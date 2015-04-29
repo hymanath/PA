@@ -28,6 +28,12 @@
 		<script src="js/flipclock/flipclock.js"></script>	
 		
 	<style>
+	
+	.dropdown-menu > li > a:hover {
+    background: none repeat scroll 0 0 #f5f5f5 !important;
+    color: #333;
+}
+
 	body{margin-bottom:120px;}
 	.footerFixedStrip{
 		bottom:0px; 
@@ -105,6 +111,7 @@
   <body class="bgc">
   
   	<!-- Header Row -->
+	
 		<div class="row-fluid">
 			<div class="span12 header-bg text-center">
 				<div class="row-fluid">
@@ -125,7 +132,7 @@
 				</div>
 			</div>
 		</div><!-- Header Row End-->
-		
+
 	<div class="container" id="yourElement">
 	<div id="myDiv"></div>
 	<div id="tableDivForCadre" class="table-responsive"></div>
@@ -134,9 +141,9 @@
 		<div id="errorDiv" style="color:#ff0020;"></div>
 			<h5 class="text-align">SELECT CONSTITUENCY </h5>
 
-			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();hideSearchResult();"/>
-			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();hideSearchResult();"><option value="0"> Select Location </option></select>		
-			<select style="width:250px;" onchange="hideSearchResult();" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
+			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:440px;" onChange="getConstituencyWiseDetails();hideSearchResult();"/>
+			<select style="width:440px;" id="panchayatList"><option value="0"> Select Booth </option></select>		
+			<!--<select style="width:250px;" onchange="hideSearchResult();" id="boothsList"> <option value="0"> Select Booth </option> </select> 	 -->
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				<span style="display:none;">
@@ -150,29 +157,64 @@
 					</div>
 				</span>	
 					<div class="pad-10b">
-					<h5 class="text-align1">CANDIDATE NAME</h5>
-							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;">
+					<h5 class="text-align1"  style="margin-left: -10px">CANDIDATE NAME</h5>
+							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;margin-left: -10px;border-radius: 5px ;height: 30px">
 					</div>
 					<div class=" m_top10 pad-10b">
 						<div class="row-fluid">
 						
 							<div class="span6">
 							<h5 class="text-align1">VOTER ID</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard">
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" style="margin-left: -10px;border-radius: 5px ;height: 30px">
 							</div>
 							
 							<div class="span6">
 							<h5 class="text-align1">H NO</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo">
+								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" style="margin-left: -10px;border-radius: 5px ;height: 30px">
 							</div>
 						</div>
 					</div>
 					<br/>
 					<div class="pad-10b">
-						<input type="checkbox" style="margin-top: 0px;" onchange="showhideRelativeType();" class="form-control border-radius-0" id="isFamilyVoterOrNot" > &nbsp; <b>Check Here If You Are Registering Cadre Using His Family VoterId</b>
+						<!--<input type="checkbox" style="margin-top: 0px;" onchange="showhideRelativeType();" class="form-control border-radius-0" id="isFamilyVoterOrNot" > &nbsp; <b>Check Here If You Are Registering Cadre Using His Family VoterId</b>
 						<div style="display:none;margin-top:10px;" id="showhideRelativeTypeId"><div id="relativeTypeIdErr" style="color:red;font-weight:bold;"></div><div><select id="relativeTypeId"></select></div></div>
+						-->
+						<!--
+						<div class="row">
+						<h5 class="text-align1"> Select Type of Registration </h5>
+						<div class="col-md-6" >
+						  <span class="text-align1" style="font-size:12px;margin-left:-10px"><input type="radio" id="voterId" name="registrationType" class="regisrationTypeCls" value="voterId" checked="true" onchange="handleRequest('voterId')"/> Voter Id</span>
+						  <span class="text-align1" class="regisrationTypeCls" style="font-size:12px;"><input type="radio" id="familyVoter" name="registrationType" value="familyVoter" onchange="handleRequest('familyVoter')"/> Family Voter</span>
+							</div>
+							<div class="col-md-4" >
+						  
+							</div>
+						<div class="col-md-3" >
+						  <label class="text-align1" class="regisrationTypeCls" style="font-size:12px;margin-left:-10px"><input type="radio" id="apVoter" name="registrationType" value="apVoterId" onchange="handleRequest('apVoterId')"/> AP Voter </lebel>
+						</div>
+					  
+					   <div class="col-md-3" >
+						  <label class="text-align1" class="regisrationTypeCls" style="font-size:12px;margin-left:-10px"><input type="radio" id="noVoterId" name="registrationType" value="noVoter" onchange="handleRequest('noVoter')"/> No Voter</lebel>
+						</div>					  
+					  </div>
+					  -->
+					  <div class="row">
+						<h5 class="text-align1"> Select Type of Registration </h5>
+
+						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('voterId')" checked="true" value="voterId" class="regisrationTypeCls" name="registrationType" id="voterId"> Voter Id</span>
+						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('familyVoter')" value="familyVoter" name="registrationType" id="familyVoter"> Family Voter</span>
+
+
+						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('apVoterId')" value="apVoterId" name="registrationType" id="apVoter"> AP Voter 
+						</span>
+
+						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('noVoter')" value="noVoter" name="registrationType" id="noVoterId"> No Voter
+						</span>  
+					  </div>
 					</div>
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<input type="hidden" value="voterId" id="registrationTypeId"/>
+					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2" id="searchBtnId"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a href="javascript:{skipDetailsForUser(0)}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " id="skipButtonId" style="display:none;">Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
 		
 		
@@ -228,9 +270,8 @@
 	</div>
 
 <!-- end FlipClock -->
-
-
 		<!-- Footer Row -->
+		
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
 					Cadre Registration Drive
@@ -283,7 +324,18 @@
 				clock.setCountdown(true);
 				clock.start();			
 			}
-		    
+		    $( "#fromDateId" ).datepicker({
+					dateFormat: 'dd-mm-yy',
+					changeMonth: true,
+					changeYear: true,
+					maxDate: new Date()	
+		});
+		$( "#toDateId" ).datepicker({	
+					dateFormat: 'dd-mm-yy',
+					changeMonth: true,
+					changeYear: true,
+					maxDate: new Date()
+		});
 
 		});
 		
@@ -381,7 +433,7 @@
 					$('#errorDiv').html('Special Characters not allowed for House No.');
 					return ;
 				}
-			}
+			} 
 		}
 		
 		if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length ==0))
@@ -524,6 +576,16 @@
 		
 	}
 	
+	function skipDetailsForUser()
+	{
+		var searchType = $('input[name="searchTypeRadio"]:checked').val();
+		var cosntiteucnyId = $('#userConstituencyId').val();	
+		var registrationTypeId = $('#registrationTypeId').val();	
+		var boothId = $('#panchayatList').val();	
+		var houseNo = 0;	
+		var candidateId = 0;
+		window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId+'&searchType='+registrationTypeId);
+	}
 	function getDetailsForUser(candidateId,status)
 	{ 
 	   $("#relativeTypeIdErr").html("");
@@ -535,7 +597,7 @@
 		
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 		var cosntiteucnyId = $('#userConstituencyId').val();	
-		var boothId = $('#boothsList').val();	
+		var boothId = 0;	
 		var houseNo = $('#panchayatList').val();	
 		
 		var panchayatId = 0;
@@ -568,10 +630,10 @@
 		$('#errorDiv').html('');
 		$('#searchNameId').val('');
 		$('#panchayatList').find('option').remove();
-		$('#panchayatList').append('<option value="0"> Select Location </option>');
+		$('#panchayatList').append('<option value="0"> Select Booth </option>');
 		
-		$('#boothsList').find('option').remove();
-		$('#boothsList').append('<option value="0"> Select Booth </option>');
+		//$('#boothsList').find('option').remove();
+		//$('#boothsList').append('<option value="0"> Select Booth </option>');
 						
 		if(cosntiteucnyId == 0 )
 		{
@@ -583,7 +645,7 @@
 		var jsObj = 
 			   {
 				  constituencyId:cosntiteucnyId,				
-				  task:"getConstituncyWiseDetails"             
+				  task:"getBoothsForConstituency"             
 			   }				   
 			   $.ajax({
 					type : "POST",
@@ -591,7 +653,7 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 						
-							$('#loadingImg').hide();
+					$('#loadingImg').hide();
 					if(result != null )
 					{
 						for(var i in result)
@@ -933,6 +995,36 @@
 			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
 		         });
 	}
+	
+	function handleRequest(requestType)
+	{
+		$('#searchBtnId').hide();
+		$('#tableElement').hide();
+		$('#skipButtonId').show();
+		$('#searchDetailsDiv').html('');
+		if(requestType =='voterId')
+		{
+			$('#searchBtnId').show();
+			$('#skipButtonId').hide();
+			$('#registrationTypeId').val('voterId');
+			
+		}
+		else if(requestType =='familyVoter')
+		{
+			$('#searchBtnId').show();
+			$('#skipButtonId').hide();
+			$('#registrationTypeId').val('familyVoterId');
+		}		
+		else if(requestType =='apVoterId')
+		{
+			$('#registrationTypeId').val('apVoterId');
+		}
+		else if(requestType =='noVoter')
+		{
+			$('#registrationTypeId').val('noVoterId');
+		}		
+	}
+	
 	getAllRelationDetails();
 		</script>
 		 <script>$('#yourElement').addClass('animated fadeInDown');</script>
