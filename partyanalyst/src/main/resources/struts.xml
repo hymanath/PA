@@ -9984,7 +9984,7 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action> 
-		<action name="mahanadueventDetailsAction" class="eventDetailsAction">
+		<action name="eventDashboardAction" class="eventDetailsAction">
 			<result name="success">/jsp/mahandueventDashBoard.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
