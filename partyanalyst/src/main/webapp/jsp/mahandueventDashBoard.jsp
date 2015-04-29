@@ -33,6 +33,10 @@
 
 <section class="container">
 	<div class="row">
+	<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
+<span class="glyphicon glyphicon-refresh"></span>
+</a>
+</div>
     	<div class="col-md-4 col-sm-6 col-xs-12">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
@@ -398,7 +402,7 @@ function insertIntermediateData()
           data: {},
 
           success: function(result){ 
-			  
+			 location.reload(); 
          },
           error:function() { 
            console.log('error', arguments);
