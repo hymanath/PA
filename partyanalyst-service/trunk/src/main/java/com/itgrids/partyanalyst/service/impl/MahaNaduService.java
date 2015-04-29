@@ -1,12 +1,15 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventUserDAO;
@@ -61,6 +65,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
@@ -73,6 +78,8 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+
+
 
 public class MahaNaduService implements IMahaNaduService{
 	private static final Logger LOG = Logger.getLogger(MahaNaduService.class);
@@ -103,10 +110,18 @@ public class MahaNaduService implements IMahaNaduService{
 	private IVoterInfoDAO voterInfoDAO;
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
 	private IEventUserDAO eventUserDAO;
+	private IEventDAO eventDAO;
 	
 	
 	
-	
+	public IEventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
 	public IEventUserDAO getEventUserDAO() {
 		return eventUserDAO;
 	}
@@ -1447,7 +1462,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 
 		return null;
 	}
- 
  public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
@@ -1509,4 +1523,83 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 	    return hoursList;
 	}
+ public List<MahanaduEventVO> getEventMembersCount(Long parentEventId)
+ {
+	 List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
+	try{
+		
+		DateUtilService date = new DateUtilService();
+		Map<Long,Long> eventCount = new HashMap<Long, Long>();
+		List<Object[]> list = eventAttendeeDAO.getEventCountsByParentEventId(parentEventId,date.getCurrentDateAndTime());
+		List<Long> eventIds = new ArrayList<Long>();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				eventCount.put((Long)params[0],(Long)params[1]);
+				if(!eventIds.contains((Long)params[0]))
+						eventIds.add((Long)params[0]);
+				/*MahanaduEventVO eventVo = new MahanaduEventVO();
+				eventVo.setName(params[2] != null ? params[2].toString() : "");
+				eventVo.setId((Long)params[0]);
+				resultList.add(eventVo);*/
+			}
+			for(Long eventId : eventIds)
+			{
+				MahanaduEventVO returnVo = new MahanaduEventVO();
+				List<MahanaduEventVO> uniEventVOList = new ArrayList<MahanaduEventVO>();
+				for(Long compareEventId : eventIds)
+				{
+					if(eventId != compareEventId)
+					{
+						MahanaduEventVO eventVo = new MahanaduEventVO();
+						Long count = eventCount.get(eventId) ;
+						Long unionCount = eventAttendeeDAO.getUnionMembersForEvent(eventId,date.getCurrentDateAndTime(),compareEventId);
+						eventVo.setId(compareEventId);
+						eventVo.setName(eventDAO.get(compareEventId).getName());
+						if(unionCount != null)
+						eventVo.setTotal(unionCount);
+						uniEventVOList.add(eventVo);
+					}
+				}
+				MahanaduEventVO mainVo = new MahanaduEventVO();
+				mainVo.setId(eventId);
+				mainVo.setName(eventDAO.get(eventId).getName());
+				Long totalunioneventCount = 0l;
+				for(MahanaduEventVO subVo : uniEventVOList)
+				{
+					totalunioneventCount = totalunioneventCount + subVo.getTotal();
+				}
+				Long mainEventCount = 0l;
+				if(eventCount.get(eventId) > totalunioneventCount)
+				mainEventCount = eventCount.get(eventId) - totalunioneventCount;
+				mainVo.setTotal(mainEventCount);
+				uniEventVOList.add(mainVo);
+				if(uniEventVOList != null && uniEventVOList.size() > 0)
+				Collections.sort(uniEventVOList,sortByName);
+				returnVo.setId(eventId);
+				returnVo.setName(eventDAO.get(eventId).getName());
+				returnVo.setSubList(uniEventVOList);
+				resultList.add(returnVo);
+				if(resultList != null && resultList.size() > 0)
+					Collections.sort(resultList,sortByName);
+			}
+			
+		}
+		
+		
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return resultList;
+ }
+ public static Comparator<MahanaduEventVO> sortByName = new Comparator<MahanaduEventVO>()
+			{	  
+					  public int compare(MahanaduEventVO arg1,MahanaduEventVO arg2)
+						{
+						  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+						}
+			};	
 }

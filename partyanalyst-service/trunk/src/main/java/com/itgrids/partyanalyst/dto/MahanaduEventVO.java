@@ -3,7 +3,10 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MahanaduEventVO {
+import java.io.Serializable;
+
+
+public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO> {
 
 	private Long id;
 	private String name;
@@ -18,8 +21,21 @@ public class MahanaduEventVO {
 	private String endTime;
 	private String desc;
 	private String inviteeExists;
+	private List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>();
 	List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
-	
+	public List<MahanaduEventVO> getHoursList() {
+		return hoursList;
+	}
+	public void setHoursList(List<MahanaduEventVO> hoursList) {
+		this.hoursList = hoursList;
+	}
+
+	public List<MahanaduEventVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<MahanaduEventVO> subList) {
+		this.subList = subList;
+	}
 	public String getDesc() {
 		return desc;
 	}
@@ -92,11 +108,17 @@ public class MahanaduEventVO {
 	public void setCadreCount(Long cadreCount) {
 		this.cadreCount = cadreCount;
 	}
-	public List<MahanaduEventVO> getHoursList() {
-		return hoursList;
+	public int compareTo(MahanaduEventVO obj) {
+		if(obj instanceof MahanaduEventVO){
+			MahanaduEventVO vo = (MahanaduEventVO) obj;
+			if(vo.getName() != null)
+			return name.compareToIgnoreCase(vo.getName());
+			else
+				return 0;
+		}
+		else
+			return 0;
 	}
-	public void setHoursList(List<MahanaduEventVO> hoursList) {
-		this.hoursList = hoursList;
-	}
+
 
 }
