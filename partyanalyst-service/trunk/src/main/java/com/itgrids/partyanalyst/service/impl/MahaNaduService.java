@@ -1379,7 +1379,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
 					 	if(eventVO != null)
 					 	{
+					 		if(params[1] != null)
 					 		eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
+					 		if(params[2] != null)
 					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);
 					 	}
 					 	
