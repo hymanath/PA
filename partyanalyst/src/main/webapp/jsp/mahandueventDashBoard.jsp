@@ -36,44 +36,8 @@
     	<div class="col-md-4 col-sm-6 col-xs-12">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
-              <div class="panel-body">
-                  <div class="text-center">
-                    <h3 class="display-style m_top0">TOTAL VISITS-</h3>
-                    <h1 class="display-style m_top0">50245</h1>
-                  </div>
-                  <div class="display-style">
-                  	<div class="display-style label-custom1">Invitees - 49456</div>
-                    <div class="pull-right label-custom1 display-style">Non Invitees - 49456</div>
-                    <br/>
-                  </div>
-                   <div class="ScrollDiv2">
-                	<hr class="m_bottom10"/>
-                    
-                    <span class="pull-left">Nara Lokesh Meeting With Mandal Presidents</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                    <span class="pull-left">Lunch Section Party Office</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                    <span class="pull-left">Lokesh Meeting</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                    <span class="pull-left">Nara Lokesh Meeting With District Presidents</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                    <span class="pull-left">Blood Donation In Party Office</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                    <span class="pull-left">Nara Lokesh Meeting With Mandal Presidents</span>
-                    <span class="pull-right label-custom">30256</span>
-                    <br/>
-                    <hr class="m_top10"/>
-                </div>
+              <div class="panel-body scrollDiv1"  id="overAllEventDiv">
+                
              
               </div>
             </div>
@@ -332,33 +296,7 @@ $(function () {
 		]
     });
 });
-$(function () {
-    $('#donutchart').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 100,
-                depth: 45
-            },
-        },
-		series: [{
-            
-            data: [
-                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
-                ['Lunch Section Party Office', 3000],
-                ['Lokesh Meeting', 1000],
-                ['Nara Lokesh Meeting With District Presidents', 6000],
-                ['Blood Donation In Party Office', 8000],
-            ]
-        }]
-    });
-});
+
 </script>
 <script>
 /*var myVar=setInterval(function(){myTimer()},1000);
@@ -486,10 +424,113 @@ function buildStartingPrograms(result){
 	});
 }
 
+function getSubEventDetails(userId,parentEventId){
+	var jObj = {
+			parentEventId:parentEventId,			
+			userId:userId
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getSubEventDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+		buildStartingPrograms(result);
+	});
+}
+function buildStartingPrograms(result){
+    var str='';
+	//str+='<div class="panel-body scrollDiv1">';
+	/*for( var i in result){
+  
+        str+='<p class="m_0 text-bold">'+result[i].name+'</p>';
+        str+='<p>'+result[i].status+'</p>';
+		if(result[i].startTime != null && result[i].endTime != null){
+        str+='<p class="text-danger">Programme Time:'+result[i].startTime+' To '+result[i].endTime +'</p>';
+		}else{
+		str+='<p class="text-danger">Programme Time:</p>';
+		}
+        str+='<hr class="m_top10"/>';
+    }     */    
 
+					str+='<div class="text-center">';
+                    str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
+                   str+=' <h1 class="display-style m_top0">50245</h1>';
+                 str+=' </div>';
+                 str+=' <div class="display-style">';
+                  str+='	<div class="display-style label-custom1">Invitees - 49456</div>';
+                   str+=' <div class="pull-right label-custom1 display-style">Non Invitees - 49456</div>';
+                   str+=' <br/>';
+                 str+=' </div>';
+                  str+=' <div class="ScrollDiv2">';
+                	str+='<hr class="m_bottom10"/>	';
+					var dataArr=[] ;
+				for(var i in result)
+				{
+				 
+					str+=' <span class="pull-left">'+result[i].name+'</span>';
+					var count = result[i].invitees + result[i].nonInvitees;
+                    str+='  <span class="pull-right label-custom">'+count+'</span>';
+                    str+=' <br/>';
+                    str+=' <hr class="m_top10"/>';
+					str+=' </div>';
+					 var arr = [];
+				    arr.push(result[i].name,count);
+				    dataArr.push(arr);
+		}
+	$("#overAllEventDiv").html(str);
+	$('.scrollDiv1').slimScroll({
+	height: '390px'
+	});
+	 buildPieChart(dataArr);
+}
+
+function buildPieChart(dataArr)
+{
+console.log(dataArr);
+    $('#donutchart').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 20
+            }
+        },
+         plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 20,
+				 showInLegend: true,
+			
+			dataLabels: {
+                        enabled: false
+                  }
+             
+            }
+        },
+			legend: {
+				enabled: true,
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 20,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },	
+		series: [{
+            
+            data: dataArr
+        }]
+ 
+});
+}
 getLocationWiseVisitorsCount(2,1,3);
 getLocationWiseVisitorsCount(2,1,4);
 
+getSubEventDetails(1,1);
 </script>
 
 </body>
