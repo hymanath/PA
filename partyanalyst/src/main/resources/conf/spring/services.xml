@@ -2516,6 +2516,7 @@
          <property name="districtDAO" ref="districtDAO" />
          <property name="cadreAddressDAO" ref="cadreAddressDAO" />
          <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+         <property name="stateDAO" ref="stateDAO" />
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
  	 <!-- <property name="cadreCallerDetailsDAO" ref="cadreCallerDetailsDAO" />-->
