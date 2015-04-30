@@ -1120,20 +1120,7 @@ public class CadreRegistrationForOtherStatesService implements
 				if(voterId != null && voterId.longValue() != 0L && vo != null){
 					List<Long> votersList = new ArrayList<Long>();
 					votersList.add(voterId);
-					if(voterType.equalsIgnoreCase("voter")){
-	                    List<VoterNames> voterNamesList = voterNamesDAO.gerVoterNamesObjByVoterId(voterId);
-						if(voterNamesList != null && voterNamesList.size() > 0 && voterNamesList.get(0) != null){
-							VoterNames voterNames = voterNamesList.get(0);
-							String voterName ="";
-							if(voterNames.getFirstName() != null){
-								voterName = voterNames.getFirstName();
-							}
-							if(voterNames.getLastName() != null){
-								voterName = voterName+" "+voterNames.getLastName();
-							}
-							vo.setTeluguName(voterName);
-						}
-					}
+
 					 Long stateId = constituencyDAO.get(constituencyId).getState().getStateId();
 					 
 					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList,getPublicationId(stateId));
