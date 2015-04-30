@@ -7,6 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>Party Office Event</title>
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
