@@ -454,6 +454,8 @@ margin-top:10px;
 					</li>
 					<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
 					<li><a href="eventInvitees.action"><span> Event Invitees  </span></a></li>
+					<li><a href="eventDashboardAction.action"><span> Events DashBoard  </span></a></li>
+					
 				
 					
 				</ul>
