@@ -538,7 +538,7 @@
 			for(var i in result){
 			 if(result[i].isRegistered == 'Y'){
 				str +='<tr  onclick="getDetailsForUser('+result[i].id+',\'Y\');">';
-				str +=' <td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls" src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
+				str +=' <td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls" src="voter_images/'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
                 str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].voterCardNo+'</span></td>';
 				str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
@@ -549,7 +549,7 @@
 				str +='</tr>';
 			 }else{
 				str +='<tr onclick="getDetailsForUser('+result[i].id+',\'N\');">';
-				str +=' <td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
+				str +=' <td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="voter_images/'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
                 str +=' <td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				str +=' <td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].voterCardNo+'</span></td>';
 				str +=' <td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
