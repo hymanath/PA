@@ -1815,7 +1815,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 		try {
 			jobj = new JSONObject(getTask());
-			
+			Long stateId = jobj.getLong("stateId");
 			Long constituencyId = jobj.getLong("constituencyId");
 			String candidateName = jobj.getString("candidateName");
 			String houseNo = jobj.getString("houseNo");
@@ -1831,7 +1831,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				
 			}
 			
-			voterInfoVOList = cadreRegistrationForOtherStatesService.getSearchDetailsCadreRegistration(constituencyId,candidateName,voterCardNo,
+			voterInfoVOList = cadreRegistrationForOtherStatesService.getSearchDetailsCadreRegistration(stateId,constituencyId,candidateName,voterCardNo,
 					                       houseNo,tehsilId,boothId,startIndex,maxIndex);
 			
 		} catch (Exception e) {
@@ -1841,9 +1841,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	
 	public String getAllMandalsInADistrict(){
-		
-		selectOptionVOList = cadreRegistrationForOtherStatesService.getAllMandalsInADistrict(Long.valueOf(request.getParameter("districtId")));
-		
+		try {
+			selectOptionVOList = cadreRegistrationForOtherStatesService.getAllMandalsInADistrict(Long.valueOf(request.getParameter("districtId")));
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllMandalsInADistrict method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCasteDetailsForCasteCategory()
+	{
+		try {
+			selectOptionVOList = cadreRegistrationForOtherStatesService.getCasteDetailsByCasteCategoryId(Long.valueOf(request.getParameter("casteCategoryId")),Long.valueOf(request.getParameter("stateId")));
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCasteDetailsForCasteCategory method in CadreRegistrationAction Action",e);
+		}
 		return Action.SUCCESS;
 	}
 }
