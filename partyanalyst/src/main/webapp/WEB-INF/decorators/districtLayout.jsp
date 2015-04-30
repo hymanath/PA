@@ -17,10 +17,12 @@
 <title><decorator:title default="Committee"/></title>
 	<!-- Bootstrap -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet"/>
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="js/bootstrap.js" ></script>
 	<style>
 		/*body{background: #F4D330 url("background_fixed.jpg"); background-size: cover;}
 		.m_top20{margin-top:20px;}
@@ -46,18 +48,23 @@
                     <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
                     Menu <img src="images/menu_icon.png" />
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">                  
-				 
-				  <li><a tabindex="-1" href="cadreSearchPageAction.action"> Cadre Search </a></li>
-				  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
-				   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-				  
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+					<c:if test="${sessionScope.USER.isAdmin == 'true' }">
+					  <li><a tabindex="-1" href="cadreSearchPageAction.action"> Cadre Search </a></li>
+					  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					</c:if>
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATIONFOR_OTHERSTATES' ) }">
+					   <li><a tabindex="-1" href="javascript:{showDashBoard();}" id="homeBtnId">Home</a></li>
+					   <li><a tabindex="-1" href="javascript:{hideDashBoard();}" id="statusBtnId" >Know User Status </a></li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					</c:if>
                     </ul>                 
             </div>
 			<!----/MENU End---->
 	</header>
 	<div class="row-fluid">
-<img width="100%" height="24" src="images/Ribbon.png">
+<img width="100%" height="24" src="images/Ribbon.png" style="height: 21px;">
 </div>
 	<decorator:head/>
 	</head>
