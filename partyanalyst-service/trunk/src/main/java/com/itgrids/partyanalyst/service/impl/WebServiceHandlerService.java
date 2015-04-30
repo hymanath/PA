@@ -1768,6 +1768,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	EventAttendee eventAttendee = new EventAttendee();
 		 	Long cadreId = tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
 		 	if(cadreId != null)
+		 	{
 		 	eventAttendee.setTdpCadreId(cadreId);
 		 	eventAttendee.setImei(inputVo.getIMEI());
 		 	if(inputVo.getRFID() != null) 
@@ -1780,6 +1781,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	
 		 	if(inputVo.getStatus() != null)
 		 	eventAttendee.setUniqueKey(inputVo.getStatus());
+		 	
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
@@ -1789,6 +1791,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
 		 	if(cadreId != null)
 		 	returnVo.setMemberShipNo(cadreId.toString());
+		 	}
+		 	else
+		 		returnVo.setStatus("fail");	
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		 	resultStatus.setMessage("success");*/
 		 }

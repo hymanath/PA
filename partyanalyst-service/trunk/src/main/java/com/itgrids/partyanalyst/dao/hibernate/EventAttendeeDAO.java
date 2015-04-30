@@ -29,7 +29,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(inviteeType.equalsIgnoreCase("invitee"))
 			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");	
 		else
-			str.append(" ,date(model.attendedTime) from EventAttendee model where model.tdpCadre.tdpCadreId not in(select model1.tdpCadre.tdpCadreId from EventInvitee model1)");
+			str.append(" ,date(model.attendedTime) from EventAttendee model where model.tdpCadre.tdpCadreId not in(select model1.tdpCadre.tdpCadreId from EventInvitee model1 where model1.tdpCadre.tdpCadreId is not null)");
 		str.append(" and date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime)");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
 			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) order by model.tdpCadre.userAddress.constituency.district.districtId");
@@ -87,7 +87,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(inviteeType.equalsIgnoreCase("invitee"))
 			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");	
 		else
-			str.append(" ,date(model.attendedTime) from EventAttendee model where model.tdpCadre.tdpCadreId not in(select model1.tdpCadre.tdpCadreId from EventInvitee model1)");
+			str.append(" ,date(model.attendedTime) from EventAttendee model where model.tdpCadre.tdpCadreId not in(select model1.tdpCadre.tdpCadreId from EventInvitee model1 where  model1.tdpCadre.tdpCadreId is not null)");
 		str.append(" and date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime)");
 		if(stateId == 1)
 			str.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23");
