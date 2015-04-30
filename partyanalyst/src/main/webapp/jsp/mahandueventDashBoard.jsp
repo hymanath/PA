@@ -571,7 +571,12 @@ console.log(dataArr)
                         textShadow: '0 0 3px black'
                     }
                 }
-            }
+            },
+			
+	        series: {
+	            pointWidth: 50
+	       
+			}
         },
         series:dataArr
     });
