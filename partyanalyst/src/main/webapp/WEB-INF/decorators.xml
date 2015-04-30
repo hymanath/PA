@@ -134,7 +134,7 @@
         <pattern>/tdpCadreIdCardDetailsAction*</pattern>
 		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
         <pattern>/partyDashBoardAction*</pattern>
-        <pattern>/cadreEnrollment*</pattern>
+        <!-- <pattern>/cadreEnrollment*</pattern>-->
         <pattern>/tdpCadreVolunteerAction*</pattern>
 		<pattern>/cadreIvrEnquiryAction*</pattern>        
         <pattern>/publicMembershipCardStatusAction*</pattern>
@@ -147,8 +147,8 @@
 		<pattern>/committeeDashBoardAction*</pattern> 
 		<pattern>/constituencyCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeRolesDashboard*</pattern>
-        -->
-        <pattern>/cadreSearchAndRegAction*</pattern>
+       
+        <pattern>/cadreSearchAndRegAction*</pattern> -->
 		<pattern>/eventDashboardAction*</pattern>
  	</excludes>  
 	
@@ -411,6 +411,7 @@
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
-		<!--<pattern>/eventDashboardAction*</pattern>-->
+		<pattern>/cadreSearchAndRegAction*</pattern>
+		<pattern>/cadreEnrollment*</pattern>
 	 </decorator>
 </decorators>
