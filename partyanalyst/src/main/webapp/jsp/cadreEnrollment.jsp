@@ -69,6 +69,25 @@
 
 
 	<style>
+
+*::after, *::before {
+    box-sizing: border-box;
+}
+*::after, *::before {
+    box-sizing: border-box;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    border-radius: 4px;
+    color: #555;
+    display: inline-block;
+    font-size: 14px;
+    height: 30px !important;
+    line-height: 20px;
+    margin-bottom: 10px;
+    padding: 4px 6px;
+    vertical-align: middle;
+	}
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}
@@ -105,1920 +124,246 @@
 	
 		
 	<script>
-		$(document).ready(function(){
-			$("#toggleButtonId").click(function(){
-				$(".fadeInUpClass").toggle();
+
+	function showTake11Image(){
+	  $('#wrapper').dialog({
+				autoOpen: true,
+				width:600,
+				title:"Take Image",
+				modal: true,
+				resizable: false
 			});
-		});
-		var constituencyArray = new Array();
-			<c:forEach var="constituency" items="${constituencyesList}">
-				var constituencys ={
-				id:"${constituency.id}",
-				name:"${constituency.name}"
-				}
-				constituencyArray.push(constituencys);
-			</c:forEach>
-		var electionArray = new Array();	
-			<c:forEach var="election" items="${eletionTypesList}">
-				var elections ={
-				id:"${election.id}",
-				name:"${election.name}"
-				}
-				electionArray.push(elections);
-			</c:forEach>
-/*
-		var casteArr = new Array();
-		var casteDetailsArr = new Array();
-		<c:forEach var="caste" items="${voterInfoVOList[0].genericVOList}">
-				var obj = {
-					id :  '${caste.id}',
-					name :  '${caste.name}'
-				}
-				casteDetailsArr.push( '${caste.name}');
-				casteArr.push(obj);
-		</c:forEach>
-
-		
-		var occupationArr = new Array();
-		var occupationDetailsArr = new Array();
-		<c:forEach var="occupation" items="${selectOptionVOList}">
-				var obj = {
-					id :  '${occupation.id}',
-					name :  '${occupation.name}'
-				}
-				occupationDetailsArr.push( '${occupation.name}');
-				occupationArr.push(obj);
-		</c:forEach>
-	*/
-	
-	
-		var participationCount = 0;
-		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
-			<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
-				participationCount = participationCount + 1;
-			</c:forEach>
-		</s:if>
-  
-		var isRolesCount = 0 ;
-		<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
-			<c:forEach var="role" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
-				isRolesCount = isRolesCount+1;
-			</c:forEach>
-		</s:if>	
-	</script>
-	
-   	<script>
-	
-	var constituencyId = '${id1}';
-	var panchayatId    = '${id2}';
-	var boothId 	   = '${id3}';
-	var srchType	   = '${searchType}';
-	var candiId		   = '${id4}';
-	var newCamPhotoTaken = false;
-	var newPhotoUploaded = false;
-	var alreadyImgPresent = false;
-	 <s:if test="voterInfoVOList[0].image != null">
-		alreadyImgPresent = true;
-	 </s:if>
-	$(document).ready(function(){
-	    $('.datePickerCls').datepicker({
-		dateFormat: 'yy-mm-dd',
-		maxDate: new Date(),
-		changeMonth: true,
-		changeYear: true,
-		yearRange: "-100:+0"
-	  });
-	  
-	  $('.dateOfBirthDtCls').datepicker({
-		dateFormat: 'yy-mm-dd',
-		maxDate: new Date(),
-		changeMonth: true,
-		changeYear: true,
-		yearRange: "-100:+0"
-	  });
-		
-		/*
-		$( "#casteIdValue" ).autocomplete({ 
-			source:casteDetailsArr,
-			select: function (event, ui) {
-				$('#casteIdValue').val(ui.item.value);	
-				for(var i in casteArr)
-				{
-					if(casteArr[i].name == ui.item.value)
-					{
-						$('#casteId').val(casteArr[i].id);
-						break;
-					}
-				}
-				return false;
-			}
-		});
-		
-		$( "#occupationValue" ).autocomplete({ 
-		source:occupationDetailsArr,
-		select: function (event, ui) {
-				$('#occupationValue').val(ui.item.value);	
-				for(var i in occupationArr)
-				{
-					if(occupationArr[i].name == ui.item.value)
-					{
-						$('#occupationId').val(occupationArr[i].id);
-						break;
-					}
-				}
-				return false;
-			}
-			
-		});
-		
-		$( ".familyOccupationsCls" ).autocomplete({ 
-		source:occupationDetailsArr,
-		select: function (event, ui) {
-				$(this ).val(ui.item.value);
-				
-				for(var i in occupationArr)
-				{
-					if(occupationArr[i].name == ui.item.value)
-					{
-						var fieldId = $(this).attr('id');
-						$('#'+fieldId+'0').val(occupationArr[i].id);
-						break;
-					}
-				}
-					return false;
-			}
-		});
-		
-		*/
-		
-		prepopulateOptions();
-		//prepopulateElctionOptions();
-		/*$('input').iCheck({
-			checkboxClass: 'icheckbox_square-blue',
-			radioClass: 'iradio_square-blue',
-			increaseArea: '20%' // optional
-		  });*/
-		 		
-		var nomineeGender = '${voterInfoVOList[0].nomineeGender}';
-		var relativeId = '${voterInfoVOList[0].voterRelationId}';
-		
-		if(nomineeGender.trim().length>0)
-			$('#nomineeGenderId').val(parseInt(nomineeGender));
-		if(relativeId.trim().length>0)
-			$('#voterRelationId').val(relativeId);
-				
-	
-	});
-
-	var rolesSize = 1;
-	var isRolesSet = true;
-	
-	function enableSearchByName(){
-		//$('#preEnrollNoValue').removeAttr('readOnly');
-		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
-		$('#searchDetailsDiv').html("");
-		$('#tableElement').hide();
-		var errDivId = "#errorDiv1";
-		$('#searchDetailsDiv1').html('');
-		$('#tableElement1').hide();
-		$('#preEnrollNo').val('');
-		$(errDivId).html('');
-		$( "#myModal1" ).dialog({title: "Search For Enrollment Number", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
-	}
-	function enableSearchByfName(){
-		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
-		$('#searchDetailsDivFmly').html("");
-		$('#tableElementFmly').hide();
-		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
-	}
-	function enableLookupName(){
-		//$('#cardNumber').removeAttr('readOnly');
-		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
-		$('#searchDetailsDiv').html("");
-		$('#tableElement').hide();
-		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
+			 $('#wrapper').show();
 	}
 	
-	function createNewForm(){
-		if(isRolesCount >= 1 &&  isRolesSet)
-		{
-			rolesSize = isRolesCount+1;
-			isRolesSet = false;
-		}
-
-		var str = '';
-		str += '<div class="rolesList'+rolesSize+'" style="margin-top:0px;float:left;margin-left:-5px;">';
-		str += '<div class="levelCls">';
-		str += '<div class=" text-align1 " >';
-		//str += '<h5 class="text-align1">Select Level </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId" id="CadreCommitteeLevelsId'+rolesSize+'" onchange="getCadreCommitteDetails(this.value,\'CadreRolesId'+rolesSize+'\')">';
-			if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
-			{
-				for(var i in cadreCmmittLvlArr)
-				{
-					str += '<option value = "'+cadreCmmittLvlArr[i].id+'">'+cadreCmmittLvlArr[i].name+'</option>';
-				}
-			}
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="levelCls">';
-		str += '<div class=" text-align1" >';
-		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId" id="CadreRolesId'+rolesSize+'" onchange="getCadreCommitteRoles(this.value,\'CadreCommitteeId'+rolesSize+'\',\'CadreCommitteeLevelsId'+rolesSize+'\');">';
-		str += '<option value = "0"> Select Committee </option>';
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="levelCls">';
-		str += '<div class=" text-align1" >';
-		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId" id="CadreCommitteeId'+rolesSize+'">';
-		str += '<option value = "0"> Select Role </option>';
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="levelCls">';
-		str += '<div class=" " >';
-		//str += '<h5 class="text-align1">From Date</h5>';		
-		str += '<div class="text-align2">';
-		str += '<input type="text" id="fromDateId'+rolesSize+'" key="'+rolesSize+'" style="width:120px;float:left;margin-left:15px;margin-top:5px;" class="form-control span2 border-radius-0 border-right-0 datePickerCls fromDateCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true" id="'+rolesSize+'" placeholder="From Date"></input> ';
-		str +='<br><span id="fromDateErr'+rolesSize+'" style="color:red;font-size:12px;"></span>';
-		str += '</div>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="levelCls ">';
-		str += '<div class=" " >';
-		//str += '<h5 class="text-align1">To Date</h5>';		
-		str += '<div class="text-align2">';
-		str += '<input type="text"  id="toDateId'+rolesSize+'"  style="width:120px;float:left;margin-left:15px;margin-top:5px;" class="form-control span2  border-radius-0 border-right-0 datePickerCls toDateCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true" id="'+rolesSize+'" placeholder="To Date"></input>';
-		str +='<br><span id="toDateErr'+rolesSize+'" style="color:red;font-size:12px;"></span>';
-		str += '</div>';
-		str += '</div>';
-		str += '</div>';
-		/*str += '<div class="span2">';
-		str += '<a onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" class="btn btn-success"></a>';
-		str += '<div>';*/
-		str += '<div class="" style="width:60px;float:left;margin-top:-10px;">';
-		str += '<div class=" " >';
-		str += '<div class="input-prepend text-align2 ">';	
-		//str += '<a class="icon-minus-sign" style="float:left;margin-top:30px;" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
-		str += '</div>';
-		str += '</div>';
-		str += '</div>';
-		str += '</div>';
-		
-		rolesSize++;
-		//alert(rolesSize);
-		
-		$('#rollesDiv').append(str);
-		//$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
-		
-		 $('.datePickerCls').datepicker({
-		dateFormat: 'yy-mm-dd',
-		maxDate: new Date(),
-		changeMonth: true,
-		changeYear: true,
-		yearRange: "-100:+0"
-	  });
-	  
-	}
-	
-	function deleteRollesForm(id)
-	{
-		if(confirm('Are you sure want to delete it? '))
-		{
-			$('.'+id).remove();
-		}		
-	}
-	
-	function submitCadreForm()
-	{	
-	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
-	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
-		if(validateDetails())
-		{
-				if(!isNumber()){
-				
-					$('html,body').animate({
-					scrollTop:  $("#casteIdValue").offset().top 
-					});
-					return false;
-				}
-				$("#submitCadreFormBtnReqId").removeAttr("onclick");
-				$("#submitCadreFormBtnReqId").attr("disabled","disabled");
-				var uploadHandler = {
-						upload: function(o) {
-							uploadResult = o.responseText;
-							//console.log(uploadResult);
-							showUploadStatus(uploadResult);	
-						}
-					};
-
-				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationForOtherAction.action',uploadHandler);
-		}		
-	}
-	
-	function validateDetails()
-	{
-		var isSuccess = false;
-		var isErrorStr = '';
-		$('#selConstiErr').html('');
-		var casteId = $('#casteId').val();
-		var mobileNumber = $('#mobileNumberId').val();
-		var cadreAge = $('#cadreAgeId').val();
-		var cadreCardNumber = $('#cardNumber').val();
-		var dateOfbirth = $('#dateOfbirthId').val();
-		var cadreName = $('#cadreNameId').val();
-		
-		var NAadharNo = $('#nomineAadharId').val();
-		var Nname = $('#nomineNameId').val();
-		var Ngender = $('#nomineeGenderId').val();
-		var NAge = $('#nomineeAgeId').val();
-		var Nrelation = $('#voterRelationId').val();
-		
-		var selDistrictId = $('#selDistrictId').val();
-		var selTehsilId = $('#selTehsilId').val();
-		var villageWardId = $('#villageWardId').val();
-		var houseNumberId = $('#houseNumberId').val();
-		var pinCodeId = $('#pinCodeId').val();
-
-		
+	function hideVoterImg(){
+  $("#voterActualImgId").removeAttr('checked');
+  $("#newTakenImgId").removeAttr('checked');
+}
+function hideCadreImg(){
+  $("#cadreActualImgId").removeAttr('checked');
+  $("#newTakenImgId").removeAttr('checked');
+}
+function showNewTakenImg(){
+  $("#cadreActualImgId").removeAttr('checked');
+  $("#voterActualImgId").removeAttr('checked');
+  $("#newTakenImgId").attr("checked","checked");
+}
+function clearExistingImg(id){
 		$('#imageErr').html('');
+		$("#"+id+"").html('');
+		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#newTakenImgId").removeAttr('checked');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+	    newPhotoUploaded = false;
+		document.getElementById("uploadFileId").value = "";
 		
-		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
-		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#selDistrictErr,#selTehsilErr,#villageWardErr,#houseNumberErr,#pinCodeErr').html('');
-		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
-			 $('#gendReqErr').html('Please select gender');
-		 }
-			$('#imageErr').html('');
-			//To check if user upload any file
-			if (!newCamPhotoTaken && !newPhotoUploaded && !alreadyImgPresent && !$("#voterActualImgId").is(':checked') && !$("#cadreActualImgId").is(':checked')) 
-			{
-				$('#imageErr').html('Please upload an image');
-				isErrorStr = " error";
-			}
-
-		if(validateName('nameErr','cadreNameId',1)){
-			isErrorStr = " error";	
-		}
-		if(validateName('ageErr','cadreAgeId',0)){
-			isErrorStr = " error";	
-		}
-		if(validateName('garErr','gardianNameId',1)){
-			isErrorStr = " error";	
-		}
-		if(validateName('relErr','relationTypessId',1)){
-			isErrorStr = " error";	
-		}
-		if(isValidName('name')){
-			isErrorStr = " error";	
-		}
-		if(isValidName('number')){
-			isErrorStr = " error";	
-		}
-
-		if(casteId == 0)
-		{
-			isErrorStr = " error";
-			$('#casteErr').html(' Caste is required.');
-		}
-		if(mobileNumber.trim().length == 0)
-		{
-			isErrorStr = " error";
-			$('#mobileErr').html(' Mobile No is required.');
-		}
-		if(cadreAge != null && cadreAge.trim().length == 0)
-		{
-			isErrorStr = " error";
-			$('#ageErr').html(' Candidate Age is required.');
-		}		
-		
-		
-		if(cadreName != null && cadreName.trim().length == 0)
-		{
-			isErrorStr = " error";
-			$('#nameErr').html(' Candidate Name is required.');
-		}		
-		
-		var pinCodeId = $('#pinCodeId').val();
-		
-		if(selDistrictId == null || selDistrictId == 0)
-		{
-			isErrorStr = " error";
-			$('#selDistrictErr').html(' Please Select District.');
-		}
-		
-		if(selTehsilId == null || selTehsilId == 0)
-		{
-			isErrorStr = " error";
-			$('#selTehsilErr').html(' Please Select Tehsil.');
-		}
-		if($.trim(villageWardId).length == 0)
-		{
-			isErrorStr = " error";
-			$('#villageWardErr').html('Ward/Village Is Required.');
-		}
-		if($.trim(houseNumberId).length == 0)
-		{
-			isErrorStr = " error";
-			$('#houseNumberErr').html('House No Is Required.');
-		}
-		
-		if($.trim(pinCodeId).length == 0)
-		{
-			isErrorStr = " error";
-			$('#pinCodeErr').html('Pin Code Is Required.');
-		}else if(isNaN($.trim(pinCodeId))){
-			isErrorStr = " error";
-			$('#pinCodeErr').html('Pin Code Must Be Number.');
-		}
-		
-		if(Nname != null && Nname.trim().length == 0)
-		{
-			isErrorStr = " error";
-			$('#NnameErr').html(' Nominee Name required.');
-		}
-		
-		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z ]+$/.test(Nname)))
-		{
-				$('#NnameErr').html('Candidate Name allows only alphabets.');
-			isErrorStr = " error";
-		}
-		if(Ngender == 0)
-		{
-			isErrorStr = " error";
-			$('#NgenderErr').html(' Nominee Gender required.');
-		}
-		if(NAge != null && NAge.trim().length == 0)
-		{
-			isErrorStr = " error";
-			$('#NageErr').html(' Nominee Age required.');
-		}
-		if(NAge != null && NAge.trim().length > 0){
-		  if(isNaN(NAge.trim())){
-		    isErrorStr = " error";
-			$('#NageErr').html(' Nominee Age must be Number.');
-		  }
-		}
-		if( Nrelation == 0)
-		{
-			isErrorStr = " error";
-			$('#NrelationErr').html(' Nominee Relation required.');
-		}
-		
-		$('.fromDateCls').each(function(){
-		
-			var keyId = $(this).attr('key');
-			$('#fromDateErr'+keyId+'').html('')	;		
-			$('#toDateErr'+keyId+'').html('');
-			
-			var startDate = $('#fromDateId'+keyId+'').val();
-			var endDate = $('#toDateId'+keyId+'').val();	
-			
-			if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
-			{
-				var arrr = startDate.split("-");
-				    var fromyear=arrr[0];
-					var frommonth=arrr[1];
-					var fromDat=arrr[2];
-			   var arr = endDate.split("-");
-					var toyear=arr[0];
-					var tomonth=arr[1];
-					var toDat=arr[2];
-					
-					if(fromyear>toyear){
-						$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
-						  isErrorStr = " error";
-					}
-					 if(frommonth>tomonth){
-						   if(fromyear == toyear){
-							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
-						    isErrorStr = " error";
-						}
-						
-					}
-					
-					if(fromDat>toDat){	
-						if(frommonth == tomonth && fromyear == toyear){			
-							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
-						    isErrorStr = " error";		
-						   }
-					}
-			}
-			
-		});
-				
-		
-		if(!isNumber()){//iferror return false
-			isErrorStr = " error";	
-		} 
-
-		/*if(!isAadharNumber('nomineAadharId','Aadhar No ')){
-			isErrorStr = " error";	
-		}*///iferror return false
-		if(!isAadharNumber('candAdrId','Aadhar No ')){
-			isErrorStr = " error";	
-		}//iferror return false
-		
-		$('.famAgeErrCls').each(function(){
-			var key = $(this).attr('key');
-			$('#famAgeErr'+key).html('');
-			if($.trim($(this).val()).length>0){	 	 
-				if (isNaN($.trim($(this).val()))) 
-				{
-					isErrorStr = " error";	
-					$('#famAgeErr'+key).html('must be number.');			
-				}
-			}else{
-				$(this).val("");
-			}
-		});
-		if(isErrorStr.trim().length >0)
-		{
-		    $("#submitCadreFormBtnReqId").removeAttr("disabled");
-		    $("#submitCadreFormBtnReqId").attr("onclick","submitCadreForm()");
-			$('html,body').animate({
-			scrollTop:  $("#yourElement").offset().top 
-			});
-			
-			isSuccess = false;
-		}
-		else
-		{
-			isSuccess = true; 
-		}
-
-	return isSuccess;	
 	}
-	
-	function showUploadStatus(myResult)
+	function getAllMandalsInADistrict(districtId)
 	{
-		$('#mainDiv').html('');
-		var result = (String)(myResult);
-		var errorDivEle = document.getElementById('errorMsgDiv');
-		var str = '';
-		var resultArr = result.split(',');
-		if(result.search('notAccess') != -1)
-		{
-			location.reload(); 
-		}
-		else if(result.search('alreadyRegistered') != -1)
-		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<h3 class="text-align">VOTER ALREADY REGISTERED AS CADRE.</h3>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
-		}else if(result.search('regfailed') != -1)
-		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<h3 class="text-align" style="color:red">ERROR OCCURED!. TRY AGAIN LATER.</h3>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
-		}
-		else if(result.search('SUCCESS') != -1)
-		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Thank You For Your Registration</p>';
-			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
-			str+= '</div>';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Your Enrollment No :'+resultArr[1]+' </p>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
-		}
-		
-		$('#statusDiv').html(str);
-	}
-	var cadreLevelArr = [];
-	var partyDesignationArr = [];
-	
-	function openSearchForm()
-	{
-		window.location.assign('tdpCadreSearchAction.action')
-	}
-	/* function prepopulateOptions()
-	{
-		var jsObj = 
-			   {				
-				  task:"getConstituncyWiseDetails"             
-			   }				   
-			   $.ajax({
-					type : "POST",
-					url : "getOptionDetailsForCadreAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-						$('#cadreLevelId').append('<option value="0"> Select Level </option>');
-							$('#partyDesignationId').append('<option value="0"> Select Designation </option>');
-						if(result != null && result.length >0)
-						{
-							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
-							{
-								for(var i in result[0].selectOptionsList)
-								{
-									$('#cadreLevelId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');
-									var cadreObj = 
-									{
-										id		:	result[0].selectOptionsList[i].id,
-										name	:	result[0].selectOptionsList[i].name								
-									}
-									
-									cadreLevelArr.push(cadreObj);
-									
-								}
-							
-							}
-							
-							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
-							{
-							
-								for(var i in result[0].selectOptionsList1)
-								{
-									$('#partyDesignationId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');
-									
-									var cadreObj = 
-									{
-										id		:	result[0].selectOptionsList1[i].id,
-										name	:	result[0].selectOptionsList1[i].name								
-									}
-									
-									partyDesignationArr.push(cadreObj);
-									
-								}							
-							}	
-						}
-				});
-	} */
-	
-	function prepopulateOptions(){
+		$('#selTehsilId').find('option').remove();
+		$('#selTehsilId').append('<option value="0"> Select Tehsil/Mandal</option>');
 		var jsObj ={}				   
 			$.ajax({
 				type : "POST",
-				url : "getCadreLevelsForCadreSearchAction.action",
-				data : {task:JSON.stringify(jsObj)} ,
+				url : "getAllMandalsInADistrict.action",
+				data : {districtId:districtId} ,
 			}).done(function(result){
-				if(result.length>0){
-					buildSelectBoxes(result);
+				if(result != null && result.length>0){
+					for(var i in result)
+					{
+						$('#selTehsilId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}	
+					
+				}
+			});
+	}
+
+	function clearSelDiv(selId){
+	 $("#"+selId).val("");
+	}
+	
+	function getCasteNamesByCasteCategory(casteGroupId)	
+	{		
+		$('#casteId').find('option').remove();
+		$('#casteId').append('<option value="0"> Select Caste Name</option>');
+		var jsObj ={}				   
+			$.ajax({
+				type : "POST",
+				url : "getCasteCategoryGroupWiseCasteDetails.action",
+				data : {stateId:1,casteCategoryId:casteGroupId} ,
+			}).done(function(result){
+				if(result != null && result.length>0){
+					for(var i in result)
+					{
+						$('#casteId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+					
 				}
 			});
 	}
 	
-	var cadreCmmittArr = [];
-	var cadreCmmittLvlArr = [];
-	var cadreRolesArr = [];
 	
-	function buildSelectBoxes(results){
-		
-		for(var i in results){
-		
-			if(results[i].name=="CadreCommitteeList"){
-				var str = "";					
-					for(var j in results[i].selectOptionsList){						
-						var cadreCmmtObj = {
-								id		:	results[i].selectOptionsList[j].id,
-								name	:	results[i].selectOptionsList[j].name								
-							}							
-						cadreCmmittArr.push(cadreCmmtObj);
-					}
-			}
-			if(results[i].name=="CadreCommitteeLevelsList"){
-				var str = "";
-					for(var j in results[i].selectOptionsList){						
-						var cadreCmmtObj = {
-								id		:	results[i].selectOptionsList[j].id,
-								name	:	results[i].selectOptionsList[j].name								
-							}
-							
-						cadreCmmittLvlArr.push(cadreCmmtObj);
-					}
-			}
-			if(results[i].name=="CadreRolesList"){
-				var str = "";
-					for(var j in results[i].selectOptionsList)
-					{						
-						var cadreCmmtObj = {
-								id		:	results[i].selectOptionsList[j].id,
-								name	:	results[i].selectOptionsList[j].name								
-							}
-							
-						cadreRolesArr.push(cadreCmmtObj);
-					}
-			}
-			
+ function validateName(errDiv,fieldid,isNumber)
+ {
+	var str = $('#'+fieldid+'').val();
+	$('#'+errDiv+'').html('');
+	var reqErstatus = false;
+	if(isNumber >0)
+	{
+		if(str != null && str.trim().length>0 && !(/^[a-zA-Z ]+$/.test(str)))
+		{
+			$('#'+errDiv+'').html('Allows only alphabets.');
+			reqErstatus = true;
+		}		  
+		if(!isValid(str))
+		{
+			reqErstatus = true;
+			$('#'+errDiv+'').html('Special Characters are not allowed.');
+		} 
+	}
+	else
+	{
+		$('#ageErr').html('');
+		if (str.length == 0) 
+		{
+			reqErstatus = true;
+			$('#'+errDiv+'').html('Please Enter Candidate Age');
+			$('#cadreAgeId').val('');
+		}		 
+		else if (isNaN(str)) 
+		{
+			 reqErstatus = true;
+			$('#'+errDiv+'').html('Candidate Age must be number.');	
+			$('#cadreAgeId').val('');			
 		}
 	}
-	
-	function prepopulateElctionOptions()
-	{
-		var jsObj = 
-			   {				
-				  task:"getConstituncyWiseDetails"             
-			   }				   
-			   $.ajax({
-					type : "POST",
-					url : "getElectionOptionDetailsForCadreAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-						$('#electionTypeId').append('<option value="0"> Select Election </option>');
-							$('#electionYearId').append('<option value="0"> Select Year </option>');
-						if(result != null && result.length >0)
-						{
-							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
-							{
-								for(var i in result[0].selectOptionsList)
-								{
-									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');		
-								}
-							
-							}
-							
-							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
-							{
-								for(var i in result[0].selectOptionsList1)
-								{
-									$('#electionYearId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');														
-								}
-							
-							}
-							
-						}
-				});
-	}
-	
-	function changeImg()
-	{
-	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
-		$("#base64Image").val("");
-		newCamPhotoTaken = false;
-		var photoElmt = document.getElementById("uploadFileId");
-		var FileUploadPath = photoElmt.value;
-		$('#imageErr').html('');
-		//To check if user upload any file
-        if (FileUploadPath == '') 
-		{
-			$('#imageErr').html('Please upload an image');
-		}
-		else 
-		{
-            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-			//The file uploaded is an image
-			if (Extension == "gif" || Extension == "png" || Extension == "bmp"
-								|| Extension == "jpeg" || Extension == "jpg") 
-			{
-                    var reader = new FileReader();
-					var file = photoElmt.files[0];
-					var reader = new FileReader();
-					reader.onloadend = handleReaderLoadEnd;
-					reader.readAsDataURL(file); 
-                    newPhotoUploaded = true;
-                    $("#voterActualImgId").removeAttr('checked');
-            } 
-			//The file upload is NOT an image
-			else 
-			{       clearExistingImg('uploadImg');
-			        newPhotoUploaded = false;
-					$('#imageErr').html('Image Formate Must Be .GIF, .PNG, .JPG, .JPEG and .BMP Only');
-			}
-        }
-	}
-	function handleReaderLoadEnd(evt)
-	{
-		var img = document.getElementById("actuploadImg");
-		img.src = evt.target.result;
-		evt=null;
-	} 
-	var eletionCont = 1;
-	var isRolesCountSet = true;
-	function createNewFormsForElections()
-	{
-		if(isRolesCount >=1 && isRolesCountSet)
-		{
-			isRolesCountSet = false;
-			eletionCont = isRolesCount;
+	return reqErstatus;
+ }
+ 
+	function buildExistingCadres(results){
+			$('#searchDetailsDiv1').html("");
+			$('#tableElement1').show();
+		if(results==null){
+
+			$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
+			return;
 		}
 		var str = '';
-		str += '<div class="row-fluid electionsList'+eletionCont+'">';
-		str += '<div class="span3">';
-		str += '<div class=" " >';
-		//str += '<h5 class="text-align1">Election Type</h5>';
-		str += '<select id="electionTypeId'+eletionCont+'" style="margin-left: 12px;" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')" >';
-		if(electionArray != null && electionArray.length>0)
-		{
-			str += '<option value = "0">Select Election Year</option>';
-			for(var i in electionArray)
-			{
-				str += '<option value = "'+electionArray[i].id+'">'+electionArray[i].name+'</option>';
-			}
-		}
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="span2">';
-		str += '<div class=" " >';
-		//str += '<h5 class="text-align1">Year</h5>';
-		str += '<select  id="electionYears'+eletionCont+'" style="width: 150px;" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId"  onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+eletionCont+'\')" >';	
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="span3">';
-		str += '<div class=" " >';
-		//str += '<h5 class="text-align1">Constituency</h5>';
-		str += '<select class="" id="constituencyList'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 10px;width:220px" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
-		str += '<option value = "0"> Select Constituency </option>';
-		/*	if(constituencyArray != null && constituencyArray.length>0)
-			{
-				for(var i in constituencyArray)
-				{
-					str += '<option value = "'+constituencyArray[i].id+'">'+constituencyArray[i].name+'</option>';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th class="text-align1"></th>';
+						str +='<th class="text-align1">NAME</th>';
+						str +='<th class="text-align1">GUARDIAN NAME</th>';
+						str +='<th class="text-align1">ENROLLMENT NO</th>';
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in results){
+					str +='<tr>';
+						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
+						str +='<td>'+results[i].name+'</td>';
+						str +='<td>'+results[i].desc+'</td>';
+						str +='<td>'+results[i].caste+'</td>';
+					str +='</tr>';
 				}
-			}
-		*/
-		str += '</select>';
-		str += '</div>';
-		str += '</div>';
-		str += '<div class="span3">';
-				str += '<div class=" " >';
-				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 10px;width:150px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
-				str += '<option value="0"> Select Candidate</option>	';							
-				str += '</select>';							
-				str += '</div>';
-			str += '</div>';
-
-		//str += '<h5 class="text-align1">Add More</h5>';
-		str += '<a class="icon-minus-sign" style="float:right;margin-top:10px;margin-right:35px;" onClick="deleteRollesForm(\'electionsList'+eletionCont+'\')" title="Remove Details"></a>';
-
-		str += '</div>';
-		
-		$('#electionsDiv').append(str);
-		eletionCont ++;
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#searchDetailsDiv1').html(str);
+			
+		 
+			$('#seachDetalsTab').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+	
+	
+}
+	function updateNameSelection(id)
+	{
+		$('#'+id+'').removeAttr('checked');		
+	}
+	function clearPreviousEnrol(){
+		$("#preEnrollNoValue").val("");
 	}
 	
-	function getElectionYears(id,divId)
+		
+	function deleteRecordsForm()
 	{
-		var jsObj = 
-			   {			
-				  eletionTypeId : id,
-				  task          : "getConstituncyWiseDetails"             
-			   }				   
-			   $.ajax({
-					type : "POST",
-					url : "getElectionYearsByElectionType.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-						$('#'+divId+'').html('');
-						$('#'+divId+'').append('<option value="0"> Select Election </option>');
-						if(result != null && result.length >0)
-						{
-							for(var i in result)
-							{
-								$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');		
-							}
-						}
-				});
-	}
-
-	var familyArr =new Array();
-	
-	<c:forEach var="votersInfo" items="${voterInfoVOList[0].voterInfoVOList}" >
-		familyArr.push(${votersInfo.voterId});
-	</c:forEach>
-		
-	var voterCount = familyArr.length - 1;
-
-	function addMoreVoters()
-	{
-	if(voterCount >= 0 )
-		voterCount = voterCount+1;
-	else
-		voterCount = 1;
-		
-	var str ='';
-
-	str +=' <tr class="voterDev'+voterCount+'">';  
-	str +='<td style="width:25px;text-align:center;">  ';
-	//str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to use this member as nominee."></td>';
-	str +='<a class="icon-remove nomineeCls" id="checkBox'+voterCount+'" style="margin-top:-10px;"  onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')"  title="Click here to use this member as nominee."></a> </td>';
-	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" id="voterName'+voterCount+'" ></input> ';
-	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId" id="voterId'+voterCount+'"></input> ';
-	str +=' </td>';
-	str +=' <td style="width:100px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"  id="voterCard'+voterCount+'"></input>';
-	str +=' </td>';
-	str +=' <td style="width:80px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age " style="width:55px;"   name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].age"  key="'+voterCount+'" id="voterAge'+voterCount+'"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr'+voterCount+'"></span>';
-	str +=' </td>';
-	str +=' <td style="width:82px;">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].gender"  id="voterGender'+voterCount+'"> </input>';
-	str +=' </td>';
-	str +=' <td style="width:100px;"> ';
-
-	str +=' <select name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].educationId" style="width:160px;">';
-	str +=' <option value="0">Select Education</option>';
-	
-	<c:forEach var="educationList" items="${genericVOList}" >
-		str +=' <option value="${educationList.id}">${educationList.name}</option>';
-	</c:forEach>
-	str +=' </select>';
-
-	str +=' </td>';
-	str +=' <td style="width:100px;"> ';
-
-	str +=' <select id="familyOccupation'+voterCount+'0" name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].occupationId" style="width:180px;margin-left: 15px;" >';
-		str +=' <option value="0">Select Occupation</option>';	
-		<c:forEach var="occupation" items="${selectOptionVOList}">
-			str +=' <option value="${occupation.id}">${occupation.name}</option>';
-		</c:forEach>
-		
-	str +=' </select>';
-	
-	/*
-	str +='<input type="text" id="familyOccupation'+voterCount+'" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style=//"width:151px;"  value=""> </input>';												 
-	str +='<input type="hidden"  id="familyOccupation'+voterCount+'0" name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>';
-	*/
-	
-	str +=' </td>';
-	str +='<td style="width:15px;"> ';
-	str +='<input type="checkbox"   class="removeCls"   style="margin-top: -10px;"  id="voterDev'+voterCount+'">';
-		/*str +='<a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm(\'voterDev'+voterCount+'\');" title="Remove Details"></a>';*/
-	str +='</td>';
-	str +=' </tr>';
-
-	
-	$('#addVotersDiv').append(str);
-	/*
-	$( ".familyOccupationsCls" ).autocomplete({ 
-		source:occupationDetailsArr,
-		select: function (event, ui) {
-				$(this ).val(ui.item.value);
-				
-				for(var i in occupationArr)
-				{
-					if(occupationArr[i].name == ui.item.value)
-					{
-						var fieldId = $(this).attr('id');
-						$('#'+fieldId+'0').val(occupationArr[i].id);
-						break;
-					}
-				}
-					return false;
-			}
+		var removeVoterArr = new Array();
+		$('.removeCls').each(function(){
+			var id = $(this).attr('id');
+			if ($('#'+id+'').is(':checked')) 
+			 {
+				console.log(id);
+				$('.'+id+'').remove();
+			 }
 		});
-	*/
-	
-	}
-	
-	
-	function isNumber()
-	{
-		var numberFlag = true;
-		var mobileNumber = $('#mobileNumberId').val().trim();
-		$('#mobileErr').html('');
-		if (mobileNumber.length == 0) 
-		{
-			$('#mobileErr').html('Please Enter Mobile No');		
-			numberFlag= false;
-		}		 
-		else if (isNaN(mobileNumber) || mobileNumber.length != 10) 
-		{
-			$('#mobileErr').html('Invalid Mobile No.');			
-			numberFlag = false;
-		}
-	
-			return numberFlag;
-	}
-	
-	function isAadharNumber(fieldId,AadharNo)
-	{
-		var numberFlag = true;
-		var errDiv='#NaadharErr';
-		if(fieldId == "candAdrId"){
-			errDiv='#errcandAdrId';
-		}
-		var mobileNumber = $('#'+fieldId+'').val().trim();
-		
-		$(errDiv).html('');
-		
-		
-		
-		if(mobileNumber.length == 0) 
-		{
-			if(!(fieldId == "candAdrId")){
-				$(errDiv).html(''+AadharNo+' Required.');		
-				numberFlag= false;
-			}
-		}		 
-		else if (isNaN(mobileNumber)) 
-		{
-			$(errDiv).html('Invalid '+AadharNo+'.');			
-			numberFlag = false;
-		}
-		/*else if(mobileNumber.length < 12) 
-		{
-			$('#NaadharErr').html(''+AadharNo+' should be 12 digits.');		
-			numberFlag= false;
-		}*/
-			return numberFlag;
-	}
-	
-	function getConstiteuncyListForElection(eletionId,constiListId)
-	{
-			$('#loadingImg').show();
-			
-			$('#'+constiListId+'').find('option').remove();
-			$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
-			
-			var jsObj = 
-			   {			
-				  electionId : eletionId,
-				  constituencyId : constituencyId,
-				  task       : "getConstiteuncyListForElection"             
-			   }				   
-			   $.ajax({
-					type : "POST",
-					url : "getConstiteuncyListForElectionAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
 
-					$('#loadingImg').hide();
-					if(result != null)
-					{
-						for(var i in result)
-						{
-							$('#'+constiListId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
-						}
-					}					
-				});
 	}
-	
-	function getCandidateDetailsForElection(constituencyId,candidateId,electionId,electionTypeId)
-	{
-		var electionValue = $('#'+electionId+'').val();
-		var electionTypeId = $('#'+electionTypeId+'').val();
-		$('#'+candidateId+'').find('option').remove();
-		$('#'+candidateId+'').append('<option value="0"> Select Candidate </option>');
-		
-			var jsObj = 
-			   {	
-				  electionTypeId : electionTypeId,
-				  electionId : electionValue,
-				  constituencyId : constituencyId,
-				  task         : "getCandidateDetailsForElection"             
-			   }				   
-			   $.ajax({
-					type : "POST",
-					url : "getCandidateDetailsForElectionAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					if(result != null)
-					{
-						for(var i in result)
-						{
-							$('#'+candidateId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
-						}
-					}		
-					
-				});
-	}
-	
-	</script>
-
-</head>
-  <body class="bgc">
-		<!-- Header Row -->
-		<div class="row-fluid">
-			<div class="span12 header-bg text-center">
-				<div class="row-fluid">
-				  <div class="span4 offset4 ">
-						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
-				  </div>
-				  <div class="span4">
-					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
-				  </div>
-				</div>
-			</div>
-		</div><!-- Header Row End-->
-	<div class="container m_top10 " id="yourElement">
-		<div class="span12 show-grid" style="position: relative;">
-			<h3 class="text-align">CADRE REGISTRATION</h3>
-		</div>
-	</div>
-	<s:if test="registeredOrNot == 'notRegistered'">
-	<div id="mainDiv">
-		<div>
-			<form action="tdpCadreSaveRegistrationForOtherAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
-		<div class="container m_top10"style="position: relative;">
-		
-			<div class="span12" >
-				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 895px;">
-					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
-					<input type="hidden" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.registrationType" value="${searchType}" > 
-					
-					<input type="hidden" class="form-control border-radius-0 text-align2" value="0" name="cadreRegistrationVO.panchayatId"> 
-					
-					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${id3}" name="cadreRegistrationVO.boothId" > 
-					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
-					
-										<div class="span12">
-											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="${id1}">										
-											<input type="hidden" id="selConstituId" name="addressVO.constituencyId" value="${id1}">										
-											<div class="span6">
-												<h5 style="color: #9a9a9a;">  CADRE NAME <span class="mandatory">*</span> </h5>
-												<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
-												<span id="nameErr" style="color:red;font-size:12px;"></span>
-											</div>	
-											<div class="span5">	
-												<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
-												<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
-												<span id="ageErr" style="color:red;font-size:12px;"></span>
-											</div>
-										</div>
-										<!--
-										<div class="span11" style="margin-left: 18px;">
-											<h5 style="color: #9a9a9a;">CADRE NAME IN MOTHER TONGUE</h5>
-											<input type="text" class="form-control border-radius-0" placeholder="Name In Mother Tongue" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
-										</div>	
-										-->
-										<div class="span12">
-										</div>
-										<div class="span12"> 
-											  <ul class="unstyled inline text-center">
-												  <li id="voterActualImgLiId">
-												   <s:if test="voterInfoVOList[0].voterImagePresent == true">
-													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
-														<span><img src="${voterInfoVOList[0].voterImage}" style="width: 140px; height: 120px;"></span>
-														<div class="btn btn-mini btn-block"> <input type="checkbox" class="m_top10" onclick="hideCadreImg();" name="cadreUploadImgVoterType" id="voterActualImgId" style="margin-top:-1px;">
-															 <span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
-														</div>
-													 </div>
-													</s:if>
-												  </li>
-												  <li>
-													<div style="width: 125px;" class="well  pad-5 m_top10">
-														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
-														<div class="btn-group"><input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
-															<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();"></span>
-															<input type="file" class="m_top10 btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 58px; margin-left: 0px; padding-left: 0px;">
-															<span onclick="showTakeImage();"><img style="width: 22px; height: 17px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png"  id="takePicture"></span>
-															<a onclick="clearExistingImg('uploadImg');" style="padding-top: 10px; padding-bottom: 7px; margin-top: 10px;" class="btn btn-mini"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" ></span></a>
-															<br/><span id="imageErr" style="color:red;font-size:12px;"></span>
-														</div>
-													</div>
-												  </li>
-											  </ul>
-										</div>
-									<div class="span12">
-										<div class="span6">
-											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"></span></h5>
-												
-												<div class="input-prepend text-align2 ">
-													
-													<input type="text" class="dateOfBirthDtCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true" id="dateOfbirthId"></input>
-													<br><span id="dobErr" style="color:red;font-size:12px;"></span>
-												</div>
-										</div>	
-										<div class="span6">	
-											<h5 class="text-align1">GENDER</h5>	 
-											<div class="row-fluid form-inline" style="margin-left:5px;">
-												<s:if test="%{voterInfoVOList[0].gender != null}">
-												
-													<c:if test="${voterInfoVOList[0].gender == 'M' || voterInfoVOList[0].gender == 'Male'}">
-													   <label class="radio"><input type="radio" value="MALE" id="maleGenderRId" name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
-														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
-													</c:if>
-													<c:if test="${voterInfoVOList[0].gender == 'F' || voterInfoVOList[0].gender == 'Female'}">												
-														<label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
-														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE" id="femaleGenderRId"   name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
-													</c:if>
-												
-												</s:if>
-												<s:else>
-												  <label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
-													&nbsp;&nbsp;&nbsp;&nbsp;
-													<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
-												</s:else>
-													<br><span id="gendReqErr" style="color:red;font-size:12px;"></span>
-											</div>		
-										</div>
-									</div>	
-								<div class="m_top10">
-									<div class="row-fluid">
-										
-										<div class="span6">
-										<h5 class="text-align1">GUARDIAN NAME </h5>
-										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"  id="gardianNameId" onkeyup="validateName('garErr','gardianNameId',1);"></input>
-										<br><span id="garErr" style="color:red;font-size:12px;"></span>
-										</div>
-										<div class="span6">
-										<h5 class="text-align1">Relationship Type</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}" id="relationTypessId" onkeyup="validateName('relErr','relationTypessId',1);"></input>
-												<br><span id="relErr" style="color:red;font-size:12px;"></span>
-										</div>
-									</div>
-								</div>
-								<div class="m_top10">
-										<div class="row-fluid">
-										  <div class="span6">
-										   <c:if test="${voterType == 'voter'}">
-											<h5 class="text-align1">VOTER ID </h5>
-											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
-											<span id="cardErr" style="color:red;font-size:12px;"></span>
-											<input type="hidden" name="cadreRegistrationVO.voterId" value="${voterInfoVOList[0].voterId}"></input>
-										    <input type="hidden" name="cadreRegistrationVO.cadreType" value="voter" ></input>
-											</c:if>
-											<c:if test="${voterType == 'familyVoter'}">
-											<h5 class="text-align1">FAMILY VOTER ID </h5>
-											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
-											<span id="cardErr" style="color:red;font-size:12px;"></span>
-											<input type="hidden" name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].voterId}" ></input>
-											<input type="hidden" name="cadreRegistrationVO.cadreType" value="familyVoter" ></input>
-										    <input type="hidden" name="cadreRegistrationVO.relationTypeId" value="${countDownTime}" />
-											</c:if>
-										  </div>
-										  <div class="span6">
-											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
-											</div>
-										</div>
-								</div>	
-								
-								<div class="m_top10">
-										<div class="row-fluid">
-										
-											<div class="span6">
-											<h5 class="text-align1">PARTY MEMBER SINCE</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" style="width: 186px;" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr" id="reqPartyMemberSinceStrId" value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Party Member Since" onclick="clearSelDiv('reqPartyMemberSinceStrId');"></span>
-											</div>
-											
-											<div class="span6">
-											<h5 class="text-align1">Blood Group</h5>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
-											
-											</div>
-										</div>
-								</div>	
-								<div class="m_top10">
-								     <div class="row-fluid">
-								        <div class=" span6" >
-										  <h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span></h5>
-										  <input type="text" class="form-control border-radius-0 text-align2" id="mobileNumberId" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}"  maxlength="10" onKeyup="isNumber()"></input>
-							              <br/><span id="mobileErr" style="color:red;font-size:12px;margin-left: 12px;"></span>
-										</div>
-										<div class=" span6" >
-									      <h5 class="text-align1">Aadhar Card No</h5>
-									       <input type="text" class="form-control border-radius-0"  placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
-								           <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
-								        </div>
-									 </div>
-								</div>
-					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height:895px;" >
-
-							<div class=" m_top20" >
-										<h5 class="text-align1">SELECT NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
-							</div>
-							
-							<div class=" m_top20" >
-								<h5 class="text-align1">EDUCATION</h5>
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:260px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
-							</div>
-							<div class=" m_top20" >
-								<h5 class="text-align1">OCCUPATION</h5>											
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:260px;" name="cadreRegistrationVO.occupationId"   value="%{voterInfoVOList[0].occupationId}"/>	
-							</div>
-							<div class=" m_top20" >
-								<h5 class="text-align1">Select District<span class="mandatory">*</span> <span id="selDistrictErr" style="color:red;font-size:12px;"></span> </h5>											
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selDistrictId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:260px;" name="addressVO.districtId"   value="%{relativeTypeId}" onchange="getAllMandalsInADistrict(this.value)"/>	
-							</div>
-							<div class=" m_top20" > 
-								<h5 class="text-align1">Select Tehsil/Mandal<span class="mandatory">*</span> <span id="selTehsilErr" style="color:red;font-size:12px;"></span> </h5>											
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selTehsilId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Tehsil/Mandal " style="width:260px;" name="addressVO.tehsilId"   value="%{id2}"/>	
-							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1">Ward/Village<span class="mandatory">*</span> <span id="villageWardErr" style="color:red;font-size:12px;"></span> </h5>
-										<input type="text" id="villageWardId" class="form-control border-radius-0 input-block-level" placeholder=" Ward/Village "  name="addressVO.hamletName"  style="width:260px;" ></input>
-							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1">House No<span class="mandatory">*</span> <span id="houseNumberErr" style="color:red;font-size:12px;"></span> </h5>
-										<input type="text" id="houseNumberId" class="form-control border-radius-0 input-block-level" placeholder=" House No "  name="addressVO.houseNo"  style="width:260px;"></input>
-							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1">Pin Code<span class="mandatory">*</span> <span id="pinCodeErr" style="color:red;font-size:12px;"></span> </h5>
-										<input type="text" id="pinCodeId" class="form-control border-radius-0 input-block-level" placeholder=" Pin Code "  name="addressVO.pinCode" style="width:260px;"></input>
-							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1">Land Mark </h5>
-										<input type="text" id="landMarkId" class="form-control border-radius-0 input-block-level" placeholder=" Land Mark "  name="addressVO.street" style="width:260px;"></input>
-							</div>
-						
-					</div>
-				</div>
-		
-		</div>
-	</div>
-	<!----  srishailam starts  -->
-	
-		<div class="container" >
-		  <div class="span12" >
-				<div class="row-fluid">
-					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:0px;margin-bottom:10px;">						
-						<div class="m_top10">
-						<div class="span12 " style="position: relative;">
-							<h3 class="text-align "> FAMILY DETAILS </h3>
-						</div>
-								<div class="row-fluid" id="addVotersDiv">		
-											<table>
-											<thead>
-											<tr>
-												<th style="width:25px;">  </th>
-												<th style="width:223px;"> VOTER NAME </th>
-												<th  style="width:145px;"> VOTER CARD NO</th>
-												<th  style="width:80px;"> AGE </th>
-												<th  style="width:80px;"> GENDER </th>
-												<th  style="width:156px;"> EDUCATION  </th>
-												<th  style="width:182px;"> OCCUPATION <a class="icon-plus-sign" style="cursor:pointer;float:right;" onClick="addMoreVoters();"  title="Click Here To Add More Family Members"> </a><br></th>
-												
-												<th> 
-												<a class="icon-minus-sign"  style="cursor:pointer; padding-bottom: 5px;"  onClick="deleteRecordsForm();" title="Select Multiple Family Members And Click Here To Remove Them">
-												</th>
-													
-							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
-											</tr>
-											</thead>
-											<tbody>		
-											
-									<c:forEach var="familyVO" items="${voterInfoVOList[0].voterInfoVOList}" varStatus="commentLoop">
-									
-										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
-										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
-											<tr class="voterDev${commentLoop.index}">
-												<td style="width:25px;text-align:center;">   
-												<!--	<input type="checkbox" id="checkBox${commentLoop.index}"  name="" class="nomineeCls" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
-												-->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add this member as nominee.">
-													
-												</td>
-												<td style="width:100px;">	
-													<input type="text" id="voterName${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Name " value="${familyVO.name}" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterName"></input> 
-													<input type="hidden" id="voterId${commentLoop.index}" class="form-control border-radius-0 text-align2" value="${familyVO.voterId}"  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterId"></input> 
-												</td>
-												<td style="width:100px;"> 
-												
-													<input type="text" id="voterCard${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
-												</td>
-												<td style="width:80px;"> 
-													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder="Age "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].age"  value="${familyVO.age}" key="${commentLoop.index}" style="width:53px;"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr${commentLoop.index}"></span> 
-												</td>
-												<td style="width:80px;">
-													<input type="text" id="voterGender${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Gender "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].gender"  value="${familyVO.gender}" style="width:50px;"> </input>
-												</td>
-												<td style="width:100px;"> 
-												
-													<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].educationId" style="width:160px;">
-													<option value="0">Select Education</option>
-														<c:forEach var="educationList" items="${genericVOList}" >															
-															<c:if test="${educationList.id == familyVO.education }">																
-																<option value="${educationList.id}" selected="selected">${educationList.name}</option>
-															</c:if>	
-															<c:if test="${educationList.id != familyVO.education }">																
-																<option value="${educationList.id}">${educationList.name}</option>
-															</c:if>	
-														</c:forEach>
-													</select>
-													 
-												</td>
-												<td style="width:100px;"> 
-												
-												<!--
-													 <input type="text" id="familyOccupation${commentLoop.index}" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Occupation "  style="width:150px;"  value="${familyVO.occupation}"> </input>
-													 
-													 <input type="hidden"  id="familyOccupation${commentLoop.index}0" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value="${familyVO.occupationId}"> </input>
-													-->
-											<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" id="familyOccupation%{commentLoop.index}" style="width:180px;margin-left:15px;">
-													<option value="0">Select Occupation</option>
-													
-											<c:forEach var="educationList" items="${selectOptionVOList}" >													
-													<c:if test="${educationList.id == familyVO.occupationId }">																
-														<option value="${educationList.id}" selected="selected">${educationList.name}</option>
-													</c:if>	
-													<c:if test="${educationList.id != familyVO.occupationId }">																
-														<option value="${educationList.id}">${educationList.name}</option>
-													</c:if>	
-											</c:forEach>
-														
-											
-											</select>
-											
-													 
-												</td>
-												<td style="width:15px;"> 
-												
-												<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev${commentLoop.index}">
-												<!--<a class="icon-minus-sign" style="float:right;margin-left:-3px;" onClick="deleteRollesForm('voterDev${commentLoop.index}');" title="Remove Details"></a> -->
-												</td>
-											</tr>
-											
-									</c:forEach>
-									</tbody>									
-								</table>
-								
-								
-									
-								</s:if>
-								<s:else>
-											
-											</tr>
-											</thead>
-											<tbody>	
-										<input type="hidden" value="0" class="countVar"></input>
-											<tr class="voterDev0">
-											    <td style="width:25px;text-align:center;">
-											    <!-- <input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee."> -->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add this member as nominee.">
-												</td>
-												<td> 
-													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
-													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ></input> 
-												</td>
-												<td> 
-													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
-												</td>
-												<td style="width:80px;"> 
-													<input type="text" id="voterAge0" key="0" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age "  name="cadreRegistrationVO.cadreFamilyDetails[0].age"  style="width:50px;"></input>  <br/> <span style="color:red;font-size:12px;" id="famAgeErr0"></span>
-												</td>
-												<td style="width:80px;">
-													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  name="cadreRegistrationVO.cadreFamilyDetails[0].gender"  style="width:50px;"> </input>
-												</td>
-												<td style="width:100px;"> 
-												
-													<select name="cadreRegistrationVO.cadreFamilyDetails[0].educationId" style="width:160px;">
-													<option value="0">Select Education</option>
-														<c:forEach var="educationList" items="${genericVOList}" >
-															<option value="${educationList.id}">${educationList.name}</option>
-														</c:forEach>
-													</select>
-													 
-												</td>
-												<td style="width:100px;"> 
-												
-												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:180px;margin-left:15px" id="familyOccupation0"  name="cadreRegistrationVO.cadreFamilyDetails[0].occupationId"/>
-												
-												<!--
-													<input type="text" id="familyOccupation0" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder="  Occupation "  style="width:150px;"  value=""> </input>
-													 
-													<input type="hidden"  id="familyOccupation00" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>
-												-->
-												
-												</td>
-												<td style="width:15px;"> 
-													<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev0">
-													<!-- <a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm('voterDev0');" title="Remove Details"> -->
-												</td>
-											</tr>
-											
-									</tbody>									
-									</table>	
-																							
-								</s:else>
-								
-								</div>
-						</div>
-					</div>
-				
-	</div>
-	</div>
-	</div>
-	<!----  srishailam end  -->
-	
-	
-	<div id="fadeInUp">
-		<div class="container m_top10">
-			<div class="span12 show-grid" style="position: relative;">
-				<h3 class="text-align ">NOMINEE DETAILS</h3>
-			</div>
-		</div>
-		<div class="container m_top10">
-			<div class="span12 show-grid" style="position: relative;" id="accDiv">
-				<div class="span2">
-					<h5 class="text-align1"> Aadhar Card  <span class="mandatory"></span></h5>
-					<input type="text" class="" style="width: 138px;" placeholder="Aadhaar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
-					 <span id="NaadharErr" style="color:red;font-size:11px;"></span>
-				</div>
-				
-				<div class="span2">
-					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterId"></input>
-					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterCardId"></input>
-					<h5 class="text-align1"> Nominee Name  <span class="mandatory">*</span></h5>
-					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName" value="${voterInfoVOList[0].nomineeName}" id="nomineNameId" onkeyup="isValidName('name')"></input>
-					<span id="NnameErr" style="color:red;font-size:11px;"></span>
-				</div>
-				
-				
-				
-				<div class="span2">
-					<h5 class="text-align1"> Gender <span class="mandatory">*</span></h5>
-					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;" id="nomineeGenderId" >
-							<option value="0">Select Gender</option>	
-							<option value="1">Male</option>
-							<option value="2">Female</option>
-					</select>
-					 <span id="NgenderErr" style="color:red;font-size:11px;"></span>
-				</div>
-				
-				<div class="span2">
-					<h5 class="text-align1"> Age  <span class="mandatory">*</span></h5>
-					<input type="text" class=""  style="width: 100px;" placeholder=" Age "  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}" id="nomineeAgeId"  onkeyup="isValidName('number')"></input>
-					<span id="NageErr" style="color:red;font-size:11px;"></span>
-				</div>
-				
-				<div class="span2">
-					<h5 class="text-align1"> Relation Type <span class="mandatory">*</span></h5>
-					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
-							<option value="0">Select Relation</option>	
-							<option value="1">Father</option>	
-							<option value="2">Mother</option>	
-							<option value="3">Wife</option>	
-							<option value="4">Brother</option>	
-							<option value="5">Sister</option>	
-							<option value="7">Husband</option>	
-							<option value="8">Son</option>	
-							<option value="9">Daughter</option>	
-							<option value="10">Grand Son</option>	
-							<option value="11">Grand Daughter</option>	
-							<option value="12">Others</option>	
-					</select>
-					<span id="NrelationErr" style="color:red;font-size:11px;"></span> 
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="container m_top10">
-			<div style="position: relative;">
-				<!-- <a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a> -->
-				
-				<div  class="btn btn-success text-align3 m_top20 pull-right border-radius-0" id="submitCadreFormBtnReqId" onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></div>
-			</div>
-		</div>
-</form>
-</div>
-</div>
-</s:if>
-<s:else>
-   <div class="container m_top10 ">
-        <div style="position: relative;" class="span12 show-grid">
-			<h3 class="text-align">VOTER ALREADY REGISTERED AS CADER</h3>
-		</div>
-   </div>
-   <script type="text/javascript">
-     $("#yourElement").hide();
-   </script>
-</s:else>
-				
-				<div id="myModal" style="display:none;">
-						<div style="border:1px solid lightgray;">
-							<div class="pad-10b">
-								<h5 class="text-align1">CANDIDATE NAME</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
-							</div>
-							<div class=" m_top10 pad-10b">
-								<div class="row-fluid">
-									<div class="span6">
-										<h5 class="text-align1">VOTER ID</h5>
-										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
-									</div>
-									
-									<div class="span6">
-										<h5 class="text-align1">H NO</h5>
-										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
-									</div>
-								</div>
-							</div>
-							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('voter');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>
-							<div id="errorDiv" class="mandatory"></div>
-							<div class="show-grid pad-5 m-bottom-10">
-								<div class="container" id="tableElement" style="margin-top:25px;display:none;">
-									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
-									
-									<div class="table-responsive" id="searchDetailsDiv" ></div>
-								</div>
-							</div>
-						</div>
-				</div>
-				
-				<div id="myModal2" style="display:none;">
-						<div style="border:1px solid lightgray;">
-							<div class="pad-10b">
-								<h5 class="text-align1">CANDIDATE NAME</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameIdFmly" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
-							</div>
-							<div class=" m_top10 pad-10b">
-								<div class="row-fluid">
-									<div class="span6">
-										<h5 class="text-align1">VOTER ID</h5>
-										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardIdFmly"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
-									</div>
-									
-									<div class="span6">
-										<h5 class="text-align1">H NO</h5>
-										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoIdFmly"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
-									</div>
-								</div>
-							</div>
-							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('family');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg3" class="" src="images/Loading-data.gif"></div>
-							<div id="errorDivFmly" class="mandatory"></div>
-							<div class="show-grid pad-5 m-bottom-10">							
-								<div class="container" id="tableElementFmly" style="margin-top:25px;display:none;">
-									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
-									<div class="table-responsive" id="searchDetailsDivFmly" ></div>
-								</div>
-							</div>
-						</div>
-				</div>
-				
-				<div id="myModal1" style="display:none;">
-					<div style="border:1px solid lightgray;">
-						<div class="pad-10b">
-								<h5 class="text-align1">CANDIDATE NAME</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="width:425px;" onkeyUp="getExistingCadreInfo1();">
-						</div>
-						<div class=" m_top10 pad-10b">
-							<div class="row-fluid">
-								<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
-							</div>
-						</div>
-						
-						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
-					</div>
-					<div id="errorDiv1"  class="mandatory"></div>
-					<div class="show-grid pad-5 m-bottom-10">
-						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
-							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
-							<div class="table-responsive" id="searchDetailsDiv1" ></div>
-						</div>
-					</div>
-				</div>
-	
-<div id="statusDiv">
-</div>
-<div id="wrapper">
-			<div id="example"></div>
-		</div>
-	<!-- Footer Row -->
-		<div class="row-fluid">
-			<div class="span12 text-center m_top5 color-white">
-					TDP Cadre Registration Drive
-				<p>Copyright &copy; 2014,  All Rights Reserved</p>
-			</div>
-		</div>
-	<!-- Footer Row End-->
-		
-</body>
-<script type="text/javascript">
-var existingCadreArr = [];
-var existingCadreInfoArr = [];
-function getExistingCadreInfo(){
-	var value = $('#preEnrollNoValue').val();
+	function getExistingCadreInfo1(){
+    var errDivId = "#errorDiv1";
+	$('#searchDetailsDiv1').html('');
+	$('#tableElement1').hide();
 	$('#preEnrollNo').val('');
+	$(errDivId).html('');
+	
+	var candidateName = $('#candiNameId').val();
+	var enrollmentNo = $('#enrollmentNoId').val();
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId = '${houseNo}';  // panchayat Id 
 	var boothId = '${boothId}';  // boothId Id 
 	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
 	
-	if(value.trim().length >2)
-	{
-		existingCadreArr = [];
-		existingCadreInfoArr = [];
-			var jsObj = 
-			   {	
-				name : value,
-				constituencyId : constituencyId,
-				panchayatId : panchayatId,
-				boothId : boothId,
-				isPresentCadre:isPresentCadre,
-				task:"getExistingCadreInfo"             
-			   }
-			   
-			   $.ajax({
-					type : "POST",
-					url : "getExistingCadreInfoAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					if(result != null && result.length > 0)
-					{
-						for(var i in result)
-						{
-							var cadreObj = {
-							id : result[i].id,
-							name : 	result[i].name,
-							relativeName : result[i].desc,
-							enrollNo : result[i].caste,
-							check : result[i].name+" - "+result[i].desc+" - "+result[i].caste
-							}
-							
-							existingCadreArr.push(cadreObj);
-							
-							existingCadreInfoArr.push(result[i].name+" - "+result[i].desc+" - "+result[i].caste);
-						}
-						
-						$( "#preEnrollNoValue" ).autocomplete({ 
-							source:existingCadreInfoArr,
-							select: function (event, ui) {
-								$('#preEnrollNoValue').val(ui.item.value);	
-								
-								for(var k in existingCadreArr)
-								{
-									
-									if(existingCadreArr[k].check == ui.item.value)
-									{
-										//console.log(existingCadreArr[k]);
-										$('#preEnrollNo').val(existingCadreArr[k].enrollNo);
-										$('#preEnrollNoValue').val(existingCadreArr[k].enrollNo);
-										if(existingCadreArr[k].enrollNo != null && $.trim(existingCadreArr[k].enrollNo).length > 0)
-                                           getCadreImage(existingCadreArr[k].enrollNo);										
-										break;
-									}
-								}
-								
-								return false;
-							}
-						});
-		
-					}
-				});
-	}
-}
-
-$("#cardNumber1").keyup(function(){
-	var cardNumberVal = $("#cardNumber").val();
-	if(cardNumberVal.trim().length>2){
-		var constituencyId = '${constiteucnyId}';
-		var panchayatId = '${houseNo}'; 
-		var boothId = '${boothId}';
-		var isPresentCadre = '${panchayatId}';
-		searchedVoters = [];
-		searchedVotersInfoArr = [];
-		
-		var jsObj ={
-					  constituencyId:constituencyId,
-					  searchType :"voter", 
-					  candidateName:cardNumberVal,
-					  houseNo : "",
-					  voterCardNo : "",
-					  panchayatId : panchayatId,
-					  boothId : boothId ,
-					  locationId : 0,
-					  isPresentCadre:isPresentCadre,
-					  task:"searchCandidatesDtailsBySearchCriteria"             
-				   }
-		
-		 $.ajax({
-					type : "POST",
-					url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					//if(result==null){return;}
-					for(var i in result){
-							var vtrsObj = {
-								id : result[i].id,
-								name : 	result[i].name,
-								relativeName : result[i].desc,
-								voterCardNo :result[i].voterCardNo,
-								check : result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender
-							}
-							searchedVoters.push(vtrsObj);
-							searchedVotersInfoArr.push(result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender);
-					}
-					
-					$( "#cardNumber" ).autocomplete({ 
-							source:searchedVotersInfoArr,
-							select: function (event, ui) {
-								$('#cardNumber').val(ui.item.value);	
-								for(var k in searchedVoters){
-									//console.log(searchedVoters);
-									if(searchedVoters[k].check == ui.item.value){
-										//$('#cardNo').val(searchedVoters[k].voterCardNo);
-										$('#cardNumber').val(searchedVoters[k].voterCardNo);	
-										break;
-									}
-								}
-								
-								return false;
-							}
-						});
-						
-						
-				});
-	}
-	
-});
-
-function getCandidateDetailsById(constituencyId,electionId,nominationId )
-{
-var electionsId = $('#'+electionId+'').val();
-	$('#candidateDivTab').html('');
-	var jsObj = 
-	   {
-			electionId : electionsId,
-			nominationId : nominationId,
-			task:"getCandidateDetailsById"             
-	   }				   
-	   $.ajax({
-			type : "POST",
-			url : "getCandidateInfoByNominationAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			buildCandidateDetails(result,nominationId);
-		});
-}
-var prvEleCount = 1;
-function buildCandidateDetails(result,nominationId)
-{
-	var str ='';
-	if(result != null)
-	{
-		str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1" style="width:850px;">';
-		str+='<tbody>';
-		
-		for(var i in result)
+	var isError = false;
+	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
 		{
-			str+='<tr class="removeId'+i+'" >';
-				str += '<input type="hidden" value=""></input>';
-				str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
-				str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
-				str += '<input type="hidden" value='+nominationId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
-				str +='<td>'+result[i].name+'</td>';
-				str +='<td>'+result[i].location+'</td>';
-				str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
-				str +='<td> <a class="icon-minus-sign" href="javascript:{deleteDetails(\'removeId'+i+'\')}"></a></td>';
-			str+='</tr>';
-			prvEleCount++;
+			$(errDivId).html('Enter any search criteria for details.');
+			 isError = true ;
 		}
 		
-		str+='</tbody>';
-		str +='</table>';
-		
-		$('#candidateDivTab').html(str);
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(enrollmentNo != null && enrollmentNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else 
+			{
+				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+	if(!isError){
+	$('#searchDataImg1').show();
+		var jsObj = {	
+			name : candidateName,
+			constituencyId : constituencyId,
+			panchayatId : panchayatId,
+			boothId : boothId,
+			isPresentCadre:isPresentCadre,
+			enrollmentNumber : enrollmentNo,
+			task:"getExistingCadreInfo"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getExistingCadreInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		$('#searchDataImg1').hide();
+			buildExistingCadres(result);
+		});
 	}
-}
-function showHideFamRelatinoSts(){
-  
-   if($('#relativeTypeChecked').prop('checked')==true){
-     $('#showHideFammemberType').show();
-   }else{
-     $('#showHideFammemberType').hide();
-   }
-}
-function getAllRelationDetails(){
-	 $.ajax({
-		type : "POST",
-		url : "getAllRelationDetails.action"
-	}).done(function(result){
-	  if(result != null && result.length > 0){
-	   //$('#relativeTypeId').append('<option value="0">Select Relation</option>');
-	   for(var i in result){
-		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	    }
-	  }
-	 
-	  <s:if test="voterInfoVOList[0].relative != null">
-	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId}');
-		$('#relativeTypeChecked').attr("checked","checked");
-		showHideFamRelatinoSts();
-	  </s:if>
-	});
-}
-getAllRelationDetails();
+}	
+
 function deleteDetails(id)
 	{
 		if(confirm('Are you sure want to delete it? '))
@@ -2037,19 +382,7 @@ function getCadreImage(id){
 				}
 		});
 }	
-function hideVoterImg(){
-  $("#voterActualImgId").removeAttr('checked');
-  $("#newTakenImgId").removeAttr('checked');
-}
-function hideCadreImg(){
-  $("#cadreActualImgId").removeAttr('checked');
-  $("#newTakenImgId").removeAttr('checked');
-}
-function showNewTakenImg(){
-  $("#cadreActualImgId").removeAttr('checked');
-  $("#voterActualImgId").removeAttr('checked');
-  $("#newTakenImgId").attr("checked","checked");
-}
+
 	function getCadreCommitteDetails( levelId,divId)
 	{
 		$('#'+divId+'').find('option').remove();
@@ -2072,17 +405,6 @@ function showNewTakenImg(){
 			});
 	}
 	
-	function clearExistingImg(id){
-		$('#imageErr').html('');
-		$("#"+id+"").html('');
-		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
-		$("#newTakenImgId").removeAttr('checked');
-		$("#base64Image").val("");
-		newCamPhotoTaken = false;
-	    newPhotoUploaded = false;
-		document.getElementById("uploadFileId").value = "";
-		
-	}
 	
 	
 	function getCadreCommitteRoles(committeeId,buildDivId,divId)
@@ -2111,19 +433,20 @@ function showNewTakenImg(){
 			});
 	}
 	
-	function isValid(str)
+	function isValid(strg)
 	{
 		var flag = true;
 		var iChars = "`~!@#$%^&*()_-+=}]{[\"':;|\?/><,";		 
-		for (var i = 0; i < str.length; i++) 
+		for (var i = 0; i < strg.length; i++) 
 		{
-			if (iChars.indexOf(str.charAt(i)) != -1) 
+			if (iChars.indexOf(strg.charAt(i)) != -1) 
 			{			
 				flag = false;
 			}
 		}
 	return flag;
 	}
+	
 	var request;	
 	function searchCandidatesDetailsBySearchCriteria(fromDiv){
 		
@@ -2537,210 +860,1918 @@ function showNewTakenImg(){
 		$('#preEnrollNo').val(enrollmentNo);
 	}
 	
-</script>
-<script>
-function getExistingCadreInfo1(){
-    var errDivId = "#errorDiv1";
-	$('#searchDetailsDiv1').html('');
-	$('#tableElement1').hide();
-	$('#preEnrollNo').val('');
-	$(errDivId).html('');
 	
-	var candidateName = $('#candiNameId').val();
-	var enrollmentNo = $('#enrollmentNoId').val();
+	
+		$(document).ready(function(){
+
+			$("#homeBtnId").hide();
+			$("#statusBtnId").hide();
+			$("#wrapper").hide();
+			$("#toggleButtonId").click(function(){
+				$(".fadeInUpClass").toggle();
+			});
+		});
+		var constituencyArray = new Array();
+			<c:forEach var="constituency" items="${constituencyesList}">
+				var constituencys ={
+				id:"${constituency.id}",
+				name:"${constituency.name}"
+				}
+				constituencyArray.push(constituencys);
+			</c:forEach>
+		var electionArray = new Array();	
+			<c:forEach var="election" items="${eletionTypesList}">
+				var elections ={
+				id:"${election.id}",
+				name:"${election.name}"
+				}
+				electionArray.push(elections);
+			</c:forEach>
+/*
+		var casteArr = new Array();
+		var casteDetailsArr = new Array();
+		<c:forEach var="caste" items="${voterInfoVOList[0].genericVOList}">
+				var obj = {
+					id :  '${caste.id}',
+					name :  '${caste.name}'
+				}
+				casteDetailsArr.push( '${caste.name}');
+				casteArr.push(obj);
+		</c:forEach>
+
+		
+		var occupationArr = new Array();
+		var occupationDetailsArr = new Array();
+		<c:forEach var="occupation" items="${selectOptionVOList}">
+				var obj = {
+					id :  '${occupation.id}',
+					name :  '${occupation.name}'
+				}
+				occupationDetailsArr.push( '${occupation.name}');
+				occupationArr.push(obj);
+		</c:forEach>
+	*/
+	
+	
+		var participationCount = 0;
+		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
+			<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+				participationCount = participationCount + 1;
+			</c:forEach>
+		</s:if>
+  
+		var isRolesCount = 0 ;
+		<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
+			<c:forEach var="role" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
+				isRolesCount = isRolesCount+1;
+			</c:forEach>
+		</s:if>	
+	</script>
+	
+   	<script>
+	
+	var constituencyId = '${id1}';
+	var panchayatId    = '${id2}';
+	var boothId 	   = '${id3}';
+	var srchType	   = '${searchType}';
+	var candiId		   = '${id4}';
+	var newCamPhotoTaken = false;
+	var newPhotoUploaded = false;
+	var alreadyImgPresent = false;
+	 <s:if test="voterInfoVOList[0].image != null">
+		alreadyImgPresent = true;
+	 </s:if>
+	$(document).ready(function(){
+		
+		if(srchType=="skip" && candiId =="0"){
+			$("#cardNumber").removeAttr("disabled");
+		}else {
+				$("#cardNumber").prop("disabled","disabled");
+		}
+		
+	    $('.datePickerCls').datepicker({
+		dateFormat: 'yy-mm-dd',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-100:+0"
+	  });
+	  
+	  $('.dateOfBirthDtCls').datepicker({
+		dateFormat: 'yy-mm-dd',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-100:+0"
+	  });
+		
+		/*
+		$( "#casteIdValue" ).autocomplete({ 
+			source:casteDetailsArr,
+			select: function (event, ui) {
+				$('#casteIdValue').val(ui.item.value);	
+				for(var i in casteArr)
+				{
+					if(casteArr[i].name == ui.item.value)
+					{
+						$('#casteId').val(casteArr[i].id);
+						break;
+					}
+				}
+				return false;
+			}
+		});
+		
+		$( "#occupationValue" ).autocomplete({ 
+		source:occupationDetailsArr,
+		select: function (event, ui) {
+				$('#occupationValue').val(ui.item.value);	
+				for(var i in occupationArr)
+				{
+					if(occupationArr[i].name == ui.item.value)
+					{
+						$('#occupationId').val(occupationArr[i].id);
+						break;
+					}
+				}
+				return false;
+			}
+			
+		});
+		
+		$( ".familyOccupationsCls" ).autocomplete({ 
+		source:occupationDetailsArr,
+		select: function (event, ui) {
+				$(this ).val(ui.item.value);
+				
+				for(var i in occupationArr)
+				{
+					if(occupationArr[i].name == ui.item.value)
+					{
+						var fieldId = $(this).attr('id');
+						$('#'+fieldId+'0').val(occupationArr[i].id);
+						break;
+					}
+				}
+					return false;
+			}
+		});
+		
+		*/
+		
+		prepopulateOptions();
+		//prepopulateElctionOptions();
+		/*$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-blue',
+			increaseArea: '20%' // optional
+		  });*/
+		 		
+		var nomineeGender = '${voterInfoVOList[0].nomineeGender}';
+		var relativeId = '${voterInfoVOList[0].voterRelationId}';
+		
+		if(nomineeGender.trim().length>0)
+			$('#nomineeGenderId').val(parseInt(nomineeGender));
+		if(relativeId.trim().length>0)
+			$('#voterRelationId').val(relativeId);
+				
+	
+	});
+
+	var rolesSize = 1;
+	var isRolesSet = true;
+	
+	function enableSearchByName(){
+		//$('#preEnrollNoValue').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		var errDivId = "#errorDiv1";
+		$('#searchDetailsDiv1').html('');
+		$('#tableElement1').hide();
+		$('#preEnrollNo').val('');
+		$(errDivId).html('');
+		$( "#myModal1" ).dialog({title: "Search For Enrollment Number", width: "auto",
+            height: "auto", position: { my: 'right', at: 'top+10' }});
+	}
+	function enableSearchByfName(){
+		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
+		$('#searchDetailsDivFmly').html("");
+		$('#tableElementFmly').hide();
+		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
+            height: "auto", position: { my: 'right', at: 'top+10' }});
+	}
+	function enableLookupName(){
+		//$('#cardNumber').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
+            height: "auto", position: { my: 'right', at: 'top+10' }});
+	}
+	
+	function createNewForm(){
+		if(isRolesCount >= 1 &&  isRolesSet)
+		{
+			rolesSize = isRolesCount+1;
+			isRolesSet = false;
+		}
+
+		var str = '';
+		str += '<div class="rolesList'+rolesSize+'" style="margin-top:0px;float:left;margin-left:-5px;">';
+		str += '<div class="levelCls">';
+		str += '<div class=" text-align1 " >';
+		//str += '<h5 class="text-align1">Select Level </h5>';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId" id="CadreCommitteeLevelsId'+rolesSize+'" onchange="getCadreCommitteDetails(this.value,\'CadreRolesId'+rolesSize+'\')">';
+			if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
+			{
+				for(var i in cadreCmmittLvlArr)
+				{
+					str += '<option value = "'+cadreCmmittLvlArr[i].id+'">'+cadreCmmittLvlArr[i].name+'</option>';
+				}
+			}
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="levelCls">';
+		str += '<div class=" text-align1" >';
+		//str += '<h5 class="text-align1">Party Designation </h5>';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId" id="CadreRolesId'+rolesSize+'" onchange="getCadreCommitteRoles(this.value,\'CadreCommitteeId'+rolesSize+'\',\'CadreCommitteeLevelsId'+rolesSize+'\');">';
+		str += '<option value = "0"> Select Committee </option>';
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="levelCls">';
+		str += '<div class=" text-align1" >';
+		//str += '<h5 class="text-align1">Party Designation </h5>';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId" id="CadreCommitteeId'+rolesSize+'">';
+		str += '<option value = "0"> Select Role </option>';
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="levelCls">';
+		str += '<div class=" " >';
+		//str += '<h5 class="text-align1">From Date</h5>';		
+		str += '<div class="text-align2">';
+		str += '<input type="text" id="fromDateId'+rolesSize+'" key="'+rolesSize+'" style="width:120px;float:left;margin-left:15px;margin-top:5px;" class="form-control span2 border-radius-0 border-right-0 datePickerCls fromDateCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true" id="'+rolesSize+'" placeholder="From Date"></input> ';
+		str +='<br><span id="fromDateErr'+rolesSize+'" style="color:red;font-size:12px;"></span>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="levelCls ">';
+		str += '<div class=" " >';
+		//str += '<h5 class="text-align1">To Date</h5>';		
+		str += '<div class="text-align2">';
+		str += '<input type="text"  id="toDateId'+rolesSize+'"  style="width:120px;float:left;margin-left:15px;margin-top:5px;" class="form-control span2  border-radius-0 border-right-0 datePickerCls toDateCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true" id="'+rolesSize+'" placeholder="To Date"></input>';
+		str +='<br><span id="toDateErr'+rolesSize+'" style="color:red;font-size:12px;"></span>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		/*str += '<div class="span2">';
+		str += '<a onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" class="btn btn-success"></a>';
+		str += '<div>';*/
+		str += '<div class="" style="width:60px;float:left;margin-top:-10px;">';
+		str += '<div class=" " >';
+		str += '<div class="input-prepend text-align2 ">';	
+		//str += '<a class="icon-minus-sign" style="float:left;margin-top:30px;" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		
+		rolesSize++;
+		//alert(rolesSize);
+		
+		$('#rollesDiv').append(str);
+		//$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+		
+		 $('.datePickerCls').datepicker({
+		dateFormat: 'yy-mm-dd',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-100:+0"
+	  });
+	  
+	}
+	
+	function deleteRollesForm(id)
+	{
+		if(confirm('Are you sure want to delete it? '))
+		{
+			$('.'+id).remove();
+		}		
+	}
+	
+	function validateDetails()
+	{
+		var isSuccess = false;
+		var isErrorStr = '';
+		$('#selConstiErr').html('');
+		var casteId = $('#casteId').val();
+		var mobileNumber = $('#mobileNumberId').val();
+		var cadreAge = $('#cadreAgeId').val();
+		var cadreCardNumber = $('#cardNumber').val();
+		var dateOfbirth = $('#dateOfbirthId').val();
+		var cadreName = $('#cadreNameId').val();
+		
+		var NAadharNo = $('#nomineAadharId').val();
+		var Nname = $('#nomineNameId').val();
+		var Ngender = $('#nomineeGenderId').val();
+		var NAge = $('#nomineeAgeId').val();
+		var Nrelation = $('#voterRelationId').val();
+		
+		var selDistrictId = $('#selDistrictId').val();
+		var selTehsilId = $('#selTehsilId').val();
+		var villageWardId = $('#villageWardId').val();
+		var houseNumberId = $('#houseNumberId').val();
+		var pinCodeId = $('#pinCodeId').val();
+
+		
+		$('#imageErr').html('');
+		
+		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
+		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#selDistrictErr,#selTehsilErr,#villageWardErr,#houseNumberErr,#pinCodeErr').html('');
+		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
+			 $('#gendReqErr').html('Please select gender');
+		 }
+			$('#imageErr').html('');
+			//To check if user upload any file
+			if (!newCamPhotoTaken && !newPhotoUploaded && !alreadyImgPresent && !$("#voterActualImgId").is(':checked') && !$("#cadreActualImgId").is(':checked')) 
+			{
+				$('#imageErr').html('Please upload an image');
+				isErrorStr = " error";
+			}
+
+			
+		if(validateName('nameErr','cadreNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('ageErr','cadreAgeId',0)){
+			isErrorStr = " error";	
+		}
+		/*if(validateName('garErr','gardianNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('relErr','relationTypessId',1)){
+			isErrorStr = " error";	
+		}*/
+		if(isValidName('name')){
+			isErrorStr = " error";	
+		}
+		if(isValidName('number')){
+			isErrorStr = " error";	
+		}
+
+		if(casteId == 0)
+		{
+			isErrorStr = " error";
+			$('#casteErr').html(' Caste is required.');
+		}
+		if(mobileNumber.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#mobileErr').html(' Mobile No is required.');
+		}
+		if(cadreAge != null && cadreAge.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#ageErr').html(' Candidate Age is required.');
+		}		
+		
+		
+		if(cadreName != null && cadreName.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#nameErr').html(' Candidate Name is required.');
+		}		
+		
+		var pinCodeId = $('#pinCodeId').val();
+		
+		if(selDistrictId == null || selDistrictId == 0)
+		{
+			isErrorStr = " error";
+			$('#selDistrictErr').html(' Please Select District.');
+		}
+		
+		if(selTehsilId == null || selTehsilId == 0)
+		{
+			isErrorStr = " error";
+			$('#selTehsilErr').html(' Please Select Tehsil.');
+		}
+		if($.trim(villageWardId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#villageWardErr').html('Ward/Village Is Required.');
+		}
+		if($.trim(houseNumberId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#houseNumberErr').html('House No Is Required.');
+		}
+		
+		if($.trim(pinCodeId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#pinCodeErr').html('Pin Code Is Required.');
+		}else if(isNaN($.trim(pinCodeId))){
+			isErrorStr = " error";
+			$('#pinCodeErr').html('Pin Code Must Be Number.');
+		}
+		
+		if(Nname != null && Nname.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#NnameErr').html(' Nominee Name required.');
+		}
+		
+		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z ]+$/.test(Nname)))
+		{
+				$('#NnameErr').html('Candidate Name allows only alphabets.');
+			isErrorStr = " error";
+		}
+		if(Ngender == 0)
+		{
+			isErrorStr = " error";
+			$('#NgenderErr').html(' Nominee Gender required.');
+		}
+		if(NAge != null && NAge.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#NageErr').html(' Nominee Age required.');
+		}
+		if(NAge != null && NAge.trim().length > 0){
+		  if(isNaN(NAge.trim())){
+		    isErrorStr = " error";
+			$('#NageErr').html(' Nominee Age must be Number.');
+		  }
+		}
+		if( Nrelation == 0)
+		{
+			isErrorStr = " error";
+			$('#NrelationErr').html(' Nominee Relation required.');
+		}
+		
+		$('.fromDateCls').each(function(){
+		
+			var keyId = $(this).attr('key');
+			$('#fromDateErr'+keyId+'').html('')	;		
+			$('#toDateErr'+keyId+'').html('');
+			
+			var startDate = $('#fromDateId'+keyId+'').val();
+			var endDate = $('#toDateId'+keyId+'').val();	
+			
+			if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
+			{
+				var arrr = startDate.split("-");
+				    var fromyear=arrr[0];
+					var frommonth=arrr[1];
+					var fromDat=arrr[2];
+			   var arr = endDate.split("-");
+					var toyear=arr[0];
+					var tomonth=arr[1];
+					var toDat=arr[2];
+					
+					if(fromyear>toyear){
+						$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  isErrorStr = " error";
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						    isErrorStr = " error";
+						}
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						    isErrorStr = " error";		
+						   }
+					}
+			}
+			
+		});
+				
+		
+		if(!isNumber()){//iferror return false
+			isErrorStr = " error";	
+		} 
+
+		/*if(!isAadharNumber('nomineAadharId','Aadhar No ')){
+			isErrorStr = " error";	
+		}*///iferror return false
+		if(!isAadharNumber('candAdrId','Aadhar No ')){
+			isErrorStr = " error";	
+		}//iferror return false
+		
+		$('.famAgeErrCls').each(function(){
+			var key = $(this).attr('key');
+			$('#famAgeErr'+key).html('');
+			if($.trim($(this).val()).length>0){	 	 
+				if (isNaN($.trim($(this).val()))) 
+				{
+					isErrorStr = " error";	
+					$('#famAgeErr'+key).html('must be number.');			
+				}
+			}else{
+				$(this).val("");
+			}
+		});
+		if(isErrorStr.trim().length >0)
+		{
+		    $("#submitCadreFormBtnReqId").removeAttr("disabled");
+		    $("#submitCadreFormBtnReqId").attr("onclick","submitCadreForm()");
+			$('html,body').animate({
+			scrollTop:  $("#yourElement").offset().top 
+			});
+			
+			isSuccess = false;
+		}
+		else
+		{
+			isSuccess = true; 
+		}
+
+	return isSuccess;	
+	}
+	
+	
+	function submitCadreForm()
+	{	
+	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
+	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
+		if(validateDetails())
+		{
+				if(!isNumber()){
+				
+					$('html,body').animate({
+					scrollTop:  $("#casteIdValue").offset().top 
+					});
+					return false;
+				}
+				$("#submitCadreFormBtnReqId").removeAttr("onclick");
+				$("#submitCadreFormBtnReqId").attr("disabled","disabled");
+				var uploadHandler = {
+						upload: function(o) {
+							uploadResult = o.responseText;
+							//console.log(uploadResult);
+							showUploadStatus(uploadResult);	
+						}
+					};
+
+				YAHOO.util.Connect.setForm('uploadCadreForm',true);
+				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationForOtherAction.action',uploadHandler);
+		}		
+	}
+	
+	
+	var cadreLevelArr = [];
+	var partyDesignationArr = [];
+	
+	function openSearchForm()
+	{
+		window.location.assign('tdpCadreSearchAction.action')
+	}
+	/* function prepopulateOptions()
+	{
+		var jsObj = 
+			   {				
+				  task:"getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getOptionDetailsForCadreAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						$('#cadreLevelId').append('<option value="0"> Select Level </option>');
+							$('#partyDesignationId').append('<option value="0"> Select Designation </option>');
+						if(result != null && result.length >0)
+						{
+							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
+							{
+								for(var i in result[0].selectOptionsList)
+								{
+									$('#cadreLevelId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');
+									var cadreObj = 
+									{
+										id		:	result[0].selectOptionsList[i].id,
+										name	:	result[0].selectOptionsList[i].name								
+									}
+									
+									cadreLevelArr.push(cadreObj);
+									
+								}
+							
+							}
+							
+							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
+							{
+							
+								for(var i in result[0].selectOptionsList1)
+								{
+									$('#partyDesignationId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');
+									
+									var cadreObj = 
+									{
+										id		:	result[0].selectOptionsList1[i].id,
+										name	:	result[0].selectOptionsList1[i].name								
+									}
+									
+									partyDesignationArr.push(cadreObj);
+									
+								}							
+							}	
+						}
+				});
+	} */
+	
+	function prepopulateOptions(){
+		var jsObj ={}				   
+			$.ajax({
+				type : "POST",
+				url : "getCadreLevelsForCadreSearchAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result.length>0){
+					buildSelectBoxes(result);
+				}
+			});
+	}
+	
+	var cadreCmmittArr = [];
+	var cadreCmmittLvlArr = [];
+	var cadreRolesArr = [];
+	
+	function buildSelectBoxes(results){
+		
+		for(var i in results){
+		
+			if(results[i].name=="CadreCommitteeList"){
+				var str = "";					
+					for(var j in results[i].selectOptionsList){						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}							
+						cadreCmmittArr.push(cadreCmmtObj);
+					}
+			}
+			if(results[i].name=="CadreCommitteeLevelsList"){
+				var str = "";
+					for(var j in results[i].selectOptionsList){						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}
+							
+						cadreCmmittLvlArr.push(cadreCmmtObj);
+					}
+			}
+			if(results[i].name=="CadreRolesList"){
+				var str = "";
+					for(var j in results[i].selectOptionsList)
+					{						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}
+							
+						cadreRolesArr.push(cadreCmmtObj);
+					}
+			}
+			
+		}
+	}
+	
+	function prepopulateElctionOptions()
+	{
+		var jsObj = 
+			   {				
+				  task:"getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getElectionOptionDetailsForCadreAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						$('#electionTypeId').append('<option value="0"> Select Election </option>');
+							$('#electionYearId').append('<option value="0"> Select Year </option>');
+						if(result != null && result.length >0)
+						{
+							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
+							{
+								for(var i in result[0].selectOptionsList)
+								{
+									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');		
+								}
+							
+							}
+							
+							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
+							{
+								for(var i in result[0].selectOptionsList1)
+								{
+									$('#electionYearId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');														
+								}
+							
+							}
+							
+						}
+				});
+	}
+	
+	function changeImg()
+	{
+	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+		var photoElmt = document.getElementById("uploadFileId");
+		var FileUploadPath = photoElmt.value;
+		$('#imageErr').html('');
+		//To check if user upload any file
+        if (FileUploadPath == '') 
+		{
+			$('#imageErr').html('Please upload an image');
+		}
+		else 
+		{
+            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+			//The file uploaded is an image
+			if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+								|| Extension == "jpeg" || Extension == "jpg") 
+			{
+                    var reader = new FileReader();
+					var file = photoElmt.files[0];
+					var reader = new FileReader();
+					reader.onloadend = handleReaderLoadEnd;
+					reader.readAsDataURL(file); 
+                    newPhotoUploaded = true;
+                    $("#voterActualImgId").removeAttr('checked');
+            } 
+			//The file upload is NOT an image
+			else 
+			{       clearExistingImg('uploadImg');
+			        newPhotoUploaded = false;
+					$('#imageErr').html('Image Formate Must Be .GIF, .PNG, .JPG, .JPEG and .BMP Only');
+			}
+        }
+	}
+	function handleReaderLoadEnd(evt)
+	{
+		var img = document.getElementById("actuploadImg");
+		img.src = evt.target.result;
+		evt=null;
+	} 
+	var eletionCont = 1;
+	var isRolesCountSet = true;
+	function createNewFormsForElections()
+	{
+		if(isRolesCount >=1 && isRolesCountSet)
+		{
+			isRolesCountSet = false;
+			eletionCont = isRolesCount;
+		}
+		var str = '';
+		str += '<div class="row-fluid electionsList'+eletionCont+'">';
+		str += '<div class="span3">';
+		str += '<div class=" " >';
+		//str += '<h5 class="text-align1">Election Type</h5>';
+		str += '<select id="electionTypeId'+eletionCont+'" style="margin-left: 12px;" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')" >';
+		if(electionArray != null && electionArray.length>0)
+		{
+			str += '<option value = "0">Select Election Year</option>';
+			for(var i in electionArray)
+			{
+				str += '<option value = "'+electionArray[i].id+'">'+electionArray[i].name+'</option>';
+			}
+		}
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span2">';
+		str += '<div class=" " >';
+		//str += '<h5 class="text-align1">Year</h5>';
+		str += '<select  id="electionYears'+eletionCont+'" style="width: 150px;" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId"  onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+eletionCont+'\')" >';	
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span3">';
+		str += '<div class=" " >';
+		//str += '<h5 class="text-align1">Constituency</h5>';
+		str += '<select class="" id="constituencyList'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 10px;width:220px" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
+		str += '<option value = "0"> Select Constituency </option>';
+		/*	if(constituencyArray != null && constituencyArray.length>0)
+			{
+				for(var i in constituencyArray)
+				{
+					str += '<option value = "'+constituencyArray[i].id+'">'+constituencyArray[i].name+'</option>';
+				}
+			}
+		*/
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span3">';
+				str += '<div class=" " >';
+				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 10px;width:150px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
+				str += '<option value="0"> Select Candidate</option>	';							
+				str += '</select>';							
+				str += '</div>';
+			str += '</div>';
+
+		//str += '<h5 class="text-align1">Add More</h5>';
+		str += '<a class="icon-minus-sign" style="float:right;margin-top:10px;margin-right:35px;" onClick="deleteRollesForm(\'electionsList'+eletionCont+'\')" title="Remove Details"></a>';
+
+		str += '</div>';
+		
+		$('#electionsDiv').append(str);
+		eletionCont ++;
+	}
+	
+	function getElectionYears(id,divId)
+	{
+		var jsObj = 
+			   {			
+				  eletionTypeId : id,
+				  task          : "getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getElectionYearsByElectionType.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						$('#'+divId+'').html('');
+						$('#'+divId+'').append('<option value="0"> Select Election </option>');
+						if(result != null && result.length >0)
+						{
+							for(var i in result)
+							{
+								$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');		
+							}
+						}
+				});
+	}
+
+	var familyArr =new Array();
+	
+	<c:forEach var="votersInfo" items="${voterInfoVOList[0].voterInfoVOList}" >
+		familyArr.push(${votersInfo.voterId});
+	</c:forEach>
+		
+	var voterCount = familyArr.length - 1;
+
+	function addMoreVoters()
+	{
+	if(voterCount >= 0 )
+		voterCount = voterCount+1;
+	else
+		voterCount = 1;
+		
+	var str ='';
+
+	str +=' <tr class="voterDev'+voterCount+'">';  
+	str +='<td style="width:25px;text-align:center;">  ';
+	//str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to use this member as nominee."></td>';
+	str +='<a class="icon-remove nomineeCls" id="checkBox'+voterCount+'" style="margin-top:-10px;"  onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')"  title="Click here to use this member as nominee."></a> </td>';
+	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" id="voterName'+voterCount+'" style="width:205px;"></input> ';
+	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId" id="voterId'+voterCount+'"></input> ';
+	str +=' </td>';
+	str +=' <td style="width:100px;"> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"  id="voterCard'+voterCount+'"></input>';
+	str +=' </td>';
+	str +=' <td style="width:80px;"> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age " style="width:55px;"   name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].age"  key="'+voterCount+'" id="voterAge'+voterCount+'"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr'+voterCount+'"></span>';
+	str +=' </td>';
+	str +=' <td style="width:82px;">';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].gender"  id="voterGender'+voterCount+'"> </input>';
+	str +=' </td>';
+	str +=' <td style="width:100px;"> ';
+
+	str +=' <select name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].educationId" style="width:160px;">';
+	str +=' <option value="0">Select Education</option>';
+	
+	<c:forEach var="educationList" items="${genericVOList}" >
+		str +=' <option value="${educationList.id}">${educationList.name}</option>';
+	</c:forEach>
+	str +=' </select>';
+
+	str +=' </td>';
+	str +=' <td style="width:100px;"> ';
+
+	str +=' <select id="familyOccupation'+voterCount+'0" name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].occupationId" style="width:180px;margin-left: 15px;" >';
+		str +=' <option value="0">Select Occupation</option>';	
+		<c:forEach var="occupation" items="${selectOptionVOList}">
+			str +=' <option value="${occupation.id}">${occupation.name}</option>';
+		</c:forEach>
+		
+	str +=' </select>';
+	
+	/*
+	str +='<input type="text" id="familyOccupation'+voterCount+'" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style=//"width:151px;"  value=""> </input>';												 
+	str +='<input type="hidden"  id="familyOccupation'+voterCount+'0" name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>';
+	*/
+	
+	str +=' </td>';
+	str +='<td style="width:15px;"> ';
+	str +='<input type="checkbox"   class="removeCls"   style="margin-top: -10px;"  id="voterDev'+voterCount+'">';
+		/*str +='<a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm(\'voterDev'+voterCount+'\');" title="Remove Details"></a>';*/
+	str +='</td>';
+	str +=' </tr>';
+
+	
+	$('#addVotersDiv').append(str);
+	/*
+	$( ".familyOccupationsCls" ).autocomplete({ 
+		source:occupationDetailsArr,
+		select: function (event, ui) {
+				$(this ).val(ui.item.value);
+				
+				for(var i in occupationArr)
+				{
+					if(occupationArr[i].name == ui.item.value)
+					{
+						var fieldId = $(this).attr('id');
+						$('#'+fieldId+'0').val(occupationArr[i].id);
+						break;
+					}
+				}
+					return false;
+			}
+		});
+	*/
+	
+	}
+	
+	
+	function isNumber()
+	{
+		var numberFlag = true;
+		var mobileNumber = $('#mobileNumberId').val().trim();
+		$('#mobileErr').html('');
+		if (mobileNumber.length == 0) 
+		{
+			$('#mobileErr').html('Please Enter Mobile No');		
+			numberFlag= false;
+		}		 
+		else if (isNaN(mobileNumber) || mobileNumber.length != 10) 
+		{
+			$('#mobileErr').html('Invalid Mobile No.');			
+			numberFlag = false;
+		}
+	
+			return numberFlag;
+	}
+	
+	function isAadharNumber(fieldId,AadharNo)
+	{
+		var numberFlag = true;
+		var errDiv='#NaadharErr';
+		if(fieldId == "candAdrId"){
+			errDiv='#errcandAdrId';
+		}
+		var mobileNumber = $('#'+fieldId+'').val().trim();
+		
+		$(errDiv).html('');
+		
+		
+		
+		if(mobileNumber.length == 0) 
+		{
+			if(!(fieldId == "candAdrId")){
+				$(errDiv).html(''+AadharNo+' Required.');		
+				numberFlag= false;
+			}
+		}		 
+		else if (isNaN(mobileNumber)) 
+		{
+			$(errDiv).html('Invalid '+AadharNo+'.');			
+			numberFlag = false;
+		}
+		/*else if(mobileNumber.length < 12) 
+		{
+			$('#NaadharErr').html(''+AadharNo+' should be 12 digits.');		
+			numberFlag= false;
+		}*/
+			return numberFlag;
+	}
+	
+	function getConstiteuncyListForElection(eletionId,constiListId)
+	{
+			$('#loadingImg').show();
+			
+			$('#'+constiListId+'').find('option').remove();
+			$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
+			
+			var jsObj = 
+			   {			
+				  electionId : eletionId,
+				  constituencyId : constituencyId,
+				  task       : "getConstiteuncyListForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getConstiteuncyListForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+
+					$('#loadingImg').hide();
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#'+constiListId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}					
+				});
+	}
+	
+	function getCandidateDetailsForElection(constituencyId,candidateId,electionId,electionTypeId)
+	{
+		var electionValue = $('#'+electionId+'').val();
+		var electionTypeId = $('#'+electionTypeId+'').val();
+		$('#'+candidateId+'').find('option').remove();
+		$('#'+candidateId+'').append('<option value="0"> Select Candidate </option>');
+		
+			var jsObj = 
+			   {	
+				  electionTypeId : electionTypeId,
+				  electionId : electionValue,
+				  constituencyId : constituencyId,
+				  task         : "getCandidateDetailsForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getCandidateDetailsForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#'+candidateId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}		
+					
+				});
+	}
+	
+	</script>
+
+</head>
+  <body class="bgc">
+		<!-- Header Row 
+		<div class="row-fluid">
+			<div class="span12 header-bg text-center">
+				<div class="row-fluid">
+				  <div class="span4 offset4 ">
+						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+				  </div>
+				  <div class="span4">
+					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
+				  </div>
+				</div>
+			</div>
+		</div><!-- Header Row End-->
+	<div class="container m_top10 " id="yourElement">
+		<div class="span12 show-grid" style="position: relative;">
+			<h3 class="text-align">CADRE REGISTRATION</h3>
+		</div>
+	</div>
+	<s:if test="registeredOrNot == 'notRegistered'">
+	<div id="mainDiv">
+		<div>
+			<form action="tdpCadreSaveRegistrationForOtherAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
+		<div class="container m_top10"style="position: relative;">
+		
+			<div class="span12" >
+				<div class="row-fluid">
+					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 895px;">
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
+					<input type="hidden" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.registrationType" value="${searchType}" > 
+					
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="0" name="cadreRegistrationVO.panchayatId"> 
+					
+					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${id3}" name="cadreRegistrationVO.boothId" > 
+					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
+					<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+						<input type="hidden"  value = "${sessionScope.USER.accessValue}" name="addressVO.stateId" > 
+					</c:if>
+										<div class="span12">
+											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="${id1}">										
+											<input type="hidden" id="selConstituId" name="addressVO.constituencyId" value="${id1}">										
+											<div class="span6">
+												<h5 style="color: #9a9a9a;">  CADRE NAME <span class="mandatory">*</span> </h5>
+												<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
+												<span id="nameErr" style="color:red;font-size:12px;"></span>
+											</div>	
+											<div class="span5">	
+												<h5 class="text-align1">AGE <span class="mandatory">*</span> </h5>
+												<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
+												<span id="ageErr" style="color:red;font-size:12px;"></span>
+											</div>
+										</div>
+										<!--
+										<div class="span11" style="margin-left: 18px;">
+											<h5 style="color: #9a9a9a;">CADRE NAME IN MOTHER TONGUE</h5>
+											<input type="text" class="form-control border-radius-0" placeholder="Name In Mother Tongue" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
+										</div>	
+										-->
+										<div class="span12">
+										</div>
+										<div class="span12"> 
+											  <ul class="unstyled inline text-center">
+												  <li id="voterActualImgLiId">
+												   <s:if test="voterInfoVOList[0].voterImagePresent == true">
+													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
+														<span><img src="${voterInfoVOList[0].voterImage}" style="width: 140px; height: 120px;"></span>
+														<div class="btn btn-mini btn-block"> <input type="checkbox" class="m_top10" onclick="hideCadreImg();" name="cadreUploadImgVoterType" id="voterActualImgId" style="margin-top:-1px;">
+															 <span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
+														</div>
+													 </div>
+													</s:if>
+												  </li>
+												  <li>
+													<div style="width: 125px;" class="well  pad-5 m_top10">
+														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+														<div class="btn-group"><input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
+															<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();"></span>
+															<input type="file" class="m_top10 btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 66px; margin-left: -6px; padding-left: 0px;"/>
+															<span onclick="showTake11Image();"><img style="width: 32px; height: 32px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png"  id="takePicture"></span>
+															<span><a onclick="clearExistingImg('uploadImg');" style="padding-top: 10px; padding-bottom: 7px; margin-top: 10px;" class="btn btn-mini"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" ></span></a></span>
+															<br/><span id="imageErr" style="color:red;font-size:12px;"></span>
+														</div>
+													</div>
+												  </li>
+											  </ul>
+										</div>
+									<div class="span12">
+										<div class="span6">
+											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"></span></h5>
+												
+												<div class="input-prepend text-align2 ">
+													
+													<input type="text" class="dateOfBirthDtCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true" id="dateOfbirthId"></input>
+													<br><span id="dobErr" style="color:red;font-size:12px;"></span>
+												</div>
+										</div>	
+										<div class="span6">	
+											<h5 class="text-align1">GENDER</h5>	 
+											<div class="row-fluid form-inline" style="margin-left:5px;">
+												<s:if test="%{voterInfoVOList[0].gender != null}">
+												
+													<c:if test="${voterInfoVOList[0].gender == 'M' || voterInfoVOList[0].gender == 'Male'}">
+													   <label class="radio"><input type="radio" value="MALE" id="maleGenderRId" name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
+														&nbsp;&nbsp;&nbsp;&nbsp;
+														<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
+													</c:if>
+													<c:if test="${voterInfoVOList[0].gender == 'F' || voterInfoVOList[0].gender == 'Female'}">												
+														<label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
+														&nbsp;&nbsp;&nbsp;&nbsp;
+														<label class="radio"><input type="radio" value="FEMALE" id="femaleGenderRId"   name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
+													</c:if>
+												
+												</s:if>
+												<s:else>
+												  <label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
+												</s:else>
+													<br><span id="gendReqErr" style="color:red;font-size:12px;"></span>
+											</div>		
+										</div>
+									</div>	
+								<!--<div class="m_top10">
+									<div class="row-fluid">
+										
+										<div class="span6">
+										<h5 class="text-align1">GUARDIAN NAME </h5>
+										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"  id="gardianNameId" onkeyup="validateName('garErr','gardianNameId',1);"></input>
+										<br><span id="garErr" style="color:red;font-size:12px;"></span>
+										</div>
+										
+										<div class="span6">
+										<h5 class="text-align1">Relationship Type</h5>
+											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}" id="relationTypessId" onkeyup="validateName('relErr','relationTypessId',1);"></input>
+												<br><span id="relErr" style="color:red;font-size:12px;"></span>
+										</div>
+									</div>
+								</div>-->
+								<div class="m_top10">
+										<div class="row-fluid">
+										  <div class="span6">
+										   <c:if test="${voterType == 'voter'}">
+											<h5 class="text-align1">VOTER ID </h5>
+											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
+											<span id="cardErr" style="color:red;font-size:12px;"></span>
+											<input type="hidden" name="cadreRegistrationVO.voterId" value="${voterInfoVOList[0].voterId}"></input>
+										    <input type="hidden" name="cadreRegistrationVO.cadreType" value="voter" ></input>
+											</c:if>
+											<c:if test="${voterType == 'familyVoter'}">
+											<h5 class="text-align1">FAMILY VOTER ID </h5>
+											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
+											<span id="cardErr" style="color:red;font-size:12px;"></span>
+											<input type="hidden" name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].voterId}" ></input>
+											<input type="hidden" name="cadreRegistrationVO.cadreType" value="familyVoter" ></input>
+										    <input type="hidden" name="cadreRegistrationVO.relationTypeId" value="${countDownTime}" />
+											</c:if>
+										  </div>
+										  <div class="span6">
+											<h5 class="text-align1">H NO</h5>
+												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
+											</div>
+										</div>
+								</div>	
+								
+								<div class="m_top10">
+										<div class="row-fluid">
+										
+											<div class="span6">
+											<h5 class="text-align1">PARTY MEMBER SINCE</h5>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" style="width: 186px;" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr" id="reqPartyMemberSinceStrId" value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Party Member Since" onclick="clearSelDiv('reqPartyMemberSinceStrId');"></span>
+											</div>
+											
+											<div class="span6">
+											<h5 class="text-align1">BLOOD GROUP</h5>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
+											
+											</div>
+										</div>
+								</div>	
+								
+								<div class="">
+								     <div class="row-fluid">								       
+										
+										<div class=" span6" >
+									      <h5 class="text-align1"> CASTE CATEGORY </h5>
+											<select id="casteCategoryList" onchange="getCasteNamesByCasteCategory(this.value);"  style="margin-left: 5px"> 
+											<option value="0"> ALL </option>
+											<option value="1"> OC </option>
+											<option value="2"> BC - A  </option>
+											<option value="3"> BC - B  </option>
+											<option value="4"> BC - C  </option>
+											<option value="5"> BC - D  </option>
+											<option value="6"> BC - E  </option>
+											<option value="7"> SC - A  </option>
+											<option value="8"> SC - B  </option>
+											<option value="9"> SC - C  </option>
+											<option value="10"> SC - D  </option>
+											<option value="11"> ST </option>
+											</select>
+								        </div>
+										
+										<div class=" span6" >
+									     <h5 class="text-align1">CASTE NAME<span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:220px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
+								        </div>
+										
+									 </div>
+								</div>
+								
+								<div class="">
+								     <div class="row-fluid">										
+										<div class=" span6" >
+									      <h5 class="text-align1">AADHAAR CARD NO</h5>
+									       <input type="text" class="form-control border-radius-0"  placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"  style="margin-left: 5px"></input>
+								           <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
+								        </div>										
+										 <div class=" span6" >
+										  <h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span></h5>
+										  <input type="text" class="form-control border-radius-0 text-align2" id="mobileNumberId" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}"  maxlength="10" onKeyup="isNumber()"  style="margin-left: -1px"></input>
+							              <br/><span id="mobileErr" style="color:red;font-size:12px;margin-left: 12px;"></span>
+										</div>										
+									 </div>
+								</div>
+								
+								<div class="">
+								     <div class="row-fluid">								       
+										<div class=" span6" style="margin-top: -17px">
+									      <h5 class="text-align1"> EMAIL </h5>
+									       <input type="text" class="form-control border-radius-0"  placeholder=" emailid@abc.com " id="cadreEmailId" onkeyup="isEmailIdValid()"  name="cadreRegistrationVO.emailId" value="${voterInfoVOList[0].emailId}"  style="margin-left: 5px"></input>
+								           <br/><span id="errcandEmailId" style="color:red;font-size:12px;"></span>
+								        </div>
+									 </div>
+								</div>	
+								
+					</div>
+					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height:895px;" >
+
+							
+							
+							<div class=" m_top20" >
+								<h5 class="text-align1">EDUCATION</h5>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:260px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
+							</div>
+							<div class=" m_top20" >
+								<h5 class="text-align1">OCCUPATION</h5>											
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:260px;" name="cadreRegistrationVO.occupationId"   value="%{voterInfoVOList[0].occupationId}"/>	
+							</div>
+							<div class=" m_top20" >
+								<h5 class="text-align1">DISTRICT<span class="mandatory">*</span> <span id="selDistrictErr" style="color:red;font-size:12px;"></span> </h5>											
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selDistrictId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:260px;" name="addressVO.districtId"   value="%{relativeTypeId}" onchange="getAllMandalsInADistrict(this.value)"/>	
+							</div>
+							<div class=" m_top20" > 
+								<h5 class="text-align1">TEHSIL / MANDAL<span class="mandatory">*</span> <span id="selTehsilErr" style="color:red;font-size:12px;"></span> </h5>											
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selTehsilId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Tehsil/Mandal " style="width:260px;" name="addressVO.tehsilId"   value="%{id2}"/>	
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">WARD / VILLAGE <span class="mandatory">*</span> <span id="villageWardErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="villageWardId" class="form-control border-radius-0 input-block-level" placeholder=" Ward/Village "  name="addressVO.hamletName"  style="width:260px;" ></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">STREET <span class="mandatory">*</span> <span id="houseNumberErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="houseNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Street "  name="addressVO.street"  style="width:260px;"></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">COLONY <span class="mandatory">*</span> <span id="colonyErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="houseNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Colony "  name="addressVO.address1"  style="width:260px;"></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">PIN CODE<span class="mandatory">*</span> <span id="pinCodeErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="pinCodeId" class="form-control border-radius-0 input-block-level" placeholder=" Pin Code "  name="addressVO.pinCode" style="width:260px;"></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">LAND MARK <span class="mandatory">*</span> </h5>
+										<input type="text" id="landMarkId" class="form-control border-radius-0 input-block-level" placeholder=" Land Mark "  name="addressVO.address2" style="width:260px;"></input>
+							</div>
+						
+					</div>
+				</div>
+		
+		</div>
+	</div>
+	<!----  srishailam starts  -->
+	<!--
+		<div class="container" >
+		  <div class="span12" >
+				<div class="row-fluid">
+					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:0px;margin-bottom:10px;">						
+						<div class="m_top10">
+						<div class="span12 " style="position: relative;">
+							<h3 class="text-align "> FAMILY DETAILS </h3>
+						</div>
+								<div class="row-fluid" id="addVotersDiv">		
+											<table>
+											<thead>
+											<tr>
+												<th style="width:25px;">  </th>
+												<th style="width:223px;"> VOTER NAME </th>
+												<th  style="width:145px;"> VOTER CARD NO</th>
+												<th  style="width:80px;"> AGE </th>
+												<th  style="width:80px;"> GENDER </th>
+												<th  style="width:156px;"> EDUCATION  </th>
+												<th  style="width:182px;"> OCCUPATION <a class="icon-plus-sign" style="cursor:pointer;float:right;" onClick="addMoreVoters();"  title="Click Here To Add More Family Members"> </a><br></th>
+												
+												<th> 
+												<a class="icon-minus-sign"  style="cursor:pointer; padding-bottom: 5px;"  onClick="deleteRecordsForm();" title="Select Multiple Family Members And Click Here To Remove Them">
+												</th>
+													
+							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
+											</tr>
+											</thead>
+											<tbody>		
+											
+									<c:forEach var="familyVO" items="${voterInfoVOList[0].voterInfoVOList}" varStatus="commentLoop">
+									
+										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
+										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
+											<tr class="voterDev${commentLoop.index}">
+												<td style="width:25px;text-align:center;">   
+												
+													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add this member as nominee.">
+													
+												</td>
+												<td style="width:100px;">	
+													<input type="text" id="voterName${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Name " value="${familyVO.name}" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterName" style="width:205px;"></input> 
+													<input type="hidden" id="voterId${commentLoop.index}" class="form-control border-radius-0 text-align2" value="${familyVO.voterId}"  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterId"></input> 
+												</td>
+												<td style="width:100px;"> 
+												
+													<input type="text" id="voterCard${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
+												</td>
+												<td style="width:80px;"> 
+													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder="Age "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].age"  value="${familyVO.age}" key="${commentLoop.index}" style="width:53px;"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr${commentLoop.index}"></span> 
+												</td>
+												<td style="width:80px;">
+													<input type="text" id="voterGender${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Gender "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].gender"  value="${familyVO.gender}" style="width:50px;"> </input>
+												</td>
+												<td style="width:100px;"> 
+												
+													<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].educationId" style="width:160px;">
+													<option value="0">Select Education</option>
+														<c:forEach var="educationList" items="${genericVOList}" >															
+															<c:if test="${educationList.id == familyVO.education }">																
+																<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+															</c:if>	
+															<c:if test="${educationList.id != familyVO.education }">																
+																<option value="${educationList.id}">${educationList.name}</option>
+															</c:if>	
+														</c:forEach>
+													</select>
+													 
+												</td>
+												<td style="width:100px;"> 
+											
+											<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" id="familyOccupation%{commentLoop.index}" style="width:180px;margin-left:15px;">
+													<option value="0">Select Occupation</option>
+													
+											<c:forEach var="educationList" items="${selectOptionVOList}" >													
+													<c:if test="${educationList.id == familyVO.occupationId }">																
+														<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+													</c:if>	
+													<c:if test="${educationList.id != familyVO.occupationId }">																
+														<option value="${educationList.id}">${educationList.name}</option>
+													</c:if>	
+											</c:forEach>
+														
+											
+											</select>
+											
+													 
+												</td>
+												<td style="width:15px;"> 
+												
+												<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev${commentLoop.index}">
+												
+												</td>
+											</tr>
+											
+									</c:forEach>
+									</tbody>									
+								</table>
+								
+								
+									
+								</s:if>
+								<s:else>
+											
+											</tr>
+											</thead>
+											<tbody>	
+										<input type="hidden" value="0" class="countVar"></input>
+											<tr class="voterDev0">
+											    <td style="width:25px;text-align:center;">
+											   	<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add this member as nominee.">
+												</td>
+												<td> 
+													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  style="width:205px;"></input> 
+													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ></input> 
+												</td>
+												<td> 
+													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
+												</td>
+												<td style="width:80px;"> 
+													<input type="text" id="voterAge0" key="0" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age "  name="cadreRegistrationVO.cadreFamilyDetails[0].age"  style="width:50px;"></input>  <br/> <span style="color:red;font-size:12px;" id="famAgeErr0"></span>
+												</td>
+												<td style="width:80px;">
+													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  name="cadreRegistrationVO.cadreFamilyDetails[0].gender"  style="width:50px;"> </input>
+												</td>
+												<td style="width:100px;"> 
+												
+													<select name="cadreRegistrationVO.cadreFamilyDetails[0].educationId" style="width:160px;">
+													<option value="0">Select Education</option>
+														<c:forEach var="educationList" items="${genericVOList}" >
+															<option value="${educationList.id}">${educationList.name}</option>
+														</c:forEach>
+													</select>
+													 
+												</td>
+												<td style="width:100px;"> 
+												
+												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:180px;margin-left:15px" id="familyOccupation0"  name="cadreRegistrationVO.cadreFamilyDetails[0].occupationId"/>
+											
+												</td>
+												<td style="width:15px;"> 
+													<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev0">
+														</td>
+											</tr>
+											
+									</tbody>									
+									</table>	
+																							
+								</s:else>
+								
+								</div>
+						</div>
+					</div>
+				
+	</div>
+	</div>
+	</div> -->
+	<!----  srishailam end  -->
+	
+	
+	<div id="fadeInUp">
+		<div class="container m_top10">
+			<div class="span12 show-grid" style="position: relative;">
+				<h3 class="text-align ">NOMINEE DETAILS</h3>
+			</div>
+		</div>
+		<div class="container m_top10">
+			<div class="span12 show-grid" style="position: relative;" id="accDiv">
+				<div class="span2">
+					<h5 class="text-align1"> Aadhaar Card  <span class="mandatory"></span></h5>
+					<input type="text" class="" style="width: 138px;" placeholder="Aadhaar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
+					 <span id="NaadharErr" style="color:red;font-size:11px;"></span>
+				</div>
+				
+				<div class="span2">
+					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterId"></input>
+					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterCardId"></input>
+					<h5 class="text-align1"> Nominee Name  <span class="mandatory">*</span></h5>
+					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName" value="${voterInfoVOList[0].nomineeName}" id="nomineNameId" onkeyup="isValidName('name')"></input>
+					<span id="NnameErr" style="color:red;font-size:11px;"></span>
+				</div>
+				
+				
+				
+				<div class="span2">
+					<h5 class="text-align1"> Gender <span class="mandatory">*</span></h5>
+					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;" id="nomineeGenderId" >
+							<option value="0">Select Gender</option>	
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+					</select>
+					 <span id="NgenderErr" style="color:red;font-size:11px;"></span>
+				</div>
+				
+				<div class="span2">
+					<h5 class="text-align1"> Age  <span class="mandatory">*</span></h5>
+					<input type="text" class=""  style="width: 100px;" placeholder=" Age "  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}" id="nomineeAgeId"  onkeyup="isValidName('number')"></input>
+					<span id="NageErr" style="color:red;font-size:11px;"></span>
+				</div>
+				
+				<div class="span2">
+					<h5 class="text-align1"> Relation Type <span class="mandatory">*</span></h5>
+					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
+							<option value="0">Select Relation</option>	
+							<option value="1">Father</option>	
+							<option value="2">Mother</option>	
+							<option value="3">Wife</option>	
+							<option value="4">Brother</option>	
+							<option value="5">Sister</option>	
+							<option value="7">Husband</option>	
+							<option value="8">Son</option>	
+							<option value="9">Daughter</option>	
+							<option value="10">Grand Son</option>	
+							<option value="11">Grand Daughter</option>	
+							<option value="12">Others</option>	
+					</select>
+					<span id="NrelationErr" style="color:red;font-size:11px;"></span> 
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container m_top10">
+			<div style="position: relative;">
+				<!-- <a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a> -->
+				
+				<div  class="btn btn-success text-align3 m_top20 pull-right border-radius-0" id="submitCadreFormBtnReqId" onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></div>
+			</div>
+		</div>
+</form>
+</div>
+</div>
+</s:if>
+<s:else>
+   <div class="container m_top10 ">
+        <div style="position: relative;" class="span12 show-grid">
+			<h3 class="text-align">VOTER ALREADY REGISTERED AS CADER</h3>
+		</div>
+   </div>
+   <script type="text/javascript">
+     $("#yourElement").hide();
+   </script>
+</s:else>
+				
+				<div id="myModal" style="display:none;">
+						<div style="border:1px solid lightgray;">
+							<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+							</div>
+							<div class=" m_top10 pad-10b">
+								<div class="row-fluid">
+									<div class="span6">
+										<h5 class="text-align1">VOTER ID</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+									</div>
+									
+									<div class="span6">
+										<h5 class="text-align1">H NO</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+									</div>
+								</div>
+							</div>
+							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('voter');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>
+							<div id="errorDiv" class="mandatory"></div>
+							<div class="show-grid pad-5 m-bottom-10">
+								<div class="container" id="tableElement" style="margin-top:25px;display:none;">
+									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									
+									<div class="table-responsive" id="searchDetailsDiv" ></div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+				<div id="myModal2" style="display:none;">
+						<div style="border:1px solid lightgray;">
+							<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameIdFmly" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+							</div>
+							<div class=" m_top10 pad-10b">
+								<div class="row-fluid">
+									<div class="span6">
+										<h5 class="text-align1">VOTER ID</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardIdFmly"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+									</div>
+									
+									<div class="span6">
+										<h5 class="text-align1">H NO</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoIdFmly"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+									</div>
+								</div>
+							</div>
+							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('family');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg3" class="" src="images/Loading-data.gif"></div>
+							<div id="errorDivFmly" class="mandatory"></div>
+							<div class="show-grid pad-5 m-bottom-10">							
+								<div class="container" id="tableElementFmly" style="margin-top:25px;display:none;">
+									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									<div class="table-responsive" id="searchDetailsDivFmly" ></div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+				<div id="myModal1" style="display:none;">
+					<div style="border:1px solid lightgray;">
+						<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="width:425px;" onkeyUp="getExistingCadreInfo1();">
+						</div>
+						<div class=" m_top10 pad-10b">
+							<div class="row-fluid">
+								<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
+							</div>
+						</div>
+						
+						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
+					</div>
+					<div id="errorDiv1"  class="mandatory"></div>
+					<div class="show-grid pad-5 m-bottom-10">
+						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
+							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+							<div class="table-responsive" id="searchDetailsDiv1" ></div>
+						</div>
+					</div>
+				</div>
+	
+<div id="statusDiv">
+</div>
+<div id="wrapper">
+			<div id="example"></div>
+		</div>
+	<!-- Footer Row 63
+		<div class="row-fluid">
+			<div class="span12 text-center m_top5 color-white">
+					TDP Cadre Registration Drive
+				<p>Copyright &copy; 2014,  All Rights Reserved</p>
+			</div>
+		</div>
+	<!-- Footer Row End-->
+		
+</body>
+<script type="text/javascript">
+var existingCadreArr = [];
+var existingCadreInfoArr = [];
+function getExistingCadreInfo(){
+	var value = $('#preEnrollNoValue').val();
+	$('#preEnrollNo').val('');
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId = '${houseNo}';  // panchayat Id 
 	var boothId = '${boothId}';  // boothId Id 
 	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
 	
-	var isError = false;
-	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
-		{
-			$(errDivId).html('Enter any search criteria for details.');
-			 isError = true ;
-		}
-		
-		if(candidateName == null || candidateName.length <=2)
-		{	
-			if(enrollmentNo != null && enrollmentNo.length  >=3 )
-			{
-				 isError = false ;
-			}
-			else 
-			{
-				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
-				isError = true ;	
-			}		
-		}
-		else
-		{
-			 isError = false ;
-		}
-	if(!isError){
-	$('#searchDataImg1').show();
-		var jsObj = {	
-			name : candidateName,
-			constituencyId : constituencyId,
-			panchayatId : panchayatId,
-			boothId : boothId,
-			isPresentCadre:isPresentCadre,
-			enrollmentNumber : enrollmentNo,
-			task:"getExistingCadreInfo"             
-		}
+	if(value.trim().length >2)
+	{
+		existingCadreArr = [];
+		existingCadreInfoArr = [];
+			var jsObj = 
+			   {	
+				name : value,
+				constituencyId : constituencyId,
+				panchayatId : panchayatId,
+				boothId : boothId,
+				isPresentCadre:isPresentCadre,
+				task:"getExistingCadreInfo"             
+			   }
 			   
-		$.ajax({
-			type : "POST",
-			url : "getExistingCadreInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-		$('#searchDataImg1').hide();
-			buildExistingCadres(result);
-		});
+			   $.ajax({
+					type : "POST",
+					url : "getExistingCadreInfoAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null && result.length > 0)
+					{
+						for(var i in result)
+						{
+							var cadreObj = {
+							id : result[i].id,
+							name : 	result[i].name,
+							relativeName : result[i].desc,
+							enrollNo : result[i].caste,
+							check : result[i].name+" - "+result[i].desc+" - "+result[i].caste
+							}
+							
+							existingCadreArr.push(cadreObj);
+							
+							existingCadreInfoArr.push(result[i].name+" - "+result[i].desc+" - "+result[i].caste);
+						}
+						
+						$( "#preEnrollNoValue" ).autocomplete({ 
+							source:existingCadreInfoArr,
+							select: function (event, ui) {
+								$('#preEnrollNoValue').val(ui.item.value);	
+								
+								for(var k in existingCadreArr)
+								{
+									
+									if(existingCadreArr[k].check == ui.item.value)
+									{
+										//console.log(existingCadreArr[k]);
+										$('#preEnrollNo').val(existingCadreArr[k].enrollNo);
+										$('#preEnrollNoValue').val(existingCadreArr[k].enrollNo);
+										if(existingCadreArr[k].enrollNo != null && $.trim(existingCadreArr[k].enrollNo).length > 0)
+                                           getCadreImage(existingCadreArr[k].enrollNo);										
+										break;
+									}
+								}
+								
+								return false;
+							}
+						});
+		
+					}
+				});
 	}
-}	
-
- 
- function validateName(errDiv,fieldid,isNumber)
- {
-	var str = $('#'+fieldid+'').val();
-	$('#'+errDiv+'').html('');
-	var reqErstatus = false;
-	if(isNumber >0)
-	{
-		if(str != null && str.trim().length>0 && !(/^[a-zA-Z ]+$/.test(str)))
-		{
-			$('#'+errDiv+'').html('Allows only alphabets.');
-			reqErstatus = true;
-		}		  
-		if(!isValid(str))
-		{
-			reqErstatus = true;
-			$('#'+errDiv+'').html('Special Characters are not allowed.');
-		} 
-	}
-	else
-	{
-		$('#ageErr').html('');
-		if (str.length == 0) 
-		{
-			reqErstatus = true;
-			$('#'+errDiv+'').html('Please Enter Candidate Age');
-			$('#cadreAgeId').val('');
-		}		 
-		else if (isNaN(str)) 
-		{
-			 reqErstatus = true;
-			$('#'+errDiv+'').html('Candidate Age must be number.');	
-			$('#cadreAgeId').val('');			
-		}
-	}
-	return reqErstatus;
- }
- 
-	function buildExistingCadres(results){
-			$('#searchDetailsDiv1').html("");
-			$('#tableElement1').show();
-		if(results==null){
-
-			$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
-			return;
-		}
-		var str = '';
-			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
-				str +='<thead>';
-					str +='<tr>';
-						str +='<th class="text-align1"></th>';
-						str +='<th class="text-align1">NAME</th>';
-						str +='<th class="text-align1">GUARDIAN NAME</th>';
-						str +='<th class="text-align1">ENROLLMENT NO</th>';
-					str +='</tr>';
-				str +='</thead>';
-				str +='<tbody>';
-				for(var i in results){
-					str +='<tr>';
-						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
-						str +='<td>'+results[i].name+'</td>';
-						str +='<td>'+results[i].desc+'</td>';
-						str +='<td>'+results[i].caste+'</td>';
-					str +='</tr>';
-				}
-				str +='</tbody>';
-			str +='</table>';
-			
-			$('#searchDetailsDiv1').html(str);
-			
-		 
-			$('#seachDetalsTab').dataTable({
-				"iDisplayLength": 100,
-				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
-			});
-	
-	
 }
-function showTakeImage(){
-  $('#wrapper').dialog({
-            autoOpen: true,
-			width:600,
-			title:"Take Image",
-            modal: true,
-			resizable: false
-        });
-}
-$(document).ready(function(){
-	$("#wrapper").hide();
+
+$("#cardNumber1").keyup(function(){
+	var cardNumberVal = $("#cardNumber").val();
+	if(cardNumberVal.trim().length>2){
+		var constituencyId = '${constiteucnyId}';
+		var panchayatId = '${houseNo}'; 
+		var boothId = '${boothId}';
+		var isPresentCadre = '${panchayatId}';
+		searchedVoters = [];
+		searchedVotersInfoArr = [];
+		
+		var jsObj ={
+					  constituencyId:constituencyId,
+					  searchType :"voter", 
+					  candidateName:cardNumberVal,
+					  houseNo : "",
+					  voterCardNo : "",
+					  panchayatId : panchayatId,
+					  boothId : boothId ,
+					  locationId : 0,
+					  isPresentCadre:isPresentCadre,
+					  task:"searchCandidatesDtailsBySearchCriteria"             
+				   }
+		
+		 $.ajax({
+					type : "POST",
+					url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					//if(result==null){return;}
+					for(var i in result){
+							var vtrsObj = {
+								id : result[i].id,
+								name : 	result[i].name,
+								relativeName : result[i].desc,
+								voterCardNo :result[i].voterCardNo,
+								check : result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender
+							}
+							searchedVoters.push(vtrsObj);
+							searchedVotersInfoArr.push(result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender);
+					}
+					
+					$( "#cardNumber" ).autocomplete({ 
+							source:searchedVotersInfoArr,
+							select: function (event, ui) {
+								$('#cardNumber').val(ui.item.value);	
+								for(var k in searchedVoters){
+									//console.log(searchedVoters);
+									if(searchedVoters[k].check == ui.item.value){
+										//$('#cardNo').val(searchedVoters[k].voterCardNo);
+										$('#cardNumber').val(searchedVoters[k].voterCardNo);	
+										break;
+									}
+								}
+								
+								return false;
+							}
+						});
+						
+						
+				});
+	}
+	
 });
 
-	if(srchType=="voter" && candiId =="0"){
-		$(".famlyMemClsDiv").css("display","block");
-	}else if(srchType=="voter" && candiId !="0"){
-		$(".famlyMemClsDiv").css("display","none");
-	}else{
-		$(".famlyMemClsDiv").css("display","block");
-	}
-	
-	function updateNameSelection(id)
-	{
-		$('#'+id+'').removeAttr('checked');		
-	}
-	function clearPreviousEnrol(){
-		$("#preEnrollNoValue").val("");
-	}
-	function clearSelDiv(selId){
-	 $("#"+selId).val("");
-	}
-		
-	function deleteRecordsForm()
-	{
-		var removeVoterArr = new Array();
-		$('.removeCls').each(function(){
-			var id = $(this).attr('id');
-			if ($('#'+id+'').is(':checked')) 
-			 {
-				console.log(id);
-				$('.'+id+'').remove();
-			 }
+function getCandidateDetailsById(constituencyId,electionId,nominationId )
+{
+var electionsId = $('#'+electionId+'').val();
+	$('#candidateDivTab').html('');
+	var jsObj = 
+	   {
+			electionId : electionsId,
+			nominationId : nominationId,
+			task:"getCandidateDetailsById"             
+	   }				   
+	   $.ajax({
+			type : "POST",
+			url : "getCandidateInfoByNominationAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			buildCandidateDetails(result,nominationId);
 		});
+}
+var prvEleCount = 1;
+function buildCandidateDetails(result,nominationId)
+{
+	var str ='';
+	if(result != null)
+	{
+		str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1" style="width:850px;">';
+		str+='<tbody>';
+		
+		for(var i in result)
+		{
+			str+='<tr class="removeId'+i+'" >';
+				str += '<input type="hidden" value=""></input>';
+				str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
+				str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
+				str += '<input type="hidden" value='+nominationId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
+				str +='<td>'+result[i].name+'</td>';
+				str +='<td>'+result[i].location+'</td>';
+				str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
+				str +='<td> <a class="icon-minus-sign" href="javascript:{deleteDetails(\'removeId'+i+'\')}"></a></td>';
+			str+='</tr>';
+			prvEleCount++;
+		}
+		
+		str+='</tbody>';
+		str +='</table>';
+		
+		$('#candidateDivTab').html(str);
+	}
+}
+function showHideFamRelatinoSts(){
+  
+   if($('#relativeTypeChecked').prop('checked')==true){
+     $('#showHideFammemberType').show();
+   }else{
+     $('#showHideFammemberType').hide();
+   }
+}
+function getAllRelationDetails(){
+	 $.ajax({
+		type : "POST",
+		url : "getAllRelationDetails.action"
+	}).done(function(result){
+	  if(result != null && result.length > 0){
+	   //$('#relativeTypeId').append('<option value="0">Select Relation</option>');
+	   for(var i in result){
+		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	    }
+	  }
+	 
+	  <s:if test="voterInfoVOList[0].relative != null">
+	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId}');
+		$('#relativeTypeChecked').attr("checked","checked");
+		showHideFamRelatinoSts();
+	  </s:if>
+	});
+}
+getAllRelationDetails();
 
+
+	function isEmailIdValid()
+	{
+		
 	}
 	
-	function getAllMandalsInADistrict(districtId)
-	{
-		$('#selTehsilId').find('option').remove();
-		$('#selTehsilId').append('<option value="0"> Select Tehsil/Mandal</option>');
-		var jsObj ={}				   
-			$.ajax({
-				type : "POST",
-				url : "getAllMandalsInADistrict.action",
-				data : {districtId:districtId} ,
-			}).done(function(result){
-				if(result != null && result.length>0){
-					for(var i in result)
-					{
-						$('#selTehsilId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-					}	
-					
-				}
-			});
-	}
+	
 </script>
 </html>
