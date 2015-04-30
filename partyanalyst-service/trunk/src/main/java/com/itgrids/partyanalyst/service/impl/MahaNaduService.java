@@ -1565,15 +1565,16 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				MahanaduEventVO mainVo = new MahanaduEventVO();
 				mainVo.setId(eventId);
 				mainVo.setName(eventDAO.get(eventId).getName());
-				Long totalunioneventCount = 0l;
+				/*Long totalunioneventCount = 0l;
 				for(MahanaduEventVO subVo : uniEventVOList)
 				{
 					totalunioneventCount = totalunioneventCount + subVo.getTotal();
 				}
 				Long mainEventCount = 0l;
 				if(eventCount.get(eventId) > totalunioneventCount)
-				mainEventCount = eventCount.get(eventId) - totalunioneventCount;
-				mainVo.setTotal(mainEventCount);
+				mainEventCount = eventCount.get(eventId) - totalunioneventCount;*/
+				if(eventCount != null && eventCount.get(eventId) != null)
+				mainVo.setTotal(eventCount.get(eventId));
 				uniEventVOList.add(mainVo);
 				if(uniEventVOList != null && uniEventVOList.size() > 0)
 				Collections.sort(uniEventVOList,sortByName);
