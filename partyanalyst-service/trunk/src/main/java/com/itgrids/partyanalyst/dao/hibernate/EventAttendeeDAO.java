@@ -109,12 +109,13 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		query.setParameter("parentEventId", parentEventId);
 		return (Long) query.uniqueResult();
 	}
+
 public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date){
 		
 		StringBuilder str = new StringBuilder();
-		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,hour(model.attendedTime),model.event.name from EventAttendee model where " +
+		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,max(hour(model.attendedTime)),model.event.name from EventAttendee model where " +
 				" model.event.parentEventId = :parentEventId and date(model.attendedTime) = :date ");
-		str.append(" group by model.event.eventId,hour(model.attendedTime) ");
+		str.append(" group by model.tdpCadre.tdpCadreId,model.event.eventId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("date", date);
 		query.setParameter("parentEventId",parentEventId);
