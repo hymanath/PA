@@ -21,7 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 
 		<script type="text/javascript" src="js/exportexcel.js"></script>
-		<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/> 
+		<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination_1.css"/> 
 <script type="text/javascript" src="js/simplePagination/simplePagination1.js" ></script>
 		
 		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
@@ -110,7 +110,7 @@
 </head>
   <body class="bgc">
   
-  	<!-- Header Row -->
+  	<!-- Header Row 
 	
 		<div class="row-fluid">
 			<div class="span12 header-bg text-center">
@@ -139,12 +139,14 @@
 	
 		<div class="span6 offset3 show-grid pad-10b" >
 		<div id="errorDiv" style="color:#ff0020;"></div>
+		<c:if test="${sessionScope.USER.accessType == 'STATE' && sessionScope.USER.accessValue != '29'}">
 			<h5 class="text-align">SELECT CONSTITUENCY </h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:440px;" onChange="getConstituencyWiseDetails();hideSearchResult();"/>
 			<select style="width:440px;" id="panchayatList"><option value="0"> Select Booth </option></select>		
 			<!--<select style="width:250px;" onchange="hideSearchResult();" id="boothsList"> <option value="0"> Select Booth </option> </select> 	 -->
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
+			</c:if>
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				<span style="display:none;">
 				<h5 class="text-align small m_top15">SEARCH BY</h5>
@@ -200,21 +202,34 @@
 					  -->
 					  <div class="row">
 						<h5 class="text-align1"> Select Type of Registration </h5>
-
-						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('voterId')" checked="true" value="voterId" class="regisrationTypeCls" name="registrationType" id="voterId"> Voter Id</span>
-						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('familyVoter')" value="familyVoter" name="registrationType" id="familyVoter"> Family Voter</span>
-
+						<div class="col-md-4">
+						  <label style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('voterId')" checked="true" value="voterId" class="regisrationTypeCls" name="registrationType" id="voterId"> With Voter Id</label>
+						  </div>
+						  <div class="col-md-5">
+						  <label style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('familyVoter')" value="familyVoter" name="registrationType" id="familyVoter"> With Family Voter</label>
+						  </div>
+						<!--
 
 						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('apVoterId')" value="apVoterId" name="registrationType" id="apVoter"> AP Voter 
 						</span>
 
 						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('noVoter')" value="noVoter" name="registrationType" id="noVoterId"> No Voter
 						</span>  
+						-->
+						
 					  </div>
 					</div>
-					<input type="hidden" value="voterId" id="registrationTypeId"/>
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2" id="searchBtnId"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-					<a href="javascript:{skipDetailsForUser(0)}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " id="skipButtonId" style="display:none;">Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
+					<input type="hidden" value="voterId" id="registrationTypeId" />
+					 <div class="row">
+					  <div class="col-md-3">
+							<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2" id="searchBtnId"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						</div>
+					   <div class="col-md-3">
+							<a href="javascript:{skipDetailsForUser('skip')}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " id="skipButtonId">Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
+						</div>
+					</div>
+					
+					
 		</div>
 		
 		
@@ -231,11 +246,11 @@
 			   <div class="row-fluid offset3">						
 							<div class="span5" style="margin-bottom:-20px;">
 							<h5 class="text-align1">Form Date : 
-							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId"></h5>
+							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId" style="width: 220px"></h5>
 							</div>							
 							<div class="span">
 								<h5 class="text-align1"> To Date : 
-								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId"></h5>
+								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId" style="width: 220px"></h5>
 							</div>
 						</div>
 						<a href="javascript:{getDashboardDetailsForUser();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset5"> Get Details  <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -257,7 +272,7 @@
 			</div>
 		</div>
 	</div>
-<!-- start FlipClock -->
+<!-- start FlipClock 
 <div class="footerFixedStrip" >		
 		<div class="" style="width:44%; float:left;">
 			<h1 style="margin-top:0px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);;font-size:18px">2014 Cadre  Registrations Will be Closed <br>By 2014-12-23 After Noon 04:00PM </h2>
@@ -270,7 +285,7 @@
 	</div>
 
 <!-- end FlipClock -->
-		<!-- Footer Row -->
+		<!-- Footer Row
 		
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
@@ -359,7 +374,7 @@
 	}	
 	function searchCandidatesDetailsBySearchCriteria(start)
 	{
-	
+		
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		var candidateName = $('#searchNameId').val();
 		var voterCardNo = $('#searchVoterCardId').val();
@@ -377,7 +392,7 @@
 	    searchType = (searchType != null && searchType.length > 0 ? searchType = searchType:"");
 	   panchayatId = (typeof(panchayatId) != 'undefined' && panchayatId != null ? panchayatId = panchayatId:0);
 	       boothId = ( typeof(boothId) != 'undefined' && boothId != null ? boothId = boothId:0);
-		      
+		    var stateId = ${sessionScope.USER.accessValue};
 			  //console.log("panchayatId  :"+panchayatId);
 		if($("#isNewCadre").is(':checked'))
 			ischecked = "true";  // checked
@@ -386,11 +401,15 @@
 			
 		var villageCovered = '';
 		$('#errorDiv').html('');
-		if(cosntiteucnyId == 0 )
+		if(stateId != 29)
 		{
-			$('#errorDiv').html('Please Select Constituency.');
-			return;
+			if(cosntiteucnyId == 0 )
+			{
+				$('#errorDiv').html('Please Select Constituency.');
+				return;
+			}
 		}
+		
 	/*	if(panchayatId == 0)
 		{
 			$('#errorDiv').html('Please Select Panchayat.');
@@ -479,6 +498,7 @@
 
 			var jsObj = 
 				   {
+					  stateId:stateId,
 					  constituencyId:cosntiteucnyId,
 					  searchType :searchType, 
 					  candidateName:candidateName,
@@ -576,16 +596,32 @@
 		
 	}
 	
-	function skipDetailsForUser()
+	function skipDetailsForUser(skip)
 	{
+		$('#registrationTypeId').val(skip);	
+		$('#errorDiv').html('');
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
-		var cosntiteucnyId = $('#userConstituencyId').val();	
-		var registrationTypeId = $('#registrationTypeId').val();	
-		var boothId = $('#panchayatList').val();	
-		var houseNo = 0;	
-		var candidateId = 0;
-		window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId+'&searchType='+registrationTypeId);
+		var cosntiteucnyId = $('#userConstituencyId').val();
+		var stateId = ${sessionScope.USER.accessValue};
+		var registrationType = $('#registrationTypeId').val();
+		if(stateId == 29)
+		{
+			window.open('cadreEnrollment.action?id1='+0+'&id2='+0+'&id3='+0+'&id4='+0+'&searchType='+registrationType);
+		}
+		else if(stateId != 29 && cosntiteucnyId != 0)
+		{
+			var registrationType = $('#registrationTypeId').val();	
+			var boothId = $('#panchayatList').val();	
+			var houseNo = 0;	
+			var candidateId = 0;
+			window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId+'&searchType='+registrationType);
+		}
+		else
+		{			
+			$('#errorDiv').html('Please select Constituency.');
+		}	
 	}
+	
 	function getDetailsForUser(candidateId,status)
 	{ 
 	   $("#relativeTypeIdErr").html("");
@@ -617,9 +653,13 @@
 			   $("#relativeTypeIdErr").html("Please Select Relation");
 			   return;
 		   }
-		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id5='+candidateId+'&countDownTime='+relativeTypeId);
+		   
+		   var registrationTypeId = $('#registrationTypeId').val();	
+			
+		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id5='+candidateId+'&countDownTime='+relativeTypeId+'&searchType='+registrationTypeId);
 		}else{
-		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId);	
+			  var registrationTypeId = $('#registrationTypeId').val();	
+		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId+'&searchType='+registrationTypeId);	
 		}
 	}
 	
