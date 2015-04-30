@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
@@ -43,7 +44,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
-import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -54,14 +54,10 @@ import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CadreAddress;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
-import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -90,7 +86,17 @@ public class CadreRegistrationForOtherStatesService implements
 	private IDistrictDAO  districtDAO;
 	private ICadreAddressDAO cadreAddressDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IStateDAO stateDAO;
 	
+	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
 	}
@@ -226,13 +232,13 @@ public class CadreRegistrationForOtherStatesService implements
 				if (cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0) {
 					tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr().toString()));
 				}
-
+				
 				tdpCadre.setGender(cadreRegistrationVO.getGender());
 
 				if (cadreRegistrationVO.getRelativeName() != null && cadreRegistrationVO.getRelativeName().trim().length() > 0) {
 					tdpCadre.setRelativename(cadreRegistrationVO.getRelativeName());
 				}
-				if(registrationType != null && (!registrationType.trim().equalsIgnoreCase("noVoterId") && !registrationType.trim().equalsIgnoreCase("apVoterId")))
+				if(registrationType != null && (!registrationType.trim().equalsIgnoreCase("skip") && !registrationType.trim().equalsIgnoreCase("apVoterId")))
 	               {
 						if (cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0) {
 							tdpCadre.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
@@ -245,11 +251,34 @@ public class CadreRegistrationForOtherStatesService implements
 	               }
 				else
 				{
-					if (cadreRegistrationVO.getAge() != null && cadreRegistrationVO.getAge() > 0) {
+					if (cadreRegistrationVO.getVoterCardNumber() != null  && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0) {
+						tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
+						if(registrationType != null && registrationType.trim().equalsIgnoreCase("skip"))
+			               {
+							List<String> voterCardNo = new ArrayList<String>();
+							voterCardNo.add(cadreRegistrationVO.getVoterCardNumber());
+							List<Object[]> voterDetils = voterDAO.getVoterIdCardNo(voterCardNo);
+							if(voterDetils != null && voterDetils.size()>0)
+							{
+								for (Object[] voters : voterDetils) {
+									Long voterId = voters[1] != null ? Long.valueOf(voters[1].toString().trim()):0L;
+									if(voterId != null && voterId.longValue()>0)
+									{
+										tdpCadre.setVoterId(voterId);
+										
+										tdpCadre.setAge(voterDAO.get(tdpCadre.getVoterId()).getAge());
+									}
+								}
+							}
+			               }						
+						
+					}
+					
+					if (tdpCadre.getAge() == null || tdpCadre.getAge().longValue() == 0l) {
 						tdpCadre.setAge(cadreRegistrationVO.getAge());
 					}
 				}
-				
+								
 				if (cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0) {
 					tdpCadre.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
 				} 
@@ -257,6 +286,10 @@ public class CadreRegistrationForOtherStatesService implements
 					tdpCadre.setBloodGroupId(cadreRegistrationVO.getBloodGroupId());
 				}
 
+				if (cadreRegistrationVO.getEmailId() != null && cadreRegistrationVO.getEmailId().trim().length()>0) {
+					tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
+				}
+				
 				if (cadreRegistrationVO.getCasteId() != null && cadreRegistrationVO.getCasteId() > 0) {
 					tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
 				}
@@ -284,7 +317,7 @@ public class CadreRegistrationForOtherStatesService implements
 				}
 		
                Long reqVoterId = null;
-               if(registrationType != null && (!registrationType.trim().equalsIgnoreCase("noVoterId") && !registrationType.trim().equalsIgnoreCase("apVoterId")))
+               if(registrationType != null && (!registrationType.trim().equalsIgnoreCase("skip") && !registrationType.trim().equalsIgnoreCase("apVoterId")))
                {
             	   if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().trim().length() > 0){
                 	   reqVoterId = Long.valueOf(cadreRegistrationVO.getVoterId().trim());
@@ -292,29 +325,50 @@ public class CadreRegistrationForOtherStatesService implements
                 	   reqVoterId = cadreRegistrationVO.getFamilyVoterId();
                    }
                }
-             
-				UserAddress userAddress = new UserAddress();
-				if(reqVoterId != null){
-					getUserAddressDetails(reqVoterId,userAddress);
-				}else{
-					if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0){
-						
-						Constituency constituency = constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()));
-						userAddress.setConstituency(constituency);
-						userAddress.setState(constituency.getState());
-						userAddress.setDistrict(constituency.getDistrict());
-					}
-					if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getBoothId().trim())>0){
-						userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId().trim())));
-					}
-					if(cadreRegistrationVO.getMuncipalityId() != null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0  && Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim())>0){
-						
-						if(cadreRegistrationVO.getMuncipalityId().trim().substring(0,1).equalsIgnoreCase("1")){
-							userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim().substring(1))));
-						}else{
-							userAddress.setTehsil(tehsilDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim().substring(1))));
+               
+               if(registrationType != null && registrationType.trim().equalsIgnoreCase("skip")){
+            	   if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() != 0l)
+            		   reqVoterId = tdpCadre.getVoterId();
+               }
+               
+				UserAddress userAddress = new UserAddress();//if(stateId == 29)
+				if(addressVO.getStateId() != null && addressVO.getStateId().longValue() >0 && addressVO.getStateId() == 29L)
+				{
+					userAddress.setState(stateDAO.get(29L));
+				}
+				else
+				{
+					if(reqVoterId != null){
+						getUserAddressDetails(reqVoterId,userAddress);
+					}else{
+						if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0){
+							
+							Constituency constituency = constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()));
+							userAddress.setConstituency(constituency);
+							userAddress.setState(constituency.getState());
+							userAddress.setDistrict(constituency.getDistrict());
+						}
+						if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getBoothId().trim())>0){
+							userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId().trim())));
+						}
+						if(cadreRegistrationVO.getMuncipalityId() != null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0  && Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim())>0){
+							
+							if(cadreRegistrationVO.getMuncipalityId().trim().substring(0,1).equalsIgnoreCase("1")){
+								userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim().substring(1))));
+							}else{
+								userAddress.setTehsil(tehsilDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId().trim().substring(1))));
+							}
 						}
 					}
+				}
+				
+				if(addressVO.getStreet() != null && addressVO.getStreet().trim().length()>0)
+				{
+					String street = addressVO.getStreet() != null && addressVO.getStreet().trim().length()>0?addressVO.getStreet():"";
+					String colony = addressVO.getAddress1() != null && addressVO.getAddress1().trim().length()>0?addressVO.getAddress1():"";
+					String landmark = addressVO.getAddress2() != null && addressVO.getAddress2().trim().length()>0?addressVO.getAddress2():"";
+					
+					userAddress.setStreet(street+" , "+colony+" ,"+landmark);
 				}
 				
 				userAddress = userAddressDAO.save(userAddress);
@@ -359,22 +413,6 @@ public class CadreRegistrationForOtherStatesService implements
 				}
 				if (cadreRegistrationVO.getVoterCardNumber() != null  && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0) {
 					tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
-					if(registrationType != null && registrationType.trim().equalsIgnoreCase("apVoterId"))
-		               {
-						List<String> voterCardNo = new ArrayList<String>();
-						voterCardNo.add(cadreRegistrationVO.getVoterCardNumber());
-						List<Object[]> voterDetils = voterDAO.getVoterIdCardNo(voterCardNo);
-						if(voterDetils != null && voterDetils.size()>0)
-						{
-							for (Object[] voters : voterDetils) {
-								Long voterId = voters[1] != null ? Long.valueOf(voters[1].toString().trim()):0L;
-								if(voterId != null && voterId.longValue()>0)
-								{
-									tdpCadre.setVoterId(voterId);
-								}
-							}
-						}
-		               }
 				}
 				
 				
@@ -471,7 +509,7 @@ public class CadreRegistrationForOtherStatesService implements
 				//SAVING THE TELUGU NAME OF NON VOTER -- END
 
 				surveyCadreResponceVO.setEnrollmentNumber(tdpCadre1.getRefNo());
-
+				/*
 				List<CadreFamilyVO> cadreFamilyDetailsList = cadreRegistrationVO.getCadreFamilyDetails();
 				if (cadreFamilyDetailsList != null && cadreFamilyDetailsList.size() > 0) {
 					for (CadreFamilyVO cadreFamilyVO : cadreFamilyDetailsList) {
@@ -530,7 +568,7 @@ public class CadreRegistrationForOtherStatesService implements
 		
 											}
 										}
-					               }
+					              }
 								
 								tdpCadreFamilyDetails.setIsDeleted("N");
 								tdpCadreFamilyDetails.setInsertedDate(dateUtilService.getCurrentDateAndTime());
@@ -994,7 +1032,7 @@ public class CadreRegistrationForOtherStatesService implements
 		return returnList;
 	}
 	
-	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String candidateName, String voterCardId,
+	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long stateId,Long constituencyId, String candidateName, String voterCardId,
 			String houseNo,Long tehsilId,Long boothId,Integer startIndex,Integer maxIndex){
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
@@ -1015,11 +1053,12 @@ public class CadreRegistrationForOtherStatesService implements
 				{
 					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
 				}
-				 Long stateId = constituencyDAO.get(constituencyId).getState().getStateId();
+				if(stateId != null && stateId.longValue() != 29L)
+				  stateId = constituencyDAO.get(constituencyId).getState().getStateId();
 				 
 				//0 voterId,1name,2relative name,3age,4houseno,5relationtype,6gender,7voterIDCardNo,8path
-				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByLocationIds(constituencyId,getPublicationId(stateId),searchQuery.toString(),tehsilId,boothId,startIndex,maxIndex);
-				 count = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByLocationIdsCount(constituencyId,getPublicationId(stateId),searchQuery.toString(),tehsilId,boothId);
+				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByLocationIds(stateId,constituencyId,getPublicationId(stateId),searchQuery.toString(),tehsilId,boothId,startIndex,maxIndex);
+				 count = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByLocationIdsCount(stateId,constituencyId,getPublicationId(stateId),searchQuery.toString(),tehsilId,boothId);
 				
 				List<Long> voterIds = new ArrayList<Long>();
 				if(searchList != null && searchList.size()>0 ){
@@ -1089,8 +1128,8 @@ public class CadreRegistrationForOtherStatesService implements
 		VoterInfoVO vo = new VoterInfoVO();
 		try {
 			Long voterId = 0L;
-			String houseNo = null;
-			List<VoterInfoVO> familyList = null;
+			//String houseNo = null;
+			//List<VoterInfoVO> familyList = null;
 			
 			if(candidateId != null && candidateId != 0L){
 				  Voter voter = voterDAO.get(candidateId);
@@ -1112,15 +1151,28 @@ public class CadreRegistrationForOtherStatesService implements
 					vo.setVoterId(voter.getVoterId());
 					vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
 					vo.setHouseNo(voter.getHouseNo() != null ? voter.getHouseNo().toString():"");
-					houseNo = vo.getHouseNo();
-					voterId = candidateId;
+					//houseNo = vo.getHouseNo();
+					//voterId = candidateId;
 				  }
 				
-				
+				/*
 				if(voterId != null && voterId.longValue() != 0L && vo != null){
 					List<Long> votersList = new ArrayList<Long>();
 					votersList.add(voterId);
-
+					if(voterType.equalsIgnoreCase("voter")){
+	                    List<VoterNames> voterNamesList = voterNamesDAO.gerVoterNamesObjByVoterId(voterId);
+						if(voterNamesList != null && voterNamesList.size() > 0 && voterNamesList.get(0) != null){
+							VoterNames voterNames = voterNamesList.get(0);
+							String voterName ="";
+							if(voterNames.getFirstName() != null){
+								voterName = voterNames.getFirstName();
+							}
+							if(voterNames.getLastName() != null){
+								voterName = voterName+" "+voterNames.getLastName();
+							}
+							vo.setTeluguName(voterName);
+						}
+					}
 					 Long stateId = constituencyDAO.get(constituencyId).getState().getStateId();
 					 
 					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList,getPublicationId(stateId));
@@ -1160,7 +1212,7 @@ public class CadreRegistrationForOtherStatesService implements
 						vo.setVoterInfoVOList(familyList);
 					} 
 					
-				}
+				}*/
 			}
 			
 			
@@ -1334,5 +1386,35 @@ public class CadreRegistrationForOtherStatesService implements
 		publicationsMap.put(15l, 13l);
 
 		return publicationsMap.get(stateId);
+	}
+	
+	public List<SelectOptionVO> getCasteDetailsByCasteCategoryId(Long casteCategoryGroupId,Long stateId)
+	{	
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Object[]> list = null;
+			if(casteCategoryGroupId != null && casteCategoryGroupId.longValue() >0)
+			{
+				list = casteStateDAO.getStatewisesCastNamesByGroupId(casteCategoryGroupId,stateId);
+			}
+			else if(casteCategoryGroupId != null && casteCategoryGroupId.longValue() == 0L)
+			{
+				list = casteStateDAO.getAllCasteDetailsForVoters(stateId);
+			}
+			if(list != null && list.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] caste : list)
+				{
+					selectOptionVO = new SelectOptionVO(caste[0] != null ? Long.valueOf(caste[0].toString().trim()):0L,caste[1] != null ? caste[1].toString().trim():"");
+					returnList.add(selectOptionVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCasteDetailsByCasteCategoryId in CadreRegistrationForOtherStatesService service", e);
+		}
+		
+		return returnList;
 	}
 }
