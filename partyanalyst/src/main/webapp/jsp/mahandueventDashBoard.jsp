@@ -15,17 +15,21 @@
 </head>
 
 <body>
-	<div class="custom-head-bg">&nbsp;</div>
-<header class="container">
-	<div class="row first-row">
-    	<div class="col-md-1 col-xs-1 col-sm-1">
-        	<img src="dist/img/logo.png" class="header-logo">
-        </div>
-        <div class="col-md-8 col-xs-9 col-sm-9 header-style" style="padding-left:36px;">
-        	<p class="display-style m_0"><img src="dist/img/header-image1.png" class="img-responsive"></p>
-            <p class="header-text display-style">PARTY OFFICE EVENT</p>
-        </div>
-        <div class="col-md-2"></div>     
+<header  class="eventsheader">
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-7 col-xs-7 col-sm-7 text-center">               
+                <p class="header-text display-style">PARTY OFFICE EVENT</p>               
+            </div>
+            <div class="col-md-2 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+        </div>       
     </div>
 </header>
 
@@ -33,11 +37,13 @@
 
 <section class="container">
 	<div class="row">
-		<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
-			<span class="glyphicon glyphicon-refresh"></span>
-		</a>
+		<div class="col-md-12">
+			<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</a>
+		</div>
 
-    	<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:30px;">
+    	<div class="col-md-4 col-sm-6 col-xs-12" style="">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
               <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">           
@@ -577,4 +583,12 @@ getSubEventDetailsHourWise(1);
  getEventMemberCount(1,1);
 </script>
 </body>
+​<style>
+    header.eventsheader {  
+    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    height: 71px;   
+}
+</style>
 </html>
