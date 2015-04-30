@@ -33,16 +33,14 @@
 
 <section class="container">
 	<div class="row">
-	<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
-<span class="glyphicon glyphicon-refresh"></span>
-</a>
-</div>
-    	<div class="col-md-4 col-sm-6 col-xs-12">
+		<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</a>
+
+    	<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:30px;">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
-              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">
-                
-             
+              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">           
               </div>
             </div>
         </div>
