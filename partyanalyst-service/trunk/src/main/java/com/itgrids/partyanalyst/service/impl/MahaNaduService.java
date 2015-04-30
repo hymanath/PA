@@ -1484,11 +1484,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 for(Object[] obj :hourWiseResult){
 				 MahanaduEventVO vo =  getMatchedVO(resultList,(Long)obj[1]);
 				 if(vo != null){
-					 for(MahanaduEventVO hours:vo.getHoursList()){
+					 
 						 MahanaduEventVO vo1 =  getMatchedVO(vo.getHoursList(),new Long((Integer) obj[2]));
 						 if(vo1 != null){
-							 vo1.setCadreCount((Long)obj[0]);
-						 }
+							 vo1.setCadreCount((Long)obj[0] + vo1.getCadreCount());
+						 
 					 }					 
 				 }
 			 }			 
