@@ -10016,7 +10016,11 @@
 				<param name="root">resultList</param>
 			</result>
 		</action>
-		
+		 <action name="getCasteCategoryGroupWiseCasteDetails" class="cadreRegistrationAction" method="getCasteDetailsForCasteCategory">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action> 
 		
 </package>
 </struts>      
