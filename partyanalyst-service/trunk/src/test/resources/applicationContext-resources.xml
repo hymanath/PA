@@ -562,6 +562,8 @@
 				<value>com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.EventUser</value>
 				<value>com.itgrids.partyanalyst.model.Event</value>
+				<value>com.itgrids.partyanalyst.model.EventSurveyUserEvent</value>
+				<value>com.itgrids.partyanalyst.model.EventRfidDetails</value>
 			</list>
 		</property>
 	</bean>
@@ -625,7 +627,15 @@
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
 	
+	<bean id="eventRfidDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventRfidDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="dynamicKeysDAO" class="com.itgrids.partyanalyst.dao.hibernate.DynamicKeysDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventSurveyUserEventDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserEventDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
