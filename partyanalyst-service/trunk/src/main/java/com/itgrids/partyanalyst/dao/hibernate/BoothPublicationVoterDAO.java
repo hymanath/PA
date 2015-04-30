@@ -7817,14 +7817,18 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			return null;
 		}
 	}
-	public List<Object[]> getVotersDetailsForCadreRegistratiobByLocationIds(Long constituencyId, Long publicationDate,String queryStr,
+	public List<Object[]> getVotersDetailsForCadreRegistratiobByLocationIds(Long stateId, Long constituencyId, Long publicationDate,String queryStr,
 			Long tehsilId,Long boothId,Integer startIndex,Integer maxIndex){
 		
 		StringBuilder queryStr1 = new StringBuilder();
 		//0 voterId,1name,2relative name,3age,4houseno,5relationtype,6gender,7voterIDCardNo,8path
 		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, ");
 		queryStr1.append("   BPV.voter.gender, BPV.voter.voterIDCardNo,BPV.voter.imagePath from BoothPublicationVoter BPV where "+queryStr+"   ");
-		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		if(stateId != null && stateId.longValue() != 29l)
+		{
+			queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and ");
+		}
+		queryStr1.append(" BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
 		if(tehsilId.longValue() != 0L){
 			if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
@@ -7839,12 +7843,21 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		}
 		
 		Query query = getSession().createQuery(queryStr1.toString());
-			
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDate", publicationDate);
+		if(stateId != null && stateId.longValue() != 29l)
+		{	
+			query.setParameter("constituencyId", constituencyId);
+		}
 		
+		query.setParameter("publicationDate", publicationDate);
+		/*
 		if(tehsilId.longValue() != 0L){
 	       query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+		}*/
+		
+		if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+			query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+		}else if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+			query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
 		}
 		
 		if(boothId.longValue() != 0L)
@@ -7859,11 +7872,16 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 	
-	public Long getVotersDetailsForCadreRegistratiobByLocationIdsCount(Long constituencyId, Long publicationDate,String queryStr,Long tehsilId,Long boothId){
+	public Long getVotersDetailsForCadreRegistratiobByLocationIdsCount(Long stateId,Long constituencyId, Long publicationDate,String queryStr,Long tehsilId,Long boothId){
 		StringBuilder queryStr1 = new StringBuilder();
 		
 		queryStr1.append(" select count(*) from BoothPublicationVoter BPV where "+queryStr+"   ");
-		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(stateId != null && stateId.longValue() != 29L)
+		{
+			queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and ");
+		}
+		queryStr1.append(" BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
 		if(tehsilId.longValue() != 0L){
 			if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
@@ -7878,13 +7896,23 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		}
 		
 		Query query = getSession().createQuery(queryStr1.toString());
-			
-		query.setParameter("constituencyId", constituencyId);
+		if(stateId != null && stateId.longValue() != 29L)
+		{
+			query.setParameter("constituencyId", constituencyId);
+		}
 		query.setParameter("publicationDate", publicationDate);
 		
-		if(tehsilId.longValue() != 0L){
-		     query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+		/*if(tehsilId.longValue() != 0L){
+			 query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
 		 }
+		*/
+		if(tehsilId.longValue() != 0L){
+			if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				 query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+			}else if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				 query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+			}
+		}
 		
 		if(boothId.longValue() != 0L)
 		{
