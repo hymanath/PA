@@ -13,6 +13,7 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
+<link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -33,17 +34,113 @@
         </div>       
     </div>
 </header>
-
+ <div class="themeControll">
+ <!--<h4 class="m_bottom0">
+ 	<form class="me-select display-style">
+        <ul id="me-select-list">
+            <li><input id="cb36" name="cb11" type="checkbox">
+                <label for="cb36" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#" aria-controls="collapseOne" class="col-drop-head">All Events</a></span></label></li>
+        </ul>
+	</form>
+  </h4>-->
+  <div class="linkinner"> 
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default border_0">
+                    <div class="panel-heading collapse-head" role="tab" id="headingOne">
+                      <h5 class="panel-title">
+                          <form class="me-select display-style">
+                            <ul id="me-select-list" style="list-style:none;">
+                                <li><input id="cb11" name="cb11" type="checkbox">
+                                	<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head">Party Office</a></span></label></li>
+                            </ul>
+                          </form>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
+                        </a>
+                      </h5>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body collapse-body">
+                        	<form class="me-select display-style">
+                                <ul id="me-select-list" style="list-style:none;">
+                                    <li><input id="cb12" name="cb11" type="checkbox">
+                                        <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Breakfast in Cateen</span></label></li>
+                                    <li><input id="cb13" name="cb11" type="checkbox">
+                                        <label for="cb13" class="m_0 collapse-select"><span class="col-drop-select-name">Lunch in Canteen</span></label></li>
+                                    <li><input id="cb14" name="cb11" type="checkbox">
+                                        <label for="cb14" class="m_0 collapse-select"><span class="col-drop-select-name">Dinner in Canteen</span></label></li>
+                                    <li><input id="cb35" name="cb11" type="checkbox">
+                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Meeting with Lokesh</span></label></li>
+                                </ul>
+                            </form>
+                      </div>
+                    </div>
+                  </div>
+                   <div class="panel panel-default border_0">
+                    <div class="panel-heading collapse-head" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                          <form class="me-select display-style">
+                            <ul id="me-select-list" style="list-style:none;">
+                                <li>
+                                	<input id="cb15" name="cb11" type="checkbox">
+                                	<label for="cb15" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo" class="col-drop-head">Mahanadu 2015</a></span></label>
+                                </li>
+                            </ul>
+                          </form>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo">
+                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="panel-body collapse-body">
+                        	<form class="me-select display-style">
+                                <ul id="me-select-list" style="list-style:none;">
+                                    <li><input id="cb16" name="cb11" type="checkbox">
+                                        <label for="cb16" class="m_0 collapse-select"><span class="col-drop-select-name">Main Entry Registration </span></label></li>
+                              									
+								    <li><input id="cb18" name="cb11" type="checkbox">
+                                        <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Blood Donation Camp</span></label></li>
+										
+									<li><input id="cb18" name="cb11" type="checkbox">
+                                        <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Photo Exhibition</span></label></li>
+                                </ul>
+                            </form>
+                      </div>
+                    </div>
+                  </div>
+                   
+            
+                  <button class="btn btn-block btn-default btn-custom">UPDATE</button>
+                </div>
+  </div>
+  <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
+</div>   
     
 
 <section class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<a class="btn btn-sm btn-default pull-right" onclick="insertIntermediateData();" style="margin-bottom:10px;">
+		
+	<div class="row" style="">
+		
+		<div class="col-md-3 col-md-offset-8">
+        	   <div id="reportrange" class="pull-right calendar-style">
+                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
+               </div>
+        </div>
+		<div class="col-md-1">
+			<a class="btn btn-md btn-success btn-block" onclick="insertIntermediateData();">
 				<span class="glyphicon glyphicon-refresh"></span>
 			</a>
 		</div>
-
+    </div>
+		
+		
+		
+		
+		
+    </div>
+	<div class="row">
     	<div class="col-md-4 col-sm-6 col-xs-12" style="">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
@@ -55,25 +152,25 @@
         		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
         </div>
 
-        </div>
-        <div class="row">
-        	<div class="col-md-5 col-xs-12 col-sm-6">
-            	<div class="panel panel-default panel-custom-default">
-                	<div class="panel-heading">total event visits</div>
-                    <div class="panel-body">
-                        <div id="donutchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px"></div>
-    				</div>
+    </div>
+	<div class="row">
+		<div class="col-md-5 col-xs-12 col-sm-6">
+			<div class="panel panel-default panel-custom-default">
+				<div class="panel-heading">total event visits</div>
+				<div class="panel-body">
+					<div id="donutchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px"></div>
 				</div>
-        	</div>
-            <div class="col-md-7 col-xs-12 col-sm-6">
-            	<div class="panel panel-default panel-custom-default">
-        			<div class="panel-heading">event wise repeated members count</div>
-                    <div class="panel-body">
-						<div id="columnchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px;"></div>
-					</div>
+			</div>
+		</div>
+		<div class="col-md-7 col-xs-12 col-sm-6">
+			<div class="panel panel-default panel-custom-default">
+				<div class="panel-heading">event wise repeated members count</div>
+				<div class="panel-body">
+					<div id="columnchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px;"></div>
 				</div>
-        	</div>
-        </div>
+			</div>
+		</div>
+	</div>
         <div class="row m_top10">
         <div class="col-md-6">
         	<!--<div class="panel panel-default panel-custom-default">
@@ -167,21 +264,87 @@
 <script src="dist/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 <script src="dist/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
+<script src="dist/Date/moment.min.js" type="text/javascript"></script>
+<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(function () {
-	   $('.DataTableDiv').DataTable( {
-        responsive: true,
-		"paging":   false,
-        "info":     false,
-		"searching": false,
-		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
-		"columnDefs": [
-	    { "width": "25%", "targets": 0 }]
-    } );
+ $(document).ready(function() {
 
-});
+                  var cb = function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                  }
 
+                  var optionSet1 = {
+                    startDate: moment().subtract(29, 'days'),
+                    endDate: moment(),
+                    minDate: '01/01/2012',
+                    maxDate: '12/31/2015',
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+                    timePicker: false,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: true,
+                    opens: 'left',
+                    buttonClasses: ['btn btn-default btn-custom'],
+                    applyClass: 'btn-small btn-primary',
+                    cancelClass: 'btn-small',
+                    format: 'MM/DD/YYYY',
+                    separator: ' to ',
+                    locale: {
+                        applyLabel: 'Submit',
+                        cancelLabel: 'Clear',
+                        fromLabel: 'From',
+                        toLabel: 'To',
+                        customRangeLabel: 'Custom',
+                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        firstDay: 1
+                    }
+                  };
 
+                  var optionSet2 = {
+                    startDate: moment().subtract(7, 'days'),
+                    endDate: moment(),
+                    opens: 'left',
+                    ranges: {
+                       'Today': [moment(), moment()],
+                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                  };
+
+                  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+                  $('#reportrange').daterangepicker(optionSet1, cb);
+
+                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+                    console.log("apply event fired, start/end dates are " 
+                      + picker.startDate.format('MMMM D, YYYY') 
+                      + " to " 
+                      + picker.endDate.format('MMMM D, YYYY')
+                    ); 
+                  });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+                  $('#options1').click(function() {
+                    $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+                  });
+
+                  $('#options2').click(function() {
+                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+                  });
+
+                  $('#destroy').click(function() {
+                    $('#reportrange').data('daterangepicker').remove();
+                  });
+
+               });
 </script>
 <script>
 /*var myVar=setInterval(function(){myTimer()},1000);
@@ -213,7 +376,7 @@ function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 }
 function buildDistrictTable(result,reportLevelId){
 	var str='';
-	str+='<div class="scrollDiv"><table  class="display DataTableDiv" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
 	str+='<tr>';
 	if(reportLevelId == 3){
     str+='<th>DISTRICT</th>';
@@ -273,38 +436,7 @@ $("#myonoffswitch1").click(function(){
 	}
 });
 
-function getSubEventDetails(userId,parentEventId){
-	var jObj = {
-			parentEventId:parentEventId,			
-			userId:userId
-		}	
-		
-		$.ajax({
-          type:'GET',
-          url: 'getSubEventDetailsAction.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-		buildStartingPrograms(result);
-	});
-}
-function buildStartingPrograms(result){
-    var str='';
-	//str+='<div class="panel-body scrollDiv1">';
-	for( var i in result){
-  
-        str+='<p class="m_0 text-bold">'+result[i].userName+'</p>';
-        str+='<p>'+result[i].status+'</p>';
-		if(result[i].startTime != null && result[i].endTime != null){
-        str+='<p class="text-danger">Programme Time:'+result[i].startTime+' To '+result[i].endTime +'</p>';
-		}else{
-		str+='<p class="text-danger">Programme Time:</p>';
-		}
-        str+='<hr class="m_top10"/>';
-    }              
 
-	$("#startingPgmDivId").html(str);
-	
-}
 
 function getSubEventDetails(userId,parentEventId){
 	var jObj = {
@@ -322,12 +454,18 @@ function getSubEventDetails(userId,parentEventId){
 }
 function buildStartingPrograms(result){
     var str='';
+	var total = 0;
+	for(var i in result)
+       {        
+		total = total + result[i].invitees + result[i].nonInvitees;
+       }
 	str+='<div class="text-center">';
 	str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
-	str+=' <h1 class="display-style m_top0">'+result[0].total+'</h1>';
+	str+=' <h1 class="display-style m_top0">'+total+'</h1>';
 	str+=' </div>';
+	str+='<div class="text-center" style="margin-top: -5px; margin-bottom: 5px;">[ Unique Visitors  -'+result[0].total +' ]</div>';
 	str+=' <div class="scrollDiv2">';
-	str+='<hr class="m_bottom10"/>	';
+	str+='<hr class=""/>	';
 	var dataArr=[] ;
 	for(var i in result)
 	{				 
@@ -597,4 +735,9 @@ getSubEventDetailsHourWise(1);
     height: 71px;   
 }
 </style>
+<script>
+$(".tbtn").click(function(){
+    $(".themeControll").toggleClass("active");
+});
+</script>
 </html>
