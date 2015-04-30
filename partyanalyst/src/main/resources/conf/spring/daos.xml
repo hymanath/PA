@@ -2033,5 +2033,13 @@
 	<bean id="eventSurveyUserLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserLoginDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="eventSurveyUserEventDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserEventDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventRfidDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventRfidDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
