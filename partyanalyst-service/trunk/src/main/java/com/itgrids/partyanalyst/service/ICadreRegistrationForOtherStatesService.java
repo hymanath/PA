@@ -13,7 +13,7 @@ public interface ICadreRegistrationForOtherStatesService {
 	public void tdpCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar, String registrationType);
 	public List<GenericVO> getTehsilByConstiteuncy(Long constituencyId);
 	public List<GenericVO> getBoothsDetailsByTehsil(Long tehsilId);
-	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String candidateName, String voterCardId,
+	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long stateId,Long constituencyId, String candidateName, String voterCardId,
 			String houseNo,Long tehsilId,Long boothId,Integer startIndex,Integer maxIndex);
 	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String voterType, Long candidateId,Long constituencyId);
 	public String checkVoterAlreadyRegisteredOrNot(Long voterId);
@@ -23,4 +23,5 @@ public interface ICadreRegistrationForOtherStatesService {
 	public Long getStateByConstituencyId(Long constituencyId);
 	
 	public List<GenericVO> getBoothsByConstiteuncy(Long constituencyId);
+	public List<SelectOptionVO> getCasteDetailsByCasteCategoryId(Long casteCategoryGroupId,Long stateId);
 }
