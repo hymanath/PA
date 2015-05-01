@@ -332,12 +332,12 @@ public class CadreRegistrationForOtherStatesService implements
                }
                
 				UserAddress userAddress = new UserAddress();//if(stateId == 29)
-				if(addressVO.getStateId() != null && addressVO.getStateId().longValue() >0 && addressVO.getStateId() == 29L)
+				if(addressVO.getStateId() != null && addressVO.getStateId().longValue() >0)
 				{
-					userAddress.setState(stateDAO.get(29L));
+					userAddress.setState(stateDAO.get(addressVO.getStateId()));
 				}
-				else
-				{
+				//else
+				//{
 					if(reqVoterId != null){
 						getUserAddressDetails(reqVoterId,userAddress);
 					}else{
@@ -360,7 +360,7 @@ public class CadreRegistrationForOtherStatesService implements
 							}
 						}
 					}
-				}
+				//}
 				
 				if(addressVO.getStreet() != null && addressVO.getStreet().trim().length()>0)
 				{
