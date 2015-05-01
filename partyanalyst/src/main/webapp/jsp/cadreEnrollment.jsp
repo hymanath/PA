@@ -860,7 +860,62 @@ function getCadreImage(id){
 		$('#preEnrollNo').val(enrollmentNo);
 	}
 	
-	
+	function showUploadStatus(myResult)
+	{
+		$('#mainDiv').html('');
+		var result = (String)(myResult);
+		var errorDivEle = document.getElementById('errorMsgDiv');
+		var str = '';
+		var resultArr = result.split(',');
+		if(result.search('notAccess') != -1)
+		{
+			location.reload(); 
+		}
+		else if(result.search('alreadyRegistered') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align">VOTER ALREADY REGISTERED AS CADRE.</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}else if(result.search('regfailed') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align" style="color:red">ERROR OCCURED!. TRY AGAIN LATER.</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}
+		else if(result.search('SUCCESS') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
+			str+= '</div>';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Your Enrollment No :'+resultArr[1]+' </p>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}
+		
+		$('#statusDiv').html(str);
+	}
 	
 		$(document).ready(function(){
 
@@ -1247,18 +1302,22 @@ function getCadreImage(id){
 		}		
 		
 		var pinCodeId = $('#pinCodeId').val();
+		var accessStateId = $('#stateIdField').val();
 		
-		if(selDistrictId == null || selDistrictId == 0)
-		{
-			isErrorStr = " error";
-			$('#selDistrictErr').html(' Please Select District.');
-		}
-		
-		if(selTehsilId == null || selTehsilId == 0)
-		{
-			isErrorStr = " error";
-			$('#selTehsilErr').html(' Please Select Tehsil.');
-		}
+		 if(accessStateId != 29)
+		 {
+			 if(selDistrictId == null || selDistrictId == 0)
+			{
+				isErrorStr = " error";
+				$('#selDistrictErr').html(' Please Select District.');
+			}			
+			if(selTehsilId == null || selTehsilId == 0)
+			{
+				isErrorStr = " error";
+				$('#selTehsilErr').html(' Please Select Tehsil.');
+			}
+		 }
+		 
 		if($.trim(villageWardId).length == 0)
 		{
 			isErrorStr = " error";
@@ -1957,7 +2016,7 @@ function getCadreImage(id){
 					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${id3}" name="cadreRegistrationVO.boothId" > 
 					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
 					<c:if test="${sessionScope.USER.accessType == 'STATE'}">
-						<input type="hidden"  value = "${sessionScope.USER.accessValue}" name="addressVO.stateId" > 
+						<input type="hidden" id="stateIdField"  value = "${sessionScope.USER.accessValue}" name="addressVO.stateId" > 
 					</c:if>
 										<div class="span12">
 											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="${id1}">										
