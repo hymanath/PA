@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
@@ -97,7 +100,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	{
 		try{
 			jObj = new JSONObject(getTask());
-			resultList = mahaNaduService.getSubEventInfo(jObj.getLong("parentEventId"),jObj.getLong("userId"));
+			List<Long> subEventIds = new ArrayList<Long>();
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++)
+			subEventIds.add(new Long(arr.get(i).toString()));
+			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,"","");
 		}
 		catch(Exception e)
 		{
@@ -106,14 +113,20 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	
+	
 	public String getLocationWiseVisitorsCount()
 	{
 		try{
 			jObj = new JSONObject(getTask());
+			List<Long> subEventIds = new ArrayList<Long>();
 			Long eventId = jObj.getLong("eventId");
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
-			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId);
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++)
+			subEventIds.add(new Long(arr.get(i).toString()));
+			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds);
 			
 		}
 		catch(Exception e)
@@ -128,7 +141,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		try{
 			jObj = new JSONObject(getTask());
 			Long parentEventId = jObj.getLong("parentEventId");
-			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId);
+			List<Long> subEventIds = new ArrayList<Long>();
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++)
+			subEventIds.add(new Long(arr.get(i).toString()));
+			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds);
 			
 		}
 		catch(Exception e)
@@ -146,7 +163,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long parentEventId = jObj.getLong("parentEventId");
 			//Long stateId = jObj.getLong("stateId");
 		//	Long reportLevelId = jObj.getLong("reportLevelId");
-			resultList =  mahaNaduService.getEventMembersCount(parentEventId);
+			List<Long> subEventIds = new ArrayList<Long>();
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++)
+			subEventIds.add(new Long(arr.get(i).toString()));
+			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds);
 			
 		}
 		catch(Exception e)

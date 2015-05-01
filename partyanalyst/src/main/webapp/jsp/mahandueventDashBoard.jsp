@@ -14,6 +14,11 @@
 <link href="dist/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
 <link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+
+
+<style>
+.errorDiv{color:red;}
+</style>
 </head>
 
 <body>
@@ -65,8 +70,8 @@
                       <h5 class="panel-title">
                           <form class="me-select display-style">
                             <ul id="me-select-list" style="list-style:none;">
-                                <li><input id="cb11" name="cb11" type="checkbox">
-                                	<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head">Party Office</a></span></label></li>
+                                <li><input id="cb11" name="cb11" type="checkbox" class="maineventCls" value="1">
+                                	<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head ">Party Office</a></span></label></li>
                             </ul>
                           </form>
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -78,16 +83,16 @@
                       <div class="panel-body collapse-body">
                         	<form class="me-select display-style">
                                 <ul id="me-select-list" style="list-style:none;">
-                                    <li><input id="cb12" name="cb11" type="checkbox">
+                                    <li><input id="cb12" name="cb11" type="checkbox" class="subeventCls" value="2">
                                         <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Breakfast in Cateen</span></label></li>
-                                    <li><input id="cb13" name="cb11" type="checkbox">
+                                    <li><input id="cb13" name="cb11" type="checkbox" class="subeventCls" value="3">
                                         <label for="cb13" class="m_0 collapse-select"><span class="col-drop-select-name">Lunch in Canteen</span></label></li>
-                                    <li><input id="cb14" name="cb11" type="checkbox">
+                                    <li><input id="cb14" name="cb11" type="checkbox" class="subeventCls" value="4">
                                         <label for="cb14" class="m_0 collapse-select"><span class="col-drop-select-name">Dinner in Canteen</span></label></li>
-                                    <li><input id="cb35" name="cb11" type="checkbox">
+                                    <li><input id="cb35" name="cb11" type="checkbox" class="subeventCls" value="5">
                                         <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Meeting with Lokesh</span></label></li>
-										     <li><input id="cb35" name="cb11" type="checkbox">
-                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Grivance</span></label></li>
+										     <li><input id="cb35" name="cb11" type="checkbox" class="subeventCls" value="6">
+                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Grievance</span></label></li>
                                 </ul>
                             </form>
                       </div>
@@ -99,7 +104,7 @@
                           <form class="me-select display-style">
                             <ul id="me-select-list" style="list-style:none;">
                                 <li>
-                                	<input id="cb15" name="cb11" type="checkbox">
+                                	<input id="cb15" name="cb11" type="checkbox" class="maineventCls">
                                 	<label for="cb15" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo" class="col-drop-head">Mahanadu 2015</a></span></label>
                                 </li>
                             </ul>
@@ -113,13 +118,13 @@
                       <div class="panel-body collapse-body">
                         	<form class="me-select display-style">
                                 <ul id="me-select-list" style="list-style:none;">
-                                    <li><input id="cb16" name="cb11" type="checkbox">
+                                    <li><input id="cb16" name="cb11" type="checkbox" class="subeventCls">
                                         <label for="cb16" class="m_0 collapse-select"><span class="col-drop-select-name">Main Entry Registration </span></label></li>
                               									
-								    <li><input id="cb18" name="cb11" type="checkbox">
+								    <li><input id="cb18" name="cb11" type="checkbox" class="subeventCls">
                                         <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Blood Donation Camp</span></label></li>
 										
-									<li><input id="cb18" name="cb11" type="checkbox">
+									<li><input id="cb18" name="cb11" type="checkbox" class="subeventCls">
                                         <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Photo Exhibition</span></label></li>
                                 </ul>
                             </form>
@@ -128,7 +133,7 @@
                   </div>
                    
             
-                  <button class="btn btn-block btn-default btn-custom">UPDATE</button>
+                  <button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>
                 </div>
   </div>
   <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
@@ -166,6 +171,7 @@
             </div>
         </div>
         <div class="col-md-8 col-xs-12 col-sm-6">
+		
         		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
         </div>
 
@@ -275,6 +281,7 @@
     	All &copy; 2015 Telugu Desam Party
     </div>
 </footer>
+<script  src="js/eventDashboard.js" type="text/javascript"></script>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/js/highcharts.js" type="text/javascript"></script>
@@ -284,6 +291,41 @@
 <script src="dist/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+
+$(".maineventCls").click(function(){
+alert('anfd');
+$(".maineventCls").prop('checked', false);
+$(".subeventCls").prop('checked', false);
+$(this).prop('checked', true);
+});
+var parentEventId = 0;
+var subEvents = [];
+function eventUpdate()
+{
+     subEvents = [];
+	$(".maineventCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		parentEventId = $(this).val();
+		$(".subeventCls").each(function(){
+		if($(this).is(":checked"))
+		subEvents.push($(this).val());
+		})
+	}
+	
+	});
+setcolorsForEvents();
+getLocationWiseVisitorsCount(parentEventId,1,3);
+getLocationWiseVisitorsCount(parentEventId,1,4);
+getSubEventDetails(parentEventId);
+getSubEventDetailsHourWise(parentEventId);
+getEventMemberCount(parentEventId);
+
+}
+
+
+
  $(document).ready(function() {
 
                   var cb = function(start, end, label) {
@@ -376,7 +418,8 @@ function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 	var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
-			reportLevelId:reportLevelId
+			reportLevelId:reportLevelId,
+			subEvents : subEvents
 		
 		}	
 		
@@ -455,10 +498,11 @@ $("#myonoffswitch1").click(function(){
 
 
 
-function getSubEventDetails(userId,parentEventId){
+function getSubEventDetails(parentEventId){
+
 	var jObj = {
-			parentEventId:parentEventId,			
-			userId:userId
+			parentEventId:parentEventId,	
+			subEvents : subEvents
 		}	
 		
 		$.ajax({
@@ -484,8 +528,11 @@ function buildStartingPrograms(result){
 	str+=' <div class="scrollDiv2">';
 	str+='<hr class=""/>	';
 	var dataArr=[] ;
+	var colorsarr = new Array();
 	for(var i in result)
-	{				 
+	{	
+		var color = getColorCodeByEvent(result[i].id);	
+		colorsarr.push(color);
 		str+=' <span class="pull-left">'+result[i].name+'</span>';
 		var count = result[i].invitees + result[i].nonInvitees;
 		str+='  <span class="pull-right label-custom">'+count+'</span>';
@@ -503,11 +550,23 @@ function buildStartingPrograms(result){
 	$('.scrollDiv2').slimScroll({
 	height: '260px'
 	});
-	buildPieChart(dataArr);
+	buildPieChart(dataArr,total,colorsarr);
 }
 
-function buildPieChart(dataArr)
+function buildPieChart(dataArr,total,colorsarr)
 {
+
+
+if(total == 0)
+{
+$('#donutchart').html("No Data Available").addClass("errorDiv");
+return;
+}
+else
+$('#donutchart').removeClass("errorDiv");
+	Highcharts.setOptions({
+	 colors:colorsarr
+		 });
     $('#donutchart').highcharts({
         chart: {
 			margin: [-80, 0,0 , 0],
@@ -573,7 +632,8 @@ function insertIntermediateData()
 var areaChartDataArr  = [];
 function getSubEventDetailsHourWise(parentEventId){
 	var jObj = {
-			parentEventId:parentEventId
+			parentEventId:parentEventId,
+			subEvents : subEvents
 		}	
 		
 		$.ajax({
@@ -582,8 +642,11 @@ function getSubEventDetailsHourWise(parentEventId){
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 				areaChartDataArr = new Array();
+				var colorsarr = new Array();
+				
 				for(var i in result)
 				{	
+				var color = getColorCodeByEvent(result[i].id);	
 					var areaChartDataArrInner = new Array();
 					for(var j in result[i].hoursList){					
 						areaChartDataArrInner.push(result[i].hoursList[j].cadreCount);
@@ -592,16 +655,27 @@ function getSubEventDetailsHourWise(parentEventId){
 						name:result[i].name,
 						data:areaChartDataArrInner
 					}
+					colorsarr.push(color);
 					areaChartDataArr.push(obj1);
 					
 				}
 		console.log(areaChartDataArr);
-		buildHourWiseChart();
+		buildHourWiseChart(colorsarr);
 		});
 }
 
-function buildHourWiseChart(){
-
+function buildHourWiseChart(colorsarr){
+console.log(areaChartDataArr);
+if(areaChartDataArr == null || areaChartDataArr.length == 0)
+{
+$('#hourWiseContainer').html("No Data Available").addClass("errorDiv");
+return;
+}
+else
+$('#hourWiseContainer').removeClass("errorDiv");
+Highcharts.setOptions({
+	 colors:colorsarr
+		 });
  $('#hourWiseContainer').highcharts({
 		chart: {
             type: 'area'
@@ -642,10 +716,10 @@ function buildHourWiseChart(){
 
 }
 
-function getEventMemberCount(userId,parentEventId){
+function getEventMemberCount(parentEventId){
 	var jObj = {
 			parentEventId:parentEventId,			
-			userId:userId
+		    subEvents : subEvents
 		}	
 		
 		$.ajax({
@@ -658,6 +732,13 @@ function getEventMemberCount(userId,parentEventId){
 }
 /* DONUT CHART */
 function buildEventMemberCount(result){
+if(result == null || result.length == 0)
+{
+$('#columnchart').html("No Data Available").addClass("errorDiv");
+return;
+}
+else
+$('#columnchart').removeClass("errorDiv");
 var xaxis = [];
 var dataArr = [];
 for(var i in result)
@@ -737,11 +818,7 @@ console.log(dataArr)
     });
 
 }
-getLocationWiseVisitorsCount(1,1,3);
-getLocationWiseVisitorsCount(1,1,4);
-getSubEventDetails(1,1);
-getSubEventDetailsHourWise(1);
- getEventMemberCount(1,1);
+
 </script>
 </body>
 ​<style>
