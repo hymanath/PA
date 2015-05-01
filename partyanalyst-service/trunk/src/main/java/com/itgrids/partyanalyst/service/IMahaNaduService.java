@@ -29,7 +29,10 @@ public interface IMahaNaduService {
 	 public ResultStatus insertDataintoEventInfo();
 
 	 public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
-	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId);
-	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId);
-	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId);
+	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
+	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds);
+	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds);
+	 public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate);
+	
 }
+

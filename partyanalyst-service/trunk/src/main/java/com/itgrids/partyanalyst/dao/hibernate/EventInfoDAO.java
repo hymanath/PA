@@ -39,17 +39,18 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 		return query.executeUpdate();
 	}
 	
-	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId,Long stateId,Date todayDate)
+	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId,Long stateId,Date todayDate,List<Long> subeventIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.locationValue,sum(model.invitees),sum(model.noninvitees) from EventInfo model " +
 				" where model.reportLevelId = :reportLevelId and model.stateId = :stateId and date(model.date) = :todayDate " +
-				" and model.event.parentEventId = :eventId group by model.locationValue ");
+				" and model.event.parentEventId = :eventId and model.event.eventId in(:subeventIds) group by model.locationValue ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setDate("todayDate", todayDate);
 		query.setParameter("eventId", eventId);
 		query.setParameter("stateId", stateId);
+		query.setParameterList("subeventIds", subeventIds);
 		return query.list();
 	}
 
