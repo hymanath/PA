@@ -225,7 +225,7 @@
 							<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2" id="searchBtnId"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
 						</div>
 					   <div class="col-md-3">
-							<a href="javascript:{skipDetailsForUser('skip')}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " id="skipButtonId">Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
+							<a href="javascript:{skipDetailsForUser('skip')}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " >Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
 						</div>
 					</div>
 					
