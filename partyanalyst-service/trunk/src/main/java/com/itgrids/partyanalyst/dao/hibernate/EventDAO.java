@@ -29,4 +29,14 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		Query query = getSession().createQuery(" select model from Event model where model.namel like '"+eventName.trim()+"' ");
 		return (Event) query.uniqueResult();
 	}
+	
+	public List<Object[]> getEventNames(List<Long> eventIds)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.eventId, model.name from Event model where  model.eventId in(:eventIds) ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("eventIds", eventIds);
+		return query.list();
+	}
 }

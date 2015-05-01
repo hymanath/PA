@@ -34,7 +34,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
 			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) order by model.tdpCadre.userAddress.constituency.district.districtId");
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime) order by model.tdpCadre.userAddress.constituency.constituencyId");
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime) order by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("currentDate", currentDate);
 		return query.list();
@@ -99,40 +99,43 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		return query.list();
 	}
 	
-	public Long getTotlaVisitsCount(Long parentEventId,Date currentDate)
+	public Long getTotlaVisitsCount(Long parentEventId,Date currentDate,List<Long> subeventIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId  and date(model.attendedTime) = :currentDate ");
+		str.append("select count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId  and date(model.attendedTime) = :currentDate and model.event.eventId in(:subeventIds) ");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("currentDate", currentDate);
+		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId", parentEventId);
 		return (Long) query.uniqueResult();
 	}
 
-public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date){
+public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds){
 		
 		StringBuilder str = new StringBuilder();
 		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,max(hour(model.attendedTime)),model.event.name from EventAttendee model where " +
-				" model.event.parentEventId = :parentEventId and date(model.attendedTime) = :date ");
+				" model.event.parentEventId = :parentEventId and date(model.attendedTime) = :date and model.event.eventId in(:subeventIds) ");
 		str.append(" group by model.tdpCadre.tdpCadreId,model.event.eventId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("date", date);
+		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId",parentEventId);
 		return query.list();
 		
 	}
 	
-	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,Date currentDate)
+	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,Date currentDate,List<Long> subeventIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
 		str.append(" from EventAttendee model where ");
-		str.append(" date(model.attendedTime) = :currentDate and model.event.parentEventId = :parentEventId");
+		str.append(" date(model.attendedTime) = :currentDate and model.event.parentEventId = :parentEventId and model.event.eventId in(:subeventIds)");
 		str.append(" group by model.event.eventId");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("currentDate", currentDate);
+		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId", parentEventId);
 		return query.list();
 	}
