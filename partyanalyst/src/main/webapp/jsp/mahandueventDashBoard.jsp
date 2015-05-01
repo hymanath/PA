@@ -26,13 +26,28 @@
             <div class="col-md-1 col-xs-1 col-sm-1">
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
-            <div class="col-md-7 col-xs-7 col-sm-7 text-center">               
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
                 <p class="header-text display-style">PARTY OFFICE EVENT</p>               
             </div>
-            <div class="col-md-2 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
+                    Menu <img src="images/menu_icon.png" />
+                    </a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					
+					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					  
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					
+                    </ul>   
+            </div>			
         </div>       
     </div>
+	
+	
 </header>
  <div class="themeControll">
  <!--<h4 class="m_bottom0">
@@ -71,6 +86,8 @@
                                         <label for="cb14" class="m_0 collapse-select"><span class="col-drop-select-name">Dinner in Canteen</span></label></li>
                                     <li><input id="cb35" name="cb11" type="checkbox">
                                         <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Meeting with Lokesh</span></label></li>
+										     <li><input id="cb35" name="cb11" type="checkbox">
+                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Grivance</span></label></li>
                                 </ul>
                             </form>
                       </div>
