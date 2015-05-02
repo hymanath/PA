@@ -99,16 +99,33 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		return query.list();
 	}
 	
-	public Long getTotlaVisitsCount(Long parentEventId,Date currentDate,List<Long> subeventIds)
+	public List<Object[]> getTotlaVisitsCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId  and date(model.attendedTime) = :currentDate and model.event.eventId in(:subeventIds) ");
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds) ");
+		
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate group by date(model.attendedTime)"); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate group by date(model.attendedTime) "); 
+		}
 		Query query = getSession().createQuery(str.toString());
-		query.setDate("currentDate", currentDate);
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
 		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId", parentEventId);
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 
 public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds){
@@ -125,33 +142,93 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		
 	}
 	
-	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,Date currentDate,List<Long> subeventIds)
+	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,List<Long> subeventIds,Date startDate,Date endDate)
 	{
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
 		str.append(" from EventAttendee model where ");
-		str.append(" date(model.attendedTime) = :currentDate and model.event.parentEventId = :parentEventId and model.event.eventId in(:subeventIds)");
-		str.append(" group by model.event.eventId");
+		str.append("  model.event.parentEventId = :parentEventId and model.event.eventId in(:subeventIds)");
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate group by model.event.eventId,date(model.attendedTime)"); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate  group by model.event.eventId,date(model.attendedTime) "); 
+		}
+		
 		Query query = getSession().createQuery(str.toString());
-		query.setDate("currentDate", currentDate);
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
 		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId", parentEventId);
 		return query.list();
 	}
 	
-	public Long getUnionMembersForEvent(Long eventId,Date currentDate,Long compareEventId)
+	public List<Object[]> getUnionMembersForEvent(Long eventId,Long compareEventId,Date startDate,Date endDate)
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select count(distinct model.tdpCadre.tdpCadreId) ");
-		str.append(" from EventAttendee model where model.event.eventId = :eventId and ");
-		str.append(" date(model.attendedTime) = :currentDate and model.tdpCadre.tdpCadreId in (select distinct model1.tdpCadre.tdpCadreId from EventAttendee model1 where model1.event.eventId = :compareEventId)");
+		str.append("select model1.event.name,count(distinct model.tdpCadre.tdpCadreId),date(model.attendedTime) ");
+		str.append(" from EventAttendee model,EventAttendee model1 where model.event.eventId = :eventId and model1.event.eventId = :compareEventId");
+		str.append(" and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate group by date(model.attendedTime)"); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate  group by date(model.attendedTime) "); 
+		}
 		Query query = getSession().createQuery(str.toString());
-		query.setDate("currentDate", currentDate);
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}	
+		}
 		query.setParameter("compareEventId", compareEventId);
 		query.setParameter("eventId", eventId);
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
-
+	public List<Object[]> getDayWiseVisitorsCount(Long parentEventId,List<Long> subeventIds,Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,date(model.attendedTime),model.event.name from EventAttendee model where " +
+				" model.event.parentEventId = :parentEventId  and model.event.eventId in(:subeventIds) ");
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate "); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		str.append(" group by model.event.eventId,date(model.attendedTime) ");
+		Query query = getSession().createQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}	
+		}
+		query.setParameterList("subeventIds", subeventIds);
+		query.setParameter("parentEventId",parentEventId);
+		return query.list();
+		
+	}
 }

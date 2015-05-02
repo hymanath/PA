@@ -1228,10 +1228,17 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return null;
  }
  
- public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds)
+ public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate)
  {
 	 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
+	 Date eventStrDate = null;
+	 Date eventEndDate = null;
 	 try{
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
+		 eventStrDate = format.parse(startDate);
+		 if(endDate != null && !endDate.isEmpty())
+		 eventEndDate = format.parse(endDate);
 		 String locationType = "";
 		 if(reportLevelId == 2l)
 			 locationType = "State";
@@ -1240,7 +1247,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 else if(reportLevelId == 4l)
 			 locationType = "Constituency";
 		 DateUtilService date = new DateUtilService();
-		  List<Object[]> list = eventInfoDAO.getEventDataByReportLevelId(reportLevelId,eventId,stateId,date.getCurrentDateAndTime(),subEventIds);
+		  List<Object[]> list = eventInfoDAO.getEventDataByReportLevelId(reportLevelId,eventId,stateId,subEventIds,eventStrDate,eventEndDate);
 		  Set<Long> reportLevelValues = new java.util.HashSet<Long>();
 		  if(list != null && list.size() > 0)
 		  {
@@ -1328,7 +1335,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		return location;
 	}
  
- public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId)
+/* public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	 Date eventStrDate = null;
@@ -1372,9 +1379,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	
 					}
 			 }
-			 /*Long totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,date.getCurrentDateAndTime());
+			 Long totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,date.getCurrentDateAndTime());
 			 if(totalVisits != null && resultList.size() > 0)
-				 resultList.get(0).setTotal(totalVisits);*/
+				 resultList.get(0).setTotal(totalVisits);
 			
 		 }
 	 }
@@ -1384,7 +1391,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 e.printStackTrace();
 	 }
 	return resultList;
- }
+ }*/
  
  
  public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate)
@@ -1393,9 +1400,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 Date eventStrDate = null;
 	 Date eventEndDate = null;
 	 try{
-		/* SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
 		 eventStrDate = format.parse(startDate);
-		 eventEndDate = format.parse(endDate);*/
+		 if(endDate != null && !endDate.isEmpty())
+		 eventEndDate = format.parse(endDate);
 		 List<Long> parentEventIds = new ArrayList<Long>();
 		 parentEventIds.add(parentId);
 		 DateUtilService date = new DateUtilService();
@@ -1410,7 +1419,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				  resultList.add(vo);
 				 }
 		  }
-		 	List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,date.getCurrentDateAndTime());
+		 	List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,eventStrDate,eventEndDate);
 			 if(attendeeInfo != null && attendeeInfo.size() > 0)
 			 {
 				
@@ -1428,9 +1437,16 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	
 					}
 			 }
-			 Long totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,date.getCurrentDateAndTime(),subEventIds);
+			 List<Object[]> totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
 			 if(totalVisits != null && resultList.size() > 0)
-				 resultList.get(0).setTotal(totalVisits);
+			 {
+				 Long uniqueMemberInday = 0l;
+				 for(Object[] params : totalVisits)
+				 {
+					 uniqueMemberInday = uniqueMemberInday + (Long)params[1];
+				 }
+				 resultList.get(0).setTotal(uniqueMemberInday);
+			 }
 			
 		 
 	 }
@@ -1484,20 +1500,39 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 
 		return null;
 	}
- public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds)
+ public MahanaduEventVO getMatchedName(List<MahanaduEventVO> list,String name)
+	{		
+			if(list != null && list.size()>0)
+			{
+				for (MahanaduEventVO vo : list)
+				{
+					if(vo.getName().equalsIgnoreCase(name))
+					{
+						return vo;
+					}
+				}
+			}
+
+		return null;
+	}
+ public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate )
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
+	 Date eventStrDate = null;
+	
 	 try{
-		 DateUtilService date = new DateUtilService();
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
+		 eventStrDate = format.parse(startDate);
 		 List<Long> eventIds = new ArrayList<Long>();
-		 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseVisitorsCount(parentEventId,date.getCurrentDateAndTime(),subEventIds);
+		 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseVisitorsCount(parentEventId,eventStrDate,subEventIds);
 		 if(hourWiseResult != null && hourWiseResult.size() > 0){
 			 for(Object[] obj :hourWiseResult){				
 				if(!eventIds.contains((Long)obj[1])){
 				 MahanaduEventVO resultVO = new MahanaduEventVO();
 				 resultVO.setId((Long)obj[1]);
 				 resultVO.setName(obj[3].toString());
-				 resultVO.setHoursList(setHoursList());
+				 resultVO.setSubList(setHoursList());
 				 resultList.add(resultVO);
 				 eventIds.add((Long)obj[1]);
 				}
@@ -1507,7 +1542,62 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 MahanaduEventVO vo =  getMatchedVO(resultList,(Long)obj[1]);
 				 if(vo != null){
 					 
-						 MahanaduEventVO vo1 =  getMatchedVO(vo.getHoursList(),new Long((Integer) obj[2]));
+						 MahanaduEventVO vo1 =  getMatchedVO(vo.getSubList(),new Long((Integer) obj[2]));
+						 if(vo1 != null){
+							 vo1.setCadreCount((Long)obj[0] + vo1.getCadreCount());
+						 
+					 }					 
+				 }
+			 }			 
+		 }	 
+	 }
+	 catch(Exception e)
+	 {
+		 LOG.error("Exception Occured in getHourWiseSubEventsCount()", e);
+		 e.printStackTrace();
+	 }
+	return resultList;
+ }
+ 
+  
+ public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate )
+ {
+	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
+	
+	 try{
+		 Date eventStrDate = null;
+		 Date eventEndDate = null;
+		 DateUtilService date = new DateUtilService();
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
+		 eventStrDate = format.parse(startDate);
+		 if(endDate != null && !endDate.isEmpty())
+		 eventEndDate = format.parse(endDate);
+		 List<Long> eventIds = new ArrayList<Long>();
+		 List<Object[]> dayWiseResult = eventAttendeeDAO.getDayWiseVisitorsCount(parentEventId,subEventIds,eventStrDate,eventEndDate);
+		 List<String> dates = new ArrayList<String>();
+		 if(dayWiseResult != null && dayWiseResult.size() > 0){
+			 for(Object[] obj :dayWiseResult)
+			 {
+				 if(!dates.contains(obj[2].toString()))
+				 dates.add(obj[2].toString());
+			 }
+			 for(Object[] obj :dayWiseResult){				
+				if(!eventIds.contains((Long)obj[1])){
+				 MahanaduEventVO resultVO = new MahanaduEventVO();
+				 resultVO.setId((Long)obj[1]);
+				 resultVO.setName(obj[3].toString());
+				 resultVO.setSubList(setDaysList(dates));
+				 resultList.add(resultVO);
+				 eventIds.add((Long)obj[1]);
+				}
+			 }
+			 
+			 for(Object[] obj :dayWiseResult){
+				 MahanaduEventVO vo =  getMatchedVO(resultList,(Long)obj[1]);
+				 if(vo != null){
+					 
+						 MahanaduEventVO vo1 =  getMatchedName(vo.getSubList(),obj[2].toString());
 						 if(vo1 != null){
 							 vo1.setCadreCount((Long)obj[0] + vo1.getCadreCount());
 						 
@@ -1545,20 +1635,45 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 	    return hoursList;
 	}
- public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds)
+ public List<MahanaduEventVO> setDaysList(List<String> dates){
+ 	 
+	  	 List<MahanaduEventVO> daysList = new ArrayList<MahanaduEventVO>();
+	  	 if(dates != null && dates.size() > 0)
+	  	 {
+	  		for(String date : dates) 
+	  		{
+	  			MahanaduEventVO vo = new MahanaduEventVO();
+	  			vo.setName(date.toString());
+	  			daysList.add(vo);
+	  		}
+	  	 }
+	      
+    return daysList;
+}
+ public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate)
  {
 	 List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
 	try{
-		
-		DateUtilService date = new DateUtilService();
+		 Date eventStrDate = null;
+		 Date eventEndDate = null;
+		 DateUtilService date = new DateUtilService();
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
+		 eventStrDate = format.parse(startDate);
+		 if(endDate != null && !endDate.isEmpty())
+		 eventEndDate = format.parse(endDate);
 		Map<Long,Long> eventCount = new HashMap<Long, Long>();
-		List<Object[]> list = eventAttendeeDAO.getEventCountsByParentEventId(parentEventId,date.getCurrentDateAndTime(),subEventIds);
+		List<Object[]> list = eventAttendeeDAO.getEventCountsByParentEventId(parentEventId,subEventIds,eventStrDate,eventEndDate);
 		List<Long> eventIds = new ArrayList<Long>();
 		if(list != null && list.size() > 0)
 		{
 			for(Object[] params : list)
 			{
+				Long count = eventCount.get((Long)params[0]);
+				if(count == null)
 				eventCount.put((Long)params[0],(Long)params[1]);
+				else
+				eventCount.put((Long)params[0],(Long)params[1] + count);	
 				if(!eventIds.contains((Long)params[0]))
 						eventIds.add((Long)params[0]);
 				
@@ -1573,32 +1688,28 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					{
 						MahanaduEventVO eventVo = new MahanaduEventVO();
 						Long count = eventCount.get(eventId) ;
-						Long unionCount = eventAttendeeDAO.getUnionMembersForEvent(eventId,date.getCurrentDateAndTime(),compareEventId);
+						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate);
 						eventVo.setId(compareEventId);
-						eventVo.setName(eventDAO.get(compareEventId).getName());
-						if(unionCount != null)
-						eventVo.setTotal(unionCount);
+						if(unionCounts != null)
+						for(Object[] params : unionCounts)
+						{
+						eventVo.setName(params[0].toString());
+						eventVo.setTotal((Long)params[1] + eventVo.getTotal());
+						}
 						uniEventVOList.add(eventVo);
 					}
 				}
+				String mainEventName = eventDAO.get(eventId).getName();
 				MahanaduEventVO mainVo = new MahanaduEventVO();
 				mainVo.setId(eventId);
-				mainVo.setName(eventDAO.get(eventId).getName());
-				/*Long totalunioneventCount = 0l;
-				for(MahanaduEventVO subVo : uniEventVOList)
-				{
-					totalunioneventCount = totalunioneventCount + subVo.getTotal();
-				}
-				Long mainEventCount = 0l;
-				if(eventCount.get(eventId) > totalunioneventCount)
-				mainEventCount = eventCount.get(eventId) - totalunioneventCount;*/
+				mainVo.setName(mainEventName);
 				if(eventCount != null && eventCount.get(eventId) != null)
 				mainVo.setTotal(eventCount.get(eventId));
 				uniEventVOList.add(mainVo);
 				if(uniEventVOList != null && uniEventVOList.size() > 0)
 				Collections.sort(uniEventVOList,sortByName);
 				returnVo.setId(eventId);
-				returnVo.setName(eventDAO.get(eventId).getName());
+				returnVo.setName(mainEventName);
 				returnVo.setSubList(uniEventVOList);
 				resultList.add(returnVo);
 				if(resultList != null && resultList.size() > 0)

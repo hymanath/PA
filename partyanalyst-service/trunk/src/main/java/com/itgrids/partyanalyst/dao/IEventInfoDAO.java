@@ -11,11 +11,12 @@ public interface IEventInfoDAO extends GenericDao<EventInfo, Long>{
 	public List<Object[]> getEventInfo(Long reportLevelId);
 
 	public Integer deleteEventInfo(Long reportLevelId,List<Long> eventIds);
-	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId,Long stateId,Date todayDate,List<Long> subeventIds);
+	
 	public List<Long> getEventIds(Long reportLevelId,Date currentDate);
 	public List<Object[]> getDistricts(List<Long> locationValues,Long reportLevel) ;
 	public Integer updateState(List<Long> locationValues,Long reportLevelId,Long stateId);
 	public List<Object[]> getEventInfoForState(Long reportLevelId,Long stateId);
-	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,List<Long> eventIds,Long stateId,Date todayDate);
+	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,List<Long> eventIds,Long stateId,Date startDate,Date endDate);
+	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId,Long stateId,List<Long> subeventIds,Date startDate,Date endDate);
 	
 }
