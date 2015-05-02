@@ -33,6 +33,7 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds);
 	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds);
 	 public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate);
+	 public List<MahanaduEventVO> getEventsForUser(Long userId);
 	
 }
 

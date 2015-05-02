@@ -1013,10 +1013,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 voterDAO.flushAndclearSession();
 			
 		 
-		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.DISTRICT,date.getCurrentDateAndTime());
+		
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"invitee",date.getCurrentDateAndTime());
 		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"",date.getCurrentDateAndTime());
-		// setDataTotalInviteeEventInfo(list,3l);
+		
 	      setInviteeInfo(list1,3l,"invitee");
 		  setInviteeInfo(list2,3l,"");
 		 events = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
@@ -1024,10 +1024,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 eventInfoDAO.deleteEventInfo(4l,events) ;
 		 voterDAO.flushAndclearSession();
 		
-		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.CONSTITUENCY,date.getCurrentDateAndTime());
+		
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",date.getCurrentDateAndTime());
 		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"",date.getCurrentDateAndTime());
-		// setDataTotalInviteeEventInfo(list,4l);
+		
 		  setInviteeInfo(list1,4l,"invitee");
 		  setInviteeInfo(list2,4l,"");
 		 
@@ -1040,42 +1040,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return result;
  }
  
- public void setDataTotalInviteeEventInfo(final List<Object[]> list,final Long reportLevelId)
- {
-	 
-	 ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
-			public Object doInTransaction(TransactionStatus status) {
-				ResultStatus rs = new ResultStatus();
-	 try{
-			
-		 if(list != null && list.size() > 0)
-		 {
-			 for(Object[] params : list)
-			 {
-				 EventInfo eventInfo = new EventInfo();
-				 eventInfo.setEventId((Long)params[0]);
-				 eventInfo.setTotalInvitees((Long)params[1]);
-				 eventInfo.setReportLevelId(reportLevelId);
-				 eventInfo.setLocationValue((Long)params[2]);
-				 eventInfoDAO.save(eventInfo);
-				
-			 }
-			 
-			 voterDAO.flushAndclearSession();
-		 }
-		 
-		 
-	 }
-	 catch(Exception e)
-	 {
-		 Log.error("Exception rised in setDataToEventInfo() while closing write operation",e); 
-		 e.printStackTrace();
-	 }
-		return rs;
-			} });
-		
-	
- }
+
  
  public void setInviteeInfo(List<Object[]> list,Long reportLevelId,String type)
  {
@@ -1657,4 +1622,51 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
 						}
 			};	
+			
+			public List<MahanaduEventVO> getEventsForUser(Long userId)
+			{
+				DateUtilService date = new DateUtilService();
+				List<MahanaduEventVO> returnList = new ArrayList<MahanaduEventVO>();
+				try{
+					List<Long> parentIds = new ArrayList<Long>();
+					List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userId,date.getCurrentDateAndTime());
+					if(parentEvent != null && parentEvent.size() > 0)
+					{
+						
+						for(Object[] params : parentEvent)
+						{
+							MahanaduEventVO eventVo = new MahanaduEventVO();
+							eventVo.setId((Long)params[0]);
+							eventVo.setName(params[1] != null ? params[1].toString() : "");
+							returnList.add(eventVo);
+							parentIds.add((Long)params[0]);
+						}
+						List<Object[]> events = eventUserDAO.getEventsByUserAndParentIds(userId,date.getCurrentDateAndTime(),parentIds);
+						if(events != null && events.size() > 0)
+						{
+							for(Object[] params : events)
+							{
+								MahanaduEventVO parentVo = getMatchedVO(returnList,(Long)params[2]);
+								if(parentVo != null)
+								{
+									MahanaduEventVO childEventVo = new MahanaduEventVO();
+									childEventVo.setId((Long)params[0]);
+									childEventVo.setName(params[1] != null ? params[1].toString() : "");
+									if(params[4]!= null)
+									childEventVo.setStartTime(TimeForm(params[4].toString()));
+									if(params[5]!= null)
+									childEventVo.setEndTime(TimeForm(params[5]!= null?params[5].toString():""));
+									parentVo.getSubList().add(childEventVo);
+								}
+							}	
+						}
+					}
+						
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				return returnList;
+			}
 }
