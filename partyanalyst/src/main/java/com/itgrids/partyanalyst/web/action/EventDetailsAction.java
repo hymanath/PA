@@ -29,9 +29,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private List<UserEventDetailsVO> subEvents;
 	List<MahanaduEventVO> resultList;
 	private HttpSession session;
+	private Long eventId;
 	
 	
 	
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
 	public HttpSession getSession() {
 		return session;
 	}
@@ -114,7 +121,8 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
 			for(int i=0;i<arr.length();i++)
 			subEventIds.add(new Long(arr.get(i).toString()));
-			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,"","");
+			
+			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 		}
 		catch(Exception e)
 		{
@@ -136,7 +144,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
 			for(int i=0;i<arr.length();i++)
 			subEventIds.add(new Long(arr.get(i).toString()));
-			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds);
+			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 			
 		}
 		catch(Exception e)
@@ -155,7 +163,10 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
 			for(int i=0;i<arr.length();i++)
 			subEventIds.add(new Long(arr.get(i).toString()));
-			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds);
+			if(jObj.getString("startDate").equalsIgnoreCase(jObj.getString("endDate")))
+			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"));
+			else
+				resultList =  mahaNaduService.getDayWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));	
 			
 		}
 		catch(Exception e)
@@ -177,7 +188,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
 			for(int i=0;i<arr.length();i++)
 			subEventIds.add(new Long(arr.get(i).toString()));
-			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds);
+			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 			
 		}
 		catch(Exception e)
