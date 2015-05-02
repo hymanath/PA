@@ -28,12 +28,14 @@ public interface IMahaNaduService {
 	 public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult);
 	 public ResultStatus insertDataintoEventInfo();
 
-	 public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
-	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
-	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds);
-	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds);
+	// public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
+	// public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
+	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate );
+	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getEventsForUser(Long userId);
+	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
+	 public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate );
 	
 }
 

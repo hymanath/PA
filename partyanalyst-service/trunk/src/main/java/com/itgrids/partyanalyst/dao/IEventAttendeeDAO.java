@@ -13,9 +13,10 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getStateWiseEventAttendeeInfo(String inviteeType,Date currentDate,Long stateId);
 
 	public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds);
-	public Long getUnionMembersForEvent(Long eventId,Date currentDate,Long compareEventId);
-	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,Date currentDate,List<Long> subeventIds);
-	public Long getTotlaVisitsCount(Long parentEventId,Date currentDate,List<Long> subeventIds);
+	public List<Object[]> getUnionMembersForEvent(Long eventId,Long compareEventId,Date startDate,Date endDate);
+	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,List<Long> subeventIds,Date startDate,Date endDate);
+	public List<Object[]> getTotlaVisitsCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
+	public List<Object[]> getDayWiseVisitorsCount(Long parentEventId,List<Long> subeventIds,Date startDate,Date endDate);
 	
 
 }
