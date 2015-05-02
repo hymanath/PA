@@ -24,6 +24,12 @@
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
 	<style>
+	
+		.dropdown-menu > li > a:hover {
+			background: none repeat scroll 0 0 #f5f5f5 !important;
+			color: #333;
+		}
+
 		/*body{background: #F4D330 url("background_fixed.jpg"); background-size: cover;}
 		.m_top20{margin-top:20px;}
 		.m_top0{margin-top:0px;}
@@ -49,7 +55,7 @@
                     Menu <img src="images/menu_icon.png" />
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-					<c:if test="${sessionScope.USER.isAdmin == 'true' }">
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) }">
 					  <li><a tabindex="-1" href="cadreSearchPageAction.action"> Cadre Search </a></li>
 					  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
