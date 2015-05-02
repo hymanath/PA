@@ -141,7 +141,7 @@
 		//areaTypeId means
 		    //for panchayat level 1
 			//for mandal level 2
-			
+			  
 		var areaTypeId  =  $('#areaTypeId').val();
 		var committeeLocationId =$("#committeeLocationId").val();
 		
@@ -483,6 +483,12 @@
 			locationValue = parentLocation
 		}
 		
+		if(loginAreaType == 'URBAN')
+		{
+			locationLevel = 4;
+			locationValue = userLocation;
+		}
+
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -1181,6 +1187,7 @@
 	
 	
 	var userLocation = "";
+	var loginAreaType ="rural";
 	function getUserLocation(){
 		
 			var jObj ={
@@ -1194,6 +1201,7 @@
 			if(result != null){
 				for(var i in result){				
 				userLocation = result[i].id;
+				loginAreaType = result[i].description;
 				}
 				}
 		});
