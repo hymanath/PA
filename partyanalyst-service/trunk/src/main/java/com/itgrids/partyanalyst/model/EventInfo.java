@@ -26,7 +26,7 @@ public class EventInfo implements Serializable{
 	private Long eventInfoId;
 	private Long reportLevelId;
 	private Long locationValue;
-	private Long totalInvitees;
+	private Long totalAttendes;
 	private Long invitees;
 	private Long noninvitees;
 	private Event event;
@@ -62,17 +62,18 @@ public class EventInfo implements Serializable{
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
-	@Column(name="total_invitees")
-	public Long getTotalInvitees() {
-		return totalInvitees;
+	@Column(name="total_attendees")
+	public Long getTotalAttendes() {
+		return totalAttendes;
 	}
-	public void setTotalInvitees(Long totalInvitees) {
-		this.totalInvitees = totalInvitees;
+	public void setTotalAttendes(Long totalAttendes) {
+		this.totalAttendes = totalAttendes;
 	}
 	@Column(name="event_id")
 	public Long getEventId() {
 		return eventId;
 	}
+	
 	@Column(name="invitees")
 	public Long getInvitees() {
 		return invitees;
