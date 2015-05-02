@@ -220,16 +220,20 @@
 <script src="dist/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 <script src="dist/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
-<script src="dist/Date/moment.min.js" type="text/javascript"></script>
-<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
+ <!--Bootstrap Date Picker-->
+   <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
+	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
 <script type="text/javascript">
 
 
 var parentEventId = 0;
 var subEvents = [];
+var startDate;
+var endDate;
 function getEvents()
 {
 var jObj = {
+eventId : parentEventId,
 task:"getEvents"
 }
 $.ajax({
@@ -256,7 +260,14 @@ str+='<div class="panel-heading collapse-head" role="tab" id="heading'+result[i]
 str+='<h5 class="panel-title">';
 str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'">';
+if(i == 0)
+{
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="radio" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'" checked>';
+}
+else
+{
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="radio" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'">';
+}
 str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head ">'+result[i].name+'</a></span></label></li>';
 str+=' </ul>';
 str+='</form>';
@@ -274,7 +285,7 @@ str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
  for(var j in result[i].subList)
  {
-str+='<li><input id="cb12" name="cb11" type="checkbox" class="subeventCls" value="'+result[i].subList[j].id+'">';
+str+='<li><input id="'+result[i].subList[j].id+'" name="cb11" type="checkbox" class="subeventCls" value="'+result[i].subList[j].id+'" ">';
 str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
 }
 str+=' </ul>';
@@ -283,6 +294,7 @@ str+=' </div>';
 str+=' </div>';
 str+=' </div>';
 }
+str+='<span id="errormsg" class="errorDiv"></span>';
 str+='<button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>';
 $("#accordion").html(str);
 
@@ -292,15 +304,15 @@ $("#accordion").html(str);
 
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    $('#reportrange span').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
-                    startDate: moment().subtract(29, 'days'),
+                    startDate: moment(),
                     endDate: moment(),
                     minDate: '01/01/2012',
-                    maxDate: '12/31/2015',
+                    maxDate: '31/12/2015',
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
@@ -310,7 +322,7 @@ $("#accordion").html(str);
                     buttonClasses: ['btn btn-default btn-custom'],
                     applyClass: 'btn-small btn-primary',
                     cancelClass: 'btn-small',
-                    format: 'MM/DD/YYYY',
+                    format: 'DD/MM/YYYY',
                     separator: ' to ',
                     locale: {
                         applyLabel: 'Submit',
@@ -338,7 +350,7 @@ $("#accordion").html(str);
                     }
                   };
 
-                  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  $('#reportrange span').html(moment().format('D MMMM, YYYY') + ' - ' + moment().format('D MMMM, YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
@@ -346,9 +358,9 @@ $("#accordion").html(str);
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
                     console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('MMMM D, YYYY') 
+                      + picker.startDate.format('D MMMM, YYYY') 
                       + " to " 
-                      + picker.endDate.format('MMMM D, YYYY')
+                      + picker.endDate.format('D MMMM, YYYY')
                     ); 
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -381,30 +393,69 @@ function myTimer() {
     document.getElementById("time").innerHTML = d.toLocaleTimeString();
 }*/
 
+/*function checkParent(id)
+{
 
+$(".maineventCls").prop('checked', false);
+$("#"+id).prop('checked', true);
+$(".maineventCls").each(function(){
+
+	if($(this).is(":checked") ==  false)
+	{
+	alert('aa');
+		$(".subeventCls").each(function(){
+			if($(this).is(":checked")){
+			alert('bb');
+				$(this).prop('checked', false);
+				}
+				else{
+				$(this).prop('checked', true);
+				}
+		})
+	}
+	
+});
+
+
+}
+*/
 
 function eventUpdate()
 {
+$("#errorDiv").html("");
      subEvents = [];
+	 var flag = true;
+	 var errStr ='';
+	 
 	$(".maineventCls").each(function(){
-
+    
 	if($(this).is(":checked"))
 	{
+		flag = false;
 		parentEventId = $(this).val();
 		$(".subeventCls").each(function(){
 		if($(this).is(":checked"))
 		subEvents.push($(this).val());
 		})
 	}
-	
-	});
 
+});
+	if(subEvents.length == 0)
+	errStr +='<br/>Select atleast one event';
+	
+	$("#errormsg").html(errStr);
+startDate = $(".dp_startDate").val();
+endDate = $(".dp_endDate").val();
+alert(errStr.length)
+if(errStr.length == 0)
+{
 setcolorsForEvents();
 getLocationWiseVisitorsCount(parentEventId,1,3);
 getLocationWiseVisitorsCount(parentEventId,1,4);
 getSubEventDetails(parentEventId);
 getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
+}
 
 }
 
@@ -415,7 +466,9 @@ function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:reportLevelId,
-			subEvents : subEvents
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate
 		
 		}	
 		
@@ -498,7 +551,9 @@ function getSubEventDetails(parentEventId){
 
 	var jObj = {
 			parentEventId:parentEventId,	
-			subEvents : subEvents
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate   :  endDate
 		}	
 		
 		$.ajax({
@@ -626,10 +681,13 @@ function insertIntermediateData()
 
 }
 var areaChartDataArr  = [];
+var areaChartNamesArr =[];
 function getSubEventDetailsHourWise(parentEventId){
 	var jObj = {
 			parentEventId:parentEventId,
-			subEvents : subEvents
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate
 		}	
 		
 		$.ajax({
@@ -638,14 +696,16 @@ function getSubEventDetailsHourWise(parentEventId){
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 				areaChartDataArr = new Array();
+				areaChartNamesArr = new Array();
 				var colorsarr = new Array();
 				
 				for(var i in result)
 				{	
 				var color = getColorCodeByEvent(result[i].id);	
 					var areaChartDataArrInner = new Array();
-					for(var j in result[i].hoursList){					
-						areaChartDataArrInner.push(result[i].hoursList[j].cadreCount);
+					for(var j in result[i].subList){	
+					    areaChartNamesArr.push(result[i].subList[j].name);					
+						areaChartDataArrInner.push(result[i].subList[j].cadreCount);
 					}
 					var obj1={
 						name:result[i].name,
@@ -655,7 +715,7 @@ function getSubEventDetailsHourWise(parentEventId){
 					areaChartDataArr.push(obj1);
 					
 				}
-		console.log(areaChartDataArr);
+		console.log(areaChartNamesArr);
 		buildHourWiseChart(colorsarr);
 		});
 }
@@ -689,8 +749,7 @@ Highcharts.setOptions({
 			x: 150 //center
         },
         xAxis: {
-            categories: ['8 AM','9 AM', '10 AM', '11 AM', '12 AM', '1 PM', '2 PM',
-                '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM','9 PM']
+            categories: areaChartNamesArr
         },
         yAxis: {
             title: {
@@ -715,7 +774,9 @@ Highcharts.setOptions({
 function getEventMemberCount(parentEventId){
 	var jObj = {
 			parentEventId:parentEventId,			
-		    subEvents : subEvents
+		    subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate
 		}	
 		
 		$.ajax({
