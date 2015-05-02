@@ -124,7 +124,7 @@
 					</div>
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
-							<select class="form-control " id="panchaytList" class="form-control">
+							<select class="form-control " id="panchaytList" class="form-control" onchange="getPanchayayCadreDetailsBySearchCriteria(0)">
 							<option value="0"> Select Panchayat </option>
 							</select>
 					</div>
@@ -286,7 +286,9 @@
 		
 		
 $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
-$(".paginationDivId").html('');
+if(startIndex == 0)
+			$(".paginationDivId").html('');
+		
 $(".paginationDivId").hide();
 //$("#paginationDivId").hide();
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
@@ -472,11 +474,13 @@ $(".paginationDivId").hide();
 	}
 	
 
-	function refreshExistingDetails(){
+	function refreshExistingDetails(){ 
 		//$("#fromAgeId").val("");
 		//$("#toAgeId").val("");
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
+		$(".paginationDivId").html('');
+		$("#cadreDetailsDiv").hide();
 		//$("#casteCategory").val(0);
 		//$("#casteList").val(0);
 		//$("#ageRange").val(0);
@@ -776,6 +780,186 @@ $(".paginationDivId").hide();
 		});	
 			
 	}
+	
+	function getPanchayayCadreDetailsBySearchCriteria(startIndex)
+		{
+				
+		var locationLevel = 0;
+		var locationValue = 0;
+		var searchName = '';
+		var mobileNo = '';
+		var casteCategory = '';
+		var casteStateId = 0;
+		var fromAge = 0;
+		var toAge = 0;
+		var memberShipCardNo = '';
+		var trNumber = '';
+		var voterCardNo = '';
+		var gender = '';
+		var houseNo = '';
+		
+		
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+		if(startIndex == 0)
+			$(".paginationDivId").html('');
+		
+		$(".paginationDivId").hide();
+		//$("#paginationDivId").hide();
+		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
+		$("#cadreDetailsDiv").hide();
+		var searchBy = $('#searchBy').val().trim();
+		var searchRadioType =$('#cadreSearchType').val();;
+		var parentLocation = 0;
+		var panchayatId = $("#panchaytList").val();
+		var mandalId = $("#mandalList").val();
+		var constituencyId = $("#constituencyId").val();
+		
+		
+		if(panchayatId !=0)
+		{
+			if(panchayatId.substr(0,1) == 1){
+				  locationLevel = 6;
+			}
+			else if(panchayatId.substr(0,1) == 2){
+				 locationLevel = 8;
+				 
+			}								
+			locationValue = panchayatId.substr(1);
+			
+			
+		$("#searchDataImg").show();
+		var jsObj =
+		{
+			locationLevel :locationLevel,
+			locationValue:locationValue,
+			searchName : searchName,
+			mobileNo: mobileNo,
+			casteCategory : casteCategory,
+			fromAge : fromAge,
+			toAge : toAge,
+			memberShipCardNo: memberShipCardNo,
+			casteStateId : casteStateId,
+			trNumber : trNumber,
+			voterCardNo:voterCardNo,
+			gender:gender,
+			houseNo:houseNo,
+			startIndex:startIndex,
+			maxIndex : 50,
+			task:"tdpCadreSearch"
+		}
+		$.ajax({
+				type : "POST",
+				url : "getCadreSearchDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				 if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+				$("#searchDataImg").hide();
+				$('#cadreDetailsDiv').show();
+				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
+				{
+				buildCadrePanchayatDetails(result.previousRoles,jsObj);
+				}
+				else
+				{
+					
+					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
+				}
+			});  
+			
+		}
+		
+		
+		
+
+	}
+	
+	function buildCadrePanchayatDetails(result,jsObj)
+	{
+		$(".paginationDivId").show();
+		//$("#paginationDivId").show();
+		var str ='';
+		
+		var elegRolCnt=0;
+		var dtCnt = 0;
+		if(result != null)
+		{
+			for(var i in result)
+			{
+				
+				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);">';
+				str+='<span href="#" class="media-left">';
+				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
+				str+='</span>';
+				str+='<div class="media-body">';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
+				str+='<ul class="list-inline">';
+				str+='<li>Age:'+result[i].age+';</i>';
+				str+='<li>Gender: '+result[i].gender+'</i>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
+				str+='<li>Caste: '+result[i].casteName+'</i>';
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
+				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
+				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
+				str+='</ul>';
+				
+				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
+				{
+					str+='<ul>';
+					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+						}
+					}
+					
+					str+='</ul>';	
+					str+='</div>';
+					str+='</div>';
+			}
+				else{
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+					    str+='<ul>';
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+						}
+					    str+='</ul>';
+					}
+					str+='</div>';
+					str+='</div>';
+				
+				}
+				elegRolCnt++;
+				dtCnt++;
+			}
+		if(result[0].mobileType > 50)	
+		{
+		var itemsCount=result[0].mobileType;
+	    var maxResults=jsObj.maxIndex;
+	   
+	     if(jsObj.startIndex==0){
+		   $(".paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*50;
+				getPanchayayCadreDetailsBySearchCriteria(num);
+				
+			}
+			});
+		}
+		
+		}
+		}
+		$('#cadreDetailsDiv').html(str);
+	}
+	
+	
 			</script>
 			</body>
 			</html>
