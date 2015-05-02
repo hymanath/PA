@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 
@@ -11,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -26,8 +28,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private ResultStatus resultStatus;
 	private List<UserEventDetailsVO> subEvents;
 	List<MahanaduEventVO> resultList;
+	private HttpSession session;
 	
 	
+	
+	public HttpSession getSession() {
+		return session;
+	}
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 	public List<MahanaduEventVO> getResultList() {
 		return resultList;
 	}
@@ -169,6 +179,21 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			subEventIds.add(new Long(arr.get(i).toString()));
 			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds);
 			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getEventsForUser()
+	{
+		try{
+		 jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			resultList = mahaNaduService.getEventsForUser(regVO.getRegistrationID());
 		}
 		catch(Exception e)
 		{
