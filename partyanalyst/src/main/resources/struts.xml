@@ -10021,6 +10021,11 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action> 
+		 <action name="getEventsForUserAction" class="eventDetailsAction" method="getEventsForUser">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action> 
 		
 </package>
 </struts>      

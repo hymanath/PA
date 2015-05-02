@@ -64,76 +64,8 @@
 	</form>
   </h4>-->
   <div class="linkinner"> 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default border_0">
-                    <div class="panel-heading collapse-head" role="tab" id="headingOne">
-                      <h5 class="panel-title">
-                          <form class="me-select display-style">
-                            <ul id="me-select-list" style="list-style:none;">
-                                <li><input id="cb11" name="cb11" type="checkbox" class="maineventCls" value="1">
-                                	<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head ">Party Office</a></span></label></li>
-                            </ul>
-                          </form>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
-                        </a>
-                      </h5>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body collapse-body">
-                        	<form class="me-select display-style">
-                                <ul id="me-select-list" style="list-style:none;">
-                                    <li><input id="cb12" name="cb11" type="checkbox" class="subeventCls" value="2">
-                                        <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Breakfast in Cateen</span></label></li>
-                                    <li><input id="cb13" name="cb11" type="checkbox" class="subeventCls" value="3">
-                                        <label for="cb13" class="m_0 collapse-select"><span class="col-drop-select-name">Lunch in Canteen</span></label></li>
-                                    <li><input id="cb14" name="cb11" type="checkbox" class="subeventCls" value="4">
-                                        <label for="cb14" class="m_0 collapse-select"><span class="col-drop-select-name">Dinner in Canteen</span></label></li>
-                                    <li><input id="cb35" name="cb11" type="checkbox" class="subeventCls" value="5">
-                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Nara Meeting with Lokesh</span></label></li>
-										     <li><input id="cb35" name="cb11" type="checkbox" class="subeventCls" value="6">
-                                        <label for="cb35" class="m_0 collapse-select"><span class="col-drop-select-name">Grievance</span></label></li>
-                                </ul>
-                            </form>
-                      </div>
-                    </div>
-                  </div>
-                   <div class="panel panel-default border_0">
-                    <div class="panel-heading collapse-head" role="tab" id="headingTwo">
-                      <h4 class="panel-title">
-                          <form class="me-select display-style">
-                            <ul id="me-select-list" style="list-style:none;">
-                                <li>
-                                	<input id="cb15" name="cb11" type="checkbox" class="maineventCls">
-                                	<label for="cb15" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo" class="col-drop-head">Mahanadu 2015</a></span></label>
-                                </li>
-                            </ul>
-                          </form>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo">
-                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                      <div class="panel-body collapse-body">
-                        	<form class="me-select display-style">
-                                <ul id="me-select-list" style="list-style:none;">
-                                    <li><input id="cb16" name="cb11" type="checkbox" class="subeventCls">
-                                        <label for="cb16" class="m_0 collapse-select"><span class="col-drop-select-name">Main Entry Registration </span></label></li>
-                              									
-								    <li><input id="cb18" name="cb11" type="checkbox" class="subeventCls">
-                                        <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Blood Donation Camp</span></label></li>
-										
-									<li><input id="cb18" name="cb11" type="checkbox" class="subeventCls">
-                                        <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name"> Photo Exhibition</span></label></li>
-                                </ul>
-                            </form>
-                      </div>
-                    </div>
-                  </div>
-                   
-            
-                  <button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" >
+              
                 </div>
   </div>
   <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
@@ -293,38 +225,68 @@
 <script type="text/javascript">
 
 
-$(".maineventCls").click(function(){
-alert('anfd');
-$(".maineventCls").prop('checked', false);
-$(".subeventCls").prop('checked', false);
-$(this).prop('checked', true);
-});
 var parentEventId = 0;
 var subEvents = [];
-function eventUpdate()
+function getEvents()
 {
-     subEvents = [];
-	$(".maineventCls").each(function(){
-	if($(this).is(":checked"))
-	{
-		parentEventId = $(this).val();
-		$(".subeventCls").each(function(){
-		if($(this).is(":checked"))
-		subEvents.push($(this).val());
-		})
-	}
-	
+var jObj = {
+task:"getEvents"
+}
+$.ajax({
+          type:'GET',
+          url: 'getEventsForUserAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				buildFilterEvents(result);	
+			}
 	});
-setcolorsForEvents();
-getLocationWiseVisitorsCount(parentEventId,1,3);
-getLocationWiseVisitorsCount(parentEventId,1,4);
-getSubEventDetails(parentEventId);
-getSubEventDetailsHourWise(parentEventId);
-getEventMemberCount(parentEventId);
 
 }
+function buildFilterEvents(result)
+{
 
+var str ='';
+for(var i in result)
+{
+str+='<div class="panel panel-default border_0">';
 
+str+='<div class="panel-heading collapse-head" role="tab" id="heading'+result[i].id+'">';
+str+='<h5 class="panel-title">';
+str+='<form class="me-select display-style">';
+str+='<ul id="me-select-list" style="list-style:none;">';
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'">';
+str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head ">'+result[i].name+'</a></span></label></li>';
+str+=' </ul>';
+str+='</form>';
+str+=' <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
+str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
+str+=' </a>';
+str+=' </h5>';
+str+=' </div>';
+if(i == 0)
+str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
+else
+str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
+str+='<div class="panel-body collapse-body">';
+str+='<form class="me-select display-style">';
+str+='<ul id="me-select-list" style="list-style:none;">';
+ for(var j in result[i].subList)
+ {
+str+='<li><input id="cb12" name="cb11" type="checkbox" class="subeventCls" value="'+result[i].subList[j].id+'">';
+str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
+}
+str+=' </ul>';
+str+=' </form>';
+str+=' </div>';
+str+=' </div>';
+str+=' </div>';
+}
+str+='<button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>';
+$("#accordion").html(str);
+
+}
 
  $(document).ready(function() {
 
@@ -395,22 +357,56 @@ getEventMemberCount(parentEventId);
                     $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
                   });
 
-                  $('#options2').click(function() {
+                  $('#optip-ons2').click(function() {
                     $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
                   });
 
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
-
+				
                });
-</script>
-<script>
+
+	function handalClick(id)
+	{
+				
+				$(".maineventCls").prop('checked', false);
+				$(".subeventCls").prop('checked', false);
+				$("#"+id).prop('checked', true);
+	}
+				
 /*var myVar=setInterval(function(){myTimer()},1000);
 function myTimer() {
     var d = new Date();
     document.getElementById("time").innerHTML = d.toLocaleTimeString();
 }*/
+
+
+
+function eventUpdate()
+{
+     subEvents = [];
+	$(".maineventCls").each(function(){
+
+	if($(this).is(":checked"))
+	{
+		parentEventId = $(this).val();
+		$(".subeventCls").each(function(){
+		if($(this).is(":checked"))
+		subEvents.push($(this).val());
+		})
+	}
+	
+	});
+
+setcolorsForEvents();
+getLocationWiseVisitorsCount(parentEventId,1,3);
+getLocationWiseVisitorsCount(parentEventId,1,4);
+getSubEventDetails(parentEventId);
+getSubEventDetailsHourWise(parentEventId);
+getEventMemberCount(parentEventId);
+
+}
 
 
 function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
@@ -830,6 +826,7 @@ console.log(dataArr)
 }
 </style>
 <script>
+getEvents();
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
