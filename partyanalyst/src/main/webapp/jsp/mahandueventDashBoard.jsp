@@ -103,7 +103,7 @@
             </div>
         </div>
         <div class="col-md-8 col-xs-12 col-sm-6">
-		
+	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;"></div>
         		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
         </div>
 
@@ -262,11 +262,11 @@ str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
 if(i == 0)
 {
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="radio" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'" checked>';
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'" checked>';
 }
 else
 {
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="radio" onclick="handalClick(this.id)" class="maineventCls" value="'+result[i].id+'">';
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
 }
 str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head ">'+result[i].name+'</a></span></label></li>';
 str+=' </ul>';
@@ -283,10 +283,19 @@ str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="t
 str+='<div class="panel-body collapse-body">';
 str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
+
  for(var j in result[i].subList)
  {
-str+='<li><input id="'+result[i].subList[j].id+'" name="cb11" type="checkbox" class="subeventCls" value="'+result[i].subList[j].id+'" ">';
+ if(i == 0)
+{
+str+='<li><input id="check'+result[i].subList[j].id+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" checked>';
 str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
+}
+else
+{
+str+='<li><input id="check'+result[i].subList[j].id+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" ">';
+str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
+}
 }
 str+=' </ul>';
 str+=' </form>';
@@ -379,12 +388,14 @@ $("#accordion").html(str);
 				
                });
 
-	function handalClick(id)
+	function handalClick(eventId)
 	{
 				
 				$(".maineventCls").prop('checked', false);
 				$(".subeventCls").prop('checked', false);
-				$("#"+id).prop('checked', true);
+				$("#mainEvent"+eventId).prop('checked', true);
+				$(".subeventCls"+eventId).prop('checked', true);
+				
 	}
 				
 /*var myVar=setInterval(function(){myTimer()},1000);
@@ -393,32 +404,26 @@ function myTimer() {
     document.getElementById("time").innerHTML = d.toLocaleTimeString();
 }*/
 
-/*function checkParent(id)
+function checkParent(eventId,subEventId)
 {
 
 $(".maineventCls").prop('checked', false);
-$("#"+id).prop('checked', true);
+$("#mainEvent"+eventId).prop('checked', true);
+
 $(".maineventCls").each(function(){
-
-	if($(this).is(":checked") ==  false)
-	{
-	alert('aa');
-		$(".subeventCls").each(function(){
-			if($(this).is(":checked")){
-			alert('bb');
-				$(this).prop('checked', false);
-				}
-				else{
-				$(this).prop('checked', true);
-				}
+	$(".subeventCls").each(function(){
+			if($(this).hasClass("subeventCls"+eventId))
+			{
+					if($("#check"+subEventId).is(":checked"))
+					$("#check"+subEventId).prop('checked', true);
+			}
+			else{
+			$(this).prop('checked', false);
+			}
 		})
-	}
-	
-});
-
-
+	});
 }
-*/
+
 
 function eventUpdate()
 {
@@ -446,15 +451,17 @@ $("#errorDiv").html("");
 	$("#errormsg").html(errStr);
 startDate = $(".dp_startDate").val();
 endDate = $(".dp_endDate").val();
-alert(errStr.length)
+
 if(errStr.length == 0)
 {
+$(".themeControll").removeClass("active");
 setcolorsForEvents();
 getLocationWiseVisitorsCount(parentEventId,1,3);
 getLocationWiseVisitorsCount(parentEventId,1,4);
 getSubEventDetails(parentEventId);
 getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
+
 }
 
 }
@@ -683,6 +690,7 @@ function insertIntermediateData()
 var areaChartDataArr  = [];
 var areaChartNamesArr =[];
 function getSubEventDetailsHourWise(parentEventId){
+$('#hourWiseerrorDiv').html("");
 	var jObj = {
 			parentEventId:parentEventId,
 			subEvents : subEvents,
@@ -698,13 +706,15 @@ function getSubEventDetailsHourWise(parentEventId){
 				areaChartDataArr = new Array();
 				areaChartNamesArr = new Array();
 				var colorsarr = new Array();
-				
+				for(var j in result[0].subList){	
+					    areaChartNamesArr.push(result[0].subList[j].name);	
+}						
 				for(var i in result)
 				{	
 				var color = getColorCodeByEvent(result[i].id);	
 					var areaChartDataArrInner = new Array();
 					for(var j in result[i].subList){	
-					    areaChartNamesArr.push(result[i].subList[j].name);					
+					  //  areaChartNamesArr.push(result[0].subList[j].name);					
 						areaChartDataArrInner.push(result[i].subList[j].cadreCount);
 					}
 					var obj1={
@@ -715,20 +725,20 @@ function getSubEventDetailsHourWise(parentEventId){
 					areaChartDataArr.push(obj1);
 					
 				}
-		console.log(areaChartNamesArr);
+		
 		buildHourWiseChart(colorsarr);
 		});
 }
 
 function buildHourWiseChart(colorsarr){
-console.log(areaChartDataArr);
+
 if(areaChartDataArr == null || areaChartDataArr.length == 0)
 {
-$('#hourWiseContainer').html("No Data Available").addClass("errorDiv");
+$("#hourWiseerrorDiv").css("display","block");
+$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv");
 return;
 }
-else
-$('#hourWiseContainer').removeClass("errorDiv");
+$("#hourWiseerrorDiv").css("display","none");
 Highcharts.setOptions({
 	 colors:colorsarr
 		 });
