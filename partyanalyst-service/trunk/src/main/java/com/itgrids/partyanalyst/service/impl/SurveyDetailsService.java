@@ -1995,7 +1995,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		try
 		{
 			
-			List<Long> boothidsList = boothDAO.getBoothIdsByConstituencyIdsAndPublicationId(constiIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Long> boothidsList = boothDAO.getBoothIdsByConstituencyIdsForCTP(constiIds);
 			
 			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(boothidsList,surveyUserIds,userTypeId,fromDate,toDate);
 			
