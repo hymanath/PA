@@ -109,9 +109,9 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
-			str.append(" and date(model.attendedTime) = :startDate group by date(model.attendedTime)"); 
+			str.append(" and date(model.attendedTime) = :startDate "); 
 			else
-			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate group by date(model.attendedTime) "); 
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
 		}
 		Query query = getSession().createQuery(str.toString());
 		if((startDate != null && endDate != null))
