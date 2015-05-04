@@ -103,7 +103,7 @@
             </div>
         </div>
         <div class="col-md-8 col-xs-12 col-sm-6">
-	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;"></div>
+	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;text-align:center"></div>
         		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
         </div>
 
@@ -306,7 +306,7 @@ str+=' </div>';
 str+='<span id="errormsg" class="errorDiv"></span>';
 str+='<button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>';
 $("#accordion").html(str);
-
+eventUpdate();
 }
 
  $(document).ready(function() {
@@ -385,6 +385,8 @@ $("#accordion").html(str);
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
+				startDate = $(".dp_startDate").val();
+				endDate = $(".dp_endDate").val();
 				
                });
 
@@ -404,6 +406,9 @@ function myTimer() {
     document.getElementById("time").innerHTML = d.toLocaleTimeString();
 }*/
 
+ $(document).on('click','.applyBtn',function(){
+eventUpdate();
+});
 function checkParent(eventId,subEventId)
 {
 
@@ -425,46 +430,7 @@ $(".maineventCls").each(function(){
 }
 
 
-function eventUpdate()
-{
-$("#errorDiv").html("");
-     subEvents = [];
-	 var flag = true;
-	 var errStr ='';
-	 
-	$(".maineventCls").each(function(){
-    
-	if($(this).is(":checked"))
-	{
-		flag = false;
-		parentEventId = $(this).val();
-		$(".subeventCls").each(function(){
-		if($(this).is(":checked"))
-		subEvents.push($(this).val());
-		})
-	}
 
-});
-	if(subEvents.length == 0)
-	errStr +='<br/>Select atleast one event';
-	
-	$("#errormsg").html(errStr);
-startDate = $(".dp_startDate").val();
-endDate = $(".dp_endDate").val();
-
-if(errStr.length == 0)
-{
-$(".themeControll").removeClass("active");
-setcolorsForEvents();
-getLocationWiseVisitorsCount(parentEventId,1,3);
-getLocationWiseVisitorsCount(parentEventId,1,4);
-getSubEventDetails(parentEventId);
-getSubEventDetailsHourWise(parentEventId);
-getEventMemberCount(parentEventId);
-
-}
-
-}
 
 
 function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
@@ -669,7 +635,49 @@ $('#donutchart').removeClass("errorDiv");
  
 });
 }
+function eventUpdate()
+{
 
+$("#errorDiv").html("");
+     subEvents = [];
+	 var flag = true;
+	 var errStr ='';
+	 
+	$(".maineventCls").each(function(){
+    
+	if($(this).is(":checked"))
+	{
+		flag = false;
+		parentEventId = $(this).val();
+		$(".subeventCls").each(function(){
+		if($(this).is(":checked"))
+		subEvents.push($(this).val());
+		})
+	}
+
+});
+
+	if(subEvents.length == 0){
+		errStr +='<br/>Select atleast one event';
+
+	$("#errormsg").html(errStr);
+	}
+	startDate = $(".dp_startDate").val();
+	endDate = $(".dp_endDate").val();
+
+if(errStr.length == 0)
+{
+$(".themeControll").removeClass("active");
+setcolorsForEvents();
+getLocationWiseVisitorsCount(parentEventId,1,3);
+getLocationWiseVisitorsCount(parentEventId,1,4);
+getSubEventDetails(parentEventId);
+getSubEventDetailsHourWise(parentEventId);
+getEventMemberCount(parentEventId);
+
+}
+
+}
 function insertIntermediateData()
 {
 	$.ajax({
@@ -706,9 +714,10 @@ $('#hourWiseerrorDiv').html("");
 				areaChartDataArr = new Array();
 				areaChartNamesArr = new Array();
 				var colorsarr = new Array();
+				if(result != null && result.length > 0)
 				for(var j in result[0].subList){	
 					    areaChartNamesArr.push(result[0].subList[j].name);	
-}						
+}				if(result != null && result.length > 0)		
 				for(var i in result)
 				{	
 				var color = getColorCodeByEvent(result[i].id);	
@@ -725,7 +734,7 @@ $('#hourWiseerrorDiv').html("");
 					areaChartDataArr.push(obj1);
 					
 				}
-		
+	
 		buildHourWiseChart(colorsarr);
 		});
 }
@@ -821,8 +830,6 @@ data.push(result[i].subList[j].total)
 dataArr.push(obj);
 }
 
-console.log(dataArr)
-
 
     $('#columnchart').highcharts({
         chart: {
@@ -898,8 +905,11 @@ console.log(dataArr)
 </style>
 <script>
 getEvents();
+
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
+
 </script>
+
 </html>
