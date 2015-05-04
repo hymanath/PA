@@ -1000,36 +1000,38 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(events != null && events.size() > 0)
 		 eventInfoDAO.deleteEventInfo(2l,events) ;
 		 voterDAO.flushAndclearSession();
+		 statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("attendee",date.getCurrentDateAndTime(),1l);
 		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),1l);
-		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),1l);
+		setInviteeInfoForState(statewise1,2l,"attendee",1l);
 		setInviteeInfoForState(statewise,2l,"invitee",1l);
-		setInviteeInfoForState(statewise1,2l,"",1l);
+		
+		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("attendee",date.getCurrentDateAndTime(),36l);
 		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),36l);
-		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),36l);
+		setInviteeInfoForState(statewise1,2l,"attendee",36l);
 		setInviteeInfoForState(statewise,2l,"invitee",36l);
-		setInviteeInfoForState(statewise1,2l,"",36l);
+		
 		    if(events != null && events.size() > 0)
 			 eventInfoDAO.deleteEventInfo(3l,events) ;
 			 voterDAO.flushAndclearSession();
 			
 		 
-		
+		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"attendee",date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"invitee",date.getCurrentDateAndTime());
-		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"",date.getCurrentDateAndTime());
-		
+		 
+		 	setInviteeInfo(list2,3l,"attendee");
 	      setInviteeInfo(list1,3l,"invitee");
-		  setInviteeInfo(list2,3l,"");
+		  
 		 events = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
 		 if(events != null && events.size() > 0)
 		 eventInfoDAO.deleteEventInfo(4l,events) ;
 		 voterDAO.flushAndclearSession();
 		
-		
+		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"attendee",date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",date.getCurrentDateAndTime());
-		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"",date.getCurrentDateAndTime());
 		
-		  setInviteeInfo(list1,4l,"invitee");
-		  setInviteeInfo(list2,4l,"");
+		 setInviteeInfo(list2,4l,"attendee");
+		 setInviteeInfo(list1,4l,"invitee");
+		 
 		 
 	 }
 	 catch(Exception e)
@@ -1078,17 +1080,23 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 eventInfo.setDate(format.parse(params[3].toString()));
 				 if(type.equalsIgnoreCase("invitee"))
 				 eventInfo.setInvitees((Long)params[1]);
-				 else
+				 if(type.equalsIgnoreCase("attendee"))
+				 {
+				 eventInfo.setTotalAttendes((Long)params[1]);
 				 eventInfo.setNoninvitees((Long)params[1]);
+				 }
 				 eventInfoDAO.save(eventInfo);
 				 }
 				 else
 				 {
 					 eventInfo = eventInfoDAO.get(eventActionPlanVO.getId()); 
-					 if(type.equalsIgnoreCase("invitee"))
+					 if(type.equalsIgnoreCase("attendee"))
+						 eventInfo.setTotalAttendes((Long)params[1]);
+					 else if(type.equalsIgnoreCase("invitee"))
+					 {
 						 eventInfo.setInvitees((Long)params[1]);
-					 else
-						 eventInfo.setNoninvitees((Long)params[1]);
+						 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
+					 }
 						 eventInfoDAO.save(eventInfo);
 				 }
 				 if(!locationValues.contains((Long)params[2]))
@@ -1181,18 +1189,24 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 eventInfo.setStateId(stateId);
 				 if(type.equalsIgnoreCase("invitee"))
 				 eventInfo.setInvitees((Long)params[1]);
-				 else
+				 if(type.equalsIgnoreCase("attendee"))
+				 {
+				 eventInfo.setTotalAttendes((Long)params[1]);
 				 eventInfo.setNoninvitees((Long)params[1]);
+				 }
 				 eventInfoDAO.save(eventInfo);
 				 }
 				 else
 				 {
 					 eventInfo = eventInfoDAO.get(eventActionPlanVO.getId()); 
-					 if(type.equalsIgnoreCase("invitee"))
+					 if(type.equalsIgnoreCase("attendee"))
+						 eventInfo.setTotalAttendes((Long)params[1]);
+					 else if(type.equalsIgnoreCase("invitee"))
+					 {
 						 eventInfo.setInvitees((Long)params[1]);
-					 else
-						 eventInfo.setNoninvitees((Long)params[1]);
-						 eventInfoDAO.save(eventInfo);
+						 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
+					 }
+					 eventInfoDAO.save(eventInfo);
 				 }
 				 
 			 }
