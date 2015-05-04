@@ -74,7 +74,7 @@
 
 <section class="container">
 		
-	<div class="row" style="">
+	<div class="row" style="padding:5px;">
 		
 		<div class="col-md-3 col-md-offset-8">
         	   <div id="reportrange" class="pull-right calendar-style">
@@ -715,9 +715,22 @@ $('#hourWiseerrorDiv').html("");
 				areaChartNamesArr = new Array();
 				var colorsarr = new Array();
 				if(result != null && result.length > 0)
-				for(var j in result[0].subList){	
+				{
+				for(var j in result[0].subList){
+						if(startDate == endDate)				
 					    areaChartNamesArr.push(result[0].subList[j].name);	
-}				if(result != null && result.length > 0)		
+						else{
+						var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+						var dateString = result[0].subList[j].name;
+						var date = new Date(result[0].subList[j].name);
+						var month       = monthNames[date.getMonth()];
+						var day         = dateString.substring(8,10);
+						areaChartNamesArr.push(month+"-" +day);	
+						}
+						}
+				}
+				if(result != null && result.length > 0)		
 				for(var i in result)
 				{	
 				var color = getColorCodeByEvent(result[i].id);	
