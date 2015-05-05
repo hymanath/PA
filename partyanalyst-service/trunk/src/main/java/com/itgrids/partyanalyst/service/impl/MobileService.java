@@ -1127,6 +1127,376 @@ public List<SelectOptionVO> getConstituencyList()
 			return resultStatus;
 		}
 	}
+	
+	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo)
+	{
+		LOG.info("Entered into createSurveySqliteFileForAParliamnetConstituency() Method ");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = null;
+			Statement statement = null;
+			
+			Long pconstituencyId = reVo.getConstituencyId();
+			Long publicationId = reVo.getPublicationDateId();
+			String constituencyName = constituencyDAO.get(pconstituencyId).getName();
+			String path = reVo.getPath();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String date = sdf.format(new Date());
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			
+			File destDir = new File(path+pathSeperator+constituencyName+"_"+date+"_SURVEY");
+			destDir.mkdir();
+			File baseFile = new File(path+pathSeperator+"Base"+pathSeperator+"survey_base.sqlite");
+			
+			FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_SURVEY.zip");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+			
+			List<Booth> boothsList = boothDAO.getBoothDataForAPublication(publicationId);
+			List<Panchayat> panchayatsList = panchayatDAO.getAll();
+			List<LocalElectionBody> localElectionBodysList = localElectionBodyDAO.getAll();
+			List<AssemblyLocalElectionBody> alebList = assemblyLocalElectionBodyDAO.getAll();
+			List<AssemblyLocalElectionBodyWard> alebwList = assemblyLocalElectionBodyWardDAO.getAll();
+			List<Object[]> constituenyAreaTypesList = constituencyDAO.getAreaTypesOfAConstituencyByElectionScope(2l);
+			
+			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
+			
+			File sqliteFile = new File(path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+			FileUtils.copyFile(baseFile,sqliteFile);
+			
+			for(Constituency ac : acList)
+			{
+				try{
+				
+				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+				
+				if(votersList != null && votersList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : votersList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no)" +
+								" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString().trim()+"','"+replaceSpecialChars(params[4].toString().trim())+"'," +
+										"'"+params[5].toString().trim()+"',"+params[6].toString().trim()+",'"+params[7].toString().trim()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
+				List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
+				if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : votersAndSerialNosList)
+					{
+						records++;
+						try{
+						String serialNo = params[3]!= null ? params[3].toString() : "0";
+						statement.executeUpdate("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (" +
+								"'"+params[0].toString()+"','"+params[1].toString()+"','"+params[2].toString()+"','"+serialNo+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
+				if(boothsList != null && boothsList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Booth booth : boothsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO booth(booth_id,part_no,part_name,location,village_covered,tehsil_id,male_voters,female_voters,total_voters," +
+								"constituency_id,year,publication_date_id) VALUES (" +
+								"'"+booth.getBoothId()+"','"+booth.getPartNo()+"','','"+booth.getLocation()+"','"+booth.getVillagesCovered()+"','"+booth.getTehsil().getTehsilId()+"'" +
+										",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getPanchayat() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set panchayat_id = "+booth.getPanchayat().getPanchayatId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBody() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set local_election_body_id = "+booth.getLocalBody().getLocalElectionBodyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBodyWard() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ward_id = "+booth.getLocalBodyWard().getConstituencyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getRefBooth() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ref_booth_id = "+booth.getRefBooth().getBoothId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
+				if(panchayatsList != null && panchayatsList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Panchayat panchayat : panchayatsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO panchayat(panchayat_id,panchayat_name,tehsil_id)" +
+								" VALUES ('"+panchayat.getPanchayatId().toString()+"','"+panchayat.getPanchayatName().toString().trim()+"','"+panchayat.getTehsil().getTehsilId().toString().trim()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Panchayat Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
+				if(localElectionBodysList != null && localElectionBodysList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(LocalElectionBody leb : localElectionBodysList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO local_election_body(local_election_body_id,name,election_type_id,tehsil_id,district_id)" +
+								" VALUES ('"+leb.getLocalElectionBodyId().toString()+"','"+leb.getName().toString().trim()+"','"+leb.getElectionType().getElectionTypeId().toString().trim()+"','"+leb.getTehsil().getTehsilId().toString()+"','"+leb.getDistrict().getDistrictId().toString()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Local Election Body Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				if(alebList != null && alebList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(AssemblyLocalElectionBody aleb : alebList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO assembly_local_election_body(assembly_local_election_body_id,local_election_body_id,constituency_id)" +
+								" VALUES ('"+aleb.getAssemblyLocalElectionBodyId().toString()+"','"+aleb.getLocalElectionBody().getLocalElectionBodyId().toString().trim()+"','"+aleb.getConstituency().getConstituencyId().toString().trim()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Assembly Local Election Body Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				if(alebwList != null && alebwList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(AssemblyLocalElectionBodyWard alebw : alebwList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO assembly_local_election_body_ward(assembly_local_election_body_ward_id,assembly_local_election_body_id,local_election_body_ward_id)" +
+								" VALUES ('"+alebw.getAssemblyLocalElectionBodyWardId().toString()+"','"+alebw.getAssemblyLocalElectionBody().getAssemblyLocalElectionBodyId().toString()+"','"+alebw.getConstituency().getConstituencyId().toString()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Assembly Local Election Body Wards Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				if(constituenyAreaTypesList != null && constituenyAreaTypesList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : constituenyAreaTypesList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("update constituency set area_type = '"+params[1].toString()+"' where constituency_id = '"+params[0].toString()+"'");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Area Types Records Updated");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				List<Object[]> hamletsList = panchayatHamletDAO.getHamletsListByConstituency(ac.getConstituencyId(),publicationId);
+				
+				if(hamletsList != null && hamletsList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : hamletsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO hamlet(hamlet_id,hamlet_name,panchayat_id,tehsil_id)" +
+								" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+params[2].toString().trim()+"','"+params[3].toString()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" hamlet Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
+				}
+				
+			}
+			
+			try{
+				 for(File rf : destDir.listFiles())
+					 addToZipFile(rf.getAbsolutePath(), zos);
+				 zos.close();
+				 fos.close();
+			 }catch(Exception e)
+			 {
+				 LOG.error("Exception Occured in Zipping Files");
+			 }
+			
+			resultStatus.setMessage("/SQLITE_DB_SURVEY/"+constituencyName+"_"+date+"_SURVEY.zip");
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in createDataDumpFileForAConstituency() Method",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
 	public ResultStatus createDataDumpFileForAConstituency(RegistrationVO reVo)
 	{
 		LOG.info("Entered into createDataDumpFileForAConstituency() Method ");
