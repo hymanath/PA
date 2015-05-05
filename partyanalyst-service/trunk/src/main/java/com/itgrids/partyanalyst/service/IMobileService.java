@@ -59,4 +59,5 @@ public interface IMobileService {
 	public ResultStatus resetAllMobileNos();
 	public ResultStatus createCadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo);
+	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 }
