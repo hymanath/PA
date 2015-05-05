@@ -1,12 +1,3 @@
-var ipaddress = "";
-function setIp()
-{
-$.get("http://ipinfo.io/?token=e9c2130d7772ec", function(response) {
- ipaddress =response.ip;
-}, "jsonp");
-}
-
-window.onload = setIp; 
 function openDialogForLoginWindowForPostProblem(){
 	$('#logInDiv').prev().find('a').trigger('click');
 	$('#login').trigger('click');
