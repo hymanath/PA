@@ -241,6 +241,41 @@ var populateId ;
 </div>
 
 	 <!-- dataDumpforCmsPC  end -->
+
+<!-- dataDumpforSurveyPC  Start -->
+
+<div id="dataDumpforSurveyPC" class="widget">
+	<h4>Create Sqllite Dump For Survey For A Parliament Constituency</h4>
+	
+	<div id="surveypcerrorDiv"></div>
+		<table >
+			<tr>
+				<td>select Parliament </td>
+				<td></td>
+				<td> <s:select theme="simple" cssClass="selectWidth" label="Select Your Parliament" name="pcconstituencyList" id="surveypcconstituencyList" list="pcconstituencyList" listKey="id" listValue="name" style="margin-top:10px;"/></td>
+			</tr>
+			<tr>
+				<td>Select Publication</td>
+				<td></td>
+				<td><select theme="simple" Class="selectWidth" name="publicationList" id="surveypcpublicationDateList"  style="margin-top:10px;">
+					<option value="12">1-2-2015</option>
+					<option value="11">1-5-2014</option>
+					<option value="10">1-2-2014</option>
+					<option value="9">1-1-2014</option>
+					<option value="8">1-2-2013</option>
+					<option value="7">1-1-2013</option>
+				</select></td>
+			</tr>
+		</table>
+		
+		<div  style="margin-left: 150px;margin-top:10px;">
+		<input type="button" class="btn btn-info" value="Create Dump File" id="surveypccreateFile"/>
+		<img src="./images/icons/search.gif" id="cmspcajaxImg" style="display:none;"/>
+		<a id="surveypcdownloadLink" style="margin-left: 11px;display:none;" href="${filePath}" class="btn btn-info">Download link</a>
+	</div>
+</div>
+
+<!-- dataDumpforSurveyPC  end -->
 	 
 	 <!-- cadre Registration Dump  -->
 	 <div class="widget" id="dataDumpforCadrepc">
@@ -534,8 +569,49 @@ $("#cmspcajaxImg").css("display","block");
 }
 	});
 	
+
+$("#surveypccreateFile").click(function(){
+	$("#surveypcerrorDiv").html("");
+	var flag = false;
+	var errorDiv= document.getElementById("surveypcerrorDiv");
+	var constituencyId = $("#surveypcconstituencyList").val();  
+	var publicationId = $("#surveypcpublicationDateList").val();
+	var str = '<font color="red">';
+
+	if(constituencyId == 0)
+	{
+		str += 'Please Select Constituency<br>';
+		flag = true;
+	}
+	if(publicationId == 0)
+	{
+		str += 'Please Select Publication<br>';
+		flag = true;
+	}
 	
-	$("#cadrepccreateFile").click(function(){
+	if(flag == true)
+	{
+		surveypcerrorDiv.innerHTML =str;
+		return;
+	}
+	else
+	{
+		surveypcerrorDiv.innerHTML = '';
+		$("#surveypcajaxImg").css("display","block");
+		
+		var jsObj=
+		{
+			constituencyId	:	constituencyId,
+			publicationId	:	publicationId,
+			task			:	"createDataDumpForSURVEYPC"				
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createDataDumpAction.action?"+rparam;						
+	callAjax(jsObj,url);	
+	}
+});
+
+$("#cadrepccreateFile").click(function(){
 
 $("#cadrepcerrorDiv").html("");
 var flag = false;
@@ -595,6 +671,10 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "createDataDumpForCMS")
 								{
 								 showStatusForCMS(myResults);	
+								}
+								else if(jsObj.task == "createDataDumpForCMS")
+								{
+									showStatusForSurvey(myResults);	
 								}
 								else if(jsObj.task == "getUsers")
 								{
@@ -695,6 +775,26 @@ function callAjax(jsObj,url)
 	  return;
 	}
  }
+
+ function showStatusForSurvey(result)
+ {
+	$("#surveypcerrorMsgDiv").html("");
+	$("#surveypcajaxImg").css("display","none");
+	
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#surveypcerrorMsgDiv").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#surveypcerrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#surveypcdownloadLink").attr('href',result.message);
+	  $("#surveypcdownloadLink").css("display","inline-block");
+	  return;
+	}
+ }
+
  function showStatusForCadrePC(result)
  {
 	
