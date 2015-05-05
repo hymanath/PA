@@ -452,9 +452,20 @@ margin-top:10px;
 							</ul>
 						</div>
 					</li>
+					
+					
+					
 					<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
+					
+					<li><a onmousedown="return false;" class="parent"><span>Events</span></a>
+						<div>
+							<ul>
+					
 					<li><a href="eventInvitees.action"><span> Event Invitees  </span></a></li>
 					<li><a href="eventDashboardAction.action"><span> Events DashBoard  </span></a></li>
+					</ul>
+						</div>
+					</li>
 					
 				
 					
