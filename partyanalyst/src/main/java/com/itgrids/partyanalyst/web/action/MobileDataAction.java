@@ -282,6 +282,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB");
 			 resultStatus = mobileService.createDataDumpFileForAParliamnetConstituency(regVo);
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("createDataDumpForSURVEYPC"))
+		 {
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
+			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
+			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_SURVEY");
+			 resultStatus = mobileService.createSurveySqliteFileForAParliamnetConstituency(regVo);
+		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
 		 {
 			 populateID = mobileService.saveSuperAdminInfoInMobileAppUser(jObj.getString("userName"),jObj.getString("password"),jObj.getString("uniqueCode")); 
