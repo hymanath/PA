@@ -22,7 +22,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	<!--<script type="text/javascript" src="js/bootstrap.js" ></script> -->
+	 <link href="dist/js/bootstrap.min.js" rel="stylesheet"/>
 	<style>
 	
 		.dropdown-menu > li > a:hover {
