@@ -287,9 +287,12 @@ public class Scheduler {
 			e.printStackTrace();
 		}
 	}
+
 	public ResultStatus insertMahanaduEventInfo()
 	{
 		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			return rs;
 		try{
 			 rs = mahaNaduService.insertDataintoEventInfo();
 		}
