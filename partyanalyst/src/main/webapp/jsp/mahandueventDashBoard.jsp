@@ -41,7 +41,7 @@
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading">PARTY OFFICE EVENT</p>               
+                 <p class="header-text display-style" id="mainheading"></p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -287,7 +287,7 @@ else
 {
 str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
 }
-str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head ">'+result[i].name+'</a></span></label></li>';
+str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head " id="eventText'+result[i].id+'">'+result[i].name+'</a></span></label></li>';
 str+=' </ul>';
 str+='</form>';
 str+=' <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
@@ -676,7 +676,10 @@ $("#errorDiv").html("");
 	}
 
 });
+var evntName = $("#eventText"+parentEventId).text();
+var title = (evntName + ' Event').toUpperCase();
 
+$("#mainheading").html(''+title+'');
 	if(subEvents.length == 0){
 		errStr +='<br/>Select atleast one event';
 
