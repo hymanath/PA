@@ -17,7 +17,16 @@
 
 
 <style>
-.errorDiv{color:red;}
+.errorDiv{}
+ #slider label {
+
+ width: 20px;
+ margin-top: 20px;
+ margin-left: -10px;
+ text-align: center;
+ font-size:8px;
+}
+
 </style>
 </head>
 
@@ -32,7 +41,7 @@
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                <p class="header-text display-style" id="mainheading">PARTY OFFICE EVENT</p>               
+                 <p class="header-text display-style" id="mainheading">PARTY OFFICE EVENT</p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -102,9 +111,17 @@
               </div>
             </div>
         </div>
+		
         <div class="col-md-8 col-xs-12 col-sm-6">
-	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;text-align:center"></div>
-        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
+		<div id="rangeSliderDiv">
+		<div id="slider"></div>
+		<p>
+		<input id="amount" type="text" style="border: none; font-weight: bold;background-color:transparent;" readonly>
+		</p>
+		</div>
+	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;text-align:center;margin-top:10px;padding-top:200px;"></div>
+        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
+					<div id="dayWiseContainer" style="width: 100%; height:357px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
 
     </div>
@@ -222,7 +239,9 @@
 <script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
  <!--Bootstrap Date Picker-->
    <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
-	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
+	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
 <script type="text/javascript">
 
 
@@ -268,7 +287,7 @@ else
 {
 str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
 }
-str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head " id="eventText'+result[i].id+'">'+result[i].name+'</a></span></label></li>';
+str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head ">'+result[i].name+'</a></span></label></li>';
 str+=' </ul>';
 str+='</form>';
 str+=' <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
@@ -583,6 +602,7 @@ function buildPieChart(dataArr,total,colorsarr)
 
 if(total == 0)
 {
+dataArr =[];
 $('#donutchart').html("No Data Available").addClass("errorDiv");
 return;
 }
@@ -649,7 +669,6 @@ $("#errorDiv").html("");
 	{
 		flag = false;
 		parentEventId = $(this).val();
-		
 		$(".subeventCls").each(function(){
 		if($(this).is(":checked"))
 		subEvents.push($(this).val());
@@ -657,12 +676,7 @@ $("#errorDiv").html("");
 	}
 
 });
-//var evntName = $("#mainEvent"+parentEventId).closest(".col-drop-head").text();
-//alert(evntName)
-var evntName = $("#eventText"+parentEventId).text();
-var title = (evntName + ' Event').toUpperCase();
 
-$("#mainheading").html(''+title+'');
 	if(subEvents.length == 0){
 		errStr +='<br/>Select atleast one event';
 
@@ -703,8 +717,12 @@ function insertIntermediateData()
 }
 var areaChartDataArr  = [];
 var areaChartNamesArr =[];
+var dayWiseArr =[];
+var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
 function getSubEventDetailsHourWise(parentEventId){
 $('#hourWiseerrorDiv').html("");
+$("#hourWiseContainer").html("");
 	var jObj = {
 			parentEventId:parentEventId,
 			subEvents : subEvents,
@@ -719,15 +737,16 @@ $('#hourWiseerrorDiv').html("");
         }).done(function(result){
 				areaChartDataArr = new Array();
 				areaChartNamesArr = new Array();
+				dayWiseArr = new Array();
 				var colorsarr = new Array();
 				if(result != null && result.length > 0)
 				{
+					dayWiseArr = result;
 				for(var j in result[0].subList){
 						if(startDate == endDate)				
 					    areaChartNamesArr.push(result[0].subList[j].name);	
 						else{
-						var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
+						
 						var dateString = result[0].subList[j].name;
 						var date = new Date(result[0].subList[j].name);
 						var month       = monthNames[date.getMonth()];
@@ -753,19 +772,232 @@ $('#hourWiseerrorDiv').html("");
 					areaChartDataArr.push(obj1);
 					
 				}
-	
+		
+		if(startDate == endDate)	
+		{
+		$( "#rangeSliderDiv" ).css("display","none");
 		buildHourWiseChart(colorsarr);
+		}
+		else{
+			sliderForDateRange();
+			$( "#rangeSliderDiv" ).css("display","block");
+		}
 		});
 }
+var dateRange;	
+function sliderForDateRange()
+{
 
-function buildHourWiseChart(colorsarr){
+var flag = false;
+var newstartdate = startDate.split("/").reverse().join("-");
+var newenddate = endDate.split("/").reverse().join("-");
+var minDate = new Date(newstartdate);
+var maxDate = new Date(newenddate);
+$( "#slider" ).slider({range: true,
+max: Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000),
+ step: 1,
+slide: function( event, ui ) {
+flag =true;
+ var date = new Date(minDate.getTime());
+            date.setDate(date.getDate() + ui.values[0]);
+            $('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
+            date = new Date(minDate.getTime());
+            date.setDate(date.getDate() + ui.values[1]);
+            $('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
+	var range = formatDate(date);
+	var month       = monthNames[date.getMonth()];
+	var day         = range.substring(8,10);			
+$( "#amount" ).val( "date : " +month+"-" +day +"");
 
-if(areaChartDataArr == null || areaChartDataArr.length == 0)
+
+dateRange=date;
+buildHourWiseChartforslider(dateRange);
+},
+change: function( event, ui ) {
+flag =true;
+	   var date = new Date(minDate.getTime());
+            date.setDate(date.getDate() + ui.values[0]);
+            $('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
+            date = new Date(minDate.getTime());
+            date.setDate(date.getDate() + ui.values[1]);
+            $('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
+	var range = formatDate(date);
+	var month       = monthNames[date.getMonth()];
+	var day         = range.substring(8,10);			
+$( "#amount" ).val( "date : " +month+"-" +day +"");
+dateRange=date;
+buildHourWiseChartforslider(dateRange);
+}
+});
+if(!flag)
+	{
+	var range = formatDate(maxDate);
+	var month       = monthNames[maxDate.getMonth()];
+	var day         = range.substring(8,10);	
+	$( "#amount" ).val( "Date : " +month+"-" +day +"");
+	dateRange=maxDate
+	;
+	buildHourWiseChartforslider(dateRange);
+	}
+
+$('.ui-slider-handle').tooltip();
+  //
+  // Add labels to slider whose values 
+  // are specified by min, max and whose
+  // step is set to 1
+  //
+ /* var total = 0;
+  var startTime = minDate.getTime(), endTime = maxDate.getTime();
+ for(loopTime = startTime; loopTime < endTime; loopTime += 86400000)
+{
+total = total + 1;
+}
+var i = 0;
+for(loopTime = startTime; loopTime < endTime; loopTime += 86400000)
+{
+       
+      var loopDay=new Date(loopTime)
+     //  minDate = new Date(newDate);
+	   var text = formatDate(loopDay);
+	    var el = $('<label>'+(text)+'</label>').css('left',(i/total*100)+'');
+		$( "#slider" ).append(el);
+		i++;
+    }
+*/
+
+
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+function buildHourWiseChartforslider(dateRange){
+
+if(dayWiseArr == null || dayWiseArr.length == 0)
+{
+$("#hourWiseerrorDiv").css("display","block");
+$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv").css("height","359px");;
+$('#dayWiseContainer').css("display","none");
+return;
+}
+$("#hourWiseerrorDiv").css("display","none");
+$('#hourWiseContainer').css("display","none");
+$('#dayWiseContainer').css("display","block");
+				var range = formatDate(dateRange);
+				var compareDate = new Date(range);
+				
+				areaChartDataArr1 = new Array();
+				areaChartNamesArr1 = new Array();
+				
+				var colorsarr = new Array();
+				if(dayWiseArr != null && dayWiseArr.length > 0)
+				{
+				
+				for(var j in dayWiseArr[0].subList){
+						
+						//var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+						var dateString = dayWiseArr[0].subList[j].name;
+						var date = new Date(dayWiseArr[0].subList[j].name);
+								if(date<=compareDate)
+								{
+									var month       = monthNames[date.getMonth()];
+									var day         = dateString.substring(8,10);
+									areaChartNamesArr1.push(month+"-" +day);
+								}							
+						}
+						
+				}
+				
+				if(dayWiseArr != null && dayWiseArr.length > 0)		
+				for(var i in dayWiseArr)
+				{	
+				var color = getColorCodeByEvent(dayWiseArr[i].id);	
+					var areaChartDataArrInner = new Array();
+					for(var j in dayWiseArr[i].subList){	
+					 	var date1 = new Date(dayWiseArr[i].subList[j].name);
+					 if(date1<=compareDate)
+					areaChartDataArrInner.push(dayWiseArr[i].subList[j].cadreCount);
+					}
+					var obj1={
+						name:dayWiseArr[i].name,
+						data:areaChartDataArrInner
+					}
+					colorsarr.push(color);
+					
+					areaChartDataArr1.push(obj1);
+					
+				}
+				
+				
+if(areaChartDataArr1 == null || areaChartDataArr1.length == 0)
 {
 $("#hourWiseerrorDiv").css("display","block");
 $('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv");
 return;
 }
+
+$("#hourWiseerrorDiv").css("display","none");
+Highcharts.setOptions({
+	 colors:colorsarr
+		 });
+ $('#dayWiseContainer').highcharts({
+		chart: {
+            type: 'area'
+        },
+		title: {
+            text: 'Visits',
+            x: -100 //center
+        },
+		legend: {
+            layout: 'vertical',
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0,
+			enabled: true,
+			x: 150 //center
+        },
+        xAxis: {
+            categories: areaChartNamesArr1
+        },
+        yAxis: {
+            title: {
+                text: 'Visits'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' Visits'
+        },
+        series:  areaChartDataArr1
+        
+       
+    });
+
+}
+function buildHourWiseChart(colorsarr){
+
+if(areaChartDataArr == null || areaChartDataArr.length == 0)
+{
+$("#hourWiseerrorDiv").css("display","block");
+$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv").css("height","390px");
+$('#hourWiseContainer').css("display","none");
+return;
+}
+$('#hourWiseContainer').css("display","block");
+$('#dayWiseContainer').css("display","none");
 $("#hourWiseerrorDiv").css("display","none");
 Highcharts.setOptions({
 	 colors:colorsarr
@@ -810,6 +1042,8 @@ Highcharts.setOptions({
 }
 
 function getEventMemberCount(parentEventId){
+$('#columnchart').html("");
+
 	var jObj = {
 			parentEventId:parentEventId,			
 		    subEvents : subEvents,
@@ -833,6 +1067,7 @@ $('#columnchart').html("No Data Available").addClass("errorDiv");
 return;
 }
 else
+{
 $('#columnchart').removeClass("errorDiv");
 var xaxis = [];
 var dataArr = [];
@@ -909,7 +1144,7 @@ dataArr.push(obj);
         },
         series:dataArr
     });
-
+}
 }
 
 </script>
