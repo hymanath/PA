@@ -2109,6 +2109,7 @@
 	  <property name="voterBoothActivitiesDAO" ref="voterBoothActivitiesDAO"/>
 	   <property name="cadreDetailsService" ref="cadreDetailsService"/>
 	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
+	    <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO"/>
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -2592,6 +2593,8 @@
            <property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 	       <property name="eventDAO" ref="eventDAO" />
            <property name="eventInviteeDAO" ref="eventInviteeDAO" />
+           <property name="eventSurveyUserDAO" ref="eventSurveyUserDAO" />
+           <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO" />
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
