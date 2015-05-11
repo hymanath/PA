@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +24,9 @@ public class EventSurveyUser {
 	private String userName;
 	private String passWord;
 	private String isEnabled;
+	private Long userId;
+	private Date insertedTime;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_survey_user_id", unique = true, nullable = false)
@@ -72,6 +77,22 @@ public class EventSurveyUser {
 	}
 	public void setIsEnabled(String isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+	
+	@Column(name="user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	
