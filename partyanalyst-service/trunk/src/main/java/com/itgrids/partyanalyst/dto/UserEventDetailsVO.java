@@ -8,6 +8,8 @@ import java.util.List;
 public class UserEventDetailsVO implements Serializable{
 	
 	private Long id;
+	private String eventName;
+	private Long mainEventId;
 	private String userName;
 	private String userPassword;
 	private List<UserEventDetailsVO> subList = new ArrayList<UserEventDetailsVO>();
@@ -23,9 +25,84 @@ public class UserEventDetailsVO implements Serializable{
 	private String startTime;
 	private String endTime;
 	private Long tabPrimaryKey;
+	private String startDate;
+	private String endDate;
+	private Long sectorNo;
+	private Long blockNo;
+	private Long entryLimit;	
+	private String serverWorkMode;
+	private String tabWorkMode;
+	private String regText;
+	private Long orderNo;
 	
 	
 	
+	public String getEventName() {
+		return eventName;
+	}
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+	public Long getMainEventId() {
+		return mainEventId;
+	}
+	public void setMainEventId(Long mainEventId) {
+		this.mainEventId = mainEventId;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public Long getSectorNo() {
+		return sectorNo;
+	}
+	public void setSectorNo(Long sectorNo) {
+		this.sectorNo = sectorNo;
+	}
+	public Long getBlockNo() {
+		return blockNo;
+	}
+	public void setBlockNo(Long blockNo) {
+		this.blockNo = blockNo;
+	}
+	public Long getEntryLimit() {
+		return entryLimit;
+	}
+	public void setEntryLimit(Long entryLimit) {
+		this.entryLimit = entryLimit;
+	}
+	public String getServerWorkMode() {
+		return serverWorkMode;
+	}
+	public void setServerWorkMode(String serverWorkMode) {
+		this.serverWorkMode = serverWorkMode;
+	}
+	public String getTabWorkMode() {
+		return tabWorkMode;
+	}
+	public void setTabWorkMode(String tabWorkMode) {
+		this.tabWorkMode = tabWorkMode;
+	}
+	public String getRegText() {
+		return regText;
+	}
+	public void setRegText(String regText) {
+		this.regText = regText;
+	}
 	public Long getTabPrimaryKey() {
 		return tabPrimaryKey;
 	}
