@@ -35,6 +35,10 @@ public class Event implements java.io.Serializable{
 	private String endTime; // programme end Time
 	private String isInviteeExist;
 	
+	private Integer entryLimit;
+	private String serverWorkMode;
+	private String tabWorkMode;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_id", unique = true, nullable = false)
@@ -127,5 +131,32 @@ public class Event implements java.io.Serializable{
 		this.isInviteeExist = isInviteeExist;
 	}
 
+	@Column(name="entry_limit")
+	public Integer getEntryLimit() {
+		return entryLimit;
+	}
+
+	public void setEntryLimit(Integer entryLimit) {
+		this.entryLimit = entryLimit;
+	}
+
+	@Column(name="server_work_mode")
+	public String getServerWorkMode() {
+		return serverWorkMode;
+	}
+
+	public void setServerWorkMode(String serverWorkMode) {
+		this.serverWorkMode = serverWorkMode;
+	}
+
+	@Column(name="tab_work_mode")
+	public String getTabWorkMode() {
+		return tabWorkMode;
+	}
+
+	public void setTabWorkMode(String tabWorkMode) {
+		this.tabWorkMode = tabWorkMode;
+	}
+	
 	
 }

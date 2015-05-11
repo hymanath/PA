@@ -32,9 +32,8 @@ public class EventRfidDetails extends BaseModel implements Serializable{
 	private String regText;
 	private Integer sectorNo;
 	private Integer blockNo;
-	private Integer entryLimit;
-	private String serverWorkMode;
-	private String tabWorkMode;
+	private Long orderNo;
+	
 	
 	public EventRfidDetails(){}
 
@@ -97,30 +96,13 @@ public class EventRfidDetails extends BaseModel implements Serializable{
 		this.blockNo = blockNo;
 	}
 
-	@Column(name="entry_limit")
-	public Integer getEntryLimit() {
-		return entryLimit;
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
 	}
 
-	public void setEntryLimit(Integer entryLimit) {
-		this.entryLimit = entryLimit;
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
-
-	@Column(name="server_work_mode")
-	public String getServerWorkMode() {
-		return serverWorkMode;
-	}
-
-	public void setServerWorkMode(String serverWorkMode) {
-		this.serverWorkMode = serverWorkMode;
-	}
-
-	@Column(name="tab_work_mode")
-	public String getTabWorkMode() {
-		return tabWorkMode;
-	}
-
-	public void setTabWorkMode(String tabWorkMode) {
-		this.tabWorkMode = tabWorkMode;
-	}
+	
 }
