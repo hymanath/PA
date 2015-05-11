@@ -17,7 +17,8 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	}
 	public List<Object[]> getParentEventByUser(Long userId,Date currentDate)
 	{
-		Query query = getSession().createQuery("select model.event.eventId,model.event.name from EventUser model where date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId  and model.event.parentEventId is null");
+		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.eventStartTime,model.event.eventEndTime," +
+				" model.event.startTime, model.event.endTime  from EventUser model where date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId is null ");
 		query.setDate("currentDate", currentDate);
 		query.setParameter("userId", userId);
 		return query.list();
@@ -36,7 +37,8 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	
 	public List<Object[]> getEventsByUserAndParentIds(Long userId,Date currentDate,List<Long> parentEventIds)
 	{
-		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.parentEventId,model.event.description,model.event.startTime,model.event.endTime,model.event.isInviteeExist from EventUser model where  " +
+		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.parentEventId,model.event.description,model.event.startTime,model.event.endTime,model.event.isInviteeExist," +
+				" model.event.entryLimit, model.event.serverWorkMode, model.event.tabWorkMode,date(model.event.eventStartTime),date(model.event.eventEndTime) from EventUser model where  " +
 				" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId in(:parentEventIds)");
 		query.setDate("currentDate", currentDate);
 		query.setParameter("userId", userId);
