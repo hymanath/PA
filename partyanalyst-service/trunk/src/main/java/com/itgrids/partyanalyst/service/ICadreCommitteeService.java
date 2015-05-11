@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 
 public interface ICadreCommitteeService {
 	public String genarateOTP(Long userId, Long mobileNo);
@@ -113,5 +114,7 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getPublicRepresenttativesList();
 	 public List<IdNameVO> getPartyEventGroups(Long userId);
 	 public List<IdNameVO> getPartyEvents(Long userId);
-	 public ResultStatus createNewEvent(final Long userId,final  String eventName,final  String description,final  String startDate,final  String endDate, final  Long mainEventId);
+	 public ResultStatus createNewEvent(final Long userId,final  UserEventDetailsVO userEventDetailsVO,final String actionType);
+	 public ResultStatus updateEventSettings(final Long userId,final  UserEventDetailsVO userEventDetailsVO,final String actionType);
+	 public ResultStatus createANewUserForEvents(final Long userId,final String firstName,final String lastName,final String userName,final String password,final String mobileNo);
 }
