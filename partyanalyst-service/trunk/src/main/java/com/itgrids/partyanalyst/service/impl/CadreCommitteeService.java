@@ -39,7 +39,6 @@ import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
-import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrDistrictDetailDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrTotalDetailDAO;
@@ -53,10 +52,11 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventGroupDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
+import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -102,6 +102,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -112,6 +113,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventInvitee;
+import com.itgrids.partyanalyst.model.EventRfidDetails;
+import com.itgrids.partyanalyst.model.EventSurveyUser;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PublicRepresentativeType;
@@ -196,7 +199,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	private IEventDAO eventDAO;
 	private IEventInviteeDAO eventInviteeDAO;
+	private IEventSurveyUserDAO eventSurveyUserDAO;
+	private IEventRfidDetailsDAO eventRfidDetailsDAO;
 	
+	
+	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
+		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
+	}
+
+	public void setEventSurveyUserDAO(IEventSurveyUserDAO eventSurveyUserDAO) {
+		this.eventSurveyUserDAO = eventSurveyUserDAO;
+	}
+
 	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
 		this.eventInviteeDAO = eventInviteeDAO;
 	}
@@ -12102,7 +12116,7 @@ return mandalList;
 		return count;		 	
 	 }
 	 
-	 public ResultStatus createNewEvent(final Long userId,final  String eventName,final  String description,final  String startDate,final  String endDate, final  Long mainEventId)
+	 public ResultStatus createNewEvent(final Long userId,final  UserEventDetailsVO userEventDetailsVO,final String actionType)
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try {
@@ -12110,20 +12124,30 @@ return mandalList;
 				 public Object doInTransaction(TransactionStatus status) {
 					 DateUtilService dateService = new DateUtilService();
 					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
-					 
-					 Event event = new Event();
-					 event.setName(eventName);
-					 event.setDescription(description);
+					 Event event = null;
+					 if(actionType != null && actionType.trim().equalsIgnoreCase("update"))
+					 {
+						 event = eventDAO.get(userEventDetailsVO.getEventId().longValue());
+					 }
+					 else
+					 {
+						 event = new Event();
+					 }
+					
+					 event.setName(userEventDetailsVO.getUserName());
+					 event.setDescription(userEventDetailsVO.getStatus());
 					 event.setInsertedTime(dateService.getCurrentDateAndTime());
 					 try{
-					 event.setEventStartTime(foramt.parse(startDate));
-					 event.setEventEndTime(foramt.parse(endDate));
+						 event.setEventStartTime(foramt.parse(userEventDetailsVO.getStartDate()));
+						 event.setEventEndTime(foramt.parse(userEventDetailsVO.getEndDate()));
+						 event.setStartTime(userEventDetailsVO.getStartTime());
+						 event.setEndTime(userEventDetailsVO.getEndTime());
 					 }catch(Exception e){}
 					 
 					// event.setIsEnabled("Y");
-					 if(mainEventId.longValue() != 0L)
+					 if(userEventDetailsVO.getMainEventId().longValue() != 0L)
 					 {
-						 event.setParentEventId(mainEventId);
+						 event.setParentEventId(userEventDetailsVO.getMainEventId());
 					 }
 					 else
 					 {
@@ -12151,5 +12175,93 @@ return mandalList;
 		}
 		 return resultStatus;
 	 }
+	 
+	 public ResultStatus createANewUserForEvents(final Long userId,final String firstName,final String lastName,final String userName,final String password,final String mobileNo)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 String status = (String) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 DateUtilService dateService = new DateUtilService();
+					 EventSurveyUser eventSurveyUser = new EventSurveyUser();
+					 eventSurveyUser.setUserName(userName);
+					 eventSurveyUser.setPassWord(password);
+					 eventSurveyUser.setFirstName(firstName);
+					 eventSurveyUser.setLastName(lastName);
+					 eventSurveyUser.setMobile(mobileNo);
+					 eventSurveyUser.setUserId(userId);
+					 eventSurveyUser.setInsertedTime(dateService.getCurrentDateAndTime());
+					 eventSurveyUserDAO.save(eventSurveyUser);
+					 return "success";
+					 
+				 }});
+			 
+			 if(status != null)
+			 {
+				 resultStatus.setResultCode(0);
+				 resultStatus.setMessage("success");
+			 }
+			 else
+			 {
+				 resultStatus.setResultCode(1);
+				 resultStatus.setMessage("error");
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception rised in createANewUserForEvents() while closing write operation",e);
+			 resultStatus.setResultCode(1);
+			 resultStatus.setMessage("error");
+		}
+		 return resultStatus;
+	 }
+	 
+	 
+	 public ResultStatus updateEventSettings(final Long userId,final  UserEventDetailsVO userEventDetailsVO,final String actionType)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 String status = (String) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 DateUtilService dateService = new DateUtilService();
+					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
+					 EventRfidDetails eventRfidDetails = null;
+					 if(actionType != null && actionType.trim().equalsIgnoreCase("update"))
+					 {
+						 List<Long> eventsIds = new ArrayList<Long>();
+						 eventsIds.add(userEventDetailsVO.getEventId().longValue());
+						 List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventsIds);
+					 }
+					 else
+					 {
+						 eventRfidDetails = new EventRfidDetails();
+						 //eventRfidDetails.setEvent(event);
+						// eventRfidDetails.setBlockNo(blockNo);
+						// eventRfidDetails.setSectorNo(sectorNo);
+						// eventRfidDetails.setOrderNo(orderNo);
+						// eventRfidDetails.setRegText(regText);
+						 
+					 }
+
+					 return "success";
+					 
+				 }});
+			 
+			 if(status != null)
+			 {
+				 resultStatus.setResultCode(0);
+				 resultStatus.setMessage("success");
+			 }
+			 else
+			 {
+				 resultStatus.setResultCode(1);
+				 resultStatus.setMessage("error");
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception rised in createNewEvent() while closing write operation",e);
+			 resultStatus.setResultCode(1);
+			 resultStatus.setMessage("error");
+		}
+		 return resultStatus;
+	 }
+	 
 	 
 }

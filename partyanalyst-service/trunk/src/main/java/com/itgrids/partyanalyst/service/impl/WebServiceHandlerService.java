@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventUserDAO;
@@ -42,13 +43,13 @@ import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.EventAttendee;
+import com.itgrids.partyanalyst.model.EventRfidDetails;
 import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
@@ -121,10 +122,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IEventAttendeeDAO eventAttendeeDAO;
     @Autowired
     private IVoterDAO voterDAO;
-    
-    
-    
-    
+    private IEventRfidDetailsDAO eventRfidDetailsDAO;
+   
+	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
+		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
+	}
+
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}
@@ -1624,11 +1627,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
    public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo)
 	{
-		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+		// List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
 		 UserEventDetailsVO userEventDetailsVO = null;
 		 DateUtilService date = new DateUtilService();
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		 SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss a");
+		// SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss a");
+		 SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
 		try{
 			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
 			if(list != null && list.size() > 0)
@@ -1656,11 +1660,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					}
 				}
 				
-				
-				
-				
 				//eventSurveyUserLoginDetailsDAO.saveCadreFromAndroid(voterDetails)
-				List<Long> parentIds = new ArrayList<Long>();
+				List<Long> eventsIdsList = new ArrayList<Long>();
 				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
 				if(parentEvent != null && parentEvent.size() > 0)
 				{
@@ -1671,9 +1672,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						eventVo.setId((Long)params[0]);
 						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
-						parentIds.add((Long)params[0]);
+						eventsIdsList.add((Long)params[0]);
 					}
-					List<Object[]> events = eventUserDAO.getEventsByUserAndParentIds(userEventDetailsVO.getId(),date.getCurrentDateAndTime(),parentIds);
+					List<Object[]> events = eventUserDAO.getEventsByUserAndParentIds(userEventDetailsVO.getId(),date.getCurrentDateAndTime(),eventsIdsList);
+					
 					if(events != null && events.size() > 0)
 					{
 						for(Object[] params : events)
@@ -1688,6 +1690,29 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setStartTime(TimeForm(params[4].toString()));
 								if(params[5]!= null)
 								childEventVo.setEndTime(TimeForm(params[5]!= null?params[5].toString():""));
+
+								childEventVo.setEntryLimit(params[7] != null ? Long.valueOf(params[7].toString()) : 0L);
+								childEventVo.setServerWorkMode(params[8] != null ? params[8].toString() : "");
+								childEventVo.setTabWorkMode(params[9] != null ? params[9].toString() : "");
+								childEventVo.setStartDate(params[10] != null ? dateFormate.format(params[10]) : "");
+								childEventVo.setEndDate(params[11] != null ? dateFormate.format(params[11]) : "");
+								
+								List<Long> eventIds = new ArrayList<Long>();
+								eventIds.add(childEventVo.getEventId());
+								List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventIds);	
+								
+								if(eventRfidDetailsList != null && eventRfidDetailsList.size()>0){
+									for (Object[] event : eventRfidDetailsList)
+									{
+										UserEventDetailsVO vo = new UserEventDetailsVO();
+										vo.setRFID(event[1] != null ? event[1].toString() : "");
+										vo.setRegText(event[2] != null ? event[2].toString() : "");
+										vo.setSectorNo(event[3] != null ? Long.valueOf(event[3].toString().trim()) : 0L);
+										vo.setBlockNo(event[4] != null ? Long.valueOf(event[4].toString().trim()) : 0L);
+										vo.setOrderNo(event[5] != null ? Long.valueOf(event[5].toString().trim()) : 0L);
+										childEventVo.getSubList().add(vo);
+									}
+								}
 								parentVo.getSubList().add(childEventVo);
 							}
 						}	
