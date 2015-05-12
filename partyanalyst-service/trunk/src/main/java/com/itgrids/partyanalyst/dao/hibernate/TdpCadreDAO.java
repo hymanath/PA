@@ -4918,6 +4918,89 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 			
 		}
+		public String checkCardNumberExists(Long tdpCadreId)
+		{
+			Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.tdpCadreId=:tdpCadreId");
+			query.setParameter("tdpCadreId", tdpCadreId);
+			return (String) query.uniqueResult();
+			
+		}
 		
 		
+		public List<String> getCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model " +
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is not null ");
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(distId!=null){
+				qry.setParameter("districtId", distId);
+			}
+			if(mandalId!=null){
+				qry.setParameter("tehsilId", mandalId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
+		
+		public List<String> getNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model " +
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is null ");
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(distId!=null){
+				qry.setParameter("districtId", distId);
+			}
+			if(mandalId!=null){
+				qry.setParameter("tehsilId", mandalId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
+		
+		public List<Object[]> getCadrePartialDetailsByMemberShip(List<String> memberCardNos)	{
+			Query query = getSession().createQuery("select model.memberShipNo , " +
+					" model.voterId," +
+					" model.firstname," +
+					" model.voter.voterId," +
+					" model.voter.voterIDCardNo,model.mobileNo," +
+					" from TdpCadre model " +
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
+			query.setParameterList("memberCardNos", memberCardNos);
+			return query.list();
+		}
+
 }

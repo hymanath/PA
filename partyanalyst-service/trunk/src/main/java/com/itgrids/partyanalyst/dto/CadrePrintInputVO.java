@@ -20,8 +20,31 @@ public class CadrePrintInputVO {
 	private String trNo;
 	private String cardNo;
 	private Long constituecyNo;
+	private String isAddress;
+	private String memberShipNumber;
+	
+	private String name;
 	
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMemberShipNumber() {
+		return memberShipNumber;
+	}
+	public void setMemberShipNumber(String memberShipNumber) {
+		this.memberShipNumber = memberShipNumber;
+	}
+	public String getIsAddress() {
+		return isAddress;
+	}
+	public void setIsAddress(String isAddress) {
+		this.isAddress = isAddress;
+	}
 	
 	public Long getConstituecyNo() {
 		return constituecyNo;
