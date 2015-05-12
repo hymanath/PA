@@ -2041,5 +2041,9 @@
 	<bean id="eventRfidDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventRfidDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+		<bean id="cadreCardNumberUpdationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCardNumberUpdationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		

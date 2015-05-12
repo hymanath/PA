@@ -2387,7 +2387,9 @@
 		<property name="tirupathiByeleMobileBoothDAO" ref="tirupathiByeleMobileBoothDAO" />			
 		<property name="twoWayMessageDAO" ref="twoWayMessageDAO" />	
 		<property name="cadreMissedCallCampaignDAO" ref="cadreMissedCallCampaignDAO" />
-		<property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />					
+		<property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	
+		<property name="cadreCardNumberUpdationDAO" ref="cadreCardNumberUpdationDAO" />	
+						
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">

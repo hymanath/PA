@@ -804,6 +804,54 @@ public class WebServiceHandler {
 	}
 	
 	@POST
+	@Path("/getTDPCadreDetailsForSearch")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getTDPCadreDetailsForSearch(CadrePrintInputVO inputVO){
+		
+		try{
+			
+			if(inputVO==null){
+				return "Inputs Are Empty";
+			}
+			
+			
+			Object object = null;
+			object = webServiceHandlerService.getTDPCadreDetailsForSearch(inputVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
+	@Path("/getTDPCadreDetailsByMemberShip")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO inputVO){
+		
+		try{
+			
+			if(inputVO==null){
+				return "Inputs Are Empty";
+			}
+			
+			
+			Object object = null;
+			object = webServiceHandlerService.getTDPCadreDetailsByMemberShip(inputVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
 	@Path("/updatePrintedCardDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -812,6 +860,23 @@ public class WebServiceHandler {
 		try{
 			Object object = null;
 			object = webServiceHandlerService.updatePrintedCardDetails(inputVOList);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	@POST
+	@Path("/updatePrintedCardInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.updatePrintedCardInfo(inputVOList);
 			return object;
 		}
 		catch(Exception e)
