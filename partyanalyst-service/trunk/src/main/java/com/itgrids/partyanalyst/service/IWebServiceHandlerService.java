@@ -90,5 +90,8 @@ public interface IWebServiceHandlerService {
 	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo);
 	
 	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo);
+	 public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList);
+	 public Object getTDPCadreDetailsForSearch(CadrePrintInputVO input);
+	 public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
 		
 }

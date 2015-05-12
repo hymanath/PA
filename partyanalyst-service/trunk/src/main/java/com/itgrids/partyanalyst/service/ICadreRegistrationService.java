@@ -158,4 +158,7 @@ public interface ICadreRegistrationService {
 	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task);
 
 	public List<MissedCallsDetailsVO> missedCallDetailsForADistrict(Long districtId,String startDateString,String endDateString);
+	public String updatePrintedCardInfo(final List<CardNFCDetailsVO> inputList);
+	public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input);
+	public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
 }

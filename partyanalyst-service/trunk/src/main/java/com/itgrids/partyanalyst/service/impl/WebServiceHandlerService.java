@@ -1186,9 +1186,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
+	public Object getTDPCadreDetailsForSearch(CadrePrintInputVO input){
+		List<CadrePrintVO> status = cadreRegistrationService.getTDPCadreDetailsForSearch(input);
+		return status;
+	}
+	public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input){
+		List<CadrePrintVO> status = cadreRegistrationService.getTDPCadreDetailsByMemberShip(input);
+		return status;
+	}
 	
 	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList){
 		String status = cadreRegistrationService.updatePrintedCardDetails(inputVOList);
+		return status;
+	}
+	
+	// Print/Reprint
+	public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList){
+		String status = cadreRegistrationService.updatePrintedCardInfo(inputVOList);
 		return status;
 	}
 	
@@ -1779,6 +1793,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo)
 		{
 		 UserEventDetailsVO returnVo = new UserEventDetailsVO();
+		 DateUtilService date = new DateUtilService();
 		 try{
 			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 	String memberShipNumber = "AP14"+inputVo.getMemberShipNo();
@@ -1802,7 +1817,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	eventAttendee.setInsertedBy(inputVo.getId());
 		 	eventAttendee.setEventId(inputVo.getEventId());
 		 	eventAttendee.setAttendedTime(formatter.parse(inputVo.getLoginTimeStamp().toString()));
-		 	eventAttendee.setInsertedTime(formatter.parse(inputVo.getLoginTimeStamp().toString()));
+		 	eventAttendee.setInsertedTime(date.getCurrentDateAndTime());
 		 	
 		 	if(inputVo.getStatus() != null)
 		 	eventAttendee.setUniqueKey(inputVo.getStatus());
@@ -1825,7 +1840,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 catch(Exception e)
 		 {
 			 Log.error("Exception Occured in getMatchedEvent() method",e) ;
-			 e.printStackTrace();
+			 
 				returnVo.setStatus("fail");
 		 }
 		return returnVo;

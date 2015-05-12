@@ -49,6 +49,7 @@ import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreCardNumberUpdationDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
@@ -140,6 +141,7 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.CadreCardNumberUpdation;
 import com.itgrids.partyanalyst.model.CadreMissedCallCampaign;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
@@ -273,6 +275,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITwoWayMessageDAO twoWayMessageDAO;
 	private ICadreMissedCallCampaignDAO cadreMissedCallCampaignDAO;
 	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
+	private ICadreCardNumberUpdationDAO cadreCardNumberUpdationDAO;
+	
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -288,6 +293,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
 		return cadreMissedCallCampaignDAO;
+	}
+
+	public ICadreCardNumberUpdationDAO getCadreCardNumberUpdationDAO() {
+		return cadreCardNumberUpdationDAO;
+	}
+
+	public void setCadreCardNumberUpdationDAO(
+			ICadreCardNumberUpdationDAO cadreCardNumberUpdationDAO) {
+		this.cadreCardNumberUpdationDAO = cadreCardNumberUpdationDAO;
 	}
 
 	public void setCadreMissedCallCampaignDAO(
@@ -5611,6 +5625,433 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return finalList;
 	}
 	
+	
+	
+public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
+	
+	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
+	try{
+		String date = input.getDate();
+		String trNo = input.getTrNo();
+		String constituency = input.getConstituency();
+		Long constiNo = input.getConstituecyNo();
+		String mobileNo = input.getMobileNo();
+		Long constiId = input.getConstituencyId();
+		Long distId = input.getDistrictId();
+		Long mandalId = input.getMandalId();
+		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date srvyDt = null;
+		/*if(date!=null){
+			srvyDt = originalFormat.parse(date);
+		}*/
+		
+		/*if(date!=null && date.trim().length()>0){
+			sb.append(" and date(model.surveyTime) =:surveyDate");
+		}*/
+		if(trNo!=null && trNo.trim().length()>0){
+			sb.append(" and model.refNo =:trNo");
+		}
+		
+		if(mobileNo!=null && mobileNo.trim().length()>0){
+			sb.append(" and model.mobileNo = :mobileNo");
+		}
+
+		if(constiNo!=null){
+			sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
+		}
+		if(distId!=null){
+			sb.append(" and model.userAddress.district.districtId =:districtId");
+		}
+		if(mandalId!=null){
+			sb.append(" and model.userAddress.tehsil.tehsilId =:tehsilId");
+		}
+		if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
+		{
+		String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
+		String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
+	 	StringBuilder queryStr = new StringBuilder();
+	 	sb.append(" and (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		}
+		if(input.getName() != null && input.getName().trim().length() > 0)
+		{
+			sb.append(" and model.firstname like '"+input.getName().trim()+"'");
+		}
+		Set<String> voterMemberCards = new HashSet<String>();
+		Set<String> nonVoterMemberCards = new HashSet<String>();
+		
+		List<String> memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
+		List<String> memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
+		
+		if(memberCards!=null && memberCards.size()>0)
+			voterMemberCards.addAll(memberCards);
+		
+		if(memberCardsForNonVoters!=null && memberCardsForNonVoters.size()>0)
+			nonVoterMemberCards.addAll(memberCardsForNonVoters);
+		
+		if(voterMemberCards!=null && voterMemberCards.size()>0 ){
+			if(input.getIsAddress().equalsIgnoreCase("partial"))
+			{
+				
+			}
+			else
+			{
+			List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
+			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(voterMemberCardsList);
+			if(vtrDetails != null && vtrDetails.size() > 0){
+				for(Object[] obj:vtrDetails){
+					Long voterId = Long.valueOf(obj[1].toString());
+					UserAddress userAddress = new UserAddress()	;
+					CadrePrintVO returnVO = new CadrePrintVO();
+					
+					Long userAddressId = 0l;
+					if(obj[12]!=null){
+						userAddressId = Long.valueOf(obj[12].toString());
+					} 
+					
+					//getVoterAddressDetails(voterId,userAddress,null);
+					
+					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
+					
+					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
+					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
+					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
+					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
+					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
+					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
+					try{
+					if(obj[10] != null)
+					{
+						String photoType = obj[10].toString();
+						if(photoType.equalsIgnoreCase("NEW"))
+						{
+							String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+							returnVO.setVoterImgPath(url);
+						
+						}
+						else if(photoType.equalsIgnoreCase("CADRE"))
+						{							
+								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+								returnVO.setVoterImgPath(url);
+						}
+						else
+						{
+							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							returnVO.setVoterImgPath(url);
+						}
+					}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					if(returnVO.getVoterId()==null){
+						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}else{
+						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}
+					
+					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
+					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
+					finalList.add(returnVO);
+				}
+			}	
+			}
+		}
+		
+		if(nonVoterMemberCards !=null && nonVoterMemberCards.size()>0){
+			List<String> nonVoterMemberCardsList = new ArrayList<String>(nonVoterMemberCards);
+			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			if(vtrDetails != null && vtrDetails.size() > 0){
+				for(Object[] obj:vtrDetails){
+					//Long voterId = Long.valueOf(obj[1].toString());
+					UserAddress userAddress = new UserAddress()	;
+					CadrePrintVO returnVO = new CadrePrintVO();
+					Long userAddressId = 0l;
+					if(obj[10]!=null){
+						userAddressId = Long.valueOf(obj[10].toString());
+					} 
+					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
+					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					/*returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
+					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");*/
+					returnVO.setDataSourceType(obj[4] != null ? obj[4].toString() : "");
+					returnVO.setTdpCadreId(obj[5] != null ? Long.valueOf(obj[5].toString()) : 0l);
+					returnVO.setRefNumber(obj[6] != null ? obj[6].toString() : "");
+					returnVO.setMobileNo(obj[7] != null ? obj[7].toString() : "");
+					try{
+					if(obj[8] != null)
+					{
+						String photoType = obj[8].toString();
+						if(photoType.equalsIgnoreCase("NEW"))
+						{
+							String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+							returnVO.setVoterImgPath(url);
+						
+						}
+						else if(photoType.equalsIgnoreCase("CADRE"))
+						{							
+								String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+								returnVO.setVoterImgPath(url);
+						}
+						else
+						{
+							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							returnVO.setVoterImgPath(url);
+						}
+					}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					if(returnVO.getVoterId()==null){
+						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}else{
+						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}
+					
+					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
+					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
+					finalList.add(returnVO);
+				}
+				
+			}
+		}
+		
+	
+}catch(Exception e){
+	LOG.error("Exception Raised in getTDPCadreDetailsBySearch",e);
+}
+	
+	return finalList;
+}
+	
+
+public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input){
+	
+	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
+	try{
+		
+		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date srvyDt = null;
+		
+		if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
+		{
+		String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
+		String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
+	 	StringBuilder queryStr = new StringBuilder();
+	 	sb.append(" and (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		}
+		
+		Set<String> voterMemberCards = new HashSet<String>();
+		Set<String> nonVoterMemberCards = new HashSet<String>();
+		
+		List<String> memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
+		List<String> memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
+		
+		if(memberCards!=null && memberCards.size()>0)
+			voterMemberCards.addAll(memberCards);
+		
+		if(memberCardsForNonVoters!=null && memberCardsForNonVoters.size()>0)
+			nonVoterMemberCards.addAll(memberCardsForNonVoters);
+		
+		if(voterMemberCards!=null && voterMemberCards.size()>0 ){
+			
+			List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
+			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(voterMemberCardsList);
+			if(vtrDetails != null && vtrDetails.size() > 0){
+				for(Object[] obj:vtrDetails){
+					Long voterId = Long.valueOf(obj[1].toString());
+					UserAddress userAddress = new UserAddress()	;
+					CadrePrintVO returnVO = new CadrePrintVO();
+					
+					Long userAddressId = 0l;
+					if(obj[12]!=null){
+						userAddressId = Long.valueOf(obj[12].toString());
+					} 
+					
+					//getVoterAddressDetails(voterId,userAddress,null);
+					
+					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
+					
+					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
+					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
+					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
+					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
+					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
+					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
+					try{
+					if(obj[10] != null)
+					{
+						String photoType = obj[10].toString();
+						if(photoType.equalsIgnoreCase("NEW"))
+						{
+							String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+							returnVO.setVoterImgPath(url);
+						
+						}
+						else if(photoType.equalsIgnoreCase("CADRE"))
+						{							
+								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+								returnVO.setVoterImgPath(url);
+						}
+						else
+						{
+							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							returnVO.setVoterImgPath(url);
+						}
+					}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					if(returnVO.getVoterId()==null){
+						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}else{
+						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}
+					
+					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
+					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
+					finalList.add(returnVO);
+				}
+			}	
+			
+		}
+		
+		if(nonVoterMemberCards !=null && nonVoterMemberCards.size()>0){
+			List<String> nonVoterMemberCardsList = new ArrayList<String>(nonVoterMemberCards);
+			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			if(vtrDetails != null && vtrDetails.size() > 0){
+				for(Object[] obj:vtrDetails){
+					//Long voterId = Long.valueOf(obj[1].toString());
+					UserAddress userAddress = new UserAddress()	;
+					CadrePrintVO returnVO = new CadrePrintVO();
+					Long userAddressId = 0l;
+					if(obj[10]!=null){
+						userAddressId = Long.valueOf(obj[10].toString());
+					} 
+					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
+					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					/*returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
+					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");*/
+					returnVO.setDataSourceType(obj[4] != null ? obj[4].toString() : "");
+					returnVO.setTdpCadreId(obj[5] != null ? Long.valueOf(obj[5].toString()) : 0l);
+					returnVO.setRefNumber(obj[6] != null ? obj[6].toString() : "");
+					returnVO.setMobileNo(obj[7] != null ? obj[7].toString() : "");
+					try{
+					if(obj[8] != null)
+					{
+						String photoType = obj[8].toString();
+						if(photoType.equalsIgnoreCase("NEW"))
+						{
+							String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+							returnVO.setVoterImgPath(url);
+						
+						}
+						else if(photoType.equalsIgnoreCase("CADRE"))
+						{							
+								String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+								returnVO.setVoterImgPath(url);
+						}
+						else
+						{
+							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							returnVO.setVoterImgPath(url);
+						}
+					}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					if(returnVO.getVoterId()==null){
+						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}else{
+						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						if(names != null && names.size() > 0){
+							returnVO.setVoterName(names.get(0));
+						}
+					}
+					
+					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
+					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
+					finalList.add(returnVO);
+				}
+				
+			}
+		}
+		
+	
+}catch(Exception e){
+	LOG.error("Exception Raised in getTDPCadreDetailsBySearch",e);
+}
+	
+	return finalList;
+}
+
+
+
 
 	public String updatePrintedCardDetails(final List<CardNFCDetailsVO> inputList){
 		LOG.debug("Entered Into updatePrintedCardDetails");
@@ -5647,6 +6088,49 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return returnMsg;
 	}
+	public String updatePrintedCardInfo(final List<CardNFCDetailsVO> inputList){
+		LOG.debug("Entered Into updatePrintedCardDetails");
+		final DateUtilService date = new DateUtilService();
+		String returnMsg = "";
+		try {
+			if(inputList!=null && inputList.size()>0){
+				try{
+					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
+						 public Object doInTransaction(TransactionStatus status) {
+							 for(CardNFCDetailsVO cardNFCDetailsVO: inputList)
+							 {		
+								 String cardNumber = tdpCadreDAO.checkCardNumberExists(cardNFCDetailsVO.getTdpCadreId());
+								 CadreCardNumberUpdation  cadreCardNumberUpdation = new CadreCardNumberUpdation();
+								 
+								 Integer count =  tdpCadreDAO.updateNFCCardNumberByTdpCadreId(cardNFCDetailsVO.getTdpCadreId(),cardNFCDetailsVO.getNfcNumber());
+								 if(count != null && count > 0)
+								 {
+									 cadreCardNumberUpdation.setCardNumber(cardNumber);
+									 cadreCardNumberUpdation.setTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
+									 cadreCardNumberUpdation.setInsertedTime(date.getCurrentDateAndTime());
+									 cadreCardNumberUpdation.setUpdatedTime(date.getCurrentDateAndTime());
+									 cadreCardNumberUpdationDAO.save(cadreCardNumberUpdation);	
+								 }
+							 }
+							 return "SUCCESS";
+						 }});
+				}catch (Exception e) {
+					LOG.error("Exception Raised in updatePrintedCardDetails" + e);
+					returnMsg = "FAIL";
+				}
+			}else{
+				returnMsg = "FAIL";
+			}
+			
+		} catch (Exception e) {
+			returnMsg = "EXCEPTION";
+			LOG.error("Exception Raised in updatePrintedCardDetails",e);
+		}
+		
+		
+		return returnMsg;
+	}
+	
 	
 	/**
 	 * 
