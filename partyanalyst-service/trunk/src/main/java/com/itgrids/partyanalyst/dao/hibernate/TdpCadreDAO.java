@@ -4996,8 +4996,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" model.voterId," +
 					" model.firstname," +
 					" model.voter.voterId," +
-					" model.voter.voterIDCardNo,model.mobileNo," +
+					" model.voter.voterIDCardNo,model.mobileNo,model.userAddress.userAddressId,model.tdpCadreId,model.cardNumber" +
 					" from TdpCadre model " +
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
+			query.setParameterList("memberCardNos", memberCardNos);
+			return query.list();
+		}
+		
+		public List<Object[]> getCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos)	{
+			Query query = getSession().createQuery("select model.memberShipNo , " +
+					" model.voterId," +
+					" model.firstname," +
+					" model.tdpCadreId," +
+					" model.mobileNo," +
+					" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 			query.setParameterList("memberCardNos", memberCardNos);
 			return query.list();
