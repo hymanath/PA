@@ -180,7 +180,8 @@
                 
                 </div>
                 <div class="panel-body" >
-                     <div id="districtTableId"></div>
+				<img id="distAjax" src="images/icons/search.gif" style="display:none;"/>
+                     <div id="districtTableId"> </div>
                 </div>
             </div>
 			
@@ -199,6 +200,7 @@
                 
                 </div>
                 <div class="panel-body">
+				<img id="constAjax" src="images/icons/search.gif" style="display:none;"/>
                    <div id="constiTableId"></div>
                 </div>
             </div>
@@ -455,9 +457,9 @@ $(".maineventCls").each(function(){
 function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 {
 if(reportLevelId == 3)
-	$("#districtTableId").html('');
+	$("#distAjax").show();
 	else
-	$("#constiTableId").html('');
+	$("#constAjax").show();
 	var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
@@ -480,7 +482,15 @@ if(reportLevelId == 3)
 	});
 }
 function buildDistrictTable(result,reportLevelId){
+	if(reportLevelId == 3)
+	{
+	$("#distAjax").hide();
+	}
+	else
+	{
 	
+	$("#constAjax").hide();
+	}
 	var str='';
 	str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
 	str+='<tr>';
