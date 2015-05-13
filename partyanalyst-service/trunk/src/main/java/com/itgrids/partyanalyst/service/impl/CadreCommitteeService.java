@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IEventGroupDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
@@ -115,6 +116,7 @@ import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventInvitee;
 import com.itgrids.partyanalyst.model.EventRfidDetails;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
+import com.itgrids.partyanalyst.model.EventUser;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PublicRepresentativeType;
@@ -201,8 +203,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IEventInviteeDAO eventInviteeDAO;
 	private IEventSurveyUserDAO eventSurveyUserDAO;
 	private IEventRfidDetailsDAO eventRfidDetailsDAO;
+	private IEventUserDAO eventUserDAO;
 	
 	
+	public IEventUserDAO getEventUserDAO() {
+		return eventUserDAO;
+	}
+
 	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
 		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
 	}
@@ -12134,9 +12141,11 @@ return mandalList;
 						 event = new Event();
 					 }
 					
-					 event.setName(userEventDetailsVO.getUserName());
+					 event.setName(userEventDetailsVO.getEventName());
 					 event.setDescription(userEventDetailsVO.getStatus());
 					 event.setInsertedTime(dateService.getCurrentDateAndTime());
+					 event.setServerWorkMode(userEventDetailsVO.getServerWorkMode());
+					 event.setTabWorkMode(userEventDetailsVO.getTabWorkMode());
 					 try{
 						 event.setEventStartTime(foramt.parse(userEventDetailsVO.getStartDate()));
 						 event.setEventEndTime(foramt.parse(userEventDetailsVO.getEndDate()));
@@ -12153,6 +12162,8 @@ return mandalList;
 					 {
 						 event.setParentEventId(null);
 					 }
+					 
+					 eventDAO.save(event);
 					 
 					 return "success";
 					 
@@ -12221,25 +12232,33 @@ return mandalList;
 		 try {
 			 String status = (String) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
-					 DateUtilService dateService = new DateUtilService();
-					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
 					 EventRfidDetails eventRfidDetails = null;
 					 if(actionType != null && actionType.trim().equalsIgnoreCase("update"))
 					 {
-						 List<Long> eventsIds = new ArrayList<Long>();
-						 eventsIds.add(userEventDetailsVO.getEventId().longValue());
-						 List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventsIds);
-					 }
-					 else
-					 {
-						 eventRfidDetails = new EventRfidDetails();
-						 //eventRfidDetails.setEvent(event);
-						// eventRfidDetails.setBlockNo(blockNo);
-						// eventRfidDetails.setSectorNo(sectorNo);
-						// eventRfidDetails.setOrderNo(orderNo);
-						// eventRfidDetails.setRegText(regText);
+						try {
+								 List<Long> eventsIds = new ArrayList<Long>();
+								 eventsIds.add(userEventDetailsVO.getEventId().longValue());
+								 eventRfidDetailsDAO.deleteEventRFIDDetailsByEventIds(eventsIds);
+							} catch (Exception e) {e.printStackTrace();}
 						 
 					 }
+						
+					 	Long orderNo=0L;
+						
+						if(userEventDetailsVO.getSubList() != null && userEventDetailsVO.getSubList().size()>0)
+						{
+							for (UserEventDetailsVO rfdetailsVO : userEventDetailsVO.getSubList()) {
+								orderNo = orderNo+1;
+								eventRfidDetails = new EventRfidDetails();
+								eventRfidDetails.setEvent(eventDAO.get(userEventDetailsVO.getEventId()));
+								eventRfidDetails.setRfidOperation(userEventDetailsVO.getRFID());
+								eventRfidDetails.setSectorNo(Integer.valueOf(rfdetailsVO.getSectorNo().toString()));
+								eventRfidDetails.setBlockNo(Integer.valueOf(rfdetailsVO.getBlockNo().toString()));
+								eventRfidDetails.setRegText(rfdetailsVO.getRegText());
+								eventRfidDetails.setOrderNo(orderNo);
+								eventRfidDetailsDAO.save(eventRfidDetails);
+							}
+						}
 
 					 return "success";
 					 
@@ -12256,12 +12275,47 @@ return mandalList;
 				 resultStatus.setMessage("error");
 			 }
 		} catch (Exception e) {
-			LOG.error("Exception rised in createNewEvent() while closing write operation",e);
+			LOG.error("Exception rised in updateEventSettings() while closing write operation",e);
 			 resultStatus.setResultCode(1);
 			 resultStatus.setMessage("error");
 		}
 		 return resultStatus;
 	 }
 	 
+	 public ResultStatus assignEventForUser(final Long userId,final  UserEventDetailsVO userEventDetailsVO)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 String status = (String) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 DateUtilService dateService = new DateUtilService();
+					 
+					 EventUser eventUser = new EventUser();
+					 eventUser.setEventId(userEventDetailsVO.getEventId());
+					 eventUser.setUserId(userEventDetailsVO.getUserId());
+					 eventUser.setInsertedBy(userId);
+					 eventUser.setInsertedTime(dateService.getCurrentDateAndTime());
+					 eventUserDAO.save(eventUser);
+					 return "success";
+					 
+				 }});
+			 
+			 if(status != null)
+			 {
+				 resultStatus.setResultCode(0);
+				 resultStatus.setMessage("success");
+			 }
+			 else
+			 {
+				 resultStatus.setResultCode(1);
+				 resultStatus.setMessage("error");
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception rised in assignEventForUser() while closing write operation",e);
+			 resultStatus.setResultCode(1);
+			 resultStatus.setMessage("error");
+		}
+		 return resultStatus;
+	 }
 	 
 }
