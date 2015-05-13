@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -1652,7 +1653,7 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	
-	public String createANewEvent()
+	public String createORUpdateANewEvent()
 	{
 		try{
 			HttpSession session = request.getSession();
@@ -1663,8 +1664,112 @@ public String getSummaryDetails(){
 				return Action.ERROR;
 			}
 			jObj = new JSONObject(getTask());
+			UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
+			userEventDetailsVO.setEventId(jObj.getLong("eventId"));
+			userEventDetailsVO.setEventName(jObj.getString("eventName"));
+			userEventDetailsVO.setStatus(jObj.getString("description"));
+			userEventDetailsVO.setStartDate(jObj.getString("startDate"));
+			userEventDetailsVO.setEndDate(jObj.getString("endDate"));
+			userEventDetailsVO.setStartTime(jObj.getString("startTime"));
+			userEventDetailsVO.setEndTime(jObj.getString("endTime"));
+			userEventDetailsVO.setServerWorkMode(jObj.getString("serverMode"));
+			userEventDetailsVO.setTabWorkMode(jObj.getString("tabMode"));
+			userEventDetailsVO.setMainEventId(jObj.getLong("mainEventId"));
+			String actionType = jObj.getString("actionType");
+			status=cadreCommitteeService.createNewEvent(user.getRegistrationID(),userEventDetailsVO,actionType);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String careateNewUserForEvents()
+	{
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			
-			status=cadreCommitteeService.createNewEvent(user.getRegistrationID(),jObj.getString("eventName"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("mainEventId"));
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			String firstName = jObj.getString("firstName");
+			String lastName = jObj.getString("lastName");
+			String userName = jObj.getString("userName");
+			String password = jObj.getString("password");
+			String mobileNo = jObj.getString("mobileNo");
+			
+			status=cadreCommitteeService.createANewUserForEvents(user.getRegistrationID(),firstName,lastName,userName,password,mobileNo);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateEventSettings()
+	{
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
+			userEventDetailsVO.setEventId(jObj.getLong("eventId"));
+			userEventDetailsVO.setRFID(jObj.getString("rfid"));
+			
+			JSONArray rfidActionsArr = jObj.getJSONArray("rfidActionsArr");
+			
+			if(rfidActionsArr != null && rfidActionsArr.length()>0)
+			{
+				List<UserEventDetailsVO> sublist = new ArrayList<UserEventDetailsVO>();
+				for(int i=0;i<rfidActionsArr.length();i++)
+				{
+					UserEventDetailsVO vo = new UserEventDetailsVO();
+					vo.setRegText(jObj.getString("regText"));
+					vo.setSectorNo(jObj.getLong("sectorNo"));
+					vo.setBlockNo(jObj.getLong("blockNo"));
+					sublist.add(vo);
+				}
+				
+				if(sublist != null && sublist.size()>0)
+				{
+					userEventDetailsVO.setSubList(sublist);
+				}
+			}
+			
+			String actionType = jObj.getString("actionType");
+			
+			status=cadreCommitteeService.updateEventSettings(user.getRegistrationID(),userEventDetailsVO,actionType);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	public String assignEventForUser()
+	{
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
+			userEventDetailsVO.setEventId(jObj.getLong("eventId"));
+			userEventDetailsVO.setUserId(jObj.getLong("userId"));
+			status=cadreCommitteeService.assignEventForUser(user.getRegistrationID(),userEventDetailsVO);
 		}catch(Exception e){
 			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
 		}
