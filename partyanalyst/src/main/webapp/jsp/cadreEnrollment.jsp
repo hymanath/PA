@@ -1094,7 +1094,8 @@ function getCadreImage(id){
 		{
 			$('#cadreNameId').val('');
 			$('#cadreAgeId').val('');
-			//$('#cadreAgeId').val('');
+			$('#gardianNameId').val('');
+			$('#relationTypessId').val('');
 		}
 	
 	});
@@ -2108,7 +2109,7 @@ function getCadreImage(id){
 											</div>		
 										</div>
 									</div>	
-								<!--<div class="m_top10">
+								<div class="m_top10">
 									<div class="row-fluid">
 										
 										<div class="span6">
@@ -2123,7 +2124,7 @@ function getCadreImage(id){
 												<br><span id="relErr" style="color:red;font-size:12px;"></span>
 										</div>
 									</div>
-								</div>-->
+								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
 										  <div class="span6">
