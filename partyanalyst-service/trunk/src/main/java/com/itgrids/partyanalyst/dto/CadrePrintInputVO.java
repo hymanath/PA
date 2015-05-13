@@ -24,9 +24,16 @@ public class CadrePrintInputVO {
 	private String memberShipNumber;
 	
 	private String name;
+	private Long userId;
 	
 	
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getName() {
 		return name;
 	}

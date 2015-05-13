@@ -48,7 +48,15 @@ public class CadrePrintVO implements Serializable{
 	private Long tdpCadreId;
 	
 	private String mobileNo;
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
 	}

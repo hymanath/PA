@@ -13,7 +13,30 @@ public class CardNFCDetailsVO implements Serializable{
 	private String firstCode;
 	private String dataSourceType;
 	private Long tdpCadreId;
+	private Long userId;
+	private String imageBase64String;
+	private String voterName;
 	
+	
+	
+	public String getImageBase64String() {
+		return imageBase64String;
+	}
+	public void setImageBase64String(String imageBase64String) {
+		this.imageBase64String = imageBase64String;
+	}
+	public String getVoterName() {
+		return voterName;
+	}
+	public void setVoterName(String voterName) {
+		this.voterName = voterName;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public Long getVoterId() {
 		return voterId;
 	}
