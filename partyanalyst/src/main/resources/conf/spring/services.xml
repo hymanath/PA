@@ -2389,6 +2389,8 @@
 		<property name="cadreMissedCallCampaignDAO" ref="cadreMissedCallCampaignDAO" />
 		<property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	
 		<property name="cadreCardNumberUpdationDAO" ref="cadreCardNumberUpdationDAO" />	
+		<property name="cardPrintUserDAO" ref="cardPrintUserDAO" />	
+		
 						
      </bean>
       
