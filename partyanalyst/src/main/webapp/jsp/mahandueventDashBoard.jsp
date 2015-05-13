@@ -1117,7 +1117,7 @@ dataArr.push(obj);
                 text: ''
             },
             stackLabels: {
-                enabled: true,
+                enabled: false,
                 style: {
                     fontWeight: 'bold',
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
