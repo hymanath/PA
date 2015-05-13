@@ -5014,5 +5014,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("memberCardNos", memberCardNos);
 			return query.list();
 		}
+		
+		public List<Object[]> getMembershipNosByTdpCadreIds(List<Long> tdpCadreIdsList)
+		{
+			Query query = getSession().createQuery("select model.voterId,model.refNo from TdpCadre model where model.voterId in (:tdpCadreIdsList) and model.isDeleted='N' and model.enrollmentYear = 2014 order by model.tdpCadreId ");
+			query.setParameterList("tdpCadreIdsList",tdpCadreIdsList);
+			return query.list();
+		}
+		
 
 }

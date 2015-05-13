@@ -7922,4 +7922,12 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return (Long)query.uniqueResult();	
 		
 	}
+	
+	public List<Booth> getOtherStateVoterAddressDetails(Long voterId)
+	{
+		Query query = getSession().createQuery("select BPV.booth from BoothPublicationVoter BPV  where BPV.voter.voterId = :voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("voterId", voterId);
+		query.setParameter("publicationDateId", IConstants.OTHER_STATE_PUBLICATION_ID);
+		return query.list();
+	}
 }
