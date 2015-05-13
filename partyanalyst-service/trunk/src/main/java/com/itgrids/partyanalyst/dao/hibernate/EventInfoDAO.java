@@ -124,7 +124,7 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
-			str.append(" and date(model.date) = :startDate group by model.event.eventId,date(model.date)"); 
+			str.append(" and date(model.date) = :startDate group by model.locationValue,model.event.eventId,date(model.date)"); 
 			else
 			str.append(" and date(model.date) >= :startDate and date(model.date) <= :endDate group by model.locationValue,model.eventId,date(model.date) "); 
 		}
