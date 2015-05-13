@@ -454,6 +454,10 @@ $(".maineventCls").each(function(){
 
 function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 {
+if(reportLevelId == 3)
+	$("#districtTableId").html('');
+	else
+	$("#constiTableId").html('');
 	var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
@@ -476,6 +480,7 @@ function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 	});
 }
 function buildDistrictTable(result,reportLevelId){
+	
 	var str='';
 	str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
 	str+='<tr>';
@@ -520,19 +525,19 @@ function buildDistrictTable(result,reportLevelId){
 }
 $("#myonoffswitch").click(function(){
 	if($('#myonoffswitch').is(":checked")){
-	getLocationWiseVisitorsCount(1,1,3);
+	getLocationWiseVisitorsCount(parentEventId,1,3);
 	$("#districtHeading").html("AP DISTRICT WISE");
 	}else{
-	getLocationWiseVisitorsCount(1,36,3);
+	getLocationWiseVisitorsCount(parentEventId,36,3);
 	$("#districtHeading").html("TS DISTRICT WISE");
 	}
 });
 $("#myonoffswitch1").click(function(){
 	if($('#myonoffswitch1').is(":checked")){
-	getLocationWiseVisitorsCount(1,1,4);
+	getLocationWiseVisitorsCount(parentEventId,1,4);
 	$("#constiHeading").html("AP CONSTITUENCY WISE");
 	}else{
-	getLocationWiseVisitorsCount(1,36,4);
+	getLocationWiseVisitorsCount(parentEventId,36,4);
 	$("#constiHeading").html("TS CONSTITUENCY WISE");
 	}
 });
