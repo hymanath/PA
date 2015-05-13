@@ -9989,6 +9989,11 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		<action name="partyEventsManagement" class="eventDetailsAction">
+			<result name="success">/jsp/partyEventsManagement.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 			<action name="insertDataintoEventInfoAction" class="eventDetailsAction" method="insertEventInfo">
 				<result type="json" name="success">
 				<param name="root">resultstatus</param>
@@ -10006,16 +10011,19 @@
 				<param name="root">resultList</param>
 			</result>
 		</action>
+		
 		<action name="getHourWiseSubEventsCountAction" class="eventDetailsAction" method="getHourWiseSubEventsCount">
 				<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>
 		</action>
+		
 		<action name="getEventMemberCountAction" class="eventDetailsAction" method="getEventMemberCount">
 				<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>
 		</action>
+		
 		 <action name="getCasteCategoryGroupWiseCasteDetails" class="cadreRegistrationAction" method="getCasteDetailsForCasteCategory">
 			<result type="json" name="success">
 				<param name="root">selectOptionVOList</param>
@@ -10026,6 +10034,30 @@
 				<param name="root">resultList</param>
 			</result>
 		</action> 
+		
+		<action name="createORUpdateANewEvent" class="cadreCommitteeAction" method="createORUpdateANewEvent">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		
+		<action name="careateANewUserForEvents" class="cadreCommitteeAction" method="careateNewUserForEvents">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		
+		<action name="updateEventsSettings" class="cadreCommitteeAction" method="updateEventSettings">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		
+		<action name="assigningEventForUser" class="cadreCommitteeAction" method="assignEventForUser">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 		
 </package>
 </struts>      
