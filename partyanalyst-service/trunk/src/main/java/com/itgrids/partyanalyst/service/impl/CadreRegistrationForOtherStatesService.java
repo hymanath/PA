@@ -279,6 +279,9 @@ public class CadreRegistrationForOtherStatesService implements
 					}
 				}
 							
+				if (cadreRegistrationVO.getVoterCardNumber() != null  && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0) {
+					tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
+				}
 				
 				if (tdpCadre.getAge() == null || tdpCadre.getAge().longValue() == 0l) {
 					tdpCadre.setAge(cadreRegistrationVO.getAge());
