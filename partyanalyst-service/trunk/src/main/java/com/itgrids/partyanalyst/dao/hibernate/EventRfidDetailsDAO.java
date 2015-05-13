@@ -22,4 +22,14 @@ public class EventRfidDetailsDAO extends GenericDaoHibernate<EventRfidDetails,Lo
 		query.setParameterList("eventIds", eventIds);
 		return query.list();
 	}
+	
+	
+	public int deleteEventRFIDDetailsByEventIds(List<Long> eventIds)
+	
+	{
+		Query query = getSession().createQuery(" delete model from EventRfidDetails model where model.event.eventId in (:eventIds) ");
+		query.setParameterList("eventIds", eventIds);
+		int count = query.executeUpdate();
+		return count;		
+	}
 }
