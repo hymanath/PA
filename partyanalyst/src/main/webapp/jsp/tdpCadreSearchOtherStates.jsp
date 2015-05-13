@@ -208,6 +208,10 @@
 						  <div class="col-md-5">
 						  <label style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('familyVoter')" value="familyVoter" name="registrationType" id="familyVoter"> With Family Voter</label>
 						  </div>
+						   <div class="col-md-5">
+							<!--<input type="checkbox" style="margin-top: 0px;" onchange="showhideRelativeType();" class="form-control border-radius-0" id="isFamilyVoterOrNot" > &nbsp; <b>Check Here If You Are 	Registering Cadre Using His Family VoterId</b>-->
+							<div style="display:none;margin-top:10px;" id="showhideRelativeTypeId"><div id="relativeTypeIdErr" style="color:red;font-weight:bold;"></div><div><select id="relativeTypeId"></select></div></div>
+						</div>
 						<!--
 
 						  <span style="font-size:12px;" class="text-align1"><input type="radio" onchange="handleRequest('apVoterId')" value="apVoterId" name="registrationType" id="apVoter"> AP Voter 
@@ -246,11 +250,11 @@
 			   <div class="row-fluid offset3">						
 							<div class="span5" style="margin-bottom:-20px;">
 							<h5 class="text-align1">Form Date : 
-							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId" style="width: 220px"></h5>
+							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId" style="width: 220px;cursor:text;height: 30px" readonly="true"></h5>
 							</div>							
 							<div class="span">
 								<h5 class="text-align1"> To Date : 
-								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId" style="width: 220px"></h5>
+								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId" style="width: 220px;cursor:text;height: 30px" readonly="true"></h5>
 							</div>
 						</div>
 						<a href="javascript:{getDashboardDetailsForUser();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset5"> Get Details  <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -339,7 +343,8 @@
 				clock.setCountdown(true);
 				clock.start();			
 			}
-		    $( "#fromDateId" ).datepicker({
+			var currentDate = new Date();
+		$( "#fromDateId" ).datepicker({
 					dateFormat: 'dd-mm-yy',
 					changeMonth: true,
 					changeYear: true,
@@ -351,7 +356,9 @@
 					changeYear: true,
 					maxDate: new Date()
 		});
-
+		$("#fromDateId").datepicker("setDate", currentDate);
+		$("#toDateId").datepicker("setDate", currentDate);
+  
 		});
 		
 	function isValid(str)
@@ -564,7 +571,7 @@
 			
 			for(var i in result){
 			 if(result[i].isRegistered == 'Y'){
-				str +='<tr  onclick="getDetailsForUser('+result[i].id+',\'Y\');">';
+				str +='<tr  onclick="getDetailsForUser('+result[i].id+',\'Y\',\''+result[i].memberShipId+'\');">';
 				str +=' <td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls" src="voter_images/'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
                 str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].voterCardNo+'</span></td>';
@@ -575,7 +582,7 @@
 				str +=' <td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				str +='</tr>';
 			 }else{
-				str +='<tr onclick="getDetailsForUser('+result[i].id+',\'N\');">';
+				str +='<tr onclick="getDetailsForUser('+result[i].id+',\'N\',\'\');">';
 				str +=' <td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="voter_images/'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
                 str +=' <td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				str +=' <td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].voterCardNo+'</span></td>';
@@ -629,12 +636,13 @@
 		}	
 	}
 	
-	function getDetailsForUser(candidateId,status)
+	function getDetailsForUser(candidateId,status,trno)
 	{ 
 	   $("#relativeTypeIdErr").html("");
 	   $('#errorDiv').html('');
-	    if(status == "Y" && !$('#isFamilyVoterOrNot').is(':checked')){
-			alert("Voter Already Registered As Cadre.If You Are Registering His Family Member Using His VoterId, Please Check CheckBox Present Above Search Button.");
+	   var aa = $('#familyVoter').is(':checked');
+	    if(status == "Y" && !$('#familyVoter').is(':checked')){
+			alert("Voter Already Registered As Cadre  with \" "+trno+" \" TR No.If You Are Registering His/Her Family Member Using His/Her VoterId, Please Check CheckBox Present Above Search Button.");
 			return;
 		}
 		
@@ -668,21 +676,31 @@
 			boothId =0;
 		}
 		
-		if($('#isFamilyVoterOrNot').is(':checked'))
+			var isFamilyVoter = $('#familyVoter').is(':checked'); 
+			var isvoterId = $('#voterId').is(':checked'); 
+			if(isFamilyVoter)
+			{
+				$('#registrationTypeId').val('familyVoterId');
+			}			
+			else if(isvoterId)
+			{
+				$('#registrationTypeId').val('voterId');
+			}
+			var registrationTypeId = $('#registrationTypeId').val();
+			
+		if($('#familyVoter').is(':checked'))
 		{
            var relativeTypeId = $("#relativeTypeId").val();
 		   if(relativeTypeId == null || relativeTypeId == 0){
 			   $("#relativeTypeIdErr").html("Please Select Relation");
 			   return;
 		   }
-		   
-		   var registrationTypeId = $('#registrationTypeId').val();	
-			
 		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id5='+candidateId+'&countDownTime='+relativeTypeId+'&searchType='+registrationTypeId);
 		}else{
-			  var registrationTypeId = $('#registrationTypeId').val();	
+	
 		  window.open('cadreEnrollment.action?id1='+cosntiteucnyId+'&id2='+houseNo+'&id3='+boothId+'&id4='+candidateId+'&searchType='+registrationTypeId);	
 		}
+		
 	}
 	
 	function getConstituencyWiseDetails()
@@ -947,13 +965,18 @@
 		$('#dashboadElmnt').hide();		
 		$('#statusDivsId1').show();
 		$('#statusDivsId2').hide();
+		$('#searchDetailsDiv').html('');
+		$('#dashBoadDiv').html('');
 	}
 	function hideDashBoard()
 	{
 		$('#yourElement').hide();
 		$('#dashboadElmnt').show();		
 		$('#statusDivsId1').hide();
+		$('#tableElement').hide();
 		$('#statusDivsId2').show();
+		$('#searchDetailsDiv').html('');
+		$('#dashBoadDiv').html('');
 	}
 	function getDashboardDetailsForUser()
 	{
@@ -962,7 +985,7 @@
 		//var userId = $('#webUserId).val();
 		var formDate = $('#fromDateId').val();
 		var toDate = $('#toDateId').val();
-		
+		$('#searchDetailsDiv').html('');
 		var jsObj = 
 			   {
 				  userId:0,	 // 4015
@@ -1062,7 +1085,9 @@
 	{
 		$('#searchBtnId').hide();
 		$('#tableElement').hide();
+		$('#showhideRelativeTypeId').hide();
 		$('#skipButtonId').show();
+		$('#relativeTypeId').val(0);
 		$('#searchDetailsDiv').html('');
 		if(requestType =='voterId')
 		{
@@ -1074,8 +1099,11 @@
 		else if(requestType =='familyVoter')
 		{
 			$('#searchBtnId').show();
+			$('#showhideRelativeTypeId').show();
 			$('#skipButtonId').hide();
 			$('#registrationTypeId').val('familyVoterId');
+			$('#relativeTypeId').val(0);
+			
 		}		
 		else if(requestType =='apVoterId')
 		{
