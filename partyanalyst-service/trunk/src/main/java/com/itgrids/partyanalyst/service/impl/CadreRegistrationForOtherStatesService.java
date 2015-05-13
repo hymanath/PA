@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -1088,10 +1089,22 @@ public class CadreRegistrationForOtherStatesService implements
 				if( voterIds.size()>0){
 					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIds(voterIds);
 					if(tdpCadreVoterIds != null && tdpCadreVoterIds.size()>0){
+						List<Object[]> tdpCadreList = tdpCadreDAO.getMembershipNosByTdpCadreIds(tdpCadreVoterIds);
+						Map<Long,String> cadreMembershipMap = new LinkedHashMap<Long, String>();
+						
+						if(tdpCadreList != null && tdpCadreList.size()>0)
+						{
+							for (Object[] cadre : tdpCadreList) {
+								Long tpdCadeId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0;
+								if(tpdCadeId>0)
+									cadreMembershipMap.put(tpdCadeId, cadre[1] != null ? cadre[1].toString().trim():"");
+							}
+						}
 						for (Long voterId : tdpCadreVoterIds){
 							VoterInfoVO voterVO =votersMap.get(voterId);
 							if(voterVO != null){
 								voterVO.setIsRegistered("Y");
+								voterVO.setMemberShipId(cadreMembershipMap.get(voterId));
 							}
 						}
 					}
@@ -1336,7 +1349,7 @@ public class CadreRegistrationForOtherStatesService implements
 		try {
 			LOG.info("Entered into getVoterAddressDetails in CadreRegistrationForOtherStatesService service");
 			
-			List<Booth> locationDetails = boothPublicationVoterDAO.getVoterAddressDetails(voterId);
+			List<Booth> locationDetails = boothPublicationVoterDAO.getOtherStateVoterAddressDetails(voterId);
 			if(locationDetails != null && locationDetails.size() > 0)
 			{
 				Booth booth = locationDetails.get(0);
