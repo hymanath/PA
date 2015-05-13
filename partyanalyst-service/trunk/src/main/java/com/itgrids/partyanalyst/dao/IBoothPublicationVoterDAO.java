@@ -713,4 +713,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersDetailsForCadreRegistratiobByLocationIds(Long stateId,Long constituencyId, Long publicationDate,String queryStr,
 				Long tehsilId,Long boothId,Integer startIndex,Integer maxIndex);
 	  public Long getVotersDetailsForCadreRegistratiobByLocationIdsCount(Long stateId,Long constituencyId, Long publicationDate,String queryStr,Long tehsilId,Long boothId);
+	  
+	  public List<Booth> getOtherStateVoterAddressDetails(Long voterId);
+	  
 }
