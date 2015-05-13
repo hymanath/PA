@@ -7824,10 +7824,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		//0 voterId,1name,2relative name,3age,4houseno,5relationtype,6gender,7voterIDCardNo,8path
 		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, ");
 		queryStr1.append("   BPV.voter.gender, BPV.voter.voterIDCardNo,BPV.voter.imagePath from BoothPublicationVoter BPV where "+queryStr+"   ");
-		if(stateId != null && stateId.longValue() != 29l)
-		{
+		//if(stateId != null && stateId.longValue() != 29l)
+		//{
 			queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and ");
-		}
+		//}
 		queryStr1.append(" BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
 		if(tehsilId.longValue() != 0L){
@@ -7843,10 +7843,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		}
 		
 		Query query = getSession().createQuery(queryStr1.toString());
-		if(stateId != null && stateId.longValue() != 29l)
-		{	
+		//if(stateId != null && stateId.longValue() != 29l)
+		//{	
 			query.setParameter("constituencyId", constituencyId);
-		}
+		//}
 		
 		query.setParameter("publicationDate", publicationDate);
 		/*
@@ -7877,10 +7877,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		queryStr1.append(" select count(*) from BoothPublicationVoter BPV where "+queryStr+"   ");
 		
-		if(stateId != null && stateId.longValue() != 29L)
-		{
+		//if(stateId != null && stateId.longValue() != 29L)
+		//{
 			queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and ");
-		}
+		//}
 		queryStr1.append(" BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
 		if(tehsilId.longValue() != 0L){
@@ -7896,10 +7896,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		}
 		
 		Query query = getSession().createQuery(queryStr1.toString());
-		if(stateId != null && stateId.longValue() != 29L)
-		{
+		//if(stateId != null && stateId.longValue() != 29L)
+		//{
 			query.setParameter("constituencyId", constituencyId);
-		}
+		//}
 		query.setParameter("publicationDate", publicationDate);
 		
 		/*if(tehsilId.longValue() != 0L){

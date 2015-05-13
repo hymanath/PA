@@ -1051,7 +1051,7 @@ public class CadreRegistrationForOtherStatesService implements
 				}
 				if(houseNo != null  && houseNo.trim().length()>0)
 				{
-					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
+					searchQuery.append(" BPV.voter.houseNo like '"+houseNo+"' and" );
 				}
 				if(stateId != null && stateId.longValue() != 29L)
 				  stateId = constituencyDAO.get(constituencyId).getState().getStateId();
