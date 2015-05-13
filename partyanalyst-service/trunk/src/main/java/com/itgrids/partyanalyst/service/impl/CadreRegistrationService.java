@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ICadreRegSyncAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ICardPrintUserDAO;
 import com.itgrids.partyanalyst.dao.ICardReceiverDAO;
 import com.itgrids.partyanalyst.dao.ICardSenderDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
@@ -276,7 +277,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreMissedCallCampaignDAO cadreMissedCallCampaignDAO;
 	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	private ICadreCardNumberUpdationDAO cadreCardNumberUpdationDAO;
-	
+	private ICardPrintUserDAO cardPrintUserDAO ;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -293,6 +294,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
 		return cadreMissedCallCampaignDAO;
+	}
+
+	public ICardPrintUserDAO getCardPrintUserDAO() {
+		return cardPrintUserDAO;
+	}
+
+	public void setCardPrintUserDAO(ICardPrintUserDAO cardPrintUserDAO) {
+		this.cardPrintUserDAO = cardPrintUserDAO;
 	}
 
 	public ICadreCardNumberUpdationDAO getCadreCardNumberUpdationDAO() {
@@ -5631,7 +5640,23 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 	
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
-		String date = input.getDate();
+	 if(input.getUserId() == null || input.getUserId() == 0)
+	 {
+			CadrePrintVO returnVO = new CadrePrintVO();
+			returnVO.setStatus("Invalid");
+			finalList.add(returnVO);
+			 return finalList;
+	   
+	 }
+	 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUserId());
+	 if(validCheck == null || validCheck.size() == 0)
+	 {
+		 CadrePrintVO returnVO = new CadrePrintVO();
+		 returnVO.setStatus("Invalid");
+		 finalList.add(returnVO);
+		 return finalList;
+	 }
+	 	String date = input.getDate();
 		String trNo = input.getTrNo();
 		String constituency = input.getConstituency();
 		Long constiNo = input.getConstituecyNo();
@@ -5787,6 +5812,22 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
 		
+		if(input.getUserId() == null || input.getUserId() == 0)
+		 {
+				CadrePrintVO returnVO = new CadrePrintVO();
+				returnVO.setStatus("Invalid");
+				finalList.add(returnVO);
+				 return finalList;
+		   
+		 }
+		 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUserId());
+		 if(validCheck == null || validCheck.size() == 0)
+		 {
+			 CadrePrintVO returnVO = new CadrePrintVO();
+			 returnVO.setStatus("Invalid");
+			 finalList.add(returnVO);
+			 return finalList;
+		 }
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -5981,7 +6022,23 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		LOG.debug("Entered Into updatePrintedCardDetails");
 		String returnMsg = "";
 		try {
+			
 			if(inputList!=null && inputList.size()>0){
+				
+				if(inputList.get(0).getUserId() == null || inputList.get(0).getUserId() == 0)
+				 {
+						CadrePrintVO returnVO = new CadrePrintVO();
+						returnMsg = "Invalid";
+						return returnMsg;
+				   
+				 }
+				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUserId());
+				 if(validCheck == null || validCheck.size() == 0)
+				 {
+					 CadrePrintVO returnVO = new CadrePrintVO();
+					 returnMsg = "Invalid";
+					 return returnMsg;
+				 }
 				try{
 					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
 						 public Object doInTransaction(TransactionStatus status) {
