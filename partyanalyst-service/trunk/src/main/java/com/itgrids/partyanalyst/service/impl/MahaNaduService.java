@@ -1704,11 +1704,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						Long count = eventCount.get(eventId) ;
 						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate);
 						eventVo.setId(compareEventId);
+						eventVo.setName(eventDAO.get(compareEventId).getName());
 						if(unionCounts != null)
 						for(Object[] params : unionCounts)
 						{
-						eventVo.setName(params[0].toString());
-						eventVo.setTotal((Long)params[1] + eventVo.getTotal());
+							eventVo.setTotal((Long)params[1] + eventVo.getTotal());
 						}
 						uniEventVOList.add(eventVo);
 					}
