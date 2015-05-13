@@ -9,18 +9,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TDP Cadre Registration</title>
-
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>	
+<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
+   
     <link href="css/style.css" rel="stylesheet"/>
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	 <script src="js/icheck/icheck.js"></script>
+
 	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-		<script src="js/icheck/icheck.js"></script>
-	 
+
+	  <link href="css/bootstrap.min.css" rel="stylesheet"/>	
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -1089,7 +1089,13 @@ function getCadreImage(id){
 			$('#nomineeGenderId').val(parseInt(nomineeGender));
 		if(relativeId.trim().length>0)
 			$('#voterRelationId').val(relativeId);
-				
+		
+		if( srchType=='familyVoterId')		
+		{
+			$('#cadreNameId').val('');
+			$('#cadreAgeId').val('');
+			//$('#cadreAgeId').val('');
+		}
 	
 	});
 
