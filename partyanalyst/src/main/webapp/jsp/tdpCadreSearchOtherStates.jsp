@@ -26,7 +26,7 @@
 		
 		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
 		<script src="js/flipclock/flipclock.js"></script>	
-		
+		<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
 	<style>
 	
 	.dropdown-menu > li > a:hover {
@@ -220,12 +220,12 @@
 					  </div>
 					</div>
 					<input type="hidden" value="voterId" id="registrationTypeId" />
-					 <div class="row">
-					  <div class="col-md-3">
-							<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2" id="searchBtnId"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					 <div class="row m_top10" >
+					  <div class="col-md-3 offset2">
+					<button onclick="searchCandidatesDetailsBySearchCriteria(0);" id="searchBtnId" class="btn btn-success"> Search <span class="glyphicon glyphicon-chevron-right"></span> </button>
 						</div>
 					   <div class="col-md-3">
-							<a href="javascript:{skipDetailsForUser('skip')}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success active col-xs-offset-4 offset2 m_top20 border-radius-0 text-align " >Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
+							<button onclick="skipDetailsForUser('skip');" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-success" >Skip<span class="glyphicon glyphicon-chevron-right"></span></button>
 						</div>
 					</div>
 					
@@ -467,7 +467,7 @@
 			{
 				 isError = false ;
 			}
-			else if(houseNo != null && houseNo.length >=3 )
+			else if(houseNo != null && houseNo.length >=1 )
 			{						
 				  isError = false ;
 			} 
@@ -496,6 +496,13 @@
 					
 			$('#searchDataImg').show();
 
+			if(stateId == 29)
+			{
+				cosntiteucnyId = 90237;
+				stateId = 0;
+				
+			}
+		
 			var jsObj = 
 				   {
 					  stateId:stateId,
@@ -606,7 +613,7 @@
 		var registrationType = $('#registrationTypeId').val();
 		if(stateId == 29)
 		{
-			window.open('cadreEnrollment.action?id1='+0+'&id2='+0+'&id3='+0+'&id4='+0+'&searchType='+registrationType);
+			window.open('cadreEnrollment.action?id1=90237&id2=0&id3=0&id4=0&searchType='+registrationType);
 		}
 		else if(stateId != 29 && cosntiteucnyId != 0)
 		{
@@ -632,7 +639,10 @@
 		}
 		
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
-		var cosntiteucnyId = $('#userConstituencyId').val();	
+		var cosntiteucnyId = $('#userConstituencyId').val();
+		var userStateId = ${sessionScope.USER.accessValue};
+		
+			
 		var boothId = 0;	
 		var houseNo = $('#panchayatList').val();	
 		
@@ -642,12 +652,24 @@
 		else
 			panchayatId = 0  // unchecked
 		
-		if(cosntiteucnyId == null || cosntiteucnyId == 0){
-			$('#errorDiv').html('Please Select Constituency.');
-			 return;
+		if(userStateId != 29)
+		{
+			if(cosntiteucnyId == null || cosntiteucnyId == 0){
+				$('#errorDiv').html('Please Select Constituency.');
+				 return;
+			}
 		}
 		
-		if($('#isFamilyVoterOrNot').is(':checked')){
+		
+		if(userStateId == 29)
+		{
+			cosntiteucnyId = 90237;		
+			houseNo='';
+			boothId =0;
+		}
+		
+		if($('#isFamilyVoterOrNot').is(':checked'))
+		{
            var relativeTypeId = $("#relativeTypeId").val();
 		   if(relativeTypeId == null || relativeTypeId == 0){
 			   $("#relativeTypeIdErr").html("Please Select Relation");
