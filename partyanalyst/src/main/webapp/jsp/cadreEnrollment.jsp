@@ -999,9 +999,9 @@ function getCadreImage(id){
 	$(document).ready(function(){
 		
 		if(srchType=="skip" && candiId =="0"){
-			$("#cardNumber").removeAttr("disabled");
+			$("#cardNumber").removeAttr("readonly");
 		}else {
-				$("#cardNumber").prop("disabled","disabled");
+				$("#cardNumber").prop("readonly","true");
 		}
 		
 	    $('.datePickerCls').datepicker({
@@ -2109,7 +2109,7 @@ function getCadreImage(id){
 											</div>		
 										</div>
 									</div>	
-								<div class="m_top10">
+								<!-- <div class="m_top10">
 									<div class="row-fluid">
 										
 										<div class="span6">
@@ -2124,7 +2124,7 @@ function getCadreImage(id){
 												<br><span id="relErr" style="color:red;font-size:12px;"></span>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								<div class="m_top10">
 										<div class="row-fluid">
 										  <div class="span6">
