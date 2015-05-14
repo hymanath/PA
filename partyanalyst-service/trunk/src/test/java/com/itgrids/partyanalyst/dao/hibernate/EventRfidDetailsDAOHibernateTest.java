@@ -14,6 +14,6 @@ public class EventRfidDetailsDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test()
 	{
-		eventRfidDetailsDAO.getAll();
+		//eventRfidDetailsDAO.getAll();
 	}
 }
