@@ -1154,246 +1154,20 @@ public List<SelectOptionVO> getConstituencyList()
 			ZipOutputStream zos = new ZipOutputStream(fos);
 			
 			List<Booth> boothsList = boothDAO.getBoothDataForAPublication(publicationId);
-			List<Panchayat> panchayatsList = panchayatDAO.getAll();
-			List<LocalElectionBody> localElectionBodysList = localElectionBodyDAO.getAll();
-			List<AssemblyLocalElectionBody> alebList = assemblyLocalElectionBodyDAO.getAll();
-			List<AssemblyLocalElectionBodyWard> alebwList = assemblyLocalElectionBodyWardDAO.getAll();
-			List<Object[]> constituenyAreaTypesList = constituencyDAO.getAreaTypesOfAConstituencyByElectionScope(2l);
-			
 			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
-			
-			File sqliteFile = new File(path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-			FileUtils.copyFile(baseFile,sqliteFile);
-			
-			if(boothsList != null && boothsList.size() > 0)
-			{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(Booth booth : boothsList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("INSERT INTO booth(booth_id,part_no,part_name,location,village_covered,tehsil_id,male_voters,female_voters,total_voters," +
-							"constituency_id,year,publication_date_id) VALUES (" +
-							"'"+booth.getBoothId()+"','"+booth.getPartNo()+"','','"+booth.getLocation()+"','"+booth.getVillagesCovered()+"','"+booth.getTehsil().getTehsilId()+"'" +
-									",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"')");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				
-				LOG.error(records+" Booth Records Inserted");
-				connection.commit();
-				statement.close();
-				connection.close();
-				
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				
-				for(Booth booth : boothsList)
-				{
-					if(booth.getPanchayat() != null)
-					{
-						try{
-						statement.executeUpdate("UPDATE booth set panchayat_id = "+booth.getPanchayat().getPanchayatId()+" where booth_id = "+booth.getBoothId());
-						}catch(Exception e)
-						{
-							LOG.error(e);
-						}
-					}
-				}
-				
-				for(Booth booth : boothsList)
-				{
-					if(booth.getLocalBody() != null)
-					{
-						try{
-						statement.executeUpdate("UPDATE booth set local_election_body_id = "+booth.getLocalBody().getLocalElectionBodyId()+" where booth_id = "+booth.getBoothId());
-						}catch(Exception e)
-						{
-							LOG.error(e);
-						}
-					}
-				}
-				
-				for(Booth booth : boothsList)
-				{
-					if(booth.getLocalBodyWard() != null)
-					{
-						try{
-						statement.executeUpdate("UPDATE booth set ward_id = "+booth.getLocalBodyWard().getConstituencyId()+" where booth_id = "+booth.getBoothId());
-						}catch(Exception e)
-						{
-							LOG.error(e);
-						}
-					}
-				}
-				
-				for(Booth booth : boothsList)
-				{
-					if(booth.getRefBooth() != null)
-					{
-						try{
-						statement.executeUpdate("UPDATE booth set ref_booth_id = "+booth.getRefBooth().getBoothId()+" where booth_id = "+booth.getBoothId());
-						}catch(Exception e)
-						{
-							LOG.error(e);
-						}
-					}
-				}
-				
-				connection.commit();
-				statement.close();
-				connection.close();
-			}
-			
-			if(panchayatsList != null && panchayatsList.size() > 0)
-			{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(Panchayat panchayat : panchayatsList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("INSERT INTO panchayat(panchayat_id,panchayat_name,tehsil_id)" +
-							" VALUES ('"+panchayat.getPanchayatId().toString()+"','"+panchayat.getPanchayatName().toString().trim()+"','"+panchayat.getTehsil().getTehsilId().toString().trim()+"')");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				LOG.error(records+" Panchayat Records Inserted");
-				connection.commit();
-				statement.close();
-				connection.close();
-			}
-			
-			if(localElectionBodysList != null && localElectionBodysList.size() > 0)
-			{
-				try{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(LocalElectionBody leb : localElectionBodysList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("INSERT INTO local_election_body(local_election_body_id,name,election_type_id,tehsil_id,district_id)" +
-							" VALUES ('"+leb.getLocalElectionBodyId().toString()+"','"+leb.getName().toString().trim()+"','"+leb.getElectionType().getElectionTypeId().toString().trim()+"','"+leb.getTehsil().getTehsilId().toString()+"','"+leb.getDistrict().getDistrictId().toString()+"')");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				LOG.error(records+" Local Election Body Records Inserted");
-				connection.commit();
-				statement.close();
-				connection.close();
-				}catch(Exception e)
-				{
-					LOG.error(e);
-				}
-			}
-			
-			if(alebList != null && alebList.size() > 0)
-			{
-				try{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(AssemblyLocalElectionBody aleb : alebList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("INSERT INTO assembly_local_election_body(assembly_local_election_body_id,local_election_body_id,constituency_id)" +
-							" VALUES ('"+aleb.getAssemblyLocalElectionBodyId().toString()+"','"+aleb.getLocalElectionBody().getLocalElectionBodyId().toString().trim()+"','"+aleb.getConstituency().getConstituencyId().toString().trim()+"')");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				LOG.error(records+" Assembly Local Election Body Records Inserted");
-				connection.commit();
-				statement.close();
-				connection.close();
-				}catch(Exception e)
-				{
-					LOG.error(e);
-				}
-			}
-			
-			if(alebwList != null && alebwList.size() > 0)
-			{
-				try{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(AssemblyLocalElectionBodyWard alebw : alebwList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("INSERT INTO assembly_local_election_body_ward(assembly_local_election_body_ward_id,assembly_local_election_body_id,local_election_body_ward_id)" +
-							" VALUES ('"+alebw.getAssemblyLocalElectionBodyWardId().toString()+"','"+alebw.getAssemblyLocalElectionBody().getAssemblyLocalElectionBodyId().toString()+"','"+alebw.getConstituency().getConstituencyId().toString()+"')");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				LOG.error(records+" Assembly Local Election Body Wards Records Inserted");
-				connection.commit();
-				statement.close();
-				connection.close();
-				}catch(Exception e)
-				{
-					LOG.error(e);
-				}
-			}
-			
-			if(constituenyAreaTypesList != null && constituenyAreaTypesList.size() > 0)
-			{
-				try{
-				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
-				connection.setAutoCommit(false);
-				statement = connection.createStatement();
-				int records = 0;
-				for(Object[] params : constituenyAreaTypesList)
-				{
-					records++;
-					try{
-					statement.executeUpdate("update constituency set area_type = '"+params[1].toString()+"' where constituency_id = '"+params[0].toString()+"'");
-					}catch(Exception e)
-					{
-						LOG.error(e);
-					}
-				}
-				LOG.error(records+" Area Types Records Updated");
-				connection.commit();
-				statement.close();
-				connection.close();
-				}catch(Exception e)
-				{
-					LOG.error(e);
-				}
-			}
 			
 			for(Constituency ac : acList)
 			{
 				try{
-				
+				String assemblyName = ac.getName();
+				File sqliteFile = new File(path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
+				FileUtils.copyFile(baseFile,sqliteFile);
+					
 				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
 				
 				if(votersList != null && votersList.size() > 0)
 				{
-					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
 					connection.setAutoCommit(false);
 					statement = connection.createStatement();
 					int records = 0;
@@ -1418,7 +1192,7 @@ public List<SelectOptionVO> getConstituencyList()
 				List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
 				if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
 				{
-					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+constituencyName+".sqlite");
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
 					connection.setAutoCommit(false);
 					statement = connection.createStatement();
 					int records = 0;
@@ -1439,6 +1213,93 @@ public List<SelectOptionVO> getConstituencyList()
 					statement.close();
 					connection.close();
 				}
+				
+				if(boothsList != null && boothsList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Booth booth : boothsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO booth(booth_id,part_no,part_name,location,village_covered,tehsil_id,male_voters,female_voters,total_voters," +
+								"constituency_id,year,publication_date_id) VALUES (" +
+								"'"+booth.getBoothId()+"','"+booth.getPartNo()+"','','"+booth.getLocation()+"','"+booth.getVillagesCovered()+"','"+booth.getTehsil().getTehsilId()+"'" +
+										",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					
+					LOG.error(records+" Booth Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getPanchayat() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set panchayat_id = "+booth.getPanchayat().getPanchayatId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBody() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set local_election_body_id = "+booth.getLocalBody().getLocalElectionBodyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBodyWard() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ward_id = "+booth.getLocalBodyWard().getConstituencyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getRefBooth() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ref_booth_id = "+booth.getRefBooth().getBoothId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
 				}catch(Exception e)
 				{
 					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
