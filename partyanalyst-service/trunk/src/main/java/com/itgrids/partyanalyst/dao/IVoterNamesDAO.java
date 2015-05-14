@@ -12,4 +12,5 @@ public interface IVoterNamesDAO extends GenericDao<VoterNames, Long>{
 	public List<Object[]> getVoterNames(Long constituencyId,Long publicationDateId);
 	public List<String> getVoterTeluguNames(Long voterId);
 	public int updateVoterName(String name,Long voterNamesId);
+	public List gerVoterNamesModelByVoterId(Long voterId);
 }

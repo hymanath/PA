@@ -6122,11 +6122,37 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 												 }catch(Exception ex){
 													
 												 }
+												 TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
 												 if(imgStatus){
-													 	TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
+													 	
 														tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 														tdpCadreDAO.save(tdpCadre);
 														LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
+													}
+												 
+												 //SAVING THE TELUGU NAME OF NON VOTER -- START //SASI
+													if(cardNFCDetailsVO.getVoterName() != null && cardNFCDetailsVO.getVoterName().trim().length() > 0){
+														if(tdpCadre.getVoterId() == null)
+														{
+															List model  = tdpCadreTeluguNamesDAO.getModelByTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
+															if(model != null && model.size() > 0 )
+															{
+																TdpCadreTeluguNames tdpCadreTeluguNames = tdpCadreTeluguNamesDAO.get((Long) model.get(0));
+																tdpCadreTeluguNames.setTeluguName(cardNFCDetailsVO.getVoterName() );
+															  tdpCadreTeluguNamesDAO.save(tdpCadreTeluguNames);
+															}
+														}
+														else
+														{
+															List model1 = voterNamesDAO.gerVoterNamesModelByVoterId(tdpCadre.getVoterId());
+															if(model1 != null && model1.size() > 0)
+															{
+																VoterNames voterNames = voterNamesDAO.get((Long) model1.get(0));
+																voterNames.setFirstName(cardNFCDetailsVO.getVoterName() );
+																voterNamesDAO.save(voterNames);
+															}
+															
+														}
 													}
 								 }
 							

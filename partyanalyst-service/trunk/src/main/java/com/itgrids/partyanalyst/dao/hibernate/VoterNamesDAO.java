@@ -45,6 +45,12 @@ public class VoterNamesDAO extends GenericDaoHibernate<VoterNames, Long> impleme
 		query.setParameter("voterNamesId", voterNamesId);*/
 		return query.executeUpdate();
 	}
+	public List gerVoterNamesModelByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("Select model.voterNamesId from VoterNames model where model.voter.voterId = :voterId");
+		query.setParameter("voterId",voterId);
+		return query.list();
+	}
 	
 	
 	
