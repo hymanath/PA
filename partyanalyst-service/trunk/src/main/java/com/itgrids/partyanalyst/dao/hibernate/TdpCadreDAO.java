@@ -4918,11 +4918,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 			
 		}
-		public String checkCardNumberExists(Long tdpCadreId)
+		public List<Object[]> checkCardNumberExists(Long tdpCadreId)
 		{
-			Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.tdpCadreId=:tdpCadreId");
+			Query query = getSession().createQuery("select model.cardNumber,model.memberShipNo,model.voterId from TdpCadre model where model.tdpCadreId=:tdpCadreId");
 			query.setParameter("tdpCadreId", tdpCadreId);
-			return (String) query.uniqueResult();
+			return query.list();
 			
 		}
 		

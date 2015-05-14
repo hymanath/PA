@@ -5733,6 +5733,10 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 					returnVO.setTdpCadreId((Long)obj[7]);
 					returnVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
 					returnVO.setCardNumber(obj[8] != null ? obj[8].toString() : "");
+					if(returnVO.getCardNumber() != null && !returnVO.getCardNumber().isEmpty())
+					returnVO.setPrintStatus("reprint");
+					else
+						returnVO.setPrintStatus("print");	
 					if(returnVO.getVoterId()==null){
 						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
 						if(names != null && names.size() > 0){
@@ -6025,20 +6029,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			
 			if(inputList!=null && inputList.size()>0){
 				
-				if(inputList.get(0).getUserId() == null || inputList.get(0).getUserId() == 0)
-				 {
-						CadrePrintVO returnVO = new CadrePrintVO();
-						returnMsg = "Invalid";
-						return returnMsg;
-				   
-				 }
-				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUserId());
-				 if(validCheck == null || validCheck.size() == 0)
-				 {
-					 CadrePrintVO returnVO = new CadrePrintVO();
-					 returnMsg = "Invalid";
-					 return returnMsg;
-				 }
+				
 				try{
 					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
 						 public Object doInTransaction(TransactionStatus status) {
@@ -6075,22 +6066,70 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		String returnMsg = "";
 		try {
 			if(inputList!=null && inputList.size()>0){
+				
+				if(inputList.get(0).getUserId() == null || inputList.get(0).getUserId() == 0)
+				 {
+						CadrePrintVO returnVO = new CadrePrintVO();
+						returnMsg = "Invalid";
+						return returnMsg;
+				   
+				 }
+				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUserId());
+				 if(validCheck == null || validCheck.size() == 0)
+				 {
+					 CadrePrintVO returnVO = new CadrePrintVO();
+					 returnMsg = "Invalid";
+					 return returnMsg;
+				 }
 				try{
 					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
 						 public Object doInTransaction(TransactionStatus status) {
 							 for(CardNFCDetailsVO cardNFCDetailsVO: inputList)
 							 {		
-								 String cardNumber = tdpCadreDAO.checkCardNumberExists(cardNFCDetailsVO.getTdpCadreId());
+								 List<Object[]> cardNumber = tdpCadreDAO.checkCardNumberExists(cardNFCDetailsVO.getTdpCadreId());
 								 CadreCardNumberUpdation  cadreCardNumberUpdation = new CadreCardNumberUpdation();
 								 
 								 Integer count =  tdpCadreDAO.updateNFCCardNumberByTdpCadreId(cardNFCDetailsVO.getTdpCadreId(),cardNFCDetailsVO.getNfcNumber());
 								 if(count != null && count > 0)
 								 {
-									 cadreCardNumberUpdation.setCardNumber(cardNumber);
+									 Object[] object= cardNumber.get(0);
+									 if(object[0] != null)
+									 cadreCardNumberUpdation.setCardNumber(object[0].toString());
 									 cadreCardNumberUpdation.setTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
 									 cadreCardNumberUpdation.setInsertedTime(date.getCurrentDateAndTime());
 									 cadreCardNumberUpdation.setUpdatedTime(date.getCurrentDateAndTime());
 									 cadreCardNumberUpdationDAO.save(cadreCardNumberUpdation);	
+									 
+									 // Image Updataion
+									 if(cardNFCDetailsVO.getImageBase64String() != null && 
+											 cardNFCDetailsVO.getImageBase64String().trim().length() > 0){
+											  LOG.error("15");
+												String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+												String filePath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + object[1].toString()+".jpg";
+												//String filePath = "D:/" + tdpCadre.getMemberShipNo()+".jpg";
+
+												cardNFCDetailsVO.setImageBase64String(cardNFCDetailsVO.getImageBase64String().replace("_", "/"));
+												cardNFCDetailsVO.setImageBase64String(cardNFCDetailsVO.getImageBase64String().replace("-", "+"));
+												boolean imgStatus = imageAndStringConverter.convertBase64StringToImage(cardNFCDetailsVO.getImageBase64String(),filePath);
+												//System.out.println(cadreRegistrationVO.getImageBase64String());
+												 LOG.error("BASE64: DP:"+filePath);
+												 try{
+												 if(cardNFCDetailsVO.getImageBase64String().length() > 55){
+												     LOG.error("BASE64FIRST50C: "+cardNFCDetailsVO.getImageBase64String().substring(0, 50));
+												 }else{
+													 LOG.error("BASE64FIRST50C: "+cardNFCDetailsVO.getImageBase64String());
+												 }
+												 }catch(Exception ex){
+													
+												 }
+												 if(imgStatus){
+													 	TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
+														tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+														tdpCadreDAO.save(tdpCadre);
+														LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
+													}
+								 }
+							
 								 }
 							 }
 							 return "SUCCESS";

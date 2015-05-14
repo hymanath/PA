@@ -49,8 +49,17 @@ public class CadrePrintVO implements Serializable{
 	
 	private String mobileNo;
 	private String status;
+	private String printStatus;
 	
 	
+	
+	
+	public String getPrintStatus() {
+		return printStatus;
+	}
+	public void setPrintStatus(String printStatus) {
+		this.printStatus = printStatus;
+	}
 	public String getStatus() {
 		return status;
 	}
