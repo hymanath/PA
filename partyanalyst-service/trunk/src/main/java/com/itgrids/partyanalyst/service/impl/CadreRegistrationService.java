@@ -5640,7 +5640,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 	
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
-	 if(input.getUserId() == null || input.getUserId() == 0)
+		if(input.getUname() == null || input.getUname().trim().length() == 0)
 	 {
 			CadrePrintVO returnVO = new CadrePrintVO();
 			returnVO.setStatus("Invalid");
@@ -5648,7 +5648,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 			 return finalList;
 	   
 	 }
-	 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUserId());
+	 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUname(),input.getPwd());;
 	 if(validCheck == null || validCheck.size() == 0)
 	 {
 		 CadrePrintVO returnVO = new CadrePrintVO();
@@ -5656,6 +5656,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		 finalList.add(returnVO);
 		 return finalList;
 	 }
+	 
 	 	String date = input.getDate();
 		String trNo = input.getTrNo();
 		String constituency = input.getConstituency();
@@ -5756,7 +5757,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 						if(userAddress.getPanchayatId() != null)
 						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
 					}
-					
+					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
 			
@@ -5795,7 +5796,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
 					} 
 					
-					
+					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
 				
@@ -5816,7 +5817,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
 		
-		if(input.getUserId() == null || input.getUserId() == 0)
+		if(input.getUname() == null || input.getUname().trim().length()  == 0)
 		 {
 				CadrePrintVO returnVO = new CadrePrintVO();
 				returnVO.setStatus("Invalid");
@@ -5824,7 +5825,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				 return finalList;
 		   
 		 }
-		 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUserId());
+		 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUname(),input.getPwd());
 		 if(validCheck == null || validCheck.size() == 0)
 		 {
 			 CadrePrintVO returnVO = new CadrePrintVO();
@@ -5864,6 +5865,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					Long voterId = Long.valueOf(obj[1].toString());
+					
 					UserAddress userAddress = new UserAddress()	;
 					CadrePrintVO returnVO = new CadrePrintVO();
 					
@@ -5930,7 +5932,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
 					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
 					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
-					
+					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
 			}	
@@ -6004,7 +6006,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
 					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
 					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
-					
+					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
 				
@@ -6067,20 +6069,21 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		try {
 			if(inputList!=null && inputList.size()>0){
 				
-				if(inputList.get(0).getUserId() == null || inputList.get(0).getUserId() == 0)
+				if(inputList.get(0).getUname() == null || inputList.get(0).getUname().trim().length()  == 0)
 				 {
 						CadrePrintVO returnVO = new CadrePrintVO();
 						returnMsg = "Invalid";
 						return returnMsg;
 				   
 				 }
-				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUserId());
+				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUname(),inputList.get(0).getPwd());
 				 if(validCheck == null || validCheck.size() == 0)
 				 {
 					 CadrePrintVO returnVO = new CadrePrintVO();
 					 returnMsg = "Invalid";
 					 return returnMsg;
 				 }
+				
 				try{
 					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
 						 public Object doInTransaction(TransactionStatus status) {
@@ -6161,7 +6164,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							 return "SUCCESS";
 						 }});
 				}catch (Exception e) {
-					LOG.error("Exception Raised in updatePrintedCardDetails" + e);
+					LOG.error("Exception Raised in updatePrintedCardInfo" + e);
 					returnMsg = "FAIL";
 				}
 			}else{

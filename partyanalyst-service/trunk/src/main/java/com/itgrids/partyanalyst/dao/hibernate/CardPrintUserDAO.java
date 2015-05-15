@@ -16,10 +16,12 @@ public class CardPrintUserDAO extends GenericDaoHibernate<CardPrintUser, Long> i
 	}
 
 	
-	public List checkUserEixsts(Long userId)
+	public List checkUserEixsts(String userName,String pwd)
 	{
-		Query query = getSession().createQuery("select model.cardPrintUserId from CardPrintUser model where model.cardPrintUserId = :userId");
-		query.setParameter("userId", userId);
+		Query query = getSession().createQuery("select model.cardPrintUserId from CardPrintUser model where model.uname = :userName" +
+				" and model.pwd = :pwd");
+		query.setParameter("userName", userName);
+		query.setParameter("pwd", pwd);
 		return query.list();
 	}
 }
