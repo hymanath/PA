@@ -15,7 +15,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class CardPrintUser {
 	
 	private Long cardPrintUserId;
-	private String name;
+	private String uname;
+	private String pwd;
 	@Id
 	@GeneratedValue (strategy = GenerationType.AUTO)
 	@Column(name = "card_print_user_id", nullable = false, unique = true)
@@ -25,14 +26,21 @@ public class CardPrintUser {
 	public void setCardPrintUserId(Long cardPrintUserId) {
 		this.cardPrintUserId = cardPrintUserId;
 	}
-	@Column(name = "name")
-	public String getName() {
-		return name;
+	@Column(name = "uname")
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+	@Column(name = "pwd")
+	public String getPwd() {
+		return pwd;
+	}
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	
 	
