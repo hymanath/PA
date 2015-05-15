@@ -34,8 +34,10 @@ public class UserEventDetailsVO implements Serializable{
 	private String tabWorkMode;
 	private String regText;
 	private Long orderNo;
-	
-	
+	private String latituede;
+	private String longitude;
+	private Long orderId;
+	private String isActive;
 	
 	public String getEventName() {
 		return eventName;
@@ -196,6 +198,29 @@ public class UserEventDetailsVO implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public String getLatituede() {
+		return latituede;
+	}
+	public void setLatituede(String latituede) {
+		this.latituede = latituede;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
 	
-
 }
