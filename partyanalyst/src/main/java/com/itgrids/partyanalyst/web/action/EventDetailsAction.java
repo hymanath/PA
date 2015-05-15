@@ -213,4 +213,19 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 
+	
+	public String getSubEventsByParentEvent()
+	{
+		try{
+		 jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			resultList = mahaNaduService.getSubEvent(jObj.getLong("eventId"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }

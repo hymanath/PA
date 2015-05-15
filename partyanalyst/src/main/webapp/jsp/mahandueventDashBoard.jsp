@@ -179,9 +179,10 @@
                 </div>
                 
                 </div>
-                <div class="panel-body" >
-				<img id="distAjax" src="images/icons/search.gif" style="display:none;"/>
-                     <div id="districtTableId"> </div>
+                <div class="panel-body" >				
+						<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3)"><option value="0"> All Events</option></select>
+						<img id="distAjax" src="images/icons/search.gif" style="display:none;"/>
+                     <div id="districtTableId" style="margin-top: 10px;"> </div>
                 </div>
             </div>
 			
@@ -200,8 +201,10 @@
                 
                 </div>
                 <div class="panel-body">
+				<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>
 				<img id="constAjax" src="images/icons/search.gif" style="display:none;"/>
-                   <div id="constiTableId"></div>
+					
+                   <div id="constiTableId" style="margin-top:10px;"></div>
                 </div>
             </div>
         </div>
@@ -689,7 +692,7 @@ $("#errorDiv").html("");
 		subEvents.push($(this).val());
 		})
 	}
-
+getSubEvents();
 });
 var evntName = $("#eventText"+parentEventId).text();
 var title = (evntName + ' Event').toUpperCase();
@@ -1181,7 +1184,71 @@ getEvents();
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
+function getSubEvents()
+{
+		var jObj = {
+			eventId:parentEventId,			
+			task:"getSubEvents"
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getSubEventsByParentEventAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				$(".eventCls").find('option').remove();
+				$(".eventCls").append('<option value="0">All Events</option>');	
+				for(var i in result){
+				
+				$(".eventCls").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');			
+				}
+	});
 
+}
+function getLocationWiseCountBySubEvents(reportLevelId){
+var subEvents1 = [];
+var stateId =0;
+var subIds =0;
+if(reportLevelId ==3){
+  subIds = $("#distEventId").val();
+ }
+ else{
+  subIds = $("#constiEventId").val();
+ }
+ if(subIds == 0){
+ subEvents1 = subEvents;
+ }else{
+ subEvents1.push(subIds);
+ }
+ if($('#myonoffswitch').is(":checked"))
+ {
+ stateId = 1;
+ }else{
+ stateId = 36;
+ }
+ 
+var jObj = {
+			eventId:parentEventId,			
+			stateId:stateId,
+			reportLevelId:reportLevelId,
+			subEvents : subEvents1,
+			startDate : startDate,
+			endDate : endDate
+		
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseVisitorsCountAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				buildDistrictTable(result,reportLevelId)	
+			}
+	});
+
+}
 </script>
 
 </html>
