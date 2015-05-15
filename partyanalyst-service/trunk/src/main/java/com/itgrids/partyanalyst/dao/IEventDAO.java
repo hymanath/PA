@@ -10,4 +10,5 @@ public interface IEventDAO extends GenericDao<Event, Long> {
 	public List<Object[]> getEventsForUser(Long userId);
 	public Event checkIsExistEvent(String eventName);
 	public List<Object[]> getEventNames(List<Long> eventIds);
+	public List<Object[]> getSubEventsByParentEvent(Long eventId);
 }
