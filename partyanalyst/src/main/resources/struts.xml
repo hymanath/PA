@@ -10059,5 +10059,10 @@
 			</result>
 		</action>
 		
+		<action name="getSubEventsByParentEventAction" class="eventDetailsAction" method="getSubEventsByParentEvent">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
 </package>
 </struts>      
