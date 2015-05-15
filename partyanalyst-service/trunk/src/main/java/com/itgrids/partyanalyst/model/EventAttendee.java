@@ -43,6 +43,8 @@ public class EventAttendee implements java.io.Serializable{
 	private Date insertedTime;
 	private Date attendedTime;
 	private String uniqueKey;
+	private String latitude;
+	private String longitude;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -168,6 +170,20 @@ public class EventAttendee implements java.io.Serializable{
 		this.uniqueKey = uniqueKey;
 	}
 	
+	@Column(name="latitude")
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
 	
+	@Column(name="longitude")
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
 	
 }

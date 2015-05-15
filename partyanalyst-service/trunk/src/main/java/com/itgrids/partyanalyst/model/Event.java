@@ -28,7 +28,7 @@ public class Event implements java.io.Serializable{
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Long parentEventId;
-	private String isEnabled;
+	private String isActive;
 	private Date insertedTime;
 	
 	private String startTime; // programme start Time
@@ -38,6 +38,8 @@ public class Event implements java.io.Serializable{
 	private Integer entryLimit;
 	private String serverWorkMode;
 	private String tabWorkMode;
+	
+	private Integer orderId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -156,6 +158,22 @@ public class Event implements java.io.Serializable{
 
 	public void setTabWorkMode(String tabWorkMode) {
 		this.tabWorkMode = tabWorkMode;
+	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
+	@Column(name="order_id")
+	public Integer getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 	
 	
