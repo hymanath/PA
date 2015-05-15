@@ -1710,6 +1710,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setTabWorkMode(params[9] != null ? params[9].toString() : "");
 								childEventVo.setStartDate(params[10] != null ? dateFormate.format(params[10]) : "");
 								childEventVo.setEndDate(params[11] != null ? dateFormate.format(params[11]) : "");
+								childEventVo.setOrderId(params[12] != null ? Long.valueOf(params[12].toString().trim()) : null);
+								childEventVo.setIsActive(params[13] != null ? params[13].toString() : "");
 								
 								List<Long> eventIds = new ArrayList<Long>();
 								eventIds.add(childEventVo.getEventId());
@@ -1821,6 +1823,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	
 		 	if(inputVo.getStatus() != null)
 		 	eventAttendee.setUniqueKey(inputVo.getStatus());
+		 	
+		 	
+		 	eventAttendee.setLatitude(inputVo.getLatituede());
+		 	eventAttendee.setLongitude(inputVo.getLongitude());
 		 	
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
