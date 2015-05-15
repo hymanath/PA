@@ -1722,7 +1722,7 @@ public String getSummaryDetails(){
 			jObj = new JSONObject(getTask());
 			UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
 			userEventDetailsVO.setEventId(jObj.getLong("eventId"));
-			userEventDetailsVO.setRFID(jObj.getString("rfid"));
+			//userEventDetailsVO.setRFID(jObj.getString("rfid"));
 			
 			JSONArray rfidActionsArr = jObj.getJSONArray("rfidActionsArr");
 			
@@ -1732,9 +1732,14 @@ public String getSummaryDetails(){
 				for(int i=0;i<rfidActionsArr.length();i++)
 				{
 					UserEventDetailsVO vo = new UserEventDetailsVO();
-					vo.setRegText(jObj.getString("regText"));
-					vo.setSectorNo(jObj.getLong("sectorNo"));
-					vo.setBlockNo(jObj.getLong("blockNo"));
+					
+					JSONObject eachObject = rfidActionsArr.getJSONObject(i);
+					
+					vo.setRFID(eachObject.getString("rfid"));
+					vo.setRegText(eachObject.getString("regText"));
+					vo.setSectorNo(eachObject.getLong("sectorNo"));
+					vo.setBlockNo(eachObject.getLong("blockNo"));
+					
 					sublist.add(vo);
 				}
 				
