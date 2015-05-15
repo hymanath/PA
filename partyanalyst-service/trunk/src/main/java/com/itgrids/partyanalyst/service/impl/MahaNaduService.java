@@ -1794,4 +1794,27 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 				return returnList;
 			}
+			
+			
+	public List<MahanaduEventVO> getSubEvent(Long eventId){
+		
+	List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
+	try{
+		List<Object[]> list = eventDAO.getSubEventsByParentEvent(eventId);
+		if(list != null && list.size() > 0){
+			  for(Object[] params : list){
+				  MahanaduEventVO vo = new MahanaduEventVO();
+				  vo.setId((Long)params[0]);
+				  vo.setName(params[1] != null ? params[1].toString() : "");
+				  resultList.add(vo);
+				 }
+		  }
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+		return resultList;
+		
+	}
 }

@@ -36,6 +36,6 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getEventsForUser(Long userId);
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate );
-	
+	 public List<MahanaduEventVO> getSubEvent(Long eventId);
 }
 
