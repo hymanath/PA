@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -91,6 +92,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private String                              globalLocationName;
 	private List<BasicVO> basicList;
 	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
+	
+     private EventCreationVO eventCreationVO;
 	
 	
 	public List<TdpCadreVO> getCommiteeMembersList() {
@@ -502,6 +505,16 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 
 	public void setGlobalLocationName(String globalLocationName) {
 		this.globalLocationName = globalLocationName;
+	}
+	
+	
+
+	public EventCreationVO getEventCreationVO() {
+		return eventCreationVO;
+	}
+
+	public void setEventCreationVO(EventCreationVO eventCreationVO) {
+		this.eventCreationVO = eventCreationVO;
 	}
 
 	public String execute()
@@ -1779,6 +1792,19 @@ public String getSummaryDetails(){
 			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	public String prePopulatingValuesOfEvents(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long eventId=jObj.getLong("eventId");
+			
+			eventCreationVO=cadreCommitteeService.getPrePopulatingValuesOfEvents(eventId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in prePopulatingValuesOfEvents() method in cadreCommitteAction Class ",e);
+		}
 		return Action.SUCCESS;
 	}
 	
