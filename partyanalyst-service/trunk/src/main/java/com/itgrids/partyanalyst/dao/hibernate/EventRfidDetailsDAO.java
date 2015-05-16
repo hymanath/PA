@@ -32,4 +32,12 @@ public class EventRfidDetailsDAO extends GenericDaoHibernate<EventRfidDetails,Lo
 		int count = query.executeUpdate();
 		return count;		
 	}
+	public List<Object> getPrePopulatingValuesOfEvents(Long eventId){
+		
+		Query query = getSession().createQuery(" select model from EventRfidDetails model where  model.event.eventId=:eventId ");
+	
+		query.setParameter("eventId", eventId);
+		return query.list();
+	}
+	
 }
