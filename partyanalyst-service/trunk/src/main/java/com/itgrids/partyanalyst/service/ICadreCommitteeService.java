@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -118,4 +119,6 @@ public interface ICadreCommitteeService {
 	 public ResultStatus updateEventSettings(final Long userId,final  UserEventDetailsVO userEventDetailsVO,final String actionType);
 	 public ResultStatus createANewUserForEvents(final Long userId,final String firstName,final String lastName,final String userName,final String password,final String mobileNo);
 	 public ResultStatus assignEventForUser(final Long userId,final  UserEventDetailsVO userEventDetailsVO);
+	 public EventCreationVO getPrePopulatingValuesOfEvents(Long eventId);
+	 
 }

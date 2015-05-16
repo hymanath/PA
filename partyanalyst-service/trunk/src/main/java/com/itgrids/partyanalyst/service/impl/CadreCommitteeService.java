@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -12131,6 +12132,35 @@ return mandalList;
 				 public Object doInTransaction(TransactionStatus status) {
 					 DateUtilService dateService = new DateUtilService();
 					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
+					 
+					 
+					 /*//converting 12 hours into 24 hours
+					 
+					 SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+			           SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+			           
+			           Date _24HourDt = _24HourSDF.parse(_24HourTime);
+			           System.out.println(_24HourDt);
+			           System.out.println(_12HourSDF.format(_24HourDt));
+					 
+			           
+			          String  startTimeFor24=userEventDetailsVO.getStartTime();
+			          String endTimeFor24=userEventDetailsVO.getEndTime();
+			          
+			          String  _24HourStartTime="";
+			          String _24HourEndTime=""; 
+			          if(startTimeFor24 !=null && endTimeFor24 !=null){
+			        	 String _12HourTime = _12HourSDF.format(startTimeFor24);
+			        	 _24HourStartTime=_24HourSDF.format(_12HourTime);
+			        	 
+			        	 String _12HouEndrTime = _12HourSDF.format(startTimeFor24);
+			        	 _24HourEndTime=_24HourSDF.format(_12HouEndrTime);
+			          }
+			        
+			          userEventDetailsVO.setStartTime(_24HourStartTime);
+			          userEventDetailsVO.setEndTime(_24HourEndTime);
+			      //time conversion End
+*/			        
 					 Event event = null;
 					 if(actionType != null && actionType.trim().equalsIgnoreCase("update"))
 					 {
@@ -12251,7 +12281,7 @@ return mandalList;
 								orderNo = orderNo+1;
 								eventRfidDetails = new EventRfidDetails();
 								eventRfidDetails.setEvent(eventDAO.get(userEventDetailsVO.getEventId()));
-								eventRfidDetails.setRfidOperation(userEventDetailsVO.getRFID());
+								eventRfidDetails.setRfidOperation(rfdetailsVO.getRFID());
 								eventRfidDetails.setSectorNo(Integer.valueOf(rfdetailsVO.getSectorNo().toString()));
 								eventRfidDetails.setBlockNo(Integer.valueOf(rfdetailsVO.getBlockNo().toString()));
 								eventRfidDetails.setRegText(rfdetailsVO.getRegText());
@@ -12316,6 +12346,48 @@ return mandalList;
 			 resultStatus.setMessage("error");
 		}
 		 return resultStatus;
+	 }
+	 //pre populating the results in event settings
+	 public EventCreationVO getPrePopulatingValuesOfEvents(Long eventId){
+		 
+		 EventCreationVO eventCreationVO = new EventCreationVO();
+				 
+		 try{
+			//Map<Long,List<EventCreationVO>> eventSettingMap=new HashMap<Long, List<EventCreationVO>>();
+				List<EventCreationVO> listOfeventSettings=new ArrayList<EventCreationVO>();
+				
+				List<Object> eventsDetailsList=eventRfidDetailsDAO.getPrePopulatingValuesOfEvents(eventId);
+			 
+				if(eventsDetailsList !=null && eventsDetailsList.size()>0){
+					
+					
+					for(int i=0;i<eventsDetailsList.size();i++){
+						
+						 EventRfidDetails eventRfidDetails= (EventRfidDetails) eventsDetailsList.get(i);
+						 
+						 EventCreationVO  vo=new EventCreationVO();
+						
+						 vo.setEventId(eventRfidDetails.getEvent().getEventId());
+						 vo.setRfidStr(eventRfidDetails.getRfidOperation());
+						 vo.setRegTextStr(eventRfidDetails.getRegText());
+						 vo.setSelectorL(eventRfidDetails.getSectorNo());
+						 vo.setBlockNoL(eventRfidDetails.getBlockNo());
+						 
+						 listOfeventSettings.add(vo);
+					}
+						
+					if(listOfeventSettings !=null && listOfeventSettings.size()>0){
+						//eventSettingMap.put(eventId, listOfeventSettings);
+						eventCreationVO.setSubList(listOfeventSettings);
+					}
+				}
+				
+				return eventCreationVO;
+		 }catch(Exception e){
+			 LOG.error("Exception rised in getPrePopulatingValuesOfEvents() while closing write operation",e);
+		 }
+		 return eventCreationVO;
+		 
 	 }
 	 
 }
