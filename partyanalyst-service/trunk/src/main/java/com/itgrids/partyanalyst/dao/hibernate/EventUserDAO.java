@@ -20,7 +20,7 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	{
 		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.eventStartTime,model.event.eventEndTime," +
 				" model.event.startTime, model.event.endTime  from EventUser model where date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId is null " +
-				" and model.event.isActive =:isActive ");
+				" and model.event.isActive =:isActive order by model.event.orderId asc ");
 		query.setDate("currentDate", currentDate);
 		query.setParameter("userId", userId);
 		query.setParameter("isActive", IConstants.TRUE);
@@ -42,7 +42,7 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	{
 		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.parentEventId,model.event.description,model.event.startTime,model.event.endTime,model.event.isInviteeExist," +
 				" model.event.entryLimit, model.event.serverWorkMode, model.event.tabWorkMode,date(model.event.eventStartTime),date(model.event.eventEndTime),model.event.orderId,model.event.isActive from EventUser model where  " +
-				" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId in(:parentEventIds)  and model.event.isActive =:isActive ");
+				" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId in(:parentEventIds)  and model.event.isActive =:isActive order by model.event.orderId asc ");
 		query.setDate("currentDate", currentDate);
 		query.setParameter("userId", userId);
 		query.setParameterList("parentEventIds", parentEventIds);
