@@ -27,6 +27,7 @@ public class CadreCommitteeMemberVO {
 	
 	private List<CasteDetailsVO> casteGroupVO;
 	private List<CasteDetailsVO> ageDetailsIfoVO;
+	private List<CasteDetailsVO> casteNameVO;
 	private List<Long> commiteeRoleIds = new ArrayList<Long>();
 	private String casteGroupName;
 	private String mobileNo;
@@ -35,6 +36,12 @@ public class CadreCommitteeMemberVO {
 	private String voterId;
 	
 	
+	public List<CasteDetailsVO> getCasteNameVO() {
+		return casteNameVO;
+	}
+	public void setCasteNameVO(List<CasteDetailsVO> casteNameVO) {
+		this.casteNameVO = casteNameVO;
+	}
 	public String getVoterId() {
 		return voterId;
 	}

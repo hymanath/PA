@@ -8,6 +8,29 @@ public class CasteDetailsVO {
 	private Long casteId = 0l;
 	private Long stateId = 0l;
 	private Long casteCategoryGroupId;
+	private Long casteCount;
+	private String femaleCount;
+	private String maleCount;
+	
+	
+	public String getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(String femaleCount) {
+		this.femaleCount = femaleCount;
+	}
+	public String getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(String maleCount) {
+		this.maleCount = maleCount;
+	}
+	public Long getCasteCount() {
+		return casteCount;
+	}
+	public void setCasteCount(Long casteCount) {
+		this.casteCount = casteCount;
+	}
 	
 	public String getCastName() {
 		return castName;
