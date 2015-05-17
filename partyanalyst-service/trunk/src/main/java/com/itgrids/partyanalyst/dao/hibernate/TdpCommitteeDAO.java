@@ -380,13 +380,13 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	}
 	
 	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds){
-		Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.district.districtId" +
+		Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.district.districtId, model.tdpBasicCommitteeId" +
 				" from TdpCommittee model" +
 				" where model.district.districtId in(:districtIds)" +
 				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds)" +
 				" and model.district.districtId is not null" +
 				" and model.tdpBasicCommitteeId = :basicCommty  " +
-				" group by model.district.districtId");
+				" group by model.district.districtId, model.tdpBasicCommitteeId order by model.tdpBasicCommitteeId ");
 		
 		query.setParameterList("districtIds", districtIds);
 		query.setParameterList("levelIds", levelIds);

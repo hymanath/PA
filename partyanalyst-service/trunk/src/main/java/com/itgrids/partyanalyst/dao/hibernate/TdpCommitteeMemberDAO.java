@@ -218,18 +218,24 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed," +
-				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, model.tdpCadre.mobileNo " +
+				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, model.tdpCadre.mobileNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name  " +
 				" from TdpCommitteeMember model" +
-				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal");
+		if(committeeTypeId.longValue() !=0L)
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
+		else 
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId != 1 ");
+		
 		if(status.equalsIgnoreCase("Conform"))
 			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
 		
-		str.append(" order by model.tdpCommitteeRole.tdpRoles.tdpRolesId");
+		str.append(" order by model.tdpCommitteeRole.tdpRoles.tdpRolesId  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("locationVal", locationVal);
-		query.setParameter("committeeTypeId", committeeTypeId);
+		if(committeeTypeId.longValue() !=0L)
+			query.setParameter("committeeTypeId", committeeTypeId);
 		return query.list();
 			
 	}
@@ -322,13 +328,13 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	}
 	
 	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds){
-		
+		 
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.district.districtId " +
+		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.district.districtId, model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
 				" from TdpCommitteeMember model " +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:levelIds)" +
 				" and model.tdpCommitteeRole.tdpCommittee.district.districtId in(:districtIds)" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
+				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
 				" and model.isActive = 'Y' ");
 		if(startDate!=null){
 			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
@@ -336,7 +342,8 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		if(endDate!=null){
 			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) <= :endDate");
 		}
-		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId");
+		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
+				" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
