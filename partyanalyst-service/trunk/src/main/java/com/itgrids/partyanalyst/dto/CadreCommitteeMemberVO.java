@@ -30,8 +30,29 @@ public class CadreCommitteeMemberVO {
 	private List<Long> commiteeRoleIds = new ArrayList<Long>();
 	private String casteGroupName;
 	private String mobileNo;
+	private String voterCardNo;
+	private String commiteeName;
+	private String voterId;
 	
 	
+	public String getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
+	}
+	public String getCommiteeName() {
+		return commiteeName;
+	}
+	public void setCommiteeName(String commiteeName) {
+		this.commiteeName = commiteeName;
+	}
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
 	public String getMobileNo() {
 		return mobileNo;
 	}
