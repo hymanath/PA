@@ -8273,20 +8273,36 @@ return constiLst;
 		    			if(gendersMap != null && gendersMap.size()>0)
 				    	{
 				    		for (String genderStr : gendersMap.keySet()) {
-				    			CasteDetailsVO casteVO = new CasteDetailsVO();
-				    			casteVO.setCastName(casteName);
-				    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+				    			CasteDetailsVO casteVO = null;
+				    			casteVO = getMatchedCasteDetailsVO(casteNameDetails,casteName.trim());
+				    			if(casteVO == null)
 				    			{
-				    				casteVO.setMaleCount(gendersMap.get(genderStr).toString());
+				    				casteVO = new CasteDetailsVO();
+				    				casteVO.setCastName(casteName);
+					    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+					    			{
+					    				casteVO.setMaleCount(gendersMap.get(genderStr).toString());
+					    			}
+					    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+					    			{
+					    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
+					    			}
+					    			
+					    			casteNameDetails.add(casteVO);
 				    			}
-				    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+				    			else
 				    			{
-				    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
+					    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+					    			{
+					    				casteVO.setMaleCount(gendersMap.get(genderStr).toString());
+					    			}
+					    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+					    			{
+					    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
+					    			}
 				    			}
-				    			casteNameDetails.add(casteVO);
 				    		}
 				    	}
-		    			
 					}
 		    	}
 		    	if(casteGroupMap != null && casteGroupMap.size() > 0)
@@ -8369,6 +8385,26 @@ return constiLst;
 		return cadreCommitteeMemberVOList;
 	}
 	
+	private  CasteDetailsVO getMatchedCasteDetailsVO(List<CasteDetailsVO> casteDetailsVOList , String casteName)
+	{
+		CasteDetailsVO returnVO = null;
+		try {
+			
+			if(casteDetailsVOList != null && casteDetailsVOList.size()>0)
+			{
+				for (CasteDetailsVO casteVo : casteDetailsVOList) {
+					if(casteVo.getCastName().trim().equalsIgnoreCase(casteName.trim()))
+					{
+						return casteVo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return returnVO;
+	}
 	public CadreCommitteeMemberVO getMAtchedVOForVoterID(List<CadreCommitteeMemberVO> cadreCommitteeMemberVOlist, String voterId)
 	{
 		CadreCommitteeMemberVO returnVO = null;
