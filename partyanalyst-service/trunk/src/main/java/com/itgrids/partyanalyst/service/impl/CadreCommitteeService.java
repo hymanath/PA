@@ -5143,7 +5143,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							temp.getDistrictCommVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
 						}
 						
-						setDistrictCommitteeParameterValues(temp,Long.valueOf(obj[3].toString()),resType, Long.valueOf(obj[0].toString()));
+						//setDistrictCommitteeParameterValues(temp,Long.valueOf(obj[3].toString()),resType, Long.valueOf(obj[0].toString()));
 						
 						/*boolean isConsidered = false;
 						if(Long.valueOf(obj[3].toString()).equals(2l)){
