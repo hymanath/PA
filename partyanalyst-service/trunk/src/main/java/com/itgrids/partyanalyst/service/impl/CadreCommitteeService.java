@@ -8026,6 +8026,8 @@ return constiLst;
 		    	ageGroupMap.put("Above60",null);
 		    	String locationName = getLocationName(locationType,locationId);
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
+		    	Map<String,Map<String,Long>> castesMap = new LinkedHashMap<String, Map<String,Long>>();
+		    	
 		    	Long maleCount = 0L;
 		    	Long femaleCount = 0L;
 		    	Set<Long> voteIdsList = new HashSet<Long>();
@@ -8041,6 +8043,28 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
+		    		
+		    		Map<String,Long> genderMap = new LinkedHashMap<String, Long>();
+		    		if(cadreCommitteeMemberVO.getCasteName() != null && !cadreCommitteeMemberVO.getCasteName().isEmpty())
+		    		{
+		    			if(castesMap.get(cadreCommitteeMemberVO.getCasteName().trim()) != null)
+			    		{
+			    			genderMap = castesMap.get(cadreCommitteeMemberVO.getCasteName().trim());
+			    		}
+			    		
+			    		if(cadreCommitteeMemberVO.getGender() != null)
+			    		{
+			    			Long casteCount=0L;
+		    				if(genderMap.get(cadreCommitteeMemberVO.getGender().trim()) != null)
+		    				{		    					
+		    					casteCount = genderMap.get(cadreCommitteeMemberVO.getGender().trim());
+		    				}	
+			    			casteCount = casteCount+1;
+		    				genderMap.put(cadreCommitteeMemberVO.getGender().trim(), casteCount);
+			    		}
+			    		castesMap.put(cadreCommitteeMemberVO.getCasteName().trim(), genderMap);
+		    		}
+		    		
 		    		if(objects[14] != null)
 		    		{
 		    			Long voterId = objects[14] != null ? Long.valueOf(objects[14].toString().trim()):0L;
@@ -8240,6 +8264,31 @@ return constiLst;
 		    		
 		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				}
+		    	
+		    	List<CasteDetailsVO> casteNameDetails = new ArrayList<CasteDetailsVO>();
+		    	if(castesMap != null && castesMap.size()>0)
+		    	{
+		    		for (String casteName : castesMap.keySet()) {		    			
+		    			Map<String,Long> gendersMap = castesMap.get(casteName);
+		    			if(gendersMap != null && gendersMap.size()>0)
+				    	{
+				    		for (String genderStr : gendersMap.keySet()) {
+				    			CasteDetailsVO casteVO = new CasteDetailsVO();
+				    			casteVO.setCastName(casteName);
+				    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+				    			{
+				    				casteVO.setMaleCount(gendersMap.get(genderStr).toString());
+				    			}
+				    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+				    			{
+				    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
+				    			}
+				    			casteNameDetails.add(casteVO);
+				    		}
+				    	}
+		    			
+					}
+		    	}
 		    	if(casteGroupMap != null && casteGroupMap.size() > 0)
 		    	{
 		    		List<CasteDetailsVO> casteGroupList = new ArrayList<CasteDetailsVO>();
@@ -8284,8 +8333,9 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
 		    	 Long totalCount = femaleCount+maleCount ;
 		    	 cadreCommitteeMemberVOList.get(0).setTotal(totalCount);
+		    	 cadreCommitteeMemberVOList.get(0).setCasteNameVO(casteNameDetails);
 				}
-		    	
+		    	//
 		    	
 		    	if(voteIdsList !=null && voteIdsList.size()>0)
 		    	{
