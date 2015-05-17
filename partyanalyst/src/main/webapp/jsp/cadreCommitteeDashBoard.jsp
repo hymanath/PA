@@ -912,12 +912,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp; VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" >&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
 					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
-						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp; DISTRICT &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck" checked="true">&nbsp; DISTRICT &nbsp;&nbsp;</label>
 					</span>
                     </div>
 	
@@ -1236,17 +1236,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
 							getConstituencyWiseCommittesSummary();
 						}else if( userAccessType.indexOf("District") >= 0){
+							//$('#areaBtnsDiv').hide();
+							//$('.areaBtnsDiv').hide();
+							//$('#constiRdId').prop('checked','checked');
 							
-							$('#areaBtnsDiv').hide();
-							$('.areaBtnsDiv').hide();
-							$('#constiRdId').prop('checked','checked');
-							
-							getConstituencyWiseCommittesSummary();
+							//getConstituencyWiseCommittesSummary();
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
 							getCommitteeDetails("AP","villageAll");
 							getCommitteeDetails("AP","district");
-							getConstituencyWiseCommittesSummary();
+							//getConstituencyWiseCommittesSummary();
 							//getCommitteeDetails("AP","state");
 							/*$("#apDistrictHeadingTR").show();
 							$("#apDistrictBodyTR").show();
@@ -1257,7 +1256,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							//$("#apStateBodyTR").hide();
 							$("#tsStateHeadingTR").hide();
 							//$("#tsStateBodyTR").hide();
-							//getDistrictWiseCommittesSummary();
+							getDistrictWiseCommittesSummary();
 						}else {
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
@@ -5087,7 +5086,7 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		$(".excelId").hide();
 		$("#distSummaryBody").html('');
 		$("#summaryAjax").show();
-		$("#districtCommDiv").hide();
+		//$("#districtCommDiv").hide();
 		//$("#stateCommDiv").hide();
 		var selected = $("input[type='radio'][name='selectstate']:checked");
 		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
