@@ -82,6 +82,45 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 .affilCls, .hideCls {
 	background:#E9E9E9 !important;
 }
+
+
+	
+	label {
+    display: inline-block;
+    font-weight: normal !important;
+	}
+
+#constiTableId th{
+    background-color: #d3d3d3 !important;
+}
+#constiTableId td{
+    background-color: #F3F3F3 !important;
+}
+
+.widget
+	{
+		background-color:rgba(0,0,0,0.1);
+		text-align:center;
+		padding:10px 0px 10px 0px;
+		margin-right:20px;
+		border:1px solid #999;
+		box-shadow:1px 1px 5px #999;
+	}
+	.borderbox
+	{
+		margin-top:10px;
+		border:5px solid #CCC;
+		border-radius:5px;
+	}
+	.tablecaption
+	{
+		background-color:#FC6;
+		padding-left:5px;
+		font-size:16px;
+		font-weight:bold;
+		color:#FFF;
+	}
+	
 	</style>
 
 <script>
@@ -977,6 +1016,19 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				</div>
 			  </div>
 			</div>
+			<div id="dialogSummaryDistsrict" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h3 class="panel-header text-center"></h3>
+					  </div>
+						<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
+				</div>
+			</div>
+    </div>
     </div>
 
 
@@ -2347,6 +2399,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var distCompleted =0; 	
 		var distMembers =0; 	
 		var distAffStarted =0; 	
+		var distAfStarted =0; 	
 		var distAffCompleted =0;
 		var percentage = 0;
 		var perc = 0;
@@ -2397,6 +2450,54 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var  commercialCmpltdCount = 0;
 		var  culturalCmpltdCount = 0;	
 
+		
+		var dstctyuvathaStartedCount = 0;
+		var dstctmahilaStartedCount = 0;
+		var dstctrythuStartedCount = 0;
+		var dstctothersStartedCount = 0;
+		var dstctyuvathaCompltdCount = 0;
+		var dstctmahilaCompltdCount = 0;
+		var dstctrythuCompltdCount = 0;
+		var dstctothersCompltdCount = 0;
+		
+		
+		
+		var dstctbcCellStartedCount = 0;
+		var dstctscCellStartedCount = 0;
+		var dstctstCellStartedCount = 0;
+		var dstctminorityStartedCount = 0;
+		var dstctCristianStartedCount = 0;
+		var dstcttnsfStartedCount = 0;
+		var dstcttntucStartedCount = 0;
+		var dstcttsnvStartedCount = 0;
+		var dstctlegalCellStartedCount = 0;
+		var dstctdoctorStartedCount = 0;
+		var dstctkalluGeethaStartedCount = 0;
+		var dstctchenethaStartedCount = 0;
+		var dstctrakshaVedikaStartedCount = 0;
+		var dstcttnusStartedCount = 0;
+		var dstctcommercialStartedCount = 0;
+		var dstctculturalStartedCount = 0;
+		var dstcttradeStartedCount = 0;
+		var  dstcttradeCmpltdCount = 0;
+		var  dstctbcCellCmpltdCount = 0;
+		var  dstctscCellCmpltdCount = 0;
+		var  dstctstCellCmpltdCount = 0;
+		var  dstctminorityCmpltdCount = 0;
+		var  dstctCristianCmpltdCount = 0;
+		var  dstcttnsfCmpltdCount = 0;
+		var  dstcttntucCmpltdCount = 0;
+		var  dstcttsnvCmpltdCount = 0;
+		var  dstctlegalCmpltdCount = 0;
+		var  dstctdoctorCmpltdCount = 0;
+		var  dstctkalluGeethaCmpltdCount = 0;
+		var  dstctchenethaCmpltdCount = 0;
+		var  dstctrakshaVedikaCmpltdCount = 0;
+		var  dstcttnusCmpltdCount = 0;
+		var  dstctcommercialCmpltdCount = 0;
+		var  dstctculturalCmpltdCount = 0;	
+
+		
 		var isConsiderAffl=  $('#considerAfflId').is(':checked')?"true":"false";
 		//console.log("isConsiderAffl  :"+isConsiderAffl);
 		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:1150px !important; background-color:rgba(0,0,0,0.1);">';
@@ -2439,7 +2540,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center;" colspan="4" class="mainCls" > Main Committees 111 </th>';
+					str+='<th style="text-align:center;" colspan="4" class="mainCls" > Main Committees  </th>';
 					str+='<th style="text-align:center;" colspan="43" class="affilCls"> Affiliated Committees </th>';
 				}
 				else
@@ -3047,8 +3148,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th rowspan="2" class="mainCls" >Completed</th>';
 			str+='<th rowspan="2" class="mainCls" >Members</th>';
 			str+='<th rowspan="2" class="affilCls" >Total</th>';
-			str+='<th rowspan="2" class="affilCls"> Started 111</th>';
-			str+='<th rowspan="2" class="affilCls"> Completed 111 </th>';
+			str+='<th rowspan="2" class="affilCls"> Started </th>';
+			str+='<th rowspan="2" class="affilCls"> Completed  </th>';
 			str+='<th colspan="2"  class="affilCls" > Telugu Yuvatha  </th>';
 			str+='<th colspan="2"  class="affilCls"> Telugu Mahila </th>';
 			str+='<th colspan="2"  class="affilCls"> Telugu Rythu </th>';
@@ -3635,7 +3736,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				
 				if(result[i].districtCommVO.membersCount!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.membersCount+'</td>';
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Main Committee \',1,11);}">'+result[i].districtCommVO.membersCount+'</a></td>';
 					distMembers=distMembers+result[i].districtCommVO.membersCount;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -3646,58 +3747,58 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str += '<td style="text-align:center" > - </td>';
 				}
 				if(result[i].districtCommVO.afflStarted!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.afflStarted+'</td>';
-					distAfStarted=distAfStarted+result[i].districtCommVO.afflStarted;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committee \',0,11);}">'+result[i].districtCommVO.afflStarted+'</a></td>';
+					distAffStarted=distAffStarted+result[i].districtCommVO.afflStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.afflCompleted!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.afflCompleted+' </td>';
-					distAfCompleted=distAfCompleted+result[i].districtCommVO.afflCompleted;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committee \',0,11);}">'+result[i].districtCommVO.afflCompleted+' </a></td>';
+					distAffCompleted=distAffCompleted+result[i].districtCommVO.afflCompleted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.youvathaStarted != null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.youvathaStarted+' </td>';
-					yuvathaStartedCount = yuvathaStartedCount+result[i].districtCommVO.youvathaStarted;
+					str += '<td style="text-align:center" > <a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committee \',2,11);}">'+result[i].districtCommVO.youvathaStarted+'</a> </td>';
+					dstctyuvathaStartedCount = dstctyuvathaStartedCount+result[i].districtCommVO.youvathaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.youvathaCmpltd!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.youvathaCmpltd+' </td>';
-					yuvathaCompltdCount = yuvathaCompltdCount+result[i].districtCommVO.youvathaCmpltd;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committee \',2,11);}">'+result[i].districtCommVO.youvathaCmpltd+'</a> </td>';
+					dstctyuvathaCompltdCount = dstctyuvathaCompltdCount+result[i].districtCommVO.youvathaCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.mahilaStarted != null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.mahilaStarted+' </td>';
-					mahilaStartedCount = mahilaStartedCount+result[i].districtCommVO.mahilaStarted;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,11);}">'+result[i].districtCommVO.mahilaStarted+' </a></td>';
+					dstctmahilaStartedCount = dstctmahilaStartedCount+result[i].districtCommVO.mahilaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.mahilaCmpltd!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.mahilaCmpltd+' </td>';
-					mahilaCompltdCount = mahilaCompltdCount+result[i].districtCommVO.mahilaCmpltd;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,11);}">'+result[i].districtCommVO.mahilaCmpltd+'</a> </td>';
+					dstctmahilaCompltdCount = dstctmahilaCompltdCount+result[i].districtCommVO.mahilaCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				
 				if(result[i].districtCommVO.rythuStarted != null){
-					str += '<td style="text-align:center >'+result[i].districtCommVO.rythuStarted+' </td>';
-						rythuStartedCount = rythuStartedCount+result[i].districtCommVO.rythuStarted;
+					str += '<td style="text-align:center;"> <a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committee \',4,11);}">'+result[i].districtCommVO.rythuStarted+'</a> </td>';
+						dstctrythuStartedCount = dstctrythuStartedCount+result[i].districtCommVO.rythuStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].districtCommVO.rythuCmpltd!=null){
-					str += '<td style="text-align:center" >'+result[i].districtCommVO.rythuCmpltd+' </td>';
-						rythuCompltdCount = rythuCompltdCount+result[i].districtCommVO.rythuCmpltd;
+					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committee \',4,11);}">'+result[i].districtCommVO.rythuCmpltd+' </a></td>';
+						dstctrythuCompltdCount = dstctrythuCompltdCount+result[i].districtCommVO.rythuCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
@@ -3705,239 +3806,239 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				if(isConsiderAffl == "true")
 				{
 						if(result[i].districtCommVO.tradeStarted != null){
-							str += '<td style="text-align:center"  >'+result[i].districtCommVO.tradeStarted+' </td>';
-							tradeStartedCount = tradeStartedCount+result[i].districtCommVO.tradeStarted;
+							str += '<td style="text-align:center"  ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,11);}">'+result[i].districtCommVO.tradeStarted+'</a> </td>';
+							dstcttradeStartedCount = dstcttradeStartedCount+result[i].districtCommVO.tradeStarted;
 						}else{
 							str += '<td style="text-align:center"  > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tradeCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tradeCmpltd+' </td>';
-							tradeCmpltdCount = tradeCmpltdCount+result[i].districtCommVO.tradeCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,11);}">'+result[i].districtCommVO.tradeCmpltd+'</a> </td>';
+							dstcttradeCmpltdCount = dstcttradeCmpltdCount+result[i].districtCommVO.tradeCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 
 						if(result[i].districtCommVO.bcCellStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.bcCellStarted+' </td>';
-							bcCellStartedCount = bcCellStartedCount+result[i].districtCommVO.bcCellStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,11);}">'+result[i].districtCommVO.bcCellStarted+'</a> </td>';
+							dstctbcCellStartedCount = dstctbcCellStartedCount+result[i].districtCommVO.bcCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.bcCellCmpltd!=null){
-							str += '<td style="text-align:center">'+result[i].districtCommVO.bcCellCmpltd+' </td>';
-							bcCellCmpltdCount = bcCellCmpltdCount+result[i].districtCommVO.bcCellCmpltd;
+							str += '<td style="text-align:center"><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,11);}">'+result[i].districtCommVO.bcCellCmpltd+' </a></td>';
+							dstctbcCellCmpltdCount = dstctbcCellCmpltdCount+result[i].districtCommVO.bcCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.scCellStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.scCellStarted+' </td>';
-							scCellStartedCount = scCellStartedCount+result[i].districtCommVO.scCellStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,11);}">'+result[i].districtCommVO.scCellStarted+' </a></td>';
+							dstctscCellStartedCount = dstctscCellStartedCount+result[i].districtCommVO.scCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.scCellCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.scCellCmpltd+' </td>';
-							scCellCmpltdCount = scCellCmpltdCount+result[i].districtCommVO.scCellCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,11);}">'+result[i].districtCommVO.scCellCmpltd+' </a></td>';
+							dstctscCellCmpltdCount = dstctscCellCmpltdCount+result[i].districtCommVO.scCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.stCellStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.stCellStarted+' </td>';
-							stCellStartedCount = stCellStartedCount+result[i].districtCommVO.stCellStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,11);}">'+result[i].districtCommVO.stCellStarted+'</a> </td>';
+							dstctstCellStartedCount = dstctstCellStartedCount+result[i].districtCommVO.stCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.stCellCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.stCellCmpltd+' </td>';
-							stCellCmpltdCount = stCellCmpltdCount+result[i].districtCommVO.stCellCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,11);}">'+result[i].districtCommVO.stCellCmpltd+'</a> </td>';
+							dstctstCellCmpltdCount = dstctstCellCmpltdCount+result[i].districtCommVO.stCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.minorityStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.minorityStarted+' </td>';
-							minorityStartedCount = minorityStartedCount+result[i].districtCommVO.minorityStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,11);}">'+result[i].districtCommVO.minorityStarted+' </a></td>';
+							dstctminorityStartedCount = dstctminorityStartedCount+result[i].districtCommVO.minorityStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.minorityCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.minorityCmpltd+' </td>';
-							minorityCmpltdCount = minorityCmpltdCount+result[i].districtCommVO.minorityCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,11);}">'+result[i].districtCommVO.minorityCmpltd+'</a> </td>';
+							dstctminorityCmpltdCount = dstctminorityCmpltdCount+result[i].districtCommVO.minorityCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.CristianStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.CristianStarted+' </td>';
-							CristianStartedCount = CristianStartedCount+result[i].districtCommVO.CristianStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,11);}">'+result[i].districtCommVO.CristianStarted+'</a> </td>';
+							dstctCristianStartedCount = dstctCristianStartedCount+result[i].districtCommVO.CristianStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.CristianCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.CristianCmpltd+' </td>';
-							CristianCmpltdCount = CristianCmpltdCount+result[i].districtCommVO.CristianCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,11);}">'+result[i].districtCommVO.CristianCmpltd+' </a></td>';
+							dstctCristianCmpltdCount = dstctCristianCmpltdCount+result[i].districtCommVO.CristianCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tnsfStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tnsfStarted+' </td>';
-							tnsfStartedCount = tnsfStartedCount+result[i].districtCommVO.tnsfStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,11);}">'+result[i].districtCommVO.tnsfStarted+' </a></td>';
+							dstcttnsfStartedCount = dstcttnsfStartedCount+result[i].districtCommVO.tnsfStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tnsfCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tnsfCmpltd+' </td>';
-							tnsfCmpltdCount = tnsfCmpltdCount+result[i].districtCommVO.tnsfCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,11);}">'+result[i].districtCommVO.tnsfCmpltd+'</a> </td>';
+							dstcttnsfCmpltdCount = dstcttnsfCmpltdCount+result[i].districtCommVO.tnsfCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tntucStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tntucStarted+' </td>';
-							tntucStartedCount = tntucStartedCount+result[i].districtCommVO.tntucStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,11);}">'+result[i].districtCommVO.tntucStarted+' </a></td>';
+							dstcttntucStartedCount = dstcttntucStartedCount+result[i].districtCommVO.tntucStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tntucCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tntucCmpltd+' </td>';
-							tntucCmpltdCount = tntucCmpltdCount+result[i].districtCommVO.tntucCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,11);}">'+result[i].districtCommVO.tntucCmpltd+'</a> </td>';
+							dstcttntucCmpltdCount = dstcttntucCmpltdCount+result[i].districtCommVO.tntucCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tsnvStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tsnvStarted+' </td>';
-							tsnvStartedCount = tsnvStartedCount+result[i].districtCommVO.tsnvStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,11);}">'+result[i].districtCommVO.tsnvStarted+'</a> </td>';
+							dstcttsnvStartedCount = dstcttsnvStartedCount+result[i].districtCommVO.tsnvStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tsnvCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tsnvCmpltd+' </td>';
-							tsnvCmpltdCount = tsnvCmpltdCount+result[i].districtCommVO.tsnvCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,11);}">'+result[i].districtCommVO.tsnvCmpltd+'</a> </td>';
+							dstcttsnvCmpltdCount = dstcttsnvCmpltdCount+result[i].districtCommVO.tsnvCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.legalCellStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.legalCellStarted+' </td>';
-							legalCellStartedCount = legalCellStartedCount+result[i].districtCommVO.legalCellStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,11);}">'+result[i].districtCommVO.legalCellStarted+' </a></td>';
+							dstctlegalCellStartedCount = dstctlegalCellStartedCount+result[i].districtCommVO.legalCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.legalCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.legalCmpltd+' </td>';
-							legalCmpltdCount = legalCmpltdCount+result[i].districtCommVO.legalCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,11);}">'+result[i].districtCommVO.legalCmpltd+'</a> </td>';
+							dstctlegalCmpltdCount = dstctlegalCmpltdCount+result[i].districtCommVO.legalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.doctorStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.doctorStarted+' </td>';
-							doctorStartedCount = doctorStartedCount+result[i].districtCommVO.doctorStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,11);}">'+result[i].districtCommVO.doctorStarted+' </a></td>';
+							dstctdoctorStartedCount = dstctdoctorStartedCount+result[i].districtCommVO.doctorStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.doctorCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.doctorCmpltd+' </td>';
-							doctorCmpltdCount = doctorCmpltdCount+result[i].districtCommVO.doctorCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,11);}">'+result[i].districtCommVO.doctorCmpltd+'</a> </td>';
+							dstctdoctorCmpltdCount = dstctdoctorCmpltdCount+result[i].districtCommVO.doctorCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.kalluGeethaStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.kalluGeethaStarted+' </td>';
-							kalluGeethaStartedCount = kalluGeethaStartedCount+result[i].districtCommVO.kalluGeethaStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,11);}">'+result[i].districtCommVO.kalluGeethaStarted+'</a> </td>';
+							dstctkalluGeethaStartedCount = dstctkalluGeethaStartedCount+result[i].districtCommVO.kalluGeethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.kalluGeethaCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.kalluGeethaCmpltd+' </td>';
-							kalluGeethaCmpltdCount = kalluGeethaCmpltdCount+result[i].districtCommVO.kalluGeethaCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,11);}">'+result[i].districtCommVO.kalluGeethaCmpltd+' </a></td>';
+							dstctkalluGeethaCmpltdCount = dstctkalluGeethaCmpltdCount+result[i].districtCommVO.kalluGeethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.chenethaStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.chenethaStarted+' </td>';
-							chenethaStartedCount = chenethaStartedCount+result[i].districtCommVO.chenethaStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,11);}">'+result[i].districtCommVO.chenethaStarted+' </a></td>';
+							dstctchenethaStartedCount = dstctchenethaStartedCount+result[i].districtCommVO.chenethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.chenethaCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.chenethaCmpltd+' </td>';
-							chenethaCmpltdCount = chenethaCmpltdCount+result[i].districtCommVO.chenethaCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,11);}">'+result[i].districtCommVO.chenethaCmpltd+' </a></td>';
+							dstctchenethaCmpltdCount = dstctchenethaCmpltdCount+result[i].districtCommVO.chenethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.rakshaVedikaStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.rakshaVedikaStarted+' </td>';
-							rakshaVedikaStartedCount = rakshaVedikaStartedCount+result[i].districtCommVO.rakshaVedikaStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,11);}">'+result[i].districtCommVO.rakshaVedikaStarted+' </a></td>';
+							dstctrakshaVedikaStartedCount = dstctrakshaVedikaStartedCount+result[i].districtCommVO.rakshaVedikaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.rakshaVedikaCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.rakshaVedikaCmpltd+' </td>';
-							rakshaVedikaCmpltdCount = rakshaVedikaCmpltdCount+result[i].districtCommVO.rakshaVedikaCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,11);}">'+result[i].districtCommVO.rakshaVedikaCmpltd+' </a></td>';
+							dstctrakshaVedikaCmpltdCount = dstctrakshaVedikaCmpltdCount+result[i].districtCommVO.rakshaVedikaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tnusStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tnusStarted+' </td>';
-							tnusStartedCount = tnusStartedCount+result[i].districtCommVO.tnusStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,11);}">'+result[i].districtCommVO.tnusStarted+' </a></td>';
+							dstcttnusStartedCount = dstcttnusStartedCount+result[i].districtCommVO.tnusStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.tnusCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.tnusCmpltd+' </td>';
-							tnusCmpltdCount = tnusCmpltdCount+result[i].districtCommVO.tnusCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,11);}">'+result[i].districtCommVO.tnusCmpltd+'</a> </td>';
+							dstcttnusCmpltdCount = dstcttnusCmpltdCount+result[i].districtCommVO.tnusCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.commercialStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.commercialStarted+' </td>';
-							commercialStartedCount = commercialStartedCount+result[i].districtCommVO.commercialStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,11);}">'+result[i].districtCommVO.commercialStarted+' </a></td>';
+							dstctcommercialStartedCount = dstctcommercialStartedCount+result[i].districtCommVO.commercialStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.commercialCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.commercialCmpltd+' </td>';
-							commercialCmpltdCount = commercialCmpltdCount+result[i].districtCommVO.commercialCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,11);}">'+result[i].districtCommVO.commercialCmpltd+'</a> </td>';
+							dstctcommercialCmpltdCount = dstctcommercialCmpltdCount+result[i].districtCommVO.commercialCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.culturalStarted != null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.culturalStarted+' </td>';
-							culturalStartedCount = culturalStartedCount+result[i].districtCommVO.culturalStarted;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,11);}">'+result[i].districtCommVO.culturalStarted+' </a></td>';
+							dstctculturalStartedCount = dstctculturalStartedCount+result[i].districtCommVO.culturalStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].districtCommVO.culturalCmpltd!=null){
-							str += '<td style="text-align:center" >'+result[i].districtCommVO.culturalCmpltd+' </td>';
-							culturalCmpltdCount = culturalCmpltdCount+result[i].districtCommVO.culturalCmpltd;
+							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,11);}">'+result[i].districtCommVO.culturalCmpltd+'</a></td>';
+							dstctculturalCmpltdCount = dstctculturalCmpltdCount+result[i].districtCommVO.culturalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
@@ -3945,15 +4046,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				else
 				{
 					if(result[i].districtCommVO.othersStarted != null){
-						str += '<td style="text-align:center" >'+result[i].districtCommVO.othersStarted+' </td>';
-						othersStartedCount = othersStartedCount+result[i].districtCommVO.othersStarted;
+						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committee \',0,11);}">'+result[i].districtCommVO.othersStarted+'</a> </td>';
+						dstctothersStartedCount = dstctothersStartedCount+result[i].districtCommVO.othersStarted;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
 					}
 					
 					if(result[i].districtCommVO.othersCmpltd != null){
-						str += '<td style="text-align:center" >'+result[i].districtCommVO.othersCmpltd+' </td>';
-						othersCompltdCount = othersCompltdCount+result[i].districtCommVO.othersCmpltd;
+						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committee \',0,11);}">'+result[i].districtCommVO.othersCmpltd+'</a> </td>';
+						dstctothersCompltdCount = dstctothersCompltdCount+result[i].districtCommVO.othersCmpltd;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
 					}
@@ -4091,7 +4192,59 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
-
+		
+		
+		str += '<td style="text-align:center" >'+dstctyuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctyuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuCompltdCount+'</td>';
+		
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center" >'+dstcttradeStartedCount+'</td>'; //999	
+				str += '<td style="text-align:center" >'+dstcttradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctstCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctstCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstcttnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctlegalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctlegalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstctchenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctchenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctcommercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctcommercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center" >'+dstctothersStartedCount+'</td>';
+				str += '<td style="text-align:center" >'+dstctothersCompltdCount+'</td>';
+			}
 		
 		}
 		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
@@ -4175,16 +4328,69 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center" >'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center" >'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+distMembers+'</td>'; 
-str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';			
+		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+		
+		str += '<td style="text-align:center" >'+dstctyuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctyuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuCompltdCount+'</td>';
+		
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center" >'+dstcttradeStartedCount+'</td>'; //999	
+				str += '<td style="text-align:center" >'+dstcttradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctstCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctstCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstcttnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctlegalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctlegalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstctchenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctchenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctcommercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctcommercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center" >'+dstctothersStartedCount+'</td>';
+				str += '<td style="text-align:center" >'+dstctothersCompltdCount+'</td>';
+			}
+			
 		}else  if(districtCommCheck == "true" && mandalCheck == "true"){
 			str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td >'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center" >'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center" >'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center" >'+mandMembers+'</td>'; 
-str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
+		str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		str += '<td style="text-align:center" >'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center" >'+mandAfCompleted+'</td>';
 		
@@ -4243,9 +4449,61 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		str += '<td style="text-align:center" >'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center" >'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center" >'+distMembers+'</td>'; 
-str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';		
+		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+		
+		str += '<td style="text-align:center" >'+dstctyuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctyuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuCompltdCount+'</td>';
+		
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center" >'+dstcttradeStartedCount+'</td>'; //999	
+				str += '<td style="text-align:center" >'+dstcttradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctstCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctstCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstcttnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctlegalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctlegalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstctchenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctchenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctcommercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctcommercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center" >'+dstctothersStartedCount+'</td>';
+				str += '<td style="text-align:center" >'+dstctothersCompltdCount+'</td>';
+			}
 		}
 		
 		}
@@ -4330,6 +4588,58 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+		
+		str += '<td style="text-align:center" >'+dstctyuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctyuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctmahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuStartedCount+'</td>';
+		str += '<td style="text-align:center" >'+dstctrythuCompltdCount+'</td>';
+		
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center" >'+dstcttradeStartedCount+'</td>'; //999	
+				str += '<td style="text-align:center" >'+dstcttradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctbcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctscCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctstCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctstCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctminorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctCristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstcttnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctlegalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctlegalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctdoctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctkalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center" >'+dstctchenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctchenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctrakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstcttnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center" >'+dstctcommercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center" >'+dstctcommercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center" >'+dstctculturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center" >'+dstctothersStartedCount+'</td>';
+				str += '<td style="text-align:center" >'+dstctothersCompltdCount+'</td>';
+			}
 		}
 			
 	    
@@ -7557,6 +7867,227 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		
 		
 	}
+
+	function gettingCadreDetails(locationId,locationName,basicCmmtyName,basicCmmtyId,locationTypeId){
+	
+		 var jsObj={
+		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "gettingCadreDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
+			 buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId);
+		});
+		
+	}
+function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId)
+{
+		if(result!=null)
+		  {
+			var name = '';
+			
+			
+			if(result.length>0){
+				name = result[0].locationName;
+			var str='';
+			str+='<div>';
+			str+='<table class="table">';
+				str+='<thead>';
+				str+='<tr>';
+				str+='<td>';
+				str+='<span class="">';
+				str+='<table class="table table-bordered" style="width:200px">';
+				str+='<thead>';
+				str+='<tr>';
+				str+='<th style="background-color:#EDEDED;"> Total Candidates : </th>';
+				str+='<td> '+result[0].total+' </td>';
+				str+='</tr>';
+				str+='</thead>';
+				str+='</table>';
+				str+='</span>';
+				str+='</td>';
+				str+='<td>';
+				str+='<span class="">';
+				str+='<table class="table table-bordered" style="width:200px">';
+				str+='<thead>';
+				str+='<tr>';
+				str+='<th  style="background-color:#EDEDED;"> Male Candidates : </th>';
+				str+='<td> '+result[0].maleCount+' </td>';
+				str+='</tr>';
+				str+='</thead>';
+				str+='</table>';
+				str+='</span>';
+				str+='</td>';
+				str+='<td>';
+				str+='<span class="">';
+				str+='<table class="table table-bordered" style="width:250px">';
+				str+='<thead>';
+				str+='<tr>';
+				str+='<th  style="background-color:#EDEDED;"> Female Candidates : </th>';
+				str+='<td> '+result[0].femaleCount+' </td>';
+				str+='</tr>';
+				str+='</thead>';
+				str+='</table>';
+				str+='</span>';
+				str+='</td>';
+				str+='</tr>';
+				str+='</thead>';
+				str+='</table>';
+				str+='</div>';
+				str += '<div>';
+				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+				str += '<caption class="tablecaption" >Caste Category Wise Information';
+				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str += '</caption>';
+				str += ' <thead>';
+				str += ' <tr>';
+				str += '<th width="25%">Caste Category</th>';
+				str += '<th width="25%">Total Count</th>';
+				str += '<th width="25%">Male</th>';
+				str += '<th width="25%">Female</th>';
+				str += '</tr>';
+				str += '</thead>';
+				for(var pr in result[0].casteGroupVO)
+				{
+					str += ' <tr>';
+					str += '<td>'+result[0].casteGroupVO[pr].castName+'</td>';
+					str += '<td>'+result[0].casteGroupVO[pr].casteId+'</td>';
+					str += '<td>'+result[0].casteGroupVO[pr].stateId+'</td>';
+					str += '<td>'+result[0].casteGroupVO[pr].castStateId+'</td>';
+					str += '</tr>';
+				}
+				
+
+				str += '</table>';
+				str += '</div>';
+				
+				str += '<div>';
+				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+				str += '<caption class="tablecaption">Age Range Wise Information';
+				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
+				str += '<thead>';
+				str += '<tr>';
+				str += ' <th width="25%">Between Age</th>';
+				str += '<th width="25%">Total Count</th>';
+				str += '<th width="25%">Male</th>';
+				str += '<th width="25%">Female</th>';
+				str += '</tr>';
+				str += '</thead>';
+				for(var tp in result[0].ageDetailsIfoVO)
+				{
+					str += ' <tr>';
+					str += '<td>'+result[0].ageDetailsIfoVO[tp].castName+'</td>';
+					str += '<td>'+result[0].ageDetailsIfoVO[tp].casteId+'</td>';
+					str += '<td>'+result[0].ageDetailsIfoVO[tp].stateId+'</td>';
+					str += '<td>'+result[0].ageDetailsIfoVO[tp].castStateId+'</td>';
+					str += '</tr>';
+				}
+
+				str += ' </table> ';
+				str += '</div>';
+				str+='<table class="table table-bordered" id="constiTableId">';
+				str+='<thead>';
+				//if(basicCmmtyId == 1)
+					//str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
+				
+				str+='<th style="width:50px;"> </th>';
+				str+='<th style="padding-left: 72px;"> MEMBER </th>';
+				//str+='<th style="padding-left: 19px;">MemberShipNo</th>';
+				str+='<th style="padding-left: 19px;"> MOBILE NO </th>';
+				str+='<th style="padding-left: 19px;"> AGE </th>';
+				str+='<th style="padding-left: 19px;"> GENDER </th>';
+				str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
+				str+='<th style="padding-left: 19px;"> VOTER ID </th>';
+				str+='</thead>';
+				for(var i in result){
+				 str+='<tr>';
+				/* if(basicCmmtyId == 1){
+				 if(result[i].role!=null){
+					str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
+				 }else{
+					str+='<td  style="padding-top: 14px; padding-left: 37px;">  </td>';
+				 }
+				 }*/
+				 str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
+				
+				 str+=' </td>';
+				 str+='<td> '+result[i].name+'';
+				 if(basicCmmtyId != 1){
+				 if(result[i].commiteeName!=null){
+					 str+='<br>'+result[i].commiteeName+' - ';
+				 }else{
+					 str+='<br>';
+				 }
+				 }
+				else{
+					 str+='<br>';
+				 }
+				 
+				  //if(basicCmmtyId == 1){
+				 if(result[i].role!=null){
+					 str+=' '+result[i].role+'';
+				 }else{
+					 str+='';
+				 }
+				// }	 
+				  str+=' </td>';	  
+				// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
+				 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
+				 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].mobileNo+'</td>';
+				 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
+				 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
+				 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
+				  str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].voterCardNo+' </td>';
+				 str+='</tr>';
+				}
+			   str+='</tbody>';
+			   str+='</table>';
+				str+=' <div class="modal-footer" style="margin-top: 50px;">';
+				str+=' <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>';
+				str+='</div>';
+		
+
+		   $("#cadreDetailsDiv").html(str);
+		   
+		   //$('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
+		   $('#dialogSummaryDistsrict').find('h3').html('<span>'+ capitalize(name)+'  ('+ basicCmmtyName +') </span>');
+		   $("#dialogSummaryDistsrict").modal("show");
+		  
+		  } 
+		  else{
+				$("#cadreDetailsDiv").html("No Data Available.");
+			}
+			
+			/*$("#constiTableId").dataTable({
+					"iDisplayLength": 20,
+					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+				});
+			*/
+		}
+}	
+
+function capitalize(str) {
+
+   // return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+   var words = str.split(" ");
+   var arr = Array();
+   for (i in words)
+   {
+      temp = words[i].toLowerCase();
+      temp = temp.charAt(0).toUpperCase() + temp.substring(1);
+      arr.push(temp);
+   }
+   return arr.join(" ");
+}
 
 </script>		
 </body>
