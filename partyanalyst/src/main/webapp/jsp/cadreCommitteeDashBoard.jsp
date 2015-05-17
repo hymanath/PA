@@ -7969,6 +7969,39 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str += '</table>';
 				str += '</div>';
 				
+				
+				str += '<div>';
+				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+				str += '<caption class="tablecaption" >Caste Wise Information';
+				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str += '</caption>';
+				str += ' <thead>';
+				str += ' <tr>';
+				str += '<th width="25%">Caste Name</th>';
+				str += '<th width="25%">Total Count</th>';
+				str += '<th width="25%">Male</th>';
+				str += '<th width="25%">Female</th>';
+				str += '</tr>';
+				str += '</thead>';
+				for(var pr in result[0].casteNameVO)
+				{
+					var malecount = result[0].casteNameVO[pr].maleCount != null ? result[0].casteNameVO[pr].maleCount:0;
+					var femaleCount = result[0].casteNameVO[pr].femaleCount != null ? result[0].casteNameVO[pr].femaleCount:0;
+					var allCount = parseInt(malecount)+parseInt(femaleCount);
+					
+					str += ' <tr>';
+					str += '<td>'+result[0].casteNameVO[pr].castName+'</td>';
+					str += '<td>'+allCount+'</td>';
+					str += '<td>'+malecount+'</td>';
+					str += '<td>'+femaleCount+'</td>';
+					str += '</tr>';
+				}
+				
+
+				str += '</table>';
+				str += '</div>';
+				
+				
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
 				str += '<caption class="tablecaption">Age Range Wise Information';
