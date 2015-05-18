@@ -8026,23 +8026,38 @@ return constiLst;
 		List<CadreCommitteeMemberVO> finalList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
 			List<Object[]> rsltListDtls = tdpCommitteeMemberDAO.cadreMemberDetailsForPerformance(locationLevelId, locationLevelValue);
+			Map<Long,String> constiNames = new HashMap<Long,String>();
 			if(rsltListDtls!=null && rsltListDtls.size()>0){
 				for(Object[] temp:rsltListDtls){
 					CadreCommitteeMemberVO cv = new CadreCommitteeMemberVO();
 					cv.setMembershipNo(temp[0].toString());
 					cv.setName(temp[1].toString());
+					if(temp[2] != null)
 					cv.setVtrId(Long.valueOf(temp[2].toString()));
 					cv.setMobileNo(temp[3].toString());
+					if(temp[4] != null)
 					cv.setAge(temp[4].toString());
+					if(temp[5] != null)
 					cv.setGender(temp[5].toString());
+					if(temp[6] != null)
 					cv.setCasteName(temp[6].toString());
+					if(temp[7] != null)
 					cv.setCasteGroupName(temp[7].toString());
 					cv.setVoterCardNo(temp[8].toString());
 					cv.setCommitte(temp[9].toString());
 					cv.setRole(temp[10].toString());
-					cv.setConstituencyId(Long.valueOf(temp[12].toString()));
-					cv.setConstituencyName(temp[11].toString());
+					if(temp[12] != null){
+						Long id = Long.valueOf(temp[12].toString());
+						if(constiNames.get(id) == null){
+							constiNames.put(id, constituencyDAO.getConstituencyNameById(id));
+						}
+						
+						cv.setConstituencyId(id);
+						cv.setConstituencyName(constiNames.get(id));
+					}
+					if(temp[14] != null)
 					cv.setBoothId(Long.valueOf(temp[14].toString()));
+					if(temp[13] != null)
 					cv.setPartNo(temp[13].toString());
 					
 					SimpleDateFormat sdfr = new SimpleDateFormat("dd/MMM/yyyy");

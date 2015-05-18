@@ -1350,4 +1350,16 @@ public List<Long> getConstituenciesByState(Long stateId) {
 				" order by model.name",districtId);
 	}
 	
+	public String getConstituencyNameById(Long constituencyId){
+		String name = "";
+		try{
+			 Query query = getSession().createQuery("select model.name from Constituency model where model.constituencyId =:constituencyId");
+				query.setParameter("constituencyId", constituencyId);
+				name =  (String)query.uniqueResult();
+		}catch(Exception e){
+			
+		}
+		return name;
+	}
+	
 }
