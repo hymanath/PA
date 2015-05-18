@@ -9712,7 +9712,18 @@
 			<result type="json" name="success">
 				<param name="root">cadreCommitteeMemberVOList</param>
 			</result>
-		</action>				
+		</action>
+		
+		<action name="peformanceOfCadreAction" class="committeeDashBoardAction" method="peformanceOfCadreAction">
+			<result name="success">/jsp/cadrePerformance.jsp</result>
+		</action>
+		
+		<action name="gettingPerformanceOfCadreAction" class="committeeDashBoardAction" method="gettingPerformanceOfCadre">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVOList</param>
+			</result>
+		</action>
+						
 		<action name="updateCommitteeMemberDesignation" class="cadreCommitteeAction" method="updateCommitteeMemberDesignation">
 			<result type="json" name="success">
 				<param name="root">status</param>
