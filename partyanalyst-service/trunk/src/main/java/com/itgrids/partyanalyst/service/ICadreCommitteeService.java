@@ -120,5 +120,5 @@ public interface ICadreCommitteeService {
 	 public ResultStatus createANewUserForEvents(final Long userId,final String firstName,final String lastName,final String userName,final String password,final String mobileNo);
 	 public ResultStatus assignEventForUser(final Long userId,final  UserEventDetailsVO userEventDetailsVO);
 	 public EventCreationVO getPrePopulatingValuesOfEvents(Long eventId);
-	 
+	 public List<CadreCommitteeMemberVO> getCommitteeMemberPerformanceDetails(Long locationLevelId, Long locationLevelValue);
 }
