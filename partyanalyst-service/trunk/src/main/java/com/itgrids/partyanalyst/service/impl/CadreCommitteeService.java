@@ -8100,6 +8100,12 @@ return constiLst;
 	public void getPerformanceOfCadre(List<CadreCommitteeMemberVO> finalList){
 		
 		if(finalList!=null && finalList.size()>0){
+				Long ttlMembs = 0l;
+				Long ttlMainMembs = 0l;
+				Long ttlAfflMembs = 0l;
+				Long ttlLowPerfMainMembs = 0l;
+				Long ttlLowPerfAfflMembs = 0l;
+				
 			for(CadreCommitteeMemberVO cv:finalList){
 				
 				List<Long> naIds = new ArrayList<Long>();
@@ -8290,7 +8296,54 @@ return constiLst;
 						cv.setOwnBoothPerc(ownBoothPerc);
 					}
 					
+					if(cv.getOwnMandalPerc()!=null && cv.getOwnBoothPerc()!=null){
+						double boothPer = Double.parseDouble(cv.getOwnBoothPerc());
+						double mandalPer = Double.parseDouble(cv.getOwnMandalPerc());
+						double prfrmancePerc = boothPer-mandalPer;
+						cv.setMandalBoothCmpr(String.valueOf(prfrmancePerc));
+						if(prfrmancePerc<0){
+							cv.setLowPerformance(true);
+						}else{
+							cv.setLowPerformance(false);
+						}
+					}
+					if(cv.getOwnMunciPerc()!=null && cv.getOwnBoothPerc()!=null){
+						double boothPer = Double.parseDouble(cv.getOwnBoothPerc());
+						double munciPer = Double.parseDouble(cv.getOwnMunciPerc());
+						double prfrmancePerc = boothPer-munciPer;
+						cv.setMandalBoothCmpr(String.valueOf(prfrmancePerc));
+						if(prfrmancePerc<0){
+							cv.setLowPerformance(true);
+						}else{
+							cv.setLowPerformance(false);
+						}
+					}
+					
+					ttlMembs =  ttlMembs + 1;
+					if(cv.getCommitte().equalsIgnoreCase("Main")){
+						ttlMainMembs = ttlMainMembs + 1;
+						if(cv.isLowPerformance()){
+							ttlLowPerfMainMembs = ttlLowPerfMainMembs + 1;
+						}
+					}else{
+						ttlAfflMembs = ttlAfflMembs + 1;
+						if(cv.isLowPerformance()){
+							ttlLowPerfAfflMembs = ttlLowPerfAfflMembs + 1;
+						}
+					}
+					
 			}
+			
+			 CadreCommitteeMemberVO firstCV  = finalList.get(0);
+			 
+			 if(firstCV!=null){
+				 firstCV.setTotalMembs(ttlMembs);
+				 firstCV.setMainCmmtteeMembs(ttlMainMembs);
+				 firstCV.setAfflCmmtteeMembs(ttlAfflMembs);
+				 firstCV.setLowPerfMainCmmtteeMembs(ttlLowPerfMainMembs);
+				 firstCV.setLowPerfAfflCmmtteeMembs(ttlLowPerfAfflMembs);
+			 }
+			
 		}
 		
 		
