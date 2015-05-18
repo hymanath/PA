@@ -49,6 +49,7 @@ public class CadreCommitteeMemberVO {
 	private String ownMunciPerc;
 	private String ownWardPerc;
 	
+	private List<CasteDetailsVO> constiVOList;
 	
 	
 	
@@ -291,6 +292,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setAgeDetailsIfoVO(List<CasteDetailsVO> ageDetailsIfoVO) {
 		this.ageDetailsIfoVO = ageDetailsIfoVO;
+	}
+	public List<CasteDetailsVO> getConstiVOList() {
+		return constiVOList;
+	}
+	public void setConstiVOList(List<CasteDetailsVO> constiVOList) {
+		this.constiVOList = constiVOList;
 	}
 	
 	
