@@ -8047,6 +8047,39 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 
 				str += ' </table> ';
 				str += '</div>';
+				if(result[0].constiVOList != null){
+				str += '<div>';
+				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+				str += '<caption class="tablecaption" >Constituency Wise Information';
+				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str += '</caption>';
+				str += ' <thead>';
+				str += ' <tr>';
+				str += '<th width="25%">Constituency Name</th>';
+				str += '<th width="25%">Total Count</th>';
+				str += '<th width="25%">Male</th>';
+				str += '<th width="25%">Female</th>';
+				str += '</tr>';
+				str += '</thead>';
+				for(var consti in result[0].constiVOList)
+				{
+					var malecount = result[0].constiVOList[consti].maleCount != null ? result[0].constiVOList[consti].maleCount:0;
+					var femaleCount = result[0].constiVOList[consti].femaleCount != null ? result[0].constiVOList[consti].femaleCount:0;
+
+					str += ' <tr>';
+					str += '<td>'+result[0].constiVOList[consti].castName+'</td>';
+					str += '<td>'+result[0].constiVOList[consti].casteCount+'</td>';
+					str += '<td>'+malecount+'</td>';
+					str += '<td>'+femaleCount+'</td>';
+					str += '</tr>';
+				}
+				
+
+				str += '</table>';
+				str += '</div>';
+				}
+				
+				
 				str += '<span id="performanceId" class="btn btn-info" attr_distId="'+lctnId+'">Get Performance Of Cadre</span>';
 				str+='<table class="table table-bordered" id="constiTableId">';
 				str+='<thead>';
