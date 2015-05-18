@@ -2163,20 +2163,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					for (Object[] districtId : accessDistrictsList) {
 						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
-					
+					Long stateTypeId = 0L;
 					if(districtIds != null && districtIds.size() == 13)
 					{
 						cadreCommitteeReportVO.setAccessState("AP");
+						stateTypeId =1L;
 					}
 					else if(districtIds != null && districtIds.size() == 10)
 					{
 						cadreCommitteeReportVO.setAccessState("TG");
+						stateTypeId =36L;
 					}
 					else if(districtIds != null && districtIds.size() == 1)
 					{
 						Long districtId = districtIds.get(0).longValue();
 						if(districtId != 0L)
 							cadreCommitteeReportVO.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+					}
+					
+					List<Object[]> newDistrictsList = districtDAO.getNewDistrictForState(stateTypeId);
+					
+					if(newDistrictsList!=null && newDistrictsList.size()>0){
+						for(Object[] obj:newDistrictsList){
+							districtIds.add(Long.valueOf(obj[0].toString()));
+						}
 					}
 				}
 			}
@@ -4312,6 +4322,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					
 					CommitteeSummaryVO vo = fnlLst.get(0);
 					vo.setAccessState("ALL");
+					
+					List<Object[]> newDistrictsList = districtDAO.getNewDistrictForState(stateTypeId);
+					
+					if(newDistrictsList!=null && newDistrictsList.size()>0){
+						for(Object[] obj:newDistrictsList){
+							CommitteeSummaryVO cv = new CommitteeSummaryVO();
+							cv.setDistrictId(Long.valueOf(obj[0].toString()));
+							cv.setDistrictName(obj[1].toString());
+							
+							distIds.add(Long.valueOf(obj[0].toString()));
+							fnlLst.add(cv);
+						}
+					}
 				}
 			}
 			
