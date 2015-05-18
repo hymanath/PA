@@ -1568,4 +1568,95 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 	
+	public List<Object[]> cadreMemberDetailsForPerformance(Long locationLevelId, Long locationLevelValue){
+		Query query = getSession().createSQLQuery("SELECT distinct SUBSTR(TD.memberShip_id,5),TD.first_name," +
+				" TD.voter_id,TD.mobile_no, TD.age, TD.gender, C.caste_name, CC.category_name," +
+				" V.voter_id_card_no,TBC.name, TR.role, CO.name, CO.constituency_id, B.part_no, B.booth_id, CPR.from_date , CPR.to_date" +
+				" FROM tdp_committee TC," +
+				" tdp_committee_role TCR," +
+				" tdp_cadre TD," +
+				" tdp_committee_member TCM, " +
+				" caste_state CS," +
+				" caste C, " +
+				" caste_category_group CCG," +
+				" caste_category CC, " +
+				" voter V, " +
+				" tdp_roles TR, " +
+				" tdp_basic_committee TBC, " +
+				" user_address UA, " +
+				" booth B," +
+				" constituency CO, " +
+				" cadre_previous_roles CPR" +
+				" WHERE " +
+				" TCM.tdp_cadre_id = TD.tdp_cadre_id " +
+				" AND TCM.tdp_committee_role_id = TCR.tdp_committee_role_id " +
+				" AND TCR.tdp_committee_id = TC.tdp_committee_id " +
+				" AND TC.tdp_committee_level_id = :locationLevelId" +//11
+				" AND TC.tdp_committee_level_value = :locationLevelValue " +//17
+				" AND TCM.is_active = 'Y' " +
+				" and TD.caste_state_id = CS.caste_state_id" +
+				" and CS.caste_id = C.caste_id " +
+				" and CS.caste_category_group_id = CCG.caste_category_group_id " +
+				" and CCG.caste_category_id = CC.caste_category_id " +
+				" and TD.voter_id = V.voter_id " +
+				" and TCR.tdp_roles_id = TR.tdp_roles_id " +
+				" and TC.tdp_basic_committee_id = TBC.tdp_basic_committee_id " +
+				" and TD.address_id = UA.user_address_id " +
+				" and UA.booth_id = B.booth_id " +
+				" and UA.constituency_id = CO.constituency_id " +
+				" and CPR.tdp_cadre_id = TD.tdp_cadre_id " +
+				" and CPR.is_deleted ='N' " +
+				" order by TC.tdp_basic_committee_id, TR.tdp_roles_id, TD.first_name");
+		
+		query.setParameter("locationLevelId", locationLevelId);
+		query.setParameter("locationLevelValue", locationLevelValue);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> cadreMemberBoothDetailsForPerformance(Long locationLevelId, Long locationLevelValue){
+		Query query = getSession().createQuery("SELECT " +
+				" distinct D.district_name," +
+				"  CO.name ," +
+				"  CO.constituency_id ," +
+						" TD.first_name, B.part_no," +
+						"  TD.mobile_no, V.voter_id_card_no, TD.voter_id " +
+						" FROM tdp_committee TC," +
+						" tdp_committee_role TCR," +
+						" tdp_cadre TD, tdp_committee_member TCM, caste_state CS, caste C, caste_category_group CCG, " +
+						" caste_category CC, " +
+						" voter V, " +
+						" tdp_roles TR, " +
+						" tdp_basic_committee TBC, " +
+						" user_address UA, " +
+						" booth B, " +
+						" constituency CO, " +
+						" district D " +
+						" WHERE " +
+						" TCM.tdp_cadre_id = TD.tdp_cadre_id " +
+						" AND TCM.tdp_committee_role_id = TCR.tdp_committee_role_id " +
+						" AND TCR.tdp_committee_id = TC.tdp_committee_id " +
+						" AND TC.tdp_committee_level_id = :locationLevelId " +
+						" AND TC.tdp_committee_level_value = :locationLevelValue " +
+						" AND TCM.is_active = 'Y' " +
+						" and TD.caste_state_id = CS.caste_state_id " +
+						" and CS.caste_id = C.caste_id " +
+						" and CS.caste_category_group_id = CCG.caste_category_group_id " +
+						" and CCG.caste_category_id = CC.caste_category_id " +
+						" and TD.voter_id = V.voter_id " +
+						" and TCR.tdp_roles_id = TR.tdp_roles_id " +
+						" and TC.tdp_basic_committee_id = TBC.tdp_basic_committee_id " +
+						" and TD.address_id = UA.user_address_id " +
+						" and UA.booth_id = B.booth_id " +
+						" and UA.constituency_id = CO.constituency_id " +
+						" and CO.district_id = D.district_id " +
+						" order by TC.tdp_basic_committee_id, TR.tdp_roles_id, TD.first_name");
+		
+		query.setParameter("locationLevelId", locationLevelId);
+		query.setParameter("locationLevelValue", locationLevelValue);
+		
+		return query.list();
+	}
+	
+	
 }
