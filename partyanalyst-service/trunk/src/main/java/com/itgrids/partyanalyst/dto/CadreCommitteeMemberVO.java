@@ -34,8 +34,66 @@ public class CadreCommitteeMemberVO {
 	private String voterCardNo;
 	private String commiteeName;
 	private String voterId;
+	private String constituencyName;
+	private Long constituencyId;
+	private String partNo;
+	private Long boothId;
+	private String fromDate;
+	private String toDate;
+	private Long vtrId;
+	
+	private String ownBoothPerc;
+	private String ownPanchPerc;
+	private String ownMandalPerc;
+	private String ownConstiPerc;
+	private String ownMunciPerc;
+	private String ownWardPerc;
 	
 	
+	
+	
+	public String getOwnBoothPerc() {
+		return ownBoothPerc;
+	}
+	public void setOwnBoothPerc(String ownBoothPerc) {
+		this.ownBoothPerc = ownBoothPerc;
+	}
+	public String getOwnPanchPerc() {
+		return ownPanchPerc;
+	}
+	public void setOwnPanchPerc(String ownPanchPerc) {
+		this.ownPanchPerc = ownPanchPerc;
+	}
+	public String getOwnMandalPerc() {
+		return ownMandalPerc;
+	}
+	public void setOwnMandalPerc(String ownMandalPerc) {
+		this.ownMandalPerc = ownMandalPerc;
+	}
+	public String getOwnConstiPerc() {
+		return ownConstiPerc;
+	}
+	public void setOwnConstiPerc(String ownConstiPerc) {
+		this.ownConstiPerc = ownConstiPerc;
+	}
+	public String getOwnMunciPerc() {
+		return ownMunciPerc;
+	}
+	public void setOwnMunciPerc(String ownMunciPerc) {
+		this.ownMunciPerc = ownMunciPerc;
+	}
+	public String getOwnWardPerc() {
+		return ownWardPerc;
+	}
+	public void setOwnWardPerc(String ownWardPerc) {
+		this.ownWardPerc = ownWardPerc;
+	}
+	public Long getVtrId() {
+		return vtrId;
+	}
+	public void setVtrId(Long vtrId) {
+		this.vtrId = vtrId;
+	}
 	public List<CasteDetailsVO> getCasteNameVO() {
 		return casteNameVO;
 	}
@@ -47,6 +105,42 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setVoterId(String voterId) {
 		this.voterId = voterId;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 	public String getCommiteeName() {
 		return commiteeName;
