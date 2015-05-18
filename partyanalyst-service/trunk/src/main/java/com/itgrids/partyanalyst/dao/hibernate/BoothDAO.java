@@ -2473,5 +2473,48 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List<Long> getBoothsDetailIds(String type,Long constituencyId,Set<Long> locationVal){
+		StringBuilder query = new StringBuilder("select model.boothId from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = 11 and model.refBooth.boothId is null  ");
+		if(type.equalsIgnoreCase("tehsil")){
+			query.append(" and model.tehsil.tehsilId in (:locationVal) and model.localBody.localElectionBodyId is null ");
+		}else if(type.equalsIgnoreCase("munic")){
+			query.append("  and  model.localBody.localElectionBodyId  in (:locationVal) ");
+		}else if(type.equalsIgnoreCase("panchayat")){
+			query.append("  and  model.panchayat.panchayatId in (:locationVal) ");
+		}else if(type.equalsIgnoreCase("ward")){
+			query.append("  and  model.localBodyWard.constituencyId  in (:locationVal) ");
+		}
+		Query queryObj = getSession().createQuery(query.toString());
+		queryObj.setParameter("constituencyId", constituencyId);
+		if(type.length() > 0)
+		queryObj.setParameterList("locationVal", locationVal);
+		return queryObj.list();
+	}
+	
+	public Long getBoothResults(List<Long> boothIds,Long electionId){
+		Query queryObj = getSession().createQuery("select sum(model.validVotes) from BoothResult model where model.boothConstituencyElection.booth.boothId in(:boothIds) and  model.boothConstituencyElection.constituencyElection.election.electionId = :electionId  ");
+		queryObj.setParameterList("boothIds", boothIds);
+		queryObj.setParameter("electionId", electionId);
+		return (Long)queryObj.uniqueResult();
+	
+	}
+	
+	public Long getCandidateBoothResults(List<Long> boothIds,List<Long> partyIds,Long electionId){
+		Query queryObj = getSession().createQuery("select sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.booth.boothId in(:boothIds) and  model.boothConstituencyElection.constituencyElection.election.electionId = :electionId and  model.nomination.party.partyId in(:partyIds) ");
+		queryObj.setParameterList("boothIds", boothIds);
+		queryObj.setParameterList("partyIds", partyIds);
+		queryObj.setParameter("electionId", electionId);
+		return (Long)queryObj.uniqueResult();
+	
+	}
+	
+	public List<Object[]> getBoothsInfo(Long constituencyId,Set<String> boothIds){
+		//0boothId, 1partNo, 2tehsilId, 3lclBodyId, 4panchayatId, 5wardId
+		Query queryObj = getSession().createQuery("select model.boothId,model.partNo,model.tehsil.tehsilId,model.localBody.localElectionBodyId,model.panchayat.panchayatId,model.localBodyWard.constituencyId from Booth model where model.constituency.constituencyId = :constituencyId and model.partNo in(:boothIds) and model.publicationDate.publicationDateId = 11 and model.refBooth.boothId is null ");
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameterList("boothIds", boothIds);
+		return queryObj.list();
+	}
+	
 
 }
