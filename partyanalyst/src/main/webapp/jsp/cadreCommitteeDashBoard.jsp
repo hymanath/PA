@@ -7963,6 +7963,21 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='</thead>';
 				str+='</table>';
 				str+='</div>';
+				
+				var array1 = ["SC","ST","BC","OC","Minority"];
+				var array2 = new Array();
+				for(var pr1 in result[0].casteGroupVO)
+				{
+					array2.push(result[0].casteGroupVO[pr1].castName);
+				}
+				var diff = $(array1).not(array2).get();
+								
+				if(diff.length > 0){
+				str+='<div id="casteInfo">';
+				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
+				str+='</div>';
+				}
+				
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
 				str += '<caption class="tablecaption" >Caste Category Wise Information';
