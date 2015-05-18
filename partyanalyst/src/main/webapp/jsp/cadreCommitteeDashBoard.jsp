@@ -3711,6 +3711,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 			if(districtCommCheck == "true"){
 			
+			$("#performanceId").show();
+			
 			if(result[i].districtCommVO != null){
 				if(result[i].districtCommVO.totalCommittees!=null){
 					str += '<td style="text-align:center" >'+result[i].districtCommVO.totalCommittees+'</td>';
@@ -7868,7 +7870,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 	}
 
 	function gettingCadreDetails(locationId,locationName,basicCmmtyName,basicCmmtyId,locationTypeId){
-	
+		$("#performanceId").hide();
 		 var jsObj={
 		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
 		       };
@@ -7884,11 +7886,30 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 				  location.reload(); 
 				}
 			}
-			 buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId);
+			buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId,locationId);
 		});
 		
+		
 	}
-function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId)
+	
+	function gettingCadreDetailsPerformance(locationTypeId,locationId){
+		
+		 var jsObj={
+		         locationId:locationId,locationTypeId:locationTypeId
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "gettingPerformanceOfCadreAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	}
+	
+	
+function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId,lctnId)
 {
 		if(result!=null)
 		  {
@@ -8026,6 +8047,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 
 				str += ' </table> ';
 				str += '</div>';
+				str += '<span id="performanceId" class="btn btn-info" attr_distId="'+lctnId+'">Get Performance Of Cadre</span>';
 				str+='<table class="table table-bordered" id="constiTableId">';
 				str+='<thead>';
 				//if(basicCmmtyId == 1)
@@ -8106,6 +8128,16 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 			*/
 		}
 }	
+
+$(document).on("click","#performanceId",function(){
+	var locationId = $(this).attr("attr_distId");
+	var locationTypeId = 11;
+	
+	window.open("peformanceOfCadreAction.action?distId="+locationId, '_blank');
+	window.focus();
+	
+	//gettingCadreDetailsPerformance(locationTypeId,locationId);
+});
 
 function capitalize(str) {
 
