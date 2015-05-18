@@ -8395,6 +8395,8 @@ return constiLst;
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 		    	Map<String,Map<String,Long>> castesMap = new LinkedHashMap<String, Map<String,Long>>();
 		    	
+		    	Map<String,Map<String,Long>> constiMap = new LinkedHashMap<String, Map<String,Long>>();
+		    	
 		    	Long maleCount = 0L;
 		    	Long femaleCount = 0L;
 		    	Set<Long> voteIdsList = new HashSet<Long>();
@@ -8411,6 +8413,29 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
 		    		cadreCommitteeMemberVO.setConstituencyName(objects[17] != null ? objects[17].toString(): "");
+		    		
+		    		
+		    		Map<String,Long> constiGenderMap = new LinkedHashMap<String, Long>();
+		    		if(cadreCommitteeMemberVO.getConstituencyName() != null && !cadreCommitteeMemberVO.getConstituencyName().isEmpty())
+		    		{
+		    			if(constiMap.get(cadreCommitteeMemberVO.getConstituencyName().trim()) != null)
+			    		{
+		    				constiGenderMap = constiMap.get(cadreCommitteeMemberVO.getConstituencyName().trim());
+			    		}
+			    		
+			    		if(cadreCommitteeMemberVO.getGender() != null)
+			    		{
+			    			Long constiGenderCount=0L;
+		    				if(constiGenderMap.get(cadreCommitteeMemberVO.getGender().trim()) != null)
+		    				{		    					
+		    					constiGenderCount = constiGenderMap.get(cadreCommitteeMemberVO.getGender().trim());
+		    				}	
+		    				constiGenderCount = constiGenderCount+1;
+			    			constiGenderMap.put(cadreCommitteeMemberVO.getGender().trim(), constiGenderCount);
+			    		}
+			    		constiMap.put(cadreCommitteeMemberVO.getConstituencyName().trim(), constiGenderMap);
+		    		}	
+		    		
 		    		Map<String,Long> genderMap = new LinkedHashMap<String, Long>();
 		    		if(cadreCommitteeMemberVO.getCasteName() != null && !cadreCommitteeMemberVO.getCasteName().isEmpty())
 		    		{
@@ -8632,6 +8657,56 @@ return constiLst;
 		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				}
 		    	
+		    	
+		    	List<CasteDetailsVO> constiNameDetails = new ArrayList<CasteDetailsVO>();
+		    	if(constiMap != null && constiMap.size()>0)
+		    	{
+		    		for (String constiName : constiMap.keySet()) {		    			
+		    			Map<String,Long> constiGendersMap = constiMap.get(constiName);
+		    			if(constiGendersMap != null && constiGendersMap.size()>0)
+				    	{
+				    		for (String genderStr : constiGendersMap.keySet()) {
+				    			CasteDetailsVO constiVO = null;
+				    			constiVO = getMatchedCasteDetailsVO(constiNameDetails,constiName.trim());
+				    			if(constiVO == null)
+				    			{
+				    				constiVO = new CasteDetailsVO();
+				    				constiVO.setCastName(constiName);
+					    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+					    			{
+					    				constiVO.setMaleCount(constiGendersMap.get(genderStr).toString());
+					    			}
+					    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+					    			{
+					    				constiVO.setFemaleCount(constiGendersMap.get(genderStr).toString());
+					    			}
+					    			Long mcount = constiVO.getMaleCount() != null ? new Long(constiVO.getMaleCount().toString()) : 0;
+					    			Long fcount = constiVO.getFemaleCount() != null ? new Long(constiVO.getFemaleCount().toString()) : 0;
+					    			constiVO.setCasteCount(mcount + fcount);
+					    			
+					    			constiNameDetails.add(constiVO);
+				    			}
+				    			else
+				    			{
+					    			if(genderStr.trim().equalsIgnoreCase("M") || genderStr.trim().equalsIgnoreCase("Male"))
+					    			{
+					    				constiVO.setMaleCount(constiGendersMap.get(genderStr).toString());
+					    			}
+					    			else if(genderStr.trim().equalsIgnoreCase("F") || genderStr.trim().equalsIgnoreCase("Female"))
+					    			{
+					    				constiVO.setFemaleCount(constiGendersMap.get(genderStr).toString());
+					    			}
+					    			Long mcount = constiVO.getMaleCount() != null ? new Long(constiVO.getMaleCount().toString()) : 0;
+					    			Long fcount = constiVO.getFemaleCount() != null ? new Long(constiVO.getFemaleCount().toString()) : 0;
+					    			constiVO.setCasteCount(mcount + fcount);
+				    			}
+				    		}
+				    	}
+					}
+		    	}
+		    	
+		    	
+		    	
 		    	List<CasteDetailsVO> casteNameDetails = new ArrayList<CasteDetailsVO>();
 		    	if(castesMap != null && castesMap.size()>0)
 		    	{
@@ -8725,9 +8800,12 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
 		    	 Long totalCount = femaleCount+maleCount ;
 		    	 cadreCommitteeMemberVOList.get(0).setTotal(totalCount);
-		    	Collections.sort(casteNameDetails,sortData);
+		    	 Collections.sort(casteNameDetails,sortData);
 		    	
 		    	 cadreCommitteeMemberVOList.get(0).setCasteNameVO(casteNameDetails);
+		    	 
+		    	 Collections.sort(constiNameDetails,sortData);
+		    	 cadreCommitteeMemberVOList.get(0).setConstiVOList(constiNameDetails);
 				}
 		    	//
 		    	
