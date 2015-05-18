@@ -61,7 +61,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ByeElectionVO 						byeEleInfo;
 	private BasicVO basicVO;
 	private CadreCommitteeRolesInfoVO			cadreCommitteeRolesInfoVO;
+	private Long								distId;
 	
+	
+	
+	public Long getDistId() {
+		return distId;
+	}
+	public void setDistId(Long distId) {
+		this.distId = distId;
+	}
 	public CadreCommitteeRolesInfoVO getCadreCommitteeRolesInfoVO() {
 		return cadreCommitteeRolesInfoVO;
 	}
@@ -619,6 +628,27 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
+	
+	
+	public String gettingPerformanceOfCadre(){
+		try{
+			LOG.debug(" Entered Into gettingPerformanceOfCadre");
+			
+			/*jObj = new JSONObject(getTask());
+			if(jObj.getString("type").equalsIgnoreCase("electrols"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.getElectrolsOfPanchayatAndWards(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
+			else 
+				cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status");*/
+			jObj = new JSONObject(getTask());
+			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberPerformanceDetails(jObj.getLong("locationTypeId"),jObj.getLong("locationId"));
+			
+		}catch(Exception e){
+			LOG.error(" Exception Raised in gettingPerformanceOfCadre ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public String saveFieldMessages(){		
 		try{ 
 			CadreRegistrationVO vo = new CadreRegistrationVO();
@@ -817,6 +847,10 @@ public String getAllConstituencysForADistrict(){
 		{
 			LOG.error("Exception in committeeMemberDetailExe() method",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String peformanceOfCadreAction(){
 		return Action.SUCCESS;
 	}
 	
