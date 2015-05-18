@@ -8655,6 +8655,9 @@ return constiLst;
 					    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
 					    			}
 					    			
+					    			Long mcnt = casteVO.getMaleCount() != null ? new Long(casteVO.getMaleCount().toString()) : 0;
+					    			Long fcnt = casteVO.getFemaleCount() != null ? new Long(casteVO.getFemaleCount().toString()) : 0;
+					    			casteVO.setCasteCount(mcnt + fcnt);
 					    			casteNameDetails.add(casteVO);
 				    			}
 				    			else
@@ -8667,6 +8670,9 @@ return constiLst;
 					    			{
 					    				casteVO.setFemaleCount(gendersMap.get(genderStr).toString());
 					    			}
+					    			Long mcnt = casteVO.getMaleCount() != null ? new Long(casteVO.getMaleCount().toString()) : 0;
+					    			Long fcnt = casteVO.getFemaleCount() != null ? new Long(casteVO.getFemaleCount().toString()) : 0;
+					    			casteVO.setCasteCount(mcnt + fcnt);
 				    			}
 				    		}
 				    	}
@@ -8702,6 +8708,7 @@ return constiLst;
 					}
 		    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
 		    		{
+		    		
 		    			cadreCommitteeMemberVOList.get(0).setAgeDetailsIfoVO(ageGroupList);
 		    		}
 		    	}
@@ -8716,6 +8723,8 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
 		    	 Long totalCount = femaleCount+maleCount ;
 		    	 cadreCommitteeMemberVOList.get(0).setTotal(totalCount);
+		    	Collections.sort(casteNameDetails,sortData);
+		    	
 		    	 cadreCommitteeMemberVOList.get(0).setCasteNameVO(casteNameDetails);
 				}
 		    	//
@@ -8751,6 +8760,19 @@ return constiLst;
 		}
 		return cadreCommitteeMemberVOList;
 	}
+	
+	public static Comparator<CasteDetailsVO> sortData = new Comparator<CasteDetailsVO>()
+		    {
+		   
+		        public int compare(CasteDetailsVO vo1, CasteDetailsVO vo2)
+		        {
+		        	 if(vo1.getCasteCount()  < vo2.getCasteCount()){
+				            return 1;
+				        } else {
+				            return -1;
+				        }
+		        }
+		    };
 	
 	private  CasteDetailsVO getMatchedCasteDetailsVO(List<CasteDetailsVO> casteDetailsVOList , String casteName)
 	{
