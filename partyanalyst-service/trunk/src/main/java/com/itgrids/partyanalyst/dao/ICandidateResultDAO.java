@@ -95,4 +95,6 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	public List<Object[]> searchElectionResultsByConstituencyName(Long electionId,List<Long> partyIds,Long electionScopeId,List<Long> constiIds,String searchName);
 	
 	public List<Object[]> getResultByPartyIds(List<Long> partyIds,Long constituencyId,Long electionId);
+	
+	public List<Object[]> getResultPercByPartyIds(List<Long> partyIds,Long constituencyId,Long electionId);
 }
