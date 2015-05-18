@@ -6102,7 +6102,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 									 cadreCardNumberUpdation.setInsertedTime(date.getCurrentDateAndTime());
 									 cadreCardNumberUpdation.setUpdatedTime(date.getCurrentDateAndTime());
 									 cadreCardNumberUpdationDAO.save(cadreCardNumberUpdation);	
-									 
+									 TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
 									 // Image Updataion
 									 if(cardNFCDetailsVO.getImageBase64String() != null && 
 											 cardNFCDetailsVO.getImageBase64String().trim().length() > 0){
@@ -6125,14 +6125,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 												 }catch(Exception ex){
 													
 												 }
-												 TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
+												
 												 if(imgStatus){
 													 	
 														tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 														tdpCadreDAO.save(tdpCadre);
 														LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 													}
-												 
+									 } 
 												 //SAVING THE TELUGU NAME OF NON VOTER -- START //SASI
 													if(cardNFCDetailsVO.getVoterName() != null && cardNFCDetailsVO.getVoterName().trim().length() > 0){
 														if(tdpCadre.getVoterId() == null)
@@ -6157,7 +6157,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 															
 														}
 													}
-								 }
+								 
 							
 								 }
 							 }
@@ -6173,7 +6173,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			
 		} catch (Exception e) {
 			returnMsg = "EXCEPTION";
-			LOG.error("Exception Raised in updatePrintedCardDetails",e);
+			LOG.error("Exception Raised in updatePrintedCardInfo",e);
 		}
 		
 		
