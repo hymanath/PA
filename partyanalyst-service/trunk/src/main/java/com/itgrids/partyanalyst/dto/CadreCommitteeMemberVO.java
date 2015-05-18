@@ -51,8 +51,60 @@ public class CadreCommitteeMemberVO {
 	
 	private List<CasteDetailsVO> constiVOList;
 	
+	private boolean lowPerformance;
+	private String mandalBoothCmpr;
+	
+	private Long totalMembs;
+	private Long mainCmmtteeMembs;
+	private Long afflCmmtteeMembs;
+	private Long lowPerfMainCmmtteeMembs;
+	private Long lowPerfAfflCmmtteeMembs;
 	
 	
+	
+	
+	public Long getTotalMembs() {
+		return totalMembs;
+	}
+	public void setTotalMembs(Long totalMembs) {
+		this.totalMembs = totalMembs;
+	}
+	public Long getMainCmmtteeMembs() {
+		return mainCmmtteeMembs;
+	}
+	public void setMainCmmtteeMembs(Long mainCmmtteeMembs) {
+		this.mainCmmtteeMembs = mainCmmtteeMembs;
+	}
+	public Long getAfflCmmtteeMembs() {
+		return afflCmmtteeMembs;
+	}
+	public void setAfflCmmtteeMembs(Long afflCmmtteeMembs) {
+		this.afflCmmtteeMembs = afflCmmtteeMembs;
+	}
+	public Long getLowPerfMainCmmtteeMembs() {
+		return lowPerfMainCmmtteeMembs;
+	}
+	public void setLowPerfMainCmmtteeMembs(Long lowPerfMainCmmtteeMembs) {
+		this.lowPerfMainCmmtteeMembs = lowPerfMainCmmtteeMembs;
+	}
+	public Long getLowPerfAfflCmmtteeMembs() {
+		return lowPerfAfflCmmtteeMembs;
+	}
+	public void setLowPerfAfflCmmtteeMembs(Long lowPerfAfflCmmtteeMembs) {
+		this.lowPerfAfflCmmtteeMembs = lowPerfAfflCmmtteeMembs;
+	}
+	public boolean isLowPerformance() {
+		return lowPerformance;
+	}
+	public void setLowPerformance(boolean lowPerformance) {
+		this.lowPerformance = lowPerformance;
+	}
+	public String getMandalBoothCmpr() {
+		return mandalBoothCmpr;
+	}
+	public void setMandalBoothCmpr(String mandalBoothCmpr) {
+		this.mandalBoothCmpr = mandalBoothCmpr;
+	}
 	public String getOwnBoothPerc() {
 		return ownBoothPerc;
 	}
