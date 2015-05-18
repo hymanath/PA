@@ -8074,7 +8074,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				 str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
 				
 				 str+=' </td>';
-				 str+='<td> '+result[i].name+'';
+				 str+='<td> '+result[i].name+' ';
 				 if(basicCmmtyId != 1){
 				 if(result[i].commiteeName!=null){
 					 str+='<br>'+result[i].commiteeName+' - ';
@@ -8092,6 +8092,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				 }else{
 					 str+='';
 				 }
+				str+=' <br/> <span> Constituency : '+result[i].constituencyName+' </span>';
 				// }	 
 				  str+=' </td>';	  
 				// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
