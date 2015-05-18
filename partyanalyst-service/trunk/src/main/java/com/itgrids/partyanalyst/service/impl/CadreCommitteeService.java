@@ -8689,6 +8689,8 @@ return constiLst;
 					}
 		    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
 		    		{
+		    			
+		    			Collections.sort(casteGroupList,sortDataForTotal);
 		    			cadreCommitteeMemberVOList.get(0).setCasteGroupVO(casteGroupList);
 		    		}
 		    	}
@@ -8773,6 +8775,19 @@ return constiLst;
 				        }
 		        }
 		    };
+		    
+		    public static Comparator<CasteDetailsVO> sortDataForTotal = new Comparator<CasteDetailsVO>()
+				    {
+				   
+				        public int compare(CasteDetailsVO vo1, CasteDetailsVO vo2)
+				        {
+				        	 if(vo1.getCasteId()  < vo2.getCasteId()){
+						            return 1;
+						        } else {
+						            return -1;
+						        }
+				        }
+				    };
 	
 	private  CasteDetailsVO getMatchedCasteDetailsVO(List<CasteDetailsVO> casteDetailsVOList , String casteName)
 	{
