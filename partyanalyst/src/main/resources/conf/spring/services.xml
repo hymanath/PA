@@ -2599,7 +2599,8 @@
            <property name="eventInviteeDAO" ref="eventInviteeDAO" />
            <property name="eventSurveyUserDAO" ref="eventSurveyUserDAO" />
            <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO" />
-	</bean>
+           <property name="candidateResultDAO" ref="candidateResultDAO" />
+    </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
 		<property name="boothDAO" ref="boothDAO"/>
