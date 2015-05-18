@@ -8468,17 +8468,34 @@ return constiLst;
 		    		}
 		    		cadreCommitteeMemberVO.setCommiteeName(objects[16] != null ? objects[16].toString().trim():"");
 		    		
-		    		CasteDetailsVO casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
-		    		if(casteCatgVO == null)
-		    		{
-		    			casteCatgVO = new CasteDetailsVO();
-		    			casteCatgVO.setCasteId(1l);
-		    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+		    		
+		    		CasteDetailsVO casteCatgVO = null; 
+		    		List<Long> minorityCaste = new ArrayList<Long>();
+		    		minorityCaste.add(292l);minorityCaste.add(301l);minorityCaste.add(430l);minorityCaste.add(459l);
+		    		
+		    		if(minorityCaste.contains((Long)objects[18])){
+		    			casteCatgVO = casteGroupMap.get("Minority");
+		    			if(casteCatgVO == null){
+			    			casteCatgVO = new CasteDetailsVO();
+			    			casteCatgVO.setCasteId(1l);
+			    			casteGroupMap.put("Minority",casteCatgVO);
+			    		}
+		    			else{
+			    			casteCatgVO.setCasteId(casteCatgVO.getCasteId() + 1l);
+			    			casteGroupMap.put("Minority",casteCatgVO);
+			    		}		    			
 		    		}
-		    		else
-		    		{
-		    			casteCatgVO.setCasteId(casteCatgVO.getCasteId() + 1l);
-		    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+		    		else{
+		    			casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
+			    		if(casteCatgVO == null){		    		
+			    			casteCatgVO = new CasteDetailsVO();
+			    			casteCatgVO.setCasteId(1l);
+			    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+			    		}
+			    		else{
+			    			casteCatgVO.setCasteId(casteCatgVO.getCasteId() + 1l);
+			    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+			    		}
 		    		}
 		    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
 	    			{
