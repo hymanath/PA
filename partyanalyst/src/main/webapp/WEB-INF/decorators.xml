@@ -413,5 +413,6 @@
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
 		<pattern>/cadreSearchAndRegAction*</pattern>
 		<pattern>/cadreEnrollment*</pattern>
+		<pattern>/peformanceOfCadreAction*</pattern>
 	 </decorator>
 </decorators>
