@@ -29,7 +29,9 @@
                     <hr style="border-color:#F00;margin:0px 0px 10px 0px;" />
                 </div>
         </div>
-		
+		<div class="row" style="text-align:center;">
+			<div id="cadrePerfId"><img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></div>
+		</div>
 	</div>
 
 
@@ -70,38 +72,93 @@
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				console.log(result);
-				//buildCadrePerformanceDetails();
+				buildCadrePerformanceDetails(result);
 			});
 		}
 		
 		function buildCadrePerformanceDetails(result){
 			var str = "";
+			$("#cadrePerfId").html('<img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
 			if(result!=null){
-				str+="<table>";
+				str+="<table class='table table-bordered'>";
 					str+="<thead>";
+					str+="<tr>";
 						str+="<th>NAME</th>";
 						str+="<th>VOTER CARD NO</th>";
 						str+="<th>CONSTITUENCY</th>";
 						str+="<th>COMMITTEE TYPE</th>";
 						str+="<th>ROLE</th>";
-						str+="<th>CONSTITUENCY</th>";
 						str+="<th>CASTE CATEGORY</th>";
 						str+="<th>CASTE</th>";
-						str+="<th>JOINED IN PARTY</th>";
 						str+="<th>MOBILE</th>";
 						str+="<th>OWN BOOTH NO</th>";
 						str+="<th>OWN CONSTITUENCY %</th>";
 						str+="<th>OWN MANDAL %</th>";
+						str+="<th>OWN MUNCIPALITY %</th>";
 						str+="<th>OWN PANCHAYAT %</th>";
-						str+="<th>OWN BOOTH NO</th>";
+						str+="<th>OWN BOOTH %</th>";
+						str+="<th>OWN WARD %</th>";
+					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
 						for(var i in result){
-							
+							str+="<tr>";
+								str+="<td>"+result[i].name+"</td>";
+								str+="<td>"+result[i].voterCardNo+"</td>";
+								str+="<td>"+result[i].constituencyName+"</td>";
+								str+="<td>"+result[i].committe+"</td>";
+								str+="<td>"+result[i].role+"</td>";
+								str+="<td>"+result[i].casteGroupName+"</td>";
+								str+="<td>"+result[i].casteName+"</td>";
+								str+="<td>"+result[i].mobileNo+"</td>";
+								str+="<td>"+result[i].partNo+"</td>";
+								
+								if(result[i].ownConstiPerc!=null){
+									str+="<td>"+result[i].ownConstiPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								
+								if(result[i].ownMandalPerc!=null){
+									str+="<td>"+result[i].ownMandalPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								if(result[i].ownMunciPerc!=null){
+									str+="<td>"+result[i].ownMunciPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								if(result[i].ownPanchPerc!=null){
+									str+="<td>"+result[i].ownPanchPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								if(result[i].ownBoothPerc!=null){
+									str+="<td>"+result[i].ownBoothPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								if(result[i].ownWardPerc!=null){
+									str+="<td>"+result[i].ownWardPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+							str+="</tr>";
 						}
 					str+="<tbody>";
 				str+="</table>";
+			}else{
+				str+="<h4>No Data Available</h4>";
 			}
+			
+			$("#cadrePerfId").html(str);
 		}
 	</script>
 	
