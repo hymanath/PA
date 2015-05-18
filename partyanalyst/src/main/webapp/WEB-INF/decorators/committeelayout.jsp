@@ -31,10 +31,10 @@
 	<script>
 	jQuery.noConflict();
 	</script>
-	<header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
+	<header style="align:center;background-color:rgb(255, 220, 45); display:flex;">
 			<!----LOGO---->
 		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
-				<img src="images/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
+				<img src="images/Committees-Logo.png" class="m_top10" title="Committee Logo" alt="committee" />
 			</div>
 			<!----/LOGO End---->
 			
@@ -82,6 +82,9 @@
             </div>
 			<!----/MENU End---->
 	</header>
+	<div class="row-fluid" style="margin-top:-1px;">
+<img width="100%" height="24" style="height: 21px;" src="images/Ribbon.png">
+</div>
 	<decorator:head/>
 	</head>
 	
