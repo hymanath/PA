@@ -25,7 +25,7 @@
 	<div class="container">
     	<div class="row" style="text-align:center;">
                 <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 ">
-                    <h3 class="panel-header">CADRE PERFORMANCE</h3>
+                    <h3 class="panel-header">COMMITTEE MEMBERS PERFORMANCE</h3>
                     <hr style="border-color:#F00;margin:0px 0px 10px 0px;" />
                 </div>
         </div>
@@ -93,11 +93,11 @@
 						str+="<th>MOBILE</th>";
 						str+="<th>OWN BOOTH NO</th>";
 						str+="<th>OWN CONSTITUENCY %</th>";
-						str+="<th>OWN MANDAL %</th>";
-						str+="<th>OWN MUNCIPALITY %</th>";
+						str+="<th>OWN MANDAL/MUNCIPALITY %</th>";
+						<!--str+="<th>OWN MUNCIPALITY %</th>";->
 						str+="<th>OWN PANCHAYAT %</th>";
 						str+="<th>OWN BOOTH %</th>";
-						str+="<th>OWN WARD %</th>";
+						<!--str+="<th>OWN WARD %</th>";-->
 					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
@@ -122,15 +122,17 @@
 								
 								if(result[i].ownMandalPerc!=null){
 									str+="<td>"+result[i].ownMandalPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}
-								
-								if(result[i].ownMunciPerc!=null){
+								}else if(result[i].ownMunciPerc!=null){
 									str+="<td>"+result[i].ownMunciPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}
+								
+								/*if(result[i].ownMunciPerc!=null){
+									str+="<td>"+result[i].ownMunciPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}*/
 								
 								if(result[i].ownPanchPerc!=null){
 									str+="<td>"+result[i].ownPanchPerc+"</td>";
@@ -144,11 +146,11 @@
 									str+="<td> - </td>";
 								}
 								
-								if(result[i].ownWardPerc!=null){
+								/*if(result[i].ownWardPerc!=null){
 									str+="<td>"+result[i].ownWardPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
-								}
+								}*/
 								
 							str+="</tr>";
 						}
