@@ -8395,7 +8395,7 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
-		    		
+		    		cadreCommitteeMemberVO.setConstituencyName(objects[17] != null ? objects[17].toString(): "");
 		    		Map<String,Long> genderMap = new LinkedHashMap<String, Long>();
 		    		if(cadreCommitteeMemberVO.getCasteName() != null && !cadreCommitteeMemberVO.getCasteName().isEmpty())
 		    		{
