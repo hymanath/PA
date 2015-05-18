@@ -242,4 +242,34 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getUnionMembersForEventSQL(Long eventId,Long compareEventId,Date startDate,Date endDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select e2.name , count(distinct model.tdp_cadre_id), date(model.attended_time) from event_attendee model, event_attendee model1, event e2, event e3 where model1.event_id=e2.event_id and model.event_id=e3.event_id and model.event_id=:eventId and model1.event_id=:compareEventId and model.tdp_cadre_id=model1.tdp_cadre_id and e3.is_active=:isActive");
+	
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attended_time) = :startDate group by date(model.attended_time)"); 
+			else
+			str.append(" and date(model.attended_time) >= :startDate and date(model.attended_time) <= :endDate  group by date(model.attended_time) "); 
+		}
+		Query query = getSession().createSQLQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}	
+		}
+		query.setParameter("compareEventId", compareEventId);
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
 }
