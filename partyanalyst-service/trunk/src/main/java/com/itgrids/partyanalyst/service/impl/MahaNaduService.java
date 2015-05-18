@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1702,13 +1703,14 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					{
 						MahanaduEventVO eventVo = new MahanaduEventVO();
 						Long count = eventCount.get(eventId) ;
-						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate);
+						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEventSQL(eventId,compareEventId,eventStrDate,eventEndDate);
 						eventVo.setId(compareEventId);
 						eventVo.setName(eventDAO.get(compareEventId).getName());
 						if(unionCounts != null)
 						for(Object[] params : unionCounts)
 						{
-							eventVo.setTotal((Long)params[1] + eventVo.getTotal());
+							if(params[1] != null)
+							eventVo.setTotal(new BigInteger(params[1].toString()).longValue() + eventVo.getTotal());
 						}
 						uniEventVOList.add(eventVo);
 					}
