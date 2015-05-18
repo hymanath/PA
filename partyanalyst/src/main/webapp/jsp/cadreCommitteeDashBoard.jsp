@@ -8080,7 +8080,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				}
 				
 				
-				str += '<span id="performanceId" class="btn btn-info" attr_distId="'+lctnId+'">Get Performance Of Cadre</span>';
+				str += '<span id="performanceId" class="btn btn-info pull-right" attr_distId="'+lctnId+'">Cadre Members Booths Performance </span>';
 				str+='<table class="table table-bordered" id="constiTableId">';
 				str+='<thead>';
 				//if(basicCmmtyId == 1)
