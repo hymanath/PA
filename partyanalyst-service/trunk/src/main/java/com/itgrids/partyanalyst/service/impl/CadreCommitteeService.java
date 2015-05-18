@@ -8290,11 +8290,6 @@ return constiLst;
 						cv.setOwnBoothPerc(ownBoothPerc);
 					}
 					
-					
-					
-					
-					
-					
 			}
 		}
 		
