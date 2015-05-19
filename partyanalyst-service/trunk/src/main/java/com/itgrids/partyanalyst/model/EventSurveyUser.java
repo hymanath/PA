@@ -26,6 +26,7 @@ public class EventSurveyUser {
 	private String isEnabled;
 	private Long userId;
 	private Date insertedTime;
+	private String isExcluded;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -93,6 +94,14 @@ public class EventSurveyUser {
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name="is_excluded")
+	public String getIsExcluded() {
+		return isExcluded;
+	}
+	public void setIsExcluded(String isExcluded) {
+		this.isExcluded = isExcluded;
 	}
 	
 	

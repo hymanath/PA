@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
@@ -112,6 +114,7 @@ public class MahaNaduService implements IMahaNaduService{
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
 	private IEventUserDAO eventUserDAO;
 	private IEventDAO eventDAO;
+	private ISurveyUserAuthDAO surveyUserAuthDAO;
 	
 	
 	
@@ -350,6 +353,10 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 
 public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 	this.casteStateDAO = casteStateDAO;
+}
+
+public void setSurveyUserAuthDAO(ISurveyUserAuthDAO surveyUserAuthDAO) {
+	this.surveyUserAuthDAO = surveyUserAuthDAO;
 }
 
 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
@@ -1818,5 +1825,53 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 		return resultList;
 		
+	}
+	
+	public List<CadreRegisterInfo> getAuthDetails(Long id,String variable){
+		List<CadreRegisterInfo> authDetails = new ArrayList<CadreRegisterInfo>();
+		try{
+			List<Object[]> usersList = null;
+			CadreRegisterInfo info = null;
+			if(id.longValue() == 1l){//for userName
+				usersList = surveyUserAuthDAO.getAuthDetailsByUserId(variable);
+			}else{//for imei
+				//0authId,1userName,2name,3mobileNo,4imei
+				usersList = surveyUserAuthDAO.getAuthDetailsByImei(variable);
+			}
+			if(usersList != null && usersList.size() > 0){
+				for(Object[] user:usersList){
+					info = new CadreRegisterInfo();
+					info.setId((Long)user[0]);
+					if(user[2] != null){
+					   info.setName(user[2].toString());
+					}else{
+					  info.setName("");
+					}
+					info.setUname(user[1].toString());
+					if(user[3] != null){
+					  info.setNumber(user[3].toString());
+					}else{
+					  info.setNumber("");
+					}
+					if(user[4] != null){
+					  info.setTabNo(user[4].toString());
+					}
+					authDetails.add(info);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getAuthDetails",e);
+		}
+		return authDetails;
+	}
+	
+	public String updateTabAllocationDetails(Long authId,String cause,Long userId){
+		try{
+			surveyUserAuthDAO.updateStatus(authId, cause, userId);
+			return "success";
+		}catch(Exception e){
+			LOG.error("Exception rised in updateTabAllocationDetails",e);
+			return "error";
+		}
 	}
 }

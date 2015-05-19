@@ -34,10 +34,13 @@ public class UserEventDetailsVO implements Serializable{
 	private String tabWorkMode;
 	private String regText;
 	private Long orderNo;
+	private String imei1;
+	private String imei2;
 	private String latituede;
 	private String longitude;
 	private Long orderId;
 	private String isActive;
+	
 	
 	public String getEventName() {
 		return eventName;
@@ -221,6 +224,18 @@ public class UserEventDetailsVO implements Serializable{
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	public String getImei1() {
+		return imei1;
+	}
+	public void setImei1(String imei1) {
+		this.imei1 = imei1;
+	}
+	public String getImei2() {
+		return imei2;
+	}
+	public void setImei2(String imei2) {
+		this.imei2 = imei2;
 	}
 	
 }
