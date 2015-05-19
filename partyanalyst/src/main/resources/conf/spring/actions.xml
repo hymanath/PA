@@ -1487,6 +1487,7 @@
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	 	<property name="loginService" ref="loginService" />
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
+		<property name="mahaNaduService" ref="mahaNaduService"></property>
 	  </bean>
 	  
     <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">

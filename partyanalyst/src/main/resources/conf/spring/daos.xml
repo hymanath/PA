@@ -2047,6 +2047,8 @@
 		<bean id="cardPrintUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="surveyUserAuthDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyUserAuthDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
