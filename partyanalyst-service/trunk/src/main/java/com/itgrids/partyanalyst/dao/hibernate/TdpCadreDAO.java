@@ -2323,7 +2323,7 @@ public void flushAndclearSession(){
 				" model.relativename," +
 				" model.voter.voterId," +
 				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo,model.mobileNo,model.photoType,model.image," +
-				" model.userAddress.userAddressId from TdpCadre model " +
+				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
@@ -3149,8 +3149,9 @@ public void flushAndclearSession(){
 				" model.refNo," +
 				" model.mobileNo," +
 				" model.photoType," +
-				" model.image," +
-				" model.userAddress.userAddressId from TdpCadre model " +
+				" model.image" +
+				
+				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();

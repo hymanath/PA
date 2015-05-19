@@ -5887,6 +5887,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
 					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
 					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
+					if(obj[13] != null && !obj[13] .toString().isEmpty())
+						returnVO.setPrintStatus("reprint");
+						else
+							returnVO.setPrintStatus("print");	
 					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
 					try{
 					if(obj[10] != null)
@@ -5961,6 +5965,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					returnVO.setDataSourceType(obj[4] != null ? obj[4].toString() : "");
 					returnVO.setTdpCadreId(obj[5] != null ? Long.valueOf(obj[5].toString()) : 0l);
 					returnVO.setRefNumber(obj[6] != null ? obj[6].toString() : "");
+					if(obj[11] != null && !obj[11] .toString().isEmpty())
+						returnVO.setPrintStatus("reprint");
+						else
+							returnVO.setPrintStatus("print");	
 					returnVO.setMobileNo(obj[7] != null ? obj[7].toString() : "");
 					try{
 					if(obj[8] != null)
