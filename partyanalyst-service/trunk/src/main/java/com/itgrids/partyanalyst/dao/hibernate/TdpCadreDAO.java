@@ -3149,7 +3149,7 @@ public void flushAndclearSession(){
 				" model.refNo," +
 				" model.mobileNo," +
 				" model.photoType," +
-				" model.image" +
+				" model.image," +
 				
 				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
