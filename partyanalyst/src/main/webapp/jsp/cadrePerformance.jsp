@@ -21,20 +21,37 @@
 	<style>
 		tr.lowPerf{background:#FFA500 !important;}
 		tr.lowPerf td{background:#FFA500 !important;}
+		#cadrePerfTableId  thead th{
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 15px !important;
+			}
+
+
 	</style>	
 </head>
 <body>
 	
 	<div class="container">
 		<span class="btn btn-info pull-right exprtToExcel" style="display:none;">Export To Excel</span>
+		<div class="row" style="text-align:center;">
+                <div class="col-md-6 col-md-offset-3 m_top10 " style="height: 49px;padding: 10px;background-color:height: 49px;padding: 10px;background-color:#B1BDC9;border-radius: 5px;">
+					<label>Select District</label>
+						<select id="districtid" class="selectBoxWidth" name="select district" style="margin-left:12px;margin-bottom:5px;width: 325px;height: 30px" onchange="gettingCadreDetailsPerformance(11,this.value)">
+						<option value="0">Select District</option>
+						</select>
+			</div>
+        </div>
+		
     	<div class="row" style="text-align:center;">
                 <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 ">
-                    <h3 class="panel-header">COMMITTEE MEMBERS PERFORMANCE</h3>
+                    <h4 class="panel-header" style="text-transform: uppercase;" id="distName"></h4>
                     <hr style="border-color:#F00;margin:0px 0px 10px 0px;" />
                 </div>
         </div>
 		<div class="row" style="text-align:center;">
 			<div id="cadrePerfId"><img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></div>
+			<div id="cadreTablePerfId" style="overflow:scroll;display:none;"></div>
 		</div>
 	</div>
 
@@ -60,11 +77,16 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<script>
+	<script>	
 		var locationId = "${distId}";
 		var locationTypeId = 11;
 		gettingCadreDetailsPerformance(locationTypeId,locationId);
 		function gettingCadreDetailsPerformance(lctnTypeId,lctnId){
+			$("#cadrePerfId").html('');
+			$("#cadreTablePerfId").html('');
+			$("#cadreTablePerfId").hide();
+			var distNameStr = $('#districtid option:selected').text();
+			$('#distName').html(''+distNameStr+' COMMITTEE MEMBERS BOOTH INFLUENCE');
 			var jsObj={
 					 locationId:lctnId,locationTypeId:lctnTypeId
 				   };
@@ -75,7 +97,16 @@
 				dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				buildCadrePerformanceDetails(result);
+				$("#cadreTablePerfId").show();
+				if (typeof(result) != "undefined" && result != null && result.length>0)
+				{
+					buildCadrePerformanceDetails(result);
+				}
+				else{
+					$(".exprtToExcel").hide();
+					var str="<h4>No Data Available</h4>";
+					$("#cadreTablePerfId").html(str);
+				}
 			});
 		}
 		
@@ -130,47 +161,64 @@
 			str+='</table>';
 				
 				
+
+				//$("#cadreTablePerfId").html(str);
+				$("#cadrePerfId").html(str);
+				
+				str='';
 				$(".exprtToExcel").show();
-				str+="<table id='cadrePerfTableId' class='table'>";
+				str+="<table id='cadrePerfTableId' class='table table-bordered'>";
 					str+="<thead>";
 					str+="<tr>";
+						str+="<th>CONSTITUENCY</th>";					
 						str+="<th>NAME</th>";
-						str+="<th>VOTER CARD NO</th>";
-						str+="<th>AGE</th>";
-						str+="<th>CONSTITUENCY</th>";
-						str+="<th>COMMITTEE TYPE</th>";
-						str+="<th>CASTE CATEGORY</th>";
 						str+="<th>CASTE</th>";
+						str+="<th>CASTE CATEGORY</th>";
+						str+="<th>COMMITTEE TYPE</th>";
+						str+="<th>DESIGNATION</th>";
 						str+="<th>MOBILE</th>";
+						str+="<th>PARTY JOINING DATE </th>";
+						str+="<th>VOTER CARD NO</th>";
+						str+="<th>BOOTH NO</th>";
 						str+="<th>OWN CONSTITUENCY %</th>";
 						str+="<th>OWN MANDAL/MUNCIPALITY %</th>";
 						str+="<th>OWN PANCHAYAT %</th>";
 						str+="<th>OWN BOOTH %</th>";
+						str+="<th>MEMBERSHIP NO %</th>";
+						
+						str+="<th>GENDER</th>";
+						str+="<th>AGE</th>";
+						
+						<!--str+="<th>ROLE</th>";-->
+						<!--str+="<th>OWN BOOTH NO</th>";-->
+						<!--str+="<th>OWN MUNCIPALITY %</th>";->
+						<!--str+="<th>OWN WARD %</th>";-->
+						
 					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
 						for(var i in result){
-							if(result[i].lowPerformance){
-								str += "<tr class='lowPerf'>";
-							}else{
-								str+="<tr>";
-							}
-								str+="<td>"+result[i].name+" ( "+result[i].role+" )</td>";
-								str+="<td>"+result[i].voterCardNo+"</td>";
-								str+="<td>"+result[i].age+"</td>";
+							str+="<tr>";
 								str+="<td>"+result[i].constituencyName+"</td>";
-								str+="<td>"+result[i].committe+"</td>";
-								str+="<td>"+result[i].casteGroupName+"</td>";
+								str+="<td>"+result[i].name+"</td>";
 								str+="<td>"+result[i].casteName+"</td>";
+								str+="<td>"+result[i].casteGroupName+"</td>";
+								str+="<td>"+result[i].committe+"</td>";
+								str+="<td>"+result[i].role+"</td>";
 								str+="<td>"+result[i].mobileNo+"</td>";
-								
+								if(result[i].fromDate!=null){
+									str+="<td>"+result[i].fromDate+"</td>";								
+								}
+								else{
+									str+="<td> - </td>";	
+								}
+								str+="<td>"+result[i].voterCardNo+"</td>";
+								str+="<td>"+result[i].partNo+"</td>";
 								if(result[i].ownConstiPerc!=null){
 									str+="<td>"+result[i].ownConstiPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}
-								
-								
 								if(result[i].ownMandalPerc!=null){
 									str+="<td>"+result[i].ownMandalPerc+"</td>";
 								}else if(result[i].ownMunciPerc!=null){
@@ -178,18 +226,36 @@
 								}else{
 									str+="<td> - </td>";
 								}
-								
 								if(result[i].ownPanchPerc!=null){
 									str+="<td>"+result[i].ownPanchPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}
-								
 								if(result[i].ownBoothPerc!=null){
 									str+="<td>"+result[i].ownBoothPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}
+								
+								str+="<td>"+result[i].membershipNo+"</td>";
+								str+="<td>"+result[i].gender+"</td>";
+								str+="<td>"+result[i].age+"</td>";
+								
+							
+								<!--str+="<td>"+result[i].role+"</td>";-->
+								<!--str+="<td>"+result[i].partNo+"</td>";-->
+								
+								/*if(result[i].ownMunciPerc!=null){
+									str+="<td>"+result[i].ownMunciPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}*/
+								
+								/*if(result[i].ownWardPerc!=null){
+									str+="<td>"+result[i].ownWardPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}*/
 								
 							str+="</tr>";
 						}
@@ -343,15 +409,17 @@
 				str+="<h4>No Data Available</h4>";
 			}
 			
-			$("#cadrePerfId").html(str);
+			$("#cadreTablePerfId").html(str);
 			$("#cadrePerfTableId").dataTable({
-				"iDisplayLength": 20,
-				"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
 			});
+			
 		}
 		
 		$(".exprtToExcel").click(function(){
-			 tableToExcel('cadrePerfTableIdToExport', 'Committee Members Performance');
+			var distNameStr = $('#districtid option:selected').text();
+			 tableToExcel('cadrePerfTableIdToExport', ''+distNameStr.toUpperCase()+' DISTRICT Committee Members Performance');
 		});
 		
 		var tableToExcel = (function() {
@@ -365,6 +433,29 @@
 			window.location.href = uri + base64(format(template, ctx))
 		  }
 		})()
+		getDistrictNamesIds();
+		function getDistrictNamesIds(){
+			var jsObj={};
+			 $.ajax({
+				type : "GET",
+				url : "getDistrictNamesIdsAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result!=null){
+					for(var i in result){
+						if(locationId==result[i].id){
+							$('#districtid').append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');
+							$("#distName").html(result[i].name+" COMMITTEE MEMBERS BOOTH INFLUENCE");
+						}else{
+							$('#districtid').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+						}
+					}
+					
+				}
+
+			});
+		}
 	</script>
 	
 	

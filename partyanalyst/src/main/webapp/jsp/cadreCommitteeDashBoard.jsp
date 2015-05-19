@@ -7964,11 +7964,11 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='</table>';
 				str+='</div>';
 				
-				var array1 = ["SC","ST","BC","OC","Minority"];
+				var array1 = [" SC"," ST"," BC"," OC"," Minority"];
 				var array2 = new Array();
 				for(var pr1 in result[0].casteGroupVO)
 				{
-					array2.push(result[0].casteGroupVO[pr1].castName);
+					array2.push(" "+result[0].casteGroupVO[pr1].castName);
 				}
 				var diff = $(array1).not(array2).get();
 								
@@ -7980,12 +7980,12 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-				str += '<caption class="tablecaption" >Caste Category Wise Information';
+				str += '<caption class="tablecaption" >Caste Group Wise Information';
 				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 				str += '</caption>';
 				str += ' <thead>';
 				str += ' <tr>';
-				str += '<th width="25%">Caste Category</th>';
+				str += '<th width="25%">Caste Group</th>';
 				str += '<th width="25%">Total Count</th>';
 				str += '<th width="25%">Male</th>';
 				str += '<th width="25%">Female</th>';
