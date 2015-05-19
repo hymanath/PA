@@ -106,6 +106,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
+import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
@@ -13345,5 +13346,35 @@ return mandalList;
 		 return eventCreationVO;
 		 
 	 }
+	 
+	 public List<VO> getDistrictNamesIds(Long userId){
+		 List<VO> vo = new ArrayList<VO>();
+		 try {
+			 List<Long> districtIds = new ArrayList<Long>();
+			 List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+			 for (Object[] districtId : accessDistrictsList) {
+					districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				}
+			 List<Object[]> distList = null;
+			 if(districtIds !=  null && districtIds.size()>0)
+			 {
+				  distList = districtDAO.getDistrictNamesIds(districtIds);
+			 }
+			 else
+			 {
+				  distList = districtDAO.getDistrictNamesIds(null);
+			 }
+			 for (Object[] objects : distList) {
+					VO temp= new VO();
+					temp.setId((Long)objects[0]);
+					temp.setName(objects[1].toString());
+					
+					vo.add(temp);
+				}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getDistrictNamesIds",e);
+		}
+		 return vo;
+	 } 
 	 
 }
