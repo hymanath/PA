@@ -1816,12 +1816,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 DateUtilService date = new DateUtilService();
 		 try{
 			 try{
-				Long count = eventSurveyUserDAO.checkUserBlockedOrNot(inputVo.getId());
+				Long count = eventSurveyUserDAO.checkUserBlockedOrNot(inputVo.getUserId());
 				if(count.longValue() > 0){
 					returnVo.setStatus("blocked");
-					returnVo.setUserId(inputVo.getId());
+					returnVo.setUserId(inputVo.getUserId());
 					return returnVo;
 				}
+				 count = eventSurveyUserDAO.checkUserBlockedOrNot(inputVo.getId());
+				 if(count.longValue() > 0){
+						returnVo.setStatus("record blocked");
+						returnVo.setUserId(inputVo.getId());
+						return returnVo;
+					}
 			 }catch(Exception ex){
 				 Log.error(ex) ;
 			 }
