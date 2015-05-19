@@ -29,6 +29,8 @@ public class CadreCardNumberUpdation {
 	private String cardNumber;
 	private Date insertedTime;
 	private Date updatedTime;
+	private CardPrintUser cardPrintUser;
+	private Long cardPrintUserId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "cadre_card_number_updation_id", unique = true, nullable = false)
@@ -78,6 +80,23 @@ public class CadreCardNumberUpdation {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "card_print_user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CardPrintUser getCardPrintUser() {
+		return cardPrintUser;
+	}
+	public void setCardPrintUser(CardPrintUser cardPrintUser) {
+		this.cardPrintUser = cardPrintUser;
+	}
+	@Column(name = "card_print_user_id")
+	public Long getCardPrintUserId() {
+		return cardPrintUserId;
+	}
+	public void setCardPrintUserId(Long cardPrintUserId) {
+		this.cardPrintUserId = cardPrintUserId;
 	}
 
 	

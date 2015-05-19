@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -161,4 +162,6 @@ public interface ICadreRegistrationService {
 	public String updatePrintedCardInfo(final List<CardNFCDetailsVO> inputList);
 	public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input);
 	public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
+	public List<CardPrintUserVO> getCardPrintCountForAllUsers(CardPrintUserVO inputVo);
+	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo);
 }
