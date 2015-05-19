@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -37,5 +38,7 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate );
 	 public List<MahanaduEventVO> getSubEvent(Long eventId);
+	 public String updateTabAllocationDetails(Long authId,String cause,Long userId);
+	 public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 }
 

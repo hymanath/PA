@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -50,10 +52,12 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventRfidDetails;
+import com.itgrids.partyanalyst.model.EventSurveyUser;
 import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
+import com.itgrids.partyanalyst.model.SurveyUserAuth;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
@@ -123,6 +127,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     @Autowired
     private IVoterDAO voterDAO;
     private IEventRfidDetailsDAO eventRfidDetailsDAO;
+    private ISurveyUserAuthDAO surveyUserAuthDAO;
    
 	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
 		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
@@ -335,6 +340,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public void setSurveyUserAuthDAO(ISurveyUserAuthDAO surveyUserAuthDAO) {
+		this.surveyUserAuthDAO = surveyUserAuthDAO;
 	}
 
 	public String checkForUserAuthentication(String userName , String passWord)
@@ -1648,31 +1657,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		// SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss a");
 		 SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
 		try{
-			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
-			if(list != null && list.size() > 0)
-			{
-				for(Object[] params : list)
-				{
+			//List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
+			LoginResponceVO statusVO = checkValidLoginOrNot(inpuVo.getUserName(),inpuVo.getUserPassword(),inpuVo.getImei1(),inpuVo.getImei2());
+			if(statusVO.getStatus().equalsIgnoreCase("logged")){
 					userEventDetailsVO = new UserEventDetailsVO();
-					String fname = params[1] != null ? params[1].toString() : "" ;
-					String lname = params[2] != null ? params[2].toString() : "";
-					userEventDetailsVO.setUserName(fname +" "+lname);
-					userEventDetailsVO.setId((Long)params[0]);
-					
-					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence((Long)params[0],inpuVo.getIMEI());
+					userEventDetailsVO.setUserName(statusVO.getConstituencyName());
+					userEventDetailsVO.setId(statusVO.getUserId());
+					userEventDetailsVO.setStatus(statusVO.getStatus());
+					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence(statusVO.getUserId(),inpuVo.getImei1());
 					if(checkList == null || checkList.size() == 0)
 					{
 						
 						EventSurveyUserLoginDetails eventSurveyUserLoginDetails = new EventSurveyUserLoginDetails();
-						eventSurveyUserLoginDetails.setImei(inpuVo.getIMEI());
+						eventSurveyUserLoginDetails.setImei(inpuVo.getImei1());
 						if(inpuVo.getLoginTimeStamp() != null)
 						eventSurveyUserLoginDetails.setLoginTime(formatter.parse(inpuVo.getLoginTimeStamp()));
 						if(inpuVo.getSIMCardNumber() != null)
 						eventSurveyUserLoginDetails.setSimno(inpuVo.getSIMCardNumber());
-						eventSurveyUserLoginDetails.setEventSurveyUser(eventSurveyUserDAO.get((Long)params[0]));
+						eventSurveyUserLoginDetails.setEventSurveyUser(eventSurveyUserDAO.get(statusVO.getUserId()));
 						eventSurveyUserLoginDetailsDAO.save(eventSurveyUserLoginDetails);
 					}
-				}
 				
 				//eventSurveyUserLoginDetailsDAO.saveCadreFromAndroid(voterDetails)
 				List<Long> eventsIdsList = new ArrayList<Long>();
@@ -1735,6 +1739,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					}
 				}
 					
+			}else{
+				userEventDetailsVO = new UserEventDetailsVO();
+				userEventDetailsVO.setStatus(statusVO.getStatus());
 			}
 			
 		}
@@ -1742,6 +1749,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		{
 			Log.error("Exception Occured in validateUserForEvent() method",e) ;
 			e.printStackTrace();
+			userEventDetailsVO = new UserEventDetailsVO();
+			userEventDetailsVO.setStatus("error");
 		}
 		return userEventDetailsVO;
 	}
@@ -1797,6 +1806,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 UserEventDetailsVO returnVo = new UserEventDetailsVO();
 		 DateUtilService date = new DateUtilService();
 		 try{
+			 try{
+				Long count = eventSurveyUserDAO.checkUserBlockedOrNot(inputVo.getId());
+				if(count.longValue() > 0){
+					returnVo.setStatus("blocked");
+					returnVo.setUserId(inputVo.getId());
+					return returnVo;
+				}
+			 }catch(Exception ex){
+				 Log.error(ex) ;
+			 }
 			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 	String memberShipNumber = "AP14"+inputVo.getMemberShipNo();
 			String memberShipNumber1 = "TS14"+inputVo.getMemberShipNo();
@@ -1851,5 +1870,176 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		return returnVo;
 	}
+	 
+	 public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2){
+	    	LoginResponceVO vo = new LoginResponceVO();
+	    	//0id,1firstName,2lastName
+	    	List<EventSurveyUser> list =  eventSurveyUserDAO.checkValidUserOrNot(userName,password);
+		 //List<CadreSurveyUser> users = cadreSurveyUserDAO.getByUserNameAndPassword(userName, password);
+	    	if(list != null && list.size() > 0 && list.get(0) != null){
+	    		vo.setUserId(list.get(0).getEventSurveyUserId());
+	    		String name = "";
+	    		if(list.get(0).getFirstName() != null){
+	    			name = list.get(0).getFirstName();
+	    		}
+	    		if(list.get(0).getLastName() != null){
+	    			name = name+" "+list.get(0).getLastName();
+	    		}
+	    		vo.setConstituencyName(name);
+	    	}
+		 if(list == null || list.size() == 0 || list.get(0) == null){
+			 vo.setStatus("login failure");
+			 SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+				 surveyUserAuth.setUserName(userName);
+				 surveyUserAuth.setPassword(password);
+				 surveyUserAuth.setImeiNo(imei1);
+				 surveyUserAuth.setImeiNo2(imei2);
+				 surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				 surveyUserAuth.setIsDeleted("Y");
+				 surveyUserAuth.setStatus("failure");
+				surveyUserAuthDAO.save(surveyUserAuth);
+			 return vo;
+		 }else if(list.get(0).getIsExcluded().equalsIgnoreCase("Y")){
+			 vo.setStatus("logged");
+			 SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+			 surveyUserAuth.setEventSurveyUserId(list.get(0).getEventSurveyUserId());
+			 surveyUserAuth.setImeiNo(imei1);
+			 surveyUserAuth.setImeiNo2(imei2);
+			 surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+			 surveyUserAuth.setIsDeleted("Y");
+			 surveyUserAuth.setStatus("success with exclude");
+			 surveyUserAuthDAO.save(surveyUserAuth);
+			return vo;
+		 }
+		 synchronized ("checkValidEventUserOrNot") {
+			 if((imei1 != null && imei1.length() > 0) && (imei2 != null && imei2.length() > 0) ){
+				  checkVaidLogInOrNot(list.get(0).getEventSurveyUserId(),imei1,imei2,vo);
+				 
+			 }else{
+				 String reqImei = imei1;
+				 if(imei2 != null && imei2.length() > 0){
+					 reqImei = imei2;
+				 }		 
+				  checkVaidLogInOrNot(list.get(0).getEventSurveyUserId(),reqImei,vo);
+				  
+			 }
+		 }
+		 return vo;
+		}
+	 
+	 public LoginResponceVO checkVaidLogInOrNot(Long userId,String imei,LoginResponceVO vo){
+	    	Long count = surveyUserAuthDAO.checkRecordExistWithGivenDetailsOrNot(userId, imei);
+	    	
+	    	if(count.longValue() == 0){
+	    		SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+	    		surveyUserAuth.setEventSurveyUserId(userId);
+	    		surveyUserAuth.setImeiNo(imei);
+	    		surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+	    		surveyUserAuth.setIsDeleted("N");
+	    		surveyUserAuth.setStatus("success");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("logged");
+	    		return vo;
+	    	}else{
+	    		count = surveyUserAuthDAO.checkRecordBelongsToUserOrNot(userId, imei);
+	    		if(count.longValue() > 0){
+	    			surveyUserAuthDAO.updateRecordBelongsToUserOrNot(userId, imei);
+	    			SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+	    			surveyUserAuth.setEventSurveyUserId(userId);
+	    			surveyUserAuth.setImeiNo(imei);
+	    			surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+	    			surveyUserAuth.setIsDeleted("N");
+	    			surveyUserAuth.setStatus("success");
+	    			surveyUserAuthDAO.save(surveyUserAuth);
+	        		vo.setStatus("logged");
+	        		return vo;
+	    		}else{
+	    			return getActualCaseForNotAllowingToLogIn(userId,imei,vo);
+	    		}
+	    	}
+	    	
+	    }
+	 
+	 private LoginResponceVO getActualCaseForNotAllowingToLogIn(Long userId,String imei,LoginResponceVO vo){
+	    	
+		 SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+		 surveyUserAuth.setEventSurveyUserId(userId);
+		 surveyUserAuth.setImeiNo(imei);
+		 surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+		 surveyUserAuth.setIsDeleted("Y");
+			
+	    	Long count = surveyUserAuthDAO.checkUserAlreadyLoggedInAnotherTab(userId, imei);
+	    	
+	    	if(count.longValue() > 0){
+	    		surveyUserAuth.setStatus("same user");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("same user");
+	    		return vo;
+	    	}else{
+	    		surveyUserAuth.setStatus("same tab");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("same tab");
+	    		return vo;
+	    	}
+	    }
+	 
+	 public LoginResponceVO checkVaidLogInOrNot(Long userId,String imei1,String imei2,LoginResponceVO vo){
+	    	Long count = surveyUserAuthDAO.checkRecordExistWithGivenDetailsOrNot(userId,imei1,imei2);
+	    	
+	    	if(count.longValue() == 0){
+	    		SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+	    		surveyUserAuth.setEventSurveyUserId(userId);
+	    		surveyUserAuth.setImeiNo(imei1);
+	    		surveyUserAuth.setImeiNo2(imei2);
+	    		surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+	    		surveyUserAuth.setIsDeleted("N");
+	    		surveyUserAuth.setStatus("success");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("logged");
+	    		return vo;
+	    	}else{
+	    		count = surveyUserAuthDAO.checkRecordBelongsToUserOrNot(userId,imei1,imei2);
+	    		if(count.longValue() > 0){
+	    			surveyUserAuthDAO.updateRecordBelongsToUserOrNot(userId,imei1,imei2);
+	    			SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+	    			surveyUserAuth.setEventSurveyUserId(userId);
+	    			surveyUserAuth.setImeiNo(imei1);
+	    			surveyUserAuth.setImeiNo2(imei2);
+	    			surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+	    			surveyUserAuth.setIsDeleted("N");
+	    			surveyUserAuth.setStatus("success");
+	        		surveyUserAuthDAO.save(surveyUserAuth);
+	        		vo.setStatus("logged");
+	        		return vo;
+	    		}else{
+	    			return getActualCaseForNotAllowingToLogIn(userId,imei1,imei2,vo);
+	    		}
+	    	}
+	    	
+	    }
+	 
+	 private LoginResponceVO getActualCaseForNotAllowingToLogIn(Long userId,String imei1,String imei2,LoginResponceVO vo){
+	    	
+		 SurveyUserAuth surveyUserAuth = new SurveyUserAuth();
+		 surveyUserAuth.setEventSurveyUserId(userId);
+		 surveyUserAuth.setImeiNo(imei1);
+		 surveyUserAuth.setImeiNo2(imei2);
+		 surveyUserAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+		 surveyUserAuth.setIsDeleted("Y");
+			
+	    	Long count = surveyUserAuthDAO.checkUserAlreadyLoggedInAnotherTab(userId, imei1,imei2);
+	    	
+	    	if(count.longValue() > 0){
+	    		surveyUserAuth.setStatus("same user");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("same user");
+	    		return vo;
+	    	}else{
+	    		surveyUserAuth.setStatus("same tab");
+	    		surveyUserAuthDAO.save(surveyUserAuth);
+	    		vo.setStatus("same tab");
+	    		return vo;
+	    	}
+	    }
 }
 
