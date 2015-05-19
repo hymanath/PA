@@ -281,4 +281,25 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getDistrictNamesIds(List<Long> districtIds){
+		
+		StringBuilder queryStr = new StringBuilder();
+		if(districtIds != null && districtIds.size()>0)
+		{
+			queryStr.append(" select model.districtId,model.districtName from District model where model.state.stateId in (1,36) " +
+					" and model.districtId in (:districtIds) order by model.districtName  ");
+		}
+		else
+		{
+			queryStr.append(" select model.districtId,model.districtName from District model where model.state.stateId in (1,36)" +
+					" order by model.districtName  ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		return query.list();
+	}
 }
