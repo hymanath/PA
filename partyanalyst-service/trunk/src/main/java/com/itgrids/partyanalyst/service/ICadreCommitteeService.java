@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
+import com.itgrids.partyanalyst.dto.VO;
 
 public interface ICadreCommitteeService {
 	public String genarateOTP(Long userId, Long mobileNo);
@@ -121,4 +122,5 @@ public interface ICadreCommitteeService {
 	 public ResultStatus assignEventForUser(final Long userId,final  UserEventDetailsVO userEventDetailsVO);
 	 public EventCreationVO getPrePopulatingValuesOfEvents(Long eventId);
 	 public List<CadreCommitteeMemberVO> getCommitteeMemberPerformanceDetails(Long locationLevelId, Long locationLevelValue);
+	 public List<VO> getDistrictNamesIds(Long userId);
 }
