@@ -246,45 +246,55 @@
 				str +="<table class='table table-bordered' style='display:none;'>";
 					str+="<thead>";
 					str+="<tr>";
+						str+="<th>CONSTITUENCY</th>";					
 						str+="<th>NAME</th>";
-						str+="<th>VOTER CARD NO</th>";
-						str+="<th>AGE</th>";
-						str+="<th>CONSTITUENCY</th>";
-						str+="<th>COMMITTEE TYPE</th>";
-						<!--str+="<th>ROLE</th>";-->
-						str+="<th>CASTE CATEGORY</th>";
 						str+="<th>CASTE</th>";
+						str+="<th>CASTE CATEGORY</th>";
+						str+="<th>COMMITTEE TYPE</th>";
+						str+="<th>DESIGNATION</th>";
 						str+="<th>MOBILE</th>";
-						<!--str+="<th>OWN BOOTH NO</th>";-->
+						str+="<th>PARTY JOINING DATE </th>";
+						str+="<th>VOTER CARD NO</th>";
+						str+="<th>BOOTH NO</th>";
 						str+="<th>OWN CONSTITUENCY %</th>";
 						str+="<th>OWN MANDAL/MUNCIPALITY %</th>";
-						<!--str+="<th>OWN MUNCIPALITY %</th>";->
 						str+="<th>OWN PANCHAYAT %</th>";
 						str+="<th>OWN BOOTH %</th>";
+						str+="<th>MEMBERSHIP NO %</th>";
+						
+						str+="<th>GENDER</th>";
+						str+="<th>AGE</th>";
+						
+						<!--str+="<th>ROLE</th>";-->
+						<!--str+="<th>OWN BOOTH NO</th>";-->
+						<!--str+="<th>OWN MUNCIPALITY %</th>";->
 						<!--str+="<th>OWN WARD %</th>";-->
+						
 					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
 						for(var i in result){
 							str+="<tr>";
-								str+="<td>"+result[i].name+" ( "+result[i].role+")</td>";
-								str+="<td>"+result[i].voterCardNo+"</td>";
-								str+="<td>"+result[i].age+"</td>";
 								str+="<td>"+result[i].constituencyName+"</td>";
-								str+="<td>"+result[i].committe+"</td>";
-								<!--str+="<td>"+result[i].role+"</td>";-->
-								str+="<td>"+result[i].casteGroupName+"</td>";
+								str+="<td>"+result[i].name+"</td>";
 								str+="<td>"+result[i].casteName+"</td>";
+								str+="<td>"+result[i].casteGroupName+"</td>";
+								str+="<td>"+result[i].committe+"</td>";
+								str+="<td>"+result[i].role+"</td>";
 								str+="<td>"+result[i].mobileNo+"</td>";
-								<!--str+="<td>"+result[i].partNo+"</td>";-->
-								
+								if(result[i].fromDate!=null){
+									str+="<td>"+result[i].fromDate+"</td>";								
+								}
+								else{
+									str+="<td> - </td>";	
+								}
+								str+="<td>"+result[i].voterCardNo+"</td>";
+								str+="<td>"+result[i].partNo+"</td>";
 								if(result[i].ownConstiPerc!=null){
 									str+="<td>"+result[i].ownConstiPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}
-								
-								
 								if(result[i].ownMandalPerc!=null){
 									str+="<td>"+result[i].ownMandalPerc+"</td>";
 								}else if(result[i].ownMunciPerc!=null){
@@ -292,24 +302,30 @@
 								}else{
 									str+="<td> - </td>";
 								}
+								if(result[i].ownPanchPerc!=null){
+									str+="<td>"+result[i].ownPanchPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								if(result[i].ownBoothPerc!=null){
+									str+="<td>"+result[i].ownBoothPerc+"</td>";
+								}else{
+									str+="<td> - </td>";
+								}
+								
+								str+="<td>"+result[i].membershipNo+"</td>";
+								str+="<td>"+result[i].gender+"</td>";
+								str+="<td>"+result[i].age+"</td>";
+								
+							
+								<!--str+="<td>"+result[i].role+"</td>";-->
+								<!--str+="<td>"+result[i].partNo+"</td>";-->
 								
 								/*if(result[i].ownMunciPerc!=null){
 									str+="<td>"+result[i].ownMunciPerc+"</td>";
 								}else{
 									str+="<td> - </td>";
 								}*/
-								
-								if(result[i].ownPanchPerc!=null){
-									str+="<td>"+result[i].ownPanchPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}
-								
-								if(result[i].ownBoothPerc!=null){
-									str+="<td>"+result[i].ownBoothPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}
 								
 								/*if(result[i].ownWardPerc!=null){
 									str+="<td>"+result[i].ownWardPerc+"</td>";
