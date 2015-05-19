@@ -9100,8 +9100,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
 					  }
 				  }
-				  
+					finalList.get(0).setStatus("success");
+					
 			  }
+			 
 		}
 		catch(Exception e)
 		{
@@ -9181,6 +9183,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  
 					 
 				  }
+				  finalList.get(0).setStatus("success");
 			  }
 		}
 					

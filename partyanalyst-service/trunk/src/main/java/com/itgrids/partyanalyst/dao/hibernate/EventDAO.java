@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -53,4 +54,27 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+	
+	public List<Object[]> getParentEvents(Date currentDate)
+	{
+		Query query = getSession().createQuery("select model.eventId,model.name,model.eventStartTime,model.eventEndTime," +
+				" model.startTime, model.endTime  from Event model where date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId is null " +
+				" and model.isActive =:isActive order by model.orderId asc ");
+		query.setDate("currentDate", currentDate);
+		
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	public List<Object[]> getEventsByUserAndParentIds(Date currentDate,List<Long> parentEventIds)
+	{
+		Query query = getSession().createQuery("select model.eventId,model.name,model.parentEventId,model.description,model.startTime,model.endTime,model.isInviteeExist," +
+				" model.entryLimit, model.serverWorkMode, model.tabWorkMode,date(model.eventStartTime),date(model.eventEndTime),model.orderId,model.isActive from Event model where  " +
+				" date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId in(:parentEventIds)  and model.isActive =:isActive order by model.orderId asc ");
+		query.setDate("currentDate", currentDate);
+		
+		query.setParameterList("parentEventIds", parentEventIds);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
 }
