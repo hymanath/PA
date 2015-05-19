@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
@@ -886,6 +887,41 @@ public class WebServiceHandler {
 		}
 	}
 	
+	@POST
+	@Path("/getCardPrintCountForUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getCardPrintUsersCount(CardPrintUserVO inputVO){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.getCardPrintCountForAllUsers(inputVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
+	@Path("/getCardPrintCountByUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getCardPrintCountByUser(CardPrintUserVO inputVO){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.getCardPrintCountByUser(inputVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 	
 	@POST
 	@Path("/cadreSurveyUserDetails")
