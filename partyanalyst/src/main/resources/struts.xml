@@ -10096,5 +10096,12 @@
 				<param name="root">eventCreationVO</param>
 			</result>
 		</action>
+		
+		<action name="getDistrictNamesIdsAction" class="cadreCommitteeAction" method="getDistrictNamesIds">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
