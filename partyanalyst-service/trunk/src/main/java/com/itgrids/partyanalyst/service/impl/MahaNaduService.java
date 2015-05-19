@@ -1017,7 +1017,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),36l);
 		setInviteeInfoForState(statewise1,2l,"attendee",36l);
 		setInviteeInfoForState(statewise,2l,"invitee",36l);
-		
+		 events = eventInfoDAO.getEventIds(3l,date.getCurrentDateAndTime());
 		    if(events != null && events.size() > 0)
 			 eventInfoDAO.deleteEventInfo(3l,events) ;
 			 voterDAO.flushAndclearSession();
