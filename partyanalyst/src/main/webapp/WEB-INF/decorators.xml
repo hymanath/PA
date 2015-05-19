@@ -414,5 +414,6 @@
 		<pattern>/cadreSearchAndRegAction*</pattern>
 		<pattern>/cadreEnrollment*</pattern>
 		<pattern>/peformanceOfCadreAction*</pattern>
+		<pattern>/mahanaduTabUsersManageAction*</pattern>
 	 </decorator>
 </decorators>

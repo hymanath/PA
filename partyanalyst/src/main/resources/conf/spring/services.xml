@@ -2110,6 +2110,7 @@
 	   <property name="cadreDetailsService" ref="cadreDetailsService"/>
 	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
 	    <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO"/>
+	    <property name="surveyUserAuthDAO" ref="surveyUserAuthDAO"/>
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -2272,7 +2273,7 @@
           <property name="eventUserDAO" ref="eventUserDAO" />	
 		    <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />	
 		  <property name="eventDAO" ref="eventDAO" />	
-         	
+         	<property name="surveyUserAuthDAO" ref="surveyUserAuthDAO" />	
          
    </bean>
   

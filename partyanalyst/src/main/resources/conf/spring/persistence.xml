@@ -595,8 +595,8 @@
 				<value>com.itgrids.partyanalyst.model.EventRfidDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreCardNumberUpdation</value>
 				<value>com.itgrids.partyanalyst.model.CardPrintUser</value>
-				
-				
+				<value>com.itgrids.partyanalyst.model.SurveyUserAuth</value>
+			    	
 				</list>
 			
 		</property>
