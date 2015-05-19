@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
+import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -94,8 +95,18 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
 	
      private EventCreationVO eventCreationVO;
+	private List<VO> resultList;
 	
 	
+	
+	public List<VO> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<VO> resultList) {
+		this.resultList = resultList;
+	}
+
 	public List<TdpCadreVO> getCommiteeMembersList() {
 		return commiteeMembersList;
 	}
@@ -1804,6 +1815,22 @@ public String getSummaryDetails(){
 			
 		}catch (Exception e) {
 			LOG.error("Exception occured in prePopulatingValuesOfEvents() method in cadreCommitteAction Class ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictNamesIds(){
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			resultList = cadreCommitteeService.getDistrictNamesIds(user.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception raised in getDistrictNamesIds",e);
 		}
 		return Action.SUCCESS;
 	}
