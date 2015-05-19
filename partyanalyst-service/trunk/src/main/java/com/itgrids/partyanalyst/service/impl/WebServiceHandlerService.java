@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
@@ -1204,6 +1205,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
+	public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO){
+		List<CardPrintUserVO> returnVo = cadreRegistrationService.getCardPrintCountForAllUsers(inputVO);
+		return returnVo;
+	}
+	public Object getCardPrintCountByUser(CardPrintUserVO inputVO){
+		List<CardPrintUserVO> returnVo = cadreRegistrationService.getCardPrintCountByUser(inputVO);
+		return returnVo;
+	}
 	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList){
 		String status = cadreRegistrationService.updatePrintedCardDetails(inputVOList);
 		return status;

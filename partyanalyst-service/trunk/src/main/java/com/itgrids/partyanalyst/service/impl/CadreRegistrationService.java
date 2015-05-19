@@ -125,6 +125,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -6076,7 +6077,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						return returnMsg;
 				   
 				 }
-				 List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUname(),inputList.get(0).getPwd());
+				final List validCheck = cardPrintUserDAO.checkUserEixsts(inputList.get(0).getUname(),inputList.get(0).getPwd());
 				 if(validCheck == null || validCheck.size() == 0)
 				 {
 					 CadrePrintVO returnVO = new CadrePrintVO();
@@ -6101,6 +6102,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 									 cadreCardNumberUpdation.setTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
 									 cadreCardNumberUpdation.setInsertedTime(date.getCurrentDateAndTime());
 									 cadreCardNumberUpdation.setUpdatedTime(date.getCurrentDateAndTime());
+									 cadreCardNumberUpdation.setCardPrintUserId((Long)validCheck.get(0));
 									 cadreCardNumberUpdationDAO.save(cadreCardNumberUpdation);	
 									 TdpCadre tdpCadre = tdpCadreDAO.get(cardNFCDetailsVO.getTdpCadreId());
 									 // Image Updataion
@@ -9042,6 +9044,209 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		  }
 		 return  missedCallsDetailsVOList;
 	  } 
+	public List<CardPrintUserVO> getCardPrintCountForAllUsers(CardPrintUserVO inputVo)
+	{
+		List<CardPrintUserVO>  finalList = new ArrayList<CardPrintUserVO>();
+		try{
+			if(inputVo.getUname() == null || inputVo.getUname().trim().length()  == 0)
+			 {
+					CardPrintUserVO returnVO = new CardPrintUserVO();
+					returnVO.setStatus("Invalid");
+					finalList.add(returnVO);
+					 return finalList;
+			   
+			 }
+			 List validCheck = cardPrintUserDAO.checkUserEixsts(inputVo.getUname(),inputVo.getPwd());
+			 if(validCheck == null || validCheck.size() == 0)
+			 {
+				 CardPrintUserVO returnVO = new CardPrintUserVO();
+				 returnVO.setStatus("Invalid");
+				 finalList.add(returnVO);
+				 return finalList;
+			 }
+			 Date startDate = null;
+			 Date endDate1 = null;
+			String strDate = inputVo.getFromDate();
+			String endDate = inputVo.getEndDate();
+			if(strDate != null && !strDate.isEmpty())
+			startDate=new SimpleDateFormat("dd/MM/yyyy").parse(strDate);
+			if(endDate != null && !endDate.isEmpty())
+		    endDate1=new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+		   List<Object[]> list = cadreCardNumberUpdationDAO.getPrintCountsForAllUser(startDate,endDate1);
+			  if(list != null && list.size() > 0)
+			  {
+				  for(Object[] params : list)
+				  {
+					  CardPrintUserVO userVO = getMatchedVO(finalList,(Long)params[3]);
+					  if(userVO == null)
+					  {
+						  userVO = new CardPrintUserVO();
+						  userVO.setId((Long)params[3]);
+						  userVO.setUname(params[1].toString());
+						  finalList.add(userVO);
+					  } 
+					  CardPrintUserVO dateVo = getMatchedDate(userVO.getSubList(), params[2].toString());
+					  if(dateVo == null)
+					  {
+						  dateVo = new CardPrintUserVO();  
+						  dateVo.setDate(params[2].toString());
+						  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
+						  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
+						  userVO.getSubList().add(dateVo);
+					  }
+					  else
+					  {
+						  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
+						  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
+					  }
+				  }
+				  
+			  }
+		}
+		catch(Exception e)
+		{
+			 LOG.error("Exception Occured in getCardPrintUsersCount()", e);
+		}
+		return finalList;
+	}
+
 	
+	
+	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo)
+	{
+		List<CardPrintUserVO>  finalList = new ArrayList<CardPrintUserVO>();
+		try{
+			if(inputVo.getUname() == null || inputVo.getUname().trim().length()  == 0)
+			 {
+					CardPrintUserVO returnVO = new CardPrintUserVO();
+					returnVO.setStatus("Invalid");
+					finalList.add(returnVO);
+					 return finalList;
+			   
+			 }
+			 List validCheck = cardPrintUserDAO.checkUserEixsts(inputVo.getUname(),inputVo.getPwd());
+			 if(validCheck == null || validCheck.size() == 0)
+			 {
+				 CardPrintUserVO returnVO = new CardPrintUserVO();
+				 returnVO.setStatus("Invalid");
+				 finalList.add(returnVO);
+				 return finalList;
+			 }
+			 Date startDate = null;
+			 Date endDate1 = null;
+			String strDate = inputVo.getFromDate();
+			String endDate = inputVo.getEndDate();
+			if(strDate != null && !strDate.isEmpty())
+			startDate=new SimpleDateFormat("dd/MM/yyyy").parse(strDate);
+			if(endDate != null && !endDate.isEmpty())
+		    endDate1=new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+		   List<Object[]> list = cadreCardNumberUpdationDAO.getPrintCountsForUser(startDate,endDate1,(Long)validCheck.get(0));
+			  if(list != null && list.size() > 0)
+			  {
+				  for(Object[] params : list)
+				  {
+					  CardPrintUserVO userVO = getMatchedVO(finalList,(Long)params[3]);
+					
+					  if(userVO == null)
+					  {
+						  userVO = new CardPrintUserVO();
+						  userVO.setId((Long)params[3]);
+						  userVO.setUname(params[1].toString());
+						  finalList.add(userVO);
+					  }
+					  userVO.setTotal(userVO.getTotal() + 1);
+					  CardPrintUserVO dateVo = getMatchedDate(userVO.getSubList(),params[2].toString());
+					  if(dateVo == null)
+					  {
+						  dateVo = new CardPrintUserVO();
+						  dateVo.setDate(params[2].toString());
+						
+						  userVO.getSubList().add(dateVo);
+					  }
+					 
+					  CardPrintUserVO memberShipVo = getMatchedMemberShipNo(dateVo.getSubList(),params[0].toString());
+					  if(memberShipVo == null)
+					  {
+						  memberShipVo = new CardPrintUserVO();
+						  memberShipVo.setMembershipNumber(params[0].toString());
+						  memberShipVo.setCount(memberShipVo.getCount() + 1);
+						  dateVo.setTotal(dateVo.getTotal() + 1);
+						  dateVo.getSubList().add(memberShipVo); 
+					  }
+					  else
+					  {
+						  dateVo.setTotal(dateVo.getTotal() + 1);
+						  memberShipVo.setCount(memberShipVo.getCount() + 1);  
+					  }
+					  
+					 
+				  }
+			  }
+		}
+					
+		catch(Exception e)
+		{
+			 LOG.error("Exception Occured in getCardPrintUsersCount()", e);
+		}
+		return finalList;
+	}
+
+	public CardPrintUserVO getMatchedVO(List<CardPrintUserVO> resultList,Long userId)
+	{
+		 try{
+			
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(CardPrintUserVO vo : resultList)
+			{
+			  if(vo.getId().longValue() == userId.longValue())
+				  return vo;
+			}
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		return null;
+	}
+	
+	public CardPrintUserVO getMatchedDate(List<CardPrintUserVO> resultList,String date)
+	{
+		 try{
+			
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(CardPrintUserVO vo : resultList)
+			{
+			  if(vo.getDate().toString().equalsIgnoreCase(date.toString()))
+				  return vo;
+			}
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		return null;
+	}
+	
+	
+	public CardPrintUserVO getMatchedMemberShipNo(List<CardPrintUserVO> resultList,String memberShipNo)
+	{
+		 try{
+			
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(CardPrintUserVO vo : resultList)
+			{
+			  if(vo.getMembershipNumber().toString().equalsIgnoreCase(memberShipNo.toString()))
+				  return vo;
+			}
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		return null;
+	}
 	
 }

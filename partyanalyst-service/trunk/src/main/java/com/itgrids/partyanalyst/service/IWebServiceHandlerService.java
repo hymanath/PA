@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
@@ -93,5 +94,7 @@ public interface IWebServiceHandlerService {
 	 public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList);
 	 public Object getTDPCadreDetailsForSearch(CadrePrintInputVO input);
 	 public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
+	 public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO);
+	 public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
 		
 }
