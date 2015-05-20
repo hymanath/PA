@@ -464,7 +464,7 @@ margin-top:10px;
 							<ul>
 					
 					<li><a href="eventInvitees.action"><span> Event Invitees  </span></a></li>
-					<li><a href="eventDashboardAction.action"><span> Events DashBoard  </span></a></li>
+					<li><a href="eventDashboardAction.action?eventId=1"><span> Events DashBoard  </span></a></li>
 					</ul>
 						</div>
 					</li>
