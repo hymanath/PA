@@ -20,7 +20,7 @@
 <body>
 <div class="container">
 		
-	<div class="row" style="padding:5px;">
+	<div class="row" style="padding:5px;height:300px;">
 	 <h4 class="text-center">Mahanadu Message Queue Management</h4>
 	<div id="errorDiv" style="margin-left: 360px;color:red;"></div>
  <form class="navbar-form  text-center" role="search">
