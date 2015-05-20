@@ -82,9 +82,9 @@
 		var locationTypeId = 11;
 		gettingCadreDetailsPerformance(locationTypeId,locationId);
 		function gettingCadreDetailsPerformance(lctnTypeId,lctnId){
-			$("#cadrePerfId").html('');
-			$("#cadreTablePerfId").html('');
 			$("#cadreTablePerfId").hide();
+			$("#cadrePerfId").show();
+			$("#cadrePerfId").html('<img style="width:80px;height:50px;display:block;margin-left:auto;margin-right:auto;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
 			var distNameStr = $('#districtid option:selected').text();
 			$('#distName').html(''+distNameStr+' COMMITTEE MEMBERS BOOTH INFLUENCE');
 			var jsObj={
@@ -98,22 +98,14 @@
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				$("#cadreTablePerfId").show();
-				if (typeof(result) != "undefined" && result != null && result.length>0)
-				{
-					buildCadrePerformanceDetails(result);
-				}
-				else{
-					$(".exprtToExcel").hide();
-					var str="<h4>No Data Available</h4>";
-					$("#cadreTablePerfId").html(str);
-				}
+				buildCadrePerformanceDetails(result);
 			});
 		}
 		
 		function buildCadrePerformanceDetails(result){
 			var str = "";
-			$("#cadrePerfId").html('<img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
-			if(result!=null){
+			//$("#cadrePerfId").html('<img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
+			if(result!=null && result.length>0){
 				
 			str +='<table id="summaryTable" class="table table-bordered table-striped" style="width:50%;margin-left:auto;margin-right:auto;">';
 			str+='<tr>';
@@ -162,7 +154,6 @@
 				
 				
 
-				//$("#cadreTablePerfId").html(str);
 				$("#cadrePerfId").html(str);
 				
 				str='';
@@ -189,16 +180,16 @@
 						str+="<th>GENDER</th>";
 						str+="<th>AGE</th>";
 						
-						<!--str+="<th>ROLE</th>";-->
-						<!--str+="<th>OWN BOOTH NO</th>";-->
-						<!--str+="<th>OWN MUNCIPALITY %</th>";->
-						<!--str+="<th>OWN WARD %</th>";-->
 						
 					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
 						for(var i in result){
-							str+="<tr>";
+							if(result[i].lowPerformance){
+								str+="<tr class='lowPerf'>";
+							}else{
+								str+="<tr>";
+							}
 								str+="<td>"+result[i].constituencyName+"</td>";
 								str+="<td>"+result[i].name+"</td>";
 								str+="<td>"+result[i].casteName+"</td>";
@@ -240,22 +231,6 @@
 								str+="<td>"+result[i].membershipNo+"</td>";
 								str+="<td>"+result[i].gender+"</td>";
 								str+="<td>"+result[i].age+"</td>";
-								
-							
-								<!--str+="<td>"+result[i].role+"</td>";-->
-								<!--str+="<td>"+result[i].partNo+"</td>";-->
-								
-								/*if(result[i].ownMunciPerc!=null){
-									str+="<td>"+result[i].ownMunciPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}*/
-								
-								/*if(result[i].ownWardPerc!=null){
-									str+="<td>"+result[i].ownWardPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}*/
 								
 							str+="</tr>";
 						}
@@ -331,16 +306,16 @@
 						str+="<th>GENDER</th>";
 						str+="<th>AGE</th>";
 						
-						<!--str+="<th>ROLE</th>";-->
-						<!--str+="<th>OWN BOOTH NO</th>";-->
-						<!--str+="<th>OWN MUNCIPALITY %</th>";->
-						<!--str+="<th>OWN WARD %</th>";-->
 						
 					str+="</tr>";
 					str+="</thead>";
 					str+="<tbody>";
 						for(var i in result){
-							str+="<tr>";
+							if(result[i].lowPerformance){
+								str+="<tr class='lowPerf'>";
+							}else{
+								str+="<tr>";
+							}
 								str+="<td>"+result[i].constituencyName+"</td>";
 								str+="<td>"+result[i].name+"</td>";
 								str+="<td>"+result[i].casteName+"</td>";
@@ -383,37 +358,25 @@
 								str+="<td>"+result[i].gender+"</td>";
 								str+="<td>"+result[i].age+"</td>";
 								
-							
-								<!--str+="<td>"+result[i].role+"</td>";-->
-								<!--str+="<td>"+result[i].partNo+"</td>";-->
-								
-								/*if(result[i].ownMunciPerc!=null){
-									str+="<td>"+result[i].ownMunciPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}*/
-								
-								/*if(result[i].ownWardPerc!=null){
-									str+="<td>"+result[i].ownWardPerc+"</td>";
-								}else{
-									str+="<td> - </td>";
-								}*/
-								
 							str+="</tr>";
 						}
 					str+="<tbody>";
 				str+="</table>";
 				str+="</div>";
+				
+				$("#cadreTablePerfId").html(str);
+				$("#cadrePerfTableId").dataTable({
+					"iDisplayLength": 15,
+					"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+				});
 			}else{
 				$(".exprtToExcel").hide();
 				str+="<h4>No Data Available</h4>";
+				$("#cadreTablePerfId").html(str);
+				$("#cadrePerfId").hide();
 			}
 			
-			$("#cadreTablePerfId").html(str);
-			$("#cadrePerfTableId").dataTable({
-				"iDisplayLength": 15,
-				"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
-			});
+			
 			
 		}
 		
