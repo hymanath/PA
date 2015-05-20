@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Party Office Event</title>
+<title>Event</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
@@ -250,7 +250,8 @@
 <script type="text/javascript">
 
 
-var parentEventId = 0;
+var parentEventId = '${eventId}';
+
 var subEvents = [];
 var startDate;
 var endDate;
@@ -284,7 +285,7 @@ str+='<div class="panel-heading collapse-head" role="tab" id="heading'+result[i]
 str+='<h5 class="panel-title">';
 str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
-if(i == 0)
+if(parentEventId == result[i].id)
 {
 str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'" checked>';
 }
@@ -300,7 +301,7 @@ str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-dr
 str+=' </a>';
 str+=' </h5>';
 str+=' </div>';
-if(i == 0)
+if(parentEventId == result[i].id)
 str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
 else
 str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
@@ -310,7 +311,7 @@ str+='<ul id="me-select-list" style="list-style:none;">';
 
  for(var j in result[i].subList)
  {
- if(i == 0)
+if(parentEventId == result[i].id)
 {
 str+='<li><input id="check'+result[i].subList[j].id+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" checked>';
 str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
@@ -692,10 +693,15 @@ $("#errorDiv").html("");
 		subEvents.push($(this).val());
 		})
 	}
-getSubEvents();
+	
+	
+	getSubEvents();
 });
 var evntName = $("#eventText"+parentEventId).text();
 var title = (evntName + ' Event').toUpperCase();
+var url = "eventDashboardAction.action?eventId="+parentEventId+"";
+ChangeUrl(''+title+'', ''+url+'');
+
 
 $("#mainheading").html(''+title+'');
 	if(subEvents.length == 0){
@@ -708,6 +714,8 @@ $("#mainheading").html(''+title+'');
 
 if(errStr.length == 0)
 {
+
+
 $(".themeControll").removeClass("active");
 setcolorsForEvents();
 getLocationWiseVisitorsCount(parentEventId,1,3);
@@ -719,6 +727,14 @@ getEventMemberCount(parentEventId);
 }
 
 }
+ function ChangeUrl(title, url) {
+    if (typeof (history.pushState) != "undefined") {
+        var obj = { Title: title, Url: url };
+        history.pushState(obj, obj.Title, obj.Url);
+    } else {
+        alert("Browser does not support HTML5.");
+    }
+}
 function insertIntermediateData()
 {
 	$.ajax({
@@ -728,7 +744,13 @@ function insertIntermediateData()
           data: {},
 
           success: function(result){ 
-			 location.reload(); 
+			 //location.reload(); 
+			 setcolorsForEvents();
+			 getLocationWiseVisitorsCount(parentEventId,1,3);
+			 getLocationWiseVisitorsCount(parentEventId,1,4);
+			 getSubEventDetails(parentEventId);
+			 getSubEventDetailsHourWise(parentEventId);
+			 getEventMemberCount(parentEventId);
          },
           error:function() { 
            console.log('error', arguments);
@@ -1082,6 +1104,7 @@ $('#columnchart').html("");
 }
 /* DONUT CHART */
 function buildEventMemberCount(result){
+var colorsarr = new Array();
 if(result == null || result.length == 0)
 {
 $('#columnchart').html("No Data Available").addClass("errorDiv");
@@ -1094,6 +1117,8 @@ var xaxis = [];
 var dataArr = [];
 for(var i in result)
 {
+var color = getColorCodeByEvent(result[i].id);
+colorsarr.push(color);	
 xaxis.push(result[i].name);
 var data=[];
 for(var j in result[i].subList)
@@ -1105,7 +1130,9 @@ data.push(result[i].subList[j].total)
 dataArr.push(obj);
 }
 
-
+Highcharts.setOptions({
+	 colors:colorsarr
+		 });
     $('#columnchart').highcharts({
         chart: {
             type: 'column'
