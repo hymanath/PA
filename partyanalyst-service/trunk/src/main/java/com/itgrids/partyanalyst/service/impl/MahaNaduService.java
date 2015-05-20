@@ -1710,7 +1710,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					{
 						MahanaduEventVO eventVo = new MahanaduEventVO();
 						Long count = eventCount.get(eventId) ;
-						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEventSQL(eventId,compareEventId,eventStrDate,eventEndDate);
+						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate);
 						eventVo.setId(compareEventId);
 						eventVo.setName(eventDAO.get(compareEventId).getName());
 						if(unionCounts != null)
