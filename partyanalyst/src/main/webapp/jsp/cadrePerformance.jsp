@@ -26,7 +26,7 @@
 				color : #468847 !important;
 				line-height: 15px !important;
 			}
-
+		#cadrePerfTableId th{text-align:center !important;}
 
 	</style>	
 </head>
@@ -168,6 +168,7 @@
 						str+="<th>COMMITTEE TYPE</th>";
 						str+="<th>DESIGNATION</th>";
 						str+="<th>MOBILE</th>";
+						str+="<th>BOOTH INFLUENCE</th>";
 						str+="<th>PARTY JOINING DATE </th>";
 						str+="<th>VOTER CARD NO</th>";
 						str+="<th>BOOTH NO</th>";
@@ -192,11 +193,13 @@
 							}
 								str+="<td>"+result[i].constituencyName+"</td>";
 								str+="<td>"+result[i].name+"</td>";
+								
 								str+="<td>"+result[i].casteName+"</td>";
 								str+="<td>"+result[i].casteGroupName+"</td>";
 								str+="<td>"+result[i].committe+"</td>";
 								str+="<td>"+result[i].role+"</td>";
 								str+="<td>"+result[i].mobileNo+"</td>";
+								str+="<td>"+parseFloat(result[i].mandalBoothCmpr).toFixed(2)+"</td>";
 								if(result[i].fromDate!=null){
 									str+="<td>"+result[i].fromDate+"</td>";								
 								}
