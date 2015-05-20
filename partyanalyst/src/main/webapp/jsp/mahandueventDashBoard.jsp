@@ -113,13 +113,13 @@
         </div>
 		
         <div class="col-md-8 col-xs-12 col-sm-6">
-		<div id="rangeSliderDiv">
+		<div id="rangeSliderDiv" style="display:none;">
 		<div id="slider"></div>
 		<p>
 		<input id="amount" type="text" style="border: none; font-weight: bold;background-color:transparent;" readonly>
 		</p>
 		</div>
-	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;display:none;text-align:center;margin-top:10px;padding-top:200px;"></div>
+	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
         		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
 					<div id="dayWiseContainer" style="width: 100%; height:357px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
@@ -130,6 +130,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">total event visits</div>
 				<div class="panel-body">
+					<center><img id="donutChartAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 					<div id="donutchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px"></div>
 				</div>
 			</div>
@@ -138,6 +139,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">event wise repeated members count</div>
 				<div class="panel-body">
+					<center><img id="columnChartAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 					<div id="columnchart" style="width: 100%; height: 100%; margin: 0 auto;border-radius:5px;"></div>
 				</div>
 			</div>
@@ -179,9 +181,9 @@
                 </div>
                 
                 </div>
-                <div class="panel-body" >				
+                <div class="panel-body" style="min-height:400px;">				
 						<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3)"><option value="0"> All Events</option></select>
-						<img id="distAjax" src="images/icons/search.gif" style="display:none;"/>
+						<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
                      <div id="districtTableId" style="margin-top: 10px;"> </div>
                 </div>
             </div>
@@ -192,7 +194,7 @@
             	<div class="panel-heading">
                 <p class="m_0 display-style" id="constiHeading">AP CONSTITUENCY WISE</p>
                 <div class="onoffswitch pull-right">
-                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" checked>
+                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
                     <label class="onoffswitch-label" for="myonoffswitch1">
                         <span class="onoffswitch-inner"></span>
                         <span class="onoffswitch-switch"></span>
@@ -200,9 +202,9 @@
                 </div>
                 
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="min-height:400px;">
 				<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>
-				<img id="constAjax" src="images/icons/search.gif" style="display:none;"/>
+				<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 					
                    <div id="constiTableId" style="margin-top:10px;"></div>
                 </div>
@@ -371,7 +373,7 @@ eventUpdate();
                   };
 
                   var optionSet2 = {
-                    startDate: moment().subtract(7, 'days'),
+                    startDate: moment(),
                     endDate: moment(),
                     opens: 'left',
                     ranges: {
@@ -460,10 +462,15 @@ $(".maineventCls").each(function(){
 
 function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
 {
-if(reportLevelId == 3)
+
+if(reportLevelId == 3){
 	$("#distAjax").show();
-	else
+	$("#districtTableId").html("");
+	}
+	else{
 	$("#constAjax").show();
+	$("#constiTableId").html("");
+	}
 	var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
@@ -488,12 +495,11 @@ if(reportLevelId == 3)
 function buildDistrictTable(result,reportLevelId){
 	if(reportLevelId == 3)
 	{
-	$("#distAjax").hide();
+		$("#distAjax").hide();
 	}
 	else
 	{
-	
-	$("#constAjax").hide();
+		$("#constAjax").hide();
 	}
 	var str='';
 	str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
@@ -519,10 +525,12 @@ function buildDistrictTable(result,reportLevelId){
 		str+='</tr>';
     }                               
 	str+='</tbody></table></div>';
-	if(reportLevelId == 3)
+	if(reportLevelId == 3){
 	$("#districtTableId").html(str);
-	else
+	}
+	else{
 	$("#constiTableId").html(str);
+	}
 	$('#table'+reportLevelId).DataTable( {
         responsive: true,
 		"paging":   false,
@@ -539,11 +547,21 @@ function buildDistrictTable(result,reportLevelId){
 }
 $("#myonoffswitch").click(function(){
 	if($('#myonoffswitch').is(":checked")){
-	getLocationWiseVisitorsCount(parentEventId,1,3);
+	$('#myonoffswitch1').prop('checked', true);
+	
 	$("#districtHeading").html("AP DISTRICT WISE");
+	$("#constiHeading").html("AP CONSTITUENCY WISE");
+	getLocationWiseVisitorsCount(parentEventId,1,3);
+	getLocationWiseVisitorsCount(parentEventId,1,4);
+	
+	
 	}else{
+	$('#myonoffswitch1').prop('checked', false);
+	$("#districtHeading").html("TS DISTRICT WISE");	
+	$("#constiHeading").html("TS CONSTITUENCY WISE");
 	getLocationWiseVisitorsCount(parentEventId,36,3);
-	$("#districtHeading").html("TS DISTRICT WISE");
+	getLocationWiseVisitorsCount(parentEventId,36,4);
+
 	}
 });
 $("#myonoffswitch1").click(function(){
@@ -559,7 +577,9 @@ $("#myonoffswitch1").click(function(){
 
 
 function getSubEventDetails(parentEventId){
-
+	$('#donutchart').html("");
+	$("#donutChartAjax").show();
+	
 	var jObj = {
 			parentEventId:parentEventId,	
 			subEvents : subEvents,
@@ -572,6 +592,8 @@ function getSubEventDetails(parentEventId){
           url: 'getSubEventDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+		$("#donutChartAjax").hide();
+		
 		buildStartingPrograms(result);
 	});
 }
@@ -764,8 +786,10 @@ var dayWiseArr =[];
 var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function getSubEventDetailsHourWise(parentEventId){
-$('#hourWiseerrorDiv').html("");
+
+$('#hourWiseerrorDiv').html('<center><img id="hourWiseAjaxImage" src="images/Loading-data.gif" style="width:70px;height:60px;"/></center>');
 $("#hourWiseContainer").html("");
+
 	var jObj = {
 			parentEventId:parentEventId,
 			subEvents : subEvents,
@@ -778,6 +802,8 @@ $("#hourWiseContainer").html("");
           url: 'getHourWiseSubEventsCountAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+		//$("#hourWiseAjaxImage").hide();
+		
 				areaChartDataArr = new Array();
 				areaChartNamesArr = new Array();
 				dayWiseArr = new Array();
@@ -1086,7 +1112,7 @@ Highcharts.setOptions({
 
 function getEventMemberCount(parentEventId){
 $('#columnchart').html("");
-
+$('#columnChartAjax').show();
 	var jObj = {
 			parentEventId:parentEventId,			
 		    subEvents : subEvents,
@@ -1099,6 +1125,7 @@ $('#columnchart').html("");
           url: 'getEventMemberCountAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+		$('#columnChartAjax').hide();
 		buildEventMemberCount(result);
 	});
 }
