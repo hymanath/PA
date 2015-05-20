@@ -6,17 +6,13 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
-
 import java.util.List;
+import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -29,7 +25,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.Job;
+import com.itgrids.partyanalyst.message.EventMessagesConsumer;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -56,10 +52,18 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private Long populateID;
 	private MobileVO mobileVo;
 	private EntitlementsHelper entitlementsHelper;
-	  
+	private EventMessagesConsumer eventMessagesConsumer;
 	
 
 	
+	public EventMessagesConsumer getEventMessagesConsumer() {
+		return eventMessagesConsumer;
+	}
+
+	public void setEventMessagesConsumer(EventMessagesConsumer eventMessagesConsumer) {
+		this.eventMessagesConsumer = eventMessagesConsumer;
+	}
+
 	public List<SelectOptionVO> getMandals() {
 		return mandals;
 	}
@@ -289,6 +293,15 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
 			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_SURVEY");
 			 resultStatus = mobileService.createSurveySqliteFileForAParliamnetConstituency(regVo);
+		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("createThreadPool"))
+		 {
+			 RegistrationVO regVo = new RegistrationVO();
+			 int count = (Long.valueOf(jObj.getLong("constituencyId"))).intValue();
+			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
+			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
+			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_SURVEY");
+			 eventMessagesConsumer.startConsumeMessages(count);
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
 		 {
