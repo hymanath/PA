@@ -193,7 +193,7 @@
         	<div class="panel panel-default panel-custom-default">
             	<div class="panel-heading">
                 <p class="m_0 display-style" id="constiHeading">AP CONSTITUENCY WISE</p>
-                <div class="onoffswitch pull-right">
+                <div class="onoffswitch pull-right" style="display:none;">
                     <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
                     <label class="onoffswitch-label" for="myonoffswitch1">
                         <span class="onoffswitch-inner"></span>
@@ -740,8 +740,14 @@ if(errStr.length == 0)
 
 $(".themeControll").removeClass("active");
 setcolorsForEvents();
+
+if($('#myonoffswitch').is(":checked")){
 getLocationWiseVisitorsCount(parentEventId,1,3);
 getLocationWiseVisitorsCount(parentEventId,1,4);
+}else{
+getLocationWiseVisitorsCount(parentEventId,36,3);
+getLocationWiseVisitorsCount(parentEventId,36,4);
+}
 getSubEventDetails(parentEventId);
 getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
@@ -768,11 +774,17 @@ function insertIntermediateData()
           success: function(result){ 
 			 //location.reload(); 
 			 setcolorsForEvents();
-			 getLocationWiseVisitorsCount(parentEventId,1,3);
-			 getLocationWiseVisitorsCount(parentEventId,1,4);
+			
 			 getSubEventDetails(parentEventId);
 			 getSubEventDetailsHourWise(parentEventId);
 			 getEventMemberCount(parentEventId);
+			 if($('#myonoffswitch').is(":checked")){
+			getLocationWiseVisitorsCount(parentEventId,1,3);
+			getLocationWiseVisitorsCount(parentEventId,1,4);
+			}else{
+			getLocationWiseVisitorsCount(parentEventId,36,3);
+			getLocationWiseVisitorsCount(parentEventId,36,4);
+			}
          },
           error:function() { 
            console.log('error', arguments);
