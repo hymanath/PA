@@ -180,7 +180,7 @@
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
-			<result type="redirect" name="eventAction">eventDetailsAction.action</result>
+			<result type="redirect" name="eventDashboardAction">eventDashboardAction.action</result>
 			<result type="redirect" name="cadreMemberShipCardDispatcherAction">cadreMemberShipCardDispatcherAction.action</result>	
 			<result type="redirect" name="cadreSurveyTransactionsDashboardAction">cadreSurveyTransactionsDashboardAction.action</result>
 			<result type="redirect" name="cadreTransactionReportsAction">cadreTransactionReportsAction.action</result>
@@ -10014,7 +10014,7 @@
 		</action> 
 		<action name="eventDashboardAction" class="eventDetailsAction">
 			<result name="success">/jsp/mahandueventDashBoard.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=eventAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=eventDashboardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 
 		</action>
@@ -10102,6 +10102,16 @@
 		<action name="getDistrictNamesIdsAction" class="cadreCommitteeAction" method="getDistrictNamesIds">
 			<result type="json" name="success">
 				<param name="root">resultList</param>
+			</result>
+		</action>
+		<action name="messageQueueManagementAction" class="messageQueueManagementAction">
+			<result name="success">/jsp/messageQueueMgnt.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		<action name="createConsumerForMsgQueueAction" class="messageQueueManagementAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root"></param>
 			</result>
 		</action>
 		
