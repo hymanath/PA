@@ -192,9 +192,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
-			str.append(" and date(model.attendedTime) = :startDate group by date(model.attendedTime)"); 
+			str.append(" and date(model1.attendedTime) = :startDate and date(model.attendedTime) = :startDate group by date(model.attendedTime)"); 
 			else
-			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate  group by date(model.attendedTime) "); 
+			str.append(" and date(model1.attendedTime) >= :startDate and date(model1.attendedTime) <= :endDate and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate  group by date(model.attendedTime) "); 
 		}
 		Query query = getSession().createQuery(str.toString());
 		if((startDate != null && endDate != null))
