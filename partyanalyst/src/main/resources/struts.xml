@@ -180,6 +180,7 @@
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
+			<result type="redirect" name="eventAction">eventDetailsAction.action</result>
 			<result type="redirect" name="cadreMemberShipCardDispatcherAction">cadreMemberShipCardDispatcherAction.action</result>	
 			<result type="redirect" name="cadreSurveyTransactionsDashboardAction">cadreSurveyTransactionsDashboardAction.action</result>
 			<result type="redirect" name="cadreTransactionReportsAction">cadreTransactionReportsAction.action</result>
@@ -10013,8 +10014,9 @@
 		</action> 
 		<action name="eventDashboardAction" class="eventDetailsAction">
 			<result name="success">/jsp/mahandueventDashBoard.jsp</result>
-			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=eventAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+
 		</action>
 		<action name="partyEventsManagement" class="eventDetailsAction">
 			<result name="success">/jsp/partyEventsManagement.jsp</result>

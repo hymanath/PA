@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -97,7 +98,9 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	public String execute()
 	{
 		
-		
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
 		return Action.SUCCESS;
 		
 	}
