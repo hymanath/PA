@@ -475,7 +475,7 @@
 			str+="<tbody>";
 			for(var i in detailsArr){
 		
-				if(committee == detailsArr[i].committe ){
+				if(committee == detailsArr[i].committe){
 					if(type =="true"){
 						if(type.indexOf(detailsArr[i].lowPerformance) == 0 ){
 							str+="<tr>";
@@ -497,9 +497,10 @@
 							str+="</tr>";
 					}					
 				}
-				else{
-					if(type =="true"){
-						if( type.indexOf(detailsArr[i].lowPerformance) < 0 ){
+				
+				else if( committee == "affl" && detailsArr[i].committe != "Main"){
+					if(type =="true" ){
+						if( type.indexOf(detailsArr[i].lowPerformance) == 0 ){
 							str+="<tr>";
 							str+="<td>"+detailsArr[i].constituencyName+"</td>";
 							str+="<td>"+detailsArr[i].name+"</td>";
