@@ -2629,5 +2629,16 @@
 	
 	</bean>
 	
+	<bean name="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    	<property name="corePoolSize" value="25" />
+    	<property name="maxPoolSize" value="100" />
+    	<property name="queueCapacity" value="250" />
+	</bean>
+	
+	<bean name="eventMessagesConsumer" class="com.itgrids.partyanalyst.message.EventMessagesConsumer">
+	    <property name="taskExecutor" ref="taskExecutor" />
+	    <property name="webServiceHandlerService" ref="webServiceHandlerService" />	
+	</bean>
+	
 </beans>		
 	
