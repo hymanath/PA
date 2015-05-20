@@ -5781,7 +5781,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
 					returnVO.setTdpCadreId((Long)obj[3]);
 					returnVO.setMobileNo(obj[4] != null ? obj[4].toString() : "");
-					returnVO.setCardNumber(obj[7] != null ? obj[7].toString() : "");
+					returnVO.setCardNumber(obj[6] != null ? obj[6].toString() : "");
 					if(returnVO.getVoterId()==null){
 						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
 						if(names != null && names.size() > 0){
