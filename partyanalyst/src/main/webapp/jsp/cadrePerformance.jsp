@@ -27,6 +27,15 @@
 				line-height: 15px !important;
 			}
 		#cadrePerfTableId th{text-align:center !important;}
+	#tableId tr.odd td.sorting_1{
+    background-color: #d3d3d3 !important;
+}
+#tableId tr.even td.sorting_1 {
+    background-color: #fafafa !important;
+}
+#tableId tr.odd {
+    background-color: #E5E5E5 !important;
+}
 
 	</style>	
 </head>
@@ -53,6 +62,21 @@
 			<div id="cadrePerfId"><img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></div>
 			<div id="cadreTablePerfId" style="overflow:scroll;display:none;"></div>
 		</div>
+
+		<div id="membersDisplayDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h4 class="panel-header text-center"></h4>
+					  </div>
+						<div id="memberDetailsDiv" style="margin-top:15px;padding:15px;margin-bottom:20px;"></div>
+				</div>
+			</div>
+    </div>
+	
 	</div>
 
 
@@ -77,7 +101,8 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<script>	
+	<script>
+		var detailsArr;
 		var locationId = "${distId}";
 		var locationTypeId = 11;
 		gettingCadreDetailsPerformance(locationTypeId,locationId);
@@ -103,6 +128,8 @@
 		}
 		
 		function buildCadrePerformanceDetails(result){
+			detailsArr = new Array();
+			detailsArr = result;
 			var str = "";
 			//$("#cadrePerfId").html('<img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
 			if(result!=null && result.length>0){
@@ -118,36 +145,46 @@
 			str+='</tr>';
 			str+='<tr>';
 			str+='<td style="text-align:left;">MAIN COMMITTEE MEMBERS</td>';	
-			if(result[0].mainCmmtteeMembs!=null){			
-				str+='<td>'+result[0].mainCmmtteeMembs+'</td>';
+			if(result[0].mainCmmtteeMembs!=null && result[0].mainCmmtteeMembs > 0){			
+				//str+='<td>'+result[0].mainCmmtteeMembs+'</td>';
+				
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'false\',\'Main\');}">'+result[0].mainCmmtteeMembs+'</a></td>';
+				
+				
 			}else{
-				str+='<td> - </td>';
+				str+='<td> 0 </td>';
 			}
 			str+='</tr>';
 			str+='<tr>';
 			str+='<td style="text-align:left;">MAIN COMMITTEE LOW PERFORMANCE MEMBERS</td>';	
-			if(result[0].lowPerfMainCmmtteeMembs!=null){
-				str+='<td>'+result[0].lowPerfMainCmmtteeMembs+'</td>';
+			if(result[0].lowPerfMainCmmtteeMembs!=null && result[0].lowPerfMainCmmtteeMembs > 0){
+				//str+='<td>'+result[0].lowPerfMainCmmtteeMembs+'</td>';
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'true\',\'Main\');}">'+result[0].lowPerfMainCmmtteeMembs+'</a></td>';
+				
+				
 			}else{
-				str+='<td> - </td>';
+				str+='<td> 0 </td>';
 			}
 			str+='</tr>';
 			
 			str+='<tr>';
 			str+='<td style="text-align:left;">AFFLIATED COMMITTEE MEMBERS</td>';
-			if(result[0].afflCmmtteeMembs!=null){
-				str+='<td>'+result[0].afflCmmtteeMembs+'</td>';
+			if(result[0].afflCmmtteeMembs!=null && result[0].afflCmmtteeMembs > 0 ){
+				//str+='<td>'+result[0].afflCmmtteeMembs+'</td>';
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'false\',\'affl\');}">'+result[0].afflCmmtteeMembs+'</a></td>';
 			}else{
-				str+='<td> - </td>';
+				str+='<td> 0 </td>';
 			}
 			str+='</tr>';
 			
 			str+='<tr>';
 			str+='<td style="text-align:left;">AFFLIATED COMMITTEE LOW PERFORMANCE MEMBERS</td>';
-			if(result[0].lowPerfAfflCmmtteeMembs!=null){
-				str+='<td>'+result[0].lowPerfAfflCmmtteeMembs+'</td>';
+			if(result[0].lowPerfAfflCmmtteeMembs!=null && result[0].lowPerfAfflCmmtteeMembs > 0){
+				//str+='<td>'+result[0].lowPerfAfflCmmtteeMembs+'</td>';
+				
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'true\',\'affl\');}">'+result[0].lowPerfAfflCmmtteeMembs+'</a></td>';
 			}else{
-				str+='<td> - </td>';
+				str+='<td> 0 </td>';
 			}
 			str+='</tr>';
 			str+='</table>';
@@ -422,6 +459,83 @@
 
 			});
 		}
+		function getMemberDetails(type,committee){
+		
+			var str="";
+			str+="<div>";
+			str+="<table class='table table-bordered' id='tableId'><thead>";
+			str+="<tr>";
+			str+="<th>CONSTITUENCY</th>";					
+			str+="<th>NAME</th>";
+			str+="<th>COMMITTEE TYPE</th>";
+			str+="<th>DESIGNATION</th>";
+			str+="<th>MOBILE</th>";
+			str+="</tr>";
+			str+="</thead>";
+			str+="<tbody>";
+			for(var i in detailsArr){
+		
+				if(committee == detailsArr[i].committe ){
+					if(type =="true"){
+						if(type.indexOf(detailsArr[i].lowPerformance) == 0 ){
+							str+="<tr>";
+							str+="<td>"+detailsArr[i].constituencyName+"</td>";
+							str+="<td>"+detailsArr[i].name+"</td>";
+							str+="<td>"+detailsArr[i].committe+"</td>";
+							str+="<td>"+detailsArr[i].role+"</td>";
+							str+="<td>"+detailsArr[i].mobileNo+"</td>";
+							str+="</tr>";
+						}
+					}	
+					else {
+							str+="<tr>";
+							str+="<td>"+detailsArr[i].constituencyName+"</td>";
+							str+="<td>"+detailsArr[i].name+"</td>";
+							str+="<td>"+detailsArr[i].committe+"</td>";
+							str+="<td>"+detailsArr[i].role+"</td>";
+							str+="<td>"+detailsArr[i].mobileNo+"</td>";
+							str+="</tr>";
+					}					
+				}
+				else{
+					if(type =="true"){
+						if( type.indexOf(detailsArr[i].lowPerformance) < 0 ){
+							str+="<tr>";
+							str+="<td>"+detailsArr[i].constituencyName+"</td>";
+							str+="<td>"+detailsArr[i].name+"</td>";
+							str+="<td>"+detailsArr[i].committe+"</td>";
+							str+="<td>"+detailsArr[i].role+"</td>";
+							str+="<td>"+detailsArr[i].mobileNo+"</td>";
+							str+="</tr>";
+						}
+					}
+					else {
+							str+="<tr>";
+							str+="<td>"+detailsArr[i].constituencyName+"</td>";
+							str+="<td>"+detailsArr[i].name+"</td>";
+							str+="<td>"+detailsArr[i].committe+"</td>";
+							str+="<td>"+detailsArr[i].role+"</td>";
+							str+="<td>"+detailsArr[i].mobileNo+"</td>";
+							str+="</tr>";
+					}
+				}			
+			}
+			str+="<tbody>";
+			str+="</table>";	
+			str+='</div>';
+			$("#memberDetailsDiv").html(str);
+			$("#tableId").dataTable({
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+			});
+			if(type =="true"){
+				$('#membersDisplayDialog').find('h4').html('<span class="text-uppercase">'+ committee +' COMMITTEE LOW PERFORMANCE MEMBERS </span>');		 
+			}else{		 
+				$('#membersDisplayDialog').find('h4').html('<span class="text-uppercase">'+ committee +'  COMMITTEE MEMBERS </span>');
+			}
+			$("#membersDisplayDialog").modal("show");
+		}
+		
 	</script>
 	
 	
