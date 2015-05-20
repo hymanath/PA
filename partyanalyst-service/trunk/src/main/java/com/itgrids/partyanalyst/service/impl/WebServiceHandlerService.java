@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventRfidDetails;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
+import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -129,7 +131,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IVoterDAO voterDAO;
     private IEventRfidDetailsDAO eventRfidDetailsDAO;
     private ISurveyUserAuthDAO surveyUserAuthDAO;
-   
+ 
 	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
 		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
 	}
@@ -1670,6 +1672,21 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			LoginResponceVO statusVO = checkValidLoginOrNot(inpuVo.getUserName(),inpuVo.getUserPassword(),inpuVo.getImei1(),inpuVo.getImei2());
 			if(statusVO.getStatus().equalsIgnoreCase("logged")){
 					userEventDetailsVO = new UserEventDetailsVO();
+						
+						List<WebServiceBaseUrl> webserviceUrls = webServiceBaseUrlDAO.getBaseUrlsForAnApp("EVENT_MGMT");
+						if(webserviceUrls != null && webserviceUrls.size() > 0)
+						{
+							for(WebServiceBaseUrl vo : webserviceUrls)
+							{
+								WebServiceBaseVO webServiceBaseVO = new WebServiceBaseVO();
+								webServiceBaseVO.setAppName(vo.getAppName() != null ? vo.getAppName() : "");
+								webServiceBaseVO.setId(vo.getWebServiceBaseUrlId());
+								webServiceBaseVO.setUrl(vo.getUrl() != null ? vo.getUrl() : "");
+								webServiceBaseVO.setSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
+								userEventDetailsVO.getWebserviceurlsList().add(webServiceBaseVO);
+							}
+						}
+						
 					userEventDetailsVO.setUserName(statusVO.getConstituencyName());
 					userEventDetailsVO.setId(statusVO.getUserId());
 					userEventDetailsVO.setStatus(statusVO.getStatus());

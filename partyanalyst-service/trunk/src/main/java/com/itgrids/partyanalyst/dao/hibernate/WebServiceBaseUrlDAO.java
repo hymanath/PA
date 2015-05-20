@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -25,5 +27,12 @@ public class WebServiceBaseUrlDAO extends GenericDaoHibernate<WebServiceBaseUrl,
 		Query query = getSession().createQuery("select model from WebServiceBaseUrl model where model.appName = :appName");
 		query.setParameter("appName",appName);
 		return (WebServiceBaseUrl)query.uniqueResult();
+	}
+	public List<WebServiceBaseUrl> getBaseUrlsForAnApp(String appName)
+	{
+		Query query = getSession().createQuery("select model from WebServiceBaseUrl model where model.appName = :appName" +
+				" and model.isEnabled ='Y' ");
+		query.setParameter("appName",appName);
+		return query.list();
 	}
 }

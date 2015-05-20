@@ -22,7 +22,8 @@ public class WebServiceBaseUrl extends BaseModel implements Serializable{
 	private Long webServiceBaseUrlId;
 	private String appName;
 	private String url;
-	
+	private String syncType;
+	private String isEnabled;
     public WebServiceBaseUrl()
     {}
     
@@ -57,4 +58,22 @@ public class WebServiceBaseUrl extends BaseModel implements Serializable{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	@Column(name="sync_type")
+	public String getSyncType() {
+		return syncType;
+	}
+
+	public void setSyncType(String syncType) {
+		this.syncType = syncType;
+	}
+	@Column(name="is_enabled")
+	public String getIsEnabled() {
+		return isEnabled;
+	}
+
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	
+	
 }

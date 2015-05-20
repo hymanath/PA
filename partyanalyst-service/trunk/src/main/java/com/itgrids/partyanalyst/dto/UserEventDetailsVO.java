@@ -40,8 +40,23 @@ public class UserEventDetailsVO implements Serializable{
 	private String longitude;
 	private Long orderId;
 	private String isActive;
+	private String appName;
+	private List<WebServiceBaseVO> webserviceurlsList = new ArrayList<WebServiceBaseVO>();
 	
 	
+	
+	public String getAppName() {
+		return appName;
+	}
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+	public List<WebServiceBaseVO> getWebserviceurlsList() {
+		return webserviceurlsList;
+	}
+	public void setWebserviceurlsList(List<WebServiceBaseVO> webserviceurlsList) {
+		this.webserviceurlsList = webserviceurlsList;
+	}
 	public String getEventName() {
 		return eventName;
 	}
