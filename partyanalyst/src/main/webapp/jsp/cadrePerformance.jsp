@@ -171,7 +171,7 @@
 			str+='<td style="text-align:left;">AFFLIATED COMMITTEE MEMBERS</td>';
 			if(result[0].afflCmmtteeMembs!=null && result[0].afflCmmtteeMembs > 0 ){
 				//str+='<td>'+result[0].afflCmmtteeMembs+'</td>';
-				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'false\',\'affl\');}">'+result[0].afflCmmtteeMembs+'</a></td>';
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'false\',\'affliated\');}">'+result[0].afflCmmtteeMembs+'</a></td>';
 			}else{
 				str+='<td> 0 </td>';
 			}
@@ -182,7 +182,7 @@
 			if(result[0].lowPerfAfflCmmtteeMembs!=null && result[0].lowPerfAfflCmmtteeMembs > 0){
 				//str+='<td>'+result[0].lowPerfAfflCmmtteeMembs+'</td>';
 				
-				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'true\',\'affl\');}">'+result[0].lowPerfAfflCmmtteeMembs+'</a></td>';
+				str += '<td style="text-align:center" ><a href="javascript:{getMemberDetails(\'true\',\'affliated\');}">'+result[0].lowPerfAfflCmmtteeMembs+'</a></td>';
 			}else{
 				str+='<td> 0 </td>';
 			}
@@ -498,7 +498,7 @@
 					}					
 				}
 				
-				else if( committee == "affl" && detailsArr[i].committe != "Main"){
+				else if( committee == "affliated" && detailsArr[i].committe != "Main"){
 					if(type =="true" ){
 						if( type.indexOf(detailsArr[i].lowPerformance) == 0 ){
 							str+="<tr>";
