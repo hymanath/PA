@@ -16,10 +16,25 @@ public class CardPrintUserVO {
 	private Long id;
 	private List<CardPrintUserVO> subList= new ArrayList<CardPrintUserVO>();
 	private String date;
+	private Long printCnt =0l;
+	private Long reprintCnt =0l;
+	
+			
 	
 	
 	
-	
+	public Long getPrintCnt() {
+		return printCnt;
+	}
+	public void setPrintCnt(Long printCnt) {
+		this.printCnt = printCnt;
+	}
+	public Long getReprintCnt() {
+		return reprintCnt;
+	}
+	public void setReprintCnt(Long reprintCnt) {
+		this.reprintCnt = reprintCnt;
+	}
 	public String getDate() {
 		return date;
 	}
