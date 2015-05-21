@@ -28,6 +28,7 @@ public class CadreCommitteeMemberVO {
 	private List<CasteDetailsVO> casteGroupVO;
 	private List<CasteDetailsVO> ageDetailsIfoVO;
 	private List<CasteDetailsVO> casteNameVO;
+	private List<CasteDetailsVO> mandalLevelDetails;
 	private List<Long> commiteeRoleIds = new ArrayList<Long>();
 	private String casteGroupName;
 	private String mobileNo;
@@ -350,6 +351,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setConstiVOList(List<CasteDetailsVO> constiVOList) {
 		this.constiVOList = constiVOList;
+	}
+	public List<CasteDetailsVO> getMandalLevelDetails() {
+		return mandalLevelDetails;
+	}
+	public void setMandalLevelDetails(List<CasteDetailsVO> mandalLevelDetails) {
+		this.mandalLevelDetails = mandalLevelDetails;
 	}
 	
 	
