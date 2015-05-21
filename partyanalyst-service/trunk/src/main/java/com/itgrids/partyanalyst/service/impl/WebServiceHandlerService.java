@@ -1715,6 +1715,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						UserEventDetailsVO eventVo = new UserEventDetailsVO();
 						eventVo.setId((Long)params[0]);
 						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
+						eventVo.setSyncType(params[6] != null ? params[6].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
 						eventsIdsList.add((Long)params[0]);
 					}
@@ -1742,7 +1743,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setEndDate(params[11] != null ? dateFormate.format(params[11]) : "");
 								childEventVo.setOrderId(params[12] != null ? Long.valueOf(params[12].toString().trim()) : null);
 								childEventVo.setIsActive(params[13] != null ? params[13].toString() : "");
-								
+								childEventVo.setSyncType(params[14] != null ? params[14].toString() : "");
 								List<Long> eventIds = new ArrayList<Long>();
 								eventIds.add(childEventVo.getEventId());
 								List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventIds);	
@@ -1780,7 +1781,71 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return userEventDetailsVO;
 	}
-	
+	public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo)
+	{
+		 UserEventDetailsVO userEventDetailsVO = null;
+		 DateUtilService date = new DateUtilService();
+		try{
+			userEventDetailsVO = new UserEventDetailsVO();
+			if(inpuVo.getAppName() != null && !inpuVo.getAppName() .isEmpty())
+			{
+				List<WebServiceBaseUrl> webserviceUrls = webServiceBaseUrlDAO.getBaseUrlsForAnApp(inpuVo.getAppName().trim().toString());
+				if(webserviceUrls != null && webserviceUrls.size() > 0)
+				{
+					for(WebServiceBaseUrl vo : webserviceUrls)
+					{
+						WebServiceBaseVO webServiceBaseVO = new WebServiceBaseVO();
+						webServiceBaseVO.setAppName(vo.getAppName() != null ? vo.getAppName() : "");
+						webServiceBaseVO.setId(vo.getWebServiceBaseUrlId());
+						webServiceBaseVO.setUrl(vo.getUrl() != null ? vo.getUrl() : "");
+						webServiceBaseVO.setSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
+						userEventDetailsVO.getWebserviceurlsList().add(webServiceBaseVO);
+					}
+				}
+			}
+				List<Long> eventsIdsList = new ArrayList<Long>();
+				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(inpuVo.getUserId(),date.getCurrentDateAndTime());
+				if(parentEvent != null && parentEvent.size() > 0)
+				{
+					
+					for(Object[] params : parentEvent)
+					{
+						UserEventDetailsVO eventVo = new UserEventDetailsVO();
+						eventVo.setId((Long)params[0]);
+						eventVo.setEventName(params[1] != null ? params[1].toString() : "");
+						eventVo.setSyncType(params[6] != null ? params[6].toString() : "");
+						userEventDetailsVO.getSubList().add(eventVo);
+						eventsIdsList.add((Long)params[0]);
+					}
+					
+					List<Object[]> events = eventUserDAO.getEventsDataByUserAndParentIds(inpuVo.getUserId(),date.getCurrentDateAndTime(),eventsIdsList);
+					
+					if(events != null && events.size() > 0)
+					{
+						for(Object[] params : events)
+						{
+							UserEventDetailsVO parentVo = getMatchedEvent(userEventDetailsVO.getSubList(),(Long)params[2]);
+							if(parentVo != null)
+							{
+								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
+								childEventVo.setEventId((Long)params[0]);
+								childEventVo.setEventName(params[1] != null ? params[1].toString() : "");
+								childEventVo.setSyncType(params[3] != null ? params[3].toString() : "");
+								parentVo.getSubList().add(childEventVo);
+							}
+						}
+					}
+		  }
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in updateDatasyncurl() method",e) ;
+			e.printStackTrace();
+			userEventDetailsVO = new UserEventDetailsVO();
+			userEventDetailsVO.setStatus("error");	
+		}
+		return userEventDetailsVO;
+	}
    
    public String TimeForm(String time)
    {

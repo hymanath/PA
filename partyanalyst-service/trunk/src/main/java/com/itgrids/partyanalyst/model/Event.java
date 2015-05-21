@@ -40,7 +40,7 @@ public class Event implements java.io.Serializable{
 	private String tabWorkMode;
 	
 	private Integer orderId;
-	
+	private String syncType;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_id", unique = true, nullable = false)
@@ -175,6 +175,13 @@ public class Event implements java.io.Serializable{
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-	
+	@Column(name="sync_type")
+	public String getSyncType() {
+		return syncType;
+	}
+
+	public void setSyncType(String syncType) {
+		this.syncType = syncType;
+	}
 	
 }
