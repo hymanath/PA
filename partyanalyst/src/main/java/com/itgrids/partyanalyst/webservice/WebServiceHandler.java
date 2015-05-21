@@ -1272,6 +1272,29 @@ public class WebServiceHandler {
 		
 		
 	}
+	
+	@POST
+	@Path("/updateDatasyncurl")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inputVo){
+		UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
+		try{
+			
+			userEventDetailsVO = webServiceHandlerService.updateDatasyncurl(inputVo);
+			
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkValidUserForEvent() Method, Exception is ",e);
+			e.printStackTrace();	
+			userEventDetailsVO.setStatus("Exception");
+		}
+		return userEventDetailsVO;
+		
+		
+	}
 	@GET
 	@Path("/validateMembership1/{data}")
 	@Produces(MediaType.APPLICATION_JSON)
