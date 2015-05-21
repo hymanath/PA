@@ -8454,6 +8454,12 @@ return constiLst;
 		{
 			Map<String,CasteDetailsVO> casteGroupMap = null;
 			Map<String,CasteDetailsVO> ageGroupMap = null;
+			Map<Long,Long> mandalIdsMap = new HashMap<Long,Long>();
+			Map<Long,Long> locIdsMap = new HashMap<Long,Long>();
+			Map<Long,Long> divisionIdsMap = new HashMap<Long,Long>();
+			Long others = 0l;
+			
+			//19tehsilId, 20localElectionBodyId 21constituencyId
 		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
 		    	casteGroupMap = new HashMap<String, CasteDetailsVO>();
@@ -8473,6 +8479,29 @@ return constiLst;
 		    	Long femaleCount = 0L;
 		    	Set<Long> voteIdsList = new HashSet<Long>();
 		    	for (Object[] objects : tdpCadresList){
+		    		if(objects[20] != null){
+		    			if(objects[21] != null && ((Long)objects[20]).longValue() == 20l){
+		    				if(divisionIdsMap.get((Long)objects[21]) != null){
+		    					divisionIdsMap.put((Long)objects[21],divisionIdsMap.get((Long)objects[21])+1l);
+		    				}else{
+		    					divisionIdsMap.put((Long)objects[21],1l);
+		    				}
+		    			}else{
+		    				if(locIdsMap.get((Long)objects[20]) != null){
+		    					locIdsMap.put((Long)objects[20],locIdsMap.get((Long)objects[20])+1l);
+		    				}else{
+		    					locIdsMap.put((Long)objects[20],1l);
+		    				}
+		    			}
+		    		}else if(objects[19] != null){
+		    			if(mandalIdsMap.get((Long)objects[19]) != null){
+		    				mandalIdsMap.put((Long)objects[19],mandalIdsMap.get((Long)objects[19])+1l);
+	    				}else{
+	    					mandalIdsMap.put((Long)objects[19],1l);
+	    				}
+		    		}else{
+		    			others=others+1;
+		    		}
 		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
 		    		cadreCommitteeMemberVO.setLevel(objects[0] != null ? Long.valueOf(objects[0].toString().trim()):0L);//roleId
 		    		cadreCommitteeMemberVO.setRole(objects[1] != null ?objects[1].toString():"");//role
@@ -8895,6 +8924,7 @@ return constiLst;
 		    	 
 		    	 Collections.sort(constiNameDetails,sortData);
 		    	 cadreCommitteeMemberVOList.get(0).setConstiVOList(constiNameDetails);
+		    	 cadreCommitteeMemberVOList.get(0).setMandalLevelDetails(populateMandalWiseInfo(mandalIdsMap,locIdsMap,divisionIdsMap,others));
 				}
 		    	//
 		    	
@@ -8930,6 +8960,47 @@ return constiLst;
 		return cadreCommitteeMemberVOList;
 	}
 	
+	public List<CasteDetailsVO> populateMandalWiseInfo(Map<Long,Long> mandalIdsMap,Map<Long,Long> locIdsMap,Map<Long,Long> divisionIdsMap,Long others){
+		List<CasteDetailsVO> mandalLevelDetails = new ArrayList<CasteDetailsVO>();
+		if(mandalIdsMap.size() > 0){
+			List<Object[]> tehsilDetails = tehsilDAO.getTehsilNameByTehsilIdsList(new ArrayList<Long>(mandalIdsMap.keySet()));
+			for(Object[] tehsil:tehsilDetails){
+				CasteDetailsVO vo = new CasteDetailsVO();
+				vo.setCasteId((Long)tehsil[0]);
+				vo.setCastName(tehsil[1].toString()+" Mandal");
+				vo.setCasteCount(mandalIdsMap.get((Long)tehsil[0]));
+				mandalLevelDetails.add(vo);
+			}
+		}
+		if(locIdsMap.size() > 0){
+			List<Object[]> lobDetails = localElectionBodyDAO.getLocalElectionBodyNames(new ArrayList<Long>(locIdsMap.keySet()));
+			for(Object[] lob:lobDetails){
+				CasteDetailsVO vo = new CasteDetailsVO();
+				vo.setCasteId((Long)lob[0]);
+				vo.setCastName(lob[1].toString());
+				vo.setCasteCount(locIdsMap.get((Long)lob[0]));
+				mandalLevelDetails.add(vo);
+			}
+		}
+		if(divisionIdsMap.size() > 0){
+			List<Object[]> divisionDetails = (List<Object[]>)localElectionBodyWardDAO.getLocalBodyElectionInfo(new ArrayList<Long>(divisionIdsMap.keySet()));
+			for(Object[] division:divisionDetails){
+				CasteDetailsVO vo = new CasteDetailsVO();
+				vo.setCasteId((Long)division[0]);
+				vo.setCastName(division[1].toString()+" Division");
+				vo.setCasteCount(divisionIdsMap.get((Long)division[0]));
+				mandalLevelDetails.add(vo);
+			}
+		}
+		if(others.longValue() > 0){
+			CasteDetailsVO vo = new CasteDetailsVO();
+			vo.setCasteId(0l);
+			vo.setCastName("Others");
+			vo.setCasteCount(others);
+			mandalLevelDetails.add(vo);
+		}
+		return mandalLevelDetails;
+	}
 	public static Comparator<CasteDetailsVO> sortData = new Comparator<CasteDetailsVO>()
 		    {
 		   
