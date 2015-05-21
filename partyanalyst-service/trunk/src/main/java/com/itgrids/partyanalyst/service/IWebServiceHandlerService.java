@@ -96,5 +96,6 @@ public interface IWebServiceHandlerService {
 	 public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
 	 public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO);
 	 public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
+	 public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
 		
 }

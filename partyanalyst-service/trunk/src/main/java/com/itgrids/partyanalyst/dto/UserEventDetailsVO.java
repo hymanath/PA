@@ -42,9 +42,16 @@ public class UserEventDetailsVO implements Serializable{
 	private String isActive;
 	private String appName;
 	private List<WebServiceBaseVO> webserviceurlsList = new ArrayList<WebServiceBaseVO>();
+	private String syncType;
 	
 	
 	
+	public String getSyncType() {
+		return syncType;
+	}
+	public void setSyncType(String syncType) {
+		this.syncType = syncType;
+	}
 	public String getAppName() {
 		return appName;
 	}
