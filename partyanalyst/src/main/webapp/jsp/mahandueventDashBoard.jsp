@@ -182,7 +182,7 @@
                 
                 </div>
                 <div class="panel-body" style="min-height:400px;">				
-						<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3)"><option value="0"> All Events</option></select>
+						<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);"><option value="0"> All Events</option></select>
 						<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
                      <div id="districtTableId" style="margin-top: 10px;"> </div>
                 </div>
@@ -202,8 +202,8 @@
                 </div>
                 
                 </div>
-                <div class="panel-body" style="min-height:400px;">
-				<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>
+                <div class="panel-body" style="min-height:430px;">
+				<!--<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>-->
 				<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 					
                    <div id="constiTableId" style="margin-top:10px;"></div>
@@ -502,7 +502,13 @@ function buildDistrictTable(result,reportLevelId){
 		$("#constAjax").hide();
 	}
 	var str='';
-	str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	if(reportLevelId == 3){
+    str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	}else{
+	str+='<div class="scrollDiv1"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	}
+	
+
 	str+='<tr>';
 	if(reportLevelId == 3){
     str+='<th>DISTRICT</th>';
@@ -540,10 +546,17 @@ function buildDistrictTable(result,reportLevelId){
 		"columnDefs": [
 	    { "width": "30%", "targets": 0 }]
     } );
-	
+	if(reportLevelId == 3){
 	$('.scrollDiv').slimScroll({
 	height: '350px'
 	});
+	}
+	else{
+	$('.scrollDiv1').slimScroll({
+	height: '370px'
+	});
+	}
+	
 }
 $("#myonoffswitch").click(function(){
 	if($('#myonoffswitch').is(":checked")){
@@ -717,7 +730,7 @@ $("#errorDiv").html("");
 	}
 	
 	
-	getSubEvents();
+
 });
 var evntName = $("#eventText"+parentEventId).text();
 var title = (evntName + ' Event').toUpperCase();
@@ -733,7 +746,7 @@ $("#mainheading").html(''+title+'');
 	}
 	startDate = $(".dp_startDate").val();
 	endDate = $(".dp_endDate").val();
-
+	getSubEvents();
 if(errStr.length == 0)
 {
 
@@ -1252,6 +1265,7 @@ $(".tbtn").click(function(){
 });
 function getSubEvents()
 {
+	
 		var jObj = {
 			eventId:parentEventId,			
 			task:"getSubEvents"
@@ -1275,12 +1289,23 @@ function getLocationWiseCountBySubEvents(reportLevelId){
 var subEvents1 = [];
 var stateId =0;
 var subIds =0;
-if(reportLevelId ==3){
+subIds = $("#distEventId").val();
+/*if(reportLevelId ==3){
   subIds = $("#distEventId").val();
  }
  else{
   subIds = $("#constiEventId").val();
- }
+ }*/
+
+if(reportLevelId == 3){
+	$("#distAjax").show();
+	$("#districtTableId").html("");
+	}
+	else{
+	$("#constAjax").show();
+	$("#constiTableId").html("");
+	}
+
  if(subIds == 0){
  subEvents1 = subEvents;
  }else{
@@ -1308,8 +1333,18 @@ var jObj = {
           url: 'getLocationWiseVisitorsCountAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			if(reportLevelId == 3){
+			$("#distAjax").show();
+			
+			}
+			else{
+			$("#constAjax").show();
+			
+			}
+
 			if(result != null)
-			{				
+			{	
+				
 				buildDistrictTable(result,reportLevelId)	
 			}
 	});
