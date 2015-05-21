@@ -6113,7 +6113,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								 if(count != null && count > 0)
 								 {
 									 Object[] object= cardNumber.get(0);
-									 if(object[0] != null)
+									 if(object[0] != null && !object[0].toString().isEmpty())
 									 cadreCardNumberUpdation.setCardNumber(object[0].toString());
 									 cadreCardNumberUpdation.setTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
 									 cadreCardNumberUpdation.setInsertedTime(date.getCurrentDateAndTime());
