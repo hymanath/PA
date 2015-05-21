@@ -5782,6 +5782,10 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 					returnVO.setTdpCadreId((Long)obj[3]);
 					returnVO.setMobileNo(obj[4] != null ? obj[4].toString() : "");
 					returnVO.setCardNumber(obj[6] != null ? obj[6].toString() : "");
+					if(returnVO.getCardNumber() != null && !returnVO.getCardNumber().isEmpty())
+					returnVO.setPrintStatus("reprint");
+					else
+						returnVO.setPrintStatus("print");
 					if(returnVO.getVoterId()==null){
 						List<String> names = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(returnVO.getTdpCadreId());
 						if(names != null && names.size() > 0){
@@ -5970,6 +5974,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						else
 							returnVO.setPrintStatus("print");	
 					returnVO.setMobileNo(obj[7] != null ? obj[7].toString() : "");
+					if(obj[11] != null && !obj[11] .toString().isEmpty())
+						returnVO.setPrintStatus("reprint");
+						else
+							returnVO.setPrintStatus("print");	
 					try{
 					if(obj[8] != null)
 					{
@@ -6143,7 +6151,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 														LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 													}
 									 } 
-												 //SAVING THE TELUGU NAME OF NON VOTER -- START //SASI
+												 
 													if(cardNFCDetailsVO.getVoterName() != null && cardNFCDetailsVO.getVoterName().trim().length() > 0){
 														if(tdpCadre.getVoterId() == null)
 														{
@@ -9081,37 +9089,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			if(endDate != null && !endDate.isEmpty())
 		    endDate1=new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
 		   List<Object[]> list = cadreCardNumberUpdationDAO.getPrintCountsForAllUser(startDate,endDate1);
-			  if(list != null && list.size() > 0)
-			  {
-				  for(Object[] params : list)
-				  {
-					  CardPrintUserVO userVO = getMatchedVO(finalList,(Long)params[3]);
-					  if(userVO == null)
-					  {
-						  userVO = new CardPrintUserVO();
-						  userVO.setId((Long)params[3]);
-						  userVO.setUname(params[1].toString());
-						  finalList.add(userVO);
-					  } 
-					  CardPrintUserVO dateVo = getMatchedDate(userVO.getSubList(), params[2].toString());
-					  if(dateVo == null)
-					  {
-						  dateVo = new CardPrintUserVO();  
-						  dateVo.setDate(params[2].toString());
-						  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
-						  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
-						  userVO.getSubList().add(dateVo);
-					  }
-					  else
-					  {
-						  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
-						  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
-					  }
-				  }
-					finalList.get(0).setStatus("success");
-					
-			  }
-			 
+		   if(list != null && list.size() > 0)
+		   setPrintCnts(finalList,list,"print");
+		   List<Object[]> list1 = cadreCardNumberUpdationDAO.getReprintCountsForAllUser(startDate,endDate1);
+		   setPrintCnts(finalList,list1,"reprint");
 		}
 		catch(Exception e)
 		{
@@ -9120,7 +9101,60 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return finalList;
 	}
 
-	
+	public List<CardPrintUserVO> setPrintCnts(List<CardPrintUserVO> finalList,List<Object[]> list,String status)
+	{
+		  if(list != null && list.size() > 0)
+		  {
+			  for(Object[] params : list)
+			  {
+				  CardPrintUserVO userVO = getMatchedVO(finalList,(Long)params[3]);
+				  if(userVO == null)
+				  {
+					  userVO = new CardPrintUserVO();
+					  userVO.setId((Long)params[3]);
+					  userVO.setUname(params[1].toString());
+					  finalList.add(userVO);
+				  } 
+				  CardPrintUserVO dateVo = getMatchedDate(userVO.getSubList(), params[2].toString());
+				  if(dateVo == null)
+				  {
+					  dateVo = new CardPrintUserVO();  
+					  dateVo.setDate(params[2].toString());
+					  if(status.equalsIgnoreCase("print"))
+					  {
+					  dateVo.setPrintCnt(dateVo.getPrintCnt() + (Long)params[0]);
+					  userVO.setPrintCnt(userVO.getPrintCnt() + (Long)params[0]);
+					  }
+					  else
+					  {
+						  dateVo.setReprintCnt(dateVo.getReprintCnt() + (Long)params[0]); 
+						  userVO.setReprintCnt(userVO.getReprintCnt() + (Long)params[0]);
+					  }
+					  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
+					  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
+					  userVO.getSubList().add(dateVo);
+				  }
+				  else
+				  {
+					  if(status.equalsIgnoreCase("print"))
+					  {
+					  dateVo.setPrintCnt(dateVo.getPrintCnt() + (Long)params[0]);
+					  userVO.setPrintCnt(userVO.getPrintCnt() + (Long)params[0]);
+					  }
+					  else
+					  {
+						  dateVo.setReprintCnt(dateVo.getReprintCnt() + (Long)params[0]); 
+						  userVO.setReprintCnt(userVO.getReprintCnt() + (Long)params[0]);
+					  }
+					  dateVo.setCount(dateVo.getCount() + (Long)params[0]);
+					  userVO.setTotal(userVO.getTotal() + (Long)params[0]);
+				  }
+			  }
+				finalList.get(0).setStatus("success");
+				
+		  }
+		return finalList;
+	}
 	
 	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo)
 	{
@@ -9164,7 +9198,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						  userVO.setUname(params[1].toString());
 						  finalList.add(userVO);
 					  }
-					  userVO.setTotal(userVO.getTotal() + 1);
+					  
 					  CardPrintUserVO dateVo = getMatchedDate(userVO.getSubList(),params[2].toString());
 					  if(dateVo == null)
 					  {
@@ -9179,14 +9213,41 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  {
 						  memberShipVo = new CardPrintUserVO();
 						  memberShipVo.setMembershipNumber(params[0].toString());
+						  if(params[4] == null)
+						  {
+							  dateVo.setPrintCnt(dateVo.getPrintCnt() + 1);
+							  memberShipVo.setPrintCnt(memberShipVo.getPrintCnt() + 1);
+							  userVO.setPrintCnt(userVO.getPrintCnt() + 1);
+						  }
+						  else
+						  {
+							  dateVo.setReprintCnt(dateVo.getReprintCnt() + 1);
+							  memberShipVo.setReprintCnt(memberShipVo.getReprintCnt() + 1);
+							  userVO.setReprintCnt(userVO.getReprintCnt() + 1);
+						  }
 						  memberShipVo.setCount(memberShipVo.getCount() + 1);
 						  dateVo.setTotal(dateVo.getTotal() + 1);
+						  userVO.setTotal(userVO.getTotal() + 1);
 						  dateVo.getSubList().add(memberShipVo); 
 					  }
 					  else
 					  {
-						  dateVo.setTotal(dateVo.getTotal() + 1);
+						  if(params[4] == null)
+						  {
+							  dateVo.setPrintCnt(dateVo.getPrintCnt() + 1);
+							  memberShipVo.setPrintCnt(memberShipVo.getPrintCnt() + 1);
+							  userVO.setPrintCnt(userVO.getPrintCnt() + 1);
+						  }
+						  else
+						  {
+							  dateVo.setReprintCnt(dateVo.getReprintCnt() + 1);
+							  memberShipVo.setReprintCnt(memberShipVo.getReprintCnt() + 1);
+							  userVO.setReprintCnt(userVO.getReprintCnt() + 1);
+						  }
 						  memberShipVo.setCount(memberShipVo.getCount() + 1);  
+						  dateVo.setTotal(dateVo.getTotal() + 1);
+						  userVO.setTotal(userVO.getTotal() + 1);
+						 
 					  }
 					  
 					 
