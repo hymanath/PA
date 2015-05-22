@@ -559,11 +559,13 @@ function buildDistrictTable(result,reportLevelId){
 	
 }
 $("#myonoffswitch").click(function(){
+	$("#distEventId").val(0);
 	if($('#myonoffswitch').is(":checked")){
 	$('#myonoffswitch1').prop('checked', true);
 	
 	$("#districtHeading").html("AP DISTRICT WISE");
 	$("#constiHeading").html("AP CONSTITUENCY WISE");
+	
 	getLocationWiseVisitorsCount(parentEventId,1,3);
 	getLocationWiseVisitorsCount(parentEventId,1,4);
 	
