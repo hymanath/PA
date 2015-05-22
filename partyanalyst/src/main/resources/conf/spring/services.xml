@@ -2601,6 +2601,7 @@
            <property name="eventSurveyUserDAO" ref="eventSurveyUserDAO" />
            <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO" />
            <property name="candidateResultDAO" ref="candidateResultDAO" />
+           <property name="newDistrictConstituencyDAO" ref="newDistrictConstituencyDAO" />
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
