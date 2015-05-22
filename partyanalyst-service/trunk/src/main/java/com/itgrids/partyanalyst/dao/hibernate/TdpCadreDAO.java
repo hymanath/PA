@@ -4914,7 +4914,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public Long getTdpCadreIdByMembership(String queryStr)
 		{
-			Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model where ("+queryStr+")");
+			Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+")");
 			
 			return (Long) query.uniqueResult();
 			

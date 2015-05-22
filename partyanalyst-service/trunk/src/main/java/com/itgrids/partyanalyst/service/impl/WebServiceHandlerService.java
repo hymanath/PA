@@ -1943,13 +1943,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	
 		 	eventAttendee.setLatitude(inputVo.getLatituede());
 		 	eventAttendee.setLongitude(inputVo.getLongitude());
+		 	eventAttendee.setTabUserId(inputVo.getId());
+		 	eventAttendee.setCurrentTabUserId(inputVo.getUserId());
 		 	
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
 		 	returnVo.setStatus("success");
 		 	returnVo.setUserId(inputVo.getId());
-		 	
+		 
 		 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
 		 	if(cadreId != null)
 		 	returnVo.setMemberShipNo(cadreId.toString());
