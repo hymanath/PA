@@ -81,7 +81,125 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 					array2.push(" "+result[0].casteGroupVO[pr1].castName);
 				}
 				var diff = $(array1).not(array2).get();
-								
+				var notParticipatedMandals = result[0].notParticipatedMandals;
+				var notParticipatedLocalBodys = result[0].notParticipatedLocalBodys;
+				var notParticioatedDivisions = result[0].notParticioatedDivisions;
+				if((notParticipatedMandals != null && notParticipatedMandals.length > 0) || (notParticipatedLocalBodys != null && notParticipatedLocalBodys.length > 0)||(notParticioatedDivisions != null && notParticioatedDivisions.length > 0))
+				{ 		
+					str += '<div>';
+						str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+						str += '<caption class="tablecaption " > No Committee Members Available From ';
+						str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+						str += '</caption>';
+						str += ' <thead>';
+						str += ' <tr>';
+						str += '<th width="25%"> Mandals </th>';
+						str += '<th width="25%"> Muncipalities/Corporations </th>';
+						str += '<th width="25%"> Divisions </th>';
+						str += '</tr>';
+						str += '</thead>';
+
+						str += ' <tr>';
+						
+							if(notParticipatedMandals != null && notParticipatedMandals.length > 0){ 
+			str += '<td><a href="javascript:{tablesHideAndShow(1)}">'+(notParticipatedMandals.length)+' </a>  out of '+result[0].actualMandals+'</td>';
+							}
+							else
+							{
+								str += '<td>0</td>';
+							}
+							if(notParticipatedLocalBodys != null && notParticipatedLocalBodys.length > 0){ 
+			str += '<td><a href="javascript:{tablesHideAndShow(2)}">'+(notParticipatedLocalBodys.length)+'</a>   out of '+result[0].actualLocalBodys+'</td>';
+							}
+							else
+							{
+								str += '<td>0</td>';
+							}
+							
+							if(notParticioatedDivisions != null && notParticioatedDivisions.length > 0){ 
+				str += '<td><a href="javascript:{tablesHideAndShow(3)}">'+(notParticioatedDivisions.length)+'</a>  out of '+result[0].actualDivistions+'</td>';
+							}
+							else
+							{
+								str += '<td>0</td>';
+							}
+						str += '</tr>';
+						str += '</table>';
+				str += '</div>';
+				}
+				if(notParticipatedMandals != null && notParticipatedMandals.length>0)
+				{
+						str += '<div>';
+						str += '<table class="table table-bordered areaDetailsCls" style="border:2px solid #FC6 !important" id="mandaldtls" >';
+						str += '<caption class="tablecaption" >No Committee Member available from these Mandals';
+						str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+						str += '</caption>';
+						str += ' <thead>';
+						str += ' <tr>';
+						str += '<th width="25%"> Mandal Name </th>';
+						//str += '<th width="25%"> Total Count </th>';
+						str += '</tr>';
+						str += '</thead>';
+						for(var n in notParticipatedMandals)
+						{
+							str += ' <tr>';
+							str += '<td>'+notParticipatedMandals[n].castName+'</td>';
+							str += '</tr>';
+						}
+						
+						str += '</table>';
+						str += '</div>';
+				}
+				
+				if(notParticipatedLocalBodys != null && notParticipatedLocalBodys.length>0)
+				{
+						str += '<div>';
+						str += '<table class="table table-bordered areaDetailsCls" style="border:2px solid #FC6 !important" id="localbodydtls" >';
+						str += '<caption class="tablecaption" >No Committee Member available from these Muncipalities/Corporations';
+						str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+						str += '</caption>';
+						str += ' <thead>';
+						str += ' <tr>';
+						str += '<th width="25%"> Mandal Name </th>';
+						//str += '<th width="25%"> Total Count </th>';
+						str += '</tr>';
+						str += '</thead>';
+						for(var n in notParticipatedLocalBodys)
+						{
+							str += ' <tr>';
+							str += '<td>'+notParticipatedLocalBodys[n].castName+'</td>';
+							str += '</tr>';
+						}
+						
+						str += '</table>';
+						str += '</div>';
+				}
+				
+				if(notParticioatedDivisions != null && notParticioatedDivisions.length>0)
+				{
+						str += '<div>';
+						str += '<table class="table table-bordered areaDetailsCls" style="border:2px solid #FC6 !important" id="divisionsdtls" >';
+						str += '<caption class="tablecaption" >No Committee Member available from these Divisions';
+						str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+						str += '</caption>';
+						str += ' <thead>';
+						str += ' <tr>';
+						str += '<th width="25%"> Mandal Name </th>';
+						//str += '<th width="25%"> Total Count </th>';
+						str += '</tr>';
+						str += '</thead>';
+						for(var n in notParticioatedDivisions)
+						{
+							str += ' <tr>';
+							str += '<td>'+notParticioatedDivisions[n].castName+'</td>';
+							str += '</tr>';
+						}
+						
+						str += '</table>';
+						str += '</div>';
+				}
+				
+				
 				if(diff.length > 0){
 				str+='<div id="casteInfo">';
 				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
@@ -97,7 +215,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				console.log(difference);			
 				if(difference.length > 0){
 				str+='<div id="constiInfo">';
-				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">      <a href="javascript:{getConstituency()}">No  Committee  Members  In '+ difference.length+' Constituencies </a></p>';			
+				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">      <a href="javascript:{getConstituency()}">No  Committee  Members  In <span style="color:green;font-weight:bold;">'+ difference.length+' </span>Constituencies </a></p>';			
 				//str+='<div id="constiNamesInfo" style="display:none;">';
 				str+='<p id="constiNamesInfo" class="alert alert-info" style="margin-top: -40px;text-transform: uppercase;display:none;border-color:none; !important">'+ difference.join("  ,  ")+' </p>';
 				str+='</div>';
@@ -321,7 +439,25 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 				});
 			*/
+			$(".areaDetailsCls").hide();
 		}
+}
+
+function tablesHideAndShow(typeId)
+{
+	$(".areaDetailsCls").hide();
+	if(typeId == 1)
+	{
+		$("#mandaldtls").show();
+	}
+	else if(typeId == 2)
+	{
+		$("#localbodydtls").show();
+	}
+	else if(typeId == 3)
+	{
+		$("#divisionsdtls").show();
+	}
 }
 
 function getConstituency(){
