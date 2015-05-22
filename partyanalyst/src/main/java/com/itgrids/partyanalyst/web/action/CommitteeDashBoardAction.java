@@ -62,9 +62,17 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private BasicVO basicVO;
 	private CadreCommitteeRolesInfoVO			cadreCommitteeRolesInfoVO;
 	private Long								distId;
+	private List<String> constiList;
 	
 	
 	
+	
+	public List<String> getConstiList() {
+		return constiList;
+	}
+	public void setConstiList(List<String> constiList) {
+		this.constiList = constiList;
+	}
 	public Long getDistId() {
 		return distId;
 	}
@@ -852,6 +860,16 @@ public String getAllConstituencysForADistrict(){
 	
 	public String peformanceOfCadreAction(){
 		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyByDistrict(){
+		try{
+			jObj = new JSONObject(getTask());
+			constiList = cadreCommitteeService.getConstituencyByDistrict(jObj.getLong("districtId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getConstituencyByDistrict ",e);
+		}
+	   return Action.SUCCESS;
 	}
 	
 }
