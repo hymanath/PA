@@ -88,14 +88,14 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				{ 		
 					str += '<div>';
 						str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-						str += '<caption class="tablecaption " > No Committee Members Available From ';
+						str += '<caption class="tablecaption " > No Committee Members Available from ';
 						str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 						str += '</caption>';
 						str += ' <thead>';
 						str += ' <tr>';
 						str += '<th width="25%"> Mandals </th>';
 						str += '<th width="25%"> Muncipalities/Corporations </th>';
-						str += '<th width="25%"> Divisions </th>';
+					//str += '<th width="25%"> Divisions </th>';
 						str += '</tr>';
 						str += '</thead>';
 
@@ -115,14 +115,15 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 							{
 								str += '<td>0</td>';
 							}
-							
+						/*	
 							if(notParticioatedDivisions != null && notParticioatedDivisions.length > 0){ 
-				str += '<td><a href="javascript:{tablesHideAndShow(3)}">'+(notParticioatedDivisions.length)+'</a>  out of '+result[0].actualDivistions+'</td>';
+							str += '<td><a href="javascript:{tablesHideAndShow(3)}">'+(notParticioatedDivisions.length)+'</a>  out of '+result[0].actualDivistions+'</td>';
 							}
 							else
 							{
 								str += '<td>0</td>';
 							}
+						*/
 						str += '</tr>';
 						str += '</table>';
 				str += '</div>';
@@ -174,7 +175,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 						str += '</table>';
 						str += '</div>';
 				}
-				
+				/*
 				if(notParticioatedDivisions != null && notParticioatedDivisions.length>0)
 				{
 						str += '<div>';
@@ -199,7 +200,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 						str += '</div>';
 				}
 				
-				
+				*/
 				if(diff.length > 0){
 				str+='<div id="casteInfo">';
 				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
