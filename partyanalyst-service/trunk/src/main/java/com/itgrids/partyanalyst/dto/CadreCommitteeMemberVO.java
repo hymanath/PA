@@ -65,7 +65,29 @@ public class CadreCommitteeMemberVO {
 	private Long lowPerfMainCmmtteeMembs;
 	private Long lowPerfAfflCmmtteeMembs;
 	
+	private Long actualMandals;
+	private Long actualLocalBodys;
+	private Long actualDivistions;
 	
+	
+	public Long getActualMandals() {
+		return actualMandals;
+	}
+	public void setActualMandals(Long actualMandals) {
+		this.actualMandals = actualMandals;
+	}
+	public Long getActualLocalBodys() {
+		return actualLocalBodys;
+	}
+	public void setActualLocalBodys(Long actualLocalBodys) {
+		this.actualLocalBodys = actualLocalBodys;
+	}
+	public Long getActualDivistions() {
+		return actualDivistions;
+	}
+	public void setActualDivistions(Long actualDivistions) {
+		this.actualDivistions = actualDivistions;
+	}
 	public List<CasteDetailsVO> getNotParticipatedMandals() {
 		return notParticipatedMandals;
 	}
