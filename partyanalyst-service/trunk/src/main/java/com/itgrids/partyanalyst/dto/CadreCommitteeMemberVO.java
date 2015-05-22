@@ -29,6 +29,10 @@ public class CadreCommitteeMemberVO {
 	private List<CasteDetailsVO> ageDetailsIfoVO;
 	private List<CasteDetailsVO> casteNameVO;
 	private List<CasteDetailsVO> mandalLevelDetails;
+	private List<CasteDetailsVO> notParticipatedMandals = new ArrayList<CasteDetailsVO>();
+	private List<CasteDetailsVO> notParticipatedLocalBodys= new ArrayList<CasteDetailsVO>();
+	private List<CasteDetailsVO> notParticioatedDivisions= new ArrayList<CasteDetailsVO>();
+	private List<CasteDetailsVO> notParticioatedOthers= new ArrayList<CasteDetailsVO>();
 	private List<Long> commiteeRoleIds = new ArrayList<Long>();
 	private String casteGroupName;
 	private String mobileNo;
@@ -62,8 +66,33 @@ public class CadreCommitteeMemberVO {
 	private Long lowPerfAfflCmmtteeMembs;
 	
 	
-	
-	
+	public List<CasteDetailsVO> getNotParticipatedMandals() {
+		return notParticipatedMandals;
+	}
+	public void setNotParticipatedMandals(
+			List<CasteDetailsVO> notParticipatedMandals) {
+		this.notParticipatedMandals = notParticipatedMandals;
+	}
+	public List<CasteDetailsVO> getNotParticipatedLocalBodys() {
+		return notParticipatedLocalBodys;
+	}
+	public void setNotParticipatedLocalBodys(
+			List<CasteDetailsVO> notParticipatedLocalBodys) {
+		this.notParticipatedLocalBodys = notParticipatedLocalBodys;
+	}
+	public List<CasteDetailsVO> getNotParticioatedDivisions() {
+		return notParticioatedDivisions;
+	}
+	public void setNotParticioatedDivisions(
+			List<CasteDetailsVO> notParticioatedDivisions) {
+		this.notParticioatedDivisions = notParticioatedDivisions;
+	}
+	public List<CasteDetailsVO> getNotParticioatedOthers() {
+		return notParticioatedOthers;
+	}
+	public void setNotParticioatedOthers(List<CasteDetailsVO> notParticioatedOthers) {
+		this.notParticioatedOthers = notParticioatedOthers;
+	}
 	public Long getTotalMembs() {
 		return totalMembs;
 	}
