@@ -6,18 +6,31 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.message.EventMessagesConsumer;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MessageQueueManagementAction  extends ActionSupport implements ServletRequestAware{
 
+	private static final long serialVersionUID = -5687650001172804055L;
+
 	private HttpServletRequest request;
 	
 	private HttpSession session;
-	
 	private String task;
 	JSONObject jObj;
+	private EventMessagesConsumer eventMessagesConsumer; 
+	private String result;
+	
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public void setEventMessagesConsumer(EventMessagesConsumer eventMessagesConsumer) {
+		this.eventMessagesConsumer = eventMessagesConsumer;
+	}
 	public void setServletRequest(HttpServletRequest request) {
 	this.request = request;
 	}
@@ -56,10 +69,14 @@ public class MessageQueueManagementAction  extends ActionSupport implements Serv
 	{
 		try{
 			jObj = new JSONObject(getTask());
+			Integer consumersCount = jObj.getInt("count");
+			eventMessagesConsumer.startConsumeMessages(consumersCount);
+			result = Action.SUCCESS;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			result = Action.ERROR;
 		}
 		return Action.SUCCESS;
 	}
