@@ -2050,5 +2050,8 @@
 	<bean id="surveyUserAuthDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyUserAuthDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="newDistrictConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewDistrictConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
