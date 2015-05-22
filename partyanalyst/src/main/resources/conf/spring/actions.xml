@@ -1290,7 +1290,6 @@
       <property name="mobileService" ref="mobileService" />
       <property name="registrationService" ref="registrationService"/>
       <property name="entitlementsHelper" ref="entitlementsHelper" />
-      <property name="eventMessagesConsumer" ref="eventMessagesConsumer"/>
     </bean>
     
     <bean id="messageCenterAction" class="com.itgrids.partyanalyst.web.action.MessageCenterAction" singleton="false">
@@ -1302,10 +1301,8 @@
     	<property name="voiceSmsService" ref="voiceSmsService" />
     	<property name="entitlementsHelper" ref="entitlementsHelper" />
     	<property name="cadreManagementService" ref="cadreManagementService" />
-    	
-    	
-    
     </bean>
+    
      <bean id="voiceSmsAction" class="com.itgrids.partyanalyst.web.action.VoiceSmsAction" singleton="false">
 		<property name="voiceSmsService" ref="voiceSmsService" />	
 		<property name="cadreManagementService" ref="cadreManagementService" />
@@ -1577,7 +1574,7 @@
 		
 	</bean>
 	<bean id="messageQueueManagementAction" class="com.itgrids.partyanalyst.web.action.MessageQueueManagementAction" singleton="false">
-		
+		<property name="eventMessagesConsumer" ref="eventMessagesConsumer"/>
 	</bean>
 	
 </beans>	
