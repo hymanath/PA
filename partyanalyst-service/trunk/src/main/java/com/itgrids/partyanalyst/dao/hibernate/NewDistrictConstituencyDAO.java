@@ -12,6 +12,14 @@ public class NewDistrictConstituencyDAO extends GenericDaoHibernate<NewDistrictC
 	public NewDistrictConstituencyDAO() {
 		super(NewDistrictConstituency.class);
 	}
+	
+	
+   public List<String> getConstiDetailsOfDistrict(Long districtId){		
+		Query query = getSession().createQuery("select distinct model.constituency.name from NewDistrictConstituency model where model.district.districtId = :districtId ");
+		query.setParameter("districtId",districtId );
+		return query.list();
+		
+	}
 
 	public List<Object[]> getConstituencyListForDistrict(Long districtId)	
 	{
