@@ -1056,7 +1056,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  {
 	 List<Long> locationValues = new ArrayList<Long>();
 	 try{
-		
+		DateUtilService date = new DateUtilService();
 		 List<EventActionPlanVO> resultList = new ArrayList<EventActionPlanVO>();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		 if(list != null && list.size() > 0)
@@ -1093,6 +1093,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 eventInfo.setTotalAttendes((Long)params[1]);
 				 eventInfo.setNoninvitees((Long)params[1]);
 				 }
+				 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 				 eventInfoDAO.save(eventInfo);
 				 }
 				 else
@@ -1105,6 +1106,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						 eventInfo.setInvitees((Long)params[1]);
 						 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
 					 }
+					 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 						 eventInfoDAO.save(eventInfo);
 				 }
 				 if(!locationValues.contains((Long)params[2]))
@@ -1164,7 +1166,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  {
 	
 	 try{
-		
+		DateUtilService date = new DateUtilService();
 		 List<EventActionPlanVO> resultList = new ArrayList<EventActionPlanVO>();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		 if(list != null && list.size() > 0)
@@ -1202,6 +1204,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 eventInfo.setTotalAttendes((Long)params[1]);
 				 eventInfo.setNoninvitees((Long)params[1]);
 				 }
+				 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 				 eventInfoDAO.save(eventInfo);
 				 }
 				 else
@@ -1214,6 +1217,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						 eventInfo.setInvitees((Long)params[1]);
 						 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
 					 }
+					 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 					 eventInfoDAO.save(eventInfo);
 				 }
 				 
