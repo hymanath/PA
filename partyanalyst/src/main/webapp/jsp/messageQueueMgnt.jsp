@@ -21,14 +21,15 @@
 <div class="container">
 		
 	<div class="row" style="padding:5px;height:300px;">
-	 <h4 class="text-center">Mahanadu Message Queue Management</h4>
+	 <h4 class="text-center">Message Queue Management</h4>
 	<div id="errorDiv" style="margin-left: 360px;color:red;"></div>
+	<div id="successDiv" style="margin-left: 360px;color:green;"></div>
  <form class="navbar-form  text-center" role="search">
  
   <div class="form-group ">
     Consumers Count <input type="text" class="form-control" placeholder="number" id="consumerCnt" onkeypress="return isNumber(event)">
   </div>
-  <button type="button" class="btn btn-info" id="createbtn" onclick="createConsumer();">Create Consumer</button>
+  <button type="button" class="btn btn-info" id="createbtn" onclick="createConsumer();">Create Consumers</button>
 </form>
 </div>
 <script>
@@ -43,10 +44,11 @@ function isNumber(evt) {
 function createConsumer()
 {
 	$("#errorDiv").html("");
+	$("#successDiv").html("");
 	var count = $("#consumerCnt").val().trim();
 	if(count.length == 0)
 	{
-		$("#errorDiv").html("enter number");
+		$("#errorDiv").html("Please enter Number");
 		return;
 	}
 		var jObj = {
@@ -59,6 +61,10 @@ function createConsumer()
           url: 'createConsumerForMsgQueueAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			  if(result == 'success')
+				$("#successDiv").html($("#consumerCnt").val()+" Consumers Created Successfully");
+			  else
+				$("#errorDiv").html("Error occured in creating Consumers");
 		  })
 }
 </script>
