@@ -119,6 +119,7 @@ public class EventMessagesConsumer {
     		inputVO.setTabPrimaryKey(dataObj.getLong("tabPrimaryKey"));
     		inputVO.setLatituede(dataObj.getString("latituede"));
     		inputVO.setLongitude(dataObj.getString("longitude"));
+    		inputVO.setSyncSource("RMQ");
     		
     		resultVO = webServiceHandlerService.insertEventAttendeeInfo(inputVO);
     		
