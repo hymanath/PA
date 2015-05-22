@@ -1,3 +1,24 @@
+var constiArr;
+function gettingConstituenciesByDistrict(locationId){	
+		 var jsObj={
+		         districtId:locationId
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "getConstituencyByDistrictAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		
+			constiArr = new Array();
+			
+			for(var  i in result){
+				constiArr.push(result[i]);
+			}		
+		});
+}
+
 function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId,lctnId)
 {
 		if(result!=null)
@@ -66,7 +87,22 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
 				str+='</div>';
 				}
-				
+				var constiResultArr = new Array;
+				for(var consti in result[0].constiVOList)
+				{			
+					constiResultArr.push(result[0].constiVOList[consti].castName);
+				}
+
+				var difference= $(constiArr).not(constiResultArr).get();
+				console.log(difference);			
+				if(difference.length > 0){
+				str+='<div id="constiInfo">';
+				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">      <a href="javascript:{getConstituency()}">No  Committee  Members  In '+ difference.length+' Constituencies </a></p>';			
+				//str+='<div id="constiNamesInfo" style="display:none;">';
+				str+='<p id="constiNamesInfo" class="alert alert-info" style="margin-top: -40px;text-transform: uppercase;display:none;border-color:none; !important">'+ difference.join("  ,  ")+' </p>';
+				str+='</div>';
+				//str+='</div>';				
+				}				
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
 				str += '<caption class="tablecaption" >Caste Group Wise Information';
@@ -286,4 +322,8 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				});
 			*/
 		}
+}
+
+function getConstituency(){
+	$("#constiNamesInfo").toggle();
 }
