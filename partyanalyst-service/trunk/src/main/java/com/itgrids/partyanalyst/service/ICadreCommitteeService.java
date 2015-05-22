@@ -123,4 +123,5 @@ public interface ICadreCommitteeService {
 	 public EventCreationVO getPrePopulatingValuesOfEvents(Long eventId);
 	 public List<CadreCommitteeMemberVO> getCommitteeMemberPerformanceDetails(Long locationLevelId, Long locationLevelValue);
 	 public List<VO> getDistrictNamesIds(Long userId);
+	 public List<String> getConstituencyByDistrict(Long districtId);
 }
