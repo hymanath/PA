@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.INewDistrictConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -209,9 +210,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IEventRfidDetailsDAO eventRfidDetailsDAO;
 	private IEventUserDAO eventUserDAO;
 	private ICandidateResultDAO candidateResultDAO;
+	private INewDistrictConstituencyDAO newDistrictConstituencyDAO;
 	
 	
-	
+	public void setNewDistrictConstituencyDAO(
+			INewDistrictConstituencyDAO newDistrictConstituencyDAO) {
+		this.newDistrictConstituencyDAO = newDistrictConstituencyDAO;
+	}
+
 	public ICandidateResultDAO getCandidateResultDAO() {
 		return candidateResultDAO;
 	}
@@ -8457,7 +8463,59 @@ return constiLst;
 			Map<Long,Long> mandalIdsMap = new HashMap<Long,Long>();
 			Map<Long,Long> locIdsMap = new HashMap<Long,Long>();
 			Map<Long,Long> divisionIdsMap = new HashMap<Long,Long>();
+
+			Map<Long,Long> allmandalsMap = new LinkedHashMap<Long, Long>();
+			Map<Long,Long> alllocalbodysMap = new LinkedHashMap<Long, Long>();
+			Map<Long,Long> allDivisionsMap = new LinkedHashMap<Long, Long>();
+			
 			Long others = 0l;
+			List<Long> constituencyList  = null;
+			List<Object[]> newDistrictConstList = newDistrictConstituencyDAO.getConstituencyListForDistrict(locationId);
+			if(newDistrictConstList != null && newDistrictConstList.size()>0)
+			{
+				constituencyList = new ArrayList<Long>();
+				for (Object[] constituency : newDistrictConstList) {
+					constituencyList.add(constituency[0] != null ? Long.valueOf(constituency[0].toString().trim()):0L);
+				}
+			}
+			else
+			{
+				constituencyList = constituencyDAO.getConstituenciesInADistrict(locationId);
+			}
+		
+			if(constituencyList != null && constituencyList.size()>0)
+			{
+				List<Object[]> mandalsList = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(constituencyList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(mandalsList != null && mandalsList.size()>0)
+				{
+					for (Object[] mandal : mandalsList) {
+						allmandalsMap.put(mandal[0] != null ? Long.valueOf(mandal[0].toString().trim()):0L,0L);
+					}
+				}
+				List<Object[]> localBodysList = tehsilDAO.getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(constituencyList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				if(localBodysList != null && localBodysList.size()>0)
+				{
+					for (Object[] localBody : localBodysList) {
+						Long id = localBody[0] != null ? Long.valueOf(localBody[0].toString().trim()):0L;
+						if(id != 20L)
+						{
+							alllocalbodysMap.put(id, 0L);
+						}
+						else
+						{
+							allDivisionsMap.put(id, 0L);
+						}
+					}
+				}
+			}
+			
+			if(allDivisionsMap != null && allDivisionsMap.size()>0)
+			{
+				for (Long divistionId : allDivisionsMap.keySet()) {
+					
+				}
+			}
 			
 			//19tehsilId, 20localElectionBodyId 21constituencyId
 		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
@@ -8479,26 +8537,29 @@ return constiLst;
 		    	Long femaleCount = 0L;
 		    	Set<Long> voteIdsList = new HashSet<Long>();
 		    	for (Object[] objects : tdpCadresList){
-		    		if(objects[20] != null){
-		    			if(objects[21] != null && ((Long)objects[20]).longValue() == 20l){
+		    		if(objects[20] != null){ // local election body id
+		    			if(objects[21] != null && ((Long)objects[20]).longValue() == 20l){ // division id
 		    				if(divisionIdsMap.get((Long)objects[21]) != null){
 		    					divisionIdsMap.put((Long)objects[21],divisionIdsMap.get((Long)objects[21])+1l);
 		    				}else{
 		    					divisionIdsMap.put((Long)objects[21],1l);
 		    				}
 		    			}else{
-		    				if(locIdsMap.get((Long)objects[20]) != null){
+		    				if(locIdsMap.get((Long)objects[20]) != null){ // local election body id
 		    					locIdsMap.put((Long)objects[20],locIdsMap.get((Long)objects[20])+1l);
 		    				}else{
 		    					locIdsMap.put((Long)objects[20],1l);
+		    					
 		    				}
+		    				alllocalbodysMap.remove((Long)objects[19]);
 		    			}
-		    		}else if(objects[19] != null){
+		    		}else if(objects[19] != null){// mandal Id
 		    			if(mandalIdsMap.get((Long)objects[19]) != null){
 		    				mandalIdsMap.put((Long)objects[19],mandalIdsMap.get((Long)objects[19])+1l);
 	    				}else{
 	    					mandalIdsMap.put((Long)objects[19],1l);
 	    				}
+		    			allmandalsMap.remove((Long)objects[19]);
 		    		}else{
 		    			others=others+1;
 		    		}
@@ -8925,8 +8986,12 @@ return constiLst;
 		    	 Collections.sort(constiNameDetails,sortData);
 		    	 cadreCommitteeMemberVOList.get(0).setConstiVOList(constiNameDetails);
 		    	 cadreCommitteeMemberVOList.get(0).setMandalLevelDetails(populateMandalWiseInfo(mandalIdsMap,locIdsMap,divisionIdsMap,others));
+		    	 
+		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedMandals(populateMandalWiseInfo(allmandalsMap,null,null,null));
+		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedLocalBodys(populateMandalWiseInfo(null,alllocalbodysMap,null,null));
+		    	 cadreCommitteeMemberVOList.get(0).setNotParticioatedDivisions(populateMandalWiseInfo(null,null,allDivisionsMap,null));
+		    	 
 				}
-		    	//
 		    	
 		    	if(voteIdsList !=null && voteIdsList.size()>0)
 		    	{
@@ -8962,7 +9027,7 @@ return constiLst;
 	
 	public List<CasteDetailsVO> populateMandalWiseInfo(Map<Long,Long> mandalIdsMap,Map<Long,Long> locIdsMap,Map<Long,Long> divisionIdsMap,Long others){
 		List<CasteDetailsVO> mandalLevelDetails = new ArrayList<CasteDetailsVO>();
-		if(mandalIdsMap.size() > 0){
+		if(mandalIdsMap != null && mandalIdsMap.size() > 0){
 			List<Object[]> tehsilDetails = tehsilDAO.getTehsilNameByTehsilIdsList(new ArrayList<Long>(mandalIdsMap.keySet()));
 			for(Object[] tehsil:tehsilDetails){
 				CasteDetailsVO vo = new CasteDetailsVO();
@@ -8972,7 +9037,7 @@ return constiLst;
 				mandalLevelDetails.add(vo);
 			}
 		}
-		if(locIdsMap.size() > 0){
+		if(locIdsMap != null && locIdsMap.size() > 0){
 			List<Object[]> lobDetails = localElectionBodyDAO.getLocalElectionBodyNames(new ArrayList<Long>(locIdsMap.keySet()));
 			for(Object[] lob:lobDetails){
 				CasteDetailsVO vo = new CasteDetailsVO();
@@ -8982,7 +9047,7 @@ return constiLst;
 				mandalLevelDetails.add(vo);
 			}
 		}
-		if(divisionIdsMap.size() > 0){
+		if(divisionIdsMap != null && divisionIdsMap.size() > 0){
 			List<Object[]> divisionDetails = (List<Object[]>)localElectionBodyWardDAO.getLocalBodyElectionInfo(new ArrayList<Long>(divisionIdsMap.keySet()));
 			for(Object[] division:divisionDetails){
 				CasteDetailsVO vo = new CasteDetailsVO();
@@ -8992,7 +9057,7 @@ return constiLst;
 				mandalLevelDetails.add(vo);
 			}
 		}
-		if(others.longValue() > 0){
+		if(others != null && others.longValue() > 0){
 			CasteDetailsVO vo = new CasteDetailsVO();
 			vo.setCasteId(0l);
 			vo.setCastName("Others");
