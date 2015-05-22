@@ -8470,7 +8470,9 @@ return constiLst;
 			Map<Long,Long> allmandalsMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Long> alllocalbodysMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Long> allDivisionsMap = new LinkedHashMap<Long, Long>();
-			
+			Long actualMandalsCount = 0L;
+			Long actuallocalbodysCount = 0L;
+			Long actualdivisionsCount = 0L;
 			Long others = 0l;
 			List<Long> constituencyList  = null;
 			List<Object[]> newDistrictConstList = newDistrictConstituencyDAO.getConstituencyListForDistrict(locationId);
@@ -8494,6 +8496,7 @@ return constiLst;
 				{
 					for (Object[] mandal : mandalsList) {
 						allmandalsMap.put(mandal[0] != null ? Long.valueOf(mandal[0].toString().trim()):0L,0L);
+						actualMandalsCount = actualMandalsCount+1;
 					}
 				}
 				List<Object[]> localBodysList = tehsilDAO.getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(constituencyList,IConstants.VOTER_DATA_PUBLICATION_ID);
@@ -8502,21 +8505,16 @@ return constiLst;
 					for (Object[] localBody : localBodysList) {
 						Long id = localBody[0] != null ? Long.valueOf(localBody[0].toString().trim()):0L;
 						if(id != 20L)
-						{
+						{							
+							actuallocalbodysCount = actuallocalbodysCount+1;
 							alllocalbodysMap.put(id, 0L);
 						}
 						else
 						{
+							actualdivisionsCount = actualdivisionsCount+1;
 							allDivisionsMap.put(id, 0L);
 						}
 					}
-				}
-			}
-			
-			if(allDivisionsMap != null && allDivisionsMap.size()>0)
-			{
-				for (Long divistionId : allDivisionsMap.keySet()) {
-					
 				}
 			}
 			
@@ -8547,6 +8545,7 @@ return constiLst;
 		    				}else{
 		    					divisionIdsMap.put((Long)objects[21],1l);
 		    				}
+		    				allDivisionsMap.remove((Long)objects[21]);
 		    			}else{
 		    				if(locIdsMap.get((Long)objects[20]) != null){ // local election body id
 		    					locIdsMap.put((Long)objects[20],locIdsMap.get((Long)objects[20])+1l);
@@ -8554,7 +8553,7 @@ return constiLst;
 		    					locIdsMap.put((Long)objects[20],1l);
 		    					
 		    				}
-		    				alllocalbodysMap.remove((Long)objects[19]);
+		    				alllocalbodysMap.remove((Long)objects[20]);
 		    			}
 		    		}else if(objects[19] != null){// mandal Id
 		    			if(mandalIdsMap.get((Long)objects[19]) != null){
@@ -8993,6 +8992,10 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedMandals(populateMandalWiseInfo(allmandalsMap,null,null,null));
 		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedLocalBodys(populateMandalWiseInfo(null,alllocalbodysMap,null,null));
 		    	 cadreCommitteeMemberVOList.get(0).setNotParticioatedDivisions(populateMandalWiseInfo(null,null,allDivisionsMap,null));
+		    	 
+		    	 cadreCommitteeMemberVOList.get(0).setActualDivistions(actualdivisionsCount);
+		    	 cadreCommitteeMemberVOList.get(0).setActualLocalBodys(actuallocalbodysCount);
+		    	 cadreCommitteeMemberVOList.get(0).setActualMandals(actualMandalsCount);
 		    	 
 				}
 		    	
