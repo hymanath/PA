@@ -878,13 +878,13 @@ public interface IConstants {
     public static final Long CADRE_ENROLLMENT_YEAR_FOROTHER_STATES = 2014l;
     
     // RabbitMQ Configurations
-    public static final String RMQ_USERNAME = "guest";
-    public static final String RMQ_PASSWORD = "guest";
+    public static final String RMQ_USERNAME = "itgrids";
+    public static final String RMQ_PASSWORD = "1tGrids456";
     public static final String RMQ_VIRTUALHOST = "/";
     public static final String RMQ_HOST = "localhost";
     public static final Integer RMQ_PORT = 5672;
     public static final String RMQ_EXCHANGE = "event_attendee_ws";
     public static final String RMQ_QUEUE = "attendee_queue";
-    public static final String ROUTING_KEY = "event_Ws_1";
+    public static final String ROUTING_KEY = "event_Ws_184375";
     
 }
