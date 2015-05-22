@@ -47,6 +47,8 @@ public class EventAttendee implements java.io.Serializable{
 	private String longitude;
 	private Long tabUserId;
 	private Long currentTabUserId;
+	private String syncSource;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_attendee_id", unique = true, nullable = false)
@@ -199,6 +201,14 @@ public class EventAttendee implements java.io.Serializable{
 	}
 	public void setCurrentTabUserId(Long currentTabUserId) {
 		this.currentTabUserId = currentTabUserId;
+	}
+	
+	@Column(name="sync_source")
+	public String getSyncSource() {
+		return syncSource;
+	}
+	public void setSyncSource(String syncSource) {
+		this.syncSource = syncSource;
 	}
 	
 	
