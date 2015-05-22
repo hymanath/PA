@@ -7870,7 +7870,8 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		
 	}
 
-	function gettingCadreDetails(locationId,locationName,basicCmmtyName,basicCmmtyId,locationTypeId){
+	function gettingCadreDetails(locationId,locationName,basicCmmtyName,basicCmmtyId,locationTypeId){	
+		gettingConstituenciesByDistrict(locationId);
 		$("#performanceId").hide();
 		 var jsObj={
 		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
