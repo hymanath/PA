@@ -45,7 +45,8 @@ public class EventAttendee implements java.io.Serializable{
 	private String uniqueKey;
 	private String latitude;
 	private String longitude;
-	
+	private Long tabUserId;
+	private Long currentTabUserId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_attendee_id", unique = true, nullable = false)
@@ -185,5 +186,22 @@ public class EventAttendee implements java.io.Serializable{
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
+	@Column(name="tab_user_id")
+	public Long getTabUserId() {
+		return tabUserId;
+	}
+	public void setTabUserId(Long tabUserId) {
+		this.tabUserId = tabUserId;
+	}
+	@Column(name="current_tab_user_id")
+	public Long getCurrentTabUserId() {
+		return currentTabUserId;
+	}
+	public void setCurrentTabUserId(Long currentTabUserId) {
+		this.currentTabUserId = currentTabUserId;
+	}
+	
+	
+	
 	
 }
