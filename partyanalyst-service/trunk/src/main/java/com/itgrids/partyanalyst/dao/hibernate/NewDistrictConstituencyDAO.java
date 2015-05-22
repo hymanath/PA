@@ -19,6 +19,7 @@ public class NewDistrictConstituencyDAO extends GenericDaoHibernate<NewDistrictC
 		queryStr.append(" select distinct model.constituency.constituencyId ,model.constituency.name from NewDistrictConstituency model where model.district.districtId = :districtId " +
 				" order by model.constituency.name asc ");
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("districtId", districtId);
 		return query.list();
 	}
 }
