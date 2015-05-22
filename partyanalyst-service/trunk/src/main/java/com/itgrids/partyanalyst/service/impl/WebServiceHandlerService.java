@@ -1945,6 +1945,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	eventAttendee.setLongitude(inputVo.getLongitude());
 		 	eventAttendee.setTabUserId(inputVo.getId());
 		 	eventAttendee.setCurrentTabUserId(inputVo.getUserId());
+		 	eventAttendee.setSyncSource(inputVo.getSyncSource() != null ? inputVo.getSyncSource() : "WS");
 		 	
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
@@ -1954,7 +1955,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 
 		 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
 		 	if(cadreId != null)
-		 	returnVo.setMemberShipNo(cadreId.toString());
+		 		returnVo.setMemberShipNo(cadreId.toString());
 		 	}
 		 	else
 		 		returnVo.setStatus("fail");	
