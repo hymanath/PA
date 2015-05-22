@@ -52,18 +52,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private Long populateID;
 	private MobileVO mobileVo;
 	private EntitlementsHelper entitlementsHelper;
-	private EventMessagesConsumer eventMessagesConsumer;
 	
-
-	
-	public EventMessagesConsumer getEventMessagesConsumer() {
-		return eventMessagesConsumer;
-	}
-
-	public void setEventMessagesConsumer(EventMessagesConsumer eventMessagesConsumer) {
-		this.eventMessagesConsumer = eventMessagesConsumer;
-	}
-
 	public List<SelectOptionVO> getMandals() {
 		return mandals;
 	}
@@ -293,15 +282,6 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
 			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_SURVEY");
 			 resultStatus = mobileService.createSurveySqliteFileForAParliamnetConstituency(regVo);
-		 }
-		 else if(jObj.getString("task").equalsIgnoreCase("createThreadPool"))
-		 {
-			 RegistrationVO regVo = new RegistrationVO();
-			 int count = (Long.valueOf(jObj.getLong("constituencyId"))).intValue();
-			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
-			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
-			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_SURVEY");
-			 eventMessagesConsumer.startConsumeMessages(count);
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
 		 {
