@@ -212,7 +212,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICandidateResultDAO candidateResultDAO;
 	private INewDistrictConstituencyDAO newDistrictConstituencyDAO;
 	
-	
+	public INewDistrictConstituencyDAO getNewDistrictConstituencyDAO() {
+		return newDistrictConstituencyDAO;
+	}
+
 	public void setNewDistrictConstituencyDAO(
 			INewDistrictConstituencyDAO newDistrictConstituencyDAO) {
 		this.newDistrictConstituencyDAO = newDistrictConstituencyDAO;
@@ -13513,4 +13516,24 @@ return mandalList;
 		 return vo;
 	 } 
 	 
+	 
+	 
+	 
+
+	public List<String> getConstituencyByDistrict(Long districtId){
+		 List<String> constiList = new ArrayList<String>();
+		 try {			
+			 constiList	= newDistrictConstituencyDAO.getConstiDetailsOfDistrict(districtId);
+			 if(constiList == null || constiList.size() == 0){
+				constiList = new ArrayList<String>();
+				List<Object[]> result = constituencyDAO.getAllConstituenciesInADistrict(districtId);
+				for(Object[] obj : result){			
+					constiList.add(obj[1].toString());
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception raised in getConstituencyByDistrict",e);
+		}
+		 return constiList;
+	 } 
 }
