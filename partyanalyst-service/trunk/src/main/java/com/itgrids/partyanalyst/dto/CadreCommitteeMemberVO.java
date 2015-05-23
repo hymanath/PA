@@ -69,8 +69,15 @@ public class CadreCommitteeMemberVO {
 	private Long actualMandals;
 	private Long actualLocalBodys;
 	private Long actualDivistions;
+	private Long actualOthers;
 	
 	
+	public Long getActualOthers() {
+		return actualOthers;
+	}
+	public void setActualOthers(Long actualOthers) {
+		this.actualOthers = actualOthers;
+	}
 	public Long getActualMandals() {
 		return actualMandals;
 	}
