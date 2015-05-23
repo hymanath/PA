@@ -2175,21 +2175,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
 					Long stateTypeId = 0L;
-					if(districtIds != null && districtIds.size() == 13)
-					{
-						cadreCommitteeReportVO.setAccessState("AP");
-						stateTypeId =1L;
-					}
-					else if(districtIds != null && districtIds.size() == 10)
-					{
-						cadreCommitteeReportVO.setAccessState("TG");
-						stateTypeId =36L;
-					}
-					else if(districtIds != null && districtIds.size() == 1)
+					
+					if(districtIds != null && districtIds.size() == 1)
 					{
 						Long districtId = districtIds.get(0).longValue();
 						if(districtId != 0L)
 							cadreCommitteeReportVO.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+					}
+					else if(districtIds != null && districtIds.contains(11L))
+					{
+						cadreCommitteeReportVO.setAccessState("AP");
+						stateTypeId =1L;
+					}
+					else if(districtIds != null && districtIds.contains(1L))
+					{
+						cadreCommitteeReportVO.setAccessState("TG");
+						stateTypeId =36L;
 					}
 					
 					List<Object[]> newDistrictsList = districtDAO.getNewDistrictForState(stateTypeId);
@@ -2967,19 +2968,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
 					
-					if(districtIds != null && districtIds.size() == 13)
-					{
-						cadreCommitteeReportVO.setAccessState("AP");
-					}
-					else if(districtIds != null && districtIds.size() == 10)
-					{
-						cadreCommitteeReportVO.setAccessState("TG");
-					}
-					else if(districtIds != null && districtIds.size() == 1)
+					if(districtIds != null && districtIds.size() == 1)
 					{
 						Long districtId = districtIds.get(0).longValue();
 						if(districtId != 0L)
 							cadreCommitteeReportVO.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+					}
+					else if(districtIds != null && districtIds.contains(1L)) // Adilabad
+					{
+						cadreCommitteeReportVO.setAccessState("TG");
+					}
+					else if(districtIds != null && districtIds.contains(11L))//Srikakulam
+					{
+						cadreCommitteeReportVO.setAccessState("AP");
 					}
 				}
 			}
@@ -4299,12 +4300,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						distIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
 					
-					if(fnlLst != null && distIds != null && distIds.size() == 13)
+					if(fnlLst != null && distIds != null && distIds.contains(11L))
 					{
 						CommitteeSummaryVO vo = fnlLst.get(0);
 						vo.setAccessState("AP");
 					}
-					if(fnlLst != null && distIds != null && distIds.size() == 10)
+					if(fnlLst != null && distIds != null && distIds.contains(1L))
 					{
 						CommitteeSummaryVO vo = fnlLst.get(0);
 						vo.setAccessState("TG");
@@ -5442,19 +5443,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 										districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 									}
 									
-									if(districtIds != null && districtIds.size() == 13)
-									{
-										vo.setAccessState("AP");
-									}
-									else if(districtIds != null && districtIds.size() == 10)
-									{
-										vo.setAccessState("TG");
-									}
-									else if(districtIds != null && districtIds.size() == 1)
+									if(districtIds != null && districtIds.size() == 1)
 									{
 										Long districtId = districtIds.get(0).longValue();
 										if(districtId != 0L)
 											vo.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+									}									
+									else if(districtIds != null && districtIds.contains(11L))
+									{
+										vo.setAccessState("AP");
+									}
+									else if(districtIds != null && districtIds.contains(1L))
+									{
+										vo.setAccessState("TG");
 									}
 								}
 							}
@@ -5566,21 +5567,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 						}
 						
-						if(districtIds != null && districtIds.size() == 13)
-						{
-							accessState = "AP";
-						}
-						else if(districtIds != null && districtIds.size() == 10)
-						{
-							accessState = "TG";
-						}
-						else if(districtIds != null && districtIds.size() == 1)
+						if(districtIds != null && districtIds.size() == 1)
 						{
 							Long districtId = districtIds.get(0).longValue();
 							if(districtId != 0L)
 								accessState =  districtDAO.get(districtId).getDistrictName()+" District";
 						}
-						
+						else if(districtIds != null && districtIds.contains(11L))
+						{
+							accessState = "AP";
+						}
+						else if(districtIds != null && districtIds.contains(1L))
+						{
+							accessState = "TG";
+						}
 						list = constituencyDAO.getAssemblyConstituencyDetlsByDistrictIds(districtIds);
 					}				
 					else{
@@ -5650,19 +5650,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
 					
-					if(districtIds != null && districtIds.size() == 13)
-					{
-						accessState = "AP";
-					}
-					else if(districtIds != null && districtIds.size() == 10)
-					{
-						accessState = "TG";
-					}
-					else if(districtIds != null && districtIds.size() == 1)
+					if(districtIds != null && districtIds.size() == 1)
 					{
 						Long districtId = districtIds.get(0).longValue();
 						if(districtId != 0L)
 							accessState =  districtDAO.get(districtId).getDistrictName()+" District";
+					}
+					else if(districtIds != null && districtIds.contains(11L))
+					{
+						accessState = "AP";
+					}
+					else if(districtIds != null && districtIds.contains(1L))
+					{
+						accessState = "TG";
 					}
 					
 					constituencysList = constituencyDAO.getAssemblyConstituencyDetlsByDistrictIds(districtIds);
@@ -6101,23 +6101,23 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(accessValue != null)
 			{
 				
-					districtIds.add(accessValue);
+				districtIds.add(accessValue);
 				
-				
-				if(districtIds != null && districtIds.size() == 13)
-				{
-					accessState = "AP";
-				}
-				else if(districtIds != null && districtIds.size() == 10)
-				{
-					accessState = "TG";
-				}
-				else if(districtIds != null && districtIds.size() == 1)
+				if(districtIds != null && districtIds.size() == 1)
 				{
 					Long districtId = districtIds.get(0).longValue();
 					if(districtId != 0L)
 						accessState =  districtDAO.get(districtId).getDistrictName()+" District";
 				}
+				else if(districtIds != null && districtIds.contains(11L))
+				{
+					accessState = "AP";
+				}
+				else if(districtIds != null && districtIds.contains(1L))
+				{
+					accessState = "TG";
+				}
+				
 				
 				constituencysList = constituencyDAO.getAssemblyConstituencyDetlsByDistrictIds(districtIds);
 			}				
@@ -8469,10 +8469,12 @@ return constiLst;
 			Map<Long,Long> divisionIdsMap = new HashMap<Long,Long>();
 
 			Map<Long,Long> allmandalsMap = new LinkedHashMap<Long, Long>();
-			Map<Long,Long> alllocalbodysMap = new LinkedHashMap<Long, Long>();
+			Map<Long,Long> allMunciMap = new LinkedHashMap<Long, Long>();
+			Map<Long,Long> allCorpsMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Long> allDivisionsMap = new LinkedHashMap<Long, Long>();
 			Long actualMandalsCount = 0L;
-			Long actuallocalbodysCount = 0L;
+			Long actualMuncisCount = 0L;
+			Long actualCorpsCount = 0L;
 			Long actualdivisionsCount = 0L;
 			Long others = 0l;
 			Long committeeId = 0l;
@@ -8506,10 +8508,21 @@ return constiLst;
 				{
 					for (Object[] localBody : localBodysList) {
 						Long id = localBody[0] != null ? Long.valueOf(localBody[0].toString().trim()):0L;
+						String electionType = localBody[2] != null ? localBody[2].toString().trim():"";
 						if(id != 20L)
 						{							
-							actuallocalbodysCount = actuallocalbodysCount+1;
-							alllocalbodysMap.put(id, 0L);
+							
+							if(electionType.trim().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+							{
+								allMunciMap.put(id, 0L);
+								actualMuncisCount = actualMuncisCount+1;
+							}
+							else 
+							if(electionType.trim().equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))
+							{
+								allCorpsMap.put(id, 0L);
+								actualCorpsCount = actualCorpsCount+1;
+							}
 						}
 						else
 						{
@@ -8519,6 +8532,8 @@ return constiLst;
 					}
 				}
 			}
+			
+			
 			
 			//19tehsilId, 20localElectionBodyId 21constituencyId
 		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
@@ -8558,7 +8573,11 @@ return constiLst;
 		    					locIdsMap.put((Long)objects[20],1l);
 		    					
 		    				}
-		    				alllocalbodysMap.remove((Long)objects[20]);
+		    				try {
+		    					allMunciMap.remove((Long)objects[20]);
+			    				allCorpsMap.remove((Long)objects[20]);
+							} catch (Exception e) {}
+		    				
 		    			}
 		    		}else if(objects[19] != null){// mandal Id
 		    			if(mandalIdsMap.get((Long)objects[19]) != null){
@@ -9025,12 +9044,14 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setMandalLevelDetails(populateMandalWiseInfo(mandalIdsMap,locIdsMap,divisionIdsMap,others));
 		    	 
 		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedMandals(populateMandalWiseInfo(allmandalsMap,null,null,null));
-		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedLocalBodys(populateMandalWiseInfo(null,alllocalbodysMap,null,null));
+		    	 cadreCommitteeMemberVOList.get(0).setNotParticipatedLocalBodys(populateMandalWiseInfo(null,allMunciMap,null,null));
+		    	 cadreCommitteeMemberVOList.get(0).setNotParticioatedOthers(populateMandalWiseInfo(null,allCorpsMap,null,null));
 		    	 cadreCommitteeMemberVOList.get(0).setNotParticioatedDivisions(populateMandalWiseInfo(null,null,allDivisionsMap,null));
 		    	 
 		    	 cadreCommitteeMemberVOList.get(0).setActualDivistions(actualdivisionsCount);
-		    	 cadreCommitteeMemberVOList.get(0).setActualLocalBodys(actuallocalbodysCount);
+		    	 cadreCommitteeMemberVOList.get(0).setActualLocalBodys(actualMuncisCount);
 		    	 cadreCommitteeMemberVOList.get(0).setActualMandals(actualMandalsCount);
+		    	 cadreCommitteeMemberVOList.get(0).setActualOthers(actualCorpsCount);
 		    	 
 		    	 cadreCommitteeMemberVOList.get(0).setRolesList(rolesList);		    	 
 				}
@@ -9193,19 +9214,19 @@ return constiLst;
 						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
 					}
 					
-					if(districtIds != null && districtIds.size() == 13)
-					{
-						userAccessValue = "AP";
-					}
-					else if(districtIds != null && districtIds.size() == 10)
-					{
-						userAccessValue = "TS";
-					}
-					else if(districtIds != null && districtIds.size() == 1)
+					if(districtIds != null && districtIds.size() == 1)
 					{
 						Long districtId = districtIds.get(0).longValue();
 						if(districtId != 0L)
 							userAccessValue =  districtDAO.get(districtId).getDistrictName()+" District";
+					}
+					else if(districtIds != null && districtIds.contains(1L)) // Adilabad
+					{
+						userAccessValue = "TS";
+					}
+					else if(districtIds != null && districtIds.contains(11L))//Srikakulam
+					{
+						userAccessValue = "AP";
 					}
 				}	
 			}
