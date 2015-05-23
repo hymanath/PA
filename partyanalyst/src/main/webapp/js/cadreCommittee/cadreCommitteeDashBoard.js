@@ -112,8 +112,13 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				var diff = $(array1).not(array2).get();
 				var notParticipatedMandals = result[0].notParticipatedMandals;
 				var notParticipatedLocalBodys = result[0].notParticipatedLocalBodys;
-				var notParticioatedDivisions = result[0].notParticioatedDivisions;
-				if((notParticipatedMandals != null && notParticipatedMandals.length > 0) || (notParticipatedLocalBodys != null && notParticipatedLocalBodys.length > 0)||(notParticioatedDivisions != null && notParticioatedDivisions.length > 0))
+				var notParticioatedDivisions = result[0].notParticioatedOthers;
+				
+				var actualMandals = result[0].actualMandals;
+				var actualLocalBodys = result[0].actualLocalBodys;
+				var actualOthers = result[0].actualOthers;
+				
+				if((actualMandals != null && actualMandals > 0) || (actualLocalBodys != null && actualLocalBodys > 0)||(actualOthers != null && actualOthers > 0))
 				{ 		
 					str += '<div>';
 						str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
@@ -123,36 +128,36 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 						str += ' <thead>';
 						str += ' <tr>';
 						str += '<th width="25%"> Mandals </th>';
-						str += '<th width="25%"> Muncipalities/Corporations </th>';
-					//str += '<th width="25%"> Divisions </th>';
+						str += '<th width="25%"> Muncipalities </th>';
+						str += '<th width="25%"> Corporations </th>';
 						str += '</tr>';
 						str += '</thead>';
 
 						str += ' <tr>';
 						
-							if(notParticipatedMandals != null && notParticipatedMandals.length > 0){ 
-			str += '<td><a href="javascript:{tablesHideAndShow(1)}">'+(notParticipatedMandals.length)+' </a>  out of '+result[0].actualMandals+'</td>';
+							if(actualMandals != null && actualMandals > 0){ 
+			str += '<td><a href="javascript:{tablesHideAndShow(1)}">'+(notParticipatedMandals.length)+' </a>  out of '+actualMandals+'</td>';
 							}
 							else
 							{
 								str += '<td>0</td>';
 							}
-							if(notParticipatedLocalBodys != null && notParticipatedLocalBodys.length > 0){ 
-			str += '<td><a href="javascript:{tablesHideAndShow(2)}">'+(notParticipatedLocalBodys.length)+'</a>   out of '+result[0].actualLocalBodys+'</td>';
+							if(actualLocalBodys != null && actualLocalBodys > 0){ 
+			str += '<td><a href="javascript:{tablesHideAndShow(2)}">'+(notParticipatedLocalBodys.length)+'</a>   out of '+actualLocalBodys+'</td>';
 							}
 							else
 							{
 								str += '<td>0</td>';
 							}
-						/*	
-							if(notParticioatedDivisions != null && notParticioatedDivisions.length > 0){ 
-							str += '<td><a href="javascript:{tablesHideAndShow(3)}">'+(notParticioatedDivisions.length)+'</a>  out of '+result[0].actualDivistions+'</td>';
+							
+							if(actualOthers != null && actualOthers > 0){ 
+				str += '<td><a href="javascript:{tablesHideAndShow(3)}">'+(notParticioatedDivisions.length)+'</a>  out of '+actualOthers+'</td>';
 							}
 							else
 							{
 								str += '<td>0</td>';
 							}
-						*/
+						
 						str += '</tr>';
 						str += '</table>';
 				str += '</div>';
@@ -204,7 +209,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 						str += '</table>';
 						str += '</div>';
 				}
-				/*
+				
 				if(notParticioatedDivisions != null && notParticioatedDivisions.length>0)
 				{
 						str += '<div>';
@@ -229,12 +234,8 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 						str += '</div>';
 				}
 				
-				*/
-				if(diff.length > 0){
-				str+='<div id="casteInfo">';
-				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
-				str+='</div>';
-				}
+				
+				
 				var constiResultArr = new Array;
 				for(var consti in result[0].constiVOList)
 				{			
@@ -242,7 +243,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				}
 
 				var difference= $(constiArr).not(constiResultArr).get();
-				console.log(difference);			
+		
 				if(difference.length > 0){
 				str+='<div id="constiInfo">';
 				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">      <a href="javascript:{getConstituency()}">No  Committee  Members  In <span style="color:green;font-weight:bold;">'+ difference.length+' </span>Constituencies </a></p>';			
@@ -250,6 +251,12 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='<p id="constiNamesInfo" class="alert alert-info" style="margin-top: -40px;text-transform: uppercase;display:none;border-color:none; !important">'+ difference.join("  ,  ")+' </p>';
 				str+='</div>';
 				//str+='</div>';				
+				}	
+				
+				if(diff.length > 0){
+				str+='<div id="casteInfo">';
+				str+='<p class="alert alert-info" style="margin-top: -15px;text-transform: uppercase">No  Committee  Members  From       '+ diff.toString()+' </p>';
+				str+='</div>';
 				}				
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
