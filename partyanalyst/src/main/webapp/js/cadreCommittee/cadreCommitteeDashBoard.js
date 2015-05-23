@@ -74,6 +74,35 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='</table>';
 				str+='</div>';
 				
+				if(result[0].rolesList != null && result[0].rolesList.length > 0){
+				str += '<div>';
+				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+				str += '<caption class="tablecaption" >Role Wise Information';
+				str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str += '</caption>';
+				str += ' <thead>';
+				str += ' <tr>';
+				str += '<th width="25%">Role</th>';
+				str += '<th width="25%">Total</th>';
+				str += '<th width="25%">Filled Positions</th>';				
+				str += '<th width="25%">Vacant Positions</th>';
+				str += '</tr>';
+				str += '</thead>';
+				for(var role in result[0].rolesList)
+				{
+					str += ' <tr>';
+					str += '<td>'+result[0].rolesList[role].name+'</td>';
+					str += '<td>'+result[0].rolesList[role].total+'</td>';
+					str += '<td>'+result[0].rolesList[role].filledCount+'</td>';
+					str += '<td>'+result[0].rolesList[role].vacancyCount+'</td>';
+					str += '</tr>';
+				}
+				
+
+				str += '</table>';
+				str += '</div>';
+				}
+				
 				var array1 = [" SC"," ST"," BC"," OC"," Minority"];
 				var array2 = new Array();
 				for(var pr1 in result[0].casteGroupVO)
