@@ -104,6 +104,7 @@ import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.RolesVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -8474,6 +8475,7 @@ return constiLst;
 			Long actuallocalbodysCount = 0L;
 			Long actualdivisionsCount = 0L;
 			Long others = 0l;
+			Long committeeId = 0l;
 			List<Long> constituencyList  = null;
 			List<Object[]> newDistrictConstList = newDistrictConstituencyDAO.getConstituencyListForDistrict(locationId);
 			if(newDistrictConstList != null && newDistrictConstList.size()>0)
@@ -8536,6 +8538,9 @@ return constiLst;
 		    	
 		    	Long maleCount = 0L;
 		    	Long femaleCount = 0L;
+		    	
+		    	Map<String,Long> rolesMap = new HashMap<String, Long>();
+
 		    	Set<Long> voteIdsList = new HashSet<Long>();
 		    	for (Object[] objects : tdpCadresList){
 		    		if(objects[20] != null){ // local election body id
@@ -8577,6 +8582,18 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
 		    		cadreCommitteeMemberVO.setConstituencyName(objects[17] != null ? objects[17].toString(): "");
+		    			    		
+		    		if(cadreCommitteeMemberVO.getRole() != null && !cadreCommitteeMemberVO.getRole().isEmpty())
+		    		{			    				    			
+		    			Long rolescnt= rolesMap.get(cadreCommitteeMemberVO.getRole());
+		    			if(rolescnt == null){
+		    				rolescnt=1L;
+		    				rolesMap.put(cadreCommitteeMemberVO.getRole(),rolescnt);
+		    			}
+		    			else{
+		    				rolesMap.put(cadreCommitteeMemberVO.getRole(),rolescnt + 1);
+		    			}
+		    		}
 		    		
 		    		
 		    		Map<String,Long> constiGenderMap = new LinkedHashMap<String, Long>();
@@ -8885,6 +8902,24 @@ return constiLst;
 				    	}
 					}
 		    	}
+		    	List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(locationType, locationId);
+				if(committeeIds.size() > 0){
+					committeeId = committeeIds.get(0);
+				}	
+		    	List<RolesVO> rolesList = new ArrayList<RolesVO>();
+		    	if(committeeId != null){			
+					//0committeeRoleid,1role name,2max nos
+					List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
+					for(Object[] role:totalCommitteRolesList){
+						RolesVO vo = new RolesVO();
+						vo.setId((Long)role[0]);
+						vo.setName(role[1].toString());
+						vo.setTotal((Long)role[2]);//total positions 				
+						vo.setFilledCount(rolesMap.get(role[1].toString())!= null ? rolesMap.get(role[1].toString()) : 0l);//filled positions 
+						vo.setVacancyCount(vo.getTotal() - vo.getFilledCount());//vacant positions
+						rolesList.add(vo);
+					}
+				}
 		    	
 		    	
 		    	
@@ -8997,6 +9032,7 @@ return constiLst;
 		    	 cadreCommitteeMemberVOList.get(0).setActualLocalBodys(actuallocalbodysCount);
 		    	 cadreCommitteeMemberVOList.get(0).setActualMandals(actualMandalsCount);
 		    	 
+		    	 cadreCommitteeMemberVOList.get(0).setRolesList(rolesList);		    	 
 				}
 		    	
 		    	if(voteIdsList !=null && voteIdsList.size()>0)

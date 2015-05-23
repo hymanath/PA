@@ -55,6 +55,7 @@ public class CadreCommitteeMemberVO {
 	private String ownWardPerc;
 	
 	private List<CasteDetailsVO> constiVOList;
+	private List<RolesVO> rolesList;
 	
 	private boolean lowPerformance;
 	private String mandalBoothCmpr;
@@ -408,6 +409,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setMandalLevelDetails(List<CasteDetailsVO> mandalLevelDetails) {
 		this.mandalLevelDetails = mandalLevelDetails;
+	}
+	public List<RolesVO> getRolesList() {
+		return rolesList;
+	}
+	public void setRolesList(List<RolesVO> rolesList) {
+		this.rolesList = rolesList;
 	}
 	
 	
