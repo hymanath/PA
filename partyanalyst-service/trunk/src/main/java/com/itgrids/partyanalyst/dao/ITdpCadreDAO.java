@@ -335,7 +335,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getRegisterCadreInfoForUserBetweenDatesByIds(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds);
 	  public Long checkVoterRegisteredOrNot(Long voterId,Long enrollmentYear);
 	  public List<Object[]> getMemberInfoyMembershipNo(String queryStr);
-	  public Long getTdpCadreIdByMembership(String membershipNo);
+	 // public Long getTdpCadreIdByMembership(String membershipNo);
 	 
 	  public List<String> getCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
 	  public List<String> getNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
@@ -343,4 +343,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
 	  public List<Object[]> getMembershipNosByTdpCadreIds(List<Long> tdpCadreIdsList);
 	  public List<Object[]> checkCardNumberExists(Long tdpCadreId);
+	  public List getTdpCadreIdByMembership(String queryStr);
 }

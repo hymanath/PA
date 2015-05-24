@@ -4912,11 +4912,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
-		public Long getTdpCadreIdByMembership(String queryStr)
+		public List getTdpCadreIdByMembership(String queryStr)
 		{
 			Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+")");
 			
-			return (Long) query.uniqueResult();
+			return query.list();
 			
 		}
 		public List<Object[]> checkCardNumberExists(Long tdpCadreId)
