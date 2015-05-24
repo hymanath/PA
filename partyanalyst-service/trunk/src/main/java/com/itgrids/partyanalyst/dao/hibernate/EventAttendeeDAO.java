@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -337,5 +338,34 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+		
+	public Long getTodayTotalVisitors(Date todayDate){
+		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate ");
+		query.setDate("todayDate", todayDate);
+		 return (Long)query.uniqueResult();
+	}
 	
+	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId){
+		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
+				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
+						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time and " +
+				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId order by tdp_cadre_id;");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("exitEventId", exitEventId);
+		query.setParameter("entryEventId", entryEventId);
+		
+		return (BigInteger)query.uniqueResult();
+	}
+	
+	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId){
+		//0eventId, 1attendedTime, 2tdpCadreId
+		Query query=getSession().createQuery("select model.eventId,model.attendedTime,model.tdpCadreId from EventAttendee model where " +
+				" date(model.attendedTime) =:todayDate and (model.eventId =:entryEventId or model.eventId =:exitEventId) and model.attendedTime is not null and " +
+				"model.tdpCadreId is not null order by model.tdpCadreId, model.attendedTime");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("entryEventId",entryEventId);
+		query.setParameter("exitEventId",exitEventId);
+		return query.list();
+	}
 }
