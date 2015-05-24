@@ -1222,9 +1222,17 @@ Highcharts.setOptions({
             },	
         tooltip: {
             formatter: function () {
-                return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
+				
+				if(this.x ==  this.series.name)
+				{
+
+					 return '<b>  ' + this.x + '</b>' + ': Total ' + this.y + '<br/>';
+				}
+				else
+				{
+                return '<b>' + this.x + '<br/></b> <b>and ' +
+                    this.series.name + '</b>: ' + this.y + '<br/>';
+				}
             }
         },
         plotOptions: {
