@@ -2107,10 +2107,14 @@
 	  <property name="voterReportService" ref="voterReportService"/>
 	  <property name="voterTagDAO" ref="voterTagDAO"/>
 	  <property name="voterBoothActivitiesDAO" ref="voterBoothActivitiesDAO"/>
-	   <property name="cadreDetailsService" ref="cadreDetailsService"/>
-	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
-	    <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO"/>
-	    <property name="surveyUserAuthDAO" ref="surveyUserAuthDAO"/>
+	  <property name="cadreDetailsService" ref="cadreDetailsService"/>
+	  <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
+	  <property name="eventRfidDetailsDAO" ref="eventRfidDetailsDAO"/>
+	  <property name="surveyUserAuthDAO" ref="surveyUserAuthDAO"/>
+	  <property name="messagingPropsDetailsDAO" ref="messagingPropsDetailsDAO"/>
+	  <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO"/>
+	     
+	    
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
