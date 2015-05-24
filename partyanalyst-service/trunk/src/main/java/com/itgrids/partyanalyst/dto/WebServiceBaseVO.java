@@ -4,7 +4,7 @@ public class WebServiceBaseVO {
 private Long id;
 private String url;
 private String appName;
-private String syncType;
+private String statusSyncType;
 public Long getId() {
 	return id;
 }
@@ -23,11 +23,11 @@ public String getAppName() {
 public void setAppName(String appName) {
 	this.appName = appName;
 }
-public String getSyncType() {
-	return syncType;
+public String getStatusSyncType() {
+	return statusSyncType;
 }
-public void setSyncType(String syncType) {
-	this.syncType = syncType;
+public void setStatusSyncType(String statusSyncType) {
+	this.statusSyncType = statusSyncType;
 }
 
 
