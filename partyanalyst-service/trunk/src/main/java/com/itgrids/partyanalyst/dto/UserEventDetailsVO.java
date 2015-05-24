@@ -46,7 +46,15 @@ public class UserEventDetailsVO implements Serializable{
 	
 	private String eventSyncType;
 	private String syncSource;
+	private String errorDesc;
 	
+	
+	public String getErrorDesc() {
+		return errorDesc;
+	}
+	public void setErrorDesc(String errorDesc) {
+		this.errorDesc = errorDesc;
+	}
 	public String getSyncSource() {
 		return syncSource;
 	}

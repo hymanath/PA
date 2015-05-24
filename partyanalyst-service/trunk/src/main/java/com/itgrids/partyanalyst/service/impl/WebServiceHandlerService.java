@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
 import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventUserDAO;
+import com.itgrids.partyanalyst.dao.IMessagingPropsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -43,6 +45,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
+import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -53,9 +56,11 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.EventAttendee;
+import com.itgrids.partyanalyst.model.EventAttendeeError;
 import com.itgrids.partyanalyst.model.EventRfidDetails;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
 import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
+import com.itgrids.partyanalyst.model.MessagingPropsDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
@@ -131,7 +136,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IVoterDAO voterDAO;
     private IEventRfidDetailsDAO eventRfidDetailsDAO;
     private ISurveyUserAuthDAO surveyUserAuthDAO;
- 
+    private IMessagingPropsDetailsDAO messagingPropsDetailsDAO;
+    private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
+    public IEventAttendeeErrorDAO getEventAttendeeErrorDAO() {
+		return eventAttendeeErrorDAO;
+	}
+
+	public void setEventAttendeeErrorDAO(
+			IEventAttendeeErrorDAO eventAttendeeErrorDAO) {
+		this.eventAttendeeErrorDAO = eventAttendeeErrorDAO;
+	}
+
+	public IMessagingPropsDetailsDAO getMessagingPropsDetailsDAO() {
+		return messagingPropsDetailsDAO;
+	}
+
+	public void setMessagingPropsDetailsDAO(
+			IMessagingPropsDetailsDAO messagingPropsDetailsDAO) {
+		this.messagingPropsDetailsDAO = messagingPropsDetailsDAO;
+	}
+
 	public void setEventRfidDetailsDAO(IEventRfidDetailsDAO eventRfidDetailsDAO) {
 		this.eventRfidDetailsDAO = eventRfidDetailsDAO;
 	}
@@ -1661,18 +1685,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
    public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo)
 	{
-		// List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+		
 		 UserEventDetailsVO userEventDetailsVO = null;
+		 
 		 DateUtilService date = new DateUtilService();
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		// SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss a");
 		 SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
 		try{
 			//List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
 			LoginResponceVO statusVO = checkValidLoginOrNot(inpuVo.getUserName(),inpuVo.getUserPassword(),inpuVo.getImei1(),inpuVo.getImei2());
 			if(statusVO.getStatus().equalsIgnoreCase("logged")){
 					userEventDetailsVO = new UserEventDetailsVO();
-						
 						List<WebServiceBaseUrl> webserviceUrls = webServiceBaseUrlDAO.getBaseUrlsForAnApp("EVENT_MGMT");
 						if(webserviceUrls != null && webserviceUrls.size() > 0)
 						{
@@ -1682,10 +1705,30 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								webServiceBaseVO.setAppName(vo.getAppName() != null ? vo.getAppName() : "");
 								webServiceBaseVO.setId(vo.getWebServiceBaseUrlId());
 								webServiceBaseVO.setUrl(vo.getUrl() != null ? vo.getUrl() : "");
-								webServiceBaseVO.setSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
+								webServiceBaseVO.setStatusSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
 								userEventDetailsVO.getWebserviceurlsList().add(webServiceBaseVO);
 							}
 						}
+						
+						
+						List<MessagingPropsDetails>  msgProperties = messagingPropsDetailsDAO.getMessagingPropsDetails("EVENT_MGMT");
+						if(msgProperties != null && msgProperties.size() > 0)
+						{
+							for(MessagingPropsDetails params : msgProperties)
+							{
+								 MessagePropertyVO messagePropertyVO = new MessagePropertyVO();
+								 messagePropertyVO.setAppName(params.getAppName() != null ? params.getAppName() : "");
+								 messagePropertyVO.setExchangeName(params.getExchangeName() != null ? params.getExchangeName() : "");
+								 messagePropertyVO.setHost(params.getHost() != null? params.getHost() : "");
+								 messagePropertyVO.setPort(params.getPort() != null ? params.getPort() : "");
+								 messagePropertyVO.setUserName(params.getUsername() != null ? params.getUsername() : "");
+								 messagePropertyVO.setPassword(params.getPassword() != null ? params.getPassword() : "");
+								 messagePropertyVO.setSecreatKey(params.getSecreatKey() != null ? params.getSecreatKey() : "");
+								 messagePropertyVO.setVirtualHost(params.getVirtualHost() != null ? params.getVirtualHost() : "");
+								 userEventDetailsVO.getMessagePropertiesList().add(messagePropertyVO);
+							}
+						}
+						
 						
 					userEventDetailsVO.setUserName(statusVO.getConstituencyName());
 					userEventDetailsVO.setId(statusVO.getUserId());
@@ -1715,7 +1758,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						UserEventDetailsVO eventVo = new UserEventDetailsVO();
 						eventVo.setId((Long)params[0]);
 						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
-						eventVo.setSyncType(params[6] != null ? params[6].toString() : "");
+						eventVo.setEventSyncType(params[6] != null ? params[6].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
 						eventsIdsList.add((Long)params[0]);
 					}
@@ -1743,7 +1786,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setEndDate(params[11] != null ? dateFormate.format(params[11]) : "");
 								childEventVo.setOrderId(params[12] != null ? Long.valueOf(params[12].toString().trim()) : null);
 								childEventVo.setIsActive(params[13] != null ? params[13].toString() : "");
-								childEventVo.setSyncType(params[14] != null ? params[14].toString() : "");
+								childEventVo.setEventSyncType(params[14] != null ? params[14].toString() : "");
 								List<Long> eventIds = new ArrayList<Long>();
 								eventIds.add(childEventVo.getEventId());
 								List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventIds);	
@@ -1798,7 +1841,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						webServiceBaseVO.setAppName(vo.getAppName() != null ? vo.getAppName() : "");
 						webServiceBaseVO.setId(vo.getWebServiceBaseUrlId());
 						webServiceBaseVO.setUrl(vo.getUrl() != null ? vo.getUrl() : "");
-						webServiceBaseVO.setSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
+						webServiceBaseVO.setStatusSyncType(vo.getSyncType() != null ? vo.getSyncType() : "");
 						userEventDetailsVO.getWebserviceurlsList().add(webServiceBaseVO);
 					}
 				}
@@ -1813,7 +1856,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						UserEventDetailsVO eventVo = new UserEventDetailsVO();
 						eventVo.setId((Long)params[0]);
 						eventVo.setEventName(params[1] != null ? params[1].toString() : "");
-						eventVo.setSyncType(params[6] != null ? params[6].toString() : "");
+						eventVo.setEventSyncType(params[6] != null ? params[6].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
 						eventsIdsList.add((Long)params[0]);
 					}
@@ -1830,7 +1873,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
 								childEventVo.setEventId((Long)params[0]);
 								childEventVo.setEventName(params[1] != null ? params[1].toString() : "");
-								childEventVo.setSyncType(params[3] != null ? params[3].toString() : "");
+								childEventVo.setEventSyncType(params[3] != null ? params[3].toString() : "");
 								parentVo.getSubList().add(childEventVo);
 							}
 						}
@@ -1894,6 +1937,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	}
 	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo)
 		{
+		  String errorDesc = "";
 		 UserEventDetailsVO returnVo = new UserEventDetailsVO();
 		 DateUtilService date = new DateUtilService();
 		 try{
@@ -1958,18 +2002,56 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 		returnVo.setMemberShipNo(cadreId.toString());
 		 	}
 		 	else
+		 	{
+		 		errorDesc = "Invalid Membership";
+		 		returnVo.setErrorDesc(errorDesc);
+		 		setEventErrorData(inputVo,errorDesc);
 		 		returnVo.setStatus("fail");	
+		 	}
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		 	resultStatus.setMessage("success");*/
 		 }
 		 catch(Exception e)
 		 {
-			 Log.error("Exception Occured in getMatchedEvent() method",e) ;
-			 
+			    Log.error("Exception Occured in insertEventAttendeeInfo() method",e) ;
+			    errorDesc = "Invalid Membership";
+		 		returnVo.setErrorDesc(e.getClass().getName());
+		 		setEventErrorData(inputVo,errorDesc);
 				returnVo.setStatus("fail");
 		 }
 		return returnVo;
 	}
+	 
+	 public void setEventErrorData(UserEventDetailsVO inputVo,String errorDesc)
+	 {
+		 try{
+			 DateUtilService date = new DateUtilService();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			EventAttendeeError  eventAttendeeError = new EventAttendeeError();
+			eventAttendeeError.setCurrentTabUserId(inputVo.getUserId());
+			eventAttendeeError.setAttendedTime(formatter.parse(inputVo.getLoginTimeStamp().toString()));
+			eventAttendeeError.setEventId(inputVo.getEventId());
+			eventAttendeeError.setImei(inputVo.getIMEI());
+			eventAttendeeError.setLatitude(inputVo.getLatituede());
+			eventAttendeeError.setLongitude(inputVo.getLongitude());
+			if(inputVo.getStatus() != null)
+			eventAttendeeError.setUniqueKey(inputVo.getStatus());
+			eventAttendeeError.setTabUserId(inputVo.getId());
+			eventAttendeeError.setInsertedTime(date.getCurrentDateAndTime());
+			eventAttendeeError.setInsertedBy(inputVo.getId());
+			eventAttendeeError.setMemberShipId(inputVo.getMemberShipNo());
+			if(inputVo.getRFID() != null)
+			eventAttendeeError.setRfid(inputVo.getRFID());
+			eventAttendeeError.setSyncSource(inputVo.getSyncSource() != null ? inputVo.getSyncSource() : "WS");
+			eventAttendeeError.setErrorDescription(errorDesc);
+			eventAttendeeErrorDAO.save(eventAttendeeError);
+			
+		 }
+		 catch (Exception e) {
+			 Log.error("Exception Occured in setEventErrorData() method",e) ;
+			 
+		}
+	 }
 	 
 	 public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2){
 	    	LoginResponceVO vo = new LoginResponceVO();
