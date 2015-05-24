@@ -1445,7 +1445,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				  resultList.add(vo);
 				 }
 		  }
-		 	List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,eventStrDate,eventEndDate);
+		 	/*List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,eventStrDate,eventEndDate);
 			 if(attendeeInfo != null && attendeeInfo.size() > 0)
 			 {
 				
@@ -1462,12 +1462,29 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	}
 					 	
 					}
+			 }*/
+		  
+		     List<Object[]> attendeeInfo =eventAttendeeDAO.getStateWiseEventAttendeeCounts(parentId,eventStrDate,eventEndDate,subEventIds);
+		     if(attendeeInfo != null && attendeeInfo.size() > 0)
+			 {
+		    	  for(Object[] params : attendeeInfo)
+					{
+					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
+					 	if(eventVO != null)
+					 	{
+					 		if(params[1] != null)
+					 		eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
+					 		/*if(params[2] != null)
+					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);*/
+					 	}
+					 	
+					}
 			 }
-			 List<Object[]> totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
-			 if(totalVisits != null && resultList.size() > 0)
+			 List<Object[]> totalUniqueVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
+			 if(totalUniqueVisits != null && resultList.size() > 0)
 			 {
 				 Long uniqueMemberInday = 0l;
-				 for(Object[] params : totalVisits)
+				 for(Object[] params : totalUniqueVisits)
 				 {
 					 uniqueMemberInday = uniqueMemberInday + (Long)params[1];
 				 }
