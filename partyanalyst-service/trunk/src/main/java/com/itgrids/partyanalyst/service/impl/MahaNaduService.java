@@ -1895,4 +1895,34 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			return "error";
 		}
 	}
+	
+	public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex ){
+		
+		List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();		
+		Date eventStrDate = null;
+	    Date eventEndDate = null;		 
+		try{
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && !startDate.isEmpty())
+				eventStrDate = format.parse(startDate);
+			if(endDate != null && !endDate.isEmpty())
+				eventEndDate = format.parse(endDate);
+		
+			List<Object[]> list = eventAttendeeDAO.getMembersDetailsBySubEvent(eventId,eventStrDate,eventEndDate,startIndex,maxIndex);
+			if(list != null && list.size() > 0){
+				  for(Object[] params : list){
+					  MahanaduEventVO vo = new MahanaduEventVO();
+					  vo.setId((Long)params[0]);
+					  vo.setName(params[1] != null ? params[1].toString() : "");
+					  vo.setDesc(params[2] != null ? params[2].toString() : "");
+					  vo.setMobileNo(params[3] != null ? params[3].toString() : "");
+					  resultList.add(vo);
+					 }
+			  }
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		return resultList;			
+		}
 }
