@@ -2059,6 +2059,12 @@
 	<bean id="eventAttendeeErrorDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAttendeeErrorDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+		
+	<bean id="cadreMahanaduVisitDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreMahanaduVisitDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreMahanaduVisitInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreMahanaduVisitInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

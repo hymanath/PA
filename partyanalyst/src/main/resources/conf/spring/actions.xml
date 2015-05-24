@@ -1576,6 +1576,9 @@
 	<bean id="messageQueueManagementAction" class="com.itgrids.partyanalyst.web.action.MessageQueueManagementAction" singleton="false">
 		<property name="eventMessagesConsumer" ref="eventMessagesConsumer"/>
 	</bean>
-	
+	<bean id="mahanaduDashBoardAction" class="com.itgrids.partyanalyst.web.action.MahanaduDashBoardAction" singleton="false">
+		<property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
+		
+	</bean>
 </beans>	
 	

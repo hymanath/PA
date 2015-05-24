@@ -599,10 +599,12 @@
 			    <value>com.itgrids.partyanalyst.model.NewDistrictConstituency</value>
 			    <value>com.itgrids.partyanalyst.model.MessagingPropsDetails</value>
 			    <value>com.itgrids.partyanalyst.model.EventAttendeeError</value>
-			    
+			    <value>com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo</value>
+			    <value>com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails</value>
 				</list>
-				</property>
-				</bean>
+			
+		</property>
+	</bean>
 	
 	<bean id="sessionFactory2" 
 			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true" >
