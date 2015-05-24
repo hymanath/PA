@@ -1514,6 +1514,15 @@
     	<property name="cronExpression" value="00 00 02 * * ?" />
 	</bean>
 	
+	<bean name="mahanaduVisitInfoInvok" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="mahanaduDashBoardAction" />
+	  	<property name="targetMethod" value="populateLatestInfo" />
+	</bean> 
+	
+	<bean name="mahanaduVisitInfoTrig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="mahanaduVisitInfoInvok" />
+    	<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
@@ -1525,6 +1534,7 @@
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
 			<ref bean="mahanaduEventInfo" />
+			<ref bean="mahanaduVisitInfoTrig" />
 			
 			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
@@ -2643,6 +2653,13 @@
 	<bean name="eventMessagesConsumer" class="com.itgrids.partyanalyst.message.EventMessagesConsumer">
 	    <property name="taskExecutor" ref="taskExecutor" />
 	    <property name="webServiceHandlerService" ref="webServiceHandlerService" />	
+	</bean>
+	
+	<bean name="mahanaduDashBoardService" class="com.itgrids.partyanalyst.service.impl.MahanaduDashBoardService">
+	    <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
+	    <property name="cadreMahanaduVisitDetailsDAO" ref="cadreMahanaduVisitDetailsDAO" />
+	    <property name="cadreMahanaduVisitInfoDAO" ref="cadreMahanaduVisitInfoDAO" />
+	    <property name="transactionTemplate" ref="transactionTemplate" />	    
 	</bean>
 	
 </beans>		

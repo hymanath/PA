@@ -416,6 +416,6 @@
 		<pattern>/peformanceOfCadreAction*</pattern>
 		<pattern>/mahanaduTabUsersManageAction*</pattern>
 		<pattern>/messageQueueManagementAction*</pattern>
-		
+		<pattern>/mahanaduCadreVisitInfoAction*</pattern>
 	 </decorator>
 </decorators>

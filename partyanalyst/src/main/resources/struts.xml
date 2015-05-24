@@ -10114,6 +10114,21 @@
 				<param name="root">result</param>
 			</result>
 		</action>
+		<action name="populateMahanaduLatestInfoAction" class="mahanaduDashBoardAction" method="populateLatestInfo">
+			<result type="json" name="success">
+				<param name="root"></param>
+			</result>
+		</action>
+		<action name="getTodayTotalAndCurrentUsersInfo" class="mahanaduDashBoardAction" method="getTodayTotalAndCurrentUsersInfo">
+			<result type="json" name="success">
+				<param name="root">mahanaduVisitVO</param>
+			</result>
+		</action>
+		<action name="mahanaduCadreVisitInfoAction" class="mahanaduDashBoardAction">
+			<result name="success">/jsp/mahanaduCadreVisitInfo.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 		
 		<action name="getConstituencyByDistrictAction" class="committeeDashBoardAction" method="getConstituencyByDistrict">
 				<result type="json" name="success">
