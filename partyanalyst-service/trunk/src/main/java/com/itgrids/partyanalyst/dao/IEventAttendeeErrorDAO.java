@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface IEventAttendeeErrorDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.EventAttendeeError;
+
+public interface IEventAttendeeErrorDAO extends GenericDao<EventAttendeeError, Long>{
 
 }
