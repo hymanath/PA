@@ -38,6 +38,7 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate );
 	 public List<MahanaduEventVO> getSubEvent(Long eventId);
+	 public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex);
 	 public String updateTabAllocationDetails(Long authId,String cause,Long userId);
 	 public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 }

@@ -21,14 +21,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String endTime;
 	private String desc;
 	private String inviteeExists;
+	
 	private List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>();
-	List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
-	public List<MahanaduEventVO> getHoursList() {
-		return hoursList;
-	}
-	public void setHoursList(List<MahanaduEventVO> hoursList) {
-		this.hoursList = hoursList;
-	}
+	private List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
+	
+	private String mobileNo;
+
 
 	public List<MahanaduEventVO> getSubList() {
 		return subList;
@@ -118,6 +116,18 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 		}
 		else
 			return 0;
+	}
+	public List<MahanaduEventVO> getHoursList() {
+		return hoursList;
+	}
+	public void setHoursList(List<MahanaduEventVO> hoursList) {
+		this.hoursList = hoursList;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 
 

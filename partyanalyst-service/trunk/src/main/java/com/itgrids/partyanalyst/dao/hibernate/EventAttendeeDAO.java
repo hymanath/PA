@@ -302,4 +302,40 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+
+	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.mobileNo ");
+		str.append(" from EventAttendee model where ");
+		str.append(" model.event.eventId = :eventId and  model.event.isActive =:isActive ");
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate "); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		Query query = getSession().createQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
+
+		query.setParameter("eventId", eventId);
+		if(startIndex!=null)
+			query.setFirstResult(startIndex);
+		if(maxIndex != null)
+			query.setMaxResults(maxIndex);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
 }
