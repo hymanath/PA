@@ -2053,5 +2053,12 @@
 	<bean id="newDistrictConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewDistrictConstituencyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="messagingPropsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessagingPropsDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventAttendeeErrorDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAttendeeErrorDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
