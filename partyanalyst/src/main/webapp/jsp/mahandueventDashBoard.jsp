@@ -26,6 +26,10 @@
  text-align: center;
  font-size:8px;
 }
+.label-custom a {
+    color: #fff !important;
+    text-decoration: none;
+}
 
 </style>
 </head>
@@ -231,6 +235,22 @@
             </div>
         </div>
     </div>-->
+	
+	<div id="eventMembersDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h4 class="panel-header text-center"></h4>
+					  </div>
+						<div id="eventMembersDiv" style="margin-top:15px;padding:15px;margin-bottom:10px;"></div>
+						<div id="paginationDivId"  style="margin-top:0px;margin-left:20px;"></div>
+				</div>
+			</div>
+    </div>
+	
 </section>
 <footer>
 	<div class="text-center">
@@ -248,7 +268,9 @@
    <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+  <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <script type="text/javascript">
 
 
@@ -634,7 +656,13 @@ function buildStartingPrograms(result){
 		colorsarr.push(color);
 		str+=' <span class="pull-left">'+result[i].name+'</span>';
 		var count = result[i].invitees + result[i].nonInvitees;
+		
+		if(count >0){		
+		str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');">'+count+'</a></span>';	
+		}
+		else{
 		str+='  <span class="pull-right label-custom">'+count+'</span>';
+		}
 		str+=' <br/>';
 		str+=' <hr class="m_top10"/>';
 		
@@ -1360,6 +1388,76 @@ var jObj = {
 	});
 
 }
-</script>
 
+function getSubEventMembers(eventId,startIndex,count,name){
+		
+		var jObj = {
+			eventId:eventId,
+			startDate : startDate,
+			endDate : endDate,
+			startIndex:startIndex,
+			maxIndex : 25
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getSubEventMemberDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			var str="";
+			str+="<div>";
+			str+="<table class='table table-bordered' id='tableId'><thead>";
+			str+="<tr>";
+							
+			str+="<th>NAME</th>";
+			str+="<th>MOBILE NUMBER</th>";
+			str+="<th>CONSTITUENCY</th>";	
+			str+="</tr>";
+			str+="</thead>";
+			str+="<tbody>";
+			for(var i in result){
+				str+="<tr>";
+				
+				str+="<td>"+result[i].name+"</td>";
+				str+="<td>"+result[i].mobileNo+"</td>";
+				str+="<td>"+result[i].desc+"</td>";
+				str+="</tr>";
+			}
+			str+="<tbody>";
+			str+="</table>";	
+			str+='</div>';
+			$("#eventMembersDiv").html(str);
+			$("#tableId").dataTable({
+				responsive: true,
+				"info":     false,
+				"searching": false,
+				"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+				"bPaginate": false,
+				"bLengthChange": false,
+				"bAutoWidth": false,
+				'iDisplayLength': 25
+			});
+			var maxResults=jObj.maxIndex;
+	   
+	     if(jObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: count,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*25;
+					getSubEventMembers(eventId,num,count,name);
+				
+			}
+		});
+	}	
+			$('#eventMembersDialog').find('h4').html('<span class="text-uppercase">'+name+' EVENT VISITORS DETAILS</span>');
+		
+			$("#eventMembersDialog").modal("show");		
+		});
+}
+</script>
+<style>
+.prev, .next {width:45px !important}
+</style>
 </html>
