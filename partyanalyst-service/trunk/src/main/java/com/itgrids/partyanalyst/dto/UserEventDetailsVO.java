@@ -42,7 +42,9 @@ public class UserEventDetailsVO implements Serializable{
 	private String isActive;
 	private String appName;
 	private List<WebServiceBaseVO> webserviceurlsList = new ArrayList<WebServiceBaseVO>();
-	private String syncType;
+	private List<MessagePropertyVO> messagePropertiesList = new ArrayList<MessagePropertyVO>();
+	
+	private String eventSyncType;
 	private String syncSource;
 	
 	public String getSyncSource() {
@@ -51,11 +53,12 @@ public class UserEventDetailsVO implements Serializable{
 	public void setSyncSource(String syncSource) {
 		this.syncSource = syncSource;
 	}
-	public String getSyncType() {
-		return syncType;
+	
+	public String getEventSyncType() {
+		return eventSyncType;
 	}
-	public void setSyncType(String syncType) {
-		this.syncType = syncType;
+	public void setEventSyncType(String eventSyncType) {
+		this.eventSyncType = eventSyncType;
 	}
 	public String getAppName() {
 		return appName;
@@ -264,5 +267,13 @@ public class UserEventDetailsVO implements Serializable{
 	public void setImei2(String imei2) {
 		this.imei2 = imei2;
 	}
+	public List<MessagePropertyVO> getMessagePropertiesList() {
+		return messagePropertiesList;
+	}
+	public void setMessagePropertiesList(
+			List<MessagePropertyVO> messagePropertiesList) {
+		this.messagePropertiesList = messagePropertiesList;
+	}
+	
 	
 }
