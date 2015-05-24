@@ -617,6 +617,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreAddress</value>
 				<value>com.itgrids.partyanalyst.model.EventSurveyUserEvent</value>
 				<value>com.itgrids.partyanalyst.model.EventRfidDetails</value>
+				<value>com.itgrids.partyanalyst.model.MessagingPropsDetails</value>
 
 				
 			</list>
@@ -2907,6 +2908,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="eventAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAttendeeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="messagingPropsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessagingPropsDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

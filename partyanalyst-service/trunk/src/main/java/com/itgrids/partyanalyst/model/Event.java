@@ -41,6 +41,7 @@ public class Event implements java.io.Serializable{
 	
 	private Integer orderId;
 	private String syncType;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_id", unique = true, nullable = false)
@@ -183,5 +184,8 @@ public class Event implements java.io.Serializable{
 	public void setSyncType(String syncType) {
 		this.syncType = syncType;
 	}
+	
+	
+	
 	
 }
