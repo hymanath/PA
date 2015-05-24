@@ -249,7 +249,7 @@
 				</div>
 			</div>
     </div>
-	
+	<div id="processingDialogue"></div>
 </section>
 <footer>
 	<div class="text-center">
@@ -807,6 +807,8 @@ getEventMemberCount(parentEventId);
 }
 function insertIntermediateData()
 {
+
+ajaxProcessing();
 	$.ajax({
           type:'POST',
           url: 'insertDataintoEventInfoAction.action',
@@ -815,6 +817,7 @@ function insertIntermediateData()
 
           success: function(result){ 
 			 //location.reload(); 
+			 closeDialogue();
 			 setcolorsForEvents();
 			
 			 getSubEventDetails(parentEventId);
@@ -829,6 +832,7 @@ function insertIntermediateData()
 			}
          },
           error:function() { 
+		  closeDialogue();
            console.log('error', arguments);
          }
     });
@@ -1455,8 +1459,45 @@ function getSubEventMembers(eventId,startIndex,count,name){
 			$("#eventMembersDialog").modal("show");		
 		});
 }
+
+function ajaxProcessing()
+{
+	
+$("#processingDialogue").dialog({
+	  
+		//width:300,
+		//height:100,
+		autoOpen: false,
+		modal: true,
+		position:'center',
+		resizable: false,
+		closeOnEscape: false
+			
+});
+$('#processingDialogue').siblings('div.ui-dialog-titlebar').hide();
+$('#processingDialogue').closest('.ui-dialog').addClass("customclass");
+$('#processingDialogue').addClass("customclass1");
+$('#processingDialogue').removeClass("ui-widget-content ui-dialog-content");
+//$(".ui-dialog-titlebar").hide();
+// $(".ui-dialog").addClass("customclass");
+//$('.ui-widget-content').css({'border':'none','background':'none'});
+//$('.ui-dialog-content').dialog("option","position","center");
+$('.ui-dialog').css({left:378 ,width:512});
+$('#processingDialogue').closest('.ui-icon').css("display","none");
+ $("#processingDialogue").dialog('open').html("<div style='margin-top:330px;'><img src='images/icons/loading.gif' style=''/></div>");
+}
+function closeDialogue()
+{
+$( "#processingDialogue" ).dialog('close');
+}
+
+
+
 </script>
 <style>
+#processingDialogue{heigth:100% !important;}
 .prev, .next {width:45px !important}
+.customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
+.customclass1{border:none !important;background:none !important}
 </style>
 </html>
