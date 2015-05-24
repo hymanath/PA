@@ -2015,7 +2015,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 {
 			    Log.error("Exception Occured in insertEventAttendeeInfo() method",e) ;
 			    errorDesc = "Exception";
-			    returnVo.setErrorDesc(e.toString());
+			    returnVo.setErrorDesc(errorDesc);
 		 		setEventErrorData(inputVo,e.toString());
 		 		returnVo.setStatus("fail");
 				
