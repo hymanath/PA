@@ -1968,10 +1968,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 		queryStr.append(" model.cardNumber = '"+inputVo.getRFID()+"' ");
 		 	}
 		 	EventAttendee eventAttendee = new EventAttendee();
-		 	Long cadreId = tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
-		 	if(cadreId != null)
+		 	List cadreList= tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
+		 	if(cadreList != null)
 		 	{
-		 	eventAttendee.setTdpCadreId(cadreId);
+		 	eventAttendee.setTdpCadreId((Long)cadreList.get(0));
 		 	eventAttendee.setImei(inputVo.getIMEI());
 		 	if(inputVo.getRFID() != null) 
 		 	eventAttendee.setRfid(inputVo.getRFID());
@@ -1998,8 +1998,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	returnVo.setUserId(inputVo.getId());
 		 
 		 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
-		 	if(cadreId != null)
-		 		returnVo.setMemberShipNo(cadreId.toString());
+		 	if(cadreList != null)
+		 		returnVo.setMemberShipNo(cadreList.get(0).toString());
 		 	}
 		 	else
 		 	{
@@ -2014,10 +2014,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 catch(Exception e)
 		 {
 			    Log.error("Exception Occured in insertEventAttendeeInfo() method",e) ;
-			    errorDesc = e.getClass().getName();
-		 		returnVo.setErrorDesc(e.getClass().getName());
-		 		setEventErrorData(inputVo,errorDesc);
-				returnVo.setStatus("fail");
+			    errorDesc = "Exception";
+			    returnVo.setErrorDesc(e.toString());
+		 		setEventErrorData(inputVo,e.toString());
+		 		returnVo.setStatus("fail");
+				
 		 }
 		return returnVo;
 	}
