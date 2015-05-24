@@ -2014,7 +2014,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 catch(Exception e)
 		 {
 			    Log.error("Exception Occured in insertEventAttendeeInfo() method",e) ;
-			    errorDesc = "Invalid Membership";
+			    errorDesc = e.getClass().getName();
 		 		returnVo.setErrorDesc(e.getClass().getName());
 		 		setEventErrorData(inputVo,errorDesc);
 				returnVo.setStatus("fail");
