@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -111,7 +112,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private AddressVO addressVO;
 	private String registeredOrNot;
 	private List<CadreRegistrationVO> resultList = new ArrayList<CadreRegistrationVO>();
+	private List<TdpCadreFamilyDetailsVO> familyDetails = new ArrayList<TdpCadreFamilyDetailsVO>();
 	
+	
+	
+	
+	public List<TdpCadreFamilyDetailsVO> getFamilyDetails() {
+		return familyDetails;
+	}
+	public void setFamilyDetails(List<TdpCadreFamilyDetailsVO> familyDetails) {
+		this.familyDetails = familyDetails;
+	}
 	public List<CadreRegistrationVO> getResultList() {
 		return resultList;
 	}
@@ -1876,10 +1887,25 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String membershipNo = jobj.getString("membershipNo");
 			String voterId = jobj.getString("voterId");
 			String mobileNo = jobj.getString("mobileNo");
-			resultList = cadreRegistrationService.getCadreDetailsForFamilyDetlsUpdate(mobileNo,voterId,membershipNo);
+			resultList = cadreRegistrationService.searchCadreDetailsForFamilyDetlsUpdate(mobileNo,voterId,membershipNo);
 			
 		} catch (Exception e) {
-			LOG.info("Exception raised in getCadreDetailsForCallCenter ",e);
+			LOG.info("Exception raised in searchCadreForFamilyDetlsUpdation ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getFamilyDetailsByCadreId()
+	{
+		try {
+			
+			jobj = new JSONObject(getTask());			
+			Long tdpCadreId = jobj.getLong("tdpCadreId");
+			
+			familyDetails = cadreRegistrationService.getFamilyDetailsByCadreId(tdpCadreId);
+			
+		} catch (Exception e) {
+			LOG.info("Exception raised in getFamilyDetailsByCadreId ",e);
 		}
 		return Action.SUCCESS;
 	}

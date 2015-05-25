@@ -10158,5 +10158,11 @@
 			</result>
 		</action>
 		
+		<action name="getFamilyDetailsByCadreIdAction" class="cadreRegistrationAction" method="getFamilyDetailsByCadreId">
+				<result type="json" name="success">
+				<param name="root">familyDetails</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
