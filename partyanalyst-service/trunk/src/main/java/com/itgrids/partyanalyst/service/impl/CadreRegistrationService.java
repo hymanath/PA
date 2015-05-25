@@ -9345,6 +9345,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			DateUtilService date= new DateUtilService();
 			if(inputList != null && inputList.size() > 0)
 			{
+				tdpCadreFamilyInfoDAO.deleteFamilyInfoByCadre(inputList.get(0).getTdpCadreId());
 				for(TdpCadreFamilyDetailsVO vo : inputList)
 				{
 				TdpCadreFamilyInfo tdpCadreFamilyInfo = new TdpCadreFamilyInfo();
