@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
@@ -26,8 +28,9 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 	}
 
 	public List<EventSurveyUser> checkValidUserOrNot(String uname,String pwd){
-		
-		Query query = getSession().createQuery("select model from EventSurveyUser model where model.userName = :uname " +
+		Session session = getSession();
+		session.setFlushMode(FlushMode.AUTO);
+		Query query = session.createQuery("select model from EventSurveyUser model where model.userName = :uname " +
 				"and model.passWord = :pwd and model.isEnabled = 'Y' ");
 		query.setParameter("uname", uname);
 		query.setParameter("pwd", pwd);
@@ -35,7 +38,9 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 	}
 	
 	public Long checkUserBlockedOrNot(Long userId){
-		Query query = getSession().createQuery("select count(*) from EventSurveyUser model where model.eventSurveyUserId = :userId " +
+		Session session = getSession();
+		session.setFlushMode(FlushMode.AUTO);
+		Query query = session.createQuery("select count(*) from EventSurveyUser model where model.eventSurveyUserId = :userId " +
 				" and model.isEnabled = 'N' ");
 		query.setParameter("userId", userId);
 		return (Long)query.uniqueResult();
