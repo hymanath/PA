@@ -1580,5 +1580,11 @@
 		<property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
 		
 	</bean>
+	<bean id="tdpCadreOccasionAction" class="com.itgrids.partyanalyst.web.action.TdpCadreOccasionAction" singleton="false">
+		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		
+	</bean>
+	
+	
 </beans>	
 	

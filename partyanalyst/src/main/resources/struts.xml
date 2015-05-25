@@ -10141,6 +10141,11 @@
 				<param name="root">resultList</param>
 			</result>
 		</action>
+		<action name="tdpCadreFamilyUpdationAction" class="tdpCadreOccasionAction">
+			<result name="success">/jsp/tdpCadreFamilyUpdation.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 		
 </package>
 </struts>      
