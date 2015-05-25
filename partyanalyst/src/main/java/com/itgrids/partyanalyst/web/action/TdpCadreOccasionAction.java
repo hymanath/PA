@@ -36,10 +36,17 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> bloodGroups,occupationsList;
 	private ICandidateUpdationDetailsService candidateUpdationDetailsService;
 	private IStaticDataService staticDataService;
+	private ResultStatus result;
 	
 	
 	
 	
+	public ResultStatus getResult() {
+		return result;
+	}
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -136,7 +143,7 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 JSONObject obj = arr.getJSONObject(i);
 				 TdpCadreFamilyDetailsVO vo = new TdpCadreFamilyDetailsVO();
 				 vo.setAge(obj.getLong("age"));
-				 vo.setBloodGroupId(obj.getLong("bloodGroup"));
+				// vo.setBloodGroupId(obj.getLong("bloodGroup"));
 				 vo.setCasteStateId(obj.getLong("casteStateId"));
 				 vo.setDob(obj.getString("dob"));
 				 vo.setName(obj.getString("name"));
@@ -150,11 +157,12 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 vo.setVotercardNo(obj.getString("voterId"));
 				 vo.setRelationId(obj.getLong("relationId"));
 				 vo.setTdpCadreId(obj.getLong("tdpCadreId"));
+				 vo.setOccupationId(obj.getLong("occupationId"));
 				 inputList.add(vo);
 				 
 				 }
 			 }
-		   cadreRegistrationService.updateCadreFamilyInfo(inputList,regVo.getRegistrationID());
+			 result =  cadreRegistrationService.updateCadreFamilyInfo(inputList,regVo.getRegistrationID());
 		 }
 		 catch (Exception e) {
 			e.printStackTrace();
