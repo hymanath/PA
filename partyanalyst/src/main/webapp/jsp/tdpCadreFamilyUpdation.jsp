@@ -85,7 +85,7 @@
 			mobileNo:mobileNo,
 			membershipNo:membershipNo,
 			voterId:voterId,			
-			task:"getDetailsForCallCenter"            
+			task:"getDetails"            
 		}
   
 		$.ajax({
@@ -104,7 +104,7 @@
 		var str="";	
 		str+='<div class="span12">';
 			
-		str+=' <table class="table table-bordered"  id="tableId">';
+		str+=' <table class="table table-bordered" style="margin-left: 0px;"  id="tableId">';
 		str+=' <thead>';
 		str+=' <tr>';
 		str+=' <th class="alert-info"> Cadre Name  </th>';
@@ -118,8 +118,9 @@
 	
 		for(var i in result){
 			str+=' <tr>';
-			
-			str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getCardDetails(\''+result[i].cadreId+'\');">'+result[i].nameType+'</a></td>';
+		
+		
+			str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getFamilyDetails(\''+result[i].cadreId+'\');">'+result[i].nameType+'</a></td>';
 			str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageBase64String+'"  /></td>';
 			str+=' <td>'+result[i].address+'</td>';
 			str+=' <td>'+result[i].mobileNumber+'</td>';
@@ -130,6 +131,26 @@
 		str+='</tbody></table></div>';
 		$("#tableDataDiv").html(str);
 		$("#tableId").dataTable();
+	}
+
+function getFamilyDetails(tdpCadreId)
+	{
+
+		var jsObj = {
+			tdpCadreId:tdpCadreId,
+			
+			task:"getFamilyDetails"            
+		}
+  
+		$.ajax({
+			type : "POST",
+			url : "getFamilyDetailsByCadreIdAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			//$("#ajaxImage").hide();			
+			
+		});
+		
 	}
 	
 	
@@ -253,8 +274,6 @@ console.log(dataArr);
 	   });
 }
 	</script>
-	<script>
-	buildfamilyDetails();
-	</script>
+	
   </body>
  </html>
