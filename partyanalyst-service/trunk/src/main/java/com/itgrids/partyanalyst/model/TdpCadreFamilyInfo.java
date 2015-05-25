@@ -271,7 +271,11 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 		this.email = email;
 	}
 	
-	@Column(name="caste_state_id")
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "caste_state_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CasteState getCasteState() {
 		return casteState;
 	}
@@ -280,10 +284,7 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	}
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "caste_state_id" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	@Column(name="caste_state_id")
 	public Long getCasteStateId() {
 		return casteStateId;
 	}
