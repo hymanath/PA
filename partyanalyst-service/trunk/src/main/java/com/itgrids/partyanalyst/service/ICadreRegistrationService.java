@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -164,4 +165,5 @@ public interface ICadreRegistrationService {
 	public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
 	public List<CardPrintUserVO> getCardPrintCountForAllUsers(CardPrintUserVO inputVo);
 	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo);
+	public ResultStatus updateCadreFamilyInfo(List<TdpCadreFamilyDetailsVO> inputList,Long userId);
 }
