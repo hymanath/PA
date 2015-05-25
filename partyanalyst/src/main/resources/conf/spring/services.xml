@@ -2405,9 +2405,8 @@
 		<property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	
 		<property name="cadreCardNumberUpdationDAO" ref="cadreCardNumberUpdationDAO" />	
 		<property name="cardPrintUserDAO" ref="cardPrintUserDAO" />	
-		
-						
-     </bean>
+		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />	
+	 </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
       	 <property name="cadreRegAmountDetailsDAO" ref="cadreRegAmountDetailsDAO" />
