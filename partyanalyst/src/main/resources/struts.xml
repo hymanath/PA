@@ -10147,5 +10147,11 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
+		<action name="searchCadreForFamilyDetlsUpdationAction" class="cadreRegistrationAction" method="searchCadreForFamilyDetlsUpdation">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      

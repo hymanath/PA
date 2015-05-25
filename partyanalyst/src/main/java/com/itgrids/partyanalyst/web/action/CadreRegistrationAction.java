@@ -110,6 +110,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String voterType;
 	private AddressVO addressVO;
 	private String registeredOrNot;
+	private List<CadreRegistrationVO> resultList = new ArrayList<CadreRegistrationVO>();
+	
+	public List<CadreRegistrationVO> getResultList() {
+		return resultList;
+	}
+	public void setResultList(List<CadreRegistrationVO> resultList) {
+		this.resultList = resultList;
+	}
 
 	public List<CadrePreviousRollesVO> getEligibleRoles() {
 	return eligibleRoles;
@@ -1855,6 +1863,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			selectOptionVOList = cadreRegistrationForOtherStatesService.getCasteDetailsByCasteCategoryId(Long.valueOf(request.getParameter("casteCategoryId")),Long.valueOf(request.getParameter("stateId")));
 		} catch (Exception e) {
 			LOG.error("Exception raised in getCasteDetailsForCasteCategory method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String searchCadreForFamilyDetlsUpdation()
+	{
+		try {
+			
+			jobj = new JSONObject(getTask());			
+			String membershipNo = jobj.getString("membershipNo");
+			String trNumber = jobj.getString("trNumber");
+			String mobileNo = jobj.getString("mobileNo");
+			resultList = cadreRegistrationService.getCadreDetailsForFamilyDetlsUpdate(mobileNo,trNumber,membershipNo);
+			
+		} catch (Exception e) {
+			LOG.info("Exception raised in getCadreDetailsForCallCenter ",e);
 		}
 		return Action.SUCCESS;
 	}
