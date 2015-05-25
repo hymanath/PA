@@ -81,7 +81,7 @@
 		var jsObj = {
 			mobileNo:mobileNo,
 			membershipNo:membershipNo,
-			trNumber:voterId,			
+			voterId:voterId,			
 			task:"getDetailsForCallCenter"            
 		}
   

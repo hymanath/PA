@@ -1874,9 +1874,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			jobj = new JSONObject(getTask());			
 			String membershipNo = jobj.getString("membershipNo");
-			String trNumber = jobj.getString("trNumber");
+			String voterId = jobj.getString("voterId");
 			String mobileNo = jobj.getString("mobileNo");
-			resultList = cadreRegistrationService.getCadreDetailsForFamilyDetlsUpdate(mobileNo,trNumber,membershipNo);
+			resultList = cadreRegistrationService.getCadreDetailsForFamilyDetlsUpdate(mobileNo,voterId,membershipNo);
 			
 		} catch (Exception e) {
 			LOG.info("Exception raised in getCadreDetailsForCallCenter ",e);
