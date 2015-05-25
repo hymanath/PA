@@ -596,6 +596,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreCardNumberUpdation</value>
 				<value>com.itgrids.partyanalyst.model.CardPrintUser</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserAuth</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreFamilyInfo</value>		
 			    <value>com.itgrids.partyanalyst.model.NewDistrictConstituency</value>
 			    <value>com.itgrids.partyanalyst.model.MessagingPropsDetails</value>
 			    <value>com.itgrids.partyanalyst.model.EventAttendeeError</value>
