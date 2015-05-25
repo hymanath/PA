@@ -2065,6 +2065,9 @@
 	</bean>
 	<bean id="cadreMahanaduVisitInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreMahanaduVisitInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	<bean id="tdpCadreFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!--  end -->
 </beans>		
