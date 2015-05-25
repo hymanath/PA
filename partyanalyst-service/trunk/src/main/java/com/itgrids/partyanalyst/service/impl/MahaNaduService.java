@@ -1925,4 +1925,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 		return resultList;			
 		}
+	
+	  
 }
