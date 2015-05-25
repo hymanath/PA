@@ -1582,6 +1582,10 @@
 	</bean>
 	<bean id="tdpCadreOccasionAction" class="com.itgrids.partyanalyst.web.action.TdpCadreOccasionAction" singleton="false">
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
+		
+		
 		
 	</bean>
 	

@@ -13,10 +13,15 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -27,10 +32,45 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	private JSONObject jobj;
 	private String 	   task;
 	private ICadreRegistrationService cadreRegistrationService ;
+	private List<GenericVO> 	educationList;
+	private List<SelectOptionVO> bloodGroups,occupationsList;
+	private ICandidateUpdationDetailsService candidateUpdationDetailsService;
+	private IStaticDataService staticDataService;
 	
 	
 	
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	public List<GenericVO> getEducationList() {
+		return educationList;
+	}
+	public void setEducationList(List<GenericVO> educationList) {
+		this.educationList = educationList;
+	}
+	public List<SelectOptionVO> getBloodGroups() {
+		return bloodGroups;
+	}
+	public void setBloodGroups(List<SelectOptionVO> bloodGroups) {
+		this.bloodGroups = bloodGroups;
+	}
+	public List<SelectOptionVO> getOccupationsList() {
+		return occupationsList;
+	}
+	public void setOccupationsList(List<SelectOptionVO> occupationsList) {
+		this.occupationsList = occupationsList;
+	}
+	public ICandidateUpdationDetailsService getCandidateUpdationDetailsService() {
+		return candidateUpdationDetailsService;
+	}
+	public void setCandidateUpdationDetailsService(
+			ICandidateUpdationDetailsService candidateUpdationDetailsService) {
+		this.candidateUpdationDetailsService = candidateUpdationDetailsService;
+	}
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
 	}
@@ -69,7 +109,10 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	 public String execute()
 	 {
 		try{
-			
+			 educationList = candidateUpdationDetailsService.gettingEducationDetails();
+			 occupationsList = staticDataService.getAllOccupations();
+			 bloodGroups = cadreRegistrationService.getBloodGroups();
+			 
 		}
 		catch(Exception e)
 		{
@@ -92,7 +135,23 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 {
 				 JSONObject obj = arr.getJSONObject(i);
 				 TdpCadreFamilyDetailsVO vo = new TdpCadreFamilyDetailsVO();
-				 //vo.set
+				 vo.setAge(obj.getLong("age"));
+				 vo.setBloodGroupId(obj.getLong("bloodGroup"));
+				 vo.setCasteStateId(obj.getLong("casteStateId"));
+				 vo.setDob(obj.getString("dob"));
+				 vo.setName(obj.getString("name"));
+				 vo.setEducationId(obj.getLong("education"));
+				 vo.setEmail(obj.getString("email"));
+				 vo.setGender(obj.getString("gender"));
+				 vo.setMarriageDay(obj.getString("marriageDay"));
+				 vo.setWhatsappStatus(obj.getString("whatsappStatus"));
+				 vo.setMobileNo(obj.getString("mobileNo"));
+				 vo.setPartyMemberSince(obj.getString("partyMemberSince"));
+				 vo.setVotercardNo(obj.getString("voterId"));
+				 vo.setRelationId(obj.getLong("relationId"));
+				 vo.setTdpCadreId(obj.getLong("tdpCadreId"));
+				 inputList.add(vo);
+				 
 				 }
 			 }
 		   cadreRegistrationService.updateCadreFamilyInfo(inputList,regVo.getRegistrationID());
@@ -102,5 +161,7 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	 }
-	
+	 
+	 
+	   
 }
