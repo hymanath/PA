@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -4914,7 +4916,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List getTdpCadreIdByMembership(String queryStr)
 		{
-			Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+")");
+			Session session = getSession();
+			session.setFlushMode(FlushMode.AUTO);
+			Query query = session.createQuery("select model.tdpCadreId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+")");
 			
 			return query.list();
 			
