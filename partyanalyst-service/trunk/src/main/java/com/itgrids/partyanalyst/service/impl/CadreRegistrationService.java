@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -92,7 +93,8 @@ import com.itgrids.partyanalyst.dao.ITabUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfo;
+
+import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
@@ -9379,7 +9381,33 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			LOG.error("Exception in updateCadreFamilyInfo()", e);
 			rs.setResultCode(ResultCodeMapper.FAILURE);
 		}
+		return rs;
 		
+	}
+	public List<SelectOptionVO> getBloodGroups()
+	{
+		List<SelectOptionVO> bloodGroups = new ArrayList<SelectOptionVO>(0);
+		try{
+		 List<BloodGroup> list = bloodGroupDAO.getAll();
+		
+		if(list != null && list.size() > 0)
+		{
+			
+			SelectOptionVO selectOptionVO = null;
+			for(BloodGroup bloodGroup : list)
+			{
+				selectOptionVO = new SelectOptionVO(bloodGroup.getBloodGroupId(),
+						bloodGroup.getBloodGroup());
+				bloodGroups.add(selectOptionVO);
+			}
+			
+			
+		}
+		}
+		catch (Exception e) {
+			LOG.error("Exception in getBloodGroups()", e);
+		}
+		return bloodGroups;
 	}
 	
 }

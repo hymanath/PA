@@ -166,4 +166,5 @@ public interface ICadreRegistrationService {
 	public List<CardPrintUserVO> getCardPrintCountForAllUsers(CardPrintUserVO inputVo);
 	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo);
 	public ResultStatus updateCadreFamilyInfo(List<TdpCadreFamilyDetailsVO> inputList,Long userId);
+	public List<SelectOptionVO> getBloodGroups();
 }
