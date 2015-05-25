@@ -6,5 +6,5 @@ import com.itgrids.partyanalyst.model.TdpCadreFamilyInfo;
 
 
 public interface ITdpCadreFamilyInfoDAO extends GenericDao<TdpCadreFamilyInfo, Long>{
-
+	public Integer deleteFamilyInfoByCadre(Long tdpCadreId);
 }
