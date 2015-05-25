@@ -9410,4 +9410,42 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return bloodGroups;
 	}
 	
+
+	public List<CadreRegistrationVO> getCadreDetailsForFamilyDetlsUpdate(String mobileNo,String voterId,String membership)
+	{
+		List<CadreRegistrationVO> returnList = new ArrayList<CadreRegistrationVO>();
+		try {
+			
+			String memberShipNo = "AP14"+membership ;
+			String memberShipNo1 = "TS14"+membership ;
+			
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.constituency.name,model.memberShipNo,model.mobileNo,model.firstname " +
+					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
+			
+			if(membership != null && !membership.isEmpty())
+				queryStr.append(" and (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNo1.trim()+"' OR model.memberShipNo ='"+membership.trim()+"') ");
+		    if(mobileNo != null && !mobileNo.isEmpty())
+				queryStr.append(" and model.mobileNo = '" +mobileNo+"'");
+			if(voterId != null && !voterId.isEmpty())
+				queryStr.append(" and model.voter.voterIDCardNo = '"+voterId+"'");
+			List<Object[]> resultList = tdpCadreDAO.getCadreDetails(queryStr.toString());
+			if(resultList != null && resultList.size() > 0){
+				for (Object[] obj : resultList){
+					CadreRegistrationVO vo = new CadreRegistrationVO();					
+					vo.setCadreId((Long)obj[0]);
+					vo.setImageBase64String(obj[1] != null ? obj[1].toString(): "");
+					vo.setConstituencyId(obj[2] != null ? obj[2].toString() : "");
+					vo.setAddress(obj[3] != null ? obj[3].toString().substring(4) : "");
+					vo.setMobileNumber(obj[4] != null ? obj[4].toString(): "");
+					vo.setNameType(obj[5]  != null ? obj[5].toString() :"");				
+					returnList.add(vo);			
+				}				
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured in getCadreDetailsForFamilyDetlsUpdate()",e);	
+		}
+		
+		return returnList;
+	}
 }
