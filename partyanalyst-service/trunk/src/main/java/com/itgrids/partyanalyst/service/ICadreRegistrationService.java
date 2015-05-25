@@ -165,7 +165,9 @@ public interface ICadreRegistrationService {
 	public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
 	public List<CardPrintUserVO> getCardPrintCountForAllUsers(CardPrintUserVO inputVo);
 	public List<CardPrintUserVO> getCardPrintCountByUser(CardPrintUserVO inputVo);
-	public List<CadreRegistrationVO> getCadreDetailsForFamilyDetlsUpdate(String mobileNo,String voterId,String membership);
+	public List<CadreRegistrationVO> searchCadreDetailsForFamilyDetlsUpdate(String mobileNo,String voterId,String membership);
 	public ResultStatus updateCadreFamilyInfo(List<TdpCadreFamilyDetailsVO> inputList,Long userId);
 	public List<SelectOptionVO> getBloodGroups();
+	
+	public List<TdpCadreFamilyDetailsVO> getFamilyDetailsByCadreId(Long tdpCadreId);
 }

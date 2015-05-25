@@ -9412,7 +9412,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	}
 	
 
-	public List<CadreRegistrationVO> getCadreDetailsForFamilyDetlsUpdate(String mobileNo,String voterId,String membership)
+	public List<CadreRegistrationVO> searchCadreDetailsForFamilyDetlsUpdate(String mobileNo,String voterId,String membership)
 	{
 		List<CadreRegistrationVO> returnList = new ArrayList<CadreRegistrationVO>();
 		try {
@@ -9421,7 +9421,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			String memberShipNo1 = "TS14"+membership ;
 			
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.constituency.name,model.memberShipNo,model.mobileNo,model.firstname " +
+			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.constituency.name,model.memberShipNo,model.mobileNo,model.firstname" +
+					" ,model.casteStateId,model.gender,model.emailId,model.age,model.dateOfBirth,model.voterId,model.occupationId,model.educationId " +
 					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
 			
 			if(membership != null && !membership.isEmpty())
@@ -9439,12 +9440,77 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setConstituencyId(obj[2] != null ? obj[2].toString() : "");
 					vo.setAddress(obj[3] != null ? obj[3].toString().substring(4) : "");
 					vo.setMobileNumber(obj[4] != null ? obj[4].toString(): "");
-					vo.setNameType(obj[5]  != null ? obj[5].toString() :"");				
+					vo.setNameType(obj[5]  != null ? obj[5].toString() :"");
+					vo.setCasteId( obj[6] != null ?(Long)obj[6]: null);
+					vo.setGender( obj[7] != null ? obj[7].toString() : null);
+					vo.setEmail(obj[8]!= null ? obj[8].toString() : null);
+					vo.setAge(obj[9] != null ? (Long)obj[9] : null);
+					vo.setEducationId(obj[13] != null ? (Long)obj[13] : null);
+					vo.setOccupationId(obj[12] != null ? (Long)obj[12] : null);
+					vo.setDobStr(obj[10] != null ? obj[10].toString(): null);
+					vo.setVoterCardNo(obj[11] != null ? voterDAO.get((Long)obj[11]).getVoterIDCardNo() : null);
+					
 					returnList.add(vo);			
 				}				
 			}
 		} catch (Exception e) {
-			LOG.error(" exception occured in getCadreDetailsForFamilyDetlsUpdate()",e);	
+			LOG.error(" exception occured in searchCadreDetailsForFamilyDetlsUpdate()",e);	
+		}
+		
+		return returnList;
+	}
+	
+	
+	public List<TdpCadreFamilyDetailsVO> getFamilyDetailsByCadreId(Long tdpCadreId)
+	{
+		List<TdpCadreFamilyDetailsVO> returnList = new ArrayList<TdpCadreFamilyDetailsVO>();
+		try {
+		
+			
+			List<TdpCadreFamilyInfo> familyInfoDetls = tdpCadreFamilyInfoDAO.getCadreFamilyDetailsBytdpCadreId(tdpCadreId);
+			if(familyInfoDetls != null && familyInfoDetls.size() > 0){
+				for (TdpCadreFamilyInfo tdpCadreFamilyInfo : familyInfoDetls){
+					TdpCadreFamilyDetailsVO vo = new TdpCadreFamilyDetailsVO();					
+					vo.setName(tdpCadreFamilyInfo.getName());
+					vo.setMobileNo(tdpCadreFamilyInfo.getMobileNo());
+					vo.setGender(tdpCadreFamilyInfo.getGender());
+					vo.setAge(tdpCadreFamilyInfo.getAge());
+					vo.setEducationId(tdpCadreFamilyInfo.getEducationId());
+					vo.setOccupationId(tdpCadreFamilyInfo.getOccupationId());
+					vo.setRelationId(tdpCadreFamilyInfo.getRelationId());				
+					vo.setDob(tdpCadreFamilyInfo.getDob() != null ? tdpCadreFamilyInfo.getDob().toString() : null);
+					vo.setEmail(tdpCadreFamilyInfo.getEmail());
+					vo.setMarriageDay(tdpCadreFamilyInfo.getMarriageDay() != null ? tdpCadreFamilyInfo.getMarriageDay().toString() : null);
+					vo.setWhatsappStatus(tdpCadreFamilyInfo.getWhatsappStatus());
+					vo.setPartyMemberSince(tdpCadreFamilyInfo.getPartyMemberSince() != null ? tdpCadreFamilyInfo.getPartyMemberSince().toString() : "");
+					vo.setCasteStateId(tdpCadreFamilyInfo.getCasteStateId());
+					vo.setVotercardNo(tdpCadreFamilyInfo.getVoterId() != null ? tdpCadreFamilyInfo.getVoter().getVoterIDCardNo() : null);
+					returnList.add(vo);			
+				}				
+			}else{
+				
+				//0voterId,1educationId,2occupationId,3voterName,4age,5gender
+				List<Object[]> familyDetls = tdpCadreFamilyDetailsDAO.getCadreFamilyDetailsBytdpCadreId(tdpCadreId);
+				if(familyDetls != null && familyDetls.size() > 0){
+					for(Object[] obj : familyDetls){
+						TdpCadreFamilyDetailsVO vo = new TdpCadreFamilyDetailsVO();	
+						vo.setVotercardNo(obj[7].toString());
+						vo.setName(obj[3] != null ?obj[3].toString() : null);
+						vo.setGender(obj[5] != null ? obj[5].toString(): null);
+						vo.setAge(obj[4] != null ? (Long)obj[4] : null);
+						vo.setEducationId(obj[1] != null ? (Long)obj[1] :null);
+						vo.setOccupationId( obj[2] != null ?  (Long)obj[2] : null);
+						vo.setRelationId(obj[6] != null ? (Long)obj[6] : null);				
+						returnList.add(vo);			
+						
+					}
+				}
+				
+				
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getFamilyDetailsByCadreId()",e);	
 		}
 		
 		return returnList;

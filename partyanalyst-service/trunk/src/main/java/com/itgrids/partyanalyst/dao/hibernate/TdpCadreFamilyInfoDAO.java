@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -21,4 +23,17 @@ public class TdpCadreFamilyInfoDAO extends GenericDaoHibernate<TdpCadreFamilyInf
 		return query.executeUpdate();
 	}
 
+	
+	
+	public List<TdpCadreFamilyInfo> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId)
+	{
+
+		Query query = getSession().createQuery("select model from TdpCadreFamilyInfo model " +
+				"  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
+		return query.list();
+	}
+	
+	
 }
