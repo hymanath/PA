@@ -92,6 +92,7 @@ import com.itgrids.partyanalyst.dao.ITabUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfo;
 import com.itgrids.partyanalyst.dao.ITdpCadreHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
@@ -138,6 +139,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -168,6 +170,7 @@ import com.itgrids.partyanalyst.model.TabUserLoginDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
+import com.itgrids.partyanalyst.model.TdpCadreFamilyInfo;
 import com.itgrids.partyanalyst.model.TdpCadreHistory;
 import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
@@ -279,6 +282,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	private ICadreCardNumberUpdationDAO cadreCardNumberUpdationDAO;
 	private ICardPrintUserDAO cardPrintUserDAO ;
+	private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -295,6 +299,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
 		return cadreMissedCallCampaignDAO;
+	}
+
+	public ITdpCadreFamilyInfoDAO getTdpCadreFamilyInfoDAO() {
+		return tdpCadreFamilyInfoDAO;
+	}
+
+	public void setTdpCadreFamilyInfoDAO(
+			ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO) {
+		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
 	}
 
 	public ICardPrintUserDAO getCardPrintUserDAO() {
@@ -9319,6 +9332,54 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			 e.printStackTrace();
 		 }
 		return null;
+	}
+	
+	public ResultStatus updateCadreFamilyInfo(List<TdpCadreFamilyDetailsVO> inputList,Long userId)
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			DateUtilService date= new DateUtilService();
+			if(inputList != null && inputList.size() > 0)
+			{
+				for(TdpCadreFamilyDetailsVO vo : inputList)
+				{
+				TdpCadreFamilyInfo tdpCadreFamilyInfo = new TdpCadreFamilyInfo();
+					tdpCadreFamilyInfo.setAge(vo.getAge());
+					if(vo.getDob() != null && !vo.getDob().isEmpty())
+					tdpCadreFamilyInfo.setDob(format.parse(vo.getDob()));
+					tdpCadreFamilyInfo.setGender(vo.getGender());
+					tdpCadreFamilyInfo.setCasteStateId(vo.getCasteStateId());
+					tdpCadreFamilyInfo.setEducationId(vo.getEducationId());
+					tdpCadreFamilyInfo.setOccupationId(vo.getOccupationId());
+					tdpCadreFamilyInfo.setEmail(vo.getEmail());
+					tdpCadreFamilyInfo.setInsertedTime(date.getCurrentDateAndTime());
+					tdpCadreFamilyInfo.setMobileNo(vo.getMobileNo());
+					if(vo.getPartyMemberSince() != null && !vo.getPartyMemberSince().isEmpty())
+					tdpCadreFamilyInfo.setPartyMemberSince(format.parse(vo.getPartyMemberSince()));
+					tdpCadreFamilyInfo.setName(vo.getName());
+					tdpCadreFamilyInfo.setIsDeleted("N");
+					tdpCadreFamilyInfo.setRelationId(vo.getRelationId());
+					if(vo.getMarriageDay() != null && !vo.getMarriageDay().isEmpty())
+					tdpCadreFamilyInfo.setMarriageDay(format.parse(vo.getMarriageDay()));
+					tdpCadreFamilyInfo.setInsertedBy(userId);
+					tdpCadreFamilyInfo.setTdpCadreId(vo.getTdpCadreId());
+					if(vo.getVotercardNo() != null && !vo.getVotercardNo().isEmpty())
+					tdpCadreFamilyInfo.setVoterId(voterDAO.getVoterIdByIdCardNo(vo.getVotercardNo()));
+					tdpCadreFamilyInfo.setWhatsappStatus(vo.getWhatsappStatus());
+					tdpCadreFamilyInfo.setUpdatedTime(date.getCurrentDateAndTime());
+					tdpCadreFamilyInfo.setUpdatedBy(userId);
+					tdpCadreFamilyInfoDAO.save(tdpCadreFamilyInfo);
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception in updateCadreFamilyInfo()", e);
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		
 	}
 	
 }
