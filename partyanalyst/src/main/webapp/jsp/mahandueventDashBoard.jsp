@@ -30,7 +30,12 @@
     color: #fff !important;
     text-decoration: none;
 }
-
+.otherstate li {
+    border: 1px solid #ccc;
+    margin: 2px;
+    padding: 5px;
+	width:216px;
+}
 </style>
 </head>
 
@@ -123,7 +128,7 @@
 		</p>
 		</div>
 	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
-        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
+        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
 					<div id="dayWiseContainer" style="width: 100%; height:357px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
 
@@ -244,6 +249,7 @@
 					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
 						<h4 class="panel-header text-center"></h4>
 					  </div>
+					  <div id="stateWiseOverView"></div>
 						<div id="eventMembersDiv" style="margin-top:15px;padding:15px;margin-bottom:10px;"></div>
 						<div id="paginationDivId"  style="margin-top:0px;margin-left:20px;"></div>
 				</div>
@@ -613,6 +619,7 @@ $("#myonoffswitch1").click(function(){
 
 
 function getSubEventDetails(parentEventId){
+	$('#overAllEventDiv').html('<center><img id="ajaxImage" src="images/Loading-data.gif" style="width:70px;height:60px;margin-top:100px;"/></center>');
 	$('#donutchart').html("");
 	$("#donutChartAjax").show();
 	
@@ -657,7 +664,7 @@ function buildStartingPrograms(result){
 		var count = result[i].invitees + result[i].nonInvitees;
 		
 		if(count >0){		
-		str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');">'+count+'</a></span>';	
+		str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';	
 		}
 		else{
 		str+='  <span class="pull-right label-custom">'+count+'</span>';
@@ -844,7 +851,7 @@ var dayWiseArr =[];
 var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function getSubEventDetailsHourWise(parentEventId){
-
+$("#dayWiseContainer").html("");
 $('#hourWiseerrorDiv').html('<center><img id="hourWiseAjaxImage" src="images/Loading-data.gif" style="width:70px;height:60px;"/></center>');
 $("#hourWiseContainer").html("");
 
@@ -1393,12 +1400,16 @@ var jObj = {
 }
 
 function getSubEventMembers(eventId,startIndex,count,name){
+
 		
+			$('#eventMembersDialog').find('h4').html('');
+		$('#dialogueHead').html('');
 		var jObj = {
 			eventId:eventId,
 			startDate : startDate,
 			endDate : endDate,
 			startIndex:startIndex,
+			
 			maxIndex : 25
 		}	
 		
@@ -1413,8 +1424,10 @@ function getSubEventMembers(eventId,startIndex,count,name){
 			str+="<tr>";
 							
 			str+="<th>NAME</th>";
+			str+="<th>IMAGE</th>";
 			str+="<th>MOBILE NUMBER</th>";
 			str+="<th>CONSTITUENCY</th>";	
+			str+="<th>INVITEE</th>";	
 			str+="</tr>";
 			str+="</thead>";
 			str+="<tbody>";
@@ -1422,8 +1435,10 @@ function getSubEventMembers(eventId,startIndex,count,name){
 				str+="<tr>";
 				
 				str+="<td>"+result[i].name+"</td>";
+				 str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].locationName+'"  style="height:50px;width:50px;"/></td>';
 				str+="<td>"+result[i].mobileNo+"</td>";
 				str+="<td>"+result[i].desc+"</td>";
+				str+="<td>"+result[i].locationType+"</td>";
 				str+="</tr>";
 			}
 			str+="<tbody>";
@@ -1454,9 +1469,58 @@ function getSubEventMembers(eventId,startIndex,count,name){
 			}
 		});
 	}	
-			$('#eventMembersDialog').find('h4').html('<span class="text-uppercase">'+name+' EVENT VISITORS DETAILS</span>');
+			$('#eventMembersDialog').find('h4').html('<span class="text-uppercase" id="dialogueHead">'+name+' EVENT VISITORS DETAILS</span>');
 		
 			$("#eventMembersDialog").modal("show");		
+		});
+}
+
+function getStateWiseOverview(eventId){
+		$("#stateWiseOverView").html('');
+		var jObj = {
+			eventId:eventId,
+			startDate : startDate,
+			endDate : endDate
+			
+			
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getSubEventMemberCountAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			var str = '';
+			/*str+='<table>';
+			str+='<tr>';
+			str+='<th>State</th>';
+			str+='<th>Count</th>';
+			str+='</tr>';
+			for(var i in result)
+			  {
+				str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].total+'</td>';
+				str+='</tr>';
+			  }
+			str+='</table>';*/
+			var total = 0;
+			for(var i in result)
+			  {
+				 total = result[i].total+ total;
+			  }
+			str+=' <h5 class="text-center" style="margin-bottom: 0px;"> TOTAL COUNT  '+total+'</h5>';
+			str+='<p class="text-center" style="font-size: 16px; margin-top: 20px;">STATE WISE COUNT</p>';
+			str+='<ul class="list-inline otherstate" style="margin-left: 10px;">';
+			for(var i in result)
+			  {
+			str+='<li>'+result[i].name+' <span class="badge  pull-right"> '+result[i].total+'</span></li>';
+			  }
+    
+			str+='</ul>';
+  
+		$("#stateWiseOverView").html(str);
+			
 		});
 }
 

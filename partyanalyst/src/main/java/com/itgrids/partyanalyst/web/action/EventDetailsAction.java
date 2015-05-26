@@ -32,6 +32,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private HttpSession session;
 	private Long eventId;
 	
+
 	
 	
 	public Long getEventId() {
@@ -269,4 +270,41 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getOtherStateDeligatesCount()
+	{
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long parentEventId = jObj.getLong("parentEventId");
+		
+			List<Long> subEventIds = new ArrayList<Long>();
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++)
+			subEventIds.add(new Long(arr.get(i).toString()));
+			resultList =  mahaNaduService.getOtherStateDeligatesCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
+			
+			
+		}
+		catch (Exception e) {
+			LOG.error(" Entered Into getOtherStateDeligatesCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getStatewiseCount()
+	{
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			resultList =  mahaNaduService.getStatewiseCount(jObj.getLong("eventId"),jObj.getString("startDate"),jObj.getString("endDate"));
+			
+			
+		}
+		catch (Exception e) {
+			LOG.error(" Entered Into getOtherStateDeligatesCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
