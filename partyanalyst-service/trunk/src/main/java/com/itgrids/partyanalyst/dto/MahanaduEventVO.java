@@ -39,6 +39,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private List<Long> attendedCadres;
 	private int oneDayCount;
 	private Long revisitCount;
+	private int newCount;
 	
 	
 	
@@ -204,6 +205,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public int getNewCount() {
+		return newCount;
+	}
+	public void setNewCount(int newCount) {
+		this.newCount = newCount;
 	}
 
 

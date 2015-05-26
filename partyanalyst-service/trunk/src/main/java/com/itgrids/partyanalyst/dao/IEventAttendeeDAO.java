@@ -22,7 +22,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getStateWiseEventAttendeeCounts(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	
 	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex);
-	public Long getTodayTotalVisitors(Date todayDate);
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId);
 	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getEventAttendeeInfoDynamic(String locationType, Date evntStDate, List<Date> datesList, String sbStart, String sbMiddle, List<Long> subEventIds);
@@ -31,4 +31,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getOtherStateDeligatesCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	public List<Object[]> getStateCount(Long eventId,Date startDate,Date endDate);
 	public List<Object[]> getOtherStateCount(Long eventId,Date startDate,Date endDate);
+	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId);
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,List<Long> subEventIds);
+	public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,List<Long> subEventIds);
 }

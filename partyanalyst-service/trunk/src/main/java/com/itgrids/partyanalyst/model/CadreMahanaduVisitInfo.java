@@ -19,6 +19,7 @@ public class CadreMahanaduVisitInfo {
 
 	private Long cadreMahanaduVisitInfoId;
 	private Date insertedTime;
+	private Long parentEventId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +39,15 @@ public class CadreMahanaduVisitInfo {
 	
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+
+	@Column(name="parent_event_id")
+	public Long getParentEventId() {
+		return parentEventId;
+	}
+
+	public void setParentEventId(Long parentEventId) {
+		this.parentEventId = parentEventId;
 	}
 	
 }

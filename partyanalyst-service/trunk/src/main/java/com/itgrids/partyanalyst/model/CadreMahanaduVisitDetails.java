@@ -26,6 +26,7 @@ public class CadreMahanaduVisitDetails {
 	private CadreMahanaduVisitInfo cadreMahanaduVisitInfo;
 	private String type;
 	private Long count;
+	private Long inviteCount;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,6 +68,15 @@ public class CadreMahanaduVisitDetails {
 	
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+	@Column(name="invite_count")
+	public Long getInviteCount() {
+		return inviteCount;
+	}
+
+	public void setInviteCount(Long inviteCount) {
+		this.inviteCount = inviteCount;
 	}
 	
 	
