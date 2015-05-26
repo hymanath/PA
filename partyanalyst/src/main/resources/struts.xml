@@ -10178,5 +10178,11 @@
 			</result>
 		</action>
 		
+		<action name="getEventAttendeeSummaryAction" class="eventDetailsAction" method="getEventAttendeeSummary">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
