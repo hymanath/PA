@@ -16,9 +16,11 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -35,9 +37,15 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	private IStaticDataService staticDataService;
 	private ResultStatus result;
 	private List<CasteDetailsVO> castesList = new ArrayList<CasteDetailsVO>();
+	private EntitlementsHelper 					entitlementsHelper;
 	
 	
-	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public List<CasteDetailsVO> getCastesList() {
 		return castesList;
 	}
@@ -119,6 +127,22 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	 public String execute()
 	 {
 		try{
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_FAMILY_DETAILS_UPDATION")){
+				noaccess = true ;
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			
+			if(noaccess){
+				return "error";
+			}
+			
 			 educationList = candidateUpdationDetailsService.gettingEducationDetails();
 			 occupationsList = staticDataService.getAllOccupations();
 			 bloodGroups = cadreRegistrationService.getBloodGroups(); 
