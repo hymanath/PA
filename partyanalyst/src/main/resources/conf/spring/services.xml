@@ -2658,7 +2658,8 @@
 	    <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
 	    <property name="cadreMahanaduVisitDetailsDAO" ref="cadreMahanaduVisitDetailsDAO" />
 	    <property name="cadreMahanaduVisitInfoDAO" ref="cadreMahanaduVisitInfoDAO" />
-	    <property name="transactionTemplate" ref="transactionTemplate" />	    
+	    <property name="transactionTemplate" ref="transactionTemplate" />
+	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />    
 	</bean>
 	
 </beans>		

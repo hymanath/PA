@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +18,7 @@ import com.opensymphony.xwork2.Action;
 public class MahanaduDashBoardAction implements ServletRequestAware {
 	private HttpServletRequest request;
 	private IMahanaduDashBoardService mahanaduDashBoardService;
-	private MahanaduVisitVO mahanaduVisitVO;
+	private List<MahanaduVisitVO> mahanaduVisitList;
 	private String status;
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardAction.class); 
 	
@@ -27,12 +31,12 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		this.mahanaduDashBoardService = mahanaduDashBoardService;
 	}
 
-	public MahanaduVisitVO getMahanaduVisitVO() {
-		return mahanaduVisitVO;
+	public List<MahanaduVisitVO> getMahanaduVisitList() {
+		return mahanaduVisitList;
 	}
 
-	public void setMahanaduVisitVO(MahanaduVisitVO mahanaduVisitVO) {
-		this.mahanaduVisitVO = mahanaduVisitVO;
+	public void setMahanaduVisitList(List<MahanaduVisitVO> mahanaduVisitList) {
+		this.mahanaduVisitList = mahanaduVisitList;
 	}
 
 	public String getStatus() {
@@ -59,7 +63,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	
 	public String populateLatestInfo(){
 		try{
-		   mahanaduDashBoardService.getTodayTotalVisitors();
+		   mahanaduDashBoardService.getTodayTotalVisitorsForSchedular();
 		}catch(Exception e){
 			LOG.error("Exception rised in populateLatestInfo()",e);
 		}
@@ -67,9 +71,28 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		
 	}
 	
+	public String getTodayTotalVisitorsForWeb(){
+		try{
+		   mahanaduDashBoardService.getTodayTotalVisitorsForWeb();
+		}catch(Exception e){
+			LOG.error("Exception rised in getTodayTotalVisitorsForWeb()",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
 	public String getTodayTotalAndCurrentUsersInfo(){
 		try{
-		   mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfo();
+			String fromDateStr = request.getParameter("fromDate");
+			String toDateStr = request.getParameter("toDate");
+			Date fromDate = null;
+			Date toDate = null;
+			if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && toDateStr.length() > 0){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			mahanaduVisitList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfo(fromDate,toDate);
 		}catch(Exception e){
 			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfo()",e);
 		}

@@ -7,7 +7,7 @@
 <title>MAHANADU VISITORS INFO</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
  <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 	<script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
 	 <script src="js/cadreCommittee/js/jquery.smartmenus.min.js" type="text/javascript"></script>
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
@@ -22,218 +22,597 @@
 <link href="dist/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
 <link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<link href="dist/MultiSelect/css/component.css" rel="stylesheet" type="text/css">
+<script src="dist/MultiSelect/js/magicselection.js" type="text/javascript"></script>
+<script src="dist/MultiSelect/js/modernizr.custom.js" type="text/javascript"></script>
+<script src="dist/Date/moment.min.js" type="text/javascript"></script>
+<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
 <style>
-  #userNameId,#imeiId{
-     height: 30px;
-     width: 220px;
+	header.eventsheader {
+   
+    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+
+    background-origin: border-box;
+    background-repeat: no-repeat;
+ 
+    height: 71px;
+	
 }
+	.box-shadow-css
+	{
+	  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+	  border-radius:0px;
+	}
+	.back-white
+	{
+		background:#fff !important;
+	}
+	.m_bottom10
+	{
+		margin-bottom:10px;
+	}
+	.color-black
+	{
+		color:#000 !important;
+		font-size:10px
+	}
+	.table-color1
+	{
+		background:#F1F1F1
+	}
+	.table-color2
+	{
+		background:#F5FAFD;
+	}
 </style>
 </head>
 <body>
-    <div class="container m_top10">
-      <div id="locationWiseCadreInfoDiv">
-		   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
-				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
-					<h3 class="text-center text-uppercase">MAHANADU VISITORS INFO</h3>
-				</div>
-			</div>
-	  </div>
-	   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
-			<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;min-height:200px;">
-				<div>
-				     <div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
-				     <table id="mainInfo"  style="margin-left: 450px;margin-top: 15px;display:none;">
-				       <tr>
-					      <td><b>Total Visitors :  &nbsp;<span id="totalVisitors" /></b></td>
-						  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					      <td><b>Current Visitors :  &nbsp;<span id="currentVisitors" /></b></td>
-					  </tr>
-					</table>
-					<div id="resultTableDiv" style="margin-top:15px;background-color: #fff;"><div  style="text-align: center;"><img style="width: 70px; height: 60px;" src="images/Loading-data.gif" /></div></div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row m_top10">
-			<div class="col-md-6">
-				<div class="panel panel-default panel-custom-default">
-					<div class="panel-heading">
-						<p class="m_0 display-style"> DAY'S UNIQUE AND REVISIT SUMMARY</p>
-					</div>
-					<div class="panel-body">
+<section class="container">
+	<div class="row">
+    	<div class="col-md-12" style="margin-top:40px;">
+        	<div class="panel panel-default box-shadow-css">
+            	<div class="panel-heading back-white">
+        			<h3 class="text-center m_0">MAHANADU VISITORS INFO</h3>
+                </div>
+				<div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
+                <div class="panel-body" style="padding:0px 15px">
+                	<div class="col-md-6 m_0">
+                    	<h4 class="pull-right">Total Visitors: <span id="totalVisitors" >0</span></h4>
+                    </div>
+                    <div class="col-md-6 m_0" style="border-left:1px solid #ccc">
+                    	<h4 class="pull-left">Visitors in Campus: <span id="currentVisitors">0</span><span style="font-size:14px;color:#ccc;">[ Invitees:<span id="currentinvVisitors">0</span> Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-md-8">
+        	<div class="panel panel-default box-shadow-css">
+            	<div class="panel-heading back-white" style=" min-height:38px;">
+                <p class="m_0 display-style"><i class="glyphicon glyphicon-calendar reservation" style="color:#ccc; font-size:18px;display:none;"></i></p>
+                <div class="pull-left">
+                    <span style="font-size:12px; color:#ccc">Last Updated On:<span id="lasteUpdtOn"> </span></span>
+                    &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#46E7E4;cursor: pointer;"></i>
+                </div>
+                
+                </div>
+                <div class="panel-body" style="padding:5px 15px">
+				    <center><img id="resultTableDivAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
+                    <div id="resultTableDiv">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        	<div class="panel panel-default box-shadow-css" style="min-height: 220px;">
+            	<div class="panel-heading back-white m_bottom10"	>
+                	<h4>DAY'S UNIQUE AND REVISIT SUMMARY</h4>
+                </div>
+                <div class="panel panel-body" style="padding:0px;">
 						<center><img id="daysSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 						
 					   <div id="daysSummaryId"></div>
 					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-default panel-custom-default">
-						<div class="panel-heading">
-							<p class="m_0 display-style"> DAY WISE VISIT SUMMARY</p>
-						</div>
-						<div class="panel-body">
+            </div>
+            <div class="panel panel-default box-shadow-css m_top10" style="min-height: 200px;">
+            	<div class="panel-heading back-white">
+                	<h4>DAY WISE VISIT SUMMARY</h4>
+                </div>
+				<div class="panel-body" style="padding:0px;">
 							<center><img id="ovrAlSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 							
 						   <div id="ovrAlSummaryId"></div>
 						</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row m_top10">
-        <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-md-12">
         	<div class="panel panel-default panel-custom-default">
             	<div class="panel-heading">
                 <p class="m_0 display-style" id="districtHeadingSummary">AP DISTRICT WISE SUMMARY</p>
-                <div class="onoffswitch pull-right">
+				 <div class="onoffswitch pull-right">
                     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitchSummary" checked>
                     <label class="onoffswitch-label" for="myonoffswitchSummary">
                         <span class="onoffswitch-inner"></span>
                         <span class="onoffswitch-switch"></span>
                     </label>
                 </div>
-                
-                </div>
-                <div class="panel-body" style="min-height:400px;">	
-					<center><img id="distAjaxSummaryId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
-					 <div id="districtTableSummaryId" style="margin-top: 10px;"> </div>
-                </div>
-            </div>
-			
-        </div>
-        <div class="col-md-6">
-        	<div class="panel panel-default panel-custom-default">
-            	<div class="panel-heading">
-                <p class="m_0 display-style" id="constiHeadingSummary">AP CONSTITUENCY WISE</p>
-                <div class="onoffswitch pull-right">
-                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitchSummary1" checked>
-                    <label class="onoffswitch-label" for="myonoffswitchSummary1">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
+                <div class="pull-right" style="margin-top:-3px;">
+                	<!--<button class="btn btn-xs btn-success">SHOW</button>-->
                 </div>
                 
                 </div>
-                <div class="panel-body" style="min-height:430px;">
-					<center><img id="constAjaxSummaryId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
-					
-                   <div id="constiTableSummaryId" style="margin-top:10px;"></div>
+                <div class="panel-body">
+                    <div class="ScrollDiv">
+					  <center><img id="distAjaxSummaryId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
+					   <div id="districtTableSummaryId" style="margin-top: 10px;"> </div>
+                        
+                        </div>
                 </div>
             </div>
         </div>
     </div>
-	</div>
+    <div class="row">
+    	<div class="col-md-12">
+        	<div class="panel panel-default panel-custom-default">
+            	<div class="panel-heading">
+                <p class="m_0 display-style" id="constiHeadingSummary">AP CONSTITUENCY WISE</p>
+                 <div class="onoffswitch pull-right">
+                     <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitchSummary1" checked>
+                     <label class="onoffswitch-label" for="myonoffswitchSummary1">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                     </label>
+                </div>
+                </div>
+                <div class="panel-body">
+                    <div class="ScrollDiv">
+					   <center><img id="constAjaxSummaryId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
+					
+                       <div id="constiTableSummaryId" style="margin-top:10px;"></div>
+              
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 	
 	<script type="text/javascript">
 	  $(".dropdown-menu").html('<li><a href="eventDashboardAction.action?eventId=1">EVENTS DASHBOARD</a></li><li><a href="dashBoardAction.action">DASHBOARD</a></li><li><a href="newlogoutAction.action">LOGOUT</a></li>');
 	  function getDetails(){
-
+           $("#resultTableDivAjax").show();
 		  $.ajax({
 			  type:'GET',
-			  url: 'getTodayTotalAndCurrentUsersInfo.action'
+			  url: 'getTodayTotalAndCurrentUsersInfo.action',
+			  data :{fromDate:'27-05-2015',toDate:'29-05-2015'}
           }).done(function(result){
+			  $("#resultTableDivAjax").hide();
 		       var str ="";
-	           if(result != null){
-				   $("#mainInfo").show();
-	        	   $("#totalVisitors").html(result.totalVisitors);
-	        	   $("#currentVisitors").html(result.currentVisitors);
-			     str+="<table class='table table-bordered m_top20 '>";
-				  str+=" <tr>";
-				  if(result.lastUpdated != null){
-				    str+="   <th colspan='2'><b>Last Updated On : "+result.lastUpdated+"</b></th>";
-				  }else{
-					 str+="   <th colspan='2'><b>Last Updated On : N/A</b></th>"; 
-				  }
-				  str+=" </tr>";
-				  str+=" <tr>";
-				  str+="   <th>STATUS</th>";
-				  str+="   <th>COUNT</th>";
-				  str+=" </tr>";
-				  str+="<tr>";
-				  str+="   <td>Above 8 Hours</td>";
-				  if(result.above8hrs != null){
-				    str+="   <td>"+result.above8hrs+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
-				  }
-				  str+="</tr>";
-				  str+="<tr>";
-				  str+="   <td>7 to 8 Hours</td>";
-				  if(result.seventoeight != null){
-				    str+="   <td>"+result.seventoeight+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
-				  }
-				  str+="</tr>";
-				  str+="<tr>";
-				  str+="   <td>6 to 7 Hours</td>";
-				  if(result.sixtoseven != null){
-				    str+="   <td>"+result.sixtoseven+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
-				  }
-				  str+="</tr>";
-				  str+="<tr>";
-				  str+="   <td>5 to 6 Hours</td>";
-				  if(result.fivetosix != null){
-				    str+="   <td>"+result.fivetosix+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
-				  }
-				  str+="</tr>";
-				  str+="<tr>";
-				  str+="   <td>4 to 5 Hours</td>";
-				  if(result.fourtofive != null){
-				    str+="   <td>"+result.fourtofive+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
-				  }
-				  str+="</tr>";
-				  str+="<tr>";
-				  str+="   <td>3 to 4 Hours</td>";
-				  if(result.threetofour != null){
-				    str+="   <td>"+result.threetofour+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
+	           if(result != null && result.length > 0){
+	        	   $("#totalVisitors").html(result[0].totalVisitors);
+	        	   $("#currentVisitors").html(result[0].currentVisitors);
+				   $("#lasteUpdtOn").html(result[result.length-1].lastUpdated);
+				   $("#currentinvVisitors").html(result[0].currentInviteeVisitors);
+				   if(result[0].currentInviteeVisitors != null && result[0].currentVisitors != null)
+				     $("#currentnoninvVisitors").html(result[0].currentVisitors - result[0].currentInviteeVisitors);
+				   else
+					 $("#currentnoninvVisitors").html(0);
+				   str+='<table class="display DataTableDiv1" cellspacing="0" width="100%">';
+                            str+='<thead>';
+                                str+='<tr>';
+                                  str+='  <th class="back-white">TIME STATUS</th>';
+								  for(var i in result){
+									  var reqi = parseInt(i)+1;
+                                    str+='<th colspan="3" class="text-center table-color1">DAY '+reqi+'</th>';
+								  }
+                                str+='</tr>';
+                                str+=' <tr>';
+                                str+=' 	<th class="back-white"></th>';
+									for(var i in result){
+                                    str+='<th class="color-black table-color2">COUNT</th>';
+                                    str+='<th class="color-black table-color2">INVITEES</th>';
+                                    str+='<th class="color-black table-color2">NON INVITEES</th>';
+									 }
+                                str+='</tr></thead>';
+                            
+                            str+='<tbody>';
+                                str+="<tr>";
+				  str+="   <td class='back-white'>Above 8 Hours</td>";
+				  for(var i in result){
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].above8hrs != null){
+						str+="   "+result[i].above8hrs+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].above8hrsInv != null){
+						str+="   "+result[i].above8hrsInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].above8hrsInv != null && result[i].above8hrs != null){
+						str+="   "+result[i].above8hrs-result[i].above8hrsInv+"</td>";
+					  }else if(result[i].above8hrs != null){
+						 str+="   "+result[i].above8hrs+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td>2 to 3 Hours</td>";
-				  if(result.twotothree != null){
-				    str+="   <td>"+result.twotothree+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
+				  str+="   <td class='back-white'>7 to 8 Hours</td>";
+				  for(var i in result){
+					     if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].seventoeight != null){
+						str+=""+result[i].seventoeight+"</td>";
+					  }else{
+						  str+="0</td>";
+					  }
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].seventoeightInv != null){
+						str+="   "+result[i].seventoeightInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].seventoeightInv != null && result[i].seventoeight != null){
+						str+="   "+result[i].seventoeight-result[i].seventoeightInv+"</td>";
+					  }else if(result[i].seventoeight != null){
+						 str+="   "+result[i].seventoeight+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td>1 to 2 Hours</td>";
-				  if(result.onetotwo != null){
-				     str+="   <td>"+result.onetotwo+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
+				  str+="   <td class='back-white'>6 to 7 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].sixtoseven != null){
+						str+="  "+result[i].sixtoseven+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].sixtosevenInv != null){
+						str+="   "+result[i].sixtosevenInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].sixtosevenInv != null && result[i].sixtoseven != null){
+						str+="   "+result[i].sixtoseven-result[i].sixtosevenInv+"</td>";
+					  }else if(result[i].sixtoseven != null){
+						 str+="   "+result[i].sixtoseven+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td>Half An Hour To One Hours</td>";
-				  if(result.halfanhour != null){
-				     str+="   <td>"+result.halfanhour+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
+				  str+="   <td class='back-white'>5 to 6 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].fivetosix != null){
+						str+="   "+result[i].fivetosix+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].fivetosixInv != null){
+						str+="   "+result[i].fivetosixInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].fivetosixInv != null && result[i].fivetosix != null){
+						str+="   "+result[i].fivetosix-result[i].fivetosixInv+"</td>";
+					  }else if(result[i].fivetosix != null){
+						 str+="   "+result[i].fivetosix+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td>Below Half An Hour</td>";
-				  if(result.belowhalfanhour != null){
-				     str+="   <td>"+result.belowhalfanhour+"</td>";
-				  }else{
-					  str+="   <td>0</td>";
+				  str+="   <td class='back-white'>4 to 5 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+						
+					  if(result[i].fourtofive != null){
+						str+="  "+result[i].fourtofive+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].fourtofiveInv != null){
+						str+="   "+result[i].fourtofiveInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].fourtofiveInv != null && result[i].fourtofive != null){
+						str+="   "+result[i].fourtofive-result[i].fourtofiveInv+"</td>";
+					  }else if(result[i].fourtofive != null){
+						 str+="   "+result[i].fourtofive+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
+					  
+					  
 				  }
 				  str+="</tr>";
-				 
-				 str+="</table>";
+				  str+="<tr>";
+				  str+="   <td class='back-white'>3 to 4 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].threetofour != null){
+						str+="   "+result[i].threetofour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].threetofourInv != null){
+						str+="   "+result[i].threetofourInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].threetofourInv != null && result[i].threetofour != null){
+						str+="   "+result[i].threetofour-result[i].threetofourInv+"</td>";
+					  }else if(result[i].threetofour != null){
+						 str+="   "+result[i].threetofour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
+				  }
+				  str+="</tr>";
+				  str+="<tr>";
+				  str+="   <td class='back-white'>2 to 3 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].twotothree != null){
+						str+="   "+result[i].twotothree+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].twotothreeInv != null){
+						str+="   "+result[i].twotothreeInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].twotothreeInv != null && result[i].twotothree != null){
+						str+="   "+result[i].twotothree-result[i].twotothreeInv+"</td>";
+					  }else if(result[i].twotothree != null){
+						 str+="   "+result[i].twotothree+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
+					  
+					  
+				  }
+				  str+="</tr>";
+				  str+="<tr>";
+				  str+="   <td class='back-white'>1 to 2 Hours</td>";
+				  for(var i in result){
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].onetotwo != null){
+						 str+="   "+result[i].onetotwo+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].onetotwoInv != null){
+						str+="   "+result[i].onetotwoInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].onetotwoInv != null && result[i].onetotwo != null){
+						str+="   "+result[i].onetotwo-result[i].onetotwoInv+"</td>";
+					  }else if(result[i].onetotwo != null){
+						 str+="   "+result[i].onetotwo+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  
+					  
+				  }
+				  str+="</tr>";
+				  str+="<tr>";
+				  str+="   <td class='back-white'>Half An Hour To One Hours</td>";
+				  for(var i in result){
+					
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].halfanhour != null){
+						 str+="   "+result[i].halfanhour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].halfanhourInv != null){
+						str+="   "+result[i].halfanhourInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].halfanhourInv != null && result[i].halfanhour != null){
+						str+="   "+result[i].halfanhour-result[i].halfanhourInv+"</td>";
+					  }else if(result[i].halfanhour != null){
+						 str+="   "+result[i].halfanhour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+				  }
+				  
+				   
+				  
+				  
+				  
+				  str+="</tr>";
+				  str+="<tr>";
+				  str+="   <td class='back-white'>Below Half An Hour</td>";
+				  for(var i in result){
+				
+					   if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].belowhalfanhour != null){
+						 str+="   "+result[i].belowhalfanhour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].belowhalfanhourInv != null){
+						str+="   "+result[i].belowhalfanhourInv+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+					  
+					  if(i == 0){str+="   <td class='table-color1'>";}
+						  if(i == 1){str+="   <td class='table-color2'>";}
+						  if(i == 2){str+="   <td class='table-color1'>";}
+					  if(result[i].belowhalfanhourInv != null && result[i].belowhalfanhour != null){
+						str+="   "+result[i].belowhalfanhour-result[i].belowhalfanhourInv+"</td>";
+					  }else if(result[i].belowhalfanhour != null){
+						 str+="   "+result[i].belowhalfanhour+"</td>";
+					  }else{
+						  str+="   0</td>";
+					  }
+				  }
+                         
+
+					  str+="</tr>";
+                            str+="</tbody>";
+                        str+="</table>";
+						
+						
+						
+			     
 			   }
 			   $("#resultTableDiv").html(str);
+			      $('.DataTableDiv1').DataTable( {
+					responsive: true,
+					"paging":   false,
+					"info":     false,
+					"searching": false,
+					"bSort" : false,
+					"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+					"columnDefs": [
+					{ "width": "25%", "targets": 0 }]
+				} );
+					
+					$('.ScrollDiv1,.linkinner').slimScroll({
+					height: '390px'
+					});
+					$('.ScrollDiv2').slimScroll({
+					height: '260px'
+					});
+					$('.ScrollDiv').slimScroll({
+					height: '375px'
+					});
 	      });
 	  }
 	  getDetails();
@@ -292,7 +671,7 @@ function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId){
 	$("#ovrAlSummaryId").html("");
 	
 
-	subEvents1 = [14]; //8 -- MAHANADU MAIN ENTRY
+	subEvents1 = [8]; //8 -- MAHANADU MAIN ENTRY
 	 
 	if($('#myonoffswitchSummary1').is(":checked")){
 		stateId = 1;
@@ -333,7 +712,7 @@ function buildLocationSummary(result,reportLevelId){
 	var str_a = "";
 	str_a += "<table class='table'>";
 		str_a +="<thead>";
-			str_a +="<tr>";
+			str_a +="<tr style='background:#F0F0F0'>";
 				str_a+="<th></th>";
 				str_a+="<th>TOTAL UNIQUE VISITS</th>";
 				str_a+="<th>ONLY ONE DAY VISITS</th>";
@@ -382,35 +761,55 @@ function buildLocationSummary(result,reportLevelId){
 
 	str+='<tr>';
 	if(reportLevelId == 3){
-    str+='<th>DISTRICT</th>';
+    str+='<th  width="10%">DISTRICT</th>';
 	}else{
-	str+='<th>CONSTITUENCY</th>';
+	str+='<th  width="10%">CONSTITUENCY</th>';
 	}
-	str +='<th> TOTAL VISITORS </th>';
+	str +='<th colspan="3"> TOTAL VISITORS </th>';
 	subListLength = result[0].hoursList.length;
 	for(var i in result[0].hoursList){
 		var number = result[0].hoursList[i].id;
 		if(number>1){
-			str +='<th> '+result[0].hoursList[i].id+' DAYS VISITORS</th>';
+			str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAYS VISITORS</th>';
 		}else{
-			str +='<th> '+result[0].hoursList[i].id+' DAY VISITORS</th>';
+			str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAY VISITORS</th>';
 		}
 	}
 	
-    str+='</tr></thead>';
+    str+='</tr>';
+	  str+='<tr>';
+   	  str+=' <th class="color-black"></th>';
+	  str+='<th class="color-black table-color1">COUNT</th>';
+       str+='<th class="color-black table-color1">INVITEES</th>';
+       str+='<th class="color-black table-color1">NON INVITEES</th>';
+	  for(var i in result[0].hoursList){
+       str+='<th class="color-black table-color1">COUNT</th>';
+       str+='<th class="color-black table-color1">INVITEES</th>';
+       str+='<th class="color-black table-color1">NON INVITEES</th>';
+	  }
+    str+='</tr>';
+	 str+='</thead>';
     str+='<tbody>';
 	for(var i in result){
 		str+='<tr>';
 		str+='<td>'+result[i].locationName+'</td>';
 		str+='<td>'+result[i].total+'</td>';
+		str+='<td>'+result[i].newCount+'</td>';
+		var rCount = result[i].total-result[i].newCount;
+		str+='<td>'+rCount+'</td>';
 		
 		if(result[i].subList!=null && result[i].subList.length>0){
 			for(var j in result[i].subList){
 				str +='<th> '+result[i].subList[j].count+'</th>';
+				str +='<th> '+result[i].subList[j].newCount+'</th>';
+				var rqCount = result[i].subList[j].count - result[i].subList[j].newCount;
+				str +='<th> '+rqCount+'</th>';
 			}
 		}else{
 			for(var i=0;i<subListLength;i++){
-				str +='<th> - </th>';	
+				str +='<th> - </th>';
+				str +='<th> - </th>';
+				str +='<th> - </th>';				
 			}
 		}
 		
@@ -423,6 +822,7 @@ function buildLocationSummary(result,reportLevelId){
 	else{
 	$("#constiTableSummaryId").html(str);
 	}
+
 	$('#table'+reportLevelId+'Summary').DataTable( {
         responsive: true,
 		"paging":   false,
@@ -430,10 +830,9 @@ function buildLocationSummary(result,reportLevelId){
 		"searching": false,
 		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
 		"columnDefs": [
-	    { "width": "30%", "targets": 0 }]
+	    { "width": "25%", "targets": 0 }]
     } );
-	
-	if(reportLevelId == 3){
+	/*if(reportLevelId == 3){
 	$('.scrollDiv').slimScroll({
 	height: '350px'
 	});
@@ -442,9 +841,30 @@ function buildLocationSummary(result,reportLevelId){
 	$('.scrollDiv1').slimScroll({
 	height: '370px'
 	});
-	}
+	}*/
 	
 }
 	</script>
+	<script type="text/javascript">
+               $(document).ready(function() {
+var stDate = 
+                 $('.reservation').daterangepicker({ 
+				       startDate:'27-05-2015',
+					   endDate:'27-05-2015',
+				       format: 'DD-MM-YYYY',
+					   minDate: '27-05-2015',
+					   maxDate: '29-05-2015', 
+					  dateLimit: { days: 3 },
+					  showWeekNumbers: false
+					}, function(start, end, label) {
+					});
+               });
+               </script>
+
+<script>
+$(".tbtn").click(function(){
+    $(".themeControll").toggleClass("active");
+});
+</script>
 </body>
 </html>

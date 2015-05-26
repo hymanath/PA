@@ -2069,5 +2069,8 @@
 	<bean id="tdpCadreFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="entryExitInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntryExitInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
