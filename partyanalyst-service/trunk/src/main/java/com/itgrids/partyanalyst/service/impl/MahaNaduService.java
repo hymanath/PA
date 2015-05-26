@@ -1891,7 +1891,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 	
 	public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex ){
-		
+		List<Long> tdpCadreIds = new ArrayList<Long>();
 		List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();		
 		Date eventStrDate = null;
 	    Date eventEndDate = null;		 
@@ -1911,8 +1911,33 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					  vo.setName(params[1] != null ? params[1].toString() : "");
 					  vo.setDesc(params[2] != null ? params[2].toString() : "");
 					  vo.setMobileNo(params[3] != null ? params[3].toString() : "");
+					  vo.setLocationName(params[4] != null ? params[4].toString() : "");
+					  vo.setLocationType("N");  
 					  resultList.add(vo);
+					  tdpCadreIds.add((Long)params[0]);
 					 }
+				  if(tdpCadreIds != null && tdpCadreIds.size() > 0)
+				  {
+					  List parentevent = eventDAO.getParentEventId(eventId);
+					  
+					  List<Object[]> list1 =eventInviteeDAO.checkInvitees(tdpCadreIds,(Long)parentevent.get(0));
+					 
+					  if(list1 != null && list1.size() > 0)
+					  {
+						  for(Object[] params : list1)
+						  {
+							  MahanaduEventVO tdpCadreVO = getMatchedVO(resultList, (Long)params[0]) ;
+							  if(tdpCadreVO != null)
+							  {
+								  tdpCadreVO.setLocationType("Y");
+							  }
+							  else
+							  {
+								  tdpCadreVO.setLocationType("N");  
+							  }
+						  }
+					  }
+				  }
 			  }
 			}catch(Exception e){
 				e.printStackTrace();
@@ -2395,6 +2420,139 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		
 	};
 	
+	public List<MahanaduEventVO> getOtherStateDeligatesCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate)
+	{
+		
+		
+			 List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
+			try{
+				 Date eventStrDate = null;
+				 Date eventEndDate = null;
+				 DateUtilService date = new DateUtilService();
+				 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				 if(startDate != null && !startDate.isEmpty())
+				 eventStrDate = format.parse(startDate);
+				 if(endDate != null && !endDate.isEmpty())
+				 eventEndDate = format.parse(endDate);
+				Map<Long,Long> eventCount = new HashMap<Long, Long>();
+				List<Object[]> list = eventAttendeeDAO.getOtherStateDeligatesCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+				
+				List<Long> eventIds = new ArrayList<Long>();
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						MahanaduEventVO locationVO = getMatchedVO(resultList,(Long)params[2]);
+						if(locationVO == null)
+						{
+							locationVO = new MahanaduEventVO();
+							locationVO.setId((Long)params[2]);
+							locationVO.setName(params[3] != null ? params[3].toString() : "");
+							locationVO.setSubList(setEvents(subEventIds));
+							resultList.add(locationVO);
+						}
+						
+						MahanaduEventVO eventVO = getMatchedVO(locationVO.getSubList(),(Long)params[0]);
+						if(eventVO != null)
+						{
+							eventVO.setTotal(eventVO.getTotal() + (Long)params[1]);
+						}
+					}
+					
+				}
+			}
+				catch (Exception e) {
+					LOG.error(" Exception Raised in getOtherStateDeligatesCount ",e);
+					e.printStackTrace();
+				}
+			return resultList;
+	}
+	public List<MahanaduEventVO> setEvents(List<Long> subEventIds)
+	{
+		List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
+	 List<Object[]> list = eventDAO.getEventNames(subEventIds);
+	  if(list != null && list.size() > 0)
+	  {
+		  for(Object[] params : list)
+			 {
+			  MahanaduEventVO vo = new MahanaduEventVO();
+				 vo.setId((Long)params[0]);
+				 vo.setName(params[1] != null ? params[1].toString() : "");
+			     resultList.add(vo);
+			 }
+	  }
+	return resultList;
+	}
+	
+	public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate)
+	{
+		Long apCnt =0l;
+		Long tsCnt =0l;
+		Date eventStrDate = null;
+		Date eventEndDate = null;
+		 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
+			try{
+		 DateUtilService date = new DateUtilService();
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(startDate != null && !startDate.isEmpty())
+		 eventStrDate = format.parse(startDate);
+		 if(endDate != null && !endDate.isEmpty())
+		 eventEndDate = format.parse(endDate);
+		
+		List<Object[]> list = eventAttendeeDAO.getStateCount(eventId,eventStrDate,eventEndDate);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				if((Long)params[0] > 10)
+				{
+					apCnt = apCnt + (Long)params[1];
+				}
+				else
+				{
+					tsCnt = tsCnt + (Long)params[1];
+				}
+			}
+			MahanaduEventVO vo = new MahanaduEventVO();
+			vo.setId(1l);
+			vo.setName("Andhra Pradesh");
+			vo.setTotal(apCnt);
+			MahanaduEventVO vo1 = new MahanaduEventVO();
+			vo1.setId(0l);
+			vo1.setName("Telangana");
+			vo1.setTotal(tsCnt);
+			resultList.add(vo);resultList.add(vo1);
+		}
+		
+		List<Object[]> otherStates =eventAttendeeDAO.getOtherStateCount(eventId,eventStrDate,eventEndDate);
+		if(otherStates != null && otherStates.size() > 0)
+		{
+			for(Object[] params : otherStates)
+			{
+				MahanaduEventVO locationVO = getMatchedVO(resultList,(Long)params[1]);
+				if(locationVO == null)
+				{
+					locationVO = new MahanaduEventVO();
+					locationVO.setId((Long)params[1]);
+					locationVO.setName(params[2] != null ? params[2].toString() : "");
+					locationVO.setTotal((Long)params[0]);
+					resultList.add(locationVO);
+				}
+				else
+				{
+					locationVO.setTotal(locationVO.getTotal() + (Long)params[0]);	
+				}
+				
+			}
+		}
+	  }
+	
+		catch (Exception e) {
+			LOG.error(" Exception Raised in getStatewiseCount ",e);
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 	
 }
 

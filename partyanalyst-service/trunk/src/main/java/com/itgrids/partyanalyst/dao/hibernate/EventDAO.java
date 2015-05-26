@@ -76,5 +76,16 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+	public List getParentEventId(Long eventId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.parentEventId from Event model where  model.isActive =:isActive and model.eventId =:eventId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
 	
 }
