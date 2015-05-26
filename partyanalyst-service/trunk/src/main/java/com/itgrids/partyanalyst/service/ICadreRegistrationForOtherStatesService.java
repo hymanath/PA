@@ -24,4 +24,5 @@ public interface ICadreRegistrationForOtherStatesService {
 	
 	public List<GenericVO> getBoothsByConstiteuncy(Long constituencyId);
 	public List<SelectOptionVO> getCasteDetailsByCasteCategoryId(Long casteCategoryGroupId,Long stateId);
+	public void tdpTempararyCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar,final String registrationType);
 }
