@@ -1584,6 +1584,7 @@
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		
 		
 		
