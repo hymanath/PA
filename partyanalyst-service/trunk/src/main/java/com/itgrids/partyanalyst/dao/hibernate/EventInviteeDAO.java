@@ -115,4 +115,15 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		query.setParameter("id", id);
 		return (Long) query.uniqueResult(); 
 	}
+	
+	public List<Object[]> checkInvitees(List<Long> tdpCadreIds,Long eventId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.tdpCadreId,model.eventInviteeId from EventInvitee model where model.eventId =:eventId and model.tdpCadreId in(:tdpCadreIds)");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return  query.list(); 	
+	}
 }

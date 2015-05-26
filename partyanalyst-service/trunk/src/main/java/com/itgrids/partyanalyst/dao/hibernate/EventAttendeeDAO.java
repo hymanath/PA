@@ -308,7 +308,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.mobileNo ");
+		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.mobileNo,model.tdpCadre.image ");
 		str.append(" from EventAttendee model where ");
 		str.append(" model.event.eventId = :eventId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		if((startDate != null && endDate != null))
@@ -487,4 +487,98 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getOtherStateDeligatesCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId),model.tdpCadre.userAddress.state.stateId,model.tdpCadre.userAddress.state.stateName from EventAttendee model where model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds)");
+		
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate "); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'T' group by model.event.eventId,model.tdpCadre.userAddress.state.stateId,date(model.attendedTime) ");
+		Query query = getSession().createQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
+		query.setParameterList("subeventIds", subeventIds);
+		query.setParameter("parentEventId", parentEventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
+	public List<Object[]> getStateCount(Long eventId,Date startDate,Date endDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.tdpCadre.userAddress.constituency.district.districtId,count(distinct model.tdpCadre.tdpCadreId),date(model.attendedTime) ");
+		str.append("  from EventAttendee model where model.event.eventId = :eventId");
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate "); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		
+		str.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' group by date(model.attendedTime),model.tdpCadre.userAddress.constituency.district.districtId ");
+		Query query = getSession().createQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
+	public List<Object[]> getOtherStateCount(Long eventId,Date startDate,Date endDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.tdpCadre.tdpCadreId),model.tdpCadre.userAddress.state.stateId,model.tdpCadre.userAddress.state.stateName,date(model.attendedTime) from EventAttendee model where model.event.eventId =:eventId");
+		
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			str.append(" and date(model.attendedTime) = :startDate "); 
+			else
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'T' group by model.tdpCadre.userAddress.state.stateId,date(model.attendedTime) ");
+		Query query = getSession().createQuery(str.toString());
+		if((startDate != null && endDate != null))
+		{
+			if(startDate.equals(endDate))
+			query.setDate("startDate", startDate);
+			else
+			{
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);	
+			}
+		}
+		
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
 }

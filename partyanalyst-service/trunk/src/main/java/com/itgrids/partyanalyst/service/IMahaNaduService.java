@@ -42,5 +42,7 @@ public interface IMahaNaduService {
 	 public String updateTabAllocationDetails(Long authId,String cause,Long userId);
 	 public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 	 public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
+	 public List<MahanaduEventVO> getOtherStateDeligatesCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate);
+	 public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate);
 }
 
