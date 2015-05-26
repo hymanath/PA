@@ -368,4 +368,120 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setParameter("exitEventId",exitEventId);
 		return query.list();
 	}
+	
+	public List<Object[]> getEventAttendeeInfoDynamic(String locationType, Date evntStDate, List<Date> datesList, String sbStart, String sbMiddle, List<Long> subEventIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" model.tdpCadre.userAddress.constituency.district.districtId");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" model.tdpCadre.userAddress.constituency.constituencyId");
+		}
+		
+		str.append(" from EventAttendee model ");
+		str.append(sbStart);
+		
+		str.append(" where model.event.eventId in(:subEventIds) ");
+		str.append(sbMiddle);
+		str.append(" and date(model.attendedTime) = :date0 ");
+		str.append(" and model.event.isActive =:isActive ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId" +
+					" order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId" +
+					" order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.constituencyId");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("date0", evntStDate);
+		
+		if(datesList.size()>1){
+			for(int i=1;i<datesList.size();i++){
+				query.setDate("date"+i+"", datesList.get(i));
+			}
+			
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("subEventIds", subEventIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,List<Long> subEventIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" model.tdpCadre.userAddress.constituency.district.districtId,");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" model.tdpCadre.userAddress.constituency.constituencyId,");
+		}
+		str.append(" date(model.attendedTime)");
+		str.append(" from EventAttendee model ");
+		str.append(" where model.event.eventId in(:subEventIds) ");
+		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and model.event.isActive =:isActive ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
+		}else{
+			str.append(" group by model.event.eventId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" date(model.attendedTime)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("eventStartDate", eventStartDate);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("subEventIds", subEventIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,List<Long> subEventIds){
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.tdpCadre.tdpCadreId," +
+				" count(model.tdpCadre.tdpCadreId), ");
+		str.append(" date(model.attendedTime) ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" ,model.tdpCadre.userAddress.constituency.district.districtId ");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId ");
+		}
+		
+		str.append(" from EventAttendee model ");
+		str.append(" where model.event.eventId in(:subEventIds) ");
+		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and model.event.isActive =:isActive ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" group by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId," +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" group by model.tdpCadre.tdpCadreId, " +
+					" model.tdpCadre.userAddress.constituency.constituencyId," +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
+		}else{
+			str.append(" group by model.tdpCadre.tdpCadreId, " +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" date(model.attendedTime)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("eventStartDate", eventStartDate);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("subEventIds", subEventIds);
+		return query.list();
+	}
 }

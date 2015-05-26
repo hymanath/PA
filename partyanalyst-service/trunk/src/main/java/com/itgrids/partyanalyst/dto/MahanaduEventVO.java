@@ -25,9 +25,85 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>();
 	private List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
 	
+	private List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>();
+	
 	private String mobileNo;
-
-
+	
+	private List<String> dates;
+	private List<String> dateCombinations;
+	private Long locationId;
+	private String locationName;
+	private String locationType;
+	private int count;
+	
+	private List<Long> attendedCadres;
+	private int oneDayCount;
+	private Long revisitCount;
+	
+	
+	
+	public Long getRevisitCount() {
+		return revisitCount;
+	}
+	public void setRevisitCount(Long revisitCount) {
+		this.revisitCount = revisitCount;
+	}
+	public int getOneDayCount() {
+		return oneDayCount;
+	}
+	public void setOneDayCount(int oneDayCount) {
+		this.oneDayCount = oneDayCount;
+	}
+	public List<Long> getAttendedCadres() {
+		return attendedCadres;
+	}
+	public void setAttendedCadres(List<Long> attendedCadres) {
+		this.attendedCadres = attendedCadres;
+	}
+	public List<MahanaduEventVO> getDatesList() {
+		return datesList;
+	}
+	public void setDatesList(List<MahanaduEventVO> datesList) {
+		this.datesList = datesList;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	public List<String> getDateCombinations() {
+		return dateCombinations;
+	}
+	public void setDateCombinations(List<String> dateCombinations) {
+		this.dateCombinations = dateCombinations;
+	}
+	public List<String> getDates() {
+		return dates;
+	}
+	public void setDates(List<String> dates) {
+		this.dates = dates;
+	}
+	
+	
 	public List<MahanaduEventVO> getSubList() {
 		return subList;
 	}
