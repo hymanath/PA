@@ -530,6 +530,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	  try{
 		session = request.getSession();
 		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"OTHER_STATE_DELEGATE_REG")){
+			return "otherStateTempararyCardsPrinting";
+		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)){
 			return "tdpCadreSearch";
 		}		
