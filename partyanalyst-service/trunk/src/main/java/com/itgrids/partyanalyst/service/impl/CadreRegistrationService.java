@@ -9797,6 +9797,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					if(vo == null)
 					{
 						vo = new TdpCadreFamilyDetailsVO();	
+						if(vo.getVotercardNo() != null && !vo.getVotercardNo().isEmpty())
 						familyMap.put(vo.getVotercardNo().trim(), vo);
 					}
 									
