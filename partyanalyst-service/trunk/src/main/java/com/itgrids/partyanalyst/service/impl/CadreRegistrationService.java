@@ -5824,7 +5824,17 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		if(voterMemberCards!=null && voterMemberCards.size()>0 ){
 			
 			List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
-			List<Object[]> vtrDetails = tdpCadreDAO.getCadrePartialDetailsByMemberShip(voterMemberCardsList);
+			List<Object[]> vtrDetails = null;
+			
+			if(isOtherState.equalsIgnoreCase("false"))
+			{
+				vtrDetails = tdpCadreDAO.getCadrePartialDetailsByMemberShip(voterMemberCardsList);
+			}
+			else if(isOtherState.equalsIgnoreCase("true"))
+			{
+				vtrDetails = tdpCadreDAO.getOtherStateCadrePartialDetailsByMemberShip(voterMemberCardsList);
+			}
+
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					//Long voterId = Long.valueOf(obj[1].toString());
@@ -5866,19 +5876,35 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 								returnVO.setVoterName(names.get(0));
 							}
 						}
+						
+						if(obj[6]!=null){
+							userAddressId = Long.valueOf(obj[6].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							if(userAddress.getPanchayatId() != null)
+							returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						}						
 					}
 					else
-					{			
-						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");						
+					{
+						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");
+						if(obj[6]!=null){
+							userAddressId = Long.valueOf(obj[6].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							returnVO.setVillage(userAddress.getState() != null ? userAddress.getState().getStateName().toUpperCase()+" STATE DELEGATE ":" OTHER STATE DELEGATE");
+						}
+						else
+						{
+							returnVO.setVillage(" OTHER STATE DELEGATE ");
+						}
 					}
-					
 					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
-					if(obj[6]!=null){
-						userAddressId = Long.valueOf(obj[6].toString());
-						userAddress = userAddressDAO.get(userAddressId);
-						if(userAddress.getPanchayatId() != null)
-						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
-					}
+					/*if(obj[6]!=null){
+							userAddressId = Long.valueOf(obj[6].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							if(userAddress.getPanchayatId() != null)
+							returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						}	
+					*/					
 					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
@@ -5888,7 +5914,15 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		
 		if(nonVoterMemberCards !=null && nonVoterMemberCards.size()>0){
 			List<String> nonVoterMemberCardsList = new ArrayList<String>(nonVoterMemberCards);
-			List<Object[]> vtrDetails = tdpCadreDAO.getCadrePartialDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			List<Object[]> vtrDetails = null;
+			if(isOtherState.equalsIgnoreCase("false"))
+			{
+				vtrDetails = tdpCadreDAO.getCadrePartialDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			}
+			else if(isOtherState.equalsIgnoreCase("true"))
+			{
+				vtrDetails = tdpCadreDAO.getOtherStateCadrePartialDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			}
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					//Long voterId = Long.valueOf(obj[1].toString());
@@ -5924,18 +5958,34 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 								returnVO.setVoterName(names.get(0));
 							}
 						}
+						if(obj[5]!=null){
+							userAddressId = Long.valueOf(obj[5].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							if(userAddress.getPanchayatId() != null)
+							returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						} 
 					}
 					else
 					{
 						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");	
+						if(obj[5]!=null){
+							userAddressId = Long.valueOf(obj[5].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							returnVO.setVillage(userAddress.getState() != null ? userAddress.getState().getStateName().toUpperCase()+" STATE DELEGATE ":" OTHER STATE DELEGATE");
+						} else
+						{
+							returnVO.setVillage(" OTHER STATE DELEGATE ");
+						}
 					}
 					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
-					if(obj[5]!=null){
-						userAddressId = Long.valueOf(obj[5].toString());
-						userAddress = userAddressDAO.get(userAddressId);
-						if(userAddress.getPanchayatId() != null)
-						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
-					} 
+					/*
+					 * if(obj[5]!=null){
+							userAddressId = Long.valueOf(obj[5].toString());
+							userAddress = userAddressDAO.get(userAddressId);
+							if(userAddress.getPanchayatId() != null)
+							returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						} 
+					*/
 					
 					returnVO.setStatus("success");	
 					finalList.add(returnVO);
@@ -6033,7 +6083,15 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		if(voterMemberCards!=null && voterMemberCards.size()>0 ){
 			
 			List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
-			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(voterMemberCardsList);
+			List<Object[]> vtrDetails = null;
+			if(isOtherState.trim().equalsIgnoreCase("false"))
+			{
+				vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(voterMemberCardsList);
+			}
+			else if(isOtherState.trim().equalsIgnoreCase("true"))
+			{
+				vtrDetails = tdpCadreDAO.getOtherStateCadreDetailsByMemberShipId(voterMemberCardsList);
+			}
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					//Long voterId = Long.valueOf(obj[1].toString());
@@ -6110,18 +6168,21 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								returnVO.setVoterName(names.get(0));
 							}
 						}
+						
+						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+						returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+						returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+						returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+						returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
 					}
 					else
 					{
-						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");			
+						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");		
+						returnVO.setVillage(userAddress.getLocalArea() != null ? userAddress.getLocalArea().toUpperCase() : "");
 					}
 					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
-					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
-					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
-					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
-					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
-					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
-					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
 					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
@@ -6131,7 +6192,16 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		
 		if(nonVoterMemberCards !=null && nonVoterMemberCards.size()>0){
 			List<String> nonVoterMemberCardsList = new ArrayList<String>(nonVoterMemberCards);
-			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			//List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			List<Object[]> vtrDetails = null;
+			if(isOtherState.trim().equalsIgnoreCase("false"))
+			{
+				vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			}
+			else if(isOtherState.trim().equalsIgnoreCase("true"))
+			{
+				vtrDetails = tdpCadreDAO.getOtherStateCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
+			}
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					//Long voterId = Long.valueOf(obj[1].toString());
@@ -6208,18 +6278,21 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								returnVO.setVoterName(names.get(0));
 							}
 						}
+						
+						returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
+						returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+						returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+						returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+						returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+						returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
 					}
 					else
 					{
-						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");			
+						returnVO.setVoterName(obj[2] != null ? obj[2].toString() : "");	
+						returnVO.setVillage(userAddress.getLocalArea() != null ? userAddress.getLocalArea().toUpperCase() : "");
 					}
 					//returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
-					returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName() : "");
-					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
-					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
-					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
-					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
-					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
 					returnVO.setStatus("success");	
 					finalList.add(returnVO);
 				}
@@ -7130,7 +7203,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						Long stateId = address.getState().getStateId();
 						if(stateId.longValue() != 1L) //AP/TS
 						{
-							userAddress.setLocalArea(address.getState().getStateName()+" State Delegate ");
+							userAddress.setLocalArea(address.getState().getStateName()+" STATE DELEGATE ");
 						}
 						else
 						{
@@ -7150,10 +7223,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					else
 					{
-						userAddress.setLocalArea(" Other State Delegate ");
+						userAddress.setLocalArea(" OTHER STATE DELEGATE ");
 					}
 				}
 				
+			}
+			else
+			{
+				userAddress.setLocalArea("  OTHER STATE DELEGATE ");
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in getUserAddressForCadreRegistered in CadreRegistrationService service", e);
