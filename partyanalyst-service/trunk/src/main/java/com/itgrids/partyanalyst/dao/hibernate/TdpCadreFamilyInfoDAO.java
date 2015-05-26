@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -35,5 +36,13 @@ public class TdpCadreFamilyInfoDAO extends GenericDaoHibernate<TdpCadreFamilyInf
 		return query.list();
 	}
 	
-	
+	public List<TdpCadreFamilyInfo> getCadresFamilyDetailsBytdpCadreIdList(Set<Long> tdpCadreIdsSet)
+	{
+
+		Query query = getSession().createQuery("select model from TdpCadreFamilyInfo model " +
+				"  where model.tdpCadreId in (:tdpCadreIdsSet) and model.isDeleted = 'N' and model.relationId = 13 ");// self relationShip members
+		query.setParameterList("tdpCadreIdsSet", tdpCadreIdsSet);
+		
+		return query.list();
+	}
 }
