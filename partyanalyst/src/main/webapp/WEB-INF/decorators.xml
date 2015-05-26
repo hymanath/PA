@@ -419,5 +419,6 @@
 		<pattern>/mahanaduTabUsersManageAction*</pattern>
 		<pattern>/messageQueueManagementAction*</pattern>
 		<pattern>/mahanaduCadreVisitInfoAction*</pattern>
+		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 	 </decorator>
 </decorators>
