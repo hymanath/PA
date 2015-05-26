@@ -118,7 +118,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
 			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
+				queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
 			}
 			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 			{							
@@ -172,7 +172,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-						cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString().substring(4):"");
+						if(cadre[4] != null){
+							if(cadre[4].toString().trim().length() > 8){
+								cadreVO.setMemberShipNo(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
+							}else{
+								cadreVO.setMemberShipNo(cadre[4].toString());
+							}
+						}else{
+							cadreVO.setMemberShipNo("");
+						}
+						//cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString().substring(4):"");
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
@@ -310,7 +319,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}						
 			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
+				queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
 			}
 			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 			{							

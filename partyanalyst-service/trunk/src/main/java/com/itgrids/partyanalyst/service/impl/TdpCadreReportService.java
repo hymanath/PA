@@ -2837,7 +2837,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					vo.setName(params[1] != null ? params[1].toString() :"" +" " + params[2] != null ? params[2].toString() :"" );
 					vo.setRelativeName(params[3] != null ? params[3].toString() : "");
 					vo.setMobileNo(params[4] != null ? params[4].toString() : "");
-					vo.setMembershipNo(params[5] != null ? params[5].toString() : "");
+					if(params[5] != null){
+					  //vo.setMembershipNo(params[5] != null ? params[5].toString() : "");
+					    if(params[5].toString().trim().length() > 8){
+						  vo.setMembershipNo(params[5].toString().trim().substring(params[5].toString().trim().length()-8));
+						}else{
+							vo.setMembershipNo(params[5].toString());
+						}
+					}else{
+						vo.setMembershipNo("");
+					}
 					vo.setPrintStatus(params[6] != null ? params[6].toString() : "");
 					returnVo.getZebraPrintDetailsVOList().add(vo);
 					
@@ -3168,7 +3177,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
 			
 			if(membership != null && !membership.isEmpty())
-				queryStr.append(" and substring(model.memberShipNo,5) = '"+membership+"'");
+				queryStr.append(" and (model.memberShipNo = '"+membership+"' or model.memberShipNo = 'AP14"+membership+"'  or model.memberShipNo = 'TS14"+membership+"')");
 		    if(mobileNo != null && !mobileNo.isEmpty())
 				queryStr.append(" and model.mobileNo = '" +mobileNo+"'");
 			if(trNumber != null && !trNumber.isEmpty())
@@ -3226,7 +3235,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						vo.setCadreId((Long)zebraPrintDetails[0]);
 						vo.setVoterName(teluguNames.get((Long)zebraPrintDetails[0]));
 						vo.setImageBase64String(zebraPrintDetails[1] != null ? zebraPrintDetails[1].toString(): "");
-						vo.setPreviousEnrollmentNumber(zebraPrintDetails[3] != null ? zebraPrintDetails[3].toString().substring(4) : "");
+						if(zebraPrintDetails[3] != null){
+							if(zebraPrintDetails[3].toString().trim().length() > 8){
+								vo.setPreviousEnrollmentNumber(zebraPrintDetails[3].toString().trim().substring(zebraPrintDetails[3].toString().trim().length()-8));
+							}else{
+								vo.setPreviousEnrollmentNumber(zebraPrintDetails[3].toString());
+							}
+						}else{
+							vo.setPreviousEnrollmentNumber("");
+						}
+						//vo.setPreviousEnrollmentNumber(zebraPrintDetails[3] != null ? zebraPrintDetails[3].toString().substring(4) : "");
 						vo.setMobileNumber(zebraPrintDetails[4] != null ? zebraPrintDetails[4].toString(): "");
 						vo.setNameType(zebraPrintDetails[5] != null ? zebraPrintDetails[5].toString() :"");
 						if(zebraPrintDetails[6] != null ){

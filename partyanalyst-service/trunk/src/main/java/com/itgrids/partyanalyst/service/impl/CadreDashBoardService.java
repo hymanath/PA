@@ -2802,7 +2802,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 				
 				if(cadre[7] != null){
-					cadreVo.setMemberShipNo(cadre[7].toString());//Membership No
+					if(cadre[7].toString().trim().length() > 8){
+						cadreVo.setMemberShipNo(cadre[7].toString().trim().substring(cadre[7].toString().trim().length()-8));
+					}else{
+						cadreVo.setMemberShipNo(cadre[7].toString());
+					}
+					//cadreVo.setMemberShipNo(cadre[7].toString());//Membership No
 				}else{
 					cadreVo.setMemberShipNo("");
 				}
