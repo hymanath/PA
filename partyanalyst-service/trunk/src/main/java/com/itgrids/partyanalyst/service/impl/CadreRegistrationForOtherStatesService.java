@@ -1437,4 +1437,103 @@ public class CadreRegistrationForOtherStatesService implements
 		
 		return returnList;
 	}
+	
+	public String checkIsAlreadyTempCardGenerated(Long mobile,String name)
+	{
+		try{
+			Long count = tdpCadreDAO.getIsAlreadyTempararyRegistered(mobile,name);
+			if(count != null && count.longValue() >0L)
+			{
+				return "alreadyRegistered";
+			}
+			else
+			{
+				return "notRegistered";
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised in checkIsAlreadyTempCardGenerated in CadreRegistrationForOtherStatesService service", e);
+		}
+		return null;
+	}
+	public void tdpTempararyCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar,final String registrationType) 
+	{
+	  try{
+		if(cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0){
+			String status = checkIsAlreadyTempCardGenerated(Long.valueOf(cadreRegistrationVO.getMobileNumber().trim()),cadreRegistrationVO.getVoterName().trim());
+			if(status.equalsIgnoreCase("alreadyRegistered")){
+				surveyCadreResponceVO.setStatus("alreadyRegistered");
+			}
+		}
+		final TdpCadre tdpCadre = new TdpCadre();
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				TdpCadre tdpCadre1 = null;
+                tdpCadre.setDataSourceType("WEB");
+				
+				if (cadreRegistrationVO.getVoterName() != null && cadreRegistrationVO.getVoterName().trim().length() > 0) {
+					tdpCadre.setFirstname(cadreRegistrationVO.getVoterName());
+				}
+				
+				if (cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0) {
+					tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
+				}				
+				
+				if (cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0) {
+					if (!insertType.equalsIgnoreCase("update")) {
+						tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+					} else {
+						tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+					}
+				}
+		
+				UserAddress userAddress = new UserAddress();
+				if(addressVO.getStateId() != null && addressVO.getStateId().longValue() >0)
+				{
+					userAddress.setState(stateDAO.get(addressVO.getStateId()));
+					userAddress = userAddressDAO.save(userAddress);
+					tdpCadre.setUserAddress(userAddress);
+				}
+
+				if (!insertType.equalsIgnoreCase("update") && tdpCadre.getInsertedTime() == null) {
+					tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				}
+				tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_YEAR_FOROTHER_STATES);
+
+				tdpCadre.setIsDeleted("T");
+				tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
+
+					String userId = "0000";
+					if (cadreRegistrationVO.getCreatedUserId() != null) {
+						userId = cadreRegistrationVO.getCreatedUserId().toString();
+					}
+					String ref = getReferenceNo(userId);
+
+					if (tdpCadre.getRefNo() == null || tdpCadre.getRefNo().trim().length() == 0) {
+						ref = getUniueRefNo(ref);
+						tdpCadre.setRefNo(ref);
+					}
+					cadreRegistrationVO.setRefNo(tdpCadre.getRefNo());
+					tdpCadre.setIsDeleted("T");
+					surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
+					tdpCadre1 = tdpCadreDAO.save(tdpCadre);
+
+				if (tdpCadre1.getMemberShipNo() == null || tdpCadre1.getMemberShipNo().trim().length() == 0) {
+					String membershipNo = getMemberShipNo(tdpCadre1.getTdpCadreId());
+					tdpCadre1.setMemberShipNo(membershipNo);
+				}
+				uploadProfileImage(cadreRegistrationVO,tdpCadre1);
+				tdpCadre1 = tdpCadreDAO.save(tdpCadre1);
+				
+				surveyCadreResponceVO.setEnrollmentNumber(tdpCadre1.getRefNo());			
+				surveyCadreResponceVO.setStatus("SUCCESS");
+				surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);				
+			}
+		});
+		surveyCadreResponceVO.setStatus("SUCCESS");
+	  }catch(Exception e){
+		  LOG.error("Exception Rised in tdpTempararyCadreSavingLogic",e);
+		  surveyCadreResponceVO.setStatus("error");
+	  }
+	}
 }
