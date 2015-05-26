@@ -152,7 +152,7 @@ background-color: #E5E5E5 !important;
         </div>
     	<div class="col-md-3">
         	<label class="control-label">Enter Mobile No</label>
-            <input class="form-control" type="text"  value="9676696760" placeholder="ENTER MOBILE NO " id="mobileNo" maxlength="10" />
+            <input class="form-control" type="text"  placeholder="ENTER MOBILE NO " id="mobileNo" maxlength="10" />
         </div>
     	<div class="col-md-3">
         	<label class="control-label">Enter Voter ID</label>
