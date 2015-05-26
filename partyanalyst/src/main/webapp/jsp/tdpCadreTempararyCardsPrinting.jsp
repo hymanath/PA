@@ -1143,7 +1143,7 @@
 														<option value="15"> Maharasthra </option>
 														<option value="20"> Orissa </option>
 														<option value="24"> Tamilnadu </option>
-														<option value="00"> Others </option>
+														<option value="-1"> Others </option>
 													</select>														
 												</h5>
 												
