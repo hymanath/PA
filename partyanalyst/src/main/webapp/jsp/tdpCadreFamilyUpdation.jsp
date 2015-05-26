@@ -143,7 +143,7 @@ background-color: #E5E5E5 !important;
 				$('#errorDiv').html('Please Enter Any Search Criteria').css("color","red");	
 				return false;
 		}
-	
+		$("#tableDataDiv").html("");
 		$('#searchDataImg').show();	
 		$('#errorDiv').html('');	
 		$("#updateTableDiv").html('');	
@@ -210,13 +210,13 @@ background-color: #E5E5E5 !important;
 				votercardNo :result[i].voterCardNo,
 				relationId:null,
 				dob: (result[i].dobStr).substring(0,11),
-				marriageDay:null,
+				marriageDay:(result[i].marriageDateStr).substring(0,11),
 				email:result[i].email,
 				casteStateId:result[i].casteId ,
 				educationId:result[i].educationId,
 				occupationId:result[i].occupationId,
-				whatsappStatus :null,
-				partyMemberSince:result[i].partyMemberSinceStr,
+				whatsappStatus :result[i].whatsAppStatus,
+				partyMemberSince:(result[i].partyMemberSinceStr).substring(0,11),
 				tdpCadreId:result[i].cadreId,
 				bloodGroupId : 0
 			};
@@ -271,9 +271,9 @@ function getFamilyDetails(tdpCadreId)
 		str+='<tr>';
 		str+='<th>Name</th>';
 		str+='<th>Mobile</th>';
-		str+='<th>Gender</th>';
+		//str+='<th>Gender</th>';
 		//str+='<th>Age</th>';
-		str+='<th>VoterCardNo</th>';
+		//str+='<th>VoterCardNo</th>';
 		//str+='<th>Relation</th>';
 		str+='<th>DOB</th>';
 		str+='<th>MarriageDay</th>';
@@ -305,63 +305,13 @@ function getFamilyDetails(tdpCadreId)
 						}
 						if(searchArr[l].mobileNo != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].mobileNo+'"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
+							str+='<td><input type="text" value="'+searchArr[l].mobileNo+'"  class="mobile"  style="width: 100px"  maxlength="10" /> <input type="hidden" value="'+searchArr[l].votercardNo+'" class="voter"  style="width: 100px"/></td>';
 						}
 						else
 						{
-							str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
+							str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> <input type="hidden" value="'+searchArr[l].votercardNo+'" class="voter"  style="width: 100px"/></td>';
 						}
-						if(searchArr[l].gender != null)
-						{
-							if(searchArr[l].gender == 'M')
-							{
-								str+='<td><select class="gender" readonly style="width: 100px"> <option value="M" selected="selected">Male</option><option value="F">Female</option></select></td>';
-							}
-							else{
-								str+='<td><select class="gender"> <option value="M">Male</option><option value="F" selected="selected">Female</option></select></td>';
-							}
-						}
-						else
-						{
-							str+='<td><select class="gender"  style="width: 100px"> <option value="M">Male</option><option value="F">Female</option></select></td>';
-						}
-						/*
-						if(searchArr[l].age != null)
-						{
-							str+='<td><input type="text" value="'+searchArr[l].age+'"  class="age"  style="width: 100px"/> </td>';
-						}
-						else
-						{
-							str+='<td><input type="text"   class="age"  style="width: 100px"/> </td>';
-						}
-						*/
-						if(searchArr[l].votercardNo != null)
-						{
-							str+='<td><input type="text" value="'+searchArr[l].votercardNo+'" readonly class="voter"  style="width: 100px"/> </td>';
-						}
-						else
-						{
-							str+='<td><input type="text"  class="voter"  style="width: 100px"/> </td>';
-						}
-					/*
-						str+='<td> ';
-						if(relationsArr != null && relationsArr.length>0)
-						{
-							str+='<select id="" class="relation">';
-							for(var k in relationsArr)
-							{
-								if(searchArr[l].relationId != null && (relationsArr[k].id ==searchArr[l].relationId ))
-								{
-									str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
-								}
-								else
-								{
-									str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
-								}
-							}
-							str+='</select>';
-						}
-						*/
+
 						str+=' </td>';
 
 						if(searchArr[l].dob != null)
@@ -395,7 +345,6 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<select id="" class="casteState"  style="width: 130px">';
 							str+='<option value="0" selected="selected">Select Caste</option>';
-							console.log("details : " + searchArr[l].relationId);
 							for(var k in casteArr)
 							{
 								if(searchArr[l].casteStateId != null && (casteArr[k].id ==searchArr[l].casteStateId ))
@@ -450,9 +399,6 @@ function getFamilyDetails(tdpCadreId)
 							str+='</select>';
 						}
 						str+=' </td>';
-						
-					
-						
 						str+='<td> ';
 						
 							str+='<select id="" class="whatsappStatus"  style="width: 130px">';
@@ -486,10 +432,10 @@ function getFamilyDetails(tdpCadreId)
 		str+='<th>Name</th>';
 		str+='<th>Mobile</th>';
 		//str+='<th>Gender</th>';
-		str+='<th>Age</th>';
-		str+='<th>VoterCardNo</th>';
+		//str+='<th>Age</th>';
+		//str+='<th>VoterCardNo</th>';
 		str+='<th>Relation</th>';
-		//str+='<th>DOB</th>';
+		str+='<th>DOB</th>';
 		//str+='<th>MarriageDay</th>';
 		str+='<th>Email</th>';
 		//str+='<th>Caste State</th>';
@@ -497,7 +443,7 @@ function getFamilyDetails(tdpCadreId)
 		str+='<th>Occupation</th>';
 		//str+='<th>Blood Group</th>';
 		//str+='<th>WhatsAPP</th>';
-		str+='<th>MemberSince</th>';
+		//str+='<th>MemberSince</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody id="familyMembers">';
@@ -522,22 +468,8 @@ function getFamilyDetails(tdpCadreId)
 					str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
 				}
 				
-				if(result[i].age != null)
-				{
-					str+='<td><input type="text" value="'+result[i].age+'"  class="age"  style="width: 100px"/> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text"   class="age"  style="width: 100px"/> </td>';
-				}
-				if(result[i].votercardNo != null)
-				{
-					str+='<td><input type="text" readonly value="'+result[i].votercardNo+'"  class="voter"  style="width: 100px"/> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text" class="voter"  style="width: 100px"/> </td>';
-				}
+				
+				
 
 				str+='<td> ';
 				if(relationsArr != null && relationsArr.length>0)
@@ -558,6 +490,14 @@ function getFamilyDetails(tdpCadreId)
 					str+='</select>';
 				}
 				str+=' </td>';
+				if(result[i].dob != null)
+				{
+					str+='<td><input type="text" readonly value="'+(result[i].dob).substring(0,11)+'"  class="dob"   readonly="true"  style="width: 100px"/> </td>';
+				}
+				else
+				{
+					str+='<td><input type="text" class="dob"   readonly="true"  style="width: 100px"/> </td>';
+				}
 				
 				if(result[i].email != null)
 				{
@@ -629,14 +569,14 @@ function getFamilyDetails(tdpCadreId)
 						}
 						str+=' </td>';		
 						*/
-				if(result[i].partyMemberSince != null)
+				/*if(result[i].partyMemberSince != null)
 				{
-					str+='<td><input type="text" value="'+result[i].partyMemberSince+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px" /> </td>';
+					str+='<td><input type="text" value="'+(result[i].partyMemberSince).substring(0,11)+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px" /> </td>';
 				}
 				else
 				{
 					str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
-				}
+				}*/
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -700,7 +640,7 @@ function updateFamilyInfo()
 		if($(this).find(".age").val())
 		var age = $(this).find(".age").val();
 		
-		var dob = "";
+		var dob = $(this).find(".dob").val();
 		var name = $(this).find(".name").val();
 	    var education = $(this).find(".education").val();
 		var email = $(this).find(".email").val();
@@ -714,7 +654,7 @@ function updateFamilyInfo()
 	
 	    var occupation = $(this).find(".occupation").val();
 	    var bloodGroup = $(this).find(".bloodGroup").val();
-		alert(count)
+		//alert(count)
 			
 		if(count == 1)
 			{
@@ -731,15 +671,17 @@ function updateFamilyInfo()
 		else
 		{
 			relation = $(this).find(".relation").val();;
+			voterId = "";
+			partyMemberSince="";
 		}
 		var obj = {
-		age:age,
+		age:0,
 		casteStateId:casteStateId,
 		dob:dob,
 		name:name,
 		education:education,
 		email:email,
-		gender:gender,
+		gender:"",
 		marriageDay:marriageDay,
 		whatsappStatus:whatsAPP,
 		mobileNo:mobileNo,
@@ -752,7 +694,7 @@ function updateFamilyInfo()
 	}
 		dataArr.push(obj);
 	});
-console.log(dataArr);
+
 	var jsObj = 
 	{
 		dataArr:dataArr,
@@ -764,9 +706,9 @@ console.log(dataArr);
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)},
      	  }).done(function(result){ 
-			  if(result != null){
-				
-			}
+			  if(result != null && result.resultCode ==0){
+				 getCadreDetails();
+				}
 	   });
 	  
 }
@@ -795,10 +737,10 @@ function addNewMemberInFamily(size)
 	var str='';
 
 				str+='<tr class="familyInfo" id="familyInnfo'+size+'">';
-				str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px" readonly/> </td>';
+				str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px" /> </td>';
 				str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
-				str+='<td><input type="text"   class="age"  style="width: 100px"/> </td>';
-				str+='<td><input type="text" class="voter"  readonly style="width: 100px"/> </td>';
+				
+
 				str+='<td> ';
 				if(relationsArr != null && relationsArr.length>0)
 				{
@@ -811,6 +753,7 @@ function addNewMemberInFamily(size)
 					str+='</select>';
 				}
 				str+=' </td>';
+				str+='<td><input type="text"   class="dob"  readonly="true" style="width: 100px"/> </td>';
 				str+='<td><input type="text" class="email"  style="width: 200px"/> </td>';
 				str+='<td> ';
 				if(educationArr != null && educationArr.length>0)
@@ -848,7 +791,7 @@ function addNewMemberInFamily(size)
 							str+='</select>';
 						}
 						str+=' </td>';*/
-				str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
+				//str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
 
 			str+='</tr>';
 		
@@ -858,6 +801,7 @@ function addNewMemberInFamily(size)
 					dateFormat: 'yy-mm-dd',
 					changeMonth: true,
 					changeYear: true,
+					maxDate: new Date(),
 					yearRange: "-100:+0"
 		});
 		$( ".dob" ).datepicker({	
@@ -871,6 +815,7 @@ function addNewMemberInFamily(size)
 					dateFormat: 'yy-mm-dd',
 					changeMonth: true,
 					changeYear: true,
+					maxDate: new Date(),
 					yearRange: "-100:+0"
 		});
 
