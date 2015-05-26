@@ -57,6 +57,9 @@
 		<div class="row m_top10">
 			<div class="col-md-6">
 				<div class="panel panel-default panel-custom-default">
+					<div class="panel-heading">
+						<p class="m_0 display-style"> DAY'S UNIQUE AND REVISIT SUMMARY</p>
+					</div>
 					<div class="panel-body">
 						<center><img id="daysSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 						
@@ -66,6 +69,9 @@
 			</div>
 			<div class="col-md-6">
 				<div class="panel panel-default panel-custom-default">
+						<div class="panel-heading">
+							<p class="m_0 display-style"> DAY WISE VISIT SUMMARY</p>
+						</div>
 						<div class="panel-body">
 							<center><img id="ovrAlSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 							
