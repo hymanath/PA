@@ -224,12 +224,13 @@ background-color: #E5E5E5 !important;
 				occupationId:result[i].occupationId,
 				whatsappStatus :null,
 				partyMemberSince:result[i].partyMemberSinceStr,
-				tdpCadreId:result[i].address,
+				tdpCadreId:result[i].cadreId,
 				bloodGroupId : 0
 			};
 			
 			searchArr.push(cadreObj);
 		}
+		//console.log(searchArr);
 		str+='</tbody></table></div>';
 		$("#tableDataDiv").html(str);
 		$("#tableId").dataTable();
@@ -268,7 +269,8 @@ function getFamilyDetails(tdpCadreId)
 
 	function buildfamilyDetails(result,tdpCadreId)
 	{
-		tdpCadreId = "0"+tdpCadreId;
+		$('#nextBuildBtnId').remove();
+		tdpCadreId = tdpCadreId;
 		var str ='';
 		str+='<h4  class="offset5"> CADRE DETAILS </h4>';
 		str+='<table class="table table-bordered" id="dayWiseUsersDetailsId"  style="margin-top:15px;">';
@@ -286,7 +288,7 @@ function getFamilyDetails(tdpCadreId)
 		str+='<th>Caste State</th>';
 		str+='<th>Education</th>';
 		str+='<th>Occupation</th>';
-		str+='<th>Blood Group</th>';
+		//str+='<th>Blood Group</th>';
 		str+='<th> interested in WhatsApp Group? </th>';
 		str+='<th>MemberSince</th>';
 		str+='</tr>';
@@ -296,11 +298,8 @@ function getFamilyDetails(tdpCadreId)
 		{
 			for(var l in searchArr)
 			{
-				console.log(searchArr[l].tdpCadreId);
-				console.log(tdpCadreId);
 				if(searchArr[l].tdpCadreId == tdpCadreId)
 				{
-					console.log(searchArr);
 						str+='<tr class="familyInfo">';
 						str+='<td style="display:none;"><input type="hidden" value="'+searchArr[l].tdpCadreId+'"  class="tdpCadre" /></td>';
 						if(searchArr[l].name != null)
@@ -403,9 +402,10 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<select id="" class="casteState"  style="width: 130px">';
 							str+='<option value="0" selected="selected">Select Caste</option>';
+							console.log("details : " + searchArr[l].relationId);
 							for(var k in casteArr)
 							{
-								if(searchArr[l].relationId != null && (casteArr[k].id ==searchArr[l].relationId ))
+								if(searchArr[l].casteStateId != null && (casteArr[k].id ==searchArr[l].casteStateId ))
 								{
 									str+='<option value="'+casteArr[k].id+'" selected="selected">'+casteArr[k].name+'</option>';
 								}
@@ -425,7 +425,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='<option value="0" selected="selected">Select Education</option>';
 							for(var k in educationArr)
 							{
-								if(searchArr[l].educationId != null && (educationArr[k].id ==searchArr[l].relationId ))
+								if(searchArr[l].educationId != null && (educationArr[k].id ==searchArr[l].educationId ))
 								{
 									str+='<option value="'+educationArr[k].id+'" selected="selected">'+educationArr[k].name+'</option>';
 								}
@@ -445,7 +445,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='<option value="0" selected="selected">Select Occupation</option>';
 							for(var k in occupationArr)
 							{
-								if(occupationArr[l].educationId != null && (occupationArr[k].id ==searchArr[l].occupationId ))
+								if(searchArr[l].occupationId != null && (occupationArr[k].id ==searchArr[l].occupationId ))
 								{
 									str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
 								}
@@ -502,7 +502,7 @@ function getFamilyDetails(tdpCadreId)
 		//str+='<th>Caste State</th>';
 		str+='<th>Education</th>';
 		str+='<th>Occupation</th>';
-		str+='<th>Blood Group</th>';
+		//str+='<th>Blood Group</th>';
 		//str+='<th>WhatsAPP</th>';
 		str+='<th>MemberSince</th>';
 		str+='</tr>';
@@ -614,7 +614,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='</select>';
 						}
 						str+=' </td>';
-					str+='<td> ';
+					/*str+='<td> ';
 						if(bloodGroupArr != null && bloodGroupArr.length>0)
 						{
 							str+='<select id="" class="bloodGroup"  style="width: 130px">';
@@ -633,7 +633,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='</select>';
 						}
 						str+=' </td>';		
-						
+						*/
 				if(result[i].partyMemberSince != null)
 				{
 					str+='<td><input type="text" value="'+result[i].partyMemberSince+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px" /> </td>';
@@ -835,7 +835,7 @@ function addNewMemberInFamily(size)
 							str+='</select>';
 						}
 						str+=' </td>';
-						str+='<td> ';
+						/*str+='<td> ';
 						if(bloodGroupArr != null && bloodGroupArr.length>0)
 						{
 							str+='<select id="" class="bloodGroup"  style="width: 130px">';
@@ -846,7 +846,7 @@ function addNewMemberInFamily(size)
 							}
 							str+='</select>';
 						}
-						str+=' </td>';
+						str+=' </td>';*/
 				str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
 
 			str+='</tr>';
