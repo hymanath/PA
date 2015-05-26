@@ -10130,14 +10130,14 @@
 				<param name="root">result</param>
 			</result>
 		</action>
-		<action name="populateMahanaduLatestInfoAction" class="mahanaduDashBoardAction" method="populateLatestInfo">
+		<action name="populateMahanaduLatestInfoAction" class="mahanaduDashBoardAction" method="getTodayTotalVisitorsForWeb">
 			<result type="json" name="success">
 				<param name="root"></param>
 			</result>
 		</action>
 		<action name="getTodayTotalAndCurrentUsersInfo" class="mahanaduDashBoardAction" method="getTodayTotalAndCurrentUsersInfo">
 			<result type="json" name="success">
-				<param name="root">mahanaduVisitVO</param>
+				<param name="root">mahanaduVisitList</param>
 			</result>
 		</action>
 		<action name="mahanaduCadreVisitInfoAction" class="mahanaduDashBoardAction">
