@@ -2330,6 +2330,20 @@ public void flushAndclearSession(){
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
+	
+	public List<Object[]> getOtherStateCadreDetailsByMemberShipId(List<String> memberCardNos)	{
+		Query query = getSession().createQuery("select model.memberShipNo , " +
+				" model.voterId," +
+				" model.firstname," +
+				" model.relativename," +
+				" model.voter.voterId," +
+				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo,model.mobileNo,model.photoType,model.image," +
+				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
+				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+		query.setParameterList("memberCardNos", memberCardNos);
+		return query.list();
+	}
+	
 	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime,List<Long> consituencyIdsList)
 	{
 		Query query = getSession().createQuery("select " +
@@ -3158,6 +3172,27 @@ public void flushAndclearSession(){
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
+	
+	public List<Object[]> getOtherStateCadreDetailsByMemberShipIdForNonVoters(List<String> memberCardNos)	{
+		Query query = getSession().createQuery("select model.memberShipNo , " +
+				" model.voterId," +
+				" model.firstname," +
+				" model.relativename," +
+				//" model.voter.voterId," +
+				//" model.voter.voterIDCardNo," +
+				" model.dataSourceType," +
+				" model.tdpCadreId," +
+				" model.refNo," +
+				" model.mobileNo," +
+				" model.photoType," +
+				" model.image," +
+				
+				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
+				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+		query.setParameterList("memberCardNos", memberCardNos);
+		return query.list();
+	}
+	
 public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyId){		
 		
 		StringBuilder queryStr=new StringBuilder();
@@ -5073,6 +5108,18 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+		public List<Object[]> getOtherStateCadrePartialDetailsByMemberShip(List<String> memberCardNos)	{
+			Query query = getSession().createQuery("select model.memberShipNo , " +
+					" model.voterId," +
+					" model.firstname," +
+					" model.voter.voterId," +
+					" model.voter.voterIDCardNo,model.mobileNo,model.userAddress.userAddressId,model.tdpCadreId,model.cardNumber" +
+					" from TdpCadre model " +
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+			query.setParameterList("memberCardNos", memberCardNos);
+			return query.list();
+		}
+		
 		public List<Object[]> getCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos)	{
 			Query query = getSession().createQuery("select model.memberShipNo , " +
 					" model.voterId," +
@@ -5081,6 +5128,18 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" model.mobileNo," +
 					" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
+			query.setParameterList("memberCardNos", memberCardNos);
+			return query.list();
+		}
+		
+		public List<Object[]> getOtherStateCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos)	{
+			Query query = getSession().createQuery("select model.memberShipNo , " +
+					" model.voterId," +
+					" model.firstname," +
+					" model.tdpCadreId," +
+					" model.mobileNo," +
+					" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
 			query.setParameterList("memberCardNos", memberCardNos);
 			return query.list();
 		}
