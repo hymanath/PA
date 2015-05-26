@@ -9573,8 +9573,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		ResultStatus rs = new ResultStatus();
 		try{
 			
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			DateUtilService date= new DateUtilService();
+			
 			if(inputList != null && inputList.size() > 0)
 			{
 				tdpCadreFamilyInfoDAO.deleteFamilyInfoByCadre(inputList.get(0).getTdpCadreId());
