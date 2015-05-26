@@ -5799,6 +5799,10 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		Set<String> nonVoterMemberCards = new HashSet<String>();
 		List<String> memberCards = null;
 		List<String> memberCardsForNonVoters  = null;
+		
+		if(isOtherState == null)
+			isOtherState = "false";
+		
 		if(isOtherState.equalsIgnoreCase("false"))
 		{
 			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
@@ -5976,6 +5980,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		Date srvyDt = null;
 		
 		String isOtherState = input.getIsOtherState();
+		
+		if(isOtherState == null)
+			isOtherState = "false";
 		
 		if(isOtherState.trim().equalsIgnoreCase("false"))
 		{
