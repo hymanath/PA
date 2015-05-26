@@ -16,11 +16,19 @@
 		 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script src="familyUpdateDist/js/bootstrap.min.js" type="text/javascript"></script>
+		<link href="familyUpdateDist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="familyUpdateDist/css/custom.css" rel="stylesheet" type="text/css">
+		<link href="familyUpdateDist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	<script>
 	
 	</script>
 	<style>
-
+.mandatory
+{
+	color:red !important;
+		
+}
 tr.lowPerf{background:#FFA500 !important;}
 tr.lowPerf td{background:#FFA500 !important;}
 #dayWiseUsersDetailsId  thead th{
@@ -40,53 +48,133 @@ background-color: #E5E5E5 !important;
 }
 
 	</style>
-	
-  </head>
-  <body>
-<div class="container">
-			<!-------ADD BLOCK------>
 
-	<div class="row m_top20" id="searchcadreDiv" class="row m_top20">	
-	
-	
-		<div class="span12" style="margin-top: 20px;">
-			<h4 id="headingDiv" class="text-uppercase"> Search Cadre</h4>
-		
-		</div>
-		<div class="span12" >
-			<div class="span4" id="errorDiv" style="margin-top: 10px;margin-bottom: 10px; margin-left: 0px;"></div>
-		</div>
-		<div class="span12" style="margin-bottom: 20px;">
-			
-			<div class="row-fluid">  
-				<div class="span4"> 
-					<input type="text" id="membershipNo" class="input-block-level" placeholder="ENTER MEMBERSHIP ID ">
-				</div>
-				
-				<div class="span4" >
-					<input type="text" placeholder="ENTER MOBILE NO " value="9581434970" class="input-block-level" id="mobileNo" maxlength="10" onkeyup="">
-				</div>
-				
-				<div class="span4">
-					<input type="text" placeholder=" ENTER VOTERID" class="input-block-level" id="voterId">
-				</div>
-			</div>
-			
-			
-			<div class="row-fluid">
-				<div class="span4 offset4">
-					<input type="button" id="searchbtn" style="margin-bottom: 20px;" class="btn btn-success btn-block" onclick="getCadreDetails()" value="SEARCH">
-				</div>
-				<div class="span12" id="tableDataDiv" style="margin-left: -15px"></div>
-			</div>
-		</div>
-		<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
-		<div id="updateTableDiv" style="clear:both;overflow:scroll;display:none;"></div>
-		<button class="btn btn-success offset4" style="margin-top:15px;margin-bottom:15px;;display:none;" onclick="updateFamilyInfo();" id="updateeBtn"> UPDATE DETAILS </button>
+<style type="text/css">
+	.m_0
+	{
+		margin:0px;
+	}
+	.m_top20
+	{
+		margin-top:20px;
+	}
+	.panel-custom
+	{
+		border:0px;
+	}
+	.panel-custom .panel-heading
+	{
+		background:#fff;
+	}
+	.shadow-box
+	{
+		box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+	}
+	/* radio button */
+.onoffswitch {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 0px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #62B762; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #E35F5F; color: ;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: 6px;
+    background: #FFFFFF;
+    border: 0px solid #999999; border-radius: 20px;
+    position: absolute; top: 0; bottom: 0; right: 56px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+.disnone
+{
+	display:none
+}
+.button-edit , .button-done , .button-edit1 , .button-done1 , .button-edit2 , .button-done2 , .button-edit3 , .button-done3
+{
+	cursor:pointer;
+	text-decoration:underline
+}
+.color-ccc , .color-ccc:hover, .color-ccc:active , .color-ccc:focus
+{
+	color:#CCCCCC;
+	text-decoration:none
+}
+.border-btm
+{
+	border-bottom:1px solid #ccc
+}
+.pad_10
+{
+	padding:10px;
+}
+</style>
+</head>
+
+<body>
+<div class="container shadow-box">
+	<h3 class="text-center border-btm">SEARCH CADRE</h3>
+    <div class="row m_top20 pad_10">
+    	<div class="col-md-3 col-md-offset-2">
+        	<label class="control-label">Enter Membership ID</label>
+            <input class="form-control" type="text" id="membershipNo"  placeholder="ENTER MEMBERSHIP ID "/>
+        </div>
+    	<div class="col-md-3">
+        	<label class="control-label">Enter Mobile No</label>
+            <input class="form-control" type="text"  value="9676696760" placeholder="ENTER MOBILE NO " id="mobileNo" maxlength="10" />
+        </div>
+    	<div class="col-md-3">
+        	<label class="control-label">Enter Voter ID</label>
+            <input class="form-control" type="text" placeholder=" ENTER VOTERID" id="voterId"/>
+        </div>
+        <div class="col-md-4 col-md-offset-4 m_top20">
+        	<button class="btn btn-success btn-block" onclick="getCadreDetails();">SEARCH</button>
+        </div>
+    </div>
+</div>
+
+<div class="container shadow-box m_top20 pad_10" id="tableDataDiv"></div>
+<div class="container shadow-box m_top20" id="tdpCadreDetails" ></div>
+<div class="container shadow-box m_top20" id="familyDetalsDiv" ></div>
+<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;margin-left:550px"/>
+<div class="container shadow-box m_top20" id="btnDiv" >
+		<button class="btn btn-success " style="margin-top:15px;margin-bottom:15px;;margin-left:500px;display:none;" onclick="updateFamilyInfo();" id="updateeBtn"> UPDATE DETAILS </button>
+</div>
 
 		
-	<script>
-	
+<script>
+
 	var relationsArr = new Array();
 	var casteArr = new Array();
 	var occupationArr = new Array();
@@ -128,6 +216,50 @@ background-color: #E5E5E5 !important;
 					 getCadreDetails();
 				}
 		  });
+		  
+		  
+				$(".hide-inline , .hide-inline1 , .hide-inline2 , .hide-inline3").hide();
+				$(".button-edit").click(function(){
+					$(".hide-inline").removeClass("disnone");
+					$(".show-inline").addClass("disnone");
+					$(".hide-inline").show();
+				});
+				$(".button-done").click(function(){
+					$(".show-inline").removeClass("disnone");
+					$(".hide-inline").addClass("disnone");
+					$(".hide-inline").hide();
+				});
+				$(".button-edit1").click(function(){
+					$(".hide-inline1").removeClass("disnone");
+					$(".show-inline1").addClass("disnone");
+					$(".hide-inline1").show();
+				});
+				$(".button-done1").click(function(){
+					$(".show-inline1").removeClass("disnone");
+					$(".hide-inline1").addClass("disnone");
+					$(".hide-inline1").hide();
+				});
+				$(".button-edit2").click(function(){
+					$(".hide-inline2").removeClass("disnone");
+					$(".show-inline2").addClass("disnone");
+					$(".hide-inline2").show();
+				});
+				$(".button-done2").click(function(){
+					$(".show-inline2").removeClass("disnone");
+					$(".hide-inline2").addClass("disnone");
+					$(".hide-inline2").hide();
+				});
+				$(".button-edit3").click(function(){
+					$(".hide-inline3").removeClass("disnone");
+					$(".show-inline3").addClass("disnone");
+					$(".hide-inline3").show();
+				});
+				$(".button-done3").click(function(){
+					$(".show-inline3").removeClass("disnone");
+					$(".hide-inline3").addClass("disnone");
+					$(".hide-inline3").hide();
+				});
+				 
 	});
 	
 	
@@ -143,11 +275,15 @@ background-color: #E5E5E5 !important;
 				$('#errorDiv').html('Please Enter Any Search Criteria').css("color","red");	
 				return false;
 		}
-		$("#tableDataDiv").html("");
+	
 		$('#searchDataImg').show();	
 		$('#errorDiv').html('');	
+		$("#tableDataDiv").html('');	
+		$("#tdpCadreDetails").html('');	
+		$("#familyDetalsDiv").html('');	
 		$("#updateTableDiv").html('');	
-		$("#updateFamilyTableDiv").html('');	
+		$("#updateFamilyTableDiv").html('');
+
 		//$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNo,
@@ -234,7 +370,8 @@ function getFamilyDetails(tdpCadreId)
 	{
 		$('#searchDataImg').show();	
 		$('#updateeBtn').hide();	
-		$('#updateTableDiv').hide();	
+		$('#tdpCadreDetails').hide();	
+		$('#familyDetalsDiv').hide();			
 		$('#updateFamilyTableDiv').hide();	
 		var jsObj = {
 			tdpCadreId:tdpCadreId,			
@@ -249,12 +386,13 @@ function getFamilyDetails(tdpCadreId)
 			//$("#ajaxImage").hide();
 			$('#searchDataImg').hide();	
 			$('#updateeBtn').show();	
-			$('#updateTableDiv').show();	
+			$('#tdpCadreDetails').show();	
+			$('#familyDetalsDiv').show();	
 			$('#updateFamilyTableDiv').show();	
 			if(result != null && result.length>0)			
 				buildfamilyDetails(result,tdpCadreId);
 			else
-				$("#updateTableDiv").html("</span style='text-align:center;'> No data Available<span>");
+				$("#tdpCadreDetails").html("</span style='text-align:center;'> No data Available<span>");
 		});
 		
 	}
@@ -263,93 +401,101 @@ function getFamilyDetails(tdpCadreId)
 
 	function buildfamilyDetails(result,tdpCadreId)
 	{
+	
 		$('#nextBuildBtnId').remove();
 		tdpCadreId = tdpCadreId;
 		var str ='';
 		str+='<h4  class="offset5"> CADRE DETAILS </h4>';
-		str+='<table class="table table-bordered" id="dayWiseUsersDetailsId"  style="margin-top:15px;">';
-		str+='<thead>';
-		str+='<tr>';
-		str+='<th>Name</th>';
-		str+='<th>Mobile</th>';
-		//str+='<th>Gender</th>';
-		//str+='<th>Age</th>';
-		//str+='<th>VoterCardNo</th>';
-		//str+='<th>Relation</th>';
-		str+='<th>DOB</th>';
-		str+='<th>MarriageDay</th>';
-		str+='<th>Email</th>';
-		str+='<th>Caste State</th>';
-		str+='<th>Education</th>';
-		str+='<th>Occupation</th>';
-		//str+='<th>Blood Group</th>';
-		str+='<th> interested in WhatsApp Group? </th>';
-		str+='<th>MemberSince</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
+		str+='<div class="row" style="padding:10px">';
+
 		if(searchArr != null && searchArr.length>0)
 		{
 			for(var l in searchArr)
 			{
 				if(searchArr[l].tdpCadreId == tdpCadreId)
 				{
-						str+='<tr class="familyInfo">';
-						str+='<td style="display:none;"><input type="hidden" value="'+searchArr[l].tdpCadreId+'"  class="tdpCadre" /></td>';
+						str+='<div class="familyInfo">';
+						str+='<input type="hidden" value="'+searchArr[l].tdpCadreId+'"  class="tdpCadre" "/>';
+						str+='<input type="hidden" value="'+searchArr[l].votercardNo+'"  class="voter" />';
 						if(searchArr[l].name != null)
 						{
-							str+='<td> <input type="text" value="'+searchArr[l].name+'" readonly class="name" /> </td>';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Name</label>';
+							str+='<input type="text" value="'+searchArr[l].name+'" readonly class="name form-control" />';
+							str+='</div>';
 						}
 						else
 						{
-							str+='<td> <input type="text"  class="name" /> </td>';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Name</label>';
+							str+=' <input type="text"  class="name form-control" />';
+							str+='</div>';
 						}
 						if(searchArr[l].mobileNo != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].mobileNo+'"  class="mobile"  style="width: 100px"  maxlength="10" /> <input type="hidden" value="'+searchArr[l].votercardNo+'" class="voter"  style="width: 100px"/></td>';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Mobile Number</label>';
+							str+=' <input type="text" value="'+searchArr[l].mobileNo+'"  class="mobile form-control" maxlength="10" key="ErrorDivcadre'+l+'"/>';
+							str+='</div>';
+							
 						}
 						else
 						{
-							str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> <input type="hidden" value="'+searchArr[l].votercardNo+'" class="voter"  style="width: 100px"/></td>';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Mobile Number</label>';
+							str+=' <input type="text"  class="mobile form-control"  maxlength="10"  key="ErrorDivcadre'+l+'"/>';
+							str+='</div>';
 						}
-
-						str+=' </td>';
-
 						if(searchArr[l].dob != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].dob+'"  class="dob" readonly="true" style="cursor:text;width: 100px"/> </td>';
+							str+='<div class="col-md-2 col-xs-6">';
+							str+='<label class="control-label">DOB</label>';
+							str+=' <input type="text" value="'+searchArr[l].dob+'"  class="dob form-control" readonly="true" style="cursor:text;"/>';
+							str+='</div>';						
+						
+							//str+='<td><input type="text" value="'+searchArr[l].dob+'"  class="dob" readonly="true" style="cursor:text;width: 100px"/> </td>';
 						}
 						else
 						{
-							str+='<td><input type="text"  class="dob" readonly="true" style="cursor:text;"  style="width: 100px"/> </td>';
+							str+='<div class="col-md-2 col-xs-6">';
+							str+='<label class="control-label">DOB</label>';
+							str+=' <input type="text"  class="dob form-control" readonly="true" style="cursor:text;"  style=""/>';
+							str+='</div>';
+						
+							//str+='<td><input type="text"  class="dob" readonly="true" style="cursor:text;"  style="width: 100px"/> </td>';
 						}
 						
-						if(searchArr[l].marriageDay != null)
-						{
-							str+='<td><input type="text" value="'+searchArr[l].marriageDay+'"  class="marriageDay" readonly="true" style="cursor:text;width: 100px"/> </td>';
-						}
-						else
-						{
-							str+='<td><input type="text" class="marriageDay" readonly="true" style="cursor:text;width: 100px"/> </td>';
-						}
 						if(searchArr[l].email != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].email+'"  class="email"  style="width: 200px"/> </td>';
+						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Email</label>';
+							str+=' <input type="text" value="'+searchArr[l].email+'"  class="email form-control"  style=""/> ';
+							str+='</div>';	
+
+							//str+='<td><input type="text" value="'+searchArr[l].email+'"  class="email"  style="width: 200px"/> </td>';
 						}
 						else
 						{
-							str+='<td><input type="text" class="email"  style="width: 200px"/> </td>';
-						}
 						
-						str+='<td> ';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Email</label>';
+							str+=' <input type="text" class="email form-control"  style=""/>';
+							str+='</div>';	
+							//str+='<td><input type="text" class="email"  style="width: 200px"/> </td>';
+						}
 						if(casteArr != null && casteArr.length>0)
 						{
-							str+='<select id="" class="casteState"  style="width: 130px">';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Caste</label>';
+							str+='<select id="" class="casteState form-control"  style="">';
 							str+='<option value="0" selected="selected">Select Caste</option>';
+							console.log("details : " + searchArr[l].relationId);
 							for(var k in casteArr)
 							{
 								if(searchArr[l].casteStateId != null && (casteArr[k].id ==searchArr[l].casteStateId ))
 								{
+								
 									str+='<option value="'+casteArr[k].id+'" selected="selected">'+casteArr[k].name+'</option>';
 								}
 								else
@@ -357,14 +503,14 @@ function getFamilyDetails(tdpCadreId)
 									str+='<option value="'+casteArr[k].id+'" >'+casteArr[k].name+'</option>';
 								}
 							}
-							str+='</select>';
+							str+='</select></div>';
 						}
-						str+=' </td>';
 						
-						str+='<td> ';
 						if(educationArr != null && educationArr.length>0)
 						{
-							str+='<select id="" class="education"  style="width: 130px">';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Education</label>';
+							str+='<select id="" class="education form-control" >';
 							str+='<option value="0" selected="selected">Select Education</option>';
 							for(var k in educationArr)
 							{
@@ -377,14 +523,15 @@ function getFamilyDetails(tdpCadreId)
 									str+='<option value="'+educationArr[k].id+'" >'+educationArr[k].name+'</option>';
 								}
 							}
-							str+='</select>';
+							str+='</select></div>';
 						}
-						str+=' </td>';
-						
-						str+='<td> ';
+					
 						if(occupationArr != null && occupationArr.length>0)
 						{
-							str+='<select id="" class="occupation"  style="width: 130px">';
+						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Occupation</label>';
+							str+='<select id="" class="occupation form-control">';
 							str+='<option value="0" selected="selected">Select Occupation</option>';
 							for(var k in occupationArr)
 							{
@@ -397,144 +544,191 @@ function getFamilyDetails(tdpCadreId)
 									str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
 								}
 							}
-							str+='</select>';
+							str+='</select></div>';
 						}
-						str+=' </td>';
-						str+='<td> ';
-						if(searchArr[l].whatsappStatus != null)
-						{
-							if( searchArr[l].whatsappStatus =='YES')
-							{
-								str+='<select id="" class="whatsappStatus"  style="width: 130px">';
-								str+='<option value="NO" >No</option>';
-								str+='<option value="YES" selected="selected">Yes</option>';
-								str+='</select>';
-							}
-							else if( searchArr[l].whatsappStatus =='NO')
-							{
-								str+='<select id="" class="whatsappStatus"  style="width: 130px">';
-								str+='<option value="NO" selected="selected">No</option>';
-								str+='<option value="YES" >Yes</option>';
-								str+='</select>';
-							}
-						}
-						else
-						{
-							str+='<select id="" class="whatsappStatus"  style="width: 130px">';
-							str+='<option value="NO" >No</option>';
-							str+='<option value="YES">Yes</option>';
-							str+='</select>';
-						}
-
-						str+=' </td>';
-						
 						if(searchArr[l].partyMemberSince != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].partyMemberSince+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px"/> </td>';
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Party Member Since</label>';
+							str+=' <input type="text" value="'+searchArr[l].partyMemberSince+'"  class="membersince form-control"  readonly="true" style="cursor:text;"/> ';
+							str+='</div>';	
+						
+							//str+='<td><input type="text" value="'+searchArr[l].partyMemberSince+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px"/> </td>';
 						}
 						else
 						{
-							str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
+						
+							
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Party Member Since</label>';
+							str+=' <input type="text"  class="membersince form-control"  readonly="true" style="cursor:text;"/> ';
+							str+='</div>';	
+							//str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
 						}
-					str+='</tr>';
+						
+						
+						if(searchArr[l].marriageDay != null)
+						{
+						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Marriage Date</label>';
+							str+=' <input type="text" value="'+searchArr[l].marriageDay+'"  class="marriageDay form-control" readonly="true" style="cursor:text;"/>';
+							str+='</div>';	
+						
+							//str+='<td><input type="text" value="'+searchArr[l].marriageDay+'"  class="marriageDay" readonly="true" style="cursor:text;width: 100px"/> </td>';
+						}
+						else
+						{
+						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Marriage Date</label>';
+							str+=' <input type="text" class="marriageDay form-control" readonly="true" style="cursor:text;"/> ';
+							str+='</div>';	
+
+							//str+='<td><input type="text" class="marriageDay" readonly="true" style="cursor:text;width: 100px"/> </td>';
+						}
+						str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Interested For WhatsApp Group? </label>';
+							
+							str+='<select id="" class="whatsappStatus form-control">';
+							console.log(searchArr[l].whatsappStatus);
+							if(searchArr[l].whatsappStatus != null)
+							{
+								if( searchArr[l].whatsappStatus == 'YES')
+								{
+									str+='<option value="NO" >No</option>';
+									str+='<option value="YES" selected="selected">Yes</option>';
+								}
+								else if( searchArr[l].whatsappStatus == 'NO')
+								{
+									str+='<option value="NO" selected="selected">No</option>';
+									str+='<option value="YES" >Yes</option>';
+								}
+							}
+							else
+							{
+								str+='<option value="NO" >No</option>';
+								str+='<option value="YES">Yes</option>';
+							}
+
+						str+='</select></div>';
+						str+='<div class="col-md-2 col-xs-6">';
+							str+=' <div id="ErrorDivcadre'+l+'" class="mandatory"></div> ';
+							str+='</div>';	
+					str+='</div>';	
 					
 				}
 			}
+			
 		}
+		str+='</div>';	
+
+		$("#tdpCadreDetails").html(str);
 		
-		str+='</tbody>';
-			str+='</table>';
-			str+='<div>';
-			str+='<h4  class="offset5"> FAMILY DETAILS  </h4>';
-			str+='<table class="table table-bordered" id="dayWiseUsersDetailsId" style="margin-top:15px;">';
-		str+='<thead>';
-		str+='<tr>';
-		str+='<th>Name</th>';
-		str+='<th>Mobile</th>';
-		//str+='<th>Gender</th>';
-		//str+='<th>Age</th>';
-		//str+='<th>VoterCardNo</th>';
-		str+='<th>Relation</th>';
-		str+='<th>DOB</th>';
-		//str+='<th>MarriageDay</th>';
-		str+='<th>Email</th>';
-		//str+='<th>Caste State</th>';
-		str+='<th>Education</th>';
-		str+='<th>Occupation</th>';
-		//str+='<th>Blood Group</th>';
-		//str+='<th>WhatsAPP</th>';
-		//str+='<th>MemberSince</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody id="familyMembers">';
+		str='';
+		str+='<div class="panel-heading">';
+        str+='<h4 class="media-heading">Cadre Family Details</h4>';
+        str+='</div>';
+        str+='<div class="panel-body">';
+       
+
+		str+='<div id="familyMembers">' ;
 		for(var i=0;i<result.length;i++)
 		{
-			str+='<tr class="familyInfo" id="familyInnfo'+i+'"> ';
-				str+='<td style="display:none;"><input type="hidden" value="cadreId"  class="tdpCadre" /></td>';
-				if(result[i].name != null)
-				{
-					str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text" value="'+result[i].name+'"  class="name" readonly style="margin-left:15px;margin-top:-20px"/> </td>';
-				}
-				else
-				{
-					str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px"/> </td>';
-				}
-				if(result[i].mobileNo != null)
-				{
-					str+='<td><input type="text" value="'+result[i].mobileNo+'"  class="mobile"   style="width: 100px"  maxlength="10" /> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
-				}
+			str+='<div class="panel panel-default familyInfo" id="familyInnfo'+i+'">';
+			str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre" />';
+			if(result[i].name != null)
+			{
+			
+				str+='<div class="panel-heading">';
+                str+='<h4 class=" media-heading" >'+result[i].name+'</h4> <input type="hidden" value="'+result[i].name+'" class="name"/> <div id="ErrorDiv'+i+'"  class="mandatory"></div>';
 				
-				
-				
+				str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-22px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click To Remove Family Member"></i>';
+                str+='</div>';
 
-				str+='<td> ';
-				if(relationsArr != null && relationsArr.length>0)
+			}
+			str+='<div class="panel-body">';
+            str+='<div class="row">';
+			
+			if(result[i].mobileNo != null)
+			{
+				
+                str+='<div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Mobile No</label>';
+                str+='<input type="text" value="'+result[i].mobileNo+'"  class="mobile form-control"  maxlength="10" key="ErrorDiv'+i+'"/> ';
+                str+='</div>';
+			}
+			else
+			{
+				str+='<div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Mobile No</label>';
+                str+='<input type="text"  class="mobile form-control"    maxlength="10"  key="ErrorDiv'+i+'"/> ';
+                str+='</div>';
+			
+			}
+				
+			if(result[i].dob != null)
+			{
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">DOB</label>';
+						str+=' <input type="text" value="'+(result[i].dob).substring(0,11)+'"  class="dob form-control" readonly="true" style="cursor:text;"/>';
+						str+='</div>';						
+			}
+			else
+			{
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">DOB</label>';
+						str+=' <input type="text"  class="dob form-control" readonly="true" style="cursor:text;"  style=""/>';
+						str+='</div>';
+			}
+				
+			if(result[i].email != null)
+			{
+				str+=' <div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Email</label>';
+				str+='<input type="text" value="'+result[i].email+'"  class="email form-control"  />';
+                str+='</div>';
+			}
+			else
+			{
+			
+				str+=' <div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Email</label>';
+				str+='<input type="text" class="email form-control"  />';
+                str+='</div>';
+			}
+			
+			if(relationsArr != null && relationsArr.length>0)
+			{
+			
+				str+=' <div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Relation</label>';
+				str+='<select id="" class="relation form-control" >';
+				str+='<option value="0" selected="selected">Select Relation</option>';
+				for(var k in relationsArr)
 				{
-					str+='<select id="" class="relation"  style="width: 150px">';
-					//str+='<option value="0" selected="selected">Select Relation</option>';
-					for(var k in relationsArr)
+					if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
 					{
-						if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
-						{
-							str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
-						}
-						else
-						{
-							str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
-						}
+						str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
 					}
-					str+='</select>';
-				}
-				str+=' </td>';
-				if(result[i].dob != null)
-				{
-					str+='<td><input type="text" readonly value="'+(result[i].dob).substring(0,11)+'"  class="dob"   readonly="true"  style="width: 100px"/> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text" class="dob"   readonly="true"  style="width: 100px"/> </td>';
-				}
-				
-				if(result[i].email != null)
-				{
-					str+='<td><input type="text" value="'+result[i].email+'"  class="email"  style="width: 200px"/> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text" class="email"  style="width: 200px"/> </td>';
-				}
-				
-				str+='<td> ';
-				if(educationArr != null && educationArr.length>0)
-				{
-					str+='<select id="" class="education"  style="width: 150px">';
-					str+='<option value="0" selected="selected">Select Education</option>';
-					for(var k in educationArr)
+					else
 					{
+						str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
+					}
+				}
+				str+='</select></div>';
+			}
+			
+			
+				
+			if(educationArr != null && educationArr.length>0)
+			{
+				str+=' <div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Education</label>';
+				str+='<select id="" class="education form-control" >';
+				str+='<option value="0" selected="selected">Select Education</option>';
+				for(var k in educationArr)
+				{
 						if(result[i].educationId != null && (educationArr[k].id ==result[i].educationId ))
 						{
 							str+='<option value="'+educationArr[k].id+'" selected="selected">'+educationArr[k].name+'</option>';
@@ -543,78 +737,46 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<option value="'+educationArr[k].id+'" >'+educationArr[k].name+'</option>';
 						}
-					}
-					str+='</select>';
 				}
-				str+=' </td>';
-				
-				str+='<td> ';
-						if(occupationArr != null && occupationArr.length>0)
-						{
-							str+='<select id="" class="occupation"  style="width: 130px">';
-							str+='<option value="0" selected="selected">Select Occupation</option>';
-							
-							for(var k in occupationArr)
-							{
-							
-								if(occupationArr[k].id != null && (occupationArr[k].id ==result[i].occupationId ))
-								{
-									str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
-								}
-								else
-								{
-									str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
-								}
-							}
-							str+='</select>';
-						}
-						str+=' </td>';
-					/*str+='<td> ';
-						if(bloodGroupArr != null && bloodGroupArr.length>0)
-						{
-							str+='<select id="" class="bloodGroup"  style="width: 130px">';
-							str+='<option value="0" selected="selected">Select Blood Group</option>';
-							for(var k in bloodGroupArr)
-							{
-								if(bloodGroupArr[l].educationId != null && (bloodGroupArr[k].id ==result[i].bloodGroupId ))
-								{
-									str+='<option value="'+bloodGroupArr[k].id+'" selected="selected">'+bloodGroupArr[k].name+'</option>';
-								}
-								else
-								{
-									str+='<option value="'+bloodGroupArr[k].id+'" >'+bloodGroupArr[k].name+'</option>';
-								}
-							}
-							str+='</select>';
-						}
-						str+=' </td>';		
-						*/
-				/*if(result[i].partyMemberSince != null)
-				{
-					str+='<td><input type="text" value="'+(result[i].partyMemberSince).substring(0,11)+'"  class="membersince"  readonly="true" style="cursor:text; width: 100px" /> </td>';
-				}
-				else
-				{
-					str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
-				}*/
-			str+='</tr>';
-		}
-		str+='</tbody>';
-		str+='</table> <br>';
-		str+='</div>';
+				str+='</select></div>';
+			}
 
-		$("#updateTableDiv").html(str);
+			if(occupationArr != null && occupationArr.length>0)
+			{
+				str+=' <div class="col-md-2 col-xs-6">';
+                str+='<label class="control-label">Occupation</label>';
+				str+='<select id="" class="occupation form-control"  >';
+				str+='<option value="0" selected="selected">Select Occupation</option>';
+							
+				for(var k in occupationArr)
+				{
+							
+					if(occupationArr[k].id != null && (occupationArr[k].id ==result[i].occupationId ))
+					{
+						str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
+					}
+					else
+					{
+						str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
+					}
+				}
+				str+='</select></div>';
+			}
+			
+			str+='</div></div></div>';
+		}
+		str+='<div id="nextBuildBtnId">';
+				str+='<button id="addNewMember" class="newMemberCls btn btn-info pull-right" onclick="addNewMemberInFamily('+result.length+')" title="Add a new member in family." style="margin-top: 15px;margin-right:15px;"> + </button>';
+			str+='</div>';
+		$("#familyDetalsDiv").html(str);
+
 		
-		var str1='';
-		str1+='<div id="nextBuildBtnId">';
-				str1+='<button id="addNewMember" class="newMemberCls btn btn-info pull-right" onclick="addNewMemberInFamily('+result.length+')" title="Add a new member in family." style="margin-top: 15px;margin-right:15px;"> + </button>';
-			str1+='</div>';
-		$("#updateTableDiv").after(str1);
 		
 		$( ".marriageDay" ).datepicker({
 					dateFormat: 'yy-mm-dd',
 					changeMonth: true,
 					changeYear: true,
+					maxDate: new Date(),
 					yearRange: "-100:+0"
 		});
 		$( ".dob" ).datepicker({	
@@ -634,8 +796,7 @@ function getFamilyDetails(tdpCadreId)
 	
 function updateFamilyInfo()
 {
-		$('#updateeBtn').hide();
-		$('#updateTableDiv').hide();
+		
 	    var age = 0;
 		var casteStateId= 0;
 		var dob = "";
@@ -655,7 +816,47 @@ function updateFamilyInfo()
 	var dataArr = new Array();
 	var finalCasteId = 0;
 	var count = 0;
+	var strErr = '';
+	$('.mandatory').html('');
 	$(".familyInfo").each(function(){
+	strErr ="";
+		var name = $(this).find(".name").val();
+		var email = $(this).find(".email").val();
+		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		var mobileNo = $(this).find(".mobile").val();
+		var relation = $(this).find(".relation").val();
+		var errStrDiv = $(this).find(".mobile").attr('key');
+		if(name != null && name.trim().length == 0)
+		{
+			strErr+=" Name is required.";
+			$('#'+errStrDiv+'').html(strErr);
+			return;
+		}	   
+		if(relation != null && relation == 0)
+		{
+			strErr+=" Relations is required.";
+			$('#'+errStrDiv+'').html(strErr);
+			return;
+		}
+		if(email != null && email.length > 0 && emailreg.test(email) == false)
+		{
+			strErr+='Invalid Email Id.';
+			$('#'+errStrDiv+'').html(strErr);
+			return;
+		}	
+		
+		if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
+		{
+			strErr+='Invalid Mobile No.';
+			$('#'+errStrDiv+'').html(strErr);
+			return;			
+		}
+		
+	});
+	
+	if(strErr != null && strErr.length == 0)
+	{
+		$(".familyInfo").each(function(){
 		count = count+1;
 		$this = $(this);
 		if($(this).find(".age").val())
@@ -674,10 +875,8 @@ function updateFamilyInfo()
 		var relation = $(this).find(".relation").val();
 	
 	    var occupation = $(this).find(".occupation").val();
-	    var bloodGroup = $(this).find(".bloodGroup").val();
-		//alert(count)
-			
-		if(count == 1)
+		
+			if(count == 1)
 			{
 			age = 0;
 			finalCasteId = casteStateId;
@@ -688,50 +887,58 @@ function updateFamilyInfo()
 			tdpCadre = $(this).find(".tdpCadre").val();
 			dob = $(this).find(".dob").val();
 			relation = 13;
-		}
-		else
-		{
-			relation = $(this).find(".relation").val();;
-			voterId = "";
-			partyMemberSince="";
-		}
-		var obj = {
-		age:0,
-		casteStateId:casteStateId,
-		dob:dob,
-		name:name,
-		education:education,
-		email:email,
-		gender:"",
-		marriageDay:marriageDay,
-		whatsappStatus:whatsAPP,
-		mobileNo:mobileNo,
-		partyMemberSince : partyMemberSince,
-		voterId:voterId,
-		relationId:relation,
-		tdpCadreId:tdpCadre,
-		occupationId:occupation,
-		bloodGroup:bloodGroup
-	}
-		dataArr.push(obj);
-	});
+			}
+			else
+			{
+				relation = $(this).find(".relation").val();;
+				voterId = "";
+				partyMemberSince="";
+			}
 
-	var jsObj = 
-	{
-		dataArr:dataArr,
-		task:"updateFamilyInfo"
+				var obj = {
+					age:0,
+					casteStateId:casteStateId,
+					dob:dob,
+					name:name,
+					education:education,
+					email:email,
+					gender:"",
+					marriageDay:marriageDay,
+					whatsappStatus:whatsAPP,
+					mobileNo:mobileNo,
+					partyMemberSince : partyMemberSince,
+					voterId:voterId,
+					relationId:relation,
+					tdpCadreId:tdpCadre,
+					occupationId:occupation,
+					bloodGroup:0
+				};
+				dataArr.push(obj);
+			
+		});
 	}
-	$.ajax({
-          type:'GET',
-          url: 'updateFamilyInfoAction.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){ 
-			  if(result != null && result.resultCode ==0){
-				 getCadreDetails();
-				}
-	   });
-	  
+	
+	if(dataArr != null && dataArr.length>0)
+	{
+		$('#updateeBtn').hide();
+		$('#updateTableDiv').hide();
+		var jsObj = 
+		{
+			dataArr:dataArr,
+			task:"updateFamilyInfo"
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'updateFamilyInfoAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)},
+			  }).done(function(result){ 
+				  if(result != null && result.resultCode ==0){
+					 getCadreDetails();
+					}
+		   });
+	}
+	
 }
 
 function getAllRelationDetails(){
@@ -754,68 +961,83 @@ function getAllRelationDetails(){
 
 function addNewMemberInFamily(size)
 {
+	$("#nextBuildBtnId").remove();
+	$("#addNewMember").remove();
 	size = parseInt(size)+1;
 	var str='';
 
-				str+='<tr class="familyInfo" id="familyInnfo'+size+'">';
-				str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px" /> </td>';
-				str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
-				
-
-				str+='<td> ';
-				if(relationsArr != null && relationsArr.length>0)
+			str+='<div class="panel panel-default familyInfo" id="familyInnfo'+size+'">';
+			str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre" />';
+			
+			str+='<div class="panel-heading">';
+            str+='<h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px"  placeholder="Please enter Name " />  </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
+			str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-13px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click To Remove Family Member"></i>';
+            str+='</div>';
+			
+			
+			str+='<div class="panel-body">';
+            str+='<div class="row">';
+			
+			str+='<div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Mobile No</label>';
+			str+='<input type="text"  class="mobile form-control" maxlength="10" key="ErrorDiv'+size+'"/> ';
+			str+='</div>';
+			str+=' <div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">DOB</label>';
+			str+='<input type="text" class="dob form-control form-control" /> ';
+			str+='</div>';
+			str+=' <div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Email</label>';
+			str+='<input type="text" class="email form-control" /> ';
+			str+='</div>';
+			str+=' <div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Relation</label>';
+			
+			if(relationsArr != null && relationsArr.length>0)
 				{
-					str+='<select id="" class="relation"  style="width: 150px">';
-					//str+='<option value="0" selected="selected">Select Relation</option>';
+					str+='<select id="" class="relation form-control">';
+					str+='<option value="0" selected="selected">Select Relation</option>';
 					for(var k in relationsArr)
 					{
 						str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
 					}
 					str+='</select>';
 				}
-				str+=' </td>';
-				str+='<td><input type="text"   class="dob"  readonly="true" style="width: 100px"/> </td>';
-				str+='<td><input type="text" class="email"  style="width: 200px"/> </td>';
-				str+='<td> ';
-				if(educationArr != null && educationArr.length>0)
-				{
-					str+='<select id="" class="education"  style="width: 150px">';
+			str+='</select></div>';
+		
+					
+			
+
+			str+=' <div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Education</label>';
+			if(educationArr != null && educationArr.length>0)
+			{
+					str+='<select id="" class="education form-control">';
 					str+='<option value="0" selected="selected">Select Education</option>';
 					for(var k in educationArr)
 					{
 						str+='<option value="'+educationArr[k].id+'" >'+educationArr[k].name+'</option>';
 					}
 					str+='</select>';
-				}
-				str+=' </td>';
-				str+='<td> ';
-						if(occupationArr != null && occupationArr.length>0)
-						{
-							str+='<select id="" class="occupation"  style="width: 130px">';
-							str+='<option value="0" selected="selected">Select Occupation</option>';
-							for(var k in occupationArr)
-							{
-								str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
-							}
-							str+='</select>';
-						}
-						str+=' </td>';
-						/*str+='<td> ';
-						if(bloodGroupArr != null && bloodGroupArr.length>0)
-						{
-							str+='<select id="" class="bloodGroup"  style="width: 130px">';
-							str+='<option value="0" selected="selected">Select Blood Group </option>';
-							for(var k in bloodGroupArr)
-							{
-								str+='<option value="'+bloodGroupArr[k].id+'" >'+bloodGroupArr[k].name+'</option>';
-							}
-							str+='</select>';
-						}
-						str+=' </td>';*/
-				//str+='<td><input type="text"  class="membersince"  readonly="true" style="cursor:text;width: 100px"/> </td>';
+			}
+			str+='</select></div>';
+			
+	
+			str+=' <div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Occupation</label>';
+			if(occupationArr != null && occupationArr.length>0)
+			{
+					str+='<select id="" class="occupation form-control" >';
+					str+='<option value="0" selected="selected">Select Occupation</option>';
+					for(var k in occupationArr)
+					{
+						str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
+					}
+					str+='</select>';
+			}
 
-			str+='</tr>';
-		
+			str+='</div></div></div></div>';
+			str+='<button id="addNewMember" class="newMemberCls btn btn-info pull-right" onclick="addNewMemberInFamily('+size+')" title="Add a new member in family." style="margin-top: 15px;margin-right:15px;"> + </button>';
 		$('#familyMembers').append(str);
 		
 			$( ".marriageDay" ).datepicker({
@@ -836,11 +1058,10 @@ function addNewMemberInFamily(size)
 					dateFormat: 'yy-mm-dd',
 					changeMonth: true,
 					changeYear: true,
-					maxDate: new Date(),
 					yearRange: "-100:+0"
 		});
 
-		$("#nextBuildBtnId").html('<button id="addNewMember" class="newMemberCls btn btn-info pull-right" onclick="addNewMemberInFamily('+size+')" title="Add a new member in family." style="margin-top: 15px;margin-right:15px;"> + </button>');
+		
 		
 }
 
@@ -852,8 +1073,9 @@ function removeDetails(divId)
 		$('#'+divId+'').remove();
 	}
 }
+
 getAllRelationDetails();
-	</script>
-	
-  </body>
- </html>
+
+</script>
+</body>
+</html>
