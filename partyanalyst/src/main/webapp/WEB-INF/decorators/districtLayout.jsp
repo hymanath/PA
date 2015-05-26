@@ -70,6 +70,7 @@
                       <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
 					</c:if>
 					 <c:if test="${sessionScope.USER.isAdmin != 'true'}">
+						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'CADRE_FAMILY_DETAILS_UPDATION' )}">
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
 							 <c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' )}">
 							   <li><a tabindex="-1" href="committeeManagementAction.action">Home</a></li>
@@ -85,6 +86,7 @@
 							</c:if>
 						</c:if>
 							
+						</c:if>
 						</c:if>
                     </c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
