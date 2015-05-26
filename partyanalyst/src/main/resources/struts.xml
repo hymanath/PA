@@ -180,6 +180,7 @@
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
+			<result type="redirect" name="tdpCadreFamilyUpdationAction">tdpCadreFamilyUpdationAction.action</result>
 			<result type="redirect" name="tdpTempararyCardsRegistration">tdpTempararyCardsRegistration.action</result>
 			<result type="redirect" name="eventDashboardAction">eventDashboardAction.action</result>
 			<result type="redirect" name="cadreMemberShipCardDispatcherAction">cadreMemberShipCardDispatcherAction.action</result>	
@@ -5635,7 +5636,8 @@
 		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	
 		    <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>
 		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
-		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>	       
+		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
+		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>	       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -10157,7 +10159,7 @@
 		</action>
 		<action name="tdpCadreFamilyUpdationAction" class="tdpCadreOccasionAction">
 			<result name="success">/jsp/tdpCadreFamilyUpdation.jsp</result>
-			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreFamilyUpdationAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
