@@ -2311,7 +2311,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					List<Long> cadreIds = entry.getValue();
 					if(cadreIds!=null && cadreIds.size()>0){
 						for (Entry<Long, List<Long>> entryInner : visitTimesCadre.entrySet()){
-							List<Long> common = new ArrayList<Long>(cadreIds);
+							Set<Long> cdrs = new HashSet<Long>();
+							cdrs.addAll(cadreIds);
+							List<Long> common = new ArrayList<Long>(cdrs);
 							common.retainAll(entryInner.getValue());
 							
 							timesCountMap.put(entryInner.getKey(), common.size());
@@ -2395,3 +2397,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	
 	
 }
+
+
+
+
