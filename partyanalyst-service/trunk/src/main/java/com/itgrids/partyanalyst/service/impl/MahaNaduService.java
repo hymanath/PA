@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
@@ -15,7 +14,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -23,9 +24,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.HashSet;
 import org.jfree.util.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -58,8 +57,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreInfoDAO;
-import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
@@ -67,8 +64,6 @@ import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
@@ -76,7 +71,6 @@ import com.itgrids.partyanalyst.model.CadrePartyDesignation;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EventInfo;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -1926,5 +1920,478 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		return resultList;			
 		}
 	
-	  
+	/*public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate){
+		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
+		LOG.debug("Entered Into getAttendeeSummaryForEvents ");
+		Date eventStrDate = null;
+	    Date eventEndDate = null;	
+	    Date currentDate = null;
+	    
+		try{
+			String locationType = "STATE";
+			if(reportLevelId==3l){ locationType = "DISTRICT"; }
+			if(reportLevelId==4l){ locationType = "CONSTITUENCY"; }
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && !startDate.isEmpty())
+				eventStrDate = format.parse(startDate);
+			if(endDate != null && !endDate.isEmpty())
+				eventEndDate = format.parse(endDate);
+			
+			
+			
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate, subEventIds);
+			
+			
+			//DISTRICTS
+			if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+				Long stateTypeId = 1l;
+				if(stateId==36l){stateTypeId = 2l;}
+				List<Object[]> distRes = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, stateTypeId);
+				if(distRes!=null){
+					for(Object[] obj:distRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			//CONSTITUENCIES
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				Long stteId = 1l;
+				if(stateId == 36l){stteId = 0l;}
+				List<Object[]> constRes = constituencyDAO.getConstituenciesByElectionTypeAndStateId1(2l, stteId);
+				if(constRes!=null){
+					for(Object[] obj:constRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			setDatesTabsForLocations(finalList, eventStrDate);
+			
+			
+			//INDIVIDUAL DATES RESULT
+			if(list!=null){
+				for(Object[] obj:list){
+					MahanaduEventVO tempVO =  getMatchedLocation(finalList, Long.valueOf(obj[2].toString()));
+					if(tempVO!=null){
+						if(tempVO.getSubList()!=null && tempVO.getSubList().size()>0){
+							MahanaduEventVO temp = getMatchedDate(tempVO.getSubList(),(Date)obj[3]);
+							if(temp!=null){
+								temp.setTotal(temp.getTotal()+Long.valueOf(obj[1].toString()));
+							}
+						}
+						
+					}
+				}
+			}
+			
+			StringBuffer sb_start = new StringBuffer();
+			StringBuffer sb_middle = new StringBuffer();
+			
+			List<Object[]> combRslt = null;
+			if(finalList!=null){
+				MahanaduEventVO ev = finalList.get(0);
+				int datesCnt = ev.getDates().size();
+				
+				List<Date> eventDates =  new ArrayList<Date>();
+				if(ev.getDates()!=null && ev.getDates().size()>0){
+					for(String edt:ev.getDates()){
+						Date evtDate = format.parse(edt);
+						eventDates.add(evtDate);
+					}
+					
+				}
+				
+				
+				
+				if(datesCnt>1){
+					if(datesCnt ==2){
+						 sb_start.append(" ,EventAttendee model1 ");
+						 sb_middle.append(" and model1.tdpCadre.tdpCadreId =  model.tdpCadre.tdpCadreId " +
+						 		" and date(model1.attendedTime)=:date1");
+						 
+					}
+					
+					if(datesCnt ==3){
+						sb_start.append(" ,EventAttendee model1, EventAttendee model2 ");
+						sb_middle.append(" and model1.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId " +
+								" and model2.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId " +
+								" and date(model1.attendedTime)=:date1" +
+								" and date(model2.attendedTime) =:date2 ");
+					}
+					
+					combRslt = eventAttendeeDAO.getEventAttendeeInfoDynamic(locationType, eventStrDate, eventDates, sb_start.toString(), sb_middle.toString(), subEventIds);
+					
+					for(int i=1;i<datesCnt;i++){
+						sb_start.append(" ,EventAttendee model"+i+"");
+						sb_middle.append(" and model"+i+".tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId ");
+					}
+				}
+			}
+			
+			
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEvents ",e);
+		}
+		return finalList;
+	}*/
+	
+	public MahanaduEventVO getMatchedLocation(List<MahanaduEventVO> list, Long id){
+		if(list!=null && list.size()>0 && id!=null){
+			for(MahanaduEventVO mv:list){
+				if(mv.getLocationId().equals(id)){
+					return mv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public MahanaduEventVO getMatchedDate(List<MahanaduEventVO> list, Date date){
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		if(list!=null && list.size()>0 && date!=null){
+			String dt = format.format(date);
+			for(MahanaduEventVO mv:list){
+				if(mv.getStartTime().equals(dt)){
+					return mv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public void setDatesTabsForLocations(List<MahanaduEventVO> finalList,Date eventStrDate){
+		if(finalList!=null && finalList.size()>0){
+			
+			List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>();
+			
+			//GENERATING THE DATES TO DISPLAY
+			DateUtilService date = new DateUtilService();
+			Date crrntDt = date.getCurrentDateAndTime();
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				
+			List<String> dates = new ArrayList<String>();
+		    long interval = 24*1000 * 60 * 60; 
+		    long endTime =crrntDt.getTime() ;
+		    long curTime = eventStrDate.getTime();
+		    while (curTime <= endTime) {
+		        
+		        String ds = format.format(new Date(curTime));
+		        dates.add(ds);
+		        curTime += interval;
+		    }
+		    
+		    List<String> dateCombinations = new ArrayList<String>();
+		    if(dates.size()>0){
+		    	
+		    	
+		    	for(String dt:dates){
+		    		MahanaduEventVO mv = new MahanaduEventVO();
+		    		mv.setStartTime(dt);
+		    		subList.add(mv);
+		    	}
+		    	
+		    	if(dates.size()==2){
+		    		MahanaduEventVO mv = new MahanaduEventVO();
+		    		mv.setStartTime(dates.get(0)+","+dates.get(1));
+		    		subList.add(mv);
+		    		dateCombinations.add(dates.get(0)+","+dates.get(1));
+		    	}
+		    	
+		    	if(dates.size()==3){
+		    		MahanaduEventVO mv = new MahanaduEventVO();
+		    		mv.setStartTime(dates.get(0)+","+dates.get(2));
+		    		subList.add(mv);
+		    		dateCombinations.add(dates.get(0)+","+dates.get(2));
+		    		
+		    		MahanaduEventVO mv1 = new MahanaduEventVO();
+		    		mv1.setStartTime(dates.get(1)+","+dates.get(2));
+		    		subList.add(mv1);
+		    		dateCombinations.add(dates.get(1)+","+dates.get(2));
+		    		
+		    		MahanaduEventVO mv2 = new MahanaduEventVO();
+		    		mv2.setStartTime(dates.get(0)+","+dates.get(1)+" "+dates.get(2));
+		    		subList.add(mv2);
+		    		dateCombinations.add(dates.get(0)+","+dates.get(1)+" "+dates.get(2));
+		    		
+		    	}
+		    }
+		    
+		    finalList.get(0).setDates(dates);
+		    finalList.get(0).setDateCombinations(dateCombinations);
+		    finalList.get(0).setSubList(subList);
+		    
+			for(MahanaduEventVO temp:finalList){
+				temp.setSubList(subList);
+			}
+		}
+	}
+	
+	public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate){
+		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
+		LOG.debug("Entered Into getAttendeeSummaryForEvents ");
+		Date eventStrDate = null;
+	    Date eventEndDate = null;	
+	    
+		try{
+			String locationType = "STATE";
+			if(reportLevelId==3l){ locationType = "DISTRICT"; }
+			if(reportLevelId==4l){ locationType = "CONSTITUENCY"; }
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && !startDate.isEmpty())
+				eventStrDate = format.parse(startDate);
+			if(endDate != null && !endDate.isEmpty())
+				eventEndDate = format.parse(endDate);
+			
+			
+			
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate, subEventIds);
+			
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate, subEventIds);
+			
+			
+			//DISTRICTS
+			if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+				Long stateTypeId = 1l;
+				if(stateId==36l){stateTypeId = 2l;}
+				List<Object[]> distRes = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, stateTypeId);
+				if(distRes!=null){
+					for(Object[] obj:distRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			//CONSTITUENCIES
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				Long stteId = 1l;
+				if(stateId == 36l){stteId = 0l;}
+				List<Object[]> constRes = constituencyDAO.getConstituenciesByElectionTypeAndStateId1(2l, stteId);
+				if(constRes!=null){
+					for(Object[] obj:constRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate, subEventIds);
+			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
+			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
+			if(Rsltlist!=null && Rsltlist.size()>0){
+				for(Object[] tmp:Rsltlist){
+					Long count = cadreAttendedCntMap.get(Long.valueOf(tmp[0].toString()));
+					if(count==null){count = 0l;}
+					count = count + 1;
+					cadreAttendedCntMap.put(Long.valueOf(tmp[0].toString()), count);
+					
+					String dt = format.format((Date)tmp[2]);
+					List<Long> cadreList  = datesAttendedCadreMap.get(dt);
+					if(cadreList==null){cadreList = new ArrayList<Long>();}
+					cadreList.add(Long.valueOf(tmp[0].toString()));
+					datesAttendedCadreMap.put(dt, cadreList); // DATE WISE ATTENDED CADRE TOTAL
+				}
+			}
+			
+			//INDIVIDUAL DATES RESULT
+			if(list!=null){
+				for(Object[] obj:list){
+					MahanaduEventVO tempVO =  getMatchedLocation(finalList, Long.valueOf(obj[2].toString()));
+					if(tempVO!=null && obj[1]!=null){
+						tempVO.setTotal(tempVO.getTotal()+Long.valueOf(obj[1].toString()));
+					}
+				}
+			}
+			
+			if(list_temp!=null){
+				if(finalList!=null && finalList.size()>0){
+					List<MahanaduEventVO> mv = finalList.get(0).getDatesList();
+					if(mv == null){mv = new ArrayList<MahanaduEventVO>();}
+					for(Object[] obj:list_temp){
+						MahanaduEventVO temp = new MahanaduEventVO();
+						String dt = format.format((Date)obj[2]);
+						temp.setStartTime(dt);
+						temp.setTotal(Long.valueOf(obj[1].toString()));
+						
+						List<Long> cadresAttended = datesAttendedCadreMap.get(dt);
+						temp.setAttendedCadres(cadresAttended);
+						
+						mv.add(temp);
+					}
+					Collections.sort(mv,datesSort);
+					
+					if(mv!=null){
+						for(int i=0;i<mv.size();i++){
+							int oneDayCount = 0;
+							List<Long> cadres = mv.get(i).getAttendedCadres();
+							
+							Set<Long> tempList = new HashSet<Long>();
+							
+							if(i==0){
+								if(mv.get(i)!=null && mv.get(i).getAttendedCadres()!=null){
+									mv.get(i).setOneDayCount(mv.get(i).getAttendedCadres().size());
+									oneDayCount = mv.get(i).getAttendedCadres().size();
+								}
+							}
+							
+							for(int j=i;j>0;j--){
+								if(mv.get(j-1).getAttendedCadres()!=null){
+									tempList.addAll(mv.get(j-1).getAttendedCadres());
+								}
+							}
+							
+							if(cadres!=null && cadres.size()>0 && tempList.size()>0){
+								for(Long cd:cadres){
+									if(!tempList.contains(cd)){
+										oneDayCount = oneDayCount + 1;
+									}
+								}
+							}
+							
+							mv.get(i).setOneDayCount(oneDayCount);
+							mv.get(i).setRevisitCount(mv.get(i).getTotal()-Long.valueOf(mv.get(i).getOneDayCount()));
+						}
+						
+					}
+				}
+			}
+			
+			
+			
+			Map<Long,Long> visitTimesMap = new HashMap<Long, Long>(); // 1 - 1454, 2 - 1254 etc
+			Map<Long,List<Long>> visitTimesCadre = new HashMap<Long, List<Long>>(); // 1 - [25485,24588], 2 - [---] etc
+			for (Entry<Long, Long> entry : cadreAttendedCntMap.entrySet()){
+				Long total = visitTimesMap.get(entry.getValue());
+				if(total==null){total =0l;}
+				total = total + 1;
+				visitTimesMap.put(entry.getValue(), total);// 1 - 1454, 2 - 1254 etc
+				
+				List<Long> cadresLst = visitTimesCadre.get(entry.getValue());
+				if(cadresLst==null){cadresLst = new ArrayList<Long>();}
+				cadresLst.add(entry.getKey());
+				visitTimesCadre.put(entry.getValue(), cadresLst);// 1 - [25485,24588], 2 - [---] etc
+			}
+			
+			
+			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummary(locationType, eventStrDate, subEventIds);
+			Map<Long,List<Long>> locationCadreMap = new HashMap<Long, List<Long>>();
+			if(locationRslt!=null && locationRslt.size()>0){
+				for(Object[] obj:locationRslt){
+					List<Long> cadreIds = locationCadreMap.get(Long.valueOf(obj[3].toString()));
+					if(cadreIds == null){cadreIds = new ArrayList<Long>();}
+					cadreIds.add(Long.valueOf(obj[0].toString()));
+					locationCadreMap.put(Long.valueOf(obj[3].toString()), cadreIds);
+				}
+			}
+			
+			Map<Long,Map<Long,Integer>> lctnTimesCountMap = new HashMap<Long, Map<Long,Integer>>();
+			if(locationCadreMap!=null){
+				for (Entry<Long, List<Long>> entry : locationCadreMap.entrySet()){
+					Map<Long,Integer> timesCountMap = new HashMap<Long, Integer>();  // 1 - 25 , 2 - 32
+					List<Long> cadreIds = entry.getValue();
+					if(cadreIds!=null && cadreIds.size()>0){
+						for (Entry<Long, List<Long>> entryInner : visitTimesCadre.entrySet()){
+							List<Long> common = new ArrayList<Long>(cadreIds);
+							common.retainAll(entryInner.getValue());
+							
+							timesCountMap.put(entryInner.getKey(), common.size());
+						}
+					}
+					lctnTimesCountMap.put(entry.getKey(), timesCountMap);
+				}
+			}
+			
+			
+			
+			
+			if(locationType.equalsIgnoreCase("DISTRICT") || locationType.equalsIgnoreCase("CONSTITUENCY"))
+			if(finalList!=null && finalList.size()>0){
+				List<MahanaduEventVO> mvLst = finalList.get(0).getHoursList();
+				for (Entry<Long, Long> entryInner : visitTimesMap.entrySet()){
+					if(mvLst==null){mvLst = new ArrayList<MahanaduEventVO>();}
+					MahanaduEventVO obj = new MahanaduEventVO();
+					obj.setId(entryInner.getKey());
+					obj.setTotal(entryInner.getValue());
+					
+					mvLst.add(obj);
+				}
+				Collections.sort(mvLst,idSort);
+				
+				
+				for(MahanaduEventVO temp:finalList){
+					Map<Long,Integer> countsMap = lctnTimesCountMap.get(temp.getLocationId());
+					List<MahanaduEventVO> mvpList = null;
+					if(temp!=null){
+						mvpList = temp.getSubList();
+					}
+					
+					if(countsMap!=null){
+						for (Entry<Long, Integer> entryInner : countsMap.entrySet()){
+							if(mvpList==null){mvpList = new ArrayList<MahanaduEventVO>();}
+							MahanaduEventVO obj = new MahanaduEventVO();
+							obj.setId(entryInner.getKey());
+							obj.setCount(entryInner.getValue());
+							
+							mvpList.add(obj);
+						}
+					}
+					Collections.sort(mvpList,idSort);
+				}
+			}
+			
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEvents ",e);
+		}
+		return finalList;
+	}
+	
+	//Collections.sort(sampleList,comparedCountSort);
+	public  Comparator<MahanaduEventVO> idSort = new Comparator<MahanaduEventVO>(){
+		public int compare(MahanaduEventVO o1, MahanaduEventVO o2) {									
+			return o1.getId().compareTo(o2.getId());
+		}
+	};
+	
+	
+	public  Comparator<MahanaduEventVO> datesSort = new Comparator<MahanaduEventVO>(){
+		
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			public int compare(MahanaduEventVO o1, MahanaduEventVO o2) {
+				Date startTime1 = null;
+				Date startTime2 = null;
+				try{	
+					startTime1 = sdf.parse(o1.getStartTime());
+					startTime2 = sdf.parse(o2.getStartTime());
+				}catch (Exception e) {
+					LOG.error("",e);
+				}
+				return startTime1.compareTo(startTime2);
+				
+			}
+		
+	};
+	
+	
 }
