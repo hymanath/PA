@@ -350,7 +350,7 @@ function buildLocationSummary(result,reportLevelId){
 	var str_b = "";
 	str_b += "<table class='table'>";
 		str_b +="<thead>";
-			for(var i in result[0].datesList){
+			for(var i in result[0].hoursList){
 				str_b +="<tr>";
 					var number = parseInt(i)+1;
 					if(number>1){
@@ -359,7 +359,7 @@ function buildLocationSummary(result,reportLevelId){
 						str_b+="<th>"+(parseInt(i)+1)+" DAY VISITORS</th>";
 					}
 					
-					str_b+="<th>"+result[0].datesList[i].total+"</th>"
+					str_b+="<th>"+result[0].hoursList[i].total+"</th>"
 				str_b +="</tr>";
 			}
 		str_b +="</thead>";
