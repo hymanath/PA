@@ -26,7 +26,7 @@ public class EventUser  implements java.io.Serializable {
 	private Long eventUserId;
 	private Event event;
 	private Long eventId;
-	private User user;
+	private EventSurveyUser user;
 	private Long userId;
 	private Date insertedTime;
 	private User insertedUser;
@@ -65,10 +65,10 @@ public class EventUser  implements java.io.Serializable {
 	@JoinColumn(name = "user_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUser() {
+	public EventSurveyUser getUser() {
 		return user;
 	}
-	public void setUser(User user) {
+	public void setUser(EventSurveyUser user) {
 		this.user = user;
 	}
 	

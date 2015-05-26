@@ -2163,8 +2163,26 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 		}
 	}
-	
 	public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate){
+		List<MahanaduEventVO> resultList = getAttendeeSummaryForReqEvents(eventId,stateId,reportLevelId,subEventIds,startDate,endDate);
+		List<MahanaduEventVO> inviteeResultList = getAttendeeSummaryForEventsInvities(eventId,stateId,reportLevelId,subEventIds,startDate,endDate);
+			for(MahanaduEventVO invitee:inviteeResultList){
+				for(MahanaduEventVO mainResult:resultList){
+					if(invitee.getLocationId() != null && mainResult.getLocationId() != null && invitee.getLocationId().longValue() == mainResult.getLocationId().longValue()){
+						if(invitee.getTotal() != null)
+						mainResult.setNewCount(invitee.getTotal().intValue());
+						if(mainResult.getSubList() != null && invitee.getSubList() != null && mainResult.getSubList().size() == invitee.getSubList().size()){
+							for(int i=0;i<mainResult.getSubList().size();i++){
+								mainResult.getSubList().get(i).setNewCount(invitee.getSubList().get(i).getCount());
+							}
+						}
+					}
+			}
+		}
+		return resultList;
+		
+	}
+	public List<MahanaduEventVO> getAttendeeSummaryForReqEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate){
 		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
 		LOG.debug("Entered Into getAttendeeSummaryForEvents ");
 		Date eventStrDate = null;
@@ -2553,7 +2571,235 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return resultList;
 	}
-	
+	public List<MahanaduEventVO> getAttendeeSummaryForEventsInvities(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate){
+		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
+		LOG.debug("Entered Into getAttendeeSummaryForEvents ");
+		Date eventStrDate = null;
+	    Date eventEndDate = null;	
+	    
+		try{
+			String locationType = "STATE";
+			if(reportLevelId==3l){ locationType = "DISTRICT"; }
+			if(reportLevelId==4l){ locationType = "CONSTITUENCY"; }
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && !startDate.isEmpty())
+				eventStrDate = format.parse(startDate);
+			if(endDate != null && !endDate.isEmpty())
+				eventEndDate = format.parse(endDate);
+			
+			
+			
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities(locationType, eventStrDate, subEventIds);
+			
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities("ALL", eventStrDate, subEventIds);
+			
+			
+			//DISTRICTS
+			if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+				Long stateTypeId = 1l;
+				if(stateId==36l){stateTypeId = 2l;}
+				List<Object[]> distRes = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, stateTypeId);
+				if(distRes!=null){
+					for(Object[] obj:distRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			//CONSTITUENCIES
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				Long stteId = 1l;
+				if(stateId == 36l){stteId = 0l;}
+				List<Object[]> constRes = constituencyDAO.getConstituenciesByElectionTypeAndStateId1(2l, stteId);
+				if(constRes!=null){
+					for(Object[] obj:constRes){
+						MahanaduEventVO mv = new MahanaduEventVO();
+						mv.setLocationId(Long.valueOf(obj[0].toString()));
+						mv.setLocationName(obj[1].toString());
+						
+						finalList.add(mv);
+					}
+				}
+			}
+			
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummaryForInvities("ALL", eventStrDate, subEventIds);
+			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
+			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
+			if(Rsltlist!=null && Rsltlist.size()>0){
+				for(Object[] tmp:Rsltlist){
+					Long count = cadreAttendedCntMap.get(Long.valueOf(tmp[0].toString()));
+					if(count==null){count = 0l;}
+					count = count + 1;
+					cadreAttendedCntMap.put(Long.valueOf(tmp[0].toString()), count);
+					
+					String dt = format.format((Date)tmp[2]);
+					List<Long> cadreList  = datesAttendedCadreMap.get(dt);
+					if(cadreList==null){cadreList = new ArrayList<Long>();}
+					cadreList.add(Long.valueOf(tmp[0].toString()));
+					datesAttendedCadreMap.put(dt, cadreList); // DATE WISE ATTENDED CADRE TOTAL
+				}
+			}
+			
+			//INDIVIDUAL DATES RESULT
+			if(list!=null){
+				for(Object[] obj:list){
+					MahanaduEventVO tempVO =  getMatchedLocation(finalList, Long.valueOf(obj[2].toString()));
+					if(tempVO!=null && obj[1]!=null){
+						tempVO.setTotal(tempVO.getTotal()+Long.valueOf(obj[1].toString()));
+					}
+				}
+			}
+			
+			if(list_temp!=null){
+				if(finalList!=null && finalList.size()>0){
+					List<MahanaduEventVO> mv = finalList.get(0).getDatesList();
+					if(mv == null){mv = new ArrayList<MahanaduEventVO>();}
+					for(Object[] obj:list_temp){
+						MahanaduEventVO temp = new MahanaduEventVO();
+						String dt = format.format((Date)obj[2]);
+						temp.setStartTime(dt);
+						temp.setTotal(Long.valueOf(obj[1].toString()));
+						
+						List<Long> cadresAttended = datesAttendedCadreMap.get(dt);
+						temp.setAttendedCadres(cadresAttended);
+						
+						mv.add(temp);
+					}
+					Collections.sort(mv,datesSort);
+					
+					if(mv!=null){
+						for(int i=0;i<mv.size();i++){
+							int oneDayCount = 0;
+							List<Long> cadres = mv.get(i).getAttendedCadres();
+							
+							Set<Long> tempList = new HashSet<Long>();
+							
+							if(i==0){
+								if(mv.get(i)!=null && mv.get(i).getAttendedCadres()!=null){
+									mv.get(i).setOneDayCount(mv.get(i).getAttendedCadres().size());
+									oneDayCount = mv.get(i).getAttendedCadres().size();
+								}
+							}
+							
+							for(int j=i;j>0;j--){
+								if(mv.get(j-1).getAttendedCadres()!=null){
+									tempList.addAll(mv.get(j-1).getAttendedCadres());
+								}
+							}
+							
+							if(cadres!=null && cadres.size()>0 && tempList.size()>0){
+								for(Long cd:cadres){
+									if(!tempList.contains(cd)){
+										oneDayCount = oneDayCount + 1;
+									}
+								}
+							}
+							
+							mv.get(i).setOneDayCount(oneDayCount);
+							mv.get(i).setRevisitCount(mv.get(i).getTotal()-Long.valueOf(mv.get(i).getOneDayCount()));
+						}
+						
+					}
+				}
+			}
+			
+			
+			
+			Map<Long,Long> visitTimesMap = new HashMap<Long, Long>(); // 1 - 1454, 2 - 1254 etc
+			Map<Long,List<Long>> visitTimesCadre = new HashMap<Long, List<Long>>(); // 1 - [25485,24588], 2 - [---] etc
+			for (Entry<Long, Long> entry : cadreAttendedCntMap.entrySet()){
+				Long total = visitTimesMap.get(entry.getValue());
+				if(total==null){total =0l;}
+				total = total + 1;
+				visitTimesMap.put(entry.getValue(), total);// 1 - 1454, 2 - 1254 etc
+				
+				List<Long> cadresLst = visitTimesCadre.get(entry.getValue());
+				if(cadresLst==null){cadresLst = new ArrayList<Long>();}
+				cadresLst.add(entry.getKey());
+				visitTimesCadre.put(entry.getValue(), cadresLst);// 1 - [25485,24588], 2 - [---] etc
+			}
+			
+			
+			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummaryForInvities(locationType, eventStrDate, subEventIds);
+			Map<Long,List<Long>> locationCadreMap = new HashMap<Long, List<Long>>();
+			if(locationRslt!=null && locationRslt.size()>0){
+				for(Object[] obj:locationRslt){
+					List<Long> cadreIds = locationCadreMap.get(Long.valueOf(obj[3].toString()));
+					if(cadreIds == null){cadreIds = new ArrayList<Long>();}
+					cadreIds.add(Long.valueOf(obj[0].toString()));
+					locationCadreMap.put(Long.valueOf(obj[3].toString()), cadreIds);
+				}
+			}
+			
+			Map<Long,Map<Long,Integer>> lctnTimesCountMap = new HashMap<Long, Map<Long,Integer>>();
+			if(locationCadreMap!=null){
+				for (Entry<Long, List<Long>> entry : locationCadreMap.entrySet()){
+					Map<Long,Integer> timesCountMap = new HashMap<Long, Integer>();  // 1 - 25 , 2 - 32
+					List<Long> cadreIds = entry.getValue();
+					if(cadreIds!=null && cadreIds.size()>0){
+						for (Entry<Long, List<Long>> entryInner : visitTimesCadre.entrySet()){
+							Set<Long> cdrs = new HashSet<Long>();
+							cdrs.addAll(cadreIds);
+							List<Long> common = new ArrayList<Long>(cdrs);
+							common.retainAll(entryInner.getValue());
+							
+							timesCountMap.put(entryInner.getKey(), common.size());
+						}
+					}
+					lctnTimesCountMap.put(entry.getKey(), timesCountMap);
+				}
+			}
+			
+			
+			
+			
+			if(locationType.equalsIgnoreCase("DISTRICT") || locationType.equalsIgnoreCase("CONSTITUENCY"))
+			if(finalList!=null && finalList.size()>0){
+				List<MahanaduEventVO> mvLst = finalList.get(0).getHoursList();
+				for (Entry<Long, Long> entryInner : visitTimesMap.entrySet()){
+					if(mvLst==null){mvLst = new ArrayList<MahanaduEventVO>();}
+					MahanaduEventVO obj = new MahanaduEventVO();
+					obj.setId(entryInner.getKey());
+					obj.setTotal(entryInner.getValue());
+					
+					mvLst.add(obj);
+				}
+				Collections.sort(mvLst,idSort);
+				
+				
+				for(MahanaduEventVO temp:finalList){
+					Map<Long,Integer> countsMap = lctnTimesCountMap.get(temp.getLocationId());
+					List<MahanaduEventVO> mvpList = null;
+					if(temp!=null){
+						mvpList = temp.getSubList();
+					}
+					
+					if(countsMap!=null){
+						for (Entry<Long, Integer> entryInner : countsMap.entrySet()){
+							if(mvpList==null){mvpList = new ArrayList<MahanaduEventVO>();}
+							MahanaduEventVO obj = new MahanaduEventVO();
+							obj.setId(entryInner.getKey());
+							obj.setCount(entryInner.getValue());
+							
+							mvpList.add(obj);
+						}
+					}
+					Collections.sort(mvpList,idSort);
+				}
+			}
+			
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEvents ",e);
+		}
+		return finalList;
+	}
 }
 
 

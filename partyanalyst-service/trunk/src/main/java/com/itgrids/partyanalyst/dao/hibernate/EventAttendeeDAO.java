@@ -339,9 +339,12 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 		
-	public Long getTodayTotalVisitors(Date todayDate){
-		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate and model.tdpCadre.isDeleted = 'N'");
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId){
+		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate " +
+				" and model.event.parentEventId =:parentEventId");
 		query.setDate("todayDate", todayDate);
+		query.setParameter("parentEventId", parentEventId);
+		
 		 return (Long)query.uniqueResult();
 	}
 	
@@ -349,7 +352,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
 				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
 						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
-						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time and " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
 				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId order by tdp_cadre_id;");
 		query.setDate("todayDate", todayDate);
 		query.setParameter("exitEventId", exitEventId);
@@ -358,11 +361,35 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return (BigInteger)query.uniqueResult();
 	}
 	
-	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId){
+	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId){
+		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_invitee ei,event_attendee ea1 inner join " +
+				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
+						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
+				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId and ea1.tdp_cadre_id = ei.tdp_cadre_id order by ei.tdp_cadre_id;");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("exitEventId", exitEventId);
+		query.setParameter("entryEventId", entryEventId);
+		
+		return (BigInteger)query.uniqueResult();
+	}
+	
+	/*public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId){
 		//0eventId, 1attendedTime, 2tdpCadreId
 		Query query=getSession().createQuery("select model.eventId,model.attendedTime,model.tdpCadreId from EventAttendee model where " +
 				" date(model.attendedTime) =:todayDate and (model.eventId =:entryEventId or model.eventId =:exitEventId) and model.attendedTime is not null and " +
 				"model.tdpCadreId is not null order by model.tdpCadreId, model.attendedTime");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("entryEventId",entryEventId);
+		query.setParameter("exitEventId",exitEventId);
+		return query.list();event_invitee
+	}*/
+	
+	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId){
+		//0eventId, 1attendedTime, 2tdpCadreId,3invitee tdpCadreId
+		Query query=getSession().createSQLQuery("select ea.event_id,ea.attended_time,ea.tdp_cadre_id,ei.tdp_cadre_id from event_attendee ea left join  event_invitee  ei on ea.tdp_cadre_id = ei.tdp_cadre_id " +
+				" where date(ea.attended_time) =:todayDate and (ea.event_id =:entryEventId or ea.event_id =:exitEventId) and ea.attended_time is not null and " +
+				" ea.tdp_cadre_id is not null order by ea.tdp_cadre_id, ea.attended_time");
 		query.setDate("todayDate", todayDate);
 		query.setParameter("entryEventId",entryEventId);
 		query.setParameter("exitEventId",exitEventId);
@@ -580,5 +607,82 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+		
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,List<Long> subEventIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" model.tdpCadre.userAddress.constituency.district.districtId,");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" model.tdpCadre.userAddress.constituency.constituencyId,");
+		}
+		str.append(" date(model.attendedTime)");
+		str.append(" from EventAttendee model,EventInvitee model1 ");
+		str.append(" where model.event.eventId in(:subEventIds) and model.tdpCadreId = model1.tdpCadreId ");
+		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and model.event.isActive =:isActive " +
+				   " and model.tdpCadre.isDeleted = 'N' ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
+		}else{
+			str.append(" group by model.event.eventId," +
+					" date(model.attendedTime) order by model.event.eventId," +
+					" date(model.attendedTime)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("eventStartDate", eventStartDate);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("subEventIds", subEventIds);
+		return query.list();
+	}
 	
+public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,List<Long> subEventIds){
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.tdpCadre.tdpCadreId," +
+				" count(model.tdpCadre.tdpCadreId), ");
+		str.append(" date(model.attendedTime) ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" ,model.tdpCadre.userAddress.constituency.district.districtId ");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId ");
+		}
+		
+		str.append(" from EventAttendee model,EventInvitee model1  ");
+		str.append(" where model.event.eventId in(:subEventIds)  and model.tdpCadreId = model1.tdpCadreId ");
+		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and model.event.isActive =:isActive " +
+				   " and model.tdpCadre.isDeleted = 'N' ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" group by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId," +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" group by model.tdpCadre.tdpCadreId, " +
+					" model.tdpCadre.userAddress.constituency.constituencyId," +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
+		}else{
+			str.append(" group by model.tdpCadre.tdpCadreId, " +
+					" date(model.attendedTime) order by model.tdpCadre.tdpCadreId," +
+					" date(model.attendedTime)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("eventStartDate", eventStartDate);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("subEventIds", subEventIds);
+		return query.list();
+	}
 }

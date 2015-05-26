@@ -14,7 +14,21 @@ public class MahanaduVisitVO {
 	private Long belowhalfanhour;
 	private Long totalVisitors;
 	private Long currentVisitors;
+	private Long currentInviteeVisitors;
+	private Long parentEventId;
 	private String lastUpdated;
+	
+	private Long above8hrsInv;
+	private Long seventoeightInv;
+	private Long sixtosevenInv;
+	private Long fivetosixInv;
+	private Long fourtofiveInv;
+	private Long threetofourInv;
+	private Long twotothreeInv;
+	private Long onetotwoInv;
+	private Long halfanhourInv;
+	private Long belowhalfanhourInv;
+	
 	
 	public Long getAbove8hrs() {
 		return above8hrs;
@@ -93,6 +107,78 @@ public class MahanaduVisitVO {
 	}
 	public void setLastUpdated(String lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+	public Long getAbove8hrsInv() {
+		return above8hrsInv;
+	}
+	public void setAbove8hrsInv(Long above8hrsInv) {
+		this.above8hrsInv = above8hrsInv;
+	}
+	public Long getSeventoeightInv() {
+		return seventoeightInv;
+	}
+	public void setSeventoeightInv(Long seventoeightInv) {
+		this.seventoeightInv = seventoeightInv;
+	}
+	public Long getSixtosevenInv() {
+		return sixtosevenInv;
+	}
+	public void setSixtosevenInv(Long sixtosevenInv) {
+		this.sixtosevenInv = sixtosevenInv;
+	}
+	public Long getFivetosixInv() {
+		return fivetosixInv;
+	}
+	public void setFivetosixInv(Long fivetosixInv) {
+		this.fivetosixInv = fivetosixInv;
+	}
+	public Long getFourtofiveInv() {
+		return fourtofiveInv;
+	}
+	public void setFourtofiveInv(Long fourtofiveInv) {
+		this.fourtofiveInv = fourtofiveInv;
+	}
+	public Long getThreetofourInv() {
+		return threetofourInv;
+	}
+	public void setThreetofourInv(Long threetofourInv) {
+		this.threetofourInv = threetofourInv;
+	}
+	public Long getTwotothreeInv() {
+		return twotothreeInv;
+	}
+	public void setTwotothreeInv(Long twotothreeInv) {
+		this.twotothreeInv = twotothreeInv;
+	}
+	public Long getOnetotwoInv() {
+		return onetotwoInv;
+	}
+	public void setOnetotwoInv(Long onetotwoInv) {
+		this.onetotwoInv = onetotwoInv;
+	}
+	public Long getHalfanhourInv() {
+		return halfanhourInv;
+	}
+	public void setHalfanhourInv(Long halfanhourInv) {
+		this.halfanhourInv = halfanhourInv;
+	}
+	public Long getBelowhalfanhourInv() {
+		return belowhalfanhourInv;
+	}
+	public void setBelowhalfanhourInv(Long belowhalfanhourInv) {
+		this.belowhalfanhourInv = belowhalfanhourInv;
+	}
+	public Long getCurrentInviteeVisitors() {
+		return currentInviteeVisitors;
+	}
+	public void setCurrentInviteeVisitors(Long currentInviteeVisitors) {
+		this.currentInviteeVisitors = currentInviteeVisitors;
+	}
+	public Long getParentEventId() {
+		return parentEventId;
+	}
+	public void setParentEventId(Long parentEventId) {
+		this.parentEventId = parentEventId;
 	}
 	
 }
