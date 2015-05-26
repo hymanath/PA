@@ -41,5 +41,6 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex);
 	 public String updateTabAllocationDetails(Long authId,String cause,Long userId);
 	 public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
+	 public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
 }
 
