@@ -80,7 +80,7 @@ background-color: #E5E5E5 !important;
 				<div class="span12" id="tableDataDiv" style="margin-left: -15px"></div>
 			</div>
 		</div>
-		<img src='images/Loading-data.gif' class="offset4"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
+		<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 		<div id="updateTableDiv" style="clear:both;overflow:scroll;display:none;"></div>
 		<button class="btn btn-success offset4" style="margin-top:15px;margin-bottom:15px;;display:none;" onclick="updateFamilyInfo();" id="updateeBtn"> UPDATE DETAILS </button>
 
@@ -297,7 +297,7 @@ function getFamilyDetails(tdpCadreId)
 						str+='<td style="display:none;"><input type="hidden" value="'+searchArr[l].tdpCadreId+'"  class="tdpCadre" /></td>';
 						if(searchArr[l].name != null)
 						{
-							str+='<td> <input type="text" value="'+searchArr[l].name+'"  class="name" /> </td>';
+							str+='<td> <input type="text" value="'+searchArr[l].name+'" readonly class="name" /> </td>';
 						}
 						else
 						{
@@ -315,15 +315,15 @@ function getFamilyDetails(tdpCadreId)
 						{
 							if(searchArr[l].gender == 'M')
 							{
-								str+='<td><select class="gender"  style="width: 100px"> <option value="M" selected="selected">Male</option><option value="F">FeMale</option></select></td>';
+								str+='<td><select class="gender" readonly style="width: 100px"> <option value="M" selected="selected">Male</option><option value="F">Female</option></select></td>';
 							}
 							else{
-								str+='<td><select class="gender"> <option value="M">Male</option><option value="F" selected="selected">FeMale</option></select></td>';
+								str+='<td><select class="gender"> <option value="M">Male</option><option value="F" selected="selected">Female</option></select></td>';
 							}
 						}
 						else
 						{
-							str+='<td><select class="gender"  style="width: 100px"> <option value="M">Male</option><option value="F">FeMale</option></select></td>';
+							str+='<td><select class="gender"  style="width: 100px"> <option value="M">Male</option><option value="F">Female</option></select></td>';
 						}
 						/*
 						if(searchArr[l].age != null)
@@ -337,7 +337,7 @@ function getFamilyDetails(tdpCadreId)
 						*/
 						if(searchArr[l].votercardNo != null)
 						{
-							str+='<td><input type="text" value="'+searchArr[l].votercardNo+'"  class="voter"  style="width: 100px"/> </td>';
+							str+='<td><input type="text" value="'+searchArr[l].votercardNo+'" readonly class="voter"  style="width: 100px"/> </td>';
 						}
 						else
 						{
@@ -507,7 +507,7 @@ function getFamilyDetails(tdpCadreId)
 				str+='<td style="display:none;"><input type="hidden" value="cadreId"  class="tdpCadre" /></td>';
 				if(result[i].name != null)
 				{
-					str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text" value="'+result[i].name+'"  class="name" style="margin-left:15px;margin-top:-20px"/> </td>';
+					str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text" value="'+result[i].name+'"  class="name" readonly style="margin-left:15px;margin-top:-20px"/> </td>';
 				}
 				else
 				{
@@ -532,7 +532,7 @@ function getFamilyDetails(tdpCadreId)
 				}
 				if(result[i].votercardNo != null)
 				{
-					str+='<td><input type="text" value="'+result[i].votercardNo+'"  class="voter"  style="width: 100px"/> </td>';
+					str+='<td><input type="text" readonly value="'+result[i].votercardNo+'"  class="voter"  style="width: 100px"/> </td>';
 				}
 				else
 				{
@@ -575,7 +575,7 @@ function getFamilyDetails(tdpCadreId)
 					str+='<option value="0" selected="selected">Select Education</option>';
 					for(var k in educationArr)
 					{
-						if(result[i].relationId != null && (educationArr[k].id ==result[i].relationId ))
+						if(result[i].educationId != null && (educationArr[k].id ==result[i].educationId ))
 						{
 							str+='<option value="'+educationArr[k].id+'" selected="selected">'+educationArr[k].name+'</option>';
 						}
@@ -593,9 +593,11 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<select id="" class="occupation"  style="width: 130px">';
 							str+='<option value="0" selected="selected">Select Occupation</option>';
+							
 							for(var k in occupationArr)
 							{
-								if(occupationArr[l].educationId != null && (occupationArr[k].id ==result[i].occupationId ))
+							
+								if(occupationArr[k].id != null && (occupationArr[k].id ==result[i].occupationId ))
 								{
 									str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
 								}
@@ -792,10 +794,10 @@ function addNewMemberInFamily(size)
 	var str='';
 
 				str+='<tr class="familyInfo" id="familyInnfo'+size+'">';
-				str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px"/> </td>';
+				str+='<td>  <a style="margin-top:10px" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click here to remove family member."><i class="icon-remove"></i></a> <input type="text"  class="name" style="margin-left:15px;margin-top:-20px" readonly/> </td>';
 				str+='<td><input type="text"  class="mobile"  style="width: 100px"  maxlength="10" /> </td>';
 				str+='<td><input type="text"   class="age"  style="width: 100px"/> </td>';
-				str+='<td><input type="text" class="voter"  style="width: 100px"/> </td>';
+				str+='<td><input type="text" class="voter"  readonly style="width: 100px"/> </td>';
 				str+='<td> ';
 				if(relationsArr != null && relationsArr.length>0)
 				{
