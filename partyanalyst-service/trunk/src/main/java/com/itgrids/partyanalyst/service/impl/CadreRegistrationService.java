@@ -6259,6 +6259,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							returnVO.setVoterImgPath(url);
 						}
 					}
+					else if(obj[8] == null && isOtherState.equalsIgnoreCase("true"))
+					{
+						returnVO.setVoterImgPath("http://mytdp.com/images/cadre_images/"+obj[9].toString());
+					}
 					}
 					catch(Exception e)
 					{
