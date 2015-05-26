@@ -423,7 +423,8 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		str.append(" from EventAttendee model ");
 		str.append(" where model.event.eventId in(:subEventIds) ");
 		str.append(" and date(model.attendedTime) >= :eventStartDate ");
-		str.append(" and model.event.isActive =:isActive ");
+		str.append(" and model.event.isActive =:isActive " +
+				   " and model.tdpCadre.isDeleted = 'N' ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
 			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId," +
 					" date(model.attendedTime) order by model.event.eventId," +
@@ -461,7 +462,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		str.append(" from EventAttendee model ");
 		str.append(" where model.event.eventId in(:subEventIds) ");
 		str.append(" and date(model.attendedTime) >= :eventStartDate ");
-		str.append(" and model.event.isActive =:isActive ");
+		str.append(" and model.event.isActive =:isActive " +
+				   " and model.tdpCadre.isDeleted = 'N' ");
+		
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
 			str.append(" group by model.tdpCadre.tdpCadreId," +
 					" model.tdpCadre.userAddress.constituency.district.districtId," +
