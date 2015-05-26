@@ -104,8 +104,22 @@ public class CadreRegistrationVO implements Serializable{
 	private Long 		familyRelationId;
 	private String 		isSmartPhone;
 	private String 		registrationType;
+	private String 		marriageDateStr;
+	private String 		whatsAppStatus;
 	
 	
+	public String getWhatsAppStatus() {
+		return whatsAppStatus;
+	}
+	public void setWhatsAppStatus(String whatsAppStatus) {
+		this.whatsAppStatus = whatsAppStatus;
+	}
+	public String getMarriageDateStr() {
+		return marriageDateStr;
+	}
+	public void setMarriageDateStr(String marriageDateStr) {
+		this.marriageDateStr = marriageDateStr;
+	}
 	public String getRegistrationType() {
 		return registrationType;
 	}
