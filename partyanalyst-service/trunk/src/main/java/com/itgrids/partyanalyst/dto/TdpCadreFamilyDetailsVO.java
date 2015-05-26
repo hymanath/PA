@@ -18,9 +18,15 @@ public class TdpCadreFamilyDetailsVO {
 	private String partyMemberSince;
 	private String whatsappStatus;
 	private Long relationId;
+	private Long voterId;
 	
 	
-	
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
 	public Long getRelationId() {
 		return relationId;
 	}
