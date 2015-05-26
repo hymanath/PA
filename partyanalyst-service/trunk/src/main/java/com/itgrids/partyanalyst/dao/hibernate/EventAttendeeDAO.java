@@ -189,7 +189,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		StringBuilder str = new StringBuilder();
 		str.append("select model1.event.name,count(distinct model.tdpCadre.tdpCadreId),date(model.attendedTime) ");
 		str.append(" from EventAttendee model,EventAttendee model1 where model.event.eventId = :eventId and model1.event.eventId = :compareEventId");
-		str.append(" and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
+		str.append(" and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model1.tdpCadre.isDeleted = 'N' ");
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
