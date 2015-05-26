@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
   <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
@@ -134,6 +137,13 @@
 	<div id="tableDivForCadre" class="table-responsive"></div>
 	
 		<div class="span6 offset3 show-grid pad-10b" >
+		
+		<div class="pad-10b offset1">	
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'OTHER_STATE_DELEGATE_REG')}">
+				<a target="_blank" href="tdpTempararyCardsRegistration.action" style="cursor:pointer;font-weight: bold"> Click here to Register Other State Delegates</a>
+			</c:if>
+		</div>
+		
 		<div id="errorDiv" style="color:#ff0020;"></div>
 			<h5 class="text-align">SELECT CONSTITUENCY </h5>
 
