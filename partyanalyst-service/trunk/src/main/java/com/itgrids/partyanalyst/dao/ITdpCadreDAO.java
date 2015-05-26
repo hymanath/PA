@@ -347,4 +347,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List getTdpCadreIdByMembership(String queryStr);
 	  public List<String> getOtherSttateCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
 	  public List<String> getOtherSttateNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
+	  public List<Object[]> getOtherStateCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
+	  public List<Object[]> getOtherStateCadrePartialDetailsByMemberShip(List<String> memberCardNos);
+	  public List<Object[]> getOtherStateCadreDetailsByMemberShipId(List<String> memberCardNos);
+	  public List<Object[]> getOtherStateCadreDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
 }
