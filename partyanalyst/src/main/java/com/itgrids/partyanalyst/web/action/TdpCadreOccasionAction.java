@@ -4,21 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
 import javax.servlet.http.HttpSession;
-
-
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
-
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -37,10 +34,16 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 	private ICandidateUpdationDetailsService candidateUpdationDetailsService;
 	private IStaticDataService staticDataService;
 	private ResultStatus result;
+	private List<CasteDetailsVO> castesList = new ArrayList<CasteDetailsVO>();
 	
 	
 	
-	
+	public List<CasteDetailsVO> getCastesList() {
+		return castesList;
+	}
+	public void setCastesList(List<CasteDetailsVO> castesList) {
+		this.castesList = castesList;
+	}
 	public ResultStatus getResult() {
 		return result;
 	}
@@ -118,7 +121,8 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 		try{
 			 educationList = candidateUpdationDetailsService.gettingEducationDetails();
 			 occupationsList = staticDataService.getAllOccupations();
-			 bloodGroups = cadreRegistrationService.getBloodGroups();
+			 bloodGroups = cadreRegistrationService.getBloodGroups(); 
+			 castesList =  cadreRegistrationService.getAllCastes();
 			 
 		}
 		catch(Exception e)
