@@ -32,7 +32,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
 		
 		str.append(" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime)");
-		str.append(" and model.event.isActive =:isActive ");
+		str.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
 			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) order by model.tdpCadre.userAddress.constituency.district.districtId");
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -99,7 +99,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 			str.append(" ( model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ) and");
 		else 
 			str.append(" (model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10) and ");
-		str.append("   model.event.isActive =:isActive group by model.event.eventId,date(model.attendedTime) ");
+		str.append("   model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' group by model.event.eventId,date(model.attendedTime) ");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("currentDate", currentDate);
 		query.setParameter("isActive", IConstants.TRUE);
@@ -110,7 +110,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds) and model.event.isActive =:isActive ");
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds) and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		
 		if((startDate != null && endDate != null))
 		{
@@ -141,7 +141,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		StringBuilder str = new StringBuilder();
 		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,max(hour(model.attendedTime)),model.event.name from EventAttendee model where " +
 				" model.event.parentEventId = :parentEventId and date(model.attendedTime) = :date and model.event.eventId in(:subeventIds) ");
-		str.append(" and  model.event.isActive =:isActive group by model.tdpCadre.tdpCadreId,model.event.eventId ");
+		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' group by model.tdpCadre.tdpCadreId,model.event.eventId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("date", date);
 		query.setParameterList("subeventIds", subeventIds);
@@ -157,7 +157,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
 		str.append(" from EventAttendee model where ");
-		str.append("  model.event.parentEventId = :parentEventId and model.event.eventId in(:subeventIds) and  model.event.isActive =:isActive ");
+		str.append("  model.event.parentEventId = :parentEventId and model.event.eventId in(:subeventIds) and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -189,7 +189,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		StringBuilder str = new StringBuilder();
 		str.append("select model1.event.name,count(distinct model.tdpCadre.tdpCadreId),date(model.attendedTime) ");
 		str.append(" from EventAttendee model,EventAttendee model1 where model.event.eventId = :eventId and model1.event.eventId = :compareEventId");
-		str.append(" and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and  model.event.isActive =:isActive ");
+		str.append(" and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -225,7 +225,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 			else
 			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
 		}
-		str.append(" and  model.event.isActive =:isActive group by model.event.eventId,date(model.attendedTime) ");
+		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' group by model.event.eventId,date(model.attendedTime) ");
 		Query query = getSession().createQuery(str.toString());
 		if((startDate != null && endDate != null))
 		{
@@ -286,7 +286,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 			else
 			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
 		}
-		str.append(" and  model.event.isActive =:isActive group by model.event.eventId,date(model.attendedTime) ");
+		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' group by model.event.eventId,date(model.attendedTime) ");
 		Query query = getSession().createQuery(str.toString());
 		if((startDate != null && endDate != null))
 		{
@@ -310,7 +310,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.mobileNo ");
 		str.append(" from EventAttendee model where ");
-		str.append(" model.event.eventId = :eventId and  model.event.isActive =:isActive ");
+		str.append(" model.event.eventId = :eventId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -340,7 +340,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	}
 		
 	public Long getTodayTotalVisitors(Date todayDate){
-		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate ");
+		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate and model.tdpCadre.isDeleted = 'N'");
 		query.setDate("todayDate", todayDate);
 		 return (Long)query.uniqueResult();
 	}
