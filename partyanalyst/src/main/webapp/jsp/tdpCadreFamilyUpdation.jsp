@@ -202,6 +202,7 @@ background-color: #E5E5E5 !important;
 			str+=' <td>'+result[i].constituencyId+'</td>';
 			
 			str+=' </tr>';
+			
 			var cadreObj={
 				name:result[i].nameType,
 				mobileNo:result[i].mobileNumber,
@@ -209,14 +210,14 @@ background-color: #E5E5E5 !important;
 				age:result[i].age,
 				votercardNo :result[i].voterCardNo,
 				relationId:null,
-				dob: (result[i].dobStr).substring(0,11),
-				marriageDay:(result[i].marriageDateStr).substring(0,11),
+				dob: result[i].dobStr != null ? (result[i].dobStr).substring(0,11):"",
+				marriageDay:result[i].marriageDateStr != null ? (result[i].marriageDateStr).substring(0,11):"",
 				email:result[i].email,
 				casteStateId:result[i].casteId ,
 				educationId:result[i].educationId,
 				occupationId:result[i].occupationId,
 				whatsappStatus :result[i].whatsAppStatus,
-				partyMemberSince:(result[i].partyMemberSinceStr).substring(0,11),
+				partyMemberSince:result[i].partyMemberSinceStr != null ? (result[i].partyMemberSinceStr).substring(0,11):"", 
 				tdpCadreId:result[i].cadreId,
 				bloodGroupId : 0
 			};
@@ -400,11 +401,30 @@ function getFamilyDetails(tdpCadreId)
 						}
 						str+=' </td>';
 						str+='<td> ';
-						
+						if(searchArr[l].whatsappStatus != null)
+						{
+							if( searchArr[l].whatsappStatus =='YES')
+							{
+								str+='<select id="" class="whatsappStatus"  style="width: 130px">';
+								str+='<option value="NO" >No</option>';
+								str+='<option value="YES" selected="selected">Yes</option>';
+								str+='</select>';
+							}
+							else if( searchArr[l].whatsappStatus =='NO')
+							{
+								str+='<select id="" class="whatsappStatus"  style="width: 130px">';
+								str+='<option value="NO" selected="selected">No</option>';
+								str+='<option value="YES" >Yes</option>';
+								str+='</select>';
+							}
+						}
+						else
+						{
 							str+='<select id="" class="whatsappStatus"  style="width: 130px">';
 							str+='<option value="NO" >No</option>';
 							str+='<option value="YES">Yes</option>';
 							str+='</select>';
+						}
 
 						str+=' </td>';
 						
@@ -475,7 +495,7 @@ function getFamilyDetails(tdpCadreId)
 				if(relationsArr != null && relationsArr.length>0)
 				{
 					str+='<select id="" class="relation"  style="width: 150px">';
-					str+='<option value="0" selected="selected">Select Relation</option>';
+					//str+='<option value="0" selected="selected">Select Relation</option>';
 					for(var k in relationsArr)
 					{
 						if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
@@ -614,7 +634,8 @@ function getFamilyDetails(tdpCadreId)
 	
 function updateFamilyInfo()
 {
-	
+		$('#updateeBtn').hide();
+		$('#updateTableDiv').hide();
 	    var age = 0;
 		var casteStateId= 0;
 		var dob = "";
@@ -650,7 +671,7 @@ function updateFamilyInfo()
 		var mobileNo = $(this).find(".mobile").val();
 		var partyMemberSince = $(this).find(".membersince").val();
 		var voterId = $(this).find(".voter").val();
-		var relation = 0;
+		var relation = $(this).find(".relation").val();
 	
 	    var occupation = $(this).find(".occupation").val();
 	    var bloodGroup = $(this).find(".bloodGroup").val();
@@ -745,7 +766,7 @@ function addNewMemberInFamily(size)
 				if(relationsArr != null && relationsArr.length>0)
 				{
 					str+='<select id="" class="relation"  style="width: 150px">';
-					str+='<option value="0" selected="selected">Select Relation</option>';
+					//str+='<option value="0" selected="selected">Select Relation</option>';
 					for(var k in relationsArr)
 					{
 						str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
