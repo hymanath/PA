@@ -1572,7 +1572,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 	}
 	
 	public List<Object[]> cadreMemberDetailsForPerformance(Long locationLevelId, Long locationLevelValue){
-		Query query = getSession().createSQLQuery("SELECT distinct SUBSTR(TD.memberShip_id,5),TD.first_name," +
+		Query query = getSession().createSQLQuery("SELECT distinct TD.memberShip_id,TD.first_name," +
 				" TD.voter_id,TD.mobile_no, TD.age, TD.gender, C.caste_name, CC.category_name," +
 				" V.voter_id_card_no,TBC.name, TR.role, CO.name, CO.constituency_id, B.part_no, B.booth_id, CPR.from_date , CPR.to_date" +
 				" FROM tdp_committee TC," +

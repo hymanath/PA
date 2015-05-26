@@ -2432,7 +2432,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
+								if(tdpCadre.getPreviousEnrollmentNo() != null){
+									if(tdpCadre.getPreviousEnrollmentNo().toString().trim().length() > 8){
+										vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo().toString().trim().substring(tdpCadre.getPreviousEnrollmentNo().toString().trim().length()-8));
+									}else{
+										vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo().toString());
+									}
+								}else{
+									vo.setMemberShipId("");
+								}
+								//vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 								if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 								  vo.setRelative("true");
@@ -2548,7 +2557,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							
 							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-							vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null  && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
+							if(tdpCadre.getPreviousEnrollmentNo() != null){
+								if(tdpCadre.getPreviousEnrollmentNo().toString().trim().length() > 8){
+									vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo().toString().trim().substring(tdpCadre.getPreviousEnrollmentNo().toString().trim().length()-8));
+								}else{
+									vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo().toString());
+								}
+							}else{
+								vo.setMemberShipId("");
+							}
+							//vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null  && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
 							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 							if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 							  vo.setRelative("true");
@@ -3659,7 +3677,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						vo.setName(param[0] != null ? param[0].toString().trim():"");
 						vo.setDesc(param[1] != null ? param[1].toString().trim():"");
-						vo.setCaste(param[2] != null ? param[2].toString().trim():"");
+						if(param[2] != null){
+							if(param[2].toString().trim().length() > 8){
+								vo.setCaste(param[2].toString().trim().substring(param[2].toString().trim().length()-8));
+							}else{
+								vo.setCaste(param[2].toString());
+							}
+						}else{
+							vo.setCaste("");
+						}
+						//vo.setCaste(param[2] != null ? param[2].toString().trim():"");
 						
 						vo.setId(param[3] != null ? Long.valueOf(param[3].toString().trim()):0L);
 						
@@ -4121,11 +4148,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		if(id.longValue() > 9999999l){
 			id = id-7000000l;
 		}
-		String memberShipNo ="AP14";
+		/*String memberShipNo ="AP14";
 		if(districtId != null && districtId.longValue() < 11l){
 			memberShipNo = "TS14";
-		}
-		String randomNo = memberShipNo+"0"+id;
+		}*/
+		String randomNo = "0"+id;
 		
 		return randomNo;
 	}
@@ -4385,7 +4412,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setVoterName(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getPanchayatName() : "");
 				returnVO.setRelativeName(voterIdDetails.get(0)[3] != null ? voterIdDetails.get(0)[3].toString() : "");
 				returnVO.setVoterId(voterIdDetails.get(0)[4] != null ? (Long)voterIdDetails.get(0)[4] : 0l);
-				returnVO.setVoterCardNo(voterIdDetails.get(0)[5] != null ? voterIdDetails.get(0)[5].toString() : "");
+				if(voterIdDetails.get(0)[5] != null){
+					if(voterIdDetails.get(0)[5].toString().trim().length() > 8){
+						returnVO.setVoterCardNo(voterIdDetails.get(0)[5].toString().trim().substring(voterIdDetails.get(0)[5].toString().trim().length()-8));
+					}else{
+						returnVO.setVoterCardNo(voterIdDetails.get(0)[5].toString());
+					}
+				}else{
+					returnVO.setVoterCardNo("");
+				}
+				//returnVO.setVoterCardNo(voterIdDetails.get(0)[5] != null ? voterIdDetails.get(0)[5].toString() : "");
 				returnVO.setVillageEng(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
 				returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 				returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
@@ -4459,7 +4495,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
 					cadrePrintVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
 					cadrePrintVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
-					cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
+					if(objects[0] != null){
+						if(objects[0].toString().trim().length() > 8){
+							cadrePrintVO.setFirstCode(objects[0].toString().trim().substring(objects[0].toString().trim().length()-8));
+						}else{
+							cadrePrintVO.setFirstCode(objects[0].toString());
+						}
+					}else{
+						cadrePrintVO.setFirstCode("");
+					}
+					//cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
 					cadrePrintVO.setVoterName(objects[2] != null ? objects[2].toString() : "");
 					cadrePrintVO.setRelativeName(objects[3] != null ? objects[3].toString() : "");
 					cadrePrintVO.setVoterId(objects[4] != null ? (Long)objects[4] : 0l);
@@ -5000,7 +5045,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
 					cadrePrintVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
 					cadrePrintVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
-					cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
+					if(objects[0] != null){
+						if(objects[0].toString().trim().length() > 8){
+							cadrePrintVO.setFirstCode(objects[0].toString().trim().substring(objects[0].toString().trim().length()-8));
+						}else{
+							cadrePrintVO.setFirstCode(objects[0].toString());
+						}
+					}else{
+						cadrePrintVO.setFirstCode("");
+					}
+					//cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
 					cadrePrintVO.setVoterName(objects[2] != null ? objects[2].toString() : "");
 					cadrePrintVO.setRelativeName(objects[3] != null ? objects[3].toString() : "");
 					cadrePrintVO.setVoterId(objects[4] != null ? (Long)objects[4] : 0l);
@@ -5232,7 +5286,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
 					cadrePrintVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
 					cadrePrintVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
-					cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
+					if(objects[0] != null){
+						if(objects[0].toString().trim().length() > 8){
+							cadrePrintVO.setFirstCode(objects[0].toString().trim().substring(objects[0].toString().trim().length()-8));
+						}else{
+							cadrePrintVO.setFirstCode(objects[0].toString());
+						}
+					}else{
+						cadrePrintVO.setFirstCode("");
+					}
+					//cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
 					cadrePrintVO.setVoterName(objects[2] != null ? objects[2].toString() : "");
 					cadrePrintVO.setRelativeName(objects[3] != null ? objects[3].toString() : "");
 					cadrePrintVO.setVoterId(objects[4] != null ? (Long)objects[4] : 0l);
@@ -5516,10 +5579,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						//getVoterAddressDetails(voterId,userAddress,null);
 						getUserAddressForCadreRegistered(userAddressId,userAddress,null);
-						
-						returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-						int size = returnVO.getFirstCode().length();
-						returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+						if(obj[0] != null){
+							if(obj[0].toString().trim().length() > 8){
+								returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+							}else{
+								returnVO.setFirstCode(obj[0].toString());
+							}
+						}else{
+							returnVO.setFirstCode("");
+						}
+						//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+						//int size = returnVO.getFirstCode().length();
+						returnVO.setSecondCode(returnVO.getFirstCode());
 						returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
 						returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
 						returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
@@ -5586,9 +5657,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							userAddressId = Long.valueOf(obj[10].toString());
 						} 
 						getUserAddressForCadreRegistered(userAddressId,userAddress,null);
-						returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-						int size = returnVO.getFirstCode().length();
-						returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+						if(obj[0] != null){
+							if(obj[0].toString().trim().length() > 8){
+								returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+							}else{
+								returnVO.setFirstCode(obj[0].toString());
+							}
+						}else{
+							returnVO.setFirstCode("");
+						}
+						//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+						//int size = returnVO.getFirstCode().length();
+						returnVO.setSecondCode(returnVO.getFirstCode());
 						/*returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
 						returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");*/
 						returnVO.setDataSourceType(obj[4] != null ? obj[4].toString() : "");
@@ -5714,7 +5794,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
 		String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
 	 	StringBuilder queryStr = new StringBuilder();
-	 	sb.append(" and (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+	 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		}
 		if(input.getName() != null && input.getName().trim().length() > 0)
 		{
@@ -5742,9 +5822,18 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 					UserAddress userAddress = new UserAddress()	;
 					CadrePrintVO returnVO = new CadrePrintVO();
 					Long userAddressId = 0l;
-					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-					int size = returnVO.getFirstCode().length();
-					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					if(obj[0] != null){
+						if(obj[0].toString().trim().length() > 8){
+							returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+						}else{
+							returnVO.setFirstCode(obj[0].toString());
+						}
+					}else{
+						returnVO.setFirstCode("");
+					}
+					//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					//int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode());
 					returnVO.setVoterId(obj[3] != null ?(Long)obj[3] : 0l);
 					returnVO.setVoterCardNo(obj[4] != null ? obj[4].toString() : "");
 					returnVO.setTdpCadreId((Long)obj[7]);
@@ -5791,9 +5880,18 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 					Long userAddressId = 0l;
 					
 					//getUserAddressForCadreRegistered(userAddressId,userAddress,null);
-					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-					int size = returnVO.getFirstCode().length();
-					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					if(obj[0] != null){
+						if(obj[0].toString().trim().length() > 8){
+							returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+						}else{
+							returnVO.setFirstCode(obj[0].toString());
+						}
+					}else{
+						returnVO.setFirstCode("");
+					}
+					//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					//int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode());
 					returnVO.setTdpCadreId((Long)obj[3]);
 					returnVO.setMobileNo(obj[4] != null ? obj[4].toString() : "");
 					returnVO.setCardNumber(obj[6] != null ? obj[6].toString() : "");
@@ -5863,7 +5961,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
 		String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
 	 	StringBuilder queryStr = new StringBuilder();
-	 	sb.append(" and (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+	 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		}
 		
 		Set<String> voterMemberCards = new HashSet<String>();
@@ -5897,10 +5995,18 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					//getVoterAddressDetails(voterId,userAddress,null);
 					
 					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
-					
-					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-					int size = returnVO.getFirstCode().length();
-					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					if(obj[0] != null){
+						if(obj[0].toString().trim().length() > 8){
+							returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+						}else{
+							returnVO.setFirstCode(obj[0].toString());
+						}
+					}else{
+						returnVO.setFirstCode("");
+					}
+					//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					//int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode());
 					returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
 					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
 					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
@@ -5976,9 +6082,18 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						userAddressId = Long.valueOf(obj[10].toString());
 					} 
 					getUserAddressForCadreRegistered(userAddressId,userAddress,null);
-					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-					int size = returnVO.getFirstCode().length();
-					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
+					if(obj[0] != null){
+						if(obj[0].toString().trim().length() > 8){
+							returnVO.setFirstCode(obj[0].toString().trim().substring(obj[0].toString().trim().length()-8));
+						}else{
+							returnVO.setFirstCode(obj[0].toString());
+						}
+					}else{
+						returnVO.setFirstCode("");
+					}
+					//returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					//int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode());
 					/*returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
 					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");*/
 					returnVO.setDataSourceType(obj[4] != null ? obj[4].toString() : "");
@@ -7023,7 +7138,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				}
 				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
+					queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
 					
 					if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 					{							
@@ -7054,7 +7169,16 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-						cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4  ? cadre[4].toString().substring(4):"");
+						if(cadre[4] != null){
+							if(cadre[4].toString().trim().length() > 8){
+								cadreVO.setMemberShipNo(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
+							}else{
+								cadreVO.setMemberShipNo(cadre[4].toString());
+							}
+						}else{
+							cadreVO.setMemberShipNo("");
+						}
+						//cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4  ? cadre[4].toString().substring(4):"");
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
@@ -7287,7 +7411,16 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							if(membershipCheck){
 								TdpCadreTravelInfo tdpCadreTravelInfo  = new TdpCadreTravelInfo();
 								tdpCadreTravelInfo.setCustId(Long.valueOf(input.getCustomerId()));
-								tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo() != null && input.getMembershipNo().toString().trim().length()>4  ? input.getMembershipNo().substring(4):"");
+								if(input.getMembershipNo() != null){
+									if(input.getMembershipNo().toString().trim().length() > 8){
+										tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo().toString().trim().substring(input.getMembershipNo().toString().trim().length()-8));
+									}else{
+										tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo().toString());
+									}
+								}else{
+									tdpCadreTravelInfo.setMembershipNo("");
+								}
+								//tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo() != null && input.getMembershipNo().toString().trim().length()>4  ? input.getMembershipNo().substring(4):"");
 										if(input.getTicketsCount() == null || input.getTicketsCount().isEmpty() || input.getTicketsCount().equals("0"))
 										{
 											status1 = "No of Ticketes Required";
@@ -7441,7 +7574,16 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-						cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4 ? cadre[4].toString().substring(4):"");
+						if(cadre[4] != null){
+							if(cadre[4].toString().trim().length() > 8){
+								cadreVO.setMemberShipNo(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
+							}else{
+								cadreVO.setMemberShipNo(cadre[4].toString());
+							}
+						}else{
+							cadreVO.setMemberShipNo("");
+						}
+						//cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4 ? cadre[4].toString().substring(4):"");
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
@@ -7809,7 +7951,16 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						
 						vo.setName(param[0] != null ? param[0].toString().trim():"");
 						vo.setDesc(param[1] != null ? param[1].toString().trim():"");
-						vo.setCaste(param[2] != null ? param[2].toString().trim():"");
+						if(param[2] != null){
+							if(param[2].toString().trim().length() > 8){
+								vo.setCaste(param[2].toString().trim().substring(param[2].toString().trim().length()-8));
+							}else{
+								vo.setCaste(param[2].toString());
+							}
+						}else{
+							vo.setCaste("");
+						}
+						//vo.setCaste(param[2] != null ? param[2].toString().trim():"");
 						
 						vo.setId(param[3] != null ? Long.valueOf(param[3].toString().trim()):0L);
 						
@@ -9227,7 +9378,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  if(memberShipVo == null)
 					  {
 						  memberShipVo = new CardPrintUserVO();
-						  memberShipVo.setMembershipNumber(params[0].toString());
+						  String cardNo = params[0].toString().trim();
+						  if(cardNo.length() > 8){
+							  cardNo = cardNo.substring(cardNo.length() - 8);
+							}
+						  memberShipVo.setMembershipNumber(cardNo);
 						  if(params[4] == null)
 						  {
 							  dateVo.setPrintCnt(dateVo.getPrintCnt() + 1);
@@ -9320,7 +9475,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	public CardPrintUserVO getMatchedMemberShipNo(List<CardPrintUserVO> resultList,String memberShipNo)
 	{
 		 try{
-			
+			if(memberShipNo!= null && memberShipNo.trim().length() > 8){
+				memberShipNo = memberShipNo.trim().substring(memberShipNo.trim().length() - 8);
+			}
 			if(resultList == null || resultList.size() == 0)
 				return null;
 			for(CardPrintUserVO vo : resultList)
@@ -9438,7 +9595,17 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setCadreId((Long)obj[0]);
 					vo.setImageBase64String(obj[1] != null ? obj[1].toString(): "");
 					vo.setConstituencyId(obj[2] != null ? obj[2].toString() : "");
-					vo.setAddress(obj[3] != null ? obj[3].toString().substring(4) : "");
+					
+					if(obj[3] != null){
+						if(obj[3].toString().trim().length() > 8){
+							vo.setAddress(obj[3].toString().trim().substring(obj[3].toString().trim().length()-8));
+						}else{
+							vo.setAddress(obj[3].toString());
+						}
+					}else{
+						vo.setAddress("");
+					}
+					//vo.setAddress(obj[3] != null ? obj[3].toString().substring(4) : "");
 					vo.setMobileNumber(obj[4] != null ? obj[4].toString(): "");
 					vo.setNameType(obj[5]  != null ? obj[5].toString() :"");
 					vo.setCasteId( obj[6] != null ?(Long)obj[6]: null);

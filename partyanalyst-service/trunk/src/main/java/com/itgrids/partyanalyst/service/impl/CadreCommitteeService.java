@@ -495,7 +495,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				cadreCommitteeVO.setCadreName(tdpCadre.getFirstname());
 				cadreCommitteeVO.setTdpCadreId(tdpCadre.getTdpCadreId());
-				cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().substring(4));
+				if(tdpCadre.getMemberShipNo().toString().trim().length() > 8){
+					cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().toString().trim().substring(tdpCadre.getMemberShipNo().toString().trim().length()-8));
+				}else{
+					cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().toString());
+				}
+				//cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().substring(4));
 				if(tdpCadre.getAge() != null){
 				    cadreCommitteeVO.setAge(tdpCadre.getAge().toString());
 				}else{
@@ -1819,7 +1824,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						
 						CadreCommitteeVO committeeVO = new CadreCommitteeVO();
 						committeeVO.setTdpCadreId(tdpCadre.getId());
-						committeeVO.setMemberShipCardId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().substring(tdpCadre.getMemberShipNo().length() - 8) :"");
+						if(tdpCadre.getMemberShipNo() != null){
+							if(tdpCadre.getMemberShipNo().toString().trim().length() > 8){
+								committeeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().toString().trim().substring(tdpCadre.getMemberShipNo().toString().trim().length()-8));
+							}else{
+								committeeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().toString());
+							}
+						}else{
+							committeeVO.setMemberShipCardId("");
+						}
+						//committeeVO.setMemberShipCardId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().substring(tdpCadre.getMemberShipNo().length() - 8) :"");
 						committeeVO.setCadreName(tdpCadre.getCadreName());
 						committeeVO.setRelativeName(tdpCadre.getRelativeName());
 						committeeVO.setAge(tdpCadre.getAge().toString());
@@ -7615,7 +7629,12 @@ return constiLst;
 					   memberVo.setUrl(electedMembersInfo[1].toString());//image
 					}
 					memberVo.setName(electedMembersInfo[2].toString());//name
-					memberVo.setType(electedMembersInfo[3].toString());//membership
+					if(electedMembersInfo[3].toString().trim().length() > 8){
+						memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));
+					}else{
+						memberVo.setType(electedMembersInfo[3].toString());
+					}
+					//memberVo.setType(electedMembersInfo[3].toString());//membership
 					memberVo.setPartno(electedMembersInfo[4].toString());//Affilicated name
 					committeeMembersList.add(memberVo);
 				}
@@ -7784,12 +7803,15 @@ return constiLst;
 			    	  	
 			    	  cadreCommitteeMemberVO.setName(objects[3] != null ?objects[3].toString():"");
 			    	  cadreCommitteeMemberVO.setImagePath(objects[4] != null ?objects[4].toString():"");
-			    	  if(objects[5].toString().trim().length() > 8){
-			    		    cadreCommitteeMemberVO.setMembershipNo(objects[5] != null ? objects[5].toString().trim().substring(objects[5].toString().trim().length()-8):"");
+			    	  if(objects[5] != null){
+			    	    if(objects[5].toString().trim().length() > 8){
+			    		    cadreCommitteeMemberVO.setMembershipNo(objects[5].toString().trim().substring(objects[5].toString().trim().length()-8));
 						}else{
-							cadreCommitteeMemberVO.setMembershipNo(objects[5] != null ? objects[5].toString():"");
+							cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
 						}
-			    	  
+			    	  }else{
+			    		  cadreCommitteeMemberVO.setMembershipNo(""); 
+			    	  }
 			    	  cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
 			    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 			    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
@@ -8064,7 +8086,16 @@ return constiLst;
 			if(rsltListDtls!=null && rsltListDtls.size()>0){
 				for(Object[] temp:rsltListDtls){
 					CadreCommitteeMemberVO cv = new CadreCommitteeMemberVO();
-					cv.setMembershipNo(temp[0].toString());
+					if(temp[0] != null){
+						if(temp[0].toString().trim().length() > 8){
+							cv.setMembershipNo(temp[0].toString().trim().substring(temp[0].toString().trim().length()-8));
+						}else{
+							cv.setMembershipNo(temp[0].toString());
+						}
+					}else{
+						cv.setMembershipNo("");
+					}
+					//cv.setMembershipNo(temp[0].toString());
 					cv.setName(temp[1].toString());
 					if(temp[2] != null)
 					cv.setVtrId(Long.valueOf(temp[2].toString()));
@@ -12949,7 +12980,16 @@ return mandalList;
 												CadreCommitteeVO committeeVO = new CadreCommitteeVO();
 			
 												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-												committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
+												if(cadre[4] != null){
+													if(cadre[4].toString().trim().length() > 8){
+														committeeVO.setMemberShipCardId(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
+													}else{
+														committeeVO.setMemberShipCardId(cadre[4].toString());
+													}
+												}else{
+													committeeVO.setMemberShipCardId("");
+												}
+												//committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
 												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");

@@ -99,9 +99,9 @@ public class CommonUtilsService {
 				String memberShipNumber1 = "TS14"+memberShipNo;
 				String temp =  memberShipNos.get(memberShipNos.size() - 1);
 				if(temp.equalsIgnoreCase(memberShipNo))
-					queryStr.append("  (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+					queryStr.append("  (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 				else
-					queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
+					queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
 				}
 			}
 		
@@ -110,8 +110,12 @@ public class CommonUtilsService {
 			if(details != null && details.size() >0)
 			{
 				for(String params :details){
-					CadreAddressVO vo = new CadreAddressVO();					
-					vo.setMembershipNo(params.substring(4));
+					CadreAddressVO vo = new CadreAddressVO();
+					if(params.trim().length() > 8){
+					  vo.setMembershipNo(params.substring(4));
+					}else{
+						vo.setMembershipNo(params);
+					}
 					vo.setValue("true");
 					validNos.add(vo.getMembershipNo());
 					cadreAddressVOList.add(vo);

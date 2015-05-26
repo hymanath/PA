@@ -1308,9 +1308,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					String temp =  memberShipNos.get(memberShipNos.size() - 1);
 					
 					if(temp.equalsIgnoreCase(memberShipNo) || memberShipNos.size() == 1)
-						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  ");
 					else
-						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
 				}
 			}
 			List<Object[]>  mobileNos = tdpCadreDAO.getMobileNosByMemberShipId(queryStr.toString());
@@ -1318,7 +1318,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(mobileNos!= null && mobileNos.size() >0){
 				for(Object[] params : mobileNos){
 					CadreAddressVO vo = new CadreAddressVO();
-					vo.setMembershipNo(params[0].toString().substring(4));
+					if(params[0] != null){
+						if(params[0].toString().trim().length() > 8){
+							vo.setMembershipNo(params[0].toString().trim().substring(params[0].toString().trim().length()-8));
+						}else{
+							vo.setMembershipNo(params[0].toString());
+						}
+					}else{
+						vo.setMembershipNo("");
+					}
+					//vo.setMembershipNo(params[0].toString().substring(4));
 					if(params[1] != null && !params[1].toString().isEmpty())
 						vo.setMobileNo(params[1].toString());
 					else
@@ -1468,9 +1477,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					String memberShipNumber1 = "TS14"+memberShipNo;
 					String temp =  addressTrueList.get(addressTrueList.size() - 1);
 					if(temp.equalsIgnoreCase(memberShipNo) || addressTrueList.size() == 1)
-						queryStr.append("  (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+						queryStr.append("  (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 					else
-						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
 				}
 			}
 			
@@ -1480,9 +1489,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				for(String memberShipNo :addressFalseList){
 					String temp =  addressFalseList.get(addressFalseList.size() - 1);
 					if(temp.equalsIgnoreCase(memberShipNo) || addressFalseList.size() == 1)
-						queryStr1.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+						queryStr1.append("  (model.memberShipNo = '"+memberShipNo.trim()+"')  ");
 					else
-						queryStr1.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+						queryStr1.append("  (model.memberShipNo = '"+memberShipNo.trim()+"')  OR ");
 				}
 			}
 			if(addressTrueList != null &&  addressTrueList.size() > 0){
@@ -1512,7 +1521,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			for(Object[] params : list)
 			{
 				CadreAddressVO cadreAddressVO = new CadreAddressVO();
-				cadreAddressVO.setMembershipNo(params[4] != null ? params[4].toString().substring(4) : "");
+				if(params[4] != null){
+					if(params[4].toString().trim().length() > 8){
+						cadreAddressVO.setMembershipNo(params[4].toString().trim().substring(params[4].toString().trim().length()-8));
+					}else{
+						cadreAddressVO.setMembershipNo(params[4].toString());
+					}
+				}else{
+					cadreAddressVO.setMembershipNo("");
+				}
+				//cadreAddressVO.setMembershipNo(params[4] != null ? params[4].toString().substring(4) : "");
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : null);
@@ -1578,7 +1596,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				queryStr = new StringBuilder();
 				
 			    //queryStr.append(" substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"'  ");
-				queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+				queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR  model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 			    list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());
 				setMemberInfo(returnVo,list);
 			}
@@ -1596,7 +1614,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				 queryStr = new StringBuilder();
 					
 				       if(memberShipNo != null && refNo != null)
-				    	   queryStr.append("  ((model.memberShipNo ='"+memberShipNumber.trim()+"' OR  model.memberShipNo ='"+memberShipNumber1.trim()+"') and model.cardNumber = '"+refNo+"')  ");
+				    	   queryStr.append("  ((model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR  model.memberShipNo ='"+memberShipNumber1.trim()+"') and model.cardNumber = '"+refNo+"')  ");
 							list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
 						if(list !=  null && list.size() > 0)
 							setMemberInfo(returnVo,list);
@@ -1627,7 +1645,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				if(refNo.equalsIgnoreCase(cardNumber))
 				{
 					count =1;
-				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+					if(params[2] != null){
+						if(params[2].toString().trim().length() > 8){
+							cadreAddressVO.setMembershipNo(params[2].toString().trim().substring(params[2].toString().trim().length()-8));
+						}else{
+							cadreAddressVO.setMembershipNo(params[2].toString());
+						}
+					}else{
+						cadreAddressVO.setMembershipNo("");
+					}
+				//cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
@@ -1638,7 +1665,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(count == 0){
 				
 				Object[] params = list.get(0);
-				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+				if(params[2] != null){
+					if(params[2].toString().trim().length() > 8){
+						cadreAddressVO.setMembershipNo(params[2].toString().trim().substring(params[2].toString().trim().length()-8));
+					}else{
+						cadreAddressVO.setMembershipNo(params[2].toString());
+					}
+				}else{
+					cadreAddressVO.setMembershipNo("");
+				}
+				//cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
@@ -1664,8 +1700,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			
 			for(Object[] params : list)
 			{
-				
-				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+				if(params[2] != null){
+					if(params[2].toString().trim().length() > 8){
+						cadreAddressVO.setMembershipNo(params[2].toString().trim().substring(params[2].toString().trim().length()-8));
+					}else{
+						cadreAddressVO.setMembershipNo(params[2].toString());
+					}
+				}else{
+					cadreAddressVO.setMembershipNo("");
+				}
+				//cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
@@ -1962,7 +2006,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			String memberShipNumber1 = "TS14"+inputVo.getMemberShipNo();
 		 	StringBuilder queryStr = new StringBuilder();
 		 	if(inputVo.getMemberShipNo() != null && !inputVo.getMemberShipNo().isEmpty())
-		 	queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		 	queryStr.append(" (model.memberShipNo ='"+inputVo.getMemberShipNo().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		 	else
 		 	{
 		 		queryStr.append(" model.cardNumber = '"+inputVo.getRFID()+"' ");

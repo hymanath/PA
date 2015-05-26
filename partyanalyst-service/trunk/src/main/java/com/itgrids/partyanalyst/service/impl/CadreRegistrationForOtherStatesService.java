@@ -448,7 +448,7 @@ public class CadreRegistrationForOtherStatesService implements
 
 				if (tdpCadre1.getMemberShipNo() == null || tdpCadre1.getMemberShipNo().trim().length() == 0) {
 					String membershipNo = getMemberShipNo(tdpCadre1.getTdpCadreId());
-					if(tdpCadre1.getUserAddress() != null)
+					/*if(tdpCadre1.getUserAddress() != null)
 					{
 						if(tdpCadre1.getUserAddress().getState() != null)
 						{
@@ -478,7 +478,7 @@ public class CadreRegistrationForOtherStatesService implements
 								membershipNo = "KR14"+membershipNo;
 							}
 						}
-					}					
+					}			*/		
 					tdpCadre1.setMemberShipNo(membershipNo);
 				}
 				uploadProfileImage(cadreRegistrationVO,tdpCadre1);
