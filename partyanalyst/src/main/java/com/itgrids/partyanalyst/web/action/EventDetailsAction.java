@@ -246,4 +246,27 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getEventAttendeeSummary(){
+		try{
+			LOG.debug(" Entered Into getEventAttendeeSummary");
+			
+			
+			jObj = new JSONObject(getTask());
+			List<Long> subEventIds = new ArrayList<Long>();
+			Long eventId = jObj.getLong("eventId");
+			Long stateId = jObj.getLong("stateId");
+			Long reportLevelId = jObj.getLong("reportLevelId");
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			resultList =  mahaNaduService.getAttendeeSummaryForEvents(eventId,stateId,reportLevelId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Entered Into getEventAttendeeSummary",e);
+		}
+		return Action.SUCCESS;
+	}
 }
