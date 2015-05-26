@@ -27,10 +27,16 @@ public class CadrePrintInputVO {
 	private Long userId;
 	private String uname;
 	private String pwd;
+	private String isOtherState;
 	
 	
-	
-	
+
+	public String getIsOtherState() {
+		return isOtherState;
+	}
+	public void setIsOtherState(String isOtherState) {
+		this.isOtherState = isOtherState;
+	}
 	public String getUname() {
 		return uname;
 	}
