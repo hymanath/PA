@@ -180,6 +180,7 @@
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
+			<result type="redirect" name="tdpTempararyCardsRegistration">tdpTempararyCardsRegistration.action</result>
 			<result type="redirect" name="eventDashboardAction">eventDashboardAction.action</result>
 			<result type="redirect" name="cadreMemberShipCardDispatcherAction">cadreMemberShipCardDispatcherAction.action</result>	
 			<result type="redirect" name="cadreSurveyTransactionsDashboardAction">cadreSurveyTransactionsDashboardAction.action</result>
@@ -5633,7 +5634,8 @@
 		    <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>
 		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	
 		    <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>
-		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>	       
+		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
+		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>	       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -10097,6 +10099,18 @@
 			<result type="json" name="success">
 				<param name="root">eventCreationVO</param>
 			</result>
+		</action>
+		
+		<action name="tdpTempararyCardsRegistration" class="cadreRegistrationAction" method="tempararyCadreCardsRegistrationPage">
+           <result name="success">/jsp/tdpCadreTempararyCardsPrinting.jsp</result>	
+           <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		   <result name="input">/jsp/loginForm.jsp?src=tdpTempararyCardsRegistration</result>
+        </action> 
+		
+		<action name="tempararyTdpCadreSaveRegistrationForOtherAction" class="cadreRegistrationAction" method="saveTempararyCadreDetailsForOtherStates">
+			 <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
 		</action>
 		
 		<action name="getDistrictNamesIdsAction" class="cadreCommitteeAction" method="getDistrictNamesIds">
