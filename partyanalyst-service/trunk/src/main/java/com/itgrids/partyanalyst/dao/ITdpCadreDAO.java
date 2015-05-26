@@ -343,5 +343,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getCadrePartialDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
 	  public List<Object[]> getMembershipNosByTdpCadreIds(List<Long> tdpCadreIdsList);
 	  public List<Object[]> checkCardNumberExists(Long tdpCadreId);
+	  public Long getIsAlreadyTempararyRegistered(Long mobile, String cadreName );
 	  public List getTdpCadreIdByMembership(String queryStr);
+	  public List<String> getOtherSttateCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
+	  public List<String> getOtherSttateNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId);
 }
