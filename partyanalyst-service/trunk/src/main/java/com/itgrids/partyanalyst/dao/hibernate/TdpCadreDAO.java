@@ -4964,11 +4964,76 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return qry.list();
 		}
 		
+		public List<String> getOtherSttateCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model " +
+					" where model.isDeleted = 'T' and model.enrollmentYear = 2014 and model.voterId is not null ");
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(distId!=null){
+				qry.setParameter("districtId", distId);
+			}
+			if(mandalId!=null){
+				qry.setParameter("tehsilId", mandalId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
+		
+		
 		public List<String> getNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
 					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is null ");
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(distId!=null){
+				qry.setParameter("districtId", distId);
+			}
+			if(mandalId!=null){
+				qry.setParameter("tehsilId", mandalId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
+		
+		public List<String> getOtherSttateNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model " +
+					" where model.isDeleted = 'T' and model.enrollmentYear = 2014 and model.voterId is null ");
 			str.append(query);
 			str.append( " order by date(model.surveyTime)" );
 			
@@ -5028,4 +5093,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 		
 
+		public Long getIsAlreadyTempararyRegistered(Long mobile, String cadreName )
+		{
+			Query query = getSession().createQuery(" select count(model.tdpCadreId) from TdpCadre model where model.mobileNo like '"+mobile+"' and  " +
+					" model.isDeleted='T' and model.enrollmentYear = 2014 and model.firstname like '%"+cadreName+"%' ");
+
+			return (Long) query.uniqueResult();
+		}
+		
 }
