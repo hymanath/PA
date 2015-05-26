@@ -1510,7 +1510,7 @@ function getStateWiseOverview(eventId){
 				 total = result[i].total+ total;
 			  }
 			str+=' <h5 class="text-center" style="margin-bottom: 0px;"> TOTAL COUNT  '+total+'</h5>';
-			str+='<p class="text-center" style="font-size: 16px; margin-top: 20px;">STATE WISE COUNT</p>';
+			
 			str+='<ul class="list-inline otherstate" style="margin-left: 10px;">';
 			for(var i in result)
 			  {
