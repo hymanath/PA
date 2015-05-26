@@ -118,14 +118,7 @@ background-color: #E5E5E5 !important;
 				occupationArr.push(obj);
 		</c:forEach>
 
-		<c:forEach var="caste" items="${bloodGroups}">
-				var obj = {
-					id :  '${caste.id}',
-					name :  '${caste.name}'
-				}
-				bloodGroupArr.push(obj);
-		</c:forEach>
-		
+				
 	</script>
 	<script>
 	
@@ -693,16 +686,18 @@ function updateFamilyInfo()
 		var partyMemberSince = "";
 		var voterId=0;
 		var relationId = 0;
-		var tdpCadreId =0;
+		var casteStateId = 0;
 		var occupationId=0;
+		var tdpCadre = 0;
 	var dataArr = new Array();
 	var finalCasteId = 0;
 	var count = 0;
 	$(".familyInfo").each(function(){
 		count = count+1;
 		$this = $(this);
+		if($(this).find(".age").val())
 		var age = $(this).find(".age").val();
-		var casteStateId = 0;
+		
 		var dob = "";
 		var name = $(this).find(".name").val();
 	    var education = $(this).find(".education").val();
@@ -714,11 +709,14 @@ function updateFamilyInfo()
 		var partyMemberSince = $(this).find(".membersince").val();
 		var voterId = $(this).find(".voter").val();
 		var relation = 0;
-		var tdpCadre = "";
+	
 	    var occupation = $(this).find(".occupation").val();
 	    var bloodGroup = $(this).find(".bloodGroup").val();
+		alert(count)
+			
 		if(count == 1)
-		{
+			{
+			age = 0;
 			finalCasteId = casteStateId;
 			casteStateId = $(this).find(".casteState").val();
 			gender = $(this).find(".gender").val();
@@ -757,7 +755,7 @@ console.log(dataArr);
 		dataArr:dataArr,
 		task:"updateFamilyInfo"
 	}
-/*	$.ajax({
+	$.ajax({
           type:'GET',
           url: 'updateFamilyInfoAction.action',
           dataType: 'json',
@@ -767,7 +765,7 @@ console.log(dataArr);
 				
 			}
 	   });
-	   */
+	  
 }
 
 function getAllRelationDetails(){
