@@ -726,6 +726,7 @@ function updateFamilyInfo()
 			whatsAPP = $(this).find(".whatsappStatus").val();
 			tdpCadre = $(this).find(".tdpCadre").val();
 			dob = $(this).find(".dob").val();
+			relation = 13;
 		}
 		else
 		{
