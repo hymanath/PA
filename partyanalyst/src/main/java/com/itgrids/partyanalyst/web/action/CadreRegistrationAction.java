@@ -1878,6 +1878,108 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String tempararyCadreCardsRegistrationPage()
+	{
+		try {
+			LOG.info("Entered into execute method in saveTempararyCadreCardsRegistrationPage Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014") || entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG") )
+			{
+				return Action.SUCCESS;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
+		}
+		return Action.ERROR;
+	}
+	
+	public String saveTempararyCadreDetailsForOtherStates()
+	{
+		try {
+			LOG.info("Entered into saveCadreDetailsForOtherStates method in CadreRegistrationAction Action");
+			if(cadreRegistrationVO != null)
+			{
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				if(user == null)
+				{
+					inputStream = new StringBufferInputStream(",notlogged,");
+					return Action.SUCCESS;
+				}
+				
+				if(!entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG"))
+				{
+					inputStream = new StringBufferInputStream(",notAccess,");
+					return Action.SUCCESS;
+				}
+				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
+					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
+					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));
+					}else if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("2")){
+						cadreRegistrationVO.setMuncipalityId(cadreRegistrationVO.getPanchayatId().substring(1));
+						cadreRegistrationVO.setPanchayatId(null);
+					}else{
+						cadreRegistrationVO.setPanchayatId(null);
+					}
+				}
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
+				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
+				cadreRegistrationVO.setPartyMemberSinceStr(cadreRegistrationVO.getPartyMemberSinceStr());
+				if(relativeTypeChecked != null){
+					cadreRegistrationVO.setRelative(true);
+					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+					if(relativeVoterCardNo != null && relativeVoterCardNo.trim().length() > 0){
+						cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+						List<Long> ids = cadreRegistrationService.getVoterIdByVoterCard(relativeVoterCardNo.trim());
+						if(ids.size() > 0 && ids.get(0)!= null){
+							cadreRegistrationVO.setFamilyVoterId(ids.get(0));
+						}
+					}
+					
+				}
+				if(cadreUploadImgVoterType != null){
+					cadreRegistrationVO.setPhotoType("voter");
+				}else{
+					cadreRegistrationVO.setPhotoType("new");
+				}
+				
+				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
+				surveyCadreResponceVO = new SurveyCadreResponceVO();
+				  cadreRegistrationForOtherStatesService.tdpTempararyCadreSavingLogic(addressVO,cadreRegistrationVO,surveyCadreResponceVO,"new",true,cadreRegistrationVO.getRegistrationType());
+				  if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("alreadyRegistered")){
+					  inputStream = new StringBufferInputStream(",alreadyRegistered,");
+					  return Action.SUCCESS;
+				  }else if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("error")){
+					  inputStream = new StringBufferInputStream(",regfailed,");
+					  return Action.SUCCESS;
+				  }else if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("SUCCESS")){
+					LOG.debug("fileuploades is sucess Method");
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
+					}else{
+						inputStream = new StringBufferInputStream(",regfailed,");
+					}
+				  }else{
+					  inputStream = new StringBufferInputStream(",regfailed,");
+				  }
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetailsForOtherStates method in CadreRegistrationAction Action",e);
+			inputStream = new StringBufferInputStream(",regfailed,");
+			  return Action.SUCCESS;
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String searchCadreForFamilyDetlsUpdation()
 	{
