@@ -200,6 +200,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						 invite = false;
 						 //changing current user
 						 currentCadreId = (Long.valueOf(cadreEventList.get(i)[2].toString())).longValue();
+						 if(cadreEventList.get(i)[3] != null){
+							    invite = true;
+							}
 					}
 					
 					int nextRecordIndex = i+1;
