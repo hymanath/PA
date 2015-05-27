@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EventInfo;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -109,7 +111,7 @@ public class MahaNaduService implements IMahaNaduService{
 	private IEventUserDAO eventUserDAO;
 	private IEventDAO eventDAO;
 	private ISurveyUserAuthDAO surveyUserAuthDAO;
-	
+	private IMahanaduDashBoardService mahanaduDashBoardService;
 	
 	
 	public IEventDAO getEventDAO() {
@@ -351,6 +353,11 @@ public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 
 public void setSurveyUserAuthDAO(ISurveyUserAuthDAO surveyUserAuthDAO) {
 	this.surveyUserAuthDAO = surveyUserAuthDAO;
+}
+
+public void setMahanaduDashBoardService(
+		IMahanaduDashBoardService mahanaduDashBoardService) {
+	this.mahanaduDashBoardService = mahanaduDashBoardService;
 }
 
 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
@@ -1485,7 +1492,28 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 resultList.get(0).setTotal(uniqueMemberInday);
 			 }
 			
-		 
+		 try{
+			 if(parentId.longValue() == 7l && eventStrDate != null && eventEndDate !=null && eventStrDate.equals(eventEndDate)){
+				 Calendar cal = Calendar.getInstance();
+				 cal.setTime(eventStrDate);
+				 int day = cal.get(Calendar.DAY_OF_MONTH);
+				 if(cal.get(Calendar.YEAR) == 2015 && cal.get(Calendar.MONTH) == 4 && (day == 27 || day == 28 || day == 29)){
+					 
+					 List<MahanaduVisitVO> currentVisitorsCountInfo = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfo(eventStrDate,eventEndDate);
+					 if(currentVisitorsCountInfo != null && currentVisitorsCountInfo.size() > 0){
+						 Long currentVisitors = currentVisitorsCountInfo.get(0).getCurrentVisitors();
+						 if(currentVisitors != null && currentVisitors.longValue() > 0){
+							 MahanaduEventVO eventVO = new MahanaduEventVO();
+							 eventVO.setName("Visitors in Campus");
+							 eventVO.setInvitees(currentVisitors);
+							 resultList.add(eventVO);
+						 }
+					 }
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error(e);
+		 }
 	 }
 	 catch(Exception e)
 	 {
