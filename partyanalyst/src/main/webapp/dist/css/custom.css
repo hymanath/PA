@@ -327,6 +327,55 @@ footer
 }
 
 
+/* RADIO FOR INVITEES*/
+.onoffswitch-invi{
+    position: relative; width: 250px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox-invi{
+    display: none;
+}
+.onoffswitch-label-invi{
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #5C2D25; border-radius: 12px;
+}
+.onoffswitch-inner-invi{
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner-invi:before, .onoffswitch-inner-invi:after {
+    display: block; float: left; width: 50%; height: 15px; padding: 0; line-height: 15px;
+    font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner-invi:before {
+    content: "HIDE INVITEES & NON-INVITEES";
+    padding-left: 17px;
+    background-color: #5C2D25; color: #FFFFFF;
+}
+.onoffswitch-inner-invi:after {
+    content: "SHOW INVITEES & NON-INVITEES";
+    padding-right: 17px;
+    background-color: #5C2D25; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch-invi{
+    display: block; width: 10px; margin: 3px 3px 8px 8px;
+    background: #FFFFFF;
+    border: 2px solid #5C2D25; border-radius: 12px;
+    position: absolute; top: 0; bottom: 0; 
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox-invi:checked + .onoffswitch-label-invi .onoffswitch-inner-invi {
+    margin-left: 0;
+}
+.onoffswitch-checkbox-invi:checked + .onoffswitch-label-invi .onoffswitch-switch-invi {
+    right: 0px; 
+}
+
+
 .header-live-time
 {
 	color:#fff;margin-top:-15%;padding-left:20%;transform:rotate(-5deg)
