@@ -16,10 +16,8 @@
 		 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-		<script src="familyUpdateDist/js/bootstrap.min.js" type="text/javascript"></script>
-		<link href="familyUpdateDist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="familyUpdateDist/css/custom.css" rel="stylesheet" type="text/css">
-		<link href="familyUpdateDist/Icomoon/style.css" rel="stylesheet" type="text/css">
+		<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
+		<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<script>
 	
 	</script>
@@ -50,9 +48,9 @@ background-color: #E5E5E5 !important;
 	</style>
 
 <style type="text/css">
-	.m_0
+	.m_top10
 	{
-		margin:0px;
+		margin-top:10px;
 	}
 	.m_top20
 	{
@@ -69,7 +67,9 @@ background-color: #E5E5E5 !important;
 	.shadow-box
 	{
 		box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+		background-color: rgb(255, 255, 255) !important;
 	}
+	
 	/* radio button */
 .onoffswitch {
     position: relative; width: 90px;
@@ -145,8 +145,16 @@ background-color: #E5E5E5 !important;
 <body>
 <div class="container shadow-box">
 	<h3 class="text-center border-btm">SEARCH CADRE</h3>
-    <div class="row m_top20 pad_10">
+	<div class="row m_top10 ">
     	<div class="col-md-3 col-md-offset-2">
+			<div id="errorDiv" ></div>
+		</div>
+	</div>
+	
+    <div class="row  pad_10">
+    	
+		<div class="col-md-3 col-md-offset-2">
+			
         	<label class="control-label">Enter Membership ID</label>
             <input class="form-control" type="text" id="membershipNo"  placeholder="ENTER MEMBERSHIP ID "/>
         </div>
@@ -164,7 +172,7 @@ background-color: #E5E5E5 !important;
     </div>
 </div>
 
-<div class="container shadow-box m_top20 pad_10" id="tableDataDiv"></div>
+<div class="container shadow-box m_top20" id="tableDataDiv"></div>
 <div class="container shadow-box m_top20" id="tdpCadreDetails" ></div>
 <div class="container shadow-box m_top20" id="familyDetalsDiv" ></div>
 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;margin-left:550px"/>
@@ -283,7 +291,7 @@ background-color: #E5E5E5 !important;
 		$("#familyDetalsDiv").html('');	
 		$("#updateTableDiv").html('');	
 		$("#updateFamilyTableDiv").html('');
-
+		$("#btnDiv").hide();
 		//$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNo,
@@ -315,7 +323,7 @@ background-color: #E5E5E5 !important;
 		var str="";	
 		str+='<div class="span12">';
 			
-		str+=' <table class="table table-bordered" style="margin-left: 0px;"  id="tableId">';
+		str+=' <table class="table table-bordered" style="margin-top: 20px;"  id="tableId">';
 		str+=' <thead>';
 		str+=' <tr>';
 		str+=' <th class="alert-info"> Cadre Name  </th>';
@@ -368,7 +376,8 @@ background-color: #E5E5E5 !important;
 
 function getFamilyDetails(tdpCadreId)
 	{
-		$('#searchDataImg').show();	
+		$('#searchDataImg').show();
+		$("#btnDiv").show();
 		$('#updateeBtn').hide();	
 		$('#tdpCadreDetails').hide();	
 		$('#familyDetalsDiv').hide();			
@@ -405,9 +414,9 @@ function getFamilyDetails(tdpCadreId)
 		$('#nextBuildBtnId').remove();
 		tdpCadreId = tdpCadreId;
 		var str ='';
-		str+='<h4  class="offset5"> CADRE DETAILS </h4>';
+		str+='<h4  class="offset5" style="margin-bottom:0px"> CADRE DETAILS </h4>';
 		str+='<div class="row" style="padding:10px">';
-
+		str+='<div id="cadreErrorDiv" class="mandatory" style="margin-left: 18px;"></div>';
 		if(searchArr != null && searchArr.length>0)
 		{
 			for(var l in searchArr)
@@ -435,7 +444,7 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<div class="col-md-3 col-xs-6">';
 							str+='<label class="control-label">Mobile Number</label>';
-							str+=' <input type="text" value="'+searchArr[l].mobileNo+'"  class="mobile form-control" maxlength="10" key="ErrorDivcadre'+l+'"/>';
+							str+=' <input type="text" id="cadreMobile" value="'+searchArr[l].mobileNo+'"  class="mobile form-control" maxlength="10" key="ErrorDivcadre'+l+'"/>';
 							str+='</div>';
 							
 						}
@@ -488,7 +497,7 @@ function getFamilyDetails(tdpCadreId)
 						{
 							str+='<div class="col-md-3 col-xs-6">';
 							str+='<label class="control-label">Caste</label>';
-							str+='<select id="" class="casteState form-control"  style="">';
+							str+='<select id="cadreCaste" class="casteState form-control"  style="">';
 							str+='<option value="0" selected="selected">Select Caste</option>';
 							console.log("details : " + searchArr[l].relationId);
 							for(var k in casteArr)
@@ -843,9 +852,20 @@ function updateFamilyInfo()
 			strErr+='Invalid Email Id.';
 			$('#'+errStrDiv+'').html(strErr);
 			return;
-		}	
+		}
 		
-		if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
+		
+		if($("#cadreMobile").val() == ""){
+			strErr+='Cadre Mobile Number Is Reqiured ';
+			$("#cadreErrorDiv").html(strErr);
+			return;
+		}
+		if($("#cadreCaste").val() <= 0){
+			strErr+='Caste Is Reqiured ';
+			$("#cadreErrorDiv").html(strErr);
+			return;
+		}
+		else if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
 		{
 			strErr+='Invalid Mobile No.';
 			$('#'+errStrDiv+'').html(strErr);
@@ -971,7 +991,7 @@ function addNewMemberInFamily(size)
 			
 			str+='<div class="panel-heading">';
             str+='<h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px"  placeholder="Please enter Name " />  </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
-			str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-13px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click To Remove Family Member"></i>';
+			str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-33px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click To Remove Family Member"></i>';
             str+='</div>';
 			
 			
