@@ -1955,7 +1955,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											smsJobStatus.setJobCode(jobCode);
 											smsJobStatus.setFromTask("Registration");
 											
-											smsJobStatusDAO.save(smsJobStatus);
+											//smsJobStatusDAO.save(smsJobStatus);
 											//tdpCadreDAO.updateSmsJobCode(tdpCadreId, jobCode.trim());
 										}
 									}
@@ -5424,7 +5424,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			//Date date = originalFormat.parse(dateTime);
 			Date date = originalFormat.parse(dateTime);
 			//int updatedCount = tdpCadreDAO.updateSmsSentStatus(mobile, jobcode, dateTime, statusCode);
-			int updatedCount = smsJobStatusDAO.updateSmsSentStatus(mobile, jobcode, date, statusCode);
+			//int updatedCount = smsJobStatusDAO.updateSmsSentStatus(mobile, jobcode, date, statusCode);
 			 
 		} catch (Exception e) {
 			LOG.error("Exception Raised in updateSmsJobStatus "+e);
