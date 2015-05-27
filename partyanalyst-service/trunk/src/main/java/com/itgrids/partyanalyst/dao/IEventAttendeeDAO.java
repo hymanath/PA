@@ -25,7 +25,6 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId);
 	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId);
-	public List<Object[]> getEventAttendeeInfoDynamic(String locationType, Date evntStDate, List<Date> datesList, String sbStart, String sbMiddle, List<Long> subEventIds);
 	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,List<Long> subEventIds);
 	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,List<Long> subEventIds);
 	public List<Object[]> getOtherStateDeligatesCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
