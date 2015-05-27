@@ -64,6 +64,9 @@
 	{
 		background:#F5FAFD;
 	}
+	
+	table.dataTable thead th, table.dataTable thead td,table.dataTable tbody td{text-align:center;}
+	.inviteesCkbCls{margin-top:0px !important;}
 </style>
 </head>
 <body>
@@ -80,7 +83,10 @@
                     	<h4 class="pull-right">Total Visitors: <span id="totalVisitors" >0</span></h4>
                     </div>
                     <div class="col-md-6 m_0" style="border-left:1px solid #ccc">
-                    	<h4 class="pull-left">Visitors in Campus: <span id="currentVisitors">0</span><span style="font-size:14px;color:#ccc;">[ Invitees:<span id="currentinvVisitors">0</span> Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
+                    	<h4 class="pull-left">Visitors in Campus: <span id="currentVisitors">0</span>
+						<span style="font-size:14px;color:#ccc;display:none;" class="inviteesSpanCls">[ Invitees:<span id="currentinvVisitors">0</span>
+						Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
+						
                     </div>
                 </div>
             </div>
@@ -95,7 +101,7 @@
                     <span style="font-size:12px; color:#ccc">Last Updated On:<span id="lasteUpdtOn"> </span></span>
                     &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#46E7E4;cursor: pointer;"></i>
                 </div>
-                
+                <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>
                 </div>
                 <div class="panel-body" style="padding:5px 15px">
 				    <center><img id="resultTableDivAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -140,9 +146,7 @@
                         <span class="onoffswitch-switch"></span>
                     </label>
                 </div>
-                <div class="pull-right" style="margin-top:-3px;">
-                	<!--<button class="btn btn-xs btn-success">SHOW</button>-->
-                </div>
+                <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_b" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>
                 
                 </div>
                 <div class="panel-body">
@@ -167,6 +171,7 @@
                         <span class="onoffswitch-switch"></span>
                      </label>
                 </div>
+				<div class="pull-right"><input type="checkbox" id="inviteesCkbCls_c" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>
                 </div>
                 <div class="panel-body">
                     <div class="ScrollDiv">
@@ -183,8 +188,52 @@
 	
 	<script type="text/javascript">
 	  $(".dropdown-menu").html('<li><a href="eventDashboardAction.action?eventId=1">EVENTS DASHBOARD</a></li><li><a href="dashBoardAction.action">DASHBOARD</a></li><li><a href="newlogoutAction.action">LOGOUT</a></li>');
+	  
+	  $('input.inviteesCkbCls').removeAttr('checked');
+	  
+	  $(".inviteesCkbCls").click(function(){
+		  
+		  var inviteeId = $(this).attr("id");
+		  var isChecked = $("#"+inviteeId).is(':checked');
+		  
+		  
+		  if(inviteeId == "inviteesCkbCls_a"){
+			  if(isChecked){
+				  needInvitees_a = true;
+				  $(".inviteesSpanCls").show();
+			  }else{
+				  needInvitees_a = false;
+				  $(".inviteesSpanCls").hide();
+			  }
+			  getDetails();
+		  }
+		  
+		  if(inviteeId == "inviteesCkbCls_b"){
+			  if(isChecked){
+				  needInvitees_b = true;
+			  }else{
+				  needInvitees_b = false;
+			  }
+			  getLocationWiseAttendeeSummaryCount(1,3,true);
+		  }
+		  
+		  if(inviteeId == "inviteesCkbCls_c"){
+			  if(isChecked){
+				  needInvitees_c = true;
+			  }else{
+				  needInvitees_c = false;
+			  }
+			  getLocationWiseAttendeeSummaryCount(1,4,true);
+		  }
+	  });
+	  
+	  var needInvitees_a = false;
+	  var needInvitees_b = false;
+	  var needInvitees_c = false;
+	  
 	  function getDetails(){
            $("#resultTableDivAjax").show();
+		   $("#resultTableDiv").html("");
 		  $.ajax({
 			  type:'GET',
 			  url: 'getTodayTotalAndCurrentUsersInfo.action',
@@ -214,8 +263,10 @@
                                 str+=' 	<th class="back-white"></th>';
 									for(var i in result){
                                     str+='<th class="color-black table-color2">COUNT</th>';
-                                    str+='<th class="color-black table-color2">INVITEES</th>';
-                                    str+='<th class="color-black table-color2">NON INVITEES</th>';
+										if(needInvitees_a){
+											str+='<th class="color-black table-color2">INVITEES</th>';
+											str+='<th class="color-black table-color2">NON INVITEES</th>';
+										}
 									 }
                                 str+='</tr></thead>';
                             
@@ -232,24 +283,26 @@
 						  str+="   0</td>";
 					  }
 					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].above8hrsInv != null){
-						str+="   "+result[i].above8hrsInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].above8hrsInv != null && result[i].above8hrs != null){
-						str+="   "+result[i].above8hrs-result[i].above8hrsInv+"</td>";
-					  }else if(result[i].above8hrs != null){
-						 str+="   "+result[i].above8hrs+"</td>";
-					  }else{
-						  str+="   0</td>";
+					  if(needInvitees_a){
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].above8hrsInv != null){
+							str+="   "+result[i].above8hrsInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].above8hrsInv != null && result[i].above8hrs != null){
+							str+="   "+result[i].above8hrs-result[i].above8hrsInv+"</td>";
+						  }else if(result[i].above8hrs != null){
+							 str+="   "+result[i].above8hrs+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
 					  }
 					  
 				  }
@@ -266,25 +319,27 @@
 						  str+="0</td>";
 					  }
 					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].seventoeightInv != null){
-						str+="   "+result[i].seventoeightInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].seventoeightInv != null && result[i].seventoeight != null){
-						str+="   "+result[i].seventoeight-result[i].seventoeightInv+"</td>";
-					  }else if(result[i].seventoeight != null){
-						 str+="   "+result[i].seventoeight+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
+					    if(needInvitees_a){
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].seventoeightInv != null){
+							str+="   "+result[i].seventoeightInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].seventoeightInv != null && result[i].seventoeight != null){
+							str+="   "+result[i].seventoeight-result[i].seventoeightInv+"</td>";
+						  }else if(result[i].seventoeight != null){
+							 str+="   "+result[i].seventoeight+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						}
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
@@ -300,27 +355,27 @@
 					  }
 					  
 					  
-					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].sixtosevenInv != null){
-						str+="   "+result[i].sixtosevenInv+"</td>";
-					  }else{
-						  str+="   0</td>";
+					  if(needInvitees_a){  
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].sixtosevenInv != null){
+							str+="   "+result[i].sixtosevenInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].sixtosevenInv != null && result[i].sixtoseven != null){
+							str+="   "+result[i].sixtoseven-result[i].sixtosevenInv+"</td>";
+						  }else if(result[i].sixtoseven != null){
+							 str+="   "+result[i].sixtoseven+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
 					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].sixtosevenInv != null && result[i].sixtoseven != null){
-						str+="   "+result[i].sixtoseven-result[i].sixtosevenInv+"</td>";
-					  }else if(result[i].sixtoseven != null){
-						 str+="   "+result[i].sixtoseven+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
 					  
 					  
 				  }
@@ -337,28 +392,28 @@
 						  str+="   0</td>";
 					  }
 					  
+					    if(needInvitees_a){
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].fivetosixInv != null){
+							str+="   "+result[i].fivetosixInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].fivetosixInv != null && result[i].fivetosix != null){
+							str+="   "+result[i].fivetosix-result[i].fivetosixInv+"</td>";
+						  }else if(result[i].fivetosix != null){
+							 str+="   "+result[i].fivetosix+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
 					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].fivetosixInv != null){
-						str+="   "+result[i].fivetosixInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].fivetosixInv != null && result[i].fivetosix != null){
-						str+="   "+result[i].fivetosix-result[i].fivetosixInv+"</td>";
-					  }else if(result[i].fivetosix != null){
-						 str+="   "+result[i].fivetosix+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  
+						}
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
@@ -374,28 +429,28 @@
 						  str+="   0</td>";
 					  }
 					  
+					  if(needInvitees_a){  
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].fourtofiveInv != null){
+							str+="   "+result[i].fourtofiveInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].fourtofiveInv != null && result[i].fourtofive != null){
+							str+="   "+result[i].fourtofive-result[i].fourtofiveInv+"</td>";
+						  }else if(result[i].fourtofive != null){
+							 str+="   "+result[i].fourtofive+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
 					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].fourtofiveInv != null){
-						str+="   "+result[i].fourtofiveInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].fourtofiveInv != null && result[i].fourtofive != null){
-						str+="   "+result[i].fourtofive-result[i].fourtofiveInv+"</td>";
-					  }else if(result[i].fourtofive != null){
-						 str+="   "+result[i].fourtofive+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  
+					  } 
 					  
 					  
 					  
@@ -413,27 +468,28 @@
 						  str+="   0</td>";
 					  }
 					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].threetofourInv != null){
-						str+="   "+result[i].threetofourInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
+					    if(needInvitees_a){
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].threetofourInv != null){
+							str+="   "+result[i].threetofourInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].threetofourInv != null && result[i].threetofour != null){
+							str+="   "+result[i].threetofour-result[i].threetofourInv+"</td>";
+						  }else if(result[i].threetofour != null){
+							 str+="   "+result[i].threetofour+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
 					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].threetofourInv != null && result[i].threetofour != null){
-						str+="   "+result[i].threetofour-result[i].threetofourInv+"</td>";
-					  }else if(result[i].threetofour != null){
-						 str+="   "+result[i].threetofour+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  
+						}
 					  
 				  }
 				  str+="</tr>";
@@ -448,27 +504,28 @@
 					  }else{
 						  str+="   0</td>";
 					  }
-					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].twotothreeInv != null){
-						str+="   "+result[i].twotothreeInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].twotothreeInv != null && result[i].twotothree != null){
-						str+="   "+result[i].twotothree-result[i].twotothreeInv+"</td>";
-					  }else if(result[i].twotothree != null){
-						 str+="   "+result[i].twotothree+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
+					 
+					  if(needInvitees_a){
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].twotothreeInv != null){
+							str+="   "+result[i].twotothreeInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].twotothreeInv != null && result[i].twotothree != null){
+							str+="   "+result[i].twotothree-result[i].twotothreeInv+"</td>";
+						  }else if(result[i].twotothree != null){
+							 str+="   "+result[i].twotothree+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+					  }  
 					  
 					  
 					  
@@ -487,27 +544,27 @@
 						  str+="   0</td>";
 					  }
 					  
-					  
-					   if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].onetotwoInv != null){
-						str+="   "+result[i].onetotwoInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].onetotwoInv != null && result[i].onetotwo != null){
-						str+="   "+result[i].onetotwo-result[i].onetotwoInv+"</td>";
-					  }else if(result[i].onetotwo != null){
-						 str+="   "+result[i].onetotwo+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
+					  if(needInvitees_a){  
+						   if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].onetotwoInv != null){
+							str+="   "+result[i].onetotwoInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].onetotwoInv != null && result[i].onetotwo != null){
+							str+="   "+result[i].onetotwo-result[i].onetotwoInv+"</td>";
+						  }else if(result[i].onetotwo != null){
+							 str+="   "+result[i].onetotwo+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+					  } 
 					  
 					  
 				  }
@@ -524,25 +581,28 @@
 					  }else{
 						  str+="   0</td>";
 					  }
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].halfanhourInv != null){
-						str+="   "+result[i].halfanhourInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
 					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].halfanhourInv != null && result[i].halfanhour != null){
-						str+="   "+result[i].halfanhour-result[i].halfanhourInv+"</td>";
-					  }else if(result[i].halfanhour != null){
-						 str+="   "+result[i].halfanhour+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
+					    if(needInvitees_a){
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].halfanhourInv != null){
+							str+="   "+result[i].halfanhourInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].halfanhourInv != null && result[i].halfanhour != null){
+							str+="   "+result[i].halfanhour-result[i].halfanhourInv+"</td>";
+						  }else if(result[i].halfanhour != null){
+							 str+="   "+result[i].halfanhour+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						}
 				  }
 				  
 				   
@@ -562,25 +622,27 @@
 					  }else{
 						  str+="   0</td>";
 					  }
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].belowhalfanhourInv != null){
-						str+="   "+result[i].belowhalfanhourInv+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
-					  
-					  if(i == 0){str+="   <td class='table-color1'>";}
-						  if(i == 1){str+="   <td class='table-color2'>";}
-						  if(i == 2){str+="   <td class='table-color1'>";}
-					  if(result[i].belowhalfanhourInv != null && result[i].belowhalfanhour != null){
-						str+="   "+result[i].belowhalfanhour-result[i].belowhalfanhourInv+"</td>";
-					  }else if(result[i].belowhalfanhour != null){
-						 str+="   "+result[i].belowhalfanhour+"</td>";
-					  }else{
-						  str+="   0</td>";
-					  }
+					    if(needInvitees_a){
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].belowhalfanhourInv != null){
+							str+="   "+result[i].belowhalfanhourInv+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						  
+						  if(i == 0){str+="   <td class='table-color1'>";}
+							  if(i == 1){str+="   <td class='table-color2'>";}
+							  if(i == 2){str+="   <td class='table-color1'>";}
+						  if(result[i].belowhalfanhourInv != null && result[i].belowhalfanhour != null){
+							str+="   "+result[i].belowhalfanhour-result[i].belowhalfanhourInv+"</td>";
+						  }else if(result[i].belowhalfanhour != null){
+							 str+="   "+result[i].belowhalfanhour+"</td>";
+						  }else{
+							  str+="   0</td>";
+						  }
+						}
 				  }
                          
 
@@ -630,30 +692,30 @@
 		$('#myonoffswitchSummary1').prop('checked', true);
 		$("#districtHeadingSummary").html("AP DISTRICT WISE");
 		$("#constiHeadingSummary").html("AP CONSTITUENCY WISE");
-		getLocationWiseAttendeeSummaryCount(1,3);
-		getLocationWiseAttendeeSummaryCount(1,4);
+		getLocationWiseAttendeeSummaryCount(1,3,false);
+		getLocationWiseAttendeeSummaryCount(1,4,false);
 	}else{
 		$('#myonoffswitchSummary1').prop('checked', false);
 		$("#districtHeadingSummary").html("TS DISTRICT WISE");	
 		$("#constiHeadingSummary").html("TS CONSTITUENCY WISE");
-		getLocationWiseAttendeeSummaryCount(36,3);
-		getLocationWiseAttendeeSummaryCount(36,4);
+		getLocationWiseAttendeeSummaryCount(36,3,false);
+		getLocationWiseAttendeeSummaryCount(36,4,false);
 	}
 }); 
 $("#myonoffswitchSummary1").click(function(){
 	if($('#myonoffswitchSummary1').is(":checked")){
-	getLocationWiseAttendeeSummaryCount(1,4);
+	getLocationWiseAttendeeSummaryCount(1,4,false);
 	$("#constiHeadingSummary").html("AP CONSTITUENCY WISE");
 	}else{
-	getLocationWiseAttendeeSummaryCount(36,4);
+	getLocationWiseAttendeeSummaryCount(36,4,false);
 	$("#constiHeadingSummary").html("TS CONSTITUENCY WISE");
 	}
 });
 
 
-getLocationWiseAttendeeSummaryCount(1,3);
-getLocationWiseAttendeeSummaryCount(1,4);
-function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId){
+getLocationWiseAttendeeSummaryCount(1,3,false);
+getLocationWiseAttendeeSummaryCount(1,4,false);
+function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId,fromChecked){
 	var subEvents1 = [];
 	var stateId =0;
 	
@@ -665,10 +727,12 @@ function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId){
 		$("#constiTableSummaryId").html("");
 	}
 	
-	$("#daysSummaryIdAjax").show();
-	$("#ovrAlSummaryIdAjax").show();
-	$("#daysSummaryId").html("");
-	$("#ovrAlSummaryId").html("");
+	if(!fromChecked){
+		$("#daysSummaryIdAjax").show();
+		$("#ovrAlSummaryIdAjax").show();
+		$("#daysSummaryId").html("");
+		$("#ovrAlSummaryId").html("");
+	}
 	
 
 	subEvents1 = [8]; //8 -- MAHANADU MAIN ENTRY
@@ -694,63 +758,71 @@ function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId){
           url: 'getEventAttendeeSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			buildLocationSummary(result,reportLevelId);
+			buildLocationSummary(result,reportLevelId,fromChecked);
 		});
 
 }
 
-function buildLocationSummary(result,reportLevelId){
+function buildLocationSummary(result,reportLevelId,fromChecked){
 	var subListLength = 0;
+	var checkVar = needInvitees_b;
+	
+	if(reportLevelId == 4){
+		checkVar = needInvitees_c;
+	}
+	
 	if(reportLevelId == 3){
 		$("#distAjaxSummaryId").hide();
 	}else{
 		$("#constAjaxSummaryId").hide();
 	}
-	$("#daysSummaryIdAjax").hide();
-	$("#ovrAlSummaryIdAjax").hide();
 	
-	var str_a = "";
-	str_a += "<table class='table'>";
-		str_a +="<thead>";
-			str_a +="<tr style='background:#F0F0F0'>";
-				str_a+="<th></th>";
-				str_a+="<th>TOTAL UNIQUE VISITS</th>";
-				str_a+="<th>ONLY ONE DAY VISITS</th>";
-				str_a+="<th>REVISITS</th>";
-			str_a +="</tr>";
-		str_a +="</thead>";
-		str_a +="<tbody>";
-			for(var i in result[0].datesList){
-				str_a +="<tr>";
-					str_a+="<td> DAY "+(parseInt(i)+1)+"</td>";
-					str_a+="<td>"+result[0].datesList[i].total+"</td>";
-					str_a+="<td>"+result[0].datesList[i].oneDayCount+"</td>";
-					str_a+="<td>"+result[0].datesList[i].revisitCount+"</td>";
+	if(!fromChecked){
+		$("#daysSummaryIdAjax").hide();
+		$("#ovrAlSummaryIdAjax").hide();
+		
+		var str_a = "";
+		str_a += "<table class='table'>";
+			str_a +="<thead>";
+				str_a +="<tr style='background:#F0F0F0'>";
+					str_a+="<th></th>";
+					str_a+="<th>TOTAL UNIQUE VISITS</th>";
+					str_a+="<th>ONLY ONE DAY VISITS</th>";
+					str_a+="<th>REVISITS</th>";
 				str_a +="</tr>";
-			}
-		str_a +="</tbody>";
-	str_a += "</table>";
-	$("#daysSummaryId").html(str_a);
-	
-	var str_b = "";
-	str_b += "<table class='table'>";
-		str_b +="<thead>";
-			for(var i in result[0].hoursList){
-				str_b +="<tr>";
-					var number = parseInt(i)+1;
-					if(number>1){
-						str_b+="<th>"+(parseInt(i)+1)+" DAY'S VISITORS</th>";
-					}else{
-						str_b+="<th>"+(parseInt(i)+1)+" DAY VISITORS</th>";
-					}
-					
-					str_b+="<th>"+result[0].hoursList[i].total+"</th>"
-				str_b +="</tr>";
-			}
-		str_b +="</thead>";
-	str_b += "</table>";
-	$("#ovrAlSummaryId").html(str_b);
-	
+			str_a +="</thead>";
+			str_a +="<tbody>";
+				for(var i in result[0].datesList){
+					str_a +="<tr>";
+						str_a+="<td> DAY-"+(parseInt(i)+1)+"</td>";
+						str_a+="<td>"+result[0].datesList[i].total+"</td>";
+						str_a+="<td>"+result[0].datesList[i].oneDayCount+"</td>";
+						str_a+="<td>"+result[0].datesList[i].revisitCount+"</td>";
+					str_a +="</tr>";
+				}
+			str_a +="</tbody>";
+		str_a += "</table>";
+		$("#daysSummaryId").html(str_a);
+		
+		var str_b = "";
+		str_b += "<table class='table'>";
+			str_b +="<thead>";
+				for(var i in result[0].hoursList){
+					str_b +="<tr>";
+						var number = parseInt(i)+1;
+						if(number>1){
+							str_b+="<th>"+(parseInt(i)+1)+" DAY'S VISITORS</th>";
+						}else{
+							str_b+="<th>"+(parseInt(i)+1)+" DAY VISITORS</th>";
+						}
+						
+						str_b+="<th>"+result[0].hoursList[i].total+"</th>"
+					str_b +="</tr>";
+				}
+			str_b +="</thead>";
+		str_b += "</table>";
+		$("#ovrAlSummaryId").html(str_b);
+	}
 	var str='';
 	if(reportLevelId == 3){
     str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'Summary" cellspacing="0" width="100%"><thead>';
@@ -761,18 +833,34 @@ function buildLocationSummary(result,reportLevelId){
 
 	str+='<tr>';
 	if(reportLevelId == 3){
-    str+='<th  width="10%">DISTRICT</th>';
+    str+='<th class="table-color1">DISTRICT</th>';
 	}else{
-	str+='<th  width="10%">CONSTITUENCY</th>';
+	str+='<th class="table-color1">CONSTITUENCY</th>';
 	}
-	str +='<th colspan="3"> TOTAL VISITORS </th>';
+	
+	if(checkVar){
+		str +='<th colspan="3" class="table-color1"> TOTAL VISITORS </th>';
+	}else{
+		str +='<th colspan="1" class="table-color1"> TOTAL VISITORS </th>';
+	}
+	
 	subListLength = result[0].hoursList.length;
 	for(var i in result[0].hoursList){
 		var number = result[0].hoursList[i].id;
 		if(number>1){
-			str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAYS VISITORS</th>';
+			if(checkVar){
+				str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAYS VISITORS</th>';
+			}else{
+				str +='<th  colspan="1" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAYS VISITORS</th>';
+			}
+			
 		}else{
-			str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAY VISITORS</th>';
+			if(checkVar){
+				str +='<th  colspan="3" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAY VISITORS</th>';
+			}else{
+				str +='<th  colspan="1" class="text-center table-color1"> '+result[0].hoursList[i].id+' DAY VISITORS</th>';
+			}
+			
 		}
 	}
 	
@@ -780,12 +868,16 @@ function buildLocationSummary(result,reportLevelId){
 	  str+='<tr>';
    	  str+=' <th class="color-black"></th>';
 	  str+='<th class="color-black table-color1">COUNT</th>';
-       str+='<th class="color-black table-color1">INVITEES</th>';
-       str+='<th class="color-black table-color1">NON INVITEES</th>';
+	  if(checkVar){
+		str+='<th class="color-black table-color1 inviteesCls">INVITEES</th>';
+		str+='<th class="color-black table-color1">NON INVITEES</th>';
+	  }
 	  for(var i in result[0].hoursList){
        str+='<th class="color-black table-color1">COUNT</th>';
-       str+='<th class="color-black table-color1">INVITEES</th>';
-       str+='<th class="color-black table-color1">NON INVITEES</th>';
+	   if(checkVar){
+		str+='<th class="color-black table-color1 inviteesCls">INVITEES</th>';
+		str+='<th class="color-black table-color1">NON INVITEES</th>';
+	   }
 	  }
     str+='</tr>';
 	 str+='</thead>';
@@ -794,22 +886,27 @@ function buildLocationSummary(result,reportLevelId){
 		str+='<tr>';
 		str+='<td>'+result[i].locationName+'</td>';
 		str+='<td>'+result[i].total+'</td>';
-		str+='<td>'+result[i].newCount+'</td>';
-		var rCount = result[i].total-result[i].newCount;
-		str+='<td>'+rCount+'</td>';
-		
+		if(checkVar){
+			str+='<td class="inviteesCls">'+result[i].newCount+'</td>';
+			var rCount = result[i].total-result[i].newCount;
+			str+='<td>'+rCount+'</td>';
+		}
 		if(result[i].subList!=null && result[i].subList.length>0){
 			for(var j in result[i].subList){
-				str +='<th> '+result[i].subList[j].count+'</th>';
-				str +='<th> '+result[i].subList[j].newCount+'</th>';
-				var rqCount = result[i].subList[j].count - result[i].subList[j].newCount;
-				str +='<th> '+rqCount+'</th>';
+				str +='<td> '+result[i].subList[j].count+'</td>';
+				if(checkVar){
+					str +='<td class="inviteesCls"> '+result[i].subList[j].newCount+'</td>';
+					var rqCount = result[i].subList[j].count - result[i].subList[j].newCount;
+					str +='<td> '+rqCount+'</td>';
+				}
 			}
 		}else{
 			for(var i=0;i<subListLength;i++){
-				str +='<th> - </th>';
-				str +='<th> - </th>';
-				str +='<th> - </th>';				
+				str +='<td> - </td>';
+				if(checkVar){
+					str +='<td class="inviteesCls"> - </td>';
+					str +='<td> - </td>';				
+				}
 			}
 		}
 		
