@@ -337,6 +337,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				saveDetails(info,"belowhalfanhour",belowhalfanhour1,belowhalfanhourInv1);
 			}
 		});
+	    cadreMahanaduVisitInfoDAO.flushAndclearSession();
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getTodayTotalVisitors()",e);
 	 }

@@ -10,4 +10,8 @@ public class CadreMahanaduVisitInfoDAO extends GenericDaoHibernate<CadreMahanadu
 		super(CadreMahanaduVisitInfo.class);
 		
 	}
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
+	}
 }
