@@ -2013,7 +2013,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	}
 		 	EventAttendee eventAttendee = new EventAttendee();
 		 	List cadreList= tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
-		 	if(cadreList != null)
+		 	if(cadreList != null && cadreList.size() > 0)
 		 	{
 		 	eventAttendee.setTdpCadreId((Long)cadreList.get(0));
 		 	eventAttendee.setImei(inputVo.getIMEI());
@@ -2050,6 +2050,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 		errorDesc = "Invalid Membership";
 		 		returnVo.setErrorDesc(errorDesc);
 		 		setEventErrorData(inputVo,errorDesc);
+		 		
 		 		returnVo.setStatus("fail");	
 		 	}
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
