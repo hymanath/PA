@@ -684,8 +684,8 @@ function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId){
 			stateId:stateId,
 			reportLevelId:reportLevelId,
 			subEvents : subEvents1,
-			startDate : "24/05/2015",
-			endDate : "25/05/2015"
+			startDate : "27/05/2015",
+			endDate : "29/05/2015"
 		
 		}	
 		
