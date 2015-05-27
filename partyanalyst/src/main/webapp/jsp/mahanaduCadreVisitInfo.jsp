@@ -74,7 +74,7 @@
 	<div class="row">
     	<div class="col-md-12" style="margin-top:40px;">
         	<div class="panel panel-default box-shadow-css">
-            	<div class="panel-heading back-white">
+            	<div class="panel-heading" style="background:#5c2d25;color:#ffffff;">
         			<h3 class="text-center m_0">MAHANADU VISITORS INFO</h3>
                 </div>
 				<div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
@@ -122,8 +122,8 @@
         </div>
         <div class="col-md-4">
         	<div class="panel panel-default box-shadow-css" style="min-height: 220px;">
-            	<div class="panel-heading back-white m_bottom10"	>
-                	<h4>DAY'S UNIQUE AND REVISIT SUMMARY</h4>
+            	<div class="panel-heading m_bottom10" style="background:#5c2d25;color:#ffffff;">
+                	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY</span>
                 </div>
                 <div class="panel panel-body" style="padding:0px;">
 						<center><img id="daysSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -132,8 +132,8 @@
 					</div>
             </div>
             <div class="panel panel-default box-shadow-css m_top10" style="min-height: 200px;">
-            	<div class="panel-heading back-white">
-                	<h4>DAY WISE VISIT SUMMARY</h4>
+            	<div class="panel-heading" style="background:#5c2d25;color:#ffffff;">
+                	<span  style='font-size:14px;font-weight:bold;'>DAY WISE VISIT SUMMARY</span>
                 </div>
 				<div class="panel-body" style="padding:0px;">
 							<center><img id="ovrAlSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -816,7 +816,7 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 		str_a += "<table class='table'>";
 			str_a +="<thead>";
 				str_a +="<tr style='background:#F0F0F0'>";
-					str_a+="<th></th>";
+					str_a+="<th style='width:20%'></th>";
 					str_a+="<th>TOTAL UNIQUE VISITS</th>";
 					str_a+="<th>ONLY ONE DAY VISITS</th>";
 					str_a+="<th>REVISITS</th>";
@@ -825,7 +825,7 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 			str_a +="<tbody>";
 				for(var i in result[0].datesList){
 					str_a +="<tr>";
-						str_a+="<td> DAY-"+(parseInt(i)+1)+"</td>";
+						str_a+="<td style='width:20%'> DAY-"+(parseInt(i)+1)+"</td>";
 						str_a+="<td>"+result[0].datesList[i].total+"</td>";
 						str_a+="<td>"+result[0].datesList[i].oneDayCount+"</td>";
 						str_a+="<td>"+result[0].datesList[i].revisitCount+"</td>";
