@@ -101,7 +101,16 @@
                     <span style="font-size:12px; color:#ccc">Last Updated On:<span id="lasteUpdtOn"> </span></span>
                     &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#46E7E4;cursor: pointer;"></i>
                 </div>
-                <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>
+               <!-- <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>-->
+				
+				<div class="onoffswitch-invi pull-right">
+                    <input type="checkbox" name="onoffswitch-invi" class="onoffswitch-checkbox-invi inviteesCkbCls" id="inviteesCkbCls_a" checked>
+                    <label class="onoffswitch-label-invi" for="inviteesCkbCls_a">
+                        <span class="onoffswitch-inner-invi"></span>
+                        <span class="onoffswitch-switch-invi"></span>
+                    </label>
+                </div>
+				
                 </div>
                 <div class="panel-body" style="padding:5px 15px">
 				    <center><img id="resultTableDivAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -140,13 +149,21 @@
             	<div class="panel-heading">
                 <p class="m_0 display-style" id="districtHeadingSummary">AP DISTRICT WISE SUMMARY</p>
 				 <div class="onoffswitch pull-right">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitchSummary" checked>
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox " id="myonoffswitchSummary" checked>
                     <label class="onoffswitch-label" for="myonoffswitchSummary">
                         <span class="onoffswitch-inner"></span>
                         <span class="onoffswitch-switch"></span>
                     </label>
                 </div>
-                <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_b" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>
+               <!--<div class="pull-right"><input type="checkbox" id="inviteesCkbCls_b" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>-->
+				
+				<div class="onoffswitch-invi pull-right">
+                    <input type="checkbox" name="onoffswitch-invi" class="onoffswitch-checkbox-invi inviteesCkbCls" id="inviteesCkbCls_b" checked>
+                    <label class="onoffswitch-label-invi" for="inviteesCkbCls_b">
+                        <span class="onoffswitch-inner-invi"></span>
+                        <span class="onoffswitch-switch-invi"></span>
+                    </label>
+                </div>
                 
                 </div>
                 <div class="panel-body">
@@ -171,7 +188,17 @@
                         <span class="onoffswitch-switch"></span>
                      </label>
                 </div>
-				<div class="pull-right"><input type="checkbox" id="inviteesCkbCls_c" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>
+				<!--<div class="pull-right"><input type="checkbox" id="inviteesCkbCls_c" class="inviteesCkbCls"/> <span style="font-size:10px !important;">Show Invitees & Non-Invitees</span></div>-->
+				
+				<div class="onoffswitch-invi pull-right">
+                    <input type="checkbox" name="onoffswitch-invi" class="onoffswitch-checkbox-invi inviteesCkbCls" id="inviteesCkbCls_c" checked>
+                    <label class="onoffswitch-label-invi" for="inviteesCkbCls_c">
+                        <span class="onoffswitch-inner-invi"></span>
+                        <span class="onoffswitch-switch-invi"></span>
+                    </label>
+                </div>
+				
+				
                 </div>
                 <div class="panel-body">
                     <div class="ScrollDiv">
@@ -194,34 +221,38 @@
 	  $(".inviteesCkbCls").click(function(){
 		  
 		  var inviteeId = $(this).attr("id");
-		  var isChecked = $("#"+inviteeId).is(':checked');
+		  //var isChecked = $("#"+inviteeId).is(':checked');
 		  
 		  
 		  if(inviteeId == "inviteesCkbCls_a"){
-			  if(isChecked){
-				  needInvitees_a = true;
-				  $(".inviteesSpanCls").show();
-			  }else{
+			  if(needInvitees_a){
 				  needInvitees_a = false;
 				  $(".inviteesSpanCls").hide();
+			  }else{
+				  needInvitees_a = true;
+				  $(".inviteesSpanCls").show();
 			  }
 			  getDetails();
 		  }
 		  
 		  if(inviteeId == "inviteesCkbCls_b"){
-			  if(isChecked){
-				  needInvitees_b = true;
-			  }else{
+			   if(needInvitees_b){
 				  needInvitees_b = false;
+				  $(".inviteesSpanCls").hide();
+			  }else{
+				  needInvitees_b = true;
+				  $(".inviteesSpanCls").show();
 			  }
 			  getLocationWiseAttendeeSummaryCount(1,3,true);
 		  }
 		  
 		  if(inviteeId == "inviteesCkbCls_c"){
-			  if(isChecked){
-				  needInvitees_c = true;
-			  }else{
+			   if(needInvitees_c){
 				  needInvitees_c = false;
+				  $(".inviteesSpanCls").hide();
+			  }else{
+				  needInvitees_c = true;
+				  $(".inviteesSpanCls").show();
 			  }
 			  getLocationWiseAttendeeSummaryCount(1,4,true);
 		  }
