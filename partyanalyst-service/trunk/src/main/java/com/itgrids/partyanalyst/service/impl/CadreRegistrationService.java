@@ -10021,4 +10021,34 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		
 		return returnList;
 	}
+	
+	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate)
+	{
+		CardPrintUserVO vo = new CardPrintUserVO();
+		try{
+			 Date startDate1 = null;
+			 Date endDate1 = null;
+		
+			if(startDate != null && !startDate.isEmpty())
+			startDate1=new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+			if(endDate != null && !endDate.isEmpty())
+		    endDate1=new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			  List reprintList = cadreCardNumberUpdationDAO.getReprintCountsByDate(startDate1,endDate1);
+			  if(reprintList != null && reprintList.size() > 0)
+			  {
+				  vo.setReprintCnt((Long)reprintList.get(0));
+			  }
+				List cadreCnt = tdpCadreDAO.getNewlyRegistredCadreCnt(startDate1,endDate1);
+				if(cadreCnt != null && cadreCnt.size() > 0)
+				{
+					vo.setTotal((Long)cadreCnt.get(0));
+				}
+			
+		}
+		catch (Exception e) {
+			LOG.error(" exception occured in getCadrePrintDetails()",e);	
+		}
+		return vo;
+		
+	}
 }
