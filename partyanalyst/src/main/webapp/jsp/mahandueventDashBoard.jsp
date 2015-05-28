@@ -115,8 +115,11 @@
     	<div class="col-md-4 col-sm-6 col-xs-12" style="">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
-              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">           
+              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">    
+			  
+
               </div>
+			
             </div>
         </div>
 		
@@ -128,8 +131,8 @@
 		</p>
 		</div>
 	<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
-        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
-					<div id="dayWiseContainer" style="width: 100%; height:357px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
+        		<div id="hourWiseContainer" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
+					<div id="dayWiseContainer" style="width: 100%; height:400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
 
     </div>
@@ -659,11 +662,15 @@ function buildStartingPrograms(result){
 	for(var i in result)
 	{	
 		var color = getColorCodeByEvent(result[i].id);	
+		if(color == null)
+		{
+			colorsarr.push('#A54423');
+		}
 		colorsarr.push(color);
 		str+=' <span class="pull-left">'+result[i].name+'</span>';
 		var count = result[i].invitees + result[i].nonInvitees;
 		
-		if(count >0){		
+		if(count >0 && result[i].id !=null){		
 		str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';	
 		}
 		else{
@@ -671,12 +678,18 @@ function buildStartingPrograms(result){
 		}
 		str+=' <br/>';
 		str+=' <hr class="m_top10"/>';
+		str+=' <br/>';
 		
 		 var arr = [];
 		arr.push(result[i].name,count);
 		dataArr.push(arr);
 	}
-	str+=' </div>';
+	 <c:if test="${eventId == 7}">
+	str+='<div id="registrationDiv"   style="background: rgb(0, 176, 125) none repeat scroll 0% 0%; margin-top: -5px;" >';
+		str+='<button   type="button" class="btn btn-info btn-block" onclick="showHide();" id="registrationbtn">Show Registraion Details</button>';
+		str+='<div id="RegistrationCntDiv" style="display:none;margin-top: 10px; color: rgb(255, 255, 255); padding: 10px 20px;"></div>';
+			str+='</div>';
+			</c:if>
 	$("#overAllEventDiv").html(str);
 
 		
@@ -800,7 +813,9 @@ getLocationWiseVisitorsCount(parentEventId,36,4);
 getSubEventDetails(parentEventId);
 getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
-
+showConst = true;
+showHide();
+getRegistrationsCnt();
 }
 
 }
@@ -948,6 +963,8 @@ dateRange=date;
 buildHourWiseChartforslider(dateRange);
 },
 change: function( event, ui ) {
+
+
 flag =true;
 	   var date = new Date(minDate.getTime());
             date.setDate(date.getDate() + ui.values[0]);
@@ -1555,7 +1572,54 @@ function closeDialogue()
 $( "#processingDialogue" ).dialog('close');
 }
 
+function getRegistrationsCnt()
+{
 
+
+	$("#RegistrationCntDiv").html('<center><img id="img" src="images/icons/loading.gif" style="width:30px;height:30px;"/></center>');
+		var jObj = {
+			
+			startDate : startDate,
+			endDate : endDate
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCadreRegistrationsCnt.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			 $("#RegistrationCntDiv").html('');
+			var str = '';
+			str+=' <span class="pull-left">Mahanadu Registration</span>';
+			str+='  <span class="pull-right label-custom">'+result.total+'</span>';
+			str+=' <br/>';
+			str+=' <hr class="m_top10"/>';
+			str+=' <span class="pull-left">Card Reprint</span>';
+			str+='  <span class="pull-right label-custom">'+result.reprintCnt+'</span>';
+			str+=' <br/>';
+			$("#RegistrationCntDiv").html(str);
+			});
+}
+
+var showConst=false;
+function showHide()
+{
+		if(showConst) {
+			$("#RegistrationCntDiv").hide();
+			$(".slimScrollBar").css("top","0px !important");
+			$("#registrationbtn").html('Show Registration Details'); 
+			showConst=false;
+		}
+		else {
+			$("#RegistrationCntDiv").css("display","block");
+			
+			
+			$("#registrationbtn").html('Hide Registration Details');
+			$(".slimScrollBar").css("top","127px !important");
+			showConst=true;	
+		}
+	
+}
 
 </script>
 <style>
