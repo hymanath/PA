@@ -287,7 +287,11 @@
                                   str+='  <th class="back-white">TIME STATUS</th>';
 								  for(var i in result){
 									  var reqi = parseInt(i)+1;
-                                    str+='<th colspan="3" class="text-center table-color1">DAY '+reqi+'</th>';
+									  if(needInvitees_a){
+										  str+='<th colspan="3" class="text-center table-color1">DAY '+reqi+'</th>';
+									  }else{
+                                         str+='<th class="text-center table-color1">DAY '+reqi+'</th>';
+									  }
 								  }
                                 str+='</tr>';
                                 str+=' <tr>';
