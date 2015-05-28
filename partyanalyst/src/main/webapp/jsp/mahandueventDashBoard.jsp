@@ -815,7 +815,7 @@ getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
 showConst = true;
 showHide();
-getRegistrationsCnt();
+//getRegistrationsCnt();
 }
 
 }
@@ -1613,7 +1613,7 @@ function showHide()
 		else {
 			$("#RegistrationCntDiv").css("display","block");
 			
-			
+			getRegistrationsCnt();
 			$("#registrationbtn").html('Hide Registration Details');
 			$(".slimScrollBar").css("top","127px !important");
 			showConst=true;	
