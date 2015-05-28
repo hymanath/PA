@@ -1923,6 +1923,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							
 						}
 					}
+					surveyCadreResponceVO.setMembershipNo(tdpCadre.getMemberShipNo());
+					
+					if(surveyCadreResponceVO.getMembershipNo() == null )
+					{
+						surveyCadreResponceVO.setMembershipNo(tdpCadre1.getMemberShipNo());
+					}
+					
 					surveyCadreResponceVO.setStatus("SUCCESS");
 					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
 					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null && !noSms){
