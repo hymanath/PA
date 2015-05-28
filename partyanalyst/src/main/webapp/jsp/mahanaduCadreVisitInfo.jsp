@@ -103,13 +103,13 @@
                 </div>
                <!-- <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>-->
 				
-				<div class="onoffswitch-invi pull-right">
+				<!--  <div class="onoffswitch-invi pull-right">
                     <input type="checkbox" name="onoffswitch-invi" class="onoffswitch-checkbox-invi inviteesCkbCls" id="inviteesCkbCls_a" checked>
                     <label class="onoffswitch-label-invi" for="inviteesCkbCls_a">
                         <span class="onoffswitch-inner-invi"></span>
                         <span class="onoffswitch-switch-invi"></span>
                     </label>
-                </div>
+                </div>-->
 				
                 </div>
                 <div class="panel-body" style="padding:5px 15px">
