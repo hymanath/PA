@@ -680,10 +680,11 @@ function buildStartingPrograms(result){
 		str+=' <br/>';
 		str+=' <hr class="m_top10"/>';
 		str+=' <br/>';
-		
+		 if( result[i].name != "Visitors in Campus"){
 		 var arr = [];
 		arr.push(result[i].name,count);
 		dataArr.push(arr);
+		 }
 	}
 	 <c:if test="${eventId == 7}">
 	str+='<div id="registrationDiv"   style="background: rgb(0, 176, 125) none repeat scroll 0% 0%; margin-top: -5px;" >';
