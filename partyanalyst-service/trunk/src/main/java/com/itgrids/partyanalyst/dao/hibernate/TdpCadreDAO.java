@@ -5160,4 +5160,27 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 		}
 		
+		public List getNewlyRegistredCadreCnt(Date fromDate,Date toDate){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+			
+			if(fromDate != null){
+				queryStr.append(" and date(model.surveyTime) >=:fromDate ");
+			}
+			
+			if(toDate != null){
+				queryStr.append(" and date(model.surveyTime) <=:toDate ");
+			}
+			Query query = getSession().createQuery(queryStr.toString());
+			if(fromDate != null){
+			   query.setDate("fromDate", fromDate);
+			}
+			if(toDate != null){
+			  query.setDate("toDate", toDate);
+			}
+			return query.list();
+		}
+		
+
+		
 }

@@ -351,4 +351,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getOtherStateCadrePartialDetailsByMemberShip(List<String> memberCardNos);
 	  public List<Object[]> getOtherStateCadreDetailsByMemberShipId(List<String> memberCardNos);
 	  public List<Object[]> getOtherStateCadreDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
+	  public List getNewlyRegistredCadreCnt(Date fromDate,Date toDate);
 }
