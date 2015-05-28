@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -114,9 +115,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<CadreRegistrationVO> resultList = new ArrayList<CadreRegistrationVO>();
 	private List<TdpCadreFamilyDetailsVO> familyDetails = new ArrayList<TdpCadreFamilyDetailsVO>();
 	
+	private CardPrintUserVO cardPrintUserVO;
 	
 	
 	
+	
+	public CardPrintUserVO getCardPrintUserVO() {
+		return cardPrintUserVO;
+	}
+	public void setCardPrintUserVO(CardPrintUserVO cardPrintUserVO) {
+		this.cardPrintUserVO = cardPrintUserVO;
+	}
 	public List<TdpCadreFamilyDetailsVO> getFamilyDetails() {
 		return familyDetails;
 	}
@@ -2011,4 +2020,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+	public String getCadreReprintCount()
+	{
+		try{
+			
+			jobj = new JSONObject(getTask());
+			
+			cardPrintUserVO =  cadreRegistrationService.getCadrePrintDetails(jobj.getString("startDate"),jobj.getString("endDate"));
+		}
+		catch (Exception e) {
+			LOG.error(" Entered Into getCadreReprintCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
