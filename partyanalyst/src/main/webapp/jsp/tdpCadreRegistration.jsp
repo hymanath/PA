@@ -699,10 +699,11 @@
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Thank You For Your Registration</p>';
-			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
+			str+= '<h3 class="text-align"> Successfully Registration Completed </h3>';
 			str+= '</div>';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Your Enrollment No :'+resultArr[1]+' </p>';
+			str+= '<p class="text-align">Your Membership No : '+resultArr[2]+' </p>';
+			str+= '<p class="text-align">Your Enrollment No : '+resultArr[1]+' </p>';			
 			str+= '</div>';
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
