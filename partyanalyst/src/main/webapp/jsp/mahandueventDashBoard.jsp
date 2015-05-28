@@ -647,8 +647,9 @@ function buildStartingPrograms(result){
     var str='';
 	var total = 0;
 	for(var i in result)
-       {        
-		total = total + result[i].invitees + result[i].nonInvitees;
+       {  
+		 if( result[i].name != "Visitors in Campus")
+		    total = total + result[i].invitees + result[i].nonInvitees;
        }
 	str+='<div class="text-center">';
 	str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
