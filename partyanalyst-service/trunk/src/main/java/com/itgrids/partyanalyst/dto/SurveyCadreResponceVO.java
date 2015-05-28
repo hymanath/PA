@@ -17,7 +17,15 @@ public class SurveyCadreResponceVO implements Serializable{
 	private Integer 		resultCode;
 	
 	private String 			errorCode;
+	private String 			membershipNo ;
 	
+	
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	public String getStatus() {
 		return status;
 	}
