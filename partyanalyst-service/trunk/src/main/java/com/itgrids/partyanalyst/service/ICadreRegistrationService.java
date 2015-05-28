@@ -170,4 +170,5 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getBloodGroups();
 	
 	public List<TdpCadreFamilyDetailsVO> getFamilyDetailsByCadreId(Long tdpCadreId);
+	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate);
 }
