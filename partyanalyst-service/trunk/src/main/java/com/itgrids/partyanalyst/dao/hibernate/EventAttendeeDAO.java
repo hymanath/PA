@@ -387,7 +387,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	
 	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId){
 		//0eventId, 1attendedTime, 2tdpCadreId,3invitee tdpCadreId
-		Query query=getSession().createSQLQuery("select ea.event_id,ea.attended_time,ea.tdp_cadre_id,ei.tdp_cadre_id from event_attendee ea left join  event_invitee  ei on ea.tdp_cadre_id = ei.tdp_cadre_id " +
+		Query query=getSession().createSQLQuery("select ea.event_id,ea.attended_time,ea.tdp_cadre_id,ei.event_invitee_id from event_attendee ea left join  event_invitee  ei on ea.tdp_cadre_id = ei.tdp_cadre_id " +
 				" where date(ea.attended_time) =:todayDate and (ea.event_id =:entryEventId or ea.event_id =:exitEventId) and ea.attended_time is not null and " +
 				" ea.tdp_cadre_id is not null order by ea.tdp_cadre_id, ea.attended_time");
 		query.setDate("todayDate", todayDate);
