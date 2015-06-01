@@ -45,6 +45,10 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 		str.append("select model.locationValue,sum(model.invitees),sum(model.noninvitees) from EventInfo model " +
 				" where model.reportLevelId = :reportLevelId and model.stateId = :stateId " +
 				" and model.event.parentEventId = :eventId and model.event.eventId in(:subeventIds)");
+		if(stateId == 1l && reportLevelId == 3)
+		str.append(" and model.locationValue between 11 and 23");
+		else if(stateId == 36l && reportLevelId == 3)
+			str.append(" and model.locationValue between 1 and 10");
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
