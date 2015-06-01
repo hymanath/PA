@@ -277,6 +277,9 @@ background-color: #E5E5E5 !important;
 		var mobileNo =	$('#mobileNo').val().trim();
 		var voterId = $('#voterId').val().trim();
 		var membershipNo =$('#membershipNo').val().trim();
+		$('#tableDataDiv').html('');
+		$('#tdpCadreDetails').html('');
+		$('#familyDetalsDiv').html('');
 		searchArr=[];
 		if(mobileNo.trim().length == 0 && voterId.trim().length == 0 && membershipNo.trim().length == 0)
 		{
@@ -284,6 +287,17 @@ background-color: #E5E5E5 !important;
 				return false;
 		}
 	
+		if(membershipNo != null && membershipNo.trim().length != 0 && membershipNo.trim().length != 8)
+		{
+				$('#errorDiv').html('Membership ID must be 8 charactors. ').css("color","red");	
+				return false;
+		}
+		else if(mobileNo != null && mobileNo.trim().length != 0 && mobileNo.trim().length != 10)
+		{
+				$('#errorDiv').html('Please enter valid mobile no. ').css("color","red");	
+				return false;
+		}
+		
 		$('#searchDataImg').show();	
 		$('#errorDiv').html('');	
 		$("#tableDataDiv").html('');	
@@ -398,10 +412,15 @@ function getFamilyDetails(tdpCadreId)
 			$('#tdpCadreDetails').show();	
 			$('#familyDetalsDiv').show();	
 			$('#updateFamilyTableDiv').show();	
-			if(result != null && result.length>0)			
+			if(result != null && result.length>0)
+			{
 				buildfamilyDetails(result,tdpCadreId);
+			}	
 			else
-				$("#tdpCadreDetails").html("</span style='text-align:center;'> No data Available<span>");
+			{
+				buildfamilyDetails(result,tdpCadreId)
+			}
+				//$("#tdpCadreDetails").html("</span style='text-align:center;'> No data Available<span>");
 		});
 		
 	}
@@ -711,19 +730,22 @@ function getFamilyDetails(tdpCadreId)
 			{
 			
 				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Relation</label>';
+                str+='<label class="control-label">Relation <span class="mandatory"> * </span></label>';
 				str+='<select id="" class="relation form-control" >';
 				str+='<option value="0" selected="selected">Select Relation</option>';
 				for(var k in relationsArr)
 				{
-					if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
+					if(relationsArr[k].id != 13)
 					{
-						str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
-					}
-					else
-					{
-						str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
-					}
+						if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
+						{
+							str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
+						}
+						else
+						{
+							str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
+						}
+					}					
 				}
 				str+='</select></div>';
 			}
@@ -940,6 +962,8 @@ function updateFamilyInfo()
 	
 	if(dataArr != null && dataArr.length>0)
 	{
+		$('#searchDataImg').show();	
+		$('#updateeBtn').hide();
 		$('#updateeBtn').hide();
 		$('#updateTableDiv').hide();
 		var jsObj = 
@@ -953,8 +977,15 @@ function updateFamilyInfo()
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)},
 			  }).done(function(result){ 
+				$('#searchDataImg').hide();	
 				  if(result != null && result.resultCode ==0){
-					 getCadreDetails();
+					  $("#familyDetalsDiv").html('');
+						getCadreDetails();
+						$("#errorDiv").html("Family Details are updated successfully...").css("color","green");
+					}
+					else
+					{
+						alert("Error occured while updating details.try again...").css("color","red");
 					}
 		   });
 	}
@@ -990,7 +1021,7 @@ function addNewMemberInFamily(size)
 			str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre" />';
 			
 			str+='<div class="panel-heading">';
-            str+='<h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px"  placeholder="Please enter Name " />  </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
+            str+=' Name : <span class="mandatory"> * </span>  <h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px"  placeholder="Please enter name " />    </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
 			str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-33px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click To Remove Family Member"></i>';
             str+='</div>';
 			
@@ -1011,7 +1042,7 @@ function addNewMemberInFamily(size)
 			str+='<input type="text" class="email form-control" /> ';
 			str+='</div>';
 			str+=' <div class="col-md-2 col-xs-6">';
-			str+='<label class="control-label">Relation</label>';
+			str+='<label class="control-label">Relation  <span class="mandatory"> * </span> </label>';
 			
 			if(relationsArr != null && relationsArr.length>0)
 				{
@@ -1019,7 +1050,10 @@ function addNewMemberInFamily(size)
 					str+='<option value="0" selected="selected">Select Relation</option>';
 					for(var k in relationsArr)
 					{
-						str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
+						if(relationsArr[k].id != 13)
+						{
+							str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
+						}
 					}
 					str+='</select>';
 				}
