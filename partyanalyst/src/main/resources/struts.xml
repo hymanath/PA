@@ -207,7 +207,6 @@
 		    <result type="redirect" name="memberShipCardPrintStatusAction">memberShipCardPrintStatusAction.action</result>
 			<result type="redirect" name="memberShipCardSamplePrint">memberShipCardSamplePrint.action</result>
 			<result type="redirect" name="tdpCadreVolunteersDetailsAction">tdpCadreVolunteersDetailsAction.action</result>
-			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5637,7 +5636,8 @@
 		    <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>
 		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
 		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
-		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>	       
+		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
+		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>	       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
