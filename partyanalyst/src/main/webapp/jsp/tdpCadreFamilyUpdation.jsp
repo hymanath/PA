@@ -661,140 +661,145 @@ function getFamilyDetails(tdpCadreId)
        
 
 		str+='<div id="familyMembers">' ;
+		var isDataAvail = false;
 		for(var i=0;i<result.length;i++)
 		{
-			str+='<div class="panel panel-default familyInfo" id="familyInnfo'+i+'">';
-			str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre" />';
 			if(result[i].name != null)
 			{
-			
-				str+='<div class="panel-heading">';
-                str+='<h4 class=" media-heading" >'+result[i].name+'</h4> <input type="hidden" value="'+result[i].name+'" class="name"/> <div id="ErrorDiv'+i+'"  class="mandatory"></div>';
-				
-				str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-22px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click To Remove Family Member"></i>';
-                str+='</div>';
-
-			}
-			str+='<div class="panel-body">';
-            str+='<div class="row">';
-			
-			if(result[i].mobileNo != null)
-			{
-				
-                str+='<div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Mobile No</label>';
-                str+='<input type="text" value="'+result[i].mobileNo+'"  class="mobile form-control"  maxlength="10" key="ErrorDiv'+i+'"/> ';
-                str+='</div>';
-			}
-			else
-			{
-				str+='<div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Mobile No</label>';
-                str+='<input type="text"  class="mobile form-control"    maxlength="10"  key="ErrorDiv'+i+'"/> ';
-                str+='</div>';
-			
-			}
-				
-			if(result[i].dob != null)
-			{
-						str+='<div class="col-md-2 col-xs-6">';
-						str+='<label class="control-label">DOB</label>';
-						str+=' <input type="text" value="'+(result[i].dob).substring(0,11)+'"  class="dob form-control" readonly="true" style="cursor:text;"/>';
-						str+='</div>';						
-			}
-			else
-			{
-						str+='<div class="col-md-2 col-xs-6">';
-						str+='<label class="control-label">DOB</label>';
-						str+=' <input type="text"  class="dob form-control" readonly="true" style="cursor:text;"  style=""/>';
+				isDataAvail = true;
+					str+='<div class="panel panel-default familyInfo" id="familyInnfo'+i+'">';
+					str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre"  />';
+					if(result[i].name != null)
+					{
+					
+						str+='<div class="panel-heading">';
+						str+='<h4 class=" media-heading" >'+result[i].name+'</h4> <input type="hidden" value="'+result[i].name+'" class="name"/> <div id="ErrorDiv'+i+'"  class="mandatory"></div>';
+						
+						str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-22px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+i+'\');" title="Click To Remove Family Member"></i>';
 						str+='</div>';
-			}
-				
-			if(result[i].email != null)
-			{
-				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Email</label>';
-				str+='<input type="text" value="'+result[i].email+'"  class="email form-control"  />';
-                str+='</div>';
-			}
-			else
-			{
-			
-				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Email</label>';
-				str+='<input type="text" class="email form-control"  />';
-                str+='</div>';
-			}
-			
-			if(relationsArr != null && relationsArr.length>0)
-			{
-			
-				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Relation <span class="mandatory"> * </span></label>';
-				str+='<select id="" class="relation form-control" >';
-				str+='<option value="0" selected="selected">Select Relation</option>';
-				for(var k in relationsArr)
-				{
-					if(relationsArr[k].id != 13)
-					{
-						if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
-						{
-							str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
-						}
-						else
-						{
-							str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
-						}
-					}					
-				}
-				str+='</select></div>';
-			}
-			
-			
-				
-			if(educationArr != null && educationArr.length>0)
-			{
-				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Education</label>';
-				str+='<select id="" class="education form-control" >';
-				str+='<option value="0" selected="selected">Select Education</option>';
-				for(var k in educationArr)
-				{
-						if(result[i].educationId != null && (educationArr[k].id ==result[i].educationId ))
-						{
-							str+='<option value="'+educationArr[k].id+'" selected="selected">'+educationArr[k].name+'</option>';
-						}
-						else
-						{
-							str+='<option value="'+educationArr[k].id+'" >'+educationArr[k].name+'</option>';
-						}
-				}
-				str+='</select></div>';
-			}
 
-			if(occupationArr != null && occupationArr.length>0)
-			{
-				str+=' <div class="col-md-2 col-xs-6">';
-                str+='<label class="control-label">Occupation</label>';
-				str+='<select id="" class="occupation form-control"  >';
-				str+='<option value="0" selected="selected">Select Occupation</option>';
-							
-				for(var k in occupationArr)
-				{
-							
-					if(occupationArr[k].id != null && (occupationArr[k].id ==result[i].occupationId ))
+					}
+					str+='<div class="panel-body">';
+					str+='<div class="row">';
+					
+					if(result[i].mobileNo != null)
 					{
-						str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
+						
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Mobile No</label>';
+						str+='<input type="text" value="'+result[i].mobileNo+'"  class="mobile form-control"  maxlength="10" key="ErrorDiv'+i+'"/> ';
+						str+='</div>';
 					}
 					else
 					{
-						str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Mobile No</label>';
+						str+='<input type="text"  class="mobile form-control"    maxlength="10"  key="ErrorDiv'+i+'"/> ';
+						str+='</div>';
+					
 					}
-				}
-				str+='</select></div>';
+						
+					if(result[i].dob != null)
+					{
+								str+='<div class="col-md-2 col-xs-6">';
+								str+='<label class="control-label">DOB</label>';
+								str+=' <input type="text" value="'+(result[i].dob).substring(0,11)+'"  class="dob form-control" readonly="true" style="cursor:text;"/>';
+								str+='</div>';						
+					}
+					else
+					{
+								str+='<div class="col-md-2 col-xs-6">';
+								str+='<label class="control-label">DOB</label>';
+								str+=' <input type="text"  class="dob form-control" readonly="true" style="cursor:text;"  style=""/>';
+								str+='</div>';
+					}
+						
+					if(result[i].email != null)
+					{
+						str+=' <div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Email</label>';
+						str+='<input type="text" value="'+result[i].email+'"  class="email form-control"  />';
+						str+='</div>';
+					}
+					else
+					{
+					
+						str+=' <div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Email</label>';
+						str+='<input type="text" class="email form-control"  />';
+						str+='</div>';
+					}
+					
+					if(relationsArr != null && relationsArr.length>0)
+					{
+					
+						str+=' <div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Relation 111 <span class="mandatory"> * </span></label>';
+						str+='<select id="" class="relation form-control" >';
+						str+='<option value="0" selected="selected">Select Relation</option>';
+						for(var k in relationsArr)
+						{
+							if(relationsArr[k].id != 13)
+							{
+								if(result[i].relationId != null && (relationsArr[k].id ==result[i].relationId ))
+								{
+									str+='<option value="'+relationsArr[k].id+'" selected="selected">'+relationsArr[k].name+'</option>';
+								}
+								else
+								{
+									str+='<option value="'+relationsArr[k].id+'" >'+relationsArr[k].name+'</option>';
+								}
+							}					
+						}
+						str+='</select></div>';
+					}
+					
+					
+						
+					if(educationArr != null && educationArr.length>0)
+					{
+						str+=' <div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Education</label>';
+						str+='<select id="" class="education form-control" >';
+						str+='<option value="0" selected="selected">Select Education</option>';
+						for(var k in educationArr)
+						{
+								if(result[i].educationId != null && (educationArr[k].id ==result[i].educationId ))
+								{
+									str+='<option value="'+educationArr[k].id+'" selected="selected">'+educationArr[k].name+'</option>';
+								}
+								else
+								{
+									str+='<option value="'+educationArr[k].id+'" >'+educationArr[k].name+'</option>';
+								}
+						}
+						str+='</select></div>';
+					}
+
+					if(occupationArr != null && occupationArr.length>0)
+					{
+						str+=' <div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Occupation</label>';
+						str+='<select id="" class="occupation form-control"  >';
+						str+='<option value="0" selected="selected">Select Occupation</option>';
+									
+						for(var k in occupationArr)
+						{
+									
+							if(occupationArr[k].id != null && (occupationArr[k].id ==result[i].occupationId ))
+							{
+								str+='<option value="'+occupationArr[k].id+'" selected="selected">'+occupationArr[k].name+'</option>';
+							}
+							else
+							{
+								str+='<option value="'+occupationArr[k].id+'" >'+occupationArr[k].name+'</option>';
+							}
+						}
+						str+='</select></div>';
+					}
+					
+					str+='</div></div></div>';
 			}
-			
-			str+='</div></div></div>';
 		}
 		str+='<div id="nextBuildBtnId">';
 				str+='<button id="addNewMember" class="newMemberCls btn btn-info pull-right" onclick="addNewMemberInFamily('+result.length+')" title="Add a new member in family." style="margin-top: 15px;margin-right:15px;"> + </button>';
@@ -822,7 +827,12 @@ function getFamilyDetails(tdpCadreId)
 					changeMonth: true,
 					changeYear: true,
 					yearRange: "-100:+0"
-		});		
+		});	
+
+		if(!isDataAvail)
+		{
+			addNewMemberInFamily(0);
+		}
 	}
 	
 function updateFamilyInfo()
@@ -1042,7 +1052,7 @@ function addNewMemberInFamily(size)
 			str+='<input type="text" class="email form-control" /> ';
 			str+='</div>';
 			str+=' <div class="col-md-2 col-xs-6">';
-			str+='<label class="control-label">Relation  <span class="mandatory"> * </span> </label>';
+			str+='<label class="control-label">Relation 222 <span class="mandatory"> * </span> </label>';
 			
 			if(relationsArr != null && relationsArr.length>0)
 				{
