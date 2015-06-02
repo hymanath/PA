@@ -60,6 +60,17 @@
 						<li><a tabindex="-1" href="dashBoardAction.action"> Main DashBoard </a></li>
 					</c:if>
 					
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) }">
+					  <li><a tabindex="-1" href="cadreSearchPageAction.action"> Cadre Search </a></li>
+					  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
+					</c:if>
+					
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATIONFOR_OTHERSTATES' ) }">
+					   <li><a tabindex="-1" href="javascript:{showDashBoard();}" id="homeBtnId">Home</a></li>
+					   <li><a tabindex="-1" href="javascript:{hideDashBoard();}" id="statusBtnId" >Know User Status </a></li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					</c:if>
+					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
 					  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' )}">
@@ -72,7 +83,7 @@
 					 <c:if test="${sessionScope.USER.isAdmin != 'true'}">
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'CADRE_FAMILY_DETAILS_UPDATION' )}">
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-							 <c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' )}">
+							 <c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
 							   <li><a tabindex="-1" href="committeeManagementAction.action">Home</a></li>
 							   <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
 							</c:if>
