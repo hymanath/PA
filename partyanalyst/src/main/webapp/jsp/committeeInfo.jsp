@@ -143,12 +143,12 @@
 		{
 		var constituenyId = $("#displayconstbox").val();
 		if(constituenyId > 0)
-		url = "/PartyAnalyst/cadreCommitteeAction.action?locationId="+constituenyId+"";
+		url = "/cadreCommitteeAction.action?locationId="+constituenyId+"";
 		}
 		else
 		{
 			var distId = $("#districtsDispalyId").val();
-			url = "/PartyAnalyst/committeeManagementAction.action?locationId="+distId+"& reqLocationType=district";
+			url = "/committeeManagementAction.action?locationId="+distId+"& reqLocationType=district";
 			
 		}
 		window.open(url,'_blank');
@@ -163,12 +163,12 @@
 		{
 		var constituenyId = $("#displayconstbox").val();
 		if(constituenyId > 0)
-		url = "/PartyAnalyst/cadreCommitteeSummaryAction.action?locationId="+constituenyId+"&locationType=constituency";
+		url = "/cadreCommitteeSummaryAction.action?locationId="+constituenyId+"&locationType=constituency";
 		}
 		else
 		{
 			var distId = $("#districtsDispalyId").val();
-			url = "/PartyAnalyst/cadreCommitteeSummaryAction.action?locationId="+distId+"&locationType=DISTRICT";
+			url = "/cadreCommitteeSummaryAction.action?locationId="+distId+"&locationType=DISTRICT";
 			
 		}
 		window.open(url,'_blank');
