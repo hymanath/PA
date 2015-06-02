@@ -125,10 +125,14 @@
 
 
     <script>
+	var reqlocationType = "";
 	var accessType = '${sessionScope.USER.accessType}';
+	if('${locationType}' != null && '${locationType}' != '')
+	reqlocationType = '${locationType}';
+	var reqlocationId ='${locationId}';
 	$(document).ready(function() {
 	
-		if(accessType != 'STATE' &&  accessType != 'DISTRICT')
+		if(accessType != 'STATE' &&  accessType != 'DISTRICT' && (reqlocationType!="" && reqlocationType !='DISTRICT'))
 		{
 			
 		getSummary();
@@ -136,7 +140,7 @@
 		getMandalMuncipalDivisonStartedCommittees();
 		}
 		//getMandalMuncipalDivisonTotalCommittees();
-		if(accessType == 'STATE' || accessType == 'DISTRICT')
+		if(accessType == 'STATE' || accessType == 'DISTRICT' ||  reqlocationType =='DISTRICT')
 		{
 		getCommitteeSummaryInfo();
 		}
@@ -169,10 +173,18 @@
 	</script>
 	<script>
 		function getSummary(){
+			var id = 0;
+				if(reqlocationId != null && reqlocationId > 0)
+				id = reqlocationId;
+			var jsObj = {
+				locationId:id,
+					task:""
+			}
 		$.ajax({
 				type : "POST",
+
 				url : "getSummaryAction.action",
-				data : {} ,
+				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -255,10 +267,17 @@
 		}
 		
 		function getStartedCommittees(){
+				var id = 0;
+				if(reqlocationId != null && reqlocationId > 0)
+				id = reqlocationId;
+				var jsObj = {
+					locationId:id,
+						task:""
+				}
 			$.ajax({
 					type : "POST",
 					url : "getStartedCommitteesAction.action",
-					data : {} ,
+					data : {task:JSON.stringify(jsObj)},
 				}).done(function(result){
 					if(typeof result == "string"){
 						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -272,10 +291,22 @@
 		
 		function getCommitteeSummaryInfo()
 		{
+			var id = 0;
+			var reqLocationType ="";
+				if(reqlocationId != null && reqlocationId > 0)
+			{
+				id = reqlocationId;
+				reqLocationType ='District';
+			}
+			var jsObj = {
+					locationId:id,
+					reqLocationType :reqLocationType,
+					task:""
+				}
 			$.ajax({
 				type : "POST",
 				url : "gettingCommitteeSummaryInfoAction.action",
-				data : {} ,
+				data : {task:JSON.stringify(jsObj)},
 			}).done(function(result){
 				if(result[0].locationId == 10)
 				$("#stateDistrictTitle").html(''+result[0].locationName+'');
@@ -364,10 +395,17 @@
 			    });
 		}
 		function getMandalMuncipalDivisonStartedCommittees(){
+				var id = 0;
+				if(reqlocationId != null && reqlocationId > 0)
+				id = reqlocationId;
+			var jsObj = {
+				locationId:id,
+					task:""
+			}
 			$.ajax({
 				type : "POST",
 				url : "gettingMandalMuncipalDivisonSummaryAction.action",
-				data : {} ,
+			data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){

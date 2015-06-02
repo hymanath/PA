@@ -963,7 +963,27 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<span type="button" style="font-size:30px;cursor:pointer;" class="pull-right" data-dismiss="modal" aria-hidden="true">&times;</span>
 						
 					</div>
+					
+					
+					
+					<!-- start -->
+				<div id="districtContent">	
+			 <div class="row">
+            	<div class="col-md-12">
+                	<h3 style="color:#090" id="stateDistrictTitle" ></h3>
+                </div>
+            </div>
+			 <div class="row">
+ 				<div class="col-md-12">
+				
+				<div id="mainCommitteDivId"></div>
+				<div id="AffliCommitteDivId"></div>
+				</div>
+				</div>
+				</div>
+					<!-- end-->
 					<!-- First Block Start-->
+					<div id="constituencyContent">
 					<div class="row">
 						<div class="col-md-12">
 							<h3 style="color:#090" >MANDAL / TOWN / DIVISION</h2>
@@ -984,6 +1004,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<h3 style="color:#090" >VILLAGE / WARD</h2>
 						</div>
 					</div>
+					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<div id="villageMainTableDivId"></div>
@@ -1002,6 +1023,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						 </div>   
 						<div class="col-md-2" id="conformedBtn" style="padding-top:10px;"></div>
 					</div>  
+					
 					<!--Second Block END-->
 					<!--Content END-->
 				
@@ -1015,6 +1037,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 				</div>
 			  </div>
+			
 			</div>
 			<div id="dialogSummaryDistsrict" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
@@ -1029,6 +1052,22 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				</div>
 			</div>
     </div>
+	<!-- district -->
+	<div id="dialogSummaryForDist" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h3 class="panel-header text-center"></h3>
+					  </div>
+						<div id="cadreDetailsDivdist" style="margin-top:25px;padding:10px;"></div>
+				</div>
+			</div>
+    </div>
+	<!-- end -->
+
     </div>
 
 
@@ -3226,9 +3265,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<td class="removeCls clearClsTD'+result[i].districtId+'" style="text-align:center;">'+result[i].districtId+'';
 			str+='</td>';
 			if(districtCommCheck == "true" && mandalCheck == "false" && villageCheck == "false"){
-            str += '<td style="color:#333333;font-weight:bold;">'+result[i].districtName+'</td>';
+            str += '<td style="color:#333333;font-weight:bold;">'+result[i].districtName+'&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].districtName+' Committee Summary Report" onclick="getPopUpForSummaryForDistrict('+result[i].districtId+',\''+result[i].districtName+'\');" class="glyphicon glyphicon-dashboard"></span></td>';
 			}else{
-			 str += '<td ><a style="color:#333333;font-weight:bold;cursor:pointer;" onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a></td>';
+			 str += '<td ><a style="color:#333333;font-weight:bold;cursor:pointer;" onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a>&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].districtName+' Committee Summary Report" onclick="getPopUpForSummaryForDistrict('+result[i].districtId+',\''+result[i].districtName+'\');" class="glyphicon glyphicon-dashboard"></span></td>';
 
 
 			}
@@ -6195,9 +6234,150 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 			
 	}
 	
+	
+	/* script for District */
+	function getPopUpForSummaryForDistrict(id,name){
+	$("#districtContent").show();
+	$("#constituencyContent").hide();
+		$("#dialogSummary" ).modal("show");
+		$("#CommitteeDetails").html(""); 
+		$("#committeeMemberDiv").html("");
+		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
+		getCommitteeSummaryInfo(id);
+		$('.loader5').ClassyLoader({
+				speed: 10,
+				diameter: 80,
+				fontSize: '30px',
+				fontFamily: 'Courier',
+				fontColor: 'rgba(0,0,0,0.4)',
+				lineColor: 'rgba(0,166,81,0.9)',
+				percentage: 80,
+				lineWidth: 15,
+				remainingLineColor: 'rgba(0,0,0,0.5)',
+				
+			});
+			$('.loader4').ClassyLoader({
+				speed: 10,
+				diameter: 80,
+				fontSize: '30px',
+				fontFamily: 'Courier',
+				fontColor: 'rgba(0,0,0,0.4)',
+				lineColor: 'rgba(0,166,81,0.9)',
+				percentage: 40,
+				lineWidth: 15,
+				remainingLineColor: 'rgba(0,0,0,0.5)',
+				
+			});
+	}
+	
+		function getCommitteeSummaryInfo(id)
+		{
+		
+				var reqLocationType ='District';
+				var locationId = id;
+			var jsObj = {
+					locationId:id,
+					reqLocationType :reqLocationType,
+					task:""
+				}
+			$.ajax({
+				type : "POST",
+				url : "gettingCommitteeSummaryInfoAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result[0].locationId == 10)
+				$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				if(result[0].locationId == 11)
+				$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				if(result!=null){
+				
+					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
+					var str='';
+					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
+							   if(result[0].startedCount != null && result[0].startedCount > 0)
+								{
+							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+								}
+								else
+								{
+									 str+='<td width="25%"><h2 style="display:inline;" >'+result[0].startedCount+'</h2> STARTED</td>';
+								
+								}
+								if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0)
+								{
+									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+									
+								}
+								else
+								{
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
+								}
+								if(notStarted != null && notStarted > 0)
+								{
+							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+								}
+								else
+								{
+									str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
+								}
+								str+='</tr>';
+							  
+					 str+='</table>';
+					 $("#mainCommitteDivId").html(str);
+			
+				var str1='';
+						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
+							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
+					 for(var i in result){
+						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
+						if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
+						 {
+		str1+='<td width="20%">';
+		str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+						 }
+						 else
+						 {
+						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+						 }
+					if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
+						 {
+						str1+='<td width="20%">';
+						str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+						
+						 }
+						 else
+						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+						 if(notConformed != null && notConformed > 0)
+						 {
+							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+notConformed+'</td>';
+						 }
+						 else
+						 {
+						str1+='<td width="20%">'+notConformed+'</td>';
+						 }
+						 str1+='</tr>';
+					
+						
+					 }
+					 
+					 str1+='</table>';
+					  $("#AffliCommitteDivId").html(str1);
+				}
+			    });
+		}
+	
+	/* end */
 	/* Script For Summary POpUP  */
 	
 	function getPopUpForSummary(id,name){
+		$("#districtContent").hide();
+		$("#constituencyContent").show();
 		$( "#dialogSummary" ).modal("show");
 		
 		$("#CommitteeDetails").html(""); 

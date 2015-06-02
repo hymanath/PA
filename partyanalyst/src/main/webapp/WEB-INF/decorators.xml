@@ -406,6 +406,8 @@
 		<pattern>/committeeDashBoardAction*</pattern> 
 		<pattern>/constituencyCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeRolesDashboard*</pattern>
+		<pattern>/committeeInfoAction*</pattern>
+		
 		 
 		  
 		

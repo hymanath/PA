@@ -408,7 +408,7 @@
               return a.text == b.text ? 0 : a.text < b.text ? -1 : 1;
           }));
 	    var slickCount = 0;
-		
+		var reqlocationId ='${locationId}';
 		var pancayatId = '';
 		var commityTypeId = '';
 		var commityId = '';
@@ -583,6 +583,9 @@
 		});
 		
 	function getCommitteeLocations(){
+		var id = 0;
+		if(reqlocationId != null && reqlocationId > 0)
+		id = reqlocationId;
 		if($("#villageId").is(':checked')){
 			return;
 		}
@@ -600,6 +603,7 @@
 		$("#committeeMainId").hide();
 		$("#dataLoadingsImg").show();
 		$("#dataLoadingImg").show();
+
 		var reqLocationType ="";
 		var committeTypesID = $('#committeeMngtType').val();
 		var searchLevelId = 0;
@@ -611,7 +615,7 @@
 		$.ajax({
 			type : "POST",
 			url : "getCommitteLocationsAction.action",
-			data : {locationType:reqLocationType} ,
+			data : {locationType:reqLocationType,locationId:id} ,
 		}).done(function(result){		
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
@@ -1217,6 +1221,9 @@
 	}
 	function getMandalCorporationsByConstituency()
 	{		
+		var id = 0;
+		if(reqlocationId != null && reqlocationId > 0)
+		id = reqlocationId;
 		if(task == 2){
 			$('#mndlLvlCommittSelec').trigger('click');
 			getCommitteeLocations();
@@ -1235,11 +1242,15 @@
 			$("#panchayatWardByMandal").append('<option value="0">Select Mandal</option>');
 			
 				$("#dataLoadingImgForMandal").show();
-				
+				var jsObj = {
+					locationId :id,
+						task:""
+				}
 				 $.ajax({
 					type : "POST",
+					
 					url : "getMandalCorporationsByConstituencyAction.action",
-					data : {} 
+					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
 				$("#dataLoadingImgForMandal").hide();
 				if(typeof result == "string"){
@@ -1446,6 +1457,10 @@
 	 }
 	//getCommitteeLocations();
 	getMandalCorporationsByConstituency();
+	
+	if(reqlocationId != null && reqlocationId !='')
+	getUserLocation1(reqlocationId);
+	else
 	getUserLocation();
 	
 	function CallPrint(strid) {

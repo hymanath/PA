@@ -26,7 +26,25 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 	private ICadreCommitteeService   		 	cadreCommitteeService;
 	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
 	private EntitlementsHelper 					entitlementsHelper;
+	private Long locationId;
+	private String locationType;
 	
+	
+	
+	
+	
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
 	public List<CadreCommitteeMemberVO> getCadreCommitteeMemberVOList() {
 		return cadreCommitteeMemberVOList;
 	}
@@ -84,7 +102,9 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") || entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS"))){
+			
+		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") || entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS"))
+				&& !(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT"))){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
