@@ -67,14 +67,21 @@
 							</c:if>
 					   
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
-							<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' )}">
+							<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH')}">
+							<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
 							   <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
 							   
 							   <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
 							   <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
+							   </c:if>
 							</c:if>
 						</c:if>
 							
+						</c:if>
+						
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+						 <li><a tabindex="-1" href="cadreSearchPageAction.action">Cadre Search</a></li>
+						 <li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 						</c:if>
                     </c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>

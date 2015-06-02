@@ -1189,8 +1189,9 @@
 	var userLocation = "";
 	var loginAreaType ="rural";
 	function getUserLocation(){
-		
+		var locationId = 0;
 			var jObj ={
+				locationId:locationId,
 			task:"getConstituency"             
 		}	
 		$.ajax({
@@ -1206,7 +1207,25 @@
 				}
 		});
 	}
+	function getUserLocation1(locationId){
 	
+			var jObj ={
+			locationId:locationId,
+			task:"getConstituency"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getUserAccessConstituencyAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result != null){
+				for(var i in result){				
+				userLocation = result[i].id;
+				loginAreaType = result[i].description;
+				}
+				}
+		});
+	}
 	function addAsElectrole(cadreId,btnId,addmoreId,resultDiv)
 	{	
 		var designationArr = new Array();

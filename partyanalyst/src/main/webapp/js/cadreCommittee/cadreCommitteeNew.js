@@ -939,8 +939,9 @@
 	
 	var userLocation = "";
 	function getUserLocation(){
-		
+		var locationId = 0;
 			var jObj ={
+			locationId:locationId,
 			task:"getConstituency"             
 		}	
 		$.ajax({

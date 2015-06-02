@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,9 +97,19 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	
      private EventCreationVO eventCreationVO;
 	private List<VO> resultList;
+	private Long locationId;
 	
 	
 	
+	
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
 	public List<VO> getResultList() {
 		return resultList;
 	}
@@ -534,7 +545,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")
+				&& !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT")){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
@@ -567,7 +579,9 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)){
+		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)
+				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT")
+				)){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
@@ -597,14 +611,26 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public List<BasicVO> getUserAccessConstituencies(){
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		return tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));	
+		if(locationId != null && locationId > 0)
+		return tdpCadreReportService.getAccessLocationValues("MLA",locationId);	
+		else
+		{
+			return tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));		
+		}
 	}
 	
 	public String getCommitteLocations(){
 		try{
+			 Long locationId = 0l;
 		   String locationType = request.getParameter("locationType");
+		   if(request.getParameter("locationId") != null)
+		   locationId = new Long(request.getParameter("locationId"));
 		   constituencies = getUserAccessConstituencies();
-
+		  if(locationId > 0)
+		  {
+			  locations = cadreCommitteeService.getLocationsList(locationId,locationType);  
+		  }
+		  else
 		   locations = cadreCommitteeService.getLocationsList(constituencies.get(0).getId(),locationType);
 		   
 		}catch(Exception e){
@@ -1326,23 +1352,51 @@ public String getSummaryDetails(){
 		
 
 	session = request.getSession();	
+	try {
+		jObj = new JSONObject(getTask());
+
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
+			
+			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
+			{
+				returnList = cadreCommitteeService.getSummaryDetails(jObj.getString("locationId"));
+			}
+			else
+			{
 			returnList = cadreCommitteeService.getSummaryDetails(user.getAccessValue());
+			}
 		}else{
 			return ERROR;
+		}
+	}
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
 	
 	public String getStartedCommitteesCountInALocation(){
+		try {
+			jObj = new JSONObject(getTask());
 		
 		session = request.getSession();	
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
-			committeesCountsInfo= cadreCommitteeService.getStartedCommitteesCountInALocation(user.getAccessValue());
+			
+			if(jObj.getString("locationId")!= null && jObj.getLong("locationId") > 0)
+			{
+			committeesCountsInfo= cadreCommitteeService.getStartedCommitteesCountInALocation(jObj.getString("locationId"));
+			}
+			else
+				committeesCountsInfo= cadreCommitteeService.getStartedCommitteesCountInALocation(user.getAccessValue());	
 		}else{
 			return ERROR;
+		}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 		
@@ -1351,11 +1405,25 @@ public String getSummaryDetails(){
 	public String gettingMandalAndMuncipalAndDivisonSummary(){
 		
 		session = request.getSession();	
+		try {
+			jObj = new JSONObject(getTask());
+		
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
-			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue());
+			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
+			{
+			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"));
+			}
+			else
+			{
+				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue());	
+			}
 		}else{
 			return ERROR;
+		}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
@@ -1363,9 +1431,18 @@ public String getSummaryDetails(){
 	public String getCommitteSummaryInfo(){
 		try{
 		session = request.getSession();	
+		jObj = new JSONObject(getTask());
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		if(user != null && user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS")){
-			returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType());
+		if(user != null && (user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS") || user.getEntitlements().contains("COMMITTEE_MGT"))){
+			
+			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
+			{
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"));
+			}
+			else
+			{
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType());
+			}
 		}else{
 			return ERROR;
 		}
@@ -1424,7 +1501,16 @@ public String getSummaryDetails(){
 		try{
 			HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-			constituencies = tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("locationId") != null &&  jObj.getLong("locationId") > 0)
+			{
+			constituencies = tdpCadreReportService.getAccessLocationValues("MLA",jObj.getLong("locationId") );
+			}
+			else
+			{
+				constituencies = tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));
+			
+			}
 			
 			/*constituencies = getUserAccessConstituencies();*/
 			
@@ -1530,18 +1616,29 @@ public String getSummaryDetails(){
 	
 	
 	public String stateDistrictLvlCommittee(){
+
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		
 		if(regVO==null){
 			return "input";
 		}
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS")){
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS")) 
+				&&  !(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT"))){
 			return "error";
 		}
-		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT")){
+		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT") || reqLocationType.equalsIgnoreCase("district")){
+			
 			reqLocationType = "district";
+			if(locationId != null && locationId > 0)
+			{
+				reqLocationValue = "1"+locationId;
+				globalLocationName = cadreCommitteeService.getDistrictName(Long.valueOf(locationId))+" District";
+			}
+			else
+			{
 			reqLocationValue = "1"+regVO.getAccessValue();
 			globalLocationName = cadreCommitteeService.getDistrictName(Long.valueOf(regVO.getAccessValue().trim()))+" District";
+			}
 		}else if(regVO.getAccessType().equalsIgnoreCase("STATE")){
 			reqLocationType = "state";
 			reqLocationValue = "2"+regVO.getAccessValue();
@@ -1833,6 +1930,22 @@ public String getSummaryDetails(){
 			LOG.error("Exception raised in getDistrictNamesIds",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	
+	public String cadreInfoExe()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVO==null){
+			return "input";
+		}
+		if(regVO != null && regVO.getEntitlements().contains("COMMITTEE_MGT"))
+		{
+			return Action.SUCCESS;
+		}
+			return Action.SUCCESS;
+		
 	}
 	
 }

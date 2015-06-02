@@ -10200,5 +10200,11 @@
 				<param name="root">cardPrintUserVO</param>
 			</result>
 		</action>
+		<action name="committeeInfoAction" class="cadreCommitteeAction" method="cadreInfoExe">
+			<result name="success">/jsp/committeeInfo.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
 </package>
 </struts>      

@@ -866,14 +866,27 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public String getUserAccessConstituencies()
 	{
 		try{
+			jobj = new JSONObject(getTask());
 			Long userId = null;
+			String accessType = "";
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO==null){
 				return "input";
 			}
+			Long accessValue = 0l;
+			if(jobj.getLong("locationId") > 0l)
+			{
+				accessValue = jobj.getLong("locationId");
+				accessType ="MLA";
+			}
+			else
+			{
+				accessValue = new Long(regVO.getAccessValue());
+				accessType = regVO.getAccessType();
+			}
 			userId = regVO.getRegistrationID();
 			
-			resultList = tdpCadreReportService.getAccessLocationValues(regVO.getAccessType(),new Long(regVO.getAccessValue()));
+			resultList = tdpCadreReportService.getAccessLocationValues(accessType,accessValue);
 		}
 		catch(Exception e)
 		{
