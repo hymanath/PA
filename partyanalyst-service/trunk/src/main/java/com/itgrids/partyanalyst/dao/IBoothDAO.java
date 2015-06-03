@@ -463,4 +463,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public Long getBoothResults(List<Long> boothIds,Long electionId);
 	public Long getCandidateBoothResults(List<Long> boothIds,List<Long> partyIds,Long electionId);
 	public List<Object[]> getBoothsInfo(Long constituencyId,Set<String> boothIds);
+	
+	public List<Object[]> getPanchaytsInfoByStateId(Long publicationId,Long stateId);
+	
 }
