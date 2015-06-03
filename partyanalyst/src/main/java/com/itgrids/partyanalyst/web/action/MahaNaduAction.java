@@ -894,6 +894,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     		String actionType = jObj.getString("actionType");
     		String stateStr = jObj.getString("stateStr");
     		Long eventId = jObj.getLong("eventId");
+    		String reportType = jObj.getString("reportType");
     		List<InviteesVO> inviteeGroupVOList = null;
     		if(submitArr != null && submitArr.length()>0)
     		{
@@ -962,7 +963,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     			}
     		}
     		
-    		commiteeMembersList = cadreCommitteeService.getEventInviteesList(regVO.getRegistrationID(),regVO.getAccessType(),regVO.getAccessValue(),stateId,inviteeGroupVOList,eventId,actionType,stateStr,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+    		commiteeMembersList = cadreCommitteeService.getEventInviteesList(regVO.getRegistrationID(),regVO.getAccessType(),regVO.getAccessValue(),stateId,inviteeGroupVOList,eventId,actionType,stateStr,reportType,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
     	}
     	catch(Exception e)
     	{
