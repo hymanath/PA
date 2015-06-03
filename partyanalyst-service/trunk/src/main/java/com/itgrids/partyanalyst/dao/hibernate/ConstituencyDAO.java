@@ -1362,4 +1362,18 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return name;
 	}
 	
+	public Object[] getlocalbodyName(Long constituencyId){
+		Query queryBuilder = getSession().createSQLQuery("select LEB.name,ET.election_type from constituency C left join local_election_body LEB on C.local_election_body_id = LEB.local_election_body_id " +
+				" left join election_type ET on LEB.election_type_id = ET.election_type_id where C.constituency_Id = :constituencyId");
+		queryBuilder.setParameter("constituencyId", constituencyId);
+		return (Object[]) queryBuilder.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllWardsForState(Long stateId) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model.constituencyId,model.name from Constituency model where model.localElectionBody.localElectionBodyId is not null and name like '%ward%'  and model.deformDate is null ");		
+		Query queryObject = getSession().createQuery(query.toString());
+		return queryObject.list();
+	} 	
 }

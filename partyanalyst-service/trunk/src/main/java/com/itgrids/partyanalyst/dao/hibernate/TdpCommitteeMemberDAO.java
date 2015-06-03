@@ -60,7 +60,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.list();
 	}
 	
-	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList)
+	/*public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList)
 	{
 		String queryStr = " select distinct model.tdpCadreId ,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
 				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
@@ -69,7 +69,22 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		Query query = getSession().createQuery(queryStr);
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
+	}*/
+	
+	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList)
+	{
+		String queryStr = " select TD.tdp_cadre_id, TBC.name, TR.role , TC.tdp_committee_level_id , TC.tdp_committee_level_value, " +
+				" TCR.tdp_committee_role_id ,TCL.tdp_committee_level  from tdp_committee_member TCM, tdp_committee_role TCR, tdp_committee TC, tdp_cadre TD, tdp_roles TR, tdp_basic_committee TBC," +
+				" tdp_committee_level TCL where " +
+				" TD.tdp_cadre_id = TCM.tdp_cadre_id and TCM.tdp_committee_role_id = TCR.tdp_committee_role_id and " +
+				" TCR.tdp_roles_id = TR.tdp_roles_id and TCR.tdp_committee_id = TC.tdp_committee_id and " +
+				" TC.tdp_basic_committee_id = TBC.tdp_basic_committee_id and TC.tdp_committee_level_id = TCL.tdp_committee_level_id and " +
+				" TCM.tdp_cadre_id in (:tdpCadreIdsList) and TCM.is_active='Y' group by TCM.tdp_cadre_id ";
+		Query query = getSession().createSQLQuery(queryStr);
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		return query.list();
 	}
+	
 	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 
 		StringBuilder str = new StringBuilder();

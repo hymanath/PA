@@ -237,4 +237,10 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTehsilDetailsByStateId(Long stateId,Long publicationDateId){
+		Object[] params = {stateId, publicationDateId};
+		return getHibernateTemplate().find("select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where model.tehsil.district.state.stateId = ? and model.publicationDate.publicationDateId = ? ", params);
+	}
+	
 }
