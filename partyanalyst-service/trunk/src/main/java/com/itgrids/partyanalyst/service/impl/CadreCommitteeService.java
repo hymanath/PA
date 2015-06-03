@@ -1,7 +1,12 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,17 +23,28 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.Font;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -1898,7 +1914,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				    }
 			   }
 		    }
-			
 		}
 	}
 	public void setCurrentElectrolInfo(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
@@ -12064,7 +12079,7 @@ return mandalList;
 	}
 	
 	
-	public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,Integer startIndex,Integer maxIndex)
+	public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,String reportType, Integer startIndex,Integer maxIndex)
 	{
 		List<TdpCadreVO> returnList = null;
 		try {
@@ -12185,7 +12200,7 @@ return mandalList;
 														 for (Object[] assembly : assemblys) {
 															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
 															 locationValuesList.add(assemblyId);
-															 
+															 Long constituencyNo =  delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
 															 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
 															 if(assemblyInfoMap.get(assemblyId) != null)
 															 {
@@ -12195,7 +12210,10 @@ return mandalList;
 															 IdNameVO parliamentVO = new IdNameVO();
 															 parliamentVO.setId(assemblyId);
 															 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
-															 
+															 if(constituencyNo != null)
+															 { 
+																 parliamentVO.setName(constituencyNo+"_"+parliamentVO.getName());
+															 }
 															 assemblyInfoList.add(parliamentVO);
 															 
 															 IdNameVO districtVO = new IdNameVO();
@@ -12382,7 +12400,7 @@ return mandalList;
 															 for (Object[] assembly : assemblys) {
 																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
 																 locationValuesList.add(assemblyId);
-																 
+																 Long constituencyNo =  delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
 																 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
 																 if(assemblyInfoMap.get(assemblyId) != null)
 																 {
@@ -12392,7 +12410,10 @@ return mandalList;
 																 IdNameVO parliamentVO = new IdNameVO();
 																 parliamentVO.setId(assemblyId);
 																 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
-																 
+																 if(constituencyNo != null)
+																 {
+																	 parliamentVO.setName(constituencyNo+"_"+parliamentVO.getName());
+																 }
 																 assemblyInfoList.add(parliamentVO);
 																 
 																 IdNameVO districtVO = new IdNameVO();
@@ -12488,7 +12509,7 @@ return mandalList;
 															 for (Object[] assembly : assemblys) {
 																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
 																 locationValuesList.add(assemblyId);
-																 
+																 Long constituencyNo =  delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
 																 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
 																 if(assemblyInfoMap.get(assemblyId) != null)
 																 {
@@ -12498,7 +12519,10 @@ return mandalList;
 																 IdNameVO parliamentVO = new IdNameVO();
 																 parliamentVO.setId(assemblyId);
 																 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
-																 
+																 if(constituencyNo != null)
+																 { 
+																	 parliamentVO.setName(constituencyNo+"_"+parliamentVO.getName());
+																 }
 																 assemblyInfoList.add(parliamentVO);
 																 
 																 IdNameVO districtVO = new IdNameVO();
@@ -12837,6 +12861,26 @@ return mandalList;
 						 totalCount = totalCount+(Long.valueOf(tdpCadreIdsList.size()));
 						 tdpCadresIdList.addAll(tdpCadreIdsList);
 					}
+					
+					if(reportType != null && reportType.trim().equalsIgnoreCase("EXPORTEXCEL"))
+					{
+						return exprortExcelForInvitees(publicRepresentativesIdList,tdpCadresIdList,parliamentInfoMap,assemblyInfoMap);
+					}
+					
+					Map<Long,String> committeeMap = new LinkedHashMap<Long, String>();
+					List<Object[]> basicCommitteList = tdpBasicCommitteeDAO.getBasicCommittees();
+					if(basicCommitteList != null && basicCommitteList.size()>0)
+					{
+						for (Object[] committee : basicCommitteList) {
+							Long id = committee[0] != null ? Long.valueOf(committee[0].toString().trim()):0L;
+							String name = committee[1] != null ? committee[1].toString().trim():"";
+							if(name != null && !name.isEmpty())
+							{
+								committeeMap.put(id, name);
+							}
+						}
+					}
+					
 					//addtoevent
 					if(actionType != null && actionType.trim().equalsIgnoreCase("invite"))
 					{
@@ -12978,9 +13022,9 @@ return mandalList;
 											for (Object[] cadre : tdpCadreIdDetails) 
 											{
 												CadreCommitteeVO committeeVO = new CadreCommitteeVO();
-			
+
 												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-												if(cadre[4] != null){
+												/*if(cadre[4] != null){
 													if(cadre[4].toString().trim().length() > 8){
 														committeeVO.setMemberShipCardId(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
 													}else{
@@ -12988,16 +13032,16 @@ return mandalList;
 													}
 												}else{
 													committeeVO.setMemberShipCardId("");
-												}
+												}*/
 												//committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
 												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
-												committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
-												committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+												//committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
+												//committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
 												committeeVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
 												committeeVO.setType("CadreCommittee");
-												if(cadre[9] != null)
+												/*if(cadre[9] != null)
 												{
 													committeeVO.setAge(cadre[9] != null ?cadre[9].toString().trim():"0");
 												}
@@ -13012,10 +13056,7 @@ return mandalList;
 															startDate.setTime(format.parse(dateOfBirth.trim()));
 															
 														} catch (Exception e) {}
-														
-														
 														endDate.setTime(new Date());
-			
 														int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
 														committeeVO.setAge(String.valueOf(diffYear));
 													}
@@ -13025,29 +13066,62 @@ return mandalList;
 												{
 													committeeVO.setAge(cadre[12] != null ? cadre[12].toString().trim():"0");
 												}
-												
+												*/
 												String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
 												committeeVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
 												
 												committeeVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
 												committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
-												committeeVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
-												committeeVO.setAddress(cadre[17] != null ? cadre[17].toString().trim():"");
+												String constiteuncyNo = cadre[35] != null ? cadre[35].toString()+"_":"";
+												String districtNo = cadre[26] != null ? cadre[26].toString()+"_":"";
+												committeeVO.setConstituency(cadre[11] != null ? constiteuncyNo+cadre[11].toString().trim():"");
+												committeeVO.setAddress(cadre[17] != null ? districtNo+cadre[17].toString().trim():"");
 												
-												cadreCommitteeList.add(committeeVO);
+												Long basicCommiteeID = cadre[29] != null ? Long.valueOf(cadre[29].toString()):0L;
+												String committeeName = committeeMap.get(basicCommiteeID);
+												String positionName =  cadre[30] != null ? cadre[30].toString():"";
+												Long LocationTypeId = cadre[31] != null ? Long.valueOf(cadre[31].toString()):0L;
+												Long locationValue = cadre[32] != null ? Long.valueOf(cadre[32].toString()):0L;
+												Long roleId = cadre[33] != null ? Long.valueOf(String.valueOf(cadre[33]).trim()):0L ;
 												
-												tdpCadreIdList.add(committeeVO.getTdpCadreId());
+													String location = null;
+													if(locationValue.longValue() > 0L){
+														//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
+														if(LocationTypeId.longValue() == 6L || LocationTypeId.longValue() == 8L || LocationTypeId.longValue() == 9L)
+														{
+															location = getLocationName(LocationTypeId,locationValue);
+															committeeVO.setCommitteeLocation(location);
+														}else
+														{
+															committeeVO.setCommitteeLocation("");
+														}
+														
+														committeeVO.setCommitteePosition(positionName);
+														if(committeeName != null)
+															committeeVO.setCommitteeName(committeeName);
+														committeeVO.setElectionType(cadre[34] != null ? cadre[34].toString():"");
+													    if(committeeVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
+													    {
+													    	committeeVO.setElectionType("Village/Ward ");
+													    }
+													    else if(committeeVO.getElectionType().trim().equalsIgnoreCase("Mandal"))
+													    {
+													    	committeeVO.setElectionType("Mandal/Division/Town");
+													    }
+													    committeeVO.setVoterId(roleId);
+												    }
+													cadreCommitteeList.add(committeeVO);
 											} 
 										}
 								 }
 							 }
 							 
-							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
+							/* if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
 								{
 									setCurrentDesignation(cadreCommitteeList,finalCadreIDsList);
 									setCurrentElectrolInfo(cadreCommitteeList,finalCadreIDsList);
 								}
-							 
+							 */
 						}	
 						
 						List<TdpCadreVO> positionsVOList = null;
@@ -13636,4 +13710,508 @@ return mandalList;
 		}
 		 return constiList;
 	 } 
+	
+	public List<TdpCadreVO> exprortExcelForInvitees(List<Long> publicRepresentativesIdList,List<Long> tdpCadresIdList,Map<Long,List<IdNameVO>> parliamentInfoMap ,Map<Long,List<IdNameVO>> assemblyInfoMap )
+	{
+		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>();
+		try {
+			List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
+			Map<Long,String> committeeMap = new LinkedHashMap<Long, String>();
+			Map<Long,String> panchayatMap = new LinkedHashMap<Long, String>();
+			Map<Long,String> wardMap = new LinkedHashMap<Long, String>();
+			
+
+			List<Object[]> panchayatList = boothDAO.getPanchaytsInfoByStateId(IConstants.VOTER_DATA_PUBLICATION_ID,1L);
+			if(panchayatList != null && panchayatList.size()>0)
+			{
+				for (Object[] committee : panchayatList) {
+					Long id = committee[0] != null ? Long.valueOf(committee[0].toString().trim()):0L;
+					String name = committee[1] != null ? committee[1].toString().trim():"";
+					if(name != null && !name.isEmpty())
+					{
+						panchayatMap.put(id, name);
+					}
+				}
+			}
+			
+			
+			List<Object[]> wardsList = constituencyDAO.getAllWardsForState(1L);
+			if(wardsList != null && wardsList.size()>0)
+			{
+				for (Object[] committee : wardsList) {
+					Long id = committee[0] != null ? Long.valueOf(committee[0].toString().trim()):0L;
+					String name = committee[1] != null ? committee[1].toString().trim():"";
+					if(name != null && !name.isEmpty())
+					{
+						wardMap.put(id, name);
+					}
+				}
+			}
+			
+			List<Object[]> basicCommitteList = tdpBasicCommitteeDAO.getBasicCommittees();
+			if(basicCommitteList != null && basicCommitteList.size()>0)
+			{
+				for (Object[] committee : basicCommitteList) {
+					Long id = committee[0] != null ? Long.valueOf(committee[0].toString().trim()):0L;
+					String name = committee[1] != null ? committee[1].toString().trim():"";
+					if(name != null && !name.isEmpty())
+					{
+						committeeMap.put(id, name);
+					}
+				}
+			}
+			
+			
+			if(tdpCadresIdList != null && tdpCadresIdList.size()>0)
+			{
+				List<Long> tdpCadreIds = new ArrayList<Long>();
+					System.out.println("Total Members : "+tdpCadresIdList.size());
+					LOG.info("Total Invitees for export excel report : "+tdpCadresIdList.size());
+					tdpCadreIds.addAll(tdpCadresIdList);
+					System.out.println(" start Time "+new Date());
+					 List<Object[]> tdpCadreIdDetails = tdpCadreDAO.getMobileNoByTdpCadreIdList(tdpCadreIds,0,0);						 
+					 System.out.println(" mid Time "+new Date());
+					 if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
+					 {								
+							if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
+							{
+								SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+								for (Object[] cadre : tdpCadreIdDetails) 
+								{
+									CadreCommitteeVO committeeVO = new CadreCommitteeVO();
+
+									committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+									/*if(cadre[4] != null){
+										if(cadre[4].toString().trim().length() > 8){
+											committeeVO.setMemberShipCardId(cadre[4].toString().trim().substring(cadre[4].toString().trim().length()-8));
+										}else{
+											committeeVO.setMemberShipCardId(cadre[4].toString());
+										}
+									}else{
+										committeeVO.setMemberShipCardId("");
+									}*/
+									//committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
+									committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
+									committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
+									committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
+									//committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
+									//committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+									committeeVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
+									committeeVO.setType("CadreCommittee");
+									/*if(cadre[9] != null)
+									{
+										committeeVO.setAge(cadre[9] != null ?cadre[9].toString().trim():"0");
+									}
+									else if((committeeVO.getAge() == null || committeeVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
+									{
+										String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+										if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+										{
+											Calendar startDate = new GregorianCalendar();
+											Calendar endDate = new GregorianCalendar();
+											try {
+												startDate.setTime(format.parse(dateOfBirth.trim()));
+												
+											} catch (Exception e) {}
+											endDate.setTime(new Date());
+											int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+											committeeVO.setAge(String.valueOf(diffYear));
+										}
+									}
+									
+									if(committeeVO.getAge() != null && committeeVO.getAge().toString().trim().length()==0)
+									{
+										committeeVO.setAge(cadre[12] != null ? cadre[12].toString().trim():"0");
+									}
+									*/
+									String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
+									committeeVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
+									
+									committeeVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
+									committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
+									String constiteuncyNo = cadre[35] != null ? cadre[35].toString()+"_":"";
+									String districtNo = cadre[26] != null ? cadre[26].toString()+"_":"";
+									committeeVO.setConstituency(cadre[11] != null ? constiteuncyNo+cadre[11].toString().trim():"");
+									committeeVO.setAddress(cadre[17] != null ? districtNo+cadre[17].toString().trim():"");
+									
+									Long basicCommiteeID = cadre[29] != null ? Long.valueOf(cadre[29].toString()):0L;
+									String committeeName = committeeMap.get(basicCommiteeID);
+									String positionName =  cadre[30] != null ? cadre[30].toString():"";
+									Long LocationTypeId = cadre[31] != null ? Long.valueOf(cadre[31].toString()):0L;
+									Long locationValue = cadre[32] != null ? Long.valueOf(cadre[32].toString()):0L;
+									Long roleId = cadre[33] != null ? Long.valueOf(String.valueOf(cadre[33]).trim()):0L ;
+									
+										String location = null;
+										if(locationValue.longValue() > 0L){
+											//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
+											//location = getLocationName(LocationTypeId,locationValue);
+											if(LocationTypeId.longValue() == 6L)
+											{
+												committeeVO.setCommitteeLocation(panchayatMap.get(locationValue)+" Panchayat");
+											}
+											else if(LocationTypeId.longValue() == 8L)
+											{
+												committeeVO.setCommitteeLocation(wardMap.get(locationValue));
+											}else
+											{
+												committeeVO.setCommitteeLocation("");
+											}
+											
+											committeeVO.setCommitteePosition(positionName);
+											if(committeeName != null)
+												committeeVO.setCommitteeName(committeeName);
+											committeeVO.setElectionType(cadre[34] != null ? cadre[34].toString():"");
+										    if(committeeVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
+										    {
+										    	committeeVO.setElectionType("Village/Ward ");
+										    }
+										    else if(committeeVO.getElectionType().trim().equalsIgnoreCase("Mandal"))
+										    {
+										    	committeeVO.setElectionType("Mandal/Division/Town");
+										    }
+										    committeeVO.setVoterId(roleId);
+									    }
+										cadreCommitteeList.add(committeeVO);
+								} 
+							}
+					 }
+				}	
+			
+			if(publicRepresentativesIdList != null && publicRepresentativesIdList.size()>0)
+			{
+				 List<Object[]> representativeDetails = publicRepresentativeDAO.getCandidateInfoByCandidateIds(publicRepresentativesIdList);
+					
+					if(representativeDetails != null && representativeDetails.size()>0)
+					{
+						for (Object[] cadre : representativeDetails) {
+								CadreCommitteeVO committeeVO = new CadreCommitteeVO();
+							
+								committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+								committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString().trim():"");
+								committeeVO.setMobileNo(cadre[2] != null ? cadre[2].toString().trim():"");
+								committeeVO.setGender(cadre[3] != null ? cadre[3].toString().trim():"");
+								committeeVO.setMobileType(cadre[4] != null ? cadre[4].toString():"");
+								
+								committeeVO.setType("PublicRepresentative");
+								Long levelValue = cadre[5] != null ? Long.valueOf(cadre[5].toString()):0L;
+								if(committeeVO.getMobileType() != null && committeeVO.getMobileType().equalsIgnoreCase("MP"))
+								{
+									List<IdNameVO> parliamentList = parliamentInfoMap.get(levelValue);
+									if(parliamentList != null && parliamentList.size()>0)
+									{
+										IdNameVO vo1 = parliamentList.get(0);
+										committeeVO.setConstituency(vo1.getName()+" Parliament");
+										
+										IdNameVO vo2 = parliamentList.get(1);
+										committeeVO.setAddress(vo2.getName());
+									}
+								}
+								else if(committeeVO.getMobileType() != null && committeeVO.getMobileType().equalsIgnoreCase("MLA"))
+								{
+									List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
+									if(assemblyList != null && assemblyList.size()>0)
+									{
+										IdNameVO vo1 = assemblyList.get(0);
+										committeeVO.setConstituency(vo1.getName()+" Assembly");
+										
+										IdNameVO vo2 = assemblyList.get(1);
+										committeeVO.setAddress(vo2.getName());
+									}
+								}
+								
+								cadreCommitteeList.add(committeeVO);
+						}
+					}
+			}
+			System.out.println(" end Time "+new Date());
+			String url = "";
+			if(cadreCommitteeList != null && cadreCommitteeList.size()>0)
+			{
+				url = generateExcelReport(cadreCommitteeList);
+				TdpCadreVO vo = new TdpCadreVO();
+				vo.setImageURL(url);
+				vo.setTotalCount(Long.valueOf(String.valueOf(tdpCadresIdList.size())));
+				returnList.add(vo);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in exprortExcelForInvitees",e);
+		}
+		
+		return returnList;
+	}
+	
+	public String generateExcelReport(List<CadreCommitteeVO> cadreCommitteeList)
+	{
+		String url = "";
+		try {
+			   
+			    
+			if(cadreCommitteeList  != null && cadreCommitteeList.size()>0)
+			{	
+				HSSFWorkbook workbook = new HSSFWorkbook();
+				HSSFSheet sheet = workbook.createSheet("INVITEE DETAILS");
+				HSSFRow rowhead = sheet.createRow((short) 1);
+				
+				
+				
+				HSSFFont font = workbook.createFont();
+			    font.setFontName("Calibri");
+			    font.setFontHeightInPoints((short)14);
+			    CellStyle style = workbook.createCellStyle();
+			    style.setFillForegroundColor(HSSFColor.YELLOW.index);
+			    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style.setAlignment(CellStyle.ALIGN_CENTER);
+			    style.setFont(font);
+			    
+			    //for data.
+			    HSSFFont font1 = workbook.createFont();
+			    font1.setFontName("Calibri");
+			    font1.setFontHeightInPoints((short)11);
+			    CellStyle style1 = workbook.createCellStyle();
+			    style1.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style1.setAlignment(CellStyle.ALIGN_CENTER);
+			    style1.setFont(font1);
+			   
+			    HSSFFont font2 = workbook.createFont();
+			    font2.setFontName("Calibri");
+			    font2.setFontHeightInPoints((short)11);
+			    CellStyle style2 = workbook.createCellStyle();
+			    style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style1.setFont(font2);
+			   
+			    
+			    HSSFCell cell = (HSSFCell) rowhead.createCell(1);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" S.NO ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(2);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" DISTRICT ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(3);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" CONSTITUENCY ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(4);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" MANDAL / MUNICIPALITY ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(5);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" CANDIDATE NAME ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(6);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" COMMITTEE - DESIGNATION ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(7);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" COMMITTEE LEVEL ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(8);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" MOBILE NO ");
+			    
+				int rowNum = 1;
+				int sno = 0;
+				for (CadreCommitteeVO cadreCommitteeVO : cadreCommitteeList) 
+				{
+					rowNum++;
+					sno++;
+				    Row dataRow = sheet.createRow(rowNum);
+
+				    cell = (HSSFCell) dataRow.createCell(1);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	cell.setCellStyle(style2);
+			    	cell.setCellValue(sno);
+			    	
+				    cell = (HSSFCell) dataRow.createCell(2);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getAddress() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getAddress());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+			    	
+			    	cell = (HSSFCell) dataRow.createCell(3);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getConstituency() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getConstituency());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(4);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getTehsil() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getTehsil());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(5);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getCadreName() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getCadreName());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(6);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getCommitteeName() != null && !cadreCommitteeVO.getCommitteeName().trim().isEmpty())
+					    {
+					    	cell.setCellStyle(style2);
+					    	 if(cadreCommitteeVO.getCommitteePosition() != null && !cadreCommitteeVO.getCommitteePosition().trim().isEmpty())
+							    {
+					    		 cell.setCellValue(cadreCommitteeVO.getCommitteeName()+" - "+cadreCommitteeVO.getCommitteePosition()+"");
+							    }
+					    }
+			    	 	else if(cadreCommitteeVO.getMobileType() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getMobileType());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(7);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getElectionType() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	String position = "";
+				    	 if(cadreCommitteeVO.getCommitteeLocation() != null && !cadreCommitteeVO.getCommitteeLocation().trim().isEmpty())
+						    {
+				    		 	position = cadreCommitteeVO.getCommitteeLocation()+" - ";
+						    }
+				    	cell.setCellValue(position+""+cadreCommitteeVO.getElectionType());
+				    }				   
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(8);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getMobileNo() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getMobileNo());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+				}
+				
+				 try {
+					 	Random randomNum = new Random();
+		    		   	//String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		    		   	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		    		   	Date date = new Date();
+		    		   	System.out.println(dateFormat.format(date));
+		    		   	url = "Invitees/"+dateFormat.format(date)+"_"+randomNum.nextInt(10000)+".xls";
+		    	        FileOutputStream out =  new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+""+url));
+		    	        workbook.write(out);
+		    	        out.close();
+		    	         
+		    	    } catch (FileNotFoundException e) {
+		    	        e.printStackTrace();
+		    	    } catch (IOException e) {
+		    	        e.printStackTrace();
+		    	    } 
+				 
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in generateExcelReport",e);
+		}
+		return url;
+	}
+	
+	public void setCurrentExcelDesignation(Map<Long,CadreCommitteeVO> cadreMap,List<Long> tdpCadreIdsList,List<CadreCommitteeVO> cadreCommitteeList){
+		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+		
+		if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+		{
+			for (Object[] tdpCadre : tdpCommitteeMemberList) 
+			{
+				Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+				String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+				String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+				Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+				Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+				Long roleId = tdpCadre[5] != null ? Long.valueOf(String.valueOf(tdpCadre[5]).trim()):0L ;
+				CadreCommitteeVO cadreVO = cadreMap.get(id);
+				if(cadreVO != null)
+				{
+					String location = null;
+					if(locationValue.longValue() > 0L){
+						//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
+						//location = getLocationName(LocationTypeId,locationValue);
+						//cadreVO.setCommitteeLocation(location);
+					    cadreVO.setCommitteePosition(positionName);
+					    cadreVO.setCommitteeName(committeeName);
+					    cadreVO.setElectionType(tdpCadre[6] != null ? tdpCadre[6].toString():"");
+					    if(cadreVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
+					    {
+					    	 cadreVO.setElectionType("Village/Ward ");
+					    }
+					    else if(cadreVO.getElectionType().trim().equalsIgnoreCase("Mandal"))
+					    {
+					    	 cadreVO.setElectionType("Mandal/Division/Town");
+					    }
+					    cadreVO.setVoterId(roleId);
+				    }
+					
+					cadreCommitteeList.add(cadreVO);
+			   }
+		    }
+			
+		}
+	}
 }
