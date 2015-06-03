@@ -200,7 +200,7 @@
 						<input type="radio" id="cadreCommitteeId" name="searchBy" checked="true" value="2" onclick="getDetails('cadreCommitteeId');"> Cadre Committee 
 					  </label>
 					  <label class="checkbox-inline">
-						<input type="radio" id="publicRepresentativesId" name="searchBy" value="1" onclick="getDetails('publicRepresentativesId');">  Public Repracentative
+						<input type="radio" id="publicRepresentativesId" name="searchBy" value="1" onclick="getDetails('publicRepresentativesId');">  Public Representative
 					  </label>
 					  <!-- <label class="checkbox-inline">
 						<input type="checkbox" id="groupId" value="3" onclick="getDetails('groupId');"> Existing Groups
@@ -383,7 +383,7 @@
 							</div>	
 							<div class="panel panel-default" id="">
 								<div class="panel-heading">
-									<button onclick="getMembersDetails(0,'none');" class="btn btn-success btn-xs"> Get Details </button>
+									<button onclick="getMembersDetails(0,'none','none');" class="btn btn-success btn-xs"> Get Details </button>
 								</div>
 							</div>
 						</div>
@@ -1484,9 +1484,9 @@
 	}
 	
 	var globalJsonArr = new Array();
-	function getMembersDetails(startIndex,actionText)
+	function getMembersDetails(startIndex,actionText,reportType)
 	{
-		$('#candidateDetailsDiv').show();
+		
 		isEntered=false;
 		var submitArr = new Array();
 		var committeeIdsArr = new Array();
@@ -1507,8 +1507,7 @@
 			}
 		}
 		
-		$('#summaryAjax').show();
-		$(".paginationDivId").hide();
+		
 		$('.checkedCls').each(function(){
 			if($(this).is(':checked'))
 			{	
@@ -1672,9 +1671,11 @@
 			};
 			submitArr.push(villageObj);
 		}
-		
+
+		//reportType:"EXPORTEXCEL";
 		var jsObj =
 		{
+			reportType:reportType,
 			searchType:"getDetails",
 			stateId:glstateId,
 			actionType:actionText,
@@ -1686,19 +1687,27 @@
 			maxIndex : 100					
 		};
 		var divId = 'buildSearchDetailsStateId';
-		$('#'+divId+'').html('');
-		if(startIndex == 0)
+		if(reportType == 'none')
 		{
-			$('#countDiv').html('');
-			$('#publicRepresentsId').html('');
-			$('#mandalMembersUl').html('');
-			$('#villageMembersUl').html('');
-			$('#stateMembersUl').html('');
-			$('#districtMembersUl').html('');
-		}
-			
+			$('#candidateDetailsDiv').show();
+			$('#summaryAjax').show();
+			$(".paginationDivId").hide();
 		
-		$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
+			$('#'+divId+'').html('');
+			if(startIndex == 0)
+			{
+				$('#countDiv').html('');
+				$('#publicRepresentsId').html('');
+				$('#mandalMembersUl').html('');
+				$('#villageMembersUl').html('');
+				$('#stateMembersUl').html('');
+				$('#districtMembersUl').html('');
+			}
+				
+			
+			$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
+		}
+		
 		$.ajax({
           type:'GET',
           url: 'getinviteesMembersDetailsAction.action',
@@ -1707,19 +1716,30 @@
 		   }).done(function(result){
 			   $('#summaryAjax').hide();
 			   isReturn = true;
-			   if(result != null && result.length>0 && result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
-			   {	
-					
-				if(actionText == 'none')
+			   if(result != null && result.length>0)
+			   {
+				if(reportType == 'EXPORTEXCEL')				   
 				{
-					buildSearchDetails(result[0].cadreComitteeVOList,result[0].cadreSearchList,divId,'',jsObj,result[0].totalCount,result);
+					window.open(result[0].imageURL);
 				}
-				else if(result != null && result.length>0 && result[0].responseCode == 0)
+				else
 				{
-					alert('Selected Members Invited Successfully...');
-					 $("#dialogueForInviteId").css('display','none');
-					 $("#inviteMembersDiv").dialog('close');
-				}
+					if(result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
+					{
+						
+						if(actionText == 'none')
+						{
+							buildSearchDetails(result[0].cadreComitteeVOList,result[0].cadreSearchList,divId,'',jsObj,result[0].totalCount,result);
+						}
+						else if(result != null && result.length>0 && result[0].responseCode == 0)
+						{
+							alert('Selected Members Invited Successfully...');
+							 $("#dialogueForInviteId").css('display','none');
+							 $("#inviteMembersDiv").dialog('close');
+						}
+						
+					}
+				}	
 			   }
 			else{
 				$('#'+divId+'').html('<span style="font-weight:bold;text-align:center;">No Data Available...</span>');
@@ -1752,7 +1772,7 @@
 				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{dispatchAddressDetails();}">Download Address Patches</a>';
 												
 				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{sendSmsForCandidtes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');}" style="margin-right: 10px;">Send SMS</a>';
-				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{exportConstituencyToExcel(\'searchTableId'+divId+'\',\''+locationLevel+'\');}" style="margin-right: 15px;"> Export Excel </a>';
+				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{getMembersDetails(0,\'none\',\'EXPORTEXCEL\');}" style="margin-right: 15px;"> Export Excel </a>';
 				
 				str+='</div>';
 				
@@ -1764,8 +1784,8 @@
 				str+='<th> CONSTITUENCY </th>';
 				str+='<th> MANDAL/MUNCIPALITY</th>';
 				str+='<th> CANDIDATE NAME	</th>';
-				str+='<th> COMMITTEE </th>';
-				str+='<th> DESIGNATION	</th>';
+				str+='<th> COMMITTEE - DESIGNATION </th>';
+				str+='<th> COMMITTEE LEVEL	</th>';
 				str+='<th> MOBILE NO </th>';
 				str+='</tr>';
 				str+='</thead>';
@@ -1783,14 +1803,30 @@
 							str+='<td style="text-align:center;"> - </td>';
 						
 						str+='<td> '+result[i].cadreName+' </td>';
-						if(result[i].committeeName != null)
-							str+='<td> '+result[i].committeeName+' ('+result[i].electionType+')</td>';
-						else 
-							str+='<td style="text-align:center;"> - </td>';
-						if(result[i].committeePosition != null)
-							str+='<td> '+result[i].committeePosition+'</td>';
+						if(result[i].committeeName != null && result[i].committeeName.trim().lenght>0){							
+							str+='<td> '+result[i].committeeName+' ('+result[i].committeePosition+')</td>';		
+						}	
 						else if(result[i].mobileType != null)
+						{
 							str+='<td> '+result[i].mobileType+'</td>';
+						}						
+						else //ElectionType
+						{
+							str+='<td style="text-align:center;"> - </td>';
+						}	
+
+						
+						if(result[i].electionType != null)
+						{
+							if(result[i].committeeLocation != null && result[i].committeeLocation.trim().length>0)
+							{
+								str+='<td> '+result[i].committeeLocation+' ('+result[i].electionType+')</td>';
+							}
+							else
+							{
+								str+='<td> '+result[i].electionType+'</td>';
+							}
+						}
 						else 
 							str+='<td style="text-align:center;"> - </td>';
 						
@@ -1811,7 +1847,7 @@
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
 				var num=(pageNumber-1)*100;
-				getMembersDetails(num,'none');
+				getMembersDetails(num,'none','none');
 				
 			}
 		});
@@ -2456,7 +2492,7 @@
 		  }
 		  else
 		  {
-			  getMembersDetails(0,'invite');
+			  getMembersDetails(0,'invite','none');
 		  }
 		  
 	  }
