@@ -2517,4 +2517,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 	
 
+	 public List<Object[]> getPanchaytsInfoByStateId(Long publicationId,Long stateId){
+	    	Object[] params={publicationId,stateId};
+	    	return getHibernateTemplate().find("select distinct model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.publicationDate.publicationDateId = ? and model.constituency.state.stateId = ? order by model.panchayat.panchayatName ",params);
+	    }
+	 	
 }

@@ -29,7 +29,7 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 	@SuppressWarnings("unchecked")
 	public List findByElectionTypeAndState(Long electionTypeId, Long stateId) {
 		Object[] params = {electionTypeId, stateId};
-		return getHibernateTemplate().find("select distinct model.localElectionBodyId, model.name from LocalElectionBody model where " +
+		return getHibernateTemplate().find("select distinct model.localElectionBodyId, model.name,model.electionType.electionType from LocalElectionBody model where " +
 				"model.electionType.electionTypeId = ? and model.district.state.stateId = ? order by model.name", params);
 	}
 

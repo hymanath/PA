@@ -4786,34 +4786,94 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 		}
 		
+		/*public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList,int firstRecord,int maxResult)
+		{
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			{
+				StringBuilder queryStr = new StringBuilder();
+				
+				queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
+				queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
+				queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
+				queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo ");
+				queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
+				queryStr.append(" left join model.userAddress.tehsil tehsil ");
+				queryStr.append(" left join model.userAddress.constituency constituency ");
+				queryStr.append(" left join model.userAddress.localElectionBody localElectionBody ");
+				queryStr.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+				queryStr.append(" left join model.userAddress.district district ");
+				queryStr.append(" left join model.occupation occupatn ");
+				queryStr.append(" left join model.voter voter ");
+				queryStr.append(" left join model.casteState.caste caste ");
+				queryStr.append(" left join model.familyVoter familyVoter ");
+				queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+				queryStr.append(" and model.tdpCadreId in (:tdpCadreIdsList)  ");
+				queryStr.append(" order by model.firstname ");
+				
+				Query query = getSession().createQuery(queryStr.toString());
+				query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+				if(firstRecord >= 0 && maxResult>0)
+				{
+					query.setFirstResult(firstRecord);
+					query.setMaxResults(maxResult);
+				}
+				
+				return query.list();
+			}
+			else
+			{
+				return null;
+			}
+		}*/
+		
 		public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList,int firstRecord,int maxResult)
 		{
-			StringBuilder queryStr = new StringBuilder();
-			
-			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
-			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
-			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
-			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo ");
-			queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
-			queryStr.append(" left join model.userAddress.tehsil tehsil ");
-			queryStr.append(" left join model.userAddress.constituency constituency ");
-			queryStr.append(" left join model.userAddress.localElectionBody localElectionBody ");
-			queryStr.append(" left join model.userAddress.localElectionBody.electionType electionType ");
-			queryStr.append(" left join model.userAddress.district district ");
-			queryStr.append(" left join model.occupation occupatn ");
-			queryStr.append(" left join model.voter voter ");
-			queryStr.append(" left join model.casteState.caste caste ");
-			queryStr.append(" left join model.familyVoter familyVoter ");
-			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
-			queryStr.append(" and model.tdpCadreId in (:tdpCadreIdsList)  ");
-			queryStr.append(" order by model.firstname ");
-			
-			Query query = getSession().createQuery(queryStr.toString());
-			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
-			query.setFirstResult(firstRecord);
-			query.setMaxResults(maxResult);
-			
-			return query.list();
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			{
+				StringBuilder queryStr = new StringBuilder();
+				
+				queryStr.append(" select distinct TC.tdp_cadre_id , TC.first_name ,TC.relative_name, TC.gender , TC.membership_id, TC.ref_no, TC.mobile_no, "+	
+						" TC.image ,TC.card_number, TC.age, date(TC.date_of_birth), C.name,V.age,O.occupation, T.tehsil_name,P.panchayat_name,LEB.name,"+	
+						" D.district_name,CA.caste_name,V.voter_id_card_no, ET.election_type, TC.house_no, C.constituency_id, T.tehsil_id, P.panchayat_id,"+	
+						"  LEB.local_election_body_id,  D.district_id, V.house_no,TC.cadre_aadher_no, TBC.tdp_basic_committee_id, TR.role , TDC.tdp_committee_level_id , "+	
+						" TDC.tdp_committee_level_value, TCR.tdp_committee_role_id ,TCL.tdp_committee_level ,DC.constituency_no "+	
+								
+						" 	from  "+	
+						" 	tdp_cadre TC  LEFT JOIN voter V on TC.voter_id = V.voter_id "+	
+						"   LEFT JOIN occupation O on TC.occupation_id = O.occupation_id"+	
+						" 	  LEFT JOIN  caste_state CS on TC.caste_state_id = CS.caste_state_id "+	
+					   " 	  LEFT JOIN caste CA on CS.caste_id = CA.caste_id "+	
+						" 			LEFT JOIN tdp_committee_member TCM on TCM.tdp_cadre_id = TC.tdp_cadre_id"+	
+						" 			LEFT JOIN tdp_committee_role TCR on TCM.tdp_committee_role_id = TCR.tdp_committee_role_id"+	
+						" 			LEFT JOIN tdp_roles TR on TCR.tdp_roles_id = TR.tdp_roles_id"+	
+						" 			LEFT JOIN tdp_committee TDC on TCR.tdp_committee_id = TDC.tdp_committee_id"+	
+											" 			LEFT JOIN tdp_basic_committee TBC on TDC.tdp_basic_committee_id = TBC.tdp_basic_committee_id"+	
+						" 		  LEFT JOIN tdp_committee_level TCL on TDC.tdp_committee_level_id = TCL.tdp_committee_level_id"+	
+						" 		  , user_address UA LEFT JOIN district D on UA.district_id = D.district_id "+	
+						" 		  LEFT JOIN constituency C on UA.constituency_id = C.constituency_id " +
+						"	LEFT JOIN delimitation_constituency DC on DC.constituency_id = C.constituency_id "+	
+						" 		  LEFT JOIN tehsil T  on UA.tehsil_id = T.tehsil_id"+	
+						" 		  LEFT JOIN panchayat P  on UA.panchayat_id = P.panchayat_id  "+	
+						" 		  LEFT JOIN local_election_body LEB  on UA.local_election_body = LEB.local_election_body_id "+	
+						" 			LEFT JOIN election_type ET on LEB.election_type_id = ET.election_type_id "+					 
+					" 	 where  "+
+					" 		TC.tdp_cadre_id in (:tdpCadreIdsList) and TC.is_deleted = 'N' and TC.enrollment_year = 2014 "+
+					" 		AND TC.address_id = UA.user_address_id and DC.year = 2009 order by  TC.first_name ");
+				
+				Query query = getSession().createSQLQuery(queryStr.toString());
+				query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+				if(firstRecord >= 0 && maxResult>0)
+				{
+					query.setFirstResult(firstRecord);
+					query.setMaxResults(maxResult);
+				}
+				
+				return query.list();
+			}
+			else
+			{
+				return null;
+			}
 		}
 		
 		public Long getRegisterCadreInfoForState(Long stateId,Long enrollmentYear){
