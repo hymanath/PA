@@ -734,7 +734,7 @@ function getFamilyDetails(tdpCadreId)
 					{
 					
 						str+=' <div class="col-md-2 col-xs-6">';
-						str+='<label class="control-label">Relation 111 <span class="mandatory"> * </span></label>';
+						str+='<label class="control-label">Relation  <span class="mandatory"> * </span></label>';
 						str+='<select id="" class="relation form-control" >';
 						str+='<option value="0" selected="selected">Select Relation</option>';
 						for(var k in relationsArr)
@@ -1052,7 +1052,7 @@ function addNewMemberInFamily(size)
 			str+='<input type="text" class="email form-control" /> ';
 			str+='</div>';
 			str+=' <div class="col-md-2 col-xs-6">';
-			str+='<label class="control-label">Relation 222 <span class="mandatory"> * </span> </label>';
+			str+='<label class="control-label">Relation  <span class="mandatory"> * </span> </label>';
 			
 			if(relationsArr != null && relationsArr.length>0)
 				{
