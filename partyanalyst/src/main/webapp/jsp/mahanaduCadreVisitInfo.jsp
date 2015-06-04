@@ -74,7 +74,7 @@
 	<div class="row">
     	<div class="col-md-12" style="margin-top:40px;">
         	<div class="panel panel-default box-shadow-css">
-            	<div class="panel-heading" style="background:#5c2d25;color:#ffffff;">
+            	<div class="panel-heading" style="background:#00B07D;color:#ffffff;">
         			<h3 class="text-center m_0">MAHANADU VISITORS INFO</h3>
                 </div>
 				<div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
@@ -95,11 +95,11 @@
     <div class="row">
     	<div class="col-md-8">
         	<div class="panel panel-default box-shadow-css">
-            	<div class="panel-heading back-white" style=" min-height:38px;">
+            	<div class="panel-heading " style=" min-height:38px; background:#CCCCCC">
                 <p class="m_0 display-style"><i class="glyphicon glyphicon-calendar reservation" style="color:#ccc; font-size:18px;display:none;"></i></p>
                 <div class="pull-left">
-                    <span style="font-size:12px; color:#ccc">Last Updated On:<span id="lasteUpdtOn"> </span></span>
-                    &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#46E7E4;cursor: pointer;"></i>
+                    <span style="font-size:14px; font-weight:bold; background:#CCCCCC;color:#6A6A6A;">Last Updated On:<span id="lasteUpdtOn"> </span></span>
+                    &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#00B07D;cursor: pointer;"></i>
                 </div>
                <!-- <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>-->
 				
@@ -122,7 +122,7 @@
         </div>
         <div class="col-md-4">
         	<div class="panel panel-default box-shadow-css" style="min-height: 220px;">
-            	<div class="panel-heading m_bottom10" style="background:#5c2d25;color:#ffffff;">
+            	<div class="panel-heading m_bottom10" style="background:#00B07D;color:#ffffff;">
                 	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY</span>
                 </div>
                 <div class="panel panel-body" style="padding:0px;">
@@ -132,7 +132,7 @@
 					</div>
             </div>
             <div class="panel panel-default box-shadow-css m_top10" style="min-height: 200px;">
-            	<div class="panel-heading" style="background:#5c2d25;color:#ffffff;">
+            	<div class="panel-heading" style="background:#00B07D;color:#ffffff;">
                 	<span  style='font-size:14px;font-weight:bold;'>DAY WISE VISIT SUMMARY</span>
                 </div>
 				<div class="panel-body" style="padding:0px;">
