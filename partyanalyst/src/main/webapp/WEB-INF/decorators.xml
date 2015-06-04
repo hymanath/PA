@@ -328,7 +328,6 @@
 			  <pattern>/currentBoothsStatus*</pattern>
 			   <pattern>/ivrCampaignUploadAction*</pattern> 
 			   <pattern>/cadreVoterSearchAction*</pattern>
-			   <pattern>/eventInvitees*</pattern>
 			   	<pattern>/cadredashBoardAction*</pattern>
 			<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 		 </decorator>
@@ -422,5 +421,6 @@
 		<pattern>/messageQueueManagementAction*</pattern>
 		<pattern>/mahanaduCadreVisitInfoAction*</pattern>
 		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
+		<pattern>/eventInvitees*</pattern>
 	 </decorator>
 </decorators>
