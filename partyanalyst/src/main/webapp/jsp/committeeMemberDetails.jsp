@@ -9,22 +9,22 @@
 	<title>Committee Member Details</title>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/css/normalize.css" rel="stylesheet" type="text/css">
-<link href="dist/css/cs-skin-slide.css" rel="stylesheet" type="text/css">
-<link href="dist/css/cs-select.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/normalize.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/cs-skin-slide.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/cs-select.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-<link href="dist/MultiSelect/css/component.css" rel="stylesheet" type="text/css">
-<link href="dist/css/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/MultiSelect/css/component.css" rel="stylesheet" type="text/css">
+<link href="dist/Invitees/css/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 
-<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="dist/js/classie.js" type="text/javascript"></script>
-<script src="dist/js/selectFx.js" type="text/javascript"></script>
-<script src="dist/MultiSelect/js/magicselection.js" type="text/javascript"></script>
-<script src="dist/MultiSelect/js/modernizr.custom.js" type="text/javascript"></script>
 
-<script src="dist/js/fm.scrollator.jquery.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/classie.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/selectFx.js" type="text/javascript"></script>
+<script src="dist/Invitees/MultiSelect/js/magicselection.js" type="text/javascript"></script>
+<script src="dist/Invitees/MultiSelect/js/modernizr.custom.js" type="text/javascript"></script>
+
+<script src="dist/Invitees/js/fm.scrollator.jquery.js" type="text/javascript"></script>
 
 	<!-- Bootstrap -->
 	 <!-- Custom Styles -->
@@ -37,9 +37,12 @@
     <script type="text/javascript" src="js/exportexcel.js"></script>
 
 
-<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="dist/Date/moment.min.js" type="text/javascript"></script>
-<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="dist/Invitees/Date/moment.min.js" type="text/javascript"></script>
+<script src="dist/Invitees/Date/daterangepicker.js" type="text/javascript"></script>
+
+<script src="dist/Invitees/js/bootstrap.min.js" type="text/javascript"></script>
+
 <style>
 *
 {
@@ -535,14 +538,14 @@
 		</div>
 		</div>
 
-<script src="dist/js/classie.js" type="text/javascript"></script>
-<script src="dist/js/selectFx.js" type="text/javascript"></script>
-<script src="dist/MultiSelect/js/magicselection.js" type="text/javascript"></script>
-<script src="dist/MultiSelect/js/modernizr.custom.js" type="text/javascript"></script>
-<script src="dist/js/fm.scrollator.jquery.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/classie.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/selectFx.js" type="text/javascript"></script>
+<script src="dist/Invitees/MultiSelect/js/magicselection.js" type="text/javascript"></script>
+<script src="dist/Invitees/MultiSelect/js/modernizr.custom.js" type="text/javascript"></script>
+<script src="dist/Invitees/js/fm.scrollator.jquery.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<script src="dist/Date/moment.min.js" type="text/javascript"></script>
+	<script src="dist/Invitees/Date/moment.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination_1.css"/>
