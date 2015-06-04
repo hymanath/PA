@@ -413,7 +413,7 @@
 								<div class="col-md-12 col-xs-12 col-md-12">
 								<center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
 								<div id="topPaginationDivId" class="paginationDivId" style="margin-top:10px;width:600px;margin-left:380px;"></div>
-								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 40px;"></div>	
+								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 40px; overflow:scroll;"></div>	
 								</div>
 								<div id="paginationDivId" class="paginationDivId" style="width:600px;margin-left:380px;"></div>
 							</div>
@@ -1782,8 +1782,10 @@
 				str+='<table class="table table-bordered " id="searchTableId'+divId+'" style="width: 1024px ! important; font-size: 11px; font-weight: bold;">';
 				str+='<thead>';
 				str+='<tr>';
-				str+='<th> <input type="checkbox" checked="true" value="" class="allContacts'+locationLevel+'Cls" onclick="checkallCheckBoxes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');"/> SELECT ALL </th>';
+				//str+='<th> <input type="checkbox" checked="true" value="" class="allContacts'+locationLevel+'Cls" onclick="checkallCheckBoxes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');"/> SELECT ALL </th>';
+				str+='<th> DISTRICT_NO </th>';
 				str+='<th> DISTRICT </th>';
+				str+='<th> CONSTITUENCY_NO </th>';
 				str+='<th> CONSTITUENCY </th>';
 				str+='<th> MANDAL/MUNCIPALITY</th>';
 				str+='<th> CANDIDATE NAME	</th>';
@@ -1797,16 +1799,21 @@
 				for(var i in result)
 				{											
 					str+='<tr>';
-						str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
-						str+='<td> '+result[i].address+' </td>';
-						str+='<td> '+result[i].constituency+' </td>';
+						//str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
+						var disres = result[i].address.split("_");
+						str+='<td style="text-align:center;"> '+disres[0]+' </td>';
+						str+='<td> '+disres[1]+' </td>';
+						//str+='<td> '+result[i].address+' </td>';
+						var res = result[i].constituency.split("_");
+						str+='<td style="text-align:center;"> '+res[0]+' </td>';
+						str+='<td> '+res[1]+' </td>';
 						if(result[i].tehsil != null)
 							str+='<td> '+result[i].tehsil+' </td>';
 						else
 							str+='<td style="text-align:center;"> - </td>';
 						
 						str+='<td> '+result[i].cadreName+' </td>';
-						if(result[i].committeeName != null && result[i].committeeName.trim().lenght>0){							
+						if(result[i].committeeName != null){							
 							str+='<td> '+result[i].committeeName+' ('+result[i].committeePosition+')</td>';		
 						}	
 						else if(result[i].mobileType != null)
