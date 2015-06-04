@@ -13831,8 +13831,10 @@ return mandalList;
 									committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
 									String constiteuncyNo = cadre[35] != null ? cadre[35].toString()+"_":"";
 									String districtNo = cadre[26] != null ? cadre[26].toString()+"_":"";
-									committeeVO.setConstituency(cadre[11] != null ? constiteuncyNo+cadre[11].toString().trim():"");
-									committeeVO.setAddress(cadre[17] != null ? districtNo+cadre[17].toString().trim():"");
+									committeeVO.setDistrictNo(cadre[26] != null ? cadre[26].toString().trim():"");
+									committeeVO.setConstiteuncyNo(cadre[35] != null ? cadre[35].toString().trim():"");
+									committeeVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
+									committeeVO.setAddress(cadre[17] != null ? cadre[17].toString().trim():"");
 									
 									Long basicCommiteeID = cadre[29] != null ? Long.valueOf(cadre[29].toString()):0L;
 									String committeeName = committeeMap.get(basicCommiteeID);
@@ -13999,34 +14001,44 @@ return mandalList;
 			    cell = (HSSFCell) rowhead.createCell(2);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" DISTRICT ");
+			    cell.setCellValue(" DISTRICT_NO ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(3);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" CONSTITUENCY ");
+			    cell.setCellValue(" DISTRICT ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(4);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" MANDAL / MUNICIPALITY ");
+			    cell.setCellValue(" CONSTITUENCY_NO ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(5);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" CANDIDATE NAME ");
+			    cell.setCellValue(" CONSTITUENCY ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(6);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" COMMITTEE - DESIGNATION ");
+			    cell.setCellValue(" MANDAL / MUNICIPALITY ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(7);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
-			    cell.setCellValue(" COMMITTEE LEVEL ");
+			    cell.setCellValue(" CANDIDATE NAME ");
 			    
 			    cell = (HSSFCell) rowhead.createCell(8);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" COMMITTEE - DESIGNATION ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(9);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" COMMITTEE LEVEL ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(10);
 			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 		    	cell.setCellStyle(style);
 			    cell.setCellValue(" MOBILE NO ");
@@ -14044,7 +14056,20 @@ return mandalList;
 			    	cell.setCellStyle(style2);
 			    	cell.setCellValue(sno);
 			    	
-				    cell = (HSSFCell) dataRow.createCell(2);
+			    	cell = (HSSFCell) dataRow.createCell(2);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getDistrictNo() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getDistrictNo());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+				    
+				    cell = (HSSFCell) dataRow.createCell(3);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 				    if(cadreCommitteeVO.getAddress() != null )
 				    {
@@ -14057,7 +14082,20 @@ return mandalList;
 				    	cell.setCellValue(" - ");
 				    }
 			    	
-			    	cell = (HSSFCell) dataRow.createCell(3);
+				    cell = (HSSFCell) dataRow.createCell(4);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getConstiteuncyNo() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getConstiteuncyNo());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(5);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 			    	 if(cadreCommitteeVO.getConstituency() != null )
 					    {
@@ -14070,7 +14108,7 @@ return mandalList;
 					    	cell.setCellValue(" - ");
 					    }
 			    	 
-			    	cell = (HSSFCell) dataRow.createCell(4);
+			    	cell = (HSSFCell) dataRow.createCell(6);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 			    	 if(cadreCommitteeVO.getTehsil() != null )
 					    {
@@ -14083,7 +14121,7 @@ return mandalList;
 					    	cell.setCellValue(" - ");
 					    }
 			    	 
-			    	cell = (HSSFCell) dataRow.createCell(5);
+			    	cell = (HSSFCell) dataRow.createCell(7);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 			    	 if(cadreCommitteeVO.getCadreName() != null )
 					    {
@@ -14096,15 +14134,12 @@ return mandalList;
 					    	cell.setCellValue(" - ");
 					    }
 			    	 
-			    	cell = (HSSFCell) dataRow.createCell(6);
+			    	cell = (HSSFCell) dataRow.createCell(8);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 			    	 if(cadreCommitteeVO.getCommitteeName() != null && !cadreCommitteeVO.getCommitteeName().trim().isEmpty())
 					    {
 					    	cell.setCellStyle(style2);
-					    	 if(cadreCommitteeVO.getCommitteePosition() != null && !cadreCommitteeVO.getCommitteePosition().trim().isEmpty())
-							    {
-					    		 cell.setCellValue(cadreCommitteeVO.getCommitteeName()+" - "+cadreCommitteeVO.getCommitteePosition()+"");
-							    }
+					    	cell.setCellValue(cadreCommitteeVO.getCommitteeName()+" - "+cadreCommitteeVO.getCommitteePosition()+"");
 					    }
 			    	 	else if(cadreCommitteeVO.getMobileType() != null )
 					    {
@@ -14117,7 +14152,7 @@ return mandalList;
 					    	cell.setCellValue(" - ");
 					    }
 			    	 
-			    	cell = (HSSFCell) dataRow.createCell(7);
+			    	cell = (HSSFCell) dataRow.createCell(9);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 				    if(cadreCommitteeVO.getElectionType() != null )
 				    {
@@ -14135,7 +14170,7 @@ return mandalList;
 					    	cell.setCellValue(" - ");
 					    }
 			    	 
-			    	cell = (HSSFCell) dataRow.createCell(8);
+			    	cell = (HSSFCell) dataRow.createCell(10);
 				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
 			    	 if(cadreCommitteeVO.getMobileNo() != null )
 					    {
