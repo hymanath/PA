@@ -32,6 +32,8 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String panchayat;
 	private String address;
 	private String familyVoterCardNo;
+	private String constiteuncyNo;
+	private String districtNo;
 	
 	private String fromDate;
 	private String toDate;
@@ -385,6 +387,18 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setPreEnrollNo(String preEnrollNo) {
 		this.preEnrollNo = preEnrollNo;
+	}
+	public String getConstiteuncyNo() {
+		return constiteuncyNo;
+	}
+	public void setConstiteuncyNo(String constiteuncyNo) {
+		this.constiteuncyNo = constiteuncyNo;
+	}
+	public String getDistrictNo() {
+		return districtNo;
+	}
+	public void setDistrictNo(String districtNo) {
+		this.districtNo = districtNo;
 	}
 	
 }
