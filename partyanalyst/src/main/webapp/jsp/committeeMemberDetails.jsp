@@ -1078,6 +1078,16 @@
 			var selCommiteeArr = new Array();
 			function addCommitteeDivs(className,memberType)
 			{
+				
+				$('#candidateDetailsDiv').hide();
+				$('.paginationDivId').html('');
+				$('#buildSearchDetailsStateId').html('');
+				$('#publicRepresentsId').html('');
+				$('#districtMembersUl').html('');
+				$('#mandalMembersUl').html('');
+				$('#stateMembersUl').html('');
+				$('#villageMembersUl').html('');
+				
 				var levelId = $(".stateName").attr('value');
 				var committeeLevl = '';
 				var locationLevel = 'State Level';
@@ -2074,6 +2084,14 @@
 	var isReturn = true;
 	function deleteCommite(removeDivId,type)
 	{
+		$('#candidateDetailsDiv').hide();
+		$('.paginationDivId').html('');
+		$('#buildSearchDetailsStateId').html('');
+		$('#publicRepresentsId').html('');
+		$('#districtMembersUl').html('');
+		$('#mandalMembersUl').html('');
+		$('#stateMembersUl').html('');
+		$('#villageMembersUl').html('');
 		$('#'+removeDivId+'').html('');
 		$('#'+removeDivId+'').remove();
 		
