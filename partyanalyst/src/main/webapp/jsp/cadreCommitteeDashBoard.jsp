@@ -6727,52 +6727,69 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 			}
 			else
 			{
-		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+');">view</button></td>';
+		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');">view</button></td>';
 			}
-         str+='<tr>';
+         //str+='<tr>';
+		 str+='<tr id="'+result[i].id+'resultTrId" class="dtlsTR" style="display:none">';
+		 str+='<td colspan="4" id="'+result[i].id+'resultDiv" class="buildDivDtals"></td>';
+		 str+='</tr>'
 			
 		}
 	 $("#CommitteeDetails").html(str);           
 	}
-	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status,constituencyId)
-	{
 	
-	$("#committeeMemberDiv").html('');
-	$("#conformedBtn").html('');
-	$("#comitteeMemberAjax").show();
-	var jsObj = 
+	var isWorking = false;
+	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status,constituencyId,ajaxImgId,index)
 	{
-		basicCommitteetypeId:basicCommitteetypeId,
-		levelId:levelId,
-		locationId:locationId,
-		status:status,
-		task:"memberInfo"
-	}
-	$.ajax({
-          type:'GET',
-          url: 'getCommitteeDetailsByStatusPopUpAction.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){
-		  $("#comitteeMemberAjax").hide();
-				if(typeof result == "string"){
-					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-					  location.reload(); 
-					}
-				}
-			  
-			  if(result != null && result.length > 0){
-				  buildCommitteeMemberDetails(result,jsObj,constituencyId);
-				
+		if(!isWorking)
+		{
+			isWorking=true;
+			$(".dtlsTR").hide();			
+			$("#"+locationId+"resultTrId").show();
+			$("#"+locationId+"resultDiv").html('<img id="ajaxImgStyle'+index+'"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
+			
+			$("#committeeMemberDiv").html('');
+			$("#conformedBtn").html('');
+			$("#"+ajaxImgId+"").show();
+			var jsObj = 
+			{
+				basicCommitteetypeId:basicCommitteetypeId,
+				levelId:levelId,
+				locationId:locationId,
+				status:status,
+				task:"memberInfo"
 			}
-	   });
+			$.ajax({
+				  type:'GET',
+				  url: 'getCommitteeDetailsByStatusPopUpAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)},
+				  }).done(function(result){
+				$("#"+ajaxImgId+"").show();
+				  isWorking=false;
+						if(typeof result == "string"){
+							if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+							  location.reload(); 
+							}
+						}
+					  
+					  if(result != null && result.length > 0){
+						  buildCommitteeMemberDetails(result,jsObj,constituencyId,locationId);
+						
+					}
+			   });
+		}
+	
 	}
 
 	
+	function removeDtlsDiv(divId)
+	{
+		$('#'+divId+'').hide();
+	}
 	
 	
-	
-	function buildCommitteeMemberDetails(result,jsObj,constituencyId)
+	function buildCommitteeMemberDetails(result,jsObj,constituencyId,locationId)
 	{
 		var str='';
 		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000000;">';
@@ -6780,6 +6797,7 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
         str+='<th colspan="4" class="text-uppercase">'+result[0].locationName+'  <b>'+result[0].committe+'  COMMITTEE</b></th>';
         str+='</thead>';
         str+='<tbody>';
+		str+='<i class="glyphicon glyphicon-remove" style="cursor:pointer;" id="closeCommitteeMemberDetailsId" onclick="removeDtlsDiv(\''+locationId+'resultTrId\');"></i>';
 		for(var i in result)
 		{
 
@@ -6799,7 +6817,9 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		}
 		str+='</tbody>';
 		str+='</table>';
-		$("#committeeMemberDiv").html(str);
+		//$("#committeeMemberDiv").html(str);
+		//$("#"+locationId+"resultTrId").show();
+		$("#"+locationId+"resultDiv").html(str);
 		if(result[0].status != "Y")
 		{
 			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
@@ -6891,6 +6911,11 @@ str += '<td style="text-align:center" >'+(mandTotal * 20 )+'</td>';		//999
 		$("#conformedBtn").hide();
 
 	}	
+	 function removeTrDiv()
+	 {
+		 $(".detailsCls").html('');
+		 $("#committeeMemberDiv").hide();
+	 }
 	/* Script For Summary POpUP  */
 	
 
