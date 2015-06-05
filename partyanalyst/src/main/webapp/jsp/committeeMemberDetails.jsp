@@ -1049,19 +1049,6 @@
 				  });
   
 				//$('.locationsCls').hide();
-				$("#checkAll").click(function()
-				{
-					if($(this).is(":checked"))
-					{
-						$(".roleCheck").prop('checked', true);
-						$("#checkText").html("UnSelect All");
-							addCommitteeDivs('roleCheck','CadreMembers');
-					}
-					else{
-						$(".roleCheck").prop('checked', false);
-						$("#checkText").html("Select All");
-					}
-				});
 				
 				$("#checkPRAll").click(function()
 				{
@@ -1727,6 +1714,7 @@
 				}
 				else
 				{
+					
 					if(result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
 					{
 						
@@ -1742,6 +1730,9 @@
 						}
 						
 					}
+					else{
+				$('#'+divId+'').html('<span style="font-weight:bold;text-align:center;">No Data Available...</span>');
+			}
 				}	
 			   }
 			else{
@@ -2520,7 +2511,19 @@
 			$("#"+divId+"").html(str);*/
 	  }
 	  
-	 
+	 $('#checkAll').click(function()
+		{
+			if($(this).is(":checked"))
+			{
+				$(".roleCheck").prop('checked', true);
+				$("#checkText").html("UnSelect All");
+					addCommitteeDivs('roleCheck','CadreMembers');
+			}
+			else{
+				$(".roleCheck").prop('checked', false);
+				$("#checkText").html("Select All");
+			}
+		});
 </script>
 <script>
 getDistricts();
