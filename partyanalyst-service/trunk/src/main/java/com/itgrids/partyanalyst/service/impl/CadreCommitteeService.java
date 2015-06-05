@@ -12126,7 +12126,7 @@ return mandalList;
 				 
 				for (InviteesVO inviteeVO : inviteesVOList) 
 				{
-					List<Long> disstrictIds = new ArrayList<Long>();
+					 List<Long> disstrictIds = new ArrayList<Long>();
 					 List<Long> locationValuesList = new ArrayList<Long>();
 					 List<Long> locationLevelIdsList = new ArrayList<Long>();
 					 
@@ -12646,92 +12646,96 @@ return mandalList;
 						 if(mandalList != null && mandalList.size()>0)
 						 {
 							 for (InviteesVO inviteesVO : mandalList) {
-								 disstrictIds.clear();
-								 if(inviteesVO.getLevelId() != null && inviteesVO.getLevelId().longValue() ==5L)//mandal level
+								 if(!inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))
 								 {
-									 locationLevelIdsList.clear();
-									 locationValuesList.clear();
-									// locationValuesList.add(inviteesVO.getLevelValue().longValue());
-									 
-									 locationLevelIdsList.add(5L);
-									 locationLevelIdsList.add(7L);
-									 locationLevelIdsList.add(9L);
-									 
-									 if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
-									 {										
-										 locationValuesList.add(inviteesVO.getMandalId());
-									 }
-									 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
+									 disstrictIds.clear();
+									 if(inviteesVO.getLevelId() != null && inviteesVO.getLevelId().longValue() ==5L)//mandal level
 									 {
-										 List<Object[]> tehsilIds = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(inviteesVO.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID);
-										 if(tehsilIds != null && tehsilIds.size()>0)
-										 {
-											 for (Object[] tehsil : tehsilIds) {
-												 locationValuesList.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);
-											}
+										 locationLevelIdsList.clear();
+										 locationValuesList.clear();
+										// locationValuesList.add(inviteesVO.getLevelValue().longValue());
+										 
+										 locationLevelIdsList.add(5L);
+										 locationLevelIdsList.add(7L);
+										 locationLevelIdsList.add(9L);
+										 
+										 if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
+										 {										
+											 locationValuesList.add(inviteesVO.getMandalId());
 										 }
-									 }
-									 else if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() ==0L) // district not selected
-									 {
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+										 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
 										 {
-											 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 List<Object[]> tehsilIds = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(inviteesVO.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID);
+											 if(tehsilIds != null && tehsilIds.size()>0)
+											 {
+												 for (Object[] tehsil : tehsilIds) {
+													 locationValuesList.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);
+												}
+											 }
 										 }
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+										 else if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() ==0L) // district not selected
 										 {
-											 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+											 {
+												 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 }
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+											 {
+												 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
+												 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 }
 										 }
-									 }
-									 else  if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() != 0L) // district selected
-									 {
-										 disstrictIds.add(inviteesVO.getDistrictId());
-									 }
-									
-									 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 
-									 if(tdpCadresList != null && tdpCadresList.size()>0)
-									 {
-										 Long count = 0L;
-										 for (Object[] cadre : tdpCadresList) {
-											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
-											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
-											tdpCadreIdsList.add(cadreId);
-											
-											 if(startIndex == 0)
-												{
-													 if(compareCadreIds != null && compareCadreIds.size()>0)
-													 {
-														 //for (Long candidateId : compareCadreIds) 
-														// {
-															if(!compareCadreIds.contains(cadreId))
-															{
-																if(mandalPositonsCountMap.get(positiion) != null)
+										 else  if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() != 0L) // district selected
+										 {
+											 disstrictIds.add(inviteesVO.getDistrictId());
+										 }
+										
+										 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+										 
+										 if(tdpCadresList != null && tdpCadresList.size()>0)
+										 {
+											 Long count = 0L;
+											 for (Object[] cadre : tdpCadresList) {
+												Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+												String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+												tdpCadreIdsList.add(cadreId);
+												
+												 if(startIndex == 0)
+													{
+														 if(compareCadreIds != null && compareCadreIds.size()>0)
+														 {
+															 //for (Long candidateId : compareCadreIds) 
+															// {
+																if(!compareCadreIds.contains(cadreId))
+																{
+																	if(mandalPositonsCountMap.get(positiion) != null)
+																	{
+																		count = mandalPositonsCountMap.get(positiion);
+																	}
+																	count = count+1;
+																	mandalPositonsCountMap.put(positiion,count);
+																}
+															// }
+														 }
+														 else
+														 {
+															 if(mandalPositonsCountMap.get(positiion) != null)
 																{
 																	count = mandalPositonsCountMap.get(positiion);
 																}
 																count = count+1;
 																mandalPositonsCountMap.put(positiion,count);
-															}
-														// }
-													 }
-													 else
-													 {
-														 if(mandalPositonsCountMap.get(positiion) != null)
-															{
-																count = mandalPositonsCountMap.get(positiion);
-															}
-															count = count+1;
-															mandalPositonsCountMap.put(positiion,count);
-														
 															
-													 }
-												}
-										 }
-										 
-										 compareCadreIds.addAll(tdpCadreIdsList);
-										 
-									}
+																
+														 }
+													}
+											 }
+											 
+											 compareCadreIds.addAll(tdpCadreIdsList);
+											 
+										}
+									 }
+								
 								 }
 							}
 						 }
@@ -12744,96 +12748,100 @@ return mandalList;
 						 if(villageVOList != null && villageVOList.size()>0)
 						 {
 							 for (InviteesVO inviteesVO : villageVOList) 
-							 {						
-								 disstrictIds.clear();
-								 if(inviteesVO.getLevelId() != null && inviteesVO.getLevelId().longValue() ==6L)//village/ward level
+							 {
+								 if(!inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))
 								 {
-									 locationLevelIdsList.clear();
-									 locationValuesList.clear();
-									// locationValuesList.add(inviteesVO.getLevelValue().longValue());
-									 locationLevelIdsList.add(6L);
-									 locationLevelIdsList.add(8L);
-									 if(inviteesVO.getPanchayatId() != null && inviteesVO.getPanchayatId().longValue() != 0L) // mandal/muncipality selected
+
+									 disstrictIds.clear();
+									 if(inviteesVO.getLevelId() != null && inviteesVO.getLevelId().longValue() ==6L)//village/ward level
 									 {
-										 locationValuesList.add(inviteeVO.getPanchayatId());
-									 }
-									 else if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
-									 {
-										 List<Long> tehsilIds = new ArrayList<Long>();
-										 tehsilIds.add(Long.valueOf(inviteesVO.getMandalId().toString().substring(1)));									 
-										 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
-										 if(panchayatLsit != null && panchayatLsit.size()>0)
+										 locationLevelIdsList.clear();
+										 locationValuesList.clear();
+										// locationValuesList.add(inviteesVO.getLevelValue().longValue());
+										 locationLevelIdsList.add(6L);
+										 locationLevelIdsList.add(8L);
+										 if(inviteesVO.getPanchayatId() != null && inviteesVO.getPanchayatId().longValue() != 0L) // mandal/muncipality selected
 										 {
-											 for (Object[] panchayat : panchayatLsit) {
-												 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
-											}
+											 locationValuesList.add(inviteeVO.getPanchayatId());
 										 }
-									 }
-									 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
-									 {
-										 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatsByConstituencyId(inviteesVO.getConstituencyId());
-										 if(panchayatLsit != null && panchayatLsit.size()>0)
+										 else if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
 										 {
-											 for (Object[] panchayat : panchayatLsit) {
-												 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
-											}
+											 List<Long> tehsilIds = new ArrayList<Long>();
+											 tehsilIds.add(Long.valueOf(inviteesVO.getMandalId().toString().substring(1)));									 
+											 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
+											 if(panchayatLsit != null && panchayatLsit.size()>0)
+											 {
+												 for (Object[] panchayat : panchayatLsit) {
+													 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
+												}
+											 }
 										 }
-									 }
-									 else if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() == 0L) // district not selected
-									 {
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+										 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
 										 {
-											 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatsByConstituencyId(inviteesVO.getConstituencyId());
+											 if(panchayatLsit != null && panchayatLsit.size()>0)
+											 {
+												 for (Object[] panchayat : panchayatLsit) {
+													 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
+												}
+											 }
 										 }
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+										 else if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() == 0L) // district not selected
 										 {
-											 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+											 {
+												 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 }
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+											 {
+												 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
+												 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 }
 										 }
-									 }
-									 else  if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() != 0L) // district selected
-									 {
-										 disstrictIds.add(inviteesVO.getDistrictId());
-									 }
-									 
-									 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 if(tdpCadresList != null && tdpCadresList.size()>0)
-									 {
-										 Long count = 0L;
-										 for (Object[] cadre : tdpCadresList) {
-											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
-											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
-											tdpCadreIdsList.add(cadreId);
-											
-											 if(startIndex == 0)
-												{
-													 if(compareCadreIds != null && compareCadreIds.size()>0)
-													 {
-														// for (Long candidateId : compareCadreIds) 
-														// {
-															if(!compareCadreIds.contains(cadreId))
-															{
-																if(villagePositonsCountMap.get(positiion) != null)
+										 else  if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() != 0L) // district selected
+										 {
+											 disstrictIds.add(inviteesVO.getDistrictId());
+										 }
+										 
+										 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+										 if(tdpCadresList != null && tdpCadresList.size()>0)
+										 {
+											 Long count = 0L;
+											 for (Object[] cadre : tdpCadresList) {
+												Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+												String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+												tdpCadreIdsList.add(cadreId);
+												
+												 if(startIndex == 0)
+													{
+														 if(compareCadreIds != null && compareCadreIds.size()>0)
+														 {
+															// for (Long candidateId : compareCadreIds) 
+															// {
+																if(!compareCadreIds.contains(cadreId))
+																{
+																	if(villagePositonsCountMap.get(positiion) != null)
+																	{
+																		count = villagePositonsCountMap.get(positiion);
+																	}
+																	count = count+1;
+																	villagePositonsCountMap.put(positiion,count);
+																}
+															// }
+														 }
+														 else
+														 {
+															 if(villagePositonsCountMap.get(positiion) != null)
 																{
 																	count = villagePositonsCountMap.get(positiion);
 																}
 																count = count+1;
 																villagePositonsCountMap.put(positiion,count);
-															}
-														// }
-													 }
-													 else
-													 {
-														 if(villagePositonsCountMap.get(positiion) != null)
-															{
-																count = villagePositonsCountMap.get(positiion);
-															}
-															count = count+1;
-															villagePositonsCountMap.put(positiion,count);
-													 }
-												}
+														 }
+													}
+											 }
+											 compareCadreIds.addAll(tdpCadreIdsList);
 										 }
-										 compareCadreIds.addAll(tdpCadreIdsList);
 									 }
 								 }
 							 }								
