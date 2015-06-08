@@ -29,7 +29,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(inviteeType.equalsIgnoreCase("attendee"))
 			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
 		if(inviteeType.equalsIgnoreCase("invitee"))
-			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
+			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
 		
 		str.append(" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime)");
 		str.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
@@ -70,7 +70,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(inviteeType.equalsIgnoreCase("attendee"))
 			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
 		if(inviteeType.equalsIgnoreCase("invitee"))
-			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
+			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y'  and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
 		
 		str.append(" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime)  and model.event.isActive =:isActive ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
@@ -92,7 +92,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		if(inviteeType.equalsIgnoreCase("attendee"))
 			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
 		else if(inviteeType.equalsIgnoreCase("invitee"))
-			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
+			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y'  and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and ");	
 		
 		str.append(" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and ");
 		if(stateId == 1)
