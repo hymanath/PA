@@ -1050,20 +1050,6 @@
   
 				//$('.locationsCls').hide();
 				
-				$("#checkPRAll").click(function()
-				{
-					
-					if($(this).is(":checked"))
-					{
-						$(".rolePRCheck").prop('checked', true);
-						$("#checkText").html("UnSelect All");
-							addCommitteeDivs('rolePRCheck','publicRepresentatives');
-					}
-					else{
-						$(".rolePRCheck").prop('checked', false);
-						$("#checkText").html("Select All");
-					}
-				});
 		});
 		
 		$(document).on('click', function (e) {
@@ -1806,7 +1792,14 @@
 						str+='<td> '+disres[1]+' </td>';
 						//str+='<td> '+result[i].address+' </td>';
 						var res = result[i].constituency.split("_");
-						str+='<td style="text-align:center;"> '+res[0]+' </td>';
+						if(res[0] == "0")
+						{
+							str+='<td style="text-align:center;"> - </td>';
+						}
+						else
+						{
+							str+='<td style="text-align:center;"> '+res[0]+' </td>';
+						}
 						str+='<td> '+res[1]+' </td>';
 						if(result[i].tehsil != null)
 							str+='<td> '+result[i].tehsil+' </td>';
@@ -2542,6 +2535,21 @@
 				$("#checkText").html("Select All");
 			}
 		});
+		
+		$("#checkPRAll").click(function()
+				{
+					
+					if($(this).is(":checked"))
+					{
+						$(".rolePRCheck").prop('checked', true);
+						$("#checkText").html("UnSelect All");
+							addCommitteeDivs('rolePRCheck','publicRepresentatives');
+					}
+					else{
+						$(".rolePRCheck").prop('checked', false);
+						$("#checkText").html("Select All");
+					}
+				});
 </script>
 <script>
 getDistricts();
