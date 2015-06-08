@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class IdNameVO implements Serializable{
 	private Long id;
 	private String name;
+	private Long districtid; 
 	
 	public IdNameVO(){}
 	
@@ -25,6 +26,15 @@ public class IdNameVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Long getDistrictid() {
+		return districtid;
+	}
+
+	public void setDistrictid(Long districtid) {
+		this.districtid = districtid;
+	}
+	
 	
 	
 }
