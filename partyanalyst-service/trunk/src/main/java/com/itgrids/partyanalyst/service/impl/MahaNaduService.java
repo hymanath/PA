@@ -1096,6 +1096,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 }
 				 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 				 eventInfoDAO.save(eventInfo);
+				
 				 }
 				 else
 				 {
@@ -1112,9 +1113,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 }
 				 if(!locationValues.contains((Long)params[2]))
 					 locationValues.add((Long)params[2]); 
-				
+				 voterDAO.flushAndclearSession();
 			 }
-			 voterDAO.flushAndclearSession();
+			
 				 List<Object[]>  districts = eventInfoDAO.getDistricts(locationValues,reportLevelId) ;
 				 Map<Long,List<Long>> stateMap = new HashMap<Long,List<Long>>();
 				 if(districts != null && districts.size() > 0)
@@ -1221,9 +1222,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
 					 eventInfoDAO.save(eventInfo);
 				 }
-				 
+				 voterDAO.flushAndclearSession(); 
 			 }
-			 voterDAO.flushAndclearSession();
+			// voterDAO.flushAndclearSession();
 				
 		 }
 	 }
