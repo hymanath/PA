@@ -106,7 +106,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year)
 	{
 		Object[] params = {districtId, year};
-		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name,model.constituency.district.districtName from DelimitationConstituencyAssemblyDetails model " +
+		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name,model.constituency.district.districtName,model.constituency.district.districtId from DelimitationConstituencyAssemblyDetails model " +
 				"where model.constituency.district.districtId = ? and model.delimitationConstituency.year = ?  order by model.delimitationConstituency.constituency.name "  ,params);
 	}
 	public List<Object[]> findDistrictsOfParliamentConstituencies(Long parliamentId){
@@ -454,7 +454,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.delimitationConstituency.constituency.constituencyId , model.delimitationConstituency.constituency.name,model.constituency.district.districtName from DelimitationConstituencyAssemblyDetails model" +
+		str.append("select distinct model.delimitationConstituency.constituency.constituencyId , model.delimitationConstituency.constituency.name,model.constituency.district.districtName,model.constituency.district.districtId from DelimitationConstituencyAssemblyDetails model" +
 				" where model.delimitationConstituency.constituency.electionScope.electionType.electionType = :electionType" +
 				" and model.delimitationConstituency.constituency.state.stateId = :stateID and model.delimitationConstituency.constituency.deformDate is null and model.delimitationConstituency.year = 2009");
 		if(region.equalsIgnoreCase("Telangana"))
