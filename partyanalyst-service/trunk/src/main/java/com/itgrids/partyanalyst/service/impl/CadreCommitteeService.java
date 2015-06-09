@@ -1890,7 +1890,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
 				Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
 				Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
-				Long roleId = (Long)tdpCadre[5];
+				Long roleId = tdpCadre[5] != null ? Long.valueOf(String.valueOf(tdpCadre[5]).trim()):0L ;
 				CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,id);
 				if(cadreVO != null)
 				{
