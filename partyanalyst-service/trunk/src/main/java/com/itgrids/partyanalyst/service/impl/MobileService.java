@@ -1220,14 +1220,15 @@ public List<SelectOptionVO> getConstituencyList()
 					connection.setAutoCommit(false);
 					statement = connection.createStatement();
 					int records = 0;
+					SimpleDateFormat sdf2 = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
 					for(Booth booth : boothsList)
 					{
 						records++;
 						try{
 						statement.executeUpdate("INSERT INTO booth(booth_id,part_no,part_name,location,village_covered,tehsil_id,male_voters,female_voters,total_voters," +
-								"constituency_id,year,publication_date_id) VALUES (" +
+								"constituency_id,year,publication_date_id,updated_time) VALUES (" +
 								"'"+booth.getBoothId()+"','"+booth.getPartNo()+"','','"+booth.getLocation()+"','"+booth.getVillagesCovered()+"','"+booth.getTehsil().getTehsilId()+"'" +
-										",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"')");
+										",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"','"+sdf2.format(booth.getUpdatedTime())+"')");
 						}catch(Exception e)
 						{
 							LOG.error(e);
