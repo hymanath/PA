@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -42,7 +43,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Panchayat panchayat;
 	private String pincode;
 	private String isCtpUsed;
-	
+	private Date updatedTime;
 
 	private Constituency constituency;
 	private LocalElectionBody localBody;
@@ -369,6 +370,15 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setIsCtpUsed(String isCtpUsed) {
 		this.isCtpUsed = isCtpUsed;
+	}
+
+	@Column(name ="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 }
