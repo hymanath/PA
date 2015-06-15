@@ -360,9 +360,11 @@ margin-top:10px;
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre</span></a>
 							<div>
 								<ul>
+								<li><a href="cadreSearchPageAction.action"><span>Cadre Search</span></a></li>
 									<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 										<div>
 											<ul>
+											
 												<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
 												<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>									
 												<li><a href="cadreReportsAction.action"><span> Cadre Reports - 2014 </span></a></li>

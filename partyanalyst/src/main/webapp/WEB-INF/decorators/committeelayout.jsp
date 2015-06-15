@@ -51,7 +51,13 @@
 					</c:if>
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-					  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+							  <li><a tabindex="-1" href="committeeInfoAction.action">Home</a></li>
+							  </c:if>
+							<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+							  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+							  </c:if>	  
+					
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' )}">
 							<li><a tabindex="-1" href="cadreCommitteeRolesDashboard.action">Committee Detailed Report </a></li>
 						</c:if>	
@@ -62,15 +68,25 @@
 					 <c:if test="${sessionScope.USER.isAdmin != 'true'}">
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
 							 <c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' )}">
+							 	<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+								
+							  <li><a tabindex="-1" href="committeeInfoAction.action">Home</a></li>
+							  </c:if>
+							   <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
 							   <li><a tabindex="-1" href="committeeManagementAction.action">Home</a></li>
+							   </c:if>
 							   <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
 							</c:if>
 					   
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
 							<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH')}">
 							<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+							  <li><a tabindex="-1" href="committeeInfoAction.action">Home</a></li>
+							  </c:if>
+						  <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
 							   <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
-							   
+							</c:if>   
 							   <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
 							   <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
 							   </c:if>
@@ -80,6 +96,7 @@
 						</c:if>
 						
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT')}">
+						  <li><a tabindex="-1" href="committeeInfoAction.action">Home</a></li>
 						 <li><a tabindex="-1" href="cadreSearchPageAction.action">Cadre Search</a></li>
 						 <li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 						</c:if>
