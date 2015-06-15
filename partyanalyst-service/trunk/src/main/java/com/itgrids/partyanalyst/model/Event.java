@@ -35,7 +35,7 @@ public class Event implements java.io.Serializable{
 	private String endTime; // programme end Time
 	private String isInviteeExist;
 	
-	private Integer entryLimit;
+	private Long entryLimit;
 	private String serverWorkMode;
 	private String tabWorkMode;
 	
@@ -135,13 +135,13 @@ public class Event implements java.io.Serializable{
 	}
 
 	@Column(name="entry_limit")
-	public Integer getEntryLimit() {
+	public Long getEntryLimit() {
 		return entryLimit;
 	}
-
-	public void setEntryLimit(Integer entryLimit) {
+	public void setEntryLimit(Long entryLimit) {
 		this.entryLimit = entryLimit;
 	}
+	
 
 	@Column(name="server_work_mode")
 	public String getServerWorkMode() {
@@ -184,8 +184,6 @@ public class Event implements java.io.Serializable{
 	public void setSyncType(String syncType) {
 		this.syncType = syncType;
 	}
-	
-	
 	
 	
 }
