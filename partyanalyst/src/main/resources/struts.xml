@@ -10205,6 +10205,11 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		<action name="manageEvents" class="committeeDashBoardAction">
+			<result name="success">/jsp/manageEventInvitees.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 		
 </package>
 </struts>      
