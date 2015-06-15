@@ -13423,7 +13423,23 @@ return mandalList;
 					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
 					 
 					 
-					 /*//converting 12 hours into 24 hours
+					 try{
+						 SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+							SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+							Date date = parseFormat.parse(userEventDetailsVO.getStartTime());
+							Date date1 = parseFormat.parse(userEventDetailsVO.getEndTime());
+							
+							String _24HourStartTime=displayFormat.format(date);
+							String _24HourEndTime=displayFormat.format(date1);
+							
+							userEventDetailsVO.setStartTime(_24HourStartTime);
+					        userEventDetailsVO.setEndTime(_24HourEndTime);
+							
+					 }catch (Exception e) {
+						e.printStackTrace();
+					}
+					 	
+			/*//converting 12 hours into 24 hours
 					 
 					 SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
 			           SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
@@ -13449,19 +13465,25 @@ return mandalList;
 			          userEventDetailsVO.setStartTime(_24HourStartTime);
 			          userEventDetailsVO.setEndTime(_24HourEndTime);
 			      //time conversion End
-*/			        
+			       
+*/		       
+					 
 					 Event event = null;
-					 if(actionType != null && actionType.trim().equalsIgnoreCase("update"))
+					 if(actionType != null && actionType.trim().equalsIgnoreCase("updateEvent"))
 					 {
-						 event = eventDAO.get(userEventDetailsVO.getEventId().longValue());
+						 event = eventDAO.get(userEventDetailsVO.getEventId().longValue()); 
 					 }
 					 else
 					 {
 						 event = new Event();
 					 }
-					
-					 event.setName(userEventDetailsVO.getEventName());
+
+					 if(actionType.trim().equalsIgnoreCase("newEvent")){
+						 event.setName(userEventDetailsVO.getEventName());
+					 }
+					 
 					 event.setDescription(userEventDetailsVO.getStatus());
+					 event.setEntryLimit(userEventDetailsVO.getEntryLimit());
 					 event.setInsertedTime(dateService.getCurrentDateAndTime());
 					 event.setServerWorkMode(userEventDetailsVO.getServerWorkMode());
 					 event.setTabWorkMode(userEventDetailsVO.getTabWorkMode());
@@ -13470,6 +13492,7 @@ return mandalList;
 						 event.setEventEndTime(foramt.parse(userEventDetailsVO.getEndDate()));
 						 event.setStartTime(userEventDetailsVO.getStartTime());
 						 event.setEndTime(userEventDetailsVO.getEndTime());
+						 event.setIsActive("true");
 					 }catch(Exception e){}
 					 
 					// event.setIsEnabled("Y");
