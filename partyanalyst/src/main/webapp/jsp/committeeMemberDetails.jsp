@@ -140,11 +140,13 @@
 
 
 <div class="container m_top30" style="min-height:340px;">
-
+<!--<div>
+ <a href="manageEvents.action" title="Click Here To Manage Events" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;padding:5px 48px 5px 48px;  margin-left: 900px;" >Manage Events</a>
+</div> -->
 	<div aria-multiselectable="true" role="tablist" id="" class="panel-group">
       <div class="panel panel-default" style="margin-top: 25px;">
        
-
+		
           <div class="panel-body">
 							
 				<div class="col-md-3" id="levelDivId">
@@ -2037,7 +2039,7 @@
 					str+='<ul class="publickRepracentative" >';
 					if(districtsArr != null && districtsArr.length>0)
 					{
-						str+='<li> <span style="font-weight:bold;"> State Level Committee Members ('+districtCadreCount+') </span> </li>';
+						str+='<li> <span style="font-weight:bold;"> District Level Committee Members ('+districtCadreCount+') </span> </li>';
 						for(var j in districtsArr)
 						{					
 							if(districtsArr[j].totalCount != 0){							
@@ -2549,7 +2551,7 @@
 						$(".rolePRCheck").prop('checked', false);
 						$("#checkText").html("Select All");
 					}
-				});
+				});	
 </script>
 <script>
 getDistricts();
