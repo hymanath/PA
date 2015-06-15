@@ -1789,10 +1789,13 @@ public String getSummaryDetails(){
 			userEventDetailsVO.setEventId(jObj.getLong("eventId"));
 			userEventDetailsVO.setEventName(jObj.getString("eventName"));
 			userEventDetailsVO.setStatus(jObj.getString("description"));
+			userEventDetailsVO.setEntryLimit(jObj.getLong("entryLimit"));
 			userEventDetailsVO.setStartDate(jObj.getString("startDate"));
 			userEventDetailsVO.setEndDate(jObj.getString("endDate"));
 			userEventDetailsVO.setStartTime(jObj.getString("startTime"));
+			//userEventDetailsVO.setStartTime("07:00:00");
 			userEventDetailsVO.setEndTime(jObj.getString("endTime"));
+			//userEventDetailsVO.setEndTime("20:00:00");
 			userEventDetailsVO.setServerWorkMode(jObj.getString("serverMode"));
 			userEventDetailsVO.setTabWorkMode(jObj.getString("tabMode"));
 			userEventDetailsVO.setMainEventId(jObj.getLong("mainEventId"));
