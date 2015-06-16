@@ -1301,6 +1301,39 @@ public List<SelectOptionVO> getConstituencyList()
 					connection.close();
 				}
 				
+				//Adding indexes
+				connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_SURVEY"+pathSeperator+assemblyName+".sqlite");
+				statement = connection.createStatement();
+				
+				try{
+					LOG.error("Adding Indexes");
+					statement.executeUpdate("CREATE INDEX idx_voter_voter_id_card_no ON voter(voter_id_card_no)");
+					statement.executeUpdate("CREATE INDEX idx_voter_age ON voter(age)");
+					statement.executeUpdate("CREATE INDEX idx_voter_gender ON voter(gender)");
+					
+					statement.executeUpdate("CREATE INDEX idx_voter_booth_id ON booth_publication_voter(booth_id)");
+					statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON booth_publication_voter(voter_id)");
+					statement.executeUpdate("CREATE INDEX idx_voter_serial_no ON booth_publication_voter(serial_no)");
+					
+					statement.executeUpdate("CREATE INDEX idx_booth_part_no ON booth(part_no)");
+					statement.executeUpdate("CREATE INDEX idx_booth_tehsil_id ON booth(tehsil_id)");
+					statement.executeUpdate("CREATE INDEX idx_booth_year ON booth(year)");
+					statement.executeUpdate("CREATE INDEX idx_booth_constituency_id ON booth(constituency_id);");
+					statement.executeUpdate("CREATE INDEX idx_booth_local_election_body_id ON booth(local_election_body_id)");
+					statement.executeUpdate("CREATE INDEX idx_booth_publication_date_id ON booth(publication_date_id)");
+					statement.executeUpdate("CREATE INDEX idx_booth_panchayat_id ON booth(panchayat_id)");
+					statement.executeUpdate("CREATE INDEX idx_booth_ward_id ON booth(ward_id)");
+					statement.executeUpdate("CREATE INDEX idx_booth_updated_time ON booth(updated_time)");
+					
+					connection.commit();
+					statement.close();
+					connection.close();
+					
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
+				
 				}catch(Exception e)
 				{
 					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
