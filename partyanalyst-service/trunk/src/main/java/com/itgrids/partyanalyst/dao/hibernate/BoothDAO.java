@@ -1297,6 +1297,17 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		@SuppressWarnings("unchecked")
+		public List<Long> getConstituencyDetailsByTehsilId(Long tehsilId)
+		{
+			Query query = getSession().createQuery("select distinct model.constituency.constituencyId from Booth model " +
+					" where model.tehsil.tehsilId = :tehsilId and model.publicationDate.publicationDateId =:publicationDateId ");
+			query.setParameter("tehsilId", tehsilId);
+			query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
 		public List<Long> getboothsByTehsilId(Long tehsilId)
 		{
 			Query query = getSession().createQuery("select distinct model.boothId from Booth model " +
