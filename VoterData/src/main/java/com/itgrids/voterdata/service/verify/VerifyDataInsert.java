@@ -1,20 +1,7 @@
 package com.itgrids.voterdata.service.verify;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-import com.itgrids.voterdata.VO.SinkVO;
 
 public class VerifyDataInsert {
 
@@ -35,7 +22,7 @@ public class VerifyDataInsert {
 	public void insertRequestData()
 	{
 		try{
-			conn1 = DriverManager.getConnection(DB_URL1,USER1,PASS1);
+			/*conn1 = DriverManager.getConnection(DB_URL1,USER1,PASS1);
     		stmt1 = conn1.createStatement();
     		
     		ResultSet rs = stmt1.executeQuery("SELECT request_data FROM tdp_cadre_verfied_data where tdp_cadre_verfied_data_id = 3359");
@@ -62,7 +49,7 @@ public class VerifyDataInsert {
     		}
     		outwriter1.write(sb1.toString());
     		outwriter1.close();
-		}catch(Exception e)
+		*/}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
