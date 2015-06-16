@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -21,7 +22,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private final static Logger LOG =  Logger.getLogger(CadreDetailsService.class);
 	public ITdpCadreDAO tdpCadreDAO;
 	public IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	public IConstituencyDAO constituencyDAO;
+
 	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -90,7 +102,54 @@ public class CadreDetailsService implements ICadreDetailsService{
     			}
     			else if(locationLevel.longValue() == 8L)
     			{
-    				queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
+    				/*
+    				Object[] localBodyDetails = constituencyDAO.getlocalbodyName(locationValue);
+    				boolean isGreater = false;
+    				if(localBodyDetails != null && localBodyDetails.length>0)
+    				{
+    					String localBody =  localBodyDetails[1] != null ? localBodyDetails[1].toString().trim():null;
+    					if(localBody != null && localBody.trim().equalsIgnoreCase("Greater Municipal Corp"))
+    					{
+    						Long tehsilId =  localBodyDetails[3] != null ? Long.valueOf(localBodyDetails[3].toString().trim()):0L;
+    						if(tehsilId != null && tehsilId.longValue()>0)
+    						{
+    							List<Long> constituencyList = boothDAO.getConstituencyDetailsByTehsilId(tehsilId);
+    							if(constituencyList != null && constituencyList.size()>0)
+    							{
+    								locationValue = constituencyList.get(0);
+    								isGreater = true;
+    								queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
+    							}
+    						}
+    					}
+    				}
+
+    				if(!isGreater)
+    				{
+    					queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
+    				}
+    				
+    			*/
+    				boolean isGreater = false;
+    				Object[] localBodyDetails = constituencyDAO.getlocalbodyName(locationValue);
+    				if(localBodyDetails != null && localBodyDetails.length>0)
+    				{
+    					String localBody =  localBodyDetails[1] != null ? localBodyDetails[1].toString().trim():null;
+    					if(localBody != null && localBody.trim().equalsIgnoreCase("Greater Municipal Corp"))
+    					{
+    						Long localBodyId =  localBodyDetails[2] != null ? Long.valueOf(localBodyDetails[2].toString().trim()):0L;
+    						if(localBodyId != null && localBodyId.longValue()>0)
+    						{
+    							locationValue = localBodyId;
+    							isGreater = true;
+    							queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
+    						}
+    					}
+    				}
+    				if(!isGreater)
+    				{
+    					queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
+    				}
     			}
     			else if(locationLevel.longValue() == 9L)
     			{
