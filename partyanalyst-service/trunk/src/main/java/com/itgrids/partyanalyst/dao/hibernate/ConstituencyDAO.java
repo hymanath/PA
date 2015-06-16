@@ -1363,7 +1363,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	}
 	
 	public Object[] getlocalbodyName(Long constituencyId){
-		Query queryBuilder = getSession().createSQLQuery("select LEB.name,ET.election_type from constituency C left join local_election_body LEB on C.local_election_body_id = LEB.local_election_body_id " +
+		Query queryBuilder = getSession().createSQLQuery("select LEB.name,ET.election_type,LEB.local_election_body_id,LEB.tehsil_id from constituency C left join local_election_body LEB on C.local_election_body_id = LEB.local_election_body_id " +
 				" left join election_type ET on LEB.election_type_id = ET.election_type_id where C.constituency_Id = :constituencyId");
 		queryBuilder.setParameter("constituencyId", constituencyId);
 		return (Object[]) queryBuilder.uniqueResult();
