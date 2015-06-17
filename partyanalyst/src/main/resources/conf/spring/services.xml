@@ -2553,7 +2553,7 @@
 	<bean name="cadreDetailsService"  class="com.itgrids.partyanalyst.service.impl.CadreDetailsService">
 		 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
-		 
+		 <property name="constituencyDAO" ref="constituencyDAO"/>
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
