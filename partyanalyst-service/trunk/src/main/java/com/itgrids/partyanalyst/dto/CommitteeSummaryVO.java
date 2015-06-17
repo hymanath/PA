@@ -22,6 +22,7 @@ public class CommitteeSummaryVO implements Serializable{
 	private String districtName;
 	private Long totalCommittees;
 	private Long membersCount;
+	private Long afflMembersCount;
 	private List<CommitteeSummaryVO> districtWiseList;
 	private Long mainStarted;
 	private Long mainCompleted;
@@ -94,6 +95,12 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long othersCmpltd;
 	
 	
+	public Long getAfflMembersCount() {
+		return afflMembersCount;
+	}
+	public void setAfflMembersCount(Long afflMembersCount) {
+		this.afflMembersCount = afflMembersCount;
+	}
 	public Long getTradeStarted() {
 		return tradeStarted;
 	}
