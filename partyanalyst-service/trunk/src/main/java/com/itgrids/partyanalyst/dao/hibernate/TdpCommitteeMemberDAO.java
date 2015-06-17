@@ -489,11 +489,11 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId " +
+		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
 				" from TdpCommitteeMember model " +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:levelIds)" +
 				" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:constiIds)" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
+				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
 				" and model.isActive = 'Y' ");
 				
 		if(startDate!=null){
@@ -502,7 +502,7 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		if(endDate!=null){
 			sb.append(" and date(model.insertedTime) <= :endDate");
 		}
-		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId ");
+		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
@@ -522,11 +522,11 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues){
 	//0 count,1levelId
 	StringBuilder sb = new StringBuilder();
-	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue " +
+	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
 			" from TdpCommitteeMember model " +
 			" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId = :levelId and model.isActive ='Y' " +
-			" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) " +
-			" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1l ");
+			" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) ");
+			//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1l ");
 	
 	if(startDate!=null){
 		sb.append(" and date(model.insertedTime) >= :startDate ");
@@ -534,7 +534,7 @@ public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date star
 	if(endDate!=null){
 		sb.append(" and date(model.insertedTime) <= :endDate");
 	}
-	sb.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+	sb.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
 	
 	Query query = getSession().createQuery(sb.toString());
 	
