@@ -29,8 +29,22 @@ public class CadreCommitteeReportVO {
 	private String locationName;
 	private CadreIVRVO committeeSummaryVO;
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList = new ArrayList<CadreCommitteeReportVO>();
+	private Long afflStartedCommittees  =0l;
+	private Long afflCompletedCommittees  =0l;
 	
 	
+	public Long getAfflStartedCommittees() {
+		return afflStartedCommittees;
+	}
+	public void setAfflStartedCommittees(Long afflStartedCommittees) {
+		this.afflStartedCommittees = afflStartedCommittees;
+	}
+	public Long getAfflCompletedCommittees() {
+		return afflCompletedCommittees;
+	}
+	public void setAfflCompletedCommittees(Long afflCompletedCommittees) {
+		this.afflCompletedCommittees = afflCompletedCommittees;
+	}
 	public List<CadreCommitteeReportVO> getCadreCommitteeReportVOList() {
 		return cadreCommitteeReportVOList;
 	}
