@@ -47,7 +47,9 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
 					 <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a tabindex="-1" href="dashBoardAction.action"> Main DashBoard </a></li>
+						<li><a tabindex="-1" href="dashBoardAction.action"> Main Dashboard </a></li>
+						<li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
+						<li><a tabindex="-1" href="cadreCommitteeRolesDashboard.action">Committee Detailed Report </a></li>						
 					</c:if>
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
@@ -59,6 +61,7 @@
 							  </c:if>	  
 					
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' )}">
+						<li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 							<li><a tabindex="-1" href="cadreCommitteeRolesDashboard.action">Committee Detailed Report </a></li>
 						</c:if>	
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
