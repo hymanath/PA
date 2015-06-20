@@ -50,11 +50,6 @@
 						for(var i in result)
 						{						
 							$('#usersListId').append('<option value='+result[i].id+'>'+result[i].name+'  --  '+result[i].mandalName+' '+result[i].hamletName+' </option>');
-							for(var j in result){
-								$('#first_name').append(result[i].name);
-								$('#ajaxImage').hide();
-							
-							}
 						}
 					}
 				  
