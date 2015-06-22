@@ -66,7 +66,10 @@
 						</c:if>	
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
 				  	  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
-                      <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
+                      <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT')}">
+						  <li><a tabindex="-1" href="cadreSearchPageAction.action">Cadre Search</a></li>
+					   </c:if>
+					  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
 					</c:if>
 					 <c:if test="${sessionScope.USER.isAdmin != 'true'}">
 						<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">

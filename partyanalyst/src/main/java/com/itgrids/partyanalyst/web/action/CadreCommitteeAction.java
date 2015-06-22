@@ -581,7 +581,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			return "input";
 		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)
 				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT")
-				)){
+				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_SEARCH_ENT"))){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
