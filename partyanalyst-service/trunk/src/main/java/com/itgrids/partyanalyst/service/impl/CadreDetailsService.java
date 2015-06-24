@@ -565,7 +565,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.eduQualificationId,5.qualification,
 				//6.occupationId,7.occupation,8.voterId,9.panchayatName,10.tehsilName,11.constName,12.mobileNo,13.ConstituencyId
 				//14.
-				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId);
+				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
 				Object[] partyPositionDetails=tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);
