@@ -1675,6 +1675,16 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		return query.list();
 	}
-	
+	public Object[] getPartyPositionBycadre(Long cadreId){
+		
+		Query query = getSession().createQuery(" select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+				" model.tdpCommitteeRole.tdpRoles.role " +
+				" from  TdpCommitteeMember model " +
+				" where model.tdpCadre.tdpCadreId =:tdpCadreId");
+		
+		query.setParameter("tdpCadreId", cadreId);
+		
+		return (Object[]) query.uniqueResult();
+	}
 	
 }

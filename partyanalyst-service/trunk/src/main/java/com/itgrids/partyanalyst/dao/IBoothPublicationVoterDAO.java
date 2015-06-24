@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
@@ -715,5 +716,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getVotersDetailsForCadreRegistratiobByLocationIdsCount(Long stateId,Long constituencyId, Long publicationDate,String queryStr,Long tehsilId,Long boothId);
 	  
 	  public List<Booth> getOtherStateVoterAddressDetails(Long voterId);
+	  public Object getBoothPartNumberByVoterId(String voterId);
 	  
 }

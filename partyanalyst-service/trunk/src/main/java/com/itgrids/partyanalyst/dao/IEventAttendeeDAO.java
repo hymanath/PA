@@ -33,4 +33,5 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,List<Long> subEventIds);
 	public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,List<Long> subEventIds);
+	public List<Object[]> getEventDetailsOfCadre(Long cadreId);
 }

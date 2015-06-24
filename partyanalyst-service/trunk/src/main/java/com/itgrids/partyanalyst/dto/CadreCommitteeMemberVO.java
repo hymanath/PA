@@ -5,7 +5,6 @@ import java.util.List;
 
 public class CadreCommitteeMemberVO {
 
-	
 	private Long id;
 	private String name;
 	private Long total;
@@ -22,6 +21,15 @@ public class CadreCommitteeMemberVO {
 	private String totalCount;
 	private String maleCount;
 	private String femaleCount;
+	private String dateOfBirth;
+	private String qualification;
+	private String occupation;
+	private String voterName;
+	private String panchayatName;
+	private String tehsilName;
+	private String partyPosition;
+	private String representativeType;
+	
 	List<CadreCommitteeMemberVO> knownList;
 	List<CadreCommitteeMemberVO> unKnownList;
 	
@@ -70,6 +78,11 @@ public class CadreCommitteeMemberVO {
 	private Long actualLocalBodys;
 	private Long actualDivistions;
 	private Long actualOthers;
+	private String type;
+	
+	private String voterIdCardNo;
+	
+	private CadreCommitteeMemberVO ccmVO;
 	
 	
 	public Long getActualOthers() {
@@ -422,6 +435,73 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setRolesList(List<RolesVO> rolesList) {
 		this.rolesList = rolesList;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public String getQualification() {
+		return qualification;
+	}
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+	public String getVoterName() {
+		return voterName;
+	}
+	public void setVoterName(String voterName) {
+		this.voterName = voterName;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	public String getPartyPosition() {
+		return partyPosition;
+	}
+	public void setPartyPosition(String partyPosition) {
+		this.partyPosition = partyPosition;
+	}
+	
+	public String getRepresentativeType() {
+		return representativeType;
+	}
+	public void setRepresentativeType(String representativeType) {
+		this.representativeType = representativeType;
+	}
+	public CadreCommitteeMemberVO getCcmVO() {
+		return ccmVO;
+	}
+	public void setCcmVO(CadreCommitteeMemberVO ccmVO) {
+		this.ccmVO = ccmVO;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getVoterIdCardNo() {
+		return voterIdCardNo;
+	}
+	public void setVoterIdCardNo(String voterIdCardNo) {
+		this.voterIdCardNo = voterIdCardNo;
 	}
 	
 	
