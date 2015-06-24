@@ -14,8 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -24,7 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -232,7 +231,6 @@ public class StaticDataService implements IStaticDataService {
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	
-	@Autowired
 	private IStateRegionDAO stateRegionDAO;
 	
 	
@@ -1225,6 +1223,14 @@ public class StaticDataService implements IStaticDataService {
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	
+	public IStateRegionDAO getStateRegionDAO() {
+		return stateRegionDAO;
+	}
+
+	public void setStateRegionDAO(IStateRegionDAO stateRegionDAO) {
+		this.stateRegionDAO = stateRegionDAO;
 	}
 
 	public List<SelectOptionVO> getConstituencies(Long stateId) {

@@ -8582,6 +8582,7 @@ return constiLst;
 			e.printStackTrace();
 			return "";
 		}
+		
 	}
     
 	public String calculatePancPerc(Set<Long> panchayatIds,Long constituencyId,List<Long> partyIds,Long electionId){
@@ -8606,7 +8607,7 @@ return constiLst;
 		return (new BigDecimal((totalSecured * 100.0)/totalVoters.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 		}catch(Exception e){
 			e.printStackTrace();
-			return null;
+			return "";
 		}
 	}
  

@@ -7930,4 +7930,17 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("publicationDateId", IConstants.OTHER_STATE_PUBLICATION_ID);
 		return query.list();
 	}
+	
+	public Object getBoothPartNumberByVoterId(String voterId){
+		
+		Long voterid=Long.parseLong(voterId);
+		
+		Query query = getSession().createQuery(" select model.booth.partNo from BoothPublicationVoter model" +
+				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId=11 ");
+		
+		query.setParameter("voterId",voterid);
+		return  query.uniqueResult();
+		
+	}
+
 }

@@ -646,4 +646,33 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
+
+	public List<Object[]> getEventDetailsOfCadre(Long cadreId){
+		
+		/*select ea.tdp_cadre_id,e.event_id,e.name,e.description,e.parent_event_id,
+		count(distinct date(ea.attended_time)) from event e, event_attendee ea where 
+		e.event_id = ea.event_id and
+		ea.tdp_cadre_id=8795444 
+		group by e.event_id;*/
+		/*Query queryStr=getSession().createQuery(" select COUNT(distinct date(model.attendedTime)),model.tdpCadre.tdpCadreId,model.event.eventId,model.event.name," +
+				" model.event.description,model.event.parentEventId " +
+				" from  EventAttendee model" +
+				" where model.tdpCadre.tdpCadreId =:tdpCadreId " +
+				" group by model.event.eventId ");*/
+		Query queryStr=getSession().createSQLQuery("select ea.tdp_cadre_id,e.event_id,e.name,e.description,e.parent_event_id, count(distinct date(ea.attended_time)) " +
+				" from event e, event_attendee ea where " +
+				" e.event_id = ea.event_id and ea.tdp_cadre_id = :tdpCadreId group by e.event_id ");
+		queryStr.setParameter("tdpCadreId", cadreId);
+		
+	return queryStr.list();	
+	}
+	public List<Object[]> getEventDetailsOfCadre1(Long cadreId){
+		
+		Query queryStr=getSession().createQuery("select model.tdpCadre.tdpCadreId,model.event.eventId,model.event.name," +
+				" model.event.description,model.event.parentEventId,count(date(model.attendedTime)) from  EventAttendee model" +
+				" where model.tdpCadre.tdpCadreId ="+cadreId+" " +
+						" group by model.event.eventId ");
+		
+		return queryStr.list();
+	}
 }

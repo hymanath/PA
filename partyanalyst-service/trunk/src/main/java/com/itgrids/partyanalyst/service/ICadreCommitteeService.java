@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -124,4 +125,9 @@ public interface ICadreCommitteeService {
 	 public List<CadreCommitteeMemberVO> getCommitteeMemberPerformanceDetails(Long locationLevelId, Long locationLevelValue);
 	 public List<VO> getDistrictNamesIds(Long userId);
 	 public List<String> getConstituencyByDistrict(Long districtId);
+	 public String calculateMandalPerc(Set<Long> mandalIds,Long constituencyId,List<Long> partyIds,Long electionId);
+	 public String calculateMunicPerc(Set<Long> municIds,Long constituencyId,List<Long> partyIds,Long electionId);
+	 public String calculatePancPerc(Set<Long> panchayatIds,Long constituencyId,List<Long> partyIds,Long electionId);
+	 public String calculateBootPerc(List<Long> boothIds,Long constituencyId,List<Long> partyIds,Long electionId);
+	 public String calculateWardPerc(Set<Long> wardIds,Long constituencyId,List<Long> partyIds,Long electionId);
 }

@@ -5246,7 +5246,37 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			return query.list();
 		}
-		
-
-		
+		public Object[] cadreFormalDetailedInformation(Long cadreId){
+			
+			StringBuilder queryStr=new StringBuilder();
+			
+			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,model.educationalQualifications.eduQualificationId,model.educationalQualifications.qualification," +
+					"  model.occupation.occupationId,model.occupation.occupation,model.voterId,model.userAddress.panchayat.panchayatName,model.userAddress.tehsil.tehsilName," +
+					" model.userAddress.constituency.name,model.mobileNo,model.userAddress.constituency.constituencyId,model.voter.voterIDCardNo,model.image " +
+					" from TdpCadre model ");
+			
+			if(cadreId !=null){
+				queryStr.append(" where model.tdpCadreId =:cadreId ");
+			}
+			
+			Query query=getSession().createQuery(queryStr.toString());
+			
+			
+			query.setParameter("cadreId", cadreId);
+			
+			return (Object[]) query.uniqueResult();
+		}
+		public List<Object[]> complaintDetailsOfCadre(Long cadreId){
+			
+			StringBuilder queryStr=new StringBuilder();
+			
+			queryStr.append("select Complaint_id,CAST(Subject as char(2550)) As Subject,Seviority,Raised_Date, " +
+					" Completed_Status,issue_type,type_of_grevience" +
+					" from complaint_master  " +
+					" where User_Id="+cadreId+" ");
+			
+			Query query=getSession().createSQLQuery(queryStr.toString());
+			
+			return query.list();
+		}
 }
