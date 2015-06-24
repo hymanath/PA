@@ -670,15 +670,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		CadreCommitteeMemberVO finalVo=new CadreCommitteeMemberVO();
 		
-		Long ttlMembs = 0l;
-		Long ttlMainMembs = 0l;
-		Long ttlAfflMembs = 0l;
-		Long ttlLowPerfMainMembs = 0l;
-		Long ttlLowPerfAfflMembs = 0l;
-		
 	try{
 		List<Long> naIds = new ArrayList<Long>();
-		List<Long> naIds1 = new ArrayList<Long>();
 		
 		String constiPerc = null;
 		Map<Long,String> constiPercMap =  new HashMap<Long,String>();
