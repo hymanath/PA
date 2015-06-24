@@ -235,6 +235,7 @@
 		
 		function complaintDetailsOfCadre(globalCadreId){
 			var localCadreId=globalCadreId;
+			//33160
 			var jsobj={
 				cadreId:localCadreId
 			}
@@ -266,6 +267,7 @@
 		}
 		function getEventDetailsOfCadre(globalCadreId){
 			var localCadreId=globalCadreId;
+			//8341157
 			var jsobj={
 				cadreId:localCadreId
 			}
@@ -331,7 +333,24 @@
 					$("#participationTableDivId").html("Data Not Available.");
 				}
 			});
-		}		
+		}
+
+		function getSurveyDetailsByCadre(){
+			
+			var jsObj={
+				cadreId:cadreId,
+				surveyId:surveyId
+			}
+			
+			$.ajax({
+				type:'GET',
+				 url: 'getSurveyDetailsByCadreAction.action',
+				 data : {task:JSON.stringify(jsobj)} ,
+			}).done(function(result){
+				
+			});
+			
+		}
 	</script>	
 </body>
 </html>
