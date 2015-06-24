@@ -280,8 +280,10 @@
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in results){
-						
-						var subLength=results[i].knownList.length;
+						var subLength;
+						if(results[i].knownList !=null){
+							subLength=results[i].knownList.length;
+						}
 						var participationType;
 						
 							if(results[i].id ==1){
@@ -294,17 +296,25 @@
 							}
 								//str+='<td  rowspan='+subLength+'>'+participationType+'</td>';
 								
-								for(var j in results[i].knownList){
-									str+='<tr>';
-									if(j==0){
-										str+='<td style="border-bottom:#fff;">'+participationType+'</td>';
-									}else{
-										str+='<td style="border:#fff;"></td>';
+								if(results[i].knownList !=null){
+									for(var j in results[i].knownList){
+										str+='<tr>';
+										if(j==0){
+											str+='<td style="border-bottom:#fff;">'+participationType+'</td>';
+										}else{
+											str+='<td style="border:#fff;"></td>';
+										}
+										str+='<td>'+results[i].knownList[j].name+'</td>';
+										str+='<td>'+results[i].knownList[j].total+'</td>';
+										 str+='</tr>';
 									}
-									str+='<td>'+results[i].knownList[j].name+'</td>';
-									str+='<td>'+results[i].knownList[j].total+'</td>';
-									 str+='</tr>';
 								}
+								else{
+									str+='</tbody>';
+									str+='</table>';
+									$("#participationTableDivId").html("Data Not Available.");
+									return;
+								}	
 						}
 						
 					str+='</tbody>';
