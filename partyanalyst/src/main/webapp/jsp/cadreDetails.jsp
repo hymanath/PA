@@ -145,19 +145,21 @@
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>	
 	<script>
 	
-	var cadreId;
+	var globalCadreId;
 	 $(document).ready(function() {
-			cadreId='${param.cadreId}';
+			globalCadreId='${param.cadreId}';
+			cadreFormalDetailedInformation(globalCadreId);
+			complaintDetailsOfCadre();
+			getEventDetailsOfCadre();
 	 });
-		cadreFormalDetailedInformation();
-		complaintDetailsOfCadre();
-		getEventDetailsOfCadre();
+		
 			
 	 var ownBoothDetailsVo;
-		function cadreFormalDetailedInformation(){
-			
+		function cadreFormalDetailedInformation(globalCadreId){
+			//2604438
+			var localCadreId=globalCadreId;
 			var jsobj={
-				cadreId:6795940
+				cadreId:localCadreId
 			}
 			$.ajax({
 				type:'GET',
