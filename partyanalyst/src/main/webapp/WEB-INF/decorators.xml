@@ -422,5 +422,6 @@
 		<pattern>/mahanaduCadreVisitInfoAction*</pattern>
 		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 		<pattern>/eventInvitees*</pattern>
+		<pattern>/committeeDetailedAnalysis*</pattern>
 	 </decorator>
 </decorators>
