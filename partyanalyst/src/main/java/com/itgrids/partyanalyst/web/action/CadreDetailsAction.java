@@ -141,4 +141,18 @@ public class CadreDetailsAction extends ActionSupport{
 		}
 		return Action.SUCCESS;
 	}
+	public String getSurveyDetailsByCadre(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long cadreId=jObj.getLong("cadreId");
+			Long surveyId=jObj.getLong("surveyId");
+			
+			/*cadreCommitteeMemberVOList=cadreDetailsService.getSurveyDetailsByCadre(cadreId,surveyId);*/
+		}catch(Exception e){
+			LOG.error("Exception raised in getEventDetailsOfCadre  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
 }

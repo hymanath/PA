@@ -10233,5 +10233,12 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		<action name="getSurveyDetailsByCadreAction" class="cadreDetailsAction" method="getSurveyDetailsByCadre" >
+			<result type="json" name="success">
+				<param name="root"></param>
+			</result>
+		</action>
+		
+		
 </package>
 </struts>      
