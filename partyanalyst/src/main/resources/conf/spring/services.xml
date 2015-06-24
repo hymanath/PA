@@ -233,6 +233,8 @@
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
 		 <property name="voterInfoDAO" ref="voterInfoDAO" />
+		 <property name="stateRegionDAO" ref="stateRegionDAO" />
+		 
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -2554,6 +2556,14 @@
 		 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 		 <property name="constituencyDAO" ref="constituencyDAO"/>
+		 <property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"/>
+		 <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"/>
+		 <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+		 <property name="candidateResultDAO" ref="candidateResultDAO"/>
+		 <property name="boothDAO" ref="boothDAO"/>
+		 <property name="cadreCommitteeService" ref="cadreCommitteeService"/>
+		 <property name="eventAttendeeDAO" ref="eventAttendeeDAO"/>
+		 
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">

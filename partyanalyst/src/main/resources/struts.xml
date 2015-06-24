@@ -10210,6 +10210,23 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-		
+		<action name="cadreDetailsAction" class="cadreDetailsAction" >
+			<result name="success">/jsp/cadreDetails.jsp</result>
+		</action>
+		<action name="cadreFormalDetailedInformationAction" class="cadreDetailsAction" method="cadreFormalDetailedInformation" >
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVO</param>
+			</result>
+		</action>
+		<action name="complaintDetailsOfCadreAction" class="cadreDetailsAction" method="complaintDetailsOfCadre" >
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVO</param>
+			</result>
+		</action>
+		<action name="getEventDetailsOfCadreAction" class="cadreDetailsAction" method="getEventDetailsOfCadre" >
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVOList</param>
+			</result>
+		</action>
 </package>
 </struts>      
