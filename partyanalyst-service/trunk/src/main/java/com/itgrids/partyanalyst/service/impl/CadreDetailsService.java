@@ -598,7 +598,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					cadreDetailsVO.setVoterId(cadreFormalDetails[8] !=null ? cadreFormalDetails[8].toString() :"" );
 					
-					cadreDetailsVO.setPanchayatName(cadreFormalDetails[9] !=null ? cadreFormalDetails[9].toString() : "" );
+					cadreDetailsVO.setPanchayatName(cadreFormalDetails[9] !=null ? cadreFormalDetails[9].toString() : "-" );
 					
 					cadreDetailsVO.setTehsilName(cadreFormalDetails[10] !=null ? cadreFormalDetails[10].toString() : "" );
 					
@@ -953,17 +953,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(eventDetails !=null){
 				
 				for (Object[] event : eventDetails) {
-					
+					CadreCommitteeMemberVO subEventDetails = null;
 					Map<Long,CadreCommitteeMemberVO>  mainEventMap=finalMap.get(Long.parseLong(event[4].toString()));
 					
 					if(mainEventMap ==null){
+						subEventDetails = new CadreCommitteeMemberVO();
 						mainEventMap=new HashMap<Long, CadreCommitteeMemberVO>();
 						finalMap.put(Long.parseLong(event[4].toString()),mainEventMap);//parentEventId,Map<EventId,CadreCommitteeMemberVO>
 					}else{
-						CadreCommitteeMemberVO subEventDetails=mainEventMap.get(Long.parseLong(event[1].toString()));
-						if(subEventDetails ==null){
+						subEventDetails=mainEventMap.get(Long.parseLong(event[1].toString()));
+						if(subEventDetails ==null){ 
 							subEventDetails=new CadreCommitteeMemberVO();
 						}
+					}
 							subEventDetails.setVtrId(Long.parseLong(event[0].toString()));//cadreId
 							subEventDetails.setId(Long.parseLong(event[1].toString()));//eventId
 							subEventDetails.setName(event[2] !=null ? event[2].toString():"");//eventName
@@ -979,7 +981,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 							mainEventMap.put(Long.parseLong(event[1].toString()), subEventDetails);
 							
 							finalMap.put(Long.parseLong(event[4].toString()), mainEventMap);
-						}
 					 }
 				
 					if(finalMap !=null && finalMap.size()>0){
