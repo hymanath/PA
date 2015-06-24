@@ -119,6 +119,84 @@
 				</div>
 		
 			</div>
+				<div class="col-md-12 m_top10 pad_10 block">
+				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					  <div class="panel panel-default"><!-- First Block -->
+						<div class="panel-heading" role="tab" id="headingOne">
+						  <h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							  Survey 1
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  <div class="panel-body">
+							<table class="table table-bordered">
+								<thead>
+									<th>Question</th>
+									<th>Answer</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						</div>
+					  </div><!-- /First Block -->
+					  <div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+						  <h4 class="panel-title">
+							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							  Survey 2
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+						  <div class="panel-body">
+							<table class="table table-bordered">
+								<thead>
+									<th>Question</th>
+									<th>Answer</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingThree">
+						  <h4 class="panel-title">
+							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+							   Survey 3
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+						  <div class="panel-body">
+							<table class="table table-bordered">
+								<thead>
+									<th>Question</th>
+									<th>Answer</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				</div>
+			
 		</div>
 	</div>
 		
@@ -339,7 +417,7 @@
 			
 			var jsObj={
 				cadreId:cadreId,
-				surveyId:surveyId
+				surveyId:0
 			}
 			
 			$.ajax({
