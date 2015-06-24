@@ -5246,23 +5246,34 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			return query.list();
 		}
-		public Object[] cadreFormalDetailedInformation(Long cadreId){
+		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear){
+
 			
 			StringBuilder queryStr=new StringBuilder();
 			
-			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,model.educationalQualifications.eduQualificationId,model.educationalQualifications.qualification," +
-					"  model.occupation.occupationId,model.occupation.occupation,model.voterId,model.userAddress.panchayat.panchayatName,model.userAddress.tehsil.tehsilName," +
-					" model.userAddress.constituency.name,model.mobileNo,model.userAddress.constituency.constituencyId,model.voter.voterIDCardNo,model.image " +
-					" from TdpCadre model ");
+			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
+					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
+					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image " +
+					" from TdpCadre model " );
+			queryStr.append(" left join model.educationalQualifications eduQualification ");
+			queryStr.append(" left join model.occupation occupation ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" left join model.userAddress.panchayat panchayat ");
+			queryStr.append(" left join model.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.userAddress.constituency constituency ");
 			
 			if(cadreId !=null){
-				queryStr.append(" where model.tdpCadreId =:cadreId ");
+				queryStr.append(" where model.tdpCadreId =:cadreId and model.isDeleted ='N'");
+			}
+			if(enrollmentYear !=null){
+				queryStr.append(" and model.enrollmentYear =:enrollmentYear  ");
 			}
 			
 			Query query=getSession().createQuery(queryStr.toString());
 			
 			
 			query.setParameter("cadreId", cadreId);
+			query.setParameter("enrollmentYear", enrollmentYear);
 			
 			return (Object[]) query.uniqueResult();
 		}
