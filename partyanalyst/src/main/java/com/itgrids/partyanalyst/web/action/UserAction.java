@@ -69,9 +69,6 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		this.constituencies = constituencies;
 	}
 
-
-		
-	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}

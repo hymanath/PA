@@ -1585,11 +1585,10 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
-		
-		
-		
 	</bean>
-	
+	<bean id="cadreDetailsAction" class="com.itgrids.partyanalyst.web.action.CadreDetailsAction" singleton="false"> 
+			<property name="cadreDetailsService" ref="cadreDetailsService" />
+	</bean>
 	
 </beans>	
 	

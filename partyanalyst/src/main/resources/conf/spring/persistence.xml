@@ -603,6 +603,7 @@
 			    <value>com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo</value>
 			    <value>com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails</value>
 			    <value>com.itgrids.partyanalyst.model.EntryExitInfo</value>
+			    <value>com.itgrids.partyanalyst.model.TdpCadreCandidate</value>
 				</list>
 			
 		</property>

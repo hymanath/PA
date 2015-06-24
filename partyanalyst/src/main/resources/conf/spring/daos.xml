@@ -2072,5 +2072,10 @@
 	<bean id="entryExitInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntryExitInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCadreCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCandidateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
