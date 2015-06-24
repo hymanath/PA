@@ -149,14 +149,14 @@
 	 $(document).ready(function() {
 			globalCadreId='${param.cadreId}';
 			cadreFormalDetailedInformation(globalCadreId);
-			complaintDetailsOfCadre();
-			getEventDetailsOfCadre();
+			complaintDetailsOfCadre(globalCadreId);
+			getEventDetailsOfCadre(globalCadreId);
 	 });
 		
 			
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
-			//2604438
+			//6795940
 			var localCadreId=globalCadreId;
 			var jsobj={
 				cadreId:localCadreId
@@ -233,9 +233,10 @@
 			
 		}
 		
-		function complaintDetailsOfCadre(){
+		function complaintDetailsOfCadre(globalCadreId){
+			var localCadreId=globalCadreId;
 			var jsobj={
-				cadreId:33160
+				cadreId:localCadreId
 			}
 			$.ajax({
 				type:'GET',
@@ -258,14 +259,15 @@
 					$("#grievanceDetailsId").html(str);
 				}
 				else{
-					$("#grievanceDetailsId").html("Result Not Available.");
+					$("#grievanceDetailsId").html("Data Not Available.");
 				}
 				
 			});
 		}
-		function getEventDetailsOfCadre(){
+		function getEventDetailsOfCadre(globalCadreId){
+			var localCadreId=globalCadreId;
 			var jsobj={
-				cadreId:8341157
+				cadreId:localCadreId
 			}
 			$.ajax({
 				type:'GET',
@@ -273,7 +275,7 @@
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(results){
 				var str='';
-				if(results !=null){
+				
 					str+='<table class="table table-bordered table-responsive">';
 					str+='<thead>';
 						str+='<th>Main Event</th>';
@@ -281,6 +283,7 @@
 						str+='<th>Attended Count(Days)</th>';
 					str+='</thead>';
 					str+='<tbody>';
+				if(results !=null && results.length>0){
 					for(var i in results){
 						var subLength;
 						if(results[i].knownList !=null){
@@ -323,6 +326,8 @@
 				   str+='</table>';	
 				   $("#participationTableDivId").html(str);
 				}else{
+					str+='</tbody>';
+				    str+='</table>';	
 					$("#participationTableDivId").html("Data Not Available.");
 				}
 			});
