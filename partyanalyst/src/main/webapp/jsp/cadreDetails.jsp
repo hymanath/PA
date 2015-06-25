@@ -114,7 +114,7 @@
 				</table>
 			</div>
 			<div class="col-md-7 col-md-offset-2 pad_10 block">
-				<h4 style="border-bottom:1px solid #999">Participation Details</h4>
+				<h4 style="border-bottom:1px solid #999">Event Participation Details</h4>
 				<div id="participationTableDivId">
 				</div>
 		
@@ -130,7 +130,7 @@
 							</a>
 						  </h4>
 						</div>
-						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 						  <div class="panel-body">
 							<table class="table table-bordered">
 								<thead>
@@ -139,7 +139,8 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td></td>
+										<td>Question</td>
+										<td>Answer</td>
 									</tr>
 								</tbody>
 							</table>
@@ -163,7 +164,8 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td></td>
+										<td>Question</td>
+										<td>answer</td>
 									</tr>
 								</tbody>
 							</table>
@@ -187,7 +189,8 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td></td>
+										<td>Question</td>
+										<td>Answer</td>
 									</tr>
 								</tbody>
 							</table>
@@ -229,6 +232,7 @@
 			cadreFormalDetailedInformation(globalCadreId);
 			complaintDetailsOfCadre(globalCadreId);
 			getEventDetailsOfCadre(globalCadreId);
+			getSurveyDetailsByCadre(globalCadreId);
 	 });
 		
 			
@@ -413,17 +417,17 @@
 			});
 		}
 
-		function getSurveyDetailsByCadre(){
-			
+		function getSurveyDetailsByCadre(globalCadreId){		
+			var localCadreId=globalCadreId;
 			var jsObj={
-				cadreId:cadreId,
+				cadreId:localCadreId,
 				surveyId:0
 			}
 			
 			$.ajax({
 				type:'GET',
 				 url: 'getSurveyDetailsByCadreAction.action',
-				 data : {task:JSON.stringify(jsobj)} ,
+				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				
 			});
