@@ -540,7 +540,7 @@ $(".paginationDivId").hide();
 			for(var i in result)
 			{
 				
-				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);">';
+				str+='<div class="media cadreDetailsCls" style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;" attr_cadre_id='+result[i].tdpCadreId+'>';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
@@ -608,6 +608,10 @@ $(".paginationDivId").hide();
 		}
 		$('#cadreDetailsDiv').html(str);
 	}
+	$(document).on("click",".cadreDetailsCls",function(){
+		var cadreId=$(this).attr("attr_cadre_id");
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
+	});
 	function gettingAllConstituencys(repType){
 		$("#constitunecyDiv").show();
 		var str='';
@@ -890,7 +894,7 @@ $(".paginationDivId").hide();
 			for(var i in result)
 			{
 				
-				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);">';
+				str+='<div class="media cadreDetailsCls" style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;" attr_cadre_id='+result[i].tdpCadreId+'>';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
