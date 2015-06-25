@@ -3,10 +3,13 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserLoginDetailsDAO;
@@ -51,13 +55,14 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
-import com.itgrids.partyanalyst.model.EventRfidDetails;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
 import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
 import com.itgrids.partyanalyst.model.MessagingPropsDetails;
@@ -86,6 +91,10 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.Util;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -138,7 +147,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ISurveyUserAuthDAO surveyUserAuthDAO;
     private IMessagingPropsDetailsDAO messagingPropsDetailsDAO;
     private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
-    public IEventAttendeeErrorDAO getEventAttendeeErrorDAO() {
+    private IEventDAO eventDAO;
+    
+    
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
+	public IEventAttendeeErrorDAO getEventAttendeeErrorDAO() {
 		return eventAttendeeErrorDAO;
 	}
 
@@ -2035,6 +2051,97 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	eventAttendee.setCurrentTabUserId(inputVo.getUserId());
 		 	eventAttendee.setSyncSource(inputVo.getSyncSource() != null ? inputVo.getSyncSource() : "WS");
 		 	
+		 	/*
+		 	Event event = eventDAO.get(eventAttendee.getEventId());		 	
+		 	if(event != null)
+		 	{
+		 		Date currentDate = eventAttendee.getInsertedTime();
+		 		Date attendeeDate = eventAttendee.getAttendedTime();
+		 		
+		 		if(attendeeDate.after(currentDate))
+			 	{
+			 		eventAttendee.setUnModifiedAttendeeTime(attendeeDate);
+
+			 		String startTime1 = event.getStartTime();;
+			    	String endTime1 = event.getEndTime();
+			    	 
+			    	 String[] time1Arr = startTime1.split(":");
+			    			  
+			    	 String hour1 = time1Arr[0];
+			    	 String minut1 = time1Arr[1];
+			    	 
+			    	 String[] time2Arr = endTime1.split(":");
+					  
+			    	 String hour2 = time2Arr[0];
+			    	 String minut2 = time2Arr[1];
+			    	 
+			    	 String startTime = "";
+			    	 String endTime ="";
+			    	 
+			    	 if(Integer.valueOf(hour1) >=0 && Integer.valueOf(hour1)<12)
+			    	 {
+			    		 startTime = hour1+":"+minut1+"AM";
+			    	 }
+			    	 else
+			    	 {
+			    		 hour1 = String.valueOf(Integer.valueOf(hour1)-12);
+			    		 if(Integer.valueOf(hour1) == 0)
+			    		 {
+			    			 startTime="12:"+minut1+"AM";
+			    		 }
+			    		 else
+			    		 {
+			    			 hour1 = String.valueOf(Integer.valueOf(hour1)+12);
+			    			 startTime = hour1+":"+minut1+"PM";// 24 hours format
+			    		 }
+			    	 }
+			    	
+			    	 if(Integer.valueOf(hour2) >=0 && Integer.valueOf(hour2)<12)
+			    	 {
+			    		 endTime = hour2+":"+minut2+"AM";
+			    	 }
+			    	 else
+			    	 {
+			    		 hour2 = String.valueOf(Integer.valueOf(hour2)-12);
+			    		 if(Integer.valueOf(hour2) == 0)
+			    		 {
+			    			 endTime="12:"+minut2+"AM";
+			    		 }
+			    		 else
+			    		 {
+			    			 hour2 = String.valueOf(Integer.valueOf(hour2)+12);
+			    			 endTime = hour2+":"+minut2+"PM";// 24 hours format
+			    		 }
+			    	 }
+			    	 
+			    	 String avarageTime = "";
+			    	 try {
+			    		 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mma");
+			 		    	Date date1=sdf.parse(startTime);
+			 		    	Date date2=sdf.parse(endTime);
+			 		    	long date1InMilSec=date1.getTime();
+			 		    	long date2InMilSec=date2.getTime();
+			 		    	//System.out.println("Average "+sdf.format((date1InMilSec+date2InMilSec)/2));
+			 		    	avarageTime = sdf.format((date1InMilSec+date2InMilSec)/2);
+					} catch (Exception e) {}  
+			    	 
+			    	 
+			    	 ;
+			    	 String[] avrgTimeArr = avarageTime.split(":");		    	
+			    	 
+					 Calendar cal = Calendar.getInstance();
+					 cal.set(Calendar.DAY_OF_MONTH, attendeeDate.getDay());
+					 cal.set(Calendar.MONTH,attendeeDate.getMonth());
+					 cal.set(Calendar.YEAR,attendeeDate.getYear());
+			    	 cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(avrgTimeArr[0])); // Your hour
+			    	 cal.set(Calendar.MINUTE, Integer.valueOf(avrgTimeArr[1])); // Your Mintue
+			    	 cal.set(Calendar.SECOND, 00); // Your second
+			    	 
+			    	 eventAttendee.setAttendedTime(cal.getTime());
+			 	}
+		 	}
+		 	
+		 	*/
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
@@ -2269,5 +2376,89 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	    		return vo;
 	    	}
 	    }
+	 
+	  public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId)
+	  {
+		  VerifierVO verifierVO = null;
+		  try {
+			  List<VerifierVO> resultList = null;
+			  Client client = Client.create();
+			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
+			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"");
+			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+    	 	  if (response.getStatus() != 200) {
+    	 		 verifierVO =null;
+    	 		  //throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+    	 	 }
+    	 	  else
+    	 	  {
+    	 		 String output = response.getEntity(String.class);
+        	 	 if(output != null && !output.isEmpty())
+    	   	 	  {
+    	   	 		
+    	   	 		 JSONObject surveyDetails = new JSONObject(output);
+    	   	 		  if(surveyDetails != null)
+    	   	 		  {
+    	   	 			  if(surveyId != null && surveyId.longValue()>0)
+    	   	 			  {
+    	   	 				JSONArray  questionsList = surveyDetails.getJSONArray("questionsList");
+    		   	 			 if(questionsList != null && questionsList.length()>0)
+    		   	 			 {
+    		   	 				resultList = new ArrayList<VerifierVO>(0);
+    		   	 				 for(int i=0;i<questionsList.length();i++)
+    		   	 				 {
+    		   	 					VerifierVO vo =  new VerifierVO();
+    		   	 					JSONObject question = (JSONObject) questionsList.get(i);
+    		   	 					if(question.has("question"))
+    		   	 					{
+    		   	 						vo.setName(question.getString("question"));
+    		   	 					}
+    			   	 				if(question.has("option"))
+    		   	 					{
+    		   	 						vo.setOption(question.getString("option"));
+    		   	 					}
+    		   	 					resultList.add(vo);
+    		   	 				 }
+    		   	 			 }
+    	   	 			  }
+    	   	 			  else
+    	   	 			  {
+    	   	 				JSONArray  surveyList = surveyDetails.getJSONArray("verifierVOList");
+    		   	 			 if(surveyList != null && surveyList.length()>0)
+    		   	 			 {
+    		   	 				resultList = new ArrayList<VerifierVO>(0);
+    		   	 				
+    		   	 				 for(int i=0;i<surveyList.length();i++)
+    		   	 				 {
+    		   	 					VerifierVO vo =  new VerifierVO();
+    		   	 					JSONObject question = (JSONObject) surveyList.get(i);
+    		   	 					if(question.has("name"))
+    		   	 					{
+    		   	 						vo.setName(question.getString("name"));
+    		   	 					}
+    			   	 				if(question.has("id"))
+    		   	 					{
+    		   	 						vo.setId(question.getLong("id"));
+    		   	 					}
+    		   	 					resultList.add(vo);
+    		   	 				 }
+    		   	 			 }
+    	   	 			  }
+    	   	 		  }
+    	   	 	  }
+    	   	 	  
+    	   	 	  if(resultList != null && resultList.size()>0)
+    	   	 	  {
+    	   	 		verifierVO = new VerifierVO();
+    	   	 		verifierVO.setVerifierVOList(resultList);
+    	   	 	  }
+    	 	  }
+    	 	 
+    	 	 
+		} catch (Exception e) {
+			log.debug("Entered into the getTdpCadreSurveyDetails  method in WebServiceHandlerService");
+		}
+		  return verifierVO;
+	  }
 }
 
