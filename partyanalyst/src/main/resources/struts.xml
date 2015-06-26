@@ -10233,9 +10233,9 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-		<action name="getSurveyDetailsByCadreAction" class="cadreDetailsAction" method="getSurveyDetailsByCadre" >
+		<action name="getTdpCadreSurveyDetailsAction" class="cadreDetailsAction" method="getTdpCadreSurveyDetails" >
 			<result type="json" name="success">
-				<param name="root"></param>
+				<param name="root">verifierVO</param>
 			</result>
 		</action>
 		

@@ -406,7 +406,6 @@
 		<pattern>/constituencyCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeRolesDashboard*</pattern>
 		<pattern>/committeeInfoAction*</pattern>
-		<pattern>/cadreDetailsAction*</pattern>
 		 
 		  
 		
@@ -423,5 +422,6 @@
 		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 		<pattern>/eventInvitees*</pattern>
 		<pattern>/committeeDetailedAnalysis*</pattern>
+		<pattern>/cadreDetailsAction*</pattern>
 	 </decorator>
 </decorators>

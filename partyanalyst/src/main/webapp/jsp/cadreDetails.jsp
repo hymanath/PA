@@ -121,8 +121,8 @@
 			</div>
 				<div class="col-md-12 m_top10 pad_10 block">
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
-					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-					  <div class="panel panel-default"><!-- First Block -->
+					<div class="panel-group surveyDetailsCls" id="accordion" role="tablist" aria-multiselectable="true">
+					<!--  <div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingOne">
 						  <h4 class="panel-title">
 							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -146,7 +146,7 @@
 							</table>
 						  </div>
 						</div>
-					  </div><!-- /First Block -->
+					  </div>
 					  <div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingTwo">
 						  <h4 class="panel-title">
@@ -196,9 +196,9 @@
 							</table>
 						  </div>
 						</div>
-					  </div>
+					  </div> -->
 					</div>
-				</div>
+				</div> 
 			
 		</div>
 	</div>
@@ -232,7 +232,7 @@
 			cadreFormalDetailedInformation(globalCadreId);
 			complaintDetailsOfCadre(globalCadreId);
 			getEventDetailsOfCadre(globalCadreId);
-			getSurveyDetailsByCadre(globalCadreId);
+			getTdpCadreSurveyDetails(globalCadreId,0,null);
 	 });
 		
 			
@@ -417,22 +417,86 @@
 			});
 		}
 
-		function getSurveyDetailsByCadre(globalCadreId){		
+	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId){
 			var localCadreId=globalCadreId;
+			var surveyId=surveyId;
+			var indexId=indexId;
+			if(surveyId !=0 && localCadreId !=0){
+				$("#dataLoadingsImg").show();
+			}
 			var jsObj={
 				cadreId:localCadreId,
-				surveyId:0
+				surveyId:surveyId
 			}
 			
 			$.ajax({
 				type:'GET',
-				 url: 'getSurveyDetailsByCadreAction.action',
+				 url: 'getTdpCadreSurveyDetailsAction.action',
 				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				
-			});
+			if(result.verifierVOList !=null){
+				if(surveyId ==0 && localCadreId !=0){
+					var str='';
+							for(var i in result.verifierVOList){
+								str+='<div class="panel panel-default">';
+								str+='<div class="panel-heading hideshowCls" role="tab" id="heading'+result.verifierVOList[i].id+''+i+'">';
+								  str+='<h4 class="panel-title">';
+									str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+result.verifierVOList[i].id+''+i+'" aria-expanded="true" aria-controls="collapse'+result.verifierVOList[i].id+''+i+'">'+result.verifierVOList[i].name+'</a>';
+								  str+='</h4>';
+								str+='</div>';
+								str+='<div id="collapse'+result.verifierVOList[i].id+''+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result.verifierVOList[i].id+''+i+'" attr_survey_id='+result.verifierVOList[i].id+' attr_cadre_id='+localCadreId+' attr_index_id='+i+'><img id="dataLoadingsImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>';
+								str+='</div>';
+							  str+='</div>';
+							}
+						 
+					$('.surveyDetailsCls').html(str);
+					
+				}
+				else if(surveyId !=0 && surveyId !=0 ){
+					buildingSurveyQuestionsDetails(result,surveyId,indexId);
+				}
+			}
+		});
 			
+	}
+		
+		$('#accordion').on('shown.bs.collapse', function() {
+			var surveyId = $(this).find("div.in").attr("attr_survey_id");
+			var cadreId= $(this).find("div.in").attr("attr_cadre_id");
+			var indexId=$(this).find("div.in").attr("attr_index_id");
+			getTdpCadreSurveyDetails(cadreId,surveyId,indexId);
+		});
+
+		function buildingSurveyQuestionsDetails(results,surveyId,indexId){
+			$("#dataLoadingsImg").hide();
+			var str='';
+				if(results.verifierVOList !=null){
+					str+='<div class="panel-body">';
+									str+='<table class="table table-bordered">';
+										str+='<thead>';
+											str+='<th>Question</th>';
+											str+='<th>Answer</th>';
+										str+='</thead>';
+										str+='<tbody>';
+										
+										for(var i in results.verifierVOList){
+											str+='<tr>';
+												str+='<td>'+results.verifierVOList[i].name+'</td>';
+												str+='<td>'+results.verifierVOList[i].option+'</td>'; 
+											str+='</tr>';
+										}
+											
+										str+='</tbody>';
+									str+='</table>';
+					str+='</div>';
+					
+				}else{
+					str+='<div>"Data Not Available."</div>';
+				}
+				$("#collapse"+surveyId+''+indexId).html(str);		
 		}
+		
 	</script>	
 </body>
 </html>

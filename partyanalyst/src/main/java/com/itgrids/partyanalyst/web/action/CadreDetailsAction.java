@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -24,6 +25,7 @@ public class CadreDetailsAction extends ActionSupport{
 	private CadreCommitteeMemberVO              cadreCommitteeMemberVO;   
 	private List<CadreCommitteeMemberVO>      	cadreCommitteeMemberVOList;
 	private Long 								cadreId;
+	private VerifierVO							verifierVO;
 	
 
 	public HttpServletRequest getRequest() {
@@ -99,6 +101,14 @@ public class CadreDetailsAction extends ActionSupport{
 	public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
 	}
+	public VerifierVO getVerifierVO() {
+		return verifierVO;
+	}
+
+
+	public void setVerifierVO(VerifierVO verifierVO) {
+		this.verifierVO = verifierVO;
+	}
 
 
 	public String execute(){
@@ -141,7 +151,7 @@ public class CadreDetailsAction extends ActionSupport{
 		}
 		return Action.SUCCESS;
 	}
-	public String getSurveyDetailsByCadre(){
+	public String getTdpCadreSurveyDetails(){
 		
 		try{
 			jObj=new JSONObject(getTask());
@@ -149,7 +159,7 @@ public class CadreDetailsAction extends ActionSupport{
 			Long cadreId=jObj.getLong("cadreId");
 			Long surveyId=jObj.getLong("surveyId");
 			
-			/*cadreCommitteeMemberVOList=cadreDetailsService.getSurveyDetailsByCadre(cadreId,surveyId);*/
+			verifierVO=cadreDetailsService.getTdpCadreSurveyDetails(cadreId,surveyId);
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventDetailsOfCadre  method in CadreDetailsAction.",e);
 		}
