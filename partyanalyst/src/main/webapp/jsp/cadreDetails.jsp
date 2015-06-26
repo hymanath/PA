@@ -434,8 +434,9 @@
 				 url: 'getTdpCadreSurveyDetailsAction.action',
 				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				
-			if(result.verifierVOList !=null){
+			
+			if(result !=null){
+				if(result.verifierVOList !=null){
 				if(surveyId ==0 && localCadreId !=0){
 					var str='';
 							for(var i in result.verifierVOList){
@@ -455,6 +456,14 @@
 				}
 				else if(surveyId !=0 && surveyId !=0 ){
 					buildingSurveyQuestionsDetails(result,surveyId,indexId);
+				}
+			 }		
+			}else{
+				if(surveyId ==0 && localCadreId !=0){
+					$('.surveyDetailsCls').html('<div>Data Not Available.</div>');
+				}
+				else if(surveyId !=0 && surveyId !=0 ){
+					$("#collapse"+surveyId+''+indexId).html('<div>Data Not Available.</div>');	
 				}
 			}
 		});
