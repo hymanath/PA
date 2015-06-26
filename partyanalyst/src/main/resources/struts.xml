@@ -10211,7 +10211,9 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		<action name="cadreDetailsAction" class="cadreDetailsAction" >
-			<result name="success">/jsp/cadreDetails.jsp</result>
+			<result name="tdpCadreDetails">/jsp/cadreDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		<action name="cadreFormalDetailedInformationAction" class="cadreDetailsAction" method="cadreFormalDetailedInformation" >
 			<result type="json" name="success">
