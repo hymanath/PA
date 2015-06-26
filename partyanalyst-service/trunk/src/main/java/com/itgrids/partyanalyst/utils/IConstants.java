@@ -321,6 +321,7 @@ public interface IConstants {
     public static final String CTP_CASTE_ADMIN_ENTITLEMENT = "CTP_CASTE_ADMIN_ENTITLEMENT";
     public static final String TDP_CADRE_2014_ADMIN = "TDP_CADRE_2014_ADMIN";
     public static final String TDP_CADRE_SEARCH = "TDP_CADRE_SEARCH";
+    public static final String TDP_CADRE_DETAILS = "TDP_CADRE_DETAILS";
     
     //Problem Management
     public static final String MLA = "MLA";
