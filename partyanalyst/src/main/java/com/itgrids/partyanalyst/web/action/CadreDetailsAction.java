@@ -6,15 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class CadreDetailsAction extends ActionSupport{
+public class CadreDetailsAction extends ActionSupport implements ServletRequestAware{
 	
 	private static final Logger LOG = Logger.getLogger(CadreDetailsAction.class);
 	private HttpServletRequest 					request;
@@ -26,6 +30,7 @@ public class CadreDetailsAction extends ActionSupport{
 	private List<CadreCommitteeMemberVO>      	cadreCommitteeMemberVOList;
 	private Long 								cadreId;
 	private VerifierVO							verifierVO;
+	private EntitlementsHelper 					entitlementsHelper;
 	
 
 	public HttpServletRequest getRequest() {
@@ -96,23 +101,38 @@ public class CadreDetailsAction extends ActionSupport{
 	public Long getCadreId() {
 		return cadreId;
 	}
-
-
 	public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
 	}
 	public VerifierVO getVerifierVO() {
 		return verifierVO;
 	}
-
-
 	public void setVerifierVO(VerifierVO verifierVO) {
 		this.verifierVO = verifierVO;
 	}
-
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	public String execute(){
 		
+		try{
+			session = request.getSession();
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_CADRE_DETAILS")){
+				return "tdpCadreDetails";
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in execute  method in CadreDetailsAction.",e);
+		}
 		return Action.SUCCESS;
 	}
 	
