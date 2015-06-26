@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,15 +24,13 @@ import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
-import com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.EventAttendeeDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -50,6 +47,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public IBoothDAO boothDAO;
 	public ICadreCommitteeService cadreCommitteeService;
 	public IEventAttendeeDAO eventAttendeeDAO;
+	public IWebServiceHandlerService webServiceHandlerService;
 
 	
 	public IConstituencyDAO getConstituencyDAO() {
@@ -143,6 +141,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 
 	public void setEventAttendeeDAO(IEventAttendeeDAO eventAttendeeDAO) {
 		this.eventAttendeeDAO = eventAttendeeDAO;
+	}
+
+	public IWebServiceHandlerService getWebServiceHandlerService() {
+		return webServiceHandlerService;
+	}
+
+
+	public void setWebServiceHandlerService(
+			IWebServiceHandlerService webServiceHandlerService) {
+		this.webServiceHandlerService = webServiceHandlerService;
 	}
 
 
@@ -1007,6 +1015,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		
 		return finalList;
+	}
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId){
+		VerifierVO verifierVO=new VerifierVO();
+		try{
+			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId);
+			return verifierVO;
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getTdpCadreSurveyDetails service  method in CadreDetailsService.",e);
+		}
+		
+		return verifierVO;
 	}
 	
 }

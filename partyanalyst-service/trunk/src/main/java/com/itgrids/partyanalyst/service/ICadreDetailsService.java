@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.VerifierVO;
 
 public interface ICadreDetailsService {
 	/*public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
@@ -15,4 +16,5 @@ public interface ICadreDetailsService {
 	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId);
 	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId);
 	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long cadreId);
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId);
 }
