@@ -1588,6 +1588,7 @@
 	</bean>
 	<bean id="cadreDetailsAction" class="com.itgrids.partyanalyst.web.action.CadreDetailsAction" singleton="false"> 
 			<property name="cadreDetailsService" ref="cadreDetailsService" />
+			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 </beans>	

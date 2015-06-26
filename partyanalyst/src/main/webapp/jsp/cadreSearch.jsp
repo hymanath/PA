@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -557,6 +558,10 @@ $(".paginationDivId").hide();
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
+				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
+				</c:if> 
+				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
@@ -894,7 +899,7 @@ $(".paginationDivId").hide();
 			for(var i in result)
 			{
 				
-				str+='<div class="media cadreDetailsCls" style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;" attr_cadre_id='+result[i].tdpCadreId+'>';
+				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
@@ -910,6 +915,10 @@ $(".paginationDivId").hide();
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
+				
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
+				</c:if>
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
