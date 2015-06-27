@@ -1367,7 +1367,7 @@
 	</bean> 
 	<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
-    	<property name="cronExpression" value="0 0/5 * * * ?" />
+    	<property name="cronExpression" value="0 0/20 * * * ?" />
 	</bean>
 	
 	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
