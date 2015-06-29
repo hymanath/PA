@@ -287,5 +287,8 @@ public class JRExporterParameter
 	 * @see JRProperties
 	 */
 	public static final String PROPERTY_IGNORE_PAGE_MARGINS = JRProperties.PROPERTY_PREFIX + "export.ignore.page.margins";
+	
+	public static final JRExporterParameter PDF_PATH = new JRExporterParameter("PDF PATH");
+	public static final JRExporterParameter PDF_NAME = new JRExporterParameter("PDF NAME");
 
 }

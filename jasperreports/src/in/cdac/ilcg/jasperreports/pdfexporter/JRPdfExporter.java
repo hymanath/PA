@@ -16,99 +16,35 @@
 
 package in.cdac.ilcg.jasperreports.pdfexporter;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.font.TextAttribute;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.text.AttributedCharacterIterator;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRAlignment;
-import net.sf.jasperreports.engine.JRAnchor;
-import net.sf.jasperreports.engine.JRElement;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JRFont;
-import net.sf.jasperreports.engine.JRHyperlink;
-import net.sf.jasperreports.engine.JRImage;
-import net.sf.jasperreports.engine.JRImageRenderer;
-import net.sf.jasperreports.engine.JRLine;
-import net.sf.jasperreports.engine.JRLineBox;
-import net.sf.jasperreports.engine.JRPen;
-import net.sf.jasperreports.engine.JRPrintAnchor;
-import net.sf.jasperreports.engine.JRPrintElement;
-import net.sf.jasperreports.engine.JRPrintEllipse;
-import net.sf.jasperreports.engine.JRPrintFrame;
-import net.sf.jasperreports.engine.JRPrintHyperlink;
 import net.sf.jasperreports.engine.JRPrintImage;
-import net.sf.jasperreports.engine.JRPrintLine;
-import net.sf.jasperreports.engine.JRPrintPage;
-import net.sf.jasperreports.engine.JRPrintRectangle;
-import net.sf.jasperreports.engine.JRPrintText;
-import net.sf.jasperreports.engine.JRRenderable;
 import net.sf.jasperreports.engine.JRReportFont;
-import net.sf.jasperreports.engine.JRRuntimeException;
 import net.sf.jasperreports.engine.JRStyle;
-import net.sf.jasperreports.engine.JRTextElement;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.base.JRBaseFont;
-import net.sf.jasperreports.engine.export.legacy.BorderOffset;
-import net.sf.jasperreports.engine.fonts.FontFace;
-import net.sf.jasperreports.engine.fonts.FontFamily;
-import net.sf.jasperreports.engine.fonts.FontInfo;
-import net.sf.jasperreports.engine.util.BreakIteratorSplitCharacter;
-import net.sf.jasperreports.engine.util.JRFontUtil;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.util.JRProperties;
-import net.sf.jasperreports.engine.util.JRStyledText;
-import net.sf.jasperreports.engine.util.JRTextAttribute;
-
-
-//------------------------------------------------------
-//import java.net.URL;
-import net.sf.jasperreports.engine.JRException;
-//import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
-
-import ooo.connector.BootstrapSocketConnector;
-import com.sun.star.beans.PropertyValue;
-//import com.sun.star.comp.helper.Bootstrap;
-import com.sun.star.frame.XComponentLoader;
-import com.sun.star.frame.XStorable;
-//import com.sun.star.io.XInputStream;
-import com.sun.star.lang.XComponent;
-import com.sun.star.lang.XMultiComponentFactory;
-import com.sun.star.uno.UnoRuntime;
-import com.sun.star.uno.XComponentContext;
-import com.sun.star.util.XCloseable;
-//import java.io.BufferedInputStream;
-//import java.io.ByteArrayInputStream;
-//import java.io.ByteArrayOutputStream;
-//import java.io.FileInputStream;
-//import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.sf.jasperreports.engine.export.FontKey;
+import net.sf.jasperreports.engine.export.GenericElementHandlerEnviroment;
 import net.sf.jasperreports.engine.export.JRExportProgressMonitor;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-//import net.sf.jasperreports.engine.export.JRPdfExporterTagHelper;
 import net.sf.jasperreports.engine.export.PdfFont;
-//import net.sf.jasperreports.engine.export.JRPdfExporterTagHelper;
+import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
+import net.sf.jasperreports.engine.util.JRProperties;
+import net.sf.jasperreports.engine.util.JRTextAttribute;
+
+import com.sun.star.beans.PropertyValue;
 
 //------------------------------------------------------
 
@@ -134,6 +70,7 @@ import net.sf.jasperreports.engine.export.PdfFont;
 public class JRPdfExporter extends JRAbstractExporter
 {
 
+	private static final  org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JRPdfExporter.class);
 	/**
 	 * @deprecated Replaced by {@link JRPdfExporterParameter#PROPERTY_FORCE_SVG_SHAPES}.
 	 */
@@ -209,7 +146,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	public void exportReport() throws JRException
 	{
 //		registerFonts();
-
+		LOG.error(" SASI--ENTERED INTO exportReport");
 		progressMonitor = (JRExportProgressMonitor)parameters.get(JRExporterParameter.PROGRESS_MONITOR);
 
 		/*   */
@@ -350,38 +287,54 @@ public class JRPdfExporter extends JRAbstractExporter
 
 
 			OutputStream os = (OutputStream)parameters.get(JRExporterParameter.OUTPUT_STREAM);
+			LOG.error("SASI--1");
+			System.out.println("SASI--1");
 			if (os != null)
 			{
+				LOG.error("SASI--2");
+				System.out.println("SASI--2");
                 try {
                     exportReportToByteStream(os);
                 } catch (IOException ex) {
+                	LOG.error("SASI--3 ERROR");
+                	System.out.println("SASI--3 error");
                     Logger.getLogger(JRPdfExporter.class.getName()).log(Level.SEVERE, null, ex);
                 }
 			}
 			else
 			{
+				LOG.error("SASI--4");
+				System.out.println("SASI--4");
 				File destFile = (File)parameters.get(JRExporterParameter.OUTPUT_FILE);
 				if (destFile == null)
 				{
 					String fileName = (String)parameters.get(JRExporterParameter.OUTPUT_FILE_NAME);
+					LOG.error("SASI--5"+fileName);
+					System.out.println("SASI--5"+fileName);
 					if (fileName != null)
 					{
 						destFile = new File(fileName);
 					}
 					else
 					{
+						LOG.error("SASI--6 No output specified for the exporter ");
+						System.out.println("SASI--6 No output specified for the exporter ");
 						throw new JRException("No output specified for the exporter.");
 					}
 				}
 
 				try
 				{
+					LOG.error("SASI--7");
+					System.out.println("SASI--7");
 					os = new FileOutputStream(destFile);
 					exportReportToStream(os);
 					os.flush();
 				}
 				catch (IOException e)
 				{
+					LOG.error("SASI--8 Error trying to export to file :"+destFile, e);
+					System.out.println("SASI--8 Error trying to export to file :"+destFile + e);
 					throw new JRException("Error trying to export to file : " + destFile, e);
 				}
 				finally
@@ -410,11 +363,12 @@ public class JRPdfExporter extends JRAbstractExporter
 	 *
 	 */
 
-    protected void exportReportToStream(OutputStream os) throws JRException, IOException
+    /*protected void exportReportToStream(OutputStream os) throws JRException, IOException
 	{
 		//ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         //String destFileName = parameters.get(JRPdfExporterParameter.OUTPUT_FILE).toString();
+    	LOG.error("SOFFICE SASI--ENTERED INTO exportReportToStream"+os);
         String destFileName = null;
         File dest_File =(File)parameters.get(JRPdfExporterParameter.OUTPUT_FILE);
         if(parameters.get(JRPdfExporterParameter.OUTPUT_FILE_NAME)!= null)
@@ -430,8 +384,27 @@ public class JRPdfExporter extends JRAbstractExporter
 
             File destFile;
                 destFile = File.createTempFile(jasperPrint.getName(),".odt",null);
+                
+                LOG.error(destFile.getAbsolutePath());    
 
 		try{
+			
+			String command = "libreoffice --headless --convert-to pdf --outdir /app/static_content/cnp_pdfs "+destFile.getAbsolutePath();
+			
+			LOG.error(command);  
+			
+			Process p = Runtime.getRuntime().exec(command); 
+            InputStream stderr = p.getErrorStream(); 
+            InputStreamReader isr = new InputStreamReader(stderr); 
+            BufferedReader br = new BufferedReader(isr); 
+            String line = null; 
+ 
+            while ( (line = br.readLine()) != null) 
+            	LOG.error(line); 
+ 
+            int exitVal = p.waitFor(); 
+            LOG.error("Process exitValue: " + exitVal);  
+          	
 
 			JROdtExporter exporter = new JROdtExporter();
 
@@ -441,14 +414,16 @@ public class JRPdfExporter extends JRAbstractExporter
 
 			exporter.exportReport();
 
-			System.err.println("ODT creation time : " + (System.currentTimeMillis() - start));
+			LOG.error("ODT creation time : " + (System.currentTimeMillis() - start));
 		}catch (JRException e)
 		{
-			e.printStackTrace();
+			LOG.error("SASI -- ADDED CODE",e);
+			//e.printStackTrace();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("SASI -- ADDED CODE",e);
+		//	e.printStackTrace();
 		}
 		//--------------------------------------------------------
 
@@ -467,6 +442,9 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		try {
                     String oooExeFolder;
+                    LOG.error("Environment Varialbe OpenOffice -- SASI"+ System.getenv("OPENOFFICE_PATH"));
+                    LOG.error("Environment Varialbe Property OpenOffice -- SASI"+ System.getProperty("OPENOFFICE_PATH"));
+                    
                     if(System.getenv("OPENOFFICE_PATH")==null)
                     {
                         oooExeFolder = System.getProperty("OPENOFFICE_PATH");
@@ -476,6 +454,7 @@ public class JRPdfExporter extends JRAbstractExporter
                         oooExeFolder = System.getenv("OPENOFFICE_PATH");//"/usr/lib/openoffice/program/";
                     }
 					System.out.println("oooExeFolder" + oooExeFolder);
+					LOG.error("oooExeFolder OpenOffice -- SASI"+ oooExeFolder);
                     //String oooExeFolder = System.getenv("OPENOFFICE_PATH");//"/usr/lib/openoffice/program/";
                     XComponentContext xContext = BootstrapSocketConnector.bootstrap(oooExeFolder);
                     //--------------
@@ -508,13 +487,13 @@ public class JRPdfExporter extends JRAbstractExporter
             os.close();
             destFile.deleteOnExit();
             }
-            /*catch (java.lang.Exception e) {
+            catch (java.lang.Exception e) {
                 e.printStackTrace();
             }
             catch (JRException e)
             {
 			e.printStackTrace();
-            }*/
+            }
             catch (Exception e)
             {
 			e.printStackTrace();
@@ -522,6 +501,55 @@ public class JRPdfExporter extends JRAbstractExporter
             finally {
                 System.exit(0);
             }
+
+	}*/
+	
+	protected void exportReportToStream(OutputStream os) throws JRException, IOException
+	{
+    	LOG.error("SOFFICE SASI--ENTERED INTO exportReportToStream"+os);
+        
+    	String destFileName = null;
+        File dest_File =(File)parameters.get(JRPdfExporterParameter.OUTPUT_FILE);
+        
+        if(parameters.get(JRPdfExporterParameter.OUTPUT_FILE_NAME)!= null)
+        {
+            destFileName = parameters.get(JRPdfExporterParameter.OUTPUT_FILE_NAME).toString();
+        }
+        else if(dest_File !=null && destFileName ==null)
+        {
+            destFileName = dest_File.toString();
+        }
+
+        File destFile = File.createTempFile(jasperPrint.getName(),".odt",null);
+        
+        LOG.error(destFile.getAbsolutePath());    
+
+		try{
+			
+			String command = "libreoffice --headless --convert-to pdf --outdir /app/static_content/cnp_pdfs "+destFile.getAbsolutePath();
+			
+			LOG.error(command);  
+			
+			Process p = Runtime.getRuntime().exec(command); 
+            InputStream stderr = p.getErrorStream(); 
+            InputStreamReader isr = new InputStreamReader(stderr); 
+            BufferedReader br = new BufferedReader(isr); 
+            String line = null; 
+ 
+            while ( (line = br.readLine()) != null) 
+            	LOG.error(line); 
+ 
+            int exitVal = p.waitFor(); 
+            LOG.error("Process exitValue: " + exitVal);  
+		} 	
+		catch (Exception e)
+		{
+			LOG.error("SASI -- ADDED CODE",e);
+		}
+        finally 
+        {
+            System.exit(0);
+        }
 
 	}
     protected void exportReportToByteStream(OutputStream os) throws JRException, IOException
@@ -531,13 +559,15 @@ public class JRPdfExporter extends JRAbstractExporter
             File destFile;
                 destFile = File.createTempFile(jasperPrint.getName(),".odt",null);
 				System.out.println(destFile);
-
+				LOG.error("SASI--2-1"+destFile);
+				System.out.println("SASI--2-1"+destFile);
 		try{
-
+			
 			JROdtExporter exporter = new JROdtExporter();
-
+			
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, destFile.toString());
+			
 			//exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER, "|");
 
 			exporter.exportReport();
@@ -545,7 +575,7 @@ public class JRPdfExporter extends JRAbstractExporter
             OOoOutputStream outputStream = new OOoOutputStream();
 
             String filterName = "writer_pdf_Export";
-
+            
             //String oooExeFolder = System.getenv("OPENOFFICE_PATH");//"/usr/lib/openoffice/program/";
             String oooExeFolder;
             if(System.getenv("OPENOFFICE_PATH")==null)
@@ -556,23 +586,76 @@ public class JRPdfExporter extends JRAbstractExporter
             {
                     oooExeFolder = System.getenv("OPENOFFICE_PATH");//"/usr/lib/openoffice/program/";
             }
+            
+            LOG.error("SASI--2-2"+oooExeFolder);
+            System.out.println("SASI--2-2"+oooExeFolder);
+            LOG.error(parameters.get(JRExporterParameter.PDF_PATH));
+            System.out.println(parameters.get(JRExporterParameter.PDF_PATH));
+            
+            LOG.error(parameters.get(JRExporterParameter.PDF_NAME));
+            System.out.println(parameters.get(JRExporterParameter.PDF_NAME));
+            
+            /* UBUNTU COMMAND */
+            //String command = "libreoffice --headless --convert-to pdf --outdir "+parameters.get(JRExporterParameter.PDF_PATH)+" "+destFile.getAbsolutePath();
+			
+            String command = "/opt/libreoffice4.4/program/soffice --headless --convert-to pdf --outdir "+parameters.get(JRExporterParameter.PDF_PATH)+" "+destFile.getAbsolutePath();
+           
+			LOG.error(command);  
+			
+			Process p = Runtime.getRuntime().exec(command); 
+            InputStream stderr = p.getErrorStream(); 
+            InputStreamReader isr = new InputStreamReader(stderr); 
+            BufferedReader br = new BufferedReader(isr); 
+            String line = null; 
+ 
+            while ( (line = br.readLine()) != null) 
+            	LOG.error(line); 
+ 
+            int exitVal = p.waitFor(); 
+            LOG.error("Process exitValue: " + exitVal);  
+          	
+            String reqFileName = destFile.getName().replace(".odt", ".pdf");
+            File oldName = new File(parameters.get(JRExporterParameter.PDF_PATH)+"/"+reqFileName);
+            File newName = new File(parameters.get(JRExporterParameter.PDF_NAME).toString());
+            if(oldName.renameTo(newName)) {
+               System.out.println("renamed"+newName);
+            } else {
+               System.out.println("Error");
+            }
+            
 
-            XComponentContext xComponentContext = BootstrapSocketConnector.bootstrap(oooExeFolder);
+			/*JROdtExporter exporter_odt = new JROdtExporter();
 
+			exporter_odt.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			exporter_odt.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, destFile.toString());
+			//exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER, "|");
+
+			exporter_odt.exportReport();
+
+			LOG.error("ODT creation time : " + (System.currentTimeMillis() - start));*/
+
+            /*XComponentContext xComponentContext = BootstrapSocketConnector.bootstrap(oooExeFolder);
+            LOG.error("SASI--2-2-1"+ xComponentContext);
 
             XMultiComponentFactory xMultiComponentFactory = xComponentContext.getServiceManager();
+            LOG.error("SASI--2-2-2"+xMultiComponentFactory);
             
             XComponentLoader xComponentLoader = (XComponentLoader) UnoRuntime.queryInterface(XComponentLoader.class, xMultiComponentFactory.createInstanceWithContext("com.sun.star.frame.Desktop", xComponentContext));
-
+            
+            LOG.error("SASI--2-3"+xComponentLoader);
 
             PropertyValue[] props = new PropertyValue[1];
 	        props[0] = new PropertyValue();
         	props[0].Name = "Hidden";
             props[0].Value = new Boolean(true);
+            
+            LOG.error("SASI -- 2-3-1 FILE ABSOLUTE PATH "+destFile.getAbsolutePath());
 	        //Object document = xComponentLoader.loadComponentFromURL("file://"+ destFile.getAbsolutePath(), "_blank", 0, props);
             XComponent objectDocument = xComponentLoader.loadComponentFromURL("file:///"+destFile.getAbsolutePath(), "_blank", 0, props);
 
 
+            LOG.error("SASI--2-4"+objectDocument);
+            
             PropertyValue[] conversionProperties = new PropertyValue[3];
             conversionProperties[0] = new PropertyValue();
             conversionProperties[1] = new PropertyValue();
@@ -588,30 +671,39 @@ public class JRPdfExporter extends JRAbstractExporter
             conversionProperties[2].Value = pdfFilterData;//filterName;
 
 
+            LOG.error("SASI--2-5"+outputStream);
+            
             XStorable xstorable = (XStorable) UnoRuntime.queryInterface(XStorable.class,objectDocument);
             xstorable.storeToURL("private:stream", conversionProperties);
 
             XCloseable xclosable = (XCloseable) UnoRuntime.queryInterface(XCloseable.class,objectDocument);
             xclosable.close(true);
 
-            /*byte[] byteBuff = new byte[4096];
+            byte[] byteBuff = new byte[4096];
             byteBuff =outputStream.toByteArray();
 
             for(int i=0;i<byteBuff.length;i++)
-                System.out.println("bytebuff conversion:"+byteBuff[i]);*/
+                System.out.println("bytebuff conversion:"+byteBuff[i]);
 
+            LOG.error("SASI--2-6"+os);
             os.write(outputStream.toByteArray());
             os.flush();
             os.close();
+            LOG.error("SASI--2-7");
             destFile.deleteOnExit();
+            LOG.error("SASI--2-8");*/
             //System.exit(0);
             //----------------------------------------------
 		}catch (JRException e)
 		{
+			LOG.error("SASI--2-9 ERROR",e);
+			System.out.println("SASI--2-9 ERROR"+e);
 			e.printStackTrace();
 		}
 		catch (Exception e)
 		{
+			LOG.error("SASI--2-10 ERROR",e);
+			System.out.println("SASI--2-10 ERROR"+e);
 			e.printStackTrace();
 		}
 
