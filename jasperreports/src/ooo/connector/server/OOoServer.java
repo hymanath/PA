@@ -14,6 +14,10 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.util.Log;
+
+import test.WriteToFile;
+
 /**
  * Starts and stops an OOo server.
  * 
@@ -84,10 +88,10 @@ public class OOoServer {
      * @param   oooAcceptOption      The accept option
      */
     public void start(String oooAcceptOption) throws BootstrapException, IOException, MalformedURLException {
-
+    	try{
         // find office executable relative to this class's class loader
         String sOffice = System.getProperty("os.name").startsWith("Windows")? "soffice.exe": "soffice";            
-
+        Log.error("SOFFICE -- SASI"+sOffice);
         URL[] oooExecFolderURL = new URL[] {new File(oooExecFolder).toURI().toURL()};
         URLClassLoader loader = new URLClassLoader(oooExecFolderURL);
         File fOffice = NativeLibraryLoader.getResource(loader, sOffice);
@@ -114,6 +118,10 @@ public class OOoServer {
 
         pipe(oooProcess.getInputStream(), System.out, "CO> ");
         pipe(oooProcess.getErrorStream(), System.err, "CE> ");
+    	}catch (Exception e) {
+    		System.out.println(e);
+    		WriteToFile.writeToFile(e.toString());
+		}
     }
 
     /**
