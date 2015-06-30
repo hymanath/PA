@@ -675,4 +675,16 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return queryStr.list();
 	}
+	
+	public List checkEventsyncData(String rfid,String imei,Long eventId,String uniqueKey)
+	{
+		Query queryStr=getSession().createQuery("select model.eventAttendeeId from EventAttendee model" +
+				" where model.event.eventId=:eventId and model.imei =:imei and model.rfid =:rfid" +
+				" and model.uniqueKey =:uniqueKey");
+		queryStr.setParameter("rfid", rfid);
+		queryStr.setParameter("imei", imei);
+		queryStr.setParameter("eventId", eventId);
+		queryStr.setParameter("uniqueKey", uniqueKey);
+		return queryStr.list();
+	}
 }

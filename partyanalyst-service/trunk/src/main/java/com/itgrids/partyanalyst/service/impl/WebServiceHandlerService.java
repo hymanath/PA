@@ -2459,5 +2459,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return verifierVO;
 	  }
+	  
+	  public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO)
+	  {
+		  ResultStatus resultStatus = new ResultStatus();
+		  List list = null;
+		  try{
+			 list = eventAttendeeErrorDAO.checkEventsyncDataInError(inputVO.getRFID(),inputVO.getIMEI(),inputVO.getEventId(),inputVO.getUniqueKey());
+			 if(list == null || list.size() == 0)
+				 list = eventAttendeeDAO.checkEventsyncData(inputVO.getRFID(),inputVO.getIMEI(),inputVO.getEventId(),inputVO.getUniqueKey());
+			 if(list == null || list.size() == 0)
+				 resultStatus.setMessage("Not Inserted");
+			 else
+				 resultStatus.setMessage("Inserted"); 
+			  
+		  }
+		  catch (Exception e) {
+			  log.debug("Entered into the verifyEventSyncData  method in WebServiceHandlerService");
+			  resultStatus.setMessage("Exception"); 
+		}
+		return resultStatus;
+	  }
 }
 
