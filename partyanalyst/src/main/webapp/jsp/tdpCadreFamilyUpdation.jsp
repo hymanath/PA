@@ -174,6 +174,7 @@ background-color: #E5E5E5 !important;
 
 <div class="container shadow-box m_top20" id="tableDataDiv"></div>
 <div class="container shadow-box m_top20" id="tdpCadreDetails" ></div>
+<div class="container shadow-box m_top20" id="cadreAddressDivId" ></div>
 <div class="container shadow-box m_top20" id="familyDetalsDiv" ></div>
 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;margin-left:550px"/>
 <div class="container shadow-box m_top20" id="btnDiv" >
@@ -279,6 +280,7 @@ background-color: #E5E5E5 !important;
 		var membershipNo =$('#membershipNo').val().trim();
 		$('#tableDataDiv').html('');
 		$('#tdpCadreDetails').html('');
+		$('#cadreAddressDivId').html('');
 		$('#familyDetalsDiv').html('');
 		searchArr=[];
 		if(mobileNo.trim().length == 0 && voterId.trim().length == 0 && membershipNo.trim().length == 0)
@@ -395,6 +397,7 @@ function getFamilyDetails(tdpCadreId)
 		$('#updateeBtn').hide();	
 		$('#tdpCadreDetails').hide();	
 		$('#familyDetalsDiv').hide();			
+		$('#cadreAddressDivId').hide();			
 		$('#updateFamilyTableDiv').hide();	
 		var jsObj = {
 			tdpCadreId:tdpCadreId,			
@@ -410,6 +413,7 @@ function getFamilyDetails(tdpCadreId)
 			$('#searchDataImg').hide();	
 			$('#updateeBtn').show();	
 			$('#tdpCadreDetails').show();	
+			$('#cadreAddressDivId').show();	
 			$('#familyDetalsDiv').show();	
 			$('#updateFamilyTableDiv').show();	
 			if(result != null && result.length>0)
@@ -652,6 +656,58 @@ function getFamilyDetails(tdpCadreId)
 		str+='</div>';	
 
 		$("#tdpCadreDetails").html(str);
+		
+		
+		str='';
+		str+='<h4  class="offset5" style="margin-bottom:0px"> CADRE ADDRESS DETAILS </h4>';
+		str+='<div class="row" style="padding:10px">';
+		str+='<div class="mandatory" style="margin-left: 18px;"></div>';
+       
+
+		str+='<div class="addressDetails">';
+		
+		str+='<div class="col-md-3 col-xs-6">';
+		str+='<label class="control-label">House.No</label>';
+		str+=' <input type="text"  class="houseNo form-control" />';
+		str+='<label class="control-label">Street</label>';
+		str+=' <input type="text"  class="street form-control" />';
+		str+='<label class="control-label">LandMark</label>';
+		str+=' <input type="text"  class="landmark form-control" />';
+		str+='</div>';
+		
+		str+='<div class="col-md-3 col-xs-6">';
+		str+='<label class="control-label">Select State</label>';
+		str+='<select id="cadreState" class="cadreState form-control" onchange="getDistrictsForState(this.value);">';
+		str+='<option value="0" selected="selected">Select State</option>';
+		str+='<option value="1">Andhra Pradesh</option>';
+		str+='<option value="36">Telangana</option>';
+		str+='</select>';
+		str+='<label class="control-label">Select District</label>';
+		str+='<select id="cadreDistrict" class="cadreDistrict form-control" onchange="getConstituenciesForDistrict(this.value);">';
+		str+='<option value="0" selected="selected">Select District</option>';
+		str+='</select>';
+		str+='<label class="control-label">Select Constituency</label>';
+		str+='<select id="cadreConstituency" class="cadreConstituency form-control" onchange="getMandalsForConstituency(this.value);">';
+		str+='<option value="0" selected="selected">Select Constituency</option>';
+		str+='</select></div>';
+				
+		str+='<div class="col-md-3 col-xs-6">';
+		str+='<label class="control-label">Select Mandal/Muncipality</label>';
+		str+='<select id="cadreMandal" class="cadreMandal form-control" onchange="getPanchayatsForMandal(this.value);">';
+		str+='<option value="0" selected="selected">Select Mandal/Muncipality</option>';
+		str+='</select>';
+		str+='<label class="control-label">Select Village/Ward</label>';
+		str+='<select id="cadreVillage" class="cadreVillage form-control">';
+		str+='<option value="0" selected="selected">Select Village/Ward</option>';
+		str+='</select>';
+		str+='<label class="control-label">Pincode</label>';
+		str+=' <input type="text"  class="pincode form-control" />';
+		str+='</div>';
+				
+		str+='</div>';
+		str+='</div>';
+				
+		$("#cadreAddressDivId").html(str);
 		
 		str='';
 		str+='<div class="panel-heading">';
@@ -1137,6 +1193,126 @@ function removeDetails(divId)
 		$('#'+divId+'').remove();
 	}
 }
+
+function getDistrictsForState(state){
+   
+	   var jsObj=
+	   {				
+					stateId:state,
+					elmtId:"districtList_d",
+					type:"default",
+					task:"getDistrictsForState"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsForStateAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+			   location.reload(); 
+		   }
+		   $("#cadreDistrict").empty();
+		 for(var i in result){
+		   if(result[i].id == 0){
+			  $("#cadreDistrict").append('<option value='+result[i].id+'>All</option>');
+		   }else{
+			  $("#cadreDistrict").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		 }
+	   });
+  }
+  
+function getConstituenciesForDistrict(district){
+		var jsObj=
+	   {				
+					districtId:district,
+					elmtId:"districtList_d",
+					type:"default",
+					task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForADistrictAjaxAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+			   location.reload(); 
+		   }
+		   $("#cadreConstituency").empty();
+		 for(var i in result){
+		   if(result[i].id == 0){
+			  $("#cadreConstituency").append('<option value='+result[i].id+'>All</option>');
+		   }else{
+			  $("#cadreConstituency").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		 }
+	   });
+  }
+  
+    function getMandalsForConstituency(constiId){
+      $("#cadreMandal option").remove();
+	  if(constiId == 0){
+	    return;
+	  }
+      var jsObj=
+		{
+			id:constiId,
+			task:"subRegionsInConstituency",
+			taskType:"",
+			selectElementId:"",
+			address:"",
+			areaType:"null",
+			constId:constiId				
+		}
+    $.ajax({
+          type:'GET',
+          url: 'locationsHierarchiesAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#cadreMandal").append('<option value='+result[i].id+'>All</option>');
+	   }else{
+	      $("#cadreMandal").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });	
+  }
+  
+      function getPanchayatsForMandal(mandalId){
+		
+		$("#cadreVillage").find('option').remove();
+		  if(mandalId == 0)
+		  {
+			return;
+		  }
+		var jsObj={
+			mandalId :mandalId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getPanchayatDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+			}
+		for(var i in result){
+	   if(result[i].id == 0){
+          $("#cadreVillage").append('<option value='+result[i].id+'>All</option>');
+	   }else{
+	      $("#cadreVillage").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });	
+  }
 
 getAllRelationDetails();
 
