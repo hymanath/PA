@@ -1433,7 +1433,8 @@ public String getSummaryDetails(){
 		session = request.getSession();	
 		jObj = new JSONObject(getTask());
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		if(user != null && (user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS") || user.getEntitlements().contains("COMMITTEE_MGT"))){
+		if(user != null && (user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS") || user.getEntitlements().contains("COMMITTEE_MGT")
+				 || user.getEntitlements().contains("TDP_COMMITTEE_ADMIN") || (user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")))){
 			
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
