@@ -1321,5 +1321,26 @@ public class WebServiceHandler {
 		return cadreAddressVOList;
 	}
 	
+	@POST
+	@Path("/verifyEventSyncData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVo){
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			resultStatus = webServiceHandlerService.verifyEventSyncData(inputVo);
+			
 		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in verifyEventSyncData() Method, Exception is ",e);
+			e.printStackTrace();	
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+		
+		
+	}	
 }
