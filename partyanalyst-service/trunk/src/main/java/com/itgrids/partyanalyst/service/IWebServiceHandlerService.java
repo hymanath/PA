@@ -97,4 +97,5 @@ public interface IWebServiceHandlerService {
 	 public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
 	 public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
 	 public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId);
+	 public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
 }
