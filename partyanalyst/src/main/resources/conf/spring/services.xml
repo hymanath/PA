@@ -2408,7 +2408,6 @@
 		<property name="cadreCardNumberUpdationDAO" ref="cadreCardNumberUpdationDAO" />	
 		<property name="cardPrintUserDAO" ref="cardPrintUserDAO" />	
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
-		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 		
 	 </bean>
       
