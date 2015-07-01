@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;

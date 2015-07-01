@@ -60,6 +60,10 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	private Date partyMemberSince;
 	private String whatsappStatus;
 	
+	private Long userAddressId;
+	private UserAddress userAddress;
+
+	
 		
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -326,6 +330,23 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	public void setMarriageDay(Date marriageDay) {
 		this.marriageDay = marriageDay;
 	}
-
 	
+	@Column(name="user_address_id")
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "user_address_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
+
 }

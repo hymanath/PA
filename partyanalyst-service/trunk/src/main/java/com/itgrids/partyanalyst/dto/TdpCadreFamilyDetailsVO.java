@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class TdpCadreFamilyDetailsVO {
 	
 	private Long tdpCadreId;
@@ -19,6 +21,8 @@ public class TdpCadreFamilyDetailsVO {
 	private String whatsappStatus;
 	private Long relationId;
 	private Long voterId;
+	
+	private AddressVO addressVo;
 	
 	
 	public Long getVoterId() {
@@ -123,6 +127,13 @@ public class TdpCadreFamilyDetailsVO {
 	public void setWhatsappStatus(String whatsappStatus) {
 		this.whatsappStatus = whatsappStatus;
 	}
+	public AddressVO getAddressVo() {
+		return addressVo;
+	}
+	public void setAddressVo(AddressVO addressVo) {
+		this.addressVo = addressVo;
+	}
+	
 	
 	
 	
