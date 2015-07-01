@@ -9745,7 +9745,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 									userAddress.setTehsil(tehsilDAO.get(tehsilId));
 								}
 								if(panchayatId !=null && panchayatId !=0l){
-									userAddress.setPanchayat(panchayatDAO.get(panchayatId));
+									userAddress.setPanchayatId(panchayatId);
 								}
 								if(landMark !=null && !landMark.equalsIgnoreCase("") )
 								{
@@ -9926,75 +9926,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					if(obj[14] !=null){
 						UserAddress	userAddress=(UserAddress) obj[14];
 						if(userAddress !=null){
-							
-							AddressVO addressVO=new AddressVO();
-							addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
-							addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
-							addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
-							addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
-							addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
-							addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
-							addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
-							addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
-							addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
-							
-							List<SelectOptionVO> selectDistrictList=null;
-							List<SelectOptionVO> selectConstituencyList=null;
-							List<SelectOptionVO> selectMandalList=null;
-							List<GenericVO> genericPanchayatList=null;
-							if(addressVO.getStateId() !=null && addressVO.getStateId() !=0l){
-								selectDistrictList=regionServiceDataImp.getDistrictsForState(addressVO.getStateId());
-							}
-							if(addressVO.getDistrictId() !=null && addressVO.getDistrictId() !=0l){
-								selectConstituencyList=regionServiceDataImp.getConstituenciesByDistrictID(addressVO.getDistrictId());
-							}
-							SelectOptionVO tehsilIst=null;
-							if(addressVO.getConstituencyId() !=null && addressVO.getConstituencyId() !=0l){
-
-								List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(addressVO.getConstituencyId(), IConstants.PRESENT_YEAR, null);
-								/*subRegions.add(0, new SelectOptionVO(0l,"Select Location"));*/
-								List stateValue = constituencyDAO.getStateForParliamentConstituency(addressVO.getConstituencyId());
-								Object[] list = (Object[])stateValue.get(0);
-								if((Long)list[0] == 24){
-									for(SelectOptionVO subRegion:subRegions){
-										subRegion.setName(subRegion.getName().replaceAll("MANDAL", "TALUK"));
-									}
-								}
-								setRegionsList(subRegions);
-									if(subRegions !=null){
-										tehsilIst=new SelectOptionVO();
-										tehsilIst.setSelectOptionsList(subRegions);
-									}
-									
-							}
-							for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
-								
-								String regionstr=regions.getId().toString();
-								
-								Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));
-								
-								if(addressVO.getTehsilId() !=null &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
-									genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalId(regions.getId());
-								}
-							}
-							if(selectDistrictList !=null){
-								addressVO.setDistrictList(selectDistrictList);
-							}
-							if(selectConstituencyList !=null){
-								addressVO.setAddressTypeList(selectConstituencyList);
-							}
-							if(tehsilIst.getSelectOptionsList() !=null){
-								addressVO.setTehsilList(tehsilIst.getSelectOptionsList());
-							}
-							
-							if(genericPanchayatList !=null){
-								addressVO.setPanchayatList(genericPanchayatList);
-							}
-							
-							if(addressVO !=null){
-								vo.setAddressVO(addressVO);
-							}
-							
+							settingUserDetailsOfCadre(userAddress,vo);
 						}
 					}
 					
@@ -10025,6 +9957,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setPartyMemberSinceStr(getFinalStringValue(familyVO.getPartyMemberSince()));
 						vo.setCadreId(familyVO.getTdpCadreId());
 						//vo.setBloodGroupId(Long.valueOf(getFinalStringValue(familyVO.getOccupationId())));
+
+						//Updating UserAddress
+						
+						UserAddress userAddress=familyVO.getUserAddress();
+						if(userAddress !=null){
+							settingUserDetailsOfCadre(userAddress,vo);
+						}
+								
 					}
 				}
 			}
@@ -10041,6 +9981,87 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		
 		return returnList;
 	}
+	//Setting && Updating UserDetails
+	public void settingUserDetailsOfCadre(UserAddress userAddress,CadreRegistrationVO vo){
+		
+		AddressVO addressVO=new AddressVO();
+		try{
+			addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
+			addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
+			addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
+			addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
+			addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
+			addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
+			addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
+			addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
+			addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
+			
+			List<SelectOptionVO> selectDistrictList=null;
+			List<SelectOptionVO> selectConstituencyList=null;
+			List<SelectOptionVO> selectMandalList=null;
+			List<GenericVO> genericPanchayatList=null;
+			if(addressVO.getStateId() !=null && addressVO.getStateId() !=0l){
+				selectDistrictList=regionServiceDataImp.getDistrictsForState(addressVO.getStateId());
+			}
+			if(addressVO.getDistrictId() !=null && addressVO.getDistrictId() !=0l){
+				selectConstituencyList=regionServiceDataImp.getConstituenciesByDistrictID(addressVO.getDistrictId());
+			}
+			SelectOptionVO tehsilIst=null;
+			if(addressVO.getConstituencyId() !=null && addressVO.getConstituencyId() !=0l){
+
+				List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(addressVO.getConstituencyId(), IConstants.PRESENT_YEAR, null);
+				subRegions.add(0, new SelectOptionVO(0l,"Select Location"));
+				List stateValue = constituencyDAO.getStateForParliamentConstituency(addressVO.getConstituencyId());
+				Object[] list = (Object[])stateValue.get(0);
+				if((Long)list[0] == 24){
+					for(SelectOptionVO subRegion:subRegions){
+						subRegion.setName(subRegion.getName().replaceAll("MANDAL", "TALUK"));
+					}
+				}
+				setRegionsList(subRegions);
+					if(subRegions !=null){
+						tehsilIst=new SelectOptionVO();
+						tehsilIst.setSelectOptionsList(subRegions);
+					}
+					
+			}
+			for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
+				if(regions.getId() !=null && regions.getId() !=0l){
+					
+					String regionstr=regions.getId().toString();
+					Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));
+					
+					if(addressVO.getTehsilId() !=null &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
+						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalId(regions.getId());
+					}
+				}
+				
+			}
+			if(selectDistrictList !=null){
+				addressVO.setDistrictList(selectDistrictList);
+			}
+			if(selectConstituencyList !=null){
+				addressVO.setAddressTypeList(selectConstituencyList);
+			}
+			if(tehsilIst.getSelectOptionsList() !=null){
+				addressVO.setTehsilList(tehsilIst.getSelectOptionsList());
+			}
+			
+			if(genericPanchayatList !=null){
+				addressVO.setPanchayatList(genericPanchayatList);
+			}
+			
+			if(addressVO !=null){
+				vo.setAddressVO(addressVO);
+			}
+		}
+		catch (Exception e) {
+			LOG.error(" exception occured in settingUserDetailsOfCadre()",e);
+		}
+		
+		
+	}
+	
 	
 	public String getFinalStringValue(Object date){
 		String value = "";
@@ -10111,25 +10132,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setCasteStateId(tdpCadreFamilyInfo.getCasteStateId());
 					vo.setVotercardNo(voterCardNo);
 					
-					UserAddress userAddress=tdpCadreFamilyInfo.getUserAddress();
-					
-					AddressVO addressVO=null;
-					if(userAddress !=null){
-						addressVO=new AddressVO();
-						addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
-						addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
-						addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
-						addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
-						addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
-						addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
-						addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
-						addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
-						addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
-					}
-					
-					if(addressVO !=null){
-						vo.setAddressVo(addressVO);
-					}
 					
 					if(tdpCadreFamilyInfo.getRelationId() != null && tdpCadreFamilyInfo.getRelationId() != 13L)
 					{
