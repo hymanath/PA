@@ -1084,7 +1084,7 @@ function updateFamilyInfo()
 		var districtId=$('.cadreDistrict option:selected').val();
 		var constituencyId=$('.cadreConstituency option:selected').val();
 		
-		var mandal=$('.cadreConstituency option:selected').val();
+		var mandal=$('.cadreMandal option:selected').val();
 		var mandalStr=mandal.toString();
 		var mandalId=0;
 		var localElectionBody=0;
