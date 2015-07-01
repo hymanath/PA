@@ -43,6 +43,7 @@ public class AddressVO implements Serializable {
 	private List<SelectOptionVO> districtList ;
 	private List<SelectOptionVO> tehsilList ;
 	private List<SelectOptionVO> addressTypeList;
+	private List<GenericVO> panchayatList;
 	
 	private Long addressId;
 	private Long candidateAddressId;
@@ -51,6 +52,11 @@ public class AddressVO implements Serializable {
 	private Long voterCategoryValuesId;
 	private String voterCategoryValuesName;
 	private String categoryValue;
+	
+	private Long panchaytId; 
+	private Long boothId;
+	private String pinCodeStr;
+	private String landMarkStr;
 	
 	
 	public Long getVoterCategoryValuesId() {
@@ -257,6 +263,36 @@ public class AddressVO implements Serializable {
 	}
 	public void setPincode(Long pincode) {
 		this.pincode = pincode;
+	}
+	public Long getPanchaytId() {
+		return panchaytId;
+	}
+	public void setPanchaytId(Long panchaytId) {
+		this.panchaytId = panchaytId;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	public String getPinCodeStr() {
+		return pinCodeStr;
+	}
+	public void setPinCodeStr(String pinCodeStr) {
+		this.pinCodeStr = pinCodeStr;
+	}
+	public String getLandMarkStr() {
+		return landMarkStr;
+	}
+	public void setLandMarkStr(String landMarkStr) {
+		this.landMarkStr = landMarkStr;
+	}
+	public List<GenericVO> getPanchayatList() {
+		return panchayatList;
+	}
+	public void setPanchayatList(List<GenericVO> panchayatList) {
+		this.panchayatList = panchayatList;
 	}
 	
 	

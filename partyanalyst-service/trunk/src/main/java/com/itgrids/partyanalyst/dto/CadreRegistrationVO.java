@@ -107,6 +107,8 @@ public class CadreRegistrationVO implements Serializable{
 	private String 		marriageDateStr;
 	private String 		whatsAppStatus;
 	
+	private AddressVO addressVO;
+	
 	
 	public String getWhatsAppStatus() {
 		return whatsAppStatus;
@@ -594,6 +596,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
 	}
 	
 }

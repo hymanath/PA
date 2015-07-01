@@ -115,6 +115,8 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.StateDAO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -163,6 +165,7 @@ import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.RegistrationStatus;
 import com.itgrids.partyanalyst.model.RegistrationStatusTemp;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserKeys;
 import com.itgrids.partyanalyst.model.TabUserLoginDetails;
@@ -280,6 +283,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreCardNumberUpdationDAO cadreCardNumberUpdationDAO;
 	private ICardPrintUserDAO cardPrintUserDAO ;
 	private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
+	private List<SelectOptionVO> regionsList;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -551,6 +555,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
 
 
 	public void setCadreSurveyUserAssignDetailsDAO(
@@ -712,6 +719,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public static void setSortData(Comparator<ByeElectionVO> sortData) {
 		CadreRegistrationService.sortData = sortData;
+	}
+	
+	
+
+	public List<SelectOptionVO> getRegionsList() {
+		return regionsList;
+	}
+
+	public void setRegionsList(List<SelectOptionVO> regionsList) {
+		this.regionsList = regionsList;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -9677,6 +9694,62 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						tdpCadreFamilyInfoDAO.deleteFamilyInfoByCadre(inputList.get(0).getTdpCadreId());
 						for(TdpCadreFamilyDetailsVO vo : inputList)
 						{
+							
+							//saving UserAdressDetails
+							
+							AddressVO addressVO=vo.getAddressVo();
+							
+							UserAddress userAddress=null;
+							UserAddress returnUserAddress=null;
+							Long userPrimaryKey=null;
+							if(addressVO !=null){
+								userAddress=new UserAddress();
+								
+								String hsNo=addressVO.getHouseNo();
+								String street=addressVO.getStreet();
+								String pinCode=addressVO.getPinCodeStr();
+								Long stateId=addressVO.getStateId();
+								Long districtId=addressVO.getDistrictId();
+								Long constituencyId=addressVO.getConstituencyId();
+								Long tehsilId=addressVO.getTehsilId();
+								Long panchayatId=addressVO.getPanchaytId();
+								Long boothId=addressVO.getBoothId();
+								String landMark=addressVO.getLandMarkStr();
+								if(hsNo !=null){
+									userAddress.setHouseNo(hsNo);
+								}
+								if(street !=null){
+									userAddress.setStreet(street);
+								}
+								if(pinCode !=null){
+									userAddress.setPinCode(pinCode);
+								}
+								if(stateId !=null && stateId !=0l){
+									userAddress.setState(stateDAO.get(stateId));
+								}
+								if(districtId !=null && districtId !=0l){
+									userAddress.setDistrict(districtDAO.get(districtId));
+								}
+								if(constituencyId !=null && constituencyId !=0l){
+									userAddress.setConstituency(constituencyDAO.get(constituencyId));
+								}
+								if(tehsilId !=null && tehsilId !=0l){
+									userAddress.setTehsil(tehsilDAO.get(tehsilId));
+								}
+								if(panchayatId !=null && panchayatId !=0l){
+									userAddress.setPanchayat(panchayatDAO.get(panchayatId));
+								}
+								if(landMark !=null)
+								{
+									userAddress.setLocalArea(landMark);
+								}
+							
+								if(userAddress !=null){
+									returnUserAddress=userAddressDAO.save(userAddress);
+								}
+								userPrimaryKey=returnUserAddress.getUserAddressId();
+							}
+							
 						TdpCadreFamilyInfo tdpCadreFamilyInfo = new TdpCadreFamilyInfo();
 						
 							if(vo.getAge() != null && vo.getAge().longValue()>0L)
@@ -9737,6 +9810,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							tdpCadreFamilyInfo.setInsertedTime(date.getCurrentDateAndTime());
 							tdpCadreFamilyInfo.setUpdatedTime(date.getCurrentDateAndTime());
 							tdpCadreFamilyInfo.setUpdatedBy(userId);
+							if(userPrimaryKey !=null){
+								tdpCadreFamilyInfo.setUserAddressId(userPrimaryKey);
+							}
 							tdpCadreFamilyInfoDAO.save(tdpCadreFamilyInfo);
 							
 						}
@@ -9790,7 +9866,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.constituency.name,model.memberShipNo,model.mobileNo,model.firstname" +
-					" ,model.casteStateId,model.gender,model.emailId,model.age,model.dateOfBirth,model.voterId,model.occupationId,model.educationId " +
+					" ,model.casteStateId,model.gender,model.emailId,model.age,model.dateOfBirth,model.voterId,model.occupationId,model.educationId," +
+					"  model.userAddress " +
 					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
 			
 			if(membership != null && !membership.isEmpty())
@@ -9829,6 +9906,84 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setOccupationId(obj[12] != null ? (Long)obj[12] : null);
 					vo.setDobStr(obj[10] != null ? obj[10].toString(): null);
 					vo.setVoterCardNo(obj[11] != null ? voterDAO.get((Long)obj[11]).getVoterIDCardNo() : null);
+					
+					//UserAddress userAddres=null;
+					
+					if(obj[14] !=null){
+						UserAddress	userAddress=(UserAddress) obj[14];
+						if(userAddress !=null){
+							
+							AddressVO addressVO=new AddressVO();
+							addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
+							addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
+							addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
+							addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
+							addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
+							addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
+							addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
+							addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
+							addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
+							
+							List<SelectOptionVO> selectDistrictList=null;
+							List<SelectOptionVO> selectConstituencyList=null;
+							List<SelectOptionVO> selectMandalList=null;
+							List<GenericVO> genericPanchayatList=null;
+							if(addressVO.getStateId() !=null && addressVO.getStateId() !=0l){
+								selectDistrictList=regionServiceDataImp.getDistrictsForState(addressVO.getStateId());
+							}
+							if(addressVO.getDistrictId() !=null && addressVO.getDistrictId() !=0l){
+								selectConstituencyList=regionServiceDataImp.getConstituenciesByDistrictID(addressVO.getDistrictId());
+							}
+							SelectOptionVO tehsilIst=null;
+							if(addressVO.getConstituencyId() !=null && addressVO.getConstituencyId() !=0l){
+
+								List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(addressVO.getConstituencyId(), IConstants.PRESENT_YEAR, null);
+								/*subRegions.add(0, new SelectOptionVO(0l,"Select Location"));*/
+								List stateValue = constituencyDAO.getStateForParliamentConstituency(addressVO.getConstituencyId());
+								Object[] list = (Object[])stateValue.get(0);
+								if((Long)list[0] == 24){
+									for(SelectOptionVO subRegion:subRegions){
+										subRegion.setName(subRegion.getName().replaceAll("MANDAL", "TALUK"));
+									}
+								}
+								setRegionsList(subRegions);
+									if(subRegions !=null){
+										tehsilIst=new SelectOptionVO();
+										tehsilIst.setSelectOptionsList(subRegions);
+									}
+									
+							}
+							for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
+								
+								String regionstr=regions.getId().toString();
+								
+								Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));
+								
+								if(addressVO.getTehsilId() !=null &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
+									genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalId(regions.getId());
+								}
+							}
+							if(selectDistrictList !=null){
+								addressVO.setDistrictList(selectDistrictList);
+							}
+							if(selectConstituencyList !=null){
+								addressVO.setAddressTypeList(selectConstituencyList);
+							}
+							if(tehsilIst.getSelectOptionsList() !=null){
+								addressVO.setTehsilList(tehsilIst.getSelectOptionsList());
+							}
+							
+							if(genericPanchayatList !=null){
+								addressVO.setPanchayatList(genericPanchayatList);
+							}
+							
+							if(addressVO !=null){
+								vo.setAddressVO(addressVO);
+							}
+							
+						}
+					}
+					
 					
 					//returnList.add(vo);
 					cadreMap.put(vo.getCadreId(), vo);
@@ -9941,6 +10096,26 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setPartyMemberSince(tdpCadreFamilyInfo.getPartyMemberSince() != null ? tdpCadreFamilyInfo.getPartyMemberSince().toString() : "");
 					vo.setCasteStateId(tdpCadreFamilyInfo.getCasteStateId());
 					vo.setVotercardNo(voterCardNo);
+					
+					UserAddress userAddress=tdpCadreFamilyInfo.getUserAddress();
+					
+					AddressVO addressVO=null;
+					if(userAddress !=null){
+						addressVO=new AddressVO();
+						addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
+						addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
+						addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
+						addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
+						addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
+						addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
+						addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
+						addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
+						addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
+					}
+					
+					if(addressVO !=null){
+						vo.setAddressVo(addressVO);
+					}
 					
 					if(tdpCadreFamilyInfo.getRelationId() != null && tdpCadreFamilyInfo.getRelationId() != 13L)
 					{
