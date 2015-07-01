@@ -9715,14 +9715,22 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								Long panchayatId=addressVO.getPanchaytId();
 								Long boothId=addressVO.getBoothId();
 								String landMark=addressVO.getLandMarkStr();
-								if(hsNo !=null){
+								Long localElectionBodyId=addressVO.getLocalElectionBodyId();
+								if(hsNo !=null && !hsNo.equalsIgnoreCase("")){
 									userAddress.setHouseNo(hsNo);
+								}else{
+									userAddress.setHouseNo(null);
 								}
-								if(street !=null){
+								if(street !=null && !street.equalsIgnoreCase("") ){
 									userAddress.setStreet(street);
+								}else{
+									userAddress.setStreet(null);
 								}
-								if(pinCode !=null){
+								if(pinCode !=null && !pinCode.equalsIgnoreCase("") ){
 									userAddress.setPinCode(pinCode);
+								}
+								else{
+									userAddress.setPinCode(null);
 								}
 								if(stateId !=null && stateId !=0l){
 									userAddress.setState(stateDAO.get(stateId));
@@ -9739,9 +9747,15 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								if(panchayatId !=null && panchayatId !=0l){
 									userAddress.setPanchayat(panchayatDAO.get(panchayatId));
 								}
-								if(landMark !=null)
+								if(landMark !=null && !landMark.equalsIgnoreCase("") )
 								{
 									userAddress.setLocalArea(landMark);
+								}
+								else{
+									userAddress.setLocalArea(null);
+								}
+								if(localElectionBodyId !=null && localElectionBodyId !=0l){
+									userAddress.setLocalElectionBody(localElectionBodyDAO.get(localElectionBodyId));
 								}
 							
 								if(userAddress !=null){
