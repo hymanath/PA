@@ -379,7 +379,20 @@ background-color: #E5E5E5 !important;
 				whatsappStatus :result[i].whatsAppStatus,
 				partyMemberSince:result[i].partyMemberSinceStr != null ? (result[i].partyMemberSinceStr).substring(0,11):"", 
 				tdpCadreId:result[i].cadreId,
-				bloodGroupId : 0
+				bloodGroupId : 0,
+				//userAddress Data
+				/* houseNo:result[i].addressVO.houseNo,
+				street:result[i].addressVO.street,
+				pinCode:result[i].addressVO.pinCode,
+				stateId:result[i].addressVO.stateId,
+				districtId:result[i].addressVO.districtId,
+				constituencyId:result[i].addressVO.constituencyId,
+				tehsilId:result[i].addressVO.tehsilId,
+				panchaytId:result[i].addressVO.panchaytId,
+				landMarkStr:result[i].addressVO.landMarkStr, */
+				addressVO:result[i].addressVO
+				
+				
 			};
 			
 			searchArr.push(cadreObj);
@@ -663,48 +676,128 @@ function getFamilyDetails(tdpCadreId)
 		str+='<div class="row" style="padding:10px">';
 		str+='<div class="mandatory" style="margin-left: 18px;"></div>';
        
-
-		str+='<div class="addressDetails">';
-		
-		str+='<div class="col-md-3 col-xs-6">';
-		str+='<label class="control-label">House.No</label>';
-		str+=' <input type="text"  class="houseNo form-control" />';
-		str+='<label class="control-label">Street</label>';
-		str+=' <input type="text"  class="street form-control" />';
-		str+='<label class="control-label">LandMark</label>';
-		str+=' <input type="text"  class="landmark form-control" />';
-		str+='</div>';
-		
-		str+='<div class="col-md-3 col-xs-6">';
-		str+='<label class="control-label">Select State</label>';
-		str+='<select id="cadreState" class="cadreState form-control" onchange="getDistrictsForState(this.value);">';
-		str+='<option value="0" selected="selected">Select State</option>';
-		str+='<option value="1">Andhra Pradesh</option>';
-		str+='<option value="36">Telangana</option>';
-		str+='</select>';
-		str+='<label class="control-label">Select District</label>';
-		str+='<select id="cadreDistrict" class="cadreDistrict form-control" onchange="getConstituenciesForDistrict(this.value);">';
-		str+='<option value="0" selected="selected">Select District</option>';
-		str+='</select>';
-		str+='<label class="control-label">Select Constituency</label>';
-		str+='<select id="cadreConstituency" class="cadreConstituency form-control" onchange="getMandalsForConstituency(this.value);">';
-		str+='<option value="0" selected="selected">Select Constituency</option>';
-		str+='</select></div>';
-				
-		str+='<div class="col-md-3 col-xs-6">';
-		str+='<label class="control-label">Select Mandal/Muncipality</label>';
-		str+='<select id="cadreMandal" class="cadreMandal form-control" onchange="getPanchayatsForMandal(this.value);">';
-		str+='<option value="0" selected="selected">Select Mandal/Muncipality</option>';
-		str+='</select>';
-		str+='<label class="control-label">Select Village/Ward</label>';
-		str+='<select id="cadreVillage" class="cadreVillage form-control">';
-		str+='<option value="0" selected="selected">Select Village/Ward</option>';
-		str+='</select>';
-		str+='<label class="control-label">Pincode</label>';
-		str+=' <input type="text"  class="pincode form-control" />';
-		str+='</div>';
-				
-		str+='</div>';
+		for(var m in searchArr)
+			{
+				if(searchArr[m].tdpCadreId == tdpCadreId)
+				{
+					str+='<div class="addressDetails">';
+					
+					str+='<div class="col-md-3 col-xs-6">';
+					str+='<label class="control-label">House.No</label>';
+					if(searchArr[m].addressVO.houseNo !=null){
+						str+=' <input type="text"  class="houseNo form-control" value="'+searchArr[m].addressVO.houseNo+'"/>';
+					}else{
+						str+=' <input type="text"  class="houseNo form-control" />';
+					}
+					
+					str+='<label class="control-label">Street</label>';
+					if(searchArr[m].addressVO.street !=null){
+						str+=' <input type="text"  class="street form-control" value="'+searchArr[m].addressVO.street+'"/>';
+					}else{
+						str+=' <input type="text"  class="street form-control" />';
+					}
+					str+='<label class="control-label">LandMark</label>';
+					if(searchArr[m].addressVO.landMarkStr !=null){
+						str+=' <input type="text"  class="landmark form-control" value="'+searchArr[m].addressVO.landMarkStr+'"/>';
+					}else{
+						str+=' <input type="text"  class="landmark form-control" />';
+					}
+					
+					str+='</div>';
+					
+					str+='<div class="col-md-3 col-xs-6">';
+					str+='<label class="control-label" selected="selected">Select State</label>';
+					str+='<select id="cadreState" class="cadreState form-control" onchange="getDistrictsForState(this.value);">';
+					str+='<option value="0" selected="selected">Select State</option>';
+					if(searchArr[m].addressVO.stateId ==1){
+						str+='<option value="1" selected="selected">Andhra Pradesh</option>';
+						str+='<option value="36" >Telangana</option>';
+					}else if(searchArr[m].addressVO.stateId ==36){
+						str+='<option value="1" >Andhra Pradesh</option>';
+						str+='<option value="36" selected="selected">Telangana</option>';
+					}
+					else{
+						str+='<option value="1" >Andhra Pradesh</option>';
+						str+='<option value="36" >Telangana</option>';
+					}
+					
+					str+='</select>';
+					
+					//district
+					str+='<label class="control-label">Select District</label>';
+					str+='<select id="cadreDistrict" class="cadreDistrict form-control" onchange="getConstituenciesForDistrict(this.value);">';
+					str+='<option value="0" selected="selected">Select District</option>';
+					
+					if(searchArr[m].addressVO.districtList !=null){
+						for(var n in searchArr[m].addressVO.districtList){
+							if(searchArr[m].addressVO.districtId == searchArr[m].addressVO.districtList[n].id){
+								str+='<option value="'+searchArr[m].addressVO.districtList[n].id+'" selected="selected">'+searchArr[m].addressVO.districtList[n].name+'</option>';
+							}else{
+								str+='<option value="'+searchArr[m].addressVO.districtList[n].id+'">'+searchArr[m].addressVO.districtList[n].name+'</option>';
+							}
+							
+						}
+					}
+					
+					str+='</select>';
+					//constituency
+					str+='<label class="control-label">Select Constituency</label>';
+					str+='<select id="cadreConstituency" class="cadreConstituency form-control" onchange="getMandalsForConstituency(this.value);">';
+					str+='<option value="0" selected="selected">Select Constituency</option>';
+					if(searchArr[m].addressVO.addressTypeList !=null){
+						for(var o in searchArr[m].addressVO.addressTypeList){
+							if(searchArr[m].addressVO.addressTypeList[o].id==searchArr[m].addressVO.constituencyId){
+								str+='<option value="'+searchArr[m].addressVO.addressTypeList[o].id+'" selected="selected">'+searchArr[m].addressVO.addressTypeList[o].name+'</option>';
+							}else{
+								str+='<option value="'+searchArr[m].addressVO.addressTypeList[o].id+'" >'+searchArr[m].addressVO.addressTypeList[o].name+'</option>';
+							}
+						}
+						
+					}
+					
+					str+='</select></div>';
+							
+					str+='<div class="col-md-3 col-xs-6">';
+					str+='<label class="control-label">Select Mandal/Muncipality</label>';
+					str+='<select id="cadreMandal" class="cadreMandal form-control" onchange="getPanchayatsForMandal(this.value);">';
+					
+					str+='<option value="0" selected="selected">Select Mandal/Muncipality</option>';
+					if(searchArr[m].addressVO.tehsilList !=null){
+						for(var p in searchArr[m].addressVO.tehsilList){
+							
+							var tehsilId=searchArr[m].addressVO.tehsilList[p].id.toString();
+							var tehsilIdComp=tehsilId.substring(1,tehsilId.length);
+							
+							if(tehsilIdComp == searchArr[m].addressVO.tehsilId){
+								str+='<option value="'+searchArr[m].addressVO.tehsilList[p].id+'" selected="selected">'+searchArr[m].addressVO.tehsilList[p].name+'</option>';
+							}else{
+								str+='<option value="'+searchArr[m].addressVO.tehsilList[p].id+'">'+searchArr[m].addressVO.tehsilList[p].name+'</option>';
+							}
+							
+						}
+					}
+					str+='</select>';
+					str+='<label class="control-label">Select Village/Ward</label>';
+					str+='<select id="cadreVillage" class="cadreVillage form-control">';
+					str+='<option value="0" selected="selected">Select Village/Ward</option>';
+					if(searchArr[m].addressVO.panchayatList !=null){
+						for(var q in searchArr[m].addressVO.panchayatList){
+							if(searchArr[m].addressVO.panchaytId==searchArr[m].addressVO.panchayatList[q].id){
+								str+='<option value="'+searchArr[m].addressVO.panchayatList[q].id+'" selected="selected">'+searchArr[m].addressVO.panchayatList[q].name+'</option>';
+							}
+							else{
+								str+='<option value="'+searchArr[m].addressVO.panchayatList[q].id+'">'+searchArr[m].addressVO.panchayatList[q].name+'</option>';
+							}
+						}
+					}
+					str+='</select>';
+					str+='<label class="control-label">Pincode</label>';
+					str+=' <input type="text"  class="pincode form-control" />';
+					str+='</div>';
+							
+					str+='</div>';
+				}
+			}
 		str+='</div>';
 				
 		$("#cadreAddressDivId").html(str);
@@ -1002,7 +1095,7 @@ function updateFamilyInfo()
 				voterId = "";
 				partyMemberSince="";
 			}
-
+			
 				var obj = {
 					age:0,
 					casteStateId:casteStateId,
@@ -1019,7 +1112,16 @@ function updateFamilyInfo()
 					relationId:relation,
 					tdpCadreId:tdpCadre,
 					occupationId:occupation,
-					bloodGroup:0
+					bloodGroup:0,
+					hNo:"1-252",
+					street:"peddamma temple",
+					stateId:0,
+					districtId:20,
+					constituencyId:242,
+					mandalId:528,
+					panchayatId:121,
+					pincode:"313131",
+					landMark:"jntuSignal"
 				};
 				dataArr.push(obj);
 			

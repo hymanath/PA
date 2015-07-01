@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -163,6 +164,7 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 			jobj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
 			List<TdpCadreFamilyDetailsVO> inputList = new ArrayList<TdpCadreFamilyDetailsVO>();
+			
 			 JSONArray arr = jobj.getJSONArray("dataArr");
 			 if(arr != null && arr.length() > 0)
 			 {
@@ -170,6 +172,9 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 {
 				 JSONObject obj = arr.getJSONObject(i);
 				 TdpCadreFamilyDetailsVO vo = new TdpCadreFamilyDetailsVO();
+				 
+				 AddressVO addressDetails=new AddressVO();
+				 
 				 vo.setAge(obj.getLong("age"));
 				// vo.setBloodGroupId(obj.getLong("bloodGroup"));
 				 vo.setCasteStateId(obj.getLong("casteStateId"));
@@ -186,8 +191,22 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 vo.setRelationId(obj.getLong("relationId"));
 				 vo.setTdpCadreId(obj.getLong("tdpCadreId"));
 				 vo.setOccupationId(obj.getLong("occupationId"));
+				 
+				
+				 addressDetails.setHouseNo(obj.getString("hNo") !=null ? obj.getString("hNo").toString() : null);
+				 addressDetails.setStreet(obj.getString("street") !=null ? obj.getString("street").toString() : null);
+				 addressDetails.setPinCodeStr(obj.getString("pincode") !=null ? obj.getString("pincode").toString() : null);
+				 addressDetails.setStateId(obj.getLong("stateId"));
+				 addressDetails.setDistrictId(obj.getLong("districtId"));
+				 addressDetails.setConstituencyId(obj.getLong("constituencyId"));
+				 addressDetails.setTehsilId(obj.getLong("mandalId"));
+				 addressDetails.setPanchaytId(obj.getLong("panchayatId"));
+				 addressDetails.setLandMarkStr(obj.getString("landMark") !=null ? obj.getString("landMark").toString() : null);
+				 
+				 vo.setAddressVo(addressDetails);
 				 inputList.add(vo);
 				 
+				
 				 }
 			 }
 			 result =  cadreRegistrationService.updateCadreFamilyInfo(inputList,regVo.getRegistrationID());
