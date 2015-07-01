@@ -1077,6 +1077,25 @@ function updateFamilyInfo()
 	
 	    var occupation = $(this).find(".occupation").val();
 		
+		var hNo=$(".houseNo").val();
+		var street=$(".street").val();
+		var landMark=$(".landmark").val();
+		var stateId=$('.cadreState option:selected').val();
+		var districtId=$('.cadreDistrict option:selected').val();
+		var constituencyId=$('.cadreConstituency option:selected').val();
+		
+		var mandal=$('.cadreConstituency option:selected').val();
+		var mandalStr=mandal.toString();
+		var mandalId=0;
+		var localElectionBody=0;
+		if(mandalStr.substring(0,1)==2){
+			mandalId=mandalStr.substring(1,mandalStr.length);
+		}else{
+			localElectionBody=mandalStr.substring(1,mandalStr.length);
+		}
+		var panchayatId=$('.cadreVillage option:selected').val();
+		var pincode=$('.pincode').val();
+		
 			if(count == 1)
 			{
 			age = 0;
@@ -1113,15 +1132,17 @@ function updateFamilyInfo()
 					tdpCadreId:tdpCadre,
 					occupationId:occupation,
 					bloodGroup:0,
-					hNo:"1-252",
-					street:"peddamma temple",
-					stateId:0,
-					districtId:20,
-					constituencyId:242,
-					mandalId:528,
-					panchayatId:121,
-					pincode:"313131",
-					landMark:"jntuSignal"
+					//
+					hNo:hNo,
+					street:street,
+					stateId:stateId,
+					districtId:districtId,
+					constituencyId:constituencyId,
+					mandalId:mandalId,
+					panchayatId:panchayatId,
+					pincode:pincode,
+					landMark:landMark,
+					localElectionBody:localElectionBody
 				};
 				dataArr.push(obj);
 			
