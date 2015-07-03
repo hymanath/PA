@@ -2033,5 +2033,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+	public String getCadreWithFamilyDetailsOfEachCadre(){
+		
+		try{
+			
+			jobj = new JSONObject(getTask());
+			
+			
+			resultList=cadreRegistrationService.getCadreWithFamilyDetailsOfEachCadre(jobj.getLong("cadreId"));
+			
+		}catch(Exception e){
+			LOG.error(" Entered Into getCadreDetailsOfEachCadre",e);
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 	
 }

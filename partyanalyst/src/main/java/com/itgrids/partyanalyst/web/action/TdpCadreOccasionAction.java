@@ -203,6 +203,7 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 addressDetails.setPanchaytId(obj.getLong("panchayatId"));
 				 addressDetails.setLandMarkStr(obj.getString("landMark") !=null ? obj.getString("landMark").toString() : null);
 				 addressDetails.setLocalElectionBodyId(obj.getLong("localElectionBody"));
+				 addressDetails.setWardId(obj.getLong("wardId"));
 				 
 				 vo.setAddressVo(addressDetails);
 				 inputList.add(vo);
