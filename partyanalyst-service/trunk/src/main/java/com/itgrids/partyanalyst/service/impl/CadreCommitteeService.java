@@ -14855,4 +14855,42 @@ return mandalList;
 			
 		}
 	}
+public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
+		
+		List<GenericVO> panachatiesList = new ArrayList<GenericVO>();
+		List<Object[]> panchayties=null;
+		if(tehsilId !=null ){
+			if(Long.valueOf(tehsilId.toString().substring(0, 1))==2){
+				 panchayties = panchayatDAO.getPanchayatsByTehsilId(Long.valueOf(tehsilId.toString().substring(1)));
+			}
+			if(Long.valueOf(tehsilId.toString().substring(0, 1))==1){
+				 panchayties = constituencyDAO.getWardIdAndName(Long.valueOf(tehsilId.toString().substring(1)));
+			}
+			if(panchayties !=null ){
+				for (Object[] list : panchayties) {
+					GenericVO panchayaties = new GenericVO();
+					String idStr=null;
+					String insertIdStr=null;
+					if(Long.valueOf(tehsilId.toString().substring(0, 1))==2){
+						idStr=list[0].toString();
+						insertIdStr="1"+idStr;					
+						panchayaties.setId(Long.valueOf(insertIdStr));//PanchayatId Setting with 1 Before
+					}else if(Long.valueOf(tehsilId.toString().substring(0, 1))==1){
+						 idStr=list[0].toString();
+						 insertIdStr="2"+idStr;
+						panchayaties.setId(Long.valueOf(insertIdStr));//WardId Setting with 2 Before
+					}
+					
+					panchayaties.setName(list[1].toString());
+					
+					panachatiesList.add(panchayaties);
+				}
+				return panachatiesList;
+			}
+			else{	
+				return null;
+			}
+		}
+		return panachatiesList;
+	}
 }
