@@ -115,6 +115,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.StateDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -9716,6 +9717,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								Long boothId=addressVO.getBoothId();
 								String landMark=addressVO.getLandMarkStr();
 								Long localElectionBodyId=addressVO.getLocalElectionBodyId();
+								Long wardId=addressVO.getWardId();
 								if(hsNo !=null && !hsNo.equalsIgnoreCase("")){
 									userAddress.setHouseNo(hsNo);
 								}else{
@@ -9756,6 +9758,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								}
 								if(localElectionBodyId !=null && localElectionBodyId !=0l){
 									userAddress.setLocalElectionBody(localElectionBodyDAO.get(localElectionBodyId));
+								}
+								if(wardId !=null && wardId !=0l){
+									userAddress.setWard(constituencyDAO.get(wardId));
 								}
 							
 								if(userAddress !=null){
@@ -9988,12 +9993,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		try{
 			addressVO.setHouseNo(userAddress.getHouseNo() !=null ? userAddress.getHouseNo().toString() :null);
 			addressVO.setStreet(userAddress.getStreet() !=null ? userAddress.getStreet().toString():null);
-			addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.toString() : null);
+			addressVO.setPinCodeStr(userAddress.getPinCode() !=null ? userAddress.getPinCode().toString() : null);
 			addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
 			addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
 			addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
 			addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
+			addressVO.setLocalElectionBodyId(userAddress.getLocalElectionBody() !=null ? userAddress.getLocalElectionBody().getLocalElectionBodyId().longValue() : 0l);
 			addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
+			addressVO.setWardId(userAddress.getWard() !=null ? userAddress.getWard().getConstituencyId().longValue() :0l);
 			addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
 			
 			List<SelectOptionVO> selectDistrictList=null;
@@ -10031,8 +10038,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					String regionstr=regions.getId().toString();
 					Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));
 					
-					if(addressVO.getTehsilId() !=null &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
-						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalId(regions.getId());
+					if((addressVO.getTehsilId() !=null &&addressVO.getTehsilId() !=0l) &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
+						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalIdAddingParam(regions.getId());
+					}else if((addressVO.getLocalElectionBodyId() !=null &&addressVO.getLocalElectionBodyId() !=0l) &&(addressVO.getLocalElectionBodyId().longValue() == regionId.longValue())){
+						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalIdAddingParam(regions.getId());
 					}
 				}
 				
@@ -10249,4 +10258,113 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return vo;
 		
 	}
+	public List<CadreRegistrationVO> getCadreWithFamilyDetailsOfEachCadre(Long cadreId){
+
+		List<CadreRegistrationVO> returnList = new ArrayList<CadreRegistrationVO>();
+		try {
+			
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.constituency.name,model.memberShipNo,model.mobileNo,model.firstname" +
+					" ,model.casteStateId,model.gender,model.emailId,model.age,model.dateOfBirth,model.voterId,model.occupationId,model.educationId," +
+					"  model.userAddress " +
+					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
+			
+			if(cadreId !=null)
+			{
+				queryStr.append(" and model.tdpCadreId ='"+cadreId+"'");
+			}
+			
+			List<Object[]> resultList = tdpCadreDAO.getCadreDetails(queryStr.toString());
+			Map<Long,CadreRegistrationVO> cadreMap = new HashMap<Long, CadreRegistrationVO>();
+			
+			if(resultList != null && resultList.size() > 0){
+				for (Object[] obj : resultList){
+					CadreRegistrationVO vo = new CadreRegistrationVO();					
+					vo.setCadreId((Long)obj[0]);
+					vo.setImageBase64String(obj[1] != null ? obj[1].toString(): "");
+					vo.setConstituencyId(obj[2] != null ? obj[2].toString() : "");
+					
+					if(obj[3] != null){
+						if(obj[3].toString().trim().length() > 8){
+							vo.setAddress(obj[3].toString().trim().substring(obj[3].toString().trim().length()-8));
+						}else{
+							vo.setAddress(obj[3].toString());
+						}
+					}else{
+						vo.setAddress("");
+					}
+					//vo.setAddress(obj[3] != null ? obj[3].toString().substring(4) : "");
+					vo.setMobileNumber(obj[4] != null ? obj[4].toString(): "");
+					vo.setNameType(obj[5]  != null ? obj[5].toString() :"");
+					vo.setCasteId( obj[6] != null ?(Long)obj[6]: null);
+					vo.setGender( obj[7] != null ? obj[7].toString() : null);
+					vo.setEmail(obj[8]!= null ? obj[8].toString() : null);
+					vo.setAge(obj[9] != null ? (Long)obj[9] : null);
+					vo.setEducationId(obj[13] != null ? (Long)obj[13] : null);
+					vo.setOccupationId(obj[12] != null ? (Long)obj[12] : null);
+					vo.setDobStr(obj[10] != null ? obj[10].toString(): null);
+					vo.setVoterCardNo(obj[11] != null ? voterDAO.get((Long)obj[11]).getVoterIDCardNo() : null);
+					
+					//UserAddress userAddres=null;
+					
+					if(obj[14] !=null){
+						UserAddress	userAddress=(UserAddress) obj[14];
+						if(userAddress !=null){
+							settingUserDetailsOfCadre(userAddress,vo);
+						}
+					}
+					
+					
+					//returnList.add(vo);
+					cadreMap.put(vo.getCadreId(), vo);
+				}				
+			}
+			
+			List<TdpCadreFamilyInfo> updatedCadreInfoList = tdpCadreFamilyInfoDAO.getCadresFamilyDetailsBytdpCadreIdList(cadreMap.keySet());
+			if(updatedCadreInfoList != null && updatedCadreInfoList.size()>0)
+			{
+				for (TdpCadreFamilyInfo familyVO : updatedCadreInfoList) {
+					CadreRegistrationVO vo = cadreMap.get(familyVO.getTdpCadreId());
+					if(vo != null)
+					{
+						vo.setNameType(getFinalStringValue(familyVO.getName()));
+						vo.setMobileNumber(getFinalStringValue(familyVO.getMobileNo()));
+						vo.setGender(getFinalStringValue(familyVO.getGender()));
+						vo.setAge(familyVO.getAge() != null ? Long.valueOf(familyVO.getAge()):0L);
+						vo.setMarriageDateStr(getFinalStringValue(familyVO.getMarriageDay()));
+						vo.setDobStr(getFinalStringValue(familyVO.getDob()));
+						vo.setEmail(getFinalStringValue(familyVO.getEmail()));
+						vo.setCasteId(familyVO.getCasteStateId() != null ? Long.valueOf(familyVO.getCasteStateId()):0L);
+						vo.setEducationId(familyVO.getEducationId() != null ? Long.valueOf(familyVO.getEducationId()):0L);
+						vo.setOccupationId(familyVO.getOccupationId() != null ? Long.valueOf(familyVO.getOccupationId()):0L);
+						vo.setWhatsAppStatus(getFinalStringValue(familyVO.getWhatsappStatus()));
+						vo.setPartyMemberSinceStr(getFinalStringValue(familyVO.getPartyMemberSince()));
+						vo.setCadreId(familyVO.getTdpCadreId());
+						//vo.setBloodGroupId(Long.valueOf(getFinalStringValue(familyVO.getOccupationId())));
+
+						//Updating UserAddress
+						
+						UserAddress userAddress=familyVO.getUserAddress();
+						if(userAddress !=null){
+							settingUserDetailsOfCadre(userAddress,vo);
+						}
+								
+					}
+				}
+			}
+			
+			if(cadreMap != null && cadreMap.size()>0)
+			{
+				for (Long tdpCadreeId : cadreMap.keySet()) {
+					returnList.add(cadreMap.get(tdpCadreeId));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured in getCadreDetailsOfEachCadre()",e);	
+		}
+		
+		return returnList;
+	}
+	
+	
 }

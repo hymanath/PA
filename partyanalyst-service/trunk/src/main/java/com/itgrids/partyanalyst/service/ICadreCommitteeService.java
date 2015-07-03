@@ -130,4 +130,6 @@ public interface ICadreCommitteeService {
 	 public String calculatePancPerc(Set<Long> panchayatIds,Long constituencyId,List<Long> partyIds,Long electionId);
 	 public String calculateBootPerc(List<Long> boothIds,Long constituencyId,List<Long> partyIds,Long electionId);
 	 public String calculateWardPerc(Set<Long> wardIds,Long constituencyId,List<Long> partyIds,Long electionId);
+	 public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long MandalId);
+	 
 }
