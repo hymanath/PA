@@ -1951,5 +1951,17 @@ public String getSummaryDetails(){
 			return Action.SUCCESS;
 		
 	}
+	public String getPanchayatDetailsByMandalIdAddingParam(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			genericVOList = cadreCommitteeService.getPanchayatDetailsByMandalIdAddingParam(jObj.getLong("mandalId"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatDetailsByMandalIdAddingParam() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
 	
 }
