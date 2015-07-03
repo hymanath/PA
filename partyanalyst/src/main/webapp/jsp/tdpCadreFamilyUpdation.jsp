@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>TDP Cadre Family Details</title>
@@ -22,6 +23,9 @@
 	
 	</script>
 	<style>
+	body{
+		background:white !important;
+	}
 .mandatory
 {
 	color:red !important;
@@ -143,7 +147,7 @@ background-color: #E5E5E5 !important;
 </head>
 
 <body>
-<div class="container shadow-box">
+<!--<div class="container shadow-box">
 	<h3 class="text-center border-btm">SEARCH CADRE</h3>
 	<div class="row m_top10 ">
     	<div class="col-md-3 col-md-offset-2">
@@ -170,14 +174,112 @@ background-color: #E5E5E5 !important;
         	<button class="btn btn-success btn-block" onclick="getCadreDetails();">SEARCH</button>
         </div>
     </div>
+</div>-->
+
+<div class="container">
+	
+	<div class="row m_top20" id="searchcadrenewDiv">	
+		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
+			<h4 id="headingDiv" class="text-uppercase"><b> Search Cadre </b></h4>
+				
+		</div>
+		
+		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+			<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+				<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="statedisplaydivid">
+					<label>State</label>
+					<c:if test="${sessionScope.USER.stateName == 'both'}">
+						<select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						</select>
+					</c:if>
+					<c:if test="${sessionScope.USER.stateName == 'TS'}">
+						<select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="2">Telangana</option>
+						</select>
+					</c:if>
+					<c:if test="${sessionScope.USER.stateName == 'AP'}">
+						<select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="1">AndhraPradesh</option>
+						</select>
+					</c:if>
+							
+				</div>
+			</c:if>
+						
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="constitunecyDiv">
+				<label>Constituency</label>
+				<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()"></select>
+			</div>
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="mandalDiv">
+				<label>Mandal/Municipality</label>
+					<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandalSearch();">
+						<option value="0"> Select Mandal/Municipality </option>
+					</select>
+			</div>
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
+				<label>Panchayat</label>
+				<select class="form-control " id="panchaytList" class="form-control">
+					<option value="0"> Select Panchayat </option>
+				</select>
+			</div>
+		</div>
+				
+		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
+			<div class="form-inline ">
+				<div class="radio">
+					<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
+				
+					<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" > Voter ID &nbsp;&nbsp;</label>
+				
+					<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> Mobile No &nbsp;&nbsp;</label>
+				
+					<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> Name &nbsp;&nbsp;</label>
+					
+					<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5"> TR No &nbsp;&nbsp;</label>
+							
+					<input type="hidden" id="cadreSearchType" value="membershipId" />
+				</div>				  
+			</div>
+		</div>
+				
+		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
+			<div class="row-fluid">      
+				<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+					<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
+					<div id="searchErrDiv"></div>
+				</div>	
+			</div>			
+		</div>
+							
+		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
+			<div class="row-fluid"><div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 ">
+				<input id="searchbtn" class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria(0)" value="SEARCH"></input></div>
+			</div>	
+		</div>
+	</div>
+	
+	<div class="row">
+		
+		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
+			<div id="topPaginationDivId" class="paginationDivId"></div>
+			<div id="errorDiv"></div>
+			<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
+			<center><div><img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-top: 20px;width:70px;height:60px;display:none;"/></div></center>
+			<div id="paginationDivId"  class="paginationDivId"></div>
+		</div>
+	</div>
+	
 </div>
 
 <div class="container shadow-box m_top20" id="tableDataDiv"></div>
 <div class="container shadow-box m_top20" id="tdpCadreDetails" ></div>
 <div class="container shadow-box m_top20" id="cadreAddressDivId" ></div>
 <div class="container shadow-box m_top20" id="familyDetalsDiv" ></div>
-<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;margin-left:550px"/>
-<div class="container shadow-box m_top20" id="btnDiv" >
+<!--<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;margin-left:550px"/>-->
+<div class="container shadow-box m_top20" id="btnDiv" style="">
 		<button class="btn btn-success " style="margin-top:15px;margin-bottom:15px;;margin-left:500px;display:none;" onclick="updateFamilyInfo();" id="updateeBtn"> UPDATE DETAILS </button>
 </div>
 
@@ -272,7 +374,7 @@ background-color: #E5E5E5 !important;
 	});
 	
 	
-	function getCadreDetails()
+/*	function getCadreDetails()
 	{
 				
 		var mobileNo =	$('#mobileNo').val().trim();
@@ -389,19 +491,19 @@ background-color: #E5E5E5 !important;
 				constituencyId:result[i].addressVO.constituencyId,
 				tehsilId:result[i].addressVO.tehsilId,
 				panchaytId:result[i].addressVO.panchaytId,
-				landMarkStr:result[i].addressVO.landMarkStr, */
+				landMarkStr:result[i].addressVO.landMarkStr,
 				addressVO:result[i].addressVO
 				
 				
 			};
 			
-			searchArr.push(cadreObj);
+			/* searchArr.push(cadreObj);
 		}
 		//console.log(searchArr);
 		str+='</tbody></table></div>';
 		$("#tableDataDiv").html(str);
 		$("#tableId").dataTable();
-	}
+	}*/
 
 function getFamilyDetails(tdpCadreId)
 	{
@@ -424,6 +526,7 @@ function getFamilyDetails(tdpCadreId)
 		}).done(function(result){
 			//$("#ajaxImage").hide();
 			$('#searchDataImg').hide();	
+			$("#btnDiv").show();
 			$('#updateeBtn').show();	
 			$('#tdpCadreDetails').show();	
 			$('#cadreAddressDivId').show();	
@@ -674,6 +777,7 @@ function getFamilyDetails(tdpCadreId)
 		str='';
 		str+='<h4  class="offset5" style="margin-bottom:0px"> CADRE ADDRESS DETAILS </h4>';
 		str+='<div class="row" style="padding:10px">';
+		str+='<div class="col-md-12" style="padding:10px">';
 		str+='<div class="mandatory" style="margin-left: 18px;"></div>';
        
 		for(var m in searchArr)
@@ -681,7 +785,7 @@ function getFamilyDetails(tdpCadreId)
 				if(searchArr[m].tdpCadreId == tdpCadreId)
 				{
 					str+='<div class="addressDetails">';
-					
+					str+='<div class="row">';
 					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">House.No</label>';
 					if(searchArr[m].addressVO.houseNo !=null){
@@ -689,13 +793,16 @@ function getFamilyDetails(tdpCadreId)
 					}else{
 						str+=' <input type="text"  class="houseNo form-control" />';
 					}
-					
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Street</label>';
 					if(searchArr[m].addressVO.street !=null){
 						str+=' <input type="text"  class="street form-control" value="'+searchArr[m].addressVO.street+'"/>';
 					}else{
 						str+=' <input type="text"  class="street form-control" />';
 					}
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">LandMark</label>';
 					if(searchArr[m].addressVO.landMarkStr !=null){
 						str+=' <input type="text"  class="landmark form-control" value="'+searchArr[m].addressVO.landMarkStr+'"/>';
@@ -704,7 +811,8 @@ function getFamilyDetails(tdpCadreId)
 					}
 					
 					str+='</div>';
-					
+					str+='</div>';
+					str+='<div class="row">';
 					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label" selected="selected">Select State</label>';
 					str+='<select id="cadreState" class="cadreState form-control" onchange="getDistrictsForState(this.value);">';
@@ -722,8 +830,9 @@ function getFamilyDetails(tdpCadreId)
 					}
 					
 					str+='</select>';
-					
+					str+='</div>';
 					//district
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Select District</label>';
 					str+='<select id="cadreDistrict" class="cadreDistrict form-control" onchange="getConstituenciesForDistrict(this.value);">';
 					str+='<option value="0" selected="selected">Select District</option>';
@@ -740,7 +849,9 @@ function getFamilyDetails(tdpCadreId)
 					}
 					
 					str+='</select>';
+					str+='</div>';
 					//constituency
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Select Constituency</label>';
 					str+='<select id="cadreConstituency" class="cadreConstituency form-control" onchange="getMandalsForConstituency(this.value);">';
 					str+='<option value="0" selected="selected">Select Constituency</option>';
@@ -756,7 +867,8 @@ function getFamilyDetails(tdpCadreId)
 					}
 					
 					str+='</select></div>';
-							
+					str+='</div>';
+					str+='<div class="row">';		
 					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Select Mandal/Muncipality</label>';
 					str+='<select id="cadreMandal" class="cadreMandal form-control" onchange="getPanchayatsForMandal(this.value);">';
@@ -776,13 +888,17 @@ function getFamilyDetails(tdpCadreId)
 							
 						}
 					}
-					str+='</select>';
+					str+='</select></div>';
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Select Village/Ward</label>';
 					str+='<select id="cadreVillage" class="cadreVillage form-control">';
 					str+='<option value="0" selected="selected">Select Village/Ward</option>';
 					if(searchArr[m].addressVO.panchayatList !=null){
 						for(var q in searchArr[m].addressVO.panchayatList){
-							if(searchArr[m].addressVO.panchaytId==searchArr[m].addressVO.panchayatList[q].id){
+							
+							var panchayatId=searchArr[m].addressVO.panchayatList[q].id.toString();
+							var panchaytIdComp=panchayatId.substring(1,panchayatId.length);
+							if(panchaytIdComp == searchArr[m].addressVO.panchaytId){
 								str+='<option value="'+searchArr[m].addressVO.panchayatList[q].id+'" selected="selected">'+searchArr[m].addressVO.panchayatList[q].name+'</option>';
 							}
 							else{
@@ -790,16 +906,22 @@ function getFamilyDetails(tdpCadreId)
 							}
 						}
 					}
-					str+='</select>';
+					str+='</select></div>';
+					str+='<div class="col-md-3 col-xs-6">';
 					str+='<label class="control-label">Pincode</label>';
-					str+=' <input type="text"  class="pincode form-control" />';
+					if(searchArr[m].addressVO.pinCodeStr !=null){
+						str+=' <input type="text"  class="pincode form-control" value="'+searchArr[m].addressVO.pinCodeStr+'"/>';
+					}
+					else{
+						str+=' <input type="text"  class="pincode form-control" />';
+					}
 					str+='</div>';
-							
+					str+='</div>';		
 					str+='</div>';
 				}
 			}
 		str+='</div>';
-				
+		str+='</div>';		
 		$("#cadreAddressDivId").html(str);
 		
 		str='';
@@ -1093,7 +1215,17 @@ function updateFamilyInfo()
 		}else{
 			localElectionBody=mandalStr.substring(1,mandalStr.length);
 		}
-		var panchayatId=$('.cadreVillage option:selected').val();
+		var panchayat=$('.cadreVillage option:selected').val();
+		var panchayatStr=panchayat.toString();
+		var panchayatId=0;
+		var wardId=0;
+		if(panchayatStr.substring(0,1)==1){
+			panchayatId=panchayatStr.substring(1,panchayatStr.length);
+		}else{
+			wardId=panchayatStr.substring(1,panchayatStr.length);
+		}
+		
+		//var panchayatId=$('.cadreVillage option:selected').val();
 		var pincode=$('.pincode').val();
 		
 			if(count == 1)
@@ -1142,7 +1274,8 @@ function updateFamilyInfo()
 					panchayatId:panchayatId,
 					pincode:pincode,
 					landMark:landMark,
-					localElectionBody:localElectionBody
+					localElectionBody:localElectionBody,
+					wardId:wardId
 				};
 				dataArr.push(obj);
 			
@@ -1169,8 +1302,14 @@ function updateFamilyInfo()
 				$('#searchDataImg').hide();	
 				  if(result != null && result.resultCode ==0){
 					  $("#familyDetalsDiv").html('');
-						getCadreDetails();
-						$("#errorDiv").html("Family Details are updated successfully...").css("color","green");
+						//getCadreDetails();
+						refreshExistingDetails();
+						$("#statesDivId").val($("#statesDivId option:first").val());
+						$("#constituencyId").val($("#constituencyId option:first").val());
+						$("#mandalList").val($("#mandalList option:first").val());
+						$("#panchaytList").val($("#panchaytList option:first").val());
+						checkResult("Family Details are updated successfully...");
+						//$("#errorDiv").html("Family Details are updated successfully...").css("color","green");  
 					}
 					else
 					{
@@ -1180,6 +1319,19 @@ function updateFamilyInfo()
 	}
 	
 }
+
+function checkResult(string)
+ {
+          var cssObj = {    
+				'font-weight' : 'bold',
+				'color' : 'green'
+			}
+           $("#errorDiv").css("visibility","visible");
+		   $('#errorDiv').text(string+"...").css(cssObj);
+          
+		   setTimeout('$("#errorDiv").css("visibility","hidden")',2500);
+
+ }
 
 function getAllRelationDetails(){
 	 $.ajax({
@@ -1318,6 +1470,13 @@ function removeDetails(divId)
 }
 
 function getDistrictsForState(state){
+	
+	$("#cadreConstituency").find('option').remove();
+	$("#cadreMandal").find('option').remove();
+	$("#cadreVillage").find('option').remove();
+	$("#cadreConstituency").append('<option value="0">Select Constituency</option>');
+	$("#cadreMandal").append('<option value="0">Select Mandal/Muncipality</option>');
+	$("#cadreVillage").append('<option value="0">Select Village/Ward</option>');
    
 	   var jsObj=
 	   {				
@@ -1347,6 +1506,12 @@ function getDistrictsForState(state){
   }
   
 function getConstituenciesForDistrict(district){
+	
+	$("#cadreMandal").find('option').remove();
+	$("#cadreVillage").find('option').remove();
+	$("#cadreMandal").append('<option value="0">Select Mandal/Muncipality</option>');
+	$("#cadreVillage").append('<option value="0">Select Village/Ward</option>');
+	
 		var jsObj=
 	   {				
 					districtId:district,
@@ -1375,6 +1540,9 @@ function getConstituenciesForDistrict(district){
   }
   
     function getMandalsForConstituency(constiId){
+		
+		$("#cadreVillage").find('option').remove();
+		$("#cadreVillage").append('<option value="0">Select Village/Ward</option>');
       $("#cadreMandal option").remove();
 	  if(constiId == 0){
 	    return;
@@ -1420,7 +1588,7 @@ function getConstituenciesForDistrict(district){
 		}
 		$.ajax({
 			type:"POST",
-			url :"getPanchayatDetailsAction.action",
+			url :"getPanchayatDetailsByMandalIdAddingParamAction.action",
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -1436,9 +1604,550 @@ function getConstituenciesForDistrict(district){
 	 }
    });	
   }
-
+  //cadreWithFamilyDetailsByCadreId
+  //getCadreWithFamilyDetailsOfEachCadre();
+  function getCadreWithFamilyDetailsOfEachCadre(cadreId){
+	    $('#searchDataImg').show();
+	    $("#tdpCadreDetails").html("");
+		$("#cadreAddressDivId").html("");
+		$("#familyDetalsDiv").html("");
+		$("#tdpCadreDetails").hide();
+		$("#cadreAddressDivId").hide();
+		$("#familyDetalsDiv").hide();
+		//$("#btnDiv").hide();
+	  
+	  searchArr=[];
+	  var cadreId=cadreId;
+	  var jsObj={
+		  cadreId:cadreId
+	  }
+	  $.ajax({
+			type:"POST",
+			url :"getCadreWithFamilyDetailsOfEachCadreAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+	  }).done(function(result){
+		  if(result !=null){
+			  for(var i in result){
+				  
+				  var cadreObj={
+						name:result[i].nameType,
+						mobileNo:result[i].mobileNumber,
+						gender:result[i].gender,
+						age:result[i].age,
+						votercardNo :result[i].voterCardNo,
+						relationId:null,
+						dob: result[i].dobStr != null ? (result[i].dobStr).substring(0,11):"",
+						marriageDay:result[i].marriageDateStr != null ? (result[i].marriageDateStr).substring(0,11):"",
+						email:result[i].email,
+						casteStateId:result[i].casteId ,
+						educationId:result[i].educationId,
+						occupationId:result[i].occupationId,
+						whatsappStatus :result[i].whatsAppStatus,
+						partyMemberSince:result[i].partyMemberSinceStr != null ? (result[i].partyMemberSinceStr).substring(0,11):"", 
+						tdpCadreId:result[i].cadreId,
+						bloodGroupId : 0,
+						//userAddress Data
+						addressVO:result[i].addressVO
+						
+					};
+					
+					searchArr.push(cadreObj);
+			  }	 
+		 }
+		 getFamilyDetails(cadreId);
+	  });
+	  
+  }
 getAllRelationDetails();
 
 </script>
+
+
+<script>
+
+var accessType = "${sessionScope.USER.accessType}";
+var accessValue = "${sessionScope.USER.accessValue}";
+var accessState = "${sessionScope.USER.stateName}";
+
+if(accessType == "DISTRICT")
+{
+	getAssemblyParlConstituencies(accessValue,"Assembly");
+}
+if(accessType == "STATE")
+{
+	getConstituenciesForStateAjax();
+}
+
+if(accessType == "MP")
+{
+	getAssemblyConstituencies(accessValue);
+}
+
+function getAssemblyParlConstituencies(districtId,type)
+	{
+	 $("#constituencyId  option").remove();
+		var str='';
+		var jsObj={
+			mainUserLocationId:districtId,
+			reportLevel:type
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubUserAccessValueAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+	   str +='<option value=0>ALL</option>';
+			for(var i in result)
+			{
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			
+			if(type=="Assembly"){
+				$("#constituencyId").html(str);
+				
+			}		
+	   });		
+	}
+	
+function getConstituenciesForStateAjax()
+	{
+		var stateId = $("#statesDivId").val();
+		getConstituenciesForState(stateId);
+	}
+	
+function getConstituenciesForState(state)
+	{
+	   var jsObj=
+	   {				
+			stateId:state,
+			elmtId:"stateList",
+			type:"default",
+			task:"getConstituenciesForState"				
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getConstituenciesForStateAjaxAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+	   
+		   $("#constituencyId").empty();
+		   
+		 for(var i in result){
+		   if(result[i].id == 0){
+			 $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+		   }else{
+			 $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		}
+	});
+  }
+  
+function getAssemblyConstituencies(constiId)
+	{
+	var str;
+	var jsObj = 
+	   {
+		  parliamentConstiId : constiId,
+		  electionYear:2005,
+		  task:"getAssemblyDetailsForParliamnt"             
+	   }	
+		$.ajax({
+			type : "POST",
+			url : "getAssemblyDetailsForParliamntAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			 $("#constituencyId").empty();
+			 var result1 = result.selectOptionsList;
+			 if(result1 != null && result1.length > 0)
+				{
+				  $("#constituencyId").append('<option value=0>ALL</option>');
+					 for(var i in result1){
+					 $("#constituencyId").append('<option value='+result1[i].id+'>'+result1[i].name+'</option>');
+					   
+					 }
+				}
+	  });
+	}
+
+function getMandalCorporationsByConstituency()
+	{		
+			var constituencyId = $('#constituencyId').val();
+			$("#mandalList  option").remove();
+			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+			$("#panchaytList  option").remove();
+			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			
+				var jsObj ={					
+					constituencyId:constituencyId
+				};
+				 $.ajax({
+					type : "GET",
+					url : "getMandalDetailsByConstituencyAction.action",
+					data : {task:JSON.stringify(jsObj)} 
+				}).done(function(result){
+
+				if(result !=null)
+				{
+					for(var i in result)
+					{
+						$("#mandalList").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+					}	
+				}				
+				});
+	}
+	
+	 function getPanchayatWardByMandalSearch(){
+		     
+			var mandalId=$("#mandalList").val();
+			
+			$("#panchaytList  option").remove();
+			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			
+			var jsObj={
+				mandalId:mandalId
+			}
+			$.ajax({
+				type : "POST",
+				url : "getPanchayatWardByMandalAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				
+			for(var i in result){
+				$("#panchaytList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+				
+		});	
+			
+	} 
+function refreshExistingDetails()
+{ 
+	$("#searchBy").val("");
+	$("#cadreDetailsDiv").html("");
+	$(".paginationDivId").html('');
+	$("#tdpCadreDetails").html("");
+	$("#cadreAddressDivId").html("");
+	$("#familyDetalsDiv").html("");
+	$("#cadreDetailsDiv").hide();
+	$("#tdpCadreDetails").hide();
+	$("#cadreAddressDivId").hide();
+	$("#familyDetalsDiv").hide();
+	$("#btnDiv").hide();
+}
+
+$('.searchTypeCls').click(function(){
+			
+		
+			
+			var id = $(this).attr('id');
+				
+			$('#advancedSearchDiv').hide();			
+			$('#basicSearchDiv').show();
+			$('#committeLocationsDiv').hide();
+		
+			if(id.trim() == 'membershipId')
+			{
+				
+				
+				$('#cadreSearchType').val('membershipId');
+			}
+			if(id.trim() == 'voterId')
+			{
+			
+				$('#cadreSearchType').val('voterId');
+			}
+			if(id.trim() == 'mobileNo')
+			{
+				
+				
+				$('#cadreSearchType').val('mobileNo');
+			}
+			
+			if(id.trim() == 'name')
+			{
+			
+				$('#cadreSearchType').val('name');
+			}
+			if(id.trim() == 'trNo')
+			{	
+				
+				$('#cadreSearchType').val('trNo');
+				
+			}
+		});
+
+	function getCadreDetailsBySearchCriteria(startIndex)
+		{
+		//committeTypeID means 
+			//for committiee management 1
+			//for Mandal/Muncipality Main Committee Electoral Management 2
+			//for Mandal/Muncipality Affiliated Committee Electoral Management 3
+		//areaTypeId means
+		    //for panchayat level 1
+			//for mandal level 2
+			
+		
+		var locationLevel = 0;
+		var locationValue = 0;
+		var searchName = '';
+		var mobileNo = '';
+		var casteCategory = '';
+		var casteStateId = 0;
+		var fromAge = 0;
+		var toAge = 0;
+		var memberShipCardNo = '';
+		var trNumber = '';
+		var voterCardNo = '';
+		var gender = '';
+		var houseNo = '';
+		
+		
+$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+if(startIndex == 0)
+			$(".paginationDivId").html('');
+		
+$(".paginationDivId").hide();
+$("#cadreDetailsDiv").html("");
+//$("#errorDiv").html("");
+//$("#errorDiv").hide();
+//$(".paginationDivId").html('');
+$("#tdpCadreDetails").html("");
+$("#cadreAddressDivId").html("");
+$("#familyDetalsDiv").html("");
+$("#cadreDetailsDiv").hide();
+$("#tdpCadreDetails").hide();
+$("#cadreAddressDivId").hide();
+$("#familyDetalsDiv").hide();
+//$("#btnDiv").hide();
+
+//$("#paginationDivId").hide();
+		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
+		$("#cadreDetailsDiv").hide();
+		var searchBy = $('#searchBy').val().trim();
+		var searchRadioType =$('#cadreSearchType').val();;
+		var parentLocation = 0;
+		var panchayatId = $("#panchaytList").val();
+		var mandalId = $("#mandalList").val();
+		var constituencyId = $("#constituencyId").val();
+		
+		if(panchayatId !=0)
+		{
+			if(panchayatId.substr(0,1) == 1){
+				  locationLevel = 6;
+			}
+			else if(panchayatId.substr(0,1) == 2){
+				 locationLevel = 8;
+				 
+			}								
+			locationValue = panchayatId.substr(1);
+		}
+		else if(mandalId !=0)
+		{
+			if(mandalId.substr(0,1) == 1){
+				 locationLevel = 7;
+			}
+			else if(mandalId.substr(0,1) == 2){
+				 locationLevel = 5;
+			}
+			else if(mandalId.substr(0,1) == 3){
+				 locationLevel = 8;
+			}
+			locationValue = mandalId.substr(1);
+		}
+		else if(constituencyId == 0)
+		{
+			if(accessType == "DISTRICT")
+			{
+				locationLevel = 3;
+				locationValue = accessValue;
+			}
+			if(accessType == "MP")
+			{
+				locationLevel = 10;
+				locationValue = accessValue;
+			}
+			if(accessType == "STATE")
+			{
+				var stateId = $("#statesDivId").val();
+				locationLevel = 2;
+				if($("#statesDivId").val() == 0)
+				{
+				stateId = 3;
+				}
+				locationValue = stateId;
+			}	
+		}
+		else
+		{
+			locationValue = constituencyId;
+			locationLevel = 4;	
+		}
+		
+		if(searchRadioType == 'membershipId')
+		{
+			memberShipCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Membership Card No.');
+				return;
+			}
+		}			
+		if(searchRadioType == 'voterId')
+		{
+			voterCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Voter Card No.');
+				return;
+			}
+		}
+		if(searchRadioType == 'mobileNo')
+		{	
+			mobileNo = $('#searchBy').val().trim();
+			
+			if(searchRadioType=="mobileNo"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter Numerics Only.');
+						return;
+					}
+			}	
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Mobile No.');
+				return;
+			}
+			
+			else if(mobileNo.trim().length != 10)
+			{
+				$('#searchErrDiv').html('Invalid Mobile No.');
+				return;				
+			}
+			
+			
+			
+		}
+		if(searchRadioType == 'name')
+		{
+			searchName = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Name.');
+				return;
+			}
+			else if(searchBy.trim().length < 3)
+			{
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				return;
+			}
+		}
+		if(searchRadioType == 'trNo')
+		{
+			trNumber = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter trNo.');
+				return;
+			}
+			
+		}
+		
+		$("#searchDataImg").show();
+		var jsObj =
+		{
+			locationLevel :locationLevel,
+			locationValue:locationValue,
+			searchName : searchName,
+			mobileNo: mobileNo,
+			casteCategory : casteCategory,
+			fromAge : fromAge,
+			toAge : toAge,
+			memberShipCardNo: memberShipCardNo,
+			casteStateId : casteStateId,
+			trNumber : trNumber,
+			voterCardNo:voterCardNo,
+			gender:gender,
+			houseNo:houseNo,
+			startIndex:startIndex,
+			maxIndex : 50,
+			task:"tdpCadreSearch"
+		}
+		$.ajax({
+				type : "POST",
+				url : "getCadreSearchDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				 if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+				$("#searchDataImg").hide();
+				$('#cadreDetailsDiv').show();
+				//alert(result);
+				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
+				{
+					$("#errorDiv").html("");
+					//$("#errorDiv").hide();
+				buildCadreDetails(result.previousRoles,jsObj);
+				}
+				else
+				{
+					
+					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
+				}
+			});  
+
+	}
+	
+	function buildCadreDetails(result,jsObj)
+	{
+		$(".paginationDivId").show();
+		//$("#paginationDivId").show();
+		var str ="";
+		
+		str+='<div class="span12">';
+			
+		str+=' <table class="table table-bordered" style="margin-top: 20px;"  id="tableId">';
+		str+=' <thead>';
+		str+=' <tr>';
+		str+=' <th class="alert-info"> Cadre Name  </th>';
+		str+=' <th class="alert-info"> Image  </th>';
+		str+=' <th class="alert-info" > Membership Number  </th>';
+		str+=' <th class="alert-info" > Mobile Number </th>';
+		//str+=' <th class="alert-info" > Constituency </th>';
+		str+=' </tr>';
+		str+=' </thead>';
+		str+=' <tbody>';
+		
+		for(var i in result)
+		{
+			str+=' <tr>';
+			
+			str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getCadreWithFamilyDetailsOfEachCadre(\''+result[i].tdpCadreId+'\');">'+result[i].cadreName+'</a></td>';
+			str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'"  style="height:50px;width:50px;"/></td>';
+			str+=' <td>'+result[i].memberShipCardId+'</td>';
+			str+=' <td>'+result[i].mobileNo+'</td>';
+			//str+=' <td>'+result[i].constituencyId+'</td>';
+			
+			str+=' </tr>';
+			
+			
+		}
+		str+='</tbody></table></div>';
+		$("#cadreDetailsDiv").html(str);
+		$("#tableId").dataTable();
+	}
+
+</script>
+
 </body>
 </html>
