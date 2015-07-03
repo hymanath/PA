@@ -1316,7 +1316,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			StringBuilder queryStr = new StringBuilder();
 			if(memberShipNos != null &&  memberShipNos.size() > 0)
 			{
-				for(String memberShipNo :memberShipNos){
+				/*for(String memberShipNo :memberShipNos){
 					String memberShipNumber = "AP14"+memberShipNo;
 					String memberShipNumber1 = "TS14"+memberShipNo;
 					String temp =  memberShipNos.get(memberShipNos.size() - 1);
@@ -1325,7 +1325,29 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  ");
 					else
 						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
-				}
+				}*/
+				
+				String memberShipNumber="";
+				String memberShipNumber1 ="";
+				String memberShipNo ="";
+				int i=memberShipNos.size();
+				do{
+					if(i==memberShipNos.size())
+					{
+						memberShipNumber = "\'AP14"+memberShipNos.get(i-1)+"\'";
+						memberShipNumber1 = "\'TS14"+memberShipNos.get(i-1)+"\'";
+						memberShipNo = "\'"+memberShipNos.get(i-1)+"\'";
+					}
+					else
+					{
+						memberShipNumber = memberShipNumber+",\'AP14"+memberShipNos.get(i-1)+"\'";
+						memberShipNumber1 = memberShipNumber1+",\'TS14"+memberShipNos.get(i-1)+"\'";
+						memberShipNo = memberShipNo+",\'"+memberShipNos.get(i-1)+"\'";
+					}
+					
+					i=--i;
+				}while(i>0);
+				queryStr.append(" model.memberShipNo in ("+memberShipNo.trim()+") OR model.memberShipNo in ("+memberShipNumber.trim()+") OR model.memberShipNo in ("+memberShipNumber1.trim()+") ");
 			}
 			List<Object[]>  mobileNos = tdpCadreDAO.getMobileNosByMemberShipId(queryStr.toString());
 			
@@ -1486,27 +1508,75 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			StringBuilder queryStr = new StringBuilder();
 			if(addressTrueList != null &&  addressTrueList.size() > 0)
 			{
-				for(String memberShipNo :addressTrueList){
-					String memberShipNumber = "AP14"+memberShipNo;
-					String memberShipNumber1 = "TS14"+memberShipNo;
+				String memberShipNumber="";
+				String memberShipNumber1 ="";
+				String memberShipNo ="";
+				int i=addressTrueList.size();
+				do{
+					if(i==addressTrueList.size())
+					{
+						memberShipNumber = "\'AP14"+addressTrueList.get(i-1)+"\'";
+						memberShipNumber1 = "\'TS14"+addressTrueList.get(i-1)+"\'";
+						memberShipNo = "\'"+addressTrueList.get(i-1)+"\'";
+					}
+					else
+					{
+						memberShipNumber = memberShipNumber+",\'AP14"+addressTrueList.get(i-1)+"\'";
+						memberShipNumber1 = memberShipNumber1+",\'TS14"+addressTrueList.get(i-1)+"\'";
+						memberShipNo = memberShipNo+",\'"+addressTrueList.get(i-1)+"\'";
+					}
+					
+					i=--i;
+				}while(i>0);
+				
+				queryStr.append(" model.memberShipNo in ("+memberShipNo.trim()+") OR model.memberShipNo in ("+memberShipNumber.trim()+") OR model.memberShipNo in ("+memberShipNumber1.trim()+") ");
+				
+				/*for(String memberShipNo :addressTrueList){
+					 memberShipNumber = "AP14"+memberShipNo;
+					 memberShipNumber1 = "TS14"+memberShipNo;
+					
 					String temp =  addressTrueList.get(addressTrueList.size() - 1);
 					if(temp.equalsIgnoreCase(memberShipNo) || addressTrueList.size() == 1)
-						queryStr.append("  (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+						queryStr.append("  (model.memberShipNo in ('"+memberShipNo.trim()+"') OR model.memberShipNo in ('"+memberShipNumber.trim()+"') OR model.memberShipNo in ('"+memberShipNumber1.trim()+"')) OR ");
 					else
-						queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
-				}
+						queryStr.append(" (model.memberShipNo in ('"+memberShipNo.trim()+"') OR model.memberShipNo in ('"+memberShipNumber.trim()+"') OR model.memberShipNo in ('"+memberShipNumber1.trim()+"'))  OR ");
+				}*/
 			}
 			
 			StringBuilder queryStr1 = new StringBuilder();
 			if(addressFalseList != null &&  addressFalseList.size() > 0)
 			{
-				for(String memberShipNo :addressFalseList){
+				
+				String memberShipNumber="";
+				String memberShipNumber1 ="";
+				String memberShipNo ="";
+				int i=addressFalseList.size();
+				do{
+					if(i==addressFalseList.size())
+					{
+						memberShipNumber = "\'AP14"+addressFalseList.get(i-1)+"\'";
+						memberShipNumber1 = "\'TS14"+addressFalseList.get(i-1)+"\'";
+						memberShipNo = "\'"+addressFalseList.get(i-1)+"\'";
+					}
+					else
+					{
+						memberShipNumber = memberShipNumber+",\'AP14"+addressFalseList.get(i-1)+"\'";
+						memberShipNumber1 = memberShipNumber1+",\'TS14"+addressFalseList.get(i-1)+"\'";
+						memberShipNo = memberShipNo+",\'"+addressFalseList.get(i-1)+"\'";
+					}
+					
+					i=--i;
+				}while(i>0);
+				
+				queryStr1.append(" model.memberShipNo in ("+memberShipNo.trim()+") OR model.memberShipNo in ("+memberShipNumber.trim()+") OR model.memberShipNo in ("+memberShipNumber1.trim()+") ");
+				
+				/*for(String memberShipNo :addressFalseList){
 					String temp =  addressFalseList.get(addressFalseList.size() - 1);
 					if(temp.equalsIgnoreCase(memberShipNo) || addressFalseList.size() == 1)
-						queryStr1.append("  (model.memberShipNo = '"+memberShipNo.trim()+"')  ");
+						queryStr1.append("  (model.memberShipNo in ('"+memberShipNo.trim()+"'))  ");
 					else
-						queryStr1.append("  (model.memberShipNo = '"+memberShipNo.trim()+"')  OR ");
-				}
+						queryStr1.append("  (model.memberShipNo in  ('"+memberShipNo.trim()+"'))  OR ");
+				}*/
 			}
 			if(addressTrueList != null &&  addressTrueList.size() > 0){
 				 list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());				 
@@ -1549,11 +1619,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : null);
 				cadreAddressVO.setGender(params[3] != null ? params[3].toString() : "");
-				cadreAddressVO.setRefNo(params[10] != null ? params[10].toString() : "");
-				cadreAddressVO.setPhoto(params[11] != null ? "http://mytdp.com/cadre_images/"+params[11].toString() : "");
+				
 				
 				if(address.equalsIgnoreCase("true"))
 				{
+					cadreAddressVO.setRefNo(params[10] != null ? params[10].toString() : "");
+					cadreAddressVO.setPhoto(params[11] != null ? "http://mytdp.com/cadre_images/"+params[11].toString() : "");
 					
 					String str = "";
 					String district =  params[5] != null ? params[5].toString()  : "";
@@ -1574,6 +1645,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		            cadreAddressVO.setAddress(str.toString());
 		           
 				}				
+				if(address.equalsIgnoreCase("false"))
+				{
+					cadreAddressVO.setPhoto(params[5] != null ? "http://mytdp.com/cadre_images/"+params[5].toString() : "");
+				}
 				cadreAddressVOList.	add(cadreAddressVO);
 			}
 		}
