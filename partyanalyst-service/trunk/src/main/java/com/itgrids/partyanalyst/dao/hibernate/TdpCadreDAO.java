@@ -4588,7 +4588,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public List<Object[]> getMemberDetlsByMembershipNo(String queryStr)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append("select distinct model.firstname,model.mobileNo,model.age,model.gender,model.memberShipNo");
+			str.append("select distinct model.firstname,model.mobileNo,model.age,model.gender,model.memberShipNo,model.image");
 			str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
