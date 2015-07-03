@@ -877,12 +877,15 @@ function getFamilyDetails(tdpCadreId)
 					if(searchArr[m].addressVO.tehsilList !=null){
 						for(var p in searchArr[m].addressVO.tehsilList){
 							
-							var tehsilId=searchArr[m].addressVO.tehsilList[p].id.toString();
-							var tehsilIdComp=tehsilId.substring(1,tehsilId.length);
+							/* var tehsilId=searchArr[m].addressVO.tehsilList[p].id.toString();
+							var tehsilIdComp=tehsilId.substring(1,tehsilId.length); */
 							
-							if(tehsilIdComp == searchArr[m].addressVO.tehsilId){
+							if(searchArr[m].addressVO.tehsilList[p].id == searchArr[m].addressVO.tehsilId){
 								str+='<option value="'+searchArr[m].addressVO.tehsilList[p].id+'" selected="selected">'+searchArr[m].addressVO.tehsilList[p].name+'</option>';
-							}else{
+							}else if(searchArr[m].addressVO.tehsilList[p].id ==searchArr[m].addressVO.localElectionBodyId){
+								str+='<option value="'+searchArr[m].addressVO.tehsilList[p].id+'" selected="selected">'+searchArr[m].addressVO.tehsilList[p].name+'</option>';
+							}
+							else{
 								str+='<option value="'+searchArr[m].addressVO.tehsilList[p].id+'">'+searchArr[m].addressVO.tehsilList[p].name+'</option>';
 							}
 							
@@ -896,9 +899,12 @@ function getFamilyDetails(tdpCadreId)
 					if(searchArr[m].addressVO.panchayatList !=null){
 						for(var q in searchArr[m].addressVO.panchayatList){
 							
-							var panchayatId=searchArr[m].addressVO.panchayatList[q].id.toString();
-							var panchaytIdComp=panchayatId.substring(1,panchayatId.length);
-							if(panchaytIdComp == searchArr[m].addressVO.panchaytId){
+							/* var panchayatId=searchArr[m].addressVO.panchayatList[q].id.toString();
+							var panchaytIdComp=panchayatId.substring(1,panchayatId.length); */
+							if(searchArr[m].addressVO.panchayatList[q].id == searchArr[m].addressVO.panchaytId){
+								str+='<option value="'+searchArr[m].addressVO.panchayatList[q].id+'" selected="selected">'+searchArr[m].addressVO.panchayatList[q].name+'</option>';
+							}
+							else if(searchArr[m].addressVO.panchayatList[q].id == searchArr[m].addressVO.wardId){
 								str+='<option value="'+searchArr[m].addressVO.panchayatList[q].id+'" selected="selected">'+searchArr[m].addressVO.panchayatList[q].name+'</option>';
 							}
 							else{
