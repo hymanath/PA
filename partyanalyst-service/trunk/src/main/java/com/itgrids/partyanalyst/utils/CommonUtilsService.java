@@ -94,7 +94,7 @@ public class CommonUtilsService {
 			StringBuilder queryStr = new StringBuilder();
 			if(memberShipNos != null &&  memberShipNos.size() > 0)
 			{
-				for(String memberShipNo :memberShipNos){
+				/*for(String memberShipNo :memberShipNos){
 				String memberShipNumber = "AP14"+memberShipNo;
 				String memberShipNumber1 = "TS14"+memberShipNo;
 				String temp =  memberShipNos.get(memberShipNos.size() - 1);
@@ -102,7 +102,29 @@ public class CommonUtilsService {
 					queryStr.append("  (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 				else
 					queryStr.append(" (model.memberShipNo ='"+memberShipNo.trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
-				}
+				}*/
+				
+				String memberShipNumber="";
+				String memberShipNumber1 ="";
+				String memberShipNo ="";
+				int i=memberShipNos.size();
+				do{
+					if(i==memberShipNos.size())
+					{
+						memberShipNumber = "\'AP14"+memberShipNos.get(i-1)+"\'";
+						memberShipNumber1 = "\'TS14"+memberShipNos.get(i-1)+"\'";
+						memberShipNo = "\'"+memberShipNos.get(i-1)+"\'";
+					}
+					else
+					{
+						memberShipNumber = memberShipNumber+",\'AP14"+memberShipNos.get(i-1)+"\'";
+						memberShipNumber1 = memberShipNumber1+",\'TS14"+memberShipNos.get(i-1)+"\'";
+						memberShipNo = memberShipNo+",\'"+memberShipNos.get(i-1)+"\'";
+					}
+					
+					i=--i;
+				}while(i>0);
+				queryStr.append(" model.memberShipNo in ("+memberShipNo.trim()+") OR model.memberShipNo in ("+memberShipNumber.trim()+") OR model.memberShipNo in  ("+memberShipNumber1.trim()+")   ");
 			}
 		
 		    List<String> details = tdpCadreDAO.checkForMemberExists(queryStr.toString());
