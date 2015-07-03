@@ -162,7 +162,9 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.ErrorStatusSms;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.RegistrationStatus;
 import com.itgrids.partyanalyst.model.RegistrationStatusTemp;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
@@ -179,6 +181,7 @@ import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.TdpCadreTravelInfo;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.TirupatiByelection;
 import com.itgrids.partyanalyst.model.TwoWayMessage;
 import com.itgrids.partyanalyst.model.TwoWaySmsMobile;
@@ -9997,10 +10000,46 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			addressVO.setStateId(userAddress.getState() !=null ? userAddress.getState().getStateId().longValue() :0l);
 			addressVO.setDistrictId(userAddress.getDistrict() !=null ? userAddress.getDistrict().getDistrictId().longValue() :0l);
 			addressVO.setConstituencyId(userAddress.getConstituency() !=null ? userAddress.getConstituency().getConstituencyId().longValue() :0l );
-			addressVO.setTehsilId(userAddress.getTehsil() !=null ? userAddress.getTehsil().getTehsilId().longValue() :0l);
-			addressVO.setLocalElectionBodyId(userAddress.getLocalElectionBody() !=null ? userAddress.getLocalElectionBody().getLocalElectionBodyId().longValue() : 0l);
-			addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);
-			addressVO.setWardId(userAddress.getWard() !=null ? userAddress.getWard().getConstituencyId().longValue() :0l);
+			
+			Tehsil tehsilModel=userAddress.getTehsil();
+			Long tehsilIdLong=0l;
+			if(tehsilModel !=null){
+				String tehsilStr=tehsilModel.getTehsilId().toString();
+				String tehsilIdStr="2"+tehsilStr;
+				 tehsilIdLong=Long.parseLong(tehsilIdStr);
+			}
+			addressVO.setTehsilId(tehsilIdLong.longValue());
+			
+			LocalElectionBody localElectionModel=userAddress.getLocalElectionBody();
+			Long localElectionLong=0l;
+			if(localElectionModel !=null){
+				String localElectionStr=localElectionModel.getLocalElectionBodyId().toString();
+				String  localElectionIdStr="1"+localElectionStr;
+				localElectionLong=Long.parseLong(localElectionIdStr);
+			}
+			addressVO.setLocalElectionBodyId(localElectionLong.longValue());
+			
+			//Panchayat && Ward
+			Panchayat panchayatModel=userAddress.getPanchayat();
+			Long panchayatIdLong=0l;
+			if(panchayatModel !=null){
+				String panchayatStr=panchayatModel.getPanchayatId().toString();
+				String panchayatIdStr="1"+panchayatStr;
+				panchayatIdLong=Long.parseLong(panchayatIdStr);
+			}
+			addressVO.setPanchaytId(panchayatIdLong.longValue());
+			
+			Constituency constituecnyModel=userAddress.getWard();
+			Long constituencyIdLong=0l;
+			if(constituecnyModel !=null){
+				String constiStr=constituecnyModel.getConstituencyId().toString();
+				String  constIdStr="2"+constiStr;
+				constituencyIdLong=Long.parseLong(constIdStr);
+			}
+			addressVO.setWardId(constituencyIdLong);
+			
+			/*addressVO.setPanchaytId(userAddress.getPanchayat() !=null ? userAddress.getPanchayat().getPanchayatId().longValue() :0l);*/
+		/*	addressVO.setWardId(userAddress.getWard() !=null ? userAddress.getWard().getConstituencyId().longValue() :0l);*/
 			addressVO.setLandMarkStr(userAddress.getLocalArea() !=null ? userAddress.getLocalArea().toString() :null);
 			
 			List<SelectOptionVO> selectDistrictList=null;
@@ -10035,12 +10074,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
 				if(regions.getId() !=null && regions.getId() !=0l){
 					
-					String regionstr=regions.getId().toString();
-					Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));
+					/*String regionstr=regions.getId().toString();
+					Long regionId=Long.parseLong(regionstr.substring(1,regionstr.length()));*/
 					
-					if((addressVO.getTehsilId() !=null &&addressVO.getTehsilId() !=0l) &&(addressVO.getTehsilId().longValue() == regionId.longValue())){
+					if((addressVO.getTehsilId() !=null &&addressVO.getTehsilId() !=0l) &&(addressVO.getTehsilId().longValue() == regions.getId().longValue())){
 						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalIdAddingParam(regions.getId());
-					}else if((addressVO.getLocalElectionBodyId() !=null &&addressVO.getLocalElectionBodyId() !=0l) &&(addressVO.getLocalElectionBodyId().longValue() == regionId.longValue())){
+					}else if((addressVO.getLocalElectionBodyId() !=null &&addressVO.getLocalElectionBodyId() !=0l) &&(addressVO.getLocalElectionBodyId().longValue() == regions.getId().longValue())){
 						genericPanchayatList=cadreCommitteeService.getPanchayatDetailsByMandalIdAddingParam(regions.getId());
 					}
 				}
