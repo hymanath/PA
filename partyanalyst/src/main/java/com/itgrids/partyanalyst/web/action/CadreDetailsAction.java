@@ -10,10 +10,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,6 +34,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private VerifierVO							verifierVO;
 	private EntitlementsHelper 					entitlementsHelper;
 	
+	private List<CandidateDetailsVO>			candidateDetailsVOs;
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -121,6 +124,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+	public List<CandidateDetailsVO> getCandidateDetailsVOs() {
+		return candidateDetailsVOs;
+	}
+
+
+	public void setCandidateDetailsVOs(List<CandidateDetailsVO> candidateDetailsVOs) {
+		this.candidateDetailsVOs = candidateDetailsVOs;
+	}
+
 
 	public String execute(){
 		
@@ -184,5 +196,19 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			LOG.error("Exception raised in getEventDetailsOfCadre  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getCandidateElectDetatails(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			candidateDetailsVOs=cadreDetailsService.getCandidateElectDetatails(jObj.getLong("cadreId"));
+			//candidateDetailsService.getCandidateElectionDetails();
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getCandidateElectDetatails  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+		
 	}
 }
