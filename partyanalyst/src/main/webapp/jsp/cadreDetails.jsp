@@ -80,6 +80,11 @@
 				<p>Party Position :<span id="positionId"></span></p>
 				<p>Public Representative : <span id="representativeId"></span></p>  -->
 			</div>
+			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId">
+				<h4 style="border-bottom:1px solid #999">Cadre Election Profile.</h4>
+				<div id="electionProfileDivId"> </div>
+			</div>
+			
 			<div class="col-md-7 col-md-offset-2 pad_10 block">
 				
 				<h4 style="border-bottom:1px solid #999">Cadre Member Booth Performance</h4>
@@ -119,7 +124,7 @@
 				</div>
 		
 			</div>
-				<div class="col-md-12 m_top10 pad_10 block">
+				<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
 					<div class="panel-group surveyDetailsCls" id="accordion" role="tablist" aria-multiselectable="true">
 					<!--  <div class="panel panel-default">
@@ -233,6 +238,7 @@
 			complaintDetailsOfCadre(globalCadreId);
 			getEventDetailsOfCadre(globalCadreId);
 			getTdpCadreSurveyDetails(globalCadreId,0,null);
+			getCandidateElectDetatails(globalCadreId);
 	 });
 		
 			
@@ -436,6 +442,7 @@
 			}).done(function(result){
 			
 			if(result !=null){
+				$("#surveyDetailsMainDivId").show();
 				if(result.verifierVOList !=null){
 				if(surveyId ==0 && localCadreId !=0){
 					var str='';
@@ -465,6 +472,8 @@
 				else if(surveyId !=0 && surveyId !=0 ){
 					$("#collapse"+surveyId+''+indexId).html('<div>Data Not Available.</div>');	
 				}
+				$("#surveyDetailsMainDivId").hide();
+				
 			}
 		});
 			
@@ -506,6 +515,59 @@
 				$("#collapse"+surveyId+''+indexId).html(str);		
 		}
 		
+		function getCandidateElectDetatails(cadreId){
+			var localCadreId=cadreId;
+			var jsObj={
+				cadreId:localCadreId,
+			}
+			$.ajax({
+				type:'GET',
+				 url: 'getCandidateElectDetatailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				var str='';
+				if(result !=null && result !=''){
+					$("#electionProfileMainDivId").show();
+					str+='<div>';
+					
+					for(var i in result){
+						if(result[i].status==true)
+						{
+							str+='<ul class="wl-sub-details">';
+							str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
+							str+='<strong>Won in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with '+result[i].votesPercentage+' of votes gain for '+result[i].partyName+' party in '+result[i].constituencyName+' constituency</li>';
+							str+='</ul>';
+						}
+					}
+					for(var i in result){
+						if(result[i].status ==false){
+							str+='<ul class="wl-sub-details">';
+							str+='<li onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
+							str+='<strong>Lost in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with '+result[i].votesPercentage+' of votes gain for '+result[i].partyName+' party in '+result[i].constituencyName+' constituency</li>';
+							str+='</ul>';
+						}
+					}
+						str+='</div>';
+						
+					$("#electionProfileDivId").html(str);
+				}
+				else{
+					$("#electionProfileMainDivId").hide();
+				}
+			});
+			
+		}
+		
+		$(document).on("click",".eachParticipationListCls",function(){
+			
+			var constId=$(this).attr("attr_constId");
+			var elecType=$(this).attr("attr_election_type");
+			var elecYear=$(this).attr("attr_election_year");
+			
+			var win =window.open("constituencyElectionResultsAction.action?constituencyId="+constId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+			win.focus();
+		});
+	
 	</script>	
 </body>
 </html>
