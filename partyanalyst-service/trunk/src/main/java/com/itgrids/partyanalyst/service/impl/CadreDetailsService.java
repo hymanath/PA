@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.google.gdata.util.parser.Action;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -48,6 +50,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public ICadreCommitteeService cadreCommitteeService;
 	public IEventAttendeeDAO eventAttendeeDAO;
 	public IWebServiceHandlerService webServiceHandlerService;
+	private CandidateDetailsService				candidateDetailsService;
 
 	
 	public IConstituencyDAO getConstituencyDAO() {
@@ -151,6 +154,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setWebServiceHandlerService(
 			IWebServiceHandlerService webServiceHandlerService) {
 		this.webServiceHandlerService = webServiceHandlerService;
+	}
+
+	public CandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+
+	public void setCandidateDetailsService(
+			CandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
 	}
 
 
@@ -578,7 +591,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0.tdpCommitteeLevel,1.role
 				Object[] partyPositionDetails=tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);
 				//0.publicRepresentativeTypeId,1.type
-				Object[] publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
+				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
 				
 				DateFormat dateFormat=null;
@@ -625,7 +638,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 					else{
 						cadreDetailsVO.setImagePath("");
 					}
-					
 				}
 				
 				if(partyPositionDetails !=null)
@@ -638,12 +650,23 @@ public class CadreDetailsService implements ICadreDetailsService{
 				else{
 					cadreDetailsVO.setPartyPosition("N/A");
 				}
-				if(publicRepDertails !=null){
-					cadreDetailsVO.setRepresentativeType(publicRepDertails[1] !=null ? publicRepDertails[1].toString() : "");
-				}else{
-					cadreDetailsVO.setRepresentativeType("N/A");
+				
+				String publicRepresentTypeStr="N/A";
+				if(publicRepDertails !=null && publicRepDertails.size()>0){
+					publicRepresentTypeStr="";
+					for(Object[] publicRepDertail:publicRepDertails){
+						publicRepresentTypeStr=publicRepDertail[1].toString()+" , "+publicRepresentTypeStr;
+					}
+					if (publicRepresentTypeStr.endsWith(",")) {
+						publicRepresentTypeStr = publicRepresentTypeStr.substring(0, publicRepresentTypeStr.length() - 1);
+						}
 				}
-			}
+				
+				cadreDetailsVO.setRepresentativeType(publicRepresentTypeStr);
+					
+					//cadreDetailsVO.setRepresentativeType(publicRepDertails[1] !=null ? publicRepDertails[1].toString() : "");
+				}
+			
 			if(cadreDetailsVO !=null){
 				
 				String voterIdStr=cadreDetailsVO.getVoterId();
@@ -911,8 +934,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					CadreCommitteeMemberVO eachComplaint=new CadreCommitteeMemberVO();
 					
 					eachComplaint.setId(Long.parseLong(objects[0].toString()));//Complaint_id
-					eachComplaint.setName(objects[1].toString());//Subject
-					eachComplaint.setOccupation(objects[2].toString());//seviority
+					eachComplaint.setName(objects[1]!=null  ? objects[1].toString():"");//Subject
+					eachComplaint.setOccupation(objects[2] !=null ? objects[2].toString():"");//seviority
 					
 					if(objects[3] !=null){
 						 String date = objects[3].toString();
@@ -1027,6 +1050,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		
 		return verifierVO;
+	}
+	public List<CandidateDetailsVO>  getCandidateElectDetatails(Long cadreId){
+		
+		List<CandidateDetailsVO> candidateElecDatails=new ArrayList<CandidateDetailsVO>();
+		try{
+			Long candidateId=tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+			if(candidateId !=null){
+				 candidateElecDatails=candidateDetailsService.getCandidateElectionDetails(candidateId);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getCandidateElectDetatails() service  method in CadreDetailsService.",e);
+		}
+		
+		return candidateElecDatails;
 	}
 	
 }
