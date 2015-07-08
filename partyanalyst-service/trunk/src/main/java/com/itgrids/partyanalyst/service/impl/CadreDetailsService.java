@@ -914,7 +914,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			return finalVo;
 	}
 	
-	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId){
+	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId,String memberShipId){
 		
 		
 		CadreCommitteeMemberVO finalVo=new CadreCommitteeMemberVO();
@@ -925,7 +925,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 DateFormat formatter = null;
 		     Date convertedDate = null;
 			//0.Complaint_id,1.Subject,2.Seviority,3.Raised_Date,4.Completed_Status,5.issue_type,6.type_of_grevience
-			List<Object[]> complaintDetails=tdpCadreDAO.complaintDetailsOfCadre(cadreId);
+			List<Object[]> complaintDetails=tdpCadreDAO.complaintDetailsOfCadre(memberShipId);
 			
 			if(complaintDetails !=null){
 				
