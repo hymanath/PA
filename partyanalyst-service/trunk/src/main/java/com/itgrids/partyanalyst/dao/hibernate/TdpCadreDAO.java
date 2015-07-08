@@ -5277,14 +5277,14 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return (Object[]) query.uniqueResult();
 		}
-		public List<Object[]> complaintDetailsOfCadre(Long cadreId){
+		public List<Object[]> complaintDetailsOfCadre(String memberShipId){
 			
 			StringBuilder queryStr=new StringBuilder();
 			
 			queryStr.append("select Complaint_id,CAST(Subject as char(2550)) As Subject,Seviority,Raised_Date, " +
 					" Completed_Status,issue_type,type_of_grevience" +
 					" from complaint_master  " +
-					" where User_Id="+cadreId+" ");
+					" where membership_id="+memberShipId+" ");
 			
 			Query query=getSession().createSQLQuery(queryStr.toString());
 			
