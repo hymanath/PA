@@ -234,8 +234,9 @@
 	var globalCadreId;
 	 $(document).ready(function() {
 			globalCadreId='${param.cadreId}';
+			globalMembershipId='${param.memberShipId}';
 			cadreFormalDetailedInformation(globalCadreId);
-			complaintDetailsOfCadre(globalCadreId);
+			complaintDetailsOfCadre(globalCadreId,globalMembershipId);
 			getEventDetailsOfCadre(globalCadreId);
 			getTdpCadreSurveyDetails(globalCadreId,0,null);
 			getCandidateElectDetatails(globalCadreId);
@@ -321,11 +322,13 @@
 			
 		}
 		
-		function complaintDetailsOfCadre(globalCadreId){
+		function complaintDetailsOfCadre(globalCadreId,globalMembershipId){
 			var localCadreId=globalCadreId;
+			var localMemberShipId=globalMembershipId;
 			//33160
 			var jsobj={
-				cadreId:localCadreId
+				cadreId:localCadreId,
+				membershipId:localMemberShipId
 			}
 			$.ajax({
 				type:'GET',
