@@ -559,7 +559,7 @@ $(".paginationDivId").hide();
 				str+='</ul>';
 				
 				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
-				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
@@ -615,7 +615,8 @@ $(".paginationDivId").hide();
 	}
 	$(document).on("click",".cadreDetailsCls",function(){
 		var cadreId=$(this).attr("attr_cadre_id");
-		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
+		var memberShipId=$(this).attr("attr_membership_id");
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'&memberShipId='+memberShipId+'','_blank');
 	});
 	function gettingAllConstituencys(repType){
 		$("#constitunecyDiv").show();
@@ -917,7 +918,7 @@ $(".paginationDivId").hide();
 				str+='</ul>';
 				
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
-				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if>
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)

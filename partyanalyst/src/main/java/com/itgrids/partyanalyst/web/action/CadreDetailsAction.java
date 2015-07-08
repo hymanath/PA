@@ -35,6 +35,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private EntitlementsHelper 					entitlementsHelper;
 	
 	private List<CandidateDetailsVO>			candidateDetailsVOs;
+	private String 								memberShipId;
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -132,6 +133,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setCandidateDetailsVOs(List<CandidateDetailsVO> candidateDetailsVOs) {
 		this.candidateDetailsVOs = candidateDetailsVOs;
 	}
+	
+	public String getMemberShipId() {
+		return memberShipId;
+	}
+
+
+	public void setMemberShipId(String memberShipId) {
+		this.memberShipId = memberShipId;
+	}
 
 
 	public String execute(){
@@ -166,7 +176,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		try {
 			jObj=new JSONObject(getTask());
 			
-			cadreCommitteeMemberVO=cadreDetailsService.complaintDetailsOfCadre(jObj.getLong("cadreId"));
+			cadreCommitteeMemberVO=cadreDetailsService.complaintDetailsOfCadre(jObj.getLong("cadreId"),jObj.getString("membershipId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in cadreFormalDetailedInformation  method in CadreDetailsAction.",e);
