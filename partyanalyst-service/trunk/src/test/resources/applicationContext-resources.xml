@@ -620,6 +620,9 @@
 				<value>com.itgrids.partyanalyst.model.MessagingPropsDetails</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCandidate</value>
 				
+			     <value>com.itgrids.partyanalyst.model.UserAddressType</value>
+			     <value>com.itgrids.partyanalyst.model.CadreAddressDetails</value>
+			    				
 			</list>
 		</property>
 	</bean>
@@ -2914,6 +2917,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="tdpCadreCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCandidateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAddressTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreAddressDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreAddressDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
