@@ -657,8 +657,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					for(Object[] publicRepDertail:publicRepDertails){
 						publicRepresentTypeStr=publicRepDertail[1].toString()+" , "+publicRepresentTypeStr;
 					}
-					if (publicRepresentTypeStr.endsWith(",")) {
-						publicRepresentTypeStr = publicRepresentTypeStr.substring(0, publicRepresentTypeStr.length() - 1);
+					if (publicRepresentTypeStr.endsWith(" , ")) {
+						publicRepresentTypeStr = publicRepresentTypeStr.substring(0, publicRepresentTypeStr.length() - 2);
 						}
 				}
 				
@@ -1017,17 +1017,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 					if(finalMap !=null && finalMap.size()>0){
 						for (Map.Entry<Long,Map<Long,CadreCommitteeMemberVO>> entry : finalMap.entrySet())
 						{
-							CadreCommitteeMemberVO subList = new CadreCommitteeMemberVO();
+							CadreCommitteeMemberVO cadreCommitteeMemberVO = new CadreCommitteeMemberVO();
 							
-							subList.setId(entry.getKey());//parentEventId
+							cadreCommitteeMemberVO.setId(entry.getKey());//parentEventId
 							
 							Map<Long,CadreCommitteeMemberVO> subMap = entry.getValue();//subEventId,vo
 							
 							if(subMap !=null && subMap.size()>0){
-								subList.setKnownList(new ArrayList<CadreCommitteeMemberVO>(subMap.values()));//List Of SubEvents
+								cadreCommitteeMemberVO.setKnownList(new ArrayList<CadreCommitteeMemberVO>(subMap.values()));//List Of SubEvents
 							}
-							list.add(subList);
-							finalList.addAll(list);
+							finalList.add(cadreCommitteeMemberVO);
 						}
 					}	
 			}
