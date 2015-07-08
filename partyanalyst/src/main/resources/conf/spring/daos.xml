@@ -2077,5 +2077,13 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userAddressTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="cadreAddressDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreAddressDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		

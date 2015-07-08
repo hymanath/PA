@@ -604,6 +604,10 @@
 			    <value>com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails</value>
 			    <value>com.itgrids.partyanalyst.model.EntryExitInfo</value>
 			    <value>com.itgrids.partyanalyst.model.TdpCadreCandidate</value>
+			    
+			     <value>com.itgrids.partyanalyst.model.UserAddressType</value>
+			     <value>com.itgrids.partyanalyst.model.CadreAddressDetails</value>
+			    
 				</list>
 			
 		</property>
