@@ -1680,7 +1680,8 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		Query query = getSession().createQuery(" select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
 				" model.tdpCommitteeRole.tdpRoles.role " +
 				" from  TdpCommitteeMember model " +
-				" where model.tdpCadre.tdpCadreId =:tdpCadreId");
+				" where model.tdpCadre.tdpCadreId =:tdpCadreId " +
+				" and model.isActive ='Y'");
 		
 		query.setParameter("tdpCadreId", cadreId);
 		
