@@ -19,5 +19,6 @@ public interface IHHSurveyAnswersDAO extends GenericDao<HHSurveyAnswers, Long>{
 	
 	public List<Object[]> getVoterAndNonVotersUnderOption(Long optionId,Long panchayatId);
 	public List<Object[]> getVoterAndNonVotersUnderOption1(Long optionId,Long panchayatId);
+	public List<Object[]> getHouseHoldsOfPanchayatsWithOption(Long optionId,List<Long> panchayatIds);
 	
 }
