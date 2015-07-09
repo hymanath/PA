@@ -59,7 +59,7 @@
 				
 				<table class="table table-bordered">
 					<tr>
-						<td width="50%">VoterCardNO : &nbsp <span id="voterIdSpan"></span> </td>
+						<td width="50%">Voter Card No : &nbsp <span id="voterIdSpan"></span> </td>
 						<td>Panchayat :&nbsp <span id="panchayatId"></span></td>
 					</tr>
 					<tr>
