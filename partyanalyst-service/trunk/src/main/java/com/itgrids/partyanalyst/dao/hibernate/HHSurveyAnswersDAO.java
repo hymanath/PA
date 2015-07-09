@@ -131,6 +131,34 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 		return query.list();
 	}
 	
+	public List<Object[]> getHouseHoldsOfPanchayatsWithOption(Long optionId,List<Long> panchayatIds){
+		Query query = getSession().createQuery(" select distinct model2.houseHoldVoterId," + // 0 -- HOUSEHOLD VOTER ID
+				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
+				" model2.houseHolds.houseNo," +//2 -- HOUSE NO
+				" model2.voter.name," + // 3 -- VOTER NAME(FAMILY HEAD)
+				" model2.voter.voterIDCardNo," +// 4 -- VOTER CARD NO
+				" model.houseHold.panchayat.panchayatId," +// 5 -- PANCHAYAT ID
+				" model.houseHold.panchayat.panchayatName," +  // 6 -- PANCHAYAT NAME
+				" model.hhOptions.optionsId, " +//7 -- OPTION ID
+				" model2.voter.voterId, " +
+				" model2.ownerMobileNo " +
+				//" model.hhOptions.options" +//8 -- OPTION
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				" and model2.hhLeader.id = model1.hhLeader.id  " +
+				" and model.houseHold.panchayat.panchayatId in( :panchayatIds)" +
+				" and model1.hhLeader.is_active = 'YES'" +
+				" and model2.isDelete = 'FALSE' " +
+				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.hhOptions.optionsId =:optionId" +
+				" order by model.houseHold.panchayat.panchayatName ");
+		
+		query.setParameter("optionId", optionId);
+		query.setParameterList("panchayatIds", panchayatIds);
+		return query.list();
+	}
+	
 	public List<Object[]> getVoterAndNonVotersUnderOption(Long optionId,Long panchayatId){
 		Query query = getSession().createQuery(" select "+
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
