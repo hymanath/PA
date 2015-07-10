@@ -2566,6 +2566,7 @@
 		 <property name="eventAttendeeDAO" ref="eventAttendeeDAO"/>
 		 <property name="webServiceHandlerService" ref="webServiceHandlerService"/>
 		  <property name="candidateDetailsService" ref="candidateDetailsService"/>
+		  <property name="eventDAO" ref="eventDAO"/>
 		 
 	</bean>
 	

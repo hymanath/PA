@@ -32,7 +32,9 @@
 				<div class="media">
 					<div class="media-left">
 						<a href="#">
-							<div id="imagePathId"></div>
+							<div id="imagePathId">
+								<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+							</div>
 						</a>
 					</div>
 					<div class="media-body">
@@ -59,7 +61,7 @@
 				
 				<table class="table table-bordered">
 					<tr>
-						<td width="50%">Voter Card No : &nbsp <span id="voterIdSpan"></span> </td>
+						<td width="50%">VoterCardNO : &nbsp <span id="voterIdSpan"></span> </td>
 						<td>Panchayat :&nbsp <span id="panchayatId"></span></td>
 					</tr>
 					<tr>
@@ -80,7 +82,7 @@
 				<p>Party Position :<span id="positionId"></span></p>
 				<p>Public Representative : <span id="representativeId"></span></p>  -->
 			</div>
-			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId">
+			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId" style="display:none">
 				<h4 style="border-bottom:1px solid #999">Cadre Election Profile.</h4>
 				<div id="electionProfileDivId"> </div>
 			</div>
@@ -98,11 +100,11 @@
 						<th>Own Ward Perc</th>
 					</tr>
 					<tr id="ownBoothDetailsId">
-						
+						<img id="dataLoadingsImgForownBoothDetailsId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 					</tr>
 				</table>
 			</div>
-			<div class="col-md-7 col-md-offset-2 pad_10 block">
+			<div class="col-md-7 col-md-offset-2 pad_10 block" id="grievanceDetailsMainDivId" style="display:none">
 				<h4 style="border-bottom:1px solid #999">Grievance Details</h4>
 				<table class="table table-bordered table-responsive">
 					<thead>
@@ -113,9 +115,8 @@
 						<th>Issue Type</th>
 						<th>Grievance Type</th>
 					</thead>
-					<tbody id="grievanceDetailsId">
-						
-					<tbody>
+					<img id="dataLoadingsImgForComplaint" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+					<tbody id="grievanceDetailsId"></tbody>
 				</table>
 			</div>
 			<div class="col-md-7 col-md-offset-2 pad_10 block">
@@ -234,19 +235,27 @@
 	var globalCadreId;
 	 $(document).ready(function() {
 			globalCadreId='${param.cadreId}';
-			globalMembershipId='${param.memberShipId}';
+			//globalMembershipId='${param.memberShipId}';
 			cadreFormalDetailedInformation(globalCadreId);
-			complaintDetailsOfCadre(globalCadreId,globalMembershipId);
+			//complaintDetailsOfCadre(globalCadreId,globalMembershipId);
 			getEventDetailsOfCadre(globalCadreId);
 			getTdpCadreSurveyDetails(globalCadreId,0,null);
-			getCandidateElectDetatails(globalCadreId);
+			
 	 });
 		
 			
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
-			//6795940
 			var localCadreId=globalCadreId;
+			
+			//loading images showing
+			$("#dataLoadingsImgForownBoothDetailsId").show();
+			$("#dataLoadingsImgForImagePath").show();
+			
+			
+			//hiding divs of Election && and Grievance details
+			$("#electionProfileMainDivId").hide();
+			$("#grievanceDetailsMainDivId").hide();
 			var jsobj={
 				cadreId:localCadreId
 			}
@@ -255,8 +264,15 @@
 				 url: 'cadreFormalDetailedInformationAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
+				//loading images hiding
+				 $("#dataLoadingsImgForownBoothDetailsId").hide();
+				 $("#dataLoadingsImgForImagePath").hide();
+				 
 				var str='';
-				if(result !=null){ 
+				if(result !=null){
+						$("#dataLoadingsImgForownBoothDetailsId").show();
+						$("#dataLoadingsImgForImagePath").show();
+						
 				//nameId dobId ageId qualificationId occupationId voterIdSpan panchayatId mandalId constituencyId positionId representativeId
 					$("#nameId").html(result.name);
 					 $("#dobId").html(result.dateOfBirth); 
@@ -276,12 +292,16 @@
 						 $("#imagePathId").html('<img src="images/search_details_member_imahe.png" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">');
 					 }
 					 
+					 //
+					  $("#dataLoadingsImgForownBoothDetailsId").hide();
+					  $("#dataLoadingsImgForImagePath").hide();
 					 
 					 if(result.ccmVO !=null && result.ccmVO!=""){
 						 ownBoothDetailsVo=result.ccmVO;
 						 buildingOwnBoothDetails(ownBoothDetailsVo);
 					 }
-					 
+					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
+					 getCandidateElectDetatails(localCadreId);
 				}
 			});
 		}
@@ -322,9 +342,11 @@
 			
 		}
 		
-		function complaintDetailsOfCadre(globalCadreId,globalMembershipId){
-			var localCadreId=globalCadreId;
-			var localMemberShipId=globalMembershipId;
+		function complaintDetailsOfCadre(cadreId,membershipId){
+			var localCadreId=cadreId;
+			var localMemberShipId=membershipId;
+			
+			//$("#dataLoadingsImgForComplaint").show();
 			//33160
 			var jsobj={
 				cadreId:localCadreId,
@@ -335,8 +357,11 @@
 				 url: 'complaintDetailsOfCadreAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
+				//$("#dataLoadingsImgForComplaint").hide();
 				var str='';
-				if(result.knownList !=null && result.knownList.length>0){
+				if(result !=null){
+					if(result.knownList !=null && result.knownList.length>0){
+						$("#grievanceDetailsMainDivId").show();
 					
 					for(var i in result.knownList){
 						str+='<tr>';
@@ -349,10 +374,12 @@
 						str+='</tr>';
 					}
 					$("#grievanceDetailsId").html(str);
+					}
+					else{
+						$("#grievanceDetailsId").html("Data Not Available.");
+					}
 				}
-				else{
-					$("#grievanceDetailsId").html("Data Not Available.");
-				}
+				
 				
 			});
 		}
@@ -382,7 +409,7 @@
 						if(results[i].knownList !=null){
 							subLength=results[i].knownList.length;
 						}
-						var participationType;
+					/* 	var participationType;
 						
 							if(results[i].id ==1){
 								participationType="PARTY OFFICE";
@@ -391,14 +418,14 @@
 								participationType="MAHANADU";
 							}else{
 								participationType="OTHER";
-							}
+							} */
 								//str+='<td  rowspan='+subLength+'>'+participationType+'</td>';
 								
 								if(results[i].knownList !=null){
 									for(var j in results[i].knownList){
 										str+='<tr>';
 										if(j==0){
-											str+='<td style="border-bottom:#fff;">'+participationType+'</td>';
+											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
 										}else{
 											str+='<td style="border:#fff;"></td>';
 										}
@@ -538,7 +565,7 @@
 						{
 							str+='<ul class="wl-sub-details">';
 							str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
-							str+='<strong>Won in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with '+result[i].votesPercentage+' of votes gain for '+result[i].partyName+' party in '+result[i].constituencyName+' constituency</li>';
+							str+='<strong><span style="color:green">Won</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
 							str+='</ul>';
 						}
 					}
@@ -546,7 +573,7 @@
 						if(result[i].status ==false){
 							str+='<ul class="wl-sub-details">';
 							str+='<li onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
-							str+='<strong>Lost in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with '+result[i].votesPercentage+' of votes gain for '+result[i].partyName+' party in '+result[i].constituencyName+' constituency</li>';
+							str+='<strong><span style="color:red">Lost</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
 							str+='</ul>';
 						}
 					}
@@ -554,9 +581,9 @@
 						
 					$("#electionProfileDivId").html(str);
 				}
-				else{
+				/* else{
 					$("#electionProfileMainDivId").hide();
-				}
+				} */
 			});
 			
 		}
