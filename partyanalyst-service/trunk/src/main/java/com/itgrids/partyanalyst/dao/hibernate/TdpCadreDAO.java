@@ -5253,7 +5253,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
 					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
-					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image " +
+					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo " +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");

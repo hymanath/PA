@@ -69,6 +69,9 @@ public class UserAddress implements java.io.Serializable {
 	private Long panchayatId;
 	
 	private Panchayat panchayat;
+	private String addressLane1;
+	private String addressLane2;
+	
 	public UserAddress() {
 		super();		
 	}
@@ -318,8 +321,24 @@ public class UserAddress implements java.io.Serializable {
 	public void setPanchayat(Panchayat panchayat) {
 		this.panchayat = panchayat;
 	}
-	
-	
+
+	@Column(name="address_lane1")
+	public String getAddressLane1() {
+		return addressLane1;
+	}
+
+	public void setAddressLane1(String addressLane1) {
+		this.addressLane1 = addressLane1;
+	}
+
+	@Column(name="address_lane2")
+	public String getAddressLane2() {
+		return addressLane2;
+	}
+
+	public void setAddressLane2(String addressLane2) {
+		this.addressLane2 = addressLane2;
+	}
 	
 	
 }

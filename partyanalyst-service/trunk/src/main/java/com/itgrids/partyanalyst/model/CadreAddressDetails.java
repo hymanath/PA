@@ -27,12 +27,17 @@ public class CadreAddressDetails extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long cadreAddressDetailsId;
-	private UserAddress userAddressId;
-	private UserAddressType userAddressTypeId;
+	private UserAddress userAddress;
+	private UserAddressType userAddressType;
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private TdpCadre tdpCadre;
+	
+	private Long userAddressId;
+	private Long userAddressTypeId;
+	private Long tdpCadreId;
 	
 	public CadreAddressDetails(){
 		
@@ -52,22 +57,22 @@ public class CadreAddressDetails extends BaseModel implements Serializable{
 	@JoinColumn(name = "user_address_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAddress getUserAddressId() {
-		return userAddressId;
+	public UserAddress getUserAddress() {
+		return userAddress;
 	}
-	public void setUserAddressId(UserAddress userAddressId) {
-		this.userAddressId = userAddressId;
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "user_address_type_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAddressType getUserAddressTypeId() {
-		return userAddressTypeId;
+	public UserAddressType getUserAddressType() {
+		return userAddressType;
 	}
-	public void setUserAddressTypeId(UserAddressType userAddressTypeId) {
-		this.userAddressTypeId = userAddressTypeId;
+	public void setUserAddressType(UserAddressType userAddressType) {
+		this.userAddressType = userAddressType;
 	}
 	
 	@Column(name = "inserted_by", length = 25)
@@ -101,5 +106,45 @@ public class CadreAddressDetails extends BaseModel implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
+	@Column(name = "user_address_id")
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+
+	@Column(name = "user_address_type_id")
+	public Long getUserAddressTypeId() {
+		return userAddressTypeId;
+	}
+
+	public void setUserAddressTypeId(Long userAddressTypeId) {
+		this.userAddressTypeId = userAddressTypeId;
+	}
+
 	
 }

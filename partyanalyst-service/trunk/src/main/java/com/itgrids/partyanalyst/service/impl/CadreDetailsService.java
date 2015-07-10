@@ -15,13 +15,13 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.google.gdata.util.parser.Action;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -50,7 +51,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public ICadreCommitteeService cadreCommitteeService;
 	public IEventAttendeeDAO eventAttendeeDAO;
 	public IWebServiceHandlerService webServiceHandlerService;
-	private CandidateDetailsService				candidateDetailsService;
+	private ICandidateDetailsService				candidateDetailsService;
+	private IEventDAO		eventDAO;
 
 	
 	public IConstituencyDAO getConstituencyDAO() {
@@ -156,14 +158,23 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.webServiceHandlerService = webServiceHandlerService;
 	}
 
-	public CandidateDetailsService getCandidateDetailsService() {
+	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
 
 
 	public void setCandidateDetailsService(
-			CandidateDetailsService candidateDetailsService) {
+			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public IEventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
 	}
 
 
@@ -638,6 +649,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 					else{
 						cadreDetailsVO.setImagePath("");
 					}
+					
+					if(cadreFormalDetails[16] !=null){
+						cadreDetailsVO.setMembershipNo(cadreFormalDetails[16].toString());
+					}
+					
 				}
 				
 				if(partyPositionDetails !=null)
@@ -1002,12 +1018,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 							subEventDetails.setName(event[2] !=null ? event[2].toString():"");//eventName
 							subEventDetails.setLevel(Long.parseLong(event[4].toString()));//parentEventId
 							
-							if(subEventDetails.getLevel() ==1l){
-								subEventDetails.setType("Party Office");//parentEventName
+							String parentEventName=eventDAO.getEventName(subEventDetails.getLevel());
+							
+							if(parentEventName !=null){
+								subEventDetails.setType(parentEventName);//parentEventName
 							}
-							else if(subEventDetails.getLevel() ==7l){
-								subEventDetails.setType("Mahanadu");//parentEventName
-							}
+							
 							subEventDetails.setTotal(event[5] !=null ? Long.parseLong(event[5].toString()) :0l);
 							mainEventMap.put(Long.parseLong(event[1].toString()), subEventDetails);
 							
@@ -1020,6 +1036,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 							CadreCommitteeMemberVO cadreCommitteeMemberVO = new CadreCommitteeMemberVO();
 							
 							cadreCommitteeMemberVO.setId(entry.getKey());//parentEventId
+							
+							String parentEventName=eventDAO.getEventName(cadreCommitteeMemberVO.getId());
+							if(parentEventName !=null){
+								cadreCommitteeMemberVO.setName(parentEventName);
+							}
 							
 							Map<Long,CadreCommitteeMemberVO> subMap = entry.getValue();//subEventId,vo
 							
