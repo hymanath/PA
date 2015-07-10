@@ -59,6 +59,8 @@ public class AddressVO implements Serializable {
 	private String landMarkStr;
 	private Long localElectionBodyId;
 	private Long wardId;
+	private String addressLane1;
+	private String addressLane2;
 	
 	
 	public Long getVoterCategoryValuesId() {
@@ -307,6 +309,18 @@ public class AddressVO implements Serializable {
 	}
 	public void setWardId(Long wardId) {
 		this.wardId = wardId;
+	}
+	public String getAddressLane1() {
+		return addressLane1;
+	}
+	public void setAddressLane1(String addressLane1) {
+		this.addressLane1 = addressLane1;
+	}
+	public String getAddressLane2() {
+		return addressLane2;
+	}
+	public void setAddressLane2(String addressLane2) {
+		this.addressLane2 = addressLane2;
 	}
 	
 	
