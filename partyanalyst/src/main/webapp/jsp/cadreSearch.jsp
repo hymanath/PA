@@ -616,7 +616,7 @@ $(".paginationDivId").hide();
 	$(document).on("click",".cadreDetailsCls",function(){
 		var cadreId=$(this).attr("attr_cadre_id");
 		var memberShipId=$(this).attr("attr_membership_id");
-		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'&memberShipId='+memberShipId+'','_blank');
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
 	});
 	function gettingAllConstituencys(repType){
 		$("#constitunecyDiv").show();
@@ -824,7 +824,6 @@ $(".paginationDivId").hide();
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
 		
-		
 		if(panchayatId !=0)
 		{
 			if(panchayatId.substr(0,1) == 1){
@@ -838,6 +837,7 @@ $(".paginationDivId").hide();
 			
 			
 		$("#searchDataImg").show();
+		
 		var jsObj =
 		{
 			locationLevel :locationLevel,
