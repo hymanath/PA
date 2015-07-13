@@ -1857,6 +1857,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setGender(tdpCadre.getGender());
 						committeeVO.setVoterCardNo(tdpCadre.getVoterCardNo());
 						committeeVO.setImageURL(tdpCadre.getImageURL());
+						committeeVO.setDataSourceType(tdpCadre.getDataSourceType());
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)
