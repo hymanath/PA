@@ -560,7 +560,7 @@ $(".paginationDivId").hide();
 				str+='<li>Caste: '+result[i].casteName+'</i>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
-				str+='<li>Regestered Through: '+result[i].dataSourceType+'</i>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</i>';
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
