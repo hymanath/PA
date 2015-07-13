@@ -828,4 +828,36 @@ public List<Long> getBoothIdsByLocalEleBody(Long localEleBodyId, Long electionId
 	query.setParameter("localElectionBodyId", localEleBodyId);
 	return query.list();
 }
+
+
+public Long getTotalVotesByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId)
+{
+	StringBuilder str = new StringBuilder();
+	str.append(" select sum(model.booth.totalVoters) from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId " +
+			" and model.constituencyElection.constituency.constituencyId =:constituencyId and  ");
+	
+	if(locationType.equalsIgnoreCase("constituency"))
+	  str.append(" model.booth.constituency.constituencyId =:locationId ");
+	
+	else if(locationType.equalsIgnoreCase("mandal"))
+		str.append(" model.booth.tehsil.tehsilId =:locationId and model.booth.localBody is null ");
+	
+	else if(locationType.equalsIgnoreCase("panchayat"))
+		str.append(" model.booth.panchayat.panchayatId =:locationId ");
+	
+	else if(locationType.equalsIgnoreCase("booth"))
+	 str.append(" model.booth.boothId = :locationId ");
+	
+	else if(locationType.equalsIgnoreCase("muncipality"))
+	  str.append(" model.booth.localBody.localElectionBodyId =:locationId ");
+	
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("locationId", locationId);
+	query.setParameter("constituencyId", constituencyId);
+	query.setParameter("electionId", electionId);
+	
+	return (Long) query.uniqueResult();
+	
+}
+
 }

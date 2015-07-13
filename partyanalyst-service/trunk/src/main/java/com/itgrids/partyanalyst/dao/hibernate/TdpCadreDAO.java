@@ -5290,4 +5290,39 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return query.list();
 		}
+
+
+		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select count(model.tdpCadreId) from TdpCadre model,UserAddress model2 where model.userAddress.userAddressId = model2.userAddressId and " +
+					" model.enrollmentYear =:year and model.isDeleted = 'N' and model2.constituency.constituencyId =:constituencyId and ");
+			
+			    if(locationtype.equalsIgnoreCase("Constituency"))
+				 str.append("  model2.constituency.constituencyId =:locationId");
+				
+				else if(locationtype.equalsIgnoreCase("Mandal"))
+					 str.append("  model2.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
+				
+				
+				else if(locationtype.equalsIgnoreCase("Panchayat"))
+					 str.append("  model2.panchayat.panchayatId =:locationId");
+				
+				
+				else if(locationtype.equalsIgnoreCase("Booth"))
+					 str.append("  model2.booth.boothId =:locationId ");
+			    
+				else if(locationtype.equalsIgnoreCase("Muncipality"))
+				 str.append("model2.localElectionBody.localElectionBodyId =:locationId ");
+			
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("locationId", locationId);
+			query.setParameter("year", year);
+			query.setParameter("constituencyId", constituencyId);
+			return (Long) query.uniqueResult();		
+			
+		}
+		
+		
+		
 }
