@@ -707,8 +707,8 @@
 		  else
 			str += '<td>-</td>';
 		
-		 if(result.munciPerc != null)
-		  str += '<td>'+result.munciPerc+'</td>';
+		 if(result.munPerc != null)
+		  str += '<td>'+result.munPerc+'</td>';
 		 else
 		  str += '<td>-</td>';
 			
@@ -828,8 +828,8 @@
 				str += '<td>'+result[i].munCount+'</td>';
 			else
 				str += '<td>-</td>';
-				if(result[i].munciPerc != null)
-				str += '<td>'+result[i].munciPerc+'</td>';
+				if(result[i].munPerc != null)
+				str += '<td>'+result[i].munPerc+'</td>';
 				else
 				str += '<td>-</td>';
 				if(result[i].consTotalVoters != null)
