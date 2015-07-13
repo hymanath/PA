@@ -354,4 +354,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List getNewlyRegistredCadreCnt(Date fromDate,Date toDate);
 	  public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear);
 	  public List<Object[]> complaintDetailsOfCadre(String memberShipId);
+
+	  public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId);
+	  
 }
