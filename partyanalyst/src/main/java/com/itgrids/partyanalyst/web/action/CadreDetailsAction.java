@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -36,6 +37,8 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	
 	private List<CandidateDetailsVO>			candidateDetailsVOs;
 	private String 								memberShipId;
+	private RegisteredMembershipCountVO         membershipCountVO;
+	private List<RegisteredMembershipCountVO> membershipCountVOList;
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -144,6 +147,27 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 
 
+	public RegisteredMembershipCountVO getMembershipCountVO() {
+		return membershipCountVO;
+	}
+
+
+	public void setMembershipCountVO(RegisteredMembershipCountVO membershipCountVO) {
+		this.membershipCountVO = membershipCountVO;
+	}
+
+
+	public List<RegisteredMembershipCountVO> getMembershipCountVOList() {
+		return membershipCountVOList;
+	}
+
+
+	public void setMembershipCountVOList(
+			List<RegisteredMembershipCountVO> membershipCountVOList) {
+		this.membershipCountVOList = membershipCountVOList;
+	}
+
+
 	public String execute(){
 		
 		try{
@@ -221,4 +245,30 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getTotalMemberShipRegistrationsInCadreLocation()
+	{
+		try{
+			
+			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getTotalMemberShipRegistrationsInCadreLocation() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getElectionPerformanceInCadreLocation()
+	{
+		try{
+			
+			membershipCountVOList = cadreDetailsService.getElectionPerformanceInCadreLocation(new Long(request.getParameter("tdpCadreId")));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getElectionPerformanceInCadreLocation() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
