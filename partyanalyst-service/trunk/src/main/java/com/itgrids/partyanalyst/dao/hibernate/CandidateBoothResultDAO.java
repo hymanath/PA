@@ -1741,7 +1741,7 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 			 str.append("  model.boothConstituencyElection.booth.constituency.constituencyId =:locationId");
 			
 			else if(locationtype.equalsIgnoreCase("Mandal"))
-				 str.append("  model.boothConstituencyElection.booth.tehsil.tehsilId =:locationId and model.boothConstituencyElection.booth.localBody is null ");
+				 str.append("  model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId =:locationId and model.boothConstituencyElection.booth.localBody is null ");
 			
 			
 			else if(locationtype.equalsIgnoreCase("Panchayat"))
