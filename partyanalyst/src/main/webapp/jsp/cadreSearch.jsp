@@ -125,7 +125,7 @@
 					</div>
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
-							<select class="form-control " id="panchaytList" class="form-control" onchange="getPanchayayCadreDetailsBySearchCriteria(0)">
+							<select class="form-control " id="panchaytList" class="form-control" onchange="getAllCadreInPanchayat()">
 							<option value="0"> Select Panchayat </option>
 							</select>
 					</div>
@@ -133,9 +133,14 @@
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
 				<div class="form-inline ">
-			
+					<span class="allcls" style="display:none">
+							   <label> <input type="radio" name="searchBasedOn" value="0" id="allId" title="click here to get all cadres in panchayat" style="cursor:pointer;" class="searchTypeCls" onclick="getPanchayayCadreDetailsBySearchCriteria(0)"/>All &nbsp;&nbsp;
+							   </label>
+					</span>	
 				   
 					<div class="radio">
+						<!--<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="allId" value="0"> All &nbsp;&nbsp;</label>-->
+					
 						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
 						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" > Voter ID &nbsp;&nbsp;</label>
@@ -555,6 +560,7 @@ $(".paginationDivId").hide();
 				str+='<li>Caste: '+result[i].casteName+'</i>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
+				str+='<li>Regestered Through: '+result[i].dataSourceType+'</i>';
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
@@ -722,6 +728,13 @@ $(".paginationDivId").hide();
 	 }
 	function getConstituenciesForStateAjax()
 		{
+			$("#mandalList  option").remove();
+			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+			$("#panchaytList  option").remove();
+			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			refreshExistingDetails();
+			document.getElementById('allId').checked = false;
+			$(".allcls").hide();
 			var stateId = $("#statesDivId").val();
 			getConstituenciesForState(stateId);
 		}
@@ -741,7 +754,10 @@ $(".paginationDivId").hide();
 			}
 			
   function getMandalCorporationsByConstituency()
-	{		
+	{	
+			refreshExistingDetails();
+			document.getElementById('allId').checked = false;
+			$(".allcls").hide();
 			var constituencyId = $('#constituencyId').val();
 			$("#mandalList  option").remove();
 			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -768,6 +784,10 @@ $(".paginationDivId").hide();
 	}
 	
 	function getPanchayatWardByMandal(){
+			
+			refreshExistingDetails();
+			document.getElementById('allId').checked = false;
+			$(".allcls").hide();
 		     
 			var mandalId=$("#mandalList").val();
 			
@@ -793,7 +813,7 @@ $(".paginationDivId").hide();
 	
 	function getPanchayayCadreDetailsBySearchCriteria(startIndex)
 		{
-				
+			refreshExistingDetails();	
 		var locationLevel = 0;
 		var locationValue = 0;
 		var searchName = '';
@@ -887,6 +907,12 @@ $(".paginationDivId").hide();
 
 	}
 	
+	function getAllCadreInPanchayat()
+	{
+		$(".allcls").show();
+		refreshExistingDetails();
+	}
+	
 	function buildCadrePanchayatDetails(result,jsObj)
 	{
 		$(".paginationDivId").show();
@@ -914,6 +940,7 @@ $(".paginationDivId").hide();
 				str+='<li>Caste: '+result[i].casteName+'</i>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</i>';
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
