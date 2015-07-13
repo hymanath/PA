@@ -87,7 +87,7 @@
 				<div id="electionProfileDivId"> </div>
 			</div>
 			
-			<div class="col-md-7 col-md-offset-2 pad_10 block">
+			<!-- <div class="col-md-7 col-md-offset-2 pad_10 block">
 				
 				<h4 style="border-bottom:1px solid #999">Cadre Member Booth Performance</h4>
 
@@ -103,7 +103,18 @@
 						<img id="dataLoadingsImgForownBoothDetailsId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 					</tr>
 				</table>
+			</div> -->
+			
+			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId">
+				<h4 style="border-bottom:1px solid #999">Election Performance In A Cadre Location</h4>
+				<div id="electionPerformanceDiv"> </div>
 			</div>
+			<div id="memberShipCountMainDiv" class="col-md-7 col-md-offset-2 pad_10 block">
+			   <h4 style="border-bottom:1px solid #999">MemberShip Registration in Cadre Location</h4>
+			   <div id="memberShipCountDiv"></div>
+			</div>
+			
+			
 			<div class="col-md-7 col-md-offset-2 pad_10 block" id="grievanceDetailsMainDivId" style="display:none">
 				<h4 style="border-bottom:1px solid #999">Grievance Details</h4>
 				<table class="table table-bordered table-responsive">
@@ -232,9 +243,10 @@
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>	
 	<script>
 	
-	var globalCadreId;
+	
+	var globalCadreId = '${cadreId}';
 	 $(document).ready(function() {
-			globalCadreId='${param.cadreId}';
+			//globalCadreId='${param.cadreId}';
 			//globalMembershipId='${param.memberShipId}';
 			cadreFormalDetailedInformation(globalCadreId);
 			//complaintDetailsOfCadre(globalCadreId,globalMembershipId);
@@ -598,6 +610,256 @@
 			win.focus();
 		});
 	
+		
+		
+		function getTotalMemberShipRegistrationsInCadreLocation()
+		{
+			
+			$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+			$.ajax({
+				type : "POST",
+				url  : "getTotalMemberShipRegsInCadreLocationAction.action",
+				data : {tdpCadreId:globalCadreId}
+			}).done(function(result){
+				if(result != null)
+				  buildTotalMemberShipRegInCadreLocation(result);
+			  else
+				$("#memberShipCountDiv").html('No Data Available.');  
+			})
+			
+		}
+	
+		function buildTotalMemberShipRegInCadreLocation(result)
+		{
+			$("#memberShipCountDiv").html('');
+			
+			var str = '';
+			str += '<div class="table-responsive">';
+			str += '<table class="table table-bordered">';
+			str += '<tr>';
+			str += '<th colspan="3" class="tdCls">Booth</th>';
+			str += '<th colspan="3" class="tdCls">Panchayat</th>';
+			str += '<th colspan="3" class="tdCls">Mandal </th>';
+			str += '<th colspan="3" class="tdCls">Municipality</th>';
+			str += '<th colspan="3" class="tdCls">Constituency</th>';
+			str += '</tr>';
+			for(var i=0;i<5;i++)
+			{
+				str += '<th>Voters</th>';
+				str += '<th>Cadre</th>';
+				str += '<th>%</th>';
+			}
+	
+			str += '</tr>';
+			
+			str += '<tr>';
+			if(result.boothTotVoters != null)
+			  str += '<td>'+result.boothTotVoters+'</td>';
+		    else
+			 str += '<td>-</td>';
+		 
+		   if(result.boothCount != null)
+			str += '<td>'+result.boothCount+'</td>';
+		   else
+			 str += '<td>-</td>';
+		 
+			if(result.boothPerc != null)
+			  str += '<td>'+result.boothPerc+'</td>';
+			else
+			str += '<td>-</td>';
+			
+			if(result.panchayatTotVoters != null)
+			 str += '<td>'+result.panchayatTotVoters+'</td>';
+		    else
+			str += '<td>-</td>';
+		   
+		   if(result.panchayatCount != null)
+			 str += '<td>'+result.panchayatCount+'</td>';
+		   else
+			str += '<td>-</td>';
+		
+		   if(result.panchPerc != null)
+			 str += '<td>'+result.panchPerc+'</td>';
+		   else
+			str += '<td>-</td>';
+		
+		   if(result.mandalTotVoters != null)
+			str += '<td>'+result.mandalTotVoters+'</td>';
+		   else
+			str += '<td>-</td>';
+		
+		  if(result.mandalCount != null)
+			str += '<td>'+result.mandalCount+'</td>';
+		  else
+			str += '<td>-</td>';
+		
+		 if(result.mandalPerc!= null)
+			str += '<td>'+result.mandalPerc+'</td>';
+		 else
+			str += '<td>-</td>';
+		
+		 if(result.munTotVoters!= null)	
+			str += '<td>'+result.munTotVoters+'</td>';
+		 else
+			str += '<td>-</td>';
+		 if(result.munCount!= null)
+			str += '<td>'+result.munCount+'</td>';
+		  else
+			str += '<td>-</td>';
+		
+		 if(result.munciPerc != null)
+		  str += '<td>'+result.munciPerc+'</td>';
+		 else
+		  str += '<td>-</td>';
+			
+		if(result.consTotalVoters != null)
+			str += '<td>'+result.consTotalVoters+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.constituencyCount != null)
+			str += '<td>'+result.constituencyCount+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.constiPerc != null)
+		 str += '<td>'+result.constiPerc+'</td>';
+		else
+		 str += '<td>-</td>';
+			
+			str += '</tr>';
+			str += '</table>';
+			str += '</div>';
+			$("#memberShipCountDiv").html(str);
+		} 
+		
+		function getElectionPerformanceInCadreLocation()
+		{
+			
+			$("#electionPerformanceDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+			$.ajax({
+				type : "POST",
+				url  : "getElectionPerformanceInCadreLocationAction.action",
+				data : {tdpCadreId:globalCadreId}
+			}).done(function(result){
+				if(result != null && result.length > 0)
+				  buildElectionPerformanceInCadreLocation(result);
+			  else
+				$("#electionPerformanceDiv").html("No Data Available");
+			})
+			
+		}
+		
+		function buildElectionPerformanceInCadreLocation(result)
+		{
+			var str = '';
+			str += '<div class="table-responsive">';
+			str += '<table class="table table-bordered">';
+			str += '<tr>';
+			str += '<th rowspan="2">Year</th>';
+			str += '<th colspan="3" class="tdCls">Booth</th>';
+			str += '<th colspan="3" class="tdCls">Panchayat</th>';
+			str += '<th colspan="3" class="tdCls">Mandal </th>';
+			str += '<th colspan="3" class="tdCls">Municipality</th>';
+			str += '<th colspan="3" class="tdCls">Constituency</th>';
+			str += '</tr>';
+			
+			str += '<tr>';
+			for(var i=0;i<5;i++)
+			{
+				str += '<th>Voters</th>';
+				str += '<th>Votes Earned</th>';
+				str += '<th>%</th>';
+			}
+		
+			str += '</tr>';
+			for(var i in result)
+			{
+				str += '<tr >';
+				str += '<td>'+result[i].year+'</td>';
+				
+				if(result[i].boothTotVoters != null)
+				 str += '<td>'+result[i].boothTotVoters+'</td>';
+			    else
+				 str += '<td>-</td>';
+			   
+			   if(result[i].boothCount != null)
+				str += '<td>'+result[i].boothCount+'</td>';
+			   else
+				 str += '<td>-</td>';
+			 
+				if(result[i].boothPerc != null)
+				 str += '<td>'+result[i].boothPerc+'</td>';
+				else
+				str += '<td>-</td>';
+			   if(result[i].panchayatTotVoters != null)
+				str += '<td>'+result[i].panchayatTotVoters+'</td>';
+			   else
+				str += '<td>-</td>';
+			  
+			    if(result[i].panchayatCount != null)
+				str += '<td>'+result[i].panchayatCount+'</td>';
+			   else
+				str += '<td>-</td>';
+				if(result[i].panchPerc != null)
+				 str += '<td>'+result[i].panchPerc+'</td>';
+			    else
+				str += '<td>-</td>';
+			 if(result[i].mandalTotVoters != null)
+				str += '<td>'+result[i].mandalTotVoters+'</td>';
+			  else
+				str += '<td>-</td>';
+			
+			if(result[i].mandalCount != null)
+				str += '<td>'+result[i].mandalCount+'</td>';
+			else
+				str += '<td>-</td>';
+			
+			if(result[i].mandalPerc != null)
+				str += '<td>'+result[i].mandalPerc+'</td>';
+			else
+				str += '<td>-</td>';	
+				
+				if(result[i].munTotVoters != null)
+				str += '<td>'+result[i].munTotVoters+'</td>';
+			else
+				str += '<td>-</td>';
+			if(result[i].munCount != null)
+				str += '<td>'+result[i].munCount+'</td>';
+			else
+				str += '<td>-</td>';
+				if(result[i].munciPerc != null)
+				str += '<td>'+result[i].munciPerc+'</td>';
+				else
+				str += '<td>-</td>';
+				if(result[i].consTotalVoters != null)
+				str += '<td>'+result[i].consTotalVoters+'</td>';
+			else
+				str += '<td>-</td>';
+			if(result[i].constituencyCount != null)
+				str += '<td>'+result[i].constituencyCount+'</td>';
+			else
+				str += '<td>-</td>';
+				if(result[i].constiPerc != null)
+				str += '<td>'+result[i].constiPerc+'</td>';
+				else
+				str += '<td>-</td>';
+			
+			  
+				
+				str += '</tr>';
+			}
+			str += '</table>';
+			str += '</div>';
+			$("#electionPerformanceDiv").html(str);
+		}
+		getTotalMemberShipRegistrationsInCadreLocation();
+		
+		getElectionPerformanceInCadreLocation();
 	</script>	
+	
+	<style>
+	.tdCls{text-align:center;}
+	</style>
 </body>
 </html>

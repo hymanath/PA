@@ -10256,6 +10256,17 @@
 			</result>
 		</action>
 		
+		<action name="getTotalMemberShipRegsInCadreLocationAction" class="cadreDetailsAction" method="getTotalMemberShipRegistrationsInCadreLocation">
+		   <result type="json" name="success">
+				<param name="root">membershipCountVO</param>
+			</result>
+		</action>
+		
+		<action name="getElectionPerformanceInCadreLocationAction" class="cadreDetailsAction" method="getElectionPerformanceInCadreLocation">
+		  <result type="json" name="success">
+				<param name="root">membershipCountVOList</param>
+			</result>
+		</action>
 		
 </package>
 </struts>      

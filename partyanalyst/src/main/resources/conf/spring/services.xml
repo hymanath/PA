@@ -2567,7 +2567,8 @@
 		 <property name="webServiceHandlerService" ref="webServiceHandlerService"/>
 		  <property name="candidateDetailsService" ref="candidateDetailsService"/>
 		  <property name="eventDAO" ref="eventDAO"/>
-		 
+		 <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		 <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
