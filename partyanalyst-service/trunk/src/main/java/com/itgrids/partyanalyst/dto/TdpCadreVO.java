@@ -34,6 +34,7 @@ public class TdpCadreVO implements java.io.Serializable
 	private String responseStatus;
 	private String responseCode;
 	private String aadharNo;
+	private String dataSourceType;
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
@@ -57,6 +58,12 @@ public class TdpCadreVO implements java.io.Serializable
 	}
 	public void setVoterSearchList(List<TdpCadreVO> voterSearchList) {
 		this.voterSearchList = voterSearchList;
+	}
+	public String getDataSourceType() {
+		return dataSourceType;
+	}
+	public void setDataSourceType(String dataSourceType) {
+		this.dataSourceType = dataSourceType;
 	}
 	public String getAadharNo() {
 		return aadharNo;

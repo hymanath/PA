@@ -443,6 +443,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreVO.setLocalElectionBodyId(cadre[25] != null ? Long.valueOf(cadre[25].toString().trim()):0L);				
 						cadreVO.setDistrictId(cadre[26] != null ? Long.valueOf(cadre[26].toString().trim()):0L);		
 						cadreVO.setAadharNo(cadre[28] != null ? cadre[28].toString().trim():"");
+						cadreVO.setDataSourceType(cadre[29] != null ? cadre[29].toString().trim():"");
 						
 						returnLsit.add(cadreVO);
 					}
