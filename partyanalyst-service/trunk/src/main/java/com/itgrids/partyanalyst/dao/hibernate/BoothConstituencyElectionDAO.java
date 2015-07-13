@@ -840,7 +840,7 @@ public Long getTotalVotesByLocationId(Long locationId,String locationType,Long e
 	  str.append(" model.booth.constituency.constituencyId =:locationId ");
 	
 	else if(locationType.equalsIgnoreCase("mandal"))
-		str.append(" model.booth.tehsil.tehsilId =:locationId and model.booth.localBody is null ");
+		str.append(" model.booth.panchayat.tehsil.tehsilId =:locationId and model.booth.localBody is null ");
 	
 	else if(locationType.equalsIgnoreCase("panchayat"))
 		str.append(" model.booth.panchayat.panchayatId =:locationId ");

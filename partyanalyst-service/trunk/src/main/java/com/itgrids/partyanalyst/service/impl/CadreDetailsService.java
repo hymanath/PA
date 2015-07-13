@@ -1138,16 +1138,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			   percentage = (new BigDecimal((countVO.getConstituencyCount() * 100.0)/countVO.getConsTotalVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			countVO.setConstiPerc(percentage);
 			
-			if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
-			{
-			  countVO.setMandalCount(getMemberShipCount("Mandal", userAddress.getTehsil().getTehsilId(), electionYear, constituencyId));	
-			  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
-			  String manPer = null;
-			  if(countVO.getMandalTotVoters() > 0)
-			   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
-			   countVO.setMandalPerc(manPer);
 			
-			}
 			
 			if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 			{
@@ -1155,8 +1146,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId));
 				String panPer = null;
 				if(countVO.getPanchayatTotVoters() > 0)
+				{
 				 panPer = (new BigDecimal((countVO.getPanchayatCount() * 100.0)/countVO.getPanchayatTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			      countVO.setPanchPerc(panPer);
+			      
+			        if(userAddress.getPanchayat().getTehsil() != null && userAddress.getPanchayat().getTehsil().getTehsilId() != null)
+					{
+					  countVO.setMandalCount(getMemberShipCount("Mandal", userAddress.getPanchayat().getTehsil().getTehsilId(), electionYear, constituencyId));	
+					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
+					  String manPer = null;
+					  if(countVO.getMandalTotVoters() > 0)
+					   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					   countVO.setMandalPerc(manPer);
+					
+					}
+			      
+				}
 			}
 			
 			if(userAddress.getBooth() != null && userAddress.getBooth().getBoothId() != null)
@@ -1265,16 +1270,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 percentage = (new BigDecimal((countVO.getConstituencyCount() * 100.0)/countVO.getConsTotalVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			countVO.setConstiPerc(percentage);
 			
-			if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
-			{
-			  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds));	
-			  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
-			  String manPer =  null;
-			  if(countVO.getMandalTotVoters() > 0)
-			   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
-			   countVO.setMandalPerc(manPer);
-			
-			}
 			
 			if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 			{
@@ -1282,8 +1277,24 @@ public class CadreDetailsService implements ICadreDetailsService{
 				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId));
 				String panPer = null;
 				if(countVO.getPanchayatTotVoters() > 0)
-				 panPer = (new BigDecimal((countVO.getPanchayatCount() * 100.0)/countVO.getPanchayatTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
-			      countVO.setPanchPerc(panPer);
+				{
+				    panPer = (new BigDecimal((countVO.getPanchayatCount() * 100.0)/countVO.getPanchayatTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+			        countVO.setPanchPerc(panPer);
+			      
+			        if(userAddress.getPanchayat().getTehsil() != null && userAddress.getPanchayat().getTehsil().getTehsilId() != null)
+					{
+					  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds));	
+					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
+					  String manPer =  null;
+					  if(countVO.getMandalTotVoters() > 0)
+					   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					   countVO.setMandalPerc(manPer);
+					
+					}
+			      
+				}
+			      
+
 			}
 			
 			if(userAddress.getBooth() != null && userAddress.getBooth().getBoothId() != null)

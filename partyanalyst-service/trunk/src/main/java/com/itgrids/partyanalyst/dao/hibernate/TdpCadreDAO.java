@@ -5302,7 +5302,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				 str.append("  model2.constituency.constituencyId =:locationId");
 				
 				else if(locationtype.equalsIgnoreCase("Mandal"))
-					 str.append("  model2.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
+					 str.append("  model2.panchayat.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Panchayat"))
