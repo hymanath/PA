@@ -680,9 +680,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreDetailsVO.setImagePath("");
 					}
 					
-					if(cadreFormalDetails[16] !=null){
-						cadreDetailsVO.setMembershipNo(cadreFormalDetails[16].toString());
-					}
+					cadreDetailsVO.setMembershipNo(cadreFormalDetails[16] !=null ? cadreFormalDetails[16].toString() :"");
+					cadreDetailsVO.setHouseNo(cadreFormalDetails[17] !=null ? cadreFormalDetails[17].toString() :"");
 					
 				}
 				
