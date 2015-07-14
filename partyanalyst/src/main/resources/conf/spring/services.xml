@@ -2569,6 +2569,7 @@
 		  <property name="eventDAO" ref="eventDAO"/>
 		 <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		 <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">

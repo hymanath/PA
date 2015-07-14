@@ -612,92 +612,101 @@
 	
 		
 		
-		function getTotalMemberShipRegistrationsInCadreLocation()
-		{
-			
-			$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-			$.ajax({
+	function getTotalMemberShipRegistrationsInCadreLocation()
+	{
+		$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+		$.ajax({
 				type : "POST",
 				url  : "getTotalMemberShipRegsInCadreLocationAction.action",
 				data : {tdpCadreId:globalCadreId}
-			}).done(function(result){
+		   }).done(function(result){
 				if(result != null)
 				  buildTotalMemberShipRegInCadreLocation(result);
 			  else
 				$("#memberShipCountDiv").html('No Data Available.');  
 			})
 			
-		}
+	}
 	
-		function buildTotalMemberShipRegInCadreLocation(result)
-		{
-			$("#memberShipCountDiv").html('');
-			
-			var str = '';
-			str += '<div class="table-responsive">';
-			str += '<table class="table table-bordered">';
-			str += '<tr>';
-			str += '<th colspan="3" class="tdCls">Booth</th>';
-			str += '<th colspan="3" class="tdCls">Panchayat</th>';
-			str += '<th colspan="3" class="tdCls">Mandal </th>';
-			str += '<th colspan="3" class="tdCls">Municipality</th>';
-			str += '<th colspan="3" class="tdCls">Constituency</th>';
-			str += '</tr>';
-			for(var i=0;i<5;i++)
-			{
-				str += '<th>Voters</th>';
-				str += '<th>Cadre</th>';
-				str += '<th>%</th>';
-			}
-	
-			str += '</tr>';
-			
-			str += '<tr>';
-			if(result.boothTotVoters != null)
-			  str += '<td>'+result.boothTotVoters+'</td>';
-		    else
-			 str += '<td>-</td>';
-		 
-		   if(result.boothCount != null)
-			str += '<td>'+result.boothCount+'</td>';
-		   else
-			 str += '<td>-</td>';
-		 
-			if(result.boothPerc != null)
-			  str += '<td>'+result.boothPerc+'</td>';
-			else
-			str += '<td>-</td>';
-			
-			if(result.panchayatTotVoters != null)
-			 str += '<td>'+result.panchayatTotVoters+'</td>';
-		    else
-			str += '<td>-</td>';
-		   
-		   if(result.panchayatCount != null)
+	function buildTotalMemberShipRegInCadreLocation(result)
+	{
+		var temp = 7;
+		$("#memberShipCountDiv").html('');
+		var str = '';
+		str += '<div class="table-responsive">';
+		str += '<table class="table table-bordered" id="memberShipTab">';
+		str += '<tr>';
+		str += '<th colspan="3" class="tdCls">Booth</th>';
+		
+	 if(result.areaType =="RURAL" || result.areaType == "RURAL-URBAN")
+	 {
+		str += '<th colspan="3" class="tdCls">Panchayat</th>';
+		str += '<th colspan="3" class="tdCls">Mandal </th>';
+		temp = 5;
+	 }
+	 if(result.areaType =="URBAN" || result.areaType == "RURAL-URBAN")
+	 {
+		str += '<th colspan="3" class="tdCls">Municipality</th>';
+		temp = 6;
+	 }
+	 if(result.areaType == "RURAL-URBAN")
+		 temp = 7;
+	 
+		str += '<th colspan="3" class="tdCls">Constituency</th>';
+		str += '<th colspan="3" class="tdCls">District</th>';
+		str += '<th colspan="3" class="tdCls">Parliament Constituency</th>';
+		str += '</tr>';
+		
+		 for(var i=0;i<temp;i++)
+		 {
+			str += '<th>Voters</th>';
+			str += '<th>Cadre</th>';
+			str += '<th>%</th>';
+		 }
+	    str += '</tr>';
+	    str += '<tr>';
+		if(result.boothTotVoters != null)
+		  str += '<td>'+result.boothTotVoters+'</td>';
+		else
+		  str += '<td>-</td>';
+		if(result.boothCount != null)
+		  str += '<td>'+result.boothCount+'</td>';
+		else
+		  str += '<td>-</td>';
+		if(result.boothPerc != null)
+		  str += '<td>'+result.boothPerc+'</td>';
+		else
+		 str += '<td>-</td>';
+	 if(result.areaType =="RURAL" || result.areaType == "RURAL-URBAN")
+	 {
+		if(result.panchayatTotVoters != null)
+		  str += '<td>'+result.panchayatTotVoters+'</td>';
+		else
+		  str += '<td>-</td>';
+	    if(result.panchayatCount != null)
 			 str += '<td>'+result.panchayatCount+'</td>';
-		   else
-			str += '<td>-</td>';
-		
-		   if(result.panchPerc != null)
-			 str += '<td>'+result.panchPerc+'</td>';
-		   else
-			str += '<td>-</td>';
-		
-		   if(result.mandalTotVoters != null)
+	    else
+		  str += '<td>-</td>';
+		if(result.panchPerc != null)
+			str += '<td>'+result.panchPerc+'</td>';
+		else
+		  str += '<td>-</td>';
+		if(result.mandalTotVoters != null)
 			str += '<td>'+result.mandalTotVoters+'</td>';
-		   else
-			str += '<td>-</td>';
-		
-		  if(result.mandalCount != null)
+		else
+		  str += '<td>-</td>';
+		if(result.mandalCount != null)
 			str += '<td>'+result.mandalCount+'</td>';
-		  else
+		 else
 			str += '<td>-</td>';
 		
 		 if(result.mandalPerc!= null)
 			str += '<td>'+result.mandalPerc+'</td>';
 		 else
 			str += '<td>-</td>';
-		
+	 }
+	if(result.areaType =="URBAN" || result.areaType == "RURAL-URBAN")
+	 {
 		 if(result.munTotVoters!= null)	
 			str += '<td>'+result.munTotVoters+'</td>';
 		 else
@@ -711,7 +720,7 @@
 		  str += '<td>'+result.munPerc+'</td>';
 		 else
 		  str += '<td>-</td>';
-			
+	 }
 		if(result.consTotalVoters != null)
 			str += '<td>'+result.consTotalVoters+'</td>';
 		else
@@ -726,15 +735,45 @@
 		 str += '<td>'+result.constiPerc+'</td>';
 		else
 		 str += '<td>-</td>';
-			
-			str += '</tr>';
+	 
+	    if(result.districtTotVoters != null)
+			str += '<td>'+result.districtTotVoters+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.districtCount != null)
+			str += '<td>'+result.districtCount+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.districtPerc != null)
+		 str += '<td>'+result.districtPerc+'</td>';
+		else
+		 str += '<td>-</td>';
+	 
+	 
+	   if(result.parConsTotVoters != null)
+			str += '<td>'+result.parConsTotVoters+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.parConsCount != null)
+			str += '<td>'+result.parConsCount+'</td>';
+		else
+			str += '<td>-</td>';
+		
+		if(result.parConsPerc != null)
+		 str += '<td>'+result.parConsPerc+'</td>';
+		else
+		 str += '<td>-</td>';
+	     str += '</tr>';
 			str += '</table>';
 			str += '</div>';
 			$("#memberShipCountDiv").html(str);
 		} 
 		
-		function getElectionPerformanceInCadreLocation()
-		{
+	function getElectionPerformanceInCadreLocation()
+	{
 			
 			$("#electionPerformanceDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 			$.ajax({
@@ -748,118 +787,89 @@
 				$("#electionPerformanceDiv").html("No Data Available");
 			})
 			
-		}
+	}
 		
-		function buildElectionPerformanceInCadreLocation(result)
-		{
+		
+		
+	function buildElectionPerformanceInCadreLocation(result)
+	{
 			var str = '';
 			str += '<div class="table-responsive">';
-			str += '<table class="table table-bordered">';
+			str += '<table class="table table-bordered" id="electionPerTab">';
 			str += '<tr>';
-			str += '<th rowspan="2">Year</th>';
-			str += '<th colspan="3" class="tdCls">Booth</th>';
-			str += '<th colspan="3" class="tdCls">Panchayat</th>';
-			str += '<th colspan="3" class="tdCls">Mandal </th>';
-			str += '<th colspan="3" class="tdCls">Municipality</th>';
-			str += '<th colspan="3" class="tdCls">Constituency</th>';
-			str += '</tr>';
-			
-			str += '<tr>';
-			for(var i=0;i<5;i++)
+			str += '<th >Year</th>';
+			str += '<th  class="tdCls">Own Booth Perc</th>';
+			if(result[0].areaType =="RURAL" || result[0].areaType == "RURAL-URBAN")
 			{
-				str += '<th>Voters</th>';
-				str += '<th>Votes Earned</th>';
-				str += '<th>%</th>';
+			   str += '<th  class="tdCls">Own Panchayat Perc</th>';
+			   str += '<th  class="tdCls">Own Mandal Perc</th>';
 			}
-		
+			if(result[0].areaType =="URBAN" || result[0].areaType == "RURAL-URBAN")
+			   str += '<th  class="tdCls">Own Municipality Perc</th>';
+			str += '<th  class="tdCls">Own Constituency Perc</th>';
+			str += '<th  class="tdCls">Own District Perc</th>';
+			str += '<th  class="tdCls">Own Parliament Constituency Perc</th>';
 			str += '</tr>';
-			for(var i in result)
-			{
-				str += '<tr >';
-				str += '<td>'+result[i].year+'</td>';
-				
-				if(result[i].boothTotVoters != null)
-				 str += '<td>'+result[i].boothTotVoters+'</td>';
-			    else
-				 str += '<td>-</td>';
-			   
-			   if(result[i].boothCount != null)
-				str += '<td>'+result[i].boothCount+'</td>';
-			   else
-				 str += '<td>-</td>';
-			 
-				if(result[i].boothPerc != null)
-				 str += '<td>'+result[i].boothPerc+'</td>';
-				else
-				str += '<td>-</td>';
-			   if(result[i].panchayatTotVoters != null)
-				str += '<td>'+result[i].panchayatTotVoters+'</td>';
-			   else
-				str += '<td>-</td>';
-			  
-			    if(result[i].panchayatCount != null)
-				str += '<td>'+result[i].panchayatCount+'</td>';
-			   else
-				str += '<td>-</td>';
-				if(result[i].panchPerc != null)
-				 str += '<td>'+result[i].panchPerc+'</td>';
-			    else
-				str += '<td>-</td>';
-			 if(result[i].mandalTotVoters != null)
-				str += '<td>'+result[i].mandalTotVoters+'</td>';
-			  else
-				str += '<td>-</td>';
 			
-			if(result[i].mandalCount != null)
-				str += '<td>'+result[i].mandalCount+'</td>';
+			
+		for(var i in result)
+		{
+			str += '<tr >';
+			str += '<td>'+result[i].year+'</td>';
+			if(result[i].boothPerc != null)
+			 str += '<td>'+result[i].boothPerc+'</td>';
 			else
-				str += '<td>-</td>';
-			
+			 str += '<td>-</td>';
+		 
+		  if(result[i].areaType =="RURAL" || result[i].areaType == "RURAL-URBAN")
+		  {
+			if(result[i].panchPerc != null)
+			  str += '<td>'+result[i].panchPerc+'</td>';
+			else
+			  str += '<td>-</td>';
 			if(result[i].mandalPerc != null)
 				str += '<td>'+result[i].mandalPerc+'</td>';
 			else
 				str += '<td>-</td>';	
-				
-				if(result[i].munTotVoters != null)
-				str += '<td>'+result[i].munTotVoters+'</td>';
-			else
-				str += '<td>-</td>';
-			if(result[i].munCount != null)
-				str += '<td>'+result[i].munCount+'</td>';
-			else
-				str += '<td>-</td>';
-				if(result[i].munPerc != null)
+		  }
+		  if(result[i].areaType =="URBAN" || result[i].areaType == "RURAL-URBAN")
+		  {
+			if(result[i].munPerc != null)
 				str += '<td>'+result[i].munPerc+'</td>';
-				else
-				str += '<td>-</td>';
-				if(result[i].consTotalVoters != null)
-				str += '<td>'+result[i].consTotalVoters+'</td>';
 			else
-				str += '<td>-</td>';
-			if(result[i].constituencyCount != null)
-				str += '<td>'+result[i].constituencyCount+'</td>';
+			  str += '<td>-</td>';
+		  }
+		
+			if(result[i].constiPerc != null)
+			  str += '<td>'+result[i].constiPerc+'</td>';
 			else
-				str += '<td>-</td>';
-				if(result[i].constiPerc != null)
-				str += '<td>'+result[i].constiPerc+'</td>';
-				else
-				str += '<td>-</td>';
+			  str += '<td>-</td>';
 			
-			  
-				
-				str += '</tr>';
-			}
+		   if(result[i].districtPerc != null)
+		     str += '<td>'+result[i].districtPerc+'</td>';
+		  else
+		    str += '<td>-</td>';
+	 
+	     if(result[i].parConsPerc != null)
+		   str += '<td>'+result[i].parConsPerc+'</td>';
+		 else
+		    str += '<td>-</td>';
+		  str += '</tr>';
+		}
 			str += '</table>';
 			str += '</div>';
 			$("#electionPerformanceDiv").html(str);
-		}
-		getTotalMemberShipRegistrationsInCadreLocation();
+   }
 		
-		getElectionPerformanceInCadreLocation();
+		
+		
+	getTotalMemberShipRegistrationsInCadreLocation();
+	getElectionPerformanceInCadreLocation();
 	</script>	
 	
 	<style>
 	.tdCls{text-align:center;}
+	#electionPerTab td,#memberShipTab td{text-align:center;}
 	</style>
 </body>
 </html>
