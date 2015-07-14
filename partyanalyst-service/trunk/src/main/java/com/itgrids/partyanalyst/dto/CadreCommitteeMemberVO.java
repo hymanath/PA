@@ -83,6 +83,7 @@ public class CadreCommitteeMemberVO {
 	private String voterIdCardNo;
 	
 	private CadreCommitteeMemberVO ccmVO;
+	private String  houseNo;
 	
 	
 	public Long getActualOthers() {
@@ -502,6 +503,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setVoterIdCardNo(String voterIdCardNo) {
 		this.voterIdCardNo = voterIdCardNo;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
 	}
 	
 	
