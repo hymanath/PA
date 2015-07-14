@@ -20,6 +20,10 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private Long panchayatTotVoters;
 	private Long boothTotVoters;
 	private Long munTotVoters;
+	private Long districtTotVoters;
+	private Long districtCount;
+	private Long parConsTotVoters;
+	private Long parConsCount;
 	
 	private String boothPerc;
 	private String panchPerc;
@@ -27,6 +31,8 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String constiPerc;
 	private String munciPerc;
 	private String munPerc;
+	private String districtPerc;
+	private String parConsPerc;
 	private String areaType;
 	
 	
@@ -134,6 +140,42 @@ public class RegisteredMembershipCountVO implements Serializable{
 	}
 	public void setMunPerc(String munPerc) {
 		this.munPerc = munPerc;
+	}
+	public Long getDistrictTotVoters() {
+		return districtTotVoters;
+	}
+	public void setDistrictTotVoters(Long districtTotVoters) {
+		this.districtTotVoters = districtTotVoters;
+	}
+	public Long getDistrictCount() {
+		return districtCount;
+	}
+	public void setDistrictCount(Long districtCount) {
+		this.districtCount = districtCount;
+	}
+	public Long getParConsTotVoters() {
+		return parConsTotVoters;
+	}
+	public void setParConsTotVoters(Long parConsTotVoters) {
+		this.parConsTotVoters = parConsTotVoters;
+	}
+	public Long getParConsCount() {
+		return parConsCount;
+	}
+	public void setParConsCount(Long parConsCount) {
+		this.parConsCount = parConsCount;
+	}
+	public String getDistrictPerc() {
+		return districtPerc;
+	}
+	public void setDistrictPerc(String districtPerc) {
+		this.districtPerc = districtPerc;
+	}
+	public String getParConsPerc() {
+		return parConsPerc;
+	}
+	public void setParConsPerc(String parConsPerc) {
+		this.parConsPerc = parConsPerc;
 	}
 	public String getAreaType() {
 		return areaType;

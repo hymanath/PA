@@ -260,6 +260,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	 
 	 public List<Object[]> findboothWiseResultsForNonParties(Long constituencyId, List<Long> partyIds,List<Long> electionIds);
 
-	 public Long getTotalAndEarnedVotesForLocation(Long locationId,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds);
+	 public Long getTotalAndEarnedVotesForLocation(Long locationId,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds);
+	 
+	 public Long getTotalEarnedVotesByBoothIdsList(List<Long> boothIdsList,Long electionId,List<Long> partyIds);
 	 
 }

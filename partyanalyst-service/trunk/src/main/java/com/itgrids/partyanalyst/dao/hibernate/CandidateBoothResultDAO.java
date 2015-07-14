@@ -1731,36 +1731,69 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
    }
    
 
-   public Long getTotalAndEarnedVotesForLocation(Long locationId,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds)
+   public Long getTotalAndEarnedVotesForLocation(Long locationId,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds)
    {
 	  StringBuilder str = new StringBuilder();
 	  str.append(" select sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
-	  str.append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId and model.nomination.party.partyId in (:partyIds)  and ");
+	  str.append(" and model.nomination.party.partyId in (:partyIds)  and ");
+	  
 	  
 	  if(locationtype.equalsIgnoreCase("Constituency"))
 			 str.append("  model.boothConstituencyElection.booth.constituency.constituencyId =:locationId");
 			
-			else if(locationtype.equalsIgnoreCase("Mandal"))
-				 str.append("  model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId =:locationId and model.boothConstituencyElection.booth.localBody is null ");
-			
-			
-			else if(locationtype.equalsIgnoreCase("Panchayat"))
-				 str.append("  model.boothConstituencyElection.booth.panchayat.panchayatId =:locationId");
-			
-			
-			else if(locationtype.equalsIgnoreCase("Booth"))
-				 str.append(" model.boothConstituencyElection.booth.boothId =:locationId ");
-		    
-			else if(locationtype.equalsIgnoreCase("Muncipality"))
-			 str.append("model.boothConstituencyElection.booth.localBody.localElectionBodyId =:locationId ");
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 258l)//2014 Election
+			 str.append("  model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId =:locationId and model.boothConstituencyElection.booth.localBody is null ");
 	  
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 38l)//2009 Election(panchayat Id is not mapped in Booth Table)
+			 str.append("  model.boothConstituencyElection.booth.tehsil.tehsilId =:locationId and model.boothConstituencyElection.booth.localBody is null ");
+			
+	  else if(locationtype.equalsIgnoreCase("Panchayat"))
+			 str.append("  model.boothConstituencyElection.booth.panchayat.panchayatId =:locationId");
+			
+	  else if(locationtype.equalsIgnoreCase("Booth"))
+			 str.append(" model.boothConstituencyElection.booth.boothId =:locationId ");
+		   
+	  else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append("model.boothConstituencyElection.booth.localBody.localElectionBodyId =:locationId and model.boothConstituencyElection.booth.localBody is not null ");
+	  
+	  else if(locationtype.equalsIgnoreCase("District"))
+	         str.append(" model.boothConstituencyElection.booth.constituency.district.districtId =:locationId ");
+	  
+	  else if(locationtype.equalsIgnoreCase("Parliament"))
+		  str.append("  model.boothConstituencyElection.booth.constituency.constituencyId in (:constituencyIds) ");
+	  
+	  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+		   str.append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId  ");
 	  
 	  Query query = getSession().createQuery(str.toString());
-	  query.setParameter("locationId", locationId);
+	  
+	  if(!locationtype.equalsIgnoreCase("Parliament"))
+	    query.setParameter("locationId", locationId);
+	  
 	  query.setParameter("electionId", electionId);
-	  query.setParameter("constituencyId", constituencyId);
+	  
+	  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+	    query.setParameter("constituencyId", constituencyId);
+	  
+	  
+	  if(locationtype.equalsIgnoreCase("Parliament"))
+		 query.setParameterList("constituencyIds", constituencyIds);
+	  
+	  
 	  query.setParameterList("partyIds", partyIds);
 	  return (Long) query.uniqueResult();
+   }
+   
+   
+   public Long getTotalEarnedVotesByBoothIdsList(List<Long> boothIdsList,Long electionId,List<Long> partyIds)
+   {
+	   Query query = getSession().createQuery(" select sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId " +
+	   		" and model.boothConstituencyElection.booth.boothId in (:boothIdsList) and model.nomination.party.partyId in (:partyIds) ");
+	   
+	   query.setParameter("electionId", electionId);
+	   query.setParameterList("boothIdsList", boothIdsList);
+	   query.setParameterList("partyIds", partyIds);
+	   return (Long) query.uniqueResult();
    }
    
    

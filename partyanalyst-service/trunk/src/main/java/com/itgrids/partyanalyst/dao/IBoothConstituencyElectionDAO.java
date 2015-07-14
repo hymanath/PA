@@ -177,6 +177,8 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Long> getBoothIdsByLocalEleBody(Long localEleBodyId, Long electionId);
 
-	public Long getTotalVotesByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId);
+	public Long getTotalVotesByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList);
+	
+	public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId);
 	
 }

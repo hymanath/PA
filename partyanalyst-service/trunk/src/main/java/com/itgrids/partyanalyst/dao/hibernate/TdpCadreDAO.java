@@ -5293,11 +5293,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 
 
-		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId)
+		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList)
 		{
 			StringBuilder str = new StringBuilder();
 			str.append(" select count(model.tdpCadreId) from TdpCadre model,UserAddress model2 where model.userAddress.userAddressId = model2.userAddressId and " +
-					" model.enrollmentYear =:year and model.isDeleted = 'N' and model2.constituency.constituencyId =:constituencyId and ");
+					" model.enrollmentYear =:year and model.isDeleted = 'N' and ");
 			
 			    if(locationtype.equalsIgnoreCase("Constituency"))
 				 str.append("  model2.constituency.constituencyId =:locationId");
@@ -5315,11 +5315,30 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			    
 				else if(locationtype.equalsIgnoreCase("Muncipality"))
 				 str.append("model2.localElectionBody.localElectionBodyId =:locationId ");
+			    
+				else if(locationtype.equalsIgnoreCase("District"))
+				 str.append(" model2.constituency.district.districtId =:locationId ");
+			    
+				else if(locationtype.equalsIgnoreCase("Parliament"))
+				  str.append("  model2.constituency.constituencyId in (:constituencyIdsList) ");
+			    
+			  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+				str.append(" and model2.constituency.constituencyId =:constituencyId "); 
 			
 			Query query = getSession().createQuery(str.toString());
-			query.setParameter("locationId", locationId);
+			
+			
+			if(!locationtype.equalsIgnoreCase("Parliament"))
+			  query.setParameter("locationId", locationId);
+			
 			query.setParameter("year", year);
+			
+		   if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
 			query.setParameter("constituencyId", constituencyId);
+		   
+		   if(constituencyIdsList != null && locationtype.equalsIgnoreCase("Parliament"))
+			  query.setParameterList("constituencyIdsList", constituencyIdsList);  
+		   
 			return (Long) query.uniqueResult();		
 			
 		}

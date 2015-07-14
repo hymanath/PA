@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -60,6 +61,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IEventDAO		eventDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
+	private IPanchayatHamletDAO panchayatHamletDAO;
 
 	
 	public IConstituencyDAO getConstituencyDAO() {
@@ -204,6 +206,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
 	}
 
 
@@ -1128,12 +1139,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(userAddress != null)
 			{
 			Long constituencyId = userAddress.getConstituency().getConstituencyId();
+			countVO.setAreaType(userAddress.getConstituency().getAreaType());
 			
-			countVO.setConsTotalVoters(getTotalVotersByLocationId(constituencyId, "Constituency", electionId, constituencyId));
-			countVO.setConstituencyCount(getMemberShipCount("Constituency", constituencyId, electionYear, constituencyId));
+			
+			countVO.setConsTotalVoters(getTotalVotersByLocationId(constituencyId, "Constituency", electionId, constituencyId,null));
+			countVO.setConstituencyCount(getMemberShipCount("Constituency", constituencyId, electionYear, constituencyId,null));
 		   
 			String percentage = null;
-			if(countVO.getConsTotalVoters() > 0)
+			if(countVO.getConsTotalVoters() != null && countVO.getConsTotalVoters() > 0)
 			   percentage = (new BigDecimal((countVO.getConstituencyCount() * 100.0)/countVO.getConsTotalVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			countVO.setConstiPerc(percentage);
 			
@@ -1141,20 +1154,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 			{
-				countVO.setPanchayatCount(getMemberShipCount("Panchayat", userAddress.getPanchayat().getPanchayatId(), electionYear, constituencyId));
-				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId));
+				countVO.setPanchayatCount(getMemberShipCount("Panchayat", userAddress.getPanchayat().getPanchayatId(), electionYear, constituencyId,null));
+				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId,null));
 				String panPer = null;
-				if(countVO.getPanchayatTotVoters() > 0)
+				if(countVO.getPanchayatTotVoters() != null && countVO.getPanchayatTotVoters() > 0)
 				{
 				 panPer = (new BigDecimal((countVO.getPanchayatCount() * 100.0)/countVO.getPanchayatTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			      countVO.setPanchPerc(panPer);
 			      
-			        if(userAddress.getPanchayat().getTehsil() != null && userAddress.getPanchayat().getTehsil().getTehsilId() != null)
+			        if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
 					{
-					  countVO.setMandalCount(getMemberShipCount("Mandal", userAddress.getPanchayat().getTehsil().getTehsilId(), electionYear, constituencyId));	
-					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
+					  countVO.setMandalCount(getMemberShipCount("Mandal", userAddress.getTehsil().getTehsilId(), electionYear, constituencyId,null));	
+					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId,null));
 					  String manPer = null;
-					  if(countVO.getMandalTotVoters() > 0)
+					  if(countVO.getMandalTotVoters() != null && countVO.getMandalTotVoters() > 0)
 					   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 					   countVO.setMandalPerc(manPer);
 					
@@ -1165,10 +1178,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getBooth() != null && userAddress.getBooth().getBoothId() != null)
 			{
-				countVO.setBoothCount(getMemberShipCount("Booth", userAddress.getBooth().getBoothId(), electionYear, constituencyId))	;
-				countVO.setBoothTotVoters(getTotalVotersByLocationId(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId));
+				countVO.setBoothCount(getMemberShipCount("Booth", userAddress.getBooth().getBoothId(), electionYear, constituencyId,null))	;
+				countVO.setBoothTotVoters(getTotalVotersByLocationId(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId,null));
 				String boothPer =null;
-				if(countVO.getBoothTotVoters() > 0)
+				if(countVO.getBoothTotVoters() != null && countVO.getBoothTotVoters() > 0)
 				 boothPer = (new BigDecimal((countVO.getBoothCount() * 100.0)/countVO.getBoothTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			     countVO.setBoothPerc(boothPer);
 			
@@ -1176,15 +1189,43 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() != null)
 			{
-				countVO.setMunCount(getMemberShipCount("Muncipality", userAddress.getLocalElectionBody().getLocalElectionBodyId(), electionYear, constituencyId));
-				countVO.setMunTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId));
+				countVO.setMunCount(getMemberShipCount("Muncipality", userAddress.getLocalElectionBody().getLocalElectionBodyId(), electionYear, constituencyId,null));
+				countVO.setMunTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
 				String  munPer =null;
-				if(countVO.getMunTotVoters() > 0)
+				if(countVO.getMunTotVoters() != null && countVO.getMunTotVoters() > 0)
 				 munPer = (new BigDecimal((countVO.getMunCount() * 100.0)/countVO.getMunTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			     countVO.setMunPerc(munPer);
 			
 			}
-			}	
+			
+			if(userAddress.getDistrict() != null && userAddress.getDistrict().getDistrictId() != null)
+			{
+				
+				countVO.setDistrictCount(getMemberShipCount("District", userAddress.getDistrict().getDistrictId(), electionYear, constituencyId,null));
+				countVO.setDistrictTotVoters(getTotalVotersByLocationId(userAddress.getDistrict().getDistrictId(), "District", electionId, constituencyId,null));
+				String  disPer =null;
+				if(countVO.getDistrictTotVoters() != null && countVO.getDistrictTotVoters() > 0)
+				 disPer = (new BigDecimal((countVO.getDistrictCount() * 100.0)/countVO.getDistrictTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+			     countVO.setDistrictPerc(disPer);
+				
+			}
+			
+			Long parliamentConId = delimitationConstituencyAssemblyDetailsDAO.getParliamentConstituencyId(constituencyId);
+			if(parliamentConId != null && parliamentConId > 0)
+			{
+				List<Long> assConstituencyIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByPCId(parliamentConId);
+				if(assConstituencyIds != null && assConstituencyIds.size() > 0)
+				{
+					countVO.setParConsCount(getMemberShipCount("Parliament", null, electionYear, null,assConstituencyIds));
+					countVO.setParConsTotVoters(getTotalVotersByLocationId(null, "Parliament", electionId, null,assConstituencyIds));
+					String  parConPer =null;
+					if(countVO.getParConsTotVoters() != null && countVO.getParConsTotVoters() > 0)
+						parConPer = (new BigDecimal((countVO.getParConsCount() * 100.0)/countVO.getParConsTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				     countVO.setParConsPerc(parConPer);
+				}
+			}
+			
+		}	
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getTotalMemberShipRegistrationsInCadreLocation() method, Exception - ",e);
@@ -1193,24 +1234,32 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	
 	
-	public Long getTotalVotersByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId)
+	public Long getTotalVotersByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList)
 	{
 		try{
-			Long totalCount = boothConstituencyElectionDAO.getTotalVotesByLocationId(locationId, locationType, electionId, constituencyId);;
-			return (totalCount!= null?totalCount:0l);
+			if(electionId.longValue() == 38l && locationType.equalsIgnoreCase("Panchayat"))
+			{
+				List<Long> boothIdsList = panchayatHamletDAO.getBoothIdsByPanchayatId(locationId, electionId);
+				if(boothIdsList != null && boothIdsList.size() > 0)
+					return boothConstituencyElectionDAO.getTotalVotersByBoothIdsList(boothIdsList, electionId);
+				return null;
+			}
+			else
+			  return boothConstituencyElectionDAO.getTotalVotesByLocationId(locationId, locationType, electionId, constituencyId,constituencyIdsList);
+			
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getTotalVotersByLocationId() method, Exception - ",e);
-			return 0l;
+			return null;
 		}
 	}
 	
 	
-	public Long getMemberShipCount(String locationType, Long locationId,Long year,Long constituencyId)
+	public Long getMemberShipCount(String locationType, Long locationId,Long year,Long constituencyId,List<Long> constituencyIds)
 	{
 		Long count = 0l;
 		try{
-			count =  tdpCadreDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId);
+			count =  tdpCadreDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds);
 			return (count != null?count:0l);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setMemberShipCount() method, Exception - ",e);
@@ -1260,32 +1309,33 @@ public class CadreDetailsService implements ICadreDetailsService{
 				electionId = 38l;
 			
 			Long constituencyId = userAddress.getConstituency().getConstituencyId();
+			countVO.setAreaType(userAddress.getConstituency().getAreaType());
 			
 			countVO.setYear(year.toString());
-			countVO.setConsTotalVoters(getTotalVotersByLocationId(constituencyId,"Constituency", electionId, constituencyId));
-			countVO.setConstituencyCount(getTotalVotesEarnedForLocation(constituencyId, "Constituency", electionId, constituencyId, partyIds));
+			countVO.setConsTotalVoters(getTotalVotersByLocationId(constituencyId,"Constituency", electionId, constituencyId,null));
+			countVO.setConstituencyCount(getTotalVotesEarnedForLocation(constituencyId, "Constituency", electionId, constituencyId, partyIds,null));
 			String percentage = null;
-			if(countVO.getConsTotalVoters() > 0)
+			if(countVO.getConsTotalVoters() != null &&  countVO.getConsTotalVoters() > 0)
 			 percentage = (new BigDecimal((countVO.getConstituencyCount() * 100.0)/countVO.getConsTotalVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			countVO.setConstiPerc(percentage);
 			
 			
 			if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 			{
-				countVO.setPanchayatCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId, partyIds));
-				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId));
+				countVO.setPanchayatCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId, partyIds,null));
+				countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId,null));
 				String panPer = null;
-				if(countVO.getPanchayatTotVoters() > 0)
+				if(countVO.getPanchayatTotVoters() != null && countVO.getPanchayatTotVoters() > 0)
 				{
 				    panPer = (new BigDecimal((countVO.getPanchayatCount() * 100.0)/countVO.getPanchayatTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			        countVO.setPanchPerc(panPer);
 			      
-			        if(userAddress.getPanchayat().getTehsil() != null && userAddress.getPanchayat().getTehsil().getTehsilId() != null)
+			        if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
 					{
-					  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds));	
-					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getTehsil().getTehsilId(), "Mandal", electionId, constituencyId));
+					  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds,null));	
+					  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId,null));
 					  String manPer =  null;
-					  if(countVO.getMandalTotVoters() > 0)
+					  if(countVO.getMandalTotVoters() != null && countVO.getMandalTotVoters() > 0)
 					   manPer = (new BigDecimal((countVO.getMandalCount() * 100.0)/countVO.getMandalTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 					   countVO.setMandalPerc(manPer);
 					
@@ -1298,10 +1348,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getBooth() != null && userAddress.getBooth().getBoothId() != null)
 			{
-				countVO.setBoothCount(getTotalVotesEarnedForLocation(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId, partyIds))	;
-				countVO.setBoothTotVoters(getTotalVotersByLocationId(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId));
+				countVO.setBoothCount(getTotalVotesEarnedForLocation(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId, partyIds,null))	;
+				countVO.setBoothTotVoters(getTotalVotersByLocationId(userAddress.getBooth().getBoothId(), "booth", electionId, constituencyId,null));
 				String boothPer = null;
-				if(countVO.getBoothTotVoters() > 0)
+				if(countVO.getBoothTotVoters() != null && countVO.getBoothTotVoters() > 0)
 				 boothPer = (new BigDecimal((countVO.getBoothCount() * 100.0)/countVO.getBoothTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			     countVO.setBoothPerc(boothPer);
 			
@@ -1309,13 +1359,40 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() != null)
 			{
-				countVO.setMunCount(getTotalVotesEarnedForLocation(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId, partyIds));
-				countVO.setMunTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId));
+				countVO.setMunCount(getTotalVotesEarnedForLocation(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId, partyIds,null));
+				countVO.setMunTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
 				String munPer = null;
-				if(countVO.getMunTotVoters() > 0)
+				if(countVO.getMunTotVoters() != null && countVO.getMunTotVoters() > 0)
 				 munPer = (new BigDecimal((countVO.getMunCount() * 100.0)/countVO.getMunTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			     countVO.setMunPerc(munPer);
 			
+			}
+			
+			
+			if(userAddress.getDistrict() != null && userAddress.getDistrict().getDistrictId() != null)
+			{
+				countVO.setDistrictCount(getTotalVotesEarnedForLocation(userAddress.getDistrict().getDistrictId(), "District", electionId, constituencyId, partyIds,null));
+				countVO.setDistrictTotVoters(getTotalVotersByLocationId(userAddress.getDistrict().getDistrictId(), "District", electionId, constituencyId,null));
+				String disPer = null;
+				if(countVO.getDistrictTotVoters() != null && countVO.getDistrictTotVoters() > 0)
+				 disPer = (new BigDecimal((countVO.getDistrictCount() * 100.0)/countVO.getDistrictTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+			     countVO.setDistrictPerc(disPer);
+			
+			}
+			
+			Long parliamentConId = delimitationConstituencyAssemblyDetailsDAO.getParliamentConstituencyId(constituencyId);
+			if(parliamentConId != null && parliamentConId > 0)
+			{
+					List<Long> assConstituencyIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByPCId(parliamentConId);
+					if(assConstituencyIds != null && assConstituencyIds.size() > 0)
+					{
+						countVO.setParConsCount(getTotalVotesEarnedForLocation(null, "Parliament", electionId, null, partyIds,assConstituencyIds));
+						countVO.setParConsTotVoters(getTotalVotersByLocationId(null, "Parliament", electionId, null,assConstituencyIds));
+						String parPer = null;
+						if(countVO.getParConsTotVoters() != null && countVO.getParConsTotVoters() > 0)
+							parPer = (new BigDecimal((countVO.getParConsCount() * 100.0)/countVO.getParConsTotVoters().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					     countVO.setParConsPerc(parPer);
+					}
 			}
 			
 			
@@ -1327,13 +1404,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	
 	
-	public Long getTotalVotesEarnedForLocation(Long locationId,String locationType,Long electionId,Long constituencyId,List<Long> partyIds)
+	public Long getTotalVotesEarnedForLocation(Long locationId,String locationType,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds)
 	{
 		Long count = 0l;
 		try{
-			
-		count = candidateBoothResultDAO.getTotalAndEarnedVotesForLocation(locationId, locationType, electionId, constituencyId, partyIds);
-		return (count != null?count:0l);	
+			if(electionId.longValue() == 38l && locationType.equalsIgnoreCase("Panchayat"))
+			{
+				List<Long> boothIdsList = panchayatHamletDAO.getBoothIdsByPanchayatId(locationId, electionId);
+				if(boothIdsList != null && boothIdsList.size() > 0);
+				  return candidateBoothResultDAO.getTotalEarnedVotesByBoothIdsList(boothIdsList, electionId,partyIds);
+			}
+			else
+			{	
+		       count = candidateBoothResultDAO.getTotalAndEarnedVotesForLocation(locationId, locationType, electionId, constituencyId, partyIds,constituencyIds);
+		       return (count != null?count:0l);	
+			}
 		}catch (Exception e) {
 			LOG.error(" Exception Occured in getTotalVotesEarnedForLocation() method, Exception - ",e);
 		}
