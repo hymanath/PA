@@ -81,6 +81,12 @@ public class CadreCommitteeMemberVO {
 	private String type;
 	
 	private String voterIdCardNo;
+	private String stateName;
+	private String districtName;
+	private String registeredOn;
+	private String registeredTime;
+	private String emailId;
+	
 	
 	private CadreCommitteeMemberVO ccmVO;
 	private String  houseNo;
@@ -509,6 +515,37 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	
+	public String getRegisteredOn() {
+		return registeredOn;
+	}
+	public void setRegisteredOn(String registeredOn) {
+		this.registeredOn = registeredOn;
+	}
+	public String getRegisteredTime() {
+		return registeredTime;
+	}
+	public void setRegisteredTime(String registeredTime) {
+		this.registeredTime = registeredTime;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	
 	
