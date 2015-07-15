@@ -5,9 +5,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title> Cadre Details</title>
-<!-- Bootstrap -->
+	<!-- custom CSS-->
+	<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">
+	
+	<!-- Bootstrap -->
     <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	
     	<!--Bootstrap DatePicker-->
@@ -18,212 +23,1010 @@
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-	<style type="text/css">
-		.block{background-color:#fff !important;margin-top:30px;}
-		body{background:#d9dbd4 none repeat scroll 0 0}
-		.pad_10{padding:10px;}
-	</style>
+	
+	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
+	
+	
+	<!--<style type="text/css">
+			.block{background-color:#fff !important;margin-top:30px;}
+			body{background:#d9dbd4 none repeat scroll 0 0}
+			.pad_10{padding:10px;}
+		</style>  -->
 </head>
 <body>
+<section>
 	<div class="container">
-		<div class="row" >
-			<div class="col-md-7 col-md-offset-2 pad_10 block"  >
-				
-				<div class="media">
-					<div class="media-left">
-						<a href="#">
-							<div id="imagePathId">
-								<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
-							</div>
-						</a>
-					</div>
-					<div class="media-body">
-					<table class="table table-bordered">
-						<tr>
-							<td width="50%">Name :&nbsp <span id="nameId"></span></td>
-							<td>Mobile No :&nbsp <span id="mobileNoId"></span></td>
-						</tr>
-						<tr>
-							<td>DOB:&nbsp <span id="dobId"></span></td>
-							<td>AGE:&nbsp <span id="ageId"></span></td>
-						</tr>
-						<tr>
-							<td>Qualification: &nbsp <span id="qualificationId"></span></td>
-							<td>Occupation :&nbsp <span id="occupationId"></span></td>
-						</tr>
-					</table>
-						<!--<h5 class="media-object" >Name      :<span id="nameId"></span></h5>
-						<h5 class="media-object" >DOB       :<span id="dobId"></span></h5>
-						<h5 class="media-object" >AGE       :<span id="ageId"></span></h5>
-						<h5 class="media-object" >MobileNo  :<span id="mobileNoId"></span></h5>-->
-					</div>
-				</div>
-				
-				<table class="table table-bordered">
-					<tr>
-						<td width="50%">VoterCardNO : &nbsp <span id="voterIdSpan"></span> </td>
-						<td>Panchayat :&nbsp <span id="panchayatId"></span></td>
-					</tr>
-					<tr>
-						<td>Mandal :&nbsp<span id="mandalId"></span></td>
-						<td>Constituency :&nbsp <span id="constituencyId"></span></td>
-					</tr>
-					<tr>
-						<td>Party Position :&nbsp <span id="positionId"></span></td>
-						<td>Public Representative :&nbsp <span id="representativeId"></span> </td>
-					</tr>
-				</table>
-				<!--<p>Qualification :<span id="qualificationId"></span></p>
-				<p>Occupation : <span id="occupationId"></span></p>
-				<p>VoterCardNO : <span id="voterIdSpan"></span></p>
-				<p>Panchayat : <span id="panchayatId"></span></p>
-				<p>Mandal :<span id="mandalId"></span></p>
-				<p>Constituency :<span id="constituencyId"></span></p>
-				<p>Party Position :<span id="positionId"></span></p>
-				<p>Public Representative : <span id="representativeId"></span></p>  -->
-			</div>
-			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId" style="display:none">
-				<h4 style="border-bottom:1px solid #999">Cadre Election Profile.</h4>
-				<div id="electionProfileDivId"> </div>
-			</div>
-			
-			<!-- <div class="col-md-7 col-md-offset-2 pad_10 block">
-				
-				<h4 style="border-bottom:1px solid #999">Cadre Member Booth Performance</h4>
-
-				<table class="table table-bordered">
-					<tr>
-						<th>Own Booth Perc</th>
-						<th>Own Panchayat Perc</th>
-						<th>Own Mandal Perc</th>
-						<th>Own Constituency Perc</th>
-						<th>Own Ward Perc</th>
-					</tr>
-					<tr id="ownBoothDetailsId">
-						<img id="dataLoadingsImgForownBoothDetailsId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
-					</tr>
-				</table>
-			</div> -->
-			
-			<div class="col-md-7 col-md-offset-2 pad_10 block" id="electionProfileMainDivId">
-				<h4 style="border-bottom:1px solid #999">Election Performance In A Cadre Location</h4>
-				<div id="electionPerformanceDiv"> </div>
-			</div>
-			<div id="memberShipCountMainDiv" class="col-md-7 col-md-offset-2 pad_10 block">
-			   <h4 style="border-bottom:1px solid #999">MemberShip Registration in Cadre Location</h4>
-			   <div id="memberShipCountDiv"></div>
-			</div>
-			
-			
-			<div class="col-md-7 col-md-offset-2 pad_10 block" id="grievanceDetailsMainDivId" style="display:none">
-				<h4 style="border-bottom:1px solid #999">Grievance Details</h4>
-				<table class="table table-bordered table-responsive">
-					<thead>
-						<th>Complaint</th>
-						<th>Severity</th>
-						<th>Complaint Date</th>
-						<th>Status</th>
-						<th>Issue Type</th>
-						<th>Grievance Type</th>
-					</thead>
-					<img id="dataLoadingsImgForComplaint" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
-					<tbody id="grievanceDetailsId"></tbody>
-				</table>
-			</div>
-			<div class="col-md-7 col-md-offset-2 pad_10 block">
-				<h4 style="border-bottom:1px solid #999">Event Participation Details</h4>
-				<div id="participationTableDivId">
-				</div>
-		
-			</div>
-				<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
-				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
-					<div class="panel-group surveyDetailsCls" id="accordion" role="tablist" aria-multiselectable="true">
-					<!--  <div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOne">
-						  <h4 class="panel-title">
-							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							  Survey 1
-							</a>
-						  </h4>
-						</div>
-						<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-						  <div class="panel-body">
-							<table class="table table-bordered">
-								<thead>
-									<th>Question</th>
-									<th>Answer</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Question</td>
-										<td>Answer</td>
-									</tr>
-								</tbody>
-							</table>
-						  </div>
-						</div>
-					  </div>
-					  <div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingTwo">
-						  <h4 class="panel-title">
-							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							  Survey 2
-							</a>
-						  </h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-						  <div class="panel-body">
-							<table class="table table-bordered">
-								<thead>
-									<th>Question</th>
-									<th>Answer</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Question</td>
-										<td>answer</td>
-									</tr>
-								</tbody>
-							</table>
-						  </div>
-						</div>
-					  </div>
-					  <div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingThree">
-						  <h4 class="panel-title">
-							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-							   Survey 3
-							</a>
-						  </h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-						  <div class="panel-body">
-							<table class="table table-bordered">
-								<thead>
-									<th>Question</th>
-									<th>Answer</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Question</td>
-										<td>Answer</td>
-									</tr>
-								</tbody>
-							</table>
-						  </div>
-						</div>
-					  </div> -->
-					</div>
-				</div> 
-			
-		</div>
-	</div>
+    	<div class="row">
+        	<div class="col-md-4 bg_white">
+            	<table class="table table-bordered">
+                	<tr>
+                    	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>
+                    </tr>
+                    <tr>
+                    	<td>
+                        	<div class="media">
+                            	<div class="media-left">
+                                	<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">
+                                </div>
+                                <div class="media-body">
+                                	<p class="m_0">NAME : ARJUN</p>
+                                    <p class="m_0">AGE : 41</p>
+                                    <p class="m_0">DOB : May 05 1963</p>
+                                    <p class="m_0">QUALIFICATION : Un Educated</p>
+                                    <p class="m_0">OCCUPATION : Former</p>
+                                    <p class="m_0">CASTE : Valmiki</p>
+                                    <p class="m_0">REGISTERED ON: 13-07-2015</p>
+                                    <p class="m_0">REGISTERED AT: PARTY OFFICE</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td>
+                        	<i class="glyphicon glyphicon-phone"></i> 8897999414 
+                        	<span class="pull-right">
+	                            <i class="glyphicon glyphicon-envelope"></i> arjunpahsg@gmail.com
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td><i class="icon-articles"></i> IDENTITY</td>
+                    </tr>
+                    <tr>
+                    	<td>
+                        	<p class="m_0">MEMBERSHIP ID : AP2123654</p>
+                            <p class="m_0">VOTER CARD NO : AP281880393378</p>
+                            <p class="m_0">PARTY POSITION : DISTRICT PRESIDENT</p>
+                            <p class="m_0">PUBLIC REPRESENTATIVE : MP</p>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td><i class="glyphicon glyphicon-map-marker"></i> ADDRESS</td>
+                    </tr>
+                    <tr>
+                    	<td>
+                        	<p class="m_0">H NO 225-5-12/1</p>
+                            <p class="m_0">PANCHAYAT : RANGAPUR</p>
+                            <p class="m_0">MANDAL : ACHAMPET</p>
+                            <p class="m_0">CONSTITUENCY : ACHAMPET</p>
+                            <p class="m_0">DISTRICT : MAHABUBNAGAR</p>
+                            <p class="m_0">STATE : ANDHRA PRADESH</p>
+                        </td>
+                    </tr>
+                </table>
+            	<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<h5 class="m_0">TOTAL COMPLAINTS 8</h5>
+                        <div class="display-style">
+                            <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
+                            <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;">
+                                <li class="show-dropdown"><span class="inp"></span>Not Verified<span class="pull-right">157
+                                	<ul class="count-hover arrow_box3">
+                                    	<li>Govt<span class="pull-right">25</span></li>
+                                        <li>Party<span class="pull-right">25</span></li>
+                                        <li>Welfare<span class="pull-right">25</span></li>
+                                    </ul>
+                                </span></li>
+                                <li class="show-dropdown"><span class="cmp"></span>In Progress<span class="pull-right">100
+                                	<ul class="count-hover arrow_box3">
+                                    	<li>Govt<span class="pull-right">25</span></li>
+                                        <li>Party<span class="pull-right">25</span></li>
+                                        <li>Welfare<span class="pull-right">25</span></li>
+                                    </ul>
+                                </span></li>
+                                <li class="show-dropdown"><span class="ncmp"></span>Completed<span class="pull-right ">100
+                                	<ul class="count-hover arrow_box3">
+                                    	<li>Govt<span class="pull-right">25</span></li>
+                                        <li>Party<span class="pull-right">25</span></li>
+                                        <li>Welfare<span class="pull-right">25</span></li>
+                                    </ul>
+                                </span></li>
+                                <li class="show-dropdown"><span class="note"></span>Not Eligible<span class="pull-right show-dropdown">100
+                                	<ul class="count-hover arrow_box3">
+                                    	<li>Govt<span class="pull-right">25</span></li>
+                                        <li>Party<span class="pull-right">25</span></li>
+                                        <li>Welfare<span class="pull-right">25</span></li>
+                                    </ul>
+                                </span></li>
+                                <li class="show-dropdown"><span class="note"></span>Not Possible<span class="pull-right">100
+                                	<ul class="count-hover arrow_box3">
+                                    	<li>Govt<span class="pull-right">25</span></li>
+                                        <li>Party<span class="pull-right">25</span></li>
+                                        <li>Welfare<span class="pull-right">25</span></li>
+                                    </ul>
+                                </span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            	<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
+                    </div>
+                    <div class="panel-body">
+                   		<h4>TOTAL REQUEST FOR<br/> FINANCE SUPPORT 210 [140000/-]</h4>
+                    	<div id="donutchart1" class="display-style" style="height: 120px;float:left;width:150px;"></div>
+                    <ul class="display-style pull-right piechart-list pad_0">
+                        <li class="financial-by-party">Financial By party 10[80000/-]</li>
+                        <li class="financial-by-govt">Financial by govt 50[30000/-]</li>
+                    </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
+                    </div>
+                    <div class="panel-body pad_0">
+                    	<table class="table table-bordered m_0">
+                        	<tr>
+                            	<td>Location</td>
+                                <td>Death</td>
+                                <td>Hospitalization</td>
+                            </tr>
+                            <tr>
+                            	<td>District</td>
+                                <td>10</td>
+                                <td>07</td>
+                            </tr>
+                            <tr>
+                            	<td>Parliament Constituency</td>
+                                <td>02</td>
+                                <td>15</td>
+                            </tr>
+                            <tr>
+                            	<td>Assembly Constituency</td>
+                                <td>08</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                            	<td>Mandal Deaths</td>
+                                <td>06</td>
+                                <td>20</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title">
+                        	<img src="dist/img/family-icon.png">&nbsp;&nbsp;&nbsp;FAMILY MEMBERS
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="family-members">
+                            <ul>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="m_0">Ramu
+                                                <span class="pull-right">
+                                                    <i class="glyphicon glyphicon-check"></i>
+                                                </span>
+                                            </p>
+                                            <p class="m_0">Relation : Father</p>
+                                            <p class="m_0">Age : 55</p>
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="m_0">Geetha
+                                                <span class="pull-right">
+                                                    <i class="glyphicon glyphicon-check"></i>
+                                                </span>
+                                            </p>
+                                            <p class="m_0">Relation : Mother</p>
+                                            <p class="m_0">Age : 55</p>
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="m_0">Shekar
+                                                <span class="pull-right">
+                                                    <i class="glyphicon glyphicon-check"></i>
+                                                </span>
+                                            </p>
+                                            <p class="m_0">Relation : Son</p>
+                                            <p class="m_0">Age : 55</p>
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+            	<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title">CADRE MEMBER BOOTH PERFORMANCE</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default">
+                            <div class="panel-heading  bg_white" role="tab" id="headingOne">
+                              <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                  2014 PERFORMANCE
+                                  <span class="pull-right">
+                                  	<i class="glyphicon glyphicon-chevron-up"></i>
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                              <div class="panel-body">
+                              	<div class="row">
+                                	<div class="col-md-2">
+                                    	<div id="myStathalf" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Booth</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf1" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Panchayat</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf2" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Mandal</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf3" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Assembly Constituency</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf9" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Parliament Constituency</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf10" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own District</p>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default">
+                            <div class="panel-heading bg_white" role="tab" id="headingTwo">
+                              <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                  2009 PERFORMANCE
+                                  <span class="pull-right">
+                                  	<i class="glyphicon glyphicon-chevron-down"></i>
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                              <div class="panel-body">
+                                <div class="row">
+                                	<div class="col-md-2">
+                                    	<div id="myStathalf5" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                       <p class="m_-40 text-center">Own Booth</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf6" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Panchayat</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf7" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Mandal</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf8" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Assembly Constituency</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf11" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own Parliament Constituency</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                    	<div id="myStathalf12" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                                        <p class="m_-40 text-center">Own District</p>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title">CADRE ENROLMENT STATS</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="row">
+                            <div class="col-md-2">
+                                <div id="myStathalf13" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="myStathalf14" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="myStathalf15" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="myStathalf16" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="myStathalf17" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="myStathalf18" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;EVENT PARTICIPATION ACTIVITIES & TRAINING DETAILS</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="row">
+                        	<div class="col-md-6 col-xs-12">
+                            	<table class="table table-bordered">
+                                	<thead >
+                                    	<th class="text-center" colspan="3">EVENT INVITATIONS</th>
+                                    </thead>
+                                    <tr class="text-center">
+                                    	<td>30<br/>Sent</td>
+                                        <td>20<br/>Participated</td>
+                                        <td>08<br/>Absent</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                            	<table class="table table-bordered">
+                                	<thead>
+                                    	<th class="text-center" colspan="3">TRAINING'S</th>
+                                    </thead>
+                                    <tr class="text-center">
+                                    	<td>30<br/>Suggested</td>
+                                        <td>20<br/>Attended</td>
+                                        <td>08<br/>Absent</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                            	<table class="table-bordered table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3" class="text-center">EVENT PARTICIPATION DETAILS</th>
+                                        </tr>
+                                        <tr>
+                                            <th>MAIN EVENT</th>
+                                            <th>SUB EVENT</th>
+                                            <th>ATTENDED COUNT(DAYS)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td rowspan="3">Party Office</td>
+                                            <td>Main Event</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>Food</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>Exit</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>MAHANADU 2015</td>
+                                            <td>Main Entry</td>
+                                            <td>1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="cadre-election">
+                        	<ul>
+                            	<li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div>
+                        	<label class="radio-inline">
+                            	<input type="radio">Panchayat
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio">Mandal
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio">Assembly Constituency
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio">Parliament Constituency
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio">District
+                            </label>
+                            <div class="pull-right">
+                            	<div class="calendar-style"  id="reportrange">
+                                	<div class="caret"></div>
+                                	<i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default m_top20">
+                        	<div class="panel-heading bg_f9">
+                            	<h4 class="panel-title text-center">
+                                	CANDIDATE CATEGORY WISE
+                                </h4>
+                            </div>
+                            <div class="panel-body pad_0">
+                            	<table class="table table-bordered m_0">
+                                	<tr>
+                                    	<td>TOTAL ARTICLES  <span class="pull-right text-bold">03</span></td>
+                                        <td>POSITIVE ARTICLES  <span class="pull-right text-bold">03</span></td>
+                                        <td>NEGATIVE ARTICLES  <span class="pull-right text-bold">03</span></td>
+                                        <td>NEUTRAL ARTICLES <span class="pull-right text-bold">03</span></td>
+                                    </tr>
+                                </table>
+                                <table class="table m_0">
+                                	<thead>
+                                    	<th width="50%">CATEGORY NAME</th>
+                                        <th>POSITIVE</th>
+                                        <th>NEGATIVE</th>
+                                        <th>NEUTRAL</th>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td>NON CONVENTIONAL ENERGY</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    	<tr>
+                                        	<td>VILLAGE HEALTH</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    	<tr>
+                                        	<td>ROADS & BUILDINGS</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    	<tr>
+                                        	<td>OTHER MUNCIPAL CORPORATIONS</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    	<tr>
+                                        	<td>RURAL WATER SUPPLY SCHEME-FLORIDE</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    	<tr>
+                                        	<td>NON CONVENTIONAL ENERGY</td>
+                                            <td><span class="text-success">20</span></td>
+                                            <td><span class="text-danger">10</span></td>
+                                            <td><span class="text-warning">20</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                        	<div class="panel-heading bg_white">
+                            	<h4 class="panel-title text-center">CANDIDATE LOCATION SPECIFIC NEWS</h4>
+                            </div>
+                            <div class="panel-body pad_0">
+                            	<div class="row">
+                                	<div class="col-md-6">
+                                    	<div class="panel panel-default">
+                                        	<div class="panel-heading bg_f9">
+                                            	<h4 class="panel-title text-center text-capitalize">ANALYSIS STORIES</h4>
+                                            </div>
+                                            <div class="panel-body pad_0">
+                                            	<table class="table m_0">
+                                                	<thead>
+                                                    	<tr>
+                                                        	<th>Party Name</th>
+                                                            <th>Positive</th>
+                                                            <th>Negative</th>
+                                                            <th>Neutral</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr>
+                                                    	<td>TDP</td>
+                                                        <td><span class="text-success">5</span></td>
+                                                        <td><span class="text-danger">5</span></td>
+                                                        <td><span class="text-warning">0</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>BJP</td>
+                                                        <td><span class="text-success">5</span></td>
+                                                        <td><span class="text-danger">5</span></td>
+                                                        <td><span class="text-warning">0</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>YSRC</td>
+                                                        <td><span class="text-success">5</span></td>
+                                                        <td><span class="text-danger">5</span></td>
+                                                        <td><span class="text-warning">0</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>INC</td>
+                                                        <td><span class="text-success">5</span></td>
+                                                        <td><span class="text-danger">5</span></td>
+                                                        <td><span class="text-warning">0</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>TRS</td>
+                                                        <td><span class="text-success">5</span></td>
+                                                        <td><span class="text-danger">5</span></td>
+                                                        <td><span class="text-warning">0</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	<div class="panel panel-default">
+                                        	<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">
+                                            	<h4 class="panel-title text-center text-capitalize">INTERNAL FIGHTS</h4>
+                                            </div>
+                                            <div class="panel-body pad_0">
+                                            	<table class="table table-bordered m_0">
+                                                	<tr>
+                                                    	<td>TDP</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>BJP</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>YSRC</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>INC</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>TRS</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	<div class="panel panel-default">
+                                        	<div class="panel-heading bg_f9">
+                                            	<h4 class="panel-title text-center text-capitalize">SPOT NEWS</h4>
+                                            </div>
+                                            <div class="panel-body pad_0">
+                                            	<table class="table table-bordered m_0">
+                                                	<tr>
+                                                    	<td>TDP</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>BJP</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>YSRC</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>INC</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>TRS</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                    	<div class="panel panel-default m_0">
+                                        	<div class="panel-heading bg_f9">
+                                            	<h4 class="panel-title text-center">PRESS & PARTY MEETINGS</h4>
+                                            </div>
+                                            <div class="panel-body pad_0">
+                                            	<table class="table m_0">
+                                                	<thead>
+                                                    	<th>Party Name</th>
+                                                        <th>Press</th>
+                                                        <th>Party</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    	<tr>
+                                                        	<td>TDP</td>
+                                                            <td>10</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td>BJP</td>
+                                                            <td>10</td>
+                                                            <td>4</td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td>YSRC</td>
+                                                            <td>10</td>
+                                                            <td>8</td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td>INC</td>
+                                                            <td>10</td>
+                                                            <td>3</td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td>TRS</td>
+                                                            <td>10</td>
+                                                            <td>1</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                    	<div class="panel panel-default m_0">
+                                        	<div class="panel-heading bg_f9">
+                                            	<h4 class="panel-title">ISSUES<span class="pull-right">TOTAL - 20</span></h4>
+                                            </div>
+                                            <div class="panel-body pad_0 table-scroll">
+                                            	<table class="table m_0">
+                                                	<tr>
+                                                    	<td width="80%">Muncipal Corporation</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>R&B</td>
+                                                        <td>2</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>RTC</td>
+                                                        <td>45</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>Irrigation</td>
+                                                        <td>6</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>Agriculture</td>
+                                                        <td>4</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>Health & Medical</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>Health & Medical</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>Health & Medical</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12">
+            	<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div>
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs tab-list" role="tablist">
+                            <li class="active"><a href="#area" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
+                            <li><a href="#participated" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
+                          </ul>
+                        
+                          <!-- Tab panes -->
+                          <div class="tab-content m_top20">
+                            <div role="tabpanel" class="tab-pane active" id="home">
+                            	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading bg_f9" role="tab" id="heading1">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+	                                      <h4 class="panel-title">
+                                          T7 SA SURVEY FIELD
+	                                      </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading bg_f9" role="tab" id="heading2">
+                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                      	<h4 class="panel-title">
+                                          T5 SA SURVEY FIELD
+                                        </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading bg_f9" role="tab" id="headingThree">
+                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                      	<h4 class="panel-title">
+                                         T2 SA SURVEY FIELD
+                                        </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="profile">
+                            	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading1">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+	                                      <h4 class="panel-title">
+                                          T7 SA SURVEY FIELD
+	                                      </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading2">
+                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                      	<h4 class="panel-title">
+                                          T5 SA SURVEY FIELD
+                                        </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingThree">
+                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                      	<h4 class="panel-title">
+                                         T2 SA SURVEY FIELD
+                                        </h4>
+                                      </a>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                                      <div class="panel-body">
+                                        <table class="table table-bordered">
+                                        	<thead>
+                                            	<th width="70%">Question</th>
+                                                <th width="30%">Answer</th>
+                                            </thead>
+                                            <tbody>
+                                            	<tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                                <tr>
+                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
+                                                    <td>మాటీవీ</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src=" http://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
-	<script src=" http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
 	<!--Circle js file-->
@@ -232,21 +1035,20 @@
     <!--Bootstrap Date Picker-->
    <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
-    <!--Jquery Sparkline-->
-    <script src="js/cadreCommittee/js/jquery.sparkline.js" type="text/javascript"></script>
-    <!-- Custom JS File-->
-    <script src="js/cadreCommittee/js/custom.js" type="text/javascript"></script>
     <!--Hover Menu-->
     <script src="js/cadreCommittee/js/jquery.smartmenus.min.js" type="text/javascript"></script>
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>	
+	<script type="text/javascript" src="js/highcharts/js/highcharts_cadre.js"></script>
+	<!-- scrollator -->
+	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
+	
 	<script>
 	
-	
-	var globalCadreId = '${cadreId}';
+	var globalCadreId;
 	 $(document).ready(function() {
-			//globalCadreId='${param.cadreId}';
+			globalCadreId='${param.cadreId}';
 			//globalMembershipId='${param.memberShipId}';
 			cadreFormalDetailedInformation(globalCadreId);
 			//complaintDetailsOfCadre(globalCadreId,globalMembershipId);
@@ -610,266 +1412,208 @@
 			win.focus();
 		});
 	
-		
-		
-	function getTotalMemberShipRegistrationsInCadreLocation()
-	{
-		$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-		$.ajax({
-				type : "POST",
-				url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-				data : {tdpCadreId:globalCadreId}
-		   }).done(function(result){
-				if(result != null)
-				  buildTotalMemberShipRegInCadreLocation(result);
-			  else
-				$("#memberShipCountDiv").html('No Data Available.');  
-			})
-			
+</script>		
+<script type="text/javascript">
+$('.table-scroll').scrollator({
+	custom_class: 'table-scroll',
+});
+$('#myStathalf').circliful();
+$('#myStathalf1').circliful();
+$('#myStathalf2').circliful();
+$('#myStathalf3').circliful();
+$('#myStathalf4').circliful();
+$('#myStathalf5').circliful();
+$('#myStathalf6').circliful();
+$('#myStathalf7').circliful();
+$('#myStathalf8').circliful();
+$('#myStathalf9').circliful();
+$('#myStathalf10').circliful();
+$('#myStathalf11').circliful();
+$('#myStathalf12').circliful();
+$('#myStathalf13').circliful();
+$('#myStathalf14').circliful();
+$('#myStathalf15').circliful();
+$('#myStathalf16').circliful();
+$('#myStathalf17').circliful();
+$('#myStathalf18').circliful();
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+  var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	minDate: '01/01/2012',
+	maxDate: '12/31/2015',
+	dateLimit: { days: 60 },
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
 	}
-	
-	function buildTotalMemberShipRegInCadreLocation(result)
-	{
-		var temp = 7;
-		$("#memberShipCountDiv").html('');
-		var str = '';
-		str += '<div class="table-responsive">';
-		str += '<table class="table table-bordered" id="memberShipTab">';
-		str += '<tr>';
-		str += '<th colspan="3" class="tdCls">Booth</th>';
-		
-	 if(result.areaType =="RURAL" || result.areaType == "RURAL-URBAN")
-	 {
-		str += '<th colspan="3" class="tdCls">Panchayat</th>';
-		str += '<th colspan="3" class="tdCls">Mandal </th>';
-		temp = 5;
-	 }
-	 if(result.areaType =="URBAN" || result.areaType == "RURAL-URBAN")
-	 {
-		str += '<th colspan="3" class="tdCls">Municipality</th>';
-		temp = 6;
-	 }
-	 if(result.areaType == "RURAL-URBAN")
-		 temp = 7;
-	 
-		str += '<th colspan="3" class="tdCls">Constituency</th>';
-		str += '<th colspan="3" class="tdCls">District</th>';
-		str += '<th colspan="3" class="tdCls">Parliament Constituency</th>';
-		str += '</tr>';
-		
-		 for(var i=0;i<temp;i++)
-		 {
-			str += '<th>Voters</th>';
-			str += '<th>Cadre</th>';
-			str += '<th>%</th>';
-		 }
-	    str += '</tr>';
-	    str += '<tr>';
-		if(result.boothTotVoters != null)
-		  str += '<td>'+result.boothTotVoters+'</td>';
-		else
-		  str += '<td>-</td>';
-		if(result.boothCount != null)
-		  str += '<td>'+result.boothCount+'</td>';
-		else
-		  str += '<td>-</td>';
-		if(result.boothPerc != null)
-		  str += '<td>'+result.boothPerc+'</td>';
-		else
-		 str += '<td>-</td>';
-	 if(result.areaType =="RURAL" || result.areaType == "RURAL-URBAN")
-	 {
-		if(result.panchayatTotVoters != null)
-		  str += '<td>'+result.panchayatTotVoters+'</td>';
-		else
-		  str += '<td>-</td>';
-	    if(result.panchayatCount != null)
-			 str += '<td>'+result.panchayatCount+'</td>';
-	    else
-		  str += '<td>-</td>';
-		if(result.panchPerc != null)
-			str += '<td>'+result.panchPerc+'</td>';
-		else
-		  str += '<td>-</td>';
-		if(result.mandalTotVoters != null)
-			str += '<td>'+result.mandalTotVoters+'</td>';
-		else
-		  str += '<td>-</td>';
-		if(result.mandalCount != null)
-			str += '<td>'+result.mandalCount+'</td>';
-		 else
-			str += '<td>-</td>';
-		
-		 if(result.mandalPerc!= null)
-			str += '<td>'+result.mandalPerc+'</td>';
-		 else
-			str += '<td>-</td>';
-	 }
-	if(result.areaType =="URBAN" || result.areaType == "RURAL-URBAN")
-	 {
-		 if(result.munTotVoters!= null)	
-			str += '<td>'+result.munTotVoters+'</td>';
-		 else
-			str += '<td>-</td>';
-		 if(result.munCount!= null)
-			str += '<td>'+result.munCount+'</td>';
-		  else
-			str += '<td>-</td>';
-		
-		 if(result.munPerc != null)
-		  str += '<td>'+result.munPerc+'</td>';
-		 else
-		  str += '<td>-</td>';
-	 }
-		if(result.consTotalVoters != null)
-			str += '<td>'+result.consTotalVoters+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.constituencyCount != null)
-			str += '<td>'+result.constituencyCount+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.constiPerc != null)
-		 str += '<td>'+result.constiPerc+'</td>';
-		else
-		 str += '<td>-</td>';
-	 
-	    if(result.districtTotVoters != null)
-			str += '<td>'+result.districtTotVoters+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.districtCount != null)
-			str += '<td>'+result.districtCount+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.districtPerc != null)
-		 str += '<td>'+result.districtPerc+'</td>';
-		else
-		 str += '<td>-</td>';
-	 
-	 
-	   if(result.parConsTotVoters != null)
-			str += '<td>'+result.parConsTotVoters+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.parConsCount != null)
-			str += '<td>'+result.parConsCount+'</td>';
-		else
-			str += '<td>-</td>';
-		
-		if(result.parConsPerc != null)
-		 str += '<td>'+result.parConsPerc+'</td>';
-		else
-		 str += '<td>-</td>';
-	     str += '</tr>';
-			str += '</table>';
-			str += '</div>';
-			$("#memberShipCountDiv").html(str);
-		} 
-		
-	function getElectionPerformanceInCadreLocation()
-	{
-			
-			$("#electionPerformanceDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-			$.ajax({
-				type : "POST",
-				url  : "getElectionPerformanceInCadreLocationAction.action",
-				data : {tdpCadreId:globalCadreId}
-			}).done(function(result){
-				if(result != null && result.length > 0)
-				  buildElectionPerformanceInCadreLocation(result);
-			  else
-				$("#electionPerformanceDiv").html("No Data Available");
-			})
-			
+  };
+
+  var optionSet2 = {
+	startDate: moment().subtract(7, 'days'),
+	endDate: moment(),
+	opens: 'left',
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	}
+  };
+
+  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#reportrange').daterangepicker(optionSet1, cb);
+
+  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+  $('#options1').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+  });
+
+  $('#options2').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+  });
+
+  $('#destroy').click(function() {
+	$('#reportrange').data('daterangepicker').remove();
+  });
+
+});
+</script>
+<script type="text/javascript">
+$(function () {
+	Highcharts.setOptions({
+        colors: ['#ff9933', '#33cccc', '#ff3333', '#663300']
+    });
+    $('#donutchart').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
 		
+		series: [{
+            data: [
+                ['In Progress', 157],
+                ['Completed', 100],
+                ['Not Eligible', 100],
+                ['Not Possible', 100],
+				['Not Completed', 100],
+            ]
+        }]
+    });
+});
+$(function () {
+	Highcharts.setOptions({
+        colors: ['#ff9933', '#33cccc', '#ff3333', '#663300']
+    });
+    $('#donutchart1').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
 		
+		series: [{
+            data: [
+                ['In Progress', 157],
+                ['Completed', 100],
+                ['Not Eligible', 100],
+                ['Not Possible', 100],
+				['Not Completed', 100],
+            ]
+        }]
+    });
+});
 		
-	function buildElectionPerformanceInCadreLocation(result)
-	{
-			var str = '';
-			str += '<div class="table-responsive">';
-			str += '<table class="table table-bordered" id="electionPerTab">';
-			str += '<tr>';
-			str += '<th >Year</th>';
-			str += '<th  class="tdCls">Own Booth Perc</th>';
-			if(result[0].areaType =="RURAL" || result[0].areaType == "RURAL-URBAN")
-			{
-			   str += '<th  class="tdCls">Own Panchayat Perc</th>';
-			   str += '<th  class="tdCls">Own Mandal Perc</th>';
-			}
-			if(result[0].areaType =="URBAN" || result[0].areaType == "RURAL-URBAN")
-			   str += '<th  class="tdCls">Own Municipality Perc</th>';
-			str += '<th  class="tdCls">Own Constituency Perc</th>';
-			str += '<th  class="tdCls">Own District Perc</th>';
-			str += '<th  class="tdCls">Own Parliament Constituency Perc</th>';
-			str += '</tr>';
-			
-			
-		for(var i in result)
-		{
-			str += '<tr >';
-			str += '<td>'+result[i].year+'</td>';
-			if(result[i].boothPerc != null)
-			 str += '<td>'+result[i].boothPerc+'</td>';
-			else
-			 str += '<td>-</td>';
-		 
-		  if(result[i].areaType =="RURAL" || result[i].areaType == "RURAL-URBAN")
-		  {
-			if(result[i].panchPerc != null)
-			  str += '<td>'+result[i].panchPerc+'</td>';
-			else
-			  str += '<td>-</td>';
-			if(result[i].mandalPerc != null)
-				str += '<td>'+result[i].mandalPerc+'</td>';
-			else
-				str += '<td>-</td>';	
-		  }
-		  if(result[i].areaType =="URBAN" || result[i].areaType == "RURAL-URBAN")
-		  {
-			if(result[i].munPerc != null)
-				str += '<td>'+result[i].munPerc+'</td>';
-			else
-			  str += '<td>-</td>';
-		  }
-		
-			if(result[i].constiPerc != null)
-			  str += '<td>'+result[i].constiPerc+'</td>';
-			else
-			  str += '<td>-</td>';
-			
-		   if(result[i].districtPerc != null)
-		     str += '<td>'+result[i].districtPerc+'</td>';
-		  else
-		    str += '<td>-</td>';
-	 
-	     if(result[i].parConsPerc != null)
-		   str += '<td>'+result[i].parConsPerc+'</td>';
-		 else
-		    str += '<td>-</td>';
-		  str += '</tr>';
-		}
-			str += '</table>';
-			str += '</div>';
-			$("#electionPerformanceDiv").html(str);
-   }
-		
-		
-		
-	getTotalMemberShipRegistrationsInCadreLocation();
-	getElectionPerformanceInCadreLocation();
-	</script>	
-	
-	<style>
-	.tdCls{text-align:center;}
-	#electionPerTab td,#memberShipTab td{text-align:center;}
-	</style>
+</script>
 </body>
 </html>
