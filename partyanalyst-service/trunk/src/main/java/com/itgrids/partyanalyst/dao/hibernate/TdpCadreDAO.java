@@ -5254,7 +5254,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
 					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
 					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,userAddress1.houseNo " +
-					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId " +
+					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
+					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name " +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");
@@ -5266,6 +5267,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.userAddress.district  district");
 			queryStr.append(" left join model.userAddress.state state ");
 			queryStr.append(" left join model.casteState.caste caste");
+			queryStr.append(" left join model.userAddress.parliamentConstituency parliamentConstituency ");
 			
 			if(cadreId !=null){
 				queryStr.append(" where model.tdpCadreId =:cadreId and model.isDeleted ='N'");
