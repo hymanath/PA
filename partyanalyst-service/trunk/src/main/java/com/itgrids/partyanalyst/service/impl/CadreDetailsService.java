@@ -653,7 +653,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0,1,2,3,5,7,9,10,11,12
 				//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.eduQualificationId,5.qualification,
 				//6.occupationId,7.occupation,8.voterId,9.panchayatName,10.tehsilName,11.constName,12.mobileNo,13.ConstituencyId
-				//14.,18.districtName,19.stateName,20.casteName,21.insertedWebUserId(registeredOn),22.registeredTime,23.emailId
+				//14.,18.districtName,19.stateName,20.casteName,21.insertedWebUserId(registeredOn),22.registeredTime,23.emailId,24.dataSourceType
+				//25.panchayatId,26.tehsilId,27.districtId,28.stateId,29.pConstId,30.pName
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
@@ -713,6 +714,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setStateName(cadreFormalDetails[19] !=null ? cadreFormalDetails[19].toString() : "" );
 					cadreDetailsVO.setCasteName(cadreFormalDetails[20] !=null ? cadreFormalDetails[20].toString():"");
 					
+					String dataSourceType="";
+					if(cadreFormalDetails[24] !=null){
+						dataSourceType=cadreFormalDetails[24].toString();
+					}
+					
 					if(cadreFormalDetails[21] !=null){
 						
 						String webUserId=cadreFormalDetails[21].toString();
@@ -729,7 +735,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 								cadreDetailsVO.setRegisteredOn(mahanaduIds[0]);
 							}
 							else{
-								cadreDetailsVO.setRegisteredOn("");
+								cadreDetailsVO.setRegisteredOn(dataSourceType);
 							}
 						}
 						
@@ -742,6 +748,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 						 cadreDetailsVO.setRegisteredTime(lines[1]+ " "+lines[2] +" " + lines[5]);
 					}
 					
+					//Ids
+					cadreDetailsVO.setPanchayatId(cadreFormalDetails[25] !=null ? Long.parseLong(cadreFormalDetails[25].toString()) :0l);
+					cadreDetailsVO.setTehsilId(cadreFormalDetails[26] !=null ? Long.parseLong(cadreFormalDetails[26].toString()):0l);
+					cadreDetailsVO.setDistrictId(cadreFormalDetails[27] !=null ? Long.parseLong(cadreFormalDetails[27].toString()):0l);
+					cadreDetailsVO.setStateId(cadreFormalDetails[28] !=null ? Long.parseLong(cadreFormalDetails[28].toString()):0l);
+					cadreDetailsVO.setpConstituencyId(cadreFormalDetails[29] !=null ? Long.parseLong(cadreFormalDetails[29].toString()):0l);
+					cadreDetailsVO.setpConstituencyName(cadreFormalDetails[30] !=null ? cadreFormalDetails[30].toString(): "");
 				}
 				
 				if(partyPositionDetails !=null)

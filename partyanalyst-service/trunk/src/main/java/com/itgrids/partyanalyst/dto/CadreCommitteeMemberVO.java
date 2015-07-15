@@ -87,6 +87,12 @@ public class CadreCommitteeMemberVO {
 	private String registeredTime;
 	private String emailId;
 	
+	private Long panchayatId;
+	private Long tehsilId;
+	private Long pConstituencyId;
+	private Long districtId;
+	private Long stateId;
+	private String pConstituencyName;
 	
 	private CadreCommitteeMemberVO ccmVO;
 	private String  houseNo;
@@ -546,6 +552,42 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public Long getpConstituencyId() {
+		return pConstituencyId;
+	}
+	public void setpConstituencyId(Long pConstituencyId) {
+		this.pConstituencyId = pConstituencyId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public String getpConstituencyName() {
+		return pConstituencyName;
+	}
+	public void setpConstituencyName(String pConstituencyName) {
+		this.pConstituencyName = pConstituencyName;
 	}
 	
 	
