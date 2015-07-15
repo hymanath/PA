@@ -258,7 +258,7 @@ i
 }
 .tab-list
 {
-	border:0px;
+	border:0px !important;
 }
 .tab-list li
 {
@@ -266,16 +266,16 @@ i
 }
 .tab-list li a
 {
-	color:#666;
+	color:#666 !important;
 	border-radius:0px;
-	margin-right:0px;
-	border-color:#f0f0f0
+	margin-right:0px !important;
+	border-color:#f0f0f0 !important;
 }
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
 {
-	background:#f0f0f0;
-	color:#666;
-	border-color:#f0f0f0
+	background:#f0f0f0 !important;
+	color:#666 !important;
+	border-color:#f0f0f0 !important
 }
 
 .bg_f9
