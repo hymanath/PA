@@ -25,7 +25,7 @@
 	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
-	
+	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	
 	<!--<style type="text/css">
 			.block{background-color:#fff !important;margin-top:30px;}
@@ -784,7 +784,7 @@
                         
                           <!-- Tab panes -->
                           <div class="tab-content m_top20">
-                            <div role="tabpanel" class="tab-pane active" id="home">
+                            <div role="tabpanel" class="tab-pane active" id="area">
                             	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
                                   <div class="panel panel-default">
                                     <div class="panel-heading bg_f9" role="tab" id="heading1">
@@ -899,7 +899,7 @@
                                   </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="profile">
+                            <div role="tabpanel" class="tab-pane" id="participated">
                             	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
                                   <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="heading1">
