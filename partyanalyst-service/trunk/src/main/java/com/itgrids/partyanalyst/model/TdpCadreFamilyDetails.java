@@ -45,6 +45,7 @@ public class TdpCadreFamilyDetails implements Serializable{
 	private Occupation 					occupation;
 	private Long                        age;
 	private String                      gender;
+	private VoterRelation               voterRelation;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -188,6 +189,19 @@ public class TdpCadreFamilyDetails implements Serializable{
 	public void setFamilyRelationId(Long familyRelationId) {
 		this.familyRelationId = familyRelationId;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "family_relation_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterRelation getVoterRelation() {
+		return voterRelation;
+	}
+	public void setVoterRelation(VoterRelation voterRelation) {
+		this.voterRelation = voterRelation;
+	}
+	
+	
 	
 	
 }

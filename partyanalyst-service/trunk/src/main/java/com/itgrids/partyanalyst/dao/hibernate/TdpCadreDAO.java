@@ -5347,6 +5347,55 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 		}
 		
+		public String getMemberShipIdByCadreId(Long tdpCadreId)
+		{
+			Query query = getSession().createQuery(" select model.memberShipNo from TdpCadre model where model.tdpCadreId =:tdpCadreId and model.isDeleted ='N' and model.enrollmentYear = 2014 ");
+			query.setParameter("tdpCadreId", tdpCadreId);
+			return (String) query.uniqueResult();
+		}
+		
+	
+		public List<Object[]> getPartyApprovedFundByMembershipId(String membershipId)
+		{
+			Query query = getSession().createSQLQuery(" select count(Complaint_id),sum(approved_amount) from complaint_master where membership_id =:membershipId " +
+					" and (Completed_Status = 'Approved' or Completed_Status = 'Completed') and (issue_type = 'Personal' or issue_type = 'Health' or " +
+					" issue_type = 'Financial Support' or issue_type = 'Fee Concession' or issue_type = 'Both Fee And concession') and approved_amount is not null and approved_amount != ''" +
+					" and delete_status != '0' and delete_status is null ");
+			
+			query.setParameter("membershipId", membershipId);
+			return query.list();
+					
+		}
+		
+		public List<Object[]> getGovtApprovedFundByMembershipId(String membershipId)
+		{
+			Query query = getSession().createSQLQuery(" select count(Complaint_id),sum(approved_amount) from complaint_master where membership_id =:membershipId and " +
+					" (Completed_Status = 'Approved' or Completed_Status = 'Completed') and issue_type = 'CM Relief' and approved_amount != '' and approved_amount is not null " +
+					" and delete_status != '0' and delete_status is null ");
+			
+			query.setParameter("membershipId", membershipId);
+			return query.list();
+		}
+		
+		public List<Object[]> getRequestedAmountByMembershipId(String membershipId)
+		{
+			Query query = getSession().createSQLQuery(" select sum(expected_amount),sum(model.health_amount) from complaint_master where membership_id =:membershipId and  " +
+					"(issue_type = 'Personal' or issue_type = 'CM Relief' or issue_type = 'Financial Support' or issue_type = 'Health') and expected_amount is not null " +
+					" and expected_amount != '' and health_amount is not null and health_amount != '' and delete_status != '0' and delete_status is null ");
+			
+			query.setParameter("membershipId", membershipId);
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getSurveyPaticipatedCountByVoterIdcardNoList(List<String> voterIdCardNoList)
+		{
+			Query query = getSession().createSQLQuery(" select count(respondent_id),voter_id from survey.respondent where voter_id in (:voterIdCardNoList)");
+			query.setParameterList("voterIdCardNoList", voterIdCardNoList);
+			
+			return query.list();
+		}
+		
 		
 		
 }

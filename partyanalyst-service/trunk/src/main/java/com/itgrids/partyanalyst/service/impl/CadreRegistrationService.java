@@ -10180,6 +10180,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setCasteStateId(tdpCadreFamilyInfo.getCasteStateId());
 					vo.setVotercardNo(voterCardNo);
 					
+					vo.setOccupation(tdpCadreFamilyInfo.getOccupationId() != null?tdpCadreFamilyInfo.getOccupation().getOccupation():"");
+					vo.setEducation(tdpCadreFamilyInfo.getEducationId() != null?tdpCadreFamilyInfo.getEducation().getQualification():"");
+					vo.setRelation(tdpCadreFamilyInfo.getRelationId() != null?tdpCadreFamilyInfo.getVoterRelation().getDescription():"");
 					
 					if(tdpCadreFamilyInfo.getRelationId() != null && tdpCadreFamilyInfo.getRelationId() != 13L)
 					{
@@ -10189,7 +10192,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				}				
 			}else{
 				
-				//0voterId,1educationId,2occupationId,3voterName,4age,5gender
+				//0voterId,1educationId,2occupationId,3voterName,4age,5gender,6relationId,7voterIdCardNo,8qualification,9occupation,10relation
 				List<Object[]> familyDetls = tdpCadreFamilyDetailsDAO.getCadreFamilyDetailsBytdpCadreId(tdpCadreId);
 				if(familyDetls != null && familyDetls.size() > 0){
 					for(Object[] obj : familyDetls){
@@ -10203,6 +10206,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setEducationId(obj[1] != null ? (Long)obj[1] :null);
 						vo.setOccupationId( obj[2] != null ?  (Long)obj[2] : null);
 						vo.setRelationId(obj[6] != null ? (Long)obj[6] : null);	
+						vo.setVotercardNo(obj[7] != null ? obj[7].toString() : "");
+						vo.setEducation(obj[8] != null ? obj[8].toString() : "");
+						vo.setOccupation(obj[9] != null ? obj[9].toString() : "");
+						vo.setRelation(obj[10] != null ? obj[10].toString() : "");
 						
 						returnList.add(vo);			
 						
@@ -10226,6 +10233,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  }
 						if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
 						{
+							//0voterId,1name,2relativeName,3relationshipType,4gender,5age,6voterIDCardNo
 							List<Object[]> familyInfo = boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,houseNo);
 							
 							if(familyInfo != null && familyInfo.size()>0)
@@ -10242,6 +10250,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 										fmilyVO.setGender(family[4] != null ? family[4].toString():"");
 										fmilyVO.setAge(family[5] != null ? Long.valueOf(family[5].toString()):0L);								
 										fmilyVO.setVotercardNo(family[6] != null ? family[6].toString():"");
+										fmilyVO.setRelation(family[3] != null ? family[3].toString():"");
 										
 										//returnList.add(fmilyVO);
 										familyMap.put(fmilyVO.getVotercardNo().trim(), fmilyVO);
