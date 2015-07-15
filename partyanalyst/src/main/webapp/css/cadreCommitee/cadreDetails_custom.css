@@ -1,0 +1,293 @@
+body
+{
+	background:#e5e5e5;
+	color:#666;
+}
+
+i
+{
+	color:#666
+}
+
+*
+{
+	outline:none !important;
+}
+
+/*.cadre-election
+{
+	height:300px;
+	overflow:scroll;
+}*/
+
+.bg_white
+{
+	background:#fff !important;
+}
+.m_0
+{
+	margin:0px;
+}
+.panel-default .panel-heading
+{
+	background:#ccc;
+	border-radius:0px;
+}
+.panel
+{
+	border-radius:0px;
+}
+.cadre-election ul
+{
+	pading-left:0px;
+}
+.cadre-election ul li
+{
+	list-style:none;
+}
+.cadre-election ul li {
+	position: relative;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+.cadre-election ul li:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -18px;
+		height: 100%;
+		width: 2px;
+		background: #666;
+}
+
+.cadre-election ul li:before
+{
+	background:#666;
+	content:'';
+	border-radius:50%;
+	padding:0px 8px;
+	position:relative;
+	left:-25px;
+}	
+
+
+.calendar-style
+{
+	padding:3px;
+	border:1px solid #ccc;
+	font-size:20px;
+	margin-top:-6px;
+	cursor:pointer;
+}
+
+.m_top20
+{
+	margin-top:20px;
+}
+
+.pad_0
+{
+	padding:0px;
+}
+
+.text-bold
+{
+	font-weight:bold;
+}
+
+.table-scroll
+{
+	height:220px;
+}
+
+.display-style
+{
+	display:inline
+}
+
+.piechart-list
+{
+	padding-left:0px;
+	margin-top:40px;
+}
+
+.piechart-list li
+{
+	font-size:15px;
+	list-style:none;
+	margin-bottom:3px;
+}
+.graph-list li
+{
+	list-style:none;
+	width:110%
+}
+.graph-list li:nth-child(1)
+{
+	color:#ff9933
+}
+.graph-list li:nth-child(2)
+{
+	color:#33cccc
+}
+.graph-list li:nth-child(3)
+{
+	color:#ff3333
+}
+.graph-list li:nth-child(4)
+{
+	color:#663300
+}
+.count-hover
+{
+	position:absolute;
+	padding:0px;
+	width:100px;
+	border:1px solid #999;
+	border-radius:3px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
+	background:#fff !important;
+	display:none;
+	z-index:9999;
+	margin-left:-40px;
+	margin-top:5px;
+}
+
+.count-hover li
+{
+	color:#333 !important;
+	background:#fff;
+	border-bottom:1px solid #999;
+	padding:3px;
+	width:80px;
+}
+
+.arrow_box3 {
+
+	background: #fff;
+	border: 4px solid #fff;
+}
+.arrow_box3:after, .arrow_box3:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box3:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 5px;
+	margin-left: -5px;
+}
+.arrow_box3:before {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 11px;
+	margin-left: -11px;
+}
+
+.show-dropdown:hover .count-hover
+{
+	display:block;
+}
+
+.show-dropdown
+{
+	cursor:pointer	
+}
+
+.inp , .cmp , .ncmp , .note
+{
+	padding:0px 8px 0px;
+	margin-right:1px;
+	margin-right:4px;
+}
+
+.inp
+{
+	background-color:#ff9933;
+}
+
+.cmp
+{
+	background-color:#33cccc;
+}
+
+.ncmp
+{
+	background-color:#ff3333;
+}
+
+.note
+{
+	background-color:#663300;
+}
+.party-color:before , .financial-by-party:before , .financial-by-govt:before , .other-type-req:before , .cm-relief:before , .party-fund:before , .total-req:before , .total-assign , .verification-cmp , .pending , .approved , .verification-pending
+{
+	padding:1px 9px 0px 9px;
+	content:'';
+	margin-right:3px;
+}
+.party-color:before 
+{
+	background:#C4C55D; 
+}
+.financial-by-party:before 
+{
+	background:#9B9AC6;
+}
+.financial-by-govt:before 
+{
+	background:#4A0EAE;
+}
+
+.family-members ul
+{
+	padding-left:0px;
+	margin-bottom:0px;
+}
+
+.family-members ul li
+{
+	list-style:none;
+}
+.tab-list
+{
+	border:0px;
+}
+.tab-list li
+{
+	border:1px solid #f0f0f0;
+}
+.tab-list li a
+{
+	color:#666;
+	border-radius:0px;
+	margin-right:0px;
+	border-color:#f0f0f0
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
+{
+	background:#f0f0f0;
+	color:#666;
+	border-color:#f0f0f0
+}
+
+.bg_f9
+{
+	background:#f9f9f9 !important;
+}
+
+a .panel-title
+{
+	color:#666 !important
+}
+.m_-40
+{
+	margin-top:-40px;
+}
