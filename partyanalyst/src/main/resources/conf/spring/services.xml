@@ -2570,6 +2570,7 @@
 		 <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		 <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
+		 <property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">

@@ -32,6 +32,12 @@
 			body{background:#d9dbd4 none repeat scroll 0 0}
 			.pad_10{padding:10px;}
 		</style>  -->
+		
+<script>
+var globalCadreId = '${cadreId}';
+
+</script>
+
 </head>
 <body>
 <section>
@@ -198,8 +204,8 @@
                         </h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="family-members">
-                            <ul>
+                    	<div class="family-members" id="familyMembersDiv">
+                           <!-- <ul>
                                 <li>
                                     <div class="media">
                                         <div class="media-left">
@@ -251,7 +257,7 @@
                                     </div>
                                     
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                 </div>
@@ -262,8 +268,8 @@
                     	<h4 class="panel-title">CADRE MEMBER BOOTH PERFORMANCE</h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                          <div class="panel panel-default">
+                    	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
+                           <!-- <div class="panel panel-default">
                             <div class="panel-heading  bg_white" role="tab" id="headingOne">
                               <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -346,7 +352,7 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                     </div>
                 </div>
@@ -355,8 +361,8 @@
                     	<h4 class="panel-title">CADRE ENROLMENT STATS</h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="row">
-                            <div class="col-md-2">
+                    	<div class="row" id="memberShipCountDiv">
+                           <!-- <div class="col-md-2">
                                 <div id="myStathalf13" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
                             </div>
                             <div class="col-md-2">
@@ -373,7 +379,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div id="myStathalf18" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -1437,7 +1443,7 @@
 $('.table-scroll').scrollator({
 	custom_class: 'table-scroll',
 });
-$('#myStathalf').circliful();
+/*$('#myStathalf').circliful();
 $('#myStathalf1').circliful();
 $('#myStathalf2').circliful();
 $('#myStathalf3').circliful();
@@ -1455,7 +1461,7 @@ $('#myStathalf14').circliful();
 $('#myStathalf15').circliful();
 $('#myStathalf16').circliful();
 $('#myStathalf17').circliful();
-$('#myStathalf18').circliful();
+$('#myStathalf18').circliful();*/
 </script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -1633,7 +1639,203 @@ $(function () {
         }]
     });
 });
+
+
+ function getTotalMemberShipRegistrationsInCadreLocation()
+ {
+	$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	  $.ajax({
+			type : "POST",
+			url  : "getTotalMemberShipRegsInCadreLocationAction.action",
+			data : {tdpCadreId:globalCadreId}
+		  }).done(function(result){
+			if(result != null)
+				  buildTotalMemberShipRegInCadreLocation(result);
+			  else
+				$("#memberShipCountDiv").html('No Data Available.');  
+		})
+			
+}
+
+function buildTotalMemberShipRegInCadreLocation(result)
+{
+	var str = '';
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
+	str += '</div>';
+	if(result.cadreLocation =="Mandal")
+	{
+		str += '<div class="col-md-2">';
+        str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+        str += '</div>';
+	 }
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+	str += '</div>';
+	
+	 $("#memberShipCountDiv").html(str);
+	 $('.fulCircleCls').circliful();
+}
+
+
+function getCadreFamilyDetailsByCadreId()
+{
+	$("#familyMembersDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+		  $.ajax({
+		  type : "POST",
+		  url  : "getCadreFamilyDetailsAction.action",
+		  data : {tdpCadreId:globalCadreId}
+	  }).done(function(result){
+		if(result != null && result.length > 0)
+		  buildCadreFamilyDetails(result);  
+	  });
+ } 
+ 
+ function buildCadreFamilyDetails(result)
+ {
+	 var str = '';
+	 str += '<ul>';
+	 for(var i in result)
+	 {
+		 str += '<li>';
+         str += '<div class="media">';
+         str += '<div class="media-left">';
+         str += '<img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">';
+         str += '</div>';
+         str += '<div class="media-body">';
+         str += '<p class="m_0">'+result[i].name+'';
+         str += '<span class="pull-right">';
+         str += '<i class="glyphicon glyphicon-check"></i>';
+         str += '</span>';
+         str += '</p>';
+         str += '<p class="m_0">Relation : '+result[i].relation+'</p>';
+         str += '<p class="m_0">Age : ';
+		 if(result[i].age != null)
+		   str +=''+result[i].age+'';
+	   else
+		 str += '';
+         str += '</p></div>';
+         str += '</div>';
+         str += '</li>';
+	 }
+	 str += '</ul>';
+	$("#familyMembersDiv").html(str);
+ }
+ 
+ 
+ function getElectionPerformanceInCadreLocation()
+ {
+			
+	  $(".electionPerformanceDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+			$.ajax({
+				type : "POST",
+				url  : "getElectionPerformanceInCadreLocationAction.action",
+				data : {tdpCadreId:globalCadreId}
+			}).done(function(result){
+				$(".electionPerformanceDiv").html("");
+				if(result != null && result.length > 0)
+				  buildElectionPerformanceInCadreLocation(result);
+			  else
+				$(".electionPerformanceDiv").html("No Data Available");
+			})
+			
+}
+
+function buildElectionPerformanceInCadreLocation(result)
+{
+	$(".electionPerformanceDiv").html('');
+	
+	var str = '';
+	for(var i in result)
+	{
 		
+		str += '<div class="panel panel-default">';
+		str += '<div class="panel-heading  bg_white" role="tab" id="headingOne'+result[i].year+'">';
+		str += '<h4 class="panel-title">';
+		str += '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+result[i].year+'" ';
+		if(result[i].year == "2014")
+		  str += ' aria-expanded="true" ';
+	    else
+		 str += ' aria-expanded="false" '; 
+	 
+		str +=' aria-controls="collapseOne'+result[i].year+'"> '+result[i].year+' PERFORMANCE';
+		if(result[i].year == "2014")
+		str += '<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span></a>';
+		else
+		str += '<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></a>';
+		
+        str += '</h4>';
+	    str += '</div>';
+		
+		str += '<div id="collapseOne'+result[i].year+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+result[i].year+'">';
+		str += '<div class="panel-body">';
+		str += '<div class="row">';
+	 if(result[i].year != "2009")
+	 {
+	   str += '<div class="col-md-2">';
+       str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+       str += '</div>';
+	 }
+	   
+	if(result[i].cadreLocation =="Mandal")
+	{
+		str += '<div class="col-md-2">';
+        str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+        str += '</div>';
+	 }
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+	str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+	}
+	$(".electionPerformanceDiv").html(str);
+	$('.fulCircleCls1').circliful();
+}
+ 
+getTotalMemberShipRegistrationsInCadreLocation();		
+getCadreFamilyDetailsByCadreId();
+getElectionPerformanceInCadreLocation();
+
 </script>
+<style>
+.circle-text, .circle-info,  .circle-info-half {
+    display: inline-block;
+    font-size: 12px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+}
+.circle-text-half{font-size: 11px !important; margin-top: 24px;}
+</style>
 </body>
 </html>

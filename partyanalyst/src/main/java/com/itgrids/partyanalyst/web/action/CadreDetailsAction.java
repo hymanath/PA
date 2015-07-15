@@ -11,8 +11,10 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -39,6 +41,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private String 								memberShipId;
 	private RegisteredMembershipCountVO         membershipCountVO;
 	private List<RegisteredMembershipCountVO> membershipCountVOList;
+	private List<GrievanceAmountVO>           grievanceAmountVOList;
+	private List<TdpCadreFamilyDetailsVO>     familyDetails;
+	
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -168,6 +173,26 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 
 
+	public List<GrievanceAmountVO> getGrievanceAmountVOList() {
+		return grievanceAmountVOList;
+	}
+
+
+	public void setGrievanceAmountVOList(
+			List<GrievanceAmountVO> grievanceAmountVOList) {
+		this.grievanceAmountVOList = grievanceAmountVOList;
+	}
+
+	public List<TdpCadreFamilyDetailsVO> getFamilyDetails() {
+		return familyDetails;
+	}
+
+
+	public void setFamilyDetails(List<TdpCadreFamilyDetailsVO> familyDetails) {
+		this.familyDetails = familyDetails;
+	}
+
+
 	public String execute(){
 		
 		try{
@@ -267,6 +292,26 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getElectionPerformanceInCadreLocation() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getApprovedFinancialSupprotForCadre()
+	{
+		try{
+			grievanceAmountVOList = cadreDetailsService.getApprovedFinancialSupprotForCadre(new Long(request.getParameter("tdpCadreId")));
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getApprovedFinancialSupprotForCadre() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreFamilyDetails()
+	{
+		try{
+			familyDetails = cadreDetailsService.getCadreFamilyDetails(new Long(request.getParameter("tdpCadreId")));	
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadreFamilyDetails() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
