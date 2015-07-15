@@ -407,8 +407,12 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-12 col-xs-12">
-                            	<table class="table-bordered table">
+                            <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
+								<h4 style="border-bottom:1px solid #999">Event Participation Details</h4>
+								<div id="participationTableDivId">
+								</div>
+							
+                            	<!--<table class="table-bordered table">
                                     <thead>
                                         <tr>
                                             <th colspan="3" class="text-center">EVENT PARTICIPATION DETAILS</th>
@@ -439,7 +443,7 @@
                                             <td>1</td>
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table>  -->
                             </div>
                         </div>
                     </div>
@@ -1219,8 +1223,9 @@
 				 url: 'getEventDetailsOfCadreAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(results){
+			if(results !=null && results.length>0 && results !=""){
+				$("#participationTableMainDivId").show();
 				var str='';
-				
 					str+='<table class="table table-bordered table-responsive">';
 					str+='<thead>';
 						str+='<th>Main Event</th>';
@@ -1274,7 +1279,11 @@
 					str+='</tbody>';
 				    str+='</table>';	
 					$("#participationTableDivId").html("Data Not Available.");
+					}   
+				}else{
+					$("#participationTableMainDivId").hide();
 				}
+				
 			});
 		}
 
