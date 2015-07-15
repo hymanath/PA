@@ -1228,9 +1228,9 @@
 				var str='';
 					str+='<table class="table table-bordered table-responsive">';
 					str+='<thead>';
-						str+='<th>Main Event</th>';
-						str+='<th>Sub Event</th>';
-						str+='<th>Attended Count(Days)</th>';
+						str+='<th>MAIN EVENT</th>';
+						str+='<th>SUB EVENT</th>';
+						str+='<th>ATTENDED COUNT(DAYS)</th>';
 					str+='</thead>';
 					str+='<tbody>';
 				if(results !=null && results.length>0){
