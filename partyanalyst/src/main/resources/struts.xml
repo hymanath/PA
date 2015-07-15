@@ -10268,5 +10268,17 @@
 			</result>
 		</action>
 		
+		<action name="getApprovedFinancialSupprotForCadreAction" class="cadreDetailsAction" method="getApprovedFinancialSupprotForCadre">
+		     <result type="json" name="success">
+				<param name="root">grievanceAmountVOList</param>
+			</result>
+		</action>
+		
+		<action name="getCadreFamilyDetailsAction" class="cadreDetailsAction" method="getCadreFamilyDetails">
+		   <result type="json" name="success">
+				<param name="root">familyDetails</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
