@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -637,7 +638,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0,1,2,3,5,7,9,10,11,12
 				//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.eduQualificationId,5.qualification,
 				//6.occupationId,7.occupation,8.voterId,9.panchayatName,10.tehsilName,11.constName,12.mobileNo,13.ConstituencyId
-				//14.
+				//14.,18.districtName,19.stateName,20.casteName,21.insertedWebUserId(registeredOn),22.registeredTime,23.emailId
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
@@ -693,6 +694,38 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					cadreDetailsVO.setMembershipNo(cadreFormalDetails[16] !=null ? cadreFormalDetails[16].toString() :"");
 					cadreDetailsVO.setHouseNo(cadreFormalDetails[17] !=null ? cadreFormalDetails[17].toString() :"");
+					cadreDetailsVO.setDistrictName(cadreFormalDetails[18] !=null ? cadreFormalDetails[18].toString() : "" );
+					cadreDetailsVO.setStateName(cadreFormalDetails[19] !=null ? cadreFormalDetails[19].toString() : "" );
+					cadreDetailsVO.setCasteName(cadreFormalDetails[20] !=null ? cadreFormalDetails[20].toString():"");
+					
+					if(cadreFormalDetails[21] !=null){
+						
+						String webUserId=cadreFormalDetails[21].toString();
+						String[] partyOfficeIds=IConstants.PARTY_OFFICE_USER_IDS.split(",");
+						String[] mahanaduIds=IConstants.MAHANADU_USER_IDS.split(",");
+					
+						boolean partyOffice=Arrays.asList(partyOfficeIds).contains(webUserId);
+						if(partyOffice){
+							cadreDetailsVO.setRegisteredOn(partyOfficeIds[0]);
+						}
+						else if(partyOffice ==false){
+							boolean mahandu=Arrays.asList(mahanaduIds).contains(webUserId);
+							if(mahandu){
+								cadreDetailsVO.setRegisteredOn(mahanaduIds[0]);
+							}
+							else{
+								cadreDetailsVO.setRegisteredOn("");
+							}
+						}
+						
+					}//registered On
+					cadreDetailsVO.setEmailId(cadreFormalDetails[23] !=null ? cadreFormalDetails[23].toString(): "");
+					if(cadreFormalDetails[22] !=null){
+						dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						convertedDate = (Date) dateFormat.parse(cadreFormalDetails[22].toString());
+						 String lines[] = convertedDate.toString().split(" ");
+						 cadreDetailsVO.setRegisteredTime(lines[1]+ " "+lines[2] +" " + lines[5]);
+					}
 					
 				}
 				
