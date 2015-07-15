@@ -87,7 +87,7 @@
                     </tr>
                     <tr>
                     	<td>
-                        	<p class="m_0">H NO <span id="houseNoId"></span></p>
+                        	<p class="m_0">H NO :<span id="houseNoId"></span></p>
                             <p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
                             <p class="m_0">MANDAL : <span id="mandalId"></span></p>
                             <p class="m_0">CONSTITUENCY : <span id="constituencyId"></span></p>
@@ -1108,6 +1108,7 @@
 					 $("#emailSpanId").html(result.emailId);
 					 $("#districtNoId").html(result.districtName);
 					 $("#stateNoId").html(result.stateName);
+					 $("#houseNoId").html(result.houseNo);
 					 
 					 
 					 if(result.imagePath !=null && result.imagePath !=""){
