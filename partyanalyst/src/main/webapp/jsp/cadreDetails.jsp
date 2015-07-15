@@ -46,26 +46,28 @@
                     	<td>
                         	<div class="media">
                             	<div class="media-left">
-                                	<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">
+                                	<div id="imagePathId">
+										<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+									</div><!--<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">-->
                                 </div>
                                 <div class="media-body">
-                                	<p class="m_0">NAME : ARJUN</p>
-                                    <p class="m_0">AGE : 41</p>
-                                    <p class="m_0">DOB : May 05 1963</p>
-                                    <p class="m_0">QUALIFICATION : Un Educated</p>
-                                    <p class="m_0">OCCUPATION : Former</p>
-                                    <p class="m_0">CASTE : Valmiki</p>
-                                    <p class="m_0">REGISTERED ON: 13-07-2015</p>
-                                    <p class="m_0">REGISTERED AT: PARTY OFFICE</p>
+                                	<p class="m_0"><strong>NAME</strong> : <span id="nameId"></span></p>
+                                    <p class="m_0"><strong>AGE</strong> : <span id="ageId"></span></p>
+                                    <p class="m_0"><strong>DOB</strong> : <span id="dobId"></span></p>
+                                    <p class="m_0"><strong>QUALIFICATION</strong> : <span id="qualificationId"></span></p>
+                                    <p class="m_0"><strong>OCCUPATION</strong> : <span id="occupationId"></span></p>
+                                    <p class="m_0"><strong>CASTE</strong> : <span id="casteFormalId"></span></p>
+                                    <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
+                                    <p class="m_0"><strong>REGISTERED AT</strong>: <span id="registeredAtId"></span></p>
                                 </div>
                             </div>
                         </td>
                     </tr>
                     <tr>
                     	<td>
-                        	<i class="glyphicon glyphicon-phone"></i> 8897999414 
+                        	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
                         	<span class="pull-right">
-	                            <i class="glyphicon glyphicon-envelope"></i> arjunpahsg@gmail.com
+	                            <i class="glyphicon glyphicon-envelope"></i><span id="emailSpanId"></span> 
                             </span>
                         </td>
                     </tr>
@@ -74,10 +76,10 @@
                     </tr>
                     <tr>
                     	<td>
-                        	<p class="m_0">MEMBERSHIP ID : AP2123654</p>
-                            <p class="m_0">VOTER CARD NO : AP281880393378</p>
-                            <p class="m_0">PARTY POSITION : DISTRICT PRESIDENT</p>
-                            <p class="m_0">PUBLIC REPRESENTATIVE : MP</p>
+                        	<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
+                            <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span></p>
+                            <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
+                            <p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
                         </td>
                     </tr>
                     <tr>
@@ -85,12 +87,12 @@
                     </tr>
                     <tr>
                     	<td>
-                        	<p class="m_0">H NO 225-5-12/1</p>
-                            <p class="m_0">PANCHAYAT : RANGAPUR</p>
-                            <p class="m_0">MANDAL : ACHAMPET</p>
-                            <p class="m_0">CONSTITUENCY : ACHAMPET</p>
-                            <p class="m_0">DISTRICT : MAHABUBNAGAR</p>
-                            <p class="m_0">STATE : ANDHRA PRADESH</p>
+                        	<p class="m_0">H NO <span id="houseNoId"></span></p>
+                            <p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
+                            <p class="m_0">MANDAL : <span id="mandalId"></span></p>
+                            <p class="m_0">CONSTITUENCY : <span id="constituencyId"></span></p>
+                            <p class="m_0">DISTRICT : <span id="districtNoId"></span></p>
+                            <p class="m_0">STATE : <span id="stateNoId"></span></p>
                         </td>
                     </tr>
                 </table>
@@ -1061,7 +1063,6 @@
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
-			
 			//loading images showing
 			$("#dataLoadingsImgForownBoothDetailsId").show();
 			$("#dataLoadingsImgForImagePath").show();
@@ -1100,6 +1101,15 @@
 					 $("#positionId").html(result.partyPosition);
 					 $("#representativeId").html(result.representativeType);
 					 $("#mobileNoId").html(result.mobileNo);
+					 $("#memberShipNoId").html(result.membershipNo);
+					 $("#casteFormalId").html(result.casteName);
+					 $("#registeredOnId").html(result.registeredOn);
+					 $("#registeredAtId").html(result.registeredTime);
+					 $("#emailSpanId").html(result.emailId);
+					 $("#districtNoId").html(result.districtName);
+					 $("#stateNoId").html(result.stateName);
+					 
+					 
 					 if(result.imagePath !=null && result.imagePath !=""){
 						 $("#imagePathId").html('<img src="'+result.imagePath+'" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">'); 
 					 }else{
