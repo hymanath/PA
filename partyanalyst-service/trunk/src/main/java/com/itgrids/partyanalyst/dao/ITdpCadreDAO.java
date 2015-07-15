@@ -357,4 +357,15 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 
 	  public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList);
 	  
+	  public String getMemberShipIdByCadreId(Long tdpCadreId);
+	  
+	  public List<Object[]> getPartyApprovedFundByMembershipId(String membershipId);
+	  
+	  public List<Object[]> getGovtApprovedFundByMembershipId(String membershipId);
+	  
+	  public List<Object[]> getRequestedAmountByMembershipId(String membershipId);
+	  
+	  public List<Object[]> getSurveyPaticipatedCountByVoterIdcardNoList(List<String> voterIdCardNoList);
+	  
+	  
 }

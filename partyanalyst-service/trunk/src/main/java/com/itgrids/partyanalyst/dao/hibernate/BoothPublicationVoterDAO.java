@@ -7376,6 +7376,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 	
+	//0voterId,1name,2relativeName,3relationshipType,4gender,5age,6voterIDCardNo
 	public List<Object[]> getFamilyDetaislByHouseNoAndBoothId(Long boothId,String houseNo)
 	{
 		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name, model.voter.relativeName, model.voter.relationshipType, model.voter.gender, model.voter.age, " +

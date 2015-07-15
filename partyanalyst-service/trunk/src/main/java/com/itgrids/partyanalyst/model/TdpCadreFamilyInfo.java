@@ -62,6 +62,7 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	
 	private Long userAddressId;
 	private UserAddress userAddress;
+	private VoterRelation voterRelation;
 
 	
 		
@@ -348,5 +349,18 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "relation_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterRelation getVoterRelation() {
+		return voterRelation;
+	}
+	public void setVoterRelation(VoterRelation voterRelation) {
+		this.voterRelation = voterRelation;
+	}
+	
+	
 
 }

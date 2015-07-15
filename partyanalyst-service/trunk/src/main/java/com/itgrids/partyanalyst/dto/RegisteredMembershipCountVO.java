@@ -34,6 +34,7 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String districtPerc;
 	private String parConsPerc;
 	private String areaType;
+	private String cadreLocation;
 	
 	
 	public Long getConstituencyCount() {
@@ -183,6 +184,14 @@ public class RegisteredMembershipCountVO implements Serializable{
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
+	public String getCadreLocation() {
+		return cadreLocation;
+	}
+	public void setCadreLocation(String cadreLocation) {
+		this.cadreLocation = cadreLocation;
+	}
+	
+	
 	
 
 }

@@ -23,7 +23,10 @@ public class TdpCadreFamilyDetailsVO {
 	private Long voterId;
 	
 	private AddressVO addressVo;
-	
+	private String occupation;
+	private String education;
+	private String relation;
+	private Long count;
 	
 	public Long getVoterId() {
 		return voterId;
@@ -132,6 +135,30 @@ public class TdpCadreFamilyDetailsVO {
 	}
 	public void setAddressVo(AddressVO addressVo) {
 		this.addressVo = addressVo;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getRelation() {
+		return relation;
+	}
+	public void setRelation(String relation) {
+		this.relation = relation;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 	

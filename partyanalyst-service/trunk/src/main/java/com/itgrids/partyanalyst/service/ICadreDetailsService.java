@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 
@@ -24,5 +26,10 @@ public interface ICadreDetailsService {
 	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId);
 	
 	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId);
+	
+	public List<GrievanceAmountVO> getApprovedFinancialSupprotForCadre(Long tdpCadreId);
+	
+	public List<TdpCadreFamilyDetailsVO> getCadreFamilyDetails(Long tdpCadreId);
+	
 	
 }
