@@ -890,5 +890,6 @@ public interface IConstants {
     
     public static final String 	SURVEY_WEBSERVICE_USERNAME = "itgrids";
     public static final String  SURVEY_WEBSERVICE_PASSWORD = "servey@android";
-    
+    public static final String PARTY_OFFICE_USER_IDS = "3930";
+    public static final String MAHANADU_USER_IDS = "7287,7288,7289,7290,7291,7292";
 }
