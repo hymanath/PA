@@ -73,7 +73,7 @@ var globalCadreId = '${cadreId}';
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
                         	<span class="pull-right">
-	                            <i class="glyphicon glyphicon-envelope"></i><span id="emailSpanId"></span> 
+	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
                             </span>
                         </td>
                     </tr>
@@ -107,39 +107,39 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
                     </div>
                     <div class="panel-body">
-                    	<h5 class="m_0">TOTAL COMPLAINTS 8</h5>
+                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId">8</span></h5>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;">
-                                <li class="show-dropdown"><span class="inp"></span>Not Verified<span class="pull-right">157
+                                <li class="show-dropdown"><span class="inp"></span>Not Verified<span class="pull-right"><span id="notVerifiedId">100</span>
                                 	<ul class="count-hover arrow_box3">
                                     	<li>Govt<span class="pull-right">25</span></li>
                                         <li>Party<span class="pull-right">25</span></li>
                                         <li>Welfare<span class="pull-right">25</span></li>
                                     </ul>
                                 </span></li>
-                                <li class="show-dropdown"><span class="cmp"></span>In Progress<span class="pull-right">100
+                                <li class="show-dropdown"><span class="cmp"></span>In Progress<span class="pull-right"><span id="inProgressId">100</span>
                                 	<ul class="count-hover arrow_box3">
                                     	<li>Govt<span class="pull-right">25</span></li>
                                         <li>Party<span class="pull-right">25</span></li>
                                         <li>Welfare<span class="pull-right">25</span></li>
                                     </ul>
                                 </span></li>
-                                <li class="show-dropdown"><span class="ncmp"></span>Completed<span class="pull-right ">100
+                                <li class="show-dropdown"><span class="ncmp"></span>Completed<span class="pull-right "><span id="completedId">100</span>
                                 	<ul class="count-hover arrow_box3">
                                     	<li>Govt<span class="pull-right">25</span></li>
                                         <li>Party<span class="pull-right">25</span></li>
                                         <li>Welfare<span class="pull-right">25</span></li>
                                     </ul>
                                 </span></li>
-                                <li class="show-dropdown"><span class="note"></span>Not Eligible<span class="pull-right show-dropdown">100
+                                <li class="show-dropdown"><span class="note"></span>Not Eligible<span class="pull-right show-dropdown"><span id="notEligibleId">100</span>
                                 	<ul class="count-hover arrow_box3">
                                     	<li>Govt<span class="pull-right">25</span></li>
                                         <li>Party<span class="pull-right">25</span></li>
                                         <li>Welfare<span class="pull-right">25</span></li>
                                     </ul>
                                 </span></li>
-                                <li class="show-dropdown"><span class="note"></span>Not Possible<span class="pull-right">100
+                                <li class="show-dropdown"><span class="note"></span>Not Possible<span class="pull-right"><span id="notPossibleId">100</span>
                                 	<ul class="count-hover arrow_box3">
                                     	<li>Govt<span class="pull-right">25</span></li>
                                         <li>Party<span class="pull-right">25</span></li>
@@ -454,20 +454,21 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE</h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="cadre-election">
-                        	<ul>
+                    	<div class="cadre-election" >
+						<div id="electionProfileDivId"> </div>
+                        	<!--<ul>
                             	<li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
                                 <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
                                 <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
                                 <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
                                 <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
                                 <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                            </ul>
+                            </ul>-->
                         </div>
                     </div>
                 </div>
@@ -1113,8 +1114,8 @@ var globalCadreId = '${cadreId}';
 					 $("#mobileNoId").html(result.mobileNo);
 					 $("#memberShipNoId").html(result.membershipNo);
 					 $("#casteFormalId").html(result.casteName);
-					 $("#registeredOnId").html(result.registeredOn);
-					 $("#registeredAtId").html(result.registeredTime);
+					 $("#registeredOnId").html(result.registeredTime);
+					 $("#registeredAtId").html(result.registeredOn);
 					 $("#emailSpanId").html(result.emailId);
 					 $("#districtNoId").html(result.districtName);
 					 $("#stateNoId").html(result.stateName);
@@ -1192,11 +1193,12 @@ var globalCadreId = '${cadreId}';
 				 url: 'complaintDetailsOfCadreAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
-				//$("#dataLoadingsImgForComplaint").hide();
 				var str='';
-				if(result !=null){
+				/* if(result !=null){
 					if(result.knownList !=null && result.knownList.length>0){
 						$("#grievanceDetailsMainDivId").show();
+					
+						$("#totalComplaintsId").html(result.knownList.length);
 					
 					for(var i in result.knownList){
 						str+='<tr>';
@@ -1213,7 +1215,7 @@ var globalCadreId = '${cadreId}';
 					else{
 						$("#grievanceDetailsId").html("Data Not Available.");
 					}
-				}
+				} */
 				
 				
 			});
@@ -1679,12 +1681,14 @@ function buildTotalMemberShipRegInCadreLocation(result)
     str += '</div>';
 	
 	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+	str += '</div>';
+	
+	str += '<div class="col-md-2">';
     str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
     str += '</div>';
 	
-	str += '<div class="col-md-2">';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
-	str += '</div>';
+	
 	
 	 $("#memberShipCountDiv").html(str);
 	 $('.fulCircleCls').circliful();
@@ -1806,12 +1810,13 @@ function buildElectionPerformanceInCadreLocation(result)
     str += '</div>';
 	
 	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+	str += '</div>';
+	
+	str += '<div class="col-md-2">';
     str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
     str += '</div>';
 	
-	str += '<div class="col-md-2">';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
-	str += '</div>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
