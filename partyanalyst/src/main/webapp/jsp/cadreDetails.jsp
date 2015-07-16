@@ -54,7 +54,7 @@ canvas {
 }
 .m_0{margin:0px;}
 .textTransFormCls{text-transform:capitalize}
-<!-- #survey-dropdown{cursor:pointer} -->
+
 </style>
 	
 	<!--<style type="text/css">
@@ -193,11 +193,10 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
                     <div class="panel-body">
-                   		<h4>TOTAL FINANCE REQUEST 140000/-</h4>
-                    	<div id="donutchart1" class="display-style" style="height: 120px;float:left;width:100px;"></div>
-                    <ul class="display-style pull-right piechart-list pad_0">
-                        <li class="financial-by-party">Financial By party 10[80000/-]</li>
-                        <li class="financial-by-govt">Financial by govt 50[30000/-]</li>
+                   		<h4 id="headingId"></h4>
+                    	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
+                    <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
+                        
                     </ul>
                     </div>
                 </div>
@@ -396,7 +395,7 @@ var globalCadreId = '${cadreId}';
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;CADRE ENROLMENT STATS</h4>
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS</h4>
                     </div>
                     <div class="panel-body">
                     	<div class="row"><!--id="memberShipCountDiv"-->
@@ -423,14 +422,6 @@ var globalCadreId = '${cadreId}';
                             </div> -->
                         </div>
                     </div>
-					
-				<!--<div class="panel-body">
-					<div class="row" id="">
-					     <div class="col-md-12 col-xs-12 col-sm-12">
-								<div id="cadreenrolmentstats" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-						   </div>
-					</div>
-				  </div> -->
 				
                 </div>
                 <div class="panel panel-default">
@@ -1276,41 +1267,7 @@ var globalCadreId = '${cadreId}';
 			
 			
 	 });
-	$(function () {
-    $('#cadreenrolmentstats').highcharts({
-        chart: {
-            type: 'column'
-        },
-        xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-            ],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ' '
-            }
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Percentage',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 16.0]
-
-        }]
-    });
-});	
+	
 			
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
@@ -1848,7 +1805,7 @@ $(function () {
         }]
     });
 });
-$(function () {
+/*$(function () {
 	Highcharts.setOptions({
         
     });
@@ -1892,7 +1849,7 @@ $(function () {
             ]
         }]
     });
-});
+});*/
 
 
  function getTotalMemberShipRegistrationsInCadreLocation()
@@ -1927,7 +1884,10 @@ function buildTotalMemberShipRegInCadreLocation(result)
 	   dataArr.push(parseFloat(result.panchPerc));
    dataArr.push(parseFloat(result.mandalPerc),parseFloat(result.constiPerc),parseFloat(result.parConsPerc),parseFloat(result.districtPerc));
   // console.log(dataArr);
-   
+   Highcharts.setOptions({
+        colors: ["#66cdcc"]
+    });
+	
 	 $('#memberShipCountDiv').highcharts({
         chart: {
             type: 'column'
@@ -1986,30 +1946,26 @@ function getCadreFamilyDetailsByCadreId()
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
          str += '<span class="pull-right">';
-         str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
+		 if(result[i].education != null || result[i].occupation != null || result[i].count != null)
+           str += '<img class="img-responsive" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
+	    else
+		  str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
 		 str += '</span>';
 		 str += '<ul class="survey-hover'+i+' arrow_box3" style="display:none">';
-         str += '<li>Education<span class="pull-right">';
-		 if(result[i].education != null)
-			 str += ' '+result[i].education+'</span></li>';
-		 else
-		   str += ' </span></li>';
-	      
-         str += '<li>Occupation<span class="pull-right">';
-		 if(result[i].occupation != null)
-			 str += ' '+result[i].occupation+'</span></li>';
-		 else
-		   str += ' </span></li>';
-         str += '<li>Participated in Survey<span class="pull-right">';
-		 if(result[i].count != null)
-			 str += ' '+result[i].count+'</span></li>';
-		 else
-		   str += ' 0</span></li>';
-	   
+        
+		 if(result[i].education != null && result[i].education.trim().length > 0)
+			 str += '<li>Education : <span class="pull-right">'+result[i].education+'</span></li>';
+		
+         if(result[i].occupation != null && result[i].occupation.trim().length > 0)
+			 str += '<li>Occupation : <span class="pull-right">'+result[i].occupation+'</span></li>';
+		 
+         if(result[i].count != null && result[i].count.trim().length > 0)
+			 str += '<li>Participated in Survey : <span class="pull-right">'+result[i].count+'</span></li>';
+		 
 		 str += '</ul>';
          str += '</div>';
          str += '<p class="m_0">Relation : <span class="textTransFormCls">'+result[i].relation+'</span>';
-		 if(result[i].relativeName != null)
+		 if(result[i].relativeName != null && result[i].relativeName.trim().length > 0)
 		  str += ' of <span class="textTransFormCls">'+result[i].relativeName+'</span></p>';
          str += '<p class="m_0">Age : ';
 		 if(result[i].age != null)
@@ -2115,6 +2071,111 @@ function buildElectionPerformanceInCadreLocation(result)
 	$('.fulCircleCls1').circliful();
 }
 
+function getApprovedFinancialSupprotForCadre()
+{
+	$.ajax({
+		type : "POST",
+		url  : "getApprovedFinancialSupprotForCadreAction.action",
+		data : {tdpCadreId:globalCadreId}
+		
+	}).done(function(result){
+		$("#headingId").html("");
+		$("#donutchart2").html("");
+		$("#financeSupportUL").html("");
+		
+		if(result != null && result.length > 0)
+		  buildApprovedFinancialSupprotForCadre(result);
+	  else
+		$("#donutchart2").html("No Data Available."); 
+		
+	});
+}
+
+function buildApprovedFinancialSupprotForCadre(result)
+{
+	var dataArr = [];
+	var colorsArr = [];
+	
+   if(result != null && result.length > 0)
+   {
+	 for(var i in result)
+	 {
+	    var data= new Array();
+		data.push(result[i].name,result[i].donationAmount);
+	  if(result[i].name !='')
+	  dataArr.push(data);
+	   if(result[i].name == "CM Relief Fund" && result[i].donationAmount != null && result[i].donationAmount > 0)
+	  colorsArr.push('#4A0EAE');  
+	  if(result[i].name == "Party Fund" && result[i].donationAmount != null && result[i].donationAmount > 0)	  
+	  colorsArr.push('#9B9AC6'); 
+	 
+	
+	  }
+	}
+	 
+	Highcharts.setOptions({
+        colors: colorsArr
+    });
+	$('#donutchart2').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+			
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+			name : 'Count',
+            data: dataArr
+        }]
+    });
+	$("#headingId").html("TOTAL FINANCE REQUESTS  "+result[0].totalRequests+"");
+	if((result[0].donationAmount != null && result[0].donationAmount > 0 ) || (result[1].donationAmount != null && result[1].donationAmount > 0))
+	{	
+	  var str = '';
+		
+		str += '<li class="financial-by-party" >Financial By party '+result[0].count+'';
+		if(result[0].donationAmount != null)
+		 str += '['+result[0].donationAmount+'/-]</li>';
+		else
+		 str += '[0/-]</li>';
+	 
+		str += '<li class="financial-by-govt" >Financial by govt '+result[1].count+'';
+		if(result[1].donationAmount != null)
+		 str += '['+result[1].donationAmount+'/-]</li>';
+		else
+		 str += '[0/-]</li>';
+ 
+      $("#financeSupportUL").html(str);
+	}	
+	
+}
+
+
+
+
 function surveyShowHide(num)
 {
 	$('.survey-hover'+num+'').toggle();
@@ -2123,6 +2184,7 @@ function surveyShowHide(num)
 getTotalMemberShipRegistrationsInCadreLocation();		
 getCadreFamilyDetailsByCadreId();
 getElectionPerformanceInCadreLocation();
+getApprovedFinancialSupprotForCadre();
 
 </script>
 
