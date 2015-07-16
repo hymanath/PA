@@ -106,8 +106,9 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
                     </div>
-                    <div class="panel-body">
-                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId">8</span></h5>
+					<center><strong>Grievance Details Not Available.</strong></center>
+                   <!-- <div class="panel-body">
+                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId"></span></h5>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;">
@@ -148,26 +149,28 @@ var globalCadreId = '${cadreId}';
                                 </span></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
-                    <div class="panel-body">
+					 <center><strong>Finance Support Data Not Available.</strong></center>
+                    <!--<div class="panel-body">
                    		<h4>TOTAL REQUEST FOR<br/> FINANCE SUPPORT 210 [140000/-]</h4>
                     	<div id="donutchart1" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0">
                         <li class="financial-by-party">Financial By party 10[80000/-]</li>
                         <li class="financial-by-govt">Financial by govt 50[30000/-]</li>
                     </ul>
-                    </div>
+                    </div>  -->
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-                    <div class="panel-body pad_0">
+					<center><strong> Presently Deaths and Hospitalization Data Not Available.</strong></center>
+                   <!-- <div class="panel-body pad_0">
                     	<table class="table table-bordered m_0">
                         	<tr>
                             	<td>Location</td>
@@ -195,7 +198,7 @@ var globalCadreId = '${cadreId}';
                                 <td>20</td>
                             </tr>
                         </table>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -395,9 +398,9 @@ var globalCadreId = '${cadreId}';
                                     	<th class="text-center" colspan="3">EVENT INVITATIONS</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>30<br/>Sent</td>
-                                        <td>20<br/>Participated</td>
-                                        <td>08<br/>Absent</td>
+                                    	<td><span>0</span><br/>Sent</td>
+                                        <td><span>0</span><br/>Participated</td>
+                                        <td><span>0</span><br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
@@ -407,9 +410,9 @@ var globalCadreId = '${cadreId}';
                                     	<th class="text-center" colspan="3">TRAINING'S</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>30<br/>Suggested</td>
-                                        <td>20<br/>Attended</td>
-                                        <td>08<br/>Absent</td>
+                                    	<td><span>0</span><br/>Suggested</td>
+                                        <td><span>0</span><br/>Attended</td>
+                                        <td><span>0</span><br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
@@ -476,7 +479,8 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
                     </div>
-                    <div class="panel-body">
+						<center><h3>News Data Not Available.</h3></center>
+                   <!-- <div class="panel-body">
                     	<div>
                         	<label class="radio-inline">
                             	<input type="radio">Panchayat
@@ -777,7 +781,7 @@ var globalCadreId = '${cadreId}';
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -787,16 +791,17 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
                     </div>
-                    <div class="panel-body">
+					<center><h3>Survey Details Not Available.</h3></center>
+                    <!--<div class="panel-body">
                     	<div>
                           <!-- Nav tabs -->
-                          <ul class="nav nav-tabs tab-list" role="tablist">
+                          <!-- <ul class="nav nav-tabs tab-list" role="tablist">
                             <li class="active"><a href="#area" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
                             <li><a href="#participated" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
                           </ul>
                         
                           <!-- Tab panes -->
-                          <div class="tab-content m_top20">
+                          <!-- <div class="tab-content m_top20">
                             <div role="tabpanel" class="tab-pane active" id="area">
                             	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
                                   <div class="panel panel-default">
@@ -1030,7 +1035,7 @@ var globalCadreId = '${cadreId}';
                           </div>
                         
                         </div>
-                    </div>
+                    </div>  -->
                 </div>
             </div>
         </div>
