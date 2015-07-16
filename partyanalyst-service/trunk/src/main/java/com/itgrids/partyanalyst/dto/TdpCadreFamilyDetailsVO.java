@@ -27,6 +27,7 @@ public class TdpCadreFamilyDetailsVO {
 	private String education;
 	private String relation;
 	private Long count;
+	private String relativeName;
 	
 	public Long getVoterId() {
 		return voterId;
@@ -159,6 +160,12 @@ public class TdpCadreFamilyDetailsVO {
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 	
 	
