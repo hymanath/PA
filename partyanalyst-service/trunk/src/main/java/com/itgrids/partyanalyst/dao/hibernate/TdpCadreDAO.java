@@ -5374,20 +5374,25 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Object[]> getGovtApprovedFundByMembershipId(String membershipId)
 		{
-			Query query = getSession().createSQLQuery(" select count(Complaint_id),sum(approved_amount) from complaint_master where membership_id =:membershipId and " +
+			Query query = getSession().createSQLQuery(" select count(Complaint_id) as count,sum(approved_amount) as amount from complaint_master where membership_id =:membershipId and " +
 					" (Completed_Status = 'Approved' or Completed_Status = 'Completed') and issue_type = 'CM Relief' and approved_amount != '' and approved_amount is not null " +
-					" and (delete_status != '0' or delete_status is null) ");
+					" and (delete_status != '0' or delete_status is null) ")
 			
+			 .addScalar("count",Hibernate.LONG)
+			 .addScalar("amount",Hibernate.LONG);
 			query.setParameter("membershipId", membershipId);
 			return query.list();
 		}
 		
 		public List<Object[]> getRequestedAmountByMembershipId(String membershipId)
 		{
-			Query query = getSession().createSQLQuery(" select sum(expected_amount),sum(health_amount),count(Complaint_id) from complaint_master where membership_id =:membershipId and  " +
+			Query query = getSession().createSQLQuery(" select sum(expected_amount) as expamt,sum(health_amount) as helamt,count(Complaint_id) as count from complaint_master where membership_id =:membershipId and  " +
 					"(issue_type = 'Personal' or issue_type = 'CM Relief' or issue_type = 'Financial Support' or issue_type = 'Health') and expected_amount is not null " +
-					" and expected_amount != '' and health_amount is not null and health_amount != '' and (delete_status != '0' or delete_status is null) ");
+					" and expected_amount != '' and health_amount is not null and health_amount != '' and (delete_status != '0' or delete_status is null) ")
 			
+			 .addScalar("expamt",Hibernate.LONG)
+			 .addScalar("helamt",Hibernate.LONG)
+			 .addScalar("count",Hibernate.LONG);
 			query.setParameter("membershipId", membershipId);
 			return query.list();
 			

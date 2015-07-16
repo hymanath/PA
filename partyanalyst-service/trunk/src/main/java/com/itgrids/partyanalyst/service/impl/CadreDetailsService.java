@@ -1590,9 +1590,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				  for(Object[] params:expectedAmtList)
 				  {
 					  if(params[0] != null && params[0].toString().matches(regex))
-						 amount = amount + Long.parseLong(params[0].toString()); 
+						 amount = amount + (Long)params[0]; 
 					  if(params[1] != null && params[1].toString().matches(regex))
-						  amount = amount + Long.parseLong(params[1].toString()); 
+						  amount = amount + (Long)params[1]; 
 					  
 					  count = params[2] != null?Long.parseLong(params[2].toString()):0l;
 					  
