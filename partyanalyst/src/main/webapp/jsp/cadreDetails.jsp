@@ -110,7 +110,7 @@ var globalCadreId = '${cadreId}';
                     <tr>
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
-                        	<span class="pull-right">
+                        	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
                             </span>
                         </td>
@@ -144,7 +144,8 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
                     </div>
-                    <div class="panel-body">
+					<center><strong>Grievance Details Not Available.</strong></center>
+                   <!-- <div class="panel-body">
                     	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId">8</span></h5>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
@@ -186,13 +187,13 @@ var globalCadreId = '${cadreId}';
                                 </span></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
-                    <div class="panel-body">
+					 <div class="panel-body">
                    		<h4 id="headingId"></h4>
                     	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
@@ -204,7 +205,8 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-                    <div class="panel-body pad_0">
+					<center><strong>Deaths And Hospitalization Details Not Available.</strong></center>
+					<!--<div class="panel-body pad_0">
                     	<table class="table m_0 table-bordered m_0">
                         	<tr>
                             	<td>Location</td>
@@ -232,7 +234,7 @@ var globalCadreId = '${cadreId}';
                                 <td>20</td>
                             </tr>
                         </table>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -436,9 +438,9 @@ var globalCadreId = '${cadreId}';
                                     	<th class="text-center" colspan="3">EVENT INVITATIONS</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>30<br/>Sent</td>
-                                        <td>20<br/>Participated</td>
-                                        <td>08<br/>Absent</td>
+                                    	<td>0<br/>Sent</td>
+                                        <td>0<br/>Participated</td>
+                                        <td>0<br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
@@ -448,9 +450,9 @@ var globalCadreId = '${cadreId}';
                                     	<th class="text-center" colspan="3">TRAINING'S</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>30<br/>Suggested</td>
-                                        <td>20<br/>Attended</td>
-                                        <td>08<br/>Absent</td>
+                                    	<td>0<br/>Suggested</td>
+                                        <td>0<br/>Attended</td>
+                                        <td>0<br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
@@ -517,22 +519,22 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
                     </div>
-                    <div class="panel-body">
+					<div class="panel-body" id="newsMainDivId">
                     	<div>
-                        	<label class="radio-inline">
-                            	<input type="radio">Panchayat
+                        	<label class="radio-inline hidingMandalCls" style="display:none">
+                            	<input type="radio" name="radio" id="panchayatRadioNewsId" class="newsRadioCls">Panchayat
+                            </label>
+                            <label class="radio-inline hidingMandalCls" style="display:none">
+                            	<input type="radio" name="radio" id="mandalRadioNewsId" class="newsRadioCls">Mandal
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Mandal
+                            	<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Assembly Constituency
+                            	<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Parliament Constituency
-                            </label>
-                            <label class="radio-inline">
-                            	<input type="radio">District
+                            	<input type="radio" name="radio" id="districtRadioNewsId" class="newsRadioCls">District
                             </label>
                             <div class="pull-right">
                             	<div class="calendar-style"  id="reportrange">
@@ -547,7 +549,8 @@ var globalCadreId = '${cadreId}';
                                 	CANDIDATE CATEGORY WISE
                                 </h4>
                             </div>
-                            <div class="panel-body pad_0">
+							<div id="candidateCategoryWiseNewsId"></div>
+                           <!-- <div class="panel-body pad_0">
                             	<table class="table m_0 table-bordered m_0">
                                 	<tr>
                                     	<td>TOTAL ARTICLES  <span class="pull-right text-bold">03</span></td>
@@ -602,9 +605,9 @@ var globalCadreId = '${cadreId}';
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
+                            </div>  -->
+                        </div><center><h3>Data Not Available.</h3></center>
+                        <!--<div class="panel panel-default">
                         	<div class="panel-heading bg_white">
                             	<h4 class="panel-title text-bold text-center">CANDIDATE LOCATION SPECIFIC NEWS</h4>
                             </div>
@@ -817,7 +820,7 @@ var globalCadreId = '${cadreId}';
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -830,6 +833,7 @@ var globalCadreId = '${cadreId}';
                         	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES
                         </h4>
                     </div>
+					<!--<center><h3>Data Not Available.</h3></center>-->
                     <div class="panel-body">
                     	<div>
                         	<label class="radio-inline">
@@ -915,17 +919,18 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-credit-card"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
                     </div>
-                    <div class="panel-body">
+					<center><h3>Survey Details Not Available.</h3></center>
+                    <!--<div class="panel-body">
                     	<div>
                           <!-- Nav tabs -->
-                          <ul class="nav nav-tabs tab-list" role="tablist">
+                          <!--<ul class="nav nav-tabs tab-list" role="tablist">
                             <li class="active"><a href="#area" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
                             <li><a href="#participated" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
 							<li class="text-danger bg_white">Negative Count : 10</li>
                           </ul>
                         
                           <!-- Tab panes -->
-                          <div class="tab-content m_top20">
+                          <!--<div class="tab-content m_top20">
                             <div role="tabpanel" class="tab-pane active" id="area">
                             	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
 								   <div class="panel panel-default">
@@ -1227,7 +1232,7 @@ var globalCadreId = '${cadreId}';
                           </div>
                         
                         </div>
-                    </div>
+                    </div>  -->
                 </div>
             </div>
         </div>
@@ -1268,7 +1273,7 @@ var globalCadreId = '${cadreId}';
 			
 	 });
 	
-			
+	 var globalCandidateId; 
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
@@ -1314,7 +1319,20 @@ var globalCadreId = '${cadreId}';
 					 $("#casteFormalId").html(result.casteName);
 					 $("#registeredOnId").html(result.registeredTime);
 					 $("#registeredAtId").html(result.registeredOn);
-					 $("#emailSpanId").html(result.emailId);
+					 
+					 if(result.candidate !=null && result.candidate !=0){
+						 globalCandidateId=result.candidate;
+					 }
+					 
+					 if(result.emailId ==null || result.emailId =="" || result.emailId ==undefined){
+						 $("#emailMainSpanId").hide();
+						  //$("#emailSpanId").html(result.emailId);
+					 }
+					else{
+						 $("#emailMainSpanId").show();
+						$("#emailSpanId").html(result.emailId);
+					}
+					
 					 $("#districtNoId").html(result.districtName);
 					 $("#stateNoId").html(result.stateName);
 					 $("#houseNoId").html(result.houseNo);
@@ -1326,6 +1344,31 @@ var globalCadreId = '${cadreId}';
 						 $("#imagePathId").html('<img src="images/search_details_member_imahe.png" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">');
 					 }
 					 
+					 
+					/*  //radioBtnIds
+					 if(result.tehsilId !=null || result.tehsilId !=0){
+						 globalTehsilId=result.tehsilId;
+						 globalPanchayatId=result.panchayatId;
+					 } */
+					 
+					 //assigning radio ButtonIds for News 
+					 
+					 $("#panchayatRadioNewsId").val(result.tehsilId);
+					 $("#mandalRadioNewsId").val(result.panchayatId);
+					 
+					 //Hiding Panchayat && Mandal Div
+					 if(result.tehsilId !=null && result.tehsilId !=0){
+						$("#hidingMandalCls").show();
+					 }else{
+						 $("#hidingMandalCls").hide();
+					 }
+					 
+					 
+					  $("#aConstiRadioNewsId").val(result.constituencyId);
+					  $("#pConstiRadioNewsId").val(result.pConstituencyId);
+					  $("#districtRadioNewsId").val(result.districtId);
+					  
+					 
 					 //
 					  $("#dataLoadingsImgForownBoothDetailsId").hide();
 					  $("#dataLoadingsImgForImagePath").hide();
@@ -1334,6 +1377,8 @@ var globalCadreId = '${cadreId}';
 						 ownBoothDetailsVo=result.ccmVO;
 						 buildingOwnBoothDetails(ownBoothDetailsVo);
 					 }
+					 
+					 
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
 				}
@@ -1621,9 +1666,9 @@ var globalCadreId = '${cadreId}';
 						
 					$("#electionProfileDivId").html(str);
 				}
-				/* else{
+				 else{
 					$("#electionProfileMainDivId").hide();
-				} */
+				}
 			});
 			
 		}
@@ -1966,7 +2011,7 @@ function getCadreFamilyDetailsByCadreId()
          str += '</div>';
          str += '<p class="m_0">Relation : <span class="textTransFormCls">'+result[i].relation+'</span>';
 		 if(result[i].relativeName != null && result[i].relativeName.trim().length > 0)
-		  str += ' of <span class="textTransFormCls">'+result[i].relativeName+'</span></p>';
+		  str += ' - <span class="textTransFormCls">'+result[i].relativeName+'</span></p>';
          str += '<p class="m_0">Age : ';
 		 if(result[i].age != null)
 		   str +=''+result[i].age+'';
@@ -1995,7 +2040,7 @@ function getCadreFamilyDetailsByCadreId()
 				  buildElectionPerformanceInCadreLocation(result);
 			  else
 				$(".electionPerformanceDiv").html("No Data Available");
-			})
+			});
 			
 }
 
@@ -2185,6 +2230,123 @@ getTotalMemberShipRegistrationsInCadreLocation();
 getCadreFamilyDetailsByCadreId();
 getElectionPerformanceInCadreLocation();
 getApprovedFinancialSupprotForCadre();
+
+//News
+//getCandidateAndLocationSummaryNews();
+$(document).on("click",".newsRadioCls",function(){
+	getCandidateAndLocationSummaryNews();
+});
+
+function getCandidateAndLocationSummaryNews(){
+	
+		var locatioinType;
+		var locationId;
+		if($(".newsRadioCls").is(':checked')) {
+			if($("#panchayatRadioNewsId").is(':checked')){
+					locatioinType="panchayat";
+					locationId=$("#panchayatRadioNewsId").val();
+			}
+			else if($("#mandalRadioNewsId").is(':checked')){
+				locatioinType="mandal";
+				locationId=$("#mandalRadioNewsId").val();
+			}
+			else if($("#aConstiRadioNewsId").is(':checked')){
+				locatioinType="assemblyConstituency";
+				locationId=$("#aConstiRadioNewsId").val();
+			}
+			else if($("#pConstiRadioNewsId").is(':checked')){
+				locatioinType="parliamentConstituency";
+				locationId=$("#pConstiRadioNewsId").val();
+			}
+			else if($("#districtRadioNewsId").is(':checked')){
+				locatioinType="district";
+				locationId=$("#districtRadioNewsId").val();
+			}
+		}
+		
+		var fromDate=$(".dp_startDate").val();//mm/dd/yyyy
+		var toDate=$(".dp_endDate").val();
+		
+		var startDate;
+		var endDate;
+		if((fromDate !=null && fromDate !="") && (toDate !=null && toDate !="")){
+			var startArray=fromDate.split("/");
+			startDate=startArray[1]+"-"+startArray[0]+"-"+startArray[2];
+			var endArray=toDate.split("/");
+			endDate=endArray[1]+"-"+endArray[0]+"-"+endArray[2];
+		}
+
+		//3424,47,"09-06-2015";,"15-07-2015";
+		candidateId=globalCandidateId;
+		locationType=locatioinType;
+		locationId=locationId;
+		startDate=startDate;
+		endDate=endDate;
+
+	 $.ajax({
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
+	}).then(function(result) {
+		
+		if(result !=null && result !=""){
+			var str="";
+				str+='<div class="panel-body pad_0">';
+					if(result.candidateSummary !=null){
+                            	str+='<table class="table m_0 table-bordered m_0">';
+                                	str+='<tr>';
+                                    	str+='<td>TOTAL ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.totalCount+'</span></td>';
+                                        str+='<td>POSITIVE ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.positiveCount+'</span></td>';
+                                        str+='<td>NEGATIVE ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.negativeCount+'</span></td>';
+                                        str+='<td>NEUTRAL ARTICLES <span class="pull-right text-bold">'+result.candidateSummary.neutralCount+'</span></td>';
+                                    str+='</tr>';
+                                str+='</table>';
+                                str+='<table class="table m_0 m_0">';
+                                	str+='<thead>';
+                                    	str+='<th width="50%">CATEGORY NAME</th>';
+                                        str+='<th>POSITIVE</th>';
+                                        str+='<th>NEGATIVE</th>';
+                                        str+='<th>NEUTRAL</th>';
+                                    str+='</thead>';
+                                    str+='<tbody>';
+									for(var i in result.candidateSummary.categoryList){
+                                    	str+='<tr>';
+                                        	str+='<td id="'+result.candidateSummary.categoryList[i].categoryId+'">'+result.candidateSummary.categoryList[i].categoryName+'</td>';
+                                            str+='<td><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></td>';
+                                            str+='<td><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></td>';
+                                            str+='<td><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></td>';
+                                        str+='</tr>';
+                                    }
+                                    str+='</tbody>';
+                                str+='</table>';
+                    str+='</div> ';
+				
+					$("#candidateCategoryWiseNewsId").html(str);
+				}else{
+					$("#candidateCategoryWiseNewsId").html("Data Not Available.");
+				}
+				if(result.departmentSummary !=null && result.departmentSummary.length>0){
+					buildingIssuesTable(result.departmentSummary);
+				}		
+		}else{
+			$("#newsMainDivId").html("Data Not Available.");
+		}
+	}); 
+	
+	 /* var jsObj={
+		candidateId:347,
+		locationType:"district",
+		locationId:13,
+		startDate:"09-06-2015",
+		endDate:"15-07-2015"	
+	}
+		$.ajax({
+				type : "POST",
+				url  : "getCandidateAndLocationSummaryNewsAction.action",
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				console.log(result);
+			}); */
+	
+}
 
 </script>
 

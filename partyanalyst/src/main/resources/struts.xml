@@ -10279,6 +10279,13 @@
 				<param name="root">familyDetails</param>
 			</result>
 		</action>
+	    <action name="getCandidateAndLocationSummaryNewsAction" class="cadreDetailsAction" method="getCandidateAndLocationSummaryNews">
+		   <result type="json" name="success">
+				<param name="root">webServiceResultVO</param>
+			</result>
+		</action> 
+		
+		
 		
 </package>
 </struts>      
