@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 public interface IWebServiceHandlerService {
@@ -98,4 +99,5 @@ public interface IWebServiceHandlerService {
 	 public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
 	 public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId);
 	 public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
+	 public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
 }

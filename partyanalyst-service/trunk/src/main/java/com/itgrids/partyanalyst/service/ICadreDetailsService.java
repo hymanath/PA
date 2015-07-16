@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 
 public interface ICadreDetailsService {
 	/*public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
@@ -31,5 +32,6 @@ public interface ICadreDetailsService {
 	
 	public List<TdpCadreFamilyDetailsVO> getCadreFamilyDetails(Long tdpCadreId);
 	
+	public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
 	
 }

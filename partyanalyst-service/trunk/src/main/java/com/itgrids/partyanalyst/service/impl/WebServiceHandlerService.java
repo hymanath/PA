@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
+import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
@@ -2457,8 +2458,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  List<VerifierVO> resultList = null;
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"");
-			  //WebResource webResource = client.resource("http://192.168.11.25:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"");
+			 // WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"");
+			  WebResource webResource = client.resource("http://192.168.11.89:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"");
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {
     	 		 verifierVO =null;
@@ -2555,5 +2556,65 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return resultStatus;
 	  }
+	  public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId){
+		  
+		  WebServiceResultVO webserviceResultVO=new WebServiceResultVO();
+		  try {
+
+				Client client = Client.create();
+
+				//WebResource webResource = client.resource("http://localhost:8080/PartyAnalyst/WebService/getMobileAppAuthorizationURL");
+				//WebResource webResource = client.resource("http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/15-07-2015/15-07-2015/district/13/44");
+				WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"");
+				
+				ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+
+				if (response.getStatus() != 200) {
+				/*	throw new RuntimeException("Failed : HTTP error code : "
+							+ response.getStatus());*/
+					webserviceResultVO=null;
+				}
+
+				String output = response.getEntity(String.class);
+				JSONObject temp = new JSONObject(output);
+				
+				List<String> deptsList = new ArrayList<String>();
+				
+				//ITERATE DEPT SUMMARY
+				JSONArray deptSummary = temp.getJSONArray("departmentSummary");
+				//Integer totalCount = temp2.getInt("totalCount");
+				JSONObject jObjFirst= (JSONObject)deptSummary.get(0);
+				int totalCount = jObjFirst.getInt("totalCount");
+				for (int i = 0; i < deptSummary.length(); i++){
+					JSONObject jObj= (JSONObject)deptSummary.get(i);
+					String partyName = jObj.getString("partyName");
+					int count =jObj.getInt("count");
+					deptsList.add(partyName);
+					webserviceResultVO.setName(partyName);
+				}
+				
+				
+				//ITERATE CANDIDATE SUMMARY
+				JSONObject temp2 = temp.getJSONObject("candidateSummary");
+				int candiSummaryTtlCnt = temp2.getInt("totalCount");
+				int candiSummaryPosCnt = temp2.getInt("positiveCount");
+				int candiSummaryNegCnt = temp2.getInt("negativeCount");
+				int candiSummarySmryCnt = temp2.getInt("neutralCount");
+				
+				
+
+			/*	System.out.println("Output from Server .... \n");
+				System.out.println(output);*/
+				/*WebServiceInputVO inputVO = new WebServiceInputVO();
+				inputVO.setPartyId(22l);
+				getArticlesBasedOnSelection(inputVO);*/
+ 
+				
+			} catch (Exception e) {
+				 log.debug("Entered into the getCandidateAndLocationSummaryNews  method in WebServiceHandlerService");
+			}
+		  	return webserviceResultVO;
+	  }
+	  
 }
 
