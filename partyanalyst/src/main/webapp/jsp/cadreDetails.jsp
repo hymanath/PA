@@ -155,7 +155,7 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
-					 <center><strong>Finance Support Data Not Available.</strong></center>
+					 <center><strong>Finance Support Details Not Available.</strong></center>
                     <!--<div class="panel-body">
                    		<h4>TOTAL REQUEST FOR<br/> FINANCE SUPPORT 210 [140000/-]</h4>
                     	<div id="donutchart1" class="display-style" style="height: 120px;float:left;width:150px;"></div>
@@ -169,7 +169,7 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-					<center><strong> Presently Deaths and Hospitalization Data Not Available.</strong></center>
+					<center><strong> Presently Deaths and Hospitalization Details Not Available.</strong></center>
                    <!-- <div class="panel-body pad_0">
                     	<table class="table table-bordered m_0">
                         	<tr>
@@ -479,7 +479,7 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
                     </div>
-						<center><h3>News Data Not Available.</h3></center>
+						<center><h3>News Details Not Available.</h3></center>
                    <!-- <div class="panel-body">
                     	<div>
                         	<label class="radio-inline">
