@@ -93,6 +93,7 @@ public class CadreCommitteeMemberVO {
 	private Long districtId;
 	private Long stateId;
 	private String pConstituencyName;
+	private Long candidate;
 	
 	private CadreCommitteeMemberVO ccmVO;
 	private String  houseNo;
@@ -588,6 +589,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setpConstituencyName(String pConstituencyName) {
 		this.pConstituencyName = pConstituencyName;
+	}
+	public Long getCandidate() {
+		return candidate;
+	}
+	public void setCandidate(Long candidate) {
+		this.candidate = candidate;
 	}
 	
 	

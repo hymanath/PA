@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -662,6 +663,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0.publicRepresentativeTypeId,1.type
 				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
+				Long candidateId=tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+				
 				
 				DateFormat dateFormat=null;
 				Date convertedDate = null;
@@ -740,6 +743,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 						}
 						
 					}//registered On
+					else{
+						cadreDetailsVO.setRegisteredOn(dataSourceType);
+					}
 					cadreDetailsVO.setEmailId(cadreFormalDetails[23] !=null ? cadreFormalDetails[23].toString(): "");
 					if(cadreFormalDetails[22] !=null){
 						dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -780,6 +786,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				
 				cadreDetailsVO.setRepresentativeType(publicRepresentTypeStr);
+				cadreDetailsVO.setCandidate(candidateId !=null ? candidateId.longValue():0l);
 					
 					//cadreDetailsVO.setRepresentativeType(publicRepDertails[1] !=null ? publicRepDertails[1].toString() : "");
 				}
@@ -1682,6 +1689,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 			return null;
 		}
 	}
+	public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId){
+		WebServiceResultVO webServiceResultVO=new WebServiceResultVO();
+		try{
+			webServiceResultVO=webServiceHandlerService.getCandidateAndLocationSummaryNews(startDate,endDate,locationType,locationId,candidateId);
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getCandidateAndLocationSummaryNews() method, Exception - ",e);
+			return null;
+		}
+		
+		return webServiceResultVO;
+	}
+	
 	
 	
 }
