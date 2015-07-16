@@ -1946,7 +1946,7 @@ function getCadreFamilyDetailsByCadreId()
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
          str += '<span class="pull-right">';
-		 if(result[i].education != null || result[i].occupation != null || result[i].count != null)
+		 if((result[i].education != null&&result[i].education.trim().length > 0) || (result[i].occupation != null && result[i].occupation.trim().length > 0) || (result[i].count != null && result[i].count.trim().length > 0))
            str += '<img class="img-responsive" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
 	    else
 		  str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
