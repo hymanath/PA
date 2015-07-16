@@ -16,9 +16,9 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
-import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -43,6 +43,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<RegisteredMembershipCountVO> membershipCountVOList;
 	private List<GrievanceAmountVO>           grievanceAmountVOList;
 	private List<TdpCadreFamilyDetailsVO>     familyDetails;
+	private WebServiceResultVO				  webServiceResultVO;
 	
 
 	public HttpServletRequest getRequest() {
@@ -191,6 +192,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setFamilyDetails(List<TdpCadreFamilyDetailsVO> familyDetails) {
 		this.familyDetails = familyDetails;
 	}
+	
+	public WebServiceResultVO getWebServiceResultVO() {
+		return webServiceResultVO;
+	}
+
+
+	public void setWebServiceResultVO(WebServiceResultVO webServiceResultVO) {
+		this.webServiceResultVO = webServiceResultVO;
+	}
 
 
 	public String execute(){
@@ -314,6 +324,25 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			LOG.error("Exception Occured in getCadreFamilyDetails() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getCandidateAndLocationSummaryNews(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long candidateId=jObj.getLong("candidateId");
+			String locationType=jObj.getString("locationType");
+			Long locationId=jObj.getLong("locationId");
+			String startDate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+
+			webServiceResultVO=cadreDetailsService.getCandidateAndLocationSummaryNews(startDate,endDate,locationType,locationId,candidateId);	
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCandidateAndLocationSummaryNews() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+		
 	}
 	
 }
