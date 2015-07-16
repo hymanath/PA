@@ -1577,23 +1577,29 @@ public class CadreDetailsService implements ICadreDetailsService{
 			{
 				String regex = "[0-9]+";
 			  List<Object[]> list = tdpCadreDAO.getPartyApprovedFundByMembershipId(memberShipId);
-			  setGrievanceAmountVO(resultList, list, "Party Fund",regex);
+			  setGrievanceAmountVO(resultList, list, "Party Fund");
 			 
 			  List<Object[]> list2 = tdpCadreDAO.getGovtApprovedFundByMembershipId(memberShipId);
-			  setGrievanceAmountVO(resultList, list2, "CM Relief Fund",regex);
+			  setGrievanceAmountVO(resultList, list2, "CM Relief Fund");
 			  
 			  List<Object[]> expectedAmtList = tdpCadreDAO.getRequestedAmountByMembershipId(memberShipId);
 			  if(expectedAmtList != null && expectedAmtList.size() > 0)
 			  {
 				  Long amount = 0l;
+				  Long count = 0l;
 				  for(Object[] params:expectedAmtList)
 				  {
 					  if(params[0] != null && params[0].toString().matches(regex))
 						 amount = amount + Long.parseLong(params[0].toString()); 
 					  if(params[1] != null && params[1].toString().matches(regex))
 						  amount = amount + Long.parseLong(params[1].toString()); 
+					  
+					  count = params[2] != null?Long.parseLong(params[2].toString()):0l;
+					  
+					  
 				  }
 				  resultList.get(0).setTotalRequests(amount); 
+				  resultList.get(0).setTotalRequests(count);
 			  }
 			  
 			}
@@ -1606,16 +1612,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 	}
 	
-	public void setGrievanceAmountVO(List<GrievanceAmountVO> resultList,List<Object[]> list,String name,String regex)
+	public void setGrievanceAmountVO(List<GrievanceAmountVO> resultList,List<Object[]> list,String name)
 	{
 		try{
 			if(list != null && list.size() > 0)
 			  {
-				  
+				String regex = "[0-9]+";
 				  GrievanceAmountVO amountVO = new GrievanceAmountVO();
 				  amountVO.setName(name);
 				  Object[] obj = list.get(0);
-				  amountVO.setCount(obj[0] != null?(Long)obj[0]:0l);
+				  amountVO.setCount(obj[0] != null?Long.parseLong(obj[0].toString()):0l);
 				  if(obj[1] != null && obj[1].toString().matches(regex))
 					  amountVO.setDonationAmount((Long)obj[1]); 
 				  resultList.add(amountVO);

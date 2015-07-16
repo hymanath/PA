@@ -6,6 +6,7 @@ public class GrievanceAmountVO {
 	private Long donationAmount;
 	private Long totalRequests;
 	private Long count;
+	private Long totalComplaints;
 	
 	
 	public String getName() {
@@ -31,6 +32,12 @@ public class GrievanceAmountVO {
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public Long getTotalComplaints() {
+		return totalComplaints;
+	}
+	public void setTotalComplaints(Long totalComplaints) {
+		this.totalComplaints = totalComplaints;
 	}
 	
 	
