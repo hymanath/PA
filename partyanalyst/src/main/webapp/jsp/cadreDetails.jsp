@@ -2284,7 +2284,7 @@ function getCandidateAndLocationSummaryNews(){
 		endDate=endDate;
 
 	 $.ajax({
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
+		url: "http://www.mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
 		
 		if(result !=null && result !=""){
