@@ -2039,9 +2039,12 @@ function getCandidateAndLocationSummaryNews(){
 		
 		startDate=startDate;
 		endDate=endDate;
+		
+		var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf(".com")+4));
 
 	 $.ajax({
-		url: "http://www.mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
+		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
 		
 		if(result !=null && result !=""){
