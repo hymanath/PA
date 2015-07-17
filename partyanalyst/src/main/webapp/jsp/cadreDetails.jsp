@@ -55,6 +55,21 @@ canvas {
 .m_0{margin:0px;}
 .textTransFormCls{text-transform:capitalize}
 
+.notverified{background-color:rgb(214,77,84);}
+.verified{background-color:rgb(72,21,87);}
+.notEligible{background-color:rgb(102,51,0);}
+.inProgress{background-color:rgb(102,205,204);}
+.notpossible{background-color:rgb(255,153,51);}
+.approved{background-color:rgb(105,167,143);}
+.completed{background-color:rgb(0,117,125);}
+
+.notverified-text{color:rgb(214,77,84);}
+.verified-text{color:rgb(72,21,87);}
+.notEligible-text{color:rgb(102,51,0);}
+.inProgress-text{color:rgb(102,205,204);}
+.notpossible-text{color:rgb(255,153,51);}
+.approved-text{color:rgb(105,167,143);}
+.completed-text{color:rgb(0,117,125);}
 </style>
 	
 	<!--<style type="text/css">
@@ -144,50 +159,15 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
                     </div>
-					<center><strong>Grievance Details Not Available.</strong></center>
-                   <!-- <div class="panel-body">
-                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId">8</span></h5>
+					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
+                    <div class="panel-body">
+                    	<h4 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold">8</span></h4>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
-                            <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;">
-                                <li class="show-dropdown"><span class="inp"></span>Not Verified<span class="pull-right"><span id="notVerifiedId">100</span>
-                                	<ul class="count-hover arrow_box3">
-                                    	<li>Govt<span class="pull-right">25</span></li>
-                                        <li>Party<span class="pull-right">25</span></li>
-                                        <li>Welfare<span class="pull-right">25</span></li>
-                                    </ul>
-                                </span></li>
-                                <li class="show-dropdown"><span class="cmp"></span>In Progress<span class="pull-right"><span id="inProgressId">100</span>
-                                	<ul class="count-hover arrow_box3">
-                                    	<li>Govt<span class="pull-right">25</span></li>
-                                        <li>Party<span class="pull-right">25</span></li>
-                                        <li>Welfare<span class="pull-right">25</span></li>
-                                    </ul>
-                                </span></li>
-                                <li class="show-dropdown"><span class="ncmp"></span>Completed<span class="pull-right "><span id="completedId">100</span>
-                                	<ul class="count-hover arrow_box3">
-                                    	<li>Govt<span class="pull-right">25</span></li>
-                                        <li>Party<span class="pull-right">25</span></li>
-                                        <li>Welfare<span class="pull-right">25</span></li>
-                                    </ul>
-                                </span></li>
-                                <li class="show-dropdown"><span class="note"></span>Not Eligible<span class="pull-right show-dropdown"><span id="notEligibleId">100</span>
-                                	<ul class="count-hover arrow_box3">
-                                    	<li>Govt<span class="pull-right">25</span></li>
-                                        <li>Party<span class="pull-right">25</span></li>
-                                        <li>Welfare<span class="pull-right">25</span></li>
-                                    </ul>
-                                </span></li>
-                                <li class="show-dropdown"><span class="note"></span>Not Possible<span class="pull-right"><span id="notPossibleId">100</span>
-                                	<ul class="count-hover arrow_box3">
-                                    	<li>Govt<span class="pull-right">25</span></li>
-                                        <li>Party<span class="pull-right">25</span></li>
-                                        <li>Welfare<span class="pull-right">25</span></li>
-                                    </ul>
-                                </span></li>
+                            <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;" id="complaintStatusUL">
                             </ul>
                         </div>
-                    </div> -->
+                    </div> 
                 </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
@@ -2267,8 +2247,130 @@ function getCadreIdByMemberShipId()
 	
 }
 
-//getCadreIdByMemberShipId();
+function getCategoryWiseStatusCount()
+{
+	$.ajax({
+		type : "POST",
+		url  : "getCategoryWiseStatusCountAction.action",
+		data : {tdpCadreId:globalCadreId}
+		
+	}).done(function(result){
+		$("#donutchart").html("");
+		$("#totalComplaintsId").html("");
+		$("#complaintStatusUL").html("");
+		if(result != null && result.subList != null && result.subList.length > 0)
+		{
+		  categroyWiseChart(result.subList);
+		  buildCategroyInfo(result);
+		}
+	  else
+	   $("#totalComplaintsId").html("0");
+		  
+	  
+	});
+}
 
+function categroyWiseChart(result)
+{
+	
+	var dataArr = [];
+	var colorsarr = new Array();
+	for(var i in result)
+	{
+	  var data= new Array();
+	  data.push(result[i].status,result[i].count);
+	  dataArr.push(data);
+	  colorsarr.push(result[i].color);
+		  
+	}
+
+	Highcharts.setOptions({
+        colors: colorsarr
+    });
+    $('#donutchart').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+			name : 'Count',
+            data: dataArr
+        }]
+    });
+
+}
+
+function buildCategroyInfo(result)
+{
+	$("#totalComplaintsId").html(""+result.count+"");
+	var str = '';
+	for(var i in result.subList)
+	{
+		str += '<li class="show-dropdown">';
+		if(result.subList[i].status.toLowerCase() == ("In Progress").toLowerCase())
+		{
+		 str += '<span class="InProgress"></span>'+result.subList[i].status+'<span><span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Completed").toLowerCase())
+		{
+		 str += '<span class="Completed">'+result.subList[i].status+'<span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Not Verified").toLowerCase())
+		{
+		 str += '<span class="NotVerified">'+result.subList[i].status+'<span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Not Eligible").toLowerCase())
+		{
+		 str += '<span class="NotEligible"></span>'+result.subList[i].status+'<span><span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Not possible").toLowerCase())
+		{
+		 str += '<span class="NotPossible">'+result.subList[i].status+'<span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Approved").toLowerCase())
+		{
+		 str += '<span class="Approved">'+result.subList[i].status+'<span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		if(result.subList[i].status.toLowerCase() == ("Verified").toLowerCase())
+		{
+		 str += '<span class="Verified">'+result.subList[i].status+'<span class="pull-right">'+result.subList[i].count+'</span></span>';
+		}
+		str += '<ul class="count-hover arrow_box3">';
+		for(var j in result.subList[i].subList)
+		str += '<li>'+result.subList[i].subList[j].status+'<span class="pull-right">'+result.subList[i].subList[j].count+'</span></li>';
+		str += '</ul>';
+		str += '</li>';
+	}
+	$("#complaintStatusUL").html(str);
+	
+}
+
+//getCadreIdByMemberShipId();
+getCategoryWiseStatusCount();
 </script>
 
 </body>

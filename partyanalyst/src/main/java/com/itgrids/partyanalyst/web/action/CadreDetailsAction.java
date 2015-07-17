@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -44,6 +45,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<GrievanceAmountVO>           grievanceAmountVOList;
 	private List<TdpCadreFamilyDetailsVO>     familyDetails;
 	private WebServiceResultVO				  webServiceResultVO;
+	private ComplaintStatusCountVO           complaintStatusCountVO;
 	
 
 	public HttpServletRequest getRequest() {
@@ -195,6 +197,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	
 	public WebServiceResultVO getWebServiceResultVO() {
 		return webServiceResultVO;
+	}
+
+	public ComplaintStatusCountVO getComplaintStatusCountVO() {
+		return complaintStatusCountVO;
+	}
+
+
+	public void setComplaintStatusCountVO(
+			ComplaintStatusCountVO complaintStatusCountVO) {
+		this.complaintStatusCountVO = complaintStatusCountVO;
 	}
 
 
@@ -355,5 +367,20 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getCategoryWiseStatusCount()
+	{
+		try{
+			complaintStatusCountVO =  cadreDetailsService.getCategoryWiseStatusCount(new Long(request.getParameter("tdpCadreId")));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	
 	
 }

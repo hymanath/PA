@@ -124,22 +124,6 @@ i
 	list-style:none;
 	width:110%
 }
-.graph-list li:nth-child(1)
-{
-	color:#ff9933
-}
-.graph-list li:nth-child(2)
-{
-	color:#33cccc
-}
-.graph-list li:nth-child(3)
-{
-	color:#ff3333
-}
-.graph-list li:nth-child(4)
-{
-	color:#663300
-}
 .count-hover
 {
 	position:absolute;
@@ -151,7 +135,7 @@ i
 	background:#fff !important;
 	display:none;
 	z-index:9999;
-	margin-left:-40px;
+	right:0px;
 	margin-top:5px;
 }
 .survey-hover{
@@ -216,32 +200,58 @@ position:absolute;
 	cursor:pointer	
 }
 
-.inp , .cmp , .ncmp , .note
+
+.NotVerified{color:#D64D54;}
+.Verified{color:#481557;}
+.NotEligible{color:#663300}
+.InProgress{color:#66CDCC}
+.NotPossible{color:#FF9933}
+.Approved{color:#69A78F}
+.Completed{color:#00B17D}
+.NotVerified:before{background-color:#D64D54;}
+.Verified:before{background-color:#481557;}
+.NotEligible:before{background-color:#663300}
+.InProgress:before{background-color:#66CDCC}
+.NotPossible:before{background-color:#FF9933}
+.Approved:before{background-color:#69A78F}
+.Completed:before{background-color:#00B17D}
+
+.NotVerified:before , .Verified:before , .NotEligible:before , .InProgress:before,.NotPossible:before,.Approved:before,.Completed:before
 {
 	padding:0px 8px 0px;
 	margin-right:1px;
 	margin-right:4px;
+	content:'';
 }
 
-.inp
+.inpogress
 {
-	background-color:#ff9933;
+	background-color:#66CDCC;
 }
 
-.cmp
+.verified
 {
-	background-color:#33cccc;
+	background-color:#481557;
 }
 
-.ncmp
-{
-	background-color:#ff3333;
-}
 
 .note
 {
 	background-color:#663300;
 }
+.notPoss
+{
+	background-color:#FF9933;
+}
+.approved
+{
+	background-color:#69A78F;
+}
+.completed
+{
+	background-color:#00B17D;
+}
+
 .party-color:before , .financial-by-party:before , .financial-by-govt:before , .other-type-req:before , .cm-relief:before , .party-fund:before , .total-req:before , .total-assign , .verification-cmp , .pending , .approved , .verification-pending
 {
 	padding:1px 9px 0px 9px;

@@ -10290,5 +10290,11 @@
 				<param name="root">cadreId</param>
 			</result>
 		</action>
+		
+	<action name="getCategoryWiseStatusCountAction" class="cadreDetailsAction" method="getCategoryWiseStatusCount">
+	    <result type="json" name="success">
+				<param name="root">complaintStatusCountVO</param>
+			</result>
+	</action>
 </package>
 </struts>      
