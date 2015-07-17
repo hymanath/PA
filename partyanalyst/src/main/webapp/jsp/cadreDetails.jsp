@@ -1470,6 +1470,7 @@ $(document).ready(function() {
 	endDate: moment(),
 	minDate: '01/01/2012',
 	maxDate: '12/31/2015',
+	//dateLimit: { days: 60 },
 	showDropdowns: true,
 	showWeekNumbers: true,
 	timePicker: false,
@@ -2126,12 +2127,13 @@ function getCandidateAndLocationSummaryNews(){
 		if(props!=null && props.length>0){
 			for(var i in props){
 				if(props[i].propertyType=="detail"){
-					str+='<div class="col-md-6" style="height:450px;">';
+					str+='<div class="col-md-6">';
                         str+='<div class="panel panel-default">';
                         str+='<div class="panel-heading bg_f9">';
                         str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
                         str+='</div>';
-                        str+='<div class="panel-body pad_0">';
+                        str+='<div class="panel-body pad_0 table-scroll">';
+						var totalCheck=false;
                         str+='<table class="table m_0 m_0" id="analysisStoriesId">';
                         str+='<thead>';
                         str+='<tr>';
@@ -2142,42 +2144,66 @@ function getCandidateAndLocationSummaryNews(){
                         str+='</tr>';
                         str+='</thead>';
 						for(var j in props[i].partiesList){
-							str+='<tr>';
-							str+='<td>'+props[i].partiesList[j].partyName+'</td>';
-							for(var k in props[i].partiesList[j].oppenentsList){
-								str+='<td>';
-								if(props[i].partiesList[j].oppenentsList[k].aliasName=='Pos'){
-									str+='<span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
-								}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='neg'){
-									str+='<span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
-								}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='Neutral'){
-									str+='<span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+							
+							var condCheck=true;
+							for(var m in props[i].partiesList[j].oppenentsList){
+								if(props[i].partiesList[j].oppenentsList[m].count ==0 && props[i].partiesList[j].oppenentsList[m].count ==0 && props[i].   partiesList[j].oppenentsList[m].count ==0){
+									condCheck=false;
 								}
-								str+='</td>';
 							}
-							str+='</tr>';
+							if(condCheck){
+								totalCheck=true;
+									str+='<tr>';
+										str+='<td>'+props[i].partiesList[j].partyName+'</td>';
+										for(var k in props[i].partiesList[j].oppenentsList){
+											str+='<td>';
+											if(props[i].partiesList[j].oppenentsList[k].aliasName=='Pos'){
+												str+='<span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='neg'){
+												str+='<span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='Neutral'){
+												str+='<span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+											}
+											str+='</td>';
+									str+='</tr>';
+								}	
+							}
+							
 						}
-                       
+                        
                         str+='</table>';
+						 if(!totalCheck){
+							 str+='<tr><center><h3>No Data Available</h3></center></tr>';
+						 }
                         str+='</div>';
                         str+='</div>';
 					str+='</div>';
 				}else if(props[i].propertyType=="versus"){
-					str+='<div class="col-md-6" style="height:450px;">';
+					str+='<div class="col-md-6">';
                         str+='<div class="panel panel-default">';
                         str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
                         str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+' </h4>';
                         str+='</div>';
-                        str+='<div class="panel-body pad_0">';
+                        str+='<div class="panel-body pad_0 table-scroll">';
                         str+='<table class="table m_0 table-bordered m_0">';
-						for(var j in props[i].partiesList){
-							str+='<h5 style="font-weight:bold;"><center> BY '+props[i].partiesList[j].partyName+' PARTY </center></h5>';
-							for(var k in props[i].partiesList[j].oppenentsList){
-								str+='<tr>';
-								str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
-								str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
-								str+='</tr>';
+						
+						//var isExist=false;
+						if(props[i].partiesList !=null && props[i].partiesList.length>0){
+							for(var j in props[i].partiesList){
+								str+='<h5 style="font-weight:bold;"><center> BY '+props[i].partiesList[j].partyName+' PARTY </center></h5>';
+									for(var k in props[i].partiesList[j].oppenentsList){
+										if(props[i].partiesList[j].oppenentsList[k].count !=0){
+										 str+='<tr>';
+										 str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
+										 str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
+										 str+='</tr>';
+										}
+									}
+								
 							}
+						}
+						else{
+							str+='<tr><center><h3>No Data Available</h3></center></tr>';
 						}
 						str+='<tr>';
 						str+='<td>&nbsp;</td>';
@@ -2193,14 +2219,21 @@ function getCandidateAndLocationSummaryNews(){
                         str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
                         str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
                         str+='</div>';
-                        str+='<div class="panel-body pad_0">';
+                        str+='<div class="panel-body pad_0 table-scroll">';
                         str+='<table class="table m_0 table-bordered m_0">';
+						var valExist=false;
 						for(var j in props[i].partiesList){
-							str+='<tr>';
-							str+='<td>'+props[i].partiesList[j].partyName+'</td>';
-							str+='<td>'+props[i].partiesList[j].count+'</td>';
-							str+='</tr>';
+							if( props[i].partiesList[j].count !=0){
+								valExist=true;
+								str+='<tr>';
+									str+='<td>'+props[i].partiesList[j].partyName+'</td>';
+									str+='<td>'+props[i].partiesList[j].count+'</td>';
+								str+='</tr>';
+							}
 						}
+						if(valExist==false){
+								str+='<tr><center><h3>No Data Available</h3></center></tr>';
+							}
 						str+='</table>';
                         str+='</div>';
                         str+='</div>';
@@ -2232,8 +2265,6 @@ function getCandidateAndLocationSummaryNews(){
 				console.log(result);
 			}); */
 	
-
-
 function getCadreIdByMemberShipId()
 {
 	$.ajax({
