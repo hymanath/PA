@@ -10183,7 +10183,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setOccupation(tdpCadreFamilyInfo.getOccupationId() != null?tdpCadreFamilyInfo.getOccupation().getOccupation():"");
 					vo.setEducation(tdpCadreFamilyInfo.getEducationId() != null?tdpCadreFamilyInfo.getEducation().getQualification():"");
 					vo.setRelation(tdpCadreFamilyInfo.getRelationId() != null?tdpCadreFamilyInfo.getVoterRelation().getDescription():"");
-					vo.setRelativeName(tdpCadreFamilyInfo.getVoter() != null?tdpCadreFamilyInfo.getVoter().getRelativeName():null);
+					//vo.setRelativeName(tdpCadreFamilyInfo.getVoter() != null?tdpCadreFamilyInfo.getVoter().getRelativeName():null);
 					
 					
 					if(tdpCadreFamilyInfo.getRelationId() != null && tdpCadreFamilyInfo.getRelationId() != 13L)
@@ -10212,7 +10212,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setEducation(obj[8] != null ? obj[8].toString() : "");
 						vo.setOccupation(obj[9] != null ? obj[9].toString() : "");
 						vo.setRelation(obj[10] != null ? obj[10].toString() : "");
-						vo.setRelativeName(obj[11] != null ? obj[11].toString() : null);
+						//vo.setRelativeName(obj[11] != null ? obj[11].toString() : null);
 						
 						returnList.add(vo);			
 						
