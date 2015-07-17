@@ -814,6 +814,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 			}
 			
+			if(cadreDetailsVO.getTehsilId() !=null && cadreDetailsVO.getTehsilId() !=0l){
+				Long localElctioniBodyId=boothDAO.getLocalElectionBody(cadreDetailsVO.getTehsilId());
+				
+				cadreDetailsVO.setLocalElectionBody(localElctioniBodyId !=null ? localElctioniBodyId.longValue() : 0l);
+			} 
+			
 			return cadreDetailsVO;
 			
 		} catch (Exception e) {

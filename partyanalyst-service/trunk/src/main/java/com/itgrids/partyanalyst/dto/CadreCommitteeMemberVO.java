@@ -97,6 +97,7 @@ public class CadreCommitteeMemberVO {
 	
 	private CadreCommitteeMemberVO ccmVO;
 	private String  houseNo;
+	private Long localElectionBody;
 	
 	
 	public Long getActualOthers() {
@@ -595,6 +596,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setCandidate(Long candidate) {
 		this.candidate = candidate;
+	}
+	public Long getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(Long localElectionBody) {
+		this.localElectionBody = localElectionBody;
 	}
 	
 	
