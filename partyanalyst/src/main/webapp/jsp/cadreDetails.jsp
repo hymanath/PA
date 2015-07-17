@@ -2187,27 +2187,33 @@ function getCandidateAndLocationSummaryNews(){
                         str+='<div class="panel-body pad_0 table-scroll">';
                         str+='<table class="table m_0 table-bordered m_0">';
 						
-						//var isExist=false;
+						var isExist=false;var z=1;
 						if(props[i].partiesList !=null && props[i].partiesList.length>0){
 							for(var j in props[i].partiesList){
-								str+='<h5 style="font-weight:bold;"><center> BY '+props[i].partiesList[j].partyName+' PARTY </center></h5>';
+								if(props[i].partiesList[j].oppenentsList !=null && props[i].partiesList[j].oppenentsList.length >0){
 									for(var k in props[i].partiesList[j].oppenentsList){
 										if(props[i].partiesList[j].oppenentsList[k].count !=0){
-										 str+='<tr>';
-										 str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
-										 str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
-										 str+='</tr>';
+											if(z==1){
+												str+='<h5 style="font-weight:bold;"><center> BY '+props[i].partiesList[j].partyName+' PARTY </center></h5>';
+											}
+											isExist=true;
+											str+='<tr>';
+											str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
+											str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
+											str+='</tr>';
+											z=2;
 										}
 									}
-								
+								}
 							}
+							if(!isExist){
+									str+='<tr><center><h3>No Data Available</h3></center></tr>';
+								}
 						}
 						else{
 							str+='<tr><center><h3>No Data Available</h3></center></tr>';
 						}
 						str+='<tr>';
-						str+='<td>&nbsp;</td>';
-						str+='<td>&nbsp;</td>';
 						str+='</tr>';
 						str+='</table>';
                         str+='</div>';
