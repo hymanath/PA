@@ -1662,7 +1662,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							{
 								TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(resultList, params[1].toString());
 							    if(VO != null)
-							    	VO.setCount(params[1] != null?(Long)params[1]:0l);
+							    	VO.setCount(params[1] != null?Long.parseLong(params[1].toString()):0l);
 							}
 						}
 					}
@@ -1702,6 +1702,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return webServiceResultVO;
 	}
 	
+	
+	public Long getCadreIdByMembershipId(String memberShipNo)
+	{
+		try{
+			Long cadreId =  tdpCadreDAO.getCadreIdByMembershipId(memberShipNo) ;
+			return cadreId;
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getCadreIdByMembershipId() method, Exception - ",e);
+			return null;
+		}
+		
+	}
 	
 	
 }
