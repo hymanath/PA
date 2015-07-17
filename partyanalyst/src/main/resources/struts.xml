@@ -10285,7 +10285,10 @@
 			</result>
 		</action> 
 		
-		
-		
+		<action name="getCadreIdByMembershipIdAction" class="cadreDetailsAction" method="getCadreIdByMembershipId">
+		    <result type="json" name="success">
+				<param name="root">cadreId</param>
+			</result>
+		</action>
 </package>
 </struts>      

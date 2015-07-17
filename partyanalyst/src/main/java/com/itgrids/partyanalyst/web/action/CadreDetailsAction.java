@@ -345,4 +345,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		
 	}
 	
+	public String getCadreIdByMembershipId()
+	{
+		try{
+			cadreId =  cadreDetailsService.getCadreIdByMembershipId(request.getParameter("membershipId"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadreIdByMembershipId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
