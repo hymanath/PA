@@ -2348,6 +2348,21 @@ function getCandidateAndLocationSummaryNews(){
 	
 }
 
+function getCadreIdByMemberShipId()
+{
+	$.ajax({
+		type : "POST",
+		url  : "getCadreIdByMembershipIdAction.action",
+		data : {membershipId:"38324292"}
+		
+	}).done(function(result){
+		console.log(result);
+	});
+	
+}
+
+//getCadreIdByMemberShipId();
+
 </script>
 
 </body>
