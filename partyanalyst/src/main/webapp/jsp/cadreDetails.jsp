@@ -521,21 +521,23 @@ var globalCadreId = '${cadreId}';
                     </div>
 					<div class="panel-body" id="newsMainDivId">
                     	<div>
-                        	<label class="radio-inline hidingMandalCls" style="display:none">
-                            	<input type="radio" name="radio" id="panchayatRadioNewsId" class="newsRadioCls">Panchayat
-                            </label>
-                            <label class="radio-inline hidingMandalCls" style="display:none">
-                            	<input type="radio" name="radio" id="mandalRadioNewsId" class="newsRadioCls">Mandal
-                            </label>
-                            <label class="radio-inline">
-                            	<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
-                            </label>
-                            <label class="radio-inline">
-                            	<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
-                            </label>
-                            <label class="radio-inline">
+							
+							<label class="radio-inline">
                             	<input type="radio" name="radio" id="districtRadioNewsId" class="newsRadioCls">District
                             </label>
+							<label class="radio-inline">
+                            	<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
+                            </label>
+							<label class="radio-inline">
+                            	<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
+                            </label>
+							<label class="radio-inline hidingMandalCls" style="display:none;">
+                            	<input type="radio" name="radio" id="mandalRadioNewsId" class="newsRadioCls">Mandal
+                            </label>
+                        	<label class="radio-inline hidingMandalCls" style="display:none;">
+                            	<input type="radio" name="radio" id="panchayatRadioNewsId" class="newsRadioCls">Panchayat
+                            </label>
+                            
                             <div class="pull-right">
                             	<div class="calendar-style"  id="reportrange">
                                 	<div class="caret"></div>
@@ -550,277 +552,32 @@ var globalCadreId = '${cadreId}';
                                 </h4>
                             </div>
 							<div id="candidateCategoryWiseNewsId"></div>
-                           <!-- <div class="panel-body pad_0">
-                            	<table class="table m_0 table-bordered m_0">
-                                	<tr>
-                                    	<td>TOTAL ARTICLES  <span class="pull-right text-bold">03</span></td>
-                                        <td>POSITIVE ARTICLES  <span class="pull-right text-bold">03</span></td>
-                                        <td>NEGATIVE ARTICLES  <span class="pull-right text-bold">03</span></td>
-                                        <td>NEUTRAL ARTICLES <span class="pull-right text-bold">03</span></td>
-                                    </tr>
-                                </table>
-                                <table class="table m_0 m_0">
-                                	<thead>
-                                    	<th width="50%">CATEGORY NAME</th>
-                                        <th>POSITIVE</th>
-                                        <th>NEGATIVE</th>
-                                        <th>NEUTRAL</th>
-                                    </thead>
-                                    <tbody>
-                                    	<tr>
-                                        	<td>NON CONVENTIONAL ENERGY</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    	<tr>
-                                        	<td>VILLAGE HEALTH</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    	<tr>
-                                        	<td>ROADS & BUILDINGS</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    	<tr>
-                                        	<td>OTHER MUNCIPAL CORPORATIONS</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    	<tr>
-                                        	<td>RURAL WATER SUPPLY SCHEME-FLORIDE</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    	<tr>
-                                        	<td>NON CONVENTIONAL ENERGY</td>
-                                            <td><span class="text-success">20</span></td>
-                                            <td><span class="text-danger">10</span></td>
-                                            <td><span class="text-warning">20</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>  -->
-                        </div><center><h3>Data Not Available.</h3></center>
-                        <!--<div class="panel panel-default">
+                         </div>
+                        <div class="panel panel-default">
                         	<div class="panel-heading bg_white">
                             	<h4 class="panel-title text-bold text-center">CANDIDATE LOCATION SPECIFIC NEWS</h4>
                             </div>
                             <div class="panel-body pad_0">
-                            	<div class="row">
-                                	<div class="col-md-6">
-                                    	<div class="panel panel-default">
-                                        	<div class="panel-heading bg_f9">
-                                            	<h4 class="panel-title text-bold text-center text-capitalize">ANALYSIS STORIES</h4>
-                                            </div>
-                                            <div class="panel-body pad_0">
-                                            	<table class="table m_0 m_0">
-                                                	<thead>
-                                                    	<tr>
-                                                        	<th>Party Name</th>
-                                                            <th>Positive</th>
-                                                            <th>Negative</th>
-                                                            <th>Neutral</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tr>
-                                                    	<td>TDP</td>
-                                                        <td><span class="text-success">5</span></td>
-                                                        <td><span class="text-danger">5</span></td>
-                                                        <td><span class="text-warning">0</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>BJP</td>
-                                                        <td><span class="text-success">5</span></td>
-                                                        <td><span class="text-danger">5</span></td>
-                                                        <td><span class="text-warning">0</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>YSRC</td>
-                                                        <td><span class="text-success">5</span></td>
-                                                        <td><span class="text-danger">5</span></td>
-                                                        <td><span class="text-warning">0</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>INC</td>
-                                                        <td><span class="text-success">5</span></td>
-                                                        <td><span class="text-danger">5</span></td>
-                                                        <td><span class="text-warning">0</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>TRS</td>
-                                                        <td><span class="text-success">5</span></td>
-                                                        <td><span class="text-danger">5</span></td>
-                                                        <td><span class="text-warning">0</span></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                    	<div class="panel panel-default">
-                                        	<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">
-                                            	<h4 class="panel-title text-bold text-center text-capitalize">INTERNAL FIGHTS</h4>
-                                            </div>
-                                            <div class="panel-body pad_0">
-                                            	<table class="table m_0 table-bordered m_0">
-                                                	<tr>
-                                                    	<td>TDP</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>BJP</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>YSRC</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>INC</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>TRS</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>&nbsp;</td>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                    	<div class="panel panel-default">
-                                        	<div class="panel-heading bg_f9">
-                                            	<h4 class="panel-title text-bold text-center text-capitalize">SPOT NEWS</h4>
-                                            </div>
-                                            <div class="panel-body pad_0">
-                                            	<table class="table m_0 table-bordered m_0">
-                                                	<tr>
-                                                    	<td>TDP</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>BJP</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>YSRC</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>INC</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>TRS</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>&nbsp;</td>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xs-12">
-                                    	<div class="panel panel-default m_0">
-                                        	<div class="panel-heading bg_f9">
-                                            	<h4 class="panel-title text-bold text-center">PRESS & PARTY MEETINGS</h4>
-                                            </div>
-                                            <div class="panel-body pad_0">
-                                            	<table class="table m_0 m_0">
-                                                	<thead>
-                                                    	<th>Party Name</th>
-                                                        <th>Press</th>
-                                                        <th>Party</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    	<tr>
-                                                        	<td>TDP</td>
-                                                            <td>10</td>
-                                                            <td>5</td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td>BJP</td>
-                                                            <td>10</td>
-                                                            <td>4</td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td>YSRC</td>
-                                                            <td>10</td>
-                                                            <td>8</td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td>INC</td>
-                                                            <td>10</td>
-                                                            <td>3</td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td>TRS</td>
-                                                            <td>10</td>
-                                                            <td>1</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xs-12">
-                                    	<div class="panel panel-default m_0">
-                                        	<div class="panel-heading bg_f9">
-                                            	<h4 class="panel-title text-bold">ISSUES<span class="pull-right">TOTAL - 20</span></h4>
-                                            </div>
-                                            <div class="panel-body pad_0 table-scroll">
-                                            	<table class="table m_0 m_0">
-                                                	<tr>
-                                                    	<td width="80%">Muncipal Corporation</td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>R&B</td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>RTC</td>
-                                                        <td>45</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>Irrigation</td>
-                                                        <td>6</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>Agriculture</td>
-                                                        <td>4</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>Health & Medical</td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>Health & Medical</td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>Health & Medical</td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                            	<div class="row" id="propertiesId">
+                                	
+                                    
                                 </div>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-md-offset-3">
+                                    	<div class="panel panel-default m_0">
+                                        	<div class="panel-heading bg_f9">
+                                            	<h4 class="panel-title text-bold">ISSUES<span class="pull-right" id="issuesCount">TOTAL COUNT - 0</span></h4>
+                                            </div>
+                                            <div class="panel-body pad_0">
+                                            	<table class="table m_0 m_0" id="issuesSummary">
+                                                	
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -913,14 +670,20 @@ var globalCadreId = '${cadreId}';
                 </div>
             </div>
         </div>
-        <div class="row">
+		<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
+				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
+					<div class="panel-group surveyDetailsCls" id="accordion" role="tablist" aria-multiselectable="true">
+					</div>
+		</div>
+       <!-- <div class="row">
         	<div class="col-md-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-credit-card"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
                     </div>
+					<div></div>
 					<center><h3>Survey Details Not Available.</h3></center>
-                    <!--<div class="panel-body">
+                    <div class="panel-body">
                     	<div>
                           <!-- Nav tabs -->
                           <!--<ul class="nav nav-tabs tab-list" role="tablist">
@@ -1232,10 +995,10 @@ var globalCadreId = '${cadreId}';
                           </div>
                         
                         </div>
-                    </div>  -->
+                    </div>  
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </section>
 		
@@ -1344,31 +1107,29 @@ var globalCadreId = '${cadreId}';
 						 $("#imagePathId").html('<img src="images/search_details_member_imahe.png" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">');
 					 }
 					 
-					 
-					/*  //radioBtnIds
-					 if(result.tehsilId !=null || result.tehsilId !=0){
-						 globalTehsilId=result.tehsilId;
-						 globalPanchayatId=result.panchayatId;
-					 } */
-					 
 					 //assigning radio ButtonIds for News 
 					 
 					 $("#panchayatRadioNewsId").val(result.tehsilId);
 					 $("#mandalRadioNewsId").val(result.panchayatId);
 					 
 					 //Hiding Panchayat && Mandal Div
-					 if(result.tehsilId !=null && result.tehsilId !=0){
-						$("#hidingMandalCls").show();
+					 if(result.localElectionBody ==0 || result.localElectionBody ==null){
+						$(".hidingMandalCls").show();
+						//$('#panchayatRadioNewsId').prop('checked', true);
 					 }else{
-						 $("#hidingMandalCls").hide();
+						//$('#aConstiRadioNewsId').prop('checked', true);
+						 $(".hidingMandalCls").hide();					 
 					 }
-					 
+					 $('#districtRadioNewsId').prop('checked', true);
 					 
 					  $("#aConstiRadioNewsId").val(result.constituencyId);
 					  $("#pConstiRadioNewsId").val(result.pConstituencyId);
 					  $("#districtRadioNewsId").val(result.districtId);
 					  
-					 
+					  //Calling WebService 
+						   getCandidateAndLocationSummaryNews();
+
+					
 					 //
 					  $("#dataLoadingsImgForownBoothDetailsId").hide();
 					  $("#dataLoadingsImgForImagePath").hide();
@@ -1729,7 +1490,6 @@ $(document).ready(function() {
 	endDate: moment(),
 	minDate: '01/01/2012',
 	maxDate: '12/31/2015',
-	dateLimit: { days: 60 },
 	showDropdowns: true,
 	showWeekNumbers: true,
 	timePicker: false,
@@ -1745,7 +1505,7 @@ $(document).ready(function() {
 	},
 	opens: 'left',
 	buttonClasses: ['btn btn-default'],
-	applyClass: 'btn-small btn-primary',
+	applyClass: 'btn-small btn-primary newsSubmitBtn',
 	cancelClass: 'btn-small',
 	format: 'MM/DD/YYYY',
 	separator: ' to ',
@@ -1803,6 +1563,10 @@ $(document).ready(function() {
   });
 
 });
+$(document).on("click",".newsSubmitBtn",function(){
+	getCandidateAndLocationSummaryNews();
+});
+
 </script>
 <script type="text/javascript">
 $(function () {
@@ -2239,6 +2003,12 @@ $(document).on("click",".newsRadioCls",function(){
 
 function getCandidateAndLocationSummaryNews(){
 	
+	//rebuilding the blocks
+	$("#candidateCategoryWiseNewsId").html("");
+	$("#propertiesId").html("");
+	$("#issuesSummary").html("");
+	$("#issuesCount").html("");
+	
 		var locatioinType;
 		var locationId;
 		if($(".newsRadioCls").is(':checked')) {
@@ -2251,11 +2021,11 @@ function getCandidateAndLocationSummaryNews(){
 				locationId=$("#mandalRadioNewsId").val();
 			}
 			else if($("#aConstiRadioNewsId").is(':checked')){
-				locatioinType="assemblyConstituency";
+				locatioinType="constituency";
 				locationId=$("#aConstiRadioNewsId").val();
 			}
 			else if($("#pConstiRadioNewsId").is(':checked')){
-				locatioinType="parliamentConstituency";
+				locatioinType="parliament";
 				locationId=$("#pConstiRadioNewsId").val();
 			}
 			else if($("#districtRadioNewsId").is(':checked')){
@@ -2277,9 +2047,15 @@ function getCandidateAndLocationSummaryNews(){
 		}
 
 		//3424,47,"09-06-2015";,"15-07-2015";
+		if(globalCandidateId ==undefined || globalCandidateId ==null){
+			globalCandidateId=0;
+		}
 		candidateId=globalCandidateId;
 		locationType=locatioinType;
 		locationId=locationId;
+		//locationType="district";
+		//locationId=13;
+		
 		startDate=startDate;
 		endDate=endDate;
 
@@ -2299,24 +2075,31 @@ function getCandidateAndLocationSummaryNews(){
                                         str+='<td>NEUTRAL ARTICLES <span class="pull-right text-bold">'+result.candidateSummary.neutralCount+'</span></td>';
                                     str+='</tr>';
                                 str+='</table>';
-                                str+='<table class="table m_0 m_0">';
-                                	str+='<thead>';
-                                    	str+='<th width="50%">CATEGORY NAME</th>';
-                                        str+='<th>POSITIVE</th>';
-                                        str+='<th>NEGATIVE</th>';
-                                        str+='<th>NEUTRAL</th>';
-                                    str+='</thead>';
-                                    str+='<tbody>';
-									for(var i in result.candidateSummary.categoryList){
-                                    	str+='<tr>';
-                                        	str+='<td id="'+result.candidateSummary.categoryList[i].categoryId+'">'+result.candidateSummary.categoryList[i].categoryName+'</td>';
-                                            str+='<td><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></td>';
-                                            str+='<td><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></td>';
-                                            str+='<td><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></td>';
-                                        str+='</tr>';
-                                    }
-                                    str+='</tbody>';
-                                str+='</table>';
+								if(result.candidateSummary.categoryList !=null && result.candidateSummary.categoryList.length>0){
+									str+='<table class="table m_0 m_0">';
+										str+='<thead>';
+											str+='<th width="50%">CATEGORY NAME</th>';
+											str+='<th>POSITIVE</th>';
+											str+='<th>NEGATIVE</th>';
+											str+='<th>NEUTRAL</th>';
+										str+='</thead>';
+										str+='<tbody>';
+										
+											for(var i in result.candidateSummary.categoryList){
+												str+='<tr>';
+													str+='<td id="'+result.candidateSummary.categoryList[i].categoryId+'">'+result.candidateSummary.categoryList[i].categoryName+'</td>';
+													str+='<td><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></td>';
+													str+='<td><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></td>';
+													str+='<td><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></td>';
+												str+='</tr>';
+											}
+									
+										str+='</tbody>';
+									str+='</table>';
+								}
+								else{
+										str+='<div>&nbsp Data Not Available.</div>';
+									}
                     str+='</div> ';
 				
 					$("#candidateCategoryWiseNewsId").html(str);
@@ -2325,11 +2108,134 @@ function getCandidateAndLocationSummaryNews(){
 				}
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
 					buildingIssuesTable(result.departmentSummary);
-				}		
+				}else{
+					$("#issuesSummary").html("<h5>&nbsp Data Not Available</h5>");
+				}
+
+				if(result.locationSummary !=null){
+					$("#propertiesId").html("");
+					buildingPropertiesResult(result.locationSummary);
+				}else{
+					$("#propertiesId").html("<h4>Data Not Available</h4>");
+				}
 		}else{
 			$("#newsMainDivId").html("Data Not Available.");
 		}
 	}); 
+}
+	
+	function buildingIssuesTable(result){
+		$("#issuesSummary").html("");
+		$("#issuesCount").html("");
+		var str = "";
+		var ttlCount = result[0].totalCount;
+		$("#issuesCount").html(" TOTAL COUNT - "+ttlCount);
+		for(var i in result){
+			str +="<tr>";
+			str +="<td width='80%'>"+result[i].partyName+"</td>";
+			str +="<td>"+result[i].count+"</td>";
+			str +="</tr>";
+		}
+		$("#issuesSummary").html(str);
+	}
+	
+	function buildingPropertiesResult(result){
+		$("#propertiesId").html("");
+		var props = result.typeList;
+		var str = '';
+		if(props!=null && props.length>0){
+			for(var i in props){
+				if(props[i].propertyType=="detail"){
+					str+='<div class="col-md-6" style="height:450px;">';
+                        str+='<div class="panel panel-default">';
+                        str+='<div class="panel-heading bg_f9">';
+                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
+                        str+='</div>';
+                        str+='<div class="panel-body pad_0">';
+                        str+='<table class="table m_0 m_0" id="analysisStoriesId">';
+                        str+='<thead>';
+                        str+='<tr>';
+                        str+='<th>Party Name</th>';
+                        str+='<th>Positive</th>';
+                        str+='<th>Negative</th>';
+                        str+='<th>Neutral</th>';
+                        str+='</tr>';
+                        str+='</thead>';
+						for(var j in props[i].partiesList){
+							str+='<tr>';
+							str+='<td>'+props[i].partiesList[j].partyName+'</td>';
+							for(var k in props[i].partiesList[j].oppenentsList){
+								str+='<td>';
+								if(props[i].partiesList[j].oppenentsList[k].aliasName=='Pos'){
+									str+='<span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+								}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='neg'){
+									str+='<span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+								}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='Neutral'){
+									str+='<span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+								}
+								str+='</td>';
+							}
+							str+='</tr>';
+						}
+                       
+                        str+='</table>';
+                        str+='</div>';
+                        str+='</div>';
+					str+='</div>';
+				}else if(props[i].propertyType=="versus"){
+					str+='<div class="col-md-6" style="height:450px;">';
+                        str+='<div class="panel panel-default">';
+                        str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
+                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+' </h4>';
+                        str+='</div>';
+                        str+='<div class="panel-body pad_0">';
+                        str+='<table class="table m_0 table-bordered m_0">';
+						for(var j in props[i].partiesList){
+							str+='<h5 style="font-weight:bold;"><center> BY '+props[i].partiesList[j].partyName+' PARTY </center></h5>';
+							for(var k in props[i].partiesList[j].oppenentsList){
+								str+='<tr>';
+								str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
+								str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
+								str+='</tr>';
+							}
+						}
+						str+='<tr>';
+						str+='<td>&nbsp;</td>';
+						str+='<td>&nbsp;</td>';
+						str+='</tr>';
+						str+='</table>';
+                        str+='</div>';
+                        str+='</div>';
+                    str+='</div>';
+				}else if(props[i].propertyType=="summary"){
+					str+='<div class="col-md-6">';
+                        str+='<div class="panel panel-default">';
+                        str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
+                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
+                        str+='</div>';
+                        str+='<div class="panel-body pad_0">';
+                        str+='<table class="table m_0 table-bordered m_0">';
+						for(var j in props[i].partiesList){
+							str+='<tr>';
+							str+='<td>'+props[i].partiesList[j].partyName+'</td>';
+							str+='<td>'+props[i].partiesList[j].count+'</td>';
+							str+='</tr>';
+						}
+						str+='</table>';
+                        str+='</div>';
+                        str+='</div>';
+                    str+='</div>';
+				}
+			}
+		}
+		$("#propertiesId").html(str);
+	}
+	
+	$(document).on("click",".ranges li",function(){
+		getCandidateAndLocationSummaryNews();
+	});
+	
+	//Dont Delete the Below Content Please..
 	
 	 /* var jsObj={
 		candidateId:347,
@@ -2346,7 +2252,7 @@ function getCandidateAndLocationSummaryNews(){
 				console.log(result);
 			}); */
 	
-}
+
 
 function getCadreIdByMemberShipId()
 {
