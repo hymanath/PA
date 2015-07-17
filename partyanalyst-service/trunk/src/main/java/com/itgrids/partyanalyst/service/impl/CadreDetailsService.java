@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -1720,6 +1721,146 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		
 	}
+	
+	
+  public ComplaintStatusCountVO getCategoryWiseStatusCount(Long tdpCadreId)
+  {
+	  ComplaintStatusCountVO returnVo = null;
+		try{
+			String memberShipNo = tdpCadreDAO.getMemberShipIdByCadreId(tdpCadreId);
+			 if(memberShipNo != null)
+			 {
+				   List<Object[]> list = tdpCadreDAO.getCategorywiseStatusCount(memberShipNo);//0typeOfissue,1count,2 completedstatus
+				    
+				   if(list != null && list.size() > 0)
+				   {
+					   Long totalComplaints = 0l;
+				    	 returnVo = new ComplaintStatusCountVO();
+					     List<ComplaintStatusCountVO> statusList = new ArrayList<ComplaintStatusCountVO>();
+					     returnVo.setSubList(statusList);
+				    	
+						 setStatusList1(statusList);//ProblemStatus
+						 for(Object[] params: list)
+						 {
+							 ComplaintStatusCountVO statusVO = getMatchedVO(params[2].toString(),statusList);
+							 totalComplaints += (params[1] != null?(Long)params[1]:0l);
+							 if(statusVO != null)
+							 {
+								 statusVO.setCount(params[1] != null?statusVO.getCount()+(Long)params[1]:0l);
+							 }
+						 }
+						 
+						 for(ComplaintStatusCountVO vo : statusList)//typeOfissue
+						 {
+							 List<ComplaintStatusCountVO> typeOfIssueVOList = new ArrayList<ComplaintStatusCountVO>();
+							 setTypeOfIssueVO(typeOfIssueVOList);
+							 vo.setSubList(typeOfIssueVOList);
+						 }
+						 
+						 for(Object[] params: list)
+						 {
+							 ComplaintStatusCountVO statusVO = getMatchedVO(params[2].toString(),statusList);
+							 if(statusVO != null)
+							 {
+								 ComplaintStatusCountVO typeOfIssueVO = getMatchedVO(params[0].toString(),statusVO.getSubList());
+								 if(typeOfIssueVO != null)
+								 {
+									 typeOfIssueVO.setCount(params[1] != null?(Long)params[1]:0l);
+								 }
+							 }
+							 
+					 }
+					 returnVo.setCount(totalComplaints);
+				}
+			}
+		 }
+			catch (Exception e) {
+				LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);
+			}
+			return returnVo;
+	 }
+	
+	
+	public ComplaintStatusCountVO getMatchedVO(String status,List<ComplaintStatusCountVO> statusList)
+	{
+		try{
+			for(ComplaintStatusCountVO statusCountVO: statusList)
+			{
+				if(statusCountVO.getStatus().equalsIgnoreCase(status))
+					return statusCountVO;
+			}
+			
+			return null;
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getMatchedVO() method, Exception -",e);
+			return null;
+		}
+	}
+	
+	public void setStatusList1(List<ComplaintStatusCountVO> statusList)
+	{
+	   ComplaintStatusCountVO vo = null;
+	
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Not Verified");
+		vo.setColor("#D64D54");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Verified");
+		vo.setColor("#481557");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Not Eligible");
+		vo.setColor("#663300");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("In Progress");
+		vo.setColor("#66CDCC");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Not Possible");
+		vo.setColor("#FF9933");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Approved");
+		vo.setColor("#69A78F");
+		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Completed");
+		vo.setColor("#00B17D");
+		statusList.add(vo);
+	}
+	 
+	 public void setTypeOfIssueVO(List<ComplaintStatusCountVO> list)
+	 {
+		 try{
+			 
+			    ComplaintStatusCountVO vo = null;
+			    
+			    vo = new ComplaintStatusCountVO();
+				vo.setStatus("Govt");
+				list.add(vo);
+				
+				vo = new ComplaintStatusCountVO();
+				vo.setStatus("Party");
+				list.add(vo);
+				
+				vo = new ComplaintStatusCountVO();
+				vo.setStatus("Welfare");
+				list.add(vo);
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setTypeOfIssueVO() method, Exception - ",e);
+		}
+		 
+	 }
+	
 	
 	
 }

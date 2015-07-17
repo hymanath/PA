@@ -369,5 +369,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public Long getCadreIdByMembershipId(String memberShipNo);
 	  
+	  public List<Object[]> getCategorywiseStatusCount(String memberShipNo);
+	  
 	  
 }

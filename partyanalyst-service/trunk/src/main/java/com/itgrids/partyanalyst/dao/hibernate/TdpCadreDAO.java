@@ -5415,6 +5415,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 		}
 		
+		public List<Object[]> getCategorywiseStatusCount(String memberShipNo)
+		{
+			Query query = getSession().createSQLQuery(" select type_of_issue as typeOfIssue,count(Complaint_id) as count ,Completed_Status as completedStatus from complaint_master where membership_id =:membershipId " +
+					" and (delete_status != '0' or delete_status is null) and Completed_Status is not null and Completed_Status != '' group by type_of_issue,Completed_Status order by type_of_issue ")
+			
+			
+			 .addScalar("typeOfIssue",Hibernate.STRING)
+			 .addScalar("count",Hibernate.LONG)
+			 .addScalar("completedStatus",Hibernate.STRING);
+			 
+			query.setParameter("membershipId", memberShipNo);
+			return query.list();
+		}
+		
 		
 		
 }
