@@ -1549,7 +1549,7 @@ $(document).on("click",".newsSubmitBtn",function(){
 
 </script>
 <script type="text/javascript">
-$(function () {
+/*$(function () {
 	Highcharts.setOptions({
         
     });
@@ -1593,7 +1593,7 @@ $(function () {
             ]
         }]
     });
-});
+});*/
 /*$(function () {
 	Highcharts.setOptions({
         
