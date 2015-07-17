@@ -161,7 +161,7 @@ var globalCadreId = '${cadreId}';
                     </div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body">
-                    	<h4 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold">8</span></h4>
+                    	<h4 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h4>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;" id="complaintStatusUL">
