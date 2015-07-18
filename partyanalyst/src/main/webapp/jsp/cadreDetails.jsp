@@ -1004,8 +1004,9 @@ var globalCadreId = '${cadreId}';
 	
 	<script>
 	
-	var globalCadreId;
-	 $(document).ready(function() {
+	var globalCadreId = '${cadreId}';
+	//var globalCadreId;
+	/*  $(document).ready(function() {
 			globalCadreId='${param.cadreId}';
 			//globalMembershipId='${param.memberShipId}';
 			cadreFormalDetailedInformation(globalCadreId);
@@ -1014,7 +1015,7 @@ var globalCadreId = '${cadreId}';
 			getTdpCadreSurveyDetails(globalCadreId,0,null);
 			
 			
-	 });
+	 }); */
 	
 	 var globalCandidateId; 
 	 var ownBoothDetailsVo;
@@ -2005,10 +2006,10 @@ function surveyShowHide(num)
 	$('.survey-hover'+num+'').toggle();
 }
  
-getTotalMemberShipRegistrationsInCadreLocation();		
+/* getTotalMemberShipRegistrationsInCadreLocation();		
 getCadreFamilyDetailsByCadreId();
 getElectionPerformanceInCadreLocation();
-getApprovedFinancialSupprotForCadre();
+getApprovedFinancialSupprotForCadre(); */
 
 //News
 //getCandidateAndLocationSummaryNews();
@@ -2443,8 +2444,54 @@ function buildCategroyInfo(result)
 	
 }
 
+
+var membershipId = '${memberShipId}';
+if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0))
+{
+		getCadreIdByMemberShipId();
+}
+else
+{
+		getCategoryWiseStatusCount();
+		getTotalMemberShipRegistrationsInCadreLocation();		
+		getCadreFamilyDetailsByCadreId();
+		getElectionPerformanceInCadreLocation();
+		getApprovedFinancialSupprotForCadre();
+		cadreFormalDetailedInformation(globalCadreId);
+		getEventDetailsOfCadre(globalCadreId);
+		getTdpCadreSurveyDetails(globalCadreId,0,null);
+		
+}
+function getCadreIdByMemberShipId()
+{
+	$.ajax({
+		type : "POST",
+		url  : "getCadreIdByMembershipIdAction.action",
+		data : {membershipId:"38324292"}
+		
+	}).done(function(result){
+		console.log(result);
+		if(result != null)
+		{
+			globalCadreId = result;
+			getCategoryWiseStatusCount();
+			getTotalMemberShipRegistrationsInCadreLocation();		
+			getCadreFamilyDetailsByCadreId();
+			getElectionPerformanceInCadreLocation();
+			getApprovedFinancialSupprotForCadre();
+			cadreFormalDetailedInformation(globalCadreId);
+			getEventDetailsOfCadre(globalCadreId);
+			getTdpCadreSurveyDetails(globalCadreId,0,null);
+		}
+		
+		
+	});
+	
+}
+
+
 //getCadreIdByMemberShipId();
-getCategoryWiseStatusCount();
+//getCategoryWiseStatusCount();
 </script>
 
 </body>
