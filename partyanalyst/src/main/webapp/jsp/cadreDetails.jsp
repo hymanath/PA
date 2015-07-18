@@ -380,11 +380,11 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS</h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="row"><!--id="memberShipCountDiv"-->
-						   <div class="col-md-12 col-xs-12 col-sm-12">
+                    	<div class="row" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+						   <!--<div class="col-md-12 col-xs-12 col-sm-12">
 								<div id="memberShipCountDiv" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 						   </div>
-                           <!-- <div class="col-md-2">
+                            <div class="col-md-2">
                                 <div id="myStathalf13" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
                             </div>
                             <div class="col-md-2">
@@ -1658,7 +1658,7 @@ $(document).on("click",".newsSubmitBtn",function(){
 			
 }
 
-function buildTotalMemberShipRegInCadreLocation(result)
+/*function buildTotalMemberShipRegInCadreLocation(result)
 {
 	 var locationNamesArr = [];
 	 locationNamesArr.push("Own Booth");
@@ -1706,6 +1706,40 @@ function buildTotalMemberShipRegInCadreLocation(result)
     });
 	 
 	 
+}*/
+
+function buildTotalMemberShipRegInCadreLocation(result)
+{
+	
+	var str = '';
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
+	str += '</div>';
+	if(result.cadreLocation =="Mandal")
+	{
+		str += '<div class="col-md-2">';
+        str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+        str += '</div>';
+	 }
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+    str += '</div>';
+	
+	str += '<div class="col-md-2">';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+	str += '</div>';
+	
+	 $("#memberShipCountDiv").html(str);
+	 $('.fulCircleCls').circliful();
 }
 
 
