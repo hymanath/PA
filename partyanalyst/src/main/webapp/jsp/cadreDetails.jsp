@@ -2100,7 +2100,7 @@ function getCandidateAndLocationSummaryNews(){
 					$("#propertiesId").html("");
 					buildingPropertiesResult(result.locationSummary);
 				}else{
-					$("#propertiesId").html("<center><h4>Data Not Available</h4></center>");
+					$("#propertiesId").html("<center><h4>Properties Data Not Available</h4></center>");
 				}
 		}else{
 			$("#newsMainDivId").html("Data Not Available.");
