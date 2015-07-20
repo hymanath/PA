@@ -2081,7 +2081,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="cadreAddressDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreAddressDetailsDAO" >
+	<bean id="subEventDAO" class="com.itgrids.partyanalyst.dao.hibernate.SubEventDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
