@@ -1807,8 +1807,11 @@
 							str+='<td> '+result[i].tehsil+' </td>';
 						else
 							str+='<td style="text-align:center;"> - </td>';
+						if(result[i].tdpCadreCommitteeId != null)
+							str+='<td><a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreCommitteeId+'"> '+result[i].cadreName+' </a></td>';
+						else
+							str+='<td><a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'"> '+result[i].cadreName+' </a></td>';
 						
-						str+='<td> '+result[i].cadreName+' </td>';
 						if(result[i].committeeName != null){							
 							str+='<td> '+result[i].committeeName+' ('+result[i].committeePosition+')</td>';		
 						}	
