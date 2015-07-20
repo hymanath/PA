@@ -1438,13 +1438,13 @@ var globalCadreId = '${cadreId}';
 												str+='<tr>';
 													str+='<td colspan="2">';
 													str+='<table class="table table-bordered">';
-														str+='<thead>';
-															str+='<th style="text-align:center;">';
+														str+='<thead >';
+															str+='<th style="text-align:center;background-color:lightgrey;">';
 																str+=' Location ';
 															str+='</th>';
 															for(var k in results.verifierVOList[i].verifierVOList[4].verifierVOList)
 															{	
-																str+='<th>';
+																str+='<th style="background-color:lightgrey;">';
 																str+=''+results.verifierVOList[i].verifierVOList[4].verifierVOList[k].option+'';
 																str+='</th>';
 															colCount = colCount+1;
