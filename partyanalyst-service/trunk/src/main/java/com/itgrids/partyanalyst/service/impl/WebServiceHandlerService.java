@@ -2550,6 +2550,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		   	 					resultList.add(vo);
     		   	 				 }
     		   	 			 }
+    		   	 			 
+    		   	 			 
     	   	 			  }
     	   	 			  else
     	   	 			  {
@@ -2574,14 +2576,20 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		   	 				 }
     		   	 			 }
     	   	 			  }
+    	   	 			  
+    	   	 			  
     	   	 		  }
+    	   	 		  
+    	   	 		 if(resultList != null && resultList.size()>0)
+	       	   	 	  {
+	       	   	 		verifierVO = new VerifierVO();
+	       	   	 		verifierVO.setCount(surveyDetails.getLong("count"));
+	       	   	 		verifierVO.setTotalCount(surveyDetails.getLong("totalCount"));
+	       	   	 		verifierVO.setVerifierVOList(resultList);
+	       	   	 	  }
     	   	 	  }
     	   	 	  
-    	   	 	  if(resultList != null && resultList.size()>0)
-    	   	 	  {
-    	   	 		verifierVO = new VerifierVO();
-    	   	 		verifierVO.setVerifierVOList(resultList);
-    	   	 	  }
+    	   	 	 
     	 	  }
     	 	 
     	 	 
