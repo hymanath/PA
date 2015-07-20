@@ -1174,10 +1174,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return finalList;
 	}
-	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId){
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr){
 		VerifierVO verifierVO=new VerifierVO();
 		try{
-			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId);
+			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr);
 			return verifierVO;
 		}
 		catch(Exception e){
