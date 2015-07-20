@@ -2103,6 +2103,7 @@ function getCandidateAndLocationSummaryNews(){
 
 	 $.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
 		$("#dataLoadingsImgForNewsId").hide();
 		$("#hideShowNewsDiv").show();
@@ -2153,7 +2154,7 @@ function getCandidateAndLocationSummaryNews(){
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
 					buildingIssuesTable(result.departmentSummary);
 				}else{
-					$("#issuesSummary").html("<h5>&nbsp Data Not Available</h5>");
+					$("#issuesSummary").html("<center><h4>&nbsp No Data Available.</h4></center>");
 				}
 
 				if(result.locationSummary !=null){
