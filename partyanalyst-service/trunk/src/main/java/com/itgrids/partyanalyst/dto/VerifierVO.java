@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class VerifierVO implements Serializable{
 	private Long surveyAnswerInfoId;
 	private String question;
 	private String option;
-	private List<VerifierVO> verifierVOList;
+	private List<VerifierVO> verifierVOList=new ArrayList<VerifierVO>(0);
 	private List<VerifierVO> questionsList;
 	private String Date;
 	private String voterId;
@@ -29,7 +30,18 @@ public class VerifierVO implements Serializable{
 	private Long optionId;
 	private Map<String,VerifierVO> verifierVOMap;
 	private String isDeleted;
+	private String percentage;
 	
+	
+	
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+
 	public Long getOptionId() {
 		return optionId;
 	}
