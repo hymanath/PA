@@ -68,8 +68,16 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String type;
 	private String dataSourceType;
 	
+	private Long tdpCadreCommitteeId;
 	
 	
+	
+	public Long getTdpCadreCommitteeId() {
+		return tdpCadreCommitteeId;
+	}
+	public void setTdpCadreCommitteeId(Long tdpCadreCommitteeId) {
+		this.tdpCadreCommitteeId = tdpCadreCommitteeId;
+	}
 	public String getDataSourceType() {
 		return dataSourceType;
 	}

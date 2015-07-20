@@ -37,6 +37,11 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		return (Long) query.uniqueResult();
 	}
 	
-	
+	public List<Object[]> getTdpCadreCandidateIds(List<Long> finalCadreIDsList)
+	{
+		Query query=getSession().createQuery("select model.tdpCadre.tdpCadreId, model.candidate.candidateId from TdpCadreCandidate model where model.candidate.candidateId in (:finalCadreIDsList)");
+		query.setParameterList("finalCadreIDsList", finalCadreIDsList);
+		return query.list();
+	}
 
 }

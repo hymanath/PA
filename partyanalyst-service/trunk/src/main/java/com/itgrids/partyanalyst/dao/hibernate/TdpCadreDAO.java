@@ -4858,7 +4858,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						" 		  LEFT JOIN local_election_body LEB  on UA.local_election_body = LEB.local_election_body_id "+	
 						" 			LEFT JOIN election_type ET on LEB.election_type_id = ET.election_type_id "+					 
 					" 	 where  "+
-					" 		TC.tdp_cadre_id in (:tdpCadreIdsList) and TC.is_deleted = 'N' and TC.enrollment_year = 2014 "+
+					" 		TC.tdp_cadre_id in (:tdpCadreIdsList) and TC.is_deleted = 'N' and TC.enrollment_year = 2014  and TCM.is_active='Y' "+
 					" 		AND TC.address_id = UA.user_address_id and DC.year = 2009 order by  TC.first_name ");
 				
 				Query query = getSession().createSQLQuery(queryStr.toString());
