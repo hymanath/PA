@@ -111,6 +111,7 @@
 		<class>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</class>
 		<class>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</class>	
 		<class>com.itgrids.partyanalyst.model.TdpCadreCandidate</class>
+		<class>com.itgrids.partyanalyst.model.SubEvent</class>
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
