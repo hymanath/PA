@@ -22,7 +22,7 @@ public interface ICadreDetailsService {
 	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId);
 	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId,String membershipId);
 	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long cadreId);
-	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId);
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr);
 	public List<CandidateDetailsVO>  getCandidateElectDetatails(Long cadreId);
 	
 	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId);
