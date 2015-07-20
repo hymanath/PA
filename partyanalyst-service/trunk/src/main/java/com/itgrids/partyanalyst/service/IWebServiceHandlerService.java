@@ -97,7 +97,7 @@ public interface IWebServiceHandlerService {
 	 public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO);
 	 public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
 	 public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
-	 public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId);
+	 public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr);
 	 public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
 	 public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
 }
