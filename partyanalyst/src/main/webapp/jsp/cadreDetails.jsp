@@ -525,6 +525,8 @@ var globalCadreId = '${cadreId}';
                                 </div>
                             </div>
                         </div>
+					<center><img style="width: 100px; height: 100px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>
+					<div id="hideShowNewsDiv" style="display:none;">
                         <div class="panel panel-default m_top20">
                         	<div class="panel-heading bg_f9">
                             	<h4 class="panel-title text-bold text-center">
@@ -542,7 +544,7 @@ var globalCadreId = '${cadreId}';
                                 	
                                     
                                 </div>
-								<div class="row">
+								<!--<div class="row" id="issuesMainDiv">
 									<div class="col-md-6 col-xs-12 col-md-offset-3">
                                     	<div class="panel panel-default m_0">
                                         	<div class="panel-heading bg_f9">
@@ -555,9 +557,26 @@ var globalCadreId = '${cadreId}';
                                             </div>
                                         </div>
                                     </div>
-								</div>
+								</div>-->
                             </div>
                         </div>
+						<div id="issuesMainDiv" class="row">
+							<div class="col-md-12 col-xs-12">
+								<div class="panel panel-default">
+									<div class="panel-heading bg_white">
+										<h4 class="panel-title text-bold ">DEPARTMENT WISE ISSUES SUMMARY<span id="issuesCount" class="pull-right">TOTAL COUNT - 0</span></h4>
+									</div>
+									<div class="panel-body pad_0">
+										<div class="table-scroll">
+											<table id="issuesSummary" class="table m_0 m_0">
+												
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
                     </div>
                 </div>
             </div>
@@ -652,7 +671,7 @@ var globalCadreId = '${cadreId}';
         </div>
 		<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
-					<div class="panel-group surveyDetailsCls" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel-group surveyDetailsCls" id="accordionSurvey" role="tablist" aria-multiselectable="true">
 					</div>
 		</div>
        <!-- <div class="row">
@@ -1307,7 +1326,7 @@ var globalCadreId = '${cadreId}';
 								str+='<div class="panel panel-default">';
 								str+='<div class="panel-heading hideshowCls" role="tab" id="heading'+result.verifierVOList[i].id+''+i+'">';
 								  str+='<h4 class="panel-title text-bold">';
-									str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+result.verifierVOList[i].id+''+i+'" aria-expanded="true" aria-controls="collapse'+result.verifierVOList[i].id+''+i+'">'+result.verifierVOList[i].name+'</a>';
+									str+='<a role="button" data-toggle="collapse" data-parent="#accordionSurvey" href="#collapse'+result.verifierVOList[i].id+''+i+'" aria-expanded="true" aria-controls="collapse'+result.verifierVOList[i].id+''+i+'">'+result.verifierVOList[i].name+'</a>';
 								  str+='</h4>';
 								str+='</div>';
 								str+='<div id="collapse'+result.verifierVOList[i].id+''+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result.verifierVOList[i].id+''+i+'" attr_survey_id='+result.verifierVOList[i].id+' attr_cadre_id='+localCadreId+' attr_index_id='+i+'><img id="dataLoadingsImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>';
@@ -1336,7 +1355,7 @@ var globalCadreId = '${cadreId}';
 			
 	}
 		
-		$('#accordion').on('shown.bs.collapse', function() {
+		$('#accordionSurvey').on('shown.bs.collapse', function() {
 			var surveyId = $(this).find("div.in").attr("attr_survey_id");
 			var cadreId= $(this).find("div.in").attr("attr_cadre_id");
 			var indexId=$(this).find("div.in").attr("attr_index_id");
@@ -2025,6 +2044,10 @@ function getCandidateAndLocationSummaryNews(){
 	$("#issuesSummary").html("");
 	$("#issuesCount").html("");
 	
+	//data loading Image.
+	$("#dataLoadingsImgForNewsId").show();
+	$("#hideShowNewsDiv").hide();
+	
 		var locatioinType;
 		var locationId;
 		if($(".newsRadioCls").is(':checked')) {
@@ -2081,6 +2104,8 @@ function getCandidateAndLocationSummaryNews(){
 	 $.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
+		$("#dataLoadingsImgForNewsId").hide();
+		$("#hideShowNewsDiv").show();
 		
 		if(result !=null && result !=""){
 			var str="";
@@ -2123,7 +2148,7 @@ function getCandidateAndLocationSummaryNews(){
 				
 					$("#candidateCategoryWiseNewsId").html(str);
 				}else{
-					$("#candidateCategoryWiseNewsId").html("Data Not Available.");
+					$("#candidateCategoryWiseNewsId").html("Category Wise Data Not Available.");
 				}
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
 					buildingIssuesTable(result.departmentSummary);
@@ -2135,10 +2160,10 @@ function getCandidateAndLocationSummaryNews(){
 					$("#propertiesId").html("");
 					buildingPropertiesResult(result.locationSummary);
 				}else{
-					$("#propertiesId").html("<center><h4>Properties Data Not Available</h4></center>");
+					$("#propertiesId").html("Location Wise Data Not Available.");
 				}
 		}else{
-			$("#newsMainDivId").html("Data Not Available.");
+			$("#newsMainDivId").html("Problem Ocuured While Getting Data..Please Consider Admin..");
 		}
 	}); 
 }
@@ -2211,7 +2236,7 @@ function getCandidateAndLocationSummaryNews(){
                         
                         str+='</table>';
 						 if(!totalCheck){
-							 str+='<tr><center><h3>No Data Available</h3></center></tr>';
+							 str+='<tr><center><h4>No Data Available</h4></center></tr>';
 						 }
                         str+='</div>';
                         str+='</div>';
@@ -2245,11 +2270,11 @@ function getCandidateAndLocationSummaryNews(){
 								}
 							}
 							if(!isExist){
-									str+='<tr><center><h3>No Data Available</h3></center></tr>';
+									str+='<tr><center><h4>No Data Available</h4></center></tr>';
 								}
 						}
 						else{
-							str+='<tr><center><h3>No Data Available</h3></center></tr>';
+							str+='<tr><center><h4>No Data Available</h4></center></tr>';
 						}
 						str+='<tr>';
 						str+='</tr>';
@@ -2276,7 +2301,7 @@ function getCandidateAndLocationSummaryNews(){
 							}
 						}
 						if(valExist==false){
-								str+='<tr><center><h3>No Data Available</h3></center></tr>';
+								str+='<tr><center><h4>No Data Available</h4></center></tr>';
 							}
 						str+='</table>';
                         str+='</div>';
