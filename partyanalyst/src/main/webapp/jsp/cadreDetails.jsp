@@ -1344,8 +1344,8 @@ var globalCadreId = '${cadreId}';
 					if(searchTypeStr == 'All')
 					{
 						str+='<ul class="nav nav-tabs tab-list display-style" role="tablist">';
-						str+='<li class="active"><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\');" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.verifierVOList.length+'</a></li>';
-						str+='<li style="margin-top: -8px;"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\');" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;1</a></li>';
+						str+='<li class="active"><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\');" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+						str+='<li style="margin-top: -8px;"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\');" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
 					}
@@ -1439,7 +1439,7 @@ var globalCadreId = '${cadreId}';
 													str+='<td colspan="2">';
 													str+='<table class="table table-bordered">';
 														str+='<thead >';
-															str+='<th style="text-align:center;background-color:lightgrey;">';
+															str+='<th style="text-align:center;background-color:ligtgrey;">';
 																str+=' Location ';
 															str+='</th>';
 															for(var k in results.verifierVOList[i].verifierVOList[4].verifierVOList)
