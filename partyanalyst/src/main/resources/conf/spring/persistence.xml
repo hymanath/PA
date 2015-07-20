@@ -607,6 +607,7 @@
 			    
 			     <value>com.itgrids.partyanalyst.model.UserAddressType</value>
 			     <value>com.itgrids.partyanalyst.model.CadreAddressDetails</value>
+			      <value>com.itgrids.partyanalyst.model.SubEvent</value>
 			    
 				</list>
 			
