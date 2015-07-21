@@ -13035,6 +13035,7 @@ return mandalList;
 							 
 							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
 							 {
+								 //0.tdpCadreId, 1.candidateId
 								 tdpCadreIdssList = tdpCadreCandidateDAO.getTdpCadreCandidateIds(finalCadreIDsList);
 								 List<Object[]> representativeDetails = publicRepresentativeDAO.getCandidateInfoByCandidateIds(finalCadreIDsList);
 									
@@ -13059,7 +13060,7 @@ return mandalList;
 												{
 													for (Object[] tdpCadre : tdpCadreIdssList)
 													{
-														Long tdpCadreId = tdpCadre[1] != null ? Long.valueOf(tdpCadre[1].toString().trim()):0L;
+														Long tdpCadreId = tdpCadre[1] != null ? Long.valueOf(tdpCadre[1].toString().trim()):0L;//candidateId
 														if(id.longValue() == tdpCadreId.longValue())
 														{
 															tdpCadreCommitteeId = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString().trim()):0L;
