@@ -1314,6 +1314,8 @@ var globalCadreId = '${cadreId}';
 		}
 
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId){
+	var temp="ajax"+surveyId+"";
+			$("#"+temp).show();
 			var localCadreId=globalCadreId;
 			var surveyId=surveyId;
 			var indexId=indexId;
@@ -1337,6 +1339,7 @@ var globalCadreId = '${cadreId}';
 			}).done(function(result){
 			
 			if(result !=null){
+				$("#"+temp).hide();
 				$("#surveyDetailsMainDivId").show();
 				if(result.verifierVOList !=null){
 				if(surveyId ==0 && localCadreId !=0){
@@ -1359,12 +1362,12 @@ var globalCadreId = '${cadreId}';
 
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default">';
-								str+='<div class="panel-heading bg_f9" role="tab" id="heading1">';
+								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;">';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>';
-								str+='</h4>';
+								str+='</h4><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/loading.gif" style="display:none;width:25px;height:20px;">';
 								str+='</a>';
 								str+='</div>';
 								
@@ -1393,6 +1396,7 @@ var globalCadreId = '${cadreId}';
 				}
 			 }		
 			}else{
+				$("#"+temp).hide();
 				if(surveyId ==0 && localCadreId !=0){
 					$('.surveyDetailsCls').html('<div>Data Not Available.</div>');
 				}
