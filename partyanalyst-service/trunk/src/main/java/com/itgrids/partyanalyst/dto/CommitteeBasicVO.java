@@ -2,15 +2,16 @@ package com.itgrids.partyanalyst.dto;
 
 public class CommitteeBasicVO {
 	
-	private Long mainCommTotalCount;
-	private Long mainCommStartedCount;
-	private Long mainCommCompletedCount;
-	private Long mainCommTotalMembers;
+	private Long mainCommTotalCount = 0l;
+	private Long mainCommStartedCount = 0l;
+	private Long mainCommCompletedCount = 0l;
+	private Long mainCommTotalMembers = 0l;
 	
-	private Long affiCommTotalCount;
-	private Long affiCommStartedCount;
-	private Long affiCommCompletedCount;
-	private Long affiCommTotalMembers;
+	private Long affiCommTotalCount = 0l;
+	private Long affiCommStartedCount= 0l;
+	private Long affiCommCompletedCount= 0l;
+	private Long affiCommTotalMembers= 0l;
+	private String locationType;
 	
 	
 	
@@ -61,6 +62,12 @@ public class CommitteeBasicVO {
 	}
 	public void setAffiCommTotalMembers(Long affiCommTotalMembers) {
 		this.affiCommTotalMembers = affiCommTotalMembers;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
 	}
 	
 	

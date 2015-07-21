@@ -652,5 +652,39 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(List<Long> locationIdsList,List<Long> locationValuesList)
+	{
+		Query query = getSession().createQuery(" select count(model.tdpCommitteeId),model.tdpCommitteeLevelId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model where model.tdpCommitteeLevelId in " +
+				" (:locationIdsList) and model.tdpCommitteeLevelValue in (:locationValuesList) group by model.tdpCommitteeLevelId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		
+		query.setParameterList("locationIdsList",locationIdsList);
+		query.setParameterList("locationValuesList",locationValuesList);
+		return query.list();
+	}
+	
+	/*public List<Object[]> getCommitteesCountByDistrict(List<Long> locationIdsList,List<Long> locationValuesList,String type){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
+				" model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId " +// BASIC_COMMITTEE_ID sri
+				" from TdpCommittee model where  " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.district.districtId in(:districtIds) ");
+		
+		
+		str.append(" group by model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		
+		return query.list();
+	}*/
+	
+	
+	
 
 }
