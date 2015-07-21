@@ -70,16 +70,17 @@ i
 	display:block;
 	position:relative;
 	left:-22px;
+	top:15px;
 }	
 
 
 .calendar-style
 {
-	padding:3px;
-	border:1px solid #ccc;
-	font-size:20px;
-	margin-top:-6px;
-	cursor:pointer;
+	border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: -8px;
+    padding: 2px;
 }
 
 .m_top20
@@ -99,7 +100,7 @@ i
 
 .table-scroll
 {
-	height:220px;
+	max-height:220px;
 	overflow:auto;
 }
 
