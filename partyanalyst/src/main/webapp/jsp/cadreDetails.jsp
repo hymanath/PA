@@ -89,6 +89,14 @@ var globalCadreId = '${cadreId}';
 	<div class="container">
     	<div class="row">
         	<div class="col-md-4 bg_white" style="padding-top:10px;">
+			<input type="hidden" value="" id="cadreBoothId" />
+			<input type="hidden" value="" id="cadrePanchaytId" />
+			<input type="hidden" value="" id="cadremandalId" />
+			<input type="hidden" value="" id="cadreRuralORUrbanId" />
+			<input type="hidden" value="" id="cadreConstituencyId" />
+			<input type="hidden" value="" id="cadrePConstituencyId" />
+			<input type="hidden" value="" id="cadreDistrictId" />
+			
             	<table class="table m_0 table-bordered">
                 	<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>
@@ -1120,7 +1128,19 @@ var globalCadreId = '${cadreId}';
 						$("#dataLoadingsImgForImagePath").show();
 						
 				//nameId dobId ageId qualificationId occupationId voterIdSpan panchayatId mandalId constituencyId positionId representativeId
-					$("#nameId").html(result.name);
+					/* start Survey Fields */	
+									
+					$('#cadreBoothId').val(result.boothId);				
+					$('#cadrePanchaytId').val(result.panchayatId);
+					$('#cadremandalId').val(result.tehsilId);	
+					$('#cadreRuralORUrbanId').val(result.localElectionBody);						
+					$('#cadreConstituencyId').val(result.constituencyId);	
+					$('#cadrePConstituencyId').val(result.pconstituencyId);						
+					$('#cadreDistrictId').val(result.districtId);
+
+					/* end Survey Fields */
+					
+					 $("#nameId").html(result.name);
 					 $("#dobId").html(result.dateOfBirth); 
 					 $("#ageId").html(result.age);
 					 $("#qualificationId").html(result.qualification);
@@ -1354,7 +1374,7 @@ var globalCadreId = '${cadreId}';
 		}
 
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId){
-	var temp="ajax"+surveyId+"";
+			var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
 			var localCadreId=globalCadreId;
 			var surveyId=surveyId;
@@ -1483,7 +1503,7 @@ var globalCadreId = '${cadreId}';
 													str+='<td colspan="2">';
 													str+='<table class="table table-bordered">';
 														str+='<thead >';
-															str+='<th style="text-align:center;background-color:ligtgrey;">';
+															str+='<th style="text-align:center;background-color:lightgrey;">';
 																str+=' Location ';
 															str+='</th>';
 															for(var k in results.verifierVOList[i].verifierVOList[4].verifierVOList)
