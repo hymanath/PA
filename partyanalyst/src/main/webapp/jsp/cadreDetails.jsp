@@ -387,7 +387,7 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS</h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding:0px 15px;">
                     	<div class="row" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
 						   <!--<div class="col-md-12 col-xs-12 col-sm-12">
 								<div id="memberShipCountDiv" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -552,7 +552,7 @@ var globalCadreId = '${cadreId}';
                         <div class="panel panel-default">
                         	<div class="panel-heading bg_f9">
                             	<h4 class="panel-title text-bold text-center">
-                                	CANDIDATE CATEGORY WISE
+                                	CANDIDATE NEWS
                                 </h4>
                             </div>
 							<div id="candidateCategoryWiseNewsId"></div>
@@ -586,7 +586,9 @@ var globalCadreId = '${cadreId}';
 										<!-- -->
 									</div>
                                 	<div class="col-md-12">
-										<div class="row" id="propertiesId"></div>
+										<div class="row">
+											<div class="col-md-12" id="propertiesId"></div>
+										</div>
 									</div>
 									
                                 	
@@ -1904,31 +1906,36 @@ function buildTotalMemberShipRegInCadreLocation(result)
 {
 	
 	var str = '';
-	str += '<div class="col-md-2">';
+	str += '<table class="table m_0">';
+	str += '<tr>';
+	str += '<td>';
     str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
-	str += '</div>';
+	str += '</td>';
 	if(result.cadreLocation =="Mandal")
 	{
-		str += '<div class="col-md-2">';
+		str += '<td>';
         str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
-        str += '</div>';
+        str += '</td>';
 	 }
 	
-	str += '<div class="col-md-2">';
+	str += '<td>';
     str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
-    str += '</div>';
+    str += '</td>';
 	
-	str += '<div class="col-md-2">';
+	str += '<td>';
     str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
-    str += '</div>';
+    str += '</td>';
 	
-	str += '<div class="col-md-2">';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
-    str += '</div>';
-	
-	str += '<div class="col-md-2">';
+	str += '<td>';
     str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
-	str += '</div>';
+	str += '</td>';
+	
+	str += '<td>';
+    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+    str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	
 	
 	 $("#memberShipCountDiv").html(str);
 	 $('.fulCircleCls').circliful();
@@ -2273,7 +2280,7 @@ function getCandidateAndLocationSummaryNews(){
 		endDate=endDate;
 		
 		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf(".com")+4)); 
+		var wurl = url.substr(0,(url.indexOf(".com")+4));
 
 	 $.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
@@ -2281,7 +2288,6 @@ function getCandidateAndLocationSummaryNews(){
 	}).then(function(result) {
 		$("#dataLoadingsImgForNewsId").hide();
 		$("#hideShowNewsDiv").show();
-		
 		if(result !=null && result !=""){
 			var str="";
 				str+='<div class="panel-body pad_0">';
@@ -2323,7 +2329,7 @@ function getCandidateAndLocationSummaryNews(){
 				
 					$("#candidateCategoryWiseNewsId").html(str);
 				}else{
-					$("#candidateCategoryWiseNewsId").html("Category Wise Data Not Available.");
+					$("#candidateCategoryWiseNewsId").html("Candidate Wise Data Not Available.");
 				}
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
 					buildingIssuesTable(result.departmentSummary);
@@ -2338,7 +2344,7 @@ function getCandidateAndLocationSummaryNews(){
 					$("#propertiesId").html("Location Wise Data Not Available.");
 				}
 		}else{
-			$("#newsMainDivId").html("Problem Ocuured While Getting Data..Please Consider Admin..");
+			$("#newsMainDivId").html("Problem Ocuured While Getting Data..Please Contact Admin..");
 		}
 	}); 
 }
@@ -2381,7 +2387,7 @@ function getCandidateAndLocationSummaryNews(){
                         str+='<th>Neutral</th>';
                         str+='</tr>';
                         str+='</thead>';
-						$("#divId").show();
+						$("#divId").show();//thead Showing for Analysis
 						for(var j in props[i].partiesList){
 							
 							var condCheck=true;
@@ -2411,8 +2417,11 @@ function getCandidateAndLocationSummaryNews(){
 						}
                         
                         str+='</table>';
+						if(totalCheck){
+							 $("#divId").show();
+						}
 						 if(!totalCheck){
-							 $("#divId").hide();
+							 $("#divId").hide();//thead Hiding for Analysis
 							 str+='<tr><center><h5>No Data Available</h5></center></tr>';
 						 }
                         str+='</div>';
