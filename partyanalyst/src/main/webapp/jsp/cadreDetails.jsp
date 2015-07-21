@@ -497,10 +497,17 @@ var globalCadreId = '${cadreId}';
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
-                    </div>
+                    	<h4 class="panel-title text-bold" style="display:inline-block;"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
+						<div class="pull-right">
+							<div class="calendar-style"  id="reportrange">
+								<div class="caret"></div>
+								<i class="glyphicon glyphicon-calendar"></i>
+							</div>
+						</div>
+					</div>
+					
 					<div class="panel-body" id="newsMainDivId">
-                    	<div>
+                    	<!--<div>
 							
 							<label class="radio-inline">
                             	<input type="radio" name="radio" id="districtRadioNewsId" class="newsRadioCls">District
@@ -524,10 +531,17 @@ var globalCadreId = '${cadreId}';
                                 	<i class="glyphicon glyphicon-calendar"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
+								<div class="pull-right">
+									<div class="calendar-style"  id="reportrange" style="margin-top:-16px;">
+										<div class="caret"></div>
+										<i class="glyphicon glyphicon-calendar"></i>
+									</div>
+								</div>-->
+						
 					<center><img style="width: 100px; height: 100px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>
 					<div id="hideShowNewsDiv" style="display:none;">
-                        <div class="panel panel-default m_top20">
+                        <div class="panel panel-default">
                         	<div class="panel-heading bg_f9">
                             	<h4 class="panel-title text-bold text-center">
                                 	CANDIDATE CATEGORY WISE
@@ -535,12 +549,38 @@ var globalCadreId = '${cadreId}';
                             </div>
 							<div id="candidateCategoryWiseNewsId"></div>
                          </div>
+						
+						
+						
                         <div class="panel panel-default">
-                        	<div class="panel-heading bg_white">
+                        	<div class="panel-heading bg_f9">
                             	<h4 class="panel-title text-bold text-center">CANDIDATE LOCATION SPECIFIC NEWS</h4>
                             </div>
                             <div class="panel-body pad_0">
-                            	<div class="row" id="propertiesId">
+                            	<div class="row pad_10"  >
+                                	<div class="col-md-12" style="margin-bottom:10px;" >
+										<!-- -->
+											<label class="radio-inline">
+												<input type="radio" name="radio" id="districtRadioNewsId" class="newsRadioCls">District
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
+											</label>
+											<label class="radio-inline hidingMandalCls" style="display:none;">
+												<input type="radio" name="radio" id="mandalRadioNewsId" class="newsRadioCls">Mandal
+											</label>
+											<label class="radio-inline hidingMandalCls" style="display:none;">
+												<input type="radio" name="radio" id="panchayatRadioNewsId" class="newsRadioCls">Panchayat
+											</label>
+										<!-- -->
+									</div>
+                                	<div class="col-md-12">
+										<div class="row" id="propertiesId"></div>
+									</div>
+									
                                 	
                                     
                                 </div>
@@ -563,7 +603,7 @@ var globalCadreId = '${cadreId}';
 						<div id="issuesMainDiv" class="row">
 							<div class="col-md-12 col-xs-12">
 								<div class="panel panel-default">
-									<div class="panel-heading bg_white">
+									<div class="panel-heading bg_f9">
 										<h4 class="panel-title text-bold ">DEPARTMENT WISE ISSUES SUMMARY<span id="issuesCount" class="pull-right">TOTAL COUNT - 0</span></h4>
 									</div>
 									<div class="panel-body pad_0">
@@ -677,7 +717,7 @@ var globalCadreId = '${cadreId}';
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><img src="dist/img/survey-deails.png">&nbsp;&nbsp;&nbsp;SURVEY  DETAILS</h4>
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
                     </div>
                     <div class="panel-body">
 					<div class="surveyDetailssCls">	</div>
@@ -1521,7 +1561,7 @@ var globalCadreId = '${cadreId}';
 					for(var i in result){
 						if(result[i].status==true)
 						{
-							str+='<ul class="wl-sub-details">';
+							str+='<ul class="wl-sub-details" style="margin-bottom:0px;">';
 							str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
 							str+='<strong><span style="color:green">Won</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
 							str+='</ul>';
@@ -1964,8 +2004,8 @@ function buildElectionPerformanceInCadreLocation(result)
 	{
 		
 		str += '<div class="panel panel-default">';
-		str += '<div class="panel-heading  bg_white" style="padding-bottom:0px;" role="tab" id="headingOne'+result[i].year+'">';
-		str += '<h4 class="panel-title text-bold">';
+		str += '<div class="panel-heading  bg_white" style="" role="tab" id="headingOne'+result[i].year+'">';
+		str += '<h4 class="panel-title">';
 		str += '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+result[i].year+'" ';
 		if(result[i].year == "2014")
 		  str += ' aria-expanded="true" ';
@@ -1982,9 +2022,10 @@ function buildElectionPerformanceInCadreLocation(result)
 	    str += '</div>';
 		
 		str += '<div id="collapseOne'+result[i].year+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+result[i].year+'">';
-		str += '<div class="panel-body" style="padding-bottom:0px;border-top:0px" >';
+		str += '<div class="panel-body" style="padding: 0px;" >';
 		
 		str += '<div class="row">';
+		str += '<div class="col-md-12">';
 		str += '<table class="table m_0">';
 		str += '<tr>';
 	 if(result[i].year != "2009")
@@ -2019,6 +2060,7 @@ function buildElectionPerformanceInCadreLocation(result)
 	
 		str += '</tr>';
 		str += '</table>';
+		str += '</div>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -2211,7 +2253,7 @@ function getCandidateAndLocationSummaryNews(){
 		endDate=endDate;
 		
 		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf(".com")+4));
+		var wurl = url.substr(0,(url.indexOf(".com")+4)); 
 
 	 $.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
@@ -2255,7 +2297,7 @@ function getCandidateAndLocationSummaryNews(){
 									str+='</table>';
 								}
 								else{
-										str+='<div>&nbsp Data Not Available.</div>';
+										str+='<div class="text-center">&nbsp No Data Available.</div>';
 									}
                     str+='</div> ';
 				
@@ -2266,7 +2308,7 @@ function getCandidateAndLocationSummaryNews(){
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
 					buildingIssuesTable(result.departmentSummary);
 				}else{
-					$("#issuesSummary").html("<center><h4>&nbsp No Data Available.</h4></center>");
+					$("#issuesSummary").html("<center><h5>&nbsp No Data Available.</h5></center>");
 				}
 
 				if(result.locationSummary !=null){
@@ -2306,12 +2348,12 @@ function getCandidateAndLocationSummaryNews(){
 					str+='<div class="col-md-6">';
                         str+='<div class="panel panel-default">';
                         str+='<div class="panel-heading bg_f9">';
-                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
+                        str+='<h4 class="panel-title text-center text-capitalize">'+props[i].aliasName+'</h4>';
                         str+='</div>';
                         str+='<div class="panel-body pad_0 table-scroll">';
 						var totalCheck=false;
                         str+='<table class="table m_0 m_0" id="analysisStoriesId">';
-                        str+='<thead>';
+                        str+='<thead id="divId" style="display:none;">';
                         str+='<tr>';
                         str+='<th>Party Name</th>';
                         str+='<th>Positive</th>';
@@ -2319,6 +2361,7 @@ function getCandidateAndLocationSummaryNews(){
                         str+='<th>Neutral</th>';
                         str+='</tr>';
                         str+='</thead>';
+						$("#divId").show();
 						for(var j in props[i].partiesList){
 							
 							var condCheck=true;
@@ -2349,16 +2392,17 @@ function getCandidateAndLocationSummaryNews(){
                         
                         str+='</table>';
 						 if(!totalCheck){
-							 str+='<tr><center><h4>No Data Available</h4></center></tr>';
+							 $("#divId").hide();
+							 str+='<tr><center><h5>No Data Available</h5></center></tr>';
 						 }
                         str+='</div>';
                         str+='</div>';
-					str+='</div>';
+					
 				}else if(props[i].propertyType=="versus"){
-					str+='<div class="col-md-6">';
+					
                         str+='<div class="panel panel-default">';
                         str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
-                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+' </h4>';
+                        str+='<h4 class="panel-title text-center text-capitalize">'+props[i].aliasName+' </h4>';
                         str+='</div>';
                         str+='<div class="panel-body pad_0 table-scroll">';
                         str+='<table class="table m_0 table-bordered m_0">';
@@ -2383,23 +2427,23 @@ function getCandidateAndLocationSummaryNews(){
 								}
 							}
 							if(!isExist){
-									str+='<tr><center><h4>No Data Available</h4></center></tr>';
+									str+='<tr><center><h5>No Data Available</h5></center></tr>';
 								}
 						}
 						else{
-							str+='<tr><center><h4>No Data Available</h4></center></tr>';
+							str+='<tr><center><h5>No Data Available</h5></center></tr>';
 						}
 						str+='<tr>';
 						str+='</tr>';
 						str+='</table>';
                         str+='</div>';
                         str+='</div>';
-                    str+='</div>';
-				}else if(props[i].propertyType=="summary"){
-					str+='<div class="col-md-6">';
+                   
+				}else if(props[i].propertyType=="summary" && props[i].aliasName =="SPOT NEWS"){
+					
                         str+='<div class="panel panel-default">';
                         str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
-                        str+='<h4 class="panel-title text-bold text-center text-capitalize">'+props[i].aliasName+'</h4>';
+                        str+='<h4 class="panel-title text-center text-capitalize">'+props[i].aliasName+'</h4>';
                         str+='</div>';
                         str+='<div class="panel-body pad_0 table-scroll">';
                         str+='<table class="table m_0 table-bordered m_0">';
@@ -2414,7 +2458,33 @@ function getCandidateAndLocationSummaryNews(){
 							}
 						}
 						if(valExist==false){
-								str+='<tr><center><h4>No Data Available</h4></center></tr>';
+								str+='<tr><center><h5>No Data Available</h5></center></tr>';
+							}
+						str+='</table>';
+                        str+='</div>';
+                        str+='</div>';
+                    str+='</div>';
+				}
+				else if(props[i].propertyType=="summary" && props[i].aliasName !="SPOT NEWS"){
+					str+='<div class="col-md-6">';
+                        str+='<div class="panel panel-default">';
+                        str+='<div class="panel-heading bg_f9" style="padding-left:5px;padding-right:5px;">';
+                        str+='<h4 class="panel-title text-center text-capitalize">'+props[i].aliasName+'</h4>';
+                        str+='</div>';
+                        str+='<div class="panel-body pad_0 table-scroll">';
+                        str+='<table class="table m_0 table-bordered m_0">';
+						var valExist=false;
+						for(var j in props[i].partiesList){
+							if( props[i].partiesList[j].count !=0){
+								valExist=true;
+								str+='<tr>';
+									str+='<td>'+props[i].partiesList[j].partyName+'</td>';
+									str+='<td>'+props[i].partiesList[j].count+'</td>';
+								str+='</tr>';
+							}
+						}
+						if(valExist==false){
+								str+='<tr><center><h5>No Data Available</h5></center></tr>';
 							}
 						str+='</table>';
                         str+='</div>';
@@ -2424,6 +2494,9 @@ function getCandidateAndLocationSummaryNews(){
 			}
 		}
 		$("#propertiesId").html(str);
+		$('.table-scroll').scrollator({
+			custom_class: 'table-scroll',
+		});
 	}
 	
 	$(document).on("click",".ranges li",function(){
