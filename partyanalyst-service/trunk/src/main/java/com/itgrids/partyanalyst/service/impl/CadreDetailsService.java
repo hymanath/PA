@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -71,6 +72,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private ICadreRegistrationService cadreRegistrationService;
+	private ITdpCommitteeDAO tdpCommitteeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();;
 	
 	
@@ -250,6 +252,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.cadreRegistrationService = cadreRegistrationService;
 	}
 
+	public ITdpCommitteeDAO getTdpCommitteeDAO() {
+		return tdpCommitteeDAO;
+	}
+	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
+		this.tdpCommitteeDAO = tdpCommitteeDAO;
+	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
@@ -1897,24 +1905,404 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(userAddress != null)
 			{
 				if(locationType.equalsIgnoreCase("district"))
-				{
+					return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId());
 					
-				}
 				else if(locationType.equalsIgnoreCase("mandal"))
 				{
 					
 				}
-				else if(locationType.equalsIgnoreCase("constituency"))
+				else if(locationType.equalsIgnoreCase("panchayat"))
 				{
 					
 				}
+				else if(locationType.equalsIgnoreCase("assemblyConstituency"))
+					return  getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"assemblyConstituency");
+				
+				else if(locationType.equalsIgnoreCase("parliamentConstituency"))
+					return getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"parliamentConstituency");
+				
+				
 			}
 				
-			
+			return committeeBasicVOList;
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getLocationwiseCommitteesCount() method, Exception - ",e);
+			return null;
 		}
-		return committeeBasicVOList;
+		
+	 }
+	 
+	 
+	 public List<CommitteeBasicVO> getDistrictwiseCommitteCount(Long districtId)
+	 {
+		 List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>();
+		 try{
+			 
+			 List<Long> levelIds = new ArrayList<Long>();
+			 levelIds.add(11l);
+			 
+			 List<Long> districtIds = new ArrayList<Long>();
+			 districtIds.add(districtId);
+			 
+			 setVillageCommitteesCount(districtIds, resultList);
+			 setMandalCommitteesCount(districtIds,resultList);
+			 setDistrictCommitteesCount(districtIds,resultList);
+			 
+		 }catch (Exception e) {
+				LOG.error("Exception Occured in getDistrictwiseCommitteCount() method, Exception - ",e);
+			}
+		 return resultList;
+		 
+	 }
+	 
+	 public void setDistrictCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 {
+		try{
+			List<Long> levelIds = new ArrayList<Long>();
+			 levelIds.add(11l);
+			 
+			 CommitteeBasicVO districtVO = new CommitteeBasicVO();
+			 districtVO.setLocationType("District");
+			
+			 List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null, districtIds);//Total Committee Members Count
+			  setTotalCommitteeMembersCount(list, districtVO);
+			 
+		     List<Object[]> list2 = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, levelIds);//total committes Count
+		     setTotalCommitteesCount(list2, districtVO);
+		     
+		     //0committeeId,1committeeTypeid
+		     List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(levelIds, null, null, "started", districtIds);
+		     setStartedCommitteesCount(stResLst,districtVO);
+		     
+		   //0committeeId,1committeeTypeid
+			 List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(levelIds, null, null, "completed", districtIds);
+			 setCompletedCommitteesCount(endResLst, districtVO);
+			 
+			 resultList.add(districtVO);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setDistrictwiseCountToVO() method, Exception - ",e);
+		}
+	 }
+	 
+	 public void setMandalCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 {
+		try{
+			CommitteeBasicVO mandalVO = new CommitteeBasicVO();
+			mandalVO.setLocationType("Mandal");
+			
+			List<Long> mandalMunciDivisionIds = new ArrayList<Long>();
+			mandalMunciDivisionIds.add(5l);
+			mandalMunciDivisionIds.add(7l);
+			mandalMunciDivisionIds.add(9l);
+			
+			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, null, null, districtIds);
+			setTotalCommitteeMembersCount(memResLst, mandalVO);
+			
+			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, mandalMunciDivisionIds);
+			setTotalCommitteesCount(ttlList, mandalVO);
+			
+			//0committeeId,1committeeTypeid
+			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, null, null, "started", districtIds);
+			setStartedCommitteesCount(stResLst, mandalVO);
+			
+			//0committeeId,1committeeTypeid
+			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, null, null, "completed", districtIds);
+			setCompletedCommitteesCount(endResLst, mandalVO);
+			
+			resultList.add(mandalVO);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setMandalCommitteesCountToVO() method, Exception - ",e);
+		}
+	 }
+	 
+	 
+	 public void setVillageCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 {
+		try{
+			CommitteeBasicVO villageVO = new CommitteeBasicVO();
+			villageVO.setLocationType("Village");
+			
+			List<Long> villageWardIds = new ArrayList<Long>();
+			villageWardIds.add(6l);
+			villageWardIds.add(8l);
+			
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, null, null, districtIds);
+			setTotalCommitteeMembersCount(memResLstVill, villageVO);
+			
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, villageWardIds);
+			setTotalCommitteesCount(ttlListVill, villageVO);
+			
+			//0committeeId,1committeeTypeid
+			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, null, null, "started", districtIds);
+			setStartedCommitteesCount(stResLstVill, villageVO);
+			
+			//0committeeId,1committeeTypeid
+			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, null, null, "completed", districtIds);
+			setCompletedCommitteesCount(endResLstVill, villageVO);
+			
+			resultList.add(villageVO);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setVillageCommitteesCount() method, Exception - ",e);
+		}
+	 }
+	 
+	 
+	 
+	 public void setTotalCommitteeMembersCount(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[2] != null && new Long(params[2].toString()).equals(1l))
+						basicVO.setMainCommTotalMembers(basicVO.getMainCommTotalMembers()+(Long)params[0]); //total Main Committee Members
+					 else
+					   basicVO.setAffiCommTotalMembers(basicVO.getAffiCommTotalMembers()+(Long)params[0]);//total Affiliated Committees Members
+				 } 
+			 }
+			 
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setTotalCommitteeMembersCount() method, Exception - ",e);
+		}
+	 }
+	 
+	 
+	 public void setTotalCommitteesCount(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[2] != null && new Long(params[2].toString()).equals(1l))
+							basicVO.setMainCommTotalCount(basicVO.getMainCommTotalCount()+(Long)params[0]); //total Main Committees Count
+					else
+					  basicVO.setAffiCommTotalCount(basicVO.getAffiCommTotalCount()+(Long)params[0]);//total Affiliated Committees Count
+				 }
+			 }
+			 
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setTotalCommitteesCount() method, Exception - ",e);
+		}
+	 }
+	 
+	 public void  setStartedCommitteesCount(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[1] != null && new Long(params[1].toString()).equals(1l))
+							basicVO.setMainCommStartedCount(basicVO.getMainCommStartedCount()+(Long)params[0]); //total Main Committees Count
+					else
+					  basicVO.setAffiCommStartedCount(basicVO.getAffiCommStartedCount()+(Long)params[0]);//total Affiliated Committees Count
+				 }
+			 }
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setStartedCommitteesCount() method, Exception - ",e);
+		} 
+	 }
+	 
+	 public void  setStartedCommitteesCount1(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[2] != null && new Long(params[2].toString()).equals(1l))
+							basicVO.setMainCommStartedCount(basicVO.getMainCommStartedCount()+(Long)params[0]); //total Main Committees Count
+					else
+					  basicVO.setAffiCommStartedCount(basicVO.getAffiCommStartedCount()+(Long)params[0]);//total Affiliated Committees Count
+				 }
+			 }
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setStartedCommitteesCount() method, Exception - ",e);
+		} 
+	 }
+	 
+	 public void  setCompletedCommitteesCount(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[1] != null && new Long(params[1].toString()).equals(1l))
+							basicVO.setMainCommCompletedCount(basicVO.getMainCommCompletedCount()+(Long)params[0]); //total Main Committees Count
+					else
+					  basicVO.setAffiCommCompletedCount(basicVO.getAffiCommCompletedCount()+(Long)params[0]);//total Affiliated Committees Count
+				 }
+			 }
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setStartedCommitteesCount() method, Exception - ",e);
+		} 
+	 }
+	 
+	 public void  setCompletedCommitteesCount1(List<Object[]> list,CommitteeBasicVO basicVO)
+	 {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params:list)
+				 {
+					 if(params[2] != null && new Long(params[2].toString()).equals(1l))
+							basicVO.setMainCommCompletedCount(basicVO.getMainCommCompletedCount()+(Long)params[0]); //total Main Committees Count
+					else
+					  basicVO.setAffiCommCompletedCount(basicVO.getAffiCommCompletedCount()+(Long)params[0]);//total Affiliated Committees Count
+				 }
+			 }
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setStartedCommitteesCount() method, Exception - ",e);
+		} 
+	 }
+	 
+	 
+	 public List<CommitteeBasicVO> getConstituencyCommittesCount(Long constituencyId ,String constituencyType)
+	 {
+		 List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>(); 
+		 try{
+			 
+			 List<Long> constituenyIdsList = new ArrayList<Long>();
+			 if(constituencyType.equalsIgnoreCase("assemblyConstituency"))
+			   constituenyIdsList.add(constituencyId);
+			 else
+			 {
+				 Long parliamentConId = delimitationConstituencyAssemblyDetailsDAO.getParliamentConstituencyId(constituencyId);
+				   if(parliamentConId != null && parliamentConId > 0)
+					  constituenyIdsList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByPCId(parliamentConId);
+			 }
+			 if(constituenyIdsList != null && constituenyIdsList.size() > 0)
+			 {
+				 setVillageCommitteesCountInConstituency(constituenyIdsList, resultList);
+				 SetMandalCommitteesCountInConstituency(constituenyIdsList, resultList);
+			 }
+			 
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getConstituencyCommittesCount() method, Exception - ",e);
+		}
+		 return resultList;
+	 }
+
+	 
+	 public void setVillageCommitteesCountInConstituency(List<Long> constituenyIdsList,List<CommitteeBasicVO> resultList)
+	 {
+		 try{
+			 
+			 CommitteeBasicVO villageCommitteeVO = new CommitteeBasicVO();
+			 villageCommitteeVO.setLocationType("Village");
+			 
+			   List<Long> villageWardIds = new ArrayList<Long>();
+				villageWardIds.add(6l);
+				villageWardIds.add(8l);
+				
+				List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, null, null, constituenyIdsList);
+				setTotalCommitteeMembersCount(memResLstVill, villageCommitteeVO);
+				
+				List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constituenyIdsList, villageWardIds);
+				setTotalCommitteesCount(ttlV, villageCommitteeVO);
+				
+				//0committeeId,1committeeTypeid
+				List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, null, null, "started", constituenyIdsList);
+				setStartedCommitteesCount(stResLstVill, villageCommitteeVO);
+				
+				//0committeeId,1committeeTypeid
+				List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, null, null, "completed", constituenyIdsList);
+				setCompletedCommitteesCount(endResLstVill, villageCommitteeVO);
+				
+				resultList.add(villageCommitteeVO);
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in setVillageCommitteesCountInConstituency() method, Exception - ",e);
+		}
+	 }
+	 
+	 public void SetMandalCommitteesCountInConstituency(List<Long> constituencyIds,List<CommitteeBasicVO> resultList)
+	 {
+		 try{
+			   
+			    CommitteeBasicVO mandalVO = new CommitteeBasicVO();
+			    mandalVO.setLocationType("Mandal");
+			   
+			    Map<Long,List<Long>> mandalIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+				Map<Long,List<Long>> localBodiesMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+				List<Long> divisionLclIds = new ArrayList<Long>();//Map<id,List<1constituencyId>>
+				Map<Long,List<Long>> divisionIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+				
+				cadreCommitteeService.getLocationsInfo(constituencyIds, divisionLclIds, localBodiesMap, divisionIdsMap, mandalIdsMap);
+				if(mandalIdsMap.size() > 0){
+					List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
+					
+					List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,null, null,levelValues);
+					setTotalCommitteeMembersCount(totalMandalMainMembers, mandalVO);
+					
+					List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues);
+					setTotalCommitteesCount(totalMandalCommittees, mandalVO);
+					
+					//0count,1locationID,2typeId
+					 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"started");
+					 setStartedCommitteesCount1(totalMandalStartedCommittees, mandalVO);
+					 
+					//0count,1locationID,2typeId
+					 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"completed");
+					 setCompletedCommitteesCount1(totalMandalCompletedCommittees,mandalVO);
+					
+				}
+				 if(localBodiesMap.size() > 0){
+					 
+					 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
+					//0 count,1levelId
+					 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,null,null,levelValues);
+					 setTotalCommitteeMembersCount(totalLocalBodMainMembers, mandalVO);
+					 
+					 //0count,1locationID
+					 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues);
+					 setTotalCommitteesCount(totalLocalBodCommittees, mandalVO);
+					 
+					//0count,1locationID,2typeId
+					 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"started");
+					 setStartedCommitteesCount1(totalLocalBodStartedCommittees, mandalVO);
+					 
+					 //0count,1locationID,2typeId
+					 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"completed");
+					 setCompletedCommitteesCount1(totalLocalBodCompletedCommittees,mandalVO);
+					 
+				 }
+				 
+				 
+				 if(divisionIdsMap.size() > 0){
+					 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
+					 
+					//0 count,1levelId
+					 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,null,null,levelValues);
+					 setTotalCommitteeMembersCount(totalDivisionMainMembers, mandalVO);
+					 
+					 //0count,1locationID
+					 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues);
+					 setTotalCommitteesCount(totalDivisionCommittees, mandalVO);
+					 
+					//0count,1locationID,2typeId
+					 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"started");
+					 setStartedCommitteesCount1(totalDivisionStartedCommittees, mandalVO);
+					 
+					 //0count,1locationID,2typeId
+					 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"completed");
+					 setCompletedCommitteesCount1(totalDivisionCompletedCommittees,mandalVO);
+					 
+				 }
+				 resultList.add(mandalVO);
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in SetMandalCommitteesCountInConstituency() method, Exception - ",e);
+		}
+		 
 	 }
 	
 	

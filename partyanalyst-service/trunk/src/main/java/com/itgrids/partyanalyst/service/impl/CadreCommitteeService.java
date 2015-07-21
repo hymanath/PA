@@ -7086,7 +7086,7 @@ return constiLst;
 		}
 	}
 	
-	private void getLocationsInfo(List<Long> constituencyIds,List<Long> divisionLclIds,
+	public void getLocationsInfo(List<Long> constituencyIds,List<Long> divisionLclIds,
 			Map<Long,List<Long>> localBodiesMap,Map<Long,List<Long>> divisionIdsMap,Map<Long,List<Long>> mandalIdsMap){
 		//0localBodyId,1constituencyId
 		List<Object[]> localBodyIdsList = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
