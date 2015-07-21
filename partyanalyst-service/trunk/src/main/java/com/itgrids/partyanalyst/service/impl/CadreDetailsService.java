@@ -779,6 +779,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 					//cadreDetailsVO.setpConstituencyName(cadreFormalDetails[30] !=null ? cadreFormalDetails[30].toString(): "");
 					cadreDetailsVO.setBoothId(cadreFormalDetails[31] !=null ? Long.parseLong(cadreFormalDetails[31].toString()):0l);
 					
+					if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L)
+						cadreDetailsVO.setPanchayatId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
+					
 					List<Object[]> pList = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(cadreDetailsVO.getConstituencyId(),2009L);
 					if(pList != null && pList.size()>0){
 						Object[] parliament = pList.get(0);
