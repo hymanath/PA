@@ -643,22 +643,22 @@ var globalCadreId = '${cadreId}';
                     <div class="panel-body">
                     	<div>
                         	<label class="radio-inline">
-                            	<input type="radio">Panchayat
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="panchayat">Panchayat
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Mandal
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="mandal">Mandal
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Assembly Constituency
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="assemblyConstituency">Assembly Constituency
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">Parliament Constituency
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="parliamentConstituency">Parliament Constituency
                             </label>
                             <label class="radio-inline">
-                            	<input type="radio">District
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="district" checked>District
                             </label>
                         </div>
-                        <div class="table m_0-responsive m_top10">
+                        <div class="table m_0-responsive m_top10" id="committeesCountDiv">
                             <table class="table m_0 table-bordered">
                                 <thead>
                                     <tr>
@@ -2700,6 +2700,7 @@ else
 		cadreFormalDetailedInformation(globalCadreId);
 		getEventDetailsOfCadre(globalCadreId);
 		getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+		getLocationwiseCommitteesCount();
 		
 }
 function getCadreIdByMemberShipId()
@@ -2722,6 +2723,7 @@ function getCadreIdByMemberShipId()
 			cadreFormalDetailedInformation(globalCadreId);
 			getEventDetailsOfCadre(globalCadreId);
 			getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+			getLocationwiseCommitteesCount();
 		}
 		
 		
@@ -2729,19 +2731,79 @@ function getCadreIdByMemberShipId()
 	
 }
 
-//getLocationwiseCommitteesCount();
-
 function getLocationwiseCommitteesCount()
 {
 	
+	var locationType = $("input[name='committeeLocation']:checked").val();
+		
+	$("#committeesCountDiv").html("");
+	$("#committeesCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 	$.ajax({
 		type : "POST",
 		url  : "getLocationwiseCommitteesCountAction.action",
-		data : {locationType : "district",tdpCadreId:globalCadreId}
+		data : {locationType : locationType,tdpCadreId:globalCadreId}
 	}).done(function(result){
+		if(result != null && result.length > 0)
+		 buildLocationwiseCommitteesCount(result);
+	 else
+	  $("#committeesCountDiv").html("No Data Available.");
 		console.log(result);
 	});
 }
+
+function buildLocationwiseCommitteesCount(result)
+{
+	var str = '';
+	str += '<table class="table m_0 table-bordered">';
+	str += '<tr>';
+	str += '<th></th>';
+    str += '<th class="text-center" colspan="4">Main Committees</th>';
+    str += '<th class="text-center" colspan="4">Affliated Committees</th>';
+    str += '</tr>';
+	str += '<tr>';
+    str += '<th></th>';
+    str += '<th>Total</th>';
+    str += '<th>Started</th>';
+    str += '<th>Completed</th>';
+    str += '<th>Members</th>';
+    str += '<th>Total</th>';
+    str += '<th>Started</th>';
+    str += '<th>Completed</th>';
+    str += '<th>Members</th>';
+    str += '</tr>';
+	
+	for(var i in result)
+	{
+	   str += '<tr>';
+	  if(result[i].locationType == "Village")
+	   str += '<td>Village Committees</td>';
+   
+     if(result[i].locationType == "Mandal")
+	   str += '<td>Mandal Committees</td>';
+   
+    if(result[i].locationType == "District")
+	   str += '<td>District Committees</td>';
+   
+     str += '<td>'+result[i].mainCommTotalCount+'</td>';
+	 str += '<td>'+result[i].mainCommStartedCount+'</td>';
+	 str += '<td>'+result[i].mainCommCompletedCount+'</td>';
+	 str += '<td>'+result[i].mainCommTotalMembers+'</td>';
+	 str += '<td>'+result[i].affiCommTotalCount+'</td>';
+	 str += '<td>'+result[i].affiCommStartedCount+'</td>';
+	 str += '<td>'+result[i].affiCommCompletedCount+'</td>';
+	 str += '<td>'+result[i].affiCommTotalMembers+'</td>';
+	 
+      str += '</tr>';
+	}
+	
+	str += '</table>';
+	$("#committeesCountDiv").html(str);
+}
+
+
+$('.committeeLocCls').click(function(){
+    getLocationwiseCommitteesCount();
+  });
 
 //getCadreIdByMemberShipId();
 //getCategoryWiseStatusCount();

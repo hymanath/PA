@@ -2571,6 +2571,7 @@
 		 <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		 <property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
