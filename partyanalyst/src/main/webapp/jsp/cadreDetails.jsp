@@ -2623,6 +2623,19 @@ function getCadreIdByMemberShipId()
 	
 }
 
+//getLocationwiseCommitteesCount();
+
+function getLocationwiseCommitteesCount()
+{
+	
+	$.ajax({
+		type : "POST",
+		url  : "getLocationwiseCommitteesCountAction.action",
+		data : {locationType : "district",tdpCadreId:globalCadreId}
+	}).done(function(result){
+		console.log(result);
+	});
+}
 
 //getCadreIdByMemberShipId();
 //getCategoryWiseStatusCount();

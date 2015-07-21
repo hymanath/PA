@@ -10296,5 +10296,11 @@
 				<param name="root">complaintStatusCountVO</param>
 			</result>
 	</action>
+	
+	<action name="getLocationwiseCommitteesCountAction" class="cadreDetailsAction" method="getLocationwiseCommitteesCount">
+		<result type="json" name="success">
+				<param name="root">committeeBasicVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

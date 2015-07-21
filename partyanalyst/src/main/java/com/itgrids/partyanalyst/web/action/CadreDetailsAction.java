@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
@@ -46,6 +47,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<TdpCadreFamilyDetailsVO>     familyDetails;
 	private WebServiceResultVO				  webServiceResultVO;
 	private ComplaintStatusCountVO           complaintStatusCountVO;
+	private List<CommitteeBasicVO> 			committeeBasicVOList;
 	
 
 	public HttpServletRequest getRequest() {
@@ -215,6 +217,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 
 
+	public List<CommitteeBasicVO> getCommitteeBasicVOList() {
+		return committeeBasicVOList;
+	}
+
+
+	public void setCommitteeBasicVOList(List<CommitteeBasicVO> committeeBasicVOList) {
+		this.committeeBasicVOList = committeeBasicVOList;
+	}
+
+
 	public String execute(){
 		
 		try{
@@ -378,6 +390,18 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationwiseCommitteesCount()
+	{
+		try{
+			committeeBasicVOList =  cadreDetailsService.getLocationwiseCommitteesCount(request.getParameter("locationType"),new Long(request.getParameter("tdpCadreId")));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 	
