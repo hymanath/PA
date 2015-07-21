@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -38,5 +39,8 @@ public interface ICadreDetailsService {
 	public Long getCadreIdByMembershipId(String memberShipNo);
 	
 	public ComplaintStatusCountVO getCategoryWiseStatusCount(Long tdpCadreId);
+	
+	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId);
+	
 	
 }

@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
@@ -1859,6 +1860,36 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 LOG.error("Exception Occured in setTypeOfIssueVO() method, Exception - ",e);
 		}
 		 
+	 }
+	 
+	 
+	 public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId)
+	 {
+		 List<CommitteeBasicVO> committeeBasicVOList = null;
+		
+		try{
+			UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+			if(userAddress != null)
+			{
+				if(locationType.equalsIgnoreCase("district"))
+				{
+					
+				}
+				else if(locationType.equalsIgnoreCase("mandal"))
+				{
+					
+				}
+				else if(locationType.equalsIgnoreCase("constituency"))
+				{
+					
+				}
+			}
+				
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getLocationwiseCommitteesCount() method, Exception - ",e);
+		}
+		return committeeBasicVOList;
 	 }
 	
 	
