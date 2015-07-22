@@ -685,6 +685,93 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	}*/
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCommitteesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from " +
+				" TdpCommittee model where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue ");
+		
+		if(constituencyId != null && constituencyId > 0)
+			str.append(" and model.constituency.constituencyId =:constituencyId ");
+		
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		if(constituencyId != null && constituencyId > 0)
+		  query.setParameter("constituencyId", constituencyId);
+		return query.list();
+				
+	}
+	
+	
+	/*public List<Object[]> committeesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId,String type){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
+				" model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId " +// BASIC_COMMITTEE_ID sri
+				" from TdpCommittee model where  " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.district.districtId in(:districtIds) ");
+		
+		if(type.equalsIgnoreCase("started")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) ");
+			}
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'  ");
+			}
+		}
+		
+		str.append(" group by model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}*/
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStartedOrComplcommitteesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId,String status)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and " +
+				" model.tdpCommitteeLevelValue =:levelValue ");
+		
+		  if(status.equalsIgnoreCase("Started"))
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			else if(status.equalsIgnoreCase("completed"))
+			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		  if(constituencyId != null && constituencyId > 0)
+			 str.append("and model.constituency.constituencyId =:constituencyId");
+		  
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		
+		if(constituencyId != null && constituencyId > 0)
+		  query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
 	
 
 }

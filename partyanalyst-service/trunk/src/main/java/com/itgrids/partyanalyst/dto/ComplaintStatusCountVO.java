@@ -9,6 +9,7 @@ public class ComplaintStatusCountVO {
 	private String status;
 	private String color;
 	private List<ComplaintStatusCountVO> subList = new ArrayList<ComplaintStatusCountVO>();
+	private Long statusOrder;
 
 	public Long getCount() {
 		return count;
@@ -40,6 +41,14 @@ public class ComplaintStatusCountVO {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public Long getStatusOrder() {
+		return statusOrder;
+	}
+
+	public void setStatusOrder(Long statusOrder) {
+		this.statusOrder = statusOrder;
 	}
 	
 	
