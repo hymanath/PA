@@ -2718,7 +2718,7 @@ function getCadreIdByMemberShipId()
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
-		data : {membershipId:"38324292"}
+		data : {membershipId:membershipId}
 		
 	}).done(function(result){
 		console.log(result);
