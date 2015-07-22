@@ -1744,10 +1744,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	
 	
-	public Long getCadreIdByMembershipId(String memberShipNo)
+	public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
 	{
 		try{
-			Long cadreId =  tdpCadreDAO.getCadreIdByMembershipId(memberShipNo) ;
+			Long cadreId =  tdpCadreDAO.getCadreIdByMembershipId(memberShipNo,constituencyId) ;
 			return cadreId;
 		}catch (Exception e) {
 			LOG.error(" Exception Occured in getCadreIdByMembershipId() method, Exception - ",e);

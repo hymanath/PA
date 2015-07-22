@@ -36,7 +36,7 @@ public interface ICadreDetailsService {
 	
 	public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
 	
-	public Long getCadreIdByMembershipId(String memberShipNo);
+	public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId);
 	
 	public ComplaintStatusCountVO getCategoryWiseStatusCount(Long tdpCadreId);
 	

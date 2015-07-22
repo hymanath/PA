@@ -5409,12 +5409,14 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
-		public Long getCadreIdByMembershipId(String memberShipNo)
+		public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
 		{
-			Query query = getSession().createQuery(" select model.tdpCadreId from TdpCadre model where model.memberShipNo =:memberShipNo and model.isDeleted = 'N' " +
-					" and model.enrollmentYear = 2014 ");
+			Query query = getSession().createQuery(" select distinct model.tdpCadreId from TdpCadre model where model.memberShipNo =:memberShipNo and model.isDeleted = 'N' " +
+					" and model.enrollmentYear = 2014 and model.userAddress.constituency.constituencyId =:constituencyId ");
 			
 			query.setParameter("memberShipNo", memberShipNo);
+			query.setParameter("constituencyId", constituencyId);
+			
 			return (Long) query.uniqueResult();
 		}
 		

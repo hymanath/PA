@@ -367,7 +367,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public List<Object[]> getSurveyPaticipatedCountByVoterIdcardNoList(List<String> voterIdCardNoList);
 	  
-	  public Long getCadreIdByMembershipId(String memberShipNo);
+	  public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId);
 	  
 	  public List<Object[]> getCategorywiseStatusCount(String memberShipNo);
 	  
