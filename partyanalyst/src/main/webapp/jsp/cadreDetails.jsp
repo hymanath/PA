@@ -2313,9 +2313,22 @@ function getCandidateAndLocationSummaryNews(){
 											for(var i in result.candidateSummary.categoryList){
 												str+='<tr>';
 													str+='<td id="'+result.candidateSummary.categoryList[i].categoryId+'">'+result.candidateSummary.categoryList[i].categoryName+'</td>';
-													str+='<td><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></td>';
-													str+='<td><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></td>';
-													str+='<td><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></td>';
+													if(result.candidateSummary.categoryList[i].positiveCount !=0){
+														str+='<td><a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="'+result.candidateSummary.categoryList[i].categoryId+'" attr_benefitId=1 attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.categoryList[i].positiveCount+'" style="cursor:pointer;"><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></a></td>';
+													}else{
+														str+='<td><span class="text-success">'+result.candidateSummary.categoryList[i].positiveCount+'</span></td>';
+													}
+													if(result.candidateSummary.categoryList[i].negativeCount !=0){
+														str+='<td><a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="'+result.candidateSummary.categoryList[i].categoryId+'" attr_benefitId=2 attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.categoryList[i].negativeCount+'"   style="cursor:pointer;"><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></a></td>';
+													}else{
+														str+='<td><span class="text-danger">'+result.candidateSummary.categoryList[i].negativeCount+'</span></td>';
+													}
+													if(result.candidateSummary.categoryList[i].neutralCount !=0){
+														str+='<td><a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="'+result.candidateSummary.categoryList[i].categoryId+'" attr_benefitId=3 attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.categoryList[i].neutralCount+'" style="cursor:pointer;"><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></a></td>';
+													}else{
+														str+='<td><span class="text-warning">'+result.candidateSummary.categoryList[i].neutralCount+'</span></td>';
+													}
+													
 												str+='</tr>';
 											}
 									
@@ -2332,14 +2345,14 @@ function getCandidateAndLocationSummaryNews(){
 					$("#candidateCategoryWiseNewsId").html("Candidate Wise Data Not Available.");
 				}
 				if(result.departmentSummary !=null && result.departmentSummary.length>0){
-					buildingIssuesTable(result.departmentSummary);
+					buildingIssuesTable(result.departmentSummary,startDate,endDate,locationId,locationType);
 				}else{
 					$("#issuesSummary").html("<center><h5>&nbsp No Data Available.</h5></center>");
 				}
 
 				if(result.locationSummary !=null){
 					$("#propertiesId").html("");
-					buildingPropertiesResult(result.locationSummary);
+					buildingPropertiesResult(result.locationSummary,startDate,endDate,locationId,locationType);
 				}else{
 					$("#propertiesId").html("Location Wise Data Not Available.");
 				}
@@ -2349,7 +2362,7 @@ function getCandidateAndLocationSummaryNews(){
 	}); 
 }
 	
-	function buildingIssuesTable(result){
+	function buildingIssuesTable(result,startDate,endDate,locationId,locationType){
 		$("#issuesSummary").html("");
 		$("#issuesCount").html("");
 		var str = "";
@@ -2358,7 +2371,7 @@ function getCandidateAndLocationSummaryNews(){
 		for(var i in result){
 			str +="<tr>";
 			str +="<td width='80%'>"+result[i].partyName+"</td>";
-			str +="<td class='depCount'>"+result[i].count+"</td>";
+			str +='<td><a class="departmentNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_departmentId="'+result[i].partyId+'" attr_locationId="'+locationId+'" attr_locationType="'+locationType+'" attr_count ="'+result[i].count+'" style="cursor:pointer;" >'+result[i].count+'</a></td>';
 			str +="</tr>";
 		}
 		$("#issuesSummary").html(str);
@@ -2372,7 +2385,7 @@ function getCandidateAndLocationSummaryNews(){
 		var win = window.open('articleDetailsAction.action', '_blank');
 	} */
 	
-	function buildingPropertiesResult(result){
+	function buildingPropertiesResult(result,startDate,endDate,locationId,locationType){
 		$("#propertiesId").html("");
 		var props = result.typeList;
 		var str = '';
@@ -2411,11 +2424,11 @@ function getCandidateAndLocationSummaryNews(){
 										for(var k in props[i].partiesList[j].oppenentsList){
 											str+='<td>';
 											if(props[i].partiesList[j].oppenentsList[k].aliasName=='Pos'){
-												str+='<span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=1 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
 											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='neg'){
-												str+='<span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=2 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_propertyId="'+props[i].id+'" attr_locationType="'+locationType+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
 											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='Neutral'){
-												str+='<span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=3 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
 											}
 											str+='</td>';
 									str+='</tr>';
@@ -2456,7 +2469,7 @@ function getCandidateAndLocationSummaryNews(){
 											isExist=true;
 											str+='<tr>';
 											str+='<td>'+props[i].partiesList[j].oppenentsList[k].partyName+'</td>';
-											str+='<td>'+props[i].partiesList[j].oppenentsList[k].count+'</td>';
+											str+='<td><a class="actionReactionNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_partyId=872 attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_secondaryPartyId="'+props[i].partiesList[j].oppenentsList[k].partyId+'" attr_locationType="'+locationType+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;">'+props[i].partiesList[j].oppenentsList[k].count+'</a></td>';
 											str+='</tr>';
 											z=2;
 										}
@@ -2490,7 +2503,7 @@ function getCandidateAndLocationSummaryNews(){
 								valExist=true;
 								str+='<tr>';
 									str+='<td>'+props[i].partiesList[j].partyName+'</td>';
-									str+='<td>'+props[i].partiesList[j].count+'</td>';
+									str+='<td><a class="summaryNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_locationType="'+locationType+'" attr_partyId="'+props[i].partiesList[j].partyId+'" attr_propertyType="'+props[i].propertyType+'" style="cursor:pointer;" attr_count="'+props[i].partiesList[j].count+'">'+props[i].partiesList[j].count+'</a></td>';
 								str+='</tr>';
 							}
 						}
@@ -2516,7 +2529,7 @@ function getCandidateAndLocationSummaryNews(){
 								valExist=true;
 								str+='<tr>';
 									str+='<td>'+props[i].partiesList[j].partyName+'</td>';
-									str+='<td>'+props[i].partiesList[j].count+'</td>';
+									str+='<td><a class="summaryNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_locationType="'+locationType+'" attr_count="'+props[i].partiesList[j].count+'" attr_partyId="'+props[i].partiesList[j].partyId+'" style="cursor:pointer;">'+props[i].partiesList[j].count+'</a></td>';
 								str+='</tr>';
 							}
 						}
@@ -2816,6 +2829,157 @@ $('.committeeLocCls').click(function(){
 
 //getCadreIdByMemberShipId();
 //getCategoryWiseStatusCount();
+
+$(document).on("click",".candidateRedirectedCls",function(){
+	var candidateId=$(this).attr("attr_candidateId");;
+	var categoryId=$(this).attr("attr_categoryId");
+	var benefitId=$(this).attr("attr_benefitId");
+	var fromDate=$(this).attr("attr_fromDate");
+	var toDate=$(this).attr("attr_toDate");
+	var articlesCount=$(this).attr("attr_count");
+	var type="candidate";
+	
+	var win = window.open('articleDetailsAction.action?cid='+candidateId+'&caid='+categoryId+'&bfid='+benefitId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&atCnt='+articlesCount+'', '_blank');
+	//getAllArticlesDetailsByType(fromDate,toDate,type,candidateId,categoryId,benefitId,0,null);
+});
+
+$(document).on("click",".departmentNewsCls",function(){
+	var fromDate=$(this).attr("attr_fromDate");
+	var toDate=$(this).attr("attr_toDate");
+	var departmentId=$(this).attr("attr_departmentId");
+	var locationId=$(this).attr("attr_locationId");
+	var locationType=$(this).attr("attr_locationType");
+	var articlesCount=$(this).attr("attr_count");
+	var type="department";
+	
+	var win = window.open('articleDetailsAction.action?did='+departmentId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&atCnt='+articlesCount+'', '_blank');
+	//getAllArticlesDetailsByType(fromDate,toDate,type,departmentId,locationId,locationType,0,null);
+	
+});
+
+$(document).on("click",".analysisNewsCls",function(){
+	var fromDate=$(this).attr("attr_fromDate");
+	var toDate=$(this).attr("attr_toDate");
+	var benefitId=$(this).attr("attr_benefitId");
+	var locationId=$(this).attr("attr_locationId");
+	var partyId=$(this).attr("attr_partyId");
+	var propertyId=$(this).attr("attr_propertyId");
+	var propertyType=$(this).attr("attr_propertyType");
+	var articlesCount=$(this).attr("attr_count");
+	var locationType=$(this).attr("attr_locationType");
+	var type="location"; 
+
+	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&bfid='+benefitId+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
+	//getAllArticlesDetailsByType(fromDate,toDate,type,benefitId,locationId,partyId,propertyId,propertyType);
+});
+
+$(document).on("click",".actionReactionNewsCls",function(){
+	var fromDate=$(this).attr("attr_fromDate");
+	var toDate=$(this).attr("attr_toDate");
+	var locationId=$(this).attr("attr_locationId");
+	var partyId=$(this).attr("attr_partyId");
+	var propertyId=$(this).attr("attr_propertyId");
+	var secondaryPartyId=$(this).attr("attr_secondaryPartyId");
+	var propertyType=$(this).attr("attr_propertyType");
+	var articlesCount=$(this).attr("attr_count");
+	var locationType=$(this).attr("attr_locationType");
+	var type="location";
+	
+	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&scpid='+secondaryPartyId+'&ltp='+locationType+'&lid='+locationId+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
+	//getAllArticlesDetailsByType(fromDate,toDate,type,secondaryPartyId,locationId,partyId,propertyId,propertyType);
+});
+
+$(document).on("click",".summaryNewsCls",function(){
+	var fromDate=$(this).attr("attr_fromDate");
+	var toDate=$(this).attr("attr_toDate");
+	var locationId=$(this).attr("attr_locationId");
+	var partyId=$(this).attr("attr_partyId");
+	var propertyId=$(this).attr("attr_propertyId");
+	var propertyType=$(this).attr("attr_propertyType");
+	var articlesCount=$(this).attr("attr_count");
+	var locationType=$(this).attr("attr_locationType");
+	var type="location"; 
+	
+	//console.log(fromDate,toDate,locationId,partyId,propertyId,propertyType,type);
+	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
+	//getAllArticlesDetailsByType(fromDate,toDate,type,0,locationId,partyId,propertyId,propertyType);
+});
+
+
+function getAllArticlesDetailsByType(fromDate,toDate,type,benefitId,locationId,partyId,propertyId,propertyType){
+	
+	var fromDate="";
+	var toDate="";
+	var type="";
+	var benefitId=0;
+	var locationId=0;
+	var partyId=0;
+	var propertyId=0;
+	var propertyType="";
+	var secondaryPartyId=0;
+	var categoryId=0;
+	var departmentId=0;
+	var locationType="";
+	
+			fromDate=fromDate;
+			toDate=toDate;
+			type=type;
+	
+	if(type == "candidate"){
+			candidateId=candidateId;
+			categoryId=categoryId;
+			benefitId=benefitId;
+	}else if(type == "department"){
+			departmentId=departmentId;
+			locationId=locationId;
+			locationType=locationType;	
+	}else if(type == "location"){
+		if(propertyType == "detail"){
+			benefitId=benefitId;
+			locationId=locationId;
+			partyId=partyId;
+			propertyId=propertyId;
+			propertyType=propertyType;
+		}else if(propertyType == "versus"){
+			secondaryPartyId=secondaryPartyId;
+			locationId=locationId;
+			partyId=partyId;
+			propertyId=propertyId;
+			propertyType=propertyType;
+		}else if(propertyType == "summary"){
+			locationId=locationId;
+			partyId=partyId;
+			propertyId=propertyId;
+			propertyType=propertyType;
+		}
+	}
+	
+	var jsObj={
+			 fromDate:fromDate,
+			 toDate:toDate,
+			 type:type,
+			 benefitId:benefitId,
+			 locationId:locationId,
+			 partyId:partyId,
+			 propertyId:propertyId,
+			 propertyType:propertyType,
+			 secondaryPartyId:secondaryPartyId,
+			 categoryId:categoryId,
+			 departmentId:departmentId,
+			 locationType:locationType
+	}
+	$.ajax({
+		type : "POST",
+		url  : "getAllArticleNewsAction.action",
+		data : {task:JSON.stringify(jsobj)}, 
+	}).done(function(result){
+		
+	});
+	
+	
+	
+}
+
 </script>
 
 </body>
