@@ -48,6 +48,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private WebServiceResultVO				  webServiceResultVO;
 	private ComplaintStatusCountVO           complaintStatusCountVO;
 	private List<CommitteeBasicVO> 			committeeBasicVOList;
+	private Long						    constituencyId;
 	
 
 	public HttpServletRequest getRequest() {
@@ -226,6 +227,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		this.committeeBasicVOList = committeeBasicVOList;
 	}
 
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 
 	public String execute(){
 		
@@ -373,7 +383,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public String getCadreIdByMembershipId()
 	{
 		try{
-			cadreId =  cadreDetailsService.getCadreIdByMembershipId(request.getParameter("membershipId"));
+			cadreId =  cadreDetailsService.getCadreIdByMembershipId(request.getParameter("membershipId"),new Long(request.getParameter("constituencyId")));
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCadreIdByMembershipId() method, Exception - ",e);
