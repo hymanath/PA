@@ -10302,5 +10302,10 @@
 				<param name="root">committeeBasicVOList</param>
 		</result>
 	</action>
+	<action name="articleDetailsAction" class="cadreDetailsAction" >
+			<result name="tdpCadreDetails">/jsp/articleDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 </package>
 </struts>      
