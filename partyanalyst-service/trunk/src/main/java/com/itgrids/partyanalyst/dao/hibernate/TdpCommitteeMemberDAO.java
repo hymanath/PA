@@ -1689,7 +1689,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(List<Long> locationLevelIdsList,List<Long> locationLevelValuesList)
 	{
 		Query query = getSession().createQuery(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId  from TdpCommitteeMember model " +
@@ -1698,6 +1698,28 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		query.setParameterList("locationLevelIdsList", locationLevelIdsList);
 		query.setParameterList("locationLevelValuesList", locationLevelValuesList);
+		
+		return query.list();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(Long levelId,Long locationValue,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId  from TdpCommitteeMember model " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationValue " +
+				" and model.isActive ='Y' ");
+		if(constituencyId != null && constituencyId > 0)
+		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
+		
+		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameter("locationValue", locationValue);
+		
+		if(constituencyId != null && constituencyId > 0)
+			query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();
 	}

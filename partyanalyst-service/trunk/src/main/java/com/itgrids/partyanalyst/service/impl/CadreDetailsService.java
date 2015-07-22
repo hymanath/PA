@@ -1835,40 +1835,49 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 	   ComplaintStatusCountVO vo = null;
 	
-		vo = new ComplaintStatusCountVO();
-		vo.setStatus("Not Verified");
-		vo.setColor("#D64D54");
-		statusList.add(vo);
-		
-		vo = new ComplaintStatusCountVO();
-		vo.setStatus("Verified");
-		vo.setColor("#481557");
-		statusList.add(vo);
-		
-		vo = new ComplaintStatusCountVO();
-		vo.setStatus("Not Eligible");
-		vo.setColor("#663300");
+	    vo = new ComplaintStatusCountVO();
+		vo.setStatus("Completed");
+		vo.setColor("#00B17D");
+		vo.setStatusOrder(1l);
 		statusList.add(vo);
 		
 		vo = new ComplaintStatusCountVO();
 		vo.setStatus("In Progress");
 		vo.setColor("#66CDCC");
+		vo.setStatusOrder(2l);
 		statusList.add(vo);
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Not Verified");
+		vo.setColor("#D64D54");
+		vo.setStatusOrder(3l);
+		statusList.add(vo);
+		
+		/*vo = new ComplaintStatusCountVO();
+		vo.setStatus("Verified");
+		vo.setColor("#481557");
+		statusList.add(vo);*/
+		
+		vo = new ComplaintStatusCountVO();
+		vo.setStatus("Not Eligible");
+		vo.setColor("#663300");
+		vo.setStatusOrder(4l);
+		statusList.add(vo);
+		
+		
 		
 		vo = new ComplaintStatusCountVO();
 		vo.setStatus("Not Possible");
 		vo.setColor("#FF9933");
+		vo.setStatusOrder(5l);
 		statusList.add(vo);
 		
-		vo = new ComplaintStatusCountVO();
+		/*vo = new ComplaintStatusCountVO();
 		vo.setStatus("Approved");
 		vo.setColor("#69A78F");
-		statusList.add(vo);
+		statusList.add(vo);*/
 		
-		vo = new ComplaintStatusCountVO();
-		vo.setStatus("Completed");
-		vo.setColor("#00B17D");
-		statusList.add(vo);
+		
 	}
 	 
 	 public void setTypeOfIssueVO(List<ComplaintStatusCountVO> list)
@@ -1902,6 +1911,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		try{
 			UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+			String areaType = userAddress.getConstituency().getAreaType();
 			if(userAddress != null)
 			{
 				if(locationType.equalsIgnoreCase("district"))
@@ -1910,9 +1920,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 				else if(locationType.equalsIgnoreCase("mandal"))
 				{
 					
+					return getMandalwiseCommitteCount(userAddress);
 				}
-				else if(locationType.equalsIgnoreCase("panchayat"))
+				else if(locationType.equalsIgnoreCase("panchayat") && (areaType != null && (areaType.trim().equalsIgnoreCase("RURAL") || areaType.trim().equalsIgnoreCase("RURAL-URBAN"))))
 				{
+					if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
+					{
+						committeeBasicVOList = new ArrayList<CommitteeBasicVO>();
+						List<Long> levelIdsList = new ArrayList<Long>();
+						levelIdsList.add(6l);
+						levelIdsList.add(8l);
+						CommitteeBasicVO villageVO = new CommitteeBasicVO();
+						getPanchayatlwiseCommitteCount(userAddress.getPanchayat().getPanchayatId(),null,villageVO,levelIdsList,"Village");
+						committeeBasicVOList.add(villageVO);
+						return committeeBasicVOList;
+					}
 					
 				}
 				else if(locationType.equalsIgnoreCase("assemblyConstituency"))
@@ -2304,6 +2326,170 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		 
 	 }
+	 
+	 
+	/* 
+	 public void getPanchayatlwiseCommitteCount(Long locationId,Long constituencyId,List<CommitteeBasicVO> resultList)
+	 {
+		 try{
+			 
+			 CommitteeBasicVO villageVO = new CommitteeBasicVO();
+				villageVO.setLocationType("Village");
+				Long panchayatLevelId = 6l;
+				Long wardLevelId = 8l;
+				
+				List<Object[]> committeeMembersList = new ArrayList<Object[]>();//Total committee members count
+				setTdpCommitteeMembersCount(panchayatLevelId, locationId, null, committeeMembersList);
+				setTdpCommitteeMembersCount(wardLevelId, locationId, null, committeeMembersList);
+				
+				setTotalCommitteeMembersCount(committeeMembersList, villageVO);
+				
+				List<Object[]> committeesList = new ArrayList<Object[]>();//Total committees count
+				setTdpCommitteesCount(panchayatLevelId, locationId, null, committeesList);
+				setTdpCommitteesCount(wardLevelId, locationId, null, committeesList);
+				setTotalCommitteesCount(committeesList, villageVO);
+				
+				List<Object[]> startedCommitteesList = new ArrayList<Object[]>();//Total started committees count
+				setTdpStartedOrCompletedCommitteesCount(panchayatLevelId, locationId, null, startedCommitteesList, "Started");
+				setTdpStartedOrCompletedCommitteesCount(wardLevelId, locationId, null, startedCommitteesList, "Started");
+				setStartedCommitteesCount(startedCommitteesList, villageVO);
+				
+				
+				List<Object[]> completedCommitteesList = new ArrayList<Object[]>();//Total completed committees count
+				setTdpStartedOrCompletedCommitteesCount(panchayatLevelId, locationId, null, startedCommitteesList, "completed");
+				setTdpStartedOrCompletedCommitteesCount(wardLevelId, locationId, null, startedCommitteesList, "completed");
+				setStartedCommitteesCount(completedCommitteesList, villageVO);
+				
+				resultList.add(villageVO); 
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getPanchayatlwiseCommitteCount() method, Exception - ",e);
+		}
+	 }
+	 */
+	 
+	 
+	 public void getPanchayatlwiseCommitteCount(Long locationId,Long constituencyId,CommitteeBasicVO villageVO,List<Long> levelIdsList,String locationType)
+	 {
+		 try{
+			 
+				villageVO.setLocationType(locationType);
+				
+				List<Object[]> committeeMembersList = new ArrayList<Object[]>();//Total committee members count
+				List<Object[]> committeesList = new ArrayList<Object[]>();//Total committees count
+				List<Object[]> startedCommitteesList = new ArrayList<Object[]>();//Total started committees count
+				List<Object[]> completedCommitteesList = new ArrayList<Object[]>();//Total completed committees count
+				
+				for(Long levelId: levelIdsList)
+				{
+					setTdpCommitteeMembersCount(levelId, locationId, null, committeeMembersList);	
+					setTdpCommitteesCount(levelId, locationId, null, committeesList);
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, startedCommitteesList, "Started");
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, completedCommitteesList, "completed");
+				}
+				
+				setTotalCommitteeMembersCount(committeeMembersList, villageVO);
+				setTotalCommitteesCount(committeesList, villageVO);
+				setStartedCommitteesCount(startedCommitteesList, villageVO);
+				setStartedCommitteesCount(completedCommitteesList, villageVO);
+				
+				
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getPanchayatlwiseCommitteCount() method, Exception - ",e);
+		}
+	 }
+	 
+	 
+	 
+	
+	public void setTdpCommitteeMembersCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList)
+	{
+		try{
+			List<Object[]> list = tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValue(levelId, levelValue,constituencyId);
+			 if(list != null && list.size() > 0)
+				 resultList.addAll(list);
+			
+		}catch (Exception e) {
+			 LOG.error("Exception Occured in setTdpCommitteeMembersCount() method, Exception - ",e);
+		}
+		
+	}
+	
+	public void setTdpCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList)
+	{
+		try{
+			List<Object[]> list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValue(levelId, levelValue, null);
+			 if(list != null && list.size() > 0)
+				 resultList.addAll(list);
+			
+		}catch (Exception e) {
+			 LOG.error("Exception Occured in setTdpCommitteesCount() method, Exception - ",e);
+		}
+		
+	}
+	
+	public void setTdpStartedOrCompletedCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList,String status)
+	{
+		try{
+			List<Object[]> list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValue(levelId, levelValue, constituencyId, status);
+			 if(list != null && list.size() > 0)
+				 resultList.addAll(list);
+			
+		}catch (Exception e) {
+			 LOG.error("Exception Occured in setTdpStartedOrCompletedCommitteesCount() method, Exception - ",e);
+		}
+		
+	}
+	
+	
+	
+	//Mandal wise Committees Count
+	
+	public List<CommitteeBasicVO> getMandalwiseCommitteCount(UserAddress userAddress)
+	{
+		List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>();
+		try{
+			
+			Long constituencyId = userAddress.getConstituency().getConstituencyId();
+			List<Long> localEleIdsList = new ArrayList<Long>();
+			localEleIdsList.add(7l);
+			List<Long> mandalIds = new ArrayList<Long>();
+			mandalIds.add(5l);
+			
+			
+			CommitteeBasicVO mandalMunciVO = new CommitteeBasicVO();
+			
+			if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() > 0)
+			{
+				getPanchayatlwiseCommitteCount(userAddress.getLocalElectionBody().getLocalElectionBodyId(), constituencyId, mandalMunciVO, localEleIdsList, "Mandal");
+			}
+			
+			if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() > 0)
+			{
+				getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, mandalMunciVO, mandalIds, "Mandal");
+				
+				
+				//panchayat committees count in mandal
+				List<Long> levelIdsList = new ArrayList<Long>();
+				levelIdsList.add(6l);
+				levelIdsList.add(8l);
+				CommitteeBasicVO villBasicVO = new CommitteeBasicVO();
+			    getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, villBasicVO,levelIdsList,"Village");
+			    
+			    resultList.add(villBasicVO);
+			   
+			}
+			
+			
+			resultList.add(mandalMunciVO);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getMandalwiseCommitteCount() method, Exception - ",e);
+		}
+		
+		return resultList;
+	}
 	
 	
 	
