@@ -144,9 +144,11 @@ function dummyfun(num){
  var endNO = 12;
  var paginationCount=paginCount;
  var jsObj={stNO:stNO,endNo : endNO};
- //{candidateId}/{categoryId}/{benefitId}/{departmentId}/{fromDate}/{toDate}/{fromNo}/{toNo}/{locationType}/{locationId}/{secondaryPartyId}/{type}/{partyId}/{propertyId}
+ //{candidateId}/{categoryId}/{benefitId}/{departmentId}/{fromDate}/{toDate}/{fromNo}/{toNo}/{locationType}/{locationId}/{secondaryPartyId}/{type}/{partyId}/{propertyI	d}
+	var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf(".com")+4));
  $.ajax({
-	url: 'http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
+	url:wurl+'/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
  }).then(function(data) {
 	var result = data.articlesList;
 	artclesRslt = result;
