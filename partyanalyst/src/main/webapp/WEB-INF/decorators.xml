@@ -423,5 +423,6 @@
 		<pattern>/eventInvitees*</pattern>
 		<pattern>/committeeDetailedAnalysis*</pattern>
 		<pattern>/cadreDetailsAction*</pattern>
+		<pattern>/articleDetailsAction*</pattern>
 	 </decorator>
 </decorators>
