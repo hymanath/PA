@@ -169,7 +169,7 @@ var globalCadreId = '${cadreId}';
                     </div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body">
-                    	<h4 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h4>
+                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h5>
                         <div class="display-style">
                             <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;" id="complaintStatusUL">
@@ -182,7 +182,7 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
 					 <div class="panel-body">
-                   		<h4 id="headingId"></h4>
+                   		<h5>TOTAL FINANCE REQUESTS <span id="headingId" class="text-bold"></span></h5>
                     	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
                         
@@ -193,7 +193,7 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-					<center><strong>Deaths And Hospitalization Details Not Available.</strong></center>
+					<center>Deaths And Hospitalization Details Not Available.</center>
 					<!--<div class="panel-body pad_0">
                     	<table class="table m_0 table-bordered m_0">
                         	<tr>
@@ -2176,7 +2176,7 @@ function buildApprovedFinancialSupprotForCadre(result)
             data: dataArr
         }]
     });
-	$("#headingId").html("TOTAL FINANCE REQUESTS  "+result[0].totalRequests+"");
+	$("#headingId").html(""+result[0].totalRequests+"");
 	if((result[0].donationAmount != null && result[0].donationAmount > 0 ) || (result[1].donationAmount != null && result[1].donationAmount > 0))
 	{	
 	  var str = '';
@@ -2400,7 +2400,7 @@ function getCandidateAndLocationSummaryNews(){
                         str+='<div class="panel-body pad_0 table-scroll">';
 						var totalCheck=false;
                         str+='<table class="table m_0 m_0" id="analysisStoriesId">';
-                        str+='<thead id="divId" style="display:none;">';
+                        str+='<thead id="divId">';
                         str+='<tr>';
                         str+='<th>Party Name</th>';
                         str+='<th>Positive</th>';
@@ -2410,13 +2410,14 @@ function getCandidateAndLocationSummaryNews(){
                         str+='</thead>';
 						$("#divId").show();//thead Showing for Analysis
 						for(var j in props[i].partiesList){
-							
 							var condCheck=true;
+							var cnt = 0;
 							for(var m in props[i].partiesList[j].oppenentsList){
-								if(props[i].partiesList[j].oppenentsList[m].count ==0 && props[i].partiesList[j].oppenentsList[m].count ==0 && props[i].   partiesList[j].oppenentsList[m].count ==0){
-									condCheck=false;
+								if(props[i].partiesList[j].oppenentsList[m].count==0){
+									cnt = cnt + 1;
 								}
 							}
+							if(cnt == 3){condCheck = false;}
 							if(condCheck){
 								totalCheck=true;
 									str+='<tr>';
@@ -2424,27 +2425,39 @@ function getCandidateAndLocationSummaryNews(){
 										for(var k in props[i].partiesList[j].oppenentsList){
 											str+='<td>';
 											if(props[i].partiesList[j].oppenentsList[k].aliasName=='Pos'){
-												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=1 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												if(props[i].partiesList[j].oppenentsList[k].count==0){
+													str+='<span>'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												}else{
+													str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=1 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-success">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												}
 											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='neg'){
-												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=2 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_propertyId="'+props[i].id+'" attr_locationType="'+locationType+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												if(props[i].partiesList[j].oppenentsList[k].count==0){
+													str+='<span>'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												}else{
+													str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=2 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_propertyId="'+props[i].id+'" attr_locationType="'+locationType+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-danger">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												}
 											}else if(props[i].partiesList[j].oppenentsList[k].aliasName=='Neutral'){
-												str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=3 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												if(props[i].partiesList[j].oppenentsList[k].count==0){
+													str+='<span>'+props[i].partiesList[j].oppenentsList[k].count+'</span>';
+												}else{
+													str+='<a class="analysisNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_benefitId=3 attr_partyId="'+props[i].partiesList[j].partyId+'" attr_locationType="'+locationType+'" attr_propertyId="'+props[i].id+'" attr_locationId="'+locationId+'" attr_propertyType="'+props[i].propertyType+'" attr_count="'+props[i].partiesList[j].oppenentsList[k].count+'" style="cursor:pointer;"><span class="text-warning">'+props[i].partiesList[j].oppenentsList[k].count+'</span></a>';
+												}
 											}
 											str+='</td>';
-									str+='</tr>';
+									
 								}	
+								str+='</tr>';
 							}
 							
 						}
                         
                         str+='</table>';
 						if(totalCheck){
-							 $("#divId").show();
+							$("#divId").show();
+						}else{
+							$("#divId").hide();//thead Hiding for Analysis
+							str+='<tr><center><h5>No Data Available</h5></center></tr>';
 						}
-						 if(!totalCheck){
-							 $("#divId").hide();//thead Hiding for Analysis
-							 str+='<tr><center><h5>No Data Available</h5></center></tr>';
-						 }
                         str+='</div>';
                         str+='</div>';
 					
