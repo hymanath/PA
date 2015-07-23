@@ -5019,6 +5019,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 			
 		}
+		
+		public List<Long> getTdpCadreIdByMembershipId(String membershipId)
+		{
+			Session session = getSession();
+			session.setFlushMode(FlushMode.AUTO);
+			Query query = session.createQuery("select model.tdpCadreId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and model.memberShipNo = :membershipId");
+			query.setParameter("membershipId",membershipId);
+			return query.list();
+			
+		}
+		
 		public List<Object[]> checkCardNumberExists(Long tdpCadreId)
 		{
 			Query query = getSession().createQuery("select model.cardNumber,model.memberShipNo,model.voterId from TdpCadre model where model.tdpCadreId=:tdpCadreId");
