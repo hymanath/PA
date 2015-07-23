@@ -841,12 +841,18 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	
 	}*/
 	
-	public void testGetMembershipNoByTdpCadreId()
+	/*public void testGetMembershipNoByTdpCadreId()
 	{
 		//System.out.println(tdpCadreDAO.getMembershipNoByTdpCadreId(1610965l));
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(1l);
 		List<Object[]> list = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(locationIds, "panchayat");
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetTdpCadreIdByMembershipId()
+	{
+		List<Long> list = tdpCadreDAO.getTdpCadreIdByMembershipId("12345678");
+		System.out.println(list.get(0));
 	}
 }
