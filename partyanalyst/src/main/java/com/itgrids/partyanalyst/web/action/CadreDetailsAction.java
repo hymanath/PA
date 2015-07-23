@@ -241,6 +241,10 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		
 		try{
 			session = request.getSession();
+			if(memberShipId != null && memberShipId.trim().length() == 8 && (constituencyId == null || constituencyId.longValue() == 0))
+			{
+				cadreId = cadreDetailsService.getTdpCadreIdBymembershipId(memberShipId.trim());
+			}
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_CADRE_DETAILS")){
 				return "tdpCadreDetails";
 			}
