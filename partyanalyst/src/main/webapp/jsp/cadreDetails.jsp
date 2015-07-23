@@ -2096,8 +2096,50 @@ function buildElectionPerformanceInCadreLocation(result)
 	$('.fulCircleCls1').circliful();
 }
 
+// Financial
+var financialColorArr = [];
+var typearr = ['EDP','CM Relief Fund','Educational','Financial Support','Personal'];
+function setcolorsForFinancialchart()
+	{
+		
+		financialColorArr = new Array();
+		var colorStatic = new Array('#D64D54','#66CDCC','#00B17D','#663300','#4169E1','#1771D7');
+		
+		var colorCount = 0;
+		
+		for(var i in typearr)
+		{
+		 
+				var obj = {
+				 type : typearr[i],
+				 color : colorStatic[colorCount]
+				}
+				financialColorArr.push(obj)
+			  
+				if(colorCount == (colorStatic.length)-1)
+				colorCount = 0;
+				 colorCount++;
+		}
+		
+		return financialColorArr;
+	}
+
+	function getColorCodeByType(type)
+	{
+
+		if(financialColorArr != null && financialColorArr.length > 0)
+		{
+			for(var i in financialColorArr)
+			{
+				if(financialColorArr[i].type == type)
+					return financialColorArr[i].color;
+			}
+		}
+	}
+
 function getApprovedFinancialSupprotForCadre()
 {
+	setcolorsForFinancialchart();
 	$.ajax({
 		type : "POST",
 		url  : "getApprovedFinancialSupprotForCadreAction.action",
@@ -2125,15 +2167,13 @@ function buildApprovedFinancialSupprotForCadre(result)
    {
 	 for(var i in result)
 	 {
-	    var data= new Array();
-		data.push(result[i].name,result[i].donationAmount);
 	  if(result[i].name !='')
-	  dataArr.push(data);
-	   if(result[i].name == "CM Relief Fund" && result[i].donationAmount != null && result[i].donationAmount > 0)
-	  colorsArr.push('#4A0EAE');  
-	  if(result[i].name == "Party Fund" && result[i].donationAmount != null && result[i].donationAmount > 0)	  
-	  colorsArr.push('#9B9AC6'); 
-	 
+	  {
+		  var data= new Array();
+		  data.push(result[i].name,result[i].donationAmount);
+		  dataArr.push(data);
+		  colorsArr.push(getColorCodeByType(result[i].name));
+	  }
 	
 	  }
 	}
@@ -2177,24 +2217,23 @@ function buildApprovedFinancialSupprotForCadre(result)
         }]
     });
 	$("#headingId").html(""+result[0].totalRequests+"");
-	if((result[0].donationAmount != null && result[0].donationAmount > 0 ) || (result[1].donationAmount != null && result[1].donationAmount > 0))
-	{	
-	  var str = '';
-		
-		str += '<li class="financial-by-party" >Financial By party '+result[0].count+'';
-		if(result[0].donationAmount != null)
-		 str += '['+result[0].donationAmount+'/-]</li>';
-		else
-		 str += '[0/-]</li>';
-	 
-		str += '<li class="financial-by-govt" >Financial by govt '+result[1].count+'';
-		if(result[1].donationAmount != null)
-		 str += '['+result[1].donationAmount+'/-]</li>';
-		else
-		 str += '[0/-]</li>';
- 
-      $("#financeSupportUL").html(str);
-	}	
+	var str = '';
+	for(var i in result)
+	{
+		if(result[i].name !='')
+		{
+		  var color = getColorCodeByType(result[i].name);
+		  str += '<li style="color:'+color+';text-transform:uppercase">';
+		  str += '<span style="margin-right:4px;padding:0px 8px;background-color:'+color+';"></span>';
+		  str += ''+result[i].name+' '+result[0].count+'';  
+		   if(result[i].donationAmount != null)
+			 str += '['+result[i].donationAmount+'/-]</li>';
+		  else
+		   str += '[0/-]</li>';  
+		}
+	}
+	$("#financeSupportUL").html(str);
+	
 	
 }
 
