@@ -414,6 +414,22 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		
 		return Action.SUCCESS;
 	}
+	public String getDeathsAndHospitalizationDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long panchayatId=jObj.getLong("panchayatId");
+			Long mandalId=jObj.getLong("mandalId");
+			Long constituencyid=jObj.getLong("constituencyId");
+			Long districtId=jObj.getLong("districtId");
+			
+			verifierVO=cadreDetailsService.getDeathsAndHospitalizationDetails(panchayatId,mandalId,constituencyid,districtId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathsAndHospitalizationDetails() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 	
 	

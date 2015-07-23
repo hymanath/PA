@@ -2085,5 +2085,17 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreInsuranceInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreInsuranceInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="insuranceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.InsuranceTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="insuranceStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.InsuranceStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		

@@ -193,7 +193,10 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-					<center>Deaths And Hospitalization Details Not Available.</center>
+					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
+					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="deathHospitalDivId">
+					</div>
 					<!--<div class="panel-body pad_0">
                     	<table class="table m_0 table-bordered m_0">
                         	<tr>
@@ -222,7 +225,7 @@ var globalCadreId = '${cadreId}';
                                 <td>20</td>
                             </tr>
                         </table>
-                    </div> -->
+                    </div>  -->
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -1099,7 +1102,15 @@ var globalCadreId = '${cadreId}';
 			
 			
 	 }); */
-	
+	 
+	 //global Ids of CADRE
+	 
+	 var globalPanchayatId=0;
+	 var globalTehsilId=0;
+	 var globalConstituencyId=0;
+	 var globalParliamentId=0;
+	 var globalDistrictId=0;
+	 
 	 var globalCandidateId; 
 	 var ownBoothDetailsVo;
 		function cadreFormalDetailedInformation(globalCadreId){
@@ -1185,8 +1196,8 @@ var globalCadreId = '${cadreId}';
 					 
 					 //assigning radio ButtonIds for News 
 					 
-					 $("#panchayatRadioNewsId").val(result.tehsilId);
-					 $("#mandalRadioNewsId").val(result.panchayatId);
+					 $("#panchayatRadioNewsId").val(result.panchayatId);
+					 $("#mandalRadioNewsId").val(result.tehsilId);
 					 
 					 //Hiding Panchayat && Mandal Div
 					 if(result.localElectionBody ==0 || result.localElectionBody ==null){
@@ -1215,9 +1226,17 @@ var globalCadreId = '${cadreId}';
 						 buildingOwnBoothDetails(ownBoothDetailsVo);
 					 }
 					 
+					 //assigning values to global variables
+					 globalPanchayatId=result.panchayatId;
+					 globalTehsilId=result.tehsilId;
+					 globalConstituencyId=result.constituencyId;
+					 globalParliamentId=result.pConstituencyId;
+					 globalDistrictId=result.districtId;
+					 
 					 
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
+					 getDeathsAndHospitalizationDetails();
 				}
 			});
 		}
@@ -2893,7 +2912,6 @@ $(document).on("click",".candidateRedirectedCls",function(){
 	var type="candidate";
 	
 	var win = window.open('articleDetailsAction.action?cid='+candidateId+'&caid='+categoryId+'&bfid='+benefitId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&atCnt='+articlesCount+'', '_blank');
-	//getAllArticlesDetailsByType(fromDate,toDate,type,candidateId,categoryId,benefitId,0,null);
 });
 
 $(document).on("click",".departmentNewsCls",function(){
@@ -2906,7 +2924,6 @@ $(document).on("click",".departmentNewsCls",function(){
 	var type="department";
 	
 	var win = window.open('articleDetailsAction.action?did='+departmentId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&atCnt='+articlesCount+'', '_blank');
-	//getAllArticlesDetailsByType(fromDate,toDate,type,departmentId,locationId,locationType,0,null);
 	
 });
 
@@ -2923,7 +2940,6 @@ $(document).on("click",".analysisNewsCls",function(){
 	var type="location"; 
 
 	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&bfid='+benefitId+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-	//getAllArticlesDetailsByType(fromDate,toDate,type,benefitId,locationId,partyId,propertyId,propertyType);
 });
 
 $(document).on("click",".actionReactionNewsCls",function(){
@@ -2939,7 +2955,6 @@ $(document).on("click",".actionReactionNewsCls",function(){
 	var type="location";
 	
 	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&scpid='+secondaryPartyId+'&ltp='+locationType+'&lid='+locationId+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-	//getAllArticlesDetailsByType(fromDate,toDate,type,secondaryPartyId,locationId,partyId,propertyId,propertyType);
 });
 
 $(document).on("click",".summaryNewsCls",function(){
@@ -2952,87 +2967,91 @@ $(document).on("click",".summaryNewsCls",function(){
 	var articlesCount=$(this).attr("attr_count");
 	var locationType=$(this).attr("attr_locationType");
 	var type="location"; 
-	
-	//console.log(fromDate,toDate,locationId,partyId,propertyId,propertyType,type);
+
 	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-	//getAllArticlesDetailsByType(fromDate,toDate,type,0,locationId,partyId,propertyId,propertyType);
 });
 
 
-function getAllArticlesDetailsByType(fromDate,toDate,type,benefitId,locationId,partyId,propertyId,propertyType){
+function getDeathsAndHospitalizationDetails(){
 	
-	var fromDate="";
-	var toDate="";
-	var type="";
-	var benefitId=0;
-	var locationId=0;
-	var partyId=0;
-	var propertyId=0;
-	var propertyType="";
-	var secondaryPartyId=0;
-	var categoryId=0;
-	var departmentId=0;
-	var locationType="";
+	//data Loading image
+	$("#dataLoadingsImgForDeathCount").show();
+	$("#deathHospitalDivId").html("");
 	
-			fromDate=fromDate;
-			toDate=toDate;
-			type=type;
-	
-	if(type == "candidate"){
-			candidateId=candidateId;
-			categoryId=categoryId;
-			benefitId=benefitId;
-	}else if(type == "department"){
-			departmentId=departmentId;
-			locationId=locationId;
-			locationType=locationType;	
-	}else if(type == "location"){
-		if(propertyType == "detail"){
-			benefitId=benefitId;
-			locationId=locationId;
-			partyId=partyId;
-			propertyId=propertyId;
-			propertyType=propertyType;
-		}else if(propertyType == "versus"){
-			secondaryPartyId=secondaryPartyId;
-			locationId=locationId;
-			partyId=partyId;
-			propertyId=propertyId;
-			propertyType=propertyType;
-		}else if(propertyType == "summary"){
-			locationId=locationId;
-			partyId=partyId;
-			propertyId=propertyId;
-			propertyType=propertyType;
-		}
+	var panchayatId=globalPanchayatId;
+	if(panchayatId ==undefined || panchayatId =="" || panchayatId ==null){
+		panchayatId=0;
 	}
+	var mandalId=globalTehsilId;
+	if(mandalId ==undefined || mandalId =="" || mandalId ==null){
+		mandalId=0;
+	}
+	var constituencyId=globalConstituencyId;
+	if(constituencyId ==undefined || constituencyId =="" || constituencyId ==null){
+		constituencyId=0;
+	}
+	var districtId=globalDistrictId;
+	if(districtId ==undefined || districtId =="" || districtId ==null){
+		districtId=0;
+	}
+	//$("#panchayatRadioNewsId").val(result.tehsilId);
+					 //$("#mandalRadioNewsId").val(result.panchayatId);
+					 
+	//locationId=$("#aConstiRadioNewsId").val();locationId=$("#pConstiRadioNewsId").val();locationId=$("#districtRadioNewsId").val();
 	
 	var jsObj={
-			 fromDate:fromDate,
-			 toDate:toDate,
-			 type:type,
-			 benefitId:benefitId,
-			 locationId:locationId,
-			 partyId:partyId,
-			 propertyId:propertyId,
-			 propertyType:propertyType,
-			 secondaryPartyId:secondaryPartyId,
-			 categoryId:categoryId,
-			 departmentId:departmentId,
-			 locationType:locationType
+		panchayatId:panchayatId,
+		mandalId:mandalId,
+		constituencyId:constituencyId,
+		districtId:districtId
 	}
 	$.ajax({
-		type : "POST",
-		url  : "getAllArticleNewsAction.action",
-		data : {task:JSON.stringify(jsobj)}, 
-	}).done(function(result){
-		
-	});
-	
-	
-	
+			type:'POST',
+			 url: 'getDeathsAndHospitalizationDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#dataLoadingsImgForDeathCount").hide();
+				
+				var str='';
+				if(result !=null){
+					if(result.verifierVOList !=null && result.verifierVOList.length>0){
+						 str+'<div class="panel-body pad_0">';
+							str+='<table class="table m_0 table-bordered m_0">'
+								
+								str+='<thead>';
+									str+='<th>Location</th>';
+									str+='<th>Death</th>';
+									str+='<th>Hospitalization</th>';
+								str+='</thead>'
+								for(var i in result.verifierVOList){
+									str+='<tr>';
+										str+='<td id="'+result.verifierVOList[i].id+'">'+result.verifierVOList[i].name+'</td>';
+										if(result.verifierVOList[i].verifierVOList !=null && result.verifierVOList[i].verifierVOList.length>0){
+											for(var j in result.verifierVOList[i].verifierVOList){
+												str+='<td>'+result.verifierVOList[i].verifierVOList[j].count+'</td>';
+											}
+										}
+										else{
+											str+='<td>0</td>';
+											str+='<td>0</td>';
+										}
+									str+='</tr>';
+								}	
+								
+							str+'</table>';
+						str+='</div>';
+					}
+					else{
+						 str+='<div>Death And Hospital Data is Not Available.</div>';
+					}
+			 }
+			 else{
+				 str+='<div>Some Problem Occured Please Contact Admin.</div>';
+			 }
+				
+			$("#deathHospitalDivId").html(str);
+		});
 }
-
 </script>
 
 </body>

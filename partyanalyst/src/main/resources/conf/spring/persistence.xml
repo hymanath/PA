@@ -607,7 +607,10 @@
 			    
 			     <value>com.itgrids.partyanalyst.model.UserAddressType</value>
 			     <value>com.itgrids.partyanalyst.model.CadreAddressDetails</value>
-			      <value>com.itgrids.partyanalyst.model.SubEvent</value>
+			     <value>com.itgrids.partyanalyst.model.SubEvent</value>
+			     <value>com.itgrids.partyanalyst.model.TdpCadreInsuranceInfo</value>
+			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
+			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
 			    
 				</list>
 			
