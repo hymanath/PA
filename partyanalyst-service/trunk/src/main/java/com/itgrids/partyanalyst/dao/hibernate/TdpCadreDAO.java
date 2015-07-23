@@ -5363,12 +5363,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	
 		public List<Object[]> getPartyApprovedFundByMembershipId(String membershipId)
 		{
-			Query query = getSession().createSQLQuery(" select count(Complaint_id) as count,sum(approved_amount) as amount from complaint_master where membership_id =:membershipId " +
-					" and (Completed_Status = 'Approved' or Completed_Status = 'Completed') and (issue_type = 'Personal' or issue_type = 'Health' or " +
-					" issue_type = 'Financial Support' or issue_type = 'Fee Concession' or issue_type = 'Both Fee And concession') and approved_amount is not null and approved_amount != ''" +
-					" and (delete_status != '0' or delete_status is null) ")
+			Query query = getSession().createSQLQuery(" select count(Complaint_id) as count,sum(approved_amount) as amount,issue_type as issueType from complaint_master where membership_id =:membershipId " +
+					" and (Completed_Status = 'Approved' or Completed_Status = 'Completed') and Subject != '' and type_of_issue = 'Welfare' and " +
+					"  approved_amount is not null and approved_amount != ''" +
+					" and (delete_status != '0' or delete_status is null)  group by issue_type ")
 			.addScalar("count",Hibernate.LONG)
-			.addScalar("amount",Hibernate.LONG);
+			.addScalar("amount",Hibernate.LONG)
+			.addScalar("issueType",Hibernate.STRING);
 			query.setParameter("membershipId", membershipId);
 			 
 			return query.list();
@@ -5377,12 +5378,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Object[]> getGovtApprovedFundByMembershipId(String membershipId)
 		{
-			Query query = getSession().createSQLQuery(" select count(Complaint_id) as count,sum(approved_amount) as amount from complaint_master where membership_id =:membershipId and " +
+			Query query = getSession().createSQLQuery(" select count(Complaint_id) as count,sum(approved_amount) as amount,issue_type issueType from complaint_master where membership_id =:membershipId and " +
 					" (Completed_Status = 'Approved' or Completed_Status = 'Completed') and issue_type = 'CM Relief' and approved_amount != '' and approved_amount is not null " +
-					" and (delete_status != '0' or delete_status is null) ")
+					" and (delete_status != '0' or delete_status is null) and Subject != '' ")
 			
 			 .addScalar("count",Hibernate.LONG)
-			 .addScalar("amount",Hibernate.LONG);
+			 .addScalar("amount",Hibernate.LONG)
+			 .addScalar("issueType",Hibernate.STRING);
 			query.setParameter("membershipId", membershipId);
 			return query.list();
 		}
