@@ -2629,6 +2629,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return finalVo;
 	}
 	
-	
+	public Long getTdpCadreIdBymembershipId(String membershipId)
+	{
+		try{
+			List<Long> list = tdpCadreDAO.getTdpCadreIdByMembershipId(membershipId);
+			if(list != null && list.size() > 0)
+				return list.get(0);
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in getTdpCadreIdBymembershipId() Method - ",e);
+		}
+		return null;
+	}
 	
 }
