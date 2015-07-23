@@ -220,7 +220,7 @@ $(document).on("click",".artclMdl",function(){
 			  str+='<div class="modal-body">';
 				str+='<div class="row">';
 					str+='<div class="col-md-12">';
-						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'"/>';
+						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive"/>';
 						str+='<p class="m_bottom0" style="height:40px;">Title : '+result[i].articleDetails[0].articleTitle+'</p>';
 						str+='<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
 						str+='<p class="m_top10 m_bottom0">Description</p>';
