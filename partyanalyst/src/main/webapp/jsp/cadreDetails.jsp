@@ -2353,10 +2353,10 @@ function getCandidateAndLocationSummaryNews(){
 					if(result.candidateSummary !=null){
                             	str+='<table class="table m_0 table-bordered m_0">';
                                 	str+='<tr>';
-                                    	str+='<td>TOTAL ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.totalCount+'</span></td>';
-                                        str+='<td>POSITIVE ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.positiveCount+'</span></td>';
-                                        str+='<td>NEGATIVE ARTICLES  <span class="pull-right text-bold">'+result.candidateSummary.negativeCount+'</span></td>';
-                                        str+='<td>NEUTRAL ARTICLES <span class="pull-right text-bold">'+result.candidateSummary.neutralCount+'</span></td>';
+                                    	str+='<td>TOTAL ARTICLES <a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="0" attr_benefitId="0" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.totalCount+'" style="cursor:pointer;"> <span class="pull-right text-bold">'+result.candidateSummary.totalCount+'</span></a></td>';
+                                        str+='<td>POSITIVE ARTICLES <a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="0" attr_benefitId="1" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.positiveCount+'" style="cursor:pointer;"> <span class="pull-right text-bold">'+result.candidateSummary.positiveCount+'</span></a></td>';
+                                        str+='<td>NEGATIVE ARTICLES <a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="0" attr_benefitId="2" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.negativeCount+'" style="cursor:pointer;"> <span class="pull-right text-bold">'+result.candidateSummary.negativeCount+'</span></a></td>';
+                                        str+='<td>NEUTRAL ARTICLES <a class="candidateRedirectedCls" attr_candidateId="'+candidateId+'" attr_categoryId="0" attr_benefitId="3" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_count="'+result.candidateSummary.neutralCount+'" style="cursor:pointer;"> <span class="pull-right text-bold">'+result.candidateSummary.neutralCount+'</span></a></td>';
                                     str+='</tr>';
                                 str+='</table>';
 								if(result.candidateSummary.categoryList !=null && result.candidateSummary.categoryList.length>0){
