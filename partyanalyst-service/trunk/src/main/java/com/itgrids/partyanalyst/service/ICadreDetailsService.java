@@ -42,7 +42,7 @@ public interface ICadreDetailsService {
 	
 	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId);
 	
-	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long districtId);
+	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long parliamentId,Long districtId);
 	
 	public Long getTdpCadreIdBymembershipId(String membershipId);
 }

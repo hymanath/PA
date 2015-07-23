@@ -46,4 +46,24 @@ public class TdpCadreInsuranceInfoDAO extends GenericDaoHibernate<TdpCadreInsura
 		
 		return query.list();
 	}
+	public List<Object[]> getDeathsAndHospitalizationDetailsForParliament(List<Long> typeIds,String type){
+	
+		StringBuilder str=new StringBuilder();
+		str.append(" select count(model.tdpCadreInsuranceInfoId),model.insuranceType.insuranceTypeId,model.insuranceType.type from TdpCadreInsuranceInfo model " );
+		
+		if(type.equalsIgnoreCase("parliament")){
+			str.append(" left join model.tdpCadre.userAddress.constituency constituency " +
+					" where constituency.constituencyId in (:typeIds) ");
+		}
+		
+		str.append(" group by model.insuranceType.insuranceTypeId");
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(type !="" && type !=null){
+			query.setParameterList("typeIds",typeIds);
+		}
+		
+		return query.list();
+	}
 }

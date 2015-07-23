@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -76,6 +77,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITdpCommitteeDAO tdpCommitteeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	
 	
@@ -268,6 +270,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setTdpCadreInsuranceInfoDAO(
 			ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO) {
 		this.tdpCadreInsuranceInfoDAO = tdpCadreInsuranceInfoDAO;
+	}
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 
 
@@ -2526,7 +2538,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return resultList;
 	}
-	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long districtId){
+	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long parliamentId,Long districtId){
 		
 		VerifierVO finalVo=new VerifierVO();
 
@@ -2596,6 +2608,37 @@ public class CadreDetailsService implements ICadreDetailsService{
 					mainList.add(constituencyVo);
 				}
 			}
+			if(parliamentId !=0){
+				VerifierVO parliamentVo=new VerifierVO();
+				List<VerifierVO> parliamentDeathList=new ArrayList<VerifierVO>();
+				
+				List<Long> asemConstIds=null;
+				
+				asemConstIds=delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByPCId(parliamentId);
+				
+				if(asemConstIds !=null && asemConstIds.size()>0){
+					List<Object[]> parliamentDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetailsForParliament(asemConstIds,"parliament");
+					
+					if(parliamentDeathDetails !=null){
+						for (Object[] objects : parliamentDeathDetails) {
+							VerifierVO vo=new VerifierVO();
+							vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+							vo.setId((Long)objects[1]);//insurance typeId
+							vo.setName(objects[2].toString());//type name(death,hospital)
+							
+							parliamentDeathList.add(vo);
+						}
+						parliamentVo.setVerifierVOList(parliamentDeathList);
+						parliamentVo.setId(parliamentId);
+						parliamentVo.setName("Parliament");
+						mainList.add(parliamentVo);
+					}
+					
+				} 
+				
+			}
+			
+			
 			if(districtId !=0l){
 				
 				VerifierVO districtVo=new VerifierVO();
