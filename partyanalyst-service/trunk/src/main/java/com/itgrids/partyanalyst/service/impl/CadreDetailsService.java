@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -73,7 +74,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private ICadreRegistrationService cadreRegistrationService;
 	private ITdpCommitteeDAO tdpCommitteeDAO;
-	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO;
 	
 	
 	
@@ -258,6 +260,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
 		this.tdpCommitteeDAO = tdpCommitteeDAO;
 	}
+
+	public ITdpCadreInsuranceInfoDAO getTdpCadreInsuranceInfoDAO() {
+		return tdpCadreInsuranceInfoDAO;
+	}
+
+	public void setTdpCadreInsuranceInfoDAO(
+			ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO) {
+		this.tdpCadreInsuranceInfoDAO = tdpCadreInsuranceInfoDAO;
+	}
+
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
@@ -2513,6 +2525,108 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		
 		return resultList;
+	}
+	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long districtId){
+		
+		VerifierVO finalVo=new VerifierVO();
+
+		List<VerifierVO> mainList=new ArrayList<VerifierVO>();
+		
+		try{
+			if(panchayatId !=0l){
+				
+				VerifierVO panchayatVo=new VerifierVO();
+				List<VerifierVO> panchayatList=new ArrayList<VerifierVO>();
+				
+				List<Object[]> panchaytDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(panchayatId,"panchayat");
+				if(panchaytDeathDetails !=null){
+					for (Object[] objects : panchaytDeathDetails) {
+						
+						VerifierVO vo=new VerifierVO();
+						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setId((Long)objects[1]);//insurance typeId
+						vo.setName(objects[2].toString());//type name(death,hospital)
+						
+						panchayatList.add(vo);
+					}
+					panchayatVo.setVerifierVOList(panchayatList);
+					panchayatVo.setId(panchayatId);
+					panchayatVo.setName("Panchayat");
+					mainList.add(panchayatVo);
+				}
+			}
+			if(mandalId !=0l){
+				
+				VerifierVO tehsilVo=new VerifierVO();
+				List<VerifierVO> tehsilList=new ArrayList<VerifierVO>();
+				List<Object[]> mandalDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(mandalId,"mandal");
+				if(mandalDeathDetails !=null){
+					for (Object[] objects : mandalDeathDetails) {
+						VerifierVO vo=new VerifierVO();
+						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);//count
+						vo.setId((Long)objects[1]);//insurance typeId
+						vo.setName(objects[2].toString());//type name(death,hospital)
+						
+						tehsilList.add(vo);
+						
+					}
+					tehsilVo.setVerifierVOList(tehsilList);
+					tehsilVo.setId(mandalId);
+					tehsilVo.setName("Mandal");
+					mainList.add(tehsilVo);
+				}
+			}
+			if(constituencyId !=0l){
+				
+				VerifierVO constituencyVo=new VerifierVO();
+				List<VerifierVO> constituencyList=new ArrayList<VerifierVO>();
+				List<Object[]> constituencyDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(constituencyId,"constituency");
+				if(constituencyDeathDetails !=null){
+					for (Object[] objects : constituencyDeathDetails) {
+						VerifierVO vo=new VerifierVO();
+						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setId((Long)objects[1]);//insurance typeId
+						vo.setName(objects[2].toString());//type name(death,hospital)
+						
+						constituencyList.add(vo);
+					}
+					constituencyVo.setVerifierVOList(constituencyList);
+					constituencyVo.setId(constituencyId);
+					constituencyVo.setName("Constituency");
+					mainList.add(constituencyVo);
+				}
+			}
+			if(districtId !=0l){
+				
+				VerifierVO districtVo=new VerifierVO();
+				List<VerifierVO> districtList=new ArrayList<VerifierVO>();
+				List<Object[]> districtDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(districtId,"district");
+				if(districtDeathDetails !=null){
+					for (Object[] objects : districtDeathDetails) {
+						VerifierVO vo=new VerifierVO();
+						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setId((Long)objects[1]);//insurance typeId
+						vo.setName(objects[2].toString());//type name(death,hospital)
+						
+						districtList.add(vo);
+						
+					}
+					districtVo.setVerifierVOList(districtList);
+					districtVo.setId(districtId);
+					districtVo.setName("District");
+					mainList.add(districtVo);
+				}
+			}
+			if(mainList !=null && mainList.size()>0){
+				finalVo.setVerifierVOList(mainList);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathsAndHospitalizationDetails() method, Exception - ",e);
+		}
+		
+		return finalVo;
 	}
 	
 	
