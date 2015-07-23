@@ -1227,11 +1227,16 @@ var globalCadreId = '${cadreId}';
 					 }
 					 
 					 //assigning values to global variables
-					 globalPanchayatId=result.panchayatId;
-					 globalTehsilId=result.tehsilId;
+					 if(result.localElectionBody ==0 || result.localElectionBody ==null){
+						globalPanchayatId=result.panchayatId;
+						globalTehsilId=result.tehsilId;
+					 }
+					 globalPanchayatId=0;
+					 globalTehsilId=0;
 					 globalConstituencyId=result.constituencyId;
 					 globalParliamentId=result.pConstituencyId;
 					 globalDistrictId=result.districtId;
+					 globalElectionBodyId=result.localElectionBody;
 					 
 					 
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
@@ -2986,10 +2991,17 @@ function getDeathsAndHospitalizationDetails(){
 	if(mandalId ==undefined || mandalId =="" || mandalId ==null){
 		mandalId=0;
 	}
+	
 	var constituencyId=globalConstituencyId;
 	if(constituencyId ==undefined || constituencyId =="" || constituencyId ==null){
 		constituencyId=0;
 	}
+	
+	var parliamentId=globalParliamentId;
+	if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
+		parliamentId=0;
+	}
+	
 	var districtId=globalDistrictId;
 	if(districtId ==undefined || districtId =="" || districtId ==null){
 		districtId=0;
@@ -3003,6 +3015,7 @@ function getDeathsAndHospitalizationDetails(){
 		panchayatId:panchayatId,
 		mandalId:mandalId,
 		constituencyId:constituencyId,
+		parliamentId:parliamentId, 
 		districtId:districtId
 	}
 	$.ajax({

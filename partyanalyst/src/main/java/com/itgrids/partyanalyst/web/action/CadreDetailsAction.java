@@ -426,8 +426,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			Long mandalId=jObj.getLong("mandalId");
 			Long constituencyid=jObj.getLong("constituencyId");
 			Long districtId=jObj.getLong("districtId");
+			Long parlimentId=jObj.getLong("parliamentId");;
 			
-			verifierVO=cadreDetailsService.getDeathsAndHospitalizationDetails(panchayatId,mandalId,constituencyid,districtId);
+			verifierVO=cadreDetailsService.getDeathsAndHospitalizationDetails(panchayatId,mandalId,constituencyid,parlimentId,districtId);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getDeathsAndHospitalizationDetails() method, Exception - ",e);
 		}

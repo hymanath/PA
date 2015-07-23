@@ -2573,6 +2573,8 @@
 		 <property name="cadreRegistrationService" ref="cadreRegistrationService" />
 		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" />
 		 <property name="tdpCadreInsuranceInfoDAO" ref="tdpCadreInsuranceInfoDAO" />
+		 <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		 
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
