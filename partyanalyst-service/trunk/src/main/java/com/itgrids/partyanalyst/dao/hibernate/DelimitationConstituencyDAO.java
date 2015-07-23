@@ -402,4 +402,15 @@ IDelimitationConstituencyDAO {
 			query.setParameterList("districtIdsList", districtIdsList);
 		return query.list();
 	}
+	public Long getDelimitationConstituencyIdByParlimantId(Long parliamentId,Long electionYear){
+		
+		Query query=getSession().createQuery("select model.delimitationConstituencyID from DelimitationConstituency model " +
+				" where model.constituency.constituencyId =:constituecyId and model.year =:year ");
+		
+		query.setParameter("constituecyId", parliamentId);
+		query.setParameter("year", electionYear);
+		
+		return (Long) query.uniqueResult();
+	}
+	
 }
