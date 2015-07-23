@@ -2367,7 +2367,7 @@ function getCandidateAndLocationSummaryNews(){
 		$("#issuesCount").html("");
 		var str = "";
 		var ttlCount = result[0].totalCount;
-		$("#issuesCount").html(" TOTAL COUNT - "+ttlCount);
+		$("#issuesCount").html(' TOTAL COUNT - <a class="departmentNewsCls" attr_fromDate="'+startDate+'" attr_toDate="'+endDate+'" attr_departmentId="0" attr_locationId="'+locationId+'" attr_locationType="'+locationType+'" attr_count ="'+ttlCount+'" style="cursor:pointer;" >'+ttlCount+'</a>');
 		for(var i in result){
 			str +="<tr>";
 			str +="<td width='80%'>"+result[i].partyName+"</td>";
