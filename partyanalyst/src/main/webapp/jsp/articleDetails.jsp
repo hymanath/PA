@@ -100,7 +100,7 @@ body
 var linkResult = [];
 var groupResult = [];
 var artclesRsltPar = [];
-var obj = ["0","State","District","Constituency","Parliament","Mandal","Panchayat","muncipal Corporation"];
+var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 
 
 
@@ -215,14 +215,17 @@ $(document).on("click",".artclMdl",function(){
 			str+='<div class="modal-content">';
 			  str+='<div class="modal-header">';
 				str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-				str+='<h4 class="modal-title" id="myModalLabel"></h4>';
+				str+='<h4 class="modal-title" id="myModalLabel">';
+					str+='<p class="m_bottom0" style="height:40px;">'+result[i].articleDetails[0].articleTitle+'</p>';
+					str+='<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
+				str+='</h4>';
 			  str+='</div>';
 			  str+='<div class="modal-body">';
 				str+='<div class="row">';
 					str+='<div class="col-md-12">';
 						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive"/>';
-						str+='<p class="m_bottom0" style="height:40px;">Title : '+result[i].articleDetails[0].articleTitle+'</p>';
-						str+='<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
+						
+						
 						str+='<p class="m_top10 m_bottom0">Description</p>';
 						str+='<p>'+result[i].articleDetails[0].description+'</p>';
 						str+='<div class="row">';
@@ -278,7 +281,7 @@ $(document).on("click",".artclMdl",function(){
 										str+='<h4 class="panel-title">NEWS TYPE</h4>';
 									str+='</div>';
 									str+='<div class="panel-body">';
-										str+='<table width="100%">';
+										str+='<table width="100%" class="table">';
 											str+='<tr>';
 												str+='<td width="60%">News type</td>';
 												if(result[i].articleDetails[0].newsType1!=null){
@@ -330,7 +333,7 @@ $(document).on("click",".artclMdl",function(){
 										str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
 									str+='</div>';
 									str+='<div class="panel-body">';
-										str+='<table width="100%">';
+										str+='<table width="100%" class="table">';
 											str+='<tr>';
 												str+='<td>IMPACT SCOPE</td>';
 												if(result[i].articleDetails[0].impactScope!=null){
@@ -342,7 +345,7 @@ $(document).on("click",".artclMdl",function(){
 											str+='<tr>';
 												str+='<td>LOCATION</td>';
 												if(result[i].articleDetails[0].selectedArea!=null){
-													str+='<td>'+obj[result[i].articleDetails[0].selectedArea]+'</td>';
+													str+='<td>'+result[i].articleDetails[0].selectedArea+'</td>';
 												}else{
 													str+='<td> - </td>';
 												}
@@ -358,7 +361,7 @@ $(document).on("click",".artclMdl",function(){
 									str+='</div>';
 									str+='<div class="panel-body">';
 										if(result[i].articleDetails[0].selectedKeyWords!=null){
-											str+='<p>'+obj[result[i].articleDetails[0].selectedKeyWords]+'</p>';
+											str+='<p>'+result[i].articleDetails[0].selectedKeyWords+'</p>';
 										}else{
 											str+='<p> - </p>';
 										}
