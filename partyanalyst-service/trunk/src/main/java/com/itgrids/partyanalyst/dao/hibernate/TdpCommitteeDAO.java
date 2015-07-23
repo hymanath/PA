@@ -771,7 +771,82 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		  query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
-	
-	
+	public List<Object[]> getcommitteesCountByDistrict(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> districtIds){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
+				" model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId " +// BASIC_COMMITTEE_ID sri
+				" from TdpCommittee model where  " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.district.districtId in(:districtIds) ");
+		
+		if(type.equalsIgnoreCase("started")){
+			
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) ");
+			}
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'  ");
+			}
+			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		}
+		
+		str.append(" group by model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}
+	public List<Object[]> getcommitteesCountByConstituency(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> constiIds){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
+				" model.constituency.constituencyId" +// DISTRICT
+				" from TdpCommittee model where  " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.constituency.constituencyId in(:constiIds) ");
+		
+		if(type.equalsIgnoreCase("started")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate)");
+			}
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'  ");
+			}
+			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		}
+		
+		str.append(" group by model.constituency.constituencyId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		query.setParameterList("constiIds", constiIds);
+		
+		return query.list();
+	}
 
 }
