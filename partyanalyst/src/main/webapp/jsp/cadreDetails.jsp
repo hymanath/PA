@@ -2216,7 +2216,8 @@ function buildApprovedFinancialSupprotForCadre(result)
             data: dataArr
         }]
     });
-	$("#headingId").html(""+result[0].totalRequests+"");
+    $("#headingId").html(""+result[0].totalComplaints+" ["+result[0].totalRequests+"]/-");
+
 	var str = '';
 	for(var i in result)
 	{
