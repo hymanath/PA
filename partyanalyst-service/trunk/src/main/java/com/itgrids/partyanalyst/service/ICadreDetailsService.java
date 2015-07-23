@@ -44,5 +44,5 @@ public interface ICadreDetailsService {
 	
 	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long districtId);
 	
-	
+	public Long getTdpCadreIdBymembershipId(String membershipId);
 }
