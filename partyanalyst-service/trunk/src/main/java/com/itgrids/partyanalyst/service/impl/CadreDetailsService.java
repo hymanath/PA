@@ -1625,10 +1625,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			{
 				String regex = "[0-9]+";
 			  List<Object[]> list = tdpCadreDAO.getPartyApprovedFundByMembershipId(memberShipId);
-			  setGrievanceAmountVO(resultList, list, "Party Fund");
+			  setGrievanceAmountVO(resultList, list);
 			 
 			  List<Object[]> list2 = tdpCadreDAO.getGovtApprovedFundByMembershipId(memberShipId);
-			  setGrievanceAmountVO(resultList, list2, "CM Relief Fund");
+			  setGrievanceAmountVO(resultList, list2);
 			  
 			  List<Object[]> expectedAmtList = tdpCadreDAO.getRequestedAmountByMembershipId(memberShipId);
 			  if(expectedAmtList != null && expectedAmtList.size() > 0)
@@ -1660,7 +1660,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 	}
 	
-	public void setGrievanceAmountVO(List<GrievanceAmountVO> resultList,List<Object[]> list,String name)
+	/*public void setGrievanceAmountVO(List<GrievanceAmountVO> resultList,List<Object[]> list,String name)
 	{
 		try{
 			if(list != null && list.size() > 0)
@@ -1673,6 +1673,30 @@ public class CadreDetailsService implements ICadreDetailsService{
 				  if(obj[1] != null && obj[1].toString().matches(regex))
 					  amountVO.setDonationAmount((Long)obj[1]); 
 				  resultList.add(amountVO);
+			  }
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in setGrievanceAmountVO() method, Exception - ",e);
+		}
+	}*/
+	
+	public void setGrievanceAmountVO(List<GrievanceAmountVO> resultList,List<Object[]> list)
+	{
+		try{
+			if(list != null && list.size() > 0)
+			  {
+				String regex = "[0-9]+";
+				for(Object[] obj: list)
+				{
+					  GrievanceAmountVO amountVO = new GrievanceAmountVO();
+					  amountVO.setName(obj[2] != null ?obj[2].toString():"");
+					  amountVO.setCount(obj[0] != null?Long.parseLong(obj[0].toString()):0l);
+					  if(obj[1] != null && obj[1].toString().matches(regex))
+						  amountVO.setDonationAmount((Long)obj[1]); 
+					  resultList.add(amountVO);
+				}
+				
+				  
 			  }
 			
 		}catch (Exception e) {
