@@ -5391,10 +5391,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Object[]> getRequestedAmountByMembershipId(String membershipId)
 		{
-			Query query = getSession().createSQLQuery(" select sum(expected_amount) as expamt,sum(health_amount) as helamt,count(Complaint_id) as count from complaint_master where membership_id =:membershipId and  " +
-					"(issue_type = 'Personal' or issue_type = 'CM Relief' or issue_type = 'Financial Support' or issue_type = 'Health') and expected_amount is not null " +
-					" and expected_amount != '' and health_amount is not null and health_amount != '' and (delete_status != '0' or delete_status is null) ")
-			
+			Query query = getSession().createSQLQuery("select sum(expected_amount) as expamt,sum(health_amount) as helamt,count(Complaint_id) as count from complaint_master where" +
+					" membership_id = :membershipId and ((expected_amount is not null and expected_amount != '') or (health_amount is not null and health_amount != '')) " +
+					"and (delete_status != '0' or delete_status is null) and issue_type in ('Health','Personal' ,'CM Relief','Financial Support') ;")
+					
 			 .addScalar("expamt",Hibernate.LONG)
 			 .addScalar("helamt",Hibernate.LONG)
 			 .addScalar("count",Hibernate.LONG);
