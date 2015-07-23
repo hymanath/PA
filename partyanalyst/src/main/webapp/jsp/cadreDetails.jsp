@@ -1231,8 +1231,6 @@ var globalCadreId = '${cadreId}';
 						globalPanchayatId=result.panchayatId;
 						globalTehsilId=result.tehsilId;
 					 }
-					 globalPanchayatId=0;
-					 globalTehsilId=0;
 					 globalConstituencyId=result.constituencyId;
 					 globalParliamentId=result.pConstituencyId;
 					 globalDistrictId=result.districtId;
