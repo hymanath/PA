@@ -622,6 +622,9 @@
 				
 			     <value>com.itgrids.partyanalyst.model.UserAddressType</value>
 			     <value>com.itgrids.partyanalyst.model.CadreAddressDetails</value>
+			     <value>com.itgrids.partyanalyst.model.TdpCadreInsuranceInfo</value>
+			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
+			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
 			    				
 			</list>
 		</property>
@@ -2927,6 +2930,10 @@
 	</bean>
 	
 	<bean id="subEventDAO" class="com.itgrids.partyanalyst.dao.hibernate.SubEventDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreInsuranceInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreInsuranceInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
