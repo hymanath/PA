@@ -1647,7 +1647,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					  
 				  }
 				  resultList.get(0).setTotalRequests(amount); 
-				  resultList.get(0).setTotalRequests(count);
+				  resultList.get(0).setTotalComplaints(count);
 			  }
 			  
 			}
