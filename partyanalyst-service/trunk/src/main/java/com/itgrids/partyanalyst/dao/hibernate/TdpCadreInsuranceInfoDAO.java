@@ -107,11 +107,13 @@ public class TdpCadreInsuranceInfoDAO extends GenericDaoHibernate<TdpCadreInsura
 			str.append(" left join model.tdpCadre.userAddress.constituency constituency " +
 					" where constituency.constituencyId in (:locationIds) ");
 		}
+		str.append(" and model.insuranceType.insuranceTypeId =:insuranceTypeId ");
 		
 		Query query=getSession().createQuery(str.toString());
 		
 		if(locationType !="" && locationType !=null){
 			query.setParameterList("locationIds",locationIds);
+			query.setParameter("insuranceTypeId", insuranceTypeId);
 		}
 		
 		return query.list();
