@@ -28,6 +28,8 @@
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <style>
+#scrollator_holder{margin-left:25px}
+.table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
 .font-10{font-size:10px}
 h1,h2,h3,h4,h5{color:#666 !important}
 .bg_f9{background:#f9f9f9}
@@ -1082,13 +1084,13 @@ var globalCadreId = '${cadreId}';
 			<div class="col-md-12">
 				<div style="background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%; border: medium none transparent; margin-bottom: 2px;" class="well well-sm">
 				<center><img id="dataLoadingsImgForDeathPopUp" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
-				<div id="popupForDeathDetails"></div>	
+				<div id="popupForDeathDetails" class="table-scroll-1"></div>	
 				</div>
 			</div>
 		</div>
       </div>
       <div class="modal-footer">
-       <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+       <button type="button" class="btn btn-default btn-primary" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -3153,7 +3155,8 @@ function getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insu
 function buildingAllCadresDetails(result){
 	var str='';
 	for(var i in result){
-			str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
+			
+			str+='<div class="media " style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imagePath+'" />';
 				str+='</span>';
@@ -3173,11 +3176,14 @@ function buildingAllCadresDetails(result){
 				str+='</div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].cadreId+' attr_membership_id='+result[i].membershipNo+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"/></div>';
-				</c:if> 
-			str+'</div>';
+				</c:if>
+			str+='</div>';
 			
 		}
 		$("#popupForDeathDetails").html(str);
+		$('.table-scroll-1').scrollator({
+			custom_class: 'table-scroll-1',
+		});
 	
 }
 $(document).on("click",".cadreDetailsCls",function(){
