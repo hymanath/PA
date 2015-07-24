@@ -2451,14 +2451,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	    	}
 	    }
 	 
-	  public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr)
+	  public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority)
 	  {
 		  VerifierVO verifierVO = null;
 		  try {
 			  List<VerifierVO> resultList = null;
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"");
+			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"");
 			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"");
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {
@@ -2474,6 +2474,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	   	 		 JSONObject surveyDetails = new JSONObject(output);
     	   	 		  if(surveyDetails != null)
     	   	 		  {
+    	   	 			verifierVO = new VerifierVO();
     	   	 			  if(surveyId != null && surveyId.longValue()>0)
     	   	 			  {
     	   	 				JSONArray  questionsList = surveyDetails.getJSONArray("questionsList");
@@ -2572,27 +2573,99 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		   	 					{
     		   	 						vo.setId(question.getLong("id"));
     		   	 					}
+    			   	 				
+    			   	 				if(question.has("verifierVOList") && !question.isNull("verifierVOList"))
+				   	 					{
+		    			   	 				
+		    			   	 			JSONArray  performanceList = question.getJSONArray("verifierVOList");
+		    			   	 			if(performanceList != null && performanceList.length()>0)
+		    			   	 			{
+		    			   	 			List<VerifierVO> questionWiseList = new ArrayList<VerifierVO>(0);
+		    			   	 				for(int j=0;j<performanceList.length();j++)
+		    			   	 				{
+			    			   	 				JSONObject optionObj = (JSONObject) performanceList.get(j);
+				    			   	 			VerifierVO optionsVO = new VerifierVO();
+				    			   	 			if(optionObj.has("question"))
+		        		   	 					{
+				    			   	 				optionsVO.setName(optionObj.getString("question"));
+		        		   	 					}
+					    			   	 		if(optionObj.has("option"))
+		        		   	 					{
+				    			   	 				optionsVO.setOption(optionObj.getString("option"));
+		        		   	 					}
+			    			   	 				  if(optionObj != null)
+			    			   	 				  {
+			    			   	 					    JSONArray  optionsPerformanceList = optionObj.getJSONArray("verifierVOList");
+			    			   	 					List<VerifierVO> optionsList = new ArrayList<VerifierVO>(0);
+				    			   	 					if(optionsPerformanceList != null && optionsPerformanceList.length()>0)
+				    			   	 					{
+				    			   	 						for (int k = 0; k < optionsPerformanceList.length(); k++)
+				    			   	 						{
+				    			   	 							VerifierVO locationVO = new VerifierVO();
+				    			   	 							JSONObject optionPerformanceObj = (JSONObject) optionsPerformanceList.get(k);
+				    			   	 							if(optionPerformanceObj != null)
+				    			   	 							{
+				    			   	 								
+					    			   	 							if(optionPerformanceObj.has("name"))
+							        		   	 					{
+					    			   	 								locationVO.setName(optionPerformanceObj.getString("name"));
+							        		   	 					}
+				    			   	 							
+				    			   	 								JSONArray  locationWiseOptionPerfObj = optionPerformanceObj.getJSONArray("verifierVOList");
+				    			   	 								if(locationWiseOptionPerfObj != null && locationWiseOptionPerfObj.length()>0)
+				    			   	 								{
+				    			   	 									List<VerifierVO> optionsVOList = new ArrayList<VerifierVO>(0);
+				    			   	 									for (int s = 0; s < locationWiseOptionPerfObj.length(); s++) {
+				    			   	 										VerifierVO optionVO = new VerifierVO();
+				    			   	 										JSONObject optiionObj =(JSONObject) locationWiseOptionPerfObj.get(s);
+				    			   	 										if(optiionObj != null)
+				    			   	 										{
+					    			   	 										if(optiionObj.has("option"))
+										        		   	 					{
+										    			   	 						optionVO.setOption(optiionObj.getString("option"));
+										        		   	 					}
+											    			   	 				if(optiionObj.has("optionId") && optiionObj.getString("optionId") != null )
+										        		   	 					{
+											    			   	 					optionVO.setOptionId(Long.valueOf(optiionObj.getString("optionId")));
+										        		   	 					}
+												    			   	 			
+													    			   	 		if(optiionObj.has("percentage"))
+										        		   	 					{
+													    			   	 			optionVO.setPercentage(optiionObj.getString("percentage"));
+										        		   	 					}
+				    			   	 										}
+				    			   	 										optionsVOList.add(optionVO);
+																		}
+				    			   	 								locationVO.setVerifierVOList(optionsVOList);
+				    			   	 								}
+				    			   	 							}
+					    			   	 						
+									    			   	 		optionsList.add(locationVO);
+				    			   	 						}
+				    			   	 					}
+				    			   	 					
+						    			   	 		optionsVO.setVerifierVOList(optionsList);
+			    			   	 				  }
+			    			   	 				  
+			    			   	 				questionWiseList.add(optionsVO);
+		    			   	 				}
+		    			   	 				vo.setVerifierVOList(questionWiseList);
+		    			   	 			}
+				   	 						
+				   	 					}
     		   	 					resultList.add(vo);
     		   	 				 }
     		   	 			 }
+    		       	   	 		verifierVO.setCount(surveyDetails.getLong("count"));
+    		       	   	 		verifierVO.setTotalCount(surveyDetails.getLong("totalCount"));
     	   	 			  }
     	   	 			  
-    	   	 			  
+    	   	 			if(resultList != null && resultList.size()>0)
+	  	       	   	 	  {
+	  	       	   	 		verifierVO.setVerifierVOList(resultList);
+	  	       	   	 	  }
     	   	 		  }
-    	   	 		  
-    	   	 		 if(resultList != null && resultList.size()>0)
-	       	   	 	  {
-	       	   	 		verifierVO = new VerifierVO();
-	       	   	 		if(surveyId == 0l){
-		       	   	 		verifierVO.setCount(surveyDetails.getLong("count"));
-		       	   	 		verifierVO.setTotalCount(surveyDetails.getLong("totalCount"));
-	       	   	 		}
-	       	   	 		
-	       	   	 		verifierVO.setVerifierVOList(resultList);
-	       	   	 	  }
     	   	 	  }
-    	   	 	  
-    	   	 	 
     	 	  }
     	 	 
     	 	 
