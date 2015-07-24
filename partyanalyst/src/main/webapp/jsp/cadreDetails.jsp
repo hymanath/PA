@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -1066,6 +1067,30 @@ var globalCadreId = '${cadreId}';
             </div>
         </div>-->
     </div>
+<!-- model -->
+<div class="modal fade myModalForDeath">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="deathTitleId"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12">
+				<div style="background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%; border: medium none transparent; margin-bottom: 2px;" class="well well-sm">
+				<center><img id="dataLoadingsImgForDeathPopUp" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				<div id="popupForDeathDetails"></div>	
+				</div>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+       <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -3004,11 +3029,7 @@ function getDeathsAndHospitalizationDetails(){
 	if(districtId ==undefined || districtId =="" || districtId ==null){
 		districtId=0;
 	}
-	//$("#panchayatRadioNewsId").val(result.tehsilId);
-					 //$("#mandalRadioNewsId").val(result.panchayatId);
-					 
-	//locationId=$("#aConstiRadioNewsId").val();locationId=$("#pConstiRadioNewsId").val();locationId=$("#districtRadioNewsId").val();
-	
+
 	var jsObj={
 		panchayatId:panchayatId,
 		mandalId:mandalId,
@@ -3039,7 +3060,7 @@ function getDeathsAndHospitalizationDetails(){
 										str+='<td id="'+result.verifierVOList[i].id+'">'+result.verifierVOList[i].name+'</td>';
 										if(result.verifierVOList[i].verifierVOList !=null && result.verifierVOList[i].verifierVOList.length>0){
 											for(var j in result.verifierVOList[i].verifierVOList){
-												str+='<td>'+result.verifierVOList[i].verifierVOList[j].count+'</td>';
+												str+='<td><a class="deathDetailsCls" attr_locationId='+result.verifierVOList[i].id+' attr_locationType='+result.verifierVOList[i].name+' attr_insuranceTypeId='+result.verifierVOList[i].verifierVOList[j].id+' attr_insuranceType='+result.verifierVOList[i].verifierVOList[j].name+' style="cursor:pointer;" data-toggle="modal" data-target=".myModalForDeath">'+result.verifierVOList[i].verifierVOList[j].count+'</a></td>';
 											}
 										}
 										else{
@@ -3063,6 +3084,87 @@ function getDeathsAndHospitalizationDetails(){
 			$("#deathHospitalDivId").html(str);
 		});
 }
+
+$(document).on("click",".deathDetailsCls",function(){
+	var locationId=$(this).attr("attr_locationId");
+	var locationType=$(this).attr("attr_locationType");
+	var insuranceTypeId=$(this).attr("attr_insuranceTypeId");
+	var insuranceType=$(this).attr("attr_insuranceType");
+	
+	getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insuranceTypeId,insuranceType);
+});
+
+function getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insuranceTypeId,insuranceType){
+	
+	$("#deathTitleId").html('');
+	$("#popupForDeathDetails").html('');
+	
+	$("#dataLoadingsImgForDeathPopUp").show();
+	
+	var jsObj={
+		locationId:locationId,
+		locationType:locationType,
+		insuranceTypeId:insuranceTypeId
+		
+	}
+	
+	$.ajax({
+			type:'POST',
+			 url: 'getCadresDetailsOfDeathsAndHospitalizationAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				
+				$("#dataLoadingsImgForDeathPopUp").hide();
+				
+				$("#deathTitleId").html("<div style='color:green;'>"+insuranceType+" Cadres Details</div>");
+				if(result !=null){
+						if(result.knownList !=null && result.knownList.length>0){
+							buildingAllCadresDetails(result.knownList);
+						}
+						else{
+							$("#popupForDeathDetails").html("No Data Available.");
+						}
+					}
+				else{
+					$("#popupForDeathDetails").html("Problem occured.Please contact admin.");
+				}
+			});
+}
+function buildingAllCadresDetails(result){
+	var str='';
+	for(var i in result){
+			str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
+				str+='<span href="#" class="media-left">';
+				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imagePath+'" />';
+				str+='</span>';
+				str+='<div class="media-body">';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
+				str+='<ul class="list-inline">';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+				str+='<li>Caste: '+result[i].casteName+'</li>';
+				str+='<li>Voter ID: '+result[i].voterIdCardNo+'</li>';
+				str+='<li>MemberShip No: '+result[i].membershipNo+'</li>';
+				str+='<li>Registered On: '+result[i].registeredOn+'</li>';
+				str+='<li>Occupation: '+result[i].occupation+'</li>';
+				str+='</ul>';
+				 
+				str+='</div>';
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].cadreId+' attr_membership_id='+result[i].membershipNo+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"/></div>';
+				</c:if> 
+			str+'</div>';
+			
+		}
+		$("#popupForDeathDetails").html(str);
+	
+}
+$(document).on("click",".cadreDetailsCls",function(){
+		var cadreId=$(this).attr("attr_cadre_id");
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
+	});
+
 </script>
 
 </body>

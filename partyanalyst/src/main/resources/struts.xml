@@ -10313,5 +10313,11 @@
 				<param name="root">verifierVO</param>
 		</result>
 	</action>
+	
+	<action name="getCadresDetailsOfDeathsAndHospitalizationAction" class="cadreDetailsAction" method="getCadresDetailsOfDeathsAndHospitalization">
+		<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVO</param>
+		</result>
+	</action>
 </package>
 </struts>      

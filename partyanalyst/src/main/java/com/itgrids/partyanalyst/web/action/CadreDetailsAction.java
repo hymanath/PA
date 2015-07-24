@@ -435,6 +435,20 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		
 		return Action.SUCCESS;
 	}
+	public String getCadresDetailsOfDeathsAndHospitalization(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long locationId=jObj.getLong("locationId");
+			String locationType=jObj.getString("locationType");
+			Long insuranceTypeId=jObj.getLong("insuranceTypeId");
+			
+			cadreCommitteeMemberVO=cadreDetailsService.getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insuranceTypeId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadresDetailsOfDeathsAndHospitalization() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 	
