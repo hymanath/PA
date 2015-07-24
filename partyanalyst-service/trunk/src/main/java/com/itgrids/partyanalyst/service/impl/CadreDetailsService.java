@@ -2377,45 +2377,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	/* 
-	 public void getPanchayatlwiseCommitteCount(Long locationId,Long constituencyId,List<CommitteeBasicVO> resultList)
-	 {
-		 try{
-			 
-			 CommitteeBasicVO villageVO = new CommitteeBasicVO();
-				villageVO.setLocationType("Village");
-				Long panchayatLevelId = 6l;
-				Long wardLevelId = 8l;
-				
-				List<Object[]> committeeMembersList = new ArrayList<Object[]>();//Total committee members count
-				setTdpCommitteeMembersCount(panchayatLevelId, locationId, null, committeeMembersList);
-				setTdpCommitteeMembersCount(wardLevelId, locationId, null, committeeMembersList);
-				
-				setTotalCommitteeMembersCount(committeeMembersList, villageVO);
-				
-				List<Object[]> committeesList = new ArrayList<Object[]>();//Total committees count
-				setTdpCommitteesCount(panchayatLevelId, locationId, null, committeesList);
-				setTdpCommitteesCount(wardLevelId, locationId, null, committeesList);
-				setTotalCommitteesCount(committeesList, villageVO);
-				
-				List<Object[]> startedCommitteesList = new ArrayList<Object[]>();//Total started committees count
-				setTdpStartedOrCompletedCommitteesCount(panchayatLevelId, locationId, null, startedCommitteesList, "Started");
-				setTdpStartedOrCompletedCommitteesCount(wardLevelId, locationId, null, startedCommitteesList, "Started");
-				setStartedCommitteesCount(startedCommitteesList, villageVO);
-				
-				
-				List<Object[]> completedCommitteesList = new ArrayList<Object[]>();//Total completed committees count
-				setTdpStartedOrCompletedCommitteesCount(panchayatLevelId, locationId, null, startedCommitteesList, "completed");
-				setTdpStartedOrCompletedCommitteesCount(wardLevelId, locationId, null, startedCommitteesList, "completed");
-				setStartedCommitteesCount(completedCommitteesList, villageVO);
-				
-				resultList.add(villageVO); 
-			 
-		 }catch (Exception e) {
-			 LOG.error("Exception Occured in getPanchayatlwiseCommitteCount() method, Exception - ",e);
-		}
-	 }
-	 */
+	
 	 
 	 
 	 public void getPanchayatlwiseCommitteCount(Long locationId,Long constituencyId,CommitteeBasicVO villageVO,List<Long> levelIdsList,String locationType)
@@ -2431,16 +2393,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 				for(Long levelId: levelIdsList)
 				{
-					setTdpCommitteeMembersCount(levelId, locationId, null, committeeMembersList);	
-					setTdpCommitteesCount(levelId, locationId, null, committeesList);
-					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, startedCommitteesList, "Started");
-					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, completedCommitteesList, "completed");
+					setTdpCommitteeMembersCount(levelId, locationId, null, committeeMembersList,locationType);	
+					setTdpCommitteesCount(levelId, locationId, null, committeesList,locationType);
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, startedCommitteesList, "Started",locationType);
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, completedCommitteesList, "completed",locationType);
 				}
 				
 				setTotalCommitteeMembersCount(committeeMembersList, villageVO);
 				setTotalCommitteesCount(committeesList, villageVO);
 				setStartedCommitteesCount(startedCommitteesList, villageVO);
-				setStartedCommitteesCount(completedCommitteesList, villageVO);
+				setCompletedCommitteesCount(completedCommitteesList, villageVO);
 				
 				
 			 
@@ -2449,13 +2411,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 	 }
 	 
-	 
+
 	 
 	
-	public void setTdpCommitteeMembersCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList)
+	public void setTdpCommitteeMembersCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList,String locationType)
 	{
 		try{
-			List<Object[]> list = tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValue(levelId, levelValue,constituencyId);
+			List<Object[]> list = null;
+			if(locationType.equalsIgnoreCase("Village"))
+				 list = tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValueForVillage(levelId, levelValue,constituencyId);
+			else
+				list= tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValue(levelId, levelValue,constituencyId);
 			 if(list != null && list.size() > 0)
 				 resultList.addAll(list);
 			
@@ -2465,10 +2431,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 	}
 	
-	public void setTdpCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList)
+	public void setTdpCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList,String locationType)
 	{
 		try{
-			List<Object[]> list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValue(levelId, levelValue, null);
+			List<Object[]> list = null;
+			if(locationType.equalsIgnoreCase("village"))
+				 list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValueForVillage(levelId, levelValue,constituencyId);
+			else
+		     list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValue(levelId, levelValue, null);
 			 if(list != null && list.size() > 0)
 				 resultList.addAll(list);
 			
@@ -2478,10 +2448,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 	}
 	
-	public void setTdpStartedOrCompletedCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList,String status)
+	public void setTdpStartedOrCompletedCommitteesCount(Long levelId,Long levelValue,Long constituencyId,List<Object[]> resultList,String status,String locationType)
 	{
 		try{
-			List<Object[]> list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValue(levelId, levelValue, constituencyId, status);
+			List<Object[]> list = null;
+			if(locationType.equalsIgnoreCase("Village"))
+				list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillage(levelId, levelValue, constituencyId, status);	
+			else
+			list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValue(levelId, levelValue, constituencyId, status);
 			 if(list != null && list.size() > 0)
 				 resultList.addAll(list);
 			
@@ -2522,7 +2496,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//panchayat committees count in mandal
 				List<Long> levelIdsList = new ArrayList<Long>();
 				levelIdsList.add(6l);
-				levelIdsList.add(8l);
+				//levelIdsList.add(8l);
 				CommitteeBasicVO villBasicVO = new CommitteeBasicVO();
 			    getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, villBasicVO,levelIdsList,"Village");
 			    
