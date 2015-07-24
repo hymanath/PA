@@ -5265,7 +5265,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
 					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
-					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,userAddress1.houseNo " +
+					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,model.houseNo " +
 					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
 					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name , " +
 					" booth.boothId,booth.partNo, ward.constituencyId, ward.name " +
@@ -5445,6 +5445,47 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			 
 			query.setParameter("membershipId", memberShipNo);
 			return query.list();
+		}
+		public List<Object[]> cadresInformationOfCandidate(List<Long> cadreIds,Long enrollmentYear){
+
+			
+			StringBuilder queryStr=new StringBuilder();
+			
+			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
+					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
+					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,model.houseNo " +
+					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
+					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name , " +
+					" booth.boothId,booth.partNo, ward.constituencyId, ward.name,model.relativename " +
+					" from TdpCadre model " );
+			queryStr.append(" left join model.educationalQualifications eduQualification ");
+			queryStr.append(" left join model.occupation occupation ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" left join model.userAddress.booth booth ");
+			queryStr.append(" left join model.userAddress.panchayat panchayat ");
+			queryStr.append(" left join model.userAddress.ward ward ");
+			queryStr.append(" left join model.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.userAddress.constituency constituency ");
+			queryStr.append(" left join model.userAddress userAddress1 ");
+			queryStr.append(" left join model.userAddress.district  district");
+			queryStr.append(" left join model.userAddress.state state ");
+			queryStr.append(" left join model.casteState.caste caste");
+			queryStr.append(" left join model.userAddress.parliamentConstituency parliamentConstituency ");
+			
+			if(cadreIds !=null && cadreIds.size()>0){
+				queryStr.append(" where model.tdpCadreId in (:cadreIds) and model.isDeleted ='N'");
+			}
+			if(enrollmentYear !=null){
+				queryStr.append(" and model.enrollmentYear =:enrollmentYear  ");
+			}
+			
+			Query query=getSession().createQuery(queryStr.toString());
+			
+			
+			query.setParameterList("cadreIds", cadreIds);
+			query.setParameter("enrollmentYear", enrollmentYear);
+			
+			return  query.list();
 		}
 		
 		

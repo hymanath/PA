@@ -99,6 +99,9 @@ public class CadreCommitteeMemberVO {
 	private String  houseNo;
 	private Long localElectionBody;
 	
+	private Long cadreId;
+	private String relativeName;
+	
 	
 	public Long getActualOthers() {
 		return actualOthers;
@@ -602,6 +605,18 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setLocalElectionBody(Long localElectionBody) {
 		this.localElectionBody = localElectionBody;
+	}
+	public Long getCadreId() {
+		return cadreId;
+	}
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 	
 	
