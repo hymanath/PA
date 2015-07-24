@@ -709,7 +709,29 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 				
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCommitteesCountByLevelIdAndLevelValueForVillage(Long levelId,Long tehsilId,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from " +
+				" TdpCommittee model,Panchayat p where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId  ");
+		
+		if(tehsilId != null && tehsilId > 0)
+			str.append(" and p.tehsil.tehsilId =:tehsilId and model.tdpCommitteeLevelValue = p.panchayatId");
+		if(constituencyId != null && constituencyId > 0)
+			str.append(" and model.constituency.constituencyId =:constituencyId ");
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		if(constituencyId != null && constituencyId > 0)
+			  query.setParameter("constituencyId", constituencyId);
+		if(tehsilId != null && tehsilId > 0)
+		  query.setParameter("tehsilId", tehsilId);
+		return query.list();
+				
+	}
 	
 	/*public List<Object[]> committeesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId,String type){
 		StringBuilder str = new StringBuilder();
@@ -753,7 +775,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	public List<Object[]> getStartedOrComplcommitteesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId,String status)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model where " +
+		str.append("select count(distinct model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and " +
 				" model.tdpCommitteeLevelValue =:levelValue ");
 		
@@ -851,5 +873,29 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
-
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillage(Long levelId,Long tehsilId,Long constituencyId,String status)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model,Panchayat p  where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId  ");
+		
+		  if(status.equalsIgnoreCase("Started"))
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			else if(status.equalsIgnoreCase("completed"))
+			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		  if(constituencyId != null && constituencyId > 0)
+			 str.append("and model.constituency.constituencyId =:constituencyId");
+		  if(tehsilId != null && tehsilId > 0)
+				str.append(" and p.tehsil.tehsilId =:tehsilId and model.tdpCommitteeLevelValue = p.panchayatId");
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("tehsilId", tehsilId);
+		
+		if(constituencyId != null && constituencyId > 0)
+		  query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }

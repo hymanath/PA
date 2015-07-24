@@ -1724,6 +1724,27 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForVillage(Long levelId,Long tehsilId,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId  from TdpCommitteeMember model,Panchayat p " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId   " +
+				" and model.isActive ='Y' ");
+		if(constituencyId != null && constituencyId > 0)
+		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
+		if(tehsilId != null && tehsilId > 0)
+			str.append(" and p.tehsil.tehsilId =:tehsilId and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue = p.panchayatId");
+		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameter("tehsilId", tehsilId);
+		if(constituencyId != null && constituencyId > 0)
+			query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+
 	
 }
