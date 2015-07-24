@@ -1752,7 +1752,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							{
 								TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(resultList, params[1].toString());
 							    if(VO != null)
-							    	VO.setCount(params[1] != null?Long.parseLong(params[1].toString()):0l);
+							    	VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
 							}
 						}
 					}
