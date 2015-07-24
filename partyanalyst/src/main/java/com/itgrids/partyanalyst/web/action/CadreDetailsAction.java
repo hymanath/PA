@@ -298,8 +298,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			Long cadreId=jObj.getLong("cadreId");
 			Long surveyId=jObj.getLong("surveyId");
 			String searchTypeStr=jObj.getString("searchTypeStr");
-			
-			verifierVO=cadreDetailsService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr);
+			String isPriority=jObj.getString("isPriority");
+			Long boothId=jObj.getLong("boothId");
+			verifierVO=cadreDetailsService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr,boothId,isPriority);
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventDetailsOfCadre  method in CadreDetailsAction.",e);
 		}
