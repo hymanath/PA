@@ -625,6 +625,7 @@
 			     <value>com.itgrids.partyanalyst.model.TdpCadreInsuranceInfo</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
+			     <value>com.itgrids.partyanalyst.model.CandidateContestedLocation</value>
 			    				
 			</list>
 		</property>
@@ -2934,6 +2935,10 @@
 	</bean>
 	
 	<bean id="tdpCadreInsuranceInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreInsuranceInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateContestedLocationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
