@@ -1233,10 +1233,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return finalList;
 	}
-	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr){
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority){
 		VerifierVO verifierVO=new VerifierVO();
 		try{
-			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr);
+			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr,boothId,isPriority);
 			return verifierVO;
 		}
 		catch(Exception e){
