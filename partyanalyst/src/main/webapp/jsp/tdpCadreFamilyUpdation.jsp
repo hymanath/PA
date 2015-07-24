@@ -958,7 +958,8 @@ function getFamilyDetails(tdpCadreId)
 					}
 					str+='<div class="panel-body">';
 					str+='<div class="row">';
-					
+					str+='<input type="hidden" value="'+result[i].voterId+'"  class="voterIdCls form-control"/> ';
+					str+='<input type="hidden" value="'+result[i].votercardNo+'"  class="votercardNocls form-control"/> ';
 					if(result[i].mobileNo != null)
 					{
 						
@@ -1236,20 +1237,20 @@ function updateFamilyInfo()
 		
 			if(count == 1)
 			{
-			age = 0;
-			finalCasteId = casteStateId;
-			casteStateId = $(this).find(".casteState").val();
-			gender = $(this).find(".gender").val();
-			marriageDay = $(this).find(".marriageDay").val();
-			whatsAPP = $(this).find(".whatsappStatus").val();
-			tdpCadre = $(this).find(".tdpCadre").val();
-			dob = $(this).find(".dob").val();
-			relation = 13;
+				age = 0;
+				finalCasteId = casteStateId;
+				casteStateId = $(this).find(".casteState").val();
+				gender = $(this).find(".gender").val();
+				marriageDay = $(this).find(".marriageDay").val();
+				whatsAPP = $(this).find(".whatsappStatus").val();
+				tdpCadre = $(this).find(".tdpCadre").val();
+				dob = $(this).find(".dob").val();
+				relation = 13;
 			}
 			else
 			{
-				relation = $(this).find(".relation").val();;
-				voterId = "";
+				relation = $(this).find(".relation").val();
+				voterId = $(this).find(".votercardNocls").val();
 				partyMemberSince="";
 			}
 			
