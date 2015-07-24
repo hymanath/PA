@@ -235,6 +235,8 @@ var globalCadreId = '${cadreId}';
                         </h4>
                     </div>
                     <div class="panel-body">
+					
+					<center><img style="width: 25px; height: 25px;display:none;" src="images/icons/loading.gif" id="dataLoadingsImgForFamilyMembers"/></center>
                     	<div class="family-members" id="familyMembersDiv">
                            <!-- <ul>
                                 <li>
@@ -1067,7 +1069,7 @@ var globalCadreId = '${cadreId}';
             </div>
         </div>-->
     </div>
-<!-- model -->
+    <!-- model -->
 <div class="modal fade myModalForDeath">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -1091,6 +1093,18 @@ var globalCadreId = '${cadreId}';
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+	<div class="modal fade modalForSurvey">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color:#CCCCCC">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" style="text-align:center;"><b>Survey Participation Details</b></h4>
+				</div>
+				<div class="modal-body">
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -1991,14 +2005,19 @@ function buildTotalMemberShipRegInCadreLocation(result)
 
 function getCadreFamilyDetailsByCadreId()
 {
-	$("#familyMembersDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	//$("#familyMembersDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	$("#dataLoadingsImgForFamilyMembers").show();
 		  $.ajax({
 		  type : "POST",
 		  url  : "getCadreFamilyDetailsAction.action",
 		  data : {tdpCadreId:globalCadreId}
 	  }).done(function(result){
-		if(result != null && result.length > 0)
-		  buildCadreFamilyDetails(result);  
+	  $("#dataLoadingsImgForFamilyMembers").hide();
+		if(result != null && result.length > 0){
+		  buildCadreFamilyDetails(result); 
+		}else{
+			$("#familyMembersDiv").html("No Data Available");
+			}
 	  });
  } 
  
@@ -2016,10 +2035,10 @@ function getCadreFamilyDetailsByCadreId()
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
          str += '<span class="pull-right">';
-		 if((result[i].education != null&&result[i].education.trim().length > 0) || (result[i].occupation != null && result[i].occupation.trim().length > 0) || (result[i].count != null && result[i].count.trim().length > 0))
+		 if(result[i].count != null && result[i].count> 0)
            str += '<img class="img-responsive" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
-	    else
-		  str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
+		   else
+		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
 		 str += '</span>';
 		 str += '<ul class="survey-hover'+i+' arrow_box3" style="display:none">';
         
@@ -2029,8 +2048,8 @@ function getCadreFamilyDetailsByCadreId()
          if(result[i].occupation != null && result[i].occupation.trim().length > 0)
 			 str += '<li>Occupation : <span class="pull-right">'+result[i].occupation+'</span></li>';
 		 
-         if(result[i].count != null && result[i].count.trim().length > 0)
-			 str += '<li>Participated in Survey : <span class="pull-right">'+result[i].count+'</span></li>';
+         if(result[i].count != null && result[i].count> 0)
+			 str += '<li>Participated in Survey : <span class="pull-right" style="cursor:pointer; color:#485EDB;" data-toggle="modal" data-target=".modalForSurvey" onclick = "familyMembersSurveyDetails(\''+result[i].votercardNo+'\')">'+result[i].count+'</span></li>';
 		 
 		 str += '</ul>';
          str += '</div>';
@@ -3085,6 +3104,7 @@ function getDeathsAndHospitalizationDetails(){
 		});
 }
 
+
 $(document).on("click",".deathDetailsCls",function(){
 	var locationId=$(this).attr("attr_locationId");
 	var locationType=$(this).attr("attr_locationType");
@@ -3165,6 +3185,19 @@ $(document).on("click",".cadreDetailsCls",function(){
 		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
 	});
 
+
+function familyMembersSurveyDetails(votercardNo)
+{	
+	var jsobj={
+				votercardNo:votercardNo
+			}
+			$.ajax({
+				type:'GET',
+				 url: 'familyMembersSurveyDetailsAction.action',
+				 data : {task:JSON.stringify(jsobj)} ,
+			}).done(function(result){
+			});
+}
 </script>
 
 </body>
