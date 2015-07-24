@@ -847,6 +847,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				cadreDetailsVO.setRepresentativeType(publicRepresentTypeStr);
 				cadreDetailsVO.setCandidate(candidateId !=null ? candidateId.longValue():0l);
 					
+				cadreDetailsVO.setCadreId(cadreId);
 					//cadreDetailsVO.setRepresentativeType(publicRepDertails[1] !=null ? publicRepDertails[1].toString() : "");
 				}
 			
@@ -2683,6 +2684,164 @@ public class CadreDetailsService implements ICadreDetailsService{
 			LOG.error("Exception occured in getTdpCadreIdBymembershipId() Method - ",e);
 		}
 		return null;
+	}
+	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(Long locationId,String locationType,Long insuranceTypeId){
+		
+		CadreCommitteeMemberVO finalcadreVo=new CadreCommitteeMemberVO();
+		try{
+			List<Long> cadreIds=null;
+			if(!locationType.equalsIgnoreCase("parliament")){
+				cadreIds=tdpCadreInsuranceInfoDAO.getCadresIdsByInsuranceType(locationId,locationType,insuranceTypeId);
+			}
+			else if(locationType.equalsIgnoreCase("parliament")){
+				
+				List<Long> asemConstIds=null;
+				
+				asemConstIds=delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByPCId(locationId);
+				if(asemConstIds !=null && asemConstIds.size()>0)
+				cadreIds=tdpCadreInsuranceInfoDAO.getCadresIdsByParliament(asemConstIds,locationType,insuranceTypeId);
+				
+			}
+			if(cadreIds !=null && cadreIds.size()>0){
+				finalcadreVo=getCadresDetailsOfDeathsAndHospitalization(cadreIds);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in getTdpCadreIdBymembershipId() Method - ",e);
+		}
+		return finalcadreVo;
+	}
+	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(List<Long> cadreIds){
+		
+		CadreCommitteeMemberVO finalcadreVo=new CadreCommitteeMemberVO();
+		
+		List<CadreCommitteeMemberVO> listOfCadreVO=new ArrayList<CadreCommitteeMemberVO>();
+		try{
+			
+					if(cadreIds !=null && cadreIds.size()>0){
+						List<Object[]> details=tdpCadreDAO.cadresInformationOfCandidate(cadreIds,2014l);
+						
+						DateFormat dateFormat=null;
+						Date convertedDate = null;
+						if(details !=null && details.size()>0){
+						 for (Object[] cadreFormalDetails : details) {
+							 
+							 CadreCommitteeMemberVO cadreDetailsVO=new CadreCommitteeMemberVO();
+							 
+								cadreDetailsVO.setCadreId((Long)cadreFormalDetails[0]);//cadreId
+								cadreDetailsVO.setName(cadreFormalDetails[1] !=null ? cadreFormalDetails[1].toString() : "");
+								
+								if(cadreFormalDetails[2] !=null){
+									dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+									convertedDate = (Date) dateFormat.parse(cadreFormalDetails[2].toString());
+									 String lines[] = convertedDate.toString().split(" ");
+									 cadreDetailsVO.setDateOfBirth(lines[1]+ " "+lines[2] +" " + lines[5]);
+								}else{
+									cadreDetailsVO.setDateOfBirth("");
+								}
+								//cadreDetailsVO.setDateOfBirth(cadreFormalDetails[2] !=null ? cadreFormalDetails[2].toString() : "");
+								cadreDetailsVO.setAge(cadreFormalDetails[3] !=null ? cadreFormalDetails[3].toString() :"" );
+								cadreDetailsVO.setQualification(cadreFormalDetails[5] !=null ? cadreFormalDetails[5].toString() : "");
+								
+								cadreDetailsVO.setOccupation(cadreFormalDetails[7] !=null ? cadreFormalDetails[7].toString() : "");
+								
+								cadreDetailsVO.setVoterId(cadreFormalDetails[8] !=null ? cadreFormalDetails[8].toString() :"" );
+								
+								cadreDetailsVO.setPanchayatName(cadreFormalDetails[9] !=null ? cadreFormalDetails[9].toString() : "-" );
+								
+								cadreDetailsVO.setTehsilName(cadreFormalDetails[10] !=null ? cadreFormalDetails[10].toString() : "" );
+								
+								cadreDetailsVO.setConstituencyName(cadreFormalDetails[11] !=null ? cadreFormalDetails[11].toString() : "" );
+								
+								cadreDetailsVO.setMobileNo(cadreFormalDetails[12] !=null ? cadreFormalDetails[12].toString() : "");
+								cadreDetailsVO.setConstituencyId(cadreFormalDetails[13] !=null ? (Long)cadreFormalDetails[13] : 0l );
+								cadreDetailsVO.setVoterIdCardNo(cadreFormalDetails[14] !=null ? cadreFormalDetails[14].toString() : "");
+								
+								if(cadreFormalDetails[15] !=null){
+									String image=cadreFormalDetails[15].toString();
+									String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+									
+									cadreDetailsVO.setImagePath(imagePath);
+								}
+								else{
+									cadreDetailsVO.setImagePath("");
+								}
+								
+								cadreDetailsVO.setMembershipNo(cadreFormalDetails[16] !=null ? cadreFormalDetails[16].toString() :"");
+								cadreDetailsVO.setHouseNo(cadreFormalDetails[17] !=null ? cadreFormalDetails[17].toString() :"");
+								cadreDetailsVO.setDistrictName(cadreFormalDetails[18] !=null ? cadreFormalDetails[18].toString() : "" );
+								cadreDetailsVO.setStateName(cadreFormalDetails[19] !=null ? cadreFormalDetails[19].toString() : "" );
+								cadreDetailsVO.setCasteName(cadreFormalDetails[20] !=null ? cadreFormalDetails[20].toString():"");
+								
+								String dataSourceType="";
+								if(cadreFormalDetails[24] !=null){
+									dataSourceType=cadreFormalDetails[24].toString();
+								}
+								
+								if(cadreFormalDetails[21] !=null){
+									
+									String webUserId=cadreFormalDetails[21].toString();
+									String[] partyOfficeIds=IConstants.PARTY_OFFICE_USER_IDS.split(",");
+									String[] mahanaduIds=IConstants.MAHANADU_USER_IDS.split(",");
+								
+									boolean partyOffice=Arrays.asList(partyOfficeIds).contains(webUserId);
+									if(partyOffice){
+										cadreDetailsVO.setRegisteredOn(partyOfficeIds[0]);
+									}
+									else if(partyOffice ==false){
+										boolean mahandu=Arrays.asList(mahanaduIds).contains(webUserId);
+										if(mahandu){
+											cadreDetailsVO.setRegisteredOn(mahanaduIds[0]);
+										}
+										else{
+											cadreDetailsVO.setRegisteredOn(dataSourceType);
+										}
+									}
+									
+								}//registered On
+								else{
+									cadreDetailsVO.setRegisteredOn(dataSourceType);
+								}
+								cadreDetailsVO.setEmailId(cadreFormalDetails[23] !=null ? cadreFormalDetails[23].toString(): "");
+								if(cadreFormalDetails[22] !=null){
+									dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+									convertedDate = (Date) dateFormat.parse(cadreFormalDetails[22].toString());
+									 String lines[] = convertedDate.toString().split(" ");
+									 cadreDetailsVO.setRegisteredTime(lines[1]+ " "+lines[2] +" " + lines[5]);
+								}
+								
+								//Ids
+								cadreDetailsVO.setPanchayatId(cadreFormalDetails[25] !=null ? Long.parseLong(cadreFormalDetails[25].toString()) :0l);
+								cadreDetailsVO.setTehsilId(cadreFormalDetails[26] !=null ? Long.parseLong(cadreFormalDetails[26].toString()):0l);
+								cadreDetailsVO.setDistrictId(cadreFormalDetails[27] !=null ? Long.parseLong(cadreFormalDetails[27].toString()):0l);
+								cadreDetailsVO.setStateId(cadreFormalDetails[28] !=null ? Long.parseLong(cadreFormalDetails[28].toString()):0l);
+								//cadreDetailsVO.setpConstituencyId(cadreFormalDetails[29] !=null ? Long.parseLong(cadreFormalDetails[29].toString()):0l);
+								//cadreDetailsVO.setpConstituencyName(cadreFormalDetails[30] !=null ? cadreFormalDetails[30].toString(): "");
+								cadreDetailsVO.setBoothId(cadreFormalDetails[31] !=null ? Long.parseLong(cadreFormalDetails[31].toString()):0l);
+								
+								if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L)
+									cadreDetailsVO.setPanchayatId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
+								cadreDetailsVO.setRelativeName(cadreFormalDetails[35] !=null ? cadreFormalDetails[35].toString() :"");
+								
+								List<Object[]> pList = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(cadreDetailsVO.getConstituencyId(),2009L);
+								if(pList != null && pList.size()>0){
+									Object[] parliament = pList.get(0);
+									cadreDetailsVO.setpConstituencyId(commonMethodsUtilService.getLongValueForObject(parliament[0]));
+									cadreDetailsVO.setpConstituencyName(commonMethodsUtilService.getStringValueForObject(parliament[1]));
+								}
+							
+								listOfCadreVO.add(cadreDetailsVO);
+						}
+						 finalcadreVo.setKnownList(listOfCadreVO);
+					}
+				}
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getCadresDetailsOfDeathsAndHospitalization() Method - ",e);
+		}
+		
+		return finalcadreVo;
 	}
 	
 }

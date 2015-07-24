@@ -66,4 +66,55 @@ public class TdpCadreInsuranceInfoDAO extends GenericDaoHibernate<TdpCadreInsura
 		
 		return query.list();
 	}
+	public List<Long> getCadresIdsByInsuranceType(Long locationId,String locationType,Long insuranceTypeId){
+		
+		StringBuilder str=new StringBuilder();
+		str.append(" select distinct model.tdpCadre.tdpCadreId from TdpCadreInsuranceInfo model " );
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			str.append("left join model.tdpCadre.userAddress.panchayat panchayat " +
+					" where panchayat.panchayatId=:locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("mandal")){
+			str.append(" left join model.tdpCadre.userAddress.tehsil tehsil " +
+					" where tehsil.tehsilId=:locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("constituency")){
+			str.append(" left join model.tdpCadre.userAddress.constituency constituency " +
+					" where constituency.constituencyId=:locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("district")){
+			str.append(" left join model.tdpCadre.userAddress.district district " +
+					" where district.districtId=:locationId ");
+		}
+		str.append(" and model.insuranceType.insuranceTypeId =:insuranceTypeId ");
+			
+		Query query=getSession().createQuery(str.toString());
+		
+		if(locationType !="" && locationType !=null){
+			query.setParameter("locationId",locationId);
+			query.setParameter("insuranceTypeId", insuranceTypeId);
+		}
+		
+		return query.list();
+	}
+	public List<Long> getCadresIdsByParliament(List<Long> locationIds,String locationType,Long insuranceTypeId){
+	
+		StringBuilder str=new StringBuilder();
+		str.append(" select distinct model.tdpCadre.tdpCadreId from TdpCadreInsuranceInfo model " );
+		
+		if(locationType.equalsIgnoreCase("parliament")){
+			str.append(" left join model.tdpCadre.userAddress.constituency constituency " +
+					" where constituency.constituencyId in (:locationIds) ");
+		}
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(locationType !="" && locationType !=null){
+			query.setParameterList("locationIds",locationIds);
+		}
+		
+		return query.list();
+	}
+	
 }
