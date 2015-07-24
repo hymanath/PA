@@ -1275,12 +1275,12 @@ var globalCadreId = '${cadreId}';
 					 globalConstituencyId=result.constituencyId;
 					 globalParliamentId=result.pConstituencyId;
 					 globalDistrictId=result.districtId;
-					 globalElectionBodyId=result.localElectionBody;
-					 
+					 globalElectionBodyId=result.localElectionBody;					 
 					 
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
 					 getDeathsAndHospitalizationDetails();
+					getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0,'true');
 				}
 			});
 		}
@@ -1438,13 +1438,13 @@ var globalCadreId = '${cadreId}';
 			});
 		}
 
-	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId){
-			var temp="ajax"+surveyId+"";
+	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
+	var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
 			var localCadreId=globalCadreId;
 			var surveyId=surveyId;
 			var indexId=indexId;
-			$('.allSurveyDtlsCls').hide();
+			$('#'+divId+'').html('');
 			if(surveyId !=0 && localCadreId !=0){
 				$("#dataLoadingsImg").show();
 			}
@@ -1455,6 +1455,8 @@ var globalCadreId = '${cadreId}';
 				cadreId:localCadreId,
 				surveyId:surveyId,
 				searchTypeStr: searchTypeStr,
+				boothId: $('#cadreBoothId').val(),
+				isPriority: isPriority,
 			}
 			
 			$.ajax({
@@ -1472,8 +1474,8 @@ var globalCadreId = '${cadreId}';
 					if(searchTypeStr == 'All')
 					{
 						str+='<ul class="nav nav-tabs tab-list display-style" role="tablist">';
-						str+='<li class="active"><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\');" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
-						str+='<li style="margin-top: -8px;"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\');" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
+						str+='<li class="active"><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+						str+='<li style="margin-top: -8px;"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\',\'\',\'true\');" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
 					}
@@ -1488,22 +1490,87 @@ var globalCadreId = '${cadreId}';
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default">';
 								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;">';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>';
-								str+='</h4><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/loading.gif" style="display:none;width:25px;height:20px;">';
-								str+='</a>';
-								str+='</div>';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'false\');" aria-expanded="true" aria-controls="" style="cursor:pointer;" class="btn btn-info small pull-right"> View All </a>';
 								
-								
-								str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
-								str+='<div class="panel-body">';
+								str+='</h4><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/loading.gif" style="display:none;width:25px;height:20px;"></div>';
 								
 								str+='</div>';
-								str+='</div>';
 								
 								
+								if(i==0)
+								{
+									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="">';
+									str+='<div class="panel-body">';
+									 str+='<table class="table m_0 table-bordered" style="width: 999px;">';
+										str+='<thead>';
+											str+='<th style="text-align:center;">Question</th>';
+											str+='<th style="text-align:center;">Answer</th>';
+										str+='</thead>';
+										str+='<tbody>';
+										if(result.verifierVOList[i].verifierVOList != null && result.verifierVOList[i].verifierVOList.length>0)
+										{
+											for(var s in result.verifierVOList[i].verifierVOList){
+												str+='<tr>';
+													str+='<td>'+result.verifierVOList[i].verifierVOList[s].name+'</td>';
+													str+='<td>'+result.verifierVOList[i].verifierVOList[s].option+'</td>'; 
+												str+='</tr>';
+												
+												if(result.verifierVOList[i].verifierVOList[s].verifierVOList != null && result.verifierVOList[i].verifierVOList[s].verifierVOList.length>0)
+											{
+												str+='<tr>';
+													str+='<td colspan="2">';
+													str+='<table class="table table-bordered">';
+														str+='<thead >';
+															str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
+																str+=' Location ';
+															str+='</th>';
+															for(var k in result.verifierVOList[i].verifierVOList[0].verifierVOList[0].verifierVOList)
+															{	
+																str+='<th style="background-color:lightgrey;">';
+																str+=''+result.verifierVOList[i].verifierVOList[0].verifierVOList[0].verifierVOList[k].option+'';
+																str+='</th>';
+															}
+															
+														str+='</thead>';
+														str+='<tbody>';
+														for(var k in result.verifierVOList[i].verifierVOList[s].verifierVOList)
+															{	
+																str+='<tr>';
+																str+='<th  style="background-color:lightgrey;"> '+result.verifierVOList[i].verifierVOList[s].verifierVOList[k].name+'</th>';
+																for(var b in result.verifierVOList[i].verifierVOList[s].verifierVOList[k].verifierVOList)
+																{	
+																	var perc = result.verifierVOList[i].verifierVOList[s].verifierVOList[k].verifierVOList[b].percentage
+																	perc = parseFloat(perc).toFixed(2);
+																	str+='<td>'+perc+'</td>';
+																}
+																str+='</tr>';
+															}
+														str+='</tbody>';
+														str+='</table>';
+													str+='</td>'; 
+												str+='</tr>';
+											}
+												
+											}
+										}
+										
+										str+='</tbody>';
+									str+='</table>';
+									str+='</div>';
+									str+='</div>';
+								}
+								else
+								{
+									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+									str+='<div class="panel-body">';										
+									str+='</div>';
+									str+='</div>';
+									
+									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
+								}
 								str+='</div>';
 						str+='</div>';
 
@@ -1541,7 +1608,7 @@ var globalCadreId = '${cadreId}';
 			var surveyId = $(this).find("div.in").attr("attr_survey_id");
 			var cadreId= $(this).find("div.in").attr("attr_cadre_id");
 			var indexId=$(this).find("div.in").attr("attr_index_id");
-			getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0);
+			getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0,'true');
 		});
 
 		function buildingSurveyQuestionsDetails(results,surveyId,indexId,divId){
@@ -1561,54 +1628,36 @@ var globalCadreId = '${cadreId}';
 												str+='<td>'+results.verifierVOList[i].name+'</td>';
 												str+='<td>'+results.verifierVOList[i].option+'</td>'; 
 											str+='</tr>';
-								if(results.verifierVOList[i].verifierVOList != null && results.verifierVOList[i].verifierVOList.length>0)
+								if(results.verifierVOList[i].verifierVOList[0].verifierVOList != null && results.verifierVOList[i].verifierVOList[0].verifierVOList.length>0)
 											{
-												var colCount = 0;
 												str+='<tr>';
 													str+='<td colspan="2">';
-													str+='<table class="table table-bordered">';
+													str+='<table class="table table-bordered" style="width: 999px;">';
 														str+='<thead >';
-															str+='<th style="text-align:center;background-color:lightgrey;">';
+															str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
 																str+=' Location ';
 															str+='</th>';
-															for(var k in results.verifierVOList[i].verifierVOList[4].verifierVOList)
+															for(var k in results.verifierVOList[i].verifierVOList[0].verifierVOList)
 															{	
 																str+='<th style="background-color:lightgrey;">';
-																str+=''+results.verifierVOList[i].verifierVOList[4].verifierVOList[k].option+'';
+																str+=''+results.verifierVOList[i].verifierVOList[0].verifierVOList[k].option+'';
 																str+='</th>';
-															colCount = colCount+1;
 															}
 														str+='</thead>';
 														str+='<tbody>';
-														for(var k in results.verifierVOList[i].verifierVOList)
+															for(var k in results.verifierVOList[i].verifierVOList)
 															{	
 																str+='<tr>';
-																	str+='<td style="text-align:center;">';
-																	str+=''+results.verifierVOList[i].verifierVOList[k].name+'';
-																	str+='</td>';	
-																if(results.verifierVOList[i].verifierVOList[k].verifierVOList != null &&
-																 results.verifierVOList[i].verifierVOList[k].verifierVOList.length>0)
+																str+='<th style="background-color:lightgrey;">';
+																str+=''+results.verifierVOList[i].verifierVOList[k].name+'';
+																str+='</th>';
+																for(var l in results.verifierVOList[i].verifierVOList[k].verifierVOList)
 																{
-																	var buildCoutn = 0;
-																	for(var s in results.verifierVOList[i].verifierVOList[k].verifierVOList)
-																	{
-																		var perc = results.verifierVOList[i].verifierVOList[k].verifierVOList[s].percentage;
-																		perc = parseFloat(perc).toFixed(2);
-																		str+='<td style="text-align:center;">';
-																		str+=''+perc+'';
-																		str+='</td>';
-																		buildCoutn = buildCoutn+1;
-																	}
-																	if(buildCoutn < colCount)
-																	{
-																		do{
-																			str+='<td style="text-align:center;"> - </td>';
-																			buildCoutn=buildCoutn+1;
-																		}while(buildCoutn<colCount);
-																			
-																	}
+																	var perc = results.verifierVOList[i].verifierVOList[k].verifierVOList[l].percentage;
+																	perc = parseFloat(perc).toFixed(2);
+																	str+='<td>'+perc+'</td>';
 																}
-																str+='<tr>';																
+																str+='</tr>';
 															}
 														str+='</tbody>';
 														str+='</table>';
@@ -2842,7 +2891,7 @@ else
 		getApprovedFinancialSupprotForCadre();
 		cadreFormalDetailedInformation(globalCadreId);
 		getEventDetailsOfCadre(globalCadreId);
-		getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
 		getLocationwiseCommitteesCount();
 		
 }
@@ -2865,7 +2914,7 @@ function getCadreIdByMemberShipId()
 			getApprovedFinancialSupprotForCadre();
 			cadreFormalDetailedInformation(globalCadreId);
 			getEventDetailsOfCadre(globalCadreId);
-			getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+			//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
 			getLocationwiseCommitteesCount();
 		}
 		
