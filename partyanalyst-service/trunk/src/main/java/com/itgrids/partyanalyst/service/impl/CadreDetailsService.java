@@ -1978,7 +1978,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						committeeBasicVOList = new ArrayList<CommitteeBasicVO>();
 						List<Long> levelIdsList = new ArrayList<Long>();
 						levelIdsList.add(6l);
-						levelIdsList.add(8l);
+						//levelIdsList.add(8l);
 						CommitteeBasicVO villageVO = new CommitteeBasicVO();
 						getPanchayatlwiseCommitteCount(userAddress.getPanchayat().getPanchayatId(),null,villageVO,levelIdsList,"Village");
 						committeeBasicVOList.add(villageVO);
