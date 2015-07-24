@@ -611,6 +611,7 @@
 			     <value>com.itgrids.partyanalyst.model.TdpCadreInsuranceInfo</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
+			     <value>com.itgrids.partyanalyst.model.CandidateContestedLocation</value>
 			    
 				</list>
 			

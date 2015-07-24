@@ -2097,5 +2097,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="candidateContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateContestedLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
