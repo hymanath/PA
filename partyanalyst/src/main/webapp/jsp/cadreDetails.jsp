@@ -3130,7 +3130,13 @@ function getDeathsAndHospitalizationDetails(){
 										str+='<td id="'+result.verifierVOList[i].id+'">'+result.verifierVOList[i].name+'</td>';
 										if(result.verifierVOList[i].verifierVOList !=null && result.verifierVOList[i].verifierVOList.length>0){
 											for(var j in result.verifierVOList[i].verifierVOList){
-												str+='<td><a class="deathDetailsCls" attr_locationId='+result.verifierVOList[i].id+' attr_locationType='+result.verifierVOList[i].name+' attr_insuranceTypeId='+result.verifierVOList[i].verifierVOList[j].id+' attr_insuranceType='+result.verifierVOList[i].verifierVOList[j].name+' style="cursor:pointer;" data-toggle="modal" data-target=".myModalForDeath">'+result.verifierVOList[i].verifierVOList[j].count+'</a></td>';
+												if(result.verifierVOList[i].verifierVOList[j].count !=0){
+													str+='<td><a class="deathDetailsCls" attr_locationId='+result.verifierVOList[i].id+' attr_locationType='+result.verifierVOList[i].name+' attr_insuranceTypeId='+result.verifierVOList[i].verifierVOList[j].id+' attr_insuranceType='+result.verifierVOList[i].verifierVOList[j].name+' style="cursor:pointer;" data-toggle="modal" data-target=".myModalForDeath">'+result.verifierVOList[i].verifierVOList[j].count+'</a></td>';
+												}
+												else{
+													str+='<td>'+result.verifierVOList[i].verifierVOList[j].count+'</td>';
+												}
+												
 											}
 										}
 										else{
