@@ -2574,6 +2574,7 @@
 		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" />
 		 <property name="tdpCadreInsuranceInfoDAO" ref="tdpCadreInsuranceInfoDAO" />
 		 <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		 <property name="insuranceTypeDAO" ref="insuranceTypeDAO" />
 		 
 	</bean>
 	
