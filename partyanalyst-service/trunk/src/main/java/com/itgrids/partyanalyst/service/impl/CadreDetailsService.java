@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -78,6 +80,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IInsuranceTypeDAO insuranceTypeDAO;
 	
 	
 	
@@ -280,6 +283,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
+	public IInsuranceTypeDAO getInsuranceTypeDAO() {
+		return insuranceTypeDAO;
+	}
+
+
+	public void setInsuranceTypeDAO(IInsuranceTypeDAO insuranceTypeDAO) {
+		this.insuranceTypeDAO = insuranceTypeDAO;
 	}
 
 
@@ -2513,6 +2525,31 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return resultList;
 	}
+	
+	public void setInsuranceType(Map<String,VerifierVO> mapVo){
+		
+		List<Object[]> insuranceType=insuranceTypeDAO.getAllInsuranceType();
+		
+		
+		if(insuranceType !=null && insuranceType.size()>0){
+			
+			for(Object[] object:insuranceType){
+				
+				VerifierVO verifierVo=new VerifierVO();
+				verifierVo.setCount(0l);
+				verifierVo.setId(Long.parseLong(object[0].toString()));//insurance typeId
+				verifierVo.setName(object[1].toString());
+				
+				mapVo.put(verifierVo.getName(), verifierVo);
+				
+				
+			}
+			
+		}
+		
+	}
+	
+	
 	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long parliamentId,Long districtId){
 		
 		VerifierVO finalVo=new VerifierVO();
@@ -2523,69 +2560,89 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(panchayatId !=0l){
 				
 				VerifierVO panchayatVo=new VerifierVO();
-				List<VerifierVO> panchayatList=new ArrayList<VerifierVO>();
+				Map<String,VerifierVO> mapVerifierVo=new LinkedHashMap<String, VerifierVO>();
+				setInsuranceType(mapVerifierVo);
+				panchayatVo.setVerifierVOMap(mapVerifierVo);
 				
 				List<Object[]> panchaytDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(panchayatId,"panchayat");
 				if(panchaytDeathDetails !=null){
 					for (Object[] objects : panchaytDeathDetails) {
 						
-						VerifierVO vo=new VerifierVO();
-						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
-						vo.setId((Long)objects[1]);//insurance typeId
-						vo.setName(objects[2].toString());//type name(death,hospital)
-						
-						panchayatList.add(vo);
+						if(objects[2]!=null){
+							VerifierVO reqTypeVO=panchayatVo.getVerifierVOMap().get(objects[2].toString());
+							reqTypeVO.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						}
 					}
-					panchayatVo.setVerifierVOList(panchayatList);
 					panchayatVo.setId(panchayatId);
 					panchayatVo.setName("Panchayat");
 					mainList.add(panchayatVo);
 				}
+				if(panchayatVo.getVerifierVOMap()!=null && panchayatVo.getVerifierVOMap().size()>0){
+					panchayatVo.getVerifierVOList().addAll(panchayatVo.getVerifierVOMap().values());
+				}
+				panchayatVo.getVerifierVOMap().clear();
 			}
 			if(mandalId !=0l){
 				
 				VerifierVO tehsilVo=new VerifierVO();
-				List<VerifierVO> tehsilList=new ArrayList<VerifierVO>();
+				Map<String,VerifierVO> mapVerifierVo=new LinkedHashMap<String, VerifierVO>();
+				setInsuranceType(mapVerifierVo);
+				tehsilVo.setVerifierVOMap(mapVerifierVo);
+				
+				//List<VerifierVO> tehsilList=new ArrayList<VerifierVO>();
 				List<Object[]> mandalDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(mandalId,"mandal");
 				if(mandalDeathDetails !=null){
 					for (Object[] objects : mandalDeathDetails) {
-						VerifierVO vo=new VerifierVO();
-						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);//count
-						vo.setId((Long)objects[1]);//insurance typeId
-						vo.setName(objects[2].toString());//type name(death,hospital)
-						
-						tehsilList.add(vo);
-						
+							
+						if(objects[2]!=null){
+							VerifierVO reqTypeVO=tehsilVo.getVerifierVOMap().get(objects[2].toString());
+							reqTypeVO.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						}
 					}
-					tehsilVo.setVerifierVOList(tehsilList);
+					//tehsilVo.setVerifierVOList(tehsilList);
 					tehsilVo.setId(mandalId);
 					tehsilVo.setName("Mandal");
 					mainList.add(tehsilVo);
 				}
+				if(tehsilVo.getVerifierVOMap()!=null && tehsilVo.getVerifierVOMap().size()>0){
+					tehsilVo.getVerifierVOList().addAll(tehsilVo.getVerifierVOMap().values());
+				}
+				tehsilVo.getVerifierVOMap().clear();
 			}
 			if(constituencyId !=0l){
 				
 				VerifierVO constituencyVo=new VerifierVO();
-				List<VerifierVO> constituencyList=new ArrayList<VerifierVO>();
+				Map<String,VerifierVO> mapVerifierVo=new LinkedHashMap<String, VerifierVO>();
+				setInsuranceType(mapVerifierVo);
+				constituencyVo.setVerifierVOMap(mapVerifierVo);
+				
+				//List<VerifierVO> constituencyList=new ArrayList<VerifierVO>();
 				List<Object[]> constituencyDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(constituencyId,"constituency");
 				if(constituencyDeathDetails !=null){
 					for (Object[] objects : constituencyDeathDetails) {
-						VerifierVO vo=new VerifierVO();
-						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
-						vo.setId((Long)objects[1]);//insurance typeId
-						vo.setName(objects[2].toString());//type name(death,hospital)
 						
-						constituencyList.add(vo);
+						if(objects[2]!=null){
+							VerifierVO reqTypeVO=constituencyVo.getVerifierVOMap().get(objects[2].toString());
+							reqTypeVO.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						}
 					}
-					constituencyVo.setVerifierVOList(constituencyList);
+					//constituencyVo.setVerifierVOList(constituencyList);
 					constituencyVo.setId(constituencyId);
 					constituencyVo.setName("Constituency");
 					mainList.add(constituencyVo);
 				}
+				if(constituencyVo.getVerifierVOMap()!=null && constituencyVo.getVerifierVOMap().size()>0){
+					constituencyVo.getVerifierVOList().addAll(constituencyVo.getVerifierVOMap().values());
+				}
+				constituencyVo.getVerifierVOMap().clear();
 			}
 			if(parliamentId !=0){
 				VerifierVO parliamentVo=new VerifierVO();
-				List<VerifierVO> parliamentDeathList=new ArrayList<VerifierVO>();
+				Map<String,VerifierVO> mapVerifierVo=new LinkedHashMap<String, VerifierVO>();
+				setInsuranceType(mapVerifierVo);
+				parliamentVo.setVerifierVOMap(mapVerifierVo);
+				
+				//List<VerifierVO> parliamentDeathList=new ArrayList<VerifierVO>();
 				
 				List<Long> asemConstIds=null;
 				
@@ -2596,19 +2653,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					if(parliamentDeathDetails !=null){
 						for (Object[] objects : parliamentDeathDetails) {
-							VerifierVO vo=new VerifierVO();
-							vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
-							vo.setId((Long)objects[1]);//insurance typeId
-							vo.setName(objects[2].toString());//type name(death,hospital)
-							
-							parliamentDeathList.add(vo);
+							if(objects[2]!=null){
+								VerifierVO reqTypeVO=parliamentVo.getVerifierVOMap().get(objects[2].toString());
+								reqTypeVO.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+							}
 						}
-						parliamentVo.setVerifierVOList(parliamentDeathList);
+						//parliamentVo.setVerifierVOList(parliamentDeathList);
 						parliamentVo.setId(parliamentId);
 						parliamentVo.setName("Parliament");
 						mainList.add(parliamentVo);
 					}
-					
+					if(parliamentVo.getVerifierVOMap()!=null && parliamentVo.getVerifierVOMap().size()>0){
+						parliamentVo.getVerifierVOList().addAll(parliamentVo.getVerifierVOMap().values());
+					}
+					parliamentVo.getVerifierVOMap().clear();
 				} 
 				
 			}
@@ -2617,28 +2675,32 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(districtId !=0l){
 				
 				VerifierVO districtVo=new VerifierVO();
-				List<VerifierVO> districtList=new ArrayList<VerifierVO>();
+				Map<String,VerifierVO> mapVerifierVo=new LinkedHashMap<String, VerifierVO>();
+				setInsuranceType(mapVerifierVo);
+				districtVo.setVerifierVOMap(mapVerifierVo);
+				
+				//List<VerifierVO> districtList=new ArrayList<VerifierVO>();
 				List<Object[]> districtDeathDetails=tdpCadreInsuranceInfoDAO.getDeathsAndHospitalizationDetails(districtId,"district");
 				if(districtDeathDetails !=null){
 					for (Object[] objects : districtDeathDetails) {
-						VerifierVO vo=new VerifierVO();
-						vo.setCount(objects[0] !=null ? (Long)objects[0]:0l);
-						vo.setId((Long)objects[1]);//insurance typeId
-						vo.setName(objects[2].toString());//type name(death,hospital)
-						
-						districtList.add(vo);
+						if(objects[2]!=null){
+							VerifierVO reqTypeVO=districtVo.getVerifierVOMap().get(objects[2].toString());
+							reqTypeVO.setCount(objects[0] !=null ? (Long)objects[0]:0l);
+						}
 						
 					}
-					districtVo.setVerifierVOList(districtList);
 					districtVo.setId(districtId);
 					districtVo.setName("District");
 					mainList.add(districtVo);
 				}
+				if(districtVo.getVerifierVOMap()!=null && districtVo.getVerifierVOMap().size()>0){
+					districtVo.getVerifierVOList().addAll(districtVo.getVerifierVOMap().values());
+				}
+				districtVo.getVerifierVOMap().clear();
 			}
 			if(mainList !=null && mainList.size()>0){
 				finalVo.setVerifierVOList(mainList);
 			}
-			
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getDeathsAndHospitalizationDetails() method, Exception - ",e);
