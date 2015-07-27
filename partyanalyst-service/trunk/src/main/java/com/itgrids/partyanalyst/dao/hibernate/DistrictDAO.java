@@ -86,7 +86,7 @@ IDistrictDAO {
 		StringBuilder query = new StringBuilder();
 		query.append("select model.districtId,model.districtName from District model where model.state.stateId = ? ");
 		if(stateId==1){
-			query.append(" and model.districtId>10 ");
+			query.append(" and model.districtId>10 and model.districtId<=23 ");
 		}
 		if(stateId==36){
 			query.append(" and model.districtId>=1 and model.districtId<=10 ");
