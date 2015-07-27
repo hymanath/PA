@@ -89,39 +89,57 @@
 			</div>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 			<c:if test="${sessionScope.USER.accessType == 'STATE'}">
-				 <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="statedisplaydivid">
+				 <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="statedisplaydivid">
 						<label>State</label>
 						<c:if test="${sessionScope.USER.stateName == 'both'}">
-						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="form-control">
 							<option value="0">All</option>
 							<option value="1">AndhraPradesh</option>
-							<option value="2">Telangana</option>
+							<option value="36">Telangana</option>
 						  </select>
 						  </c:if>
 						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
-						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
-							<option value="2">Telangana</option>
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="form-control">
+							<option value="36">Telangana</option>
 						  </select>
 						  </c:if>
 						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
-						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="form-control">
 							<option value="1">AndhraPradesh</option>
 						  </select>
 						  </c:if>
 						
 				     </div>
 					 </c:if>
-					
-				   <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="constitunecyDiv">
-							<label>Constituency</label>
-							<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
+					<div class="col-md-1 col-xs-1 col-sm-1">
+					<!--<img style="float: right; margin-right: 308px; display: none;" alt="Processing Image" src="./images/icons/search.gif" id="constiImge">-->
+						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
+					</div>
+					<div class="col-md-8 col-md-offset-2 col-sm-1 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="districtDiv">
+							<label>District</label>
+							<select class="form-control " id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							</select>
 					</div>
-					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="mandalDiv">
+					<div class="col-md-1 col-xs-1 col-sm-1">
+						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForConst" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
+					</div>
+				   <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="constitunecyDiv">
+							<label>Constituency</label>
+							<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
+							<option value="0"> Select Constituency </option>
+							</select>
+					</div>
+					<div class="col-md-1 col-xs-1 col-sm-1">
+						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMandl" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
+					</div>
+					<div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" style="padding-top: 10px" id="mandalDiv">
 							<label>Mandal/Municipality</label>
 							<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandal();">
 							<option value="0"> Select Mandal/Municipality </option>
 							</select>
+					</div>
+					<div class="col-md-1 col-xs-1 col-sm-1">
+						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForPanc" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
 					</div>
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
@@ -134,7 +152,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
 				<div class="form-inline ">
 					<span class="allcls" style="display:none">
-							   <label> <input type="radio" name="searchBasedOn" value="0" id="allId" title="click here to get all cadres in panchayat" style="cursor:pointer;" class="searchTypeCls" onclick="getPanchayayCadreDetailsBySearchCriteria(0)"/>All &nbsp;&nbsp;
+							   <label style="font-weight: 100;"> <input type="radio" name="searchBasedOn" value="0" id="allId" title="click here to get all cadres in panchayat" style="cursor:pointer;" class="searchTypeCls" onclick="getPanchayayCadreDetailsBySearchCriteria(0)"/>All &nbsp;&nbsp;
 							   </label>
 					</span>	
 				   
@@ -487,6 +505,7 @@ $(".paginationDivId").hide();
 		$("#cadreDetailsDiv").html("");
 		$(".paginationDivId").html('');
 		$("#cadreDetailsDiv").hide();
+		$("#searchErrDiv").html("");
 		//$("#casteCategory").val(0);
 		//$("#casteList").val(0);
 		//$("#ageRange").val(0);
@@ -647,11 +666,11 @@ $(".paginationDivId").hide();
 		}
 
 		 
-   function getConstituenciesForState(state){
+  function getConstituenciesForState(state){
  
    var jsObj=
    {				
-				stateId:state,
+				stateId:0,
 				elmtId:"stateList",
                 type:"default",
 				task:"getConstituenciesForState"				
@@ -726,7 +745,7 @@ $(".paginationDivId").hide();
 					}
 		  });
 	 }
-	function getConstituenciesForStateAjax()
+/*	function getConstituenciesForStateAjax()
 		{
 			$("#mandalList  option").remove();
 			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -737,7 +756,7 @@ $(".paginationDivId").hide();
 			$(".allcls").hide();
 			var stateId = $("#statesDivId").val();
 			getConstituenciesForState(stateId);
-		}
+		}*/
 		
 			</script>
 			<script>
@@ -745,16 +764,45 @@ $(".paginationDivId").hide();
 			getAssemblyParlConstituencies(accessValue,"Assembly");
 			if(accessType == "STATE")
 			{
-				getConstituenciesForStateAjax();
+				getConstituenciesForState();
+				getDistricts();
 			}
 			
 			if(accessType == "MP")
 			{
 				getAssemblyConstituencies(accessValue);
 			}
+	
+	function getDistricts(){
+     var jsObj=
+		{				
+				stateId:1,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"findDistrictsForAState"				
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForAStateAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
 			
   function getMandalCorporationsByConstituency()
 	{	
+			$("#searchDataImgForMandl").show();
 			refreshExistingDetails();
 			document.getElementById('allId').checked = false;
 			$(".allcls").hide();
@@ -763,6 +811,7 @@ $(".paginationDivId").hide();
 			$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
 			$("#panchaytList  option").remove();
 			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+			document.getElementById('membershipId').checked = true;
 			
 				var jsObj ={					
 					constituencyId:constituencyId
@@ -772,7 +821,7 @@ $(".paginationDivId").hide();
 					url : "getMandalDetailsByConstituencyAction.action",
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
-
+				$("#searchDataImgForMandl").hide();
 				if(result !=null)
 				{
 					for(var i in result)
@@ -784,7 +833,7 @@ $(".paginationDivId").hide();
 	}
 	
 	function getPanchayatWardByMandal(){
-			
+			$("#searchDataImgForPanc").show();
 			refreshExistingDetails();
 			document.getElementById('allId').checked = false;
 			$(".allcls").hide();
@@ -802,7 +851,7 @@ $(".paginationDivId").hide();
 				url : "getPanchayatWardByMandalAction.action",
 				data : {task:JSON.stringify(jsObj)} 
 			}).done(function(result){
-				
+				$("#searchDataImgForPanc").hide();
 			for(var i in result){
 				$("#panchaytList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 			}
@@ -811,104 +860,119 @@ $(".paginationDivId").hide();
 			
 	}
 	
+	var isLoading = false;
 	function getPanchayayCadreDetailsBySearchCriteria(startIndex)
 		{
-			refreshExistingDetails();	
-		var locationLevel = 0;
-		var locationValue = 0;
-		var searchName = '';
-		var mobileNo = '';
-		var casteCategory = '';
-		var casteStateId = 0;
-		var fromAge = 0;
-		var toAge = 0;
-		var memberShipCardNo = '';
-		var trNumber = '';
-		var voterCardNo = '';
-		var gender = '';
-		var houseNo = '';
-		
-		
-		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
-		if(startIndex == 0)
-			$(".paginationDivId").html('');
-		
-		$(".paginationDivId").hide();
-		//$("#paginationDivId").hide();
-		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
-		$("#cadreDetailsDiv").hide();
-		var searchBy = $('#searchBy').val().trim();
-		var searchRadioType =$('#cadreSearchType').val();;
-		var parentLocation = 0;
-		var panchayatId = $("#panchaytList").val();
-		var mandalId = $("#mandalList").val();
-		var constituencyId = $("#constituencyId").val();
-		
-		if(panchayatId !=0)
-		{
-			if(panchayatId.substr(0,1) == 1){
-				  locationLevel = 6;
-			}
-			else if(panchayatId.substr(0,1) == 2){
-				 locationLevel = 8;
-				 
-			}								
-			locationValue = panchayatId.substr(1);
-			
-			
-		$("#searchDataImg").show();
-		
-		var jsObj =
-		{
-			locationLevel :locationLevel,
-			locationValue:locationValue,
-			searchName : searchName,
-			mobileNo: mobileNo,
-			casteCategory : casteCategory,
-			fromAge : fromAge,
-			toAge : toAge,
-			memberShipCardNo: memberShipCardNo,
-			casteStateId : casteStateId,
-			trNumber : trNumber,
-			voterCardNo:voterCardNo,
-			gender:gender,
-			houseNo:houseNo,
-			startIndex:startIndex,
-			maxIndex : 50,
-			task:"tdpCadreSearch"
-		}
-		$.ajax({
-				type : "POST",
-				url : "getCadreSearchDetailsAction.action",
-				data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-				 if(typeof result == "string"){
-					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-					  location.reload(); 
-					}
-				}
-				$("#searchDataImg").hide();
-				$('#cadreDetailsDiv').show();
-				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
-				{
-				buildCadrePanchayatDetails(result.previousRoles,jsObj);
-				}
-				else
-				{
-					
-					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
-				}
-			});  
-			
-		}
-		
-		
-		
 
+			if(!isLoading)
+			{
+				isLoading = true;
+				refreshExistingDetails();
+						$("#searchbtn").hide();
+						$(".allcls").hide();
+					var locationLevel = 0;
+					var locationValue = 0;
+					var searchName = '';
+					var mobileNo = '';
+					var casteCategory = '';
+					var casteStateId = 0;
+					var fromAge = 0;
+					var toAge = 0;
+					var memberShipCardNo = '';
+					var trNumber = '';
+					var voterCardNo = '';
+					var gender = '';
+					var houseNo = '';
+					
+					
+					$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+					if(startIndex == 0)
+						$(".paginationDivId").html('');
+					
+					$(".paginationDivId").hide();
+					//$("#paginationDivId").hide();
+					$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
+					$("#cadreDetailsDiv").hide();
+					var searchBy = $('#searchBy').val().trim();
+					var searchRadioType =$('#cadreSearchType').val();;
+					var parentLocation = 0;
+					var panchayatId = $("#panchaytList").val();
+					var mandalId = $("#mandalList").val();
+					var constituencyId = $("#constituencyId").val();
+					
+					if(panchayatId !=0)
+					{
+						if(panchayatId.substr(0,1) == 1){
+							  locationLevel = 6;
+						}
+						else if(panchayatId.substr(0,1) == 2){
+							 locationLevel = 8;
+							 
+						}								
+						locationValue = panchayatId.substr(1);
+						
+						
+					$("#searchDataImg").show();
+					
+					var jsObj =
+					{
+						locationLevel :locationLevel,
+						locationValue:locationValue,
+						searchName : searchName,
+						mobileNo: mobileNo,
+						casteCategory : casteCategory,
+						fromAge : fromAge,
+						toAge : toAge,
+						memberShipCardNo: memberShipCardNo,
+						casteStateId : casteStateId,
+						trNumber : trNumber,
+						voterCardNo:voterCardNo,
+						gender:gender,
+						houseNo:houseNo,
+						startIndex:startIndex,
+						maxIndex : 50,
+						task:"tdpCadreSearch"
+					}
+					$.ajax({
+							type : "POST",
+							url : "getCadreSearchDetailsAction.action",
+							data : {task:JSON.stringify(jsObj)} ,
+						}).done(function(result){
+							isLoading = false;
+							$('#searchErrDiv').html('');
+							document.getElementById('allId').checked = false;
+							 if(typeof result == "string"){
+								if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+								  location.reload(); 
+								}
+							}
+							$("#searchDataImg").hide();
+							$('#cadreDetailsDiv').show();
+							$("#searchbtn").show();
+							$(".allcls").show();
+							if(result != null && result.previousRoles != null && result.previousRoles.length>0)
+							{
+							buildCadrePanchayatDetails(result.previousRoles,jsObj);
+							}
+							else
+							{
+								
+								$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
+							}
+						});  
+						
+					}
+			}
+			else
+			{
+				$('#searchErrDiv').html('Please wait Data is Loading...');
+			}
 	}
 	
 	function getAllCadreInPanchayat()
 	{
+		document.getElementById('allId').checked = false;
+		document.getElementById('membershipId').checked = true;
 		$(".allcls").show();
 		refreshExistingDetails();
 	}
@@ -1002,6 +1066,98 @@ $(".paginationDivId").hide();
 	
 	
 			</script>
+			
+<script>
+
+	
+  
+  function getDistrictsForStates(state){
+   
+    $("#searchDataImgForDist").show();
+    refreshExistingDetails();
+	$(".allcls").hide();
+	$("#districtId  option").remove();
+	$("#districtId").append('<option value="0">Select District</option>');
+	$("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$("#mandalList  option").remove();
+	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+	$("#panchaytList  option").remove();
+	$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+	
+	document.getElementById('membershipId').checked = true;
+	
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getDistrictsForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForStateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#districtId").empty();
+	   $("#searchDataImgForDist").hide();
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+  
+   function getConstituenciesForDistricts(district){
+   $("#searchDataImgForConst").show();
+    refreshExistingDetails();
+	$(".allcls").hide();
+   $("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$("#mandalList  option").remove();
+	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+	$("#panchaytList  option").remove();
+	$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+	
+	document.getElementById('membershipId').checked = true;
+	
+	var jsObj=
+   {				
+				districtId:district,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getConstituenciesForDistricts"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForADistrictAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#constituencyId").empty();
+	   $("#searchDataImgForConst").hide();
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+  
+</script>
+			
 			</body>
 			</html>
 			
