@@ -100,7 +100,7 @@ var globalCadreId = '${cadreId}';
 			<input type="hidden" value="" id="cadrePConstituencyId" />
 			<input type="hidden" value="" id="cadreDistrictId" />
 			
-            	<table class="table m_0 table-bordered">
+            	<table class="table table-bordered">
                 	<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>
                     </tr>
@@ -168,7 +168,7 @@ var globalCadreId = '${cadreId}';
                 </table>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-hand-right"></i> GRIEVANCE DETAILS</h4>
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> GRIEVANCE DETAILS</h4>
                     </div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body">
@@ -644,11 +644,13 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title">
-                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES 
+							<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId"> <i class="pull-right glyphicon glyphicon-triangle-top "></i></a>
+							<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId"> <i class="pull-right glyphicon glyphicon-triangle-bottom "></i></a>
                         </h4>
                     </div>
 					<!--<center><h3>Data Not Available.</h3></center>-->
-                    <div class="panel-body">
+                    <div class="panel-body" id="committeesDivId" style="display:none;"> 
                     	<div>
                         	<label class="radio-inline">
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="panchayat">Panchayat
@@ -740,6 +742,8 @@ var globalCadreId = '${cadreId}';
                     <div class="panel-body">
 					<div class="surveyDetailssCls">	</div>
 					<div class="surveyDetailsCls">	</div>
+					
+					<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
                     	<div id="surveyDetailsMainDivId">						
                     	</div>
                     </div>
@@ -1280,7 +1284,7 @@ var globalCadreId = '${cadreId}';
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
 					 getDeathsAndHospitalizationDetails();
-					getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0,'true');
+					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 				}
 			});
 		}
@@ -1438,18 +1442,65 @@ var globalCadreId = '${cadreId}';
 			});
 		}
 
+		function familyMembersSurveyDetails(votercardNo)
+		{	
+			alert(votercardNo);
+			var jsObj={
+				cadreId:0,
+				surveyId:0,
+				searchTypeStr: "All",
+				boothId: 0,
+				isPriority: "false",
+				voterCardNo:votercardNo
+			}
+			
+			$.ajax({
+				type:'GET',
+				 url: 'getTdpCadreSurveyDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				console.log(result);
+			});
+		}
+
+
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
 	var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
 			var localCadreId=globalCadreId;
 			var surveyId=surveyId;
 			var indexId=indexId;
+			if(surveyId != null && surveyId>0)
+			{
+				$('.topsurveyTable').show();
+				$('.bottomsurveyTable').hide();
+				
+				$('#top'+divId+'').hide();								
+				$('#bottom'+divId+'').show();				
+			}
+			
 			$('#'+divId+'').html('');
+			$('.allSurveyDtlsCls').hide();
+			$("#img"+divId+"").show();
 			if(surveyId !=0 && localCadreId !=0){
 				$("#dataLoadingsImg").show();
 			}
-			if(surveyId>0)
+			if(surveyId>0){
 				searchTypeStr = "NotAll";
+			}
+			else{
+				$('#surveyDataLoadoing').show();
+			}
+			
+			if(searchTypeStr == 'All'){
+				$('#list1').removeClass('li_arr');
+				$('#list2').addClass('li_arr');
+				$('.surveyDetailsCls').html('');
+			}
+			else if(searchTypeStr == 'NotAll'){
+				$('#list2').removeClass('li_arr');
+				$('#list1').addClass('li_arr');							
+			}
 			
 			var jsObj={
 				cadreId:localCadreId,
@@ -1457,6 +1508,7 @@ var globalCadreId = '${cadreId}';
 				searchTypeStr: searchTypeStr,
 				boothId: $('#cadreBoothId').val(),
 				isPriority: isPriority,
+				voterCardNo:"false"
 			}
 			
 			$.ajax({
@@ -1467,15 +1519,23 @@ var globalCadreId = '${cadreId}';
 			
 			if(result !=null){
 				$("#"+temp).hide();
+				$('#surveyDataLoadoing').hide();
 				$("#surveyDetailsMainDivId").show();
+				$("#img"+divId+"").hide();
 				if(result.verifierVOList !=null){
 				if(surveyId ==0 && localCadreId !=0){
 					var str='';
-					if(searchTypeStr == 'All')
+					if(searchTypeStr == 'NotAll')
 					{
 						str+='<ul class="nav nav-tabs tab-list display-style" role="tablist">';
-						str+='<li class="active"><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
-						str+='<li style="margin-top: -8px;"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\',\'\',\'true\');" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
+						str+='<li  style="margin-top: 0px;padding:0px;" id="list1" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+						if(result.count != null && result.count >0)
+						{
+							str+='<li class="active li_arr" style="margin-top: 0px;padding:0px;" id="list2"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\',\'\',\'true\');" class="text-bold" data-toggle="tab" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
+						}
+						else{
+							str+='<li class="active li_arr" style="margin-top: 15px;padding:0px;" id="list2">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</li>';
+						}
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
 					}
@@ -1484,21 +1544,20 @@ var globalCadreId = '${cadreId}';
 					str='';
 					str+='<div class="tab-content m_top20">';
 					str+='<div role="tabpanel" class="tab-pane active" id="area">';
-					str+='<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel-group m_0" id="accordion1" role="tablist" aria-multiselectable="true">';
 					
 
 							for(var i in result.verifierVOList){
-								str+='<div class="panel panel-default">';
+								str+='<div class="panel panel-default m_0">';
 								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
-								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'false\');" aria-expanded="true" aria-controls="" style="cursor:pointer;" class="btn btn-info small pull-right"> View All </a>';
-								
-								str+='</h4><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/loading.gif" style="display:none;width:25px;height:20px;"></div>';
+								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
+								str+='</h4> </a><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
 								
 								str+='</div>';
-								
+								/*
 								
 								if(i==0)
 								{
@@ -1569,8 +1628,13 @@ var globalCadreId = '${cadreId}';
 									str+='</div>';
 									str+='</div>';
 									
-									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
+									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
 								}
+								*/
+								str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+									str+='<div class="panel-body table-responsive">';										
+									str+='</div>';
+									str+='</div>';
 								str+='</div>';
 						str+='</div>';
 
@@ -1584,7 +1648,7 @@ var globalCadreId = '${cadreId}';
 					
 				}
 				else if(surveyId !=0 && surveyId !=0 ){
-					buildingSurveyQuestionsDetails(result,surveyId,indexId,divId);
+					buildingSurveyQuestionsDetails(result,surveyId,indexId,divId,isPriority);
 				}
 			 }		
 			}else{
@@ -1611,11 +1675,16 @@ var globalCadreId = '${cadreId}';
 			getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0,'true');
 		});
 
-		function buildingSurveyQuestionsDetails(results,surveyId,indexId,divId){
+		function buildingSurveyQuestionsDetails(results,surveyId,indexId,divId,isPriority){
 			$("#dataLoadingsImg").hide();
 			var str='';
-				if(results.verifierVOList !=null){
+				if(results.verifierVOList !=null){					
 					str+='<div class="panel-body">';
+					if(isPriority == 'true')
+					{
+						str+='<div class="pull-right" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-success btn-xs " > View All</a> </div>';
+					}
+					
 									str+='<table class="table m_0 table-bordered">';
 										str+='<thead>';
 											str+='<th style="text-align:center;">Question</th>';
@@ -1632,7 +1701,8 @@ var globalCadreId = '${cadreId}';
 											{
 												str+='<tr>';
 													str+='<td colspan="2">';
-													str+='<table class="table table-bordered" style="width: 999px;">';
+													str+='<div class="table-responsive" style="width:1059px;overflow-y:auto">';
+													str+='<table class="table table-bordered">';
 														str+='<thead >';
 															str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
 																str+=' Location ';
@@ -1661,6 +1731,7 @@ var globalCadreId = '${cadreId}';
 															}
 														str+='</tbody>';
 														str+='</table>';
+														str+='</div>'; 
 													str+='</td>'; 
 												str+='</tr>';
 											}
@@ -3246,18 +3317,20 @@ $(document).on("click",".cadreDetailsCls",function(){
 		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
 	});
 
-
-function familyMembersSurveyDetails(votercardNo)
-{	
-	var jsobj={
-				votercardNo:votercardNo
-			}
-			$.ajax({
-				type:'GET',
-				 url: 'familyMembersSurveyDetailsAction.action',
-				 data : {task:JSON.stringify(jsobj)} ,
-			}).done(function(result){
-			});
+function hideAndShowCommittee(typeId)
+{
+	if(typeId == 1)
+	{
+		$('#committeesDivId').show();
+		$('#showId').hide();
+		$('#hideId').show();
+	}
+	else if(typeId == 2)
+	{
+		$('#committeesDivId').hide();
+		$('#showId').show();
+		$('#hideId').hide();
+	}
 }
 </script>
 
