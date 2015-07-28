@@ -45,6 +45,9 @@ public class CandidateContestedLocation extends BaseModel implements Serializabl
 	private Long boothId;
 	private LocalElectionBody localElectionBody;
 	private Long localElectionBodyId;
+	private District district;
+	private Long districtId;
+	
 	
 	public CandidateContestedLocation()
 	{
@@ -231,5 +234,28 @@ public class CandidateContestedLocation extends BaseModel implements Serializabl
 	public void setLocalElectionBodyId(Long localElectionBodyId) {
 		this.localElectionBodyId = localElectionBodyId;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id", insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	@Column(name="district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	
+	
 	
 }
