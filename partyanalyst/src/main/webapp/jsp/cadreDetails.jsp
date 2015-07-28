@@ -1109,7 +1109,9 @@ var globalCadreId = '${cadreId}';
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" style="text-align:center;"><b>Survey Participation Details</b></h4>
 				</div>
+				<center><img id="familySurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
 				<div class="modal-body familySurveyDetailsCls">
+				
 				</div>
 			</div>
 		</div>
@@ -1445,9 +1447,11 @@ var globalCadreId = '${cadreId}';
 			});
 		}
 
-	/*	function familyMembersSurveyDetails(votercardNo)
+		function familyMembersSurveyDetails(votercardNo)
 		{	
-			alert(votercardNo);
+			$("#familySurveyDataLoadoing").show();
+			
+			$('.familySurveyDetailsCls').html("");
 			var jsObj={
 				cadreId:0,
 				surveyId:0,
@@ -1463,74 +1467,130 @@ var globalCadreId = '${cadreId}';
 				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				//console.log(result);
+				$("#familySurveyDataLoadoing").hide();
 				if(result != null){
-					$("#"+temp).hide();
-					$("#surveyDetailsMainDivId").show();
-					$("#img"+divId+"").hide();
+					
 					if(result.verifierVOList !=null){
-					if(surveyId ==0 && localCadreId !=0){
+						
 						var str='';
-						if(searchTypeStr == 'NotAll')
-						{
-							str+='<ul class="nav nav-tabs tab-list display-style" role="tablist">';
-							if(result.count != null && result.count >0)
-							{
-								str+='<li class="active li_arr" style="margin-top: 0px;padding:0px;" id="list2"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\',\'\',\'true\');" class="text-bold" data-toggle="tab" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
-							}
-							else{
-								str+='<li class="active li_arr" style="padding:10px 15px;" id="list2">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</li>';
-							}
-							
-							str+='<li  style="margin-top: 0px;padding:0px;" id="list1" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
-							
-							str+='</ul>';
-							$('.surveyDetailssCls').html(str);
-						}
-						
-						
+											
 						str='';
 						str+='<div class="tab-content m_top20">';
 						str+='<div role="tabpanel" class="tab-pane active" id="area">';
 						str+='<div class="panel-group m_0" id="accordion1" role="tablist" aria-multiselectable="true">';
-						
-
-								for(var i in result.verifierVOList){
-									str+='<div class="panel panel-default m_0">';
-									str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
-									str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
-									str+='<h4 class="panel-title text-bold">';
-									str+=''+result.verifierVOList[i].name+'';
-									str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
-									str+='</h4> </a><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
-									
+							for(var i in result.verifierVOList){
+								str+='<div class="panel panel-default m_0">';
+								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
+								str+='<h4 class="panel-title text-bold">';
+								str+=''+result.verifierVOList[i].name+'';
+								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
+								str+='</h4> </a><div style="offset4"><center><img id="familyAjax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;"/></center></div>';
+								
+								str+='</div>';
+								
+								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+									str+='<div class="panel-body table-responsive">';										
 									str+='</div>';
-									
-									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
-										str+='<div class="panel-body table-responsive">';										
-										str+='</div>';
-										str+='</div>';
 									str+='</div>';
-							str+='</div>';
-
-								}
-
-						
+								str+='</div>';
 						str+='</div>';
-						str+='</div> ';                     
-						str+='</div>';
-						$('.familySurveyDetailsCls').html(str);
-						
-					}
-					else if(surveyId !=0 && surveyId !=0 ){
-						buildingSurveyQuestionsDetails(result,surveyId,indexId,divId,isPriority);
-					}
+
+							}
+
+					
+					str+='</div>';
+					str+='</div> ';                     
+					
+					$('.familySurveyDetailsCls').html(str);
+				
 				 }
 				}
 			});
+		}
+		
+	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
+		$("#"+divId+"").html("");	
+		var temp="familyAjax"+surveyId+"";
+			$("#"+temp).show();
+		var localCadreId=globalCadreId;
+		var surveyId=surveyId;
+		var indexId=indexId;
+		
+		var jsObj={
+			cadreId:localCadreId,
+			surveyId:surveyId,
+			searchTypeStr: searchTypeStr,
+			boothId: $('#cadreBoothId').val(),
+			isPriority: isPriority,
+			voterCardNo:"false"
+		}
+		
+		$.ajax({
+			type:'GET',
+			 url: 'getTdpCadreSurveyDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			$("#"+temp).hide();
+			if(result != null){
+			var str='';
+			if(result.verifierVOList !=null){					
+				str+='<div class="panel-body">';
+				if(isPriority == 'true')
+					{
+						str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreFamilySurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
+					}
+				str+='<table class="table m_0 table-bordered">';
+				str+='<thead>';
+					str+='<th style="text-align:center;">Question</th>';
+					str+='<th style="text-align:center;">Answer</th>';
+				str+='</thead>';
+				str+='<tbody>';
+				
+				for(var i in result.verifierVOList){
+					str+='<tr>';
+						str+='<td>'+result.verifierVOList[i].name+'</td>';
+						str+='<td>'+result.verifierVOList[i].option+'</td>'; 
+					str+='</tr>';
+					}
+				}
+				$("#"+divId+"").show();		
+				$("#"+divId+"").html(str);	
+			}
+		});
+		
+	}
+	
+	$(document).on('click', '.innerDiv', function(){
+		/*var surveyDivId = $(this).attr("attr_survy_divId");
+		//$(".allSurveyDtlsCls").hide();
+		var temp = $("#"+surveyDivId).css("display");
+		alert(temp);
+		if(temp != "none"){alert(1);
+			$("#"+surveyDivId).css("display")="none";
+		}else{alert(2);
+			$("#"+surveyDivId).show();
 		}*/
-
-
+		var surveyDivId = $(this).attr("attr_survy_divId");
+		
+		//alert($("#"+surveyDivId).hasClass("hideSurvey"));
+		
+		if($("#"+surveyDivId).hasClass("hideSurvey")){
+			$("#"+surveyDivId).removeClass("hideSurvey");
+			$("#"+surveyDivId).addClass("showSurvey");
+			$("#"+surveyDivId).css({"display":"block"});
+		}else if($("#"+surveyDivId).hasClass("showSurvey")){
+			$("#"+surveyDivId).removeClass("showSurvey");
+			$("#"+surveyDivId).addClass("hideSurvey");
+			$("#"+surveyDivId).css({"display":"none"});
+			
+		}
+		
+	});
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
+		if($("#"+divId).hasClass("showSurvey")){
+			return;
+		}
 	var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
 			var localCadreId=globalCadreId;
@@ -1541,9 +1601,11 @@ var globalCadreId = '${cadreId}';
 				$('.topsurveyTable').show();
 				$('.bottomsurveyTable').hide();
 				
+				
 				$('#top'+divId+'').hide();								
 				$('#bottom'+divId+'').show();				
 			}
+			
 			
 			$('#'+divId+'').html('');
 			$('.allSurveyDtlsCls').hide();
@@ -1629,7 +1691,7 @@ var globalCadreId = '${cadreId}';
 
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default m_0">';
-								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
+								str+='<div class="panel-heading bg_f9 innerDiv" role="tab" id="heading'+i+'" attr_survy_divId="surveyTable'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
@@ -1711,7 +1773,7 @@ var globalCadreId = '${cadreId}';
 									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
 								}
 								*/
-								str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+								str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurvey" role="" aria-labelledby="" style="display:none;">';
 									str+='<div class="panel-body table-responsive">';										
 									str+='</div>';
 									str+='</div>';
@@ -1724,6 +1786,7 @@ var globalCadreId = '${cadreId}';
 					str+='</div>';
 					str+='</div> ';                     
 					str+='</div>';
+					
 					$('.surveyDetailsCls').html(str);
 					
 				}
@@ -2245,7 +2308,7 @@ function getCadreFamilyDetailsByCadreId()
 		   else
 		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
 		 str += '</span>';
-		 str += '<ul class="survey-hover'+i+' arrow_box3" style="display:none">';
+		 str += '<ul class="survey-hover survey-hover'+i+' arrow_box3" style="display:none">';
         
 		 if(result[i].education != null && result[i].education.trim().length > 0)
 			 str += '<li>Education : <span class="pull-right">'+result[i].education+'</span></li>';
