@@ -2949,7 +2949,7 @@ function buildCategroyInfo(result)
 
 var membershipId = '${memberShipId}';
 var constituencyId = '${constituencyId}';
-if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0) && (constituencyId != null && constituencyId > 0))
+if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0))
 {
 		getCadreIdByMemberShipId();
 }
