@@ -173,7 +173,7 @@ function dummyfun(num){
 	var result = data.articlesList;
 	for(var i in result){
 		totalArticleIds.push(result[i].articleDetails[0].articleId);
-		str+='<div class="col-md-3 col-sm-3 widgets widget-hide" style="height:350px;"><div class="thumbnail thumbnail-widget"><a style="cursor:pointer;" attr_articleid="16840" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:100px;height:100px;border:2px solid #adadad;" class="artclMdl" attr_artclNo="'+i+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;height:40px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
+		str+='<div class="col-md-3 col-sm-3 widgets widget-hide" style="height:350px;"><div class="thumbnail thumbnail-widget"><a style="cursor:pointer;" attr_articleid="'+result[i].articleDetails[0].articleId+'" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:100px;height:100px;border:2px solid #adadad;" class="artclMdl" attr_artclNo="'+i+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;height:40px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
 		if(result[i].articleDetails[0].selectedArea!=null){
 			str+='<br>Location: '+result[i].articleDetails[0].selectedArea+'<br>';
 		}else{
