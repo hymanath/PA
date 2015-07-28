@@ -5404,7 +5404,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			Query query = getSession().createSQLQuery("select sum(expected_amount) as expamt,sum(health_amount) as helamt,count(Complaint_id) as count from complaint_master where" +
 					" membership_id = :membershipId and ((expected_amount is not null and expected_amount != '') or (health_amount is not null and health_amount != '')) " +
-					"and (delete_status != '0' or delete_status is null) and issue_type in ('Health','Personal' ,'CM Relief','Financial Support') ;")
+					"and (delete_status != '0' or delete_status is null) and issue_type in ('Health','Personal' ,'CM Relief','Financial Support') and Subject != '' ")
 					
 			 .addScalar("expamt",Hibernate.LONG)
 			 .addScalar("helamt",Hibernate.LONG)
@@ -5414,6 +5414,21 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 		}
 		
+		public List<Object[]> getEducationalRequestedAmountByMembershipId(String membershipId)
+		{
+			
+			Query query = getSession().createSQLQuery("select sum(approved_amount) as apprAmt,count(Complaint_id) as count from complaint_master where " +
+					" membership_id = :membershipId and issue_type = 'Educational' and approved_amount is not null and approved_amount != '' " +
+					" and (delete_status != '0' or delete_status is null)  and Subject != '' ")
+			
+			.addScalar("apprAmt",Hibernate.LONG)
+			.addScalar("count",Hibernate.LONG);
+			query.setParameter("membershipId", membershipId);
+			return query.list();
+			
+		}
+		
+		
 		public List<Object[]> getSurveyPaticipatedCountByVoterIdcardNoList(List<String> voterIdCardNoList)
 		{
 			Query query = getSession().createSQLQuery(" select count(respondent_id),voter_id from survey.respondent where voter_id in (:voterIdCardNoList) group by voter_id");
@@ -5422,7 +5437,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
-		public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
+		/*public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
 		{
 			Query query = getSession().createQuery(" select distinct model.tdpCadreId from TdpCadre model where model.memberShipNo =:memberShipNo and model.isDeleted = 'N' " +
 					" and model.enrollmentYear = 2014 and model.userAddress.constituency.constituencyId =:constituencyId ");
@@ -5431,6 +5446,21 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("constituencyId", constituencyId);
 			
 			return (Long) query.uniqueResult();
+		}*/
+		
+		public List<Long> getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select distinct model.tdpCadreId from TdpCadre model where model.memberShipNo =:memberShipNo and model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			if(constituencyId != null && constituencyId > 0)
+			 str.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			query.setParameter("memberShipNo", memberShipNo);
+			query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
 		}
 		
 		public List<Object[]> getCategorywiseStatusCount(String memberShipNo)

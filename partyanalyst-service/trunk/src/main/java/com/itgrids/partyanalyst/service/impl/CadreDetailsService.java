@@ -1668,10 +1668,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			  setGrievanceAmountVO(resultList, list2);
 			  
 			  List<Object[]> expectedAmtList = tdpCadreDAO.getRequestedAmountByMembershipId(memberShipId);
+			  Long amount = 0l;
+			  Long count = 0l;
 			  if(expectedAmtList != null && expectedAmtList.size() > 0)
 			  {
-				  Long amount = 0l;
-				  Long count = 0l;
 				  for(Object[] params:expectedAmtList)
 				  {
 					  if(params[0] != null && params[0].toString().matches(regex))
@@ -1683,9 +1683,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 					  
 					  
 				  }
-				  resultList.get(0).setTotalRequests(amount); 
-				  resultList.get(0).setTotalComplaints(count);
 			  }
+			  
+			  List<Object[]> educationalAmt = tdpCadreDAO.getEducationalRequestedAmountByMembershipId(memberShipId);
+			  if(educationalAmt != null && educationalAmt.size() > 0)
+			  {
+				  for(Object[] params:educationalAmt)
+				  {
+					  if(params[0] != null && params[0].toString().matches(regex))
+						amount = amount + (Long)params[0]; 
+					  
+					  count = count + (params[1] != null?Long.parseLong(params[1].toString()):0l);
+				  }
+			  }
+			  resultList.get(0).setTotalRequests(amount); 
+			  resultList.get(0).setTotalComplaints(count);
 			  
 			}
 			
@@ -1808,7 +1820,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public Long getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
 	{
 		try{
-			Long cadreId =  tdpCadreDAO.getCadreIdByMembershipId(memberShipNo,constituencyId) ;
+			Long cadreId = null;
+			List<Long> cadreIdsList =  tdpCadreDAO.getCadreIdByMembershipId(memberShipNo,constituencyId) ;
+			if(cadreIdsList != null && cadreIdsList.size() > 0)
+				cadreId = cadreIdsList.get(0);
 			return cadreId;
 		}catch (Exception e) {
 			LOG.error(" Exception Occured in getCadreIdByMembershipId() method, Exception - ",e);
