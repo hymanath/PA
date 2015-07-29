@@ -101,6 +101,7 @@ public class CadreCommitteeMemberVO {
 	
 	private Long cadreId;
 	private String relativeName;
+	private String areaType;
 	
 	
 	public Long getActualOthers() {
@@ -617,6 +618,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
+	}
+	public String getAreaType() {
+		return areaType;
+	}
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
 	}
 	
 	
