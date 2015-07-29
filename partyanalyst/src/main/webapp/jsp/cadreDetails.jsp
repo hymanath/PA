@@ -1588,8 +1588,11 @@ var globalCadreId = '${cadreId}';
 		
 	});
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
+
 		if($("#"+divId).hasClass("showSurvey")){
+			if(isPriority=="true"){
 			return;
+			}
 		}
 	var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
