@@ -164,6 +164,7 @@ function dummyfun(num){
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
  $.ajax({
 	url:wurl+'/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
+	//url:'http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
  }).then(function(data) {
 	var result = data.articlesList;
 	artclesRslt = result;
@@ -172,8 +173,9 @@ function dummyfun(num){
 	var str = '';
 	var result = data.articlesList;
 	for(var i in result){
-		totalArticleIds.push(result[i].articleDetails[0].articleId);
-		str+='<div class="col-md-3 col-sm-3 widgets widget-hide" style="height:350px;"><div class="thumbnail thumbnail-widget"><a style="cursor:pointer;" attr_articleid="'+result[i].articleDetails[0].articleId+'" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:100px;height:100px;border:2px solid #adadad;" class="artclMdl" attr_artclNo="'+i+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;height:40px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
+		//totalArticleIds.push(result[i].articleDetails[0].articleId);
+		var artclNmbr  = parseInt(stNO) + parseInt(i);
+		str+='<div class="col-md-3 col-sm-3 widgets widget-hide" style="height:350px;"><div class="thumbnail thumbnail-widget"><a style="cursor:pointer;" attr_articleid="'+result[i].articleDetails[0].articleId+'" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:100px;height:100px;border:2px solid #adadad;" class="artclMdl" attr_artclNo="'+artclNmbr+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;height:40px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
 		if(result[i].articleDetails[0].selectedArea!=null){
 			str+='<br>Location: '+result[i].articleDetails[0].selectedArea+'<br>';
 		}else{
@@ -220,35 +222,25 @@ $(document).on("click",".artclMdl",function(){
 	
  });
  
- function getClickedArticle(artclId){
+ function getClickedChildArticle(artclId){
  	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	$.ajax({
 	url: wurl+'/CommunityNewsPortal/webservice/getArticleDetailsForAArticle/'+artclId+''
+	//url: 'http://localhost:8080/CommunityNewsPortal/webservice/getArticleDetailsForAArticle/'+artclId+''
 	 }).then(function(data) {
 		var result = data.articlesList;
 		 
 		 var str = '';
 			for(var i in result){
-				 //if(result[i].articleDetails[0].articleId == artclId){
-					 str+='<div class="modal-dialog modal-lg" role="document">';
-					str+='<div class="modal-content">';
-					  str+='<div class="modal-header">';
-						str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-						str+='<h4 class="modal-title" id="myModalLabel">';
-							str+='<p class="m_bottom0" style="height:40px;">'+result[i].articleDetails[0].articleTitle+'</p>';
-							str+='<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
-						str+='</h4>';
-					  str+='</div>';
-					  str+='<div class="modal-body">';
-						str+='<div class="row">';
+				$("#mdlArtclTtl").html('<p class="m_bottom0" style="height:40px;">'+result[i].articleDetails[0].articleTitle+'</p>');
+				$("#mdlArtclDesc").html('<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>');
+				
+					  
 							str+='<div class="col-md-12">';
 								str+='<div class="row">';
-								/*str+='<span><button id="previous" class="changeArticle btn btn-info"><i class="glyphicon glyphicon-chevron-left"></i></button></span><span class="pull-right"><button id="next" class="changeArticle btn btn-info"><i class="glyphicon glyphicon-chevron-right"></i></button></span>'*/
 								str+='<div class="col-md-10 col-md-offset-1">';
-								str+='<span><i id="previous" class="changeArticle glyphicon glyphicon-chevron-left"></i></span><span class="pull-right"><i id="next" class="changeArticle glyphicon glyphicon-chevron-right"></i></span>';
-								str+='<img attr_id="'+result[i].articleDetails[0].articleId+'" src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive mainImage thumbnail"/></div>';
-								//str+='<div></div>'
+								str+='<img attr_id="'+result[i].articleDetails[0].articleId+'" src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive thumbnail"/></div>';
 								str+='</div>';
 								
 								str+='<p class="m_top10 m_bottom0">Description</p>';
@@ -443,36 +435,19 @@ $(document).on("click",".artclMdl",function(){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-					  str+='</div>';
-					str+='</div>';
-				  str+='</div>';
 				// }
 			}
 			
-			str += '<div id="prevNextId"></div>';
-			$("#myModal").html(str);
-			
-			/* $(".prevNextId").pagination({
-			 items: paginationCount,
-			 itemsOnPage: 1,
-			 cssStyle: 'light-theme',
-			 hrefTextPrefix: '#pages-',
-			 edges:0,
-			 onPageClick: function(pageNumber) { 
-				 var num=(pageNumber-1)*1;
-				 getClickedArticle(num);
-			 }
-		}); */
-			
+			$("#mdlInBodyId").html(str);
 	 });
-	$('#myModal').modal('show'); 
+	
  }
  
 	$(document).on("click",".linkedArticlesClickId",function(){	 
 		var temp=$(this).attr('src');
 		$(this).attr('src',$(".mainImage").attr('src'));
 		$(".mainImage").attr('src',temp);
+		
 	});
 	
 	$(document).on("click",".groupedArticlesClickId",function(){
@@ -507,26 +482,30 @@ $(document).on("click",".artclMdl",function(){
 
 function getClickedArticle(artclePosNo){
 	endNO = 1;
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	$.ajax({
-	url:'http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+artclePosNo+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
+	url:wurl+'/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+artclePosNo+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
+	//url:'http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+artclePosNo+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
  }).then(function(data) {
 	var result = data.articlesList;
 	var str = '';
 	for(var i in result){
+		var artclId = result[i].articleDetails[0].articleId;
 		 str+='<div class="modal-dialog modal-lg" role="document">';
 			str+='<div class="modal-content">';
 			  str+='<div class="modal-header">';
 				str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 				str+='<h4 class="modal-title" id="myModalLabel">';
-					str+='<p class="m_bottom0" style="height:40px;">'+result[i].articleDetails[0].articleTitle+'</p>';
-					str+='<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
+					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result[i].articleDetails[0].articleTitle+'</p>';
+					str+='<p class="m_bottom0 text-italic font-10" id="mdlArtclDesc">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
 				str+='</h4>';
 			  str+='</div>';
 			  str+='<div class="modal-body">';
 				str+='<div id="prevNxtId"></div>';
-				str+='<div class="row">';
+				str+='<div class="row" id="mdlInBodyId">';
 					str+='<div class="col-md-12">';
-						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive"/>';
+						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive mainImage"/>';
 						
 						
 						str+='<p class="m_top10 m_bottom0">Description</p>';
