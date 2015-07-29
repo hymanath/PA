@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -81,7 +82,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITdpCadreInsuranceInfoDAO tdpCadreInsuranceInfoDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IInsuranceTypeDAO insuranceTypeDAO;
-	
+	private ICandidateContestedLocationDAO candidateContestedLocationDAO; 
 	
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
@@ -292,6 +293,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 
 	public void setInsuranceTypeDAO(IInsuranceTypeDAO insuranceTypeDAO) {
 		this.insuranceTypeDAO = insuranceTypeDAO;
+	}
+	public ICandidateContestedLocationDAO getCandidateContestedLocationDAO() {
+		return candidateContestedLocationDAO;
+	}
+
+
+	public void setCandidateContestedLocationDAO(
+			ICandidateContestedLocationDAO candidateContestedLocationDAO) {
+		this.candidateContestedLocationDAO = candidateContestedLocationDAO;
 	}
 
 
@@ -715,7 +725,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.eduQualificationId,5.qualification,
 				//6.occupationId,7.occupation,8.voterId,9.panchayatName,10.tehsilName,11.constName,12.mobileNo,13.ConstituencyId
 				//14.,18.districtName,19.stateName,20.casteName,21.insertedWebUserId(registeredOn),22.registeredTime,23.emailId,24.dataSourceType
-				//25.panchayatId,26.tehsilId,27.districtId,28.stateId,29.pConstId,30.pName
+				//25.panchayatId,26.tehsilId,27.districtId,28.stateId,29.pConstId,30.pName,35.areaType
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
@@ -860,6 +870,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				cadreDetailsVO.setCandidate(candidateId !=null ? candidateId.longValue():0l);
 					
 				cadreDetailsVO.setCadreId(cadreId);
+				cadreDetailsVO.setAreaType(cadreFormalDetails[35] !=null ? cadreFormalDetails[35].toString() :"");
+				
 					//cadreDetailsVO.setRepresentativeType(publicRepDertails[1] !=null ? publicRepDertails[1].toString() : "");
 				}
 			
@@ -1991,12 +2003,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(userAddress != null)
 			{
 				if(locationType.equalsIgnoreCase("district"))
-					return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId());
+					return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId(),areaType);
 					
 				else if(locationType.equalsIgnoreCase("mandal"))
 				{
-					
 					return getMandalwiseCommitteCount(userAddress);
+					
 				}
 				else if(locationType.equalsIgnoreCase("panchayat") && (areaType != null && (areaType.trim().equalsIgnoreCase("RURAL") || areaType.trim().equalsIgnoreCase("RURAL-URBAN"))))
 				{
@@ -2010,6 +2022,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 						getPanchayatlwiseCommitteCount(userAddress.getPanchayat().getPanchayatId(),null,villageVO,levelIdsList,"Village");
 						committeeBasicVOList.add(villageVO);
 						return committeeBasicVOList;
+					}
+					else if(userAddress.getWard() !=null && userAddress.getWard().getConstituencyId() !=null){
+						committeeBasicVOList = new ArrayList<CommitteeBasicVO>();
+						List<Long> levelIdsList = new ArrayList<Long>();
+						levelIdsList.add(8l);
+						CommitteeBasicVO wardVO = new CommitteeBasicVO();
+						getWardWiseCommitteeCount(userAddress.getWard().getConstituencyId(),null,wardVO,levelIdsList,"Ward");
+						committeeBasicVOList.add(wardVO);
+						return committeeBasicVOList;
+						
 					}
 					
 				}
@@ -2031,7 +2053,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	 public List<CommitteeBasicVO> getDistrictwiseCommitteCount(Long districtId)
+	 public List<CommitteeBasicVO> getDistrictwiseCommitteCount(Long districtId,String areaType)
 	 {
 		 List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>();
 		 try{
@@ -2045,6 +2067,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 setVillageCommitteesCount(districtIds, resultList);
 			 setMandalCommitteesCount(districtIds,resultList);
 			 setDistrictCommitteesCount(districtIds,resultList);
+			 
+			 if(resultList !=null && resultList.size()>0){
+				 resultList.get(0).setAreaType(areaType);
+			 }
 			 
 		 }catch (Exception e) {
 				LOG.error("Exception Occured in getDistrictwiseCommitteCount() method, Exception - ",e);
@@ -2438,6 +2464,39 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 	 }
 	 
+	 public void getWardWiseCommitteeCount(Long locationId,Long constituencyId,CommitteeBasicVO wardVo,List<Long> levelIdsList,String locationType){
+		 
+		 try{
+			 
+			 	wardVo.setLocationType(locationType);
+				
+				List<Object[]> committeeMembersList = new ArrayList<Object[]>();//Total committee members count
+				List<Object[]> committeesList = new ArrayList<Object[]>();//Total committees count//
+				List<Object[]> startedCommitteesList = new ArrayList<Object[]>();//Total started committees count
+				List<Object[]> completedCommitteesList = new ArrayList<Object[]>();//Total completed committees count
+				
+				for(Long levelId: levelIdsList)
+				{
+					setTdpCommitteeMembersCount(levelId, locationId, null, committeeMembersList,locationType);//clear	
+					setTdpCommitteesCount(levelId, locationId, null, committeesList,locationType);
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, startedCommitteesList, "Started",locationType);
+					setTdpStartedOrCompletedCommitteesCount(levelId, locationId, null, completedCommitteesList, "completed",locationType);
+				}
+				
+				setTotalCommitteeMembersCount(committeeMembersList, wardVo);
+				setTotalCommitteesCount(committeesList, wardVo);
+				setStartedCommitteesCount(startedCommitteesList, wardVo);
+				setCompletedCommitteesCount(completedCommitteesList, wardVo);
+				
+				
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getPanchayatlwiseCommitteCount() method, Exception - ",e);
+		}
+		 
+		 
+	 }
+	 
 
 	 
 	
@@ -2445,8 +2504,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		try{
 			List<Object[]> list = null;
-			if(locationType.equalsIgnoreCase("Village"))
+			if(locationType.equalsIgnoreCase("mandalLevelVillage"))
 				 list = tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValueForVillage(levelId, levelValue,constituencyId);
+			else if(locationType.equalsIgnoreCase("municipalWiseWards")){
+				list=tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValueForWards(levelId,levelValue,constituencyId);
+			}
 			else
 				list= tdpCommitteeMemberDAO.getTotalCommittesCountByLevelIdAndLevelValue(levelId, levelValue,constituencyId);
 			 if(list != null && list.size() > 0)
@@ -2462,8 +2524,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		try{
 			List<Object[]> list = null;
-			if(locationType.equalsIgnoreCase("village"))
+			if(locationType.equalsIgnoreCase("mandalLevelVillage"))
 				 list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValueForVillage(levelId, levelValue,constituencyId);
+			else if(locationType.equalsIgnoreCase("municipalWiseWards")){
+				list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValueForVillageMunicipal(levelId, levelValue,constituencyId);
+			}
 			else
 		     list = tdpCommitteeDAO.getCommitteesCountByLevelIdAndLevelValue(levelId, levelValue, null);
 			 if(list != null && list.size() > 0)
@@ -2479,8 +2544,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		try{
 			List<Object[]> list = null;
-			if(locationType.equalsIgnoreCase("Village"))
-				list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillage(levelId, levelValue, constituencyId, status);	
+			if(locationType.equalsIgnoreCase("mandalLevelVillage"))
+				list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillage(levelId, levelValue, constituencyId, status);
+			else if(locationType.equalsIgnoreCase("municipalWiseWards")){
+				list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillageMunicipal(levelId, levelValue, constituencyId, status);
+			}
 			else
 			list = tdpCommitteeDAO.getStartedOrComplcommitteesCountByLevelIdAndLevelValue(levelId, levelValue, constituencyId, status);
 			 if(list != null && list.size() > 0)
@@ -2504,6 +2572,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long constituencyId = userAddress.getConstituency().getConstituencyId();
 			List<Long> localEleIdsList = new ArrayList<Long>();
 			localEleIdsList.add(7l);
+			
 			List<Long> mandalIds = new ArrayList<Long>();
 			mandalIds.add(5l);
 			
@@ -2512,10 +2581,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() > 0)
 			{
-				getPanchayatlwiseCommitteCount(userAddress.getLocalElectionBody().getLocalElectionBodyId(), constituencyId, mandalMunciVO, localEleIdsList, "Mandal");
+				getPanchayatlwiseCommitteCount(userAddress.getLocalElectionBody().getLocalElectionBodyId(), constituencyId, mandalMunciVO, localEleIdsList, "localElection");
+				
+				//ward committees count in municipality
+				List<Long> levelIdsList = new ArrayList<Long>();
+				levelIdsList.add(8l);
+				CommitteeBasicVO villBasicVO = new CommitteeBasicVO();
+			    getPanchayatlwiseCommitteCount(userAddress.getLocalElectionBody().getLocalElectionBodyId(), constituencyId, villBasicVO,levelIdsList,"municipalWiseWards");
+			    
+			    resultList.add(villBasicVO);
+				
 			}
 			
-			if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() > 0)
+			else if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() > 0)
 			{
 				getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, mandalMunciVO, mandalIds, "Mandal");
 				
@@ -2525,7 +2603,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				levelIdsList.add(6l);
 				//levelIdsList.add(8l);
 				CommitteeBasicVO villBasicVO = new CommitteeBasicVO();
-			    getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, villBasicVO,levelIdsList,"Village");
+			    getPanchayatlwiseCommitteCount(userAddress.getTehsil().getTehsilId(), constituencyId, villBasicVO,levelIdsList,"mandalLevelVillage");
 			    
 			    resultList.add(villBasicVO);
 			   
@@ -2540,6 +2618,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return resultList;
 	}
+/*	public List<CommitteeBasicVO> getLocalElectionBodyWiseCount(UserAddress userAddress){
+		
+		
+		return null;
+	}*/
 	
 	public void setInsuranceType(Map<String,VerifierVO> mapVo){
 		
