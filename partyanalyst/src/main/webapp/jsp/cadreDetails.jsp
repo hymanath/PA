@@ -652,11 +652,11 @@ var globalCadreId = '${cadreId}';
 					<!--<center><h3>Data Not Available.</h3></center>-->
                     <div class="panel-body" id="committeesDivId" style="display:none;"> 
                     	<div>
-                        	<label class="radio-inline">
-                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="panchayat">Panchayat
+                        	<label class="radio-inline urbanClass">
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="panchayat">Village/Ward
                             </label>
-                            <label class="radio-inline">
-                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="mandal">Mandal
+                            <label class="radio-inline urbanClass">
+                            	<input type="radio" name="committeeLocation" class="committeeLocCls" value="mandal">Mandal/Town/Division
                             </label>
                             <label class="radio-inline">
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="assemblyConstituency">Assembly Constituency
@@ -1163,6 +1163,7 @@ var globalCadreId = '${cadreId}';
 	 
 	 var globalCandidateId; 
 	 var ownBoothDetailsVo;
+	 var globalAreaType="";
 		function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
 			//loading images showing
@@ -1237,6 +1238,7 @@ var globalCadreId = '${cadreId}';
 					 $("#stateNoId").html(result.stateName);
 					 $("#houseNoId").html(result.houseNo);
 					 
+					 $("#globalAreaType").html(result.areaType);
 					 
 					 if(result.imagePath !=null && result.imagePath !=""){
 						 $("#imagePathId").html('<img src="'+result.imagePath+'" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">'); 
@@ -3169,40 +3171,60 @@ function buildLocationwiseCommitteesCount(result)
 	str += '<table class="table m_0 table-bordered">';
 	str += '<tr>';
 	str += '<th></th>';
-    str += '<th class="text-center" colspan="4">Main Committees</th>';
-    str += '<th class="text-center" colspan="4">Affliated Committees</th>';
+    str += '<th class="text-center" colspan="5">Main Committees</th>';
+    str += '<th class="text-center" colspan="5">Affliated Committees</th>';
     str += '</tr>';
 	str += '<tr>';
     str += '<th></th>';
     str += '<th>Total</th>';
     str += '<th>Started</th>';
+	str += '<th>Not Yet Started</th>';
     str += '<th>Completed</th>';
+	
     str += '<th>Members</th>';
     str += '<th>Total</th>';
     str += '<th>Started</th>';
+	str += '<th>Not Yet Started</th>';
     str += '<th>Completed</th>';
+	
     str += '<th>Members</th>';
     str += '</tr>';
+	
+	if(result[0].areaType !=null && result[0].areaType !=""){
+		globalAreaType=result[0].areaType;
+	}
 	
 	for(var i in result)
 	{
 	   str += '<tr>';
-	  if(result[i].locationType == "Village")
-	   str += '<td>Village Committees</td>';
+	  if(result[i].locationType == "Village" || result[i].locationType =="mandalLevelVillage" || result[i].locationType =="Ward" || result[i].locationType=="municipalWiseWards")
+	   str += '<td>Village/Ward Committees</td>';
    
-     if(result[i].locationType == "Mandal")
-	   str += '<td>Mandal Committees</td>';
+     if(result[i].locationType == "Mandal" || result[i].locationType=="localElection")
+	   str += '<td>Mandal/Town/Division Committees</td>';
    
     if(result[i].locationType == "District")
 	   str += '<td>District Committees</td>';
    
+   var affiNotyetStarted=0;
+   var mainNotyetStarted=0;
+	if(result[i].mainCommTotalCount !=null && result[i].mainCommTotalCount !=0){
+		mainNotyetStarted=result[i].mainCommTotalCount - (result[i].mainCommStartedCount + result[i].mainCommCompletedCount);
+	}
+	if(result[i].affiCommTotalCount !=null && result[i].affiCommTotalCount !=0){
+		affiNotyetStarted=result[i].affiCommTotalCount -(result[i].affiCommStartedCount + result[i].affiCommCompletedCount);
+	}
+   
      str += '<td>'+result[i].mainCommTotalCount+'</td>';
 	 str += '<td>'+result[i].mainCommStartedCount+'</td>';
+	  str += '<td>'+mainNotyetStarted+'</td>';
 	 str += '<td>'+result[i].mainCommCompletedCount+'</td>';
 	 str += '<td>'+result[i].mainCommTotalMembers+'</td>';
 	 str += '<td>'+result[i].affiCommTotalCount+'</td>';
 	 str += '<td>'+result[i].affiCommStartedCount+'</td>';
+	  str += '<td>'+affiNotyetStarted+'</td>';
 	 str += '<td>'+result[i].affiCommCompletedCount+'</td>';
+	 
 	 str += '<td>'+result[i].affiCommTotalMembers+'</td>';
 	 
       str += '</tr>';
@@ -3470,6 +3492,12 @@ function hideAndShowCommittee(typeId)
 {
 	if(typeId == 1)
 	{
+		if(globalAreaType == "URBAN"){
+			$(".urbanClass").hide();
+		}
+		else{
+			$(".urbanClass").show();
+		}
 		$('#committeesDivId').show();
 		$('#showId').hide();
 		$('#hideId').show();
