@@ -6,4 +6,5 @@ import com.itgrids.partyanalyst.model.CandidateContestedLocation;
 
 public interface ICandidateContestedLocationDAO extends GenericDao<CandidateContestedLocation, Long>{
 
+	public CandidateContestedLocation getCandidateContestedLocationDetailsByCadre(Long cadreId);
 }
