@@ -265,7 +265,7 @@
 				<div class="row">
 	
 			
-			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
+			<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" style=" margin-left: 400px;margin-top: 20px;width:250px;height:200px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
 				<div id="topPaginationDivId" class="paginationDivId"></div>
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
@@ -310,10 +310,13 @@
 		
 		
 $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
-if(startIndex == 0)
-			$(".paginationDivId").html('');
+	if(startIndex == 0)
+	{
+		$(".paginationDivId").html('');
+	}
+		$(".paginationDivId").hide();	
 		
-$(".paginationDivId").hide();
+
 //$("#paginationDivId").hide();
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
@@ -323,6 +326,7 @@ $(".paginationDivId").hide();
 		var panchayatId = $("#panchaytList").val();
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
+		var districtId = $("#districtId").val();
 		
 		if(panchayatId !=0)
 		{
@@ -348,7 +352,7 @@ $(".paginationDivId").hide();
 			}
 			locationValue = mandalId.substr(1);
 		}
-		else if(constituencyId == 0)
+		/*else if(constituencyId == 0)
 		{
 			if(accessType == "DISTRICT")
 			{
@@ -370,13 +374,40 @@ $(".paginationDivId").hide();
 				}
 				locationValue = stateId;
 			}	
-		}
-		else
+		}*/
+		else if(constituencyId != 0)
 		{
 			locationValue = constituencyId;
 			locationLevel = 4;	
 		}
-		
+		else if(districtId != 0)
+		{
+			locationValue = districtId;
+			locationLevel = 3;
+		}
+		else
+		{
+			if(accessType == "DISTRICT")
+			{
+				locationLevel = 3;
+				locationValue = accessValue;
+			}
+			if(accessType == "MP")
+			{
+				locationLevel = 10;
+				locationValue = accessValue;
+			}
+			if(accessType == "STATE")
+			{
+				var stateId = $("#statesDivId").val();
+				locationLevel = 2;
+				if($("#statesDivId").val() == 0)
+				{
+					stateId = 3;
+				}
+				locationValue = stateId;
+			}	
+		}
 		if(searchRadioType == 'membershipId')
 		{
 			memberShipCardNo = $('#searchBy').val().trim();
@@ -477,6 +508,7 @@ $(".paginationDivId").hide();
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+			$(".paginationDivId").show();
 				 if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 					  location.reload(); 
@@ -557,7 +589,6 @@ $(".paginationDivId").hide();
 		$(".paginationDivId").show();
 		//$("#paginationDivId").show();
 		var str ='';
-		
 		var elegRolCnt=0;
 		var dtCnt = 0;
 		if(result != null)
@@ -667,7 +698,8 @@ $(".paginationDivId").hide();
 
 		 
   function getConstituenciesForState(state){
- 
+  
+ $("#searchDataImgForConst").show();
    var jsObj=
    {				
 				stateId:0,
@@ -681,7 +713,7 @@ $(".paginationDivId").hide();
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-   
+		$("#searchDataImgForConst").hide();
 	   $("#constituencyId").empty();
 	   
      for(var i in result){
@@ -774,6 +806,7 @@ $(".paginationDivId").hide();
 			}
 	
 	function getDistricts(){
+	$("#searchDataImgForDist").show();
      var jsObj=
 		{				
 				stateId:1,
@@ -787,6 +820,7 @@ $(".paginationDivId").hide();
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+   $("#searchDataImgForDist").hide();
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -863,11 +897,12 @@ $(".paginationDivId").hide();
 	var isLoading = false;
 	function getPanchayayCadreDetailsBySearchCriteria(startIndex)
 		{
+		
 
 			if(!isLoading)
 			{
-				isLoading = true;
-				refreshExistingDetails();
+				
+				//refreshExistingDetails();
 						$("#searchbtn").hide();
 						$(".allcls").hide();
 					var locationLevel = 0;
@@ -887,10 +922,10 @@ $(".paginationDivId").hide();
 					
 					$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 					if(startIndex == 0)
+					{
 						$(".paginationDivId").html('');
-					
+					}
 					$(".paginationDivId").hide();
-					//$("#paginationDivId").hide();
 					$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 					$("#cadreDetailsDiv").hide();
 					var searchBy = $('#searchBy').val().trim();
@@ -902,6 +937,7 @@ $(".paginationDivId").hide();
 					
 					if(panchayatId !=0)
 					{
+						isLoading = true;
 						if(panchayatId.substr(0,1) == 1){
 							  locationLevel = 6;
 						}
@@ -940,6 +976,7 @@ $(".paginationDivId").hide();
 						}).done(function(result){
 							isLoading = false;
 							$('#searchErrDiv').html('');
+							$(".paginationDivId").show();
 							document.getElementById('allId').checked = false;
 							 if(typeof result == "string"){
 								if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -979,8 +1016,6 @@ $(".paginationDivId").hide();
 	
 	function buildCadrePanchayatDetails(result,jsObj)
 	{
-		$(".paginationDivId").show();
-		//$("#paginationDivId").show();
 		var str ='';
 		
 		var elegRolCnt=0;
@@ -1072,7 +1107,7 @@ $(".paginationDivId").hide();
 	
   
   function getDistrictsForStates(state){
-   
+   getConstituenciesForState(state);
     $("#searchDataImgForDist").show();
     refreshExistingDetails();
 	$(".allcls").hide();
