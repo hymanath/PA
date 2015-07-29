@@ -12,6 +12,7 @@ public class CommitteeBasicVO {
 	private Long affiCommCompletedCount= 0l;
 	private Long affiCommTotalMembers= 0l;
 	private String locationType;
+	private String areaType="";
 	
 	
 	
@@ -68,6 +69,12 @@ public class CommitteeBasicVO {
 	}
 	public void setLocationType(String locationType) {
 		this.locationType = locationType;
+	}
+	public String getAreaType() {
+		return areaType;
+	}
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
 	}
 	
 	
