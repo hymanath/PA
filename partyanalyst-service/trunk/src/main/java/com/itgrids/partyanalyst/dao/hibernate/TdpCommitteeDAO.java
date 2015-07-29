@@ -304,7 +304,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		if(type.equalsIgnoreCase("started")){
 			if(startDate != null && endDate !=null){
-				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) ");
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) and model.isCommitteeConfirmed = 'N' and model.startedDate is not null and model.completedDate is null ");
 			}
 		}else if(type.equalsIgnoreCase("completed")){
 			if(startDate != null && endDate !=null){
