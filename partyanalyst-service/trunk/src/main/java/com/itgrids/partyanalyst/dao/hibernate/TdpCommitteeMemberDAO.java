@@ -1745,6 +1745,28 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForWards(Long levelId,Long localElectionBody,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId  from TdpCommitteeMember model,Constituency con " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId   " +
+				" and model.isActive ='Y' ");
+		if(constituencyId != null && constituencyId > 0)
+		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
+		if(localElectionBody != null && localElectionBody > 0)
+			str.append(" and con.localElectionBody.localElectionBodyId =:localElectionBody and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue = con.constituencyId ");
+		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameter("localElectionBody", localElectionBody);
+		if(constituencyId != null && constituencyId > 0)
+			query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
 
 	
 }

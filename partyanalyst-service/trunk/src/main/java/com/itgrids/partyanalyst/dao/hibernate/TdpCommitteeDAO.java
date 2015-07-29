@@ -732,6 +732,29 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 				
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCommitteesCountByLevelIdAndLevelValueForVillageMunicipal(Long levelId,Long localElectionBody,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from " +
+				" TdpCommittee model,Constituency con where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId  ");
+		
+		if(localElectionBody != null && localElectionBody > 0)
+			str.append(" and con.localElectionBody.localElectionBodyId =:localElectionBody and model.tdpCommitteeLevelValue = con.constituencyId ");
+		if(constituencyId != null && constituencyId > 0)
+			str.append(" and model.constituency.constituencyId =:constituencyId ");
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		if(constituencyId != null && constituencyId > 0)
+			  query.setParameter("constituencyId", constituencyId);
+		if(localElectionBody != null && localElectionBody > 0)
+		  query.setParameter("localElectionBody", localElectionBody);
+		return query.list();
+				
+	}
 	
 	/*public List<Object[]> committeesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long constituencyId,String type){
 		StringBuilder str = new StringBuilder();
@@ -897,5 +920,32 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(constituencyId != null && constituencyId > 0)
 		  query.setParameter("constituencyId", constituencyId);
 		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillageMunicipal(Long levelId,Long localElectionBody,Long constituencyId,String status){
+
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommittee model,Constituency con  where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId  ");
+		
+		  if(status.equalsIgnoreCase("Started"))
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			else if(status.equalsIgnoreCase("completed"))
+			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		  if(constituencyId != null && constituencyId > 0)
+			 str.append("and model.constituency.constituencyId =:constituencyId");
+		  if(localElectionBody != null && localElectionBody > 0)
+				str.append(" and con.localElectionBody.localElectionBodyId =:localElectionBody and model.tdpCommitteeLevelValue = con.constituencyId ");
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("localElectionBody", localElectionBody);
+		
+		if(constituencyId != null && constituencyId > 0)
+		  query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	
 	}
 }
