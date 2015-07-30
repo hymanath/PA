@@ -1507,7 +1507,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 		try{
 			if(totalVoters != null && totalVoters.longValue() > 0l)
 			  return (new BigDecimal((count * 100.0)/totalVoters.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
-			
+			else{
+				return "0";
+			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in calculatePercentage() method, Exception - ",e);
@@ -1585,34 +1587,60 @@ public class CadreDetailsService implements ICadreDetailsService{
 				countVO.setBoothPerc(calculatePercentage(countVO.getBoothTotVoters(), countVO.getBoothCount()));
 			}
 			
-			if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() != null)
-			{
-				countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId, partyIds,null));
-				countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
-				countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
-				countVO.setCadreLocation("Muncipality");
-			}
-			else
-			{
-				countVO.setCadreLocation("Mandal");
-				if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
-				{
-					countVO.setPanchayatCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId, partyIds,null));
-					countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId,null));
-					countVO.setPanchPerc(calculatePercentage(countVO.getPanchayatTotVoters(), countVO.getPanchayatCount()));
+			
+			boolean municpal2009=true;
+			
+			if(electionId == 38l){
+				Long publicationDateId=3l;
+				if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() != null){
 					
-					if(countVO.getPanchayatTotVoters() != null && countVO.getPanchayatTotVoters() > 0)
+					Long electionBodyId=boothDAO.getLocalElectionBodyDetails(userAddress.getLocalElectionBody().getLocalElectionBodyId(),constituencyId,publicationDateId);
+					if(electionBodyId == null){
+						municpal2009=false;
+					}
+					
+				}
+			}
+			
+			if(municpal2009){
+				if(userAddress.getLocalElectionBody() != null && userAddress.getLocalElectionBody().getLocalElectionBodyId() != null)
+				{
+					countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId, partyIds,null));
+					countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
+					countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
+					countVO.setCadreLocation("Muncipality");
+				}
+				else
+				{
+					countVO.setCadreLocation("Mandal");
+					if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 					{
-				        if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
+						countVO.setPanchayatCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId, partyIds,null));
+						countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId,null));
+						countVO.setPanchPerc(calculatePercentage(countVO.getPanchayatTotVoters(), countVO.getPanchayatCount()));
+						
+						if(countVO.getPanchayatTotVoters() != null && countVO.getPanchayatTotVoters() > 0)
 						{
-						  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds,null));	
-						  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId,null));
-						  countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
+					        if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
+							{
+							  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds,null));	
+							  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId,null));
+							  countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
+							}
 						}
 					}
+					
 				}
-				
 			}
+			else{
+				if(userAddress.getTehsil() != null && userAddress.getTehsil().getTehsilId() != null)
+				{
+				  countVO.setMandalCount(getTotalVotesEarnedForLocation(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId, partyIds,null));	
+				  countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getTehsil().getTehsilId(), "Mandal", electionId, constituencyId,null));
+				  countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
+				}
+			}
+			
 			
 			
 			if(userAddress.getDistrict() != null && userAddress.getDistrict().getDistrictId() != null)
