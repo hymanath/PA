@@ -867,7 +867,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				
 				cadreDetailsVO.setRepresentativeType(publicRepresentTypeStr);
-				cadreDetailsVO.setCandidate(candidateList !=null ? candidateList.get(0).longValue():0l);
+				cadreDetailsVO.setCandidate(candidateList !=null && candidateList.size()>0? candidateList.get(0).longValue():0l);
 					
 				cadreDetailsVO.setCadreId(cadreId);
 				cadreDetailsVO.setAreaType(cadreFormalDetails[35] !=null ? cadreFormalDetails[35].toString() :"");
