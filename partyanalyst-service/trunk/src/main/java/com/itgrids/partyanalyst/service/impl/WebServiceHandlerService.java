@@ -2477,22 +2477,25 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	   	 			verifierVO = new VerifierVO();
     	   	 			  if(surveyId != null && surveyId.longValue()>0)
     	   	 			  {
-    	   	 				JSONArray  questionsList = surveyDetails.getJSONArray("questionsList");
-    		   	 			 if(questionsList != null && questionsList.length()>0)
-    		   	 			 {
-    		   	 				resultList = new ArrayList<VerifierVO>(0);
-    		   	 				 for(int i=0;i<questionsList.length();i++)
-    		   	 				 {
-    		   	 					VerifierVO vo =  new VerifierVO();
-    		   	 					JSONObject question = (JSONObject) questionsList.get(i);
-    		   	 					if(question.has("question"))
-    		   	 					{
-    		   	 						vo.setName(question.getString("question"));
-    		   	 					}
-    			   	 				if(question.has("option"))
-    		   	 					{
-    		   	 						vo.setOption(question.getString("option"));
-    		   	 					}
+    	   	 				JSONArray  questionsList = null;
+    	   	 				  try{
+    	   	 					questionsList = surveyDetails.getJSONArray("questionsList");
+    	   	 					
+    	   	 				if(questionsList != null && questionsList.length()>0)
+   		   	 			 {
+   		   	 				resultList = new ArrayList<VerifierVO>(0);
+   		   	 				 for(int i=0;i<questionsList.length();i++)
+   		   	 				 {
+   		   	 					VerifierVO vo =  new VerifierVO();
+   		   	 					JSONObject question = (JSONObject) questionsList.get(i);
+   		   	 					if(question.has("question"))
+   		   	 					{
+   		   	 						vo.setName(question.getString("question"));
+   		   	 					}
+   			   	 				if(question.has("option"))
+   		   	 					{
+   		   	 						vo.setOption(question.getString("option"));
+   		   	 					}
 	    			   	 			if(question.has("verifierVOList"))
 			   	 					{
 	    			   	 				
@@ -2547,10 +2550,60 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	    			   	 			}
 			   	 						
 			   	 					}
-    			   	 				
-    		   	 					resultList.add(vo);
-    		   	 				 }
-    		   	 			 }
+   			   	 				
+   		   	 					resultList.add(vo);
+   		   	 				 }
+   		   	 			 }
+    	   	 				  }
+    	   	 				  catch(Exception e){
+    	   	 					  
+    	   	 					questionsList = surveyDetails.getJSONArray("verifierVOList");
+		    	   	 				if(questionsList != null && questionsList.length()>0)
+		    	   	 				{
+		   		   	 				resultList = new ArrayList<VerifierVO>(0);
+		   		   	 				 for(int i=0;i<questionsList.length();i++)
+		   		   	 				 {
+		   		   	 					VerifierVO vo =  new VerifierVO();
+		   		   	 					JSONObject question = (JSONObject) questionsList.get(i);
+		   		   	 					if(question.has("question"))
+		   		   	 					{
+		   		   	 						vo.setName(question.getString("question"));
+		   		   	 					}
+		   			   	 				if(question.has("option"))
+		   		   	 					{
+		   		   	 						vo.setOption(question.getString("option"));
+		   		   	 					}
+			    			   	 			if(question.has("verifierVOList"))
+					   	 					{
+			    			   	 				
+			    			   	 			JSONArray  performanceList = question.getJSONArray("verifierVOList");
+			    			   	 			if(performanceList != null && performanceList.length()>0)
+			    			   	 			{
+			    			   	 			List<VerifierVO> questionWiseList = new ArrayList<VerifierVO>(0);
+			    			   	 				for(int j=0;j<performanceList.length();j++)
+			    			   	 				{
+				    			   	 				JSONObject optionObj = (JSONObject) performanceList.get(j);
+					    			   	 			VerifierVO optionsVO = new VerifierVO();
+					    			   	 			if(optionObj.has("question"))
+			        		   	 					{
+					    			   	 				optionsVO.setName(optionObj.getString("question"));
+			        		   	 					}
+						    			   	 		if(optionObj.has("option"))
+			        		   	 					{
+						    			   	 			optionsVO.setOption(optionObj.getString("option"));
+			        		   	 					}
+				    			   	 				 		    			   	 				  
+				    			   	 				questionWiseList.add(optionsVO);
+			    			   	 				}
+			    			   	 				vo.setVerifierVOList(questionWiseList);
+			    			   	 			}
+					   	 						
+					   	 					}
+		   			   	 				
+		   		   	 					resultList.add(vo);
+		   		   	 				 }
+		   		   	 			 }
+    	   	 				  }
     		   	 			 
     		   	 			 
     	   	 			  }
@@ -2658,6 +2711,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		   	 			 }
     		       	   	 		verifierVO.setCount(surveyDetails.getLong("count"));
     		       	   	 		verifierVO.setTotalCount(surveyDetails.getLong("totalCount"));
+    		       	   	 		verifierVO.setIsVerified(surveyDetails.getString("isVerified"));
     	   	 			  }
     	   	 			  
     	   	 			if(resultList != null && resultList.size()>0)
