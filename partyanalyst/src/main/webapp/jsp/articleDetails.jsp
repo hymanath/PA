@@ -253,15 +253,21 @@ $(document).on("click",".artclMdl",function(){
 											str+='</div>';
 											if(result[i].articleDetails[0].fromList!=null && result[i].articleDetails[0].fromList.candidates!=null && result[i].articleDetails[0].fromList.candidates.length>0){
 												for(var j in result[i].articleDetails[0].fromList.candidates){
-													str+='<div class="panel-body">';
-														str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].editionName+'';
-														if(result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null){
-															str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].fromCandiName+'';
-														}
-															str+='<span class="pull-right">';
+													if(result[i].articleDetails[0].fromList.candidates[j].editionName!=null || result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null || result[i].articleDetails[0].fromList.candidates[j].fromBenefit!=null){
+														str+='<div class="panel-body">';
+															if(result[i].articleDetails[0].fromList.candidates[j].editionName!=null){
+																str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].editionName+'</p>';	
+															}
+															if(result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null){
+																str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].fromCandiName+'</p>';
+															}
+															if(result[i].articleDetails[0].fromList.candidates[j].fromBenefit!=null){
+																str+='<span class="pull-right">';
 																str+='<img class="img-circle" style="width: 16px; height: 16px; margin-left: -7px; margin-top: -24px;" src="images/'+result[i].articleDetails[0].fromList.candidates[j].fromBenefit+'.png"></span>';
-														str+='</p>';
-													str+='</div>';
+															}
+																
+														str+='</div>';
+													}
 												}
 											}else{
 												str+='<li class="list-group-item border-radius-0"><span >No candidates assigned</span></li>';
@@ -275,15 +281,20 @@ $(document).on("click",".artclMdl",function(){
 											str+='</div>';
 											if(result[i].articleDetails[0].toList!=null && result[i].articleDetails[0].toList.candidates!=null && result[i].articleDetails[0].toList.candidates.length>0){
 												for(var j in result[i].articleDetails[0].toList.candidates){
-													str+='<div class="panel-body">';
-														str+='<p>'+result[i].articleDetails[0].toList.candidates[j].editionName+'';
+													if(result[i].articleDetails[0].toList.candidates[j].editionName!=null || result[i].articleDetails[0].toList.candidates[j].toCandiName!=null || result[i].articleDetails[0].toList.candidates[j].toBenefit!=null){
+														str+='<div class="panel-body">';
+														if(result[i].articleDetails[0].toList.candidates[j].editionName!=null){
+															str+='<p>'+result[i].articleDetails[0].toList.candidates[j].editionName+'</p>';
+														}
 														if(result[i].articleDetails[0].toList.candidates[j].toCandiName!=null){
 															str+='<p>'+result[i].articleDetails[0].toList.candidates[j].toCandiName+'';
 														}
+														if(result[i].articleDetails[0].toList.candidates[j].toBenefit!=null){
 															str+='<span class="pull-right">';
-																str+='<img class="img-circle" style="width: 16px; height: 16px; margin-left: -7px; margin-top: -24px;" src="images/'+result[i].articleDetails[0].toList.candidates[j].toBenefit+'.png"></span>';
-														str+='</p>';
-													str+='</div>';
+															str+='<img class="img-circle" style="width: 16px; height: 16px; margin-left: -7px; margin-top: -24px;" src="images/'+result[i].articleDetails[0].toList.candidates[j].toBenefit+'.png"></span>';
+														}
+														str+='</div>';
+													}
 												}
 											}else{
 												str+='<li class="list-group-item border-radius-0"><span >No candidates assigned</span></li>';
@@ -518,15 +529,20 @@ function getClickedArticle(artclePosNo){
 									str+='</div>';
 									if(result[i].articleDetails[0].fromList!=null && result[i].articleDetails[0].fromList.candidates!=null && result[i].articleDetails[0].fromList.candidates.length>0){
 										for(var j in result[i].articleDetails[0].fromList.candidates){
-											str+='<div class="panel-body">';
-												str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].editionName+'';
-												if(result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null){
-													str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].fromCandiName+'';
-												}
-													str+='<span class="pull-right">';
+											if(result[i].articleDetails[0].fromList.candidates[j].editionName!=null || result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null || result[i].articleDetails[0].fromList.candidates[j].fromBenefit!=null){
+												str+='<div class="panel-body">';
+													if(result[i].articleDetails[0].fromList.candidates[j].editionName!=null){
+														str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].editionName+'</p>';	
+													}
+													if(result[i].articleDetails[0].fromList.candidates[j].fromCandiName!=null){
+														str+='<p>'+result[i].articleDetails[0].fromList.candidates[j].fromCandiName+'</p>';
+													}
+													if(result[i].articleDetails[0].fromList.candidates[j].fromBenefit!=null){
+														str+='<span class="pull-right">';
 														str+='<img class="img-circle" style="width: 16px; height: 16px; margin-left: -7px; margin-top: -24px;" src="images/'+result[i].articleDetails[0].fromList.candidates[j].fromBenefit+'.png"></span>';
-												str+='</p>';
-											str+='</div>';
+													}
+												str+='</div>';
+											}
 										}
 									}else{
 										str+='<li class="list-group-item border-radius-0"><span >No candidates assigned</span></li>';
@@ -540,15 +556,20 @@ function getClickedArticle(artclePosNo){
 									str+='</div>';
 									if(result[i].articleDetails[0].toList!=null && result[i].articleDetails[0].toList.candidates!=null && result[i].articleDetails[0].toList.candidates.length>0){
 										for(var j in result[i].articleDetails[0].toList.candidates){
-											str+='<div class="panel-body">';
-												str+='<p>'+result[i].articleDetails[0].toList.candidates[j].editionName+'';
-												if(result[i].articleDetails[0].toList.candidates[j].toCandiName!=null){
-													str+='<p>'+result[i].articleDetails[0].toList.candidates[j].toCandiName+'';
-												}
-													str+='<span class="pull-right">';
+											if(result[i].articleDetails[0].toList.candidates[j].editionName!=null || result[i].articleDetails[0].toList.candidates[j].toCandiName!=null || result[i].articleDetails[0].toList.candidates[j].toBenefit!=null){
+												str+='<div class="panel-body">';
+													if(result[i].articleDetails[0].toList.candidates[j].editionName!=null){
+														str+='<p>'+result[i].articleDetails[0].toList.candidates[j].editionName+'</p>';	
+													}
+													if(result[i].articleDetails[0].toList.candidates[j].toCandiName!=null){
+														str+='<p>'+result[i].articleDetails[0].toList.candidates[j].toCandiName+'';
+													}
+													if(result[i].articleDetails[0].toList.candidates[j].toBenefit!=null){
+														str+='<span class="pull-right">';
 														str+='<img class="img-circle" style="width: 16px; height: 16px; margin-left: -7px; margin-top: -24px;" src="images/'+result[i].articleDetails[0].toList.candidates[j].toBenefit+'.png"></span>';
-												str+='</p>';
-											str+='</div>';
+													}
+												str+='</div>';
+											}
 										}
 									}else{
 										str+='<li class="list-group-item border-radius-0"><span >No candidates assigned</span></li>';
