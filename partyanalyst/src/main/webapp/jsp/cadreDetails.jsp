@@ -2328,7 +2328,7 @@ function getCadreFamilyDetailsByCadreId()
          str += '</div>';
          str += '<p class="m_0">Relation : <span class="textTransFormCls">'+result[i].relation+'</span>';
 		 if(result[i].relativeName != null && result[i].relativeName.trim().length > 0)
-		  str += ' - <span class="textTransFormCls">'+result[i].relativeName+'</span></p>';
+		  str += ' - <span class="textTransFormCls">'+result[i].relativeName.toLowerCase()+'</span></p>';
          str += '<p class="m_0">Age : ';
 		 if(result[i].age != null)
 		   str +=''+result[i].age+'';
