@@ -27,14 +27,11 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 			
 		return query.list();
 	}
-	public Long getTdpCadreCandidate(Long cadreId){
-		
-		Query query=getSession().createQuery(" select model.candidate.candidateId from  TdpCadreCandidate model " +
+	public List<Long> getTdpCadreCandidate(Long cadreId){
+		Query query=getSession().createQuery(" select distinct model.candidate.candidateId from  TdpCadreCandidate model " +
 				" where model.tdpCadre.tdpCadreId =:cadreId");
-		
 		query.setParameter("cadreId", cadreId);
-		
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 	
 	public List<Object[]> getTdpCadreCandidateIds(List<Long> finalCadreIDsList)
