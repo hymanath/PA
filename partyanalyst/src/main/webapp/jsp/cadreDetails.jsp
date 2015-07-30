@@ -1483,7 +1483,7 @@ var globalCadreId = '${cadreId}';
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default m_0">';
 								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\',\''+votercardNo+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
@@ -1511,7 +1511,7 @@ var globalCadreId = '${cadreId}';
 			});
 		}
 		
-	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
+	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
 		$("#"+divId+"").html("");	
 		var temp="familyAjax"+surveyId+"";
 			$("#"+temp).show();
@@ -1524,8 +1524,8 @@ var globalCadreId = '${cadreId}';
 			surveyId:surveyId,
 			searchTypeStr: searchTypeStr,
 			boothId: $('#cadreBoothId').val(),
-			isPriority: isPriority,
-			voterCardNo:"false"
+			isPriority: "false",
+			voterCardNo:voterCardNo
 		}
 		
 		$.ajax({
@@ -1536,28 +1536,32 @@ var globalCadreId = '${cadreId}';
 			$("#"+temp).hide();
 			if(result != null){
 			var str='';
-			if(result.verifierVOList !=null){					
-				str+='<div class="panel-body">';
-				if(isPriority == 'true')
-					{
-						str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreFamilySurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
-					}
-				str+='<table class="table m_0 table-bordered">';
-				str+='<thead>';
-					str+='<th style="text-align:center;">Question</th>';
-					str+='<th style="text-align:center;">Answer</th>';
-				str+='</thead>';
-				str+='<tbody>';
-				
-				for(var i in result.verifierVOList){
-					str+='<tr>';
-						str+='<td>'+result.verifierVOList[i].name+'</td>';
-						str+='<td>'+result.verifierVOList[i].option+'</td>'; 
-					str+='</tr>';
-					}
+				if(result.verifierVOList !=null){	
+					if(result.verifierVOList != null && result.verifierVOList.length>0)
+					{			
+						str+='<div class="panel-body">';
+						if(isPriority == 'true')
+							{
+								str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreFamilySurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
+							}
+						str+='<table class="table m_0 table-bordered">';
+						str+='<thead>';
+							str+='<th style="text-align:center;">Question</th>';
+							str+='<th style="text-align:center;">Answer</th>';
+						str+='</thead>';
+						str+='<tbody>';
+						
+						for(var i in result.verifierVOList[0].verifierVOList){
+						str+='<tr>';
+							str+='<td>'+result.verifierVOList[0].verifierVOList[i].name+'</td>';
+							str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'</td>'; 
+						str+='</tr>';
+						}
+					
+					}				
+					$("#"+divId+"").show();		
+					$("#"+divId+"").html(str);	
 				}
-				$("#"+divId+"").show();		
-				$("#"+divId+"").html(str);	
 			}
 		});
 		
@@ -1589,6 +1593,9 @@ var globalCadreId = '${cadreId}';
 		}
 		
 	});
+	
+	var participatedSurveysArr = new Array();
+	var isparticipatedSelected = '';
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
 
 		if($("#"+divId).hasClass("showSurvey")){
@@ -1611,8 +1618,9 @@ var globalCadreId = '${cadreId}';
 				$('#bottom'+divId+'').show();				
 			}
 			
+			if(isPriority =='false')
+				$('#'+divId+'').html('<div style="offset4"><img id="ajaxsurveyTable" src="images/icons/survey-details.gif" style="width:250px;height:200px;margin-left:300px;"/></div>');
 			
-			$('#'+divId+'').html('');
 			$('.allSurveyDtlsCls').hide();
 			$("#img"+divId+"").show();
 			if(surveyId !=0 && localCadreId !=0){
@@ -1624,28 +1632,42 @@ var globalCadreId = '${cadreId}';
 			else{
 				$('#surveyDataLoadoing').show();
 			}
-			
-			/*if(searchTypeStr == 'All'){
-				$('#list1').removeClass('li_arr');
-				$('#list2').addClass('li_arr');
-				$('.surveyDetailsCls').html('');
-			}
-			else if(searchTypeStr == 'NotAll'){
-				$('#list2').removeClass('li_arr');
-				$('#list1').addClass('li_arr');							
-			}*/
+				
 			$('#list1').click(function(){
 				$('#list2').removeClass('li_arr');
 				$('#list2').removeClass('active');
 				$('#list1').addClass('active');
 				$('#list1').addClass('li_arr');
+				isparticipatedSelected = '';
 			});
 			$('#list2').click(function(){
 				$('#list1').removeClass('li_arr');
 				$('#list1').removeClass('active');
 				$('#list2').addClass('active');
 				$('#list2').addClass('li_arr');
+				isparticipatedSelected = 'false';
 			});
+			var voterCardNo = 'false';
+			console.log("isparticipatedSelected "+isparticipatedSelected)
+			if(participatedSurveysArr != null && participatedSurveysArr.length>0)
+			{
+				if(isparticipatedSelected == 'false')
+				{
+					voterCardNo = "notParticipated";
+				}
+				else
+				{					
+					for(var i in participatedSurveysArr)
+					{
+						var id = participatedSurveysArr[i].id;
+						if(surveyId == id )
+						{
+							voterCardNo = "participated";
+						}
+					}
+				}
+				
+			}
 			
 			var jsObj={
 				cadreId:localCadreId,
@@ -1653,9 +1675,9 @@ var globalCadreId = '${cadreId}';
 				searchTypeStr: searchTypeStr,
 				boothId: $('#cadreBoothId').val(),
 				isPriority: isPriority,
-				voterCardNo:"false"
+				voterCardNo:voterCardNo
 			}
-			
+			$('#'+divId+'').show();
 			$.ajax({
 				type:'GET',
 				 url: 'getTdpCadreSurveyDetailsAction.action',
@@ -1671,6 +1693,8 @@ var globalCadreId = '${cadreId}';
 					var str='';
 					if(searchTypeStr == 'NotAll')
 					{
+						participatedSurveysArr =[];
+						
 						str+='<ul class="nav nav-tabs tab-list display-style" role="tablist">';
 						if(result.count != null && result.count >0)
 						{
@@ -1695,8 +1719,25 @@ var globalCadreId = '${cadreId}';
 					
 
 							for(var i in result.verifierVOList){
+								if(result.isVerified != null && result.isVerified =='true')
+								{
+									var obj = {
+										id:result.verifierVOList[i].id
+									};
+									participatedSurveysArr.push(obj);
+								}
 								str+='<div class="panel panel-default m_0">';
+								
 								str+='<div class="panel-heading bg_f9 innerDiv" role="tab" id="heading'+i+'" attr_survy_divId="surveyTable'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="tableshidesandShow(\'surveyTable'+i+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
+								str+='<h4 class="panel-title text-bold">';
+								str+=''+result.verifierVOList[i].name+'';
+								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
+								str+='</h4> </a><div style="offset4"><img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
+								
+								str+='</div>';
+								
+								/*str+='<div class="panel-heading bg_f9 innerDiv" role="tab" id="heading'+i+'" attr_survy_divId="surveyTable'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
@@ -1704,6 +1745,8 @@ var globalCadreId = '${cadreId}';
 								str+='</h4> </a><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
 								
 								str+='</div>';
+								*/
+								
 								/*
 								
 								if(i==0)
@@ -1778,10 +1821,18 @@ var globalCadreId = '${cadreId}';
 									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
 								}
 								*/
-								str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurvey" role="" aria-labelledby="" style="display:none;">';
+								/*str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurvey" role="" aria-labelledby="" style="display:none;">';
 									str+='<div class="panel-body table-responsive">';										
 									str+='</div>';
+									str+='</div>';*/
+									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+									str+='<img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="width:250px;height:200px;margin-left:300px;"/>';
+									str+='<div class="panel-body">';										
 									str+='</div>';
+									str+='</div>';
+									
+									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
+									
 								str+='</div>';
 						str+='</div>';
 
@@ -1793,7 +1844,7 @@ var globalCadreId = '${cadreId}';
 					str+='</div>';
 					
 					$('.surveyDetailsCls').html(str);
-					
+					console.log(participatedSurveysArr);
 				}
 				else if(surveyId !=0 && surveyId !=0 ){
 					buildingSurveyQuestionsDetails(result,surveyId,indexId,divId,isPriority);
@@ -1846,6 +1897,10 @@ var globalCadreId = '${cadreId}';
 												str+='<td>'+results.verifierVOList[i].name+'</td>';
 												str+='<td>'+results.verifierVOList[i].option+'</td>'; 
 											str+='</tr>';
+											if(results.verifierVOList[i].verifierVOList != null && results.verifierVOList[i].verifierVOList.length>0)
+											{
+												
+											
 								if(results.verifierVOList[i].verifierVOList[0].verifierVOList != null && results.verifierVOList[i].verifierVOList[0].verifierVOList.length>0)
 											{
 												str+='<tr>';
@@ -1884,6 +1939,7 @@ var globalCadreId = '${cadreId}';
 													str+='</td>'; 
 												str+='</tr>';
 											}
+											}
 										}
 											
 										str+='</tbody>';
@@ -1893,7 +1949,7 @@ var globalCadreId = '${cadreId}';
 				}else{
 					str+='<div>"Data Not Available."</div>';
 				}
-				$("#"+divId+"").show();		
+				//$("#"+divId+"").show();		
 				$("#"+divId+"").html(str);		
 		}
 		function getCandidateElectDetatails(cadreId){
@@ -3523,6 +3579,20 @@ function hideAndShowSurvey(typeId)
 		$('#surveyshowId').show();
 		$('#surveyhideId').hide();
 	}
+}
+
+function tableshidesandShow(divId)
+{
+		var styleStr = $('#'+divId+'').is(":visible")
+		console.log(styleStr);
+		if(styleStr)
+		{
+			$('#'+divId+'').hide();
+		}
+		else
+		{
+			$('#'+divId+'').show();
+		}	
 }
 </script>
 
