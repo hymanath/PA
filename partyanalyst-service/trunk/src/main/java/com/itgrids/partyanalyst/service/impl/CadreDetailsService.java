@@ -328,28 +328,28 @@ public class CadreDetailsService implements ICadreDetailsService{
     				locationValue = 0l;
     			}
     			
-    			else if(locationLevel.longValue() == 3L)
+    			else if(locationLevel.longValue() == 3L) //district
     			{
     				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
     			}
     			
-    			else if(locationLevel.longValue() == 4L)
+    			else if(locationLevel.longValue() == 4L)//constituency
     			{
     				queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
     			}
-    			else if(locationLevel.longValue() == 5L)
+    			else if(locationLevel.longValue() == 5L)//tehsil
     			{
     				queryStr.append(" and model.userAddress.tehsil.tehsilId =:locationValue ");
     			}
-    			else if(locationLevel.longValue() == 6L)
+    			else if(locationLevel.longValue() == 6L)//panchayat
     			{
     				queryStr.append(" and model.userAddress.panchayat.panchayatId =:locationValue ");
     			}
-    			else if(locationLevel.longValue() == 7L)
+    			else if(locationLevel.longValue() == 7L)//localElectionBody
     			{
     				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
     			}
-    			else if(locationLevel.longValue() == 8L)
+    			else if(locationLevel.longValue() == 8L)//greater cities
     			{
     				/*
     				Object[] localBodyDetails = constituencyDAO.getlocalbodyName(locationValue);
@@ -733,7 +733,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//0.publicRepresentativeTypeId,1.type
 				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
-				Long candidateId=tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+				List<Long> candidateList =tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
 				
 				
 				DateFormat dateFormat=null;
@@ -867,7 +867,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				
 				cadreDetailsVO.setRepresentativeType(publicRepresentTypeStr);
-				cadreDetailsVO.setCandidate(candidateId !=null ? candidateId.longValue():0l);
+				cadreDetailsVO.setCandidate(candidateList !=null ? candidateList.get(0).longValue():0l);
 					
 				cadreDetailsVO.setCadreId(cadreId);
 				cadreDetailsVO.setAreaType(cadreFormalDetails[35] !=null ? cadreFormalDetails[35].toString() :"");
@@ -1273,9 +1273,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		List<CandidateDetailsVO> candidateElecDatails=new ArrayList<CandidateDetailsVO>();
 		try{
-			Long candidateId=tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
-			if(candidateId !=null){
-				 candidateElecDatails=candidateDetailsService.getCandidateElectionDetails(candidateId);
+			List<Long> candidateList=tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+			if(candidateList !=null && candidateList.size()>0L){
+				 candidateElecDatails=candidateDetailsService.getCandidateElectionDetails(candidateList.get(0));
 			}
 			
 		}catch(Exception e){
