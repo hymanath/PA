@@ -1113,6 +1113,9 @@ var globalCadreId = '${cadreId}';
 				<div class="modal-body familySurveyDetailsCls">
 				
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -1452,7 +1455,8 @@ var globalCadreId = '${cadreId}';
 		function familyMembersSurveyDetails(votercardNo)
 		{	
 			$("#familySurveyDataLoadoing").show();
-			
+			$(".arrow_box3").hide();
+		
 			$('.familySurveyDetailsCls').html("");
 			var jsObj={
 				cadreId:0,
@@ -1482,7 +1486,7 @@ var globalCadreId = '${cadreId}';
 						str+='<div class="panel-group m_0" id="accordion1" role="tablist" aria-multiselectable="true">';
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default m_0">';
-								str+='<div class="panel-heading bg_f9" role="tab" id="heading'+i+'">';
+								str+='<div class="panel-heading bg_f9 innerDivFamilyCls" attr_survy_divId="familySurveyTable'+i+'" role="tab" id="heading'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\',\''+votercardNo+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
@@ -1491,7 +1495,7 @@ var globalCadreId = '${cadreId}';
 								
 								str+='</div>';
 								
-								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurveyCls" role="" aria-labelledby="" style="display:none;">';
 									str+='<div class="panel-body table-responsive">';										
 									str+='</div>';
 									str+='</div>';
@@ -1512,7 +1516,12 @@ var globalCadreId = '${cadreId}';
 		}
 		
 	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
-		$("#"+divId+"").html("");	
+		$("#"+divId+"").html("");
+		
+		if($("#"+divId).hasClass("showSurveyCls")){
+			return;
+		}
+		
 		var temp="familyAjax"+surveyId+"";
 			$("#"+temp).show();
 		var localCadreId=globalCadreId;
@@ -1540,10 +1549,10 @@ var globalCadreId = '${cadreId}';
 					if(result.verifierVOList != null && result.verifierVOList.length>0)
 					{			
 						str+='<div class="panel-body">';
-						if(isPriority == 'true')
+						/*if(isPriority == 'true')
 							{
 								str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreFamilySurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
-							}
+							}*/
 						str+='<table class="table m_0 table-bordered">';
 						str+='<thead>';
 							str+='<th style="text-align:center;">Question</th>';
@@ -1592,6 +1601,22 @@ var globalCadreId = '${cadreId}';
 			
 		}
 		
+	});
+	$(document).on('click', '.innerDivFamilyCls', function(){
+	
+		var surveyDivId = $(this).attr("attr_survy_divId");
+		
+		if($("#"+surveyDivId).hasClass("hideSurveyCls")){
+			$("#"+surveyDivId).removeClass("hideSurveyCls");
+			$("#"+surveyDivId).addClass("showSurveyCls");
+			$("#"+surveyDivId).css({"display":"block"});
+		}else if($("#"+surveyDivId).hasClass("showSurveyCls")){
+			$("#"+surveyDivId).removeClass("showSurveyCls");
+			$("#"+surveyDivId).addClass("hideSurveyCls");
+			$("#"+surveyDivId).css({"display":"none"});
+			
+		}
+	
 	});
 	
 	var participatedSurveysArr = new Array();
@@ -2365,7 +2390,7 @@ function getCadreFamilyDetailsByCadreId()
          str += '<div class="m_0">'+result[i].name+'';
          str += '<span class="pull-right">';
 		 if(result[i].count != null && result[i].count> 0)
-           str += '<img class="img-responsive" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
+           str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
 		   else
 		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
 		 str += '</span>';
@@ -2639,6 +2664,14 @@ function buildApprovedFinancialSupprotForCadre(result)
 function surveyShowHide(num)
 {
 	$('.survey-hover'+num+'').toggle();
+	
+	$(document).click(function() {
+		$('.survey-hover').hide();
+	});
+	$(".survey-drop").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
 }
  
 /* getTotalMemberShipRegistrationsInCadreLocation();		
