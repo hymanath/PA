@@ -46,6 +46,10 @@
 		font-weight:bold;
 		color:red;
 	}
+	.membrshipAndMobileNoCls{
+		font-weight:bold;
+		color:green;
+	}
 	.m_top5{margin-top:5px;}
 	.m_top30{margin-top:30px;}
 	.editDesignation{margin-bottom: 10px;}
@@ -166,7 +170,9 @@
 						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> Mobile No &nbsp;&nbsp;</label>
 					
 						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> Name &nbsp;&nbsp;</label>
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5"> TR No &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5"> TR No &nbsp;&nbsp;</label><br>
+						
+						<!--<label style="margin-left: -250px;"><input type="radio" name="searchBasedOn" class="searchTypeCls" id="membershipIdAndMobileNo"  onclick="rfrshEstngDtlsForMembrShipNoAndMblNo();"  value="6"> MembershipID, MobileNo &nbsp;&nbsp;</label>-->
 						<!--<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  onclick="refreshExistingDetails();"  value="5"> Advanced Search &nbsp;&nbsp;</label>-->
 						
 						<input type="hidden" id="cadreSearchType" value="membershipId" />
@@ -198,6 +204,7 @@
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
 						<div id="searchErrDiv"></div>
+						<div id="membrshipAndMobileNoDiv" class="membrshipAndMobileNoCls"></div>
 					</div>	
 					<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
@@ -307,6 +314,7 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
+		var membershipAndMobileNo = '';
 		
 		
 $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
@@ -482,6 +490,36 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			}
 			
 		}
+		if(searchRadioType == 'membershipIdAndMobileNo')
+		{
+			membershipAndMobileNo = $('#searchBy').val().trim();
+			
+			var splitList = new Array();
+			splitList = membershipAndMobileNo.split(",");
+			memberShipCardNo = splitList[0];
+			mobileNo = splitList[1];
+			
+			if(memberShipCardNo.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter MemberShip Number..');
+				return;
+			}
+			
+			if(mobileNo.trim().length == 10){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!mobileNo.match(numericExpression)){
+						$('#searchErrDiv').html('Enter Numerics Only.');
+						return;
+					}
+			}	
+			else
+			{
+				$('#searchErrDiv').html('Please enter Valid Mobile No.');
+				return;
+			}
+			
+		}
 		
 		$("#searchDataImg").show();
 		var jsObj =
@@ -538,11 +576,27 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		$(".paginationDivId").html('');
 		$("#cadreDetailsDiv").hide();
 		$("#searchErrDiv").html("");
+		$("#membrshipAndMobileNoDiv").html("");
+		
 		//$("#casteCategory").val(0);
 		//$("#casteList").val(0);
 		//$("#ageRange").val(0);
 		//$("#gender").val(0);
 	}
+	
+	function rfrshEstngDtlsForMembrShipNoAndMblNo()
+  {
+		$("#searchBy").val("");
+		$("#cadreDetailsDiv").html("");
+		$(".paginationDivId").html('');
+		$("#cadreDetailsDiv").hide();
+		$("#searchErrDiv").html("");
+		$("#membrshipAndMobileNoDiv").html("");
+		$("#membrshipAndMobileNoDiv").html("Hint:MemberShip No (8digits), Mobile No(10 digits) Example:xxxxxxxx,xxxxxxxxxx");
+		
+		
+  }
+	
 		$('.searchTypeCls').click(function(){
 			
 		
@@ -580,6 +634,12 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			{	
 				
 				$('#cadreSearchType').val('trNo');
+				
+			}
+			if(id.trim() == 'membershipIdAndMobileNo')
+			{	
+				
+				$('#cadreSearchType').val('membershipIdAndMobileNo');
 				
 			}
 		});
@@ -1190,6 +1250,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	 }
    });
   }
+  
+  
   
 </script>
 			
