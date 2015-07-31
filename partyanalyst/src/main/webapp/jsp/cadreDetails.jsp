@@ -1517,7 +1517,8 @@ var globalCadreId = '${cadreId}';
 		
 	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
 		$("#"+divId+"").html("");
-		
+
+		//balu
 		if($("#"+divId).hasClass("showSurveyCls")){
 			return;
 		}
@@ -1605,6 +1606,8 @@ var globalCadreId = '${cadreId}';
 	$(document).on('click', '.innerDivFamilyCls', function(){
 	
 		var surveyDivId = $(this).attr("attr_survy_divId");
+		
+		//alert(surveyDivId);
 		
 		if($("#"+surveyDivId).hasClass("hideSurveyCls")){
 			$("#"+surveyDivId).removeClass("hideSurveyCls");
@@ -2039,11 +2042,6 @@ var globalCadreId = '${cadreId}';
 $('.table-scroll').scrollator({
 	custom_class: 'table-scroll',
 });
-/* $('.survey-hover').hide();
-$('#survey-dropdown').click(function(){
-	$('.survey-hover').toggle();
-	
-}); */
 
 
 /*$('#myStathalf').circliful();
@@ -2390,7 +2388,7 @@ function getCadreFamilyDetailsByCadreId()
          str += '<div class="m_0">'+result[i].name+'';
          str += '<span class="pull-right">';
 		 if(result[i].count != null && result[i].count> 0)
-           str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" onclick="surveyShowHide('+i+')">';
+           str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" >';
 		   else
 		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
 		 str += '</span>';
@@ -2657,23 +2655,16 @@ function buildApprovedFinancialSupprotForCadre(result)
 	
 	
 }
-
-
-
-
-function surveyShowHide(num)
-{
-	$('.survey-hover'+num+'').toggle();
-	
 	$(document).click(function() {
 		$('.survey-hover').hide();
 	});
-	$(".survey-drop").click(function(e) {
+	$(document).on("click",".survey-drop",function(){
+		$('.survey-hover').hide();
+		$(this).parent().find('.survey-hover').show();
 		e.stopPropagation(); 
-		return false;
 	});
-}
- 
+	
+
 /* getTotalMemberShipRegistrationsInCadreLocation();		
 getCadreFamilyDetailsByCadreId();
 getElectionPerformanceInCadreLocation();
