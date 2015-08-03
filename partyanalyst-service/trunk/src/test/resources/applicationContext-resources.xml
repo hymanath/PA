@@ -626,6 +626,9 @@
 			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
 			     <value>com.itgrids.partyanalyst.model.CandidateContestedLocation</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampProgram</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCamp</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampDistrict</value>
 			    				
 			</list>
 		</property>
@@ -2941,5 +2944,13 @@
 	<bean id="candidateContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateContestedLocationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="trainingCampDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampProgramDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampProgramDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDistrictDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
