@@ -2686,5 +2686,9 @@
 	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />    
 	</bean>
 	
+	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
+	       
+	</bean>
+	
 </beans>		
 	
