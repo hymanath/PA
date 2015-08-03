@@ -612,6 +612,14 @@
 			     <value>com.itgrids.partyanalyst.model.InsuranceType</value>
 			     <value>com.itgrids.partyanalyst.model.InsuranceStatus</value>
 			     <value>com.itgrids.partyanalyst.model.CandidateContestedLocation</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampProgram</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCamp</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampDistrict</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampSchedule</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampBatch</value>
+			     <value>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</value>
+			     
 			    
 				</list>
 			
