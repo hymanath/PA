@@ -20,6 +20,40 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String 		task;
 
 	
+	
+	
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -27,5 +61,11 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public String execute(){
 		return Action.SUCCESS;
 	}
-
+	public String callCenterTrainingAdmin(){
+		return Action.SUCCESS;
+	}
+	public String callCenterTrainingAgent(){
+		return Action.SUCCESS;
+	}
+	
 }

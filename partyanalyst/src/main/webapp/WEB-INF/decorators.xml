@@ -151,6 +151,8 @@
        
         <pattern>/cadreSearchAndRegAction*</pattern> -->
 		<pattern>/eventDashboardAction*</pattern>
+		<pattern>/callCenterTrainingAdmin*</pattern>
+		<pattern>/callCenterTrainingAgent*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
