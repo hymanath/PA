@@ -2121,5 +2121,13 @@
 	<bean id="trainingCampScheduleInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="trainingCampScheduleInviteeTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeTrackDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="batchStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.BatchStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
