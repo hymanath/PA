@@ -2100,6 +2100,26 @@
 	<bean id="candidateContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateContestedLocationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+		<bean id="trainingCampDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampProgramDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampProgramDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDistrictDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampScheduleDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampBatchDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="scheduleInviteeStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ScheduleInviteeStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampScheduleInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
