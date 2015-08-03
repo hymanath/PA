@@ -38,6 +38,7 @@ public class SubEvent extends BaseModel implements java.io.Serializable{
 	private Date endTime;
 	private Long userId;
 	private Date insertionTime;
+	private Long orderId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -114,6 +115,14 @@ public class SubEvent extends BaseModel implements java.io.Serializable{
 	}
 	public void setInsertionTime(Date insertionTime) {
 		this.insertionTime = insertionTime;
+	}
+	
+	@Column(name="order_id")
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 	
 	
