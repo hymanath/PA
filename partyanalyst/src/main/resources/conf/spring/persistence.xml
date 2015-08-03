@@ -619,8 +619,8 @@
 			     <value>com.itgrids.partyanalyst.model.TrainingCampBatch</value>
 			     <value>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</value>
-			     
-			    
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack</value>
+			     <value>com.itgrids.partyanalyst.model.BatchStatus</value>
 				</list>
 			
 		</property>
