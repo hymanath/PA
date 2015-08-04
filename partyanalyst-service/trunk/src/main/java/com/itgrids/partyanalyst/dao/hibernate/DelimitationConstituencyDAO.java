@@ -413,4 +413,10 @@ IDelimitationConstituencyDAO {
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> getConstiNoByConstiId(Long year)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituencyNO from DelimitationConstituency model where model.year = :year");
+		query.setParameter("year", year);
+		return query.list();
+	}
 }
