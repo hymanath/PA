@@ -58,4 +58,6 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List<Object[]> getAssemblyConstituencyAndMandalsInAState(Long stateId);
 	
 	public List<Object[]> getTehsilsByDelimitationConstituencyIDs(List<Long> delimitationConstituencyIDs) ;
+	
+	public List<Long> getStateWideDelimitationConstituencyIdsList(Long stateId);
 }
