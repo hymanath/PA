@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.model.PublicRepresentative;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresentative, Long> implements IPublicRepresentativeDAO{
 
@@ -14,7 +15,51 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		super(PublicRepresentative.class);
 	}
 
-	public List<Long> getRepresentativesByPositions(Long representativeLevelId,List<Long> locationValuesList,Long positionId)
+	public List<Integer> getRepresentativesByPositions(Long representativeLevelId,List<Long> locationValuesList,Long positionId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(locationValuesList != null)
+		{
+			/*queryStr.append(" select distinct model.candidateId from PublicRepresentative model where model.levelValue in (:locationValuesList) and model.publicRepresentativeTypeId =:positionId ");
+			if(representativeLevelId != null && representativeLevelId.longValue() != 0L)
+			{
+				queryStr.append(" and model.levelId = :representativeLevelId order by model.candidateId ");
+			}*/
+			if(locationValuesList != null && locationValuesList.size()>0)
+			{
+				queryStr.append(" select distinct candidate_id from public_representative model where model.representative_level_value in (:locationValuesList) and " +
+						" model.public_representative_type_id =:positionId  ");
+			}
+			else
+			{
+				queryStr.append(" select distinct model.representative_level_value from public_representative model where  " +
+						" model.public_representative_type_id in ("+IConstants.MPTC_ELCTION_TYPE_ID+","+IConstants.ZPTC_ELCTION_TYPE_ID+") ");
+			}
+			
+			if(representativeLevelId != null && representativeLevelId.longValue() != 0L)
+			{
+				queryStr.append(" and model.representative_level_id =:representativeLevelId order by model.candidate_id ");
+			}
+			
+			Query query = getSession().createSQLQuery(queryStr.toString());
+			
+			if(locationValuesList != null && locationValuesList.size()>0)
+			{
+				query.setParameter("positionId", positionId);
+				query.setParameterList("locationValuesList", locationValuesList);
+			}
+			if(representativeLevelId != null && representativeLevelId.longValue() != 0L)
+			{
+				query.setParameter("representativeLevelId", representativeLevelId);
+			}
+			return query.list();
+		}
+		else
+			return null;
+	}
+	
+	/*public List<Long> getRepresentativesByPositions(Long representativeLevelId,List<Long> locationValuesList,Long positionId)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -37,7 +82,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		else
 			return null;
 	}
-	
+	*/
 	public List<Object[]> getCandidateInfoByCandidateIds(List<Long> candidateIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
