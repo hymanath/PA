@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +33,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private Long trainingCampScheduleInviteeId;
 	private Long trainingCampScheduleId;
 	private Long tdpCadreId;
-	private Long scheduleInviteeStatusId;
+//private Long scheduleInviteeStatusId;
 	private Long attendingBatchId;
 	private String remarks;
 	private Long insertedBy;
@@ -41,8 +42,16 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private TrainingCampScheduleInvitee trainingCampScheduleInvitee;
 	private TrainingCampSchedule trainingCampSchedule;
 	private TdpCadre tdpCadre;
-	
-
+	private Long trainingCampScheduleInviteeCallerId;
+	private Long trainingCampCallerAdminId;	
+	private Long callPurposeId;
+	private Long callStatusId;
+	private Long scheduleStatusId;
+	private Date calledTime;
+	private Date callBackTime;
+	private Date insertedTime;
+	private Date updatedTime;
+	private Long trainingCampCallerId;
 	
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -88,7 +97,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.tdpCadreId = tdpCadreId;
 	}
 
-    @Column(name = "schedule_invitee_status_id")
+   /* @Column(name = "schedule_invitee_status_id")
 	public Long getScheduleInviteeStatusId() {
 		return scheduleInviteeStatusId;
 	}
@@ -96,7 +105,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setScheduleInviteeStatusId(Long scheduleInviteeStatusId) {
 		this.scheduleInviteeStatusId = scheduleInviteeStatusId;
-	}
+	}*/
 
    @Column(name = "attending_batch_id")
 	public Long getAttendingBatchId() {
@@ -179,4 +188,108 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.tdpCadre = tdpCadre;
 	}
 
+	  @Column(name = "training_camp_schedule_invitee_caller_id")
+	public Long getTrainingCampScheduleInviteeCallerId() {
+		return trainingCampScheduleInviteeCallerId;
+	}
+
+
+	public void setTrainingCampScheduleInviteeCallerId(
+			Long trainingCampScheduleInviteeCallerId) {
+		this.trainingCampScheduleInviteeCallerId = trainingCampScheduleInviteeCallerId;
+	}
+
+	  @Column(name = "training_camp_caller_admin_id")
+	public Long getTrainingCampCallerAdminId() {
+		return trainingCampCallerAdminId;
+	}
+
+
+	public void setTrainingCampCallerAdminId(Long trainingCampCallerAdminId) {
+		this.trainingCampCallerAdminId = trainingCampCallerAdminId;
+	}
+
+	 @Column(name = "call_purpose_id")
+	public Long getCallPurposeId() {
+		return callPurposeId;
+	}
+
+
+	public void setCallPurposeId(Long callPurposeId) {
+		this.callPurposeId = callPurposeId;
+	}
+
+	 @Column(name = "call_status_id")
+	public Long getCallStatusId() {
+		return callStatusId;
+	}
+
+
+	public void setCallStatusId(Long callStatusId) {
+		this.callStatusId = callStatusId;
+	}
+
+	@Column(name = "schedule_status_id")
+	public Long getScheduleStatusId() {
+		return scheduleStatusId;
+	}
+
+
+	public void setScheduleStatusId(Long scheduleStatusId) {
+		this.scheduleStatusId = scheduleStatusId;
+	}
+
+	@Column(name = "called_time")
+	public Date getCalledTime() {
+		return calledTime;
+	}
+
+
+	public void setCalledTime(Date calledTime) {
+		this.calledTime = calledTime;
+	}
+
+	@Column(name = "call_back_time")
+	public Date getCallBackTime() {
+		return callBackTime;
+	}
+
+
+	public void setCallBackTime(Date callBackTime) {
+		this.callBackTime = callBackTime;
+	}
+
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+	@Column(name = "training_camp_caller_id")
+	public Long getTrainingCampCallerId() {
+		return trainingCampCallerId;
+	}
+
+
+	public void setTrainingCampCallerId(Long trainingCampCallerId) {
+		this.trainingCampCallerId = trainingCampCallerId;
+	}
+
+
+
+	
 }
