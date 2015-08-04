@@ -2129,5 +2129,21 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="campCallStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CampCallStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="campCallPurposeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CampCallPurposeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampScheduleInviteeCallerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeCallerDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
