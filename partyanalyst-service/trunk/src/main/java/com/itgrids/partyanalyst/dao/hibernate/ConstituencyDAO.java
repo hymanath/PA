@@ -763,17 +763,28 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region)
+	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region,Long districtId,Long tehsilId)
 	{
-		/*Object[] params = {electionType, stateID};
-		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
-				" where model.electionScope.electionType.electionType = ?" +
-				" and model.state.stateId=? and model.deformDate is null order by model.name",params);*/
 		StringBuilder str = new StringBuilder();
-		str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
-				" where model.electionScope.electionType.electionType = :electionType" +
-				" and model.state.stateId = :stateID and model.deformDate is null  ");
-		if(region.equalsIgnoreCase("Telangana")){
+		boolean isDistrictApplied=false;
+		if(electionType != null && (electionType.equalsIgnoreCase("MPTC") ||  electionType.equalsIgnoreCase("ZPTC")))
+		{
+			str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
+					" where model.electionScope.electionType.electionType in ('ZPTC','MPTC')" +
+					" and model.state.stateId = :stateID and model.deformDate is null  ");
+		}
+		else
+		{
+			str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
+					" where model.electionScope.electionType.electionType  in (:electionType)" +
+					" and model.state.stateId = :stateID and model.deformDate is null  ");
+		}
+		if(districtId != null && districtId.longValue()>0L)
+		{
+			isDistrictApplied =true;
+			str.append("and model.district.districtId=:districtId");
+		}
+		else if(region.equalsIgnoreCase("Telangana")){
 			str.append("and model.district.districtId between 1 and 10 order by model.name");
 		}
 		else if(region.equalsIgnoreCase("ALL"))
@@ -786,7 +797,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("stateID", stateID);
-		query.setParameter("electionType", electionType);
+		if(electionType != null && (!electionType.equalsIgnoreCase("MPTC") &&  !electionType.equalsIgnoreCase("ZPTC")))
+		{
+			query.setParameter("electionType", electionType);
+		}
+		if(districtId != null && districtId.longValue()>0L && isDistrictApplied)
+		{
+			query.setParameter("districtId", districtId);
+		}
 		return query.list();
 		
 	}
@@ -1357,7 +1375,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 				query.setParameter("constituencyId", constituencyId);
 				name =  (String)query.uniqueResult();
 		}catch(Exception e){
-			
+
 		}
 		return name;
 	}
@@ -1368,12 +1386,24 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		queryBuilder.setParameter("constituencyId", constituencyId);
 		return (Object[]) queryBuilder.uniqueResult();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllWardsForState(Long stateId) {	
 		StringBuilder query = new StringBuilder();
 		query.append("select model.constituencyId,model.name from Constituency model where model.localElectionBody.localElectionBodyId is not null and name like '%ward%'  and model.deformDate is null ");		
 		Query queryObject = getSession().createQuery(query.toString());
 		return queryObject.list();
-	} 	
+	} 
+	
+	public List<Object[]> getMPTCZPTCLocationAreaDetails(List<Long> constituencyIds,List<Long> latestdelimitedTehsilIds){
+		Query query = getSession().createQuery("select model2.constituency.constituencyId , model2.constituency.name , model.district.districtId, model.district.districtName, model2.tehsil.tehsilId," +
+				" model2.tehsil.tehsilName,model.constituencyId from Constituency model, Booth model2  where model.tehsil.tehsilId = model2.tehsil.tehsilId and model2.publicationDate.publicationDateId =:publicationDateId and " +
+				" model.constituencyId in (:constituencyIds) and model2.tehsil.tehsilId in (:latestdelimitedTehsilIds) ");
+		query.setParameterList("constituencyIds",constituencyIds);
+		query.setParameterList("latestdelimitedTehsilIds",latestdelimitedTehsilIds);
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		return query.list();
+		
+	}
+	
 }
