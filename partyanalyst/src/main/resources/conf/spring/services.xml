@@ -2687,7 +2687,20 @@
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
-	       
+		<property name="trainingCampScheduleInviteeCallerDAO" ref="trainingCampScheduleInviteeCallerDAO" /> 
+		<property name="trainingCampDAO" ref="trainingCampDAO" /> 
+		<property name="trainingCampDistrictDAO" ref="trainingCampDistrictDAO" /> 
+		<property name="scheduleInviteeStatusDAO" ref="scheduleInviteeStatusDAO" /> 
+		<property name="trainingCampScheduleDAO" ref="trainingCampScheduleDAO" /> 
+		<property name="trainingCampProgramDAO" ref="trainingCampProgramDAO" /> 
+		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO" /> 
+		<property name="batchStatusDAO" ref="batchStatusDAO" /> 
+		<property name="trainingCampScheduleInviteeDAO" ref="trainingCampScheduleInviteeDAO" /> 
+		<property name="trainingCampUserDAO" ref="trainingCampUserDAO" /> 
+		<property name="trainingCampUserTypeDAO" ref="trainingCampUserTypeDAO" /> 
+		<property name="campCallPurposeDAO" ref="campCallPurposeDAO" /> 
+		<property name="campCallStatusDAO" ref="campCallStatusDAO" /> 
+		<property name="trainingCampScheduleInviteeTrackDAO" ref="trainingCampScheduleInviteeTrackDAO" /> 
 	</bean>
 	
 </beans>		
