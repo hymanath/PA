@@ -238,7 +238,7 @@ IDelimitationConstituencyMandalDAO {
 		
 		query.setParameter("stateId",stateId);
 		query.setParameter("electionType",IConstants.ASSEMBLY_ELECTION_TYPE);
-		query.setParameter("year",2009l);
+		query.setParameter("year",IConstants.DELIMITATION_YEAR);
 		return query.list();
 	}
 	
@@ -249,4 +249,13 @@ IDelimitationConstituencyMandalDAO {
 		query.setParameterList("ids",ids);
 		 return query.list();
 	}
+	
+	public List<Long> getStateWideDelimitationConstituencyIdsList(Long stateId) {
+		Query query = getSession().createQuery("select distinct model.tehsil.tehsilId " +
+				" from DelimitationConstituencyMandal model where " +
+				"model.delimitationConstituency.year =:year and (model.tehsil.district.districtId between 1 and 23) ");
+		query.setParameter("year",IConstants.DELIMITATION_YEAR);
+		 return query.list();
+	}
+	
 }
