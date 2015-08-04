@@ -102,7 +102,6 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -12254,9 +12253,10 @@ return mandalList;
 				 Set<Long> publicRepresentativesIds = new TreeSet<Long>();
 				// List<Long> tdpCadreList = null;
 				 List<Object[]> tdpCadresList = null;
-				 List<Long> publicRepresentativesList = null;
+				 List<Integer> publicRepresentativesList = null;
 				 Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
 				 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
+				 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();
 				 
 				 String region ="ALL";
 				 if(stateId != null && stateId.longValue() == 2L )
@@ -12267,7 +12267,16 @@ return mandalList;
 				 {
 					 region ="AP";
 				 }
-				 
+				 List<Object[]> constiNoList = delimitationConstituencyDAO.getConstiNoByConstiId(2009L);
+				 Map<Long,Long> constiNoMap = new LinkedHashMap<Long,Long>(0);
+						 
+				 if(constiNoList != null && constiNoList.size()>0)
+				 {
+					 for(Object[] data : constiNoList)
+					 {
+						 constiNoMap.put(data[0] != null ? Long.valueOf(data[0].toString().trim()):0L, data[1] != null ? Long.valueOf(data[1].toString().trim()):0L);
+					 }
+				 }
 				 List<Object[]> parliaments = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentByStateIdForregion("Parliament", 1L, region);
 				 if(parliaments != null && parliaments.size()>0)
 				 {
@@ -12278,7 +12287,7 @@ return mandalList;
 						 {
 							 parliamentInfoList = parliamentInfoMap.get(parliamentId);
 						 }
-						 Long constituencyNo =  delimitationConstituencyDAO.getConstituencyNo(parliamentId,2009L);
+						 Long constituencyNo = constiNoMap.get(parliamentId);//delimitationConstituencyDAO.getConstituencyNo(parliamentId,2009L);
 						 IdNameVO parliamentVO = new IdNameVO();
 						 parliamentVO.setId(parliamentId);
 						 parliamentVO.setName(parliament[1] != null ?parliament[1].toString().trim():"");
@@ -12299,12 +12308,12 @@ return mandalList;
 					}
 				 }
 
-				 List<Object[]> assemblys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region);
+				 List<Object[]> assemblys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region,null,null);
 				 if(assemblys != null && assemblys.size()>0)
 				 {
 					 for (Object[] assembly : assemblys) {
 						 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
-						 Long constituencyNo =  delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
+						 Long constituencyNo =  constiNoMap.get(assemblyId);;//delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
 						 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
 						 if(assemblyInfoMap.get(assemblyId) != null)
 						 {
@@ -12329,6 +12338,53 @@ return mandalList;
 						 
 						 assemblyInfoMap.put(assemblyId, assemblyInfoList);
 						 
+					}
+				 }
+				 List<Integer> availableMPTCZPTCLocations = publicRepresentativeDAO.getRepresentativesByPositions(null,new ArrayList<Long>(0),IConstants.MPTC_ELCTION_TYPE_ID); // MPTC,ZPTC,MPP Locations
+				 List<Long> areaIdsList = new ArrayList<Long>(0);
+				 if(availableMPTCZPTCLocations !=null && availableMPTCZPTCLocations.size()>0)
+				 {
+					 for (Integer locationId : availableMPTCZPTCLocations) {
+						 areaIdsList.add(Long.valueOf(String.valueOf(locationId)));
+					}
+				 }
+				List<Long> tehsilIdsList =  delimitationConstituencyMandalDAO.getStateWideDelimitationConstituencyIdsList(1L);
+				 List<Object[]> MPTCZPTCAreaList = constituencyDAO.getMPTCZPTCLocationAreaDetails(areaIdsList,tehsilIdsList);
+				 
+				 if(MPTCZPTCAreaList != null && MPTCZPTCAreaList.size()>0)
+				 {
+					 for (Object[] assembly : MPTCZPTCAreaList) {
+						 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+						 Long constituencyNo =  constiNoMap.get(assemblyId);//delimitationConstituencyDAO.getConstituencyNo(assemblyId,2009L);
+						 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
+						 if(assemblyInfoMap.get(assembly[6] != null ? Long.valueOf(assembly[6].toString().trim()):0L) != null)
+						 {
+							 assemblyInfoList = assemblyInfoMap.get(assembly[6] != null ? Long.valueOf(assembly[6].toString().trim()):0L);
+						 }
+						 
+						 IdNameVO assemblyVO = new IdNameVO();
+						 assemblyVO.setId(assemblyId);
+						 assemblyVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
+						 assemblyVO.setDistrictid(assembly[2] != null ? Long.valueOf(assembly[2].toString().trim()):0L);
+						 if(constituencyNo != null)
+						 { 
+							 assemblyVO.setName(constituencyNo+"_"+assemblyVO.getName());
+						 }
+						 assemblyInfoList.add(assemblyVO);
+						 
+						 IdNameVO districtVO = new IdNameVO();
+						 districtVO.setId(assembly[2] != null ? Long.valueOf(assembly[2].toString().trim()):0L);
+						 districtVO.setName(assembly[3] != null ? assembly[3].toString().trim():"");
+						 districtVO.setDistrictid(assembly[2] != null ? Long.valueOf(assembly[2].toString().trim()):0L);
+						 assemblyInfoList.add(districtVO);
+						 
+						 IdNameVO mandalVO = new IdNameVO();
+						 mandalVO.setId(assembly[4] != null ? Long.valueOf(assembly[4].toString().trim()):0L);
+						 mandalVO.setName(assembly[5] != null ? assembly[5].toString().trim():"");
+						 mandalVO.setDistrictid(assembly[2] != null ? Long.valueOf(assembly[2].toString().trim()):0L);
+						 assemblyInfoList.add(mandalVO);
+						 
+						 mandalsListMap.put(assembly[6] != null ? Long.valueOf(assembly[6].toString().trim()):0L, assemblyInfoList);
 					}
 				 }
 				 
@@ -12375,7 +12431,7 @@ return mandalList;
 												 }
 												 else  if(positionId.longValue() == 2L || positionId.longValue() == 6L || positionId.longValue() == 8L)//MLA or State Ministers or Ex. MLA
 												 {
-													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region);
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region,null,null);
 													 if(assemblyys != null && assemblyys.size()>0)
 													 {
 														 for (Object[] assembly : assemblyys) {
@@ -12384,11 +12440,35 @@ return mandalList;
 														}
 													 }
 												 }
-												 
-												  publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+												 else  if(positionId.longValue() == 4L )//ZPTC
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region,null,null);
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+												 else  if( positionId.longValue() == 3L || positionId.longValue() == 5L)//MPTC.MPP
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region,null,null);
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+
+												 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
 												 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 												 {
-													 publicRepresentativesIds.addAll(publicRepresentativesList);
+													 for (Integer candidateId : publicRepresentativesList) {
+														 publicRepresentativesIds.add(Long.valueOf(String.valueOf(candidateId)));
+													 }
 													
 													 if(startIndex == 0)
 														{
@@ -12397,9 +12477,9 @@ return mandalList;
 														 		
 															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
 															 {
-																 for (Long candidateId : publicRepresentativesList) 
+																 for (Integer candidateId : publicRepresentativesList) 
 																 {
-																	if(!compareRepresentsIds.contains(candidateId))
+																	if(!compareRepresentsIds.contains(Long.valueOf(String.valueOf(candidateId))))
 																	{
 																		if(publicRepresentsCountMap.get(positiion) != null)
 																		{
@@ -12420,7 +12500,10 @@ return mandalList;
 																	
 																	publicRepresentsCountMap.put(positiion,count);
 															 }
-																 compareRepresentsIds.addAll(publicRepresentativesList);
+															 	//compareRepresentsIds.addAll(publicRepresentativesList);
+																 for (Integer candidateId : publicRepresentativesList) {
+																	 compareRepresentsIds.add(Long.valueOf(String.valueOf(candidateId)));
+																 }
 														}
 												 }
 											}
@@ -12526,7 +12609,7 @@ return mandalList;
 													 }
 													 else if(positionId.longValue() == 2L   || positionId.longValue() == 6L || positionId.longValue() == 8L )//MLA or Ex MLA or 
 													 {
-														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region);
+														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region,null, null);
 														 if(assemblyys != null && assemblyys.size()>0)
 														 {
 															 for (Object[] assembly : assemblyys) {
@@ -12535,9 +12618,9 @@ return mandalList;
 															}
 														 }
 													 }
-													 else if(positionId.longValue() == 4L)//MPTC
+													 else  if(positionId.longValue() == 4L )//ZPTC
 													 {
-														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region);
+														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region,null,null);
 														 if(assemblyys != null && assemblyys.size()>0)
 														 {
 															 for (Object[] assembly : assemblyys) {
@@ -12546,9 +12629,9 @@ return mandalList;
 															}
 														 }
 													 }
-													 else if(positionId.longValue() == 5L )// ZPTC
+													 else  if( positionId.longValue() == 3L || positionId.longValue() == 5L)//MPTC.MPP
 													 {
-														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region);
+														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region,null,null);
 														 if(assemblyys != null && assemblyys.size()>0)
 														 {
 															 for (Object[] assembly : assemblyys) {
@@ -12560,7 +12643,11 @@ return mandalList;
 													 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
 													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 													 {
-														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														 //publicRepresentativesIds.addAll(publicRepresentativesList);
+														 
+														 for (Integer candidateId : publicRepresentativesList) {
+															 publicRepresentativesIds.add(Long.valueOf(String.valueOf(candidateId)));
+														 }
 														 
 														 if(startIndex == 0)
 															{
@@ -12569,9 +12656,9 @@ return mandalList;
 														 		
 															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
 															 {
-																 for (Long candidateId : publicRepresentativesList) 
+																 for (Integer candidateId : publicRepresentativesList) 
 																 {
-																	if(!compareRepresentsIds.contains(candidateId))
+																	if(!compareRepresentsIds.contains(Long.valueOf(String.valueOf(candidateId))))
 																	{
 																		if(publicRepresentsCountMap.get(positiion) != null)
 																		{
@@ -12592,7 +12679,10 @@ return mandalList;
 																	
 																	publicRepresentsCountMap.put(positiion,count);
 															 }
-																 compareRepresentsIds.addAll(publicRepresentativesList);
+																 //compareRepresentsIds.addAll(publicRepresentativesList);
+																 for (Integer candidateId : publicRepresentativesList) {
+																	 compareRepresentsIds.add(Long.valueOf(String.valueOf(candidateId)));
+																 }
 															}
 													 }
 												}
@@ -12627,10 +12717,35 @@ return mandalList;
 															}
 														 }
 													 }
+													 else  if(positionId.longValue() == 4L )//ZPTC
+													 {
+														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region,inviteesVO.getDistrictId(),null);
+														 if(assemblyys != null && assemblyys.size()>0)
+														 {
+															 for (Object[] assembly : assemblyys) {
+																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+																 locationValuesList.add(assemblyId);
+															}
+														 }
+													 }
+													 else  if( positionId.longValue() == 3L || positionId.longValue() == 5L)//MPTC.MPP
+													 {
+														 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region,inviteesVO.getDistrictId(),null);
+														 if(assemblyys != null && assemblyys.size()>0)
+														 {
+															 for (Object[] assembly : assemblyys) {
+																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+																 locationValuesList.add(assemblyId);
+															}
+														 }
+													 }
 													 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
 													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 													 {
-														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														// publicRepresentativesIds.addAll(publicRepresentativesList);
+														 for (Integer candidateId : publicRepresentativesList) {
+															 publicRepresentativesIds.add(Long.valueOf(String.valueOf(candidateId)));
+														 }
 														 
 														 if(startIndex == 0)
 															{
@@ -12639,9 +12754,9 @@ return mandalList;
 														 		
 															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
 															 {
-																 for (Long candidateId : publicRepresentativesList) 
+																 for (Integer candidateId : publicRepresentativesList) 
 																 {
-																	if(!compareRepresentsIds.contains(candidateId))
+																	if(!compareRepresentsIds.contains(Long.valueOf(String.valueOf(candidateId))))
 																	{
 																		if(publicRepresentsCountMap.get(positiion) != null)
 																		{
@@ -12662,7 +12777,10 @@ return mandalList;
 																	
 																	publicRepresentsCountMap.put(positiion,count);
 															 }
-																 compareRepresentsIds.addAll(publicRepresentativesList);
+																// compareRepresentsIds.addAll(publicRepresentativesList);
+																 for (Integer candidateId : publicRepresentativesList) {
+																	 compareRepresentsIds.add(Long.valueOf(String.valueOf(candidateId)));
+																 }
 															}
 													 }
 												}
@@ -12734,11 +12852,168 @@ return mandalList;
 						 }
 					 }
 					 else  if(inviteeVO.getLevelStr().trim().equalsIgnoreCase("mandal"))
-					 {
+					 {  
 						 List<InviteesVO> mandalList = inviteeVO.getMandalLevelVOList();
 						 if(mandalList != null && mandalList.size()>0)
 						 {
 							 for (InviteesVO inviteesVO : mandalList) {
+								 if(!inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))								 
+								 {
+									 List<Long> positions = inviteesVO.getRolesIds();
+									 
+									 if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() ==0L) // district not selected
+									 {
+										 if(positions != null && positions.size()>0)
+										 {
+											 for (Long positionId : positions) {
+												 
+												 if(positionId.longValue() == 4L )//ZPTC
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region,null,null);
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+												 else  if( positionId.longValue() == 3L || positionId.longValue() == 5L)//MPTC.MPP
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region,null,null);
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+												 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+												 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
+												 {
+													 //publicRepresentativesIds.addAll(publicRepresentativesList);
+													 
+													 for (Integer candidateId : publicRepresentativesList) {
+														 publicRepresentativesIds.add(Long.valueOf(String.valueOf(candidateId)));
+													 }
+													 
+													 if(startIndex == 0)
+														{
+														 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+													 	 Long count = 0L;
+													 		
+														 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
+														 {
+															 for (Integer candidateId : publicRepresentativesList) 
+															 {
+																if(!compareRepresentsIds.contains(Long.valueOf(String.valueOf(candidateId))))
+																{
+																	if(publicRepresentsCountMap.get(positiion) != null)
+																	{
+																		count = publicRepresentsCountMap.get(positiion);
+																	}
+																	count = count+1;
+																	publicRepresentsCountMap.put(positiion,count);
+																}
+															 }
+														 }
+														 else
+														 {
+															 if(publicRepresentsCountMap.get(positiion) != null)
+																{
+																	count = publicRepresentsCountMap.get(positiion);
+																}
+																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																
+																publicRepresentsCountMap.put(positiion,count);
+														 }
+															 //compareRepresentsIds.addAll(publicRepresentativesList);
+															 for (Integer candidateId : publicRepresentativesList) {
+																 compareRepresentsIds.add(Long.valueOf(String.valueOf(candidateId)));
+															 }
+														}
+												 }
+											}
+										 }
+									 }
+									 else // mandal selected
+									 {
+										 
+										 if(positions != null && positions.size()>0)
+										 {
+											 for (Long positionId : positions) {
+												 
+												if(positionId.longValue() == 4L )//ZPTC
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("ZPTC", 1L, region,null,inviteesVO.getMandalId());
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+												 else  if( positionId.longValue() == 3L || positionId.longValue() == 5L)//MPTC.MPP
+												 {
+													 List<Object[]> assemblyys = constituencyDAO.getLatestConstituenciesByStateIdForregion("MPTC", 1L, region,null,inviteesVO.getMandalId());
+													 if(assemblyys != null && assemblyys.size()>0)
+													 {
+														 for (Object[] assembly : assemblyys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+														}
+													 }
+												 }
+												 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+												 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
+												 {
+													// publicRepresentativesIds.addAll(publicRepresentativesList);
+													 for (Integer candidateId : publicRepresentativesList) {
+														 publicRepresentativesIds.add(Long.valueOf(String.valueOf(candidateId)));
+													 }
+													 
+													 if(startIndex == 0)
+														{
+														 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+													 	 Long count = 0L;
+													 		
+														 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
+														 {
+															 for (Integer candidateId : publicRepresentativesList) 
+															 {
+																if(!compareRepresentsIds.contains(Long.valueOf(String.valueOf(candidateId))))
+																{
+																	if(publicRepresentsCountMap.get(positiion) != null)
+																	{
+																		count = publicRepresentsCountMap.get(positiion);
+																	}
+																	count = count+1;
+																	publicRepresentsCountMap.put(positiion,count);
+																}
+															 }
+														 }
+														 else
+														 {
+															 if(publicRepresentsCountMap.get(positiion) != null)
+																{
+																	count = publicRepresentsCountMap.get(positiion);
+																}
+																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																
+																publicRepresentsCountMap.put(positiion,count);
+														 }
+															// compareRepresentsIds.addAll(publicRepresentativesList);
+															 for (Integer candidateId : publicRepresentativesList) {
+																 compareRepresentsIds.add(Long.valueOf(String.valueOf(candidateId)));
+															 }
+														}
+												 }
+											}
+										 }
+									 }
+								 }
 								 if(!inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))
 								 {
 									 disstrictIds.clear();
@@ -12943,8 +13218,6 @@ return mandalList;
 				}
 					
 					List<Long> finalCadreIDsList = new ArrayList<Long>();
-					List<Long> tdpCadreIdList = new ArrayList<Long>();
-					
 					List<Object[]> tdpCadreIdssList = new ArrayList<Object[]>();
 				
 					returnList = new ArrayList<TdpCadreVO>();
@@ -12967,7 +13240,7 @@ return mandalList;
 					
 					if(reportType != null && reportType.trim().equalsIgnoreCase("EXPORTEXCEL"))
 					{
-						return exprortExcelForInvitees(publicRepresentativesIdList,tdpCadresIdList,parliamentInfoMap,assemblyInfoMap);
+						return exprortExcelForInvitees(publicRepresentativesIdList,tdpCadresIdList,parliamentInfoMap,assemblyInfoMap,mandalsListMap);
 					}
 					
 					Map<Long,String> committeeMap = new LinkedHashMap<Long, String>();
@@ -13086,9 +13359,7 @@ return mandalList;
 												}
 												else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 														committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-														committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-														committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-														committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") ))
+														committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS")))
 												{
 													List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 													if(assemblyList != null && assemblyList.size()>0)
@@ -13100,7 +13371,25 @@ return mandalList;
 														committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
 													}
 												}
-												
+												else if(committeeVO.getMobileType() != null && (
+														committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+														committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+														committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+												{
+													List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+													if(assemblyList != null && assemblyList.size()>0)
+													{
+														IdNameVO vo1 = assemblyList.get(0);
+														committeeVO.setConstituency(vo1.getName()+" Assembly");
+														
+														IdNameVO vo2 = assemblyList.get(1);
+														committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+														if(assemblyList.size()>2){
+															IdNameVO vo3 = assemblyList.get(2);
+															committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+														}
+													}
+												}
 												cadreCommitteeList.add(committeeVO);
 										
 											}
@@ -13142,9 +13431,7 @@ return mandalList;
 																}
 																else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 																		committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") ))
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ))
 																{
 																	List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 																	if(assemblyList != null && assemblyList.size()>0)
@@ -13156,7 +13443,25 @@ return mandalList;
 																		committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
 																	}
 																}
-																
+																else if(committeeVO.getMobileType() != null && (
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+																{
+																	List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+																	if(assemblyList != null && assemblyList.size()>0)
+																	{
+																		IdNameVO vo1 = assemblyList.get(0);
+																		committeeVO.setConstituency(vo1.getName()+" Assembly");
+																		
+																		IdNameVO vo2 = assemblyList.get(1);
+																		committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+																		if(assemblyList.size()>2){
+																			IdNameVO vo3 = assemblyList.get(2);
+																			committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+																		}
+																	}
+																}
 																cadreCommitteeList.add(committeeVO);
 															}
 															else
@@ -13187,9 +13492,7 @@ return mandalList;
 																}
 																else if(existingVO.getMobileType() != null && (existingVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 																		existingVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-																		existingVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-																		existingVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-																		existingVO.getMobileType().trim().equalsIgnoreCase("MPTC") ))
+																		existingVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS")  ))
 																{
 																	List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 																	if(assemblyList != null && assemblyList.size()>0)
@@ -13201,7 +13504,25 @@ return mandalList;
 																		existingVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
 																	}
 																}
-																
+																else if(existingVO.getMobileType() != null && (
+																		existingVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+																		existingVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+																		existingVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+																{
+																	List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+																	if(assemblyList != null && assemblyList.size()>0)
+																	{
+																		IdNameVO vo1 = assemblyList.get(0);
+																		existingVO.setConstituency(vo1.getName()+" Assembly");
+																		
+																		IdNameVO vo2 = assemblyList.get(1);
+																		existingVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+																		if(assemblyList.size()>2){
+																			IdNameVO vo3 = assemblyList.get(2);
+																			existingVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+																		}
+																	}
+																}
 																//cadreCommitteeList.add(committeeVO);
 															
 																existingVO.setMobileType(candidateType);
@@ -13238,9 +13559,7 @@ return mandalList;
 																}
 																else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 																		committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") ))
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ))
 																{
 																	List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 																	if(assemblyList != null && assemblyList.size()>0)
@@ -13252,7 +13571,25 @@ return mandalList;
 																		committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
 																	}
 																}
-																
+																else if(committeeVO.getMobileType() != null && (
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+																		committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+																{
+																	List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+																	if(assemblyList != null && assemblyList.size()>0)
+																	{
+																		IdNameVO vo1 = assemblyList.get(0);
+																		committeeVO.setConstituency(vo1.getName()+" Assembly");
+																		
+																		IdNameVO vo2 = assemblyList.get(1);
+																		committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+																		if(assemblyList.size()>2){
+																			IdNameVO vo3 = assemblyList.get(2);
+																			committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+																		}
+																	}
+																}
 																cadreCommitteeList.add(committeeVO);
 															}
 															else
@@ -13986,7 +14323,8 @@ return mandalList;
 		 return constiList;
 	 } 
 	
-	public List<TdpCadreVO> exprortExcelForInvitees(List<Long> publicRepresentativesIdList,List<Long> tdpCadresIdList,Map<Long,List<IdNameVO>> parliamentInfoMap ,Map<Long,List<IdNameVO>> assemblyInfoMap )
+	public List<TdpCadreVO> exprortExcelForInvitees(List<Long> publicRepresentativesIdList,List<Long> tdpCadresIdList,
+			 Map<Long,List<IdNameVO>> parliamentInfoMap ,Map<Long,List<IdNameVO>> assemblyInfoMap,Map<Long,List<IdNameVO>> mandalsListMap )
 	{
 		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>();
 		try {
@@ -14160,9 +14498,7 @@ return mandalList;
 						}
 						else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 								committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-								committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-								committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-								committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") )) 
+								committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") )) 
 						{
 							List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 							if(assemblyList != null && assemblyList.size()>0)
@@ -14181,6 +14517,25 @@ return mandalList;
 									{
 										committeeVO.setDistrictNo(param[2].toString());
 									}
+								}
+							}
+						}
+						else if(committeeVO.getMobileType() != null && (
+								committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+								committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+								committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+						{
+							List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+							if(assemblyList != null && assemblyList.size()>0)
+							{
+								IdNameVO vo1 = assemblyList.get(0);
+								committeeVO.setConstituency(vo1.getName()+" Assembly");
+								
+								IdNameVO vo2 = assemblyList.get(1);
+								committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+								if(assemblyList.size()>2){
+									IdNameVO vo3 = assemblyList.get(2);
+									committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
 								}
 							}
 						}
@@ -14234,9 +14589,7 @@ return mandalList;
 										}
 										else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 												committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-												committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-												committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-												committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") )) 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") )) 
 										{
 											List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 											if(assemblyList != null && assemblyList.size()>0)
@@ -14259,7 +14612,25 @@ return mandalList;
 												
 											}
 										}
-										
+										else if(committeeVO.getMobileType() != null && (
+												committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+										{
+											List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												committeeVO.setConstituency(vo1.getName()+" Assembly");
+												
+												IdNameVO vo2 = assemblyList.get(1);
+												committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+												if(assemblyList.size()>2){
+													IdNameVO vo3 = assemblyList.get(2);
+													committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+												}
+											}
+										}
 										cadreCommitteeList.add(committeeVO);
 									}
 									else
@@ -14297,9 +14668,7 @@ return mandalList;
 										}
 										else if(existingVO.getMobileType() != null && (existingVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 												existingVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-												existingVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-												existingVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-												existingVO.getMobileType().trim().equalsIgnoreCase("MPTC") )) 
+												existingVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS"))) 
 										{
 											List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 											if(assemblyList != null && assemblyList.size()>0)
@@ -14322,7 +14691,25 @@ return mandalList;
 												
 											}
 										}
-										
+										else if(existingVO.getMobileType() != null && (
+												existingVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+												existingVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+												existingVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+										{
+											List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												existingVO.setConstituency(vo1.getName()+" Assembly");
+												
+												IdNameVO vo2 = assemblyList.get(1);
+												existingVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+												if(assemblyList.size()>2){
+													IdNameVO vo3 = assemblyList.get(2);
+													existingVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+												}
+											}
+										}
 										//cadreCommitteeList.add(committeeVO);
 									
 										existingVO.setMobileType(candidateType);
@@ -14369,9 +14756,7 @@ return mandalList;
 										}
 										else if(committeeVO.getMobileType() != null && (committeeVO.getMobileType().trim().equalsIgnoreCase("MLA") || 
 												committeeVO.getMobileType().trim().equalsIgnoreCase("EX MLA") ||
-												committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
-												committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
-												committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") )) 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("2014 AP STATE MINISTERS") )) 
 										{
 											List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
 											if(assemblyList != null && assemblyList.size()>0)
@@ -14394,7 +14779,25 @@ return mandalList;
 												
 											}
 										}
-										
+										else if(committeeVO.getMobileType() != null && (
+												committeeVO.getMobileType().trim().equalsIgnoreCase("ZPTC") || 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("MPTC") || 
+												committeeVO.getMobileType().trim().equalsIgnoreCase("MPP") ))
+										{
+											List<IdNameVO> assemblyList = mandalsListMap.get(levelValue);
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												committeeVO.setConstituency(vo1.getName()+" Assembly");
+												
+												IdNameVO vo2 = assemblyList.get(1);
+												committeeVO.setAddress(vo2.getDistrictid()+"_"+vo2.getName());
+												if(assemblyList.size()>2){
+													IdNameVO vo3 = assemblyList.get(2);
+													committeeVO.setTehsil(vo3.getId()+"_"+vo3.getName());
+												}
+											}
+										}
 										cadreCommitteeList.add(committeeVO);
 									}
 									else
