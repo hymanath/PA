@@ -208,7 +208,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> getRuralAndRurlaUrbanConstis(Set<Long> assemblyIds);
 	
 	public List<Object[]> getConstituencyByState(Long stateId);
-	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region);
+	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region,Long districtId,Long tehsilId);
 	
 	public List<Object[]> getConstituencyDetaisByRegionid(List<Long> regionIds);
 	
@@ -281,4 +281,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public Object[] getlocalbodyName(Long constituencyId);
 	 
 	 public List<Object[]> getAllWardsForState(Long stateId);
+	 public List<Object[]> getMPTCZPTCLocationAreaDetails(List<Long> constituencyIds,List<Long> tehsilsList);
 }
