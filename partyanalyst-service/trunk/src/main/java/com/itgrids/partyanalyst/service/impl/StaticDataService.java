@@ -10204,7 +10204,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		try {
 			if(locationType.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE))
 			 result = constituencyDAO.getLatestConstituenciesByStateIdForregion(
-					locationType, stateId,region);
+					locationType, stateId,region,null,null);
 			else
 				result = delimitationConstituencyAssemblyDetailsDAO.getLatestParConstituenciesByStateIdForregion(locationType, stateId,region);
 			for (int i = 0; i < result.size(); i++) {
