@@ -620,7 +620,13 @@
 			     <value>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack</value>
-			     <value>com.itgrids.partyanalyst.model.BatchStatus</value>
+			     <value>com.itgrids.partyanalyst.model.BatchStatus</value>    
+			     <value>com.itgrids.partyanalyst.model.TrainingCampUser</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampUserType</value>
+			     <value>com.itgrids.partyanalyst.model.CampCallPurpose</value>
+			     <value>com.itgrids.partyanalyst.model.CampCallStatus</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</value>
+			     
 				</list>
 			
 		</property>
