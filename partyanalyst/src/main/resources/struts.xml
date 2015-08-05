@@ -10331,6 +10331,21 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
+	<action name="callCenterTrainingAgentDashBoard" class="trainingCampAction" method="callCenterTrainingAgent">
+			<result name="success">/jsp/callCenterTrainingAgentDahBoard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	<action name="getScheduleCallStatusCountAction" class="trainingCampAction" method="getScheduleCallStatusCount">
+		<result type="json" name="success">
+				<param name="root">statusCountList</param>
+		</result>
+	</action>
+	<action name="getBatchCallStatusCountAction" class="trainingCampAction" method="getBatchCallStatusCount">
+		<result type="json" name="success">
+				<param name="root">statusCountList</param>
+		</result>
+	</action>
 	
 	<action name="trainingAdminDashboard" class="trainingCampAction" method="getTrainingAdminDashboard">
 		<result name="success">/jsp/trainingAdminDashboard.jsp</result>

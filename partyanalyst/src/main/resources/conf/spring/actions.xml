@@ -1591,6 +1591,7 @@
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
+	<property name="trainingCampService" ref="trainingCampService" />
 			
 	</bean>
 	
