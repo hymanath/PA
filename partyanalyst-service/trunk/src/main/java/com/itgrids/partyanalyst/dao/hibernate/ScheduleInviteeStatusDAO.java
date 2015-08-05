@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
@@ -11,5 +13,8 @@ public class ScheduleInviteeStatusDAO extends GenericDaoHibernate<ScheduleInvite
 		super(ScheduleInviteeStatus.class);
 		// TODO Auto-generated constructor stub
 	}
-
+	public List<Object[]> getAllStatusList()
+	{
+		return getHibernateTemplate().find("select model.scheduleInviteeStatusId,model.status from ScheduleInviteeStatus model");
+	}
 }
