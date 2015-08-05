@@ -629,6 +629,20 @@
 			     <value>com.itgrids.partyanalyst.model.TrainingCampProgram</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCamp</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampDistrict</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampProgram</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCamp</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampDistrict</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampSchedule</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampBatch</value>
+			     <value>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack</value>
+			     <value>com.itgrids.partyanalyst.model.BatchStatus</value>    
+			     <value>com.itgrids.partyanalyst.model.TrainingCampUser</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampUserType</value>
+			     <value>com.itgrids.partyanalyst.model.CampCallPurpose</value>
+			     <value>com.itgrids.partyanalyst.model.CampCallStatus</value>
+			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</value>
 			    				
 			</list>
 		</property>
@@ -2952,5 +2966,40 @@
 	</bean>
 		<bean id="trainingCampDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDistrictDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampScheduleDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="trainingCampBatchDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="scheduleInviteeStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ScheduleInviteeStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampScheduleInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampScheduleInviteeTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeTrackDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="batchStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.BatchStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="campCallStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CampCallStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="campCallPurposeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CampCallPurposeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampScheduleInviteeCallerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampScheduleInviteeCallerDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
