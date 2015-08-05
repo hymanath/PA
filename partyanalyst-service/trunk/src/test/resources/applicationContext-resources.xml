@@ -643,7 +643,8 @@
 			     <value>com.itgrids.partyanalyst.model.CampCallPurpose</value>
 			     <value>com.itgrids.partyanalyst.model.CampCallStatus</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</value>
-			    				
+			     <value>com.itgrids.partyanalyst.model.TrainingCampBatchAttendee</value>
+			     			
 			</list>
 		</property>
 	</bean>
@@ -3000,6 +3001,9 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="trainingCampUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="trainingCampBatchAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchAttendeeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
