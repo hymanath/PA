@@ -2,8 +2,19 @@ body
 {
 	background-color:#d8dcdf;
 	color:#666 !important;
+	font-size:14px !important;
+	font-family: 'Roboto', sans-serif;
 }
+h1,h2,h3,h4,h5,h6{color:#666 !important;}
 a{color:#666 !important;}
+*
+{
+	outline:none !important
+}
+.section-container
+{
+	box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
 .font-30
 {
 	font-size:30px;
@@ -12,6 +23,7 @@ a{color:#666 !important;}
 {
 	font-style:italic
 }
+.m_top0{margin-top:0px !important}
 .m_top10{margin-top:10px}
 .m_top20{margin-top:20px}
 .m_bottom0{margin-bottom:0px;}
@@ -116,13 +128,72 @@ a{color:#666 !important;}
 {
 	position:absolute;
 	padding:0px;
-	width:380px;
+	width:600px;
 	border-radius:3px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
 	background:#fff !important;
 	display:none;
 	z-index:999;
-	margin-left:-50%;
+	margin-left:-25%;
 	margin-top:5px;
 }
 .count-hover li{list-style:none}
+
+.display-style
+{
+	display:inline-block
+}
+
+
+.planned-batchs
+{
+	color:#663200;
+}
+
+.running-batches
+{
+	color:#989864;
+}
+
+.completed-batches
+{
+	color:#689900;
+}
+
+.table-bordered thead th
+{
+	border:1px solid #ccc !important
+}
+
+.total-batches-td
+{
+	color:#333 !important;
+}
+
+.planned-batches-td
+{
+	color:#663300 !important;
+}
+
+.training-running-td
+{
+	color:#999966 !important;
+}
+
+.completed-batches-td
+{
+	color:#669900 !important;
+}
+
+caption
+{
+	border:1px solid #ccc;
+	background:#ddd;
+	padding:10px;
+	font-weight:500;
+}
+
+.font-10
+{
+	font-size:10px;
+}

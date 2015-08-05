@@ -68,4 +68,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getTrainingAdminDashboard(){
+		return Action.SUCCESS;
+	}
+
 }

@@ -10319,6 +10319,7 @@
 				<param name="root">cadreCommitteeMemberVO</param>
 		</result>
 	</action>
+	
 	<action name="callCenterTrainingAdmin" class="trainingCampAction" method="callCenterTrainingAdmin">
 			<result name="success">/jsp/callCenterTrainingAdmin.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
@@ -10331,5 +10332,10 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="trainingAdminDashboard" class="trainingCampAction" method="getTrainingAdminDashboard">
+		<result name="success">/jsp/trainingAdminDashboard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
 </package>
 </struts>      

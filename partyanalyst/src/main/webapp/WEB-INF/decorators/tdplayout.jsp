@@ -356,6 +356,16 @@ margin-top:10px;
 					
 					
 					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
+					
+					<!-- <li><a onmousedown = "return false;" class="parent"><span>Cadre Training</span></a>
+						<div>
+							<ul>
+								<li><a href="trainingAdminDashboard.action"><span>Admin Dashboard</span></a></li>
+								<li><a href="callCenterTrainingAdmin.action"><span>Caller Dashboard</span></a></li>
+							</ul>
+						</div>
+					</li> -->
+					
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre</span></a>
 							<div>
