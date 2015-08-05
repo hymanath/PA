@@ -27,10 +27,10 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 			
 			Date startDate= format.parse("09/01/2015");
 			Date endDate= format.parse("09/15/2015");
-			List<Object[]> list = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails("interested", "NotStarted", startDate, endDate);
-			if(list != null && list.size()>0)
+			List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails("interested", "NotStarted", startDate, endDate);
+			if(campAndSchedulewiseResultsList != null && campAndSchedulewiseResultsList.size()>0)
 			{
-				System.out.println(list.size());
+				System.out.println(campAndSchedulewiseResultsList.size());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
