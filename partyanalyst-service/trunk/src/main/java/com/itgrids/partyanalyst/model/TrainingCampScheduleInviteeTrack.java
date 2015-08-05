@@ -44,9 +44,9 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private TdpCadre tdpCadre;
 	private Long trainingCampScheduleInviteeCallerId;
 	private Long trainingCampCallerAdminId;	
-	private Long callPurposeId;
-	private Long callStatusId;
-	private Long scheduleStatusId;
+	private Long campCallPurposeId;
+	private Long campCallStatusId;
+	private Long scheduleInviteeStatusId;
 	private Date calledTime;
 	private Date callBackTime;
 	private Date insertedTime;
@@ -188,7 +188,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.tdpCadre = tdpCadre;
 	}
 
-	  @Column(name = "training_camp_schedule_invitee_caller_id")
+	 @Column(name = "training_camp_schedule_invitee_caller_id")
 	public Long getTrainingCampScheduleInviteeCallerId() {
 		return trainingCampScheduleInviteeCallerId;
 	}
@@ -209,34 +209,33 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.trainingCampCallerAdminId = trainingCampCallerAdminId;
 	}
 
-	 @Column(name = "call_purpose_id")
-	public Long getCallPurposeId() {
-		return callPurposeId;
+	@Column(name = "camp_call_purpose_id")
+	 public Long getCampCallPurposeId() {
+		return campCallPurposeId;
 	}
 
 
-	public void setCallPurposeId(Long callPurposeId) {
-		this.callPurposeId = callPurposeId;
+	public void setCampCallPurposeId(Long campCallPurposeId) {
+		this.campCallPurposeId = campCallPurposeId;
 	}
 
-	 @Column(name = "call_status_id")
-	public Long getCallStatusId() {
-		return callStatusId;
+	 @Column(name = "camp_call_status_id")
+	 public Long getCampCallStatusId() {
+		return campCallStatusId;
+	}
+
+	public void setCampCallStatusId(Long campCallStatusId) {
+		this.campCallStatusId = campCallStatusId;
+	}
+
+	@Column(name = "schedule_invitee_status_id")
+	public Long getScheduleInviteeStatusId() {
+		return scheduleInviteeStatusId;
 	}
 
 
-	public void setCallStatusId(Long callStatusId) {
-		this.callStatusId = callStatusId;
-	}
-
-	@Column(name = "schedule_status_id")
-	public Long getScheduleStatusId() {
-		return scheduleStatusId;
-	}
-
-
-	public void setScheduleStatusId(Long scheduleStatusId) {
-		this.scheduleStatusId = scheduleStatusId;
+	public void setScheduleInviteeStatusId(Long scheduleInviteeStatusId) {
+		this.scheduleInviteeStatusId = scheduleInviteeStatusId;
 	}
 
 	@Column(name = "called_time")
