@@ -153,6 +153,7 @@
 		<pattern>/eventDashboardAction*</pattern>
 		<pattern>/callCenterTrainingAdmin*</pattern>
 		<pattern>/callCenterTrainingAgent*</pattern>
+		<pattern>/trainingAdminDashboard*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
