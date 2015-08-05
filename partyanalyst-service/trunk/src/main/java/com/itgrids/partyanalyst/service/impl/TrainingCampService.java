@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -123,13 +124,20 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 	}
 	
-	public void getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate)
+	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate)
 	{
+		TrainingCampVO returnVO = null;
 		try {
+			if(callerIdsList == null || callerIdsList.size() == 0)
+			{
+				//trainingCampScheduleInviteeDAO.g
+			}
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseBatchWiseMembersDetails method in TrainingCampService class.",e);
 		}
+		
+		return returnVO;
 	}
 	
 	
@@ -155,23 +163,27 @@ public class TrainingCampService implements ITrainingCampService{
 		return status;
 	}
 	
-	public void getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate)
+	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate)
 	{
+		TrainingCampVO returnVO = null;
 		try {
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseDateWiseInterestedMembersDetails method in TrainingCampService class.",e);
 		}
+		return returnVO;
 	}
 	
 	
-	public void getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate)
+	public TrainingCampVO getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate)
 	{
+		TrainingCampVO returnVO = null;
 		try {
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseDateWiseCampDetails method in TrainingCampService class.",e);
 		}
+		return returnVO;
 	}
 	
 }
