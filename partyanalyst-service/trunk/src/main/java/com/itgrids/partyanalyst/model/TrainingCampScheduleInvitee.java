@@ -27,6 +27,8 @@ public class TrainingCampScheduleInvitee {
 	private String remarks;
 	private TdpCadre tdpCadre;
 	private ScheduleInviteeStatus scheduleInviteeStatus;
+	private TrainingCampBatch trainingCampBatch;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="training_camp_schedule_invitee_id", unique=true, nullable=false)
@@ -94,6 +96,14 @@ public class TrainingCampScheduleInvitee {
 	}
 	public void setScheduleInviteeStatus(ScheduleInviteeStatus scheduleInviteeStatus) {
 		this.scheduleInviteeStatus = scheduleInviteeStatus;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "attending_batch_id",insertable =false,updatable = false)
+	public TrainingCampBatch getTrainingCampBatch() {
+		return trainingCampBatch;
+	}
+	public void setTrainingCampBatch(TrainingCampBatch trainingCampBatch) {
+		this.trainingCampBatch = trainingCampBatch;
 	}
 	
 	
