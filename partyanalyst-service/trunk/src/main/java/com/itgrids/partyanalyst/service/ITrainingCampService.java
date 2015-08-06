@@ -2,10 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
+import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
+import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 
 public interface ITrainingCampService {
 
@@ -18,4 +21,7 @@ public interface ITrainingCampService {
 	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
 	public List<Long> getTrainingCampUserTypeIds();
+	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
+	public List<BasicVO> getAllPrograms();
+	public List<BasicVO> getAllschedules();
 }
