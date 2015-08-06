@@ -2701,6 +2701,8 @@
 		<property name="campCallPurposeDAO" ref="campCallPurposeDAO" /> 
 		<property name="campCallStatusDAO" ref="campCallStatusDAO" /> 
 		<property name="trainingCampScheduleInviteeTrackDAO" ref="trainingCampScheduleInviteeTrackDAO" /> 
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" /> 
+		
 	</bean>
 	
 </beans>		

@@ -60,292 +60,9 @@
 									</tr>
 								</table>
 							</div>
-							<div class="col-md-9">
-								<div class="table-scroll">
-									<table class="table table-bordered">
-										<thead class="bg_d">
-											<th>Name</th>
-											<th>Contact Number</th>
-											<th>Status</th>
-										</thead>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												Members Interested
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input class="checkbox-inline m_0" type="checkbox">
-												Rajamahendar
-											</td>
-											<td>
-												9630258741
-											</td>
-											<td>
-												<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
-											</td>
-										</tr>
-
-									</table>
+							<div class="col-md-9" >
+								<div class="table-scroll" id="memberInfoDiv">
+									
 							</div>
 						</div>
 					</div>
@@ -425,6 +142,13 @@
 	<script type="text/javascript" src="js/highcharts/js/highcharts_cadre.js"></script>
 
 <script type="text/javascript">
+var purposeId = '${purposeId}';
+var programId = '${programId}';
+var campId = '${campId}';
+var scheduleId = '${scheduleId}';
+var status = '${status}';
+var batchId = '${batchId}';
+var statusType = '${statusType}';
 $(".table-scroll").mCustomScrollbar({
 	setHeight:850,
 	theme:"minimal-dark"
@@ -475,6 +199,100 @@ $(function () {
         }]
     });
 });
+function getMemberDetails()
+{
+alert(batchId)
+if(batchId == "")
+batchId = 0;
+var jObj={
+		purposeId : purposeId,
+		programId:programId,
+		campId:campId,
+		scheduleId:scheduleId,
+		status:status,
+		batchId :batchId,
+		statusType:statusType,
+		task:"scheduleWiseCount"
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getScheduleCallMemberDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			buildScheduleCallMemberDetailsCount(result,jObj);
+		   });	
+}
+
+function buildScheduleCallMemberDetailsCount(result,jObj)
+{
+var purpose ;
+var callFor ;
+if(jObj.purposeId == 1)
+purpose = "Invitation";
+else if(jObj.purposeId == 2)
+purpose = "Confirmation";
+else if(jObj.purposeId == 3)
+purpose = "Batch Change";
+if(jObj.batchId == 0)
+callFor = "Schedule";
+else
+callFor = "Batch";
+var str='';
+str+='<table class="table table-bordered">';
+str+='<thead class="bg_d">';
+str+='<th>Image</th>';
+str+='<th>Name</th>';
+str+='<th>Age</th>';
+str+='<th>Committee Roll Position</th>';
+str+='<th>Contact Number</th>';
+str+='<th>Calling For</th>';
+str+='<th>District</th>';
+str+='<th>Status</th>';
+str+='</thead>';
+if(result.subList != null && result.subList .length > 0)
+{
+for(var i in result.subList)
+{
+str+='<tr>';
+str+='<td><img style="height:50px;width:50px;" class="media-object img-border profile-image img-circle" src="http://mytdp.com/images/cadre_images/'+result.subList[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image"></td>';
+str+='<td>'+result.subList[i].name+'</td>';
+if(result.subList[i].age == null)
+result.subList[i].age ='';
+str+='<th>'+result.subList[i].age+'</th>';
+if(result.subList[i].role == null)
+result.subList[i].role = '';
+str+='<td>'+result.subList[i].role+'</td>';
+str+='<td>'+result.subList[i].mobileNumber+'</td>';
+str+='<td>'+callFor+' '+purpose+'</td>';
+str+='<td>'+result.subList[i].location+'</td>';
+str+='<td>'+result.subList[i].status+'</td>';
+str+='</tr>';
+}
+}
+/*
+<tr>
+<td>
+<input class="checkbox-inline m_0" type="checkbox">
+Rajamahendar
+</td>
+<td>
+9630258741
+</td>
+<td>
+<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">Update Status</button>
+</td>
+</tr>*/
+str+='</table>';
+$("#memberInfoDiv").html(str);
+
+}
+function setDefaultImage(img){
+	  img.src = "dist/img/profileimage.png";
+   }
+</script>
+<script>
+getMemberDetails();
 </script>
 </body>
 </html>
