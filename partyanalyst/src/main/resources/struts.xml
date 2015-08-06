@@ -10333,7 +10333,7 @@
 	</action>
 	<action name="getCallerWiseCallsDetailsAction" class="trainingCampAction" method="getCallerWiseCallsDetails">
 			<result type="json" name="success">
-				<param name="root">trainingCampScheduleVOs</param>
+				<param name="root">trainingCampScheduleVO</param>
 		</result>
 	</action>
 	<action name="callCenterTrainingAgentDashBoard" class="trainingCampAction" method="callCenterTrainingAgent">
