@@ -257,7 +257,7 @@ var rowSpanCnt = result[i].subList.length;
 str+='<td rowspan="'+rowSpanCnt+'">'+result[i].name+'</td>';
 for(var j=0;j< result[i].subList.length;j++) //camp
 {
-var rowSpanCnt1 = result[i].subList.length;
+
 str+=' <td>'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
@@ -289,9 +289,9 @@ var later = 0;
 var notInterested = 0;
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Call Back")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name.indexOf("Call Back") != -1)
 callBack = result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Attending")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
 interested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
 notInterested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
@@ -349,14 +349,14 @@ for(var i in result) // program
 {
 str+=' <tr>';
 var rowSpanCnt = result[i].subList.length;
-str+='<td rowspan="'+rowSpanCnt+'">'+result[i].name+'</td>';
+str+='<td rowspan="'+result[i].spanCnt+'">'+result[i].name+'</td>';
 for(var j=0;j< result[i].subList.length;j++) //camp
 {
-var rowSpanCnt1 = result[i].subList.length;
-str+=' <td>'+result[i].subList[j].name+'</td>';
+
+str+=' <td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
-str+=' <td>'+result[i].subList[j].subList[k].name+'</td>';
+str+=' <td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].subList[k].name+'</td>';
 for(var p=0;p<result[i].subList[j].subList[k].subList.length;p++) //batch
 {
 var answered  = 0;
@@ -386,13 +386,13 @@ var later = 0;
 var notInterested = 0;
 for(var m=0;m<result[i].subList[j].subList[k].subList[p].scheduleStatusList.length;m++) // invitee Status
 {
-if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Call Back")
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name.indexOf("Call Back") != -1)
 callBack = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Interested")
 interested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Interested")
 notInterested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Interested in next Time")
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Now")
 later = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 str+=' <td>'+callBack+'</td>';
