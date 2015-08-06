@@ -13,9 +13,8 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
-import com.itgrids.partyanalyst.dto.TrainingMemberVO;
-import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
+import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -309,6 +308,23 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	}
 
 	return Action.SUCCESS;
+	}
+	public String getTrainingProgramMembersBatchCount(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			String fromDate=jObj.getString("fromdate");
+			String toDate=jObj.getString("toDate");
+			
+			if(fromDate !=null && toDate !=null){
+				trainingCampScheduleVO=trainingCampService.getTrainingProgramMembersBatchCount(fromDate,toDate);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 }

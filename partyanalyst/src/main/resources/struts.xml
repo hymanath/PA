@@ -10383,7 +10383,11 @@
 		</result>
 	</action>
 	
-	
+	<action name="getTrainingProgramMembersBatchCountAction" class="trainingCampAction" method="getTrainingProgramMembersBatchCount">
+		<result type="json" name="success">
+				<param name="root">trainingCampScheduleVO</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      
