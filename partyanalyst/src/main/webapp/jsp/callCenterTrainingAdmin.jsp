@@ -584,6 +584,23 @@ function getCallerWiseCallsDetails(){
 			});
 	
 }
+getTrainingProgramMembersBatchCount();
+function getTrainingProgramMembersBatchCount(){
+	
+	var jsObj={
+		fromdate:"09/01/2015",
+		toDate :"09/30/2015"
+	}
+	$.ajax({
+			type:'POST',
+			 url: 'getTrainingProgramMembersBatchCountAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					
+			});
+	
+}
+
 </script>
 </body>
 </html>
