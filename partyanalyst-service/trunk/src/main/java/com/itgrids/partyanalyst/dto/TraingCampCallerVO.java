@@ -8,7 +8,15 @@ public class TraingCampCallerVO {
 	private String name;
 	private Long total = 0l;
 	private Long count =0l;
+	private Long spanCnt = 0l;
 	
+	
+	public Long getSpanCnt() {
+		return spanCnt;
+	}
+	public void setSpanCnt(Long spanCnt) {
+		this.spanCnt = spanCnt;
+	}
 	public Long getCount() {
 		return count;
 	}
