@@ -135,7 +135,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
 				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
