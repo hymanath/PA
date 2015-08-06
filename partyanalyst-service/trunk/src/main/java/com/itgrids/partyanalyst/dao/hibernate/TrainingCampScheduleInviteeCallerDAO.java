@@ -21,10 +21,10 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		StringBuilder str=new StringBuilder();
 		
 		str.append(" select model.trainingCampUser.userId,count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
-				" where model.trainingCampCallerId in (:userIds)  ");
+				" where  ");
 		
 		if(startDate !=null && endDate !=null){
-			str.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+			str.append(" (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
 		}
 		if(userIds !=null && userIds.size()>0){
 			str.append(" and model.trainingCampUser.userId in (:userIds) ");
@@ -37,6 +37,9 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 			}
 			else if(type.equalsIgnoreCase("pendingCount")){
 				str.append(" and model.callStatusId is null or model.callStatusId !=1 ");
+			}
+			else if(type.equalsIgnoreCase("dialedCalls")){
+				str.append(" and model.callStatusId is not null ");
 			}
 		}
 		
@@ -54,6 +57,13 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		}
 		
 		return query.list();
+	}
+	public Long getAllCallersCount(Date startDate,Date endDate){
+		
+		Query query=getSession().createQuery(" select count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
+				" where  (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		
+		return (Long) query.uniqueResult();
 	}
 	
 	

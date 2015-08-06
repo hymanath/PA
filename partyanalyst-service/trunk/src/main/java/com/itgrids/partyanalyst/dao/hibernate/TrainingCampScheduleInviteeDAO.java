@@ -49,4 +49,41 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getTrainingProgramMembersBatchCount(Date startDate,Date endDate,String status,String type){
+		
+		StringBuilder str =new StringBuilder();
+		
+		if(type.equalsIgnoreCase("program")){
+			str.append(" select  model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampSchedule.trainingCampProgram.programName ");
+		}else if(type.equalsIgnoreCase("camp")){
+			str.append(" select  model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName ");
+		}
+		
+		str.append(" ,count(distinct model.trainingCampScheduleInviteeId),count(distinct model1.trainingCampBatchId) " +
+				"  from TrainingCampScheduleInvitee model,TrainingCampBatch model1" +
+				" where model.trainingCampSchedule.trainingCampScheduleId = model1.trainingCampSchedule.trainingCampScheduleId " +
+				" and model.scheduleInviteeStatus.status like '%"+status+"%' ");	
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and (date(model.trainingCampSchedule.fromDate)>=:startDate and date(model.trainingCampSchedule.toDate)<=:endDate)  ");
+		}
+		
+		if(type.equalsIgnoreCase("program")){
+			str.append(" group by model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
+		}else if(type.equalsIgnoreCase("camp")){
+			str.append(" group by model.trainingCampSchedule.trainingCamp.trainingCampId ");
+		}
+	
+		Query query = getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+	
+	
 }

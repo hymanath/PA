@@ -16,22 +16,12 @@ public class TrainingCampScheduleVO implements Serializable{
 	private Long completedCallsCount=0l;
 	private Long pendingCallsCount=0l;
 	
-	private Long attendingCount=0l;
-	private Long invitedCount=0l;
-	private Long notNowCount=0l;
-	private Long notInterestedCount=0l;
-	private Long callBackCount=0l;
-	private Long wrongMobileNoCount=0l;
-	private Long invalidMobileNoCount=0l;
+	private Long totalAssignedCount=0l;
+	private Long dialedCallsCount;
 	
-	public Long getNotInterestedCount() {
-		return notInterestedCount;
-	}
-	public void setNotInterestedCount(Long notInterestedCount) {
-		this.notInterestedCount = notInterestedCount;
-	}
 	
 	private List<TrainingCampScheduleVO> trainingCampVOList;
+	private List<TrainingCampScheduleVO> trainingCampScheduleVOList;
 	
 	
 	public Long getId() {
@@ -94,43 +84,25 @@ public class TrainingCampScheduleVO implements Serializable{
 	public void setPendingCallsCount(Long pendingCallsCount) {
 		this.pendingCallsCount = pendingCallsCount;
 	}
-	public Long getAttendingCount() {
-		return attendingCount;
+	public Long getTotalAssignedCount() {
+		return totalAssignedCount;
 	}
-	public void setAttendingCount(Long attendingCount) {
-		this.attendingCount = attendingCount;
+	public void setTotalAssignedCount(Long totalAssignedCount) {
+		this.totalAssignedCount = totalAssignedCount;
 	}
-	public Long getInvitedCount() {
-		return invitedCount;
+	public List<TrainingCampScheduleVO> getTrainingCampScheduleVOList() {
+		return trainingCampScheduleVOList;
 	}
-	public void setInvitedCount(Long invitedCount) {
-		this.invitedCount = invitedCount;
+	public void setTrainingCampScheduleVOList(
+			List<TrainingCampScheduleVO> trainingCampScheduleVOList) {
+		this.trainingCampScheduleVOList = trainingCampScheduleVOList;
 	}
-	public Long getNotNowCount() {
-		return notNowCount;
+	public Long getDialedCallsCount() {
+		return dialedCallsCount;
 	}
-	public void setNotNowCount(Long notNowCount) {
-		this.notNowCount = notNowCount;
+	public void setDialedCallsCount(Long dialedCallsCount) {
+		this.dialedCallsCount = dialedCallsCount;
 	}
-	public Long getCallBackCount() {
-		return callBackCount;
-	}
-	public void setCallBackCount(Long callBackCount) {
-		this.callBackCount = callBackCount;
-	}
-	public Long getWrongMobileNoCount() {
-		return wrongMobileNoCount;
-	}
-	public void setWrongMobileNoCount(Long wrongMobileNoCount) {
-		this.wrongMobileNoCount = wrongMobileNoCount;
-	}
-	public Long getInvalidMobileNoCount() {
-		return invalidMobileNoCount;
-	}
-	public void setInvalidMobileNoCount(Long invalidMobileNoCount) {
-		this.invalidMobileNoCount = invalidMobileNoCount;
-	}
-	
 	
 	
 }
