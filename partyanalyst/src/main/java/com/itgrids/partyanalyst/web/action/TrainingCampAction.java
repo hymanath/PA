@@ -28,6 +28,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private ITrainingCampService trainingCampService;
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
+	private TrainingCampScheduleVO trainingCampScheduleVO;
 	
 	
 	public List<TraingCampCallerVO> getStatusCountList() {
@@ -90,6 +91,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			List<TrainingCampScheduleVO> trainingCampScheduleVOs) {
 		this.trainingCampScheduleVOs = trainingCampScheduleVOs;
 	}
+	
+	public TrainingCampScheduleVO getTrainingCampScheduleVO() {
+		return trainingCampScheduleVO;
+	}
+
+	public void setTrainingCampScheduleVO(
+			TrainingCampScheduleVO trainingCampScheduleVO) {
+		this.trainingCampScheduleVO = trainingCampScheduleVO;
+	}
 
 	public String execute(){
 		return Action.SUCCESS;
@@ -140,9 +150,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
 			
 			if(userIds !=null){
-				trainingCampScheduleVOs = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate);
+				trainingCampScheduleVO = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate);
 			}
-			
 			
 		}catch(Exception e){
 			e.printStackTrace();
