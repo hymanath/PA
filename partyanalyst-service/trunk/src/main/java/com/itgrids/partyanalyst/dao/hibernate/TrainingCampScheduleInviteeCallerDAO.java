@@ -36,6 +36,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 			}
 			else if(type.equalsIgnoreCase("pendingCount")){
 				str.append(" and model.callStatusId is null ");
+				str.append(" and model.callStatusId !=1 ");
 			}
 		}
 		

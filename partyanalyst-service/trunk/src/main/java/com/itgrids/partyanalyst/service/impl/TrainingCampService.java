@@ -123,7 +123,7 @@ public class TrainingCampService implements ITrainingCampService{
 		this.trainingCampScheduleInviteeCallerDAO = trainingCampScheduleInviteeCallerDAO;
 	}
 	
-	public List<TrainingCampScheduleVO> getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString)
+	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString)
 	{
 		List<TrainingCampScheduleVO> finalList=null;
 		TrainingCampScheduleVO finalCallersVODetails=new TrainingCampScheduleVO();
@@ -192,20 +192,27 @@ public class TrainingCampService implements ITrainingCampService{
 			}	
 			
 			
+			if(finalList !=null && finalList.size()>0)
+			{
+				finalCallersVODetails.setTrainingCampVOList(finalList);
+			}
 		}catch (Exception e){
-			e.printStackTrace();
+			LOG.error(" Exception occured in getCallerWiseCallsDetails method in TrainingCampService class.",e);
 		}
-		return finalList;
+		return finalCallersVODetails;
 	}
 	public void setResultToMap(List<Object[]> listObj,Map<Long,Long> corespondentmap)
 	{
-		if(listObj !=null && listObj.size()>0){
-			for(Object[] Obj:listObj){
-				Long assignedCount=Obj[1] !=null ? Long.parseLong(Obj[1].toString()):0l;
-				corespondentmap.put(Long.parseLong(Obj[0].toString()),assignedCount);
+		try{
+			if(listObj !=null && listObj.size()>0){
+				for(Object[] Obj:listObj){
+					Long assignedCount=Obj[1] !=null ? Long.parseLong(Obj[1].toString()):0l;
+					corespondentmap.put(Long.parseLong(Obj[0].toString()),assignedCount);
+				}
 			}
+		}catch (Exception e) {
+			LOG.error(" Exception occured in setResultToMap method in TrainingCampService class.",e);
 		}
-		
 	}
 	public void setResultToAssignedMap(Map<Long,Long> assignedMap,Map<Long,TrainingCampScheduleVO> finalMap,String type,List<Object[]> allStatus,List<Object[]> callStatusOfinviteesList){
 		
@@ -280,7 +287,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 		}
 		catch (Exception e) {
-			
+			LOG.error(" Exception occured in setResultToAssignedMap method in TrainingCampService class.",e);
 		}
 		
 	}
@@ -299,7 +306,7 @@ public class TrainingCampService implements ITrainingCampService{
 			assignCampVo.setTrainingCampVOList(statusScheduleList);
 			
 		}catch (Exception e) {
-			
+			LOG.error(" Exception occured in setStatusSchedules method in TrainingCampService class.",e);
 		}
 	}
 	
@@ -567,8 +574,8 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
-		public List<Long> getTrainingCampUserTypeIds(){
-		
+	public List<Long> getTrainingCampUserTypeIds(){
+	
 		List<Long> users=trainingCampUserDAO.getTrainingCampUserTypeIds(5l);
 		
 		return users;

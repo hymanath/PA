@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 public interface ITrainingCampService {
 
 	public List<TraingCampCallerVO> getScheduleCallStatusCount(Long userId,Long callPurposeId);
-	public List<TrainingCampScheduleVO> getCallerWiseCallsDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
+	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
 	public ResultStatus assignInviteesToCallersForScheduleConfirmation(Long inviteesCount, Long adminId, Long callerId,String searchTypeId,String startDate,String endDate);
 	public ResultStatus assignInviteesToCallersForBatchConfirmation(Long inviteesCount, Long adminId, Long callerId,String searchTypeId,String startDate,String endDate);
 	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
