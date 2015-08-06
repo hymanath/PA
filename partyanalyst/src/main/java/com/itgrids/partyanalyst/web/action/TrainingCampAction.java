@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.model.Job;
+import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,6 +26,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private JSONObject	jObj;
 	private String 		task;
 	private ITrainingCampService trainingCampService;
+	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
 	
 	
@@ -34,14 +36,6 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setStatusCountList(List<TraingCampCallerVO> statusCountList) {
 		this.statusCountList = statusCountList;
-	}
-
-	public ITrainingCampService getTrainingCampService() {
-		return trainingCampService;
-	}
-
-	public void setTrainingCampService(ITrainingCampService trainingCampService) {
-		this.trainingCampService = trainingCampService;
 	}
 
 	public HttpServletRequest getRequest() {
@@ -78,6 +72,23 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+
+	public ITrainingCampService getTrainingCampService() {
+		return trainingCampService;
+	}
+
+	public void setTrainingCampService(ITrainingCampService trainingCampService) {
+		this.trainingCampService = trainingCampService;
+	}
+	
+	public List<TrainingCampScheduleVO> getTrainingCampScheduleVOs() {
+		return trainingCampScheduleVOs;
+	}
+
+	public void setTrainingCampScheduleVOs(
+			List<TrainingCampScheduleVO> trainingCampScheduleVOs) {
+		this.trainingCampScheduleVOs = trainingCampScheduleVOs;
 	}
 
 	public String execute(){
@@ -117,4 +128,27 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			}
 			return Action.SUCCESS;
 	}
+	public String getCallerWiseCallsDetails(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			String searchType=jObj.getString("searchType");
+			String fromDate=jObj.getString("fromdate");
+			String toDate=jObj.getString("toDate");
+			
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
+			
+			if(userIds !=null){
+				trainingCampScheduleVOs = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
