@@ -33,6 +33,8 @@ private Long insertedBy;
 private Long updatedBy;
 private Date insertedTime;
 private Date updatedTime;
+private TrainingCampUser trainingCampUser;
+
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 @Column(name = "training_camp_schedule_invitee_caller_id", unique = true, nullable = false)
@@ -130,6 +132,15 @@ public TrainingCampScheduleInvitee getTrainingCampScheduleInvitee() {
 public void setTrainingCampScheduleInvitee(
 		TrainingCampScheduleInvitee trainingCampScheduleInvitee) {
 	this.trainingCampScheduleInvitee = trainingCampScheduleInvitee;
+}
+
+@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "training_camp_caller_id",insertable =false,updatable = false)
+public TrainingCampUser getTrainingCampUser() {
+	return trainingCampUser;
+}
+public void setTrainingCampUser(TrainingCampUser trainingCampUser) {
+	this.trainingCampUser = trainingCampUser;
 }
 
 

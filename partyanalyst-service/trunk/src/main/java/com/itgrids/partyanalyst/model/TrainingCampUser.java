@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.model;
+ package com.itgrids.partyanalyst.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
