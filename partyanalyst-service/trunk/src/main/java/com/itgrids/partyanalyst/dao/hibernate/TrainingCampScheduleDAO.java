@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
@@ -10,6 +12,10 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 	public TrainingCampScheduleDAO() {
 		super(TrainingCampSchedule.class);
 		// TODO Auto-generated constructor stub
+	}
+	public List<Object[]> getSchedules()
+	{
+		return getHibernateTemplate().find("select model.trainingCampScheduleId,model.trainingCampScheduleCode TrainingCampSchedule model");
 	}
 
 }

@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
 import com.itgrids.partyanalyst.dao.ICampCallStatusDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
@@ -24,10 +25,14 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
+import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
+import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -49,7 +54,19 @@ public class TrainingCampService implements ITrainingCampService{
 	private ICampCallPurposeDAO campCallPurposeDAO;
 	private ICampCallStatusDAO campCallStatusDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	
+	
+	
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
+
 	public void setTrainingCampDAO(ITrainingCampDAO trainingCampDAO) {
 		this.trainingCampDAO = trainingCampDAO;
 	}
@@ -512,7 +529,104 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return returnList;
 	}
+	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo)
+	{
+		List<Long> statusIds = new ArrayList<Long>();
+		TrainingMemberVO inputVO = new TrainingMemberVO();
+		
+		try{
+			statusIds = getCallStatusIds(inputVo.getStatus());
+			
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus());
+			if(list != null && list.size() > 0)
+			{
+				List<TrainingMemberVO> resultList = setMemberDetails(list);
+				inputVO.setSubList(resultList);
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in TrainingCampService getScheduleCallMemberDetails() method", e);
+		}
+		return inputVO;
+	}
 	
+	
+	public List<Long> getCallStatusIds(String status)
+	{
+		List<Long> statusIds = new ArrayList<Long>();
+		if(status.equalsIgnoreCase("dialed"))
+		{
+			statusIds.add(1l);statusIds.add(2l);statusIds.add(3l); //all
+		}
+		else if(status.equalsIgnoreCase("answered"))
+		{
+			statusIds.add(1l); // answered
+		}
+		else if(status.equalsIgnoreCase("busy"))
+		{
+			statusIds.add(2l);statusIds.add(3l); // userbusy and switchOff
+		}
+		else if(status.equalsIgnoreCase("callback"))
+		{
+			statusIds.add(6l);statusIds.add(7l);
+		}
+		else if(status.equalsIgnoreCase("interested"))
+		{
+			statusIds.add(4l);
+		}
+		else if(status.equalsIgnoreCase("notInterested"))
+		{
+		statusIds.add(5l);
+		}
+		else if(status.equalsIgnoreCase("later"))
+		{
+		statusIds.add(3l);
+		}
+		return statusIds;	
+	}
+	public List<TrainingMemberVO> setMemberDetails(List<Object[]> list)
+	{
+		List<Long> cadreIds = new ArrayList<Long>();
+		List<TrainingMemberVO>  returnList = new ArrayList<TrainingMemberVO>();
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					TrainingMemberVO vo =new TrainingMemberVO();
+					vo.setId((Long)params[0]);
+					String fname = params[1] != null ? params[1].toString() : "";
+					String lname = params[2] != null ? params[2].toString() : "";
+					vo.setName(fname +" "+lname);
+					vo.setMobileNumber(params[3] != null ?params[3].toString() : "");
+					vo.setImage(params[4] != null ?params[4].toString() : "");
+					vo.setStatus(params[6] != null ?params[6].toString() : "");
+					vo.setAge(params[7] != null ?params[7].toString() : "");
+					vo.setLocation(params[8] != null ?params[8].toString() : "");
+					returnList.add(vo);
+					if(!cadreIds.contains((Long)params[0]))
+						cadreIds.add((Long)params[0]);
+				}
+				 List<Object[]> roles = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(cadreIds);
+				 if(roles != null && roles.size() > 0)
+				 {
+					 for(Object[] params : roles)
+					 {
+						 TrainingMemberVO vo =  getMatchedVo1(returnList, (Long)params[0]);
+						 if(vo != null)
+						 {
+							 vo.setRole(params[2] != null ?params[2].toString() : "");
+						 }
+					 }
+				 }
+				 
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in TrainingCampService setMemberDetails() method", e);
+		}
+		return returnList;
+	}
 	
 	public List<TraingCampCallerVO> getStatusList()
 	{
@@ -574,10 +688,69 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
+	public TrainingMemberVO getMatchedVo1(List<TrainingMemberVO> resultList,Long id)
+	{
+		if(resultList == null || resultList.size() == 0)
+			return null;
+		for(TrainingMemberVO vo : resultList)
+		{
+			if(vo.getId().longValue() == id.longValue())
+			{
+			return vo;	
+			}
+		}
+		return null;
+	}
 	public List<Long> getTrainingCampUserTypeIds(){
 	
 		List<Long> users=trainingCampUserDAO.getTrainingCampUserTypeIds(5l);
 		
 		return users;
+	}
+	
+	public List<BasicVO> getAllPrograms()
+	{
+		try{
+			List<Object[]> programs = trainingCampProgramDAO.getPrograms();
+			return getBasicList(programs);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	public List<BasicVO> getAllschedules()
+	{
+		try{
+			List<Object[]> schedules = trainingCampScheduleDAO.getSchedules();
+			return getBasicList(schedules);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	public List<BasicVO> getBasicList(List<Object[]> list)
+	{
+		List<BasicVO>  returnList = new ArrayList<BasicVO>();
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					BasicVO vo = new BasicVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1] != null ? params[1].toString() : "");
+					returnList.add(vo);
+					
+				}
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnList;
 	}
 }

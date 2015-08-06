@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeCallerDAO;
+import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 
 public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<TrainingCampScheduleInviteeCaller, Long> implements ITrainingCampScheduleInviteeCallerDAO{
@@ -142,6 +143,45 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId," +
+				" model.trainingCampScheduleInvitee.tdpCadre.firstname," +
+				" model.trainingCampScheduleInvitee.tdpCadre.lastname," +
+				" model.trainingCampScheduleInvitee.tdpCadre.mobileNo," +
+				" model.trainingCampScheduleInvitee.tdpCadre.image," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status," +
+				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName" +
+				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId");
+		if(status.equalsIgnoreCase("undialed"))
+			str.append(" and campCallStatus.campCallStatusId is null");
+		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
+					str.append(" and campCallStatus.campCallStatusId in(:statusIds)");
+		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("scheduleCallStatus"))
+			str.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(:statusIds)");
+		if(inputVo.getBatchId() > 0)
+			str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId = :batchId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("callerId", inputVo.getUserId());
+		query.setParameter("callPurposeId", inputVo.getPurposeId());
+		query.setParameter("programId", inputVo.getProgramId());
+		query.setParameter("campId", inputVo.getCampId());
+		query.setParameter("scheduleId", inputVo.getScheduleId());
+		if(statusIds != null && statusIds.size() > 0)
+		query.setParameterList("statusIds", statusIds);
+		if(inputVo.getBatchId() > 0)
+		query.setParameter("batchId", inputVo.getBatchId());	
+		return query.list();
+	}
+	
+	
 	
 	/*public List<Object[]> getTodayScheduleWiseCallStatusCount(Long callerId,Long callPurposeId,Date fromDate,Date toDate)
 	{
