@@ -1,9 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainingMemberVO {
+public class TrainingMemberVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
 	private String mobileNumber;
@@ -72,7 +77,4 @@ public class TrainingMemberVO {
 		this.subList = subList;
 	}
 	
-	
-	
-
 }

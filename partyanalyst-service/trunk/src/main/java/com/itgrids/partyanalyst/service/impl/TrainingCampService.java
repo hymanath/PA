@@ -169,7 +169,7 @@ public class TrainingCampService implements ITrainingCampService{
 			  List<Object[]> completedCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "completedCount");
 			  List<Object[]> pendingCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds,startDate,endDate,"pendingCount");
 		      List<Object[]> callStatusOfinviteesList = trainingCampScheduleInviteeCallerDAO.getCallStatusContsOfInvitees(userIds,startDate,endDate);//0.callerId,1.scheduleInviteeStatusId,2.status,3.count
-			
+		      
 			
 			//iterating.
 			Map<Long,Long> assignedMap=new HashMap<Long, Long>();
@@ -206,8 +206,39 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			if(finalmap!=null && finalmap.size()>0){
 				finalList=new ArrayList<TrainingCampScheduleVO>(finalmap.values());
-			}	
+			}
 			
+			//totalAssignedCount
+			Long totalAssignedCountofAgents=0l;
+			if(finalList !=null && finalList.size()>0){
+				for (TrainingCampScheduleVO vo : finalList) {
+					totalAssignedCountofAgents=totalAssignedCountofAgents+vo.getAssignedCallsCount();
+				}
+			}
+			
+			
+			//building For allocated Calls
+			finalCallersVODetails.setTotalAssignedCount(totalAssignedCountofAgents);//allocating totalAssigned Count
+			
+			Long countForTotalCallers=trainingCampScheduleInviteeCallerDAO.getAllCallersCount(startDate,endDate);
+			if(countForTotalCallers !=null){
+				finalCallersVODetails.setTotalCount(countForTotalCallers);//allocating calls To caller
+			}
+			
+			 List<Object[]> totalDialedCalls=trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "dialedCalls");
+			
+			 Long dialedCallsCount =0l;
+			if(totalDialedCalls !=null && totalDialedCalls.size()>0){
+				for(Object[] dialed:totalDialedCalls){
+					if(dialed[1] !=null){
+						dialedCallsCount=dialedCallsCount+(Long)dialed[1] ;//allocating dialedCallsCount
+					}
+				}
+			}
+			
+			finalCallersVODetails.setDialedCallsCount(dialedCallsCount);
+			 //
+			 
 			
 			if(finalList !=null && finalList.size()>0)
 			{
@@ -257,6 +288,8 @@ public class TrainingCampService implements ITrainingCampService{
 						if(schedulesList!=null && schedulesList.size()>0){
 							for(TrainingCampScheduleVO schedule:schedulesList){
 								if(schedule.getStatusId().longValue()==statusId.longValue()){
+									schedule.setId((Long)obj[0]);
+									schedule.setName("");
 									schedule.setCount(obj[3]!=null?(Long)obj[3]:0l);
 								}
 							}
@@ -753,4 +786,67 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return returnList;
 	}
+	
+  public TrainingCampScheduleVO getTrainingProgramMembersBatchCount(String startDateString,String endDateString){
+		
+		TrainingCampScheduleVO finalTrainingVo=new TrainingCampScheduleVO();
+		
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		Date startDate = sdf.parse(startDateString);
+    		Date endDate=sdf.parse(endDateString);
+			
+			/*SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date startDate=sdf.parse("09/01/2015");
+			Date endDate=sdf.parse("09/30/2015");*/
+			
+		
+			//0.id,1.program/camp name 3.membersCount 4.batchCount 
+			List<Object[]> programDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, "Interested","program");
+			List<Object[]> campDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, "Interested","camp");
+			
+			
+			List<TrainingCampScheduleVO> listForProgramVo=new ArrayList<TrainingCampScheduleVO>();
+			List<TrainingCampScheduleVO> listForCampVo=new ArrayList<TrainingCampScheduleVO>();
+			
+			if(programDetails !=null && programDetails.size()>0){
+				setListObjectsForTrainingProgramMembersBatchCount(programDetails,listForProgramVo,"program");
+			}
+			if(campDetails !=null && campDetails.size()>0){
+				setListObjectsForTrainingProgramMembersBatchCount(campDetails,listForCampVo,"camp");
+			}
+			
+			if(listForProgramVo !=null && listForProgramVo.size()>0){
+				finalTrainingVo.setTrainingCampVOList(listForProgramVo);//ProgramWise List
+			}
+			if(listForCampVo !=null && listForCampVo.size()>0){
+				finalTrainingVo.setTrainingCampScheduleVOList(listForCampVo);//CampWise List
+			}
+			
+			return finalTrainingVo;
+	
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		return finalTrainingVo;
+		
+	}
+	public void setListObjectsForTrainingProgramMembersBatchCount(List<Object[]> programDetails,List<TrainingCampScheduleVO> listVo,String type){
+		
+		for (Object[] objects : programDetails) {
+			TrainingCampScheduleVO progamVo=new TrainingCampScheduleVO();
+			
+			progamVo.setId((Long)objects[0]);
+			progamVo.setName(objects[1] !=null ? objects[1].toString() : "");
+			progamVo.setTotalCount(objects[2] !=null ? (Long)objects[2] : 0l );//members Count
+			progamVo.setCount(objects[3] !=null ? (Long)objects[3]:0l);//batchCount
+			
+			listVo.add(progamVo);
+		}
+	}
+	
+	
 }
