@@ -477,7 +477,7 @@ public class TrainingCampService implements ITrainingCampService{
 							batchVo.setScheduleStatusList(getScheduleStatusList());
 							scheduleVo.getSubList().add(batchVo);
 							scheduleVo.setSpanCnt(new Long(scheduleVo.getSubList().size()));
-							programVo.setSpanCnt(programVo.getSpanCnt() + scheduleVo.getSpanCnt());
+							programVo.setSpanCnt(programVo.getSpanCnt() + 1);
 							campVo.setSpanCnt(new Long(scheduleVo.getSubList().size()));
 						} 
 						batchVo.setTotal(batchVo.getTotal() + (Long)params[0]);
