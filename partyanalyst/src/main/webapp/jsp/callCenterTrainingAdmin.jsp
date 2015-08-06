@@ -492,7 +492,7 @@
 	<script src="css/Training/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 	<script src="css/Training/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js/highcharts/js/highcharts_cadre.js"></script>
-	
+	<script type="text/javascript" src="js/TrainingProgram/callCenterTrainingAdmin.js"></script>
 <!--
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -567,6 +567,23 @@ $(function () {
         }]
     });
 });
+getCallerWiseCallsDetails();
+function getCallerWiseCallsDetails(){
+	
+	var jsObj={
+		searchType:"",
+		fromdate:"08/02/2015",
+		toDate :"08/05/2015"
+	}
+	$.ajax({
+			type:'POST',
+			 url: 'getCallerWiseCallsDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					
+			});
+	
+}
 </script>
 </body>
 </html>
