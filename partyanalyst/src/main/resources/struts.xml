@@ -10357,5 +10357,33 @@
 		<result name="input">/jsp/loginForm.jsp</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
+	<action name="getScheduleCallMemberDetailsAction" class="trainingCampAction" method="getScheduleCallMemberDetails">
+		<result type="json" name="success">
+				<param name="root">memberList</param>
+		</result>
+	</action>
+	<action name="getAllPrograms" class="trainingCampAction" method="getAllPrograms">
+		<result type="json" name="success">
+				<param name="root">basicList</param>
+		</result>
+	</action>
+	<action name="getAllschedules" class="trainingCampAction" method="getAllschedules">
+		<result type="json" name="success">
+				<param name="root">basicList</param>
+		</result>
+	</action>
+	<action name="getAllBatches" class="trainingCampAction" method="getAllBatches">
+		<result type="json" name="success">
+				<param name="root">basicList</param>
+		</result>
+	</action>
+	<action name="getAllCamps" class="trainingCampAction" method="getAllCamps">
+		<result type="json" name="success">
+				<param name="root">basicList</param>
+		</result>
+	</action>
+	
+	
+	
 </package>
 </struts>      

@@ -9,8 +9,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
+import com.itgrids.partyanalyst.dto.TraingCampDataVO;
+import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
@@ -29,8 +32,91 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
 	private TrainingCampScheduleVO trainingCampScheduleVO;
+	private String status;
+	private Long purposeId;
+	private Long programId;
+	private Long campId;
+	private Long scheduleId;
+	private TrainingMemberVO memberList ;
+	private String statusType;
+	private String batchId;
+	private List<BasicVO> basicList;
 	
 	
+	
+
+	public List<BasicVO> getBasicList() {
+		return basicList;
+	}
+
+	public void setBasicList(List<BasicVO> basicList) {
+		this.basicList = basicList;
+	}
+
+	public String getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
+
+	public String getStatusType() {
+		return statusType;
+	}
+
+	public void setStatusType(String statusType) {
+		this.statusType = statusType;
+	}
+
+	public TrainingMemberVO getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(TrainingMemberVO memberList) {
+		this.memberList = memberList;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getPurposeId() {
+		return purposeId;
+	}
+
+	public void setPurposeId(Long purposeId) {
+		this.purposeId = purposeId;
+	}
+
+	public Long getProgramId() {
+		return programId;
+	}
+
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+
+	public Long getCampId() {
+		return campId;
+	}
+
+	public void setCampId(Long campId) {
+		this.campId = campId;
+	}
+
+	public Long getScheduleId() {
+		return scheduleId;
+	}
+
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
 	public List<TraingCampCallerVO> getStatusCountList() {
 		return statusCountList;
 	}
@@ -126,6 +212,27 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getScheduleCallMemberDetails()
+	{
+		try{
+			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			TraingCampDataVO inputVo = new TraingCampDataVO();
+			inputVo.setCampId(jObj.getLong("campId"));
+			inputVo.setProgramId(jObj.getLong("programId"));
+			inputVo.setScheduleId(jObj.getLong("scheduleId"));
+			inputVo.setPurposeId(jObj.getLong("purposeId"));
+			inputVo.setStatus(jObj.getString("status"));
+			inputVo.setUserId(regVo.getRegistrationID());
+			inputVo.setBatchId(jObj.getLong("batchId"));
+			inputVo.setStatusType(jObj.getString("statusType"));
+			memberList = trainingCampService.getScheduleCallMemberDetails(inputVo);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return Action.SUCCESS;	
+	}
 	public String getBatchCallStatusCount()
 	{
 		try{
@@ -158,6 +265,50 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}
 		
 		return Action.SUCCESS;
+	}
+	public String getAllPrograms()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
+	}
+	public String getAllCamps()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
+	}
+	public String getAllschedules()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
+	}
+	public String getAllBatches()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
 	}
 	
 }
