@@ -14,5 +14,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type);
 	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate);
 	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status);
-	public Long getAllCallersCount(Date startDate,Date endDate);
+	public Long getAllCallersCount(Date startDate,Date endDate,String type);
+	public List<Object[]> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,Date startDate,Date endDate,String type);
 }

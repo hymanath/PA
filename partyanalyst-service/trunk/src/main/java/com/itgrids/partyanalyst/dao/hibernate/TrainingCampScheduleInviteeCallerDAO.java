@@ -58,11 +58,28 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		return query.list();
 	}
-	public Long getAllCallersCount(Date startDate,Date endDate){
+	public Long getAllCallersCount(Date startDate,Date endDate,String type){
 		
-		Query query=getSession().createQuery(" select count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
-				" where  (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		StringBuilder str = new StringBuilder();
 		
+		str.append("select count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model  where  ");
+		
+		if(type.equalsIgnoreCase("totalCallers")){
+			str.append(" (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		else if(type.equalsIgnoreCase("todayCallers")){
+			str.append(" date(model.updatedTime)>=:startDate ");
+		}
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		else if(startDate !=null){
+			query.setParameter("startDate", startDate);
+		}
 		return (Long) query.uniqueResult();
 	}
 	
@@ -218,6 +235,47 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		return query.list();
 		
 	}*/
+	
+	public List<Object[]> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,Date startDate,Date endDate,String type){
+		
+		/*select CCP.camp_call_purpose,CCP.purpose,count(training_camp_schedule_invitee_caller_id)
+		from training_camp_schedule_invitee_caller TCSI,camp_call_purpose CCP,training_camp_user tcu  
+		where 
+		TCSI.call_purpose_id = CCP.camp_call_purpose
+		and TCSI.training_camp_caller_id = tcu.training_camp_user_id
+		and  tcu.training_camp_user_id in (1)
+		group by CCP.camp_call_purpose;*/
+		
+		StringBuilder scheduleAndConfirmationCalls = new StringBuilder();
+		
+		scheduleAndConfirmationCalls.append(" select model.campCallPurpose.campCallPurpose,model.campCallPurpose.purpose,count(model.trainingCampScheduleInviteeCallerId)" +
+											" from TrainingCampScheduleInviteeCaller model where " );
+		
+		if(startDate !=null && endDate !=null){
+			scheduleAndConfirmationCalls.append(" (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate)");
+		}
+		if(userIds !=null && userIds.size()>0){
+			scheduleAndConfirmationCalls.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		
+		if(type.equalsIgnoreCase("dialedCalls")){
+			scheduleAndConfirmationCalls.append(" and model.campCallStatus.campCallStatusId is not null ");
+		}
+		
+		scheduleAndConfirmationCalls.append(" group by model.campCallPurpose.campCallPurpose ");
+		
+		Query scheduleAndConfirmationCallsQuery = getSession().createQuery(scheduleAndConfirmationCalls.toString());
+		
+		if(startDate !=null && endDate !=null){
+			scheduleAndConfirmationCallsQuery.setParameter("startDate", startDate);
+			scheduleAndConfirmationCallsQuery.setParameter("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			scheduleAndConfirmationCallsQuery.setParameterList("userIds", userIds);
+		}
+		
+		return scheduleAndConfirmationCallsQuery.list();
+	}
 	
 
 }

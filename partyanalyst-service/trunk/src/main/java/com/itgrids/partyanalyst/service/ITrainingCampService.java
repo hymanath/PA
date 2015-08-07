@@ -25,4 +25,5 @@ public interface ITrainingCampService {
 	public List<BasicVO> getAllPrograms();
 	public List<BasicVO> getAllschedules();
 	public TrainingCampScheduleVO getTrainingProgramMembersBatchCount(String startDateString,String endDateString);
+	public List<TrainingCampScheduleVO> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString);
 }
