@@ -257,12 +257,35 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			finalCallersVODetails.setDialedCallsCount(dialedCallsCount);
 			 //
-			 
+			
+			//statusWiseCount For upper Block in call center admin page
+			List<Object[]> statusWiseCountList = trainingCampScheduleInviteeCallerDAO.getStatusWiseCount(userIds,startDate,endDate);
+			
+			List<TrainingCampScheduleVO> statusWiseCountLi = new ArrayList<TrainingCampScheduleVO>();
+			if(statusWiseCountList !=null && statusWiseCountList.size()>0){
+				for (Object[] object : statusWiseCountList) {
+					TrainingCampScheduleVO vo =new TrainingCampScheduleVO();
+					
+					vo.setStatusId(object[0] !=null ? (Long)object[0]:0l);
+					vo.setStatus(object[1] !=null ? object[1].toString() :"");
+					vo.setCount(object[2] !=null ? (Long)object[2]:0l);
+					
+					statusWiseCountLi.add(vo);
+				}
+			}
+			
 			
 			if(finalList !=null && finalList.size()>0)
 			{
 				finalCallersVODetails.setTrainingCampVOList(finalList);
 			}
+			
+			if(statusWiseCountLi !=null && statusWiseCountLi.size()>0){
+				finalCallersVODetails.setTrainingCampScheduleVOList(statusWiseCountLi);
+			}
+			
+			return finalCallersVODetails;
+			
 		}catch (Exception e){
 			LOG.error(" Exception occured in getCallerWiseCallsDetails method in TrainingCampService class.",e);
 		}
@@ -911,6 +934,7 @@ public class TrainingCampService implements ITrainingCampService{
 				
 			}
 			
+			
 			if(scheduleAndConfirmationCallsTotal !=null && scheduleAndConfirmationCallsTotal.size()>0){
 				setScheduleAndConfirmationCallsOfCallerToAgent(scheduleAndConfirmationCallsTotal,finalVo,"total");
 			}
@@ -919,7 +943,25 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(finalVo !=null && finalVo.size()>0){
+				
 				finalList=new ArrayList<TrainingCampScheduleVO>(finalVo.values());
+				
+				//For total assigned And Total Dialed Calls Count
+				Long totalAssignedCount=0l;
+				Long totalDialedCount=0l;
+				if(finalList !=null && finalList.size()>0){
+					for(TrainingCampScheduleVO vo:finalList){
+						totalAssignedCount =totalAssignedCount+vo.getCount();
+						totalDialedCount=totalDialedCount+vo.getDialedCallsCount();
+					}
+					
+					TrainingCampScheduleVO listVo=finalList.get(0);
+					
+					listVo.setTotalAssignedCount(totalAssignedCount);//totalAssignedCalls To Agents
+					listVo.setTotalDialedCallsCount(totalDialedCount);//total Agent Dialed calls
+					
+				}
+				
 			}
 			
 			return finalList;
@@ -946,10 +988,10 @@ public class TrainingCampService implements ITrainingCampService{
 				scheduleVo.setName(objects[1].toString());
 				
 				if(type.equalsIgnoreCase("total")){
-					scheduleVo.setCount(objects[2] !=null ? Long.parseLong(objects[2].toString()):0l);
+					scheduleVo.setCount(objects[2] !=null ? Long.parseLong(objects[2].toString()):0l);//purpose wise assigned calls
 				}
 				else if(type.equalsIgnoreCase("dialed")){
-					scheduleVo.setDialedCallsCount(objects[2] !=null ? Long.parseLong(objects[2].toString()) : 0l);
+					scheduleVo.setDialedCallsCount(objects[2] !=null ? Long.parseLong(objects[2].toString()) : 0l);//purpose wise dialed calls
 				}
 				
 				finalVo.put(scheduleVo.getId(), scheduleVo);
