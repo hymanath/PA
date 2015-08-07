@@ -600,6 +600,22 @@ function getTrainingProgramMembersBatchCount(){
 			});
 	
 }
+getScheduleAndConfirmationCallsOfCallerToAgent();
+function getScheduleAndConfirmationCallsOfCallerToAgent(){
+	
+	var jsObj={
+			fromdate:"08/02/2015",
+			toDate :"08/05/2015"
+	}
+	$.ajax({
+			type:'POST',
+			 url: 'getScheduleAndConfirmationCallsOfCallerToAgentAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					
+			});
+	
+}
 
 </script>
 </body>
