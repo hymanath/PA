@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TrainingCampService implements ITrainingCampService{
 
@@ -55,6 +56,7 @@ public class TrainingCampService implements ITrainingCampService{
 	private ICampCallStatusDAO campCallStatusDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private DateUtilService dateUtilService;
 	
 	
 	
@@ -140,6 +142,14 @@ public class TrainingCampService implements ITrainingCampService{
 		this.trainingCampScheduleInviteeCallerDAO = trainingCampScheduleInviteeCallerDAO;
 	}
 	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
 	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString)
 	{
 		List<TrainingCampScheduleVO> finalList=null;
@@ -220,10 +230,19 @@ public class TrainingCampService implements ITrainingCampService{
 			//building For allocated Calls
 			finalCallersVODetails.setTotalAssignedCount(totalAssignedCountofAgents);//allocating totalAssigned Count
 			
-			Long countForTotalCallers=trainingCampScheduleInviteeCallerDAO.getAllCallersCount(startDate,endDate);
+			Long countForTotalCallers=trainingCampScheduleInviteeCallerDAO.getAllCallersCount(startDate,endDate,"totalCallers");
 			if(countForTotalCallers !=null){
 				finalCallersVODetails.setTotalCount(countForTotalCallers);//allocating calls To caller
 			}
+				
+			Date currentDate =dateUtilService.getCurrentDateAndTime();
+
+			Long todayAllocatedCount= trainingCampScheduleInviteeCallerDAO.getAllCallersCount(currentDate,null,"todayCallers");
+			
+			if(todayAllocatedCount !=null){
+				finalCallersVODetails.setTodayAllocatedCalls(todayAllocatedCount);//today Allocated Calls Count
+			}
+			
 			
 			 List<Object[]> totalDialedCalls=trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "dialedCalls");
 			
@@ -847,6 +866,97 @@ public class TrainingCampService implements ITrainingCampService{
 			listVo.add(progamVo);
 		}
 	}
+	
+	public List<TrainingCampScheduleVO> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString){
+		
+		List<TrainingCampScheduleVO> finalList=null;
+		try{
+			
+			/*SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date startDate=sdf.parse("08/02/2015");
+			Date endDate=sdf.parse("08/05/2015");
+			
+			List<Long> userIds=new ArrayList<Long>();
+			
+			userIds.add(1l);*/
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		Date startDate = sdf.parse(startDateString);
+    		Date endDate=sdf.parse(endDateString);
+			
+			
+			
+			List<Object[]>  scheduleAndConfirmationCallsTotal= trainingCampScheduleInviteeCallerDAO.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,startDate,endDate,"totalCalls");
+			List<Object[]> scheduleAndConfirmationCallsDialed=trainingCampScheduleInviteeCallerDAO.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,startDate,endDate,"dialedCalls");
+			
+			Map<Long,TrainingCampScheduleVO> finalVo=new HashMap<Long, TrainingCampScheduleVO>();
+			
+			List<Object[]>  allPurposes = campCallPurposeDAO.getAllCampCallPurpose();
+			
+			if(allPurposes !=null && allPurposes.size()>0){
+				
+				for(Object[] purpose:allPurposes){
+					TrainingCampScheduleVO vo = new TrainingCampScheduleVO();
+					vo.setId(purpose[0] !=null ? (Long)purpose[0] :0l);
+					vo.setName(purpose[1] !=null ? purpose[1].toString() : "");
+					vo.setCount(0l);//call Purpose wise count
+					vo.setDialedCallsCount(0l);//dialed count forcall purpose
+					
+					finalVo.put(vo.getId(), vo);
+				}
+				
+				
+			}
+			
+			if(scheduleAndConfirmationCallsTotal !=null && scheduleAndConfirmationCallsTotal.size()>0){
+				setScheduleAndConfirmationCallsOfCallerToAgent(scheduleAndConfirmationCallsTotal,finalVo,"total");
+			}
+			if(scheduleAndConfirmationCallsDialed !=null && scheduleAndConfirmationCallsDialed.size()>0){
+				setScheduleAndConfirmationCallsOfCallerToAgent(scheduleAndConfirmationCallsDialed,finalVo,"dialed");
+			}
+			
+			if(finalVo !=null && finalVo.size()>0){
+				finalList=new ArrayList<TrainingCampScheduleVO>(finalVo.values());
+			}
+			
+			return finalList;
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return finalList;
+	}
+	public void setScheduleAndConfirmationCallsOfCallerToAgent(List<Object[]>  scheduleAndConfirmationCalls,Map<Long,TrainingCampScheduleVO> finalVo,String type){
+		
+		if(scheduleAndConfirmationCalls !=null && scheduleAndConfirmationCalls.size()>0){
+			
+			for (Object[] objects : scheduleAndConfirmationCalls) {
+				
+				TrainingCampScheduleVO scheduleVo =finalVo.get((Long)objects[0]);
+				
+				if(scheduleVo ==null){
+					scheduleVo=new TrainingCampScheduleVO();
+				}
+				scheduleVo.setId((Long)objects[0]);
+				scheduleVo.setName(objects[1].toString());
+				
+				if(type.equalsIgnoreCase("total")){
+					scheduleVo.setCount(objects[2] !=null ? Long.parseLong(objects[2].toString()):0l);
+				}
+				else if(type.equalsIgnoreCase("dialed")){
+					scheduleVo.setDialedCallsCount(objects[2] !=null ? Long.parseLong(objects[2].toString()) : 0l);
+				}
+				
+				finalVo.put(scheduleVo.getId(), scheduleVo);
+			}
+			
+		}
+		
+	}
+	
 	
 	
 }
