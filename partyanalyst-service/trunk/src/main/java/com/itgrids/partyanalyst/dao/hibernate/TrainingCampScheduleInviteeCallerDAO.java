@@ -36,7 +36,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				str.append(" and model.callStatusId =1 ");
 			}
 			else if(type.equalsIgnoreCase("pendingCount")){
-				str.append(" and model.callStatusId is null or model.callStatusId !=1 ");
+				str.append(" and (model.callStatusId is null or model.callStatusId !=1) ");
 			}
 			else if(type.equalsIgnoreCase("dialedCalls")){
 				str.append(" and model.callStatusId is not null ");
@@ -275,6 +275,29 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		}
 		
 		return scheduleAndConfirmationCallsQuery.list();
+	}
+	
+	public List<Object[]> getStatusWiseCount(List<Long> userIds,Date startDate,Date endDate){
+		
+		Query query=getSession().createQuery("select model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
+				" from  TrainingCampScheduleInviteeCaller model" +
+				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null " +
+				" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) " +
+				" and model.trainingCampUser.userId in (:userIds) " +
+				" group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			query.setParameterList("userIds", userIds);
+		}
+		
+		
+		return query.list();
 	}
 	
 

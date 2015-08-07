@@ -17,8 +17,12 @@ public class TrainingCampScheduleVO implements Serializable{
 	private Long pendingCallsCount=0l;
 	
 	private Long totalAssignedCount=0l;
-	private Long dialedCallsCount;
+	private Long dialedCallsCount=0l;
+	private Long totalDialedCallsCount=0l;
 	private Long todayAllocatedCalls=0l;
+	private Long programCount=0l;
+	private Long campCount=0l;
+	
 	
 	
 	private List<TrainingCampScheduleVO> trainingCampVOList;
@@ -109,6 +113,24 @@ public class TrainingCampScheduleVO implements Serializable{
 	}
 	public void setTodayAllocatedCalls(Long todayAllocatedCalls) {
 		this.todayAllocatedCalls = todayAllocatedCalls;
+	}
+	public Long getProgramCount() {
+		return programCount;
+	}
+	public void setProgramCount(Long programCount) {
+		this.programCount = programCount;
+	}
+	public Long getCampCount() {
+		return campCount;
+	}
+	public void setCampCount(Long campCount) {
+		this.campCount = campCount;
+	}
+	public Long getTotalDialedCallsCount() {
+		return totalDialedCallsCount;
+	}
+	public void setTotalDialedCallsCount(Long totalDialedCallsCount) {
+		this.totalDialedCallsCount = totalDialedCallsCount;
 	}
 	
 	
