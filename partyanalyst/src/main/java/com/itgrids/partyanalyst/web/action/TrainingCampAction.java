@@ -327,4 +327,24 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getScheduleAndConfirmationCallsOfCallerToAgent(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			String fromDate=jObj.getString("fromdate");
+			String toDate=jObj.getString("toDate");
+			
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
+			
+			if(fromDate !=null && toDate !=null){
+				trainingCampScheduleVOs=trainingCampService.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,fromDate,toDate);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }

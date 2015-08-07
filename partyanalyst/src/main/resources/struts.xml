@@ -10388,6 +10388,11 @@
 				<param name="root">trainingCampScheduleVO</param>
 		</result>
 	</action>
+	<action name="getScheduleAndConfirmationCallsOfCallerToAgentAction" class="trainingCampAction" method="getScheduleAndConfirmationCallsOfCallerToAgent">
+		<result type="json" name="success">
+				<param name="root">trainingCampScheduleVOs</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      
