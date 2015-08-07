@@ -34,9 +34,17 @@
 									<i class="glyphicon glyphicon-calendar"></i>
 									<span class="caret"></span>
 								</span>
-								<input type="text" class="form-control" id="CustomCalendar">
+								<input type="text" class="form-control" id="reportrange">
 							</div>
 						</span>
+                    	<span class="pull-right">
+                        	<label class="checkbox-inline">
+                            	<input type="checkbox"> Planned
+                            </label>
+                            <label class="checkbox-inline">
+                            	<input type="checkbox">All
+                            </label>
+                        </span>
 					</h4>
 				</div>
 				<div class="panel-body">
@@ -51,31 +59,58 @@
 										<table class="table table-bordered m_0">
 											<tr>
 												<td colspan="3" class="pad_15">
-													<h3 class="m_0">ALLOCATED CALLS TO CALLER - 1000</h3>
-													<span class="pull-right font-12">Allocated Today - 100</span>
+													<h3 class="m_0">ALLOCATED CALLS TO CALLER - <span id="totalCallsPerCallerId">
+														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
+													</span></h3>
+													<span class="pull-right font-12">Allocated Today - <span id="todayCallsPerCallerId">
+													<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
+													</span></span>
 												</td>
 											</tr>
 											<tr>
-												<td>
-													<h2 class="m_0">800</h2>
-													<p>Assigned <br/>to agents</p>
+												<td colspan="2" class="pad_0" id="callPurposeCountDivId">
+												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
+													<!--<table class="table table-bordered m_0">
+                                                    	<tr>
+                                                        	<td class="pad_5">
+                                                            	<h4 class="display-style m_0">Calls Assigned <br/>to agents</h4>
+                                                                <span class="pull-right"><h2 class="m_0">800</h2></span>
+                                                            </td>
+                                                            <td class="pad_5 text-yellow">
+                                                            	<p class="m_0 font-10">Agents <br/>Dialled</p>
+                                                                <h4 class="m_0 text-yellow">700</h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td class="pad_5">
+                                                                	Batch Scheduled Calls
+                                                                    <span class="pull-right">-500</span>
+                                                            </td>
+                                                            <td class="pad_5">
+                                                            	<h4 class="m_0 text-yellow">400</h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td class="pad_5">
+                                                                	Batch Conformation Calls
+                                                                    <span class="pull-right">-300</span>
+                                                            </td>
+                                                            <td class="pad_5">
+                                                            	<h4 class="m_0 text-yellow">300</h4>
+                                                            </td>
+                                                        </tr>
+                                                    </table>  -->
 												</td>
-												<td class="text-warning">
-													<h2 class="m_0">800</h2>
-													<p>Agents<br/>dialled calls</p>
-												</td>
-												<td class="pad_0">
-													<table class="table table-bordered m_0">
+												<td class="pad_0" id="statusWiseCountArraId">
+												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
+													<!--<table class="table table-bordered m_0">
 														<tr>
-															<td class="text-custom">600 - interested</td>
+															<td>
+                                                            	<h4 class="m_bottom0 text-custom">600 - interested</h4>
+                                                            </td>
 														</tr>
-														<tr>
-															<td class="text-custom">80 - interested in next time</td>
-														</tr>
-														<tr>
-															<td class="text-danger">20 - totally not interested</td>
-														</tr>
-													</table>
+														
+													</table> -->
 												</td>
 											</tr>
 										</table>
@@ -88,13 +123,17 @@
 								<tr>
 									<td>
 										<ul class="list-inline m_bottom0">
-											<li>TRAINING <br/>PROGRAMS</li>
+											<li><h4>TRAINING <br/>PROGRAMS</h4></li>
 											<li class="show-dropdown">
-												<div class="font-30">02</div>
+												<div><h1 class="m_0"><span id="totalProgramsCountId">
+												<img id="dataLoadingsImgFortotalProgramsCountId" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
+												</span></h1></div>
 												<ul class="count-hover up-arrow">
 													<li>
-														<div class="count-hover-scroll">
-															<table class="table table-hover">
+														<div class="count-hover-scroll" id="batchCountOfProgramId">
+														
+															<center><img id="dataLoadingsImgForBatchOfProgramId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
+															<!--<table class="table table-hover">
 																<thead>
 																	<th>PROGRAM NAME</th>
 																	<th>MEMBERS</th>
@@ -112,7 +151,7 @@
 																		<td>02</td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
 														</div>
 													</li>
 												</ul>
@@ -121,12 +160,15 @@
 									</td>
 									<td>
 										<ul class="list-inline m_bottom0">
-											<li>TRAINING <br/>CAMPS</li>
+											<li><h4>TRAINING <br/>CAMPS</h4></li>
 											<li class="show-dropdown">
-												<div class="font-30">02</div>
+												<div><h1 class="m_0"><span id="totalCampsCountId">
+												<img id="dataLoadingsImgFortotalCampsCountId" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
+												</span></h1></div>
 												<ul class="count-hover up-arrow">
 													<li>
-														<table class="table table-hover">
+													<div class="count-hover-scroll" id="batchCountOfCampId"> 
+														<!--<table class="table table-hover">
 															<thead>
 																<th>PROGRAM NAME</th>
 																<th>MEMBERS</th>
@@ -144,7 +186,8 @@
 																	<td>02</td>
 																</tr>
 															</tbody>
-														</table>
+														</table> -->
+													</div>
 													</li>
 												</ul>
 											</li>
@@ -160,69 +203,192 @@
 							</table>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<table class="table table-bordered">
-								<thead class="bg_d">
-									<th>TRAINING CAMP<br/> NAME</th>
-									<th>CALENDAR <br/>DATES</th>
-									<th>INTERESTED <br/> MEMBERS</th>
-									<th>INTERESTED IN NEW <br/> CALENDAR DATES</th>
-									<th>NOT <br/>INTERESTED</th>
-									<th>ASSIGNED TO <br/> TRAINING BATCHES</th>
-									<th>AVAILABLE MEMBERS IN <br/>CALENDAR DATES</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>SVV Batch Campus</td>
-										<td>Sep_2015_01 to 15</td>
-										<td>300</td>
-										<td>300</td>
-										<td>200</td>
-										<td>200</td>
-										<td>100</td>
-									</tr>
-									<tr>
-										<td>EWK Batch Campus</td>
-										<td>Sep_2015_01 to 15</td>
-										<td>300</td>
-										<td>300</td>
-										<td>200</td>
-										<td>200</td>
-										<td>100</td>
-									</tr>
-									<tr>
-										<td>GPN Batch Campus</td>
-										<td>Jan_2016_01 to 15</td>
-										<td>300</td>
-										<td>300</td>
-										<td>200</td>
-										<td>200</td>
-										<td>100</td>
-									</tr>
-									<tr>
-										<td>AKKC Batch Campus</td>
-										<td>Jan_2016_15 to 30</td>
-										<td>300</td>
-										<td>300</td>
-										<td>200</td>
-										<td>200</td>
-										<td>100</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
+                    <div class="row">
+                    	<div class="col-md-12">
+                        	<div class="panel panel-default">
+								<div class="panel-heading pad_5 pad_bottom0">
+									<ul class="nav nav-tabs tab-list-sch" role="tablist">
+										<li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULED</a></li>
+										<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING BATCH</a></li>
+										<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED BATCH</a></li>
+										<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED BATCH</a></li>
+                                        <li class="col-md-3 col-md-offset-1">
+                                        	<div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="CustomCalendar1">
+                                                </div>
+                                            </div>
+                                        </li>
+									</ul>
+								</div>
+								<div class="panel-body pad_0">
+									<div>
+									  <!-- Tab panes -->
+									  <div class="tab-content">
+										<div role="tabpanel" class="tab-pane active" id="scheduled">
+											<table class="table table-bordered m_0">
+												<thead>
+													<th>TRAINING CAMP <br/> NAME</th>
+													<th>TRAINING PROGRAM <br/> NAME</th>
+													<th>SCHEDULED <br/> CALENDAR DATES</th>
+													<th>INTERESTED <br/> MEMBERS</th>
+													<th>LATER</th>
+													<th>NOT <br/> INTERESTED</th>
+													<th>ASSIGNED TO <br/> <span class="font-12">BATCH CONFORMATION</span> </th>
+                                                    <th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>
+												</thead>
+												<tbody>
+                                                	<tr>
+                                                    	<td>SVV Batch Campus</td>
+                                                        <td rowspan="4">Leadership Skills</td>
+                                                        <td>Sep_2015_1 to 15</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>200</td>
+                                                        <td>100</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>EWK Batch Campus</td>
+                                                        <td>Sep_2015_1 to 15</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>200</td>
+                                                        <td>100</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>GPN Batch Campus</td>
+                                                        <td>Sep_2015_1 to 15</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>200</td>
+                                                        <td>100</td>
+                                                    </tr>
+                                                    <tr>
+                                                    	<td>AKKC Batch Campus</td>
+                                                        <td>Sep_2015_1 to 15</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>300</td>
+                                                        <td>200</td>
+                                                        <td>100</td>
+                                                    </tr>
+												</tbody>
+											</table>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="running">
+											<table class="table table-bordered m_0">
+                                                        <thead>
+                                                            <th>Program Name</th>
+                                                            <th>Training Camp Name</th>
+                                                            <th>Schedule</th>
+                                                            <th>Batch Name & Date</th>
+                                                            <th>Batch Members</th>
+                                                            <th>Absent</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        	<tr>
+                                                            	<td rowspan="2">Leadership Skills</td>
+                                                                <td>SVV Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                                <td>2</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>EWK Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                                <td>270</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="completed">
+                                                    <table class="table table-bordered m_0">
+                                                        <thead>
+                                                            <th>Program Name</th>
+                                                            <th>Training Camp Name</th>
+                                                            <th>Schedule</th>
+                                                            <th>Batch Name & Date</th>
+                                                            <th>Completed</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        	<tr>
+                                                            	<td rowspan="2">Leadership Skills</td>
+                                                                <td>SVV Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>EWK Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="cancelled">
+                                                    <table class="table table-bordered m_0">
+                                                        <thead>
+                                                            <th>Program Name</th>
+                                                            <th>Training Camp Name</th>
+                                                            <th>Schedule</th>
+                                                            <th>Batch Name & Date</th>
+                                                            <th>Status</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        	<tr>
+                                                            	<td rowspan="2">Leadership Skills</td>
+                                                                <td>SVV Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>Cancelled</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>EWK Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>Postponed</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+										</div>
+									  </div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
 					<div class="row">
 						<div class="col-md-4">
 							<div class="assign_box">
-								<input type="checkbox" style="margin-top:-16px;" class="checkbox-inline">
-								<label>Assign Members <br/>to check availability</label>
-								<input type="checkbox" style="margin-top:-16px;" class="checkbox-inline">
-								<label>Assign Members<br/>For acceptance	</label>
+								<label class="checkbox-inline font-10">
+                                	<input type="checkbox">
+                                    Assign Members <br/>to check availability
+                                </label>
+                                <label class="checkbox-inline font-10">
+                                	<input type="checkbox">
+                                    Assign Members<br/>For acceptance
+                                </label>
 								<h5>Select Camp</h5>
 								<select class="form-control">
 									<option>SVV Batch Camp</option>
+								</select>
+                                <h5>Select Program Name</h5>
+								<input class="form-control" placeholder="Leasdership Skills">
+                                <h5>Select Calendar Schedule Dates</h5>
+								<select class="form-control">
+									<option>Sep-2015_1 to 15</option>
 								</select>
 								<h5 class="m_top20">
 									Select no of calls
@@ -238,7 +404,7 @@
 						</div>
 						<div class="col-md-8">
 							<div class="table-scroll">
-								<table class="table table-bordered">
+								<table class="table table-bordered m_0">
 									<thead class="bg_d">
 										<th>TRAINING CAMP<br/> NAME</th>
 										<th>TRAINING <br/> DATE</th>
@@ -303,113 +469,42 @@
 											<td>Sep_2015_01 to 3</td>
 											<td>100</td>
 										</tr>
+                                        <tr>
+											<td>AKKC Batch Campus</td>
+											<td>Sep_2015_01 to 3</td>
+											<td>100</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12 m_top20">
-							<div class="panel panel-default">
-								<div class="panel-heading bg_d">
-									<h4 class="panel-title">
-											PLANNED PROGRAM DETAILS
-									</h4>
-								</div>
-								<div class="panel-body pad_0">
-									<div class="panel-group m_0" id="accordion" role="tablist" aria-multiselectable="true">
-									  <div class="panel panel-default">
-										<div class="panel-heading  bg_e9" role="tab" id="headingOne">
-										  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-											<h4 class="panel-title text-bold">
-											 Leadership Skills
-											  <span class="pull-right">
-												<span class="text-warning font-12">180<span class="text-italic"> members ready for training b/w 01-15 dates</span></span>
-												<i class="glyphicon glyphicon-chevron-up"></i>
-											  </span>
-											</h4>
-										  </a>
-										</div>
-										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-										  <div class="panel-body  pad_5">
-											<table class="table table-bordered m_0">
-												<tr>
-													<td>BATCH NAME</td>
-													<td>MEMBERS ACCEPTED</td>
-													<td>TRAINING DATE</td>
-													<td>BATCH TRAINER</td>
-												</tr>
-												<tr>
-													<td>SVV_Batch_201503</td>
-													<td>100</td>
-													<td>Aug_2015_1 to 3</td>
-													<td>Trainer name</td>
-												</tr>
-												<tr>
-													<td>EWK_Batch_201503</td>
-													<td>100</td>
-													<td>Aug_2015_1 to 3</td>
-													<td>Trainer name</td>
-												</tr>
-												<tr>
-													<td>GPN_Batch_201503</td>
-													<td>100</td>
-													<td>Aug_2015_1 to 3</td>
-													<td>Trainer name</td>
-												</tr>
-											</table>
-										  </div>
-										</div>
-									  </div>
-									  <div class="panel panel-default">
-										<div class="panel-heading bg_e9" role="tab" id="headingTwo">
-											<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-												<h4 class="panel-title text-bold">
-													Election Year
-												  <span class="pull-right">
-													<span class="text-warning font-12">180<span class="text-italic"> members ready for training b/w 01-15 dates</span></span>
-													<i class="glyphicon glyphicon-chevron-up"></i>
-												  </span>
-												</h4>
-											</a>
-										</div>
-										<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-										  <div class="panel-body" style="padding-bottom:0px;">
-											
-										  </div>
-										</div>
-									  </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 col-xs-12">
+						<div class="col-md-12 col-xs-12 m_top20">
 							<div class="panel panel-default">
 								<div class="panel-heading pad_5 pad_bottom0">
-									<ul class="nav nav-tabs tab-list display-style" role="tablist">
+									<ul class="nav nav-tabs tab-list" role="tablist">
 										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">AGENTS CALL DATA PROGRESS - MEMBERS AVAILABILITY</a></li>
 										<li><a href="#participated" class="text-bold" data-toggle="tab">MEMBERS ACCEPTANCE</a></li>
-										<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span>
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
 									<div>
-									  <!-- Nav tabs -->
-									  
-									  <!-- Tab panes -->
 									  <div class="tab-content">
-										<div role="tabpanel" class="tab-pane active" id="area">
-											<table class="table table-bordered m_0">
+										<div role="tabpanel" class="tab-pane active memberAvailabilityDivCls" id="area">
+										<center><img id="dataLoadingsImgForProgressOfAgentCountId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
+											<!--<table class="table table-bordered m_0">
 												<thead>
 													<th>Agent Name</th>
 													<th>Assigned Calls</th>
 													<th>Completed Calls</th>
 													<th>Pending Calls</th>
-													<th>Interested Members</th>
-													<th>Interested in next time</th>
-													<th>Totally not interested</th>
+													<th class="font-12">
+                                                    	Scheduled Camp <br/>Interested Members
+                                                        
+                                                    </th>
+													<th>Interested Later</th>
+													<th>Not interested</th>
 												</thead>
 												<tbody>
 													<tr>
@@ -458,7 +553,7 @@
 														<td>70</td>
 													</tr>
 												</tbody>
-											</table>
+											</table>-->
 										</div>
 										<div role="tabpanel" class="tab-pane" id="participated">
 											
@@ -467,8 +562,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</div> 
+					</div>  
 				</div>
 			</div>
 		</div>
@@ -513,14 +608,155 @@ $(".count-hover-scroll").mCustomScrollbar({
 	theme:"minimal-dark"
 });
 $(".table-scroll").mCustomScrollbar({
-	setHeight:350,
+	setHeight:470,
 	theme:"minimal-dark"
 });
 $(document).ready(function() {
-  $('.CustomCalendar').daterangepicker(null, function(start, end, label) {
+  /* var cb = function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
+	$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+  }
+
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#reportrange').daterangepicker(optionSet1, cb);
+
+  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
   });
+  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 });
+
+ */
+
+   var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	minDate: '01/01/2012',
+	maxDate: '12/31/2015',
+	//dateLimit: { days: 60 },
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary newsSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+
+  var optionSet2 = {
+	startDate: moment().subtract(7, 'days'),
+	endDate: moment(),
+	opens: 'left',
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	}
+  };
+
+  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#reportrange').daterangepicker(optionSet1, cb);
+
+  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+  $('#options1').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+  });
+
+  $('#options2').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+  });
+
+  $('#destroy').click(function() {
+	$('#reportrange').data('daterangepicker').remove();
+  });
+  
+	getCallerWiseCallsDetails();
+	getTrainingProgramMembersBatchCount();
+	getScheduleAndConfirmationCallsOfCallerToAgent();
+
+});
+
 </script>
 <script type="text/javascript">
 $(function () {
@@ -567,56 +803,275 @@ $(function () {
         }]
     });
 });
-getCallerWiseCallsDetails();
-function getCallerWiseCallsDetails(){
-	
-	var jsObj={
-		searchType:"",
-		fromdate:"08/02/2015",
-		toDate :"08/05/2015"
-	}
-	$.ajax({
-			type:'POST',
-			 url: 'getCallerWiseCallsDetailsAction.action',
-			 data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-					
-			});
-	
-}
-getTrainingProgramMembersBatchCount();
-function getTrainingProgramMembersBatchCount(){
-	
-	var jsObj={
-		fromdate:"09/01/2015",
-		toDate :"09/30/2015"
-	}
-	$.ajax({
-			type:'POST',
-			 url: 'getTrainingProgramMembersBatchCountAction.action',
-			 data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-					
-			});
-	
-}
-getScheduleAndConfirmationCallsOfCallerToAgent();
-function getScheduleAndConfirmationCallsOfCallerToAgent(){
-	
-	var jsObj={
-			fromdate:"08/02/2015",
-			toDate :"08/05/2015"
-	}
-	$.ajax({
-			type:'POST',
-			 url: 'getScheduleAndConfirmationCallsOfCallerToAgentAction.action',
-			 data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-					
-			});
-	
-}
 
 </script>
+<script>
+	
+	function getCallerWiseCallsDetails(){
+		
+		$("#memberAvailabilityDivCls").html("");
+		$("#statusWiseCountArraId").html("");
+		$("#totalCallsPerCallerId").html("");
+		$("#todayCallsPerCallerId").html("");
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+		
+		var jsObj={
+			searchType:"",
+			/* fromdate:"08/02/2015",
+			toDate :"08/05/2015" */
+			fromdate : fromDate,
+			toDate   : toDate
+		}
+		$.ajax({
+				type:'POST',
+				 url: 'getCallerWiseCallsDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result !=null){ 
+						$("#totalCallsPerCallerId").html(result.totalCount);
+						$("#todayCallsPerCallerId").html(result.todayAllocatedCalls);
+						buildingCallerWiseCallsDetails(result);
+					}
+					else{
+						$("#memberAvailabilityDivCls").html("problem occured.please contact admin.");
+					}
+				});
+		
+	}
+	function buildingCallerWiseCallsDetails(result){
+		var str='';
+				if(result.trainingCampVOList !=null){
+						str+='<table class="table table-bordered m_0" id="dataNotAvailableDiv">';
+							str+='<thead >';
+								str+='<th>Agent Name</th>';
+								str+='<th>Assigned Calls</th>';
+								str+='<th>Completed Calls</th>';
+								str+='<th>Pending Calls</th>';
+								
+									if(result.trainingCampVOList[0].trainingCampVOList !=null){
+									for(var i in result.trainingCampVOList[0].trainingCampVOList){
+										str+='<th class="font-12" id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
+									}
+								 }
+								
+							str+='</thead>';
+							str+='<tbody>';
+							
+							if(result.trainingCampScheduleVOList !=null && result.trainingCampScheduleVOList.length>0){
+								buildingStatusWiseCountForUpper(result.trainingCampScheduleVOList);
+							}
+							
+							if(result.trainingCampVOList !=null && result.trainingCampVOList.length>0){
+								for(var i in result.trainingCampVOList){
+									str+='<tr>';
+									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].id+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].completedCallsCount+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
+									
+									if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0){
+										for(var j in result.trainingCampVOList[i].trainingCampVOList){
+											str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+										}
+									}
+									str+='</tr>';
+								}
+							}
+							else{
+								str+='<tr>Data Not Available</tr>';
+							}
+								
+							str+='</tbody>';
+						str+='</table>';
+					$(".memberAvailabilityDivCls").html(str);	
+				}else{
+					$(".memberAvailabilityDivCls").html("Data Not Available.");
+				}
+	}
+	
+	 //totalProgramsCountId totalCampsCountId 
+	 //batchCountOfProgramId batchCountOfCampId
+	
+	function getTrainingProgramMembersBatchCount(){
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+		
+		var jsObj={
+			fromdate:fromDate,
+			toDate :toDate
+			/* fromdate:"09/01/2015",
+			toDate:"09/30/2015" */
+		}
+		$.ajax({
+				type:'POST',
+				 url: 'getTrainingProgramMembersBatchCountAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					var str='';
+					if(result !=null){
+						$("#totalProgramsCountId").html(result.programCount);
+						$("#totalCampsCountId").html(result.campCount);
+						
+						if(result.trainingCampVOList !=null){
+							buildingProgramMembersBatchCount(result);
+						}
+						else{
+							$("#batchCountOfProgramId").html("Program Data  Not Available.")
+						}
+						if(result.trainingCampScheduleVOList !=null){
+							buildingCampMembersBatchCount(result.trainingCampScheduleVOList);
+						}
+						else{
+							$("#batchCountOfCampId").html("Camp Data Not Available");	
+						}
+						
+					}
+						
+				});
+		
+	}
+	function buildingProgramMembersBatchCount(result){
+		
+		var str='';
+		if(result.trainingCampVOList !=null){
+		str+='<table class="table table-hover">';
+										str+='<thead>';
+											str+='<th>PROGRAM NAME</th>';
+											str+='<th>MEMBERS</th>';
+											str+='<th>BATCHES</th>';
+										str+='</thead>';
+										str+='<tbody>';
+										for(var i in result.trainingCampVOList){
+											str+='<tr>';
+												str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
+												str+='<td>'+result.trainingCampVOList[i].totalCount+'</td>';
+												str+='<td>'+result.trainingCampVOList[i].count+'</td>';
+											str+='</tr>';
+										}	
+									str+='</tbody>';
+						str+='</table>';
+			$("#batchCountOfProgramId").html(str);
+		}
+	else{
+		$("#batchCountOfProgramId").html("Program Data Not Available.");
+	}
+		
+		
+	}
+	
+	function buildingCampMembersBatchCount(result){
+		var str='';
+		if(result !=null){
+				str+='<table class="table table-hover">';
+					str+='<thead>';
+						str+='<th>PROGRAM NAME</th>';
+						str+='<th>MEMBERS</th>';
+						str+='<th>BATCHES</th>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].count+'</td>';
+							str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
+				
+				$("#batchCountOfCampId").html(str);
+		}
+		else{
+			$("#batchCountOfCampId").html("Camp Data Not Availale");
+		}
+		
+	}
+	
+	
+	function getScheduleAndConfirmationCallsOfCallerToAgent(){
+		
+		$("#callPurposeCountDivId").html("");
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+		
+		var jsObj={
+				fromdate:fromDate,
+				toDate :toDate
+		}
+		$.ajax({
+				type:'POST',
+				 url: 'getScheduleAndConfirmationCallsOfCallerToAgentAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					var str='';
+					if(result !=null && result.length>0){
+						str+='<table class="table table-bordered m_0">';
+							str+='<tr>';
+								str+='<td class="pad_5">';
+									str+='<h4 class="display-style m_0">Calls Assigned <br/>to agents</h4>';
+									str+='<span class="pull-right"><h2 class="m_0">'+result[0].totalAssignedCount+'</h2></span>';
+								str+='</td>';
+								str+='<td class="pad_5 text-yellow">';
+									str+='<p class="m_0 font-10">Agents <br/>Dialled</p>';
+									str+='<h4 class="m_0 text-yellow">'+result[0].totalDialedCallsCount+'</h4>';
+								str+='</td>';
+							str+='</tr>';
+							for(var i in result){
+								str+='<tr>';
+									str+='<td class="pad_5" id="'+result[i].id+'">'+result[i].name+'<span class="pull-right">'+result[i].count+'</span>';
+									str+='</td>';
+									str+='<td class="pad_5">';
+										str+='<h4 class="m_0 text-yellow">'+result[i].dialedCallsCount+'</h4>';
+									str+='</td>';
+								str+='</tr>';
+							}
+						str+='</table>';
+						
+						$("#callPurposeCountDivId").html(str);
+					}
+					else{
+						$("#callPurposeCountDivId").html("Some problem occured while processing data.Please contact Admin.")
+					}
+				});
+		
+	}
+	
+	//status Wise Count showing   
+	function buildingStatusWiseCountForUpper(result){
+		var str='';
+		if(result !=null){
+			for(var i in result){
+				str+='<table class="table table-bordered m_0">';
+					str+='<tr>';
+						str+='<td>';
+							str+='<h4 class="m_bottom0 text-custom" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						str+='</td>';
+					str+='</tr>';
+				str+='</table>';
+			}
+			$("#statusWiseCountArraId").html(str);
+		}
+	}
+	
+	
+	
+	$(document).on("click",".ranges li",function(){
+		getCallerWiseCallsDetails();
+		getTrainingProgramMembersBatchCount();
+		getScheduleAndConfirmationCallsOfCallerToAgent();
+	});	
+	$(document).on("click",".newsSubmitBtn",function(){
+		getCallerWiseCallsDetails();
+		getTrainingProgramMembersBatchCount();
+		getScheduleAndConfirmationCallsOfCallerToAgent();
+	})
+
+</script>
+
+
 </body>
 </html>
