@@ -307,8 +307,6 @@ public class TrainingCampService implements ITrainingCampService{
 						if(schedulesList!=null && schedulesList.size()>0){
 							for(TrainingCampScheduleVO schedule:schedulesList){
 								if(schedule.getStatusId().longValue()==statusId.longValue()){
-									schedule.setId((Long)obj[0]);
-									schedule.setName("");
 									schedule.setCount(obj[3]!=null?(Long)obj[3]:0l);
 								}
 							}
@@ -838,9 +836,13 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(listForProgramVo !=null && listForProgramVo.size()>0){
+				Long programCount=(long) listForProgramVo.size();
+				finalTrainingVo.setProgramCount(programCount);
 				finalTrainingVo.setTrainingCampVOList(listForProgramVo);//ProgramWise List
 			}
 			if(listForCampVo !=null && listForCampVo.size()>0){
+				Long campCount=(long) listForCampVo.size();
+				finalTrainingVo.setCampCount(campCount);
 				finalTrainingVo.setTrainingCampScheduleVOList(listForCampVo);//CampWise List
 			}
 			
