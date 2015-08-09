@@ -27,9 +27,23 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long pendingCalls;
 	private String scheduleName;
 	private String memberStatus;
+	private String startDateStr;
+	private String endDateStr;
 	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
 	
 	
+	public String getStartDateStr() {
+		return startDateStr;
+	}
+	public String getEndDateStr() {
+		return endDateStr;
+	}
+	public void setStartDateStr(String startDateStr) {
+		this.startDateStr = startDateStr;
+	}
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
+	}
 	public String getMemberStatus() {
 		return memberStatus;
 	}
