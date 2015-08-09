@@ -277,15 +277,38 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		return scheduleAndConfirmationCallsQuery.list();
 	}
 	
-	public List<Object[]> getStatusWiseCount(List<Long> userIds,Date startDate,Date endDate){
+	public List<Object[]> getStatusWiseCount(List<Long> userIds,Date startDate,Date endDate,String searchType){
 		
-		Query query=getSession().createQuery("select model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId," +
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId," +
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
-				" from  TrainingCampScheduleInviteeCaller model" +
-				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null " +
-				" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) " +
-				" and model.trainingCampUser.userId in (:userIds) " +
-				" group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+				" from  TrainingCampScheduleInviteeCaller model " +
+				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
+		if(startDate !=null && endDate !=null){
+			queryStr.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		if(userIds != null && userIds.size()>0){
+			queryStr.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Not Started' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("running"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Progress' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("completed"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Completed' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("cancelled"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+		}
+		
+		queryStr.append(" group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		Query query=getSession().createQuery(queryStr.toString());
 		
 		
 		if(startDate !=null && endDate !=null){
@@ -301,6 +324,59 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 	}
 	
 	
+public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date startDate,Date endDate,String searchType,String purpose){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode, " +
+				" model.campCallPurpose.campCallPurpose," +
+				" model.campCallPurpose.purpose," +
+				" count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
+				" from  TrainingCampScheduleInviteeCaller model " +
+				" where model.campCallPurpose.campCallPurpose is not null ");
+		if(startDate !=null && endDate !=null){
+			queryStr.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		if(userIds != null && userIds.size()>0){
+			queryStr.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Not Started' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("running"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Progress' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("completed"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Completed' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("cancelled"))
+		{
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+		}
+		if(purpose != null && !purpose.isEmpty())
+			queryStr.append(" and model.campCallPurpose.purpose like '%"+purpose+"%'");
+		
+		queryStr.append(" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId, model.campCallPurpose.campCallPurpose ");
+		Query query=getSession().createQuery(queryStr.toString());
+		
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			query.setParameterList("userIds", userIds);
+		}
+		
+		
+		return query.list();
+	}
+
 	public List<Long> getAlreadyInvitedMembersInviteeIdsListByScheduleId(Long scheduleId,Long callPurposeId)
 	{
 		StringBuilder queryStr = new StringBuilder();

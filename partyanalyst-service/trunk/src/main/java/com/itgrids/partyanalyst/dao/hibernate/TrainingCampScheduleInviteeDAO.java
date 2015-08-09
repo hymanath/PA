@@ -15,11 +15,16 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		super(TrainingCampScheduleInvitee.class);
 	}
 
-	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String membersType, String searchType, Date startDate, Date endDate)
+	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String searchType, Date startDate, Date endDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select TCSI.trainingCampSchedule.trainingCamp.campName,TCSI.trainingCampSchedule.trainingCampScheduleCode ");
-		queryStr.append(" ,TCSI.scheduleInviteeStatus.scheduleInviteeStatusId,TCSI.scheduleInviteeStatus.status ,count(distinct TCSI.tdpCadreId) ");
+		queryStr.append("select TCSI.trainingCampSchedule.trainingCamp.campName," +
+				"TCSI.trainingCampSchedule.trainingCampProgram.programName," +
+				"TCSI.trainingCampSchedule.trainingCampScheduleCode ");
+		queryStr.append(" ,TCSI.scheduleInviteeStatus.scheduleInviteeStatusId," +
+				"TCSI.scheduleInviteeStatus.status ," +
+				"count(distinct TCSI.tdpCadreId)," +
+				"TCSI.trainingCampSchedule.trainingCampScheduleId ");
 		
 		queryStr.append(" from TrainingCampScheduleInvitee TCSI,TrainingCampBatch TCB where TCSI.trainingCampSchedule.trainingCampId = TCB.trainingCampBatchId ");
 		
@@ -43,7 +48,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		{
 			queryStr.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
 		}
-		queryStr.append(" group by TCSI.trainingCampSchedule.trainingCamp.trainingCampId,TCSI.trainingCampSchedule.trainingCampScheduleCode,TCSI.scheduleInviteeStatus.scheduleInviteeStatusId order by " +
+		queryStr.append(" group by TCSI.trainingCampSchedule.trainingCamp.trainingCampId,TCSI.trainingCampSchedule.trainingCampScheduleId," +
+				" TCSI.scheduleInviteeStatus.scheduleInviteeStatusId order by " +
 				" TCSI.trainingCampSchedule.trainingCamp.trainingCampId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(startDate != null && endDate != null)
