@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +13,11 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
+import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
@@ -40,14 +43,43 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private TrainingMemberVO memberList ;
 	private String statusType;
 	private String batchId;
-	private List<IdNameVO> idNameVOList ;
+	private List<BasicVO> basicList;
+	private List<IdNameVO> idNameList;
+	private ResultStatus resultStatus;
+	private TrainingCampVO trainingCampVO;
+	
 
-	public List<IdNameVO> getIdNameVOList() {
-		return idNameVOList;
+	
+	public TrainingCampVO getTrainingCampVO() {
+		return trainingCampVO;
 	}
 
-	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
-		this.idNameVOList = idNameVOList;
+	public void setTrainingCampVO(TrainingCampVO trainingCampVO) {
+		this.trainingCampVO = trainingCampVO;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public List<IdNameVO> getIdNameList() {
+		return idNameList;
+	}
+
+	public void setIdNameList(List<IdNameVO> idNameList) {
+		this.idNameList = idNameList;
+	}
+
+	public List<BasicVO> getBasicList() {
+		return basicList;
+	}
+
+	public void setBasicList(List<BasicVO> basicList) {
+		this.basicList = basicList;
 	}
 
 	public String getBatchId() {
@@ -178,7 +210,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public String execute(){
 		return Action.SUCCESS;
 	}
-	public String callCenterTrainingAdmin(){
+	public String callCenterTrainingAdmin()
+	{
+		try
+		{
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
+		}
 		return Action.SUCCESS;
 	}
 	public String callCenterTrainingAgent(){
@@ -333,6 +372,102 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getAllCampBatchesAction(){
+		
+		try{
+			idNameList = trainingCampService.getAllTrainingCampsInfoByDistrictIds(null);
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getAllCampBatchesAction method in TrainingCampAction class.",e);
+		}
+		
+		return Action.SUCCESS;
+	
+	}
+	
+	public String getAllProgramsListAction(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long campId = jObj.getLong("campId");
+			List<Long> campIds = new ArrayList<Long>();
+			campIds.add(campId);
+			
+			idNameList = trainingCampService.getProgrammesDetailsByCamps(campIds);
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getAllProgramsListAction method in TrainingCampAction class.",e);
+		}
+		
+		return Action.SUCCESS;
+	
+	}
+	
+	public String getAllScheduleListAction(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long programId = jObj.getLong("programId");
+			List<Long> programIds = new ArrayList<Long>();
+			programIds.add(programId);
+			
+			idNameList = trainingCampService.getScheduledDetailsByProgrammes(programIds);
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getAllScheduleListAction method in TrainingCampAction class.",e);
+		}
+		
+		return Action.SUCCESS;
+	
+	}
+	
+	public String saveAllDetailsAction(){
+		
+		try{
+			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			Long scheduleId = jObj.getLong("scheduleId");
+			Long membersCount = Long.parseLong(jObj.getString("membersCount"));
+			Long callerId = jObj.getLong("callerId");
+			Long callPurposeId = jObj.getLong("callPurposeId");
+			
+			resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId);
+		}catch (Exception e) {
+			LOG.error(" Exception occured in saveAllDetailsAction method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCampusWiseDateWiseInterestedMembersDetails(){
+		
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			String startDate = jObj.getString("fromdate");
+			String endDate = jObj.getString("toDate");
+			
+			trainingCampVO = trainingCampService.getCampusWiseDateWiseInterestedMembersDetails(searchType,startDate,endDate);
+		}catch(Exception e) {
+			LOG.error(" Exception occured in getCampusWiseDateWiseInterestedMembersDetails method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCampusWiseBatchWiseMembersDetails(){
+		
+		try{
+			
+			List<Long> callerIdsList = new ArrayList<Long>(0);
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			String startDate = jObj.getString("fromdate");
+			String endDate = jObj.getString("toDate");
+			
+			trainingCampVO = trainingCampService.getCampusWiseBatchWiseMembersDetails(callerIdsList,searchType,startDate,endDate);
+		}catch(Exception e) {
+			LOG.error(" Exception occured in getCampusWiseBatchWiseMembersDetails method in TrainingCampAction class.",e);
+		}
 		return Action.SUCCESS;
 	}
 	
