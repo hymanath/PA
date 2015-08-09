@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrainingCampVO implements java.io.Serializable{
 
 	private Long id;
@@ -22,6 +25,29 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long assignedCalls;
 	private Long completedCalls;
 	private Long pendingCalls;
+	private String scheduleName;
+	private String memberStatus;
+	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+	
+	
+	public String getMemberStatus() {
+		return memberStatus;
+	}
+	public void setMemberStatus(String memberStatus) {
+		this.memberStatus = memberStatus;
+	}
+	public String getScheduleName() {
+		return scheduleName;
+	}
+	public void setScheduleName(String scheduleName) {
+		this.scheduleName = scheduleName;
+	}
+	public List<TrainingCampVO> getTrainingCampVOList() {
+		return trainingCampVOList;
+	}
+	public void setTrainingCampVOList(List<TrainingCampVO> trainingCampVOList) {
+		this.trainingCampVOList = trainingCampVOList;
+	}
 	public Long getId() {
 		return id;
 	}
