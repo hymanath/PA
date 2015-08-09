@@ -587,7 +587,7 @@ public class TrainingCampService implements ITrainingCampService{
 			{
 
 				String[] memberTypesArr = {"INTERESTED","NOT NOW","NOT INTERESTED"};
-				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails("NotStarted", startDate, endDate);
+				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails(searchType, startDate, endDate);
 				
 				Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,List<TrainingCampVO>>>>(0);
 				Map<Long,Long> interestedMembersForSchedulMap = new LinkedHashMap<Long, Long>(0);
@@ -747,37 +747,77 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error(" Exception occured in getMatchedVOforMemberStatus method in TrainingCampService class.",e);
 		}
 		return returnVO;
 	}
 	
-	public ResultStatus assignInviteesToCallersForScheduleConfirmation(Long inviteesCount, Long adminId, Long callerId,String searchTypeId,String startDate,String endDate)
+	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchType,String startDateStr,String endDateStr)
 	{
-		ResultStatus status = new ResultStatus();
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+		TrainingCampVO returnVO = new TrainingCampVO();
 		try {
-			
-		} catch (Exception e) {
-			LOG.error(" Exception occured in assignInviteesToCallersForScheduleConfirmation method in TrainingCampService class.",e);
-		}
-		return status;
-	}
-	
-	public ResultStatus assignInviteesToCallersForBatchConfirmation(Long inviteesCount, Long adminId, Long callerId,String searchTypeId,String startDate,String endDate)
-	{
-		ResultStatus status = new ResultStatus();
-		try {
-			
-		} catch (Exception e) {
-			LOG.error(" Exception occured in assignInviteesToCallersForBatchConfirmation method in TrainingCampService class.",e);
-		}
-		return status;
-	}
-	
-	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate)
-	{
-		TrainingCampVO returnVO = null;
-		try {
+			Date startDate= format.parse(startDateStr);
+			Date endDate= format.parse(endDateStr);
+			List<Object[]> interestedMembersList = trainingCampScheduleInviteeDAO.getBatchWiseProgramWiseInterestedMembersDetails("interested",  searchType,  startDate,  endDate);
+			Map<String,Map<String,List<TrainingCampVO>>> programWiseInterestedMembersMap = new LinkedHashMap<String,Map<String, List<TrainingCampVO>>>(0);
+			if(interestedMembersList != null && interestedMembersList.size()>0)
+			{
+				for (Object[] member : interestedMembersList) {
+					String programName = commonMethodsUtilService.getStringValueForObject(member[1]);
+					String campName = commonMethodsUtilService.getStringValueForObject(member[3]);
+					Map<String,List<TrainingCampVO>> campsWiseInterestedMembersMap = new LinkedHashMap<String, List<TrainingCampVO>>(0);
+					List<TrainingCampVO>  scheduleVOList = new ArrayList<TrainingCampVO>(0);
+					
+					if(programWiseInterestedMembersMap.get(programName) != null)
+					{
+						campsWiseInterestedMembersMap = programWiseInterestedMembersMap.get(programName);
+					}
+					if(campsWiseInterestedMembersMap.get(campName) != null)
+					{
+						scheduleVOList = campsWiseInterestedMembersMap.get(campName);
+					}
+					
+					TrainingCampVO vo = new TrainingCampVO();
+					vo.setName(programName);
+					vo.setTrainingCampName(campName);
+					vo.setStartDateStr(commonMethodsUtilService.getStringValueForObject(member[4]));
+					vo.setEndDateStr(commonMethodsUtilService.getStringValueForObject(member[5]));
+					vo.setBatchConfirmationCount(commonMethodsUtilService.getLongValueForObject(member[6]));
+					scheduleVOList.add(vo);
+					campsWiseInterestedMembersMap.put(campName, scheduleVOList);
+					programWiseInterestedMembersMap.put(programName, campsWiseInterestedMembersMap);
+					
+				}
+				
+				if(programWiseInterestedMembersMap != null && programWiseInterestedMembersMap.size()>0)
+				{
+					List<TrainingCampVO> trainingProgramsList = new ArrayList<TrainingCampVO>(0);
+					for (String programNameStr : programWiseInterestedMembersMap.keySet()) {
+						TrainingCampVO programVO = new TrainingCampVO();
+						programVO.setName(programNameStr);
+						
+						Map<String,List<TrainingCampVO>> campsWiseInterestedMembersMap = programWiseInterestedMembersMap.get(programNameStr);
+						if(campsWiseInterestedMembersMap != null && campsWiseInterestedMembersMap.size()>0)
+						{
+							List<TrainingCampVO> campusVOList = new ArrayList<TrainingCampVO>(0);
+							for (String campusName : campsWiseInterestedMembersMap.keySet()) {
+								TrainingCampVO campVO = new TrainingCampVO();
+								campVO.setTrainingCampVOList(campsWiseInterestedMembersMap.get(campusName));
+								campusVOList.add(campVO);
+							}
+							if(campusVOList != null && campusVOList.size()>0)
+							{
+								programVO.setTrainingCampVOList(campusVOList);
+							}
+							
+						}
+						trainingProgramsList.add(programVO);
+					}
+					
+					returnVO.setTrainingCampVOList(trainingProgramsList);
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseDateWiseInterestedMembersDetails method in TrainingCampService class.",e);
