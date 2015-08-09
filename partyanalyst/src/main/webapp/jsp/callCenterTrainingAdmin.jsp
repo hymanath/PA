@@ -140,7 +140,7 @@
 										<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING BATCH</a></li>
 										<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED BATCH</a></li>
 										<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED BATCH</a></li>
-                                        <li class="col-md-3 col-md-offset-1">
+                                        <li class="col-md-3">
                                         	<div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
