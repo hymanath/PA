@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
@@ -25,14 +28,15 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -40,24 +44,32 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 public class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
-	private ITrainingCampScheduleInviteeCallerDAO trainingCampScheduleInviteeCallerDAO;
-	private ITrainingCampDAO trainingCampDAO;
-	private ITrainingCampDistrictDAO trainingCampDistrictDAO;
-	private IScheduleInviteeStatusDAO scheduleInviteeStatusDAO;
-	private ITrainingCampScheduleDAO trainingCampScheduleDAO;
-	private ITrainingCampScheduleInviteeTrackDAO trainingCampScheduleInviteeTrackDAO;
-	private ITrainingCampProgramDAO trainingCampProgramDAO;
-	private ITrainingCampBatchDAO trainingCampBatchDAO;
-	private IBatchStatusDAO batchStatusDAO;
-	private ITrainingCampScheduleInviteeDAO trainingCampScheduleInviteeDAO;
-	private ITrainingCampUserDAO trainingCampUserDAO;
-	private ITrainingCampUserTypeDAO trainingCampUserTypeDAO;
-	private ICampCallPurposeDAO campCallPurposeDAO;
-	private ICampCallStatusDAO campCallStatusDAO;
+	private ITrainingCampScheduleInviteeCallerDAO 	trainingCampScheduleInviteeCallerDAO;
+	private ITrainingCampDAO 						trainingCampDAO;
+	private ITrainingCampDistrictDAO 				trainingCampDistrictDAO;
+	private IScheduleInviteeStatusDAO 				scheduleInviteeStatusDAO;
+	private ITrainingCampScheduleDAO 				trainingCampScheduleDAO;
+	private ITrainingCampScheduleInviteeTrackDAO 	trainingCampScheduleInviteeTrackDAO;
+	private ITrainingCampProgramDAO 				trainingCampProgramDAO;
+	private ITrainingCampBatchDAO 					trainingCampBatchDAO;
+	private IBatchStatusDAO 						batchStatusDAO;
+	private ITrainingCampScheduleInviteeDAO 		trainingCampScheduleInviteeDAO;
+	private ITrainingCampUserDAO 					trainingCampUserDAO;
+	private ITrainingCampUserTypeDAO 				trainingCampUserTypeDAO;
+	private ICampCallPurposeDAO 					campCallPurposeDAO;
+	private ICampCallStatusDAO 						campCallStatusDAO;
+	private TransactionTemplate            			transactionTemplate;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private DateUtilService dateUtilService;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 	
 	
 	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
@@ -150,6 +162,137 @@ public class TrainingCampService implements ITrainingCampService{
 		this.dateUtilService = dateUtilService;
 	}
 
+	
+	public List<IdNameVO> getAllTrainingCampsInfoByDistrictIds(List<Long> districtIds)
+	{
+		List<IdNameVO> trainingCampsList = null;
+		try {
+			List<Object[]> trainingCamps = trainingCampDistrictDAO.getCampDetailsByDistrictIds(districtIds);
+			if(trainingCamps != null && trainingCamps.size()>0){
+				trainingCampsList = new ArrayList<IdNameVO>();
+				for (Object[] camp : trainingCamps) {
+					Long campId = commonMethodsUtilService.getLongValueForObject(camp[0]);
+					String campName = commonMethodsUtilService.getStringValueForObject(camp[1]);
+					IdNameVO idNameVO = new IdNameVO();
+					idNameVO.setId(campId);
+					idNameVO.setName(campName);
+					trainingCampsList.add(idNameVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getAllScheduleInfo method in TrainingCampService class.",e);
+		}
+		return trainingCampsList;
+	}
+	
+	public List<IdNameVO> getProgrammesDetailsByCamps(List<Long> campIdsList)
+	{
+		List<IdNameVO> programmesList = null;
+		try {
+			List<Object[]> programmes = trainingCampScheduleDAO.getProgrammesListByCampsList(campIdsList);
+			if(programmes != null && programmes.size()>0){
+				programmesList = new ArrayList<IdNameVO>();
+				for (Object[] camp : programmes) {
+					Long campId = commonMethodsUtilService.getLongValueForObject(camp[0]);
+					String campName = commonMethodsUtilService.getStringValueForObject(camp[1]);
+					IdNameVO idNameVO = new IdNameVO();
+					idNameVO.setId(campId);
+					idNameVO.setName(campName);
+					programmesList.add(idNameVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getAllScheduleInfo method in TrainingCampService class.",e);
+		}
+		return programmesList;
+	}
+	
+	public List<IdNameVO> getScheduledDetailsByProgrammes(List<Long> programIds)
+	{
+		List<IdNameVO> scheduleList = null;
+		try {
+			List<Object[]> programmes = trainingCampScheduleDAO.getScheduledDetailsByProgrammes(programIds);
+			if(programmes != null && programmes.size()>0){
+				scheduleList = new ArrayList<IdNameVO>();
+				for (Object[] camp : programmes) {
+					Long campId = commonMethodsUtilService.getLongValueForObject(camp[0]);
+					String campName = commonMethodsUtilService.getStringValueForObject(camp[1]);
+					IdNameVO idNameVO = new IdNameVO();
+					idNameVO.setId(campId);
+					idNameVO.setName(campName);
+					scheduleList.add(idNameVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getAllScheduleInfo method in TrainingCampService class.",e);
+		}
+		return scheduleList;
+	}
+	
+	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
+	{
+		ResultStatus status  = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					List<Long> alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
+					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,alreadyInvitedMemberIdsList,Integer.valueOf(membersCount.toString()));
+					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
+					{
+						DateUtilService dateutilService = new DateUtilService();
+						
+						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
+							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
+							trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+							trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
+							trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
+							trainingCampScheduleInviteeCaller.setInsertedBy(userId);
+							trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
+							trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
+							trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+						}
+					}
+				}
+			});
+		} catch (Exception e) {
+			LOG.error(" Exception occured in assignMembersToCallerForMemberConfirmation method in TrainingCampService class.",e);
+		}
+		
+		return status;
+	}
+	 
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
+	{
+		ResultStatus status  = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					List<Long> alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
+					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,alreadyInvitedMemberIdsList,Integer.valueOf(membersCount.toString()));
+					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
+					{
+						DateUtilService dateutilService = new DateUtilService();
+						
+						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
+							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
+							trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+							trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
+							trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
+							trainingCampScheduleInviteeCaller.setInsertedBy(userId);
+							trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
+							trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
+							trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+						}
+					}
+				}
+			});
+		} catch (Exception e) {
+			LOG.error(" Exception occured in assignMembersToCallerForMemberConfirmation method in TrainingCampService class.",e);
+		}
+		
+		return status;
+	}
+	
 	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString)
 	{
 		List<TrainingCampScheduleVO> finalList=null;
