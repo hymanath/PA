@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
@@ -16,7 +16,7 @@ public interface ITrainingCampService {
 	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
 	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
 	public TrainingCampVO getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
-	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
+	//public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
 	public List<Long> getTrainingCampUserTypeIds();
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
@@ -24,6 +24,10 @@ public interface ITrainingCampService {
 	//public List<BasicVO> getAllschedules();
 	public TrainingCampScheduleVO getTrainingProgramMembersBatchCount(String startDateString,String endDateString);
 	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString);
-	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
+	public List<IdNameVO> getAllTrainingCampsInfoByDistrictIds(List<Long> districtIds);
+	public List<IdNameVO> getProgrammesDetailsByCamps(List<Long> campIdsList);
+	public List<IdNameVO> getScheduledDetailsByProgrammes(List<Long> programIds);
 	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
+	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(String searchType,String startDateStr,String endDateStr);
 }

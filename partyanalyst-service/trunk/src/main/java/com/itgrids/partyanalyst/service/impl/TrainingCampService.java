@@ -29,7 +29,6 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -752,7 +751,7 @@ public class TrainingCampService implements ITrainingCampService{
 		return returnVO;
 	}
 	
-	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchType,String startDateStr,String endDateStr)
+	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(String searchType,String startDateStr,String endDateStr)
 	{
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
 		TrainingCampVO returnVO = new TrainingCampVO();

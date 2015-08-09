@@ -40,6 +40,8 @@ public class TrainingCampScheduleInvitee {
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private Date callBackTime;
+	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -161,4 +163,12 @@ public class TrainingCampScheduleInvitee {
 		this.updatedTime = updatedTime;
 	}
 	
+	@Column(name = "call_back_time")
+	public Date getCallBackTime() {
+		return callBackTime;
+	}
+	public void setCallBackTime(Date callBackTime) {
+		this.callBackTime = callBackTime;
+	}
+
 }
