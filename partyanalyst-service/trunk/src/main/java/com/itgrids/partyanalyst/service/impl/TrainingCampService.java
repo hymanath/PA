@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -425,7 +426,7 @@ public class TrainingCampService implements ITrainingCampService{
 			if(totalDialedCalls !=null && totalDialedCalls.size()>0){
 				for(Object[] dialed:totalDialedCalls){
 					if(dialed[1] !=null){
-						dialedCallsCount=dialedCallsCount+(Long)dialed[1] ;//allocating dialedCallsCount
+						dialedCallsCount=dialedCallsCount+commonMethodsUtilService.getLongValueForObject(dialed[1]) ;//allocating dialedCallsCount
 					}
 				}
 			}
@@ -434,16 +435,16 @@ public class TrainingCampService implements ITrainingCampService{
 			 //
 			
 			//statusWiseCount For upper Block in call center admin page
-			List<Object[]> statusWiseCountList = trainingCampScheduleInviteeCallerDAO.getStatusWiseCount(userIds,startDate,endDate);
+			List<Object[]> statusWiseCountList = trainingCampScheduleInviteeCallerDAO.getStatusWiseCount(userIds,startDate,endDate,null);
 			
 			List<TrainingCampScheduleVO> statusWiseCountLi = new ArrayList<TrainingCampScheduleVO>();
 			if(statusWiseCountList !=null && statusWiseCountList.size()>0){
 				for (Object[] object : statusWiseCountList) {
 					TrainingCampScheduleVO vo =new TrainingCampScheduleVO();
 					
-					vo.setStatusId(object[0] !=null ? (Long)object[0]:0l);
-					vo.setStatus(object[1] !=null ? object[1].toString() :"");
-					vo.setCount(object[2] !=null ? (Long)object[2]:0l);
+					vo.setStatusId(commonMethodsUtilService.getLongValueForObject(object[0]));
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(object[1]));
+					vo.setCount(commonMethodsUtilService.getLongValueForObject(object[2]));
 					
 					statusWiseCountLi.add(vo);
 				}
@@ -471,8 +472,8 @@ public class TrainingCampService implements ITrainingCampService{
 		try{
 			if(listObj !=null && listObj.size()>0){
 				for(Object[] Obj:listObj){
-					Long assignedCount=Obj[1] !=null ? Long.parseLong(Obj[1].toString()):0l;
-					corespondentmap.put(Long.parseLong(Obj[0].toString()),assignedCount);
+					Long assignedCount=commonMethodsUtilService.getLongValueForObject(Obj[1]);
+					corespondentmap.put(Long.parseLong(commonMethodsUtilService.getStringValueForObject(Obj[0])),assignedCount);
 				}
 			}
 		}catch (Exception e) {
@@ -481,18 +482,17 @@ public class TrainingCampService implements ITrainingCampService{
 	}
 	public void setResultToAssignedMap(Map<Long,Long> assignedMap,Map<Long,TrainingCampScheduleVO> finalMap,String type,List<Object[]> allStatus,List<Object[]> callStatusOfinviteesList){
 		
-		
 		try{
 			if(type.equalsIgnoreCase("status")){
 				
 				for(Object[] obj:callStatusOfinviteesList){////0.callerId,1.scheduleInviteeStatusId,2.status,3.count,name
-					TrainingCampScheduleVO assignCampVo =finalMap.get((Long)obj[0]);
+					TrainingCampScheduleVO assignCampVo =finalMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					boolean agentExist=true;
 					
 					if(assignCampVo==null){
 						agentExist=false;
 						assignCampVo=new TrainingCampScheduleVO();
-						assignCampVo.setId((Long)obj[0]);
+						assignCampVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						assignCampVo.setName("");
 						assignCampVo.setAssignedCallsCount(0l);
 						assignCampVo.setCompletedCallsCount(0l);
@@ -500,19 +500,19 @@ public class TrainingCampService implements ITrainingCampService{
 						setStatusSchedules(assignCampVo,allStatus);
 					}
 					if(obj[1]!=null){
-						Long statusId=(Long)obj[1];
+						Long statusId=commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(obj[1]));
 						List<TrainingCampScheduleVO> schedulesList=assignCampVo.getTrainingCampVOList();
 						if(schedulesList!=null && schedulesList.size()>0){
 							for(TrainingCampScheduleVO schedule:schedulesList){
 								if(schedule.getStatusId().longValue()==statusId.longValue()){
-									schedule.setCount(obj[3]!=null?(Long)obj[3]:0l);
+									schedule.setCount(commonMethodsUtilService.getLongValueForObject(obj[3]));
 								}
 							}
 								
 						}
 					}
 					if(!agentExist){
-						finalMap.put((Long)obj[0], assignCampVo);
+						finalMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), assignCampVo);
 					}
 					
 				}
@@ -563,8 +563,8 @@ public class TrainingCampService implements ITrainingCampService{
 			if(allStatus !=null && allStatus.size()>0){
 				for(Object[] status:allStatus){
 					TrainingCampScheduleVO trainingCampScheduleVO=new TrainingCampScheduleVO();
-					trainingCampScheduleVO.setStatusId(status[0] !=null ? Long.parseLong(status[0].toString()) : 0l);
-					trainingCampScheduleVO.setStatus(status[1] !=null ? status[1].toString() :"");
+					trainingCampScheduleVO.setStatusId(commonMethodsUtilService.getLongValueForObject(status[0]));
+					trainingCampScheduleVO.setStatus(commonMethodsUtilService.getStringValueForObject(status[1]));
 					statusScheduleList.add(trainingCampScheduleVO);
 				  }
 			}
@@ -575,22 +575,182 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 	}
 	
-	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate)
+	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchType,String startDateStr,String endDateStr)
 	{
 		TrainingCampVO returnVO = null;
 		try {
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate= format.parse(startDateStr);
+			Date endDate= format.parse(endDateStr);
+			
 			if(callerIdsList == null || callerIdsList.size() == 0)
 			{
-				//trainingCampScheduleInviteeDAO.g
+
+				String[] memberTypesArr = {"INTERESTED","NOT NOW","NOT INTERESTED"};
+				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails("NotStarted", startDate, endDate);
+				
+				Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,List<TrainingCampVO>>>>(0);
+				Map<Long,Long> interestedMembersForSchedulMap = new LinkedHashMap<Long, Long>(0);
+				if(campAndSchedulewiseResultsList != null && campAndSchedulewiseResultsList.size()>0)
+				{
+					returnVO = new TrainingCampVO();
+					for (Object[] campObj : campAndSchedulewiseResultsList) {
+						
+						
+						String memberStatus = commonMethodsUtilService.getStringValueForObject(campObj[4]);
+						if(memberStatus != null && ( memberStatus.equalsIgnoreCase("NOT NOW") || memberStatus.equalsIgnoreCase("Interested") || 
+								memberStatus.equalsIgnoreCase("Not Interested")) )
+						{
+
+							String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
+							String programName = commonMethodsUtilService.getStringValueForObject(campObj[1]);
+							String scheduleName =commonMethodsUtilService.getStringValueForObject(campObj[2]);
+							Long scheduleId =commonMethodsUtilService.getLongValueForObject(campObj[6]);
+							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = new LinkedHashMap<String,Map<Long,List<TrainingCampVO>>>(0);
+							Map<Long,List<TrainingCampVO>> scheduleWiseMap = new LinkedHashMap<Long,List<TrainingCampVO>>(0);
+							List<TrainingCampVO> trainingCampVOList = null;
+							if(programWiseSceduleWiseMap.get(programName) != null)
+							{
+								campWiseMap = programWiseSceduleWiseMap.get(programName);
+							}
+							if(campWiseMap.get(campName) != null)
+							{
+								scheduleWiseMap = campWiseMap.get(campName);
+							}
+							if(scheduleWiseMap.get(scheduleId) != null)
+							{
+								trainingCampVOList = scheduleWiseMap.get(scheduleId);
+							}
+							else
+							{
+								trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+								for (int i = 0; i < memberTypesArr.length; i++) {
+									TrainingCampVO trainingCampVO = new TrainingCampVO();
+									trainingCampVO.setMemberStatus(memberTypesArr[i].toString());
+									trainingCampVOList.add(trainingCampVO);
+								}
+							}
+							
+							TrainingCampVO trainingCampVO = getMatchedVOforMemberStatus(trainingCampVOList,memberStatus);
+							if(trainingCampVO != null)
+							{
+								if(memberStatus != null && memberStatus.equalsIgnoreCase("NOT NOW"))
+									trainingCampVO.setMemberStatus("LATER");
+								
+								trainingCampVO.setTrainingCampName(campName);
+								trainingCampVO.setScheduleName(scheduleName);
+								//trainingCampVO.setMemberStatus(memberStatus);
+								trainingCampVO.setNextBatchInterestedCount(commonMethodsUtilService.getLongValueForObject(campObj[5]));
+								//trainingCampVOList.add(trainingCampVO);
+								if(trainingCampVO.getMemberStatus() != null && !trainingCampVO.getMemberStatus().isEmpty() && 
+										trainingCampVO.getMemberStatus().trim().equalsIgnoreCase("Interested"))
+									interestedMembersForSchedulMap.put(scheduleId, trainingCampVO.getNextBatchInterestedCount());
+								
+								scheduleWiseMap.put(scheduleId, trainingCampVOList);
+								campWiseMap.put(campName,scheduleWiseMap);
+								programWiseSceduleWiseMap.put(programName, campWiseMap);
+							}
+						}
+					}
+					
+					Map<Long,Long> scheduleWiseBatchConfirmedCountMap = new LinkedHashMap<Long,Long>(0);
+					List<Object[]> batchConfirmedDetails = trainingCampScheduleInviteeCallerDAO.getBatchConfirmedMemberDetails(null, startDate, endDate,"Interested","confirmation");
+					if(batchConfirmedDetails != null && batchConfirmedDetails.size()>0)
+					{
+						for (Object[] campObj : batchConfirmedDetails) {
+							
+							Long scheduleId =commonMethodsUtilService.getLongValueForObject(campObj[3]);
+							
+							Long confirmedCount =commonMethodsUtilService.getLongValueForObject(campObj[5]);
+							
+							if(scheduleWiseBatchConfirmedCountMap.get(scheduleId) != null)
+							{
+								confirmedCount = scheduleWiseBatchConfirmedCountMap.get(scheduleId);
+							}
+							
+							scheduleWiseBatchConfirmedCountMap.put(scheduleId, confirmedCount);
+						}
+					}
+					if(programWiseSceduleWiseMap != null && programWiseSceduleWiseMap.size()>0)
+					{
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						for (String programStr : programWiseSceduleWiseMap.keySet()) {
+							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = programWiseSceduleWiseMap.get(programStr);
+							TrainingCampVO programVO = new TrainingCampVO();
+							programVO.setName(programStr);
+							if(campWiseMap != null && campWiseMap.size()>0)
+							{
+								for (String campNameStr : campWiseMap.keySet()) {
+									Map<Long,List<TrainingCampVO>> scheduleWiseCountMap = campWiseMap.get(campNameStr);
+									programVO.setTrainingCampName(campNameStr);
+									if(scheduleWiseCountMap != null && scheduleWiseCountMap.size()>0)
+									{
+										for (Long scheduleId : scheduleWiseCountMap.keySet()) {
+											List<TrainingCampVO> scheduleVOList = scheduleWiseCountMap.get(scheduleId);
+											if(scheduleVOList != null)
+											{
+
+												Long  batchConfirmationCount= scheduleWiseBatchConfirmedCountMap.get(scheduleId);
+												if(batchConfirmationCount == null)
+													batchConfirmationCount=0L;
+												TrainingCampVO batchConfirmedVO = new TrainingCampVO();
+												batchConfirmedVO.setMemberStatus(" BATCH CONFIRMED COUNT ");
+												if(batchConfirmationCount != null && batchConfirmationCount.longValue()>0L)
+													batchConfirmedVO.setBatchConfirmationCount(batchConfirmationCount);
+												else
+													batchConfirmedVO.setBatchConfirmationCount(0L);
+												
+												scheduleVOList.add(batchConfirmedVO);
+												
+												Long  interestedCount= interestedMembersForSchedulMap.get(scheduleId);
+												Long availableCount = interestedCount - batchConfirmationCount;
+												TrainingCampVO availableMembersVO = new TrainingCampVO();
+												availableMembersVO.setMemberStatus("AVAILABLE INTERESTED MEMBERS");
+												if(availableCount != null && availableCount.longValue()>0L)
+													availableMembersVO.setAvailableMembersCount(availableCount);
+												else
+													availableMembersVO.setAvailableMembersCount(0L);
+												
+												scheduleVOList.add(availableMembersVO);
+												
+												programVO.setTrainingCampVOList(scheduleVOList);
+											}
+										}
+									}
+								}
+								trainingCampVOList.add(programVO);
+							}
+							
+							returnVO.setTrainingCampVOList(trainingCampVOList);
+						}
+					}
+				}
 			}
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseBatchWiseMembersDetails method in TrainingCampService class.",e);
+			returnVO = null;
 		}
 		
 		return returnVO;
 	}
 	
+	public TrainingCampVO getMatchedVOforMemberStatus(List<TrainingCampVO> list,String memberStatus)
+	{
+		TrainingCampVO returnVO = null;
+		try {
+			if(list != null && list.size()>0 && memberStatus != null && !memberStatus.isEmpty())
+			{
+				for (TrainingCampVO trainingCampVO : list) {
+					if(trainingCampVO.getMemberStatus().equalsIgnoreCase(memberStatus))
+						return trainingCampVO;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnVO;
+	}
 	
 	public ResultStatus assignInviteesToCallersForScheduleConfirmation(Long inviteesCount, Long adminId, Long callerId,String searchTypeId,String startDate,String endDate)
 	{
@@ -648,46 +808,46 @@ public class TrainingCampService implements ITrainingCampService{
 				
 				for(Object[] params : list)
 				{
-					TraingCampCallerVO programVo  = getMatchedVo(returnList,(Long)params[1]); // Program
+					TraingCampCallerVO programVo  = getMatchedVo(returnList,commonMethodsUtilService.getLongValueForObject(params[1])); // Program
 						if(programVo == null)
 						{
 							programVo = new TraingCampCallerVO()	;
-							programVo.setId((Long)params[1]);
-							programVo.setName(params[2].toString());
+							programVo.setId(commonMethodsUtilService.getLongValueForObject(params[1]));
+							programVo.setName(commonMethodsUtilService.getStringValueForObject(params[2]));
 							returnList.add(programVo);
 						}
 						
-						TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),(Long)params[3]); // Camp
+						TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[3])); // Camp
 						if(campVo == null)
 						{
 							campVo = new TraingCampCallerVO()	;
-							campVo.setId((Long)params[3]);
-							campVo.setName(params[4].toString());
+							campVo.setId(commonMethodsUtilService.getLongValueForObject(params[3]));
+							campVo.setName(commonMethodsUtilService.getStringValueForObject(params[4]));
 							
 							programVo.getSubList().add(campVo);
 						}
-						TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),(Long)params[5]); // Schedule
+						TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[5])); // Schedule
 						if(scheduleVo == null)
 						{
 							scheduleVo = new TraingCampCallerVO()	;
-							scheduleVo.setId((Long)params[5]);
-							scheduleVo.setName(params[6].toString());
+							scheduleVo.setId(commonMethodsUtilService.getLongValueForObject(params[5]));
+							scheduleVo.setName(commonMethodsUtilService.getStringValueForObject(params[6]));
 							scheduleVo.setSubList(getStatusList());
 							scheduleVo.setScheduleStatusList(getScheduleStatusList());
 							campVo.getSubList().add(scheduleVo);
 						}
-						scheduleVo.setTotal(scheduleVo.getTotal() + (Long)params[0]);
-						TraingCampCallerVO schedulestatusVo  = getMatchedVo(scheduleVo.getScheduleStatusList(),(Long)params[9]); // Status
+						scheduleVo.setTotal(scheduleVo.getTotal() + commonMethodsUtilService.getLongValueForObject(params[0]));
+						TraingCampCallerVO schedulestatusVo  = getMatchedVo(scheduleVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params[9])); // Status
 						if(schedulestatusVo != null)
 						{
-							schedulestatusVo.setCount(schedulestatusVo.getCount() + (Long)params[0]);
+							schedulestatusVo.setCount(schedulestatusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
 						}
 						if(params[7] != null)
 						{
-							TraingCampCallerVO statusVo  = getMatchedVo(scheduleVo.getSubList(),(Long)params[7]); // Status
+							TraingCampCallerVO statusVo  = getMatchedVo(scheduleVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[7])); // Status
 							if(statusVo != null)
 							{
-								statusVo.setCount(statusVo.getCount() + (Long)params[0]);
+								statusVo.setCount(statusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
 							}
 						}
 						
@@ -712,39 +872,39 @@ public class TrainingCampService implements ITrainingCampService{
 				
 				for(Object[] params : list)
 				{
-					TraingCampCallerVO programVo  = getMatchedVo(returnList,(Long)params[1]); // Program
+					TraingCampCallerVO programVo  = getMatchedVo(returnList,commonMethodsUtilService.getLongValueForObject(params[1])); // Program
 						if(programVo == null)
 						{
 							programVo = new TraingCampCallerVO()	;
-							programVo.setId((Long)params[1]);
-							programVo.setName(params[2].toString());
+							programVo.setId(commonMethodsUtilService.getLongValueForObject(params[1]));
+							programVo.setName(commonMethodsUtilService.getStringValueForObject(params[2]));
 							returnList.add(programVo);
 						}
 						
-						TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),(Long)params[3]); // Camp
+						TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[3])); // Camp
 						if(campVo == null)
 						{
 							campVo = new TraingCampCallerVO()	;
-							campVo.setId((Long)params[3]);
-							campVo.setName(params[4].toString());
+							campVo.setId(commonMethodsUtilService.getLongValueForObject(params[3]));
+							campVo.setName(commonMethodsUtilService.getStringValueForObject(params[4]));
 							
 							programVo.getSubList().add(campVo);
 						}
-						TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),(Long)params[5]); // Schedule
+						TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[5])); // Schedule
 						if(scheduleVo == null)
 						{
 							scheduleVo = new TraingCampCallerVO()	;
-							scheduleVo.setId((Long)params[5]);
-							scheduleVo.setName(params[6].toString());
+							scheduleVo.setId(commonMethodsUtilService.getLongValueForObject(params[5]));
+							scheduleVo.setName(commonMethodsUtilService.getStringValueForObject(params[6]));
 							campVo.getSubList().add(scheduleVo);
 						}
 						
-						TraingCampCallerVO batchVo  = getMatchedVo(scheduleVo.getSubList(),(Long)params[10]); // Batch
+						TraingCampCallerVO batchVo  = getMatchedVo(scheduleVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[10])); // Batch
 						if(batchVo == null)
 						{
 							batchVo = new TraingCampCallerVO()	;
-							batchVo.setId((Long)params[10]);
-							batchVo.setName(params[11].toString());
+							batchVo.setId(commonMethodsUtilService.getLongValueForObject(params[10]));
+							batchVo.setName(commonMethodsUtilService.getStringValueForObject(params[11]));
 							batchVo.setSubList(getStatusList());
 							batchVo.setScheduleStatusList(getScheduleStatusList());
 							scheduleVo.getSubList().add(batchVo);
@@ -752,18 +912,18 @@ public class TrainingCampService implements ITrainingCampService{
 							programVo.setSpanCnt(programVo.getSpanCnt() + 1);
 							campVo.setSpanCnt(new Long(scheduleVo.getSubList().size()));
 						} 
-						batchVo.setTotal(batchVo.getTotal() + (Long)params[0]);
-						TraingCampCallerVO batchstatusVo  = getMatchedVo(batchVo.getScheduleStatusList(),(Long)params[9]); // Status
+						batchVo.setTotal(batchVo.getTotal() + commonMethodsUtilService.getLongValueForObject(params[0]));
+						TraingCampCallerVO batchstatusVo  = getMatchedVo(batchVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params[9])); // Status
 						if(batchstatusVo != null)
 						{
-							batchstatusVo.setCount(batchstatusVo.getCount() + (Long)params[0]);
+							batchstatusVo.setCount(batchstatusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
 						}
 						if(params[7] != null)
 						{
-							TraingCampCallerVO batchstatusVo1  = getMatchedVo(batchVo.getSubList(),(Long)params[7]); // Status
+							TraingCampCallerVO batchstatusVo1  = getMatchedVo(batchVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[7])); // Status
 							if(batchstatusVo1 != null)
 							{
-								batchstatusVo1.setCount(batchstatusVo1.getCount() + (Long)params[0]);
+								batchstatusVo1.setCount(batchstatusVo1.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
 							}
 						}
 						
@@ -842,28 +1002,28 @@ public class TrainingCampService implements ITrainingCampService{
 				for(Object[] params : list)
 				{
 					TrainingMemberVO vo =new TrainingMemberVO();
-					vo.setId((Long)params[0]);
-					String fname = params[1] != null ? params[1].toString() : "";
-					String lname = params[2] != null ? params[2].toString() : "";
+					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					String fname = commonMethodsUtilService.getStringValueForObject(params[1]);
+					String lname = commonMethodsUtilService.getStringValueForObject(params[2]);
 					vo.setName(fname +" "+lname);
-					vo.setMobileNumber(params[3] != null ?params[3].toString() : "");
-					vo.setImage(params[4] != null ?params[4].toString() : "");
-					vo.setStatus(params[6] != null ?params[6].toString() : "");
-					vo.setAge(params[7] != null ?params[7].toString() : "");
-					vo.setLocation(params[8] != null ?params[8].toString() : "");
+					vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(params[3]));
+					vo.setImage(commonMethodsUtilService.getStringValueForObject(params[4]));
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(params[6]));
+					vo.setAge(commonMethodsUtilService.getStringValueForObject(params[7]));
+					vo.setLocation(commonMethodsUtilService.getStringValueForObject(params[8]));
 					returnList.add(vo);
-					if(!cadreIds.contains((Long)params[0]))
-						cadreIds.add((Long)params[0]);
+					if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(params[0])))
+						cadreIds.add(commonMethodsUtilService.getLongValueForObject(params[0]));
 				}
 				 List<Object[]> roles = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(cadreIds);
 				 if(roles != null && roles.size() > 0)
 				 {
 					 for(Object[] params : roles)
 					 {
-						 TrainingMemberVO vo =  getMatchedVo1(returnList, (Long)params[0]);
+						 TrainingMemberVO vo =  getMatchedVo1(returnList, commonMethodsUtilService.getLongValueForObject(params[0]));
 						 if(vo != null)
 						 {
-							 vo.setRole(params[2] != null ?params[2].toString() : "");
+							 vo.setRole(commonMethodsUtilService.getStringValueForObject(params[2]));
 						 }
 					 }
 				 }
@@ -887,8 +1047,8 @@ public class TrainingCampService implements ITrainingCampService{
 				for(Object[] params : list)
 				{
 					TraingCampCallerVO vo = new TraingCampCallerVO();
-					vo.setId((Long)params[0]);
-					vo.setName(params[1].toString());
+					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
 					statusList.add(vo);
 				}
 			
@@ -911,8 +1071,8 @@ public class TrainingCampService implements ITrainingCampService{
 				for(Object[] params : list)
 				{
 					TraingCampCallerVO vo = new TraingCampCallerVO();
-					vo.setId((Long)params[0]);
-					vo.setName(params[1].toString());
+					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
 					statusList.add(vo);
 				}
 			
@@ -965,8 +1125,8 @@ public class TrainingCampService implements ITrainingCampService{
 				for(Object[] params : list)
 				{
 					IdNameVO vo = new IdNameVO();
-					vo.setId((Long)params[0]);
-					vo.setName(params[1] != null ? params[1].toString() : "");
+					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
 					returnList.add(vo);
 					
 				}
@@ -1010,12 +1170,12 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(listForProgramVo !=null && listForProgramVo.size()>0){
-				Long programCount=(long) listForProgramVo.size();
+				Long programCount=commonMethodsUtilService.getIntegerToLong(listForProgramVo.size());
 				finalTrainingVo.setProgramCount(programCount);
 				finalTrainingVo.setTrainingCampVOList(listForProgramVo);//ProgramWise List
 			}
 			if(listForCampVo !=null && listForCampVo.size()>0){
-				Long campCount=(long) listForCampVo.size();
+				Long campCount=commonMethodsUtilService.getIntegerToLong(listForCampVo.size());
 				finalTrainingVo.setCampCount(campCount);
 				finalTrainingVo.setTrainingCampScheduleVOList(listForCampVo);//CampWise List
 			}
@@ -1034,10 +1194,10 @@ public class TrainingCampService implements ITrainingCampService{
 		for (Object[] objects : programDetails) {
 			TrainingCampScheduleVO progamVo=new TrainingCampScheduleVO();
 			
-			progamVo.setId((Long)objects[0]);
-			progamVo.setName(objects[1] !=null ? objects[1].toString() : "");
-			progamVo.setTotalCount(objects[2] !=null ? (Long)objects[2] : 0l );//members Count
-			progamVo.setCount(objects[3] !=null ? (Long)objects[3]:0l);//batchCount
+			progamVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+			progamVo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+			progamVo.setTotalCount(commonMethodsUtilService.getLongValueForObject(objects[2]));//members Count
+			progamVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));//batchCount
 			
 			listVo.add(progamVo);
 		}
@@ -1074,8 +1234,8 @@ public class TrainingCampService implements ITrainingCampService{
 				
 				for(Object[] purpose:allPurposes){
 					TrainingCampScheduleVO vo = new TrainingCampScheduleVO();
-					vo.setId(purpose[0] !=null ? (Long)purpose[0] :0l);
-					vo.setName(purpose[1] !=null ? purpose[1].toString() : "");
+					vo.setId(commonMethodsUtilService.getLongValueForObject(purpose[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(purpose[1]));
 					vo.setCount(0l);//call Purpose wise count
 					vo.setDialedCallsCount(0l);//dialed count forcall purpose
 					
@@ -1131,19 +1291,19 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			for (Object[] objects : scheduleAndConfirmationCalls) {
 				
-				TrainingCampScheduleVO scheduleVo =finalVo.get((Long)objects[0]);
+				TrainingCampScheduleVO scheduleVo =finalVo.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				
 				if(scheduleVo ==null){
 					scheduleVo=new TrainingCampScheduleVO();
 				}
-				scheduleVo.setId((Long)objects[0]);
-				scheduleVo.setName(objects[1].toString());
+				scheduleVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				scheduleVo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				
 				if(type.equalsIgnoreCase("total")){
-					scheduleVo.setCount(objects[2] !=null ? Long.parseLong(objects[2].toString()):0l);//purpose wise assigned calls
+					scheduleVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));//purpose wise assigned calls
 				}
 				else if(type.equalsIgnoreCase("dialed")){
-					scheduleVo.setDialedCallsCount(objects[2] !=null ? Long.parseLong(objects[2].toString()) : 0l);//purpose wise dialed calls
+					scheduleVo.setDialedCallsCount(commonMethodsUtilService.getLongValueForObject(objects[2]));//purpose wise dialed calls
 				}
 				
 				finalVo.put(scheduleVo.getId(), scheduleVo);
