@@ -70,47 +70,11 @@
 											<tr>
 												<td colspan="2" class="pad_0" id="callPurposeCountDivId">
 												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
-													<!--<table class="table table-bordered m_0">
-                                                    	<tr>
-                                                        	<td class="pad_5">
-                                                            	<h4 class="display-style m_0">Calls Assigned <br/>to agents</h4>
-                                                                <span class="pull-right"><h2 class="m_0">800</h2></span>
-                                                            </td>
-                                                            <td class="pad_5 text-yellow">
-                                                            	<p class="m_0 font-10">Agents <br/>Dialled</p>
-                                                                <h4 class="m_0 text-yellow">700</h4>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td class="pad_5">
-                                                                	Batch Scheduled Calls
-                                                                    <span class="pull-right">-500</span>
-                                                            </td>
-                                                            <td class="pad_5">
-                                                            	<h4 class="m_0 text-yellow">400</h4>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td class="pad_5">
-                                                                	Batch Conformation Calls
-                                                                    <span class="pull-right">-300</span>
-                                                            </td>
-                                                            <td class="pad_5">
-                                                            	<h4 class="m_0 text-yellow">300</h4>
-                                                            </td>
-                                                        </tr>
-                                                    </table>  -->
+													
 												</td>
 												<td class="pad_0" id="statusWiseCountArraId">
 												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
-													<!--<table class="table table-bordered m_0">
-														<tr>
-															<td>
-                                                            	<h4 class="m_bottom0 text-custom">600 - interested</h4>
-                                                            </td>
-														</tr>
-														
-													</table> -->
+													
 												</td>
 											</tr>
 										</table>
@@ -133,25 +97,7 @@
 														<div class="count-hover-scroll" id="batchCountOfProgramId">
 														
 															<center><img id="dataLoadingsImgForBatchOfProgramId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
-															<!--<table class="table table-hover">
-																<thead>
-																	<th>PROGRAM NAME</th>
-																	<th>MEMBERS</th>
-																	<th>BATCHES</th>
-																</thead>
-																<tbody>
-																	<tr>
-																		<td>Leadership Skills</td>
-																		<td>300</td>
-																		<td>02</td>
-																	</tr>
-																	<tr>
-																		<td>Election Year</td>
-																		<td>300</td>
-																		<td>02</td>
-																	</tr>
-																</tbody>
-															</table> -->
+														
 														</div>
 													</li>
 												</ul>
@@ -168,25 +114,7 @@
 												<ul class="count-hover up-arrow">
 													<li>
 													<div class="count-hover-scroll" id="batchCountOfCampId"> 
-														<!--<table class="table table-hover">
-															<thead>
-																<th>PROGRAM NAME</th>
-																<th>MEMBERS</th>
-																<th>BATCHES</th>
-															</thead>
-															<tbody>
-																<tr>
-																	<td>Leadership Skills</td>
-																	<td>300</td>
-																	<td>02</td>
-																</tr>
-																<tr>
-																	<td>Election Year</td>
-																	<td>300</td>
-																	<td>02</td>
-																</tr>
-															</tbody>
-														</table> -->
+														
 													</div>
 													</li>
 												</ul>
@@ -232,8 +160,8 @@
 										<div role="tabpanel" class="tab-pane active" id="scheduled">
 											<table class="table table-bordered m_0">
 												<thead>
-													<th>TRAINING CAMP <br/> NAME</th>
 													<th>TRAINING PROGRAM <br/> NAME</th>
+													<th>TRAINING CAMP <br/> NAME</th>													
 													<th>SCHEDULED <br/> CALENDAR DATES</th>
 													<th>INTERESTED <br/> MEMBERS</th>
 													<th>LATER</th>
@@ -243,8 +171,8 @@
 												</thead>
 												<tbody>
                                                 	<tr>
-                                                    	<td>SVV Batch Campus</td>
-                                                        <td rowspan="4">Leadership Skills</td>
+													 <td rowspan="4">Leadership Skills</td>
+                                                    	<td>SVV Batch Campus</td>                                                       
                                                         <td>Sep_2015_1 to 15</td>
                                                         <td>300</td>
                                                         <td>300</td>
@@ -406,74 +334,64 @@
 							<div class="table-scroll">
 								<table class="table table-bordered m_0">
 									<thead class="bg_d">
+									    <th>TRAINING <br/> PROGRAM NAME</th>
 										<th>TRAINING CAMP<br/> NAME</th>
-										<th>TRAINING <br/> DATE</th>
-										<th>TRAINING <br/> PROGRAM NAME</th>
+										<th>START <br/> DATE</th>
+										<th>END <br/> DATE</th>											
 										<th>MEMBERS <br/>ACCEPTED</th>
 									</thead>
 									<tbody>
 										<tr>
+										<td rowspan="4">Leadership Skills</td>
 											<td>SVV Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
-											<td rowspan="4">Leadership Skills</td>
+											<td></td>											
+											<td></td>											
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>EWK Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>GPN Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
 										<tr>
-											<td>SVV Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
 											<td rowspan="4">Election Year</td>
+											<td>SVV Batch Campus</td>
+											<td></td>											
+											<td></td>											
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
 										<tr>
 											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
+											<td></td>											
+											<td></td>
 											<td>100</td>
 										</tr>
-										<tr>
-											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
-											<td>100</td>
-										</tr>
-										<tr>
-											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
-											<td>100</td>
-										</tr>
-										<tr>
-											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
-											<td>100</td>
-										</tr>
-                                        <tr>
-											<td>AKKC Batch Campus</td>
-											<td>Sep_2015_01 to 3</td>
-											<td>100</td>
-										</tr>
+										
 									</tbody>
 								</table>
 							</div>
@@ -1013,11 +931,11 @@ $(function () {
 						str+='<table class="table table-bordered m_0">';
 							str+='<tr>';
 								str+='<td class="pad_5">';
-									str+='<h4 class="display-style m_0">Calls Assigned <br/>to agents</h4>';
+									str+='<h4 class="display-style m_0"> Calls Assigned <br/> to Caller </h4>';
 									str+='<span class="pull-right"><h2 class="m_0">'+result[0].totalAssignedCount+'</h2></span>';
 								str+='</td>';
 								str+='<td class="pad_5 text-yellow">';
-									str+='<p class="m_0 font-10">Agents <br/>Dialled</p>';
+									str+='<p class="m_0 font-10"> Caller <br/>Dialled</p>';
 									str+='<h4 class="m_0 text-yellow">'+result[0].totalDialedCallsCount+'</h4>';
 								str+='</td>';
 							str+='</tr>';
