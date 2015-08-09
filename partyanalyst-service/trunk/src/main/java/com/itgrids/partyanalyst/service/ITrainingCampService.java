@@ -22,9 +22,9 @@ public interface ITrainingCampService {
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
 	public List<Long> getTrainingCampUserTypeIds();
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
-	public List<BasicVO> getAllPrograms();
-	public List<BasicVO> getAllschedules();
+	//public List<BasicVO> getAllPrograms();
+	//public List<BasicVO> getAllschedules();
 	public TrainingCampScheduleVO getTrainingProgramMembersBatchCount(String startDateString,String endDateString);
-	public List<TrainingCampScheduleVO> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString);
-	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
+	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString);
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
 }
