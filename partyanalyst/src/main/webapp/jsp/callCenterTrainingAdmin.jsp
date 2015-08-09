@@ -1006,9 +1006,10 @@ $(function () {
 				type:'POST',
 				 url: 'getScheduleAndConfirmationCallsOfCallerToAgentAction.action',
 				 data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
+				}).done(function(results){
 					var str='';
-					if(result !=null && result.length>0){
+					if(results !=null && results.trainingCampScheduleVOList.length>0){
+						var result = results.trainingCampScheduleVOList;
 						str+='<table class="table table-bordered m_0">';
 							str+='<tr>';
 								str+='<td class="pad_5">';
