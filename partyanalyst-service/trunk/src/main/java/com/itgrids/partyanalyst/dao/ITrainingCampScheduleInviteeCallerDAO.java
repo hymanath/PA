@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 
 public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<TrainingCampScheduleInviteeCaller, Long>{
+	public List<Long> getAlreadyInvitedMembersInviteeIdsListByScheduleId(Long scheduleId,Long assignId);
 	public List<Object[]> getScheduleWiseCallStatusCount(Long callerId,Long callPurposeId);
 	public List<Object[]> getBatchWiseWiseCallStatusCount(Long callerId,Long callPurposeId);
 	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type);
