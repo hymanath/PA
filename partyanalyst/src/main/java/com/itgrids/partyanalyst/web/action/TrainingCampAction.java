@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
@@ -28,7 +29,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private JSONObject	jObj;
 	private String 		task;
 	private ITrainingCampService trainingCampService;
-	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
+	//private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
 	private TrainingCampScheduleVO trainingCampScheduleVO;
 	private String status;
@@ -39,17 +40,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private TrainingMemberVO memberList ;
 	private String statusType;
 	private String batchId;
-	private List<BasicVO> basicList;
-	
-	
-	
+	private List<IdNameVO> idNameVOList ;
 
-	public List<BasicVO> getBasicList() {
-		return basicList;
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
 	}
 
-	public void setBasicList(List<BasicVO> basicList) {
-		this.basicList = basicList;
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
 	}
 
 	public String getBatchId() {
@@ -166,15 +164,6 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setTrainingCampService(ITrainingCampService trainingCampService) {
 		this.trainingCampService = trainingCampService;
-	}
-	
-	public List<TrainingCampScheduleVO> getTrainingCampScheduleVOs() {
-		return trainingCampScheduleVOs;
-	}
-
-	public void setTrainingCampScheduleVOs(
-			List<TrainingCampScheduleVO> trainingCampScheduleVOs) {
-		this.trainingCampScheduleVOs = trainingCampScheduleVOs;
 	}
 	
 	public TrainingCampScheduleVO getTrainingCampScheduleVO() {
@@ -337,7 +326,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
 			
 			if(fromDate !=null && toDate !=null){
-				trainingCampScheduleVOs=trainingCampService.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,fromDate,toDate);
+				trainingCampScheduleVO=trainingCampService.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,fromDate,toDate);
 			}
 			
 		}catch (Exception e) {
