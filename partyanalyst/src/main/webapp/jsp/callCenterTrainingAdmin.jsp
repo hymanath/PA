@@ -157,7 +157,8 @@
 									<div>
 									  <!-- Tab panes -->
 									  <div class="tab-content">
-										<div role="tabpanel" class="tab-pane active" id="scheduled">
+									  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>
+										<!--<div role="tabpanel" class="tab-pane active" id="scheduled">
 											<table class="table table-bordered m_0">
 												<thead>
 													<th>TRAINING PROGRAM <br/> NAME</th>
@@ -209,7 +210,7 @@
                                                     </tr>
 												</tbody>
 											</table>
-										</div>
+										</div>-->
 										<div role="tabpanel" class="tab-pane" id="running">
 											<table class="table table-bordered m_0">
                                                         <thead>
@@ -300,37 +301,51 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="assign_box">
-								<label class="checkbox-inline font-10">
+								<!--<label class="checkbox-inline font-10">
                                 	<input type="checkbox">
                                     Assign Members <br/>to check availability
                                 </label>
                                 <label class="checkbox-inline font-10">
                                 	<input type="checkbox">
                                     Assign Members<br/>For acceptance
-                                </label>
+                                </label>-->
+								<h5>Select Member/Batch</h5>
+								<select class="form-control" id="memeberBatchConformationId" onchange="getAllCampBatches();">
+									<option value="0" selected>Select Member/Batch</option>
+									<option value="1">Member Conformation</option>
+									<option value="2">Batch Conformation</option>
+								</select>
 								<h5>Select Camp</h5>
-								<select class="form-control">
-									<option>SVV Batch Camp</option>
+								<select class="form-control" id="campId" onchange="getAllProgramsList(this.value);">
+									<option value="0">Select Camp</option>
 								</select>
                                 <h5>Select Program Name</h5>
-								<input class="form-control" placeholder="Leasdership Skills">
+								<!--<input class="form-control" placeholder="Leasdership Skills">-->
+								<select class="form-control" id="programId" onchange="getAllSchedulesDatesList(this.value);">
+									<option value="0">Select Program</option>
+								</select>
                                 <h5>Select Calendar Schedule Dates</h5>
-								<select class="form-control">
-									<option>Sep-2015_1 to 15</option>
+								<select class="form-control" id="scheduleId">
+									<option value="0">Select Schedule</option>
 								</select>
 								<h5 class="m_top20">
 									Select no of calls
 									<span class="text-danger pull-right text-italic">Avail Calls 500</span>
 								</h5>
-								<input class="form-control" type="text">
+								<input class="form-control" type="text" id="membersCountId">
 								<h5>Select Call Center Agent Name</h5>
-								<select class="form-control">
-									<option>Harish</option>
+								<select class="form-control" id="callerId">
+									<option value="0">Select Agent</option>
+									<option value="1">Harish</option>
 								</select>
-								<button class="btn btn-success btn-block m_top20">ASSIGN TO AGENT</button>
+								<div id="searchErrDivID"></div>
+								<button class="btn btn-success btn-block m_top20" type="button" onclick="saveAllDetails();">ASSIGN TO CALLER</button>
 							</div>
 						</div>
-						<div class="col-md-8">
+						<div role="tabpanel" class="tab-pane active InterestedMembersCountDivId" id="interestedDivId">
+						<center><img id="dataLoadingsImgForInterestedMembersCountId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
+						</div>
+						<!--<div class="col-md-8">
 							<div class="table-scroll">
 								<table class="table table-bordered m_0">
 									<thead class="bg_d">
@@ -395,7 +410,7 @@
 									</tbody>
 								</table>
 							</div>
-						</div>
+						</div>-->
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 m_top20">
@@ -672,6 +687,8 @@ $(document).ready(function() {
 	getCallerWiseCallsDetails();
 	getTrainingProgramMembersBatchCount();
 	getScheduleAndConfirmationCallsOfCallerToAgent();
+	getCampusWiseDateWiseInterestedMembersDetails();
+	getCampusWiseBatchWiseMembersDetails();
 
 });
 
@@ -982,13 +999,17 @@ $(function () {
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
+		getCampusWiseDateWiseInterestedMembersDetails();
+		getCampusWiseBatchWiseMembersDetails();
 	});	
 	$(document).on("click",".newsSubmitBtn",function(){
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
+		getCampusWiseDateWiseInterestedMembersDetails();
+		getCampusWiseBatchWiseMembersDetails();
 	})
-
+	
 </script>
 
 

@@ -10393,6 +10393,36 @@
 				<param name="root">trainingCampScheduleVO</param>
 		</result>
 	</action>
+	<action name="getAllCampBatchesAction" class="trainingCampAction" method="getAllCampBatchesAction">
+		<result type="json" name="success">
+				<param name="root">idNameList</param>
+		</result>
+	</action>
+	<action name="getAllProgramsListAction" class="trainingCampAction" method="getAllProgramsListAction">
+		<result type="json" name="success">
+				<param name="root">idNameList</param>
+		</result>
+	</action>
+	<action name="getAllScheduleListAction" class="trainingCampAction" method="getAllScheduleListAction">
+		<result type="json" name="success">
+				<param name="root">idNameList</param>
+		</result>
+	</action>
+	<action name="saveAllDetailsAction" class="trainingCampAction" method="saveAllDetailsAction">
+		<result type="json" name="success">
+				<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="getCampusWiseDateWiseInterestedMembersDetailsAction" class="trainingCampAction" method="getCampusWiseDateWiseInterestedMembersDetails">
+		<result type="json" name="success">
+				<param name="root">trainingCampVO</param>
+		</result>
+	</action>
+	<action name="getCampusWiseBatchWiseMembersDetails" class="trainingCampAction" method="getCampusWiseBatchWiseMembersDetails">
+		<result type="json" name="success">
+				<param name="root">trainingCampVO</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      
