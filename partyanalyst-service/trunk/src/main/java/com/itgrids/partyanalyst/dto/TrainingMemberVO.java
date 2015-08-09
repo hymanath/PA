@@ -17,11 +17,22 @@ public class TrainingMemberVO implements Serializable{
 	private String role;
 	private String location;
 	private String age;
-	
+	private Long availableCount;
+	private Long totalCount;
 	private List<TrainingMemberVO> subList = new ArrayList<TrainingMemberVO>();
 	
-	
-	
+	public Long getAvailableCount() {
+		return availableCount;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setAvailableCount(Long availableCount) {
+		this.availableCount = availableCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getAge() {
 		return age;
 	}

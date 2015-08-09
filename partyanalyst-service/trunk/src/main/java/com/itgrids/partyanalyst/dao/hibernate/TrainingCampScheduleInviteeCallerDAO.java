@@ -312,4 +312,21 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		query.setParameter("callPurposeId", callPurposeId);
 		return query.list();
 	}
+	
+	public List<Long> getInterestedAndInvitedMembersListForBatchConfirmation(Long callerId,Long scheduleId,String callPurposeStr,String memberTypeStr)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId  from TrainingCampScheduleInviteeCaller model where " +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId and model.campCallPurpose.purpose like '%"+callPurposeStr+"%'  and " +
+				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.status  '%"+memberTypeStr+"%' ");
+		if(callerId != null && callerId.longValue() >0L)
+			queryStr.append(" and model.trainingCampCallerId =:callerId ");
+		
+		queryStr.append(" order by  model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("scheduleId", scheduleId);
+		return query.list();
+	}	
+	
 }

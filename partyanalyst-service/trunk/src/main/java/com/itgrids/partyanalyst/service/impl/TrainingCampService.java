@@ -229,6 +229,25 @@ public class TrainingCampService implements ITrainingCampService{
 		return scheduleList;
 	}
 	
+	public TrainingMemberVO getAvailableMembersCountDetails(Long scheduleId,Long callerId)
+	{
+		TrainingMemberVO returnVO = new TrainingMemberVO();
+		try {
+			List<Long> alreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation( callerId, scheduleId, "Invited", "Interested");
+			List<Long> AllalreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation( null, scheduleId, "Invited", "Interested");
+			
+			if(alreadyInvitedMemberIdsForCallerList != null && alreadyInvitedMemberIdsForCallerList.size()>0)
+				returnVO.setAvailableCount(commonMethodsUtilService.getIntegerToLong(alreadyInvitedMemberIdsForCallerList.size()));
+			if(AllalreadyInvitedMemberIdsForCallerList != null && AllalreadyInvitedMemberIdsForCallerList.size()>0)
+				returnVO.setTotalCount(commonMethodsUtilService.getIntegerToLong(AllalreadyInvitedMemberIdsForCallerList.size()));
+			
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getAvailableMembersCountDetails method in TrainingCampService class.",e);
+			returnVO = null;
+		}
+		return returnVO;
+	}
+	
 	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
 	{
 		ResultStatus status  = new ResultStatus();
@@ -253,21 +272,31 @@ public class TrainingCampService implements ITrainingCampService{
 						}
 					}
 				}
-			});
+			});			
+			status.setResultCode(0);
+			status.setMessage("SUCCESS");
 		} catch (Exception e) {
+			status.setResultCode(1);
+			status.setMessage("FAILURE");
 			LOG.error(" Exception occured in assignMembersToCallerForMemberConfirmation method in TrainingCampService class.",e);
 		}
 		
 		return status;
 	}
 	 
-	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
 	{
 		ResultStatus status  = new ResultStatus();
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					List<Long> alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
+					List<Long> alreadyInvitedMemberIdsList = null;
+					if(isOwnMembers){
+						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(callerId,scheduleId, "Invited", "Interested");
+					}
+					else{
+						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(null,scheduleId, "Invited", "Interested");
+					}
 					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,alreadyInvitedMemberIdsList,Integer.valueOf(membersCount.toString()));
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
@@ -286,10 +315,13 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 				}
 			});
+			status.setResultCode(0);
+			status.setMessage("SUCCESS");
 		} catch (Exception e) {
-			LOG.error(" Exception occured in assignMembersToCallerForMemberConfirmation method in TrainingCampService class.",e);
+			status.setResultCode(1);
+			status.setMessage("FAILURE");
+			LOG.error(" Exception occured in assignMembersToCallerForBatchConfirmation method in TrainingCampService class.",e);
 		}
-		
 		return status;
 	}
 	
@@ -923,40 +955,16 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		return users;
 	}
-	
-	public List<BasicVO> getAllPrograms()
+			
+	public List<IdNameVO> getBasicList(List<Object[]> list)
 	{
-		try{
-			List<Object[]> programs = trainingCampProgramDAO.getPrograms();
-			return getBasicList(programs);
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
-	}
-	
-	public List<BasicVO> getAllschedules()
-	{
-		try{
-			List<Object[]> schedules = trainingCampScheduleDAO.getSchedules();
-			return getBasicList(schedules);
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
-	}
-	
-	public List<BasicVO> getBasicList(List<Object[]> list)
-	{
-		List<BasicVO>  returnList = new ArrayList<BasicVO>();
+		List<IdNameVO>  returnList = new ArrayList<IdNameVO>();
 		try{
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
 				{
-					BasicVO vo = new BasicVO();
+					IdNameVO vo = new IdNameVO();
 					vo.setId((Long)params[0]);
 					vo.setName(params[1] != null ? params[1].toString() : "");
 					returnList.add(vo);
@@ -1035,8 +1043,8 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 	}
 	
-	public List<TrainingCampScheduleVO> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString){
-		
+	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString){
+		TrainingCampScheduleVO returnVO = new TrainingCampScheduleVO();
 		List<TrainingCampScheduleVO> finalList=null;
 		try{
 			
@@ -1102,19 +1110,20 @@ public class TrainingCampService implements ITrainingCampService{
 					
 					listVo.setTotalAssignedCount(totalAssignedCount);//totalAssignedCalls To Agents
 					listVo.setTotalDialedCallsCount(totalDialedCount);//total Agent Dialed calls
-					
 				}
-				
 			}
 			
-			return finalList;
+			if(finalList != null && finalList.size()>0)
+				returnVO.setTrainingCampScheduleVOList(finalList);
+			
+			return returnVO;
 			
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		return finalList;
+		return returnVO;
 	}
 	public void setScheduleAndConfirmationCallsOfCallerToAgent(List<Object[]>  scheduleAndConfirmationCalls,Map<Long,TrainingCampScheduleVO> finalVo,String type){
 		
