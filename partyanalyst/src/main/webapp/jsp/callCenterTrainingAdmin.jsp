@@ -53,7 +53,8 @@
 							<table class="table table-bordered">
 								<tr>
 									<td>
-										<div id="donutchart" class="display-style" style="height: 160px;float:left;width:190px;"></div>
+										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
+										<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:190px;"></div>
 									</td>
 									<td class="pad_0">
 										<table class="table table-bordered m_0">
@@ -124,7 +125,9 @@
 								</tr>
 								<tr>
 									<td colspan="2">
-										<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>
+									<center><img id="dataLoadingsImgForCircleForConfirmed" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
+										<div id="circleForConfirmed"></div>
+										<!--<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>-->
 										<p style="margin-top:-70px;margin-bottom:0px;color:#40b6c0;text-align:center;">MEMBERS FILLED IN CALENDAR BATCHES</p>
 									</td>
 								</tr>
@@ -535,7 +538,6 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>  -->
 <script type="text/javascript">
-$('#myStathalf').circliful();
 $(".count-hover-scroll").mCustomScrollbar({
 	setHeight:140,
 	theme:"minimal-dark"
@@ -693,12 +695,145 @@ $(document).ready(function() {
 });
 
 </script>
-<script type="text/javascript">
-$(function () {
+<script>
+	
+	function getCallerWiseCallsDetails(){
+		
+		$("#memberAvailabilityDivCls").html("");
+		$("#statusWiseCountArraId").html("");
+		$("#totalCallsPerCallerId").html("");
+		$("#todayCallsPerCallerId").html("");
+		$("#donutchartForStatus").html("");
+		$("#circleForConfirmed").html("");
+		//data loading images  showing for total counts of allocated callers
+		$("#dataLoadingsImgForTotalCallerCount").show();
+		$("#dataLoadingsImgForTodayCount").show();
+		$("#dataLoadingsImgForDonutchartStatus").show();
+		$("#dataLoadingsImgForCircleForConfirmed").show();
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+		
+		var jsObj={
+			searchType:"",
+			 /* fromdate:"09/01/2015",
+			toDate :"09/11/2015" */
+			fromdate : fromDate,
+			toDate   : toDate
+		}
+		$.ajax({
+				type:'POST',
+				 url: 'getCallerWiseCallsDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					
+					//data loading images  hiding for total counts of allocated callers
+					$("#dataLoadingsImgForTotalCallerCount").hide();
+					$("#dataLoadingsImgForTodayCount").hide();
+					$("#dataLoadingsImgForDonutchartStatus").hide();
+					$("#dataLoadingsImgForCircleForConfirmed").hide();
+					
+					if(result !=null){ 
+						$("#totalCallsPerCallerId").html(result.totalCount);
+						$("#todayCallsPerCallerId").html(result.todayAllocatedCalls);
+						buildingCallerWiseCallsDetails(result);
+					}
+					else{
+						$("#memberAvailabilityDivCls").html("problem occured.please contact admin.");
+					}
+				});
+		
+	}
+	function buildingCallerWiseCallsDetails(result){
+		var str='';
+		var str1='';
+				if(result.trainingCampVOList !=null){
+						str+='<table class="table table-bordered m_0" id="dataNotAvailableDiv">';
+							str+='<thead >';
+								str+='<th>Agent Name</th>';
+								str+='<th>Assigned Calls</th>';
+								str+='<th>Completed Calls</th>';
+								str+='<th>Pending Calls</th>';
+								
+									if(result.trainingCampVOList[0].trainingCampVOList !=null){
+									for(var i in result.trainingCampVOList[0].trainingCampVOList){
+										str+='<th class="font-12" id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
+									}
+								 }
+								
+							str+='</thead>';
+							str+='<tbody>';
+							
+							if(result.trainingCampScheduleVOList !=null && result.trainingCampScheduleVOList.length>0){
+								buildingHighchartForStatus(result.trainingCampScheduleVOList);
+								buildingStatusWiseCountForUpper(result.trainingCampScheduleVOList);
+								buildingMembersFilledInCalenderBatch(result.trainingCampScheduleVOList);
+							}
+							else{
+								$("#donutchartForStatus").html("<div style='margin-top:100px;text-align:center;'>Status Data Not Available.</div>");
+								
+								str1+='<div id="myStathalf"  class="text-center" data-info="0" data-dimension="150px" data-percent="0" data-fgcolor="blue" data-bgcolor="#cccccc" data-type="half" >';
+										str1+='</div>';
+									
+									$("#circleForConfirmed").html(str1);
+									$('#myStathalf').circliful();
+							}
+							
+							if(result.trainingCampVOList !=null && result.trainingCampVOList.length>0){
+								for(var i in result.trainingCampVOList){
+									str+='<tr>';
+									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].id+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].completedCallsCount+'</td>';
+									str+='<td>'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
+									
+									if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0){
+										for(var j in result.trainingCampVOList[i].trainingCampVOList){
+											str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+										}
+									}
+									str+='</tr>';
+								}
+							}
+							else{
+								str+='<tr>Data Not Available</tr>';
+							}
+								
+							str+='</tbody>';
+						str+='</table>';
+					$(".memberAvailabilityDivCls").html(str);	
+				}else{
+					$(".memberAvailabilityDivCls").html("Data Not Available.");
+					
+					//highchart and circle filling
+					
+					$("#donutchartForStatus").html("<div style='margin-top:100px;text-align:center;'>Status Data Not Available.</div>");
+								
+					str1+='<div id="myStathalf"  class="text-center" data-info="0" data-dimension="150px" data-percent="0" data-fgcolor="blue" data-bgcolor="#cccccc" data-type="half" >';
+						str1+='</div>';
+					
+					$("#circleForConfirmed").html(str1);
+					$('#myStathalf').circliful();
+				}
+	}
+	
+	//balu chart
+function buildingHighchartForStatus(result){
+	var statusArray=[];
+	if(result !=null && result.length>0){
+		for(var i in result){
+			var data=new Array();
+			var statusName = result[i].status;
+			var count      = result[i].count;
+			data.push(statusName,count);
+			statusArray.push(data);
+		}
+	}
+	
 	Highcharts.setOptions({
         colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
     });
-    $('#donutchart').highcharts({
+    $('#donutchartForStatus').highcharts({
         chart: {
             type: 'pie',
 			backgroundColor: 'transparent',
@@ -728,104 +863,50 @@ $(function () {
         },
 		
 		series: [{
-            data: [
-                ['Interested', 157],
-                ['Not Interested', 100],
-                ['Not Eligible', 100],
-                ['Not Possible', 100],
-				['Not Completed', 100],
-            ]
+            data:statusArray
         }]
     });
-});
+}
 
-</script>
-<script>
+function buildingMembersFilledInCalenderBatch(result){
 	
-	function getCallerWiseCallsDetails(){
+	$("#circleForConfirmed").html("");
+	var str='';
+	if(result !=null){
 		
-		$("#memberAvailabilityDivCls").html("");
-		$("#statusWiseCountArraId").html("");
-		$("#totalCallsPerCallerId").html("");
-		$("#todayCallsPerCallerId").html("");
-		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
-		
-		var jsObj={
-			searchType:"",
-			/* fromdate:"08/02/2015",
-			toDate :"08/05/2015" */
-			fromdate : fromDate,
-			toDate   : toDate
+		var statusPercentage=0;
+		for(var i in result){
+			statusPercentage=statusPercentage+result[i].count;
 		}
-		$.ajax({
-				type:'POST',
-				 url: 'getCallerWiseCallsDetailsAction.action',
-				 data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					if(result !=null){ 
-						$("#totalCallsPerCallerId").html(result.totalCount);
-						$("#todayCallsPerCallerId").html(result.todayAllocatedCalls);
-						buildingCallerWiseCallsDetails(result);
-					}
-					else{
-						$("#memberAvailabilityDivCls").html("problem occured.please contact admin.");
-					}
-				});
+		confirmedCount=0;
+		for(var i in result){
+			if(result[i].status == "Interested"){
+				confirmedCount = result[i].count;
+			}
+		}
+		//percentage Calculation
+		var resultPerc = 0;
+		if(confirmedCount !=null && confirmedCount !=0){
+			resultPerc = parseInt((confirmedCount) * 100)/ parseInt(statusPercentage);
+		}
 		
-	}
-	function buildingCallerWiseCallsDetails(result){
-		var str='';
-				if(result.trainingCampVOList !=null){
-						str+='<table class="table table-bordered m_0" id="dataNotAvailableDiv">';
-							str+='<thead >';
-								str+='<th>Agent Name</th>';
-								str+='<th>Assigned Calls</th>';
-								str+='<th>Completed Calls</th>';
-								str+='<th>Pending Calls</th>';
-								
-									if(result.trainingCampVOList[0].trainingCampVOList !=null){
-									for(var i in result.trainingCampVOList[0].trainingCampVOList){
-										str+='<th class="font-12" id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
-									}
-								 }
-								
-							str+='</thead>';
-							str+='<tbody>';
-							
-							if(result.trainingCampScheduleVOList !=null && result.trainingCampScheduleVOList.length>0){
-								buildingStatusWiseCountForUpper(result.trainingCampScheduleVOList);
-							}
-							
-							if(result.trainingCampVOList !=null && result.trainingCampVOList.length>0){
-								for(var i in result.trainingCampVOList){
-									str+='<tr>';
-									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].id+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].completedCallsCount+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
-									
-									if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0){
-										for(var j in result.trainingCampVOList[i].trainingCampVOList){
-											str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
-										}
-									}
-									str+='</tr>';
-								}
-							}
-							else{
-								str+='<tr>Data Not Available</tr>';
-							}
-								
-							str+='</tbody>';
-						str+='</table>';
-					$(".memberAvailabilityDivCls").html(str);	
-				}else{
-					$(".memberAvailabilityDivCls").html("Data Not Available.");
-				}
+		//assigning percentage to Circle
+		for(var i in result){
+			
+			if(result[i].status == "Confirmed"){
+				str+='<div id="myStathalf"  class="text-center" data-info="'+result[i].count+'" data-dimension="150px" data-percent="'+resultPerc+'" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" >';
+				str+='</div>';
+			}else{
+				str+='<div id="myStathalf"  class="text-center" data-info="0" data-dimension="150px" data-percent="0" data-fgcolor="blue" data-bgcolor="#cccccc" data-type="half" >';
+				str+='</div>';
+			}
+			
+			$("#circleForConfirmed").html(str);
+			$('#myStathalf').circliful();
+		}
 	}
 	
+}
 	 //totalProgramsCountId totalCampsCountId 
 	 //batchCountOfProgramId batchCountOfCampId
 	
@@ -837,7 +918,7 @@ $(function () {
 		var jsObj={
 			fromdate:fromDate,
 			toDate :toDate
-			/* fromdate:"09/01/2015",
+		/* 	fromdate:"09/01/2015",
 			toDate:"09/30/2015" */
 		}
 		$.ajax({
@@ -936,6 +1017,8 @@ $(function () {
 		var jsObj={
 				fromdate:fromDate,
 				toDate :toDate
+				/* fromdate:"09/01/2015",
+				toDate :"09/11/2015" */
 		}
 		$.ajax({
 				type:'POST',
@@ -980,22 +1063,27 @@ $(function () {
 	function buildingStatusWiseCountForUpper(result){
 		var str='';
 		if(result !=null){
+			str+='<table class="table table-bordered m_0">';
 			for(var i in result){
-				str+='<table class="table table-bordered m_0">';
+				if(result[i].status == "Interested" || result[i].status == "Confirmed" || result[i].status == "Invited" ){
 					str+='<tr>';
 						str+='<td>';
 							str+='<h4 class="m_bottom0 text-custom" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
 						str+='</td>';
 					str+='</tr>';
-				str+='</table>';
+				}
+					
 			}
+			str+='</table>';
 			$("#statusWiseCountArraId").html(str);
 		}
 	}
 	
-	
-	
 	$(document).on("click",".ranges li",function(){
+		if($(this).text() == "Custom"){
+			return;
+		}
+	
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
@@ -1010,6 +1098,8 @@ $(function () {
 		getCampusWiseBatchWiseMembersDetails();
 	})
 	
+</script>
+<script>
 </script>
 
 
