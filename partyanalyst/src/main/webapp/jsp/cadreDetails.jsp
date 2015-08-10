@@ -200,35 +200,7 @@ var globalCadreId = '${cadreId}';
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="deathHospitalDivId">
 					</div>
-					<!--<div class="panel-body pad_0">
-                    	<table class="table m_0 table-bordered m_0">
-                        	<tr>
-                            	<td>Location</td>
-                                <td>Death</td>
-                                <td>Hospitalization</td>
-                            </tr>
-                            <tr>
-                            	<td>District</td>
-                                <td>10</td>
-                                <td>07</td>
-                            </tr>
-                            <tr>
-                            	<td>Parliament Constituency</td>
-                                <td>02</td>
-                                <td>15</td>
-                            </tr>
-                            <tr>
-                            	<td>Assembly Constituency</td>
-                                <td>08</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                            	<td>Mandal Deaths</td>
-                                <td>06</td>
-                                <td>20</td>
-                            </tr>
-                        </table>
-                    </div>  -->
+					
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -240,59 +212,7 @@ var globalCadreId = '${cadreId}';
 					
 					<center><img style="width: 25px; height: 25px;display:none;" src="images/icons/loading.gif" id="dataLoadingsImgForFamilyMembers"/></center>
                     	<div class="family-members" id="familyMembersDiv">
-                           <!-- <ul>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
-                                        </div>
-                                        <div class="media-body">
-                                            <p class="m_0">Ramu
-                                                <span class="pull-right">
-                                                    <i class="glyphicon glyphicon-check"></i>
-                                                </span>
-                                            </p>
-                                            <p class="m_0">Relation : Father</p>
-                                            <p class="m_0">Age : 55</p>
-                                        </div>
-                                    </div>
-                                    
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
-                                        </div>
-                                        <div class="media-body">
-                                            <p class="m_0">Geetha
-                                                <span class="pull-right">
-                                                    <i class="glyphicon glyphicon-check"></i>
-                                                </span>
-                                            </p>
-                                            <p class="m_0">Relation : Mother</p>
-                                            <p class="m_0">Age : 55</p>
-                                        </div>
-                                    </div>
-                                    
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/family-member.png" class="img-responsive img-circle" alt="profile">
-                                        </div>
-                                        <div class="media-body">
-                                            <p class="m_0">Shekar
-                                                <span class="pull-right">
-                                                    <i class="glyphicon glyphicon-check"></i>
-                                                </span>
-                                            </p>
-                                            <p class="m_0">Relation : Son</p>
-                                            <p class="m_0">Age : 55</p>
-                                        </div>
-                                    </div>
-                                    
-                                </li>
-                            </ul> -->
+                          
                         </div>
                     </div>
                 </div>
@@ -304,90 +224,7 @@ var globalCadreId = '${cadreId}';
                     </div>
                     <div class="panel-body">
                     	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
-                           <!-- <div class="panel panel-default">
-                            <div class="panel-heading  bg_white" role="tab" id="headingOne">
-                              <h4 class="panel-title text-bold">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                  2014 PERFORMANCE
-                                  <span class="pull-right">
-                                  	<i class="glyphicon glyphicon-chevron-up"></i>
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                              <div class="panel-body">
-                              	<div class="row">
-                                	<div class="col-md-2">
-                                    	<div id="myStathalf" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Booth</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf1" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Panchayat</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf2" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Mandal</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf3" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Assembly Constituency</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf9" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Parliament Constituency</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf10" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own District</p>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default">
-                            <div class="panel-heading bg_white" role="tab" id="headingTwo">
-                              <h4 class="panel-title text-bold">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                  2009 PERFORMANCE
-                                  <span class="pull-right">
-                                  	<i class="glyphicon glyphicon-chevron-down"></i>
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                              <div class="panel-body">
-                                <div class="row">
-                                	<div class="col-md-2">
-                                    	<div id="myStathalf5" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                       <p class="m_-40 text-center">Own Booth</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf6" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Panchayat</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf7" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Mandal</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf8" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Assembly Constituency</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf11" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own Parliament Constituency</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                    	<div id="myStathalf12" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                                        <p class="m_-40 text-center">Own District</p>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div> -->
+                          
                         </div>
                     </div>
                 </div>
@@ -396,28 +233,8 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS</h4>
                     </div>
                     <div class="panel-body" style="padding:0px 15px;">
-                    	<div class="row" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
-						   <!--<div class="col-md-12 col-xs-12 col-sm-12">
-								<div id="memberShipCountDiv" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-						   </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf13" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf14" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf15" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf16" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf17" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="myStathalf18" data-dimension="100%" data-percent="35" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>
-                            </div> -->
+                    	<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+						   
                         </div>
                     </div>
 				
@@ -454,41 +271,10 @@ var globalCadreId = '${cadreId}';
                             </div>
                             <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
 								<h4 style="border-bottom:1px solid #999">Event Participation Details</h4>
-								<div id="participationTableDivId">
+								<div id="participationTableDivId" class="table-responsive">
 								</div>
 							
-                            	<!--<table class="table m_0-bordered table">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="3" class="text-center">EVENT PARTICIPATION DETAILS</th>
-                                        </tr>
-                                        <tr>
-                                            <th>MAIN EVENT</th>
-                                            <th>SUB EVENT</th>
-                                            <th>ATTENDED COUNT(DAYS)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    	<tr>
-                                        	<td rowspan="3">Party Office</td>
-                                            <td>Main Event</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>Food</td>
-                                            <td>2</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>Exit</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>MAHANADU 2015</td>
-                                            <td>Main Entry</td>
-                                            <td>1</td>
-                                        </tr>
-                                    </tbody>
-                                </table>  -->
+                            	
                             </div>
                         </div>
                     </div>
@@ -500,21 +286,23 @@ var globalCadreId = '${cadreId}';
                     <div class="panel-body">
                     	<div class="cadre-election" >
 						<div id="electionProfileDivId"> </div>
-                        	<!--<ul>
-                            	<li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                                <li>Won in 2014 election with 62.59 votes gain for TELUGU DESAM party in kuppam consituency</li>
-                            </ul>-->
+                        	
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold" style="display:inline-block;"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS</h4>
-						<div class="pull-right">
+					<a id="" class="showbtnCls" title="Click here to Show Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
+                    	<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS
+						 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
+						</h4>
+						</a>
+						<a id="" class="newsMainDivId" style="display:none;" title="Click here to Hide Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
+						<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS
+							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
+						</h4>
+						</a>
+						<div class="pull-right dateCls" style="margin-top: -15px;margin-right: 25px;display:none;">
 							<div class="calendar-style"  id="reportrange">
 								<div class="caret"></div>
 								<i class="glyphicon glyphicon-calendar"></i>
@@ -522,38 +310,8 @@ var globalCadreId = '${cadreId}';
 						</div>
 					</div>
 					
-					<div class="panel-body" id="newsMainDivId">
-                    	<!--<div>
-							
-							<label class="radio-inline">
-                            	<input type="radio" name="radio" id="districtRadioNewsId" class="newsRadioCls">District
-                            </label>
-							<label class="radio-inline">
-                            	<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
-                            </label>
-							<label class="radio-inline">
-                            	<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
-                            </label>
-							<label class="radio-inline hidingMandalCls" style="display:none;">
-                            	<input type="radio" name="radio" id="mandalRadioNewsId" class="newsRadioCls">Mandal
-                            </label>
-                        	<label class="radio-inline hidingMandalCls" style="display:none;">
-                            	<input type="radio" name="radio" id="panchayatRadioNewsId" class="newsRadioCls">Panchayat
-                            </label>
-                            
-                            <div class="pull-right">
-                            	<div class="calendar-style"  id="reportrange">
-                                	<div class="caret"></div>
-                                	<i class="glyphicon glyphicon-calendar"></i>
-                                </div>
-                            </div>
-                        </div> 
-								<div class="pull-right">
-									<div class="calendar-style"  id="reportrange" style="margin-top:-16px;">
-										<div class="caret"></div>
-										<i class="glyphicon glyphicon-calendar"></i>
-									</div>
-								</div>-->
+					<div class="panel-body" id="newsMainDivId" style="display:none;">
+                    	
 						
 					<center><img style="width: 100px; height: 100px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>
 					<div id="hideShowNewsDiv" style="display:none;">
@@ -602,20 +360,7 @@ var globalCadreId = '${cadreId}';
                                 	
                                     
                                 </div>
-								<!--<div class="row" id="issuesMainDiv">
-									<div class="col-md-6 col-xs-12 col-md-offset-3">
-                                    	<div class="panel panel-default m_0">
-                                        	<div class="panel-heading bg_f9">
-                                            	<h4 class="panel-title text-bold">ISSUES<span class="pull-right" id="issuesCount">TOTAL COUNT - 0</span></h4>
-                                            </div>
-                                            <div class="panel-body pad_0">
-                                            	<table class="table m_0 m_0" id="issuesSummary">
-                                                	
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-								</div>-->
+								
                             </div>
                         </div>
 						<div id="issuesMainDiv" class="row">
@@ -643,11 +388,19 @@ var globalCadreId = '${cadreId}';
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
+					<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId">
                     	<h4 class="panel-title">
                         	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES 
-							<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId"> <i class="pull-right glyphicon glyphicon-triangle-top "></i></a>
-							<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId"> <i class="pull-right glyphicon glyphicon-triangle-bottom "></i></a>
+							 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
                         </h4>
+						</a>
+						<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId">
+							<h4 class="panel-title">
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES 
+							 
+							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
+                        </h4>
+						</a>
                     </div>
 					<!--<center><h3>Data Not Available.</h3></center>-->
                     <div class="panel-body" id="committeesDivId" style="display:none;"> 
@@ -668,7 +421,7 @@ var globalCadreId = '${cadreId}';
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="district" checked>District
                             </label>
                         </div>
-                        <div class="table m_0-responsive m_top10" id="committeesCountDiv">
+                        <div class="table m_0-responsive m_top10 table-responsive" id="committeesCountDiv">
                             <table class="table m_0 table-bordered">
                                 <thead>
                                     <tr>
@@ -737,346 +490,29 @@ var globalCadreId = '${cadreId}';
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
+					<a href="javascript:{hideAndShowSurvey(1);}" title="Click here to Show Committee Details" id="surveyshowId"> 
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS
-							<a href="javascript:{hideAndShowSurvey(1);}" title="Click here to Show Committee Details" id="surveyshowId"> <i class="pull-right glyphicon glyphicon-triangle-top "></i></a>
-							<a href="javascript:{hideAndShowSurvey(2);}" title="Click here to Hide Committee Details" style="display:none;" id="surveyhideId"> <i class="pull-right glyphicon glyphicon-triangle-bottom "></i></a>
+							<i class="pull-right glyphicon glyphicon-triangle-top "></i>
 						</h4>
+						</a>
+							<a href="javascript:{hideAndShowSurvey(2);}" title="Click here to Hide Committee Details" style="display:none;" id="surveyhideId">
+						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS
+							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
+						</h4>
+						</a>
                     </div>
                     <div class="panel-body" id="surveyDetailsId" style="display:none;">
 					<div class="surveyDetailssCls">	</div>
 					<div class="surveyDetailsCls">	</div>
 					
 					<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
-                    	<div id="surveyDetailsMainDivId">						
+                    	<div id="surveyDetailsMainDivId" class="">						
                     	</div>
                     </div>
                 </div>
             </div>
         </div>
-       <!-- <div class="row">
-        	<div class="col-md-12">
-            	<div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-credit-card"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS</h4>
-                    </div>
-					<div></div>
-					<center><h3>Survey Details Not Available.</h3></center>
-                    <div class="panel-body">
-                    	<div>
-                          <!-- Nav tabs -->
-                          <!--<ul class="nav nav-tabs tab-list" role="tablist">
-                            <li class="active"><a href="#area" class="text-bold" data-toggle="tab">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
-                            <li><a href="#participated" class="text-bold" data-toggle="tab">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;10</a></li>
-							<li class="text-danger bg_white">Negative Count : 10</li>
-                          </ul>
-                        
-                          <!-- Tab panes -->
-                          <!--<div class="tab-content m_top20">
-                            <div role="tabpanel" class="tab-pane active" id="area">
-                            	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
-								   <div class="panel panel-default">
-                                    <div id="heading1" role="tab" class="panel-heading bg_f9">
-                                      <a aria-controls="collapse1" aria-expanded="true" href="#collapse1" data-parent="#accordion1" data-toggle="collapse" role="button">
-	                                      <h4 class="panel-title text-bold">
-                                          T7 SA SURVEY FIELD<span class="font-10 text-danger">&nbsp;&nbsp;Negative Count  10</span>
-                                          <span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>
-	                                      </h4>
-                                      </a>
-                                    </div>
-                                    <div aria-labelledby="heading1" role="tabpanel" class="panel-collapse collapse in" id="collapse1">
-                                      <div class="panel-body pad_0">
-                                      	<p class="pad_10 m_0">ప్రథిపక్ష నయకుదు జగన్ ప మి అబిప్రయం</p>
-                                        <table class="table">
-                                        	<thead>
-                                            	<tr><th>Location</th>
-                                                <th>No Of Samples</th>
-                                                <th>పర్వలెదు</th>
-                                                <th>బగుంది</th>
-                                                <th>బాగాలెదు</th>
-                                                <th>తెలియదు</th>
-                                            </tr></thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>District</td>
-                                                    <td>50</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>AC</td>
-                                                    <td>40</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>PC</td>
-                                                    <td>46</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Mandal</td>
-                                                    <td>45</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                   <div class="panel panel-default">
-                                    <div id="heading2" role="tab" class="panel-heading bg_f9">
-                                      <a aria-controls="collapse2" aria-expanded="false" href="#collapse2" data-parent="#accordion1" data-toggle="collapse" role="button" class="collapsed">
-                                      	<h4 class="panel-title text-bold">
-                                          T5 SA SURVEY FIELD
-                                          <span class="font-10 text-danger">&nbsp;&nbsp;Negative Count  10</span>
-                                          <span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>
-                                        </h4>
-                                      </a>
-                                    </div>
-                                    <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse" id="collapse2">
-                                      <div class="panel-body">
-                                        <p class="pad_10 m_0">ప్రథిపక్ష నయకుదు జగన్ ప మి అబిప్రయం</p>
-                                        <table class="table">
-                                        	<thead>
-                                            	<tr><th>Location</th>
-                                                <th>No Of Samples</th>
-                                                <th>పర్వలెదు</th>
-                                                <th>బగుంది</th>
-                                                <th>బాగాలెదు</th>
-                                                <th>తెలియదు</th>
-                                            </tr></thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>District</td>
-                                                    <td>50</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>AC</td>
-                                                    <td>40</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>PC</td>
-                                                    <td>46</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Mandal</td>
-                                                    <td>45</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-								  <div class="panel panel-default">
-                                    <div id="headingThree" role="tab" class="panel-heading bg_f9">
-                                      <a aria-controls="collapse3" aria-expanded="false" href="#collapse3" data-parent="#accordion1" data-toggle="collapse" role="button" class="collapsed">
-                                      	<h4 class="panel-title text-bold">
-                                         T2 SA SURVEY FIELD
-                                         <span class="font-10 text-danger">&nbsp;&nbsp;Negative Count  10</span>
-                                          <span class="pull-right"><i class="glyphicon glyphicon-triangle-top"></i></span>
-                                        </h4>
-                                      </a>
-                                    </div>
-                                    <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse" id="collapse3">
-                                      <div class="panel-body">
-                                        <p class="pad_10 m_0">ప్రథిపక్ష నయకుదు జగన్ ప మి అబిప్రయం</p>
-                                        <table class="table">
-                                        	<thead>
-                                            	<tr><th>Location</th>
-                                                <th>No Of Samples</th>
-                                                <th>పర్వలెదు</th>
-                                                <th>బగుంది</th>
-                                                <th>బాగాలెదు</th>
-                                                <th>తెలియదు</th>
-                                            </tr></thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>District</td>
-                                                    <td>50</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>AC</td>
-                                                    <td>40</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>PC</td>
-                                                    <td>46</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Mandal</td>
-                                                    <td>45</td>
-                                                    <td>30%</td>
-                                                    <td>20%</td>
-                                                    <td>10%</td>
-                                                    <td>50%</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-								  </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="participated">
-                            	<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
-                                  <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading1">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-	                                      <h4 class="panel-title text-bold">
-                                          T7 SA SURVEY FIELD
-	                                      </h4>
-                                      </a>
-                                    </div>
-                                    <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
-                                      <div class="panel-body">
-                                        <table class="table m_0 table-bordered">
-                                        	<thead>
-                                            	<th width="70%">Question</th>
-                                                <th width="30%">Answer</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading2">
-                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                      	<h4 class="panel-title text-bold">
-                                          T5 SA SURVEY FIELD
-                                        </h4>
-                                      </a>
-                                    </div>
-                                    <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
-                                      <div class="panel-body">
-                                        <table class="table m_0 table-bordered">
-                                        	<thead>
-                                            	<th width="70%">Question</th>
-                                                <th width="30%">Answer</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="headingThree">
-                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                      	<h4 class="panel-title text-bold">
-                                         T2 SA SURVEY FIELD
-                                        </h4>
-                                      </a>
-                                    </div>
-                                    <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
-                                      <div class="panel-body">
-                                        <table class="table m_0 table-bordered">
-                                        	<thead>
-                                            	<th width="70%">Question</th>
-                                                <th width="30%">Answer</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>ఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూఇ ఛానల్ లూ</td>
-                                                    <td>మాటీవీ</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                          </div>
-                        
-                        </div>
-                    </div>  
-                </div>
-            </div>
-        </div>-->
+      
     </div>
     <!-- model -->
 <div class="modal fade myModalForDeath">
@@ -1495,7 +931,7 @@ var globalCadreId = '${cadreId}';
 								
 								str+='</div>';
 								
-								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurveyCls" role="" aria-labelledby="" style="display:none;">';
+								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurveyCls " role="" aria-labelledby="" style="display:none;">';
 									str+='<div class="panel-body table-responsive">';										
 									str+='</div>';
 									str+='</div>';
@@ -1757,103 +1193,15 @@ var globalCadreId = '${cadreId}';
 								str+='<div class="panel panel-default m_0">';
 								
 								str+='<div class="panel-heading bg_f9 innerDiv" role="tab" id="heading'+i+'" attr_survy_divId="surveyTable'+i+'">';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="tableshidesandShow(\'surveyTable'+i+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="tableshidesandShow(\'surveyTable'+i+'\','+i+');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
-								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
+								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable topsurveyTable'+i+'" id="topsurveyTable'+i+'" style="display:none;"></i></span>';
 								str+='</h4> </a><div style="offset4"><img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
 								
 								str+='</div>';
-								
-								/*str+='<div class="panel-heading bg_f9 innerDiv" role="tab" id="heading'+i+'" attr_survy_divId="surveyTable'+i+'">';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'surveyTable'+i+'\',\'true\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
-								str+='<h4 class="panel-title text-bold">';
-								str+=''+result.verifierVOList[i].name+'';
-								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
-								str+='</h4> </a><div style="offset4"><img id="ajax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
-								
-								str+='</div>';
-								*/
-								
-								/*
-								
-								if(i==0)
-								{
-									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="">';
-									str+='<div class="panel-body">';
-									 str+='<table class="table m_0 table-bordered" style="width: 999px;">';
-										str+='<thead>';
-											str+='<th style="text-align:center;">Question</th>';
-											str+='<th style="text-align:center;">Answer</th>';
-										str+='</thead>';
-										str+='<tbody>';
-										if(result.verifierVOList[i].verifierVOList != null && result.verifierVOList[i].verifierVOList.length>0)
-										{
-											for(var s in result.verifierVOList[i].verifierVOList){
-												str+='<tr>';
-													str+='<td>'+result.verifierVOList[i].verifierVOList[s].name+'</td>';
-													str+='<td>'+result.verifierVOList[i].verifierVOList[s].option+'</td>'; 
-												str+='</tr>';
-												
-												if(result.verifierVOList[i].verifierVOList[s].verifierVOList != null && result.verifierVOList[i].verifierVOList[s].verifierVOList.length>0)
-											{
-												str+='<tr>';
-													str+='<td colspan="2">';
-													str+='<table class="table table-bordered">';
-														str+='<thead >';
-															str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
-																str+=' Location ';
-															str+='</th>';
-															for(var k in result.verifierVOList[i].verifierVOList[0].verifierVOList[0].verifierVOList)
-															{	
-																str+='<th style="background-color:lightgrey;">';
-																str+=''+result.verifierVOList[i].verifierVOList[0].verifierVOList[0].verifierVOList[k].option+'';
-																str+='</th>';
-															}
-															
-														str+='</thead>';
-														str+='<tbody>';
-														for(var k in result.verifierVOList[i].verifierVOList[s].verifierVOList)
-															{	
-																str+='<tr>';
-																str+='<th  style="background-color:lightgrey;"> '+result.verifierVOList[i].verifierVOList[s].verifierVOList[k].name+'</th>';
-																for(var b in result.verifierVOList[i].verifierVOList[s].verifierVOList[k].verifierVOList)
-																{	
-																	var perc = result.verifierVOList[i].verifierVOList[s].verifierVOList[k].verifierVOList[b].percentage
-																	perc = parseFloat(perc).toFixed(2);
-																	str+='<td>'+perc+'</td>';
-																}
-																str+='</tr>';
-															}
-														str+='</tbody>';
-														str+='</table>';
-													str+='</td>'; 
-												str+='</tr>';
-											}
-												
-											}
-										}
-										
-										str+='</tbody>';
-									str+='</table>';
-									str+='</div>';
-									str+='</div>';
-								}
-								else
-								{
-									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
-									str+='<div class="panel-body">';										
-									str+='</div>';
-									str+='</div>';
-									
-									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority)
-								}
-								*/
-								/*str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurvey" role="" aria-labelledby="" style="display:none;">';
-									str+='<div class="panel-body table-responsive">';										
-									str+='</div>';
-									str+='</div>';*/
-									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls" role="" aria-labelledby="" style="display:none;">';
+																
+									str+='<div id="surveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls table-responsive" role="" aria-labelledby="" style="display:none;">';
 									str+='<img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="width:250px;height:200px;margin-left:300px;"/>';
 									str+='<div class="panel-body">';										
 									str+='</div>';
@@ -2157,96 +1505,7 @@ $(document).on("click",".newsSubmitBtn",function(){
 
 </script>
 <script type="text/javascript">
-/*$(function () {
-	Highcharts.setOptions({
-        
-    });
-    $('#donutchart').highcharts({
-        chart: {
-            type: 'pie',
-			backgroundColor: 'transparent',
-			colors: ['#ff9933', '#33cccc', '#ff3333', '#663300'],
-            options3d: {
-                enabled: false,
-                alpha: 50
-            }
-        },
-		legend: {
-                enabled: true,
-                align: 'right',
-                verticalAlign: 'right',
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 10,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['In Progress', 157],
-                ['Completed', 100],
-                ['Not Eligible', 100],
-                ['Not Possible', 100],
-				['Not Completed', 100],
-            ]
-        }]
-    });
-});*/
-/*$(function () {
-	Highcharts.setOptions({
-        
-    });
-    $('#donutchart1').highcharts({
-        chart: {
-            type: 'pie',
-			backgroundColor: 'transparent',
-			colors: ['#ff9933', '#33cccc', '#ff3333', '#663300'],
-            options3d: {
-                enabled: false,
-                alpha: 50
-            }
-        },
-		legend: {
-                enabled: true,
-                align: 'right',
-                verticalAlign: 'right',
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 10,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['In Progress', 157],
-                ['Completed', 100],
-                ['Not Eligible', 100],
-                ['Not Possible', 100],
-				['Not Completed', 100],
-            ]
-        }]
-    });
-});*/
+
 
 
  function getTotalMemberShipRegistrationsInCadreLocation()
@@ -2469,8 +1728,8 @@ function buildElectionPerformanceInCadreLocation(result)
 		str += '<div id="collapseOne'+result[i].year+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+result[i].year+'">';
 		str += '<div class="panel-body" style="padding: 0px;" >';
 		
-		str += '<div class="row">';
-		str += '<div class="col-md-12">';
+		str += '<div class="row ">';
+		str += '<div class="col-md-12 table-responsive">';
 		str += '<table class="table m_0">';
 		str += '<tr>';
 	 if(result[i].year != "2009")
@@ -3605,20 +2864,46 @@ function hideAndShowSurvey(typeId)
 	}
 }
 
-function tableshidesandShow(divId)
+function tableshidesandShow(divId,index)
 {
+
+	$('#topsurveyTable'+index+'').hide();
+	$('.topsurveyTable'+index+'').hide();
+	var styleStr = $('#'+divId+'').is(":visible")
+	if(styleStr)
+	{
+		$('#'+divId+'').hide();
+		$('.'+divId+'').hide();
+		$('.topsurveyTable'+index+'').show();
+	}
+	else
+	{
+		$('#'+divId+'').show();
+		$('.'+divId+'').show();
+		$('#topsurveyTable'+index+'').show();
+	}	
+}
+
+function newsHideAndShow(divId)
+{
+	$('.showbtnCls').hide();
+	$('.dateCls').hide();
 		var styleStr = $('#'+divId+'').is(":visible")
 		console.log(styleStr);
 		if(styleStr)
 		{
 			$('#'+divId+'').hide();
+			$('.'+divId+'').hide();
+			$('.showbtnCls').show();
+			
 		}
 		else
 		{
 			$('#'+divId+'').show();
+			$('.'+divId+'').show();
+			$('.dateCls').show();
 		}	
 }
 </script>
-
 </body>
 </html>
