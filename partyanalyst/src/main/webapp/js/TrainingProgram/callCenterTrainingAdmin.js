@@ -1,6 +1,16 @@
 
-function getAllCampBatches()
+function getAllCampBatches(batchMemId)
 	{
+		if(batchMemId == 1){
+			$("#batchConfirmationDivId").hide();
+			$("#memberConfirmationDivId").show();
+		}
+		if(batchMemId == 2){
+			$("#memberConfirmationDivId").hide();
+			$("#batchConfirmationDivId").show();
+		}
+	$("#campId  option").remove();
+	$("#campId").append('<option value="0">Select Camp</option>');
 		var districtIds = 0;
 		var jsObj={
 				districtIds:districtIds
@@ -27,6 +37,8 @@ function getAllCampBatches()
 	
 function getAllProgramsList(campId)
 {
+	$("#programId  option").remove();
+	$("#programId").append('<option value="0">Select Program</option>');
 	var jsObj={
 		campId:campId
 	}
@@ -50,6 +62,8 @@ function getAllProgramsList(campId)
 
 function getAllSchedulesDatesList(programId)
 {
+	$("#scheduleId  option").remove();
+	$("#scheduleId").append('<option value="0">Select Schedule</option>');
 	var jsObj={
 		programId:programId
 	}
@@ -75,7 +89,7 @@ function saveAllDetails()
 {
 	var scheduleId = $("#scheduleId").val();
 	var membersCount = $("#membersCountId").val().trim();
-	var callerId = $("#callerId").val();
+	var callerId = $(".callerId").val();
 	var callPurposeId = $("#memeberBatchConformationId").val();
 	
 	if(scheduleId == null && scheduleId == 0){
@@ -83,7 +97,7 @@ function saveAllDetails()
 		return;
 	}
 	if(membersCount == null && membersCount.length == 0){
-		$("#").html("Please Enter No.of Calls");
+		$("#searchErrDivID").html("Please Enter No.of Calls");
 		return;
 	}
 	
@@ -100,8 +114,9 @@ function saveAllDetails()
 		url :'saveAllDetailsAction.action',
 		data:{task:JSON.stringify(jsObj)},
 	}).done(function(result){
+		$("#searchErrDivID").html("");
 		if(result != null){
-			
+			$("#searchErrDivID").html("Details Are Updated Successfully");
 		}
 	});
 }
@@ -228,4 +243,23 @@ function buildCampusWiseBatchWiseMembersDetails(result)
 			$("#scheduled").html(str);										
     									
 	}
+}
+
+function getAvailableMembersCountDetails(caallerrId)
+{
+	var schedduleeId = $("#scheduleId").val();
+	var jsObj={
+		schedduleeId:schedduleeId,
+		caallerrId:caallerrId
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getAvailableMembersCountDetailsAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null){
+			$("#searchErrDivID").html("Details Are Updated Successfully");
+		}
+	});
 }
