@@ -394,7 +394,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId  from TrainingCampScheduleInviteeCaller model where " +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId and model.campCallPurpose.purpose like '%"+callPurposeStr+"%'  and " +
-				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.status  '%"+memberTypeStr+"%' ");
+				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.status like '%"+memberTypeStr+"%' ");
 		if(callerId != null && callerId.longValue() >0L)
 			queryStr.append(" and model.trainingCampCallerId =:callerId ");
 		
@@ -402,6 +402,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("scheduleId", scheduleId);
+		if(callerId != null && callerId.longValue() >0L)
+			query.setParameter("callerId", callerId);
 		return query.list();
 	}	
 	
