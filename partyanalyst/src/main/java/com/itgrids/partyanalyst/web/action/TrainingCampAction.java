@@ -471,4 +471,19 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getAvailableMembersCountDetailsAction()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			Long scheduleId = jObj.getLong("schedduleeId");
+			Long callerId = jObj.getLong("caallerrId");
+			
+			memberList = trainingCampService.getAvailableMembersCountDetails(scheduleId,callerId);
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getAvailableMembersCountDetailsAction method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

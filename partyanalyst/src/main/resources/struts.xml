@@ -10423,6 +10423,11 @@
 				<param name="root">trainingCampVO</param>
 		</result>
 	</action>
+	<action name="getAvailableMembersCountDetailsAction" class="trainingCampAction" method="getAvailableMembersCountDetailsAction">
+		<result type="json" name="success">
+				<param name="root">memberList</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      

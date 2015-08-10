@@ -18,9 +18,46 @@
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 
 </head>
+<style>
+    header.eventsheader {  
+    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    height: 71px;   
+}
+</style>
 <body>
-<header>
-	<img src="css/Training/img/header.jpg" width="100%">
+<header  class="eventsheader">
+<!-- <img src="css/Training/img/header.jpg" width="100%"> -->
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:38px;"></p>               
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
+                    Menu <img src="images/menu_icon.png" />
+                    </a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
+					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					
+                    </ul>   
+            </div>			
+        </div>       
+    </div>
+	
+	
 </header>
 <section>
 	<div class="container">
@@ -313,10 +350,10 @@
                                     Assign Members<br/>For acceptance
                                 </label>-->
 								<h5>Select Member/Batch</h5>
-								<select class="form-control" id="memeberBatchConformationId" onchange="getAllCampBatches();">
+								<select class="form-control" id="memeberBatchConformationId" onchange="getAllCampBatches(this.value);">
 									<option value="0" selected>Select Member/Batch</option>
-									<option value="1">Member Conformation</option>
-									<option value="2">Batch Conformation</option>
+									<option value="1">Member Confirmation</option>
+									<option value="2">Batch Confirmation</option>
 								</select>
 								<h5>Select Camp</h5>
 								<select class="form-control" id="campId" onchange="getAllProgramsList(this.value);">
@@ -331,16 +368,30 @@
 								<select class="form-control" id="scheduleId">
 									<option value="0">Select Schedule</option>
 								</select>
+								<div id="memberConfirmationDivId">
 								<h5 class="m_top20">
 									Select no of calls
 									<span class="text-danger pull-right text-italic">Avail Calls 500</span>
 								</h5>
 								<input class="form-control" type="text" id="membersCountId">
-								<h5>Select Call Center Agent Name</h5>
-								<select class="form-control" id="callerId">
-									<option value="0">Select Agent</option>
+								<h5>Select Call Center Caller Name</h5>
+								<select class="form-control callerId">
+									<option value="0">Select Caller</option>
 									<option value="1">Harish</option>
 								</select>
+								</div>
+								<div id="batchConfirmationDivId" style="display:none">
+								<h5>Select Call Center Caller Name</h5>
+								<select class="form-control callerId" onchange="getAvailableMembersCountDetails(this.value);">
+									<option value="0">Select Caller</option>
+									<option value="1">Harish</option>
+								</select>
+								<h5 class="m_top20">
+									Select no of calls
+									<span class="text-danger pull-right text-italic">Avail Calls 500</span>
+								</h5>
+								<input class="form-control" type="text" id="membersCountId">
+								</div>
 								<div id="searchErrDivID"></div>
 								<button class="btn btn-success btn-block m_top20" type="button" onclick="saveAllDetails();">ASSIGN TO CALLER</button>
 							</div>
@@ -420,7 +471,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading pad_5 pad_bottom0">
 									<ul class="nav nav-tabs tab-list" role="tablist">
-										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">AGENTS CALL DATA PROGRESS - MEMBERS AVAILABILITY</a></li>
+										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">CALLERS CALL DATA PROGRESS - MEMBERS AVAILABILITY</a></li>
 										<li><a href="#participated" class="text-bold" data-toggle="tab">MEMBERS ACCEPTANCE</a></li>
 									</ul>
 								</div>
@@ -750,7 +801,7 @@ $(document).ready(function() {
 				if(result.trainingCampVOList !=null){
 						str+='<table class="table table-bordered m_0" id="dataNotAvailableDiv">';
 							str+='<thead >';
-								str+='<th>Agent Name</th>';
+								str+='<th>Caller Name</th>';
 								str+='<th>Assigned Calls</th>';
 								str+='<th>Completed Calls</th>';
 								str+='<th>Pending Calls</th>';
@@ -1098,6 +1149,7 @@ function buildingMembersFilledInCalenderBatch(result){
 		getCampusWiseBatchWiseMembersDetails();
 	})
 	
+	$("#mainheading").html("TRAINING PROGRAM");
 </script>
 <script>
 </script>
