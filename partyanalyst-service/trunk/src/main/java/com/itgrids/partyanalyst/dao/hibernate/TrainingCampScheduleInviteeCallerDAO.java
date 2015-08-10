@@ -68,7 +68,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 			str.append(" (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
 		}
 		else if(type.equalsIgnoreCase("todayCallers")){
-			str.append(" date(model.updatedTime)>=:startDate ");
+			str.append(" date(model.updatedTime) =:startDate ");
 		}
 		
 		Query query=getSession().createQuery(str.toString());
