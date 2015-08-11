@@ -17,9 +17,12 @@ public class TrainingMemberVO implements Serializable{
 	private String role;
 	private String location;
 	private String age;
+	private Long inviteeId;
+	private Long inviteeCallerId;
 	private Long availableCount;
 	private Long totalCount;
 	private List<TrainingMemberVO> subList = new ArrayList<TrainingMemberVO>();
+	private String remarks;
 	
 	public Long getAvailableCount() {
 		return availableCount;
@@ -32,6 +35,24 @@ public class TrainingMemberVO implements Serializable{
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public Long getInviteeId() {
+		return inviteeId;
+	}
+	public void setInviteeId(Long inviteeId) {
+		this.inviteeId = inviteeId;
+	}
+	public Long getInviteeCallerId() {
+		return inviteeCallerId;
+	}
+	public void setInviteeCallerId(Long inviteeCallerId) {
+		this.inviteeCallerId = inviteeCallerId;
 	}
 	public String getAge() {
 		return age;

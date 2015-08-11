@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -29,13 +30,18 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
+import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -161,7 +167,19 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
-
+	
+	public List<BasicVO> getAllPrograms()
+	{
+		try{
+			List<Object[]> programs = trainingCampProgramDAO.getPrograms();
+			return getBasicList1(programs);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
 	
 	public List<IdNameVO> getAllTrainingCampsInfoByDistrictIds(List<Long> districtIds)
 	{
@@ -1050,6 +1068,9 @@ public class TrainingCampService implements ITrainingCampService{
 					vo.setStatus(commonMethodsUtilService.getStringValueForObject(params[6]));
 					vo.setAge(commonMethodsUtilService.getStringValueForObject(params[7]));
 					vo.setLocation(commonMethodsUtilService.getStringValueForObject(params[8]));
+					vo.setInviteeId(params[9] != null ? (Long)params[9] : 0l);
+					vo.setInviteeCallerId(params[10] != null ? (Long)params[10] : 0l);
+					vo.setRemarks(params[11] != null ? params[11].toString() : "");
 					returnList.add(vo);
 					if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(params[0])))
 						cadreIds.add(commonMethodsUtilService.getLongValueForObject(params[0]));
@@ -1159,11 +1180,63 @@ public class TrainingCampService implements ITrainingCampService{
 	{
 		List<IdNameVO>  returnList = new ArrayList<IdNameVO>();
 		try{
+			List<Object[]> programs = trainingCampProgramDAO.getPrograms();
+			return getBasicList(programs);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	
+	
+	public List<BasicVO> getCampsByProgramId(Long programId)
+	{
+		try{
+			List<Object[]> camps = trainingCampScheduleDAO.getCampsForProgram(programId);
+			return getBasicList1(camps);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	public List<BasicVO> getSchedulesByCampId(Long campId)
+	{
+		try{
+			List<Object[]> schedules = trainingCampScheduleDAO.getSchedules(campId);
+			return getBasicList1(schedules);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	public List<BasicVO> getBatchesByScheduleId(Long scheduleId)
+	{
+		try{
+			List<Object[]> batches = trainingCampBatchDAO.getBatchesForSchedule(scheduleId);
+			return getBasicList1(batches);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	
+	public List<BasicVO> getBasicList1(List<Object[]> list)
+	{
+		List<BasicVO>  returnList = new ArrayList<BasicVO>();
+		try{
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
 				{
-					IdNameVO vo = new IdNameVO();
+					BasicVO vo = new BasicVO();
 					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
 					returnList.add(vo);
@@ -1240,6 +1313,44 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			listVo.add(progamVo);
 		}
+	}
+	
+	public ResultStatus updateCadreStatusForTraining(TrainingCadreVO inputVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		DateUtilService date = new DateUtilService();
+		try{
+			if(inputVO.getCallStatusId() == 1l && inputVO.getStatus().equalsIgnoreCase("callstatus"))//Answered
+			{
+			TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+					if(inputVO.getBatchId() > 0)
+						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
+					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
+						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
+					if(inputVO.getScheduleStatusId() > 0)
+						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+						trainingCampScheduleInvitee.setInsertedBy(inputVO.getUserId());
+						trainingCampScheduleInvitee.setInsertedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+			}
+					
+			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+			trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
+			trainingCampScheduleInviteeCaller.setInsertedBy(inputVO.getUserId());
+			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+				
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					
+			
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in updateCadreStatusForTraining()", e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
 	}
 	
 	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString){
