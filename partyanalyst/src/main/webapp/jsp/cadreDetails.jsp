@@ -674,7 +674,14 @@ var globalCadreId = '${cadreId}';
 					}
 					
 					 $("#districtNoId").html(result.districtName);
-					 $("#stateNoId").html(result.stateName);
+					 
+					if(result.districtId >= 1 && result.districtId <=10 )
+						$("#stateNoId").html("Telangana");
+					else if(result.districtId >= 11 && result.districtId <=23 )
+						$("#stateNoId").html("Telangana");
+					else
+						$("#stateNoId").html(result.stateName);
+					
 					 $("#houseNoId").html(result.houseNo);
 					 
 					 $("#globalAreaType").html(result.areaType);
