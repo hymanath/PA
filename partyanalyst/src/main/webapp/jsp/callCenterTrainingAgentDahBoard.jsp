@@ -230,11 +230,11 @@ for(var i in result) // program
 {
 str+=' <tr>';
 var rowSpanCnt = result[i].subList.length;
-str+='<td rowspan="'+rowSpanCnt+'">'+result[i].name+'</td>';
+str+='<td rowspan="'+result[i].spanCnt+'">'+result[i].name+'</td>';
 for(var j=0;j< result[i].subList.length;j++) //camp
 {
 
-str+=' <td>'+result[i].subList[j].name+'</td>';
+str+=' <td rowspan="'+result[i].spanCnt+'">'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
 var answered  = 0;
@@ -360,7 +360,7 @@ for(var j=0;j< result[i].subList.length;j++) //camp
 str+=' <td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
-str+=' <td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].subList[k].name+'</td>';
+str+=' <td rowspan="'+result[i].subList[j].subList[k].spanCnt+'">'+result[i].subList[j].subList[k].name+'</td>';
 for(var p=0;p<result[i].subList[j].subList[k].subList.length;p++) //batch
 {
 var answered  = 0;
