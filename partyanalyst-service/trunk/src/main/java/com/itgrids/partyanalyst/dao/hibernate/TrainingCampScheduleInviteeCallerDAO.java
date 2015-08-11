@@ -403,6 +403,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId  from TrainingCampScheduleInviteeCaller model where " +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId and model.callPurposeId =:callPurposeId " +
+				" and model.campCallPurpose.purpose !='Confirmation' " +
 				" order by  model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("scheduleId", scheduleId);

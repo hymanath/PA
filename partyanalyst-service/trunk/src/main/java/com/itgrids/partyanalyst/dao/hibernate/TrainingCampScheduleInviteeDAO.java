@@ -15,7 +15,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		super(TrainingCampScheduleInvitee.class);
 	}
 
-	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String searchType, Date startDate, Date endDate)
+	public List<Object[]> getCampusWiseScheduleWiseMembersDetails(String searchType, Date startDate, Date endDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select TCSI.trainingCampSchedule.trainingCamp.campName," +
@@ -60,14 +60,58 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return query.list();
 	}
 	
+	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String searchType, Date startDate, Date endDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName," +
+				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName," +
+				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode," +
+				" TCB.trainingCampBatchName,date(TCB.fromDate),date(TCB.toDate),TCB.batchStatus.status," +
+				" count(TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId)," +
+				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId = TCB.trainingCampSchedule.trainingCamp.trainingCampId  ");
+		queryStr.append(" and TCSIC.campCallPurpose.purpose='Confirmation' and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ='Interested' ");
+		if(startDate != null && endDate != null)
+		{
+			queryStr.append(" and (date(TCB.fromDate) >=:startDate and date(TCB.fromDate) <=:endDate) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
+		{
+			queryStr.append(" and TCB.batchStatus.status ='Not Started' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("running"))
+		{
+			queryStr.append(" and TCB.batchStatus.status ='Progress' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("completed"))
+		{
+			queryStr.append(" and TCB.batchStatus.status ='Completed' ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("cancelled"))
+		{
+			queryStr.append(" and  ( TCB.batchStatus.status ='Cancelled' or TCB.batchStatus.status ='Postponed' ) ");
+		}
+		
+		queryStr.append("  group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId" +
+				" ,TCB.batchStatus.status order by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+	}
+	
 	public List<Long> getInvitedCandidatesListByScheduleIdAndCount(Long scheduleId,List<Long> alreadyInvitedMemberIdsList,int membersCount)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct TCSI.trainingCampScheduleInviteeId from TrainingCampScheduleInvitee TCSI where TCSI.scheduleInviteeStatusId =1  ");
+		queryStr.append(" select distinct TCSI.trainingCampScheduleInviteeId from TrainingCampScheduleInvitee TCSI where TCSI.scheduleInviteeStatusId =1 and TCSI.trainingcampScheduleId =:scheduleId ");
 		if(alreadyInvitedMemberIdsList != null && alreadyInvitedMemberIdsList.size()>0)
 			queryStr.append(" and TCSI.trainingCampScheduleInviteeId not in (:alreadyInvitedMemberIdsList) ");
 		queryStr.append("order by TCSI.trainingCampScheduleInviteeId ");
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("scheduleId", scheduleId);
 		if(alreadyInvitedMemberIdsList != null && alreadyInvitedMemberIdsList.size()>0)
 			query.setParameterList("alreadyInvitedMemberIdsList", alreadyInvitedMemberIdsList);
 		query.setFirstResult(0);
@@ -167,4 +211,24 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return query.list();
 	}
 
+	public Long getAvailableInvitedCandidatesListByScheduleIdAndCount(Long scheduleId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(TCSI.trainingCampScheduleInviteeId) from TrainingCampScheduleInvitee TCSI where TCSI.scheduleInviteeStatusId =1 and TCSI.trainingcampScheduleId =:scheduleId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("scheduleId", scheduleId);
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getAreadyAssignedCandidatesListByScheduleIdAndCount(Long scheduleId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(TCSI.trainingCampScheduleInviteeId) from TrainingCampScheduleInviteeCaller TCSIC where TCSI.trainingCampScheduleInvitee.trainingcampScheduleId =:scheduleId and " +
+				" TCSIC.campCallPurpose.purpose='Invitation' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("scheduleId", scheduleId);
+		return (Long) query.uniqueResult();
+	}
+	
+	
 }
