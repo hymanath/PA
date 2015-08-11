@@ -2184,12 +2184,12 @@
 	 
 	 <bean id="partyMeetingMinuteHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteHistoryDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="partyMeetingMinuteDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteDocumentDAO">
+	 </bean>	
+	  
+	 <bean id="partyMeetingDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	 
+	  
 	 <bean id="partyMeetingAtrPointDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
