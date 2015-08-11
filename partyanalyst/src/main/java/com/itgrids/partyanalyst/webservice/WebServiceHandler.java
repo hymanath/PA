@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
@@ -55,10 +57,10 @@ public class WebServiceHandler {
 	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private MissedCallCampaignVO MissedCallCampaignVO;
 	private List<CadreAddressVO> cadreAddressVOList;
-
 	
-
-
+	@Autowired
+	private IAttendanceService attendanceService;
+	
 	public List<CadreAddressVO> getCadreAddressVOList() {
 		return cadreAddressVOList;
 	}
@@ -1340,7 +1342,20 @@ public class WebServiceHandler {
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
-		
-		
-	}	
+	}
+	
+	@POST
+	@Path("/saveAttendance")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AttendanceVO saveAttendance(AttendanceVO inputVo){
+		try{
+			return attendanceService.saveAttendance(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAttendance() Method - ",e);
+			return null;
+		}
+	}
 }
