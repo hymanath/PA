@@ -2706,5 +2706,13 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
+	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		<property name="attendanceDAO" ref="attendanceDAO" />
+		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
+		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />
+		<property name="attendanceErrorDAO" ref="attendanceErrorDAO" />
+	</bean>
+	
 </beans>		
 	
