@@ -8,9 +8,12 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 
 public interface ITrainingCampScheduleInviteeDAO extends GenericDao<TrainingCampScheduleInvitee, Long>{
-	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String searchType, Date startDate, Date endDate);
+	public List<Object[]> getCampusWiseScheduleWiseMembersDetails(String searchType, Date startDate, Date endDate);
 	public List<Long> getInvitedCandidatesListByScheduleIdAndCount(Long scheduleId,List<Long> alreadyInvitedMemberIdsList,int membersCount);
 	public List<Object[]> getTrainingProgramMembersBatchCount(Date startDate,Date endDate,String status,String type);
 	public List<Object[]> getBatchWiseProgramWiseInterestedMembersDetails(String membersType, String searchType, Date startDate, Date endDate);
+	public List<Object[]> getCampusWiseBatchWiseMembersDetails(String searchType, Date startDate, Date endDate);
 	public List getTrainingCampScheduleInviteeId(Long tdpCadreId,Long programId,Long campId,Long scheduleId);
+	public Long getAvailableInvitedCandidatesListByScheduleIdAndCount(Long scheduleId);
+	public Long getAreadyAssignedCandidatesListByScheduleIdAndCount(Long scheduleId);
 }
