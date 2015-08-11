@@ -31,6 +31,7 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private PartyMeeting partyMeeting;
 	private String path;
 	private String documentType;
+	private String documentFormat;
 	private User uploadedBy;
 	private User updatedBy;
 	private Date uploadedTime; 
@@ -139,6 +140,15 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
+	}
+
+	@Column(name="document_format")
+	public String getDocumentFormat() {
+		return documentFormat;
+	}
+
+	public void setDocumentFormat(String documentFormat) {
+		this.documentFormat = documentFormat;
 	}
 	
 }
