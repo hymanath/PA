@@ -10362,22 +10362,22 @@
 				<param name="root">memberList</param>
 		</result>
 	</action>
-	<action name="getAllPrograms" class="trainingCampAction" method="getAllPrograms">
+	<action name="getAllProgramsAction" class="trainingCampAction" method="getAllPrograms">
 		<result type="json" name="success">
 				<param name="root">basicList</param>
 		</result>
 	</action>
-	<action name="getAllschedules" class="trainingCampAction" method="getAllschedules">
+	<action name="getSchedulesByCampIdAction" class="trainingCampAction" method="getSchedulesByCampId">
 		<result type="json" name="success">
 				<param name="root">basicList</param>
 		</result>
 	</action>
-	<action name="getAllBatches" class="trainingCampAction" method="getAllBatches">
+	<action name="getBatchesByScheduleIdAction" class="trainingCampAction" method="getBatchesByScheduleId">
 		<result type="json" name="success">
 				<param name="root">basicList</param>
 		</result>
 	</action>
-	<action name="getAllCamps" class="trainingCampAction" method="getAllCamps">
+	<action name="getCampsByProgramIdAction" class="trainingCampAction" method="getCampsByProgramId">
 		<result type="json" name="success">
 				<param name="root">basicList</param>
 		</result>
@@ -10428,6 +10428,25 @@
 				<param name="root">memberList</param>
 		</result>
 	</action>
+		<action name="getScheduleStatusListAction" class="trainingCampAction" method="getScheduleStatusList">
+		<result type="json" name="success">
+				<param name="root">statusCountList</param>
+		</result>
+	</action>
+	
+		<action name="getCallStatusListAction" class="trainingCampAction" method="getCallStatusList">
+		<result type="json" name="success">
+				<param name="root">statusCountList</param>
+		</result>
+	</action>
+	
+	
+		<action name="updateCadreStatusForTrainingAction" class="trainingCampAction" method="updateCadreStatusForTraining">
+		<result type="json" name="success">
+				<param name="root">resultStatus</param>
+		</result>
+	</action>
+	
 	
 </package>
 </struts>      

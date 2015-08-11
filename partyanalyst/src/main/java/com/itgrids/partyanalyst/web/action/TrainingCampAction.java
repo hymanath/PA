@@ -16,9 +16,11 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
+import com.itgrids.partyanalyst.dto.TrainingCadreVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -44,8 +46,9 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String statusType;
 	private String batchId;
 	private List<BasicVO> basicList;
-	private List<IdNameVO> idNameList;
 	private ResultStatus resultStatus;
+	private List<IdNameVO> idNameList;
+
 	private TrainingCampVO trainingCampVO;
 	
 
@@ -58,20 +61,21 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		this.trainingCampVO = trainingCampVO;
 	}
 
-	public ResultStatus getResultStatus() {
-		return resultStatus;
-	}
-
-	public void setResultStatus(ResultStatus resultStatus) {
-		this.resultStatus = resultStatus;
-	}
-
+	
 	public List<IdNameVO> getIdNameList() {
 		return idNameList;
 	}
 
 	public void setIdNameList(List<IdNameVO> idNameList) {
 		this.idNameList = idNameList;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 	public List<BasicVO> getBasicList() {
@@ -297,6 +301,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	{
 		try{
 			jObj=new JSONObject(getTask());
+			basicList = trainingCampService.getAllPrograms();
 		}
 	catch(Exception e){
 	e.printStackTrace();
@@ -304,10 +309,12 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	return Action.SUCCESS;
 	}
-	public String getAllCamps()
+	public String getCampsByProgramId()
 	{
 		try{
 			jObj=new JSONObject(getTask());
+			basicList = trainingCampService.getCampsByProgramId(jObj.getLong("programId"));
+			
 		}
 	catch(Exception e){
 	e.printStackTrace();
@@ -315,10 +322,11 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	return Action.SUCCESS;
 	}
-	public String getAllschedules()
+	public String getSchedulesByCampId()
 	{
 		try{
 			jObj=new JSONObject(getTask());
+			basicList = trainingCampService.getSchedulesByCampId(jObj.getLong("campId"));
 		}
 	catch(Exception e){
 	e.printStackTrace();
@@ -326,10 +334,38 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	return Action.SUCCESS;
 	}
-	public String getAllBatches()
+	public String getBatchesByScheduleId()
 	{
 		try{
 			jObj=new JSONObject(getTask());
+			basicList = trainingCampService.getBatchesByScheduleId(jObj.getLong("scheduleId"));
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
+	}
+	
+	public String getScheduleStatusList()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+			statusCountList = trainingCampService.getScheduleStatusList();
+		}
+	catch(Exception e){
+	e.printStackTrace();
+	}
+
+	return Action.SUCCESS;
+	}
+	
+	
+	public String getCallStatusList()
+	{
+		try{
+			jObj=new JSONObject(getTask());
+			statusCountList = trainingCampService.getStatusList();
 		}
 	catch(Exception e){
 	e.printStackTrace();
@@ -354,8 +390,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		
 		return Action.SUCCESS;
 	}
-	
-	public String getScheduleAndConfirmationCallsOfCallerToAgent(){
+public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		
 		try{
 			jObj=new JSONObject(getTask());
@@ -483,6 +518,29 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}catch (Exception e) {
 			LOG.error(" Exception occured in getAvailableMembersCountDetailsAction method in TrainingCampAction class.",e);
 		}
+		return Action.SUCCESS;
+	}
+	public String updateCadreStatusForTraining()
+	{
+		try{
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj=new JSONObject(getTask());
+			TrainingCadreVO inputVo = new TrainingCadreVO();
+			inputVo.setInvitteId(jObj.getLong("inviteeId"));
+			inputVo.setInviteeCallerId(jObj.getLong("inviteeCallerId"));
+			inputVo.setTdpCadreId(jObj.getLong("tdpCadreId"));
+			inputVo.setBatchId(jObj.getLong("batchId"));
+			inputVo.setRamarks(jObj.getString("ramarks"));
+			inputVo.setScheduleStatusId(jObj.getLong("scheduleStatusId"));
+			inputVo.setCallStatusId(jObj.getLong("callstatusId"));
+			inputVo.setStatus(jObj.getString("status"));
+			inputVo.setUserId(regVo.getRegistrationID());
+			resultStatus = trainingCampService.updateCadreStatusForTraining(inputVo);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return Action.SUCCESS;
 	}
 	
