@@ -10453,5 +10453,11 @@
 		</result>
 	</action>
 	
+	<action name="getMembersCountByBatchStatusAction" class="trainingCampAction" method="getMembersCountByBatchStatus">
+	  <result type="json" name="success">
+	     <param name="root">statusCountList</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      
