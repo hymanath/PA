@@ -116,9 +116,9 @@ table th
                                     	<div class="panel-heading pad_5 pad_bottom0">
                                             <ul class="nav nav-tabs tab-list-sch" role="tablist">
                                                 <li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULE CONFORMATION</a></li>
-                                                <li><a href="#running" class="text-bold" data-toggle="tab">RUNNING</a></li>
+                                                <!--<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING</a></li>
                                                 <li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED</a></li>
-                                                <li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED</a></li>
+                                                <li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED</a></li> -->
                                             </ul>
                                         </div>
                                         <div class="panel-body pad_0">
