@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,8 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -545,8 +549,15 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	{
 		try{
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			jObj=new JSONObject(getTask());
+			jObj = new JSONObject(getTask());
 			TrainingCadreVO inputVo = new TrainingCadreVO();
+			JSONArray jarr = jObj.getJSONArray("dataArray");
+			
+			if(jarr != null && jarr.length() > 0)
+			{
+				for(int i=0;i<jarr.length();i++)
+				{
+			JSONObject jObj=(JSONObject) jarr.get(i);
 			inputVo.setInvitteId(jObj.getLong("inviteeId"));
 			inputVo.setInviteeCallerId(jObj.getLong("inviteeCallerId"));
 			inputVo.setTdpCadreId(jObj.getLong("tdpCadreId"));
@@ -557,6 +568,41 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			inputVo.setStatus(jObj.getString("status"));
 			inputVo.setUserId(regVo.getRegistrationID());
 			resultStatus = trainingCampService.updateCadreStatusForTraining(inputVo);
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateCallBackStatus()
+	{
+		try{
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			TrainingCadreVO inputVo = new TrainingCadreVO();
+			JSONArray jarr = jObj.getJSONArray("dataArray");
+			
+			if(jarr != null && jarr.length() > 0)
+			{
+				for(int i=0;i<jarr.length();i++)
+				{
+			JSONObject jObj=(JSONObject) jarr.get(i);
+			inputVo.setInvitteId(jObj.getLong("inviteeId"));
+			inputVo.setInviteeCallerId(jObj.getLong("inviteeCallerId"));
+			inputVo.setTdpCadreId(jObj.getLong("tdpCadreId"));
+			inputVo.setRamarks(jObj.getString("ramarks"));
+			inputVo.setUserId(regVo.getRegistrationID());
+			inputVo.setScheduleStatusId(jObj.getLong("scheduleStatusId"));
+			inputVo.setCallBackTime(jObj.getString("time"));
+			inputVo.setCallBackDate(jObj.getString("callbackDate"));
+			
+			resultStatus = trainingCampService.updateCallBackCadreStatusForTraining(inputVo);
+				}
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();

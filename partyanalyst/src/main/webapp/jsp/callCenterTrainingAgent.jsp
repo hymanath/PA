@@ -49,54 +49,57 @@
         <h4 class="modal-title">&nbsp;</h4>
       </div>
       <div class="modal-body">
+	  <div id="messageDiv"></div>
       		<div class="row">
             	<section>
                 	<div class="col-md-12" id="callStatusDiv">
                            
                     </div>
-                    <div class="Answered-div">
-                        <div class="col-md-12 m_top20">
+                    <div class="Answered-div ">
+                        <div class="col-md-12 m_top20 clearDiv">
                             <label>Call Back Remarks</label>
                             <ul class="callback-remarks">
-                            	<li>no remarks</li>
+                            	<textarea class="form-control clearEl" id="remarks"></textarea>
                             </ul>
                         </div>
-                        <div class="col-md-4 m_top20">
+                        <div class="col-md-4 m_top20 clearDiv">
                             <label>Select Program</label>
                             <select class="form-control" id="programId" disabled onchange="getCampsForProgram();">
                                <option value="0">Select</option>
                             </select>
                         </div>
-                        <div class="col-md-4 m_top20">
+                        <div class="col-md-4 m_top20 clearDiv">
                             <label>Select Training Camp</label>
                             <select class="form-control" id="campId" disabled onchange="getSchedulesForCamp();">
                                   <option value="0">Select</option>
                             </select>
                         </div>
-                        <div class="col-md-4 m_top20">
+                        <div class="col-md-4 m_top20 clearDiv">
                             <label>Select Schedule</label>
                             <select class="form-control" id="scheduleId" disabled onchange="getBatchesForSchedule();">
                                   <option value="0">Select</option>
                             </select>
                         </div>
-                        <div class="col-md-4 m_top20">
+                        <div class="col-md-4 m_top20 clearDiv">
                             <label>Select Batch</label>
                             <select class="form-control" id="batchId">
                                  <option value="0">Select</option> 
                             </select>
                         </div>
-                        <div class="col-md-12 m_top20" id="scheduleStatusDiv">
+                        <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
                            
                         </div>
-                        <div class="col-md-12 m_top20">
+                        <div class="col-md-12 m_top20 clearDiv">
                             <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
                         </div>
                     </div>
                     <div class="callback-div disnone">
                     	<div class="col-md-4 m_top20">
                         	<label>Call Back Type</label>
-                            <select class="form-control">
-                            	<option>Confirm later</option>
+                            <select class="form-control" id="callBackTypeId">
+								<option value="0">Select CallBack Type</option>
+                            	<option value="6">Call Back - Busy</option>
+								<option value="7">Call Back - Confirm Later</option>
                             </select>
                         </div>
                         
@@ -104,22 +107,22 @@
                         	<label>Call Back Date & Time</label>
                             <div class="input-group">
                             	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                <input class="form-control" id="CallbackTime">
+                                <input class="form-control clearEl" id="CallbackTime">
                             </div>
                         </div>
                     	<div class="col-md-4 m_top20">
                         	<label>Call Back Date & Time</label>
                             <div class="input-group">
                             	<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                <input class="form-control" id="timepicker4">
+                                <input class="form-control clearEl" id="timepicker4">
                             </div>
                         </div>
                         <div class="col-md-12 m_top20">
                             <label>Remarks</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control clearEl" id="callbackremarks"></textarea>
                         </div>
-                        <div class="col-md-12 m_top20">
-                            <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
+                        <div class="col-md-12 m_top20 clearDiv">
+                            <button class="btn btn-success" onclick="updateCallBackCadreStatus();">Update Status</button>
                         </div>
                     </div>
                     <div class="switchoff-div disnone">
@@ -149,7 +152,7 @@ var scheduleId = '${scheduleId}';
 var status = '${status}';
 var batchId = '${batchId}';
 var statusType = '${statusType}';
-$('.callback input:checkbox').change(function(){
+/*$('.callback input:checkbox').change(function(){
      if($(this).is(":checked")) {
         $('.Answered-div').addClass("disnone");
 		$('.callback-div').removeClass("disnone");
@@ -169,7 +172,7 @@ $('.switchoff input:checkbox').change(function(){
 		$('.callback-div').addClass("disnone");
 		$('.switchoff-div').addClass("disnone");
     }
-});
+});*/
 $(document).ready(function() {
 $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,locale: {
             format: 'MM/DD/YYYY'
@@ -401,13 +404,45 @@ function setDefaultImage(img){
    var str ='';
 	for(var i in result)
 	{
+	
 	 str+='<label class="checkbox-inline">';
-	 str+='<input type="checkbox" name="callStatus" class="callstatuscheckbox">'+result[i].name+'';
+	 str+='<input type="checkbox" id="callstatus'+result[i].id+'" name="callStatus" class="callstatuscheckbox" value="'+result[i].id+'" onclick="showHideCallStatus(\''+result[i].id+'\')">'+result[i].name+'';
 	 str+='</label>';
-	 }
+	}
+	str+='<label class="checkbox-inline callback">';
+    str+='<input type="checkbox" name="callback"  id="callstatus0" name="callStatus" class="callstatuscheckbox" value="0" onclick="showHideCallStatus(0)"> Call Back';
+    str+='</label>';
        $("#callStatusDiv").html(str);                    
    }
+  
    
+   function showHideCallStatus(id)
+   {
+	//ClearDiv();
+	 if(id == 0)
+	 {
+	
+     $('.Answered-div').hide();
+	$('.callback-div').show();
+	$('.switchoff-div').hide();
+	}
+	else if(id == 1)
+	{
+	$('.Answered-div').show();;
+	$('.callback-div').hide();
+	$('.switchoff-div').hide();
+	}
+	else
+	{
+	$('.Answered-div').hide();
+	$('.callback-div').hide();
+	$('.switchoff-div').show();
+	}
+	$(".callstatuscheckbox").prop( "checked", false );
+	 $("#callstatus"+id).prop( "checked", true );
+	 
+  
+   }
      function getScheduleStatusList()
    {
   
@@ -429,19 +464,32 @@ function setDefaultImage(img){
    var str ='';
 	for(var i in result)
 	{
+	if(result[i].name.indexOf("Call Back") ==-1)
+	{
 	 str+='<label class="checkbox-inline">';
-	 str+='<input type="checkbox" name="scheduleStatus" class="scheduleStatuscehckbox">'+result[i].name+'';
+	 str+='<input type="checkbox" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
 	 str+='</label>';
+	 }
 	 }
        $("#scheduleStatusDiv").html(str);                    
    }
-   var status = "callstatus";
+ 
+ function ClearDiv()
+ {
+ $(".clearEl").val('');
+ $("#batchId").val(0);
+ $("#callBackTypeId").val(0);
+ 
+ }
   function updateCadreStatus()
    {
+   var str = '';
+   var flag = false;
+   $("#messageDiv").html("");
    var scheduleStatusId  = 0;
    var callstatusId = 0;
    var dataArray = new Array();
-   //var ramarks = $("#remarksId").val();
+   var ramarks = $("#remarks").val();
    var batchId = $("#batchId").val();
    $(".scheduleStatuscehckbox").each(function()
    {
@@ -451,17 +499,47 @@ function setDefaultImage(img){
    $(".callstatuscheckbox").each(function()
    {
    if($(this).is(":checked"))
-	callstatusId = $(this).is(":checked").val();
+	callstatusId = $(this).val();
    });
+   if(callstatusId == 0)
+	   {
+		str+='<font color="red">Select Call Status</font><br/>';;
+		flag = true;
+	   }
+   if(callstatusId == 1)
+   {
+		if(ramarks.length == 0)
+	   {
+		str+='<font color="red">Remarks  Required</font><br/>';
+		flag = true;
+	   }
+		if(batchId == 0)
+	   {
+		str+='<font color="red">Select  Batch</font><br/>';;
+		flag = true;
+	   }
+		
+		if(scheduleStatusId == 0)
+	   {
+		str+='<font color="red">Select Schedule Status</font><br/>';;
+		flag = true;
+	   }
+   }
+   if(flag == true)
+   {
+   $("#messageDiv").html(str);
+   return;
+   }
+   $("#messageDiv").html("");
    var obj = {
    batchId : batchId,
-   ramarks : '',
+   ramarks : ramarks,
    callstatusId : callstatusId,
    scheduleStatusId:scheduleStatusId,
    inviteeId:inviteeId,
    inviteeCallerId:inviteeCallerId,
    tdpCadreId:tdpCadreId,
-   status:status
+   status:"callstatus"
 
    }
    dataArray.push(obj);
@@ -475,10 +553,79 @@ function setDefaultImage(img){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 			  
-				//buildCallStatus(result);
+					$("#messageDiv").html("Status Updated Successfully").css("color","green");
+					$("#myModal").modal('hide');
+					//getMemberDetails();
 		   })
     
    }
+   
+    function updateCallBackCadreStatus()
+   {
+   var str ='';
+   var flag = false;
+   $("#messageDiv").html("");
+   var callstatusId = 0;
+   var dataArray = new Array();
+   var ramarks = $("#callbackremarks").val().trim();
+   var callBackTypeId = $("#callBackTypeId").val();
+   var Date = $("#CallbackTime").val();
+   var time =$("#timepicker4").val();
+   if(ramarks.length == 0)
+   {
+    str+='<font color="red">Remarks  Required</font><br/>';
+	flag = true;
+   }
+    if(callBackTypeId == 0)
+   {
+    str+='<font color="red">Select  Call Back Type</font><br/>';
+	flag = true;
+   }
+    if(Date.length == 0)
+   {
+    str+='<font color="red">Date Required</font><br/>';
+	flag = true;
+   }
+    if(time.length == 0)
+   {
+    str+='<font color="red">Time Required</font><br/>';
+	flag = true;
+   }
+   if(flag == true)
+   {
+   $("#messageDiv").html(str);
+   return;
+   }
+   $("#messageDiv").html("");
+   var obj = {
+   ramarks : ramarks,
+   inviteeId:inviteeId,
+   inviteeCallerId:inviteeCallerId,
+   tdpCadreId:tdpCadreId,
+   scheduleStatusId:callBackTypeId,
+   callbackDate:Date,
+   time:time,
+   status:"callBackStatus"
+
+   }
+   dataArray.push(obj);
+   var jObj={
+		dataArray : dataArray,
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'updateCallBackCadreStatusForTrainingAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				$("#messageDiv").html("Status Updated Successfully").css("color","green");
+				$("#myModal").modal('hide');
+				//getMemberDetails();
+		   })
+    
+   }
+   
    
 </script>
 <script>
@@ -489,6 +636,7 @@ getSchedulesForCamp();
 getBatchesForSchedule();
 getCallStatusList();
 getScheduleStatusList();
+ClearDiv();
 </script>
 </body>
 </html>
