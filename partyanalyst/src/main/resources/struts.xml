@@ -10428,20 +10428,19 @@
 				<param name="root">memberList</param>
 		</result>
 	</action>
-		<action name="getScheduleStatusListAction" class="trainingCampAction" method="getScheduleStatusList">
+	<action name="getScheduleStatusListAction" class="trainingCampAction" method="getScheduleStatusList">
 		<result type="json" name="success">
 				<param name="root">statusCountList</param>
 		</result>
 	</action>
 	
-		<action name="getCallStatusListAction" class="trainingCampAction" method="getCallStatusList">
+	<action name="getCallStatusListAction" class="trainingCampAction" method="getCallStatusList">
 		<result type="json" name="success">
 				<param name="root">statusCountList</param>
 		</result>
 	</action>
 	
-	
-		<action name="updateCadreStatusForTrainingAction" class="trainingCampAction" method="updateCadreStatusForTraining">
+	<action name="updateCadreStatusForTrainingAction" class="trainingCampAction" method="updateCadreStatusForTraining">
 		<result type="json" name="success">
 				<param name="root">resultStatus</param>
 		</result>
@@ -10452,6 +10451,12 @@
 				<param name="root">trainingCampCallStatusVO</param>
 		</result>
 	</action>
+	<action name="getUsersofUserTypeAction" class="trainingCampAction" method="getUsersofUserType">
+		<result type="json" name="success">
+				<param name="root">idnemIdNameVOs</param>
+		</result>
+	</action>
+	
 	
 	<action name="getMembersCountByBatchStatusAction" class="trainingCampAction" method="getMembersCountByBatchStatus">
 	  <result type="json" name="success">

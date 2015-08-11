@@ -251,7 +251,6 @@
 								<h5>Select Call Center Caller Name</h5>
 								<select class="form-control callerId">
 									<option value="0">Select Caller</option>
-									<option value="1">Harish</option>
 								</select>
 								</div>
 								<div id="batchConfirmationDivId" style="display:none">
@@ -610,6 +609,7 @@ $(document).ready(function() {
 	$('#reportrange').data('daterangepicker').remove();
   });
   
+  	getAllUserIdsByUserType();
 	getCallerWiseCallsDetails();
 	getTrainingProgramMembersBatchCount();
 	getScheduleAndConfirmationCallsOfCallerToAgent();
@@ -620,6 +620,29 @@ $(document).ready(function() {
 
 </script>
 <script>
+
+	function getAllUserIdsByUserType(){
+		
+		$('.callerId').find('option').remove();
+		
+		$('.callerId').append('<option value="0">Select Caller</option>');
+		
+		$.ajax({
+			type:'POST',
+			 url: 'getUsersofUserTypeAction.action',
+			 data : {task:JSON.stringify()} ,
+			}).done(function(result){
+				var str='';
+				if(result !=null){
+					for(var i in result){
+						str+='<option val="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+					
+					$(".callerId").append(str);
+				}
+			});
+		
+	}
 	
 	function getCallerWiseCallsDetails(){
 		
@@ -708,7 +731,7 @@ $(document).ready(function() {
 							if(result.trainingCampVOList !=null && result.trainingCampVOList.length>0){
 								for(var i in result.trainingCampVOList){
 									str+='<tr>';
-									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].id+'</td>';
+									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
 									str+='<td>'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
 									str+='<td>'+result.trainingCampVOList[i].completedCallsCount+'</td>';
 									str+='<td>'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
