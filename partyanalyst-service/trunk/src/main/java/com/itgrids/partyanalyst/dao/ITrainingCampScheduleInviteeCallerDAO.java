@@ -25,5 +25,7 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	
 	public List<Object[]> getInterestedMembersCountByCampCallerId(Long trainingCampCallerId);
 	
+	public List<Object[]> getMembersCountByBatchStatusAndCallerId(Long callerId,String batchStatus);
+	
 	
 }
