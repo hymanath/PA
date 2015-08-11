@@ -20,7 +20,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.userId,count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
+		str.append(" select model.trainingCampUser.user.userId,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.user.lastName from  TrainingCampScheduleInviteeCaller model " +
 				" where  ");
 		
 		if(startDate !=null && endDate !=null){
@@ -97,7 +97,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
+		str.append(" select model.trainingCampUser.user.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.user.lastName " +
 				" from  TrainingCampScheduleInviteeCaller model " +
 				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
 		

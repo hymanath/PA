@@ -19,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TrainingCampUser {
 	private Long trainingCampUserId;
+	private User user;
 	private Long userId;
 	private Long trainingCampUserTypeId;
 	private TrainingCampUserType trainingCampUserType;
@@ -31,6 +32,16 @@ public class TrainingCampUser {
 	public void setTrainingCampUserId(Long trainingCampUserId) {
 		this.trainingCampUserId = trainingCampUserId;
 	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id",insertable =false,updatable = false)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
     @Column(name = "user_id")
 	public Long getUserId() {
 		return userId;

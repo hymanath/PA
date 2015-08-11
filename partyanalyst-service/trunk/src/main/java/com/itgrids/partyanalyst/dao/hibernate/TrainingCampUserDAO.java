@@ -21,5 +21,13 @@ public class TrainingCampUserDAO extends GenericDaoHibernate<TrainingCampUser, L
 		query.setParameter("typeId", typeId);
 		return query.list();
 	}
+	public List<Object[]> getUserIdsByType(Long typeId){
+		
+		Query query=getSession().createQuery("select model.user.userId,model.user.lastName from TrainingCampUser model " +
+				" where model.trainingCampUserType.trainingCampUserTypeId =:typeId ");
+		query.setParameter("typeId", typeId);
+		
+		return query.list();
+	}
 
 }
