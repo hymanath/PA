@@ -70,7 +70,7 @@
 		<div class="col-md-12">
 			<div class="panel panel-default panel-custom">
 				<div class="panel-heading">
-					<h4 class="panel-title">CALL CENTER ADMIN DASHBOARD
+					<h4 class="panel-title"><b>CALL CENTER ADMIN DASHBOARD</b>
 						<span class="pull-right col-md-3" style="margin-top:-8px">
 							<div class="input-group">
 								<span class="input-group-addon">
@@ -80,14 +80,14 @@
 								<input type="text" class="form-control" id="reportrange">
 							</div>
 						</span>
-                    	<span class="pull-right">
+                    <!--	<span class="pull-right">
                         	<label class="checkbox-inline">
                             	<input type="checkbox"> Planned
                             </label>
                             <label class="checkbox-inline">
                             	<input type="checkbox">All
                             </label>
-                        </span>
+                        </span> -->
 					</h4>
 				</div>
 				<div class="panel-body">
@@ -186,7 +186,7 @@
 										<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING BATCH</a></li>
 										<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED BATCH</a></li>
 										<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED BATCH</a></li>
-                                        <li class="col-md-3">
+                                       <!-- <li class="col-md-3">
                                         	<div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
@@ -196,7 +196,7 @@
                                                     <input type="text" class="form-control" id="CustomCalendar1">
                                                 </div>
                                             </div>
-                                        </li>
+                                        </li> -->
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
@@ -402,7 +402,7 @@
 								<button class="btn btn-success btn-block m_top20" type="button" onclick="saveAllDetails();">ASSIGN TO CALLER</button>
 							</div>
 						</div>
-						<div role="tabpanel" class="tab-pane active InterestedMembersCountDivId" id="interestedDivId">
+						<div role="tabpanel" class="tab-pane active InterestedMembersCountDivId table-responsive" id="interestedDivId">
 						<center><img id="dataLoadingsImgForInterestedMembersCountId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
 						</div>
 						<!--<div class="col-md-8">
@@ -484,7 +484,7 @@
 								<div class="panel-body pad_0">
 									<div>
 									  <div class="tab-content">
-										<div role="tabpanel" class="tab-pane active memberAvailabilityDivCls" id="area">
+										<div role="tabpanel" class="tab-pane active memberAvailabilityDivCls table-responsive" id="area">
 										<center><img id="dataLoadingsImgForProgressOfAgentCountId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
 											<!--<table class="table table-bordered m_0">
 												<thead>
@@ -595,10 +595,6 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>  -->
 <script type="text/javascript">
-$(".count-hover-scroll").mCustomScrollbar({
-	setHeight:140,
-	theme:"minimal-dark"
-});
 $(".table-scroll").mCustomScrollbar({
 	setHeight:470,
 	theme:"minimal-dark"
@@ -814,7 +810,7 @@ $(document).ready(function() {
 								
 									if(result.trainingCampVOList[0].trainingCampVOList !=null){
 									for(var i in result.trainingCampVOList[0].trainingCampVOList){
-										str+='<th class="font-12" id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
+										str+='<th id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
 									}
 								 }
 								
@@ -1010,7 +1006,7 @@ function buildingMembersFilledInCalenderBatch(result){
 		
 		var str='';
 		if(result.trainingCampVOList !=null){
-		str+='<table class="table table-hover">';
+		str+='<table class="table table-hover table-bordered">';
 										str+='<thead>';
 											str+='<th>PROGRAM NAME</th>';
 											str+='<th>MEMBERS</th>';
@@ -1027,6 +1023,11 @@ function buildingMembersFilledInCalenderBatch(result){
 									str+='</tbody>';
 						str+='</table>';
 			$("#batchCountOfProgramId").html(str);
+			//scroll
+			$(".count-hover-scroll").mCustomScrollbar({
+				setHeight:140,
+				theme:"minimal-dark"
+			});
 		}
 	else{
 		$("#batchCountOfProgramId").html("Program Data Not Available.");
@@ -1038,7 +1039,7 @@ function buildingMembersFilledInCalenderBatch(result){
 	function buildingCampMembersBatchCount(result){
 		var str='';
 		if(result !=null){
-				str+='<table class="table table-hover">';
+				str+='<table class="table table-hover table-bordered">';
 					str+='<thead>';
 						str+='<th>PROGRAM NAME</th>';
 						str+='<th>MEMBERS</th>';
@@ -1056,6 +1057,12 @@ function buildingMembersFilledInCalenderBatch(result){
 				str+='</table>';
 				
 				$("#batchCountOfCampId").html(str);
+				
+				//scroll
+				$(".count-hover-scroll").mCustomScrollbar({
+				setHeight:140,
+					theme:"minimal-dark"
+				});
 		}
 		else{
 			$("#batchCountOfCampId").html("Camp Data Not Availale");
