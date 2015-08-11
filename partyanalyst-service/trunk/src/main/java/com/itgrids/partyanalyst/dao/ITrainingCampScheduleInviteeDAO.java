@@ -12,4 +12,5 @@ public interface ITrainingCampScheduleInviteeDAO extends GenericDao<TrainingCamp
 	public List<Long> getInvitedCandidatesListByScheduleIdAndCount(Long scheduleId,List<Long> alreadyInvitedMemberIdsList,int membersCount);
 	public List<Object[]> getTrainingProgramMembersBatchCount(Date startDate,Date endDate,String status,String type);
 	public List<Object[]> getBatchWiseProgramWiseInterestedMembersDetails(String membersType, String searchType, Date startDate, Date endDate);
+	public List getTrainingCampScheduleInviteeId(Long tdpCadreId,Long programId,Long campId,Long scheduleId);
 }

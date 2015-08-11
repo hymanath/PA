@@ -153,4 +153,18 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return query.list();
 	}
 	
+	public List getTrainingCampScheduleInviteeId(Long tdpCadreId,Long programId,Long campId,Long scheduleId)
+	{
+		Query query = getSession().createQuery("select model.trainingCampScheduleInviteeId from " +
+				" TrainingCampScheduleInvitee model where model.tdpCadre.tdpCadreId = :tdpCadreId" +
+				" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId" +
+				" and model.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
+				"and model.trainingCampSchedule.trainingcampScheduleId =:scheduleId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("programId", programId);
+		query.setParameter("campId", campId);
+		query.setParameter("scheduleId", scheduleId);
+		return query.list();
+	}
+
 }

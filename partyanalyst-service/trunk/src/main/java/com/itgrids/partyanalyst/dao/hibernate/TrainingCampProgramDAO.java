@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.model.TrainingCampProgram;
@@ -17,7 +18,8 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 	
 	public List<Object[]> getPrograms()
 	{
-		return getHibernateTemplate().find("select model.trainingCampProgramId,model.programName TrainingCampProgram model");
+	Query query = getSession().createQuery("select distinct model.trainingCampProgramId,model.programName from TrainingCampProgram model");
+	return query.list();
 	}
 
 }

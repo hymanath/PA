@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface ITrainingCampBatchDAO {
+import java.util.List;
 
+public interface ITrainingCampBatchDAO {
+	public List<Object[]> getBatchesForSchedule(Long scheduleId);
 }
