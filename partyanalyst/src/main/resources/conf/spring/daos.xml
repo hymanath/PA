@@ -2177,5 +2177,34 @@
 	 <bean id="partyMeetingMinuteDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="attendanceErrorDAO" class="com.itgrids.partyanalyst.dao.hibernate.AttendanceErrorDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingMinuteHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteHistoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingMinuteDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteDocumentDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingAtrPointDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingAtrPointHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointHistoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingAttendanceTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAttendanceTabUserDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="partyMeetingUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUserDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
 	<!--  end -->
 </beans>		
