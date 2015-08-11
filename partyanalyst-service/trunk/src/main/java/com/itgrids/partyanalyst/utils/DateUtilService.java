@@ -210,4 +210,16 @@ public class DateUtilService {
 		}
 	}
 	
+	public Date getDateByStringAndFormat(String dateString,String format)
+	{
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			return sdf.parse(dateString.trim());
+		}catch(Exception e)
+		{
+			log.error("Exception occured in getDateByStringAndFormat - ",e);
+		}
+		return null;
+	}
+	
 }
