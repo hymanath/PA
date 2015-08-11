@@ -10456,6 +10456,11 @@
 				<param name="root">idnemIdNameVOs</param>
 		</result>
 	</action>
+			<action name="updateCallBackCadreStatusForTrainingAction" class="trainingCampAction" method="updateCallBackStatus">
+		<result type="json" name="success">
+				<param name="root">resultStatus</param>
+		</result>
+	</action>
 	
 	
 	<action name="getMembersCountByBatchStatusAction" class="trainingCampAction" method="getMembersCountByBatchStatus">
