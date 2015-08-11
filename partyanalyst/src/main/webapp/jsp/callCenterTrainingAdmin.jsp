@@ -31,6 +31,15 @@
 	top:35%;
 	left:0;
 }
+/*.invited{background-color:rgb(238,130,238);}
+.pending{background-color:rgb(255,0,0);}
+.interested{background-color:rgb(64,181,191);}
+.confirmed{background-color:rgb(0,255,0);}*/
+
+.invited-text{color:rgb(238,130,238) !important;}
+.pending-text{color:rgb(255,0,0) !important;}
+.interested-text{color:rgb(64,181,191) !important;}
+.confirmed-text{color:rgb(0,255,0) !important;}
 </style>
 <body>
 <header  class="eventsheader">
@@ -764,6 +773,8 @@ $(document).ready(function() {
 		$("#dataLoadingsImgForDonutchartStatus").show();
 		$("#dataLoadingsImgForCircleForConfirmed").show();
 		
+		setcolorsForTrainingchart();
+		
 		var fromDate=$(".dp_startDate").val();
 		var toDate=$(".dp_endDate").val();
 		
@@ -871,8 +882,47 @@ $(document).ready(function() {
 	}
 	
 	//balu chart
+var trainingColorArr = [];
+var statusArr = ['Invited','Pending','Not Now','Interested','Not Interested','Call Back - Busy','Call Back - Confirm Later','Wrong Mobile No','Invalid Mobile No','Confirmed'];  
+function setcolorsForTrainingchart()
+	{
+		
+		trainingColorArr = new Array();
+		var colorStatic = new Array('#EE82EE', '#FF0000', '#D2B48C', '#40B5BF' , '#FA8072','#DDA0DD','#BC8F8F','#A9A9A9','#FDF5E6','#00FF00');
+		
+		var colorCount = 0;
+		
+		for(var i in statusArr)
+		{
+		 
+				var obj = {
+				 status : statusArr[i],
+				 color : colorStatic[colorCount]
+				}
+				trainingColorArr.push(obj)
+			  
+				if(colorCount == (colorStatic.length)-1)
+				colorCount = 0;
+				 colorCount++;
+		}
+		
+		return trainingColorArr;
+	}
+function getColorCodeByType(status)
+	{
+
+		if(trainingColorArr != null && trainingColorArr.length > 0)
+		{
+			for(var i in trainingColorArr)
+			{
+				if(trainingColorArr[i].status == status)
+					return trainingColorArr[i].color;
+			}
+		}
+	}
 function buildingHighchartForStatus(result){
 	var statusArray=[];
+	var colorsArr = [];
 	if(result !=null && result.length>0){
 		for(var i in result){
 			var data=new Array();
@@ -880,11 +930,12 @@ function buildingHighchartForStatus(result){
 			var count      = result[i].count;
 			data.push(statusName,count);
 			statusArray.push(data);
+			colorsArr.push(getColorCodeByType(result[i].status));
 		}
 	}
 	
 	Highcharts.setOptions({
-        colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
+        colors: colorsArr
     });
     $('#donutchartForStatus').highcharts({
         chart: {
@@ -916,6 +967,7 @@ function buildingHighchartForStatus(result){
         },
 		
 		series: [{
+			name : 'Count',
             data:statusArray
         }]
     });
@@ -947,7 +999,7 @@ function buildingMembersFilledInCalenderBatch(result){
 		for(var i in result){
 			
 			if(result[i].status == "Confirmed"){
-				str+='<div id="myStathalf"  class="text-center" data-info="'+result[i].count+'" data-dimension="150px" data-percent="'+resultPerc+'" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" >';
+				str+='<div id="myStathalf"  class="text-center" data-info="'+result[i].count+'" data-dimension="150px" data-percent="'+resultPerc+'" data-fgcolor="#00FF00" data-bgcolor="#cccccc" data-type="half" >';
 				str+='</div>';
 			}else{
 				str+='<div id="myStathalf"  class="text-center" data-info="0" data-dimension="150px" data-percent="0" data-fgcolor="blue" data-bgcolor="#cccccc" data-type="half" >';
@@ -1132,7 +1184,19 @@ function buildingMembersFilledInCalenderBatch(result){
 				if(result[i].status == "Interested" || result[i].status == "Confirmed" || result[i].status == "Invited" ){
 					str+='<tr>';
 						str+='<td>';
-							str+='<h4 class="m_bottom0 text-custom" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						if(result[i].status == "Interested")
+						{
+							str+='<h4 class="m_bottom0 interested-text" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						}
+						else if(result[i].status == "Confirmed"){
+							str+='<h4 class="m_bottom0 confirmed-text" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						}
+						else if(result[i].status == "Invited"){
+							str+='<h4 class="m_bottom0 invited-text" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						}
+						else if(result[i].status == "Pending"){
+							str+='<h4 class="m_bottom0 pending-text" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
+						}
 						str+='</td>';
 					str+='</tr>';
 				}
