@@ -181,7 +181,9 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.tdpCadre.mobileNo," +
 				" model.trainingCampScheduleInvitee.tdpCadre.image," +
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status," +
-				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName" +
+				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName," +
+				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
+				" model.trainingCampScheduleInvitee.remarks" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
 				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +

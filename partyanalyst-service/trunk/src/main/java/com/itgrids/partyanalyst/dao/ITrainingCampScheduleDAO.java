@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 public interface ITrainingCampScheduleDAO extends GenericDao<TrainingCampSchedule, Long>{
 	public List<Object[]> getProgrammesListByCampsList(List<Long> campsList);
 	public List<Object[]> getScheduledDetailsByProgrammes(List<Long> programmesList);
-	public List<Object[]> getSchedules();
+	public List<Object[]> getSchedules(Long campId);
+	public List<Object[]> getCampsForProgram(Long programId);
 }

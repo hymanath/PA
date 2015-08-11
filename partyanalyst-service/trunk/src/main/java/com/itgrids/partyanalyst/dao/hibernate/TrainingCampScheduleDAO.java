@@ -13,9 +13,20 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 	public TrainingCampScheduleDAO() {
 		super(TrainingCampSchedule.class);
 	}
-	public List<Object[]> getSchedules()
+	public List<Object[]> getSchedules(Long campId)
 	{
-		return getHibernateTemplate().find("select model.trainingCampScheduleId,model.trainingCampScheduleCode TrainingCampSchedule model");
+		Query query = getSession().createQuery("select distinct model.trainingCampScheduleId,model.trainingCampScheduleCode from TrainingCampSchedule model" +
+				" where model.trainingCampId =:campId ");
+		query.setParameter("campId", campId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCampsForProgram(Long programId)
+	{
+		Query query = getSession().createQuery("select distinct model.trainingCamp.trainingCampId,model.trainingCamp.campName from TrainingCampSchedule model" +
+				" where  model.trainingCampProgram.trainingCampProgramId =:programId");
+		query.setParameter("programId", programId);
+		return query.list();
 	}
 
 	public List<Object[]> getProgrammesListByCampsList(List<Long> campsList)
