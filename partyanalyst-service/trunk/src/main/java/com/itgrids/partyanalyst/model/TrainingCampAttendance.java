@@ -31,7 +31,6 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 	private TrainingCampSchedule trainingCampSchedule;
 	private TrainingCampBatch trainingCampBatch;
 	private Date insertedTime;
-	private Long attendanceId;
 	private Long trainingCampScheduleId;
 	private Long trainingCampBatchId;
 	
@@ -49,7 +48,7 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="attendance_id",updatable = false, insertable = false)
+	@JoinColumn(name="attendance_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Attendance getAttendance() {
@@ -91,15 +90,6 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
-	}
-
-	@Column(name="attendance_id")
-	public Long getAttendanceId() {
-		return attendanceId;
-	}
-
-	public void setAttendanceId(Long attendanceId) {
-		this.attendanceId = attendanceId;
 	}
 
 	@Column(name="training_camp_schedule_id")
