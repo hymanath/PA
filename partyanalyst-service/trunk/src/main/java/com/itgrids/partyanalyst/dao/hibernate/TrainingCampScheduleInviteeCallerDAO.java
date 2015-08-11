@@ -171,6 +171,25 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMembersCountByBatchStatusAndCallerId(Long callerId,String batchStatus)
+	{
+		Query query = getSession().createQuery(" select count(distinct model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId)," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName, " +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName, " +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode," +
+				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName from TrainingCampScheduleInviteeCaller model " +
+				" where model.trainingCampCallerId =:callerId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.status =:batchStatus " +
+				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
+				"model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId ");
+		
+		query.setParameter("callerId", callerId);
+		query.setParameter("batchStatus", batchStatus);
+		return query.list();
+	}
+
 	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status)
 	{
 		StringBuilder str = new StringBuilder();

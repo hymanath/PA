@@ -995,6 +995,73 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return returnList;
 	}
+
+	public List<TraingCampCallerVO> getMembersCountByBatchStatus(Long campCallerId,String batchStatus)
+	{
+		List<TraingCampCallerVO> returnList = null;
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getMembersCountByBatchStatusAndCallerId(campCallerId, batchStatus);
+			
+			if(list != null && list.size() > 0)
+			{
+				returnList = new ArrayList<TraingCampCallerVO>(0);
+				for(Object[] params : list)
+				{
+					TraingCampCallerVO programVo  = getMatchedVo(returnList,commonMethodsUtilService.getLongValueForObject(params[1])); //program
+					if(programVo == null)
+					{
+						programVo = new TraingCampCallerVO();
+						programVo.setId(commonMethodsUtilService.getLongValueForObject(params[1]));
+						programVo.setName(commonMethodsUtilService.getStringValueForObject(params[2]));
+						returnList.add(programVo);
+					}
+					
+					TraingCampCallerVO campVo = getMatchedVo(programVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[3])); //camp
+					if(campVo == null)
+					{
+						campVo = new TraingCampCallerVO();
+						campVo.setId(commonMethodsUtilService.getLongValueForObject(params[3]));
+						campVo.setName(commonMethodsUtilService.getStringValueForObject(params[4]));
+						programVo.getSubList().add(campVo);
+					}
+					TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[5])); // Schedule
+					if(scheduleVo == null)
+					{
+						scheduleVo = new TraingCampCallerVO()	;
+						scheduleVo.setId(commonMethodsUtilService.getLongValueForObject(params[5]));
+						scheduleVo.setName(commonMethodsUtilService.getStringValueForObject(params[6]));
+						campVo.getSubList().add(scheduleVo);
+					}
+					TraingCampCallerVO batchVo  = getMatchedVo(scheduleVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params[7])); // Batch
+					if(batchVo == null)
+					{
+						batchVo = new TraingCampCallerVO()	;
+						batchVo.setId(commonMethodsUtilService.getLongValueForObject(params[7]));
+						batchVo.setName(commonMethodsUtilService.getStringValueForObject(params[8]));
+						batchVo.setCount(commonMethodsUtilService.getLongValueForObject(params[0]));
+						batchVo.setSpanCnt(1l);
+						
+						scheduleVo.getSubList().add(batchVo);
+						
+						programVo.setSpanCnt(programVo.getSpanCnt() + 1);
+						campVo.setSpanCnt(campVo.getSpanCnt() + 1);
+						scheduleVo.setSpanCnt(scheduleVo.getSpanCnt()+1);
+					} 
+					
+					
+				}
+				
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getMembersCountByBatchStatus() method, Exception - ", e);
+		}
+		
+		return returnList;
+		
+	}
+	
+	
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo)
 	{
 		List<Long> statusIds = new ArrayList<Long>();

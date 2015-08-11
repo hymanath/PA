@@ -30,6 +30,8 @@ private Date fromDate;
 private Date toDate;
 private Long batchStatusId;
 private Long maxMembers;
+private BatchStatus batchStatus;
+
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 @Column(name="training_camp_batch_id", unique=true, nullable=false)
@@ -95,6 +97,15 @@ public TrainingCampSchedule getTrainingCampSchedule() {
 }
 public void setTrainingCampSchedule(TrainingCampSchedule trainingCampSchedule) {
 	this.trainingCampSchedule = trainingCampSchedule;
+}
+
+@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "batch_status_id", insertable = false, updatable = false)
+public BatchStatus getBatchStatus() {
+	return batchStatus;
+}
+public void setBatchStatus(BatchStatus batchStatus) {
+	this.batchStatus = batchStatus;
 }
 
 
