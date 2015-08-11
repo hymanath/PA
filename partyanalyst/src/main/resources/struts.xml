@@ -10469,5 +10469,11 @@
 	  </result>
 	</action>
 	
+	<action name="getAvailableCountForMemberConfirmationAction" class="trainingCampAction" method="getAvailableCountForMemberConfirmation">
+	  <result type="json" name="success">
+	     <param name="root">availableCount</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      

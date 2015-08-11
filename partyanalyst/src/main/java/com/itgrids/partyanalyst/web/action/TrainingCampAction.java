@@ -53,6 +53,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<BasicVO> basicList;
 	private ResultStatus resultStatus;
 	private List<IdNameVO> idNameList;
+	private Long availableCount;
 
 	private TrainingCampVO trainingCampVO;
 	private TrainingCampCallStatusVO trainingCampCallStatusVO;
@@ -60,6 +61,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	
 
 	
+	public Long getAvailableCount() {
+		return availableCount;
+	}
+
+	public void setAvailableCount(Long availableCount) {
+		this.availableCount = availableCount;
+	}
+
 	public TrainingCampVO getTrainingCampVO() {
 		return trainingCampVO;
 	}
@@ -654,5 +663,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getAvailableCountForMemberConfirmation()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO)request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			Long scheduleId = jObj.getLong("scheduleId");
+		 	
+			if(regVO == null)
+			 return "error";
+			
+			availableCount = trainingCampService.getAvailableCountForMemberConfirmation(scheduleId);
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getAvailableCountForMemberConfirmation method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
 }
