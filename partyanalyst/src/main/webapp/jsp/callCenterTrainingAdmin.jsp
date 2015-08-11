@@ -190,163 +190,22 @@
                     	<div class="col-md-12">
                         	<div class="panel panel-default">
 								<div class="panel-heading pad_5 pad_bottom0">
-									<ul class="nav nav-tabs tab-list-sch" role="tablist">
+									<ul class="nav nav-tabs tab-list-sch searchTypeCls" role="tablist">
 										<li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULED</a></li>
 										<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING BATCH</a></li>
 										<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED BATCH</a></li>
 										<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED BATCH</a></li>
-                                       <!-- <li class="col-md-3">
-                                        	<div>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="glyphicon glyphicon-calendar"></i>
-                                                        <span class="caret"></span>
-                                                    </span>
-                                                    <input type="text" class="form-control" id="CustomCalendar1">
-                                                </div>
-                                            </div>
-                                        </li> -->
+                                       
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
 									<div>
 									  <!-- Tab panes -->
 									  <div class="tab-content">
-									  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>
-										<!--<div role="tabpanel" class="tab-pane active" id="scheduled">
-											<table class="table table-bordered m_0">
-												<thead>
-													<th>TRAINING PROGRAM <br/> NAME</th>
-													<th>TRAINING CAMP <br/> NAME</th>													
-													<th>SCHEDULED <br/> CALENDAR DATES</th>
-													<th>INTERESTED <br/> MEMBERS</th>
-													<th>LATER</th>
-													<th>NOT <br/> INTERESTED</th>
-													<th>ASSIGNED TO <br/> <span class="font-12">BATCH CONFORMATION</span> </th>
-                                                    <th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>
-												</thead>
-												<tbody>
-                                                	<tr>
-													 <td rowspan="4">Leadership Skills</td>
-                                                    	<td>SVV Batch Campus</td>                                                       
-                                                        <td>Sep_2015_1 to 15</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>200</td>
-                                                        <td>100</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>EWK Batch Campus</td>
-                                                        <td>Sep_2015_1 to 15</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>200</td>
-                                                        <td>100</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>GPN Batch Campus</td>
-                                                        <td>Sep_2015_1 to 15</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>200</td>
-                                                        <td>100</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>AKKC Batch Campus</td>
-                                                        <td>Sep_2015_1 to 15</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>300</td>
-                                                        <td>200</td>
-                                                        <td>100</td>
-                                                    </tr>
-												</tbody>
-											</table>
-										</div>-->
-										<div role="tabpanel" class="tab-pane" id="running">
-											<table class="table table-bordered m_0">
-                                                        <thead>
-                                                            <th>Program Name</th>
-                                                            <th>Training Camp Name</th>
-                                                            <th>Schedule</th>
-                                                            <th>Batch Name & Date</th>
-                                                            <th>Batch Members</th>
-                                                            <th>Absent</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        	<tr>
-                                                            	<td rowspan="2">Leadership Skills</td>
-                                                                <td>SVV Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                                <td>2</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>EWK Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                                <td>270</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane" id="completed">
-                                                    <table class="table table-bordered m_0">
-                                                        <thead>
-                                                            <th>Program Name</th>
-                                                            <th>Training Camp Name</th>
-                                                            <th>Schedule</th>
-                                                            <th>Batch Name & Date</th>
-                                                            <th>Completed</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        	<tr>
-                                                            	<td rowspan="2">Leadership Skills</td>
-                                                                <td>SVV Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>EWK Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane" id="cancelled">
-                                                    <table class="table table-bordered m_0">
-                                                        <thead>
-                                                            <th>Program Name</th>
-                                                            <th>Training Camp Name</th>
-                                                            <th>Schedule</th>
-                                                            <th>Batch Name & Date</th>
-                                                            <th>Status</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        	<tr>
-                                                            	<td rowspan="2">Leadership Skills</td>
-                                                                <td>SVV Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>Cancelled</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>EWK Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>Postponed</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-										</div>
+									  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
+										<div role="tabpanel" class="tab-pane" id="running"> </div>
+                                        <div role="tabpanel" class="tab-pane" id="completed">   </div>
+                                        <div role="tabpanel" class="tab-pane" id="cancelled"></div>
 									  </div>
 									</div>
 								</div>
@@ -403,7 +262,10 @@
 								</select>
 								<h5 class="m_top20">
 									Select no of calls
-									<span class="text-danger pull-right text-italic">Avail Calls 500</span>
+									<br> <div id="availableCounstDivId" style="display:none;">
+									<label><input type="radio"><span class="text-danger pull-right text-italic">Avail Own Calls <span id="ownCountId"></span></span></input></label>
+									<label><input type="radio"> <span class="text-danger pull-right text-italic">Avail Others Calls <span id="othersCountId"></span></span></label>
+									</div>
 								</h5>
 								<input class="form-control" type="text" id="membersCountId">
 								</div>
@@ -752,7 +614,7 @@ $(document).ready(function() {
 	getTrainingProgramMembersBatchCount();
 	getScheduleAndConfirmationCallsOfCallerToAgent();
 	getCampusWiseDateWiseInterestedMembersDetails();
-	getCampusWiseBatchWiseMembersDetails();
+	getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 
 });
 
@@ -1207,6 +1069,28 @@ function buildingMembersFilledInCalenderBatch(result){
 		}
 	}
 	
+	$(document).on("click",".searchTypeCls li",function(){
+		 var text=$(this).text();
+		 var searchType="";
+		 var divId='';
+		 if(text == "SCHEDULED"){
+		 searchType = "notStarted";
+		 divId ='scheduled';
+		 }
+		 else if(text == "RUNNING BATCH"){
+		 searchType = "running";
+		 divId ='running';
+		 }else if(text == "COMPLETED BATCH"){
+		 searchType = "completed";
+		 divId ='completed';
+		 }else if(text == "CANCELLED BATCH"){
+		 searchType = "cancelled";
+		 divId ='cancelled';
+		 }
+		 getCampusWiseBatchWiseMembersDetails(searchType,divId);
+		 
+	});
+ 
 	$(document).on("click",".ranges li",function(){
 		if($(this).text() == "Custom"){
 			return;
@@ -1216,14 +1100,14 @@ function buildingMembersFilledInCalenderBatch(result){
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
 		getCampusWiseDateWiseInterestedMembersDetails();
-		getCampusWiseBatchWiseMembersDetails();
+		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 	});	
 	$(document).on("click",".newsSubmitBtn",function(){
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
 		getCampusWiseDateWiseInterestedMembersDetails();
-		getCampusWiseBatchWiseMembersDetails();
+		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 	})
 	
 	$("#mainheading").html("TRAINING PROGRAM");
