@@ -639,7 +639,7 @@
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinute</value>
 				 <value>com.itgrids.partyanalyst.model.AttendanceError</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory</value>
-				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteDocument</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingDocument</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingAtrPoint</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory</value>
 				 <value>com.itgrids.partyanalyst.model.AttendanceTabUser</value>
