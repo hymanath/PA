@@ -31,7 +31,6 @@ public class PartyMeetingAttendance extends BaseModel implements Serializable{
 	private Attendance attendance;
 	private PartyMeeting partyMeeting;
 	private Date insertedTime;
-	private Long attendanceId;
 	private Long partyMeetingId;
 	
 	public PartyMeetingAttendance(){}
@@ -48,7 +47,7 @@ public class PartyMeetingAttendance extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="attendance_id",updatable = false, insertable = false)
+	@JoinColumn(name="attendance_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Attendance getAttendance() {
@@ -78,15 +77,6 @@ public class PartyMeetingAttendance extends BaseModel implements Serializable{
 
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
-	}
-
-	@Column(name="attendance_id")
-	public Long getAttendanceId() {
-		return attendanceId;
-	}
-
-	public void setAttendanceId(Long attendanceId) {
-		this.attendanceId = attendanceId;
 	}
 
 	@Column(name="party_meeting_id")
