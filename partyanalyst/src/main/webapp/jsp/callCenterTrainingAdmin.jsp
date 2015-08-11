@@ -104,14 +104,14 @@
 						<div class="col-md-8">
 							<table class="table table-bordered">
 								<tr>
-									<td>
+									<td style="text-align:center;" >
 										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
 										<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:190px;"></div>
 									</td>
-									<td class="pad_0">
+									<td style="text-align:center;"  class="pad_0">
 										<table class="table table-bordered m_0">
 											<tr>
-												<td colspan="3" class="pad_15">
+												<td style="text-align:center;"  colspan="3" class="pad_15">
 													<h3 class="m_0">ALLOCATED CALLS TO CALLER - <span id="totalCallsPerCallerId">
 														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
 													</span></h3>
@@ -121,11 +121,11 @@
 												</td>
 											</tr>
 											<tr>
-												<td colspan="2" class="pad_0" id="callPurposeCountDivId">
+												<td style="text-align:center;"  colspan="2" class="pad_0" id="callPurposeCountDivId">
 												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
 													
 												</td>
-												<td class="pad_0" id="statusWiseCountArraId">
+												<td style="text-align:center;"  class="pad_0" id="statusWiseCountArraId">
 												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
 													
 												</td>
@@ -138,7 +138,7 @@
 						<div class="col-md-4">
 							<table class="table table-bordered">
 								<tr>
-									<td>
+									<td style="text-align:center;" >
 										<ul class="list-inline m_bottom0">
 											<li><h4>TRAINING <br/>PROGRAMS</h4></li>
 											<li class="show-dropdown">
@@ -157,7 +157,7 @@
 											</li>
 										</ul>
 									</td>
-									<td>
+									<td style="text-align:center;" >
 										<ul class="list-inline m_bottom0">
 											<li><h4>TRAINING <br/>CAMPS</h4></li>
 											<li class="show-dropdown">
@@ -176,7 +176,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td colspan="2">
+									<td style="text-align:center;"  colspan="2">
 									<center><img id="dataLoadingsImgForCircleForConfirmed" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
 										<div id="circleForConfirmed"></div>
 										<!--<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>-->
@@ -290,54 +290,54 @@
 									</thead>
 									<tbody>
 										<tr>
-										<td rowspan="4">Leadership Skills</td>
-											<td>SVV Batch Campus</td>
-											<td></td>											
-											<td></td>											
-											<td>100</td>
+										<td style="text-align:center;"  rowspan="4">Leadership Skills</td>
+											<td style="text-align:center;" >SVV Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>EWK Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >EWK Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>GPN Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >GPN Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>AKKC Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >AKKC Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td rowspan="4">Election Year</td>
-											<td>SVV Batch Campus</td>
-											<td></td>											
-											<td></td>											
-											<td>100</td>
+											<td style="text-align:center;"  rowspan="4">Election Year</td>
+											<td style="text-align:center;" >SVV Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>AKKC Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >AKKC Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>AKKC Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >AKKC Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										<tr>
-											<td>AKKC Batch Campus</td>
-											<td></td>											
-											<td></td>
-											<td>100</td>
+											<td style="text-align:center;" >AKKC Batch Campus</td>
+											<td style="text-align:center;" ></td>											
+											<td style="text-align:center;" ></td>
+											<td style="text-align:center;" >100</td>
 										</tr>
 										
 									</tbody>
@@ -374,49 +374,49 @@
 												</thead>
 												<tbody>
 													<tr>
-														<td>Agent 1	</td>
-														<td>100</td>
-														<td>80</td>
-														<td>20</td>
-														<td>70</td>
-														<td>20</td>
-														<td>70</td>
+														<td style="text-align:center;" >Agent 1	</td>
+														<td style="text-align:center;" >100</td>
+														<td style="text-align:center;" >80</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
 													</tr>
 													<tr>
-														<td>Agent 2</td>
-														<td>100</td>
-														<td>80</td>
-														<td>20</td>
-														<td>70</td>
-														<td>20</td>
-														<td>70</td>
+														<td style="text-align:center;" >Agent 2</td>
+														<td style="text-align:center;" >100</td>
+														<td style="text-align:center;" >80</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
 													</tr>
 													<tr>
-														<td>Agent 3</td>
-														<td>100</td>
-														<td>80</td>
-														<td>20</td>
-														<td>70</td>
-														<td>20</td>
-														<td>70</td>
+														<td style="text-align:center;" >Agent 3</td>
+														<td style="text-align:center;" >100</td>
+														<td style="text-align:center;" >80</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
 													</tr>
 													<tr>
-														<td>Agent 4</td>
-														<td>100</td>
-														<td>80</td>
-														<td>20</td>
-														<td>70</td>
-														<td>20</td>
-														<td>70</td>
+														<td style="text-align:center;" >Agent 4</td>
+														<td style="text-align:center;" >100</td>
+														<td style="text-align:center;" >80</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
 													</tr>
 													<tr>
-														<td>Agent 5</td>
-														<td>100</td>
-														<td>80</td>
-														<td>20</td>
-														<td>70</td>
-														<td>20</td>
-														<td>70</td>
+														<td style="text-align:center;" >Agent 5</td>
+														<td style="text-align:center;" >100</td>
+														<td style="text-align:center;" >80</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
+														<td style="text-align:center;" >20</td>
+														<td style="text-align:center;" >70</td>
 													</tr>
 												</tbody>
 											</table>-->
@@ -616,7 +616,7 @@ $(document).ready(function() {
 	getCallerWiseCallsDetails();
 	getTrainingProgramMembersBatchCount();
 	getScheduleAndConfirmationCallsOfCallerToAgent();
-	getCampusWiseDateWiseInterestedMembersDetails();
+	getCampusWiseDateWiseInterestedMembersDetails('interested');
 	getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 
 });
@@ -638,7 +638,7 @@ $(document).ready(function() {
 				var str='';
 				if(result !=null){
 					for(var i in result){
-						str+='<option val="'+result[i].id+'">'+result[i].name+'</option>';
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 					}
 					
 					$(".callerId").append(str);
@@ -734,14 +734,14 @@ $(document).ready(function() {
 							if(result.trainingCampVOList !=null && result.trainingCampVOList.length>0){
 								for(var i in result.trainingCampVOList){
 									str+='<tr>';
-									str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].completedCallsCount+'</td>';
-									str+='<td>'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
+									str+='<td style="text-align:center;"  id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].assignedCallsCount+'</td>';
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].completedCallsCount+'</td>';
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
 									
 									if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0){
 										for(var j in result.trainingCampVOList[i].trainingCampVOList){
-											str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+											str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
 										}
 									}
 									str+='</tr>';
@@ -955,9 +955,9 @@ function buildingMembersFilledInCalenderBatch(result){
 										str+='<tbody>';
 										for(var i in result.trainingCampVOList){
 											str+='<tr>';
-												str+='<td id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
-												str+='<td>'+result.trainingCampVOList[i].totalCount+'</td>';
-												str+='<td>'+result.trainingCampVOList[i].count+'</td>';
+												str+='<td style="text-align:center;"  id="'+result.trainingCampVOList[i].id+'">'+result.trainingCampVOList[i].name+'</td>';
+												str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].totalCount+'</td>';
+												str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].count+'</td>';
 											str+='</tr>';
 										}	
 									str+='</tbody>';
@@ -988,9 +988,9 @@ function buildingMembersFilledInCalenderBatch(result){
 					str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
-								str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
-								str+='<td>'+result[i].totalCount+'</td>';
-								str+='<td>'+result[i].count+'</td>';
+								str+='<td style="text-align:center;"  id="'+result[i].id+'">'+result[i].name+'</td>';
+								str+='<td style="text-align:center;" >'+result[i].totalCount+'</td>';
+								str+='<td style="text-align:center;" >'+result[i].count+'</td>';
 							str+='</tr>';
 						}
 					str+='</tbody>';
@@ -1034,20 +1034,20 @@ function buildingMembersFilledInCalenderBatch(result){
 						var result = results.trainingCampScheduleVOList;
 						str+='<table class="table table-bordered m_0">';
 							str+='<tr>';
-								str+='<td class="pad_5">';
+								str+='<td style="text-align:center;"  class="pad_5">';
 									str+='<h4 class="display-style m_0"> Calls Assigned <br/> to Caller </h4>';
 									str+='<span class="pull-right"><h2 class="m_0">'+result[0].totalAssignedCount+'</h2></span>';
 								str+='</td>';
-								str+='<td class="pad_5 text-yellow">';
+								str+='<td style="text-align:center;"  class="pad_5 text-yellow">';
 									str+='<p class="m_0 font-10"> Caller <br/>Dialled</p>';
 									str+='<h4 class="m_0 text-yellow">'+result[0].totalDialedCallsCount+'</h4>';
 								str+='</td>';
 							str+='</tr>';
 							for(var i in result){
 								str+='<tr>';
-									str+='<td class="pad_5" id="'+result[i].id+'">'+result[i].name+'<span class="pull-right">'+result[i].count+'</span>';
+									str+='<td style="text-align:center;"  class="pad_5" id="'+result[i].id+'">'+result[i].name+'<span class="pull-right">'+result[i].count+'</span>';
 									str+='</td>';
-									str+='<td class="pad_5">';
+									str+='<td style="text-align:center;"  class="pad_5">';
 										str+='<h4 class="m_0 text-yellow">'+result[i].dialedCallsCount+'</h4>';
 									str+='</td>';
 								str+='</tr>';
@@ -1071,7 +1071,7 @@ function buildingMembersFilledInCalenderBatch(result){
 			for(var i in result){
 				if(result[i].status == "Interested" || result[i].status == "Confirmed" || result[i].status == "Invited" ){
 					str+='<tr>';
-						str+='<td>';
+						str+='<td style="text-align:center;" >';
 						if(result[i].status == "Interested")
 						{
 							str+='<h4 class="m_bottom0 interested-text" id='+result[i].statusId+'>'+result[i].count+' - '+result[i].status+'</h4>';
@@ -1125,14 +1125,14 @@ function buildingMembersFilledInCalenderBatch(result){
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
-		getCampusWiseDateWiseInterestedMembersDetails();
+		getCampusWiseDateWiseInterestedMembersDetails('interested');
 		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 	});	
 	$(document).on("click",".newsSubmitBtn",function(){
 		getCallerWiseCallsDetails();
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
-		getCampusWiseDateWiseInterestedMembersDetails();
+		getCampusWiseDateWiseInterestedMembersDetails('interested');
 		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
 	})
 	
