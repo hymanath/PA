@@ -590,16 +590,16 @@ public class TrainingCampService implements ITrainingCampService{
 						setStatusSchedules(assignCampVo,allStatus);
 					}
 					if(type.equalsIgnoreCase("assigned")){
-						assignCampVo.setAssignedCallsCount(assignCampVo.getCount());
-						assignCampVo.setName(assignCampVo.getName());
+						assignCampVo.setAssignedCallsCount(assingedCount.getCount());
+						assignCampVo.setName(assingedCount.getName());
 					}
 					else if(type.equalsIgnoreCase("completed")){
-						assignCampVo.setCompletedCallsCount(assignCampVo.getCount());
-						assignCampVo.setName(assignCampVo.getName());
+						assignCampVo.setCompletedCallsCount(assingedCount.getCount());
+						assignCampVo.setName(assingedCount.getName());
 					}
 					else if(type.equalsIgnoreCase("pending")){
-						assignCampVo.setPendingCallsCount(assignCampVo.getCount());
-						assignCampVo.setName(assignCampVo.getName());
+						assignCampVo.setPendingCallsCount(assingedCount.getCount());
+						assignCampVo.setName(assingedCount.getName());
 					}
 					if(!agentExist){
 						finalMap.put(callerId, assignCampVo);
