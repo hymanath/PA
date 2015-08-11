@@ -2703,7 +2703,7 @@
 		<property name="trainingCampScheduleInviteeTrackDAO" ref="trainingCampScheduleInviteeTrackDAO" /> 
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" /> 
 		<property name="dateUtilService" ref="dateUtilService" />
-		
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 </beans>		
