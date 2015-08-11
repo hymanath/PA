@@ -25,6 +25,12 @@
     background-repeat: no-repeat;
     height: 71px;   
 }
+.circle-text, .circle-info, .circle-text-half, .circle-info-half 
+{
+	font-size:22px;
+	top:35%;
+	left:0;
+}
 </style>
 <body>
 <header  class="eventsheader">
@@ -472,7 +478,7 @@
 								<div class="panel-heading pad_5 pad_bottom0">
 									<ul class="nav nav-tabs tab-list" role="tablist">
 										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">CALLERS CALL DATA PROGRESS - MEMBERS AVAILABILITY</a></li>
-										<li><a href="#participated" class="text-bold" data-toggle="tab">MEMBERS ACCEPTANCE</a></li>
+										<!--<li><a href="#participated" class="text-bold" data-toggle="tab">MEMBERS ACCEPTANCE</a></li>-->
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
