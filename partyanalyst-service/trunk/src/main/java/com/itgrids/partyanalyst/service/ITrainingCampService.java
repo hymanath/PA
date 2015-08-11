@@ -41,6 +41,7 @@ public interface ITrainingCampService {
 	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
 	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(String searchType,String startDateStr,String endDateStr);
 	public TrainingMemberVO getAvailableMembersCountDetails(Long scheduleId,Long callerId);
+	public ResultStatus updateCallBackCadreStatusForTraining(TrainingCadreVO inputVO);
 	
 	public TrainingCampCallStatusVO getCallStatusCountByTrainingCampCallerId(Long trainingCampCallerId);
 	public Long getAvailableCountForMemberConfirmation(Long scheduleId);

@@ -31,16 +31,16 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long trainingCampScheduleInviteeTrackId;
 	private Long trainingCampScheduleInviteeId;
-	private Long trainingCampScheduleId;
-	private Long tdpCadreId;
+	//private Long trainingCampScheduleId;
+//	private Long tdpCadreId;
 //private Long scheduleInviteeStatusId;
-	private Long attendingBatchId;
+	//private Long attendingBatchId;
 	private String remarks;
 	private Long insertedBy;
 	private Long updatedBy;
 	
 	private TrainingCampScheduleInvitee trainingCampScheduleInvitee;
-	private TrainingCampSchedule trainingCampSchedule;
+	//private TrainingCampSchedule trainingCampSchedule;
 	private TdpCadre tdpCadre;
 	private Long trainingCampScheduleInviteeCallerId;
 	private Long trainingCampCallerAdminId;	
@@ -77,7 +77,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	}
 
 
-	@Column(name = "training_camp_schedule_id")
+	/*@Column(name = "training_camp_schedule_id")
 	public Long getTrainingCampScheduleId() {
 		return trainingCampScheduleId;
 	}
@@ -85,8 +85,8 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setTrainingCampScheduleId(Long trainingCampScheduleId) {
 		this.trainingCampScheduleId = trainingCampScheduleId;
-	}
-
+	}*/
+/*
    @Column(name = "tdp_cadre_id")
 	public Long getTdpCadreId() {
 		return tdpCadreId;
@@ -95,7 +95,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
-	}
+	}*/
 
    /* @Column(name = "schedule_invitee_status_id")
 	public Long getScheduleInviteeStatusId() {
@@ -106,7 +106,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	public void setScheduleInviteeStatusId(Long scheduleInviteeStatusId) {
 		this.scheduleInviteeStatusId = scheduleInviteeStatusId;
 	}*/
-
+/*
    @Column(name = "attending_batch_id")
 	public Long getAttendingBatchId() {
 		return attendingBatchId;
@@ -115,7 +115,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setAttendingBatchId(Long attendingBatchId) {
 		this.attendingBatchId = attendingBatchId;
-	}
+	}*/
 
 
 	@Column(name = "remarks")
@@ -162,7 +162,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.trainingCampScheduleInvitee = trainingCampScheduleInvitee;
 	}
 
-	 @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/* @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	 @JoinColumn(name = "training_camp_schedule_id", insertable = false, updatable = false)
 	 @LazyToOne(LazyToOneOption.NO_PROXY)
      @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -173,9 +173,9 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setTrainingCampSchedule(TrainingCampSchedule trainingCampSchedule) {
 		this.trainingCampSchedule = trainingCampSchedule;
-	}
+	}*/
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "tdp_cadre_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
     @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -186,7 +186,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
-	}
+	}*/
 
 	 @Column(name = "training_camp_schedule_invitee_caller_id")
 	public Long getTrainingCampScheduleInviteeCallerId() {
