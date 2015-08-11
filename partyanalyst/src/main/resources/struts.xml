@@ -10447,6 +10447,11 @@
 		</result>
 	</action>
 	
+	<action name="getCallStatusCountByTrainingCampCallerIdAction" class="trainingCampAction" method="getCallStatusCountByTrainingCampCallerId">
+		<result type="json" name="success">
+				<param name="root">trainingCampCallStatusVO</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      

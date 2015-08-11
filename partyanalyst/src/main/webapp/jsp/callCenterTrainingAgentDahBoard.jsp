@@ -35,44 +35,7 @@ table th
                         <div class="row">
                             <div class="col-md-6">
                                 <section>
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <td rowspan="7">
-                                                <div id="donutchart" style="width:200px;height:250px"></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        	<td><h4 class="text-bold m_0">ALLOCATED CALLS - 1000</h4></td>
-                                        </tr>
-                                        <tr>
-                                        	<td class="text-dialled"><h1 class="m_0 display-style text-dialled">800</h1> Dialled Calls</td>
-                                        </tr>
-                                        <tr>
-                                        	<td class="pad_0">
-                                            	<table class="table table-bordered m_0">
-                                                	<tr>
-                                                    	<td class="text-dialled"><p>700 Call<br/>Answered</p></td>
-                                                        <td class="text-switchoff">100 Call<br/>Switched Off / Userbusy</td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        	<td>
-                                            	<span class="text-custom">600 - Members Interested</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        	<td>
-                                            	<p class="text-not-interested m_0">80 - Currently not interested</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        	<td>
-                                            	<p class="text-totally-not m_0">20 - Totally not interested</p>
-                                            </td>
-                                        </tr>
-                                    </table>
+								<div id="callStatusCountDiv"></div>
                                 </section>
                             </div>
                             <div class="col-md-6">
@@ -583,10 +546,120 @@ function redirectToAgentwithBatch(purposeId,programId,campId,scheduleId,status,b
 var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&batchId="+batchId+"&statusType="+statusType+"");
     browser1.focus();
 }
+
+
+function getCallStatusCountByTrainingCampCallerId()
+{
+	$.ajax({
+		type   : "POST",
+		url    : "getCallStatusCountByTrainingCampCallerIdAction.action"
+		
+	}).done(function(result){
+		 buildCallStatusCountByTraCampCallerId(result);
+	});
+}
+
+function buildCallStatusCountByTraCampCallerId(result)
+{
+	$("#callStatusCountDiv").html("");
+	var str = '';
+	str += '<table class="table table-bordered">';
+	str += '<tr>';
+	str += '<td rowspan="7">';
+    str += '<div id="donutchart" style="width:200px;height:250px"></div>';
+    str += '</td>';
+	str += '</tr>';
+	str += '<tr>';
+    str += '<td><h4 class="text-bold m_0" id="allocatedCallId">ALLOCATED CALLS - '+result.allocatedCallsCount+'</h4></td>';
+    str += '</tr>';
+	str += '<tr>';
+    str += '<td class="text-dialled"><h1 class="m_0 display-style text-dialled" id="dialledCallId">'+result.dialledCallsCount+'</h1> Dialled Calls</td>';
+    str += '</tr>';
+	str += '<tr>';
+    str += '<td class="pad_0">';
+    str += '<table class="table table-bordered m_0">';
+    str += '<tr>';
+    str += '<td class="text-dialled"><p id="answeredCallsId">'+result.answerdeCallsCount+' Call<br/>Answered</p></td>';
+    str += '<td class="text-switchoff" id="switchoffId">'+result.userBusyCallsCount+' Call<br/>Switched Off / Userbusy</td>';
+    str += '</tr>';
+    str += '</table>';
+    str += '</td>';
+    str += '</tr>';
+    str += '<tr>';
+    str += '<td>';
+    str += '<span class="text-custom">'+result.interestedMemCount+' - Members Interested</span>';
+    str += '</td>';
+    str += '</tr>';
+    str += '<tr>';
+    str += '<td>';
+    str += '<p class="text-not-interested m_0">'+result.currentlyNotIntMemCount+' - Currently not interested</p>';
+    str += '</td>';
+    str += '</tr>';
+    str += '<tr>';
+    str += '<td>';
+    str += '<p class="text-totally-not m_0">'+result.notIntereMemCount+' - Totally not interested</p>';
+    str += '</td>';
+    str += '</tr>';
+    str += '</table>';
+	$("#callStatusCountDiv").html(str);
+	buildChart(result);
+}
+
+
+function buildChart(result)
+{
+	$(function () {
+	Highcharts.setOptions({
+        colors: ['#40b5bf', '#999967', '#089bf8']
+    });
+    $('#donutchart').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 120,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+			name : 'Count',
+            data: [
+                [' Members Interested', result.interestedMemCount],
+                ['Currently not interested', result.currentlyNotIntMemCount],
+                ['Totally not interested', result.notIntereMemCount],
+                
+            ]
+        }]
+    });
+});
+}
+
 </script>
 <script>
 getScheduleCallStatusCount();
 getBatchWiseCallStatusCount();
+getCallStatusCountByTrainingCampCallerId();
+
 </script>
 </script>
 </body>
