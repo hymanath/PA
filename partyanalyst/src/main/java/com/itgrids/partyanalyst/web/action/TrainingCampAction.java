@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
+import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
@@ -50,6 +51,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<IdNameVO> idNameList;
 
 	private TrainingCampVO trainingCampVO;
+	private TrainingCampCallStatusVO trainingCampCallStatusVO;
 	
 
 	
@@ -209,6 +211,16 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public void setTrainingCampScheduleVO(
 			TrainingCampScheduleVO trainingCampScheduleVO) {
 		this.trainingCampScheduleVO = trainingCampScheduleVO;
+	}
+
+	
+	public TrainingCampCallStatusVO getTrainingCampCallStatusVO() {
+		return trainingCampCallStatusVO;
+	}
+
+	public void setTrainingCampCallStatusVO(
+			TrainingCampCallStatusVO trainingCampCallStatusVO) {
+		this.trainingCampCallStatusVO = trainingCampCallStatusVO;
 	}
 
 	public String execute(){
@@ -539,6 +551,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getCallStatusCountByTrainingCampCallerId()
+	{
+		try{
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			trainingCampCallStatusVO = trainingCampService.getCallStatusCountByTrainingCampCallerId(regVo.getRegistrationID());
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getCallStatusCountByTrainingCampCallerId method in TrainingCampAction class.",e);
 		}
 		
 		return Action.SUCCESS;
