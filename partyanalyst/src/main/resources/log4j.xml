@@ -16,11 +16,20 @@
 			<param name="ConversionPattern" value="[%d{ISO8601}]%5p%6.6r[%t]%x - %C.%M(%F:%L) - %m%n" />
 		</layout>
 	</appender>
-	<!-- updated by anil for seperate error log file for exceptions -->
-	 <appender name="ErrorFile"
-         class="org.apache.log4j.RollingFileAppender">
+	
+	 <appender name="ErrorFile" class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="error"/>
         <param name="file" value="${catalina.home}/logs/PAErrors.log" />        	
+        <param name="MaxFileSize" value="10MB" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{ISO8601}]%5p%6.6r[%t]%x - %C.%M(%F:%L) - %m%n" />
+        </layout>
+    </appender>
+    
+     <appender name="FatalFile" class="org.apache.log4j.RollingFileAppender">
+        <param name="Threshold" value="fatal"/>
+        <param name="file" value="${catalina.home}/logs/PartyAnalyst_Fatal.log" />        	
         <param name="MaxFileSize" value="10MB" />
         <param name="MaxBackupIndex" value="10" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -42,5 +51,6 @@
 		<appender-ref ref="file" />
 		<appender-ref ref="console" />
 		<appender-ref ref="ErrorFile" />
+		<appender-ref ref="FatalFile" />
 	</root>
 </log4j:configuration>
