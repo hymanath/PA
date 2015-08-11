@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
+import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
@@ -1460,6 +1461,57 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 		}
+		
+	}
+	
+	public TrainingCampCallStatusVO getCallStatusCountByTrainingCampCallerId(Long trainingCampCallerId)
+	{
+		TrainingCampCallStatusVO callStatusVO = new TrainingCampCallStatusVO();
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getCallStatusCountByTrainingCampCallerId(trainingCampCallerId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params: list)
+				{
+					if(params[1] !=null && params[1].toString().equalsIgnoreCase("Call Answered"))
+						callStatusVO.setAnswerdeCallsCount((Long)params[0]);
+						
+					else if(params[1] !=null && (params[1].toString().equalsIgnoreCase("Switchoff") || params[1].toString().equalsIgnoreCase("User Busy")))
+						callStatusVO.setUserBusyCallsCount(callStatusVO.getUserBusyCallsCount()+(Long)params[0]);
+					
+					
+					callStatusVO.setAllocatedCallsCount(callStatusVO.getAllocatedCallsCount()+(Long)params[0]);
+					
+				}
+				callStatusVO.setDialledCallsCount(callStatusVO.getAnswerdeCallsCount()+callStatusVO.getUserBusyCallsCount());
+			}
+			
+			List<Object[]> list1 = trainingCampScheduleInviteeCallerDAO.getInterestedMembersCountByCampCallerId(trainingCampCallerId);
+			if(list1 != null && list1.size() > 0)
+			{
+				for(Object[] obj: list1)
+				{
+					if(obj[1] !=null && obj[1].toString().equalsIgnoreCase("Interested"))
+						callStatusVO.setInterestedMemCount((Long)obj[0]);
+						
+					else if(obj[1] !=null && obj[1].toString().equalsIgnoreCase("Not Interested"))
+						callStatusVO.setNotIntereMemCount((Long)obj[0]);
+					
+					else
+					 callStatusVO.setCurrentlyNotIntMemCount((Long)obj[0]);
+					
+				}
+				
+			}
+			
+			
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getCallStatusCountByTrainingCampCallerId() method, Exception - ",e);
+		}
+		return callStatusVO;
+		
 		
 	}
 	
