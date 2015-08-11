@@ -560,6 +560,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	{
 		try{
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo == null)
+				 return "error";
 			
 			trainingCampCallStatusVO = trainingCampService.getCallStatusCountByTrainingCampCallerId(regVo.getRegistrationID());
 		}catch (Exception e) {
@@ -568,5 +570,23 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getMembersCountByBatchStatus()
+	{
+		try{
+		 	RegistrationVO regVO = (RegistrationVO)request.getSession().getAttribute("USER");
+		 	
+			if(regVO == null)
+			 return "error";
+			
+			statusCountList = trainingCampService.getMembersCountByBatchStatus(regVO.getRegistrationID(),request.getParameter("batchStatus"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getMembersCountByBatchStatus method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }

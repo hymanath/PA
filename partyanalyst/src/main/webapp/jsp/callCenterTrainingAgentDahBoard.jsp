@@ -149,8 +149,8 @@ table th
                                     	<div class="panel-heading pad_5 pad_bottom0">
                                             <ul class="nav nav-tabs tab-list-sch" role="tablist">
                                                 <li class="active"><a href="#bacthdate" class="text-bold" data-toggle="tab">BATCH DATE CONFORMATION</a></li>
-                                                <li><a href="#running1" class="text-bold" data-toggle="tab">RUNNING</a></li>
-                                                <li><a href="#completed1" class="text-bold" data-toggle="tab">COMPLETED</a></li>
+                                                <li><a href="#running1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Progress','running1')">RUNNING</a></li>
+                                                <li><a href="#completed1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Completed','completed1')">COMPLETED</a></li>
                                             </ul>
                                         </div>
                                         <div class="panel-body pad_0">
@@ -158,63 +158,11 @@ table th
                                               <!-- Tab panes -->
                                               <div class="tab-content">
                                                 <div role="tabpanel" class="tab-pane active" id="bacthdate">
-                                                   
-                                                </div>
+                                                 </div>
                                                 <div role="tabpanel" class="tab-pane" id="running1">
-                                                    <table class="table table-bordered m_0">
-                                                        <thead>
-                                                            <th>Program Name</th>
-                                                            <th>Training Camp Name</th>
-                                                            <th>Schedule</th>
-                                                            <th>Batch Name & Date</th>
-                                                            <th>Batch Members</th>
-                                                            <th>Absent</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        	<tr>
-                                                            	<td rowspan="2">Leadership Skills</td>
-                                                                <td>SVV Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                                <td>2</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>EWK Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                                <td>270</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+												 </div>
                                                 <div role="tabpanel" class="tab-pane" id="completed1">
-                                                    <table class="table table-bordered m_0">
-                                                        <thead>
-                                                            <th>Program Name</th>
-                                                            <th>Training Camp Name</th>
-                                                            <th>Schedule</th>
-                                                            <th>Batch Name & Date</th>
-                                                            <th>Completed</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        	<tr>
-                                                            	<td rowspan="2">Leadership Skills</td>
-                                                                <td>SVV Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>EWK Camp</td>
-                                                                <td>SVV_Sep_01 to 15</td>
-                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
-                                                                <td>200</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                 </div>
                                               </div>
                                             </div>
                                         </div>
@@ -609,6 +557,68 @@ function buildChart(result)
         }]
     });
 });
+}
+
+function getMembersCountByBatchStatus(batchStatus,divId)
+{
+  $("#"+divId+"").html("");
+  $.ajax({
+	data : {batchStatus : batchStatus}, 
+	type : "POST",
+    url  : "getMembersCountByBatchStatusAction.action"	
+  }).done(function(result){
+	  buildMembersCountByBatchStatus(result,divId);
+  })	
+}
+
+function buildMembersCountByBatchStatus(result,divId)
+{
+	
+	if(result != null && result.length > 0)
+	{
+	  var str = "";
+	  str += '<table class="table table-bordered m_0">';
+	  str += '<thead>';
+	  str += '<tr>';
+      str += '<th>Program Name</th>';
+      str += '<th>Training Camp Name</th>';
+      str += '<th>Schedule</th>';
+      str += '<th>Batch Name & Date</th>';
+      str += '<th>Batch Members</th>';
+      str += '</tr>';
+      str += '</thead>';
+	  str += '<tbody>';
+	  for(var i in result)
+	  {
+		str += '<tr>';
+        str += '<td rowspan="'+result[i].spanCnt+'">'+result[i].name+'</td>';
+		
+		for(var j in result[i].subList)
+		{
+          str += '<td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].name+'</td>';
+		  for(var k in result[i].subList[j].subList)
+		  {
+			str += '<td rowspan="'+result[i].subList[j].subList[k].spanCnt+'">'+result[i].subList[j].subList[k].name+'</td>';  
+			
+			for(var l in result[i].subList[j].subList[k].subList)
+			{
+			  str += '<td rowspan="'+result[i].subList[j].subList[k].subList[l].spanCnt+'">'+result[i].subList[j].subList[k].subList[l].name+'</td>';
+			  
+			  str += '<td rowspan="'+result[i].subList[j].subList[k].subList[l].spanCnt+'">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+			 
+			  str += '</tr>';
+			  str += '<tr>';
+			}
+		  }
+		}
+        str += '</tr>';
+	  }
+	   str += '</tbody>';
+	  str += '</table>';
+	  $("#"+divId+"").html(str);
+	}
+	else
+     $("#"+divId+"").html("No Data Available.");
 }
 
 </script>
