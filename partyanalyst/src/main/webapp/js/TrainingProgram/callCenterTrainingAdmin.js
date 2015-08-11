@@ -118,7 +118,7 @@ function saveAllDetails()
 	}).done(function(result){
 		$("#searchErrDivID").html("");
 		if(result != null){
-			$("#searchErrDivID").html("Details Are Updated Successfully");
+			$("#searchErrDivID").html("<span style='color:green;'>Details Are Updated Successfully</span>");
 		}
 	});
 }
@@ -159,19 +159,49 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 				str+='<th>END <br/> DATE</th>';										
 				str+='<th>MEMBERS <br/>ACCEPTED</th>';
 			str+='</thead>';
+			str+='<tbody>';
 			for(var i in result.trainingCampVOList){
-				str+='<tbody>';
-				str+='<tr>';
-				str+='<td rowspan="4">'+result.trainingCampVOList[i].name+'</td>';
-				for(var j in result.trainingCampVOList[i].trainingCampVOList[0].trainingCampVOList){
-					
-					str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].trainingCampVOList[j].trainingCampName+'</td>';
-					str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].trainingCampVOList[j].startDateStr+'</td>';
-					str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].trainingCampVOList[j].endDateStr+'</td>';
-					str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].trainingCampVOList[j].batchConfirmationCount+'</td>';
-					
+				
+				if(result.trainingCampVOList[i].trainingCampVOList != null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+				{
+					for(var k in result.trainingCampVOList[i].trainingCampVOList)
+					{
+						if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList != null && result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList.length>0)
+						{
+							for(var s in result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList)
+							{
+								str+='<tr>';
+								if(s==0 && result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].name != null)
+									str+='<td style="text-align:center;"  rowspan="'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList.length+'">'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].name+'</td>';
+								else if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].name == null)
+									str+='<td style="text-align:center;"  rowspan="'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList.length+'"> - </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].trainingCampName != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].trainingCampName+'</td>';
+								else
+									str+='<td style="text-align:center;" > - </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].trainingCampName != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].trainingCampName+'</td>';
+								else
+									str+='<td style="text-align:center;" > - </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].startDateStr != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].startDateStr+'</td>';
+								else
+									str+='<td style="text-align:center;" > - </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].endDateStr != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList[s].endDateStr+'</td>';
+								else
+									str+='<td style="text-align:center;" > - </td>';
+								
+								str+='</tr>';
+							}
+						}
+					}
 				}
-				str+='</tr>';
+			
 			}
 			/*else{
 				str+='<tr>Data Not Available</tr>';
@@ -245,42 +275,42 @@ function buildBAtchWiseMembersDetails(result,divId,searchType)
 						str+='<tr>';
 						
 						if(k==0 && result.trainingCampVOList[i].name != null)
-								str+='<td rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'>'+result.trainingCampVOList[i].name+'</td>';
+								str+='<td style="text-align:center;"  rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'>'+result.trainingCampVOList[i].name+'</td>';
 						else if(k==0)
-							str+='<td rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'> - </td>';
+							str+='<td style="text-align:center;"  rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'> - </td>';
 							
 						if(result.trainingCampVOList[i].trainingCampName != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampName+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;" > - </td>';
 						if(result.trainingCampVOList[i].trainingCampVOList[k].scheduleName != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;" > - </td>';
 						if(result.trainingCampVOList[i].trainingCampVOList[k].name != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].name+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].name+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;" > - </td>';
 						
 						if(searchType=='running'){
 							if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
 							else
-								str+='<td>0</td>';
+								str+='<td style="text-align:center;" >0</td>';
 							
-							str+='<td>0</td>';
+							str+='<td style="text-align:center;" >0</td>';
 						}
 						else if(searchType=='completed'){
 							if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
 							else
-								str+='<td> 0 </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 						}
 						else if(searchType=='cancelled'){
 							if(result.trainingCampVOList[i].trainingCampVOList[k].memberStatus != null)
-								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].memberStatus+'</td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].memberStatus+'</td>';
 							else
-								str+='<td> - </td>';
+								str+='<td style="text-align:center;" > - </td>';
 						}
 						
 						str+='</tr>';
@@ -311,26 +341,59 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 				str+='<th>ASSIGNED TO <br/> <span class="font-12">BATCH CONFORMATION</span> </th>';
 				str+='<th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>';
 			str+='</thead>';
+			str+='<tbody>';
+			
 			for(var i in result.trainingCampVOList)
 			{
-				str+='<tbody>';
-				str+='<tr>';
-				str+='<td rowspan="4">'+result.trainingCampVOList[i].name+'</td>';
-				str+='<td>'+result.trainingCampVOList[i].trainingCampName+'</td>';
-			
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].scheduleName+'</td>';
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[0].nextBatchInterestedCount+'</td>';
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[1].nextBatchInterestedCount+'</td>';
-				if(result.trainingCampVOList[i].trainingCampVOList[2].notInterestedCount == null){
-				str+='<td>0</td>';
-				}else{
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[2].notInterestedCount+'</td>';
-				}
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[3].batchConfirmationCount+'</td>';
-				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[4].availableMembersCount+'</td>';
 				
-				str+='</tr>';
+				var statusCount = result.trainingCampVOList[i].trainingCampVOList.length;
+				if(result.trainingCampVOList[i].trainingCampVOList != null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+				{
+					for(var k in result.trainingCampVOList[i].trainingCampVOList)
+					{
+							str+='<tr>';	
+								if(k==0 && result.trainingCampVOList[i].name != null)
+									str+='<td style="text-align:center;"  rowspan="'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList.length+'">'+result.trainingCampVOList[i].name+'</td>';
+								else if(result.trainingCampVOList[i].name == null)
+									str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampName+'</td>';							
+								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
+								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								if(k<statusCount-1)
+									k=parseInt(k)+parseInt(1);
+								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								if(k<statusCount-1)
+									k=parseInt(k)+parseInt(1);
+								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								if(k<statusCount-1)
+									k=parseInt(k)+parseInt(1);
+								if(result.trainingCampVOList[i].trainingCampVOList[k].batchConfirmationCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].batchConfirmationCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								if(k<statusCount-1)
+									k=parseInt(k)+parseInt(1);
+								if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								str+='</tr>';
+								break;
+					}
+				}
+				
+				
 			}
+			
 			str+='</tbody>';
 			str+='</table>';									
                                                 	
@@ -377,7 +440,9 @@ function getAvailableCountForMemberConfirmation(scheduleId)
 	}).done(function(result){
 		if(result != null){
 			$("#availableCallsDivId").show();
-			$("#availCountId").html(result);
+				$("#availCountId").html(0);
+			if(result>=0)
+				$("#availCountId").html(result);
 		}		
 	});
 }
