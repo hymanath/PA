@@ -244,50 +244,7 @@ $(".table-scroll").mCustomScrollbar({
 });
 </script>
 <script type="text/javascript">
-$(function () {
-	Highcharts.setOptions({
-        colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
-    });
-    $('#donutchart').highcharts({
-        chart: {
-            type: 'pie',
-			backgroundColor: 'transparent',
-            options3d: {
-                enabled: false,
-                alpha: 50
-            }
-        },
-		legend: {
-                enabled: true,
-                align: 'right',
-                verticalAlign: 'right',
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 120,
-                depth: 10,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Interested', 157],
-                ['Not Interested', 100],
-                ['Not Eligible', 100],
-                ['Not Possible', 100],
-				['Not Completed', 100],
-            ]
-        }]
-    });
-});
+
 function getScheduleCallStatusCount()
 {
 		var jObj={
