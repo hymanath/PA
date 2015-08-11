@@ -52,6 +52,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	private TrainingCampVO trainingCampVO;
 	private TrainingCampCallStatusVO trainingCampCallStatusVO;
+	private List<IdNameVO> idnemIdNameVOs;
 	
 
 	
@@ -221,6 +222,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public void setTrainingCampCallStatusVO(
 			TrainingCampCallStatusVO trainingCampCallStatusVO) {
 		this.trainingCampCallStatusVO = trainingCampCallStatusVO;
+	}
+
+	public List<IdNameVO> getIdnemIdNameVOs() {
+		return idnemIdNameVOs;
+	}
+
+	public void setIdnemIdNameVOs(List<IdNameVO> idnemIdNameVOs) {
+		this.idnemIdNameVOs = idnemIdNameVOs;
 	}
 
 	public String execute(){
@@ -566,6 +575,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			trainingCampCallStatusVO = trainingCampService.getCallStatusCountByTrainingCampCallerId(regVo.getRegistrationID());
 		}catch (Exception e) {
 			LOG.error(" Exception occured in getCallStatusCountByTrainingCampCallerId method in TrainingCampAction class.",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getUsersofUserType(){
+		
+		try{
+			idnemIdNameVOs=trainingCampService.getUserIdsByType();
+		}
+		catch(Exception e){
+			LOG.error(" Exception occured in getUsersofUserType method in TrainingCampAction class.",e);
 		}
 		
 		return Action.SUCCESS;
