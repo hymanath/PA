@@ -627,7 +627,16 @@
 			     <value>com.itgrids.partyanalyst.model.CampCallStatus</value>
 			     <value>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampBatchAttendee</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingType</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingLevel</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingOccurrence</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeeting</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingInvitee</value>
+				 <value>com.itgrids.partyanalyst.model.Attendance</value>
+				 <value>com.itgrids.partyanalyst.model.AttendanceTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingAttendance</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendance</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinute</value>
 				</list>
 			
 		</property>
