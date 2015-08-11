@@ -409,4 +409,32 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}	
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCallStatusCountByTrainingCampCallerId(Long trainingCampCallerId)
+	{
+		Query query = getSession().createQuery(" select count(model.trainingCampScheduleInviteeCallerId),campCallStatus.status,campCallStatus.campCallStatusId from TrainingCampScheduleInviteeCaller model " +
+				" left join model.campCallStatus campCallStatus  where " +
+				" model.trainingCampCallerId =:trainingCampCallerId group by campCallStatus.campCallStatusId ");
+		
+		query.setParameter("trainingCampCallerId", trainingCampCallerId);
+		return query.list();
+				
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getInterestedMembersCountByCampCallerId(Long trainingCampCallerId)
+	{
+		Query query = getSession().createQuery(" select count(distinct model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId),model.trainingCampScheduleInvitee.scheduleInviteeStatus.status " +
+				" from TrainingCampScheduleInviteeCaller model where model.trainingCampScheduleInvitee.scheduleInviteeStatus.status in ('Interested','Not Interested','Not Now') and " +
+				" model.trainingCampCallerId =:trainingCampCallerId group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		
+		query.setParameter("trainingCampCallerId", trainingCampCallerId);
+		return query.list();
+		
+	}
+	
+	
+	
 }
