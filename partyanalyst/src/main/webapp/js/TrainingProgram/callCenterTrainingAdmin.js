@@ -1,6 +1,7 @@
 
 function getAllCampBatches(batchMemId)
 	{
+		$("#availableCounstDivId").hide();
 		if(batchMemId == 1){
 			$("#batchConfirmationDivId").hide();
 			$("#memberConfirmationDivId").show();
@@ -121,13 +122,13 @@ function saveAllDetails()
 	});
 }
 
-function getCampusWiseDateWiseInterestedMembersDetails()
+function getCampusWiseDateWiseInterestedMembersDetails(searchType)
 {
 	var fromDate=$(".dp_startDate").val();
 	var toDate=$(".dp_endDate").val();
 	
 	var jsObj={
-			searchType:"notStarted",
+			searchType:searchType,
 			fromdate : fromDate,
 			toDate   : toDate
 		}
@@ -181,12 +182,13 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 	}
 }
 
-function getCampusWiseBatchWiseMembersDetails()
+function getCampusWiseBatchWiseMembersDetails(searchType,divId)
 {
+
 	var fromDate=$(".dp_startDate").val();
 	var toDate=$(".dp_endDate").val();
 	var jsObj={
-			searchType:"notStarted",
+			searchType:searchType,
 			fromdate : fromDate,
 			toDate   : toDate
 		}
@@ -197,12 +199,102 @@ function getCampusWiseBatchWiseMembersDetails()
 		 data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			if(result != null){
-				buildCampusWiseBatchWiseMembersDetails(result);
+				if(searchType=='notStarted')
+					buildCampusWiseBatchWiseMembersDetails(result,divId);
+				else
+					buildBAtchWiseMembersDetails(result,divId,searchType);
+			}
+			else{
+				$('#'+divId+'').html('<div class="text-center"><b> No Data Available...</b></div>');
 			}
 		});
 }
 
-function buildCampusWiseBatchWiseMembersDetails(result)
+
+function buildBAtchWiseMembersDetails(result,divId,searchType)
+{
+	var str='';
+	if(result.trainingCampVOList != null)
+	{//alert(1);
+		str+='<table class="table table-bordered m_0">';
+			str+='<thead>';
+				str+='<th>PROGRAM NAME</th>';
+				str+='<th>CAMP NAME</th>';
+				str+='<th> SCHEDULE </th>';
+				str+='<th>BATCH NAME & DATE </th>';
+				if(searchType=='running'){
+					str+='<th>BATCH MEMBERS</th>';
+					str+='<th>ABSENT</th>';
+				}
+				else if(searchType=='completed'){
+					str+='<th>COMPLETED</th>';
+				}
+				else if(searchType=='cancelled'){
+					str+='<th>status</th>';
+				}
+				
+			str+='</thead>';
+			for(var i in result.trainingCampVOList)
+			{
+				str+='<tbody>';
+				if(result.trainingCampVOList[i].trainingCampVOList != null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+				{
+					for(var k in result.trainingCampVOList[i].trainingCampVOList)
+					{
+						str+='<tr>';
+						
+						if(k==0 && result.trainingCampVOList[i].name != null)
+								str+='<td rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'>'+result.trainingCampVOList[i].name+'</td>';
+						else if(k==0)
+							str+='<td rowspan='+result.trainingCampVOList[i].trainingCampVOList.length+'> - </td>';
+							
+						if(result.trainingCampVOList[i].trainingCampName != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampName+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result.trainingCampVOList[i].trainingCampVOList[k].scheduleName != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result.trainingCampVOList[i].trainingCampVOList[k].name != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].name+'</td>';
+						else
+							str+='<td> - </td>';
+						
+						if(searchType=='running'){
+							if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+							else
+								str+='<td>0</td>';
+							
+							str+='<td>0</td>';
+						}
+						else if(searchType=='completed'){
+							if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+							else
+								str+='<td> 0 </td>';
+						}
+						else if(searchType=='cancelled'){
+							if(result.trainingCampVOList[i].trainingCampVOList[k].memberStatus != null)
+								str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[k].memberStatus+'</td>';
+							else
+								str+='<td> - </td>';
+						}
+						
+						str+='</tr>';
+					}
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';									
+                                                	
+			$("#"+divId+"").html(str);										
+    									
+	}
+}
+
+function buildCampusWiseBatchWiseMembersDetails(result,divId)
 {
 	var str='';
 	if(result.trainingCampVOList != null)
@@ -235,12 +327,13 @@ function buildCampusWiseBatchWiseMembersDetails(result)
 				}
 				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[3].batchConfirmationCount+'</td>';
 				str+='<td>'+result.trainingCampVOList[i].trainingCampVOList[4].availableMembersCount+'</td>';
+				
 				str+='</tr>';
 			}
 			str+='</tbody>';
 			str+='</table>';									
                                                 	
-			$("#scheduled").html(str);										
+			$("#"+divId+"").html(str);										
     									
 	}
 }
@@ -248,18 +341,24 @@ function buildCampusWiseBatchWiseMembersDetails(result)
 function getAvailableMembersCountDetails(caallerrId)
 {
 	var schedduleeId = $("#scheduleId").val();
-	var jsObj={
+	if(caallerrId != 0)
+	{
+		var jsObj={
 		schedduleeId:schedduleeId,
 		caallerrId:caallerrId
+		}
+		
+		$.ajax({
+			type:'POST',
+			url :'getAvailableMembersCountDetailsAction.action',
+			data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null){
+				$("#availableCounstDivId").show();
+				$("#ownCountId").html(result.availableCount);
+				$("#othersCountId").html(result.availableCount);
+			}
+		});
 	}
 	
-	$.ajax({
-		type:'POST',
-		url :'getAvailableMembersCountDetailsAction.action',
-		data:{task:JSON.stringify(jsObj)},
-	}).done(function(result){
-		if(result != null){
-			$("#searchErrDivID").html("Details Are Updated Successfully");
-		}
-	});
 }
