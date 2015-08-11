@@ -223,7 +223,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	public Long getAreadyAssignedCandidatesListByScheduleIdAndCount(Long scheduleId)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count(TCSI.trainingCampScheduleInviteeId) from TrainingCampScheduleInviteeCaller TCSIC where TCSI.trainingCampScheduleInvitee.trainingcampScheduleId =:scheduleId and " +
+		queryStr.append(" select count(TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) from TrainingCampScheduleInviteeCaller TCSIC where TCSIC.trainingCampScheduleInvitee.trainingcampScheduleId =:scheduleId and " +
 				" TCSIC.campCallPurpose.purpose='Invitation' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("scheduleId", scheduleId);
