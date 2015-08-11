@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,12 +39,12 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
-import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
+import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -1526,7 +1527,7 @@ public class TrainingCampService implements ITrainingCampService{
 			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
-				
+			saveTrackingInfo(inputVO);	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					
 			
@@ -1538,6 +1539,94 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return resultStatus;
 	}
+	public void saveTrackingInfo(TrainingCadreVO inputVO)
+	{
+		try{
+			DateUtilService date= new DateUtilService();
+			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+			TrainingCampScheduleInviteeTrack trainingCampScheduleInviteeTrack = new TrainingCampScheduleInviteeTrack();
+		
+			if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
+				trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
+			trainingCampScheduleInviteeTrack.setCampCallPurposeId(2l);
+			trainingCampScheduleInviteeTrack.setCampCallStatusId(inputVO.getCallStatusId());
+			if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId() > 0)
+			trainingCampScheduleInviteeTrack.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+			//trainingCampScheduleInviteeTrack.setTdpCadreId(inputVO.getTdpCadreId());
+			trainingCampScheduleInviteeTrack.setTrainingCampCallerId(inputVO.getUserId());
+			trainingCampScheduleInviteeTrack.setCalledTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeTrack.setInsertedBy(inputVO.getUserId());
+			trainingCampScheduleInviteeTrack.setUpdatedBy(inputVO.getUserId());
+			trainingCampScheduleInviteeTrack.setInsertedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeTrack.setUpdatedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeId(inputVO.getInvitteId());
+			trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeCallerId(inputVO.getInviteeCallerId());
+			if(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId() != null)
+			trainingCampScheduleInviteeTrack.setTrainingCampCallerAdminId(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId());
+			
+			if(inputVO.getCallBackDate() != null)
+			{
+				String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
+				 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
+				 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
+			     DateFormat oldFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+			     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+			trainingCampScheduleInviteeTrack.setCallBackTime(oldDate);
+			}
+			trainingCampScheduleInviteeTrackDAO.save(trainingCampScheduleInviteeTrack);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public ResultStatus updateCallBackCadreStatusForTraining(TrainingCadreVO inputVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		DateUtilService date = new DateUtilService();
+		try{
+			SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+		    SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+		    Date date1 = parseFormat.parse(inputVO.getCallBackTime());
+		    System.out.println(parseFormat.format(date1) + " = " + displayFormat.format(date1));
+		    inputVO.setCallBackTime(displayFormat.format(date1));
+			TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+					
+					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
+						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
+					if(inputVO.getScheduleStatusId() > 0)
+						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+						trainingCampScheduleInvitee.setInsertedBy(inputVO.getUserId());
+						String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
+
+						 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
+					     DateFormat oldFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+					     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+					     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+						trainingCampScheduleInvitee.setCallBackTime(oldDate);
+						trainingCampScheduleInvitee.setInsertedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+			
+					
+			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+			trainingCampScheduleInviteeCaller.setCallStatusId(1l);
+			trainingCampScheduleInviteeCaller.setInsertedBy(inputVO.getUserId());
+			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+			saveTrackingInfo(inputVO);		
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					
+			
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in updateCallBackCadreStatusForTraining()", e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
+	
 	
 	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString){
 		TrainingCampScheduleVO returnVO = new TrainingCampScheduleVO();
@@ -1621,6 +1710,8 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		return returnVO;
 	}
+	
+
 	public void setScheduleAndConfirmationCallsOfCallerToAgent(List<Object[]>  scheduleAndConfirmationCalls,Map<Long,TrainingCampScheduleVO> finalVo,String type){
 		
 		if(scheduleAndConfirmationCalls !=null && scheduleAndConfirmationCalls.size()>0){

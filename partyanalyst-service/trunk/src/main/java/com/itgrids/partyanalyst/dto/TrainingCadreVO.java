@@ -13,10 +13,26 @@ public class TrainingCadreVO {
 	private Long userId;
 	private Long invitteId;
 	private Long inviteeCallerId;
+	private String callBackTime;
+	private String callBackDate;
 	
 	
 	
 	
+	public String getCallBackDate() {
+		return callBackDate;
+	}
+	public void setCallBackDate(String callBackDate) {
+		this.callBackDate = callBackDate;
+	}
+	
+	
+	public String getCallBackTime() {
+		return callBackTime;
+	}
+	public void setCallBackTime(String callBackTime) {
+		this.callBackTime = callBackTime;
+	}
 	public Long getInvitteId() {
 		return invitteId;
 	}
