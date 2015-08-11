@@ -248,6 +248,24 @@ public class TrainingCampService implements ITrainingCampService{
 		return scheduleList;
 	}
 	
+	public Long getAvailableCountForMemberConfirmation(Long scheduleId)
+	{
+		Long availableCount = 0L;
+		try {
+			availableCount = trainingCampScheduleInviteeDAO.getAvailableInvitedCandidatesListByScheduleIdAndCount(scheduleId);
+			if(availableCount != null && availableCount.longValue()>0L)
+			{
+				Long alreadyAssignedCount = trainingCampScheduleInviteeDAO.getAreadyAssignedCandidatesListByScheduleIdAndCount(scheduleId);
+				if(alreadyAssignedCount != null && alreadyAssignedCount.longValue()>0L){
+					availableCount = availableCount - alreadyAssignedCount;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getAvailableCountForMemberConfirmation method in TrainingCampService class.",e);
+		}
+		return availableCount;
+	}
+	
 	public TrainingMemberVO getAvailableMembersCountDetails(Long scheduleId,Long callerId)
 	{
 		TrainingMemberVO returnVO = new TrainingMemberVO();
@@ -274,20 +292,24 @@ public class TrainingCampService implements ITrainingCampService{
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					List<Long> alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
-					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,alreadyInvitedMemberIdsList,Integer.valueOf(membersCount.toString()));
+					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,null,Integer.valueOf(membersCount.toString()));
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
 						DateUtilService dateutilService = new DateUtilService();
 						
 						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
-							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
-							trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
-							trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
-							trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
-							trainingCampScheduleInviteeCaller.setInsertedBy(userId);
-							trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
-							trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
-							trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+							if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
+							{
+								TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
+								trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+								trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
+								trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
+								trainingCampScheduleInviteeCaller.setInsertedBy(userId);
+								trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
+								trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
+								trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+								//trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+							}
 						}
 					}
 				}
@@ -316,20 +338,24 @@ public class TrainingCampService implements ITrainingCampService{
 					else{
 						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(null,scheduleId, "Invited", "Interested");
 					}
-					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,alreadyInvitedMemberIdsList,Integer.valueOf(membersCount.toString()));
+					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,null,Integer.valueOf(membersCount.toString()));
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
 						DateUtilService dateutilService = new DateUtilService();
 						
 						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
-							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
-							trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
-							trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
-							trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
-							trainingCampScheduleInviteeCaller.setInsertedBy(userId);
-							trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
-							trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
-							trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+								if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
+								{
+									TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
+									trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+									trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
+									trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
+									trainingCampScheduleInviteeCaller.setInsertedBy(userId);
+									trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
+									trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
+									trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+									//trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+								}
 						}
 					}
 				}
@@ -597,15 +623,15 @@ public class TrainingCampService implements ITrainingCampService{
 	{
 		TrainingCampVO returnVO = null;
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			Date startDate= format.parse(startDateStr);
 			Date endDate= format.parse(endDateStr);
 			
-			if(callerIdsList == null || callerIdsList.size() == 0)
+			if(searchType != null && searchType.equalsIgnoreCase("notStarted") && (callerIdsList == null || callerIdsList.size() == 0))
 			{
 
 				String[] memberTypesArr = {"INTERESTED","NOT NOW","NOT INTERESTED"};
-				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails(searchType, startDate, endDate);
+				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseScheduleWiseMembersDetails(searchType, startDate, endDate);
 				
 				Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,List<TrainingCampVO>>>>(0);
 				Map<Long,Long> interestedMembersForSchedulMap = new LinkedHashMap<Long, Long>(0);
@@ -744,7 +770,86 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 				}
 			}
-			
+			else if(callerIdsList == null || callerIdsList.size() == 0)
+			{
+				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseBatchWiseMembersDetails(searchType, startDate, endDate);
+				
+				Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,List<TrainingCampVO>>>>(0);
+				if(campAndSchedulewiseResultsList != null && campAndSchedulewiseResultsList.size()>0)
+				{
+					returnVO = new TrainingCampVO();
+					for (Object[] campObj : campAndSchedulewiseResultsList) {
+
+							String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
+							String programName = commonMethodsUtilService.getStringValueForObject(campObj[1]);
+							String scheduleName =commonMethodsUtilService.getStringValueForObject(campObj[2]);
+							String batchName =commonMethodsUtilService.getStringValueForObject(campObj[3]);
+							String startDate1Str =commonMethodsUtilService.getStringValueForObject(campObj[4]);
+							String endDate1Str =commonMethodsUtilService.getStringValueForObject(campObj[5]);
+							String status =commonMethodsUtilService.getStringValueForObject(campObj[6]);
+							Long count =commonMethodsUtilService.getLongValueForObject(campObj[7]);
+							Long scheduleId =commonMethodsUtilService.getLongValueForObject(campObj[8]);
+							
+							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = new LinkedHashMap<String,Map<Long,List<TrainingCampVO>>>(0);
+							Map<Long,List<TrainingCampVO>> scheduleWiseMap = new LinkedHashMap<Long,List<TrainingCampVO>>(0);
+							List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+							if(programWiseSceduleWiseMap.get(programName) != null)
+							{
+								campWiseMap = programWiseSceduleWiseMap.get(programName);
+							}
+							if(campWiseMap.get(campName) != null)
+							{
+								scheduleWiseMap = campWiseMap.get(campName);
+							}
+							if(scheduleWiseMap.get(scheduleId) != null)
+							{
+								trainingCampVOList = scheduleWiseMap.get(scheduleId);
+							}
+								TrainingCampVO trainingCampVO = new TrainingCampVO();
+								trainingCampVO.setTrainingCampName(campName);
+								trainingCampVO.setScheduleName(scheduleName);
+								trainingCampVO.setName(batchName);
+								trainingCampVO.setStartDateStr(startDate1Str);
+								trainingCampVO.setEndDateStr(endDate1Str);
+								trainingCampVO.setMemberStatus(status);
+								trainingCampVO.setAvailableMembersCount(count);
+								trainingCampVOList.add(trainingCampVO);
+								scheduleWiseMap.put(scheduleId, trainingCampVOList);
+								campWiseMap.put(campName,scheduleWiseMap);
+								programWiseSceduleWiseMap.put(programName, campWiseMap);
+							
+						
+					}
+					if(programWiseSceduleWiseMap != null && programWiseSceduleWiseMap.size()>0)
+					{
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						for (String programStr : programWiseSceduleWiseMap.keySet()) {
+							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = programWiseSceduleWiseMap.get(programStr);
+							TrainingCampVO programVO = new TrainingCampVO();
+							programVO.setName(programStr);
+							if(campWiseMap != null && campWiseMap.size()>0)
+							{
+								for (String campNameStr : campWiseMap.keySet()) {
+									Map<Long,List<TrainingCampVO>> scheduleWiseCountMap = campWiseMap.get(campNameStr);
+									programVO.setTrainingCampName(campNameStr);
+									if(scheduleWiseCountMap != null && scheduleWiseCountMap.size()>0)
+									{
+										for (Long scheduleId : scheduleWiseCountMap.keySet()) {
+											List<TrainingCampVO> scheduleVOList = scheduleWiseCountMap.get(scheduleId);
+											if(scheduleVOList != null)
+											{
+												programVO.setTrainingCampVOList(scheduleVOList);
+											}
+										}
+									}
+								}
+								trainingCampVOList.add(programVO);
+							}
+							returnVO.setTrainingCampVOList(trainingCampVOList);
+						}
+					}
+			}
+		 }
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getCampusWiseBatchWiseMembersDetails method in TrainingCampService class.",e);
 			returnVO = null;
