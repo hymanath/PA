@@ -402,17 +402,17 @@ public class TrainingCampService implements ITrainingCampService{
 		      
 			
 			//iterating.
-			Map<Long,Long> assignedMap=new HashMap<Long, Long>();
+			Map<Long,TrainingCampScheduleVO> assignedMap=new HashMap<Long, TrainingCampScheduleVO>();
 			if(totalAssignedList !=null && totalAssignedList.size()>0){
 				setResultToMap(totalAssignedList,assignedMap);
 			}
 			
-			Map<Long,Long> completedMap=new HashMap<Long, Long>();
+			Map<Long,TrainingCampScheduleVO> completedMap=new HashMap<Long, TrainingCampScheduleVO>();
 			if(completedCallsList !=null && completedCallsList.size()>0){
 				setResultToMap(completedCallsList,completedMap);
 			}
 			
-			Map<Long,Long> pendingMap=new HashMap<Long, Long>();
+			Map<Long,TrainingCampScheduleVO> pendingMap=new HashMap<Long, TrainingCampScheduleVO>();
 
 			if(pendingCallsList !=null && pendingCallsList.size()>0){
 				setResultToMap(pendingCallsList,pendingMap);
@@ -511,20 +511,28 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return finalCallersVODetails;
 	}
-	public void setResultToMap(List<Object[]> listObj,Map<Long,Long> corespondentmap)
+	public void setResultToMap(List<Object[]> listObj,Map<Long,TrainingCampScheduleVO> corespondentmap)
 	{
 		try{
 			if(listObj !=null && listObj.size()>0){
 				for(Object[] Obj:listObj){
+					
+					TrainingCampScheduleVO vo=new TrainingCampScheduleVO();
+					
 					Long assignedCount=commonMethodsUtilService.getLongValueForObject(Obj[1]);
-					corespondentmap.put(Long.parseLong(commonMethodsUtilService.getStringValueForObject(Obj[0])),assignedCount);
+					
+					vo.setId(Long.parseLong(commonMethodsUtilService.getStringValueForObject(Obj[0])));
+					vo.setName(Obj[2] !=null ? Obj[2].toString() : "");
+					vo.setCount(assignedCount);
+					
+					corespondentmap.put(Long.parseLong(commonMethodsUtilService.getStringValueForObject(Obj[0])),vo);
 				}
 			}
 		}catch (Exception e) {
 			LOG.error(" Exception occured in setResultToMap method in TrainingCampService class.",e);
 		}
 	}
-	public void setResultToAssignedMap(Map<Long,Long> assignedMap,Map<Long,TrainingCampScheduleVO> finalMap,String type,List<Object[]> allStatus,List<Object[]> callStatusOfinviteesList){
+	public void setResultToAssignedMap(Map<Long,TrainingCampScheduleVO> assignedMap,Map<Long,TrainingCampScheduleVO> finalMap,String type,List<Object[]> allStatus,List<Object[]> callStatusOfinviteesList){
 		
 		try{
 			if(type.equalsIgnoreCase("status")){
@@ -562,10 +570,10 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 				
 			}else{
-				for (Entry<Long, Long> assignedEntry : assignedMap.entrySet()){
+				for (Entry<Long, TrainingCampScheduleVO> assignedEntry : assignedMap.entrySet()){
 					
 					Long callerId=assignedEntry.getKey();
-					Long assingedCount=assignedEntry.getValue();
+					TrainingCampScheduleVO assingedCount=assignedEntry.getValue();
 					
 					TrainingCampScheduleVO assignCampVo =finalMap.get(callerId);
 					boolean agentExist=true;
@@ -581,13 +589,16 @@ public class TrainingCampService implements ITrainingCampService{
 						setStatusSchedules(assignCampVo,allStatus);
 					}
 					if(type.equalsIgnoreCase("assigned")){
-						assignCampVo.setAssignedCallsCount(assingedCount);
+						assignCampVo.setAssignedCallsCount(assignCampVo.getCount());
+						assignCampVo.setName(assignCampVo.getName());
 					}
 					else if(type.equalsIgnoreCase("completed")){
-						assignCampVo.setCompletedCallsCount(assingedCount);
+						assignCampVo.setCompletedCallsCount(assignCampVo.getCount());
+						assignCampVo.setName(assignCampVo.getName());
 					}
 					else if(type.equalsIgnoreCase("pending")){
-						assignCampVo.setPendingCallsCount(assingedCount);
+						assignCampVo.setPendingCallsCount(assignCampVo.getCount());
+						assignCampVo.setName(assignCampVo.getName());
 					}
 					if(!agentExist){
 						finalMap.put(callerId, assignCampVo);
@@ -1686,7 +1697,25 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		
 	}
-	
-	
+	public List<IdNameVO> getUserIdsByType(){
+		
+		List<IdNameVO> listOfUsers=new ArrayList<IdNameVO>();
+		try{
+			List<Object[]> users=trainingCampUserDAO.getUserIdsByType(5l);
+			if(users !=null && users.size()>0){
+				for(Object[] user:  users){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(user[0] !=null ? (Long)user[0] :0l);//userId
+					vo.setName(user[1] !=null ? user[1].toString() : "");
+					
+					listOfUsers.add(vo);
+				}
+				return listOfUsers;
+			}
+		}catch(Exception e){
+			LOG.error(" Exception Occured in getUserIdsByType() method, Exception - ",e);
+		}
+		return listOfUsers;
+	}
 	
 }

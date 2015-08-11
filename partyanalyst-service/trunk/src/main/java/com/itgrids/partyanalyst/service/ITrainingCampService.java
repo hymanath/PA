@@ -45,5 +45,6 @@ public interface ITrainingCampService {
 	public TrainingCampCallStatusVO getCallStatusCountByTrainingCampCallerId(Long trainingCampCallerId);
 	public Long getAvailableCountForMemberConfirmation(Long scheduleId);
 	public List<TraingCampCallerVO> getMembersCountByBatchStatus(Long campCallerId,String batchStatus);
+	public List<IdNameVO> getUserIdsByType();
 	
 }
