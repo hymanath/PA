@@ -2,6 +2,7 @@
 function getAllCampBatches(batchMemId)
 	{
 		$("#availableCounstDivId").hide();
+		$("#availableCallsDivId").hide();
 		if(batchMemId == 1){
 			$("#batchConfirmationDivId").hide();
 			$("#memberConfirmationDivId").show();
@@ -361,4 +362,22 @@ function getAvailableMembersCountDetails(caallerrId)
 		});
 	}
 	
+}
+
+function getAvailableCountForMemberConfirmation(scheduleId)
+{
+	var jsObj={
+			scheduleId:scheduleId
+			}
+	
+	$.ajax({
+		type:'POST',
+		url :'getAvailableCountForMemberConfirmationAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null){
+			$("#availableCallsDivId").show();
+			$("#availCountId").html(result);
+		}		
+	});
 }

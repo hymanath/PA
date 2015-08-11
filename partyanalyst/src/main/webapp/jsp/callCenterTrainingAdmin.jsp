@@ -239,13 +239,16 @@
 									<option value="0">Select Program</option>
 								</select>
                                 <h5>Select Calendar Schedule Dates</h5>
-								<select class="form-control" id="scheduleId">
+								<select class="form-control" id="scheduleId" onchange="getAvailableCountForMemberConfirmation(this.value);">
 									<option value="0">Select Schedule</option>
 								</select>
 								<div id="memberConfirmationDivId">
 								<h5 class="m_top20">
 									Select no of calls
-									<span class="text-danger pull-right text-italic">Avail Calls 500</span>
+									<!--<span class="text-danger pull-right text-italic">Avail Calls 500</span>-->
+									<br> <div id="availableCallsDivId" style="display:none">
+									<label><input type="radio"><span class="text-danger pull-right text-italic">Avail Calls <span id="availCountId"></span></span></input></label>
+									</div>
 								</h5>
 								<input class="form-control" type="text" id="membersCountId">
 								<h5>Select Call Center Caller Name</h5>
