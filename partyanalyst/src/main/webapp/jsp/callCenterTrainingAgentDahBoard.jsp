@@ -1,16 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="s" uri="/struts-tags"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CAll Center Admin</title>
+<title>CAll Center Agent</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style type="text/css">
+table th
+{
+	padding:6px !important;
+	font-size:13px !important
+}
+
+</style>
 </head>
 <body>
 <header>
@@ -37,16 +42,16 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                        	<td><h4 class="text-bold">ALLOCATED CALLS - 1000</h4></td>
+                                        	<td><h4 class="text-bold m_0">ALLOCATED CALLS - 1000</h4></td>
                                         </tr>
                                         <tr>
-                                        	<td class="text-dialled"><span class="font-30">800</span> Dialled Calls</td>
+                                        	<td class="text-dialled"><h1 class="m_0 display-style text-dialled">800</h1> Dialled Calls</td>
                                         </tr>
                                         <tr>
                                         	<td class="pad_0">
                                             	<table class="table table-bordered m_0">
                                                 	<tr>
-                                                    	<td class="text-dialled">700 Call<br/>Answered</td>
+                                                    	<td class="text-dialled"><p>700 Call<br/>Answered</p></td>
                                                         <td class="text-switchoff">100 Call<br/>Switched Off / Userbusy</td>
                                                     </tr>
                                                 </table>
@@ -59,12 +64,12 @@
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<p class="text-not-interested">80 - Currently not interested</p>
+                                            	<p class="text-not-interested m_0">80 - Currently not interested</p>
                                             </td>
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<p class="text-totally-not">20 - Totally not interested</p>
+                                            	<p class="text-totally-not m_0">20 - Totally not interested</p>
                                             </td>
                                         </tr>
                                     </table>
@@ -78,6 +83,23 @@
                                         </div>
                                         <div class="panel-body pad_0">
                                         	<table class="table table-bordered m_0">
+                                            	<tr>
+                                                	<td></td>
+                                                    <td><p class="m_top20 m_bottom20">TALK TO YOU LATER/<span class="font-10">TCB</span></p></td>
+                                                    <td><p class="m_top20 m_bottom20">CONFIRM LATER/<span class="font-10">TCB</span></p></td>
+                                                </tr>
+                                                <tr>
+                                                	<td><p class="m_top20 m_bottom20">Schedule Confirmation</p></td>
+                                                    <td><p class="m_top20 m_bottom20">150/10</p></td>
+                                                    <td><p class="m_top20 m_bottom20">150/10</p></td>
+                                                </tr>
+                                                <tr>
+                                                	<td><p class="m_top20 m_bottom20">Batch Confirmation</p></td>
+                                                    <td><p class="m_top20 m_bottom20">150/10</p></td>
+                                                    <td><p class="m_top20 m_bottom20">150/10</p></td>
+                                                </tr>
+                                            </table>
+                                        	<!--<table class="table table-bordered m_0">
                                             	<tr>
                                                 	<td colspan="2" class="text-center">TALK TO YOU LATER</td>
                                                     <td colspan="2" class="text-center">CONFIRM LATER</td>
@@ -120,7 +142,7 @@
                                                         <p class="m_0">Night<span class="pull-right text-underline">-0</span></p>
                                                     </td>
                                                 </tr>
-                                            </table>
+                                            </table>-->
                                         </div>
                                     </div>
                                 </section>
@@ -128,11 +150,32 @@
                             <section>
                             	<div class="col-md-12">
                                 	<div class="panel panel-default panel-custom">
-                                    	<div class="panel-heading">
-                                        	<h4 class="panel-title">Schedule Confirmation</h4>
+                                    	<div class="panel-heading pad_5 pad_bottom0">
+                                            <ul class="nav nav-tabs tab-list-sch" role="tablist">
+                                                <li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULE CONFORMATION</a></li>
+                                                <li><a href="#running" class="text-bold" data-toggle="tab">RUNNING</a></li>
+                                                <li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED</a></li>
+                                                <li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED</a></li>
+                                            </ul>
                                         </div>
-                                        <div class="panel-body pad_0" id="scheduleWiseCountDiv">
-                                        	
+                                        <div class="panel-body pad_0">
+                                            <div>
+                                              <!-- Tab panes -->
+                                              <div class="tab-content">
+                                                <div role="tabpanel" class="tab-pane active" id="scheduled">
+                                                  
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="running">
+                                                  
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="completed">
+                                                   
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="cancelled">
+                                                   
+                                                </div>
+                                              </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,11 +183,77 @@
                             <section>
                             	<div class="col-md-12">
                                 	<div class="panel panel-default panel-custom">
-                                    	<div class="panel-heading">
-                                        	<h4 class="panel-title">Batch Date Confirmation</h4>
+                                    	<div class="panel-heading pad_5 pad_bottom0">
+                                            <ul class="nav nav-tabs tab-list-sch" role="tablist">
+                                                <li class="active"><a href="#bacthdate" class="text-bold" data-toggle="tab">BATCH DATE CONFORMATION</a></li>
+                                                <li><a href="#running1" class="text-bold" data-toggle="tab">RUNNING</a></li>
+                                                <li><a href="#completed1" class="text-bold" data-toggle="tab">COMPLETED</a></li>
+                                            </ul>
                                         </div>
-                                        <div class="panel-body pad_0" id="batchWiseCountDiv">
-                                        	
+                                        <div class="panel-body pad_0">
+                                            <div>
+                                              <!-- Tab panes -->
+                                              <div class="tab-content">
+                                                <div role="tabpanel" class="tab-pane active" id="bacthdate">
+                                                   
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="running1">
+                                                    <table class="table table-bordered m_0">
+                                                        <thead>
+                                                            <th>Program Name</th>
+                                                            <th>Training Camp Name</th>
+                                                            <th>Schedule</th>
+                                                            <th>Batch Name & Date</th>
+                                                            <th>Batch Members</th>
+                                                            <th>Absent</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        	<tr>
+                                                            	<td rowspan="2">Leadership Skills</td>
+                                                                <td>SVV Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                                <td>2</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>EWK Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                                <td>270</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="completed1">
+                                                    <table class="table table-bordered m_0">
+                                                        <thead>
+                                                            <th>Program Name</th>
+                                                            <th>Training Camp Name</th>
+                                                            <th>Schedule</th>
+                                                            <th>Batch Name & Date</th>
+                                                            <th>Completed</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        	<tr>
+                                                            	<td rowspan="2">Leadership Skills</td>
+                                                                <td>SVV Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>EWK Camp</td>
+                                                                <td>SVV_Sep_01 to 15</td>
+                                                                <td>SVV Sep-1<p class="m_0 font-10">sep-1-15 to sep-2-15</p></td>
+                                                                <td>200</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                              </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +325,6 @@ $(function () {
         }]
     });
 });
-
 function getScheduleCallStatusCount()
 {
 		var jObj={
@@ -277,11 +385,26 @@ userbusy = userbusy + result[i].subList[j].subList[k].subList[l].count;
 dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].total;
 undialed = allocated - dialed;
+if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\');">'+allocated+'</a></td>';
+else
+str+=' <td>'+allocated+'</td>';
+if(dialed > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\');">'+dialed+'</a></td>';
+else
+str+=' <td>'+dialed+'</td>';
+if(undialed > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\');">'+undialed+'</a></td>';
+else
+str+='<td>'+undialed+'</td>';
+if(answered > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\');">'+answered+'</a></td>';
+else
+str+='<td>'+answered+'</td>';
+if(userbusy > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\');">'+userbusy+'</a></td>';
+else
+str+='<td>'+userbusy+'</td>';
 
 var callBack  = 0;
 var interested  = 0;
@@ -298,10 +421,22 @@ notInterested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Now")
 later = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
+if(callBack > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\');">'+callBack+'</a></td>';
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\');">'+interested+'</td>';
+else
+str+=' <td>'+callBack+'</td>';
+if(interested > 0)
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\');">'+interested+'</a></td>';
+else
+str+=' <td>'+interested+'</td>';
+if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\');">'+notInterested+'</a></td>';
+else
+str+='<td>'+notInterested+'</td>';
+if(later > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\');">'+later+'</a></td>';
+else
+str+='<td>'+later+'</td>';
 str+='</tr>';
 
 }
@@ -309,7 +444,7 @@ str+='</tr>';
 
 }
 str+=' </table>';
-$("#scheduleWiseCountDiv").html(str);
+$("#scheduled").html(str);
 }
 function getBatchWiseCallStatusCount()
 {
@@ -376,11 +511,27 @@ userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].coun
 dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].subList[p].total;
 undialed = allocated - dialed;
+
+if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+allocated+'</a></td>';
+else
+str+=' <td>'+allocated+'</td>';
+if(dialed > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+dialed+'</a></td>';
+else
+str+=' <td>'+dialed+'</td>';
+if(undialed > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+undialed+'</a></td>';
+else
+str+='<td>'+undialed+'</td>';
+if(answered > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+answered+'</a></td>';
+else
+str+='<td>'+answered+'</td>';
+if(userbusy > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+userbusy+'</a></td>';
+else
+str+='<td>'+userbusy+'</td>';
 
 var callBack  = 0;
 var interested  = 0;
@@ -397,10 +548,22 @@ notInterested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m]
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Now")
 later = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
+if(callBack > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+callBack+'</a></td>';
+else
+str+=' <td>'+callBack+'</td>';
+if(interested > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+interested+'</a></td>';
+else
+str+=' <td>'+interested+'</td>';
+if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+notInterested+'</a></td>';
+else
+str+='<td>'+notInterested+'</td>';
+if(later > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+later+'</a></td>';
+else
+str+='<td>'+later+'</td>';
 str+='</tr>';
 
 }
@@ -408,7 +571,7 @@ str+='</tr>';
 }
 }
 str+=' </table>';
-$("#batchWiseCountDiv").html(str);
+$("#bacthdate").html(str);
 }
 function redirectToAgent(purposeId,programId,campId,scheduleId,status,statusType)
 {
@@ -424,6 +587,7 @@ var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId
 <script>
 getScheduleCallStatusCount();
 getBatchWiseCallStatusCount();
+</script>
 </script>
 </body>
 </html>
