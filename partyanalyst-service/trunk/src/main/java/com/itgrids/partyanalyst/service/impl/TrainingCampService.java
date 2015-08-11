@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -31,7 +30,6 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -39,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
+import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
@@ -297,7 +296,7 @@ public class TrainingCampService implements ITrainingCampService{
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
 						DateUtilService dateutilService = new DateUtilService();
-						
+						if(alreadyInvitedMemberIdsList == null) alreadyInvitedMemberIdsList = new ArrayList<Long>(0);
 						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
 							if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
 							{
@@ -309,7 +308,7 @@ public class TrainingCampService implements ITrainingCampService{
 								trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
 								trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
 								trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
-								//trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+								trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
 							}
 						}
 					}
@@ -343,7 +342,7 @@ public class TrainingCampService implements ITrainingCampService{
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
 						DateUtilService dateutilService = new DateUtilService();
-						
+						if(alreadyInvitedMemberIdsList == null) alreadyInvitedMemberIdsList = new ArrayList<Long>(0);
 						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
 								if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
 								{
@@ -355,7 +354,7 @@ public class TrainingCampService implements ITrainingCampService{
 									trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
 									trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
 									trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
-									//trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+									trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
 								}
 						}
 					}
