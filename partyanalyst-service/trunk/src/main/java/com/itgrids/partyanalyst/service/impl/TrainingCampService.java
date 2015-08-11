@@ -1009,6 +1009,7 @@ public class TrainingCampService implements ITrainingCampService{
 							scheduleVo.setSubList(getStatusList());
 							scheduleVo.setScheduleStatusList(getScheduleStatusList());
 							campVo.getSubList().add(scheduleVo);
+							programVo.setSpanCnt(programVo.getSpanCnt()+1);
 						}
 						scheduleVo.setTotal(scheduleVo.getTotal() + commonMethodsUtilService.getLongValueForObject(params[0]));
 						TraingCampCallerVO schedulestatusVo  = getMatchedVo(scheduleVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params[9])); // Status
@@ -1082,9 +1083,10 @@ public class TrainingCampService implements ITrainingCampService{
 							batchVo.setSubList(getStatusList());
 							batchVo.setScheduleStatusList(getScheduleStatusList());
 							scheduleVo.getSubList().add(batchVo);
-							scheduleVo.setSpanCnt(new Long(scheduleVo.getSubList().size()));
 							programVo.setSpanCnt(programVo.getSpanCnt() + 1);
-							campVo.setSpanCnt(new Long(scheduleVo.getSubList().size()));
+							campVo.setSpanCnt(campVo.getSpanCnt() + 1);
+							scheduleVo.setSpanCnt(scheduleVo.getSpanCnt() + 1);
+
 						} 
 						batchVo.setTotal(batchVo.getTotal() + commonMethodsUtilService.getLongValueForObject(params[0]));
 						TraingCampCallerVO batchstatusVo  = getMatchedVo(batchVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params[9])); // Status
