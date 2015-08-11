@@ -610,7 +610,7 @@ function buildChart(result)
 {
 	$(function () {
 	Highcharts.setOptions({
-        colors: ['#40b5bf', '#999967', '#089bf8']
+        colors: ['#3eb6c4', '#079bf3', '#ac68b1']
     });
     $('#donutchart').highcharts({
         chart: {
