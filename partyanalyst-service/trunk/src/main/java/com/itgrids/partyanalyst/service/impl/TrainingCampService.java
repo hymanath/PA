@@ -1695,7 +1695,7 @@ public class TrainingCampService implements ITrainingCampService{
 				String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
 				 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
 				 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
-			     DateFormat oldFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 			     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
 			trainingCampScheduleInviteeTrack.setCallBackTime(oldDate);
@@ -1730,7 +1730,7 @@ public class TrainingCampService implements ITrainingCampService{
 						String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
 
 						 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
-					     DateFormat oldFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+					     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 					     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 					     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
 						trainingCampScheduleInvitee.setCallBackTime(oldDate);
