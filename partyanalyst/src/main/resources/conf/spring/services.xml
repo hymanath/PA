@@ -2721,5 +2721,18 @@
 		<property name="attendanceErrorDAO" ref="attendanceErrorDAO" />
 	</bean>
 	
+	<bean name="partyMeetingService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingService">
+		<property name="partyMeetingDAO" ref="partyMeetingDAO" />
+		<property name="partyMeetingTypeDAO" ref="partyMeetingTypeDAO" />
+		<property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO" />
+		<property name="partyMeetingOccurrenceDAO" ref="partyMeetingOccurrenceDAO" />		
+		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
+		<property name="attendanceDAO" ref="attendanceDAO" />
+		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
+		<property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO" />
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		<property name="partyMeetingAtrPointDAO" ref="partyMeetingAtrPointDAO" />
+		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
+	</bean>
 </beans>		
 	
