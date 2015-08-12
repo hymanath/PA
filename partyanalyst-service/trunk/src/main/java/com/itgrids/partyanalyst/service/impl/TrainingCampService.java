@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -69,7 +70,19 @@ public class TrainingCampService implements ITrainingCampService{
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private DateUtilService dateUtilService;
+	private IVoterDAO voterDAO;
 	
+	
+	
+	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1526,6 +1539,7 @@ public class TrainingCampService implements ITrainingCampService{
 			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+			voterDAO.flushAndclearSession();
 			saveTrackingInfo(inputVO);	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					
@@ -1547,7 +1561,7 @@ public class TrainingCampService implements ITrainingCampService{
 		
 			if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
 				trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
-			trainingCampScheduleInviteeTrack.setCampCallPurposeId(2l);
+			trainingCampScheduleInviteeTrack.setCampCallPurposeId(trainingCampScheduleInviteeCaller.getCallPurposeId());
 			trainingCampScheduleInviteeTrack.setCampCallStatusId(inputVO.getCallStatusId());
 			if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId() > 0)
 			trainingCampScheduleInviteeTrack.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
@@ -1613,7 +1627,9 @@ public class TrainingCampService implements ITrainingCampService{
 			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
-			saveTrackingInfo(inputVO);		
+			voterDAO.flushAndclearSession();
+			saveTrackingInfo(inputVO);	
+			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					
 			
