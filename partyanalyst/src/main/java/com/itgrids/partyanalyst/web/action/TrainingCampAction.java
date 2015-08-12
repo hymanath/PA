@@ -751,7 +751,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			
-			callBackCountVO = trainingCampService.getCallBackDayWiseDetails(regVO.getRegistrationID(),new Long(request.getParameter("callPurposeId")));
+			callBackCountVO = trainingCampService.getCallBackDayWiseDetails(regVO.getRegistrationID());
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
