@@ -2704,6 +2704,8 @@
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" /> 
 		<property name="dateUtilService" ref="dateUtilService" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="voterDAO" ref="voterDAO" />
+		
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">

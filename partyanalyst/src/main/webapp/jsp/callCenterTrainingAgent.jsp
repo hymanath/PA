@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Undialled List</title>
+<title>CALLS List</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
@@ -22,12 +22,12 @@
             	<div class="col-md-12">
                 	<div class="panel panel-default">
                     	<div class="panel-heading">
-                        	<h4 class="panel-title">UNDIALLED CALLS LIST
-                            	<span class="pull-right">
+                        	<h4 class="panel-title" id="titleId" style="text-transform: uppercase;">UNDIALLED CALLS LIST
+                            <!--	<span class="pull-right">
                                 	<select>
                                     	<option>Not Dialled Calls</option>
                                     </select>
-                                </span>
+                                </span>-->
                             </h4>
                         </div>
                         <div class="panel-body">
@@ -91,6 +91,7 @@
                         </div>
                         <div class="col-md-12 m_top20 clearDiv">
                             <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
+							<img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:30px;display:none;"/>
                         </div>
                     </div>
                     <div class="callback-div disnone">
@@ -123,11 +124,13 @@
                         </div>
                         <div class="col-md-12 m_top20 clearDiv">
                             <button class="btn btn-success" onclick="updateCallBackCadreStatus();">Update Status</button>
+							<img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:30px;display:none;"/>
                         </div>
                     </div>
                     <div class="switchoff-div disnone">
                     	<div class="col-md-12 m_top20">
                             <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
+							<img id="ajaxImage2" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:30px;display:none;"/>
                         </div>
                     </div>
                 </section>
@@ -181,10 +184,11 @@ $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,lo
   });
 });
 $('#timepicker4').datetimepicker({format: 'LT'});
+$("#titleId").html(" ${status} CALLS LIST ");
 
 function getMemberDetails()
 {
-
+$("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
 if(batchId == "")
 batchId = 0;
 var jObj={
@@ -270,6 +274,7 @@ function setCadreInfo(cadreId,inviteId,inviteCallerId)
 tdpCadreId = cadreId;
 inviteeId = inviteId;
 inviteeCallerId = inviteCallerId;
+ClearDiv();
 }
 function setDefaultImage(img){
 	  img.src = "dist/img/profileimage.png";
@@ -508,6 +513,7 @@ function setDefaultImage(img){
 	   }
    if(callstatusId == 1)
    {
+   
 		if(ramarks.length == 0)
 	   {
 		str+='<font color="red">Remarks  Required</font><br/>';
@@ -530,6 +536,16 @@ function setDefaultImage(img){
    $("#messageDiv").html(str);
    return;
    }
+   if(callstatusId == 1)
+   {
+	$("#ajaxImage").show();
+  }
+  else
+   {
+	$("#ajaxImage2").show();
+  }
+  
+  
    $("#messageDiv").html("");
    var obj = {
    batchId : batchId,
@@ -555,7 +571,14 @@ function setDefaultImage(img){
 			  }).done(function(result){ 			  
 					$("#messageDiv").html("Status Updated Successfully").css("color","green");
 					$("#myModal").modal('hide');
-					//getMemberDetails();
+					 if(callstatusId == 1)
+					   {
+						$("#ajaxImage").show();
+					  }
+					  else
+					   {
+						$("#ajaxImage2").show();
+					  }
 		   })
     
    }
@@ -596,7 +619,8 @@ function setDefaultImage(img){
    $("#messageDiv").html(str);
    return;
    }
-   $("#messageDiv").html("");
+   $("#messageDiv").html('');
+   $("#ajaxImage1").show();
    var obj = {
    ramarks : ramarks,
    inviteeId:inviteeId,
@@ -621,7 +645,7 @@ function setDefaultImage(img){
 			  }).done(function(result){ 			  
 				$("#messageDiv").html("Status Updated Successfully").css("color","green");
 				$("#myModal").modal('hide');
-				//getMemberDetails();
+				$("#ajaxImage1").hide();
 		   })
     
    }
