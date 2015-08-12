@@ -31,4 +31,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	
 	public List<Object[]> getBatchConfirmationCallBackDetails(Long campCallerId,Long callPurposeId,Date todayDate,List<Long> scheduleInviteeStatusIdsList);
 	
+	public List<Object[]> getSchduleBatchConfirmationCallBackDetails(Long campCallerId,Long callPurposeId,Date todayDate,List<Long> scheduleInviteeStatusIdsList,List<Long> batchStatusIdsList);
+	
 }
