@@ -678,7 +678,7 @@ var globalCadreId = '${cadreId}';
 					if(result.districtId >= 1 && result.districtId <=10 )
 						$("#stateNoId").html("Telangana");
 					else if(result.districtId >= 11 && result.districtId <=23 )
-						$("#stateNoId").html("Telangana");
+						$("#stateNoId").html("Andhra Pradesh");
 					else
 						$("#stateNoId").html(result.stateName);
 					
