@@ -674,10 +674,10 @@ var globalCadreId = '${cadreId}';
 					}
 					
 					 $("#districtNoId").html(result.districtName);
-					 
-					if(result.districtId >= 1 && result.districtId <=10 )
+					 var cadreDistrictId  = parseInt(result.districtId);
+					if(cadreDistrictId >= 1 && cadreDistrictId <=10 )
 						$("#stateNoId").html("Telangana");
-					else if(result.districtId >= 11 && result.districtId <=23 )
+					else if(cadreDistrictId >= 11 && cadreDistrictId <=23 )
 						$("#stateNoId").html("Andhra Pradesh");
 					else
 						$("#stateNoId").html(result.stateName);
