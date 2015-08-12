@@ -280,8 +280,12 @@ var later = 0;
 var notInterested = 0;
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name.indexOf("Call Back") != -1)
-callBack = result[i].subList[j].subList[k].scheduleStatusList[m].count;
+console.log(result[i].subList[j].subList[k].scheduleStatusList[m].name)
+console.log(result[i].subList[j].subList[k].scheduleStatusList[m].count)
+if(result[i].subList[j].subList[k].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].scheduleStatusList[m].id == 7)
+{
+callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].count;
+}
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
 interested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
@@ -407,8 +411,10 @@ var later = 0;
 var notInterested = 0;
 for(var m=0;m<result[i].subList[j].subList[k].subList[p].scheduleStatusList.length;m++) // invitee Status
 {
-if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name.indexOf("Call Back") != -1)
-callBack = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].id == 7)
+{
+callBack = callBack + result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+}
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Interested")
 interested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Interested")
