@@ -44,8 +44,8 @@ table th
                                     	<div class="panel-heading">
                                         	<h4 class="panel-title">Call Back Day Wise Details</h4>
                                         </div>
-                                        <div class="panel-body pad_0">
-                                        	<table class="table table-bordered m_0">
+                                        <div class="panel-body pad_0" id="callBackDayDiv">
+                                        	<!--<table class="table table-bordered m_0">
                                             	<tr>
                                                 	<td></td>
                                                     <td><p class="m_top20 m_bottom20">TALK TO YOU LATER/<span class="font-10">TCB</span></p></td>
@@ -61,7 +61,7 @@ table th
                                                     <td><p class="m_top20 m_bottom20">150/10</p></td>
                                                     <td><p class="m_top20 m_bottom20">150/10</p></td>
                                                 </tr>
-                                            </table>
+                                            </table> -->
                                         	<!--<table class="table table-bordered m_0">
                                             	<tr>
                                                 	<td colspan="2" class="text-center">TALK TO YOU LATER</td>
@@ -195,6 +195,7 @@ $(".table-scroll").mCustomScrollbar({
 
 function getScheduleCallStatusCount()
 {
+	$("#scheduled").html("<img src='images/icons/search.gif'>");
 		var jObj={
 		callPurposeId : 2,
 		
@@ -320,6 +321,7 @@ $("#scheduled").html(str);
 }
 function getBatchWiseCallStatusCount()
 {
+	$("#bacthdate").html("<img src='images/icons/search.gif'>");
 		var jObj={
 		callPurposeId : 2,
 		
@@ -461,6 +463,8 @@ var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId
 
 function getCallStatusCountByTrainingCampCallerId()
 {
+	$("#callStatusCountDiv").html("<img src='images/icons/search.gif'>");
+	
 	$.ajax({
 		type   : "POST",
 		url    : "getCallStatusCountByTrainingCampCallerIdAction.action"
@@ -472,7 +476,6 @@ function getCallStatusCountByTrainingCampCallerId()
 
 function buildCallStatusCountByTraCampCallerId(result)
 {
-	$("#callStatusCountDiv").html("");
 	var str = '';
 	str += '<table class="table table-bordered">';
 	str += '<tr>';
@@ -519,6 +522,15 @@ function buildCallStatusCountByTraCampCallerId(result)
 
 function buildChart(result)
 {
+	$('#donutchart').html("");
+	if(result.interestedMemCount == 0 && result.currentlyNotIntMemCount == 0)
+	{
+		if(result.notIntereMemCount = 0)
+		{
+	       $('#donutchart').html("No Data Available.");
+           return;	   
+		}
+	}
 	$(function () {
 	Highcharts.setOptions({
         colors: ['#3eb6c4', '#079bf3', '#ac68b1']
@@ -568,6 +580,8 @@ function buildChart(result)
 function getMembersCountByBatchStatus(batchStatus,divId)
 {
   $("#"+divId+"").html("");
+  $("#"+divId+"").html("<img src='images/icons/search.gif'>");
+  
   $.ajax({
 	data : {batchStatus : batchStatus}, 
 	type : "POST",
@@ -627,11 +641,50 @@ function buildMembersCountByBatchStatus(result,divId)
      $("#"+divId+"").html("No Data Available.");
 }
 
+function getCallBackDayWiseDetails()
+{
+	$("#callBackDayDiv").html("");
+	$("#callBackDayDiv").html("<img src='images/icons/search.gif'>");
+	
+	$.ajax({
+		data : {callPurposeId : 2},
+		type : "POST",
+		url  : "getCallBackDayWiseDetailsAction.action"
+	}).done(function(result){
+		buildCallBackDayWiseDetails(result);
+		console.log(result);
+		
+	});
+}
+
+function buildCallBackDayWiseDetails(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_0">';
+	str += '<tr>';
+	str += '<td></td>';
+    str += '<td><p class="m_top20 m_bottom20">TALK TO YOU LATER/<span class="font-10">TCB</span></p></td>';
+    str += '<td><p class="m_top20 m_bottom20">CONFIRM LATER/<span class="font-10">TCB</span></p></td>';
+	str += '</tr>';
+	str += '<tr>';
+    str += '<td><p class="m_top20 m_bottom20">Schedule Confirmation</p></td>';
+    str += '<td><p class="m_top20 m_bottom20">'+result.scheduleConfirmationCount+'/'+result.todayScheduleConCount+'</p></td>';
+    str += '<td><p class="m_top20 m_bottom20">'+result.scheduleConfirmLaterCount+'/'+result.todayScheduleConfirmLaterCount+'</p></td>';
+    str += '</tr>';
+    str += '<tr>';
+    str += '<td><p class="m_top20 m_bottom20">Batch Confirmation</p></td>';
+    str += '<td><p class="m_top20 m_bottom20">'+result.batchConfirmationCount+'/'+result.todaybatchConCount+'</p></td>';
+    str += '<td><p class="m_top20 m_bottom20">'+result.batchConfirmLaterCount+'/'+result.todaybatchConfirmLaterCount+'</p></td>';
+    str += '</tr>';
+	str += '</table>';
+	$("#callBackDayDiv").html(str);
+}
 </script>
 <script>
 getScheduleCallStatusCount();
 getBatchWiseCallStatusCount();
 getCallStatusCountByTrainingCampCallerId();
+getCallBackDayWiseDetails();
 
 </script>
 </script>
