@@ -647,7 +647,6 @@ function getCallBackDayWiseDetails()
 	$("#callBackDayDiv").html("<img src='images/icons/search.gif'>");
 	
 	$.ajax({
-		data : {callPurposeId : 2},
 		type : "POST",
 		url  : "getCallBackDayWiseDetailsAction.action"
 	}).done(function(result){
