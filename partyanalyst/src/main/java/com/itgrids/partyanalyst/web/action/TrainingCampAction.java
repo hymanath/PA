@@ -506,8 +506,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long membersCount = Long.parseLong(jObj.getString("membersCount"));
 			Long callerId = jObj.getLong("callerId");
 			Long callPurposeId = jObj.getLong("callPurposeId");
+			Boolean isOwnMembers = jObj.getBoolean("availCalls");
+			if(callPurposeId == 1){
+				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId);
+			}
+			else if(callPurposeId == 2){
+				resultStatus = trainingCampService.assignMembersToCallerForBatchConfirmation(regVo.getRegistrationID(),isOwnMembers,scheduleId,membersCount,callerId,callPurposeId);
+			}
 			
-			resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId);
 		}catch (Exception e) {
 			LOG.error(" Exception occured in saveAllDetailsAction method in TrainingCampAction class.",e);
 		}
