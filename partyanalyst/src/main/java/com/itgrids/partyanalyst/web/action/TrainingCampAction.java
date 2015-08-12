@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -58,6 +59,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private TrainingCampVO trainingCampVO;
 	private TrainingCampCallStatusVO trainingCampCallStatusVO;
 	private List<IdNameVO> idnemIdNameVOs;
+	private CallBackCountVO callBackCountVO;
 	private List<CallStatusVO> retResult;
 
 	public List<CallStatusVO> getRetResult() {
@@ -250,6 +252,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setIdnemIdNameVOs(List<IdNameVO> idnemIdNameVOs) {
 		this.idnemIdNameVOs = idnemIdNameVOs;
+	}
+	
+	public CallBackCountVO getCallBackCountVO() {
+		return callBackCountVO;
+	}
+
+	public void setCallBackCountVO(CallBackCountVO callBackCountVO) {
+		this.callBackCountVO = callBackCountVO;
 	}
 
 	public String execute(){
@@ -732,6 +742,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllMeetings",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCallBackDayWiseDetails()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			callBackCountVO = trainingCampService.getCallBackDayWiseDetails(regVO.getRegistrationID(),new Long(request.getParameter("callPurposeId")));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}

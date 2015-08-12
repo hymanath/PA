@@ -10504,6 +10504,12 @@
 				<param name="root">retResult</param>
 		</result>
 	</action>
+		
+	<action name="getCallBackDayWiseDetailsAction" class="trainingCampAction" method="getCallBackDayWiseDetails">
+	    <result type="json" name="success">
+	       <param name="root">callBackCountVO</param>
+	  </result>
+	</action>
 	
 </package>
 </struts>      
