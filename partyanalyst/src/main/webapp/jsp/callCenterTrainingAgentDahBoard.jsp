@@ -297,7 +297,7 @@ if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Now")
 later = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 if(callBack > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\');">'+callBack+'/'+todaycallBack+'</a></td>';
+str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
 else
 str+=' <td>'+callBack+'</td>';
 if(interested > 0)
@@ -429,7 +429,7 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not
 later = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 if(callBack > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+callBack+'/'+todaycallBack+'</a></td>';
+str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
 else
 str+=' <td>'+callBack+'</td>';
 if(interested > 0)
