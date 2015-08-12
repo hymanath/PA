@@ -90,4 +90,5 @@ public interface IStateDAO extends GenericDao<State, Long>{
 	public List<Object[]> getStateNames();
 
 	public List<Object[]> getStateDetailsByconstituencyId(Long constituencyId);
+	public List<Object[]> getStatesForList(List<Long> stateIds);
 }
