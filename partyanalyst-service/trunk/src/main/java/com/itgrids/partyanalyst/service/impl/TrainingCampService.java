@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -33,6 +34,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -1514,11 +1516,15 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 	}
 	
-	public ResultStatus updateCadreStatusForTraining(TrainingCadreVO inputVO)
+	public ResultStatus updateCadreStatusForTraining(final TrainingCadreVO inputVO)
 	{
-		ResultStatus resultStatus = new ResultStatus();
-		DateUtilService date = new DateUtilService();
-		try{
+		
+		final ResultStatus resultStatus = new ResultStatus();
+		final DateUtilService date = new DateUtilService();
+		final ResultStatus resultStatus1 =  (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						try{
 			if(inputVO.getCallStatusId() == 1l && inputVO.getStatus().equalsIgnoreCase("callstatus"))//Answered
 			{
 			TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
@@ -1542,14 +1548,15 @@ public class TrainingCampService implements ITrainingCampService{
 			voterDAO.flushAndclearSession();
 			saveTrackingInfo(inputVO);	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					}
 					
-			
-			
-		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in updateCadreStatusForTraining()", e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		}
+						return resultStatus;
+				}
+		});
 		return resultStatus;
 	}
 	public void saveTrackingInfo(TrainingCadreVO inputVO)
@@ -1561,6 +1568,7 @@ public class TrainingCampService implements ITrainingCampService{
 		
 			if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
 				trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
+			if(trainingCampScheduleInviteeCaller.getCallPurposeId() != null)
 			trainingCampScheduleInviteeTrack.setCampCallPurposeId(trainingCampScheduleInviteeCaller.getCallPurposeId());
 			trainingCampScheduleInviteeTrack.setCampCallStatusId(inputVO.getCallStatusId());
 			if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId() > 0)
@@ -1592,12 +1600,16 @@ public class TrainingCampService implements ITrainingCampService{
 		catch (Exception e) {
 			// TODO: handle exception
 		}
+		
 	}
-	public ResultStatus updateCallBackCadreStatusForTraining(TrainingCadreVO inputVO)
+	public ResultStatus updateCallBackCadreStatusForTraining(final TrainingCadreVO inputVO)
 	{
-		ResultStatus resultStatus = new ResultStatus();
-		DateUtilService date = new DateUtilService();
-		try{
+		final ResultStatus resultStatus = new ResultStatus();
+		final DateUtilService date = new DateUtilService();
+		final ResultStatus resultStatus1 =  (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						try{
 			SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
 		    SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
 		    Date date1 = parseFormat.parse(inputVO.getCallBackTime());
@@ -1631,15 +1643,16 @@ public class TrainingCampService implements ITrainingCampService{
 			saveTrackingInfo(inputVO);	
 			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-					
-			
-			
-		}
+						}
 		catch (Exception e) {
 			LOG.error("Exception Occured in updateCallBackCadreStatusForTraining()", e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		}
 		return resultStatus;
+					}
+				});
+				return resultStatus;
+			
 	}
 	
 	

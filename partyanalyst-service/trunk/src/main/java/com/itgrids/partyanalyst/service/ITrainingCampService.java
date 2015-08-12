@@ -32,7 +32,7 @@ public interface ITrainingCampService {
 	public TrainingCampScheduleVO getTrainingProgramMembersBatchCount(String startDateString,String endDateString);
 	public List<TraingCampCallerVO> getScheduleStatusList();
 	public List<TraingCampCallerVO> getStatusList();
-	public ResultStatus updateCadreStatusForTraining(TrainingCadreVO inputVO);
+	public ResultStatus updateCadreStatusForTraining(final TrainingCadreVO inputVO);
 	public TrainingCampScheduleVO getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,String startDateString,String endDateString);
 	public List<IdNameVO> getAllTrainingCampsInfoByDistrictIds(List<Long> districtIds);
 	public List<IdNameVO> getProgrammesDetailsByCamps(List<Long> campIdsList);
@@ -41,7 +41,7 @@ public interface ITrainingCampService {
 	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
 	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(String searchType,String startDateStr,String endDateStr);
 	public TrainingMemberVO getAvailableMembersCountDetails(Long scheduleId,Long callerId);
-	public ResultStatus updateCallBackCadreStatusForTraining(TrainingCadreVO inputVO);
+	public ResultStatus updateCallBackCadreStatusForTraining(final TrainingCadreVO inputVO);
 	
 	public TrainingCampCallStatusVO getCallStatusCountByTrainingCampCallerId(Long trainingCampCallerId);
 	public Long getAvailableCountForMemberConfirmation(Long scheduleId);
