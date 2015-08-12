@@ -9,7 +9,7 @@ public class TraingCampCallerVO {
 	private Long total = 0l;
 	private Long count =0l;
 	private Long spanCnt = 0l;
-	private Long todayCnt;
+	private Long todayCnt = 0l;
 	
 	
 	public Long getTodayCnt() {
