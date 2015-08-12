@@ -3,6 +3,7 @@ function getAllCampBatches(batchMemId)
 	{
 		$("#availableCounstDivId").hide();
 		$("#availableCallsDivId").hide();
+		$("#searchErrDivID").html("");
 		if(batchMemId == 1){
 			$("#batchConfirmationDivId").hide();
 			$("#memberConfirmationDivId").show();
@@ -13,6 +14,10 @@ function getAllCampBatches(batchMemId)
 		}
 	$("#campId  option").remove();
 	$("#campId").append('<option value="0">Select Camp</option>');
+	$("#programId  option").remove();
+	$("#programId").append('<option value="0">Select Program</option>');
+	$("#scheduleId  option").remove();
+	$("#scheduleId").append('<option value="0">Select Schedule</option>');
 		var districtIds = 0;
 		var jsObj={
 				districtIds:districtIds
@@ -39,6 +44,7 @@ function getAllCampBatches(batchMemId)
 	
 function getAllProgramsList(campId)
 {
+	$("#searchErrDivID").html("");
 	$("#programId  option").remove();
 	$("#programId").append('<option value="0">Select Program</option>');
 	var jsObj={
@@ -66,6 +72,7 @@ function getAllSchedulesDatesList(programId)
 {
 	$("#scheduleId  option").remove();
 	$("#scheduleId").append('<option value="0">Select Schedule</option>');
+	$("#searchErrDivID").html("");
 	var jsObj={
 		programId:programId
 	}
@@ -93,6 +100,7 @@ function saveAllDetails()
 	var membersCount = $("#membersCountId").val().trim();
 	var callerId = $(".callerId").val();
 	var callPurposeId = $("#memeberBatchConformationId").val();
+	var availCalls = $("#availCallsId").val();
 	
 	if(scheduleId == null && scheduleId == 0){
 		$("#searchErrDivID").html("Please Select Any Schedule Date");
@@ -108,7 +116,8 @@ function saveAllDetails()
 		scheduleId:scheduleId,
 		membersCount:membersCount,
 		callerId:callerId,
-		callPurposeId:callPurposeId
+		callPurposeId:callPurposeId,
+		availCalls:availCalls
 	}
 	
 	$.ajax({
@@ -446,3 +455,15 @@ function getAvailableCountForMemberConfirmation(scheduleId)
 		}		
 	});
 }
+
+$(document).on("click",".availTypeCls",function(){
+	
+var id = $(this).attr('id');
+
+if(id.trim() == 'ownCallsId'){	
+		$('#availCallsId').val('true');
+	}
+if(id.trim() == 'othersCallsId'){	
+	$('#availCallsId').val('false');
+	}
+});

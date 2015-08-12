@@ -265,8 +265,9 @@
 								<h5 class="m_top20">
 									Select no of calls
 									<br> <div id="availableCounstDivId" style="display:none;">
-									<label><input type="radio"><span class="text-danger pull-right text-italic">Avail Own Calls <span id="ownCountId"></span></span></input></label>
-									<label><input type="radio"> <span class="text-danger pull-right text-italic">Avail Others Calls <span id="othersCountId"></span></span></label>
+									<label><input type="radio" class="availTypeCls" name="availCalls" id="ownCallsId"><span class="text-danger pull-right text-italic">Avail Own Calls <span id="ownCountId"></span></span></input></label>
+									<label><input type="radio" class="availTypeCls" name="availCalls" id="othersCallsId"> <span class="text-danger pull-right text-italic">Avail Others Calls <span id="othersCountId"></span></span></label>
+									<input type="hidden" id="availCallsId"/>
 									</div>
 								</h5>
 								<input class="form-control" type="text" id="membersCountId">
