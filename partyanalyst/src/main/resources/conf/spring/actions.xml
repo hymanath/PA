@@ -1594,6 +1594,8 @@
 	<property name="trainingCampService" ref="trainingCampService" />
 			
 	</bean>
-	
+	<bean id="partyMeetingAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingAction" singleton="false"> 
+		<property name="partyMeetingService" ref="partyMeetingService" />
+	</bean>
 </beans>	
 	

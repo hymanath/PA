@@ -2159,7 +2159,7 @@
 	 <bean id="partyMeetingDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	 <bean id="PpartyMeetingInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingInviteeDAO">
+	 <bean id="partyMeetingInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingInviteeDAO">
 	 	 <property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 <bean id="attendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.AttendanceDAO">
