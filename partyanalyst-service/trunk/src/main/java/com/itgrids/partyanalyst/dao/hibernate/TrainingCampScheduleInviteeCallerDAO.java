@@ -507,6 +507,59 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
+	public List<Object[]> getScheduleWiseDayWiseCallBackCount(Long callerId,Long callPurposeId,Date date)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select count(model.trainingCampScheduleInviteeCallerId)," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode," +
+				" campCallStatus.campCallStatusId,campCallStatus.status," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
+				
+				
+				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
+				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("callerId", callerId);
+		query.setParameter("callPurposeId", callPurposeId);
+		query.setDate("date", date);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getBatchWiseDayWiseCallBackCount(Long callerId,Long callPurposeId,Date date)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select count(model.trainingCampScheduleInviteeCallerId)," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
+				"model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode," +
+				" campCallStatus.campCallStatusId,campCallStatus.status," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId," +
+				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
+				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
+				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
+				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("callerId", callerId);
+		query.setParameter("callPurposeId", callPurposeId);
+		query.setDate("date", date);
+		return query.list();
+		
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSchduleBatchConfirmationCallBackDetails(Long campCallerId,Long callPurposeId,Date todayDate,List<Long> scheduleInviteeStatusIdsList,List<Long> batchStatusIdsList)

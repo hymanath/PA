@@ -9,8 +9,15 @@ public class TraingCampCallerVO {
 	private Long total = 0l;
 	private Long count =0l;
 	private Long spanCnt = 0l;
+	private Long todayCnt;
 	
 	
+	public Long getTodayCnt() {
+		return todayCnt;
+	}
+	public void setTodayCnt(Long todayCnt) {
+		this.todayCnt = todayCnt;
+	}
 	public Long getSpanCnt() {
 		return spanCnt;
 	}

@@ -1094,6 +1094,30 @@ public class TrainingCampService implements ITrainingCampService{
 						}
 						
 				}
+				DateUtilService date = new DateUtilService();
+				List<Object[]> list1 = trainingCampScheduleInviteeCallerDAO.getScheduleWiseDayWiseCallBackCount(userId,callPurposeId,date.getCurrentDateAndTime());
+				if(list1 != null)
+				{
+					for(Object[] params1 : list1)
+					{
+						TraingCampCallerVO programVo  = getMatchedVo(returnList,commonMethodsUtilService.getLongValueForObject(params1[1])); // Program
+						if(programVo != null)
+						{
+							TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params1[3])); // Camp
+							if(campVo != null)
+							{
+								TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params1[5])); // Schedule
+								if(scheduleVo != null)
+								{
+									TraingCampCallerVO schedulestatusVo  = getMatchedVo(scheduleVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params1[9])); // Status
+									if(schedulestatusVo != null)
+										schedulestatusVo.setTodayCnt(schedulestatusVo.getTodayCnt() + commonMethodsUtilService.getLongValueForObject(params1[0]));
+								}
+								
+							}
+						}
+					}
+				}
 			}
 			
 			
@@ -1171,9 +1195,37 @@ public class TrainingCampService implements ITrainingCampService{
 						}
 						
 				}
+				DateUtilService date= new DateUtilService();
+				List<Object[]> list1 = trainingCampScheduleInviteeCallerDAO.getBatchWiseDayWiseCallBackCount(userId,callPurposeId,date.getCurrentDateAndTime());
+				if(list1 != null)
+				{
+					
+					for(Object[] params1 : list1)
+					{
+						TraingCampCallerVO programVo  = getMatchedVo(returnList,commonMethodsUtilService.getLongValueForObject(params1[1])); // Program
+						if(programVo != null)
+						{
+							TraingCampCallerVO campVo  = getMatchedVo(programVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params1[3])); // Camp
+							if(campVo != null)
+							{
+								TraingCampCallerVO scheduleVo  = getMatchedVo(campVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params1[5])); // Schedule
+								if(scheduleVo != null)
+								{
+									TraingCampCallerVO batchVo  = getMatchedVo(scheduleVo.getSubList(),commonMethodsUtilService.getLongValueForObject(params1[10])); // Batch
+									if(batchVo != null)
+									{
+										TraingCampCallerVO batchstatusVo  = getMatchedVo(batchVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params1[9])); // Status
+										if(batchstatusVo != null)
+										{
+											batchstatusVo.setTodayCnt(batchstatusVo.getTodayCnt() + commonMethodsUtilService.getLongValueForObject(params1[0]));	
+										}
+									}
+								}
+							}
+						}
+					}
 			}
-			
-			
+		  }
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallStatusCount() method", e);
