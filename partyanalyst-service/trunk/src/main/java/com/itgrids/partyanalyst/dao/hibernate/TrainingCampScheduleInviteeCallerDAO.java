@@ -135,7 +135,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
 				
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -161,7 +161,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId" +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -208,7 +208,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
-				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId");
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
+				" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) ");
 		if(status.equalsIgnoreCase("undialed"))
 			str.append(" and campCallStatus.campCallStatusId is null");
 		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
