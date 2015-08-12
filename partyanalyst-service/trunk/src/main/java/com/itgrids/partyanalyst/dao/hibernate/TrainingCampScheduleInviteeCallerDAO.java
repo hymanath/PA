@@ -508,5 +508,30 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSchduleBatchConfirmationCallBackDetails(Long campCallerId,Long callPurposeId,Date todayDate,List<Long> scheduleInviteeStatusIdsList,List<Long> batchStatusIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.trainingCampScheduleInviteeCallerId),model.trainingCampScheduleInvitee.scheduleInviteeStatus.status from TrainingCampScheduleInviteeCaller model " +
+				" where model.trainingCampCallerId =:campCallerId and model.campCallPurpose.campCallPurpose =:callPurposeId and" +
+				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in (:scheduleInviteeStatusIdsList) and " +
+				" model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in (:batchStatusIdsList) ");
+		
+		if(todayDate != null)
+		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:todayDate ");
+		
+		str.append(" group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("campCallerId", campCallerId);
+		query.setParameter("callPurposeId", callPurposeId);
+		query.setParameterList("scheduleInviteeStatusIdsList", scheduleInviteeStatusIdsList);
+		query.setParameterList("batchStatusIdsList", batchStatusIdsList);
+		if(todayDate != null)
+			query.setDate("todayDate", todayDate);
+		return query.list();
+	}
+
 	
 }

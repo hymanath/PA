@@ -1998,7 +1998,7 @@ public class TrainingCampService implements ITrainingCampService{
 		return allMeetings;
 	}
 	
-	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId,Long callPurposeId)
+	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId)
 	{
 		CallBackCountVO callBackCountVO = new CallBackCountVO();
 		try{
@@ -2008,7 +2008,11 @@ public class TrainingCampService implements ITrainingCampService{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date toDayDate = dateUtilService.getCurrentDateAndTime();
 			
-			List<Object[]> schduleConfirmList = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationCallBackDetails(campCallerId, callPurposeId, null, scheduleInviteeStatusIdsList);
+			List<Long> batchStatusList = new ArrayList<Long>();
+			batchStatusList.add(1l);
+			batchStatusList.add(2l);
+			
+			List<Object[]> schduleConfirmList = trainingCampScheduleInviteeCallerDAO.getSchduleBatchConfirmationCallBackDetails(campCallerId, 1l, null, scheduleInviteeStatusIdsList,batchStatusList);
 			if(schduleConfirmList != null && schduleConfirmList.size() > 0)
 			{
 				for(Object[] params:schduleConfirmList)
@@ -2020,7 +2024,7 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
-			List<Object[]> toDaySchduleConfirmList = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationCallBackDetails(campCallerId, callPurposeId, toDayDate, scheduleInviteeStatusIdsList);
+			List<Object[]> toDaySchduleConfirmList = trainingCampScheduleInviteeCallerDAO.getSchduleBatchConfirmationCallBackDetails(campCallerId, 1l, toDayDate, scheduleInviteeStatusIdsList,batchStatusList);
 			if(toDaySchduleConfirmList != null && toDaySchduleConfirmList.size() > 0)
 			{
 				for(Object[] params:toDaySchduleConfirmList)
@@ -2033,7 +2037,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			
-			List<Object[]> batchConfirmList = trainingCampScheduleInviteeCallerDAO.getBatchConfirmationCallBackDetails(campCallerId, callPurposeId, null, scheduleInviteeStatusIdsList);
+			List<Object[]> batchConfirmList = trainingCampScheduleInviteeCallerDAO.getSchduleBatchConfirmationCallBackDetails(campCallerId, 2l, null, scheduleInviteeStatusIdsList,batchStatusList);
 			if(batchConfirmList != null && batchConfirmList.size() > 0)
 			{
 				for(Object[] params:batchConfirmList)
@@ -2045,7 +2049,7 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
-			List<Object[]> toDaybatchConfirmList = trainingCampScheduleInviteeCallerDAO.getBatchConfirmationCallBackDetails(campCallerId, callPurposeId, toDayDate, scheduleInviteeStatusIdsList);
+			List<Object[]> toDaybatchConfirmList = trainingCampScheduleInviteeCallerDAO.getSchduleBatchConfirmationCallBackDetails(campCallerId, 2l, toDayDate, scheduleInviteeStatusIdsList,batchStatusList);
 			if(toDaybatchConfirmList != null && toDaybatchConfirmList.size() > 0)
 			{
 				for(Object[] params:toDaybatchConfirmList)
