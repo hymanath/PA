@@ -27,7 +27,61 @@
 	
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
+	
 <style>
+
+.right_arrow {
+	position: relative;
+	background: #fff;
+	border: 1px solid #fff;
+}
+.right_arrow:after, .right_arrow:before {
+	left: 100%;
+	bottom: 25px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.right_arrow:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.right_arrow:before {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #fff;
+	border-width: 6px;
+	margin-top: -6px;
+}
+.show-dropdown:hover .count-hover
+{
+	display:block;
+}
+
+.show-dropdown
+{
+	cursor:pointer	
+}
+.count-hover
+{
+	position:absolute;
+	padding:0px;
+	width:650px;
+	border-radius:3px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
+	background:#fff !important;
+	display:none;
+	z-index:999;
+	margin-right:41%;
+	bottom:-20px;
+}
+.count-hover li{list-style:none}
+
 #scrollator_holder{margin-left:25px}
 .table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
 .font-10{font-size:10px}
@@ -245,19 +299,19 @@ var globalCadreId = '${cadreId}';
                     </div>
                     <div class="panel-body">
                     	<div class="row">
-                        	<div class="col-md-6 col-xs-12">
+                        	<div class="col-md-4 col-xs-12">
                             	<table class="table m_0 table-bordered">
                                 	<thead >
                                     	<th class="text-center" colspan="3">EVENT INVITATIONS</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>0<br/>Sent</td>
+                                    	<td>0<br/>Invited</td>
                                         <td>0<br/>Participated</td>
                                         <td>0<br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-md-4 col-xs-12">
                             	<table class="table m_0 table-bordered">
                                 	<thead>
                                     	<th class="text-center" colspan="3">TRAINING'S</th>
@@ -269,16 +323,49 @@ var globalCadreId = '${cadreId}';
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
-								<h4 style="border-bottom:1px solid #999">Event Participation Details</h4>
-								<div id="participationTableDivId" class="table-responsive">
-								</div>
-							
+							 <div class="col-md-4 col-xs-12" id="partyMeetingDescDiv">
                             	
                             </div>
+                            <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
+								<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>
+								<div id="participationTableDivId" class="table-responsive">
+								</div>
+                            </div>
+							
+							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" >
+								<h4 style="border-bottom:1px solid #999">Party Meetings Participation Details</h4>
+								<div id="partyMetindetlsDivId"></div>
+								<!--<table class="table m_0 table-bordered">
+                                	<thead>
+                                    	<th class="text-center">MEETING TYPE </th>
+                                    	<th class="text-center"> INVITED </th>
+                                    	<th class="text-center"> ATTENDED </th>
+                                    	<th class="text-center"> ABSENT </th>
+                                    </thead>
+                                    <tr class="text-center">
+                                    	<td> STATE-PUBLIC REPRESENTATIVES MEETING </td>
+                                        <td> <ul class="list-inline"><li class="show-dropdown">2
+											<ul class="count-hover right_arrow">
+												<li>
+													<table class="table table-bordered table-hover">
+														<tr>
+															<td>sdf</td>
+															<td>dfg</td>
+														</tr>
+													</table>
+												</li>
+											</ul> </td>
+                                        <td> 1 </td>
+                                        <td> 0 </td>
+                                    </tr>
+                                </table>
+								-->
+								</div>
+                            </div>
+							
                         </div>
                     </div>
-                </div>
+                
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE</h4>
@@ -2911,6 +2998,120 @@ function newsHideAndShow(divId)
 			$('.dateCls').show();
 		}	
 }
+
+function getPartyMeetingDetails()
+{
+	$('#partyMeetingDescDiv').html('');
+	var jsObj={
+		membershipNo:globalCadreId,
+		constituencyId:0		
+	}	
+	$.ajax({
+			type:'POST',
+			 url: 'getPartyMeetingDetailsForCadre.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
+				{
+					var str='';
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+					str+='<th class="text-center" colspan="3">PARTY MEETINGS</th>';
+					str+='</thead>';
+					str+='<tr class="text-center">';
+					var myResult = result.partyMeetingVOList[0];
+						str+='<td>'+myResult.invitedCount+'<br/>Invited</td>';
+						str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+						str+='<td>'+myResult.absentCount+'<br/>Absent</td>';
+						str+='</tr>';
+					str+='</table>';
+
+					$('#partyMeetingDescDiv').html(str);
+				}
+			});
+}
+
+
+function getPartyMeetingDetaildReprt()
+{
+	$('#partyMetindetlsDivId').html('');
+	var jsObj={
+		membershipNo:globalCadreId,
+		constituencyId:0		
+	}	
+	$.ajax({
+			type:'POST',
+			 url: 'getPartyMeetingDetailsForCadre.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
+				{
+					var str='';
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+					str+='<th class="text-center">MEETING TYPE </th>';
+					str+='<th class="text-center"> INVITED </th>';
+					str+='<th class="text-center"> ATTENDED </th>';
+					str+='<th class="text-center"> ABSENT </th>';
+					str+='</thead>';
+					
+					for(var i in result.partyMeetingVOList)
+					{
+						str+='<tr class="text-center">';
+						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
+						str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+result.partyMeetingVOList[i].invitedCount+'</u>';
+						str+='<ul class="count-hover right_arrow">';
+						str+='<li>';
+						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
+						str+='<thead>';
+						str+='<tr>';
+						str+='<th style=""> MEETING NAME </th>';
+						str+='<th style=""> LOCATION </th>';
+						//str+='<th> MEETING_TYPE </th>';
+						str+='<th style=""> START DATE</th>';
+						str+='<th style=""> END DATE</th>';
+						str+='<th style=""> ATTENDED </th>';
+						str+='<th style=""> INVITED </th>';
+						str+='<th style=""> ABSENT </th>';
+						str+='</tr>';
+						str+='<thead>';
+						str+='<tbody>';
+						if(result.partyMeetingVOList[i].partyMeetingVOList != null && result.partyMeetingVOList[i].partyMeetingVOList.length>0)
+						{
+							for(var k in result.partyMeetingVOList[i].partyMeetingVOList)
+							{
+								str+='<tr>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].name+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].location+'</td>';
+									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingLevelStr+' - //'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingType+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].startDateStr+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].endDateStr+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].attendedCount	+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].invitedCount+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].absentCount+'</td>';
+								str+='</tr>';
+							}
+						}
+						str+='</tbody>';
+						str+='</table>';
+						str+='</li>';
+						str+='</ul> </td>';
+						
+						str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
+						str+='<td> '+result.partyMeetingVOList[i].absentCount+' </td>';
+						str+='</tr>';
+					}
+					
+					str+='</table>';
+
+
+					$('#partyMetindetlsDivId').html(str);
+				}
+			});
+}
+
+getPartyMeetingDetaildReprt();
+getPartyMeetingDetails();
 </script>
 </body>
 </html>
