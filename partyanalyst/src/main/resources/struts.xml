@@ -10511,5 +10511,18 @@
 	  </result>
 	</action>
 	
+	<action name="getPartyMeetingDetailsForCadre" class="partyMeetingAction" method="getPartyMeetingDetailsForCadre">
+	    <result type="json" name="success">
+	       <param name="root">partyMeetingVO</param>
+	  </result>
+	</action>
+	
+	<action name="getPartyMeetingTypeWiseDetails" class="partyMeetingAction" method="getMeetingWiseDetailsByMeetingTypeId">
+	    <result type="json" name="success">
+	       <param name="root">partyMeetingVO</param>
+	  </result>
+	</action>
+	
+	
 </package>
 </struts>      
