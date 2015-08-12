@@ -292,3 +292,43 @@ caption
 {
 	border:1px solid #666
 }
+
+.grievance-training ul
+{
+	padding:10px;
+}
+
+.grievance-training ul li
+{
+	border:1px solid #999;
+	list-style:none;
+}
+.grievance-training ul li p
+{
+	margin:0px;
+}
+.grievance-training ul li .data
+{
+	padding:10px;
+}
+.grievance-training ul li .data-edit .row
+{
+	padding:10px;
+}
+.btn-custom-g
+{
+	background:#ccc;
+	border-radius:0px;
+	float:right;
+}
+
+.dropzone .dz-message
+{
+	font-size:25px !important;
+}
+
+
+.glyphicon-trash
+{
+	cursor:pointer
+}
