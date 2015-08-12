@@ -161,7 +161,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId" +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -204,7 +204,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
 				" model.trainingCampScheduleInvitee.remarks" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId" +
+				" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId");
@@ -215,7 +215,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("scheduleCallStatus"))
 			str.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(:statusIds)");
 		if(inputVo.getBatchId() > 0)
-			str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId = :batchId");
+			str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId = :batchId " );
+		str.append(" and model.callPurposeId = :callPurposeId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", inputVo.getUserId());
 		query.setParameter("callPurposeId", inputVo.getPurposeId());
