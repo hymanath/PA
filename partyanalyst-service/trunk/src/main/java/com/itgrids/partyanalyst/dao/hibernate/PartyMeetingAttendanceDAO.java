@@ -15,18 +15,64 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		super(PartyMeetingAttendance.class);
 	}
 	
-	public List<Object[]> getPartyMeetingsAttendenceDetailsByCadreId(Long searchTypeId,Long tdpCadreId)
+	public List<Object[]> getPartyMeetingsAttendenceDetailsByCadreId(List<Long> tdpCadreIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select * from PartyMeetingAttendance PMA where PMA.attendance.tdpCadreId =:tdpCadreId ");
-		if(searchTypeId != null && searchTypeId.longValue()>0L)
-			queryStr.append(" and PMA.partyMeeting.partyMeetingLevelId=:searchTypeId ");
-		queryStr.append(" group by PMA.partyMeeting.");
-		
-		Query query=getSession().createQuery(queryStr.toString());
-		query.setParameter("tdpCadreId", tdpCadreId);
-		if(searchTypeId != null && searchTypeId.longValue()>0L)
-			query.setParameter("searchTypeId", searchTypeId);
+		queryStr.append(" select distinct  PMA.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMA.partyMeeting.partyMeetingLevel.level, " +
+				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count(PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  ");
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			queryStr.append(" where PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingType.partyMeetingTypeId order by PMA.attendance.tdpCadreId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalAttendedDetailsForCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId)
+	{
+		boolean isSetWhere = false;
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName,PMA.partyMeeting.partyMeetingLevelId,PMA.partyMeeting.partyMeetingLevel.level, " +
+				" PMA.partyMeeting.locationValue ,PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type," +
+				" date(PMA.partyMeeting.startDate),date(PMA.partyMeeting.endDate),  count(distinct PMA.attendance.tdpCadreId),PMA.partyMeeting.meetingAddress.localArea  from PartyMeetingAttendance PMA ");
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
+			queryStr.append(" where PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
+			isSetWhere = true;
+		}
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+		{
+			if(!isSetWhere)
+				queryStr.append(" where PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+			else
+				queryStr.append(" and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+		}
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
+			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAbsentMemberDeails(Long partyMeetingTypeId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName, count(distinct PMA.attendance.tdpCadreId) " +
+				" from PartyMeetingAttendance PMA ,PartyMeetingInvitee PMI where PMA.partyMeeting.partyMeetingId = PMI.partyMeeting.partyMeetingId and " +
+				" PMI.tdpCadreId = PMA.attendance.tdpCadreId ");
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
+			queryStr.append("  PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
+		}
+		
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
+			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
+		
+		return query.list();
+	}
+	
 }
