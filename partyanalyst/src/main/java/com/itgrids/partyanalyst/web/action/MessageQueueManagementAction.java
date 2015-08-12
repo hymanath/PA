@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.message.AttendanceMessagesConsumer;
 import com.itgrids.partyanalyst.message.EventMessagesConsumer;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -19,9 +20,14 @@ public class MessageQueueManagementAction  extends ActionSupport implements Serv
 	private HttpSession session;
 	private String task;
 	JSONObject jObj;
-	private EventMessagesConsumer eventMessagesConsumer; 
+	private EventMessagesConsumer eventMessagesConsumer;
+	private AttendanceMessagesConsumer attendanceMessagesConsumer;
 	private String result;
 	
+	public void setAttendanceMessagesConsumer(
+			AttendanceMessagesConsumer attendanceMessagesConsumer) {
+		this.attendanceMessagesConsumer = attendanceMessagesConsumer;
+	}
 	public String getResult() {
 		return result;
 	}
@@ -71,6 +77,7 @@ public class MessageQueueManagementAction  extends ActionSupport implements Serv
 			jObj = new JSONObject(getTask());
 			Integer consumersCount = jObj.getInt("count");
 			eventMessagesConsumer.startConsumeMessages(consumersCount);
+			attendanceMessagesConsumer.startConsumeMessages(consumersCount);
 			result = Action.SUCCESS;
 		}
 		catch(Exception e)
