@@ -5450,14 +5450,16 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Long> getCadreIdByMembershipId(String memberShipNo,Long constituencyId)
 		{
+			memberShipNo = memberShipNo != null&& !memberShipNo.isEmpty() && memberShipNo.length()==7 ? "0"+memberShipNo:memberShipNo;
 			StringBuilder str = new StringBuilder();
 			str.append(" select distinct model.tdpCadreId from TdpCadre model where model.memberShipNo =:memberShipNo and model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
-			if(constituencyId != null && constituencyId > 0)
+			if(constituencyId != null && constituencyId > 0L)
 			 str.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
 			
 			Query query = getSession().createQuery(str.toString());
 			
 			query.setParameter("memberShipNo", memberShipNo);
+			if(constituencyId != null && constituencyId > 0L)
 			query.setParameter("constituencyId", constituencyId);
 			
 			return query.list();
