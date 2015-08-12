@@ -152,10 +152,11 @@
         <pattern>/cadreSearchAndRegAction*</pattern> -->
 		<pattern>/eventDashboardAction*</pattern>
 		<pattern>/callCenterTrainingAdmin*</pattern>
-		<pattern>/callCenterTrainingAgent*</pattern>	<pattern>/callCenterTrainingAgentDahBoard*</pattern>
-		
+		<pattern>/callCenterTrainingAgent*</pattern>
+		<pattern>/callCenterTrainingAgentDahBoard*</pattern>
 		<pattern>/trainingAdminDashboard*</pattern>
-		
+		<pattern>/meetingList*</pattern>
+		<pattern>/meetingDetailsList*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
