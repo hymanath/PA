@@ -23,7 +23,15 @@ public class TrainingMemberVO implements Serializable{
 	private Long totalCount;
 	private List<TrainingMemberVO> subList = new ArrayList<TrainingMemberVO>();
 	private String remarks;
+	private String constituency;
 	
+	
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
 	public Long getAvailableCount() {
 		return availableCount;
 	}

@@ -1324,6 +1324,7 @@ public class TrainingCampService implements ITrainingCampService{
 					vo.setInviteeId(params[9] != null ? (Long)params[9] : 0l);
 					vo.setInviteeCallerId(params[10] != null ? (Long)params[10] : 0l);
 					vo.setRemarks(params[11] != null ? params[11].toString() : "");
+					vo.setConstituency(params[12] != null ? params[12].toString() : "");
 					returnList.add(vo);
 					if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(params[0])))
 						cadreIds.add(commonMethodsUtilService.getLongValueForObject(params[0]));
