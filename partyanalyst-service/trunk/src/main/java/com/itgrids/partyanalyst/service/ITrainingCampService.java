@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -47,5 +48,7 @@ public interface ITrainingCampService {
 	public Long getAvailableCountForMemberConfirmation(Long scheduleId);
 	public List<TraingCampCallerVO> getMembersCountByBatchStatus(Long campCallerId,String batchStatus);
 	public List<IdNameVO> getUserIdsByType();
-	
+	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId);
+	public List<CallStatusVO> getMeetingTypes();
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long meetingLocation);
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.omg.CosNaming.IstringHelper;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -19,7 +20,12 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
 import com.itgrids.partyanalyst.dao.ICampCallStatusDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
@@ -33,6 +39,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -44,6 +51,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.PartyMeetingType;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
@@ -73,10 +81,53 @@ public class TrainingCampService implements ITrainingCampService{
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private DateUtilService dateUtilService;
 	private IVoterDAO voterDAO;
+	private IPartyMeetingUserDAO partyMeetingUserDAO;
+	private IPartyMeetingTypeDAO partyMeetingTypeDAO;
+	private IPartyMeetingDAO partyMeetingDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
 	
 	
-	
-	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IPartyMeetingDAO getPartyMeetingDAO() {
+		return partyMeetingDAO;
+	}
+
+	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
+		this.partyMeetingDAO = partyMeetingDAO;
+	}
+
+	public IPartyMeetingTypeDAO getPartyMeetingTypeDAO() {
+		return partyMeetingTypeDAO;
+	}
+
+	public void setPartyMeetingTypeDAO(IPartyMeetingTypeDAO partyMeetingTypeDAO) {
+		this.partyMeetingTypeDAO = partyMeetingTypeDAO;
+	}
+
+	public IPartyMeetingUserDAO getPartyMeetingUserDAO() {
+		return partyMeetingUserDAO;
+	}
+
+	public void setPartyMeetingUserDAO(IPartyMeetingUserDAO partyMeetingUserDAO) {
+		this.partyMeetingUserDAO = partyMeetingUserDAO;
+	}
+
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
 	}
@@ -84,7 +135,7 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
 	}
-
+	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1839,4 +1890,109 @@ public class TrainingCampService implements ITrainingCampService{
 		return listOfUsers;
 	}
 	
+	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId){
+		List<CallStatusVO> levelDetails = new ArrayList<CallStatusVO>();
+		try {
+			LOG.info("Entered into getTheMeetingLevelDetails");
+			
+			List<Object[]> meetingLevelDetails= partyMeetingUserDAO.getTheMeetingLevelDetails(userId);
+			
+			if(meetingLevelDetails!=null && meetingLevelDetails.size()>0){
+				for (Object[] objects : meetingLevelDetails) {
+					CallStatusVO vo = new CallStatusVO();
+					vo.setLocationId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setLocationLevel(objects[1]!=null?objects[1].toString():"");
+					levelDetails.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getTheMeetingLevelDetails",e);
+		}
+		
+		return levelDetails;
+	}
+	
+	public List<CallStatusVO> getMeetingTypes(){
+		
+		List<CallStatusVO> meetingTypes = new ArrayList<CallStatusVO>();
+		try {
+			LOG.info("Entered into getMeetingTypes");
+			List<PartyMeetingType> meetingTypesList = partyMeetingTypeDAO.getAll();
+			if(meetingTypesList!=null && meetingTypesList.size()>0){
+				for (PartyMeetingType partyMeetingType : meetingTypesList) {
+					CallStatusVO vo = new CallStatusVO();
+					vo.setId(partyMeetingType.getPartyMeetingTypeId());
+					vo.setMeetingType(partyMeetingType.getType());
+					meetingTypes.add(vo);
+				}
+				
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised in getMeetingTypes",e);
+		}
+		return meetingTypes;
+	}
+	
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long meetingLocation){
+		List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
+		try {
+			LOG.info("Entered into getAllMeetings");
+			
+			//meetingtypeId,meetingtype,meetinglevelid,level,location value,starttime,endtime
+			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,meetingLocation);
+			
+			List<Long> level1List = new ArrayList<Long>();
+			List<Long> level2List = new ArrayList<Long>();
+			List<Long> level3List = new ArrayList<Long>();
+			List<Long> level4List = new ArrayList<Long>();
+			List<Long> level5List = new ArrayList<Long>();
+			
+			Map<Long,String> level1Map = new HashMap<Long,String>();
+			Map<Long,String> level2Map = new HashMap<Long,String>();
+			Map<Long,String> level3Map = new HashMap<Long,String>();
+			Map<Long,String> level4Map = new HashMap<Long,String>();
+			Map<Long,String> level5Map = new HashMap<Long,String>();
+			
+			if(meetings!=null && meetings.size()>0){
+				for (Object[] objects : meetings) {
+					if(objects[2]!=null && (Long)objects[2]==1l){
+						level1List.add((Long)objects[2]);
+					}else if(objects[2]!=null && (Long)objects[2]==2l){
+						level2List.add((Long)objects[2]);
+					}else if(objects[2]!=null && (Long)objects[2]==3l){
+						level3List.add((Long)objects[2]);
+					}else if(objects[2]!=null && (Long)objects[2]==4l){
+						level4List.add((Long)objects[2]);
+					}else if(objects[2]!=null && (Long)objects[2]==5l){
+						level5List.add((Long)objects[2]);
+					}
+				}
+			}
+			
+			if(level1List!=null && level1List.size()>0){
+				List<Object[]> stateDetails = stateDAO.getStatesForList(level1List);
+				
+				if(stateDetails!=null && stateDetails.size()>0){
+					for (Object[] objects : stateDetails) {
+						level1Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(level2List!=null && level2List.size()>0){
+				List<Object[]> distDetails = districtDAO.getDistrictDetailsByDistrictIds(level2List);
+				
+				if(distDetails!=null && distDetails.size()>0){
+					for (Object[] objects : distDetails) {
+						level2Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllMeetings",e);
+		}
+		return allMeetings;
+	}
 }
