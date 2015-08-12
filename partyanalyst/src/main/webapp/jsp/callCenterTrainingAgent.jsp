@@ -235,6 +235,8 @@ str+='<th>Committee Roll Position</th>';
 str+='<th>Contact Number</th>';
 str+='<th>Calling For</th>';
 str+='<th>District</th>';
+str+='<th>Constituency</th>';
+str+='<th>Remarks</th>';
 str+='<th>Status</th>';
 str+='<th>Update</th>';
 str+='</thead>';
@@ -254,6 +256,8 @@ str+='<td>'+result.subList[i].role+'</td>';
 str+='<td>'+result.subList[i].mobileNumber+'</td>';
 str+='<td>'+callFor+' '+purpose+'</td>';
 str+='<td>'+result.subList[i].location+'</td>';
+str+='<td>'+result.subList[i].constituency+'</td>';
+str+='<td>'+result.subList[i].remarks+'</td>';
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'
 str+='<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\');">Update Status</button>';
