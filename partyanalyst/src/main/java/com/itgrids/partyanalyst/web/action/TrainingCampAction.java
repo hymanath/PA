@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -25,7 +26,6 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
-import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -58,8 +58,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private TrainingCampVO trainingCampVO;
 	private TrainingCampCallStatusVO trainingCampCallStatusVO;
 	private List<IdNameVO> idnemIdNameVOs;
-	
+	private List<CallStatusVO> retResult;
 
+	public List<CallStatusVO> getRetResult() {
+		return retResult;
+	}
+
+	public void setRetResult(List<CallStatusVO> retResult) {
+		this.retResult = retResult;
+	}
 	
 	public Long getAvailableCount() {
 		return availableCount;
@@ -677,6 +684,48 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 		}catch (Exception e) {
 			LOG.error(" Exception occured in getAvailableCountForMemberConfirmation method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTheMeetingLevelDetails(){
+		try{
+			LOG.info("Entered into getTheMeetingLevelDetails");
+			
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo.getRegistrationID()!=null){
+				Long userId=regVo.getRegistrationID();
+				retResult = trainingCampService.getTheMeetingLevelDetails(userId);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getTheMeetingLevelDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMeetingTypes(){
+		try{
+			LOG.info("Entered into getMeetingTypes");
+			retResult = trainingCampService.getMeetingTypes();
+		}catch (Exception e) {
+			LOG.error("Exception raised into getMeetingTypes",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllMeetings(){
+		try {
+			LOG.info("entered into getAllMeetings");
+			jObj = new JSONObject(getTask());
+			
+			Long meetingType = jObj.getLong("meetingType");
+			Long locationLevel = jObj.getLong("locationLevel");
+			Long meetingLocation = jObj.getLong("meetingLocation");
+			trainingCampService.getAllMeetings(meetingType,locationLevel,meetingLocation);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllMeetings",e);
 		}
 		return Action.SUCCESS;
 	}

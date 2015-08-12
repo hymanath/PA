@@ -10475,5 +10475,35 @@
 	  </result>
 	</action>
 	
+	<action name="meetingList" class="trainingCampAction" method="callCenterTrainingAgent">
+		<result name="success">/jsp/meetingsList.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
+	<action name="meetingDetailsList" class="trainingCampAction" method="callCenterTrainingAgent">
+		<result name="success">/jsp/meetingDetailsList.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
+	<action name="getTheMeetingLevelDetailsAction" class="trainingCampAction" method="getTheMeetingLevelDetails">
+		<result type="json" name="success">
+				<param name="root">retResult</param>
+		</result>
+	</action>
+	
+	<action name="getMeetingTypesAction" class="trainingCampAction" method="getMeetingTypes">
+		<result type="json" name="success">
+				<param name="root">retResult</param>
+		</result>
+	</action>
+	
+	<action name="getAllMeetingsAction" class="trainingCampAction" method="getAllMeetings">
+		<result type="json" name="success">
+				<param name="root">retResult</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
