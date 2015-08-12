@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1994,5 +1995,72 @@ public class TrainingCampService implements ITrainingCampService{
 			LOG.error("Exception raised in getAllMeetings",e);
 		}
 		return allMeetings;
+	}
+	
+	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId,Long callPurposeId)
+	{
+		CallBackCountVO callBackCountVO = new CallBackCountVO();
+		try{
+			List<Long> scheduleInviteeStatusIdsList = new ArrayList<Long>(0);
+			scheduleInviteeStatusIdsList.add(6l);
+			scheduleInviteeStatusIdsList.add(7l);
+			DateUtilService dateUtilService = new DateUtilService();
+			Date toDayDate = dateUtilService.getCurrentDateAndTime();
+			
+			List<Object[]> schduleConfirmList = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationCallBackDetails(campCallerId, callPurposeId, null, scheduleInviteeStatusIdsList);
+			if(schduleConfirmList != null && schduleConfirmList.size() > 0)
+			{
+				for(Object[] params:schduleConfirmList)
+				{
+					if(params[1] != null && params[1].toString().equalsIgnoreCase("Call Back - Confirm Later"))
+						callBackCountVO.setScheduleConfirmLaterCount((Long)params[0]);
+					else
+						callBackCountVO.setScheduleConfirmationCount((Long)params[0]);
+				}
+			}
+			
+			List<Object[]> toDaySchduleConfirmList = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationCallBackDetails(campCallerId, callPurposeId, toDayDate, scheduleInviteeStatusIdsList);
+			if(toDaySchduleConfirmList != null && toDaySchduleConfirmList.size() > 0)
+			{
+				for(Object[] params:toDaySchduleConfirmList)
+				{
+					if(params[1] != null && params[1].toString().equalsIgnoreCase("Call Back - Confirm Later"))
+						callBackCountVO.setTodayScheduleConfirmLaterCount((Long)params[0]);
+					else
+						callBackCountVO.setTodayScheduleConCount((Long)params[0]);
+				}
+			}
+			
+			
+			List<Object[]> batchConfirmList = trainingCampScheduleInviteeCallerDAO.getBatchConfirmationCallBackDetails(campCallerId, callPurposeId, null, scheduleInviteeStatusIdsList);
+			if(batchConfirmList != null && batchConfirmList.size() > 0)
+			{
+				for(Object[] params:batchConfirmList)
+				{
+					if(params[1] != null && params[1].toString().equalsIgnoreCase("Call Back - Confirm Later"))
+						callBackCountVO.setBatchConfirmLaterCount((Long)params[0]);
+					else
+						callBackCountVO.setBatchConfirmationCount((Long)params[0]);
+				}
+			}
+			
+			List<Object[]> toDaybatchConfirmList = trainingCampScheduleInviteeCallerDAO.getBatchConfirmationCallBackDetails(campCallerId, callPurposeId, toDayDate, scheduleInviteeStatusIdsList);
+			if(toDaybatchConfirmList != null && toDaybatchConfirmList.size() > 0)
+			{
+				for(Object[] params:toDaybatchConfirmList)
+				{
+					if(params[1] != null && params[1].toString().equalsIgnoreCase("Call Back - Confirm Later"))
+						callBackCountVO.setTodaybatchConfirmLaterCount((Long)params[0]);
+					else
+						callBackCountVO.setTodaybatchConCount((Long)params[0]);
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
+		}
+		return callBackCountVO;
+		
 	}
 }

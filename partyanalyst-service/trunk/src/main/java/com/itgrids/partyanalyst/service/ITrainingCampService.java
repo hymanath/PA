@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -51,4 +52,5 @@ public interface ITrainingCampService {
 	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId);
 	public List<CallStatusVO> getMeetingTypes();
 	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long meetingLocation);
+	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId,Long callPurposeId);
 }
