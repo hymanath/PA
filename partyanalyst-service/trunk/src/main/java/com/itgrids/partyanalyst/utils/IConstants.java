@@ -884,9 +884,14 @@ public interface IConstants {
     public static final String RMQ_VIRTUALHOST = "/";
     public static final String RMQ_HOST = "localhost";
     public static final Integer RMQ_PORT = 5672;
+    
     public static final String RMQ_EXCHANGE = "event_attendee_ws";
     public static final String RMQ_QUEUE = "attendee_queue";
     public static final String ROUTING_KEY = "event_Ws_184375";
+    
+    public static final String ATTENDANCE_RMQ_EXCHANGE = "attendance_ws";
+    public static final String ATTENDANCE_RMQ_QUEUE = "attendance_queue";
+    public static final String ATTENDANCE_ROUTING_KEY = "attendacen_Ws_747294";
     
     public static final String 	SURVEY_WEBSERVICE_USERNAME = "itgrids";
     public static final String  SURVEY_WEBSERVICE_PASSWORD = "servey@android";
