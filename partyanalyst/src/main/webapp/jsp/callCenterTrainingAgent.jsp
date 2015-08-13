@@ -155,6 +155,7 @@ var scheduleId = '${scheduleId}';
 var status = '${status}';
 var batchId = '${batchId}';
 var statusType = '${statusType}';
+var today = '${today}';
 /*$('.callback input:checkbox').change(function(){
      if($(this).is(":checked")) {
         $('.Answered-div').addClass("disnone");
@@ -191,6 +192,9 @@ function getMemberDetails()
 $("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
 if(batchId == "")
 batchId = 0;
+if(today == null)
+	today = '';
+
 var jObj={
 		purposeId : purposeId,
 		programId:programId,
@@ -199,6 +203,7 @@ var jObj={
 		status:status,
 		batchId :batchId,
 		statusType:statusType,
+		toDayDate : today,
 		task:"scheduleWiseCount"
 		};
 		$.ajax({
