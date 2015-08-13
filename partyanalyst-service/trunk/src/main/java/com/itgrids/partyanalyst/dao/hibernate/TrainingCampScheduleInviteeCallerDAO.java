@@ -135,9 +135,9 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
 				
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
@@ -161,7 +161,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -190,7 +190,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		return query.list();
 	}
 
-	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status)
+	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate)
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -209,7 +209,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
-				" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) ");
+				" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
 		if(status.equalsIgnoreCase("undialed"))
 			str.append(" and campCallStatus.campCallStatusId is null");
 		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
@@ -219,6 +219,10 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		if(inputVo.getBatchId() > 0)
 			str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId = :batchId " );
 		str.append(" and model.callPurposeId = :callPurposeId");
+		
+		if(toDayDate != null)
+		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", inputVo.getUserId());
 		query.setParameter("callPurposeId", inputVo.getPurposeId());
@@ -229,6 +233,10 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		query.setParameterList("statusIds", statusIds);
 		if(inputVo.getBatchId() > 0)
 		query.setParameter("batchId", inputVo.getBatchId());	
+		
+		if(toDayDate != null)
+		 query.setDate("toDayDate", toDayDate);
+		
 		return query.list();
 	}
 	
