@@ -1307,7 +1307,14 @@ public class TrainingCampService implements ITrainingCampService{
 		try{
 			statusIds = getCallStatusIds(inputVo.getStatus());
 			
-			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus());
+			Date toDayDate = null;
+			if(inputVo.getDateStr() != null && inputVo.getDateStr().trim().length() > 0)
+			{
+			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			   toDayDate = sdf.parse(inputVo.getDateStr());
+			}
+			
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
 			if(list != null && list.size() > 0)
 			{
 				List<TrainingMemberVO> resultList = setMemberDetails(list);

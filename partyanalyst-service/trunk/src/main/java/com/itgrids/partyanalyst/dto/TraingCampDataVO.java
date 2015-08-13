@@ -10,8 +10,7 @@ public class TraingCampDataVO {
 	private Long batchId;
 	private Long scheduleId;
 	private String statusType;
-	
-	
+	private String dateStr;
 	
 	public String getStatusType() {
 		return statusType;
@@ -61,6 +60,14 @@ public class TraingCampDataVO {
 	public void setBatchId(Long batchId) {
 		this.batchId = batchId;
 	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	
+	
 	
 	
 }
