@@ -5520,6 +5520,33 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return  query.list();
 		}
 		
+		public List<Object[]> checkVoterCardNosCadreOrNot(String voterCardNoStr)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select distinct voter.voterIDCardNo,familyVoter.voterIDCardNo, model.tdpCadreId,model.memberShipNo ");
+			queryStr.append(" from TdpCadre model ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" left join model.familyVoter familyVoter ");
+			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" and (voter.voterIDCardNo like '"+voterCardNoStr+"'  or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '"+voterCardNoStr+"' )) ");
+			Query query = getSession().createQuery(queryStr.toString());
+			return query.list();
 		
+		}
+		
+		public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select distinct voter.voterIDCardNo,model.tdpCadreId,model.memberShipNo ");
+			queryStr.append(" from TdpCadre model ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" and (voter.voterIDCardNo in (:voterCardNoList)) ");
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			query.setParameterList("voterCardNoList", voterCardNoList);
+			return query.list();
+		
+		}
 		
 }

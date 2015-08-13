@@ -75,4 +75,15 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
+	public List<Object[]> getAttendenceForCadre(Long tdpCadreId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName, count(distinct PMA.attendance.tdpCadreId) " +
+				" from PartyMeetingAttendance PMA where PMA.attendance.tdpCadreId =:tdpCadreId ");
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("tdpCadreId", tdpCadreId);		
+		return query.list();
+	}
+	
 }
