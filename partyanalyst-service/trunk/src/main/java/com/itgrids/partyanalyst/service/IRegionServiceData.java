@@ -99,4 +99,6 @@ public interface IRegionServiceData {
 	
 	public List<SelectOptionVO> getDistrictsForUser(Long userId,String accessValue,String accessType);
 	
+	public List<SelectOptionVO> getAllMandalsByAllConstituencies(List<Long> constiIds);
+	
 }

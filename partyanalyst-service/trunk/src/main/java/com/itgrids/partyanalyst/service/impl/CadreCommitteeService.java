@@ -15212,4 +15212,148 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return panachatiesList;
 	}
+
+	public List<LocationWiseBoothDetailsVO> getLocationsOfSublevelConstituencyMandal(Long stateId, Long districtId, Long constituencyId, String mandalStr, Long locationLevelId){
+		
+		List<Long> constiIds = new ArrayList<Long>();
+		List<Long> mandalIds = new ArrayList<Long>();
+		List<Long> localBodyIds = new ArrayList<Long>();
+		if(locationLevelId.equals(4l)){
+			if(constituencyId.equals(0l)){
+				List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+				if(rslt!=null && rslt.size()>0){
+					for(Object[] obj:rslt){
+						constiIds.add(Long.valueOf(obj[0].toString()));
+					}
+				}
+			}else{
+				constiIds.add(constituencyId);
+			}
+		}else{
+			if(!mandalStr.equalsIgnoreCase("0")){
+				String firstLetter = mandalStr.substring(0, 1);
+				if(firstLetter.equalsIgnoreCase("4")){
+					Long mandalId = Long.valueOf(mandalStr.substring(1));
+					mandalIds.add(mandalId);
+				}else if(firstLetter.equalsIgnoreCase("5")){
+					Long localBody = Long.valueOf(mandalStr.substring(1));
+					localBodyIds.add(localBody);
+				}
+				
+			}else{
+				if(constituencyId.equals(0l)){
+					List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+					if(rslt!=null && rslt.size()>0){
+						for(Object[] obj:rslt){
+							constiIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}else{
+					constiIds.add(constituencyId);
+				}
+			}
+		}
+		
+		try{
+			if(locationLevelId.equals(4l)){
+				return getMandalMunicCorpDetailsOfConstituencies(constiIds);
+			}else{
+				return getPanchayatWardDivisionDetailsOfSubLocation(constiIds, mandalIds, localBodyIds);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getLocationsList", e);
+			return new ArrayList<LocationWiseBoothDetailsVO>(); 
+		}
+	}
+	
+	
+	// TO GET MANDAL/LOCAL BODY/ DIVISION DETAILS OF CONSTITUENCIES
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<Long> greaterCorpIds = new ArrayList<Long>();
+		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByAllConstituencies(constituencyIds);
+		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+	        for(SelectOptionVO location:locations){
+	        	vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(Long.valueOf("4"+location.getId()));
+	        	vo.setLocationName(location.getName()+" Mandal");
+	        	locationsList.add(vo);
+	        }
+	        for(Object[] localBodi:localBodies){
+	        	Long localBdyId = (Long)localBodi[0];
+	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString());
+		        	locationsList.add(vo);
+	        	}else{
+	        		greaterCorpIds.add(localBdyId);
+	        	}
+	        }
+	        if(greaterCorpIds.size() > 0){
+        	  for(Long id:greaterCorpIds){
+        		  List<Object[]>  wards = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyConstiIds(greaterCorpIds, constituencyIds);
+        		  for(Object[] location:wards){
+        			  vo = new LocationWiseBoothDetailsVO();
+  		        	vo.setLocationId(Long.valueOf("6"+location[0].toString()));
+  		        	vo.setLocationName(location[1].toString());
+  		        	locationsList.add(vo);
+        		  }
+        	  }
+	        }
+	        return locationsList;
+	}
+	
+	
+	// TO GET VILLAGE / WARD DETAILS OF MANDAL/LOCAL BODY/DIVISION
+	public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsOfSubLocation(List<Long> constituencyIds, List<Long> mandals, List<Long> localBodys){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		
+		List<Long> mandalIds = new ArrayList<Long>();
+		List<Long> localBodyIds = new ArrayList<Long>();
+		
+		if(constituencyIds!=null && constituencyIds.size()>0){
+			List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+			
+	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
+	        	if(location.getLocationId().toString().substring(0,1).trim().equalsIgnoreCase("5")){
+	        		Long localBdyId = Long.valueOf(location.getLocationId().toString().substring(1));
+	        		if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		   localBodyIds.add(localBdyId);
+	        		}
+	        	}else if(location.getLocationId().toString().substring(0,1).trim().equalsIgnoreCase("4")){
+	        		mandalIds.add(Long.valueOf(location.getLocationId().toString().substring(1)));
+	        	}
+	        }
+		}else{
+			mandalIds = mandals;
+			localBodyIds = localBodys;
+		}
+		
+		
+		
+	        if(mandalIds.size() > 0){
+	        	//0panchayatId,1panchayatName,2tehsilName
+	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(mandalIds);
+	        	for(Object[] panchayat:panchayatsList){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("7"+(Long)panchayat[0]));
+		        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
+		        	locationsList.add(vo);
+	        	}
+	        }
+	        if(localBodyIds.size() > 0){
+	        	//0wardId,1pwardName,2localBdyName
+	        	List<Object[]> localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+	        	for(Object[] localBody:localBodyList){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("8"+(Long)localBody[0]));
+		        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+		        	locationsList.add(vo);
+	        	}
+	        }
+	        return locationsList;
+	}
 }

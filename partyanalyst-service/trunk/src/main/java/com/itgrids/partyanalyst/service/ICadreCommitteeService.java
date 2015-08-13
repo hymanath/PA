@@ -134,5 +134,6 @@ public interface ICadreCommitteeService {
 	 
 	 public void getLocationsInfo(List<Long> constituencyIds,List<Long> divisionLclIds,
 				Map<Long,List<Long>> localBodiesMap,Map<Long,List<Long>> divisionIdsMap,Map<Long,List<Long>> mandalIdsMap);
+	 public List<LocationWiseBoothDetailsVO> getLocationsOfSublevelConstituencyMandal(Long stateId, Long districtId, Long constituencyId, String mandalStr, Long locationLevelId);
 	 
 }

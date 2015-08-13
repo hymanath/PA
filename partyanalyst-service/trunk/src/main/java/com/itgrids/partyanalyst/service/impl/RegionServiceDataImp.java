@@ -1765,6 +1765,29 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return mandalNames;
 	}
+	
+	public List<SelectOptionVO> getAllMandalsByAllConstituencies(List<Long> constiIds){
+		List<Object[]> dcRslts = delimitationConstituencyDAO.getDelimitationConstituencyByConstituencyIDs(constiIds,2009l);
+		List<Long> delimitaitonConstiIds = new ArrayList<Long>();
+		if(dcRslts!=null && dcRslts.size()>0){
+			for(Object[] obj:dcRslts){
+				delimitaitonConstiIds.add(Long.valueOf(obj[0].toString()));
+			}
+		}
+		
+		//Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIds(delimitaitonConstiIds);
+		
+		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+		
+		for(Tehsil tehsil : mandals){
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(tehsil.getTehsilId());
+			objVO.setName(tehsil.getTehsilName());
+			mandalNames.add(objVO);
+		}
+		return mandalNames;
+	}
 }
 	
  
