@@ -97,6 +97,48 @@ header.eventsheader {
                                     </div>
                                 </div>
                             </div>
+							<div class="row m_top10" >
+							<div class="col-md-3" id="stateShowId" style="display:none;">
+                                	<label>State</label>
+                                    <select class="form-control" id="statesDivId">
+									<option>Select State</option>
+									<option value="0">All</option>
+									<option value="1">AndhraPradesh</option>
+									<option value="36">Telangana</option>
+									</select>
+                            </div>
+							<div class="col-md-1" style="height: 44px; width: 10px;">
+								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+							</div>
+							<div class="col-md-3" id="DistrictShowId" style="display:none;">
+                                	<label>District</label>
+                                    <select class="form-control" id="districtId">
+									<option>Select District</option>
+									</select>
+                            </div>
+							<div class="col-md-1" style="height: 44px; width: 10px;">
+								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+							</div>
+							<div class="col-md-3" id="ConstShowId" style="display:none;">
+                                	<label>Constituency</label>
+                                    <select class="form-control" id="constituencyId">
+									<option>Select Constituency</option>
+									</select>
+                            </div>
+							<div class="col-md-3" id="ManTwnDivShowId" style="display:none;">
+                                	<label>Mandal/Town/Division</label>
+                                    <select class="form-control" id="manTowDivId">
+									<option>Select Mandal/Town/Division</option>
+									</select>
+                            </div>
+							<div class="col-md-3" id="VillWardShowId" style="display:none;">
+                                	<label>Village/Ward</label>
+                                    <select class="form-control" id="villWardId">
+									<option>Select Village/Ward</option>
+									</select>
+                            </div>
+							</div>
+							
                         	<div class="m_top20">
                             	<table class="table table-bordered">
                                 	<thead class="bg_d">
@@ -191,6 +233,7 @@ $(document).ready(function() {
 			data:{task :JSON.stringify(jsObj)}
 		}
 		).done(function(result){
+			$("#meetingLocationLevel").append('<option value="0">Select Location Type</option>');
 			if(result!=null && result.length>0){
 				for(var i in result){
 				$("#meetingLocationLevel").append('<option value="'+result[i].locationId+'">'+result[i].locationLevel+'</option>');
@@ -241,7 +284,165 @@ $(document).ready(function() {
 			
 		});
 	});
+	function getDistrictsForStates(state){
+		
+	$("#searchDataImgForDist").show();
 	
+	$("#districtId  option").remove();
+	$("#districtId").append('<option value="0">Select District</option>');
+	$("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getDistrictsForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForStateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#searchDataImgForDist").hide();
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+	function getConstituenciesForDistricts(district){
+	    $("#searchDataImgForcons").show();
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	
+		var jsObj={				
+			districtId:district,
+			elmtId:"districtList_d",
+            type:"default",
+			task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForADistrictAjaxAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForcons").hide();
+			for(var i in result){
+			   if(result[i].id == 0){
+				  $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+			   }else{
+				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+		});
+	}
+	$( "#statesDivId" ).change(function() {
+		getDistrictsForStates(this.value);
+	});
+	$( "#districtId" ).change(function() {
+		getConstituenciesForDistricts(this.value);
+	});
+$("#meetingLocationLevel").change(function(){
+	if($("#meetingLocationLevel").val()== 2 ){
+		$("#stateShowId").show();
+		$("#DistrictShowId").show();
+		$("#ConstShowId").hide();
+		$("#ManTwnDivShowId").hide();
+		$("#VillWardShowId").hide();
+		
+	}else if($("#meetingLocationLevel").val()== 3){
+		$("#stateShowId").show();
+		$("#DistrictShowId").show();
+		$("#ConstShowId").show();
+		$("#ManTwnDivShowId").hide();
+		$("#VillWardShowId").hide();
+		
+	}else if($("#meetingLocationLevel").val()== 4){
+		$("#stateShowId").show();
+		$("#DistrictShowId").show();
+		$("#ConstShowId").show();
+		$("#ManTwnDivShowId").show();
+		$("#VillWardShowId").hide();
+		
+	}else if($("#meetingLocationLevel").val()== 5){
+		$("#stateShowId").show();
+		$("#DistrictShowId").show();
+		$("#ConstShowId").show();
+		$("#ManTwnDivShowId").show();
+		$("#VillWardShowId").show();
+		
+	}else if($("#meetingLocationLevel").val()== 1){
+	
+			$("#stateShowId").show();
+			$("#DistrictShowId").hide();
+			$("#ConstShowId").hide();
+			$("#ManTwnDivShowId").hide();
+			$("#VillWardShowId").hide();
+			
+	}else{
+		
+	}
+	
+		});
+		
+		$("#constituencyId").change(function(){
+			getMandalVillageDetails(4);
+		});
+		$("#manTowDivId").change(function(){
+			getMandalVillageDetails(5);
+		});
+		
+	function getMandalVillageDetails(locationLevel){
+		
+		var stateId = $("#statesDivId").val();
+		var districtId = $("#districtId").val();
+		var constituencyId = $("#constituencyId").val();
+		var mandalId = "0";
+		
+		if(locationLevel==4){
+			$("#manTowDivId").html("")
+		}
+		if(locationLevel==5){
+			mandalId = $("#manTowDivId").val();
+			$("#villWardId").html("");
+		}
+		
+	   var jsObj={				
+			stateId : stateId,
+			districtId : districtId,
+			constituencyId : constituencyId,//228
+			mandalId : mandalId,
+			locationLevel : locationLevel,
+			task:"getConstituenciesForDistricts"
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+			  var divId = "#manTowDivId";
+			  $(divId).append("<option value=''>SELECT MANDAL/ TOWN/ DIVISION</option>");
+			  if(locationLevel ==5){
+				  divId = "#villWardId";
+				  $(divId).append("<option value=''>SELECT VILLAGE/ WARD </option>");
+			  }
+			  
+			  $(divId).append("<option value='0'>ALL</option>");
+			  
+			for(var i in result){
+				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+		});
+	}
+		
+		
 </script>
 </body>
 </html>
