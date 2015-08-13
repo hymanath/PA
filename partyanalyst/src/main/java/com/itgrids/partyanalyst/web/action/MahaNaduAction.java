@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -105,8 +106,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private IConstituencyDAO constituencyDAO;
 	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
 	private CadreCommitteeService cadreCommitteeService;
+	private PartyMeetingVO partyMeetingVO;
 	
 	
+	public PartyMeetingVO getPartyMeetingVO() {
+		return partyMeetingVO;
+	}
+
+	public void setPartyMeetingVO(PartyMeetingVO partyMeetingVO) {
+		this.partyMeetingVO = partyMeetingVO;
+	}
+
 	public List<TdpCadreVO> getCommiteeMembersList() {
 		return commiteeMembersList;
 	}
@@ -971,5 +981,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	}
     	return Action.SUCCESS;
     	
+	}
+	
+	public String getCadreWiseEventDetails()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			partyMeetingVO = mahaNaduService.getParticipatedCandidateEventDetails(tdpCadreId);
+		} catch (Exception e) {
+			LOG.error(" exception occured in getCadreWiseEventDetails() in mahanaduAction class.",e);
+		}
+		return Action.SUCCESS;
 	}
 }
