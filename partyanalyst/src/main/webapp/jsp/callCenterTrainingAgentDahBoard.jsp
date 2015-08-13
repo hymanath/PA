@@ -197,7 +197,7 @@ function getScheduleCallStatusCount()
 {
 	$("#scheduled").html("<img src='images/icons/search.gif'>");
 		var jObj={
-		callPurposeId : 2,
+		callPurposeId : 1,
 		
 		task:"scheduleWiseCount"
 		};
@@ -255,23 +255,23 @@ dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].total;
 undialed = allocated - dialed;
 if(allocated > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\');">'+allocated+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
 str+=' <td>'+allocated+'</td>';
 if(dialed > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\');">'+dialed+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\',\'\');">'+dialed+'</a></td>';
 else
 str+=' <td>'+dialed+'</td>';
 if(undialed > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\');">'+undialed+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\',\'\');">'+undialed+'</a></td>';
 else
 str+='<td>'+undialed+'</td>';
 if(answered > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\');">'+answered+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';
 if(userbusy > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\');">'+userbusy+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\',\'\');">'+userbusy+'</a></td>';
 else
 str+='<td>'+userbusy+'</td>';
 
@@ -282,8 +282,7 @@ var notInterested = 0;
 var todaycallBack =0;
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
-console.log(result[i].subList[j].subList[k].scheduleStatusList[m].name)
-console.log(result[i].subList[j].subList[k].scheduleStatusList[m].count)
+
 if(result[i].subList[j].subList[k].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].scheduleStatusList[m].id == 7)
 {
 callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].count;
@@ -297,19 +296,28 @@ if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Now")
 later = result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 if(callBack > 0)
-str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
+{
+   //str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
+   str += '<td>';
+   str += '<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
+   if(todaycallBack > 0)
+	 str += '<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
+   else
+	 str += ''+todaycallBack+'';
+   str += '</td>';
+}
 else
 str+=' <td>'+callBack+'</td>';
 if(interested > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\');">'+interested+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
 str+=' <td>'+interested+'</td>';
 if(notInterested > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\');">'+notInterested+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
 str+='<td>'+notInterested+'</td>';
 if(later > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\');">'+later+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\',\'\');">'+later+'</a></td>';
 else
 str+='<td>'+later+'</td>';
 str+='</tr>';
@@ -389,23 +397,23 @@ allocated = result[i].subList[j].subList[k].subList[p].total;
 undialed = allocated - dialed;
 
 if(allocated > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+allocated+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
 str+=' <td>'+allocated+'</td>';
 if(dialed > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+dialed+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+dialed+'</a></td>';
 else
 str+=' <td>'+dialed+'</td>';
 if(undialed > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+undialed+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+undialed+'</a></td>';
 else
 str+='<td>'+undialed+'</td>';
 if(answered > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+answered+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';
 if(userbusy > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\');">'+userbusy+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+userbusy+'</a></td>';
 else
 str+='<td>'+userbusy+'</td>';
 
@@ -429,19 +437,26 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not
 later = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 if(callBack > 0)
-str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
+{
+  str += '<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
+   if(todaycallBack > 0)
+	str += '<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
+	else
+	  str += ''+todaycallBack+'';
+	str += '</td>';
+}
 else
 str+=' <td>'+callBack+'</td>';
 if(interested > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+interested+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
 str+=' <td>'+interested+'</td>';
 if(notInterested > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+notInterested+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
 str+='<td>'+notInterested+'</td>';
 if(later > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\');">'+later+'</a></td>';
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+later+'</a></td>';
 else
 str+='<td>'+later+'</td>';
 str+='</tr>';
@@ -453,14 +468,45 @@ str+='</tr>';
 str+=' </table>';
 $("#bacthdate").html(str);
 }
-function redirectToAgent(purposeId,programId,campId,scheduleId,status,statusType)
+function redirectToAgent(purposeId,programId,campId,scheduleId,status,statusType,todayDate)
 {
-var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&statusType="+statusType+"");
+if(todayDate != null && todayDate.length > 0)
+ {
+	  var today = new Date();
+	  var dd = today.getDate();
+	  var mm = today.getMonth()+1; //January is 0!
+	  var yyyy = today.getFullYear();
+		if(dd<10){
+			dd='0'+dd
+		} 
+		if(mm<10){
+			mm='0'+mm
+		} 
+		var todayDate = dd+'/'+mm+'/'+yyyy;
+ }
+var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&statusType="+statusType+"&today="+todayDate+"");
     browser1.focus();
 }
-function redirectToAgentwithBatch(purposeId,programId,campId,scheduleId,status,batchId,statusType)
+function redirectToAgentwithBatch(purposeId,programId,campId,scheduleId,status,batchId,statusType,todayDate)
 {
-var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&batchId="+batchId+"&statusType="+statusType+"");
+
+ if(todayDate != null && todayDate.length > 0)
+ {
+	  var today = new Date();
+	  var dd = today.getDate();
+	  var mm = today.getMonth()+1; //January is 0!
+	  var yyyy = today.getFullYear();
+		if(dd<10){
+			dd='0'+dd
+		} 
+		if(mm<10){
+			mm='0'+mm
+		} 
+		var todayDate = dd+'/'+mm+'/'+yyyy;
+ }
+  
+  
+  var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&batchId="+batchId+"&statusType="+statusType+"&today="+todayDate+"");
     browser1.focus();
 }
 
@@ -642,7 +688,7 @@ function buildMembersCountByBatchStatus(result,divId)
 	  $("#"+divId+"").html(str);
 	}
 	else
-     $("#"+divId+"").html("No Data Available.");
+     $("#"+divId+"").html("<div style='text-align:center;margin-top:10px;margin-bottom:10px'>No Data Available.</div>");
 }
 
 function getCallBackDayWiseDetails()
@@ -655,7 +701,6 @@ function getCallBackDayWiseDetails()
 		url  : "getCallBackDayWiseDetailsAction.action"
 	}).done(function(result){
 		buildCallBackDayWiseDetails(result);
-		console.log(result);
 		
 	});
 }

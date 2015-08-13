@@ -61,6 +61,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<IdNameVO> idnemIdNameVOs;
 	private CallBackCountVO callBackCountVO;
 	private List<CallStatusVO> retResult;
+	private String today;
 
 	public List<CallStatusVO> getRetResult() {
 		return retResult;
@@ -262,6 +263,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		this.callBackCountVO = callBackCountVO;
 	}
 
+	public String getToday() {
+		return today;
+	}
+
+	public void setToday(String today) {
+		this.today = today;
+	}
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -308,6 +317,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			inputVo.setUserId(regVo.getRegistrationID());
 			inputVo.setBatchId(jObj.getLong("batchId"));
 			inputVo.setStatusType(jObj.getString("statusType"));
+			inputVo.setDateStr(jObj.getString("toDayDate"));
 			memberList = trainingCampService.getScheduleCallMemberDetails(inputVo);
 			}
 			catch (Exception e) {
