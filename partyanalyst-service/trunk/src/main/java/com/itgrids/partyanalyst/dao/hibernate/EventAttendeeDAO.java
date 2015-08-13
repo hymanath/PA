@@ -661,7 +661,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" group by model.event.eventId ");*/
 		Query queryStr=getSession().createSQLQuery("select ea.tdp_cadre_id,e.event_id,e.name,e.description,e.parent_event_id, count(distinct date(ea.attended_time)) " +
 				" from event e, event_attendee ea where " +
-				" e.event_id = ea.event_id and ea.tdp_cadre_id = :tdpCadreId group by e.event_id ");
+				" e.event_id = ea.event_id and ea.tdp_cadre_id = :tdpCadreId and e.is_active ='true' group by e.event_id ");
 		queryStr.setParameter("tdpCadreId", cadreId);
 		
 	return queryStr.list();	
@@ -687,4 +687,14 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		queryStr.setParameter("uniqueKey", uniqueKey);
 		return queryStr.list();
 	}
+	
+	public List<Object[]> getAttendedEventsCountforCandidate(Long tdpCadreId)
+	{
+		Query query = getSession().createQuery(" select model.eventId,model.event.name, count(distinct model.tdpCadreId)  from EventAttendee model" +
+				" where model.tdpCadreId =:tdpCadreId and " +
+				" model.event.isActive ='true' group by model.eventId  ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return  query.list(); 	
+	}
+	
 }

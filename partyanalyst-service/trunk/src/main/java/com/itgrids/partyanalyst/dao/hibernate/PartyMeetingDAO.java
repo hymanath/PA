@@ -41,4 +41,16 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getPartyMeetingDetailsByMeetingIdList(List<Long> patyMeetingIdsList)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct PM.partyMeetingId, PM.meetingName, PM.partyMeetingLevel.level, PM.partyMeetingType.type,PM.meetingAddress.localArea  from PartyMeeting PM where PM.partyMeetingId in (:patyMeetingIdsList) ");
+		Query query = getSession().createQuery(sb.toString());
+		if(patyMeetingIdsList!=null && patyMeetingIdsList.size()>0){
+			query.setParameterList("patyMeetingIdsList", patyMeetingIdsList);
+		}
+		
+		return query.list();
+	}
 }
