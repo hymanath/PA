@@ -28,7 +28,15 @@ public class TdpCadreFamilyDetailsVO {
 	private String relation;
 	private Long count;
 	private String relativeName;
+	private String membershipNo;
 	
+	
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	public Long getVoterId() {
 		return voterId;
 	}

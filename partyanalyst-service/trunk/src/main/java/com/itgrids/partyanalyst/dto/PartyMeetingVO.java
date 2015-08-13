@@ -21,8 +21,15 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private Long minutsCount=0L;
 	private Long atrPointsCount=0L;
 	private Long documentsCount=0L;
+	private String memberStatus;
 	public List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>(0);
 	
+	public String getMemberStatus() {
+		return memberStatus;
+	}
+	public void setMemberStatus(String memberStatus) {
+		this.memberStatus = memberStatus;
+	}
 	public Long getMinutsCount() {
 		return minutsCount;
 	}
