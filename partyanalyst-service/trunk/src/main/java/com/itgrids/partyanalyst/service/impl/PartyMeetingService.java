@@ -118,13 +118,79 @@ public class PartyMeetingService implements IPartyMeetingService{
 		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
 	}
 	
-	
-	public PartyMeetingVO getPartyMeetingDetailsBySearchType(String memberShipNo,Long constituencyId)
+	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
 		PartyMeetingVO returnVO = new PartyMeetingVO();
 		try {
 			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
-			tdpCadreIdsList.add(commonMethodsUtilService.getLongValueForString(memberShipNo));
+			tdpCadreIdsList.add(tdpCadreId);
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			{
+				List<Object[]> invitationList =  partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList,null);
+				Long invitationCount = 0L;
+				List<Long> invitationMeetingsList = new ArrayList<Long>(0);
+				if(invitationList != null && invitationList.size()>0)
+				{
+					for (Object[] param : invitationList) {
+						Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
+						invitationCount = invitationCount+count;
+						invitationMeetingsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+					}
+				}
+				 
+				 List<Object[]> attendedList =  partyMeetingAttendanceDAO.getAttendenceForCadre(tdpCadreId);
+					Long attendedCount = 0L;
+					if(attendedList != null && attendedList.size()>0)
+					{
+						for (Object[] param : attendedList) {
+							Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
+							attendedCount = attendedCount+count;
+							if(invitationMeetingsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
+							{
+								invitationMeetingsList.remove(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+							}
+						}
+					}
+					
+					Long absentCount = Long.valueOf(String.valueOf(invitationMeetingsList.size()));
+					
+					if(absentCount > 0L)
+					{
+						List<Object[]> eventNames = partyMeetingDAO.getPartyMeetingDetailsByMeetingIdList(invitationMeetingsList);
+						if(eventNames != null && eventNames.size()>0)
+						{
+							List<PartyMeetingVO> partyMeetingList = new ArrayList<PartyMeetingVO>(0);
+							for (Object[] param : eventNames) {
+								PartyMeetingVO vo = new PartyMeetingVO();
+								vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								vo.setMeetingType(commonMethodsUtilService.getStringValueForObject(param[2])+" - "+commonMethodsUtilService.getStringValueForObject(param[3]));
+								vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								vo.setLocation(commonMethodsUtilService.getStringValueForObject(param[4]));
+								vo.setMemberStatus("Absent");
+								partyMeetingList.add(vo);
+							}
+							returnVO.setPartyMeetingVOList(partyMeetingList);
+						}
+					}
+					
+					returnVO.setAbsentCount(absentCount);
+					returnVO.setInvitedCount(invitationCount);
+					returnVO.setAttendedCount(attendedCount);
+					
+					
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartyMeetingsForCadrePeople in PartyMeetingService Class.",e);
+		}
+		return returnVO;
+	}
+	
+	public PartyMeetingVO getPartyMeetingDetailsBySearchType(Long tdpCadreId )
+	{
+		PartyMeetingVO returnVO = new PartyMeetingVO();
+		try {
+			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+			tdpCadreIdsList.add(tdpCadreId);
 			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			{
 				List<Object[]> availMeetingDetls =  partyMeetingInviteeDAO.getPartyMeetingsInvitationsDetailsByCadreIds(tdpCadreIdsList);
@@ -389,6 +455,5 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		return returnVO;
 	}
-	
-	
+		
 }

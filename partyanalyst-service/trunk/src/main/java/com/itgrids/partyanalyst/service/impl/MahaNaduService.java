@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -2828,6 +2829,64 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			LOG.error(" Exception Raised in getAttendeeSummaryForEvents ",e);
 		}
 		return finalList;
+	}
+	
+	public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId)
+	{
+		PartyMeetingVO returnVO = new PartyMeetingVO();
+		try {
+			List<Object[]> invitationList = eventInviteeDAO.getInvitationCountforCandidate(tdpCadreId);
+			Long invitationCount = 0L;
+			List<Long> invitationEventsList = new ArrayList<Long>(0);
+			if(invitationList != null && invitationList.size()>0)
+			{
+				for (Object[] param : invitationList) {
+					Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
+					invitationCount = invitationCount+count;
+					invitationEventsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+				}
+			}
+			
+			List<Object[]> attendedList = eventAttendeeDAO.getAttendedEventsCountforCandidate(tdpCadreId);
+			Long attendedCount = 0L;
+			if(attendedList != null && attendedList.size()>0)
+			{
+				for (Object[] param : attendedList) {
+					Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
+					attendedCount = attendedCount+count;
+					if(invitationEventsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
+					{
+						invitationEventsList.remove(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+					}
+				}
+			}
+			
+			Long absentCount = Long.valueOf(String.valueOf(invitationEventsList.size()));
+			
+			if(absentCount > 0L)
+			{
+				List<Object[]> eventNames = eventDAO.getEventNames(invitationEventsList);
+				if(eventNames != null && eventNames.size()>0)
+				{
+					List<PartyMeetingVO> partyMeetingList = new ArrayList<PartyMeetingVO>(0);
+					for (Object[] param : eventNames) {
+						PartyMeetingVO vo = new PartyMeetingVO();
+						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+						vo.setName(param[1] != null ? param[1].toString():"");
+						partyMeetingList.add(vo);
+					}
+					returnVO.setPartyMeetingVOList(partyMeetingList);
+				}
+			}
+			
+			returnVO.setAbsentCount(absentCount);
+			returnVO.setInvitedCount(invitationCount);
+			returnVO.setAttendedCount(attendedCount);
+			
+		} catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEvents ",e);
+		}
+		return returnVO;
 	}
 }
 
