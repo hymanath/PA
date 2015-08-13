@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +11,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -27,7 +25,9 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
+import com.itgrids.partyanalyst.service.impl.CadreCommitteeService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -62,6 +62,26 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private CallBackCountVO callBackCountVO;
 	private List<CallStatusVO> retResult;
 	private String today;
+	private List<LocationWiseBoothDetailsVO> locations;
+	private ICadreCommitteeService cadreCommitteeService;
+	
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
+	public List<LocationWiseBoothDetailsVO> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<LocationWiseBoothDetailsVO> locations) {
+		this.locations = locations;
+	}
 
 	public List<CallStatusVO> getRetResult() {
 		return retResult;
@@ -762,6 +782,26 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			
 			callBackCountVO = trainingCampService.getCallBackDayWiseDetails(regVO.getRegistrationID());
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSubLevelLctnsForConstituencyAndMandal(){
+		LOG.info("entered into getSubLevelLctnsForConstituencyAndMandal");
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String mandalId = jObj.getString("mandalId");
+			Long locationLevel = jObj.getLong("locationLevel");
+						
+			locations = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(stateId,districtId,constituencyId,mandalId,locationLevel);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
