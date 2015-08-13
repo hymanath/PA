@@ -10522,6 +10522,16 @@
 	       <param name="root">partyMeetingVO</param>
 	  </result>
 	</action>
+	<action name="getEventsOverviewFortdpCadre" class="mahaNaduAction" method="getCadreWiseEventDetails">
+	    <result type="json" name="success">
+	       <param name="root">partyMeetingVO</param>
+	  </result>
+	</action>
+	<action name="getPartyMeetingsOverViewForCadre" class="partyMeetingAction" method="getPartyMeetingsOverViewForCadre">
+	    <result type="json" name="success">
+	       <param name="root">partyMeetingVO</param>
+	  </result>
+	</action>
 	
 	<action name="getSubLevelLctnsForConstituencyAndMandalAction" class="trainingCampAction" method="getSubLevelLctnsForConstituencyAndMandal">
 	    <result type="json" name="success">
