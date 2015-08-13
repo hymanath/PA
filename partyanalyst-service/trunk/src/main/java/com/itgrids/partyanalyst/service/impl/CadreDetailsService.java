@@ -832,6 +832,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					//cadreDetailsVO.setpConstituencyId(cadreFormalDetails[29] !=null ? Long.parseLong(cadreFormalDetails[29].toString()):0l);
 					//cadreDetailsVO.setpConstituencyName(cadreFormalDetails[30] !=null ? cadreFormalDetails[30].toString(): "");
 					cadreDetailsVO.setBoothId(cadreFormalDetails[31] !=null ? Long.parseLong(cadreFormalDetails[31].toString()):0l);
+					cadreDetailsVO.setPartNo(cadreFormalDetails[32] !=null ? cadreFormalDetails[32].toString():"0");
 					
 					if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L)
 						cadreDetailsVO.setPanchayatId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
@@ -1820,9 +1821,26 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 					}
+					
+					List<Object[]> cadreMembersInFamilyList = tdpCadreDAO.checkVoterCardNosCadreNosOrNot(voterIdCardNoList);
+					if(cadreMembersInFamilyList != null && cadreMembersInFamilyList.size() > 0)
+					{
+						for(Object[] params: cadreMembersInFamilyList)
+						{
+							if(params[0] != null)
+							{
+								TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(resultList, params[0].toString());
+							    if(VO != null){
+							    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
+							    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
+							    }
+							}
+							
+						}
+					}
 				}
-				
 			}
+			
 		}catch (Exception e) {
 			LOG.error(" Exception Occured in getCadreFamilyDetails() method, Exception - ",e);
 		}
