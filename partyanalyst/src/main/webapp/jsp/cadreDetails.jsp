@@ -30,6 +30,17 @@
 	
 <style>
 
+.family-identity:after
+{
+	position:absolute;
+	left:45px;
+	background-image:url(dist/img/Card_member.png);
+	content:' ';
+	width:20px;
+	height:20px;
+
+}
+
 .right_arrow {
 	position: relative;
 	background: #fff;
@@ -71,7 +82,7 @@
 {
 	position:absolute;
 	padding:0px;
-	width:650px;
+	width:350px;
 	border-radius:3px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
 	background:#fff !important;
@@ -147,6 +158,7 @@ var globalCadreId = '${cadreId}';
     	<div class="row">
         	<div class="col-md-4 bg_white" style="padding-top:10px;">
 			<input type="hidden" value="" id="cadreBoothId" />
+			<input type="hidden" value="" id="cadrePartNo" />
 			<input type="hidden" value="" id="cadrePanchaytId" />
 			<input type="hidden" value="" id="cadremandalId" />
 			<input type="hidden" value="" id="cadreRuralORUrbanId" />
@@ -299,17 +311,8 @@ var globalCadreId = '${cadreId}';
                     </div>
                     <div class="panel-body">
                     	<div class="row">
-                        	<div class="col-md-4 col-xs-12">
-                            	<table class="table m_0 table-bordered">
-                                	<thead >
-                                    	<th class="text-center" colspan="3">EVENT INVITATIONS</th>
-                                    </thead>
-                                    <tr class="text-center">
-                                    	<td>0<br/>Invited</td>
-                                        <td>0<br/>Participated</td>
-                                        <td>0<br/>Absent</td>
-                                    </tr>
-                                </table>
+                        	<div class="col-md-4 col-xs-12" id="eventInvitatinDiv">
+                            	
                             </div>
                             <div class="col-md-4 col-xs-12">
                             	<table class="table m_0 table-bordered">
@@ -332,7 +335,7 @@ var globalCadreId = '${cadreId}';
 								</div>
                             </div>
 							
-							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" >
+							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" style="display:none;" >
 								<h4 style="border-bottom:1px solid #999">Party Meetings Participation Details</h4>
 								<div id="partyMetindetlsDivId"></div>
 								<!--<table class="table m_0 table-bordered">
@@ -721,6 +724,7 @@ var globalCadreId = '${cadreId}';
 					/* start Survey Fields */	
 									
 					$('#cadreBoothId').val(result.boothId);				
+					$('#cadrePartNo').val(result.partNo);				
 					$('#cadrePanchaytId').val(result.panchayatId);
 					$('#cadremandalId').val(result.tehsilId);	
 					$('#cadreRuralORUrbanId').val(result.localElectionBody);						
@@ -825,6 +829,7 @@ var globalCadreId = '${cadreId}';
 					 getCandidateElectDetatails(localCadreId);
 					 getDeathsAndHospitalizationDetails();
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
+					getCadreFamilyDetailsByCadreId();
 				}
 			});
 		}
@@ -950,7 +955,10 @@ var globalCadreId = '${cadreId}';
 									for(var j in results[i].knownList){
 										str+='<tr>';
 										if(j==0){
-											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
+											if(results[i].name=='Party Office')
+												str+='<td style="border-bottom:#fff;">'+results[i].name+' (<b> VISITORS </b> )</td>';
+											else
+												str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
 										}else{
 											str+='<td style="border:#fff;"></td>';
 										}
@@ -1728,17 +1736,32 @@ function getCadreFamilyDetailsByCadreId()
  
  function buildCadreFamilyDetails(result)
  {
+	 var constId = $('#cadreConstituencyId').val();
+	 var partNo = $('#cadrePartNo').val();
 	 var str = '';
 	 str += '<ul>';
 	 for(var i in result)
 	 {
 		 str += '<li>';
          str += '<div class="media">';
-         str += '<div class="media-left">';
-         str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-         str += '</div>';
+		 if(result[i].tdpCadreId != null ){
+			 str += '<div class="media-left ">';
+			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '</div>';
+		 }
+		 else
+		 {
+			 str += '<div class="media-left">';
+			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '</div>';
+		 }
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
+		if(result[i].tdpCadreId != null )
+		str+=' [ <b><a href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" data-toggle="tooltip" data-placement="right" title="Membership No" class="membershipno-cls">'+result[i].membershipNo+'</a></b> ] ';
+	
          str += '<span class="pull-right">';
 		 if(result[i].count != null && result[i].count> 0)
            str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" >';
@@ -1772,6 +1795,9 @@ function getCadreFamilyDetailsByCadreId()
 	 }
 	 str += '</ul>';
 	$("#familyMembersDiv").html(str);
+	$(function () {
+	  $('.membershipno-cls').tooltip()
+	})
  }
  
  
@@ -2541,7 +2567,7 @@ else
 {
 		getCategoryWiseStatusCount();
 		getTotalMemberShipRegistrationsInCadreLocation();		
-		getCadreFamilyDetailsByCadreId();
+		
 		getElectionPerformanceInCadreLocation();
 		getApprovedFinancialSupprotForCadre();
 		cadreFormalDetailedInformation(globalCadreId);
@@ -2564,7 +2590,7 @@ function getCadreIdByMemberShipId()
 			globalCadreId = result;
 			getCategoryWiseStatusCount();
 			getTotalMemberShipRegistrationsInCadreLocation();		
-			getCadreFamilyDetailsByCadreId();
+			//getCadreFamilyDetailsByCadreId();
 			getElectionPerformanceInCadreLocation();
 			getApprovedFinancialSupprotForCadre();
 			cadreFormalDetailedInformation(globalCadreId);
@@ -3003,8 +3029,7 @@ function getPartyMeetingDetails()
 {
 	$('#partyMeetingDescDiv').html('');
 	var jsObj={
-		membershipNo:globalCadreId,
-		constituencyId:0		
+		tdpCadreId:globalCadreId		
 	}	
 	$.ajax({
 			type:'POST',
@@ -3020,9 +3045,26 @@ function getPartyMeetingDetails()
 					str+='</thead>';
 					str+='<tr class="text-center">';
 					var myResult = result.partyMeetingVOList[0];
-						str+='<td>'+myResult.invitedCount+'<br/>Invited</td>';
-						str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
-						str+='<td>'+myResult.absentCount+'<br/>Absent</td>';
+
+						str+='<td>'+myResult.invitedCount+'<br/>Invited</td>';						
+						if(parseInt(myResult.invitedCount) > parseInt(myResult.attendedCount))
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
+						{
+							var absentCount = 0;
+							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
 						str+='</tr>';
 					str+='</table>';
 
@@ -3036,8 +3078,7 @@ function getPartyMeetingDetaildReprt()
 {
 	$('#partyMetindetlsDivId').html('');
 	var jsObj={
-		membershipNo:globalCadreId,
-		constituencyId:0		
+		tdpCadreId:globalCadreId
 	}	
 	$.ajax({
 			type:'POST',
@@ -3046,10 +3087,11 @@ function getPartyMeetingDetaildReprt()
 			}).done(function(result){
 				if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
 				{
+					$('#partymettingParlDivId').show();
 					var str='';
 					str+='<table class="table m_0 table-bordered">';
 					str+='<thead>';
-					str+='<th class="text-center">MEETING TYPE </th>';
+					str+='<th class="text-center"> MEETING NAME </th>';
 					str+='<th class="text-center"> INVITED </th>';
 					str+='<th class="text-center"> ATTENDED </th>';
 					str+='<th class="text-center"> ABSENT </th>';
@@ -3065,14 +3107,15 @@ function getPartyMeetingDetaildReprt()
 						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
 						str+='<thead>';
 						str+='<tr>';
-						str+='<th style=""> MEETING NAME </th>';
+						//str+='<th style=""> MEETING NAME </th>';
 						str+='<th style=""> LOCATION </th>';
+						str+='<th style=""> TIME </th>';						
 						//str+='<th> MEETING_TYPE </th>';
 						str+='<th style=""> START DATE</th>';
 						str+='<th style=""> END DATE</th>';
-						str+='<th style=""> ATTENDED </th>';
-						str+='<th style=""> INVITED </th>';
-						str+='<th style=""> ABSENT </th>';
+						//str+='<th style=""> ATTENDED </th>';
+						//str+='<th style=""> INVITED </th>';
+						//str+='<th style=""> ABSENT </th>';
 						str+='</tr>';
 						str+='<thead>';
 						str+='<tbody>';
@@ -3081,14 +3124,16 @@ function getPartyMeetingDetaildReprt()
 							for(var k in result.partyMeetingVOList[i].partyMeetingVOList)
 							{
 								str+='<tr>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].name+'</td>';
+									//str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
 									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].location+'</td>';
+									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].name+'</td>';
+									
 									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingLevelStr+' - //'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingType+'</td>';
 									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].startDateStr+'</td>';
 									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].endDateStr+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].attendedCount	+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].invitedCount+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].absentCount+'</td>';
+									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].attendedCount	+'</td>';
+									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].invitedCount+'</td>';
+									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].absentCount+'</td>';
 								str+='</tr>';
 							}
 						}
@@ -3096,9 +3141,54 @@ function getPartyMeetingDetaildReprt()
 						str+='</table>';
 						str+='</li>';
 						str+='</ul> </td>';
-						
-						str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
-						str+='<td> '+result.partyMeetingVOList[i].absentCount+' </td>';
+						if(parseInt(result.partyMeetingVOList[i].invitedCount) > parseInt(result.partyMeetingVOList[i].attendedCount))
+						{
+							var absentCount = parseInt(result.partyMeetingVOList[i].invitedCount) - parseInt(result.partyMeetingVOList[i].attendedCount);
+							str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
+							//str+='<td> '+absentCount+' </td>';
+						str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+absentCount+'</u>';
+						str+='<ul class="count-hover right_arrow">';
+						str+='<li>';
+						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
+						str+='<thead>';
+						str+='<tr>';
+						str+='<th style=""> MEETING NAME </th>';
+						str+='<th style=""> LOCATION </th>';
+						str+='<th style=""> TIME </th>';
+						str+='<th style=""> STATUS </th>';
+						str+='</tr>';
+						str+='<thead>';
+						str+='<tbody>';
+						if(absetPArtyMeetingsArr != null && absetPArtyMeetingsArr.length>0)
+						{
+							for(var k in absetPArtyMeetingsArr)
+							{
+								str+='<tr>';
+									str+='<td> '+absetPArtyMeetingsArr[k].meetingName+'</td>';
+									str+='<td> '+absetPArtyMeetingsArr[k].location+' </td>';
+									str+='<td> '+absetPArtyMeetingsArr[k].time+' </td>';
+									str+='<td> '+absetPArtyMeetingsArr[k].status+' </td>';
+								str+='</tr>';
+							}
+						}
+						str+='</tbody>';
+						str+='</table>';
+						str+='</li>';
+						str+='</ul> </td>';
+						}
+						else if(parseInt(result.partyMeetingVOList[i].invitedCount) < parseInt(result.partyMeetingVOList[i].attendedCount))
+						{
+							var absentCount = 0;
+							str+='<td> '+result.partyMeetingVOList[i].invitedCount+' </td>';
+							str+='<td> '+absentCount+' </td>';
+						}
+						else
+						{
+							var absentCount = 0;
+							str+='<td> '+result.partyMeetingVOList[i].invitedCount+' </td>';
+							str+='<td> '+absentCount+' </td>';							
+
+						}
 						str+='</tr>';
 					}
 					
@@ -3110,8 +3200,120 @@ function getPartyMeetingDetaildReprt()
 			});
 }
 
-getPartyMeetingDetaildReprt();
-getPartyMeetingDetails();
+var absetPArtyMeetingsArr = new Array();
+function getPartyMeetingsOverViewForCadre()
+{
+	absetPArtyMeetingsArr=[];
+	$('#partyMetindetlsDivId').html('');
+	var jsObj={
+		tdpCadreId:globalCadreId
+	}	
+	$.ajax({
+			type:'POST',
+			 url: 'getPartyMeetingsOverViewForCadre.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(myResult){
+				if(myResult != null)
+				{
+					var str='';
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+					str+='<th class="text-center" colspan="3">PARTY MEETINGS</th>';
+					str+='</thead>';
+					str+='<tr class="text-center">';
+						str+='<td>'+myResult.invitedCount+'<br/>Invited</td>';						
+						if(parseInt(myResult.invitedCount) > parseInt(myResult.attendedCount))
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
+						{
+							var absentCount = 0;
+							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						str+='</tr>';
+					str+='</table>';
+
+					$('#partyMeetingDescDiv').html(str);
+					
+					var resultList = myResult.partyMeetingVOList;
+					if(resultList != null && resultList.length>0)
+					{
+						for(var k in resultList)
+						{
+							var absentObj = {
+								meetingName:resultList[k].meetingType,
+								location:resultList[k].location,
+								time:resultList[k].name,
+								status : resultList[k].memberStatus
+							};							
+							absetPArtyMeetingsArr.push(absentObj);
+						}
+					}
+					
+					getPartyMeetingDetaildReprt();
+				}
+			});
+}
+
+
+function getEventsOverviewFortdpCadre()
+{
+	$('#eventInvitatinDiv').html('');
+	var jsObj={
+		tdpCadreId:globalCadreId
+	}	
+	$.ajax({
+			type:'POST',
+			 url: 'getEventsOverviewFortdpCadre.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(myResult){
+				if(myResult != null)
+				{
+					var str='';
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+					str+='<th class="text-center" colspan="3"> EVENTS INVITATION </th>';
+					str+='</thead>';
+					str+='<tr class="text-center">';
+						str+='<td>'+myResult.invitedCount+'<br/>Invited</td>';						
+						if(parseInt(myResult.invitedCount) > parseInt(myResult.attendedCount))
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
+						{
+							var absentCount = 0;
+							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						else
+						{
+							var absentCount = parseInt(myResult.invitedCount) - parseInt(myResult.attendedCount);
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
+							str+='<td>'+absentCount+'<br/>Absent</td>';
+						}
+						str+='</tr>';
+					str+='</table>';
+
+					$('#eventInvitatinDiv').html(str);
+				}
+			});
+}
+
+getPartyMeetingsOverViewForCadre();
+getEventsOverviewFortdpCadre();
 </script>
 </body>
 </html>
