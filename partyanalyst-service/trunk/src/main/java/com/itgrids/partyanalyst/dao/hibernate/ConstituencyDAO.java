@@ -1406,4 +1406,29 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		
 	}
 	
+	public List<Object[]> getConstituenciesByStateAndDistrict(Long stateId, Long districtId){
+		 StringBuilder str = new StringBuilder();
+			 
+			  str.append("select model.constituencyId , model.name from Constituency model" +
+					" where model.electionScope.electionType.electionTypeId = :electionTypeId and model.deformDate is null");
+			  if(districtId.equals(0l)){
+				  if(stateId.equals(36l)){
+					  str.append(" and model.state.stateId =36 and model.district.districtId between 11 and 23 order by model.name");
+				  }else if(stateId.equals(1l)){
+					  str.append(" and model.state.stateId = 1 and model.district.districtId between 1 and 10 order by model.name");
+				  }else{
+					  str.append(" and model.district.state.stateId in(1,36) order by model.name");
+				  }
+			  }else{
+				  str.append(" and model.district.districtId=:districtId order by model.district.districtName");
+			  }
+			 
+			  Query query = getSession().createQuery(str.toString());
+			  query.setParameter("electionTypeId", 2l);
+			  if(districtId != 0){
+				  query.setParameter("districId", districtId);
+			  }
+			return query.list();
+	}
+	
 }
