@@ -82,16 +82,24 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getPartyMeetingsOverViewForCadre()
+	{
+		try {
+			 jObj = new JSONObject(getTask());
+		     Long tdpCadreId = jObj.getLong("tdpCadreId");
+		     partyMeetingVO = partyMeetingService.getPartyMeetingsForCadrePeople(tdpCadreId);
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartyMeetingDetailsForCadre in PartyMeetingAction Class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getPartyMeetingDetailsForCadre()
 	{
 		try {
 			 jObj = new JSONObject(getTask());
-		    // session = request.getSession();
-		    // RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
-		     String membershipNo = jObj.getString("membershipNo");
-		     Long constituencyId = jObj.getLong("constituencyId");
-		     
-		     partyMeetingVO = partyMeetingService.getPartyMeetingDetailsBySearchType(membershipNo,constituencyId);
+		     Long tdpCadreId = jObj.getLong("tdpCadreId");
+		     partyMeetingVO = partyMeetingService.getPartyMeetingDetailsBySearchType(tdpCadreId);
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getPartyMeetingDetailsForCadre in PartyMeetingAction Class.",e);
 		}
@@ -102,8 +110,6 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	{
 		try {
 			 jObj = new JSONObject(getTask());
-		    // session = request.getSession();
-		    // RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
 		     Long meetingTypeId = jObj.getLong("meetingTypeId");
 		    partyMeetingVO = partyMeetingService.getMeetingTypeWiseDescription(meetingTypeId);
 		} catch (Exception e) {
