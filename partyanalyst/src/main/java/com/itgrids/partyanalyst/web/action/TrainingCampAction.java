@@ -69,11 +69,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long locationLevelId;
 	private Long locationId;
 	private Long campCallerId;
-	
-	
-	public Long getLocationLevelId() {
-		return locationLevelId;
-	}
+	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 
 	public void setLocationLevelId(Long locationLevelId) {
 		this.locationLevelId = locationLevelId;
@@ -123,7 +119,11 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public List<CallStatusVO> getRetResult() {
 		return retResult;
 	}
-
+	
+	public Long getLocationLevelId() {
+		return locationLevelId;
+	}
+	
 	public void setRetResult(List<CallStatusVO> retResult) {
 		this.retResult = retResult;
 	}
@@ -327,6 +327,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public void setToday(String today) {
 		this.today = today;
 	}
+	
+	public List<TrainingCampScheduleVO> getTrainingCampScheduleVOs() {
+		return trainingCampScheduleVOs;
+	}
+
+	public void setTrainingCampScheduleVOs(
+			List<TrainingCampScheduleVO> trainingCampScheduleVOs) {
+		this.trainingCampScheduleVOs = trainingCampScheduleVOs;
+	}
 
 	public Long getCampCallerId() {
 		return campCallerId;
@@ -431,11 +440,12 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			String searchType=jObj.getString("searchType");
 			String fromDate=jObj.getString("fromdate");
 			String toDate=jObj.getString("toDate");
+			String agentType = jObj.getString("agentType");
 			
 			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
 			
 			if(userIds !=null){
-				trainingCampScheduleVO = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate);
+				trainingCampScheduleVO = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate,agentType);
 			}
 			
 		}catch(Exception e){
@@ -862,6 +872,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getCallerAgentDistricts()
 	{
 		try{
@@ -957,5 +968,41 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCallsDetailsOfCallCenterAdmin(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds();
+			
+			trainingCampScheduleVOs=trainingCampService.getCallsDetailsOfCallCenterAdmin(userIds,fromDate,toDate);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCallsDetailsOfCallCenterAdmin() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getUpComingBatchDetails(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			trainingCampScheduleVO=trainingCampService.getUpComingBatchDetails(fromDate,toDate);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCallsDetailsOfCallCenterAdmin() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+		
+	} 
+	
+	
 	
 }

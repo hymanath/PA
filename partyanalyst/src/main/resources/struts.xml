@@ -10571,5 +10571,17 @@
 	  </result>
 	</action>
 	
+	<action name="getCallsDetailsOfCallCenterAdminAction" class="trainingCampAction" method="getCallsDetailsOfCallCenterAdmin">
+	    <result type="json" name="success">
+	       <param name="root">trainingCampScheduleVOs</param>
+	  </result>
+	</action>
+	<action name="getUpComingBatchDetailsAction" class="trainingCampAction" method="getUpComingBatchDetails">
+	    <result type="json" name="success">
+	       <param name="root">trainingCampScheduleVO</param>
+	  </result>
+	</action>
+	
+	
 </package>
 </struts>      
