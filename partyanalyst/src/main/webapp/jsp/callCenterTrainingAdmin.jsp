@@ -233,20 +233,20 @@
 							</table>
 							<table class="table table-bordered table-condensed">
 								<tr>
-									<td rowspan="2">UPCOMING SCHEDULE<br/><p class="text-center">04</p></td>
-									<td>Allocated to Agents <span class="pull-right">03</span></td>
+									<td rowspan="2">UPCOMING SCHEDULE<br/><p class="text-center"><span id="upcmngSchCountId">0</span></p></td>
+									<td>Allocated to Agents <span class="pull-right" id="upAlctId">0</span></td>
 								</tr>
 								<tr>
-									<td>Not Allocated<span class="pull-right">03</span></td>
+									<td>Not Allocated<span class="pull-right" id="upNtAlctId">0</span></td>
 								</tr>
 							</table>
 							<table class="table table-bordered">
 								<tr>
-									<td rowspan="2">BATCH CONFIRMATION<br/><p class="text-center">04</p></td>
-									<td>Allocated to Agents <span class="pull-right">03</span></td>
+									<td rowspan="2">BATCH CONFIRMATION<br/><p class="text-center"><span id="btchConfId">0</span></p></td>
+									<td>Allocated to Agents <span class="pull-right" id="btchAlcId">0</span></td>
 								</tr>
 								<tr>
-									<td>Not Allocated<span class="pull-right">03</span></td>
+									<td>Not Allocated<span class="pull-right" id="btchNtalctedId">03</span></td>
 								</tr>
 							</table>
 						</div>
@@ -257,7 +257,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-sm pull-right" style="margin-top:-7px">Assign to Agents</button>
-										<span class="pull-right col-md-3" style="margin-top:-8px">
+										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
 											<div class="input-group">
 												<span class="input-group-addon">
 													<i class="glyphicon glyphicon-calendar"></i>
@@ -265,7 +265,7 @@
 												</span>
 												<input type="text" class="form-control" id="reportrange">
 											</div>
-										</span>
+										</span> -->
 									</h4>
 								</div>
 								<div class="panel-body pad_0">
@@ -1192,6 +1192,7 @@ function buildingMembersFilledInCalenderBatch(result){
 		
 		$("#adminAssignedTdId").html("");
 		
+		$("#dataLoadingImgForAdminAssignedTdId").show();
 		
 		var fromDate=$(".dp_startDate").val();
 		var toDate=$(".dp_endDate").val();
@@ -1207,6 +1208,8 @@ function buildingMembersFilledInCalenderBatch(result){
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				
+				$("#dataLoadingImgForAdminAssignedTdId").hide();
+				
 				var str='';
 				if(result !=null){
 					str+='<table class="table table-bordered m_0 table-condensed">';
@@ -1216,23 +1219,10 @@ function buildingMembersFilledInCalenderBatch(result){
 								str+='<td class="text-yellow">Dialled</td>';
 								str+='<td class="text-yellow">Not Dialled</td>';
 								
-								/* for(var i in result){
-									
-									if(result[i].trainingCampVOList !=null && result[i].trainingCampVOList.length >0){
-										
-										if(result[i].trainingCampVOList[0].status == "Call Back - Busy"){
-											
-										}
-										
-									}
-									
-									
-								} */
-								
 								str+='<td>Interested</td>';
 								str+='<td class="interested-text">Not Interested</td>';
-								str+='<td class="text-info">Call Back - Busy</td>';
-								str+='<td class="text-danger">Call Back - Confirm Later</td>';
+								str+='<td class="text-info">Busy</td>';
+								str+='<td class="text-danger">Confirm Later</td>';
 							str+='</tr>';
 							for(var i in result){
 								
@@ -1322,8 +1312,14 @@ function buildingMembersFilledInCalenderBatch(result){
 			 url: 'getUpComingBatchDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				
-				
+				if(result !=null){
+					$("#upcmngSchCountId").html(result.upcomingscheduleCnt);
+					$("#upAlctId").html(result.upcomingAllocatedAgnt);
+					$("#upNtAlctId").html(result.upNotAllocated);
+					$("#btchConfId").html(result.batchConfirmCnt);
+					$("#btchAlcId").html(result.btchAllocatedCnt);
+					$("#btchNtalctedId").html(result.btchNotAllocated);
+				}
 			});
 		
 	}
