@@ -163,7 +163,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
 				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
@@ -533,7 +533,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
 				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
@@ -560,7 +560,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
 				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
@@ -661,13 +661,19 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
 				" model.trainingCampScheduleInvitee.remarks," +
 				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name " +
-				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" " +
-				" where model.trainingCampCallerId = :callerId " +
+				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
+				if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
+				str.append(" ,TdpCommitteeMember model1 ");
+				str.append(" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
 				" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+				if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
+				{
+					str.append(" and model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
+							" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:committeeLevelId ");
+				}
 		if(status.equalsIgnoreCase("undialed"))
 			str.append(" and campCallStatus.campCallStatusId is null");
 		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
@@ -680,22 +686,23 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		if(toDayDate != null)
 		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
-		if(inputVo.getDistrictId() != null)
+		if(inputVo.getDistrictId() != null && inputVo.getDistrictId()  > 0)
 		{
 			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtId =:districtId ");
 		}
-		if(inputVo.getConstituencyId() != null)
+		if(inputVo.getConstituencyId() != null && inputVo.getConstituencyId() > 0)
 		{
 			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.constituencyId =:constituencyId ");
 		}
-		if(inputVo.getMandalId() != null)
+		if(inputVo.getMandalId() != null && inputVo.getMandalId() > 0)
 		{
 			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.tehsil.tehsilId =:tehsilId ");
 		}
-		if(inputVo.getVillageId() != null)
+		if(inputVo.getVillageId() != null && inputVo.getVillageId() > 0)
 		{
 			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.panchayat.panchayatId =:panchayatId ");
 		}
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", inputVo.getUserId());
 		query.setParameter("callPurposeId", inputVo.getPurposeId());
@@ -709,6 +716,18 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		if(toDayDate != null)
 		 query.setDate("toDayDate", toDayDate);
+		if(inputVo.getDistrictId() != null && inputVo.getDistrictId() > 0)
+			query.setParameter("districtId", inputVo.getDistrictId());
+		if(inputVo.getConstituencyId() != null && inputVo.getConstituencyId() > 0)
+			query.setParameter("constituencyId", inputVo.getConstituencyId());
+		if(inputVo.getMandalId() != null && inputVo.getMandalId() > 0)
+			query.setParameter("tehsilId", inputVo.getMandalId());
+		if(inputVo.getVillageId() != null && inputVo.getVillageId() > 0)
+			query.setParameter("panchayatId", inputVo.getVillageId());
+		if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
+		{
+			query.setParameter("committeeLevelId", inputVo.getCommitteeLevelId());
+		}	
 		
 		return query.list();
 	}
