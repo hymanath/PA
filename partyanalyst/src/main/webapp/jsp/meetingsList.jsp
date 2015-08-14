@@ -521,7 +521,7 @@ $(document).ready(function() {
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].meetingName+'</td>';
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
-					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].meetingType+'\',\''+$("#meetingLocationLevel option:selected").text()+'\',\''+result[i].locationLevelId+'\',\''+result[i].locationId+'\');">UPDATE</button></td>';
+					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
 				}
 				str+='</tbody>';
 				str+='</table>';
@@ -694,8 +694,8 @@ $("#meetingLocationLevel").change(function(){
 		});
 	}
 		
-	function updateMeeting(meetingType,meetingLocationLevel,locationlevelId,locationId){
-		window.open('meetingDetailsList.action?meetingType='+meetingType+'&meetingLocationLevel='+meetingLocationLevel+'&locationLevelId='+locationlevelId+'&locationId='+locationId+'', '_blank');
+	function updateMeeting(meetingMeetingId){
+		window.open('meetingDetailsList.action?meetingMeetingId='+meetingMeetingId+'', '_blank');
 		//alert(meetingType+"--"+meetingLocationLevel);
 	}
 </script>

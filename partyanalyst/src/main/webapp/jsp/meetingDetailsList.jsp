@@ -264,9 +264,6 @@ header.eventsheader {
 
 <script type="text/javascript">
 
-	var meetingType='${meetingType}';
-	var meetingLocationLevel='${meetingLocationLevel}';
-	
 	$('.btn-custom-g').click(function(){
 		$('.data-edit').show();
 		$('.data').hide();
@@ -285,10 +282,6 @@ header.eventsheader {
 	  }, function(start, end, label) {
 		console.log(start.toISOString(), end.toISOString(), label);
 	  });
-	  
-	  $("#meetingType").html(meetingType);
-	  $("#location").html("("+meetingLocationLevel+")");
-	  
    });
 			   
 	$("#mainheading").html("TRAINING PROGRAM");
