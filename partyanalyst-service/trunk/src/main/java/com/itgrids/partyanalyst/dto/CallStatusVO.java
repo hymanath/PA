@@ -4,6 +4,7 @@ public class CallStatusVO {
 private Long id;
 private String status;
 private String locationLevel;
+private Long locationLevelId;
 private Long locationId;
 private String meetingType;
 private Long meetingTypeId;
@@ -11,8 +12,21 @@ private Long locationValue;
 private String location;
 private String startTime;
 private String endTime;
+private String meetingName;
 
 
+public Long getLocationLevelId() {
+	return locationLevelId;
+}
+public void setLocationLevelId(Long locationLevelId) {
+	this.locationLevelId = locationLevelId;
+}
+public String getMeetingName() {
+	return meetingName;
+}
+public void setMeetingName(String meetingName) {
+	this.meetingName = meetingName;
+}
 public Long getMeetingTypeId() {
 	return meetingTypeId;
 }
