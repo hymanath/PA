@@ -51,7 +51,7 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getUserIdsByType();
 	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId);
 	public List<CallStatusVO> getMeetingTypes();
-	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long meetingLocation);
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString);
 	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId);
 	public List<IdNameVO> getCallerAgentDistricts(Long userId);
 	public List<IdNameVO> getCallerAgentConstituencies(Long userId,Long districtId);
