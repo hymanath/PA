@@ -709,7 +709,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		if(scheduleIds !=null){
+		if(scheduleIds !=null  && scheduleIds.size() > 0){
 			query.setParameterList("scheduleIds", scheduleIds);
 		}
 		if(fromDate !=null && toDate !=null){
