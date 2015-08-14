@@ -659,11 +659,10 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" from  EventAttendee model" +
 				" where model.tdpCadre.tdpCadreId =:tdpCadreId " +
 				" group by model.event.eventId ");*/
-		Query queryStr=getSession().createSQLQuery("select ea.tdp_cadre_id,e.event_id,e.name,e.description,e.parent_event_id, count(distinct date(ea.attended_time)) " +
+		Query queryStr=getSession().createSQLQuery("select ea.tdp_cadre_id,e.event_id,e.name,e.description,e.parent_event_id, count(distinct date(ea.attended_time)),e.event_type_id " +
 				" from event e, event_attendee ea where " +
-				" e.event_id = ea.event_id and ea.tdp_cadre_id = :tdpCadreId and e.is_active ='true' group by e.event_id ");
+				" e.event_id = ea.event_id and ea.tdp_cadre_id = :tdpCadreId and e.is_active ='true'  group by e.event_id ");
 		queryStr.setParameter("tdpCadreId", cadreId);
-		
 	return queryStr.list();	
 	}
 	public List<Object[]> getEventDetailsOfCadre1(Long cadreId){
@@ -692,7 +691,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	{
 		Query query = getSession().createQuery(" select model.eventId,model.event.name, count(distinct model.tdpCadreId)  from EventAttendee model" +
 				" where model.tdpCadreId =:tdpCadreId and " +
-				" model.event.isActive ='true' group by model.eventId  ");
+				" model.event.isActive ='true' group by model.event.parentEventId  ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return  query.list(); 	
 	}
