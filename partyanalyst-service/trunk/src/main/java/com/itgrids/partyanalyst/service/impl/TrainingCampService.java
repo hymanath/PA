@@ -2343,7 +2343,7 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
-			//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName
+			//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName,partymeetingid
 			if(meetings!=null && meetings.size()>0){
 				for (Object[] objects : meetings) {
 					CallStatusVO vo = new CallStatusVO();
@@ -2381,6 +2381,7 @@ public class TrainingCampService implements ITrainingCampService{
 					vo.setStartTime(objects[5].toString());
 					vo.setEndTime(objects[6].toString());
 					vo.setMeetingName(objects[8].toString());
+					vo.setPartyMeetingId((Long)objects[9]);
 					allMeetings.add(vo);
 					
 				}

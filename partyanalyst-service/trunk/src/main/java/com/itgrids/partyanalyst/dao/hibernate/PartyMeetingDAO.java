@@ -23,7 +23,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		
 		sb.append(" select model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type, " +
 				" model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level, " +
-				" model.locationValue, date(model.startDate), date(model.endDate),model.meetingAddress.userAddressId,model.meetingName " +
+				" model.locationValue, date(model.startDate), date(model.endDate),model.meetingAddress.userAddressId,model.meetingName,model.partyMeetingId " +
 				"from PartyMeeting model " +
 				" where model.isActive='Y' " );
 		if(meetingType!=null && meetingType>0l){
