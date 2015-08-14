@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeCallerDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -103,6 +104,7 @@ public class TrainingCampService implements ITrainingCampService{
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IWardDAO wardDAO;
 	private IPanchayatDAO panchayatDAO;
+	private ITrainingCampUserRelationDAO trainingCampUserRelationDAO;
 	
 	
 	public IPanchayatDAO getPanchayatDAO() {
@@ -300,6 +302,16 @@ public class TrainingCampService implements ITrainingCampService{
 		this.dateUtilService = dateUtilService;
 	}
 	
+	
+	public ITrainingCampUserRelationDAO getTrainingCampUserRelationDAO() {
+		return trainingCampUserRelationDAO;
+	}
+
+	public void setTrainingCampUserRelationDAO(
+			ITrainingCampUserRelationDAO trainingCampUserRelationDAO) {
+		this.trainingCampUserRelationDAO = trainingCampUserRelationDAO;
+	}
+
 	public List<BasicVO> getAllPrograms()
 	{
 		try{
@@ -1254,8 +1266,8 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 				}
 			}
-			
-			
+			if(returnList.size() > 0)
+			  returnList.get(0).setCampCallerId(userId);
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallStatusCount() method", e);
@@ -1471,6 +1483,8 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 			}
 		  }
+			if(returnList.size() > 0)
+			  returnList.get(0).setCampCallerId(userId);
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallStatusCount() method", e);
@@ -2600,4 +2614,32 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return returnList;
 	}
+	
+	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId)
+	{
+		List<BasicVO> basicVOList = null;
+		try{
+			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(campCallerAdminId);
+			if(list != null && list.size() > 0)
+			{
+				basicVOList = new ArrayList<BasicVO>(0);
+				for(Object[] params : list)
+				{
+					BasicVO basicVO = new BasicVO();
+					String name = "";
+					 name += params[1] != null?params[1].toString():"";
+					 name += params[2]!= null?(" "+params[2].toString()):"";
+					 basicVO.setId((Long)params[0]);
+					 basicVO.setName(name);
+					 basicVOList.add(basicVO);
+				}
+			}
+				
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAgents() method, Exception - ",e); 
+		}
+		
+		return basicVOList;
+	}
+	
 }

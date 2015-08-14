@@ -798,4 +798,14 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	}
 	
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId)
+	{
+		Query query = getSession().createQuery(" select distinct model.trainingCampUser.user.userId,model.trainingCampUser.user.firstName,model.trainingCampUser.user.lastName" +
+				" from TrainingCampScheduleInviteeCaller model where model.trainingCampCallerAdminId =:campCallerAdminId ");
+		
+		query.setParameter("campCallerAdminId", campCallerAdminId);
+		return query.list();
+	}
+
 }

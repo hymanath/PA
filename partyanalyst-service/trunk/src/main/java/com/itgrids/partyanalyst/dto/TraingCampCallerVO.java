@@ -10,6 +10,7 @@ public class TraingCampCallerVO {
 	private Long count =0l;
 	private Long spanCnt = 0l;
 	private Long todayCnt = 0l;
+	private Long campCallerId;
 	
 	
 	public Long getTodayCnt() {
@@ -74,6 +75,13 @@ public class TraingCampCallerVO {
 	public void setSubList(List<TraingCampCallerVO> subList) {
 		this.subList = subList;
 	}
+	public Long getCampCallerId() {
+		return campCallerId;
+	}
+	public void setCampCallerId(Long campCallerId) {
+		this.campCallerId = campCallerId;
+	}
+	
 	
 
 }
