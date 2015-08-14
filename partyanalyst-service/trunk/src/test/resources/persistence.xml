@@ -113,19 +113,37 @@
 		<class>com.itgrids.partyanalyst.model.TdpCadreCandidate</class>
 		<class>com.itgrids.partyanalyst.model.SubEvent</class>
 		<class>com.itgrids.partyanalyst.model.TrainingCampProgram</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCamp</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampDistrict</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampSchedule</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampBatch</class>
-		     <class>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack</class>
-		     <class>com.itgrids.partyanalyst.model.BatchStatus</class>    
-		     <class>com.itgrids.partyanalyst.model.TrainingCampUser</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampUserType</class>
-		     <class>com.itgrids.partyanalyst.model.CampCallPurpose</class>
-		     <class>com.itgrids.partyanalyst.model.CampCallStatus</class>
-		     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCamp</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampDistrict</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampSchedule</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampBatch</class>
+	     <class>com.itgrids.partyanalyst.model.ScheduleInviteeStatus</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack</class>
+	     <class>com.itgrids.partyanalyst.model.BatchStatus</class>    
+	     <class>com.itgrids.partyanalyst.model.TrainingCampUser</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampUserType</class>
+	     <class>com.itgrids.partyanalyst.model.CampCallPurpose</class>
+	     <class>com.itgrids.partyanalyst.model.CampCallStatus</class>
+	     <class>com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller</class>
+	     <class>com.itgrids.partyanalyst.model.PartyMeeting </class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingType </class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingOccurrence </class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingInvitee </class>
+		 <class>com.itgrids.partyanalyst.model.Attendance </class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingAttendance </class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingMinute </class>
+ 	     <class>com.itgrids.partyanalyst.model.PartyMeetingType</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingLevel</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingOccurrence</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeeting</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingInvitee</class>
+		 <class>com.itgrids.partyanalyst.model.Attendance</class>
+		 <class>com.itgrids.partyanalyst.model.AttendanceTabUser</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingAttendance</class>
+		 <class>com.itgrids.partyanalyst.model.TrainingCampAttendance</class>
+		 <class>com.itgrids.partyanalyst.model.PartyMeetingMinute</class>
+		 <class>com.itgrids.partyanalyst.model.EventType</class>
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
