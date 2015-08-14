@@ -307,7 +307,7 @@ var globalCadreId = '${cadreId}';
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;EVENT PARTICIPATION ACTIVITIES & TRAINING DETAILS</h4>
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES</h4>
                     </div>
                     <div class="panel-body">
                     	<div class="row">
@@ -330,13 +330,13 @@ var globalCadreId = '${cadreId}';
                             	
                             </div>
                             <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
-								<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>
+								<!--<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>-->
 								<div id="participationTableDivId" class="table-responsive">
 								</div>
                             </div>
 							
 							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" style="display:none;" >
-								<h4 style="border-bottom:1px solid #999">Party Meetings Participation Details</h4>
+								<!--<h4 style="border-bottom:1px solid #999">Party Meetings Participation Details</h4> -->
 								<div id="partyMetindetlsDivId"></div>
 								<!--<table class="table m_0 table-bordered">
                                 	<thead>
@@ -922,48 +922,55 @@ var globalCadreId = '${cadreId}';
 				type:'GET',
 				 url: 'getEventDetailsOfCadreAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
-			}).done(function(results){
-			if(results !=null && results.length>0 && results !=""){
+			}).done(function(myresult){
+			if(myresult !=null && myresult.length>0 && myresult !=""){
 				$("#participationTableMainDivId").show();
+				
 				var str='';
-					str+='<table class="table m_0 table-bordered table-responsive">';
+				for(var k in myresult)
+				{
+					str+='<table class="table m_0 table-bordered table-responsive" style="margin-top: 10px">';
 					str+='<thead>';
+					str+='<tr>';
+					str+='<th colspan="5" style="background-color:#CCCCCC;text-align:center;"> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </th>';						
+					str+='</tr>';
+						str+='<tr>';
+						
 						str+='<th>MAIN EVENT</th>';
 						str+='<th>SUB EVENT</th>';
-						str+='<th>ATTENDED COUNT(DAYS)</th>';
+						str+='<th>INIVITED</th>';
+						str+='<th>ATTENDED</th>';
+						if(myresult[k].eventTypeStr == 'Visitor Event')
+							str+='';
+						else
+							str+='<th>ABSENT</th>';
+						
+						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
-				if(results !=null && results.length>0){
+					var results = myresult[k].knownList;
+					if(results !=null && results.length>0){
 					for(var i in results){
 						var subLength;
 						if(results[i].knownList !=null){
 							subLength=results[i].knownList.length;
-						}
-					/* 	var participationType;
-						
-							if(results[i].id ==1){
-								participationType="PARTY OFFICE";
-							}
-							else if(results[i].id ==7){
-								participationType="MAHANADU";
-							}else{
-								participationType="OTHER";
-							} */
-								//str+='<td  rowspan='+subLength+'>'+participationType+'</td>';
-								
+						}					
 								if(results[i].knownList !=null){
 									for(var j in results[i].knownList){
 										str+='<tr>';
-										if(j==0){
-											if(results[i].name=='Party Office')
-												str+='<td style="border-bottom:#fff;">'+results[i].name+' (<b> VISITORS </b> )</td>';
-											else
+										if(j==0){											
 												str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
 										}else{
 											str+='<td style="border:#fff;"></td>';
 										}
 										str+='<td>'+results[i].knownList[j].name+'</td>';
+										if(results[i].knownList[j].eventTypeId == 2)
+											str+='<td>0</td>';
+										else
+											str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
 										str+='<td>'+results[i].knownList[j].total+'</td>';
+										if(results[i].knownList[j].eventTypeId != 2)
+											str+='<td>'+results[i].knownList[j].absentCount+'</td>';
 										 str+='</tr>';
 									}
 								}
@@ -977,12 +984,15 @@ var globalCadreId = '${cadreId}';
 						
 					str+='</tbody>';
 				   str+='</table>';	
-				   $("#participationTableDivId").html(str);
+				   //$("#participationTableDivId").html(str);
 				}else{
 					str+='</tbody>';
 				    str+='</table>';	
-					$("#participationTableDivId").html("Data Not Available.");
-					}   
+					//$("#participationTableDivId").html("Data Not Available.");
+					}					
+				}
+				 $("#participationTableDivId").html(str);	
+				   
 				}else{
 					$("#participationTableMainDivId").hide();
 				}
@@ -3056,7 +3066,7 @@ function getPartyMeetingDetails()
 						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
 						{
 							var absentCount = 0;
-							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+parseInt(myResult.attendedCount)+'<br/>Attended</td>';
 							str+='<td>'+absentCount+'<br/>Absent</td>';
 						}
 						else
@@ -3089,12 +3099,17 @@ function getPartyMeetingDetaildReprt()
 				{
 					$('#partymettingParlDivId').show();
 					var str='';
-					str+='<table class="table m_0 table-bordered">';
+					str+='<table class="table m_0 table-bordered" style="margin-top:10px;">';
 					str+='<thead>';
+					str+='<tr>';
+					str+='<th colspan="4" style="background-color:#CCCCCC;text-align:center;"> PARTY MEETINGS PARTICIPATION DETAILS </th>';						
+					str+='</tr>';
+					str+='<tr>';						
 					str+='<th class="text-center"> MEETING NAME </th>';
 					str+='<th class="text-center"> INVITED </th>';
 					str+='<th class="text-center"> ATTENDED </th>';
-					str+='<th class="text-center"> ABSENT </th>';
+					str+='<th class="text-center"> ABSENT </th>';								
+					str+='</tr>';
 					str+='</thead>';
 					
 					for(var i in result.partyMeetingVOList)
@@ -3151,8 +3166,9 @@ function getPartyMeetingDetaildReprt()
 						str+='<li>';
 						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
 						str+='<thead>';
+						
 						str+='<tr>';
-						str+='<th style=""> MEETING NAME </th>';
+						//str+='<th style=""> MEETING NAME </th>';
 						str+='<th style=""> LOCATION </th>';
 						str+='<th style=""> TIME </th>';
 						str+='<th style=""> STATUS </th>';
@@ -3164,7 +3180,7 @@ function getPartyMeetingDetaildReprt()
 							for(var k in absetPArtyMeetingsArr)
 							{
 								str+='<tr>';
-									str+='<td> '+absetPArtyMeetingsArr[k].meetingName+'</td>';
+									//str+='<td> '+absetPArtyMeetingsArr[k].meetingName+'</td>';
 									str+='<td> '+absetPArtyMeetingsArr[k].location+' </td>';
 									str+='<td> '+absetPArtyMeetingsArr[k].time+' </td>';
 									str+='<td> '+absetPArtyMeetingsArr[k].status+' </td>';
@@ -3179,13 +3195,13 @@ function getPartyMeetingDetaildReprt()
 						else if(parseInt(result.partyMeetingVOList[i].invitedCount) < parseInt(result.partyMeetingVOList[i].attendedCount))
 						{
 							var absentCount = 0;
-							str+='<td> '+result.partyMeetingVOList[i].invitedCount+' </td>';
+							str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
 							str+='<td> '+absentCount+' </td>';
 						}
 						else
 						{
 							var absentCount = 0;
-							str+='<td> '+result.partyMeetingVOList[i].invitedCount+' </td>';
+							str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
 							str+='<td> '+absentCount+' </td>';							
 
 						}
@@ -3231,7 +3247,7 @@ function getPartyMeetingsOverViewForCadre()
 						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
 						{
 							var absentCount = 0;
-							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
 							str+='<td>'+absentCount+'<br/>Absent</td>';
 						}
 						else
@@ -3251,6 +3267,7 @@ function getPartyMeetingsOverViewForCadre()
 						for(var k in resultList)
 						{
 							var absentObj = {
+								id:resultList[k].id,
 								meetingName:resultList[k].meetingType,
 								location:resultList[k].location,
 								time:resultList[k].name,
@@ -3295,7 +3312,7 @@ function getEventsOverviewFortdpCadre()
 						else if(parseInt(myResult.invitedCount) < parseInt(myResult.attendedCount))
 						{
 							var absentCount = 0;
-							str+='<td>'+myResult.invitedCount+'<br/>Attended</td>';
+							str+='<td>'+myResult.attendedCount+'<br/>Attended</td>';
 							str+='<td>'+absentCount+'<br/>Absent</td>';
 						}
 						else
