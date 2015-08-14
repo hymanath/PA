@@ -246,7 +246,7 @@
 									<td>Allocated to Agents <span class="pull-right" id="btchAlcId">0</span></td>
 								</tr>
 								<tr>
-									<td>Not Allocated<span class="pull-right" id="btchNtalctedId">03</span></td>
+									<td>Not Allocated<span class="pull-right" id="btchNtalctedId">0</span></td>
 								</tr>
 							</table>
 						</div>
