@@ -866,4 +866,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getAgentCallDetailsByCampCallerId()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			statusCountList =  trainingCampService.getAgentCallDetailsByCampCallerId(regVO.getRegistrationID());
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAgentCallDetailsByCampCallerId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

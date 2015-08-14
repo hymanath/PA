@@ -10559,5 +10559,11 @@
 	  </result>
 	</action>
 	
+	<action name="getAgentCallDetailsByCampCallerIdAction" class="trainingCampAction" method="getAgentCallDetailsByCampCallerId">
+	  <result type="json" name="success">
+	       <param name="root">statusCountList</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      
