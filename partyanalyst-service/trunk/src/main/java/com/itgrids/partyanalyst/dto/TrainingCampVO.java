@@ -31,7 +31,43 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String endDateStr;
 	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
 	
+	private Long schdlStatusId;
+	private String schdlStatus;
+	private Long othersCount;
+	private Long conformLaterCount;
+	private Long batchId;
 	
+	
+	public Long getBatchId() {
+		return batchId;
+	}
+	public void setBatchId(Long batchId) {
+		this.batchId = batchId;
+	}
+	public Long getConformLaterCount() {
+		return conformLaterCount;
+	}
+	public void setConformLaterCount(Long conformLaterCount) {
+		this.conformLaterCount = conformLaterCount;
+	}
+	public Long getOthersCount() {
+		return othersCount;
+	}
+	public void setOthersCount(Long othersCount) {
+		this.othersCount = othersCount;
+	}
+	public Long getSchdlStatusId() {
+		return schdlStatusId;
+	}
+	public void setSchdlStatusId(Long schdlStatusId) {
+		this.schdlStatusId = schdlStatusId;
+	}
+	public String getSchdlStatus() {
+		return schdlStatus;
+	}
+	public void setSchdlStatus(String schdlStatus) {
+		this.schdlStatus = schdlStatus;
+	}
 	public String getStartDateStr() {
 		return startDateStr;
 	}

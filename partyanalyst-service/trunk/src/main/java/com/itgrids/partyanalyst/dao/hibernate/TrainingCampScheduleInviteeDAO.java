@@ -154,49 +154,6 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return query.list();
 	}
 	
-	public List<Object[]> getBatchWiseProgramWiseInterestedMembersDetails(String membersType, String searchType, Date startDate, Date endDate)
-	{
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCampProgram.programName, ");
-		queryStr.append(" TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCSI.trainingCampSchedule.trainingCamp.campName, date(TCB.fromDate), ");
-		queryStr.append(" date(TCB.toDate), count(distinct TCSI.trainingCampScheduleInviteeId) ");
-		
-		queryStr.append(" from TrainingCampScheduleInvitee TCSI, TrainingCampBatch TCB  where TCSI.trainingCampSchedule.trainingCampScheduleId = TCB.trainingCampBatchId ");
-		queryStr.append(" and TCSI.scheduleInviteeStatus.status like '%"+membersType+"%' ");
-		
-		if(startDate != null && endDate != null)
-		{
-			queryStr.append(" and (date(TCB.fromDate) >=:startDate and date(TCB.toDate) <=:endDate) ");
-		}
-		/*if(membersType != null && membersType.equalsIgnoreCase("interested"))
-		{
-			queryStr.append(" and TCSI.scheduleInviteeStatus.status = 'Interested' ");
-		}*/
-		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
-		{
-			queryStr.append(" and TCSI.trainingCampSchedule.status = 'Not Started' ");
-		}
-		else if(searchType != null && searchType.equalsIgnoreCase("running"))
-		{
-			queryStr.append(" and TCSI.trainingCampSchedule.status = 'Progress' ");
-		}
-		else if(searchType != null && searchType.equalsIgnoreCase("completed"))
-		{
-			queryStr.append(" and TCSI.trainingCampSchedule.status = 'Completed' ");
-		}
-		
-		//queryStr.append(" group by TCB.trainingCampBatchId, TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
-		queryStr.append(" group by TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCB.trainingCampBatchId ");
-		Query query = getSession().createQuery(queryStr.toString());
-		if(startDate != null && endDate != null)
-		{
-			query.setDate("startDate", startDate);
-			query.setDate("endDate", endDate);
-		}
-		
-		return query.list();
-	}
-	
 	public List getTrainingCampScheduleInviteeId(Long tdpCadreId,Long programId,Long campId,Long scheduleId)
 	{
 		Query query = getSession().createQuery("select model.trainingCampScheduleInviteeId from " +
@@ -230,5 +187,32 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return (Long) query.uniqueResult();
 	}
 	
-	
+	public List<Object[]> getBatchWiseConformationDetails(String searchType, Date startDate, Date endDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCampProgram.programName, ");
+		queryStr.append(" TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCSI.trainingCampSchedule.trainingCamp.campName, TCB.trainingCampBatchId, date(TCB.fromDate), ");
+		queryStr.append(" date(TCB.toDate), count(distinct TCSI.trainingCampScheduleInviteeId), TCSI.scheduleInviteeStatus.scheduleInviteeStatusId, TCSI.scheduleInviteeStatus.status ");
+		
+		queryStr.append(" from TrainingCampScheduleInvitee TCSI, TrainingCampBatch TCB  where TCSI.trainingCampSchedule.trainingCampScheduleId = TCB.trainingCampBatchId ");
+		
+		if(startDate != null && endDate != null)
+		{
+			queryStr.append(" and (date(TCB.fromDate) >=:startDate and date(TCB.toDate) <=:endDate) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("planned"))
+		{
+			queryStr.append(" and TCSI.trainingCampSchedule.status = 'Not Started' ");
+		}
+		
+		queryStr.append(" group by TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCB.trainingCampBatchId, TCSI.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		return query.list();
+	}
 }
