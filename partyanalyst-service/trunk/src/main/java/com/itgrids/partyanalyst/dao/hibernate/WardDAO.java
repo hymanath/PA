@@ -90,4 +90,10 @@ public class WardDAO extends GenericDaoHibernate<Ward, Long> implements
 		  List<Object[]> li = getHibernateTemplate().find(" ");
 		  return 	li;
 	  }
+	  
+	  public List<Object[]> getWardDetailsForList(List<Long> wardIds){
+		  org.hibernate.Query query = getSession().createQuery("select model.wardId,model.wardName from Ward model where wardId in (:wardIds)");
+		  query.setParameterList("wardIds", wardIds);
+		  return query.list();
+	  }
 }
