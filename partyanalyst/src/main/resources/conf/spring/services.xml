@@ -2681,7 +2681,7 @@
 	
 	<bean name="attendanceMessagesConsumer" class="com.itgrids.partyanalyst.message.AttendanceMessagesConsumer">
 	    <property name="taskExecutor" ref="taskExecutor" />
-	    <property name="attendanceService" ref="attendanceService" />	
+	    <property name="attendanceService" ref="attendanceService" />
 	</bean>
 	
 	<bean name="mahanaduDashBoardService" class="com.itgrids.partyanalyst.service.impl.MahanaduDashBoardService">
