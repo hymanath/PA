@@ -32,6 +32,65 @@ table th
                         </h4>
                     </div>
                     <div class="panel-body">
+					 <div id="agentCallDetailsDiv">
+						<!--<table class="table table-bordered">
+							<tr>
+								<td rowspan="2"><div id="donutchart" style="width:200px;height:150px"></div></td>
+								<td>
+									<h4>ALLOCATED CALLS - 700</h4>
+								</td>
+							</tr>
+							<tr>
+								<td class="pad_0">
+									<table class="table table-bordered m_0">
+										<tr>
+											<td></td>
+											<td>Calls</td>
+											<td class="text-dialled">Not Dialled</td>
+											<td class="text-dialled">Dialed</td>
+											<td colspan="2">Call Back</td>
+											<td class="text-custom">Interested</td>
+											<td class="text-not-interested"> Later</td>
+											<td class="text-totally-not">Not Interested</td>
+										</tr>
+										<tr>
+											<td>Assigned to Agents</td>
+											<td>52</td>
+											<td class="text-dialled">04</td>
+											<td class="text-dialled">09</td>
+											<td>Talk to you later/TCB</td>
+											<td>Confirm Later/TCB</td>
+											<td class="text-custom">01</td>
+											<td class="text-not-interested">05</td>
+											<td class="text-totally-not">04</td>
+										</tr>
+										<tr>
+											<td>Calendar Schedule</td>
+											<td>52</td>
+											<td class="text-dialled">04</td>
+											<td class="text-dialled">09</td>
+											<td>12/02</td>
+											<td>10/01</td>
+											<td class="text-custom">01</td>
+											<td class="text-not-interested">05</td>
+											<td class="text-totally-not">04</td>
+										</tr>
+										<tr>
+											<td>Batch Confirmation</td>
+											<td>52</td>
+											<td class="text-dialled">04</td>
+											<td class="text-dialled">09</td>
+											<td>13/02</td>
+											<td>06/01</td>
+											<td class="text-custom">01</td>
+											<td class="text-not-interested">05</td>
+											<td class="text-totally-not">04</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table> -->
+					</div>
                         <div class="row">
                             <div class="col-md-6">
                                 <section>
@@ -39,13 +98,13 @@ table th
                                 </section>
                             </div>
                             <div class="col-md-6">
-                                <section>
+                                <!--<section>
                                     <div class="panel panel-default panel-custom">
                                     	<div class="panel-heading">
                                         	<h4 class="panel-title">Call Back Day Wise Details</h4>
                                         </div>
                                         <div class="panel-body pad_0" id="callBackDayDiv">
-                                        	<!--<table class="table table-bordered m_0">
+                                        	<table class="table table-bordered m_0">
                                             	<tr>
                                                 	<td></td>
                                                     <td><p class="m_top20 m_bottom20">TALK TO YOU LATER/<span class="font-10">TCB</span></p></td>
@@ -105,10 +164,10 @@ table th
                                                         <p class="m_0">Night<span class="pull-right text-underline">-0</span></p>
                                                     </td>
                                                 </tr>
-                                            </table>-->
+                                            </table>
                                         </div>
                                     </div>
-                                </section>
+                                </section>-->
                             </div>
                             <section>
                             	<div class="col-md-12">
@@ -727,12 +786,182 @@ function buildCallBackDayWiseDetails(result)
 	str += '</table>';
 	$("#callBackDayDiv").html(str);
 }
+
+
+function getAgentCallDetailsByCampCallerId()
+{
+	$("#agentCallDetailsDiv").html("");
+	$("#agentCallDetailsDiv").html("<img src='images/icons/search.gif'>");
+	$.ajax({
+		type:"POST",
+		url : "getAgentCallDetailsByCampCallerIdAction.action"
+	}).done(function(result){
+		
+		buildAgentCallDetailsByCampCallerId(result);
+		
+	})
+}
+function buildAgentCallDetailsByCampCallerId(result)
+{
+	
+	var str = '';
+	str +='<table class="table table-bordered">';
+	str +='<tr>';
+	str +='<td rowspan="2"><div id="donutchart" style="width:200px;height:150px"></div></td>';
+	str +='<td><h4>ALLOCATED CALLS - '+result[0].total+'</h4></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td class="pad_0">';
+	str +='<table class="table table-bordered m_0">';
+	str +='<tr>';
+	str +='<td></td>';
+	str +='<td>Calls</td>';
+	str +='<td class="text-dialled">Not Dialled</td>';
+	str +='<td class="text-dialled">Dialed</td>';
+	str +='<td colspan="2" style="padding: 0px; text-align: center;">Call Back';
+	str +='<table class="table table-bordered table-condenced" style="margin-bottom: 0px;">';
+str +='<tbody>';
+  str +='<tr>';
+    str +='<td style="padding: 0px;"><small>Call Me back / TCB</small></td>';
+    str +='<td style="padding: 0px;"><small>Confirm Later / TCB</small></td>';
+ str +=' </tr>';
+  str +='</tbody><tbody>';
+str +='</tbody></table></td>';
+	str +='<td class="text-custom">Interested</td>';
+	str +='<td class="text-not-interested"> Later</td>';
+	str +='<td class="text-totally-not">Not Interested</td>';
+	str +='</tr>';
+	for(var i in result)
+	{
+		str +='<tr>';
+		str +='<td>'+result[i].name+'</td>';
+		str += '<td>'+result[i].total+'</td>';
+		var dialled = 0;
+		var notdialled = 0;
+		var callBackBusy = 0;
+		var callBackConfirm = 0;
+		var todayCallBackBusy = 0;
+		var todayCallBackConfirm = 0;
+		var interested = 0;
+		var later = 0;
+		var notInterested = 0;
+		for(var j in result[i].subList)
+		{
+			dialled += result[i].subList[j].count;
+		}
+		notdialled = result[i].total-dialled;
+		str += '<td>'+notdialled+'</td>';
+		str += '<td>'+dialled+'</td>';
+		for(var k in result[i].scheduleStatusList)
+		{
+			if(result[i].scheduleStatusList[k].id == 6)
+			{
+			 callBackBusy += result[i].scheduleStatusList[k].count;
+			 todayCallBackBusy += result[i].scheduleStatusList[k].todayCnt;
+			}
+		    if(result[i].scheduleStatusList[k].id == 7)
+			{
+			 callBackConfirm += result[i].scheduleStatusList[k].count;
+			 todayCallBackConfirm += result[i].scheduleStatusList[k].todayCnt;
+			}
+		    if(result[i].scheduleStatusList[k].id == 4)
+			 interested += result[i].scheduleStatusList[k].count;
+		   if(result[i].scheduleStatusList[k].id == 3)
+			 later += result[i].scheduleStatusList[k].count;
+		   if(result[i].scheduleStatusList[k].id == 5)
+			 notInterested += result[i].scheduleStatusList[k].count;
+		 
+		}
+		str +='<td>'+callBackBusy+'/'+todayCallBackBusy+'</td>';
+		str +='<td>'+callBackConfirm+'/'+todayCallBackConfirm+'</td>';
+		str +='<td class="text-custom">'+interested+'</td>';
+		str +='<td class="text-not-interested">'+later+'</td>';
+		str +='<td class="text-totally-not">'+notInterested+'</td>';
+		str +='</tr>';
+	}
+	
+	str += '</table>';
+	$("#agentCallDetailsDiv").html(str);
+	buildChartForCallStatus(result);
+}
+
+function buildChartForCallStatus(result)
+{
+	$('#donutchart').html("<img src='images/icons/search.gif'>");
+	var interestedMemCount = 0;
+	var laterMembersCount = 0;
+	var notIntereMemCount = 0;
+	
+	for(var i in result[0].scheduleStatusList)
+	{
+	  if(result[0].scheduleStatusList[i].id == 4)
+		interestedMemCount = result[0].scheduleStatusList[i].count;
+	   if(result[0].scheduleStatusList[i].id == 3)
+		 laterMembersCount = result[0].scheduleStatusList[i].count;
+	  if(result[0].scheduleStatusList[i].id == 5)
+		 notIntereMemCount = result[0].scheduleStatusList[i].count;
+	}
+	if(interestedMemCount == 0 && laterMembersCount == 0)
+	{
+		if(notIntereMemCount = 0)
+		{
+	       $('#donutchart').html("No Data Available.");
+           return;	   
+		}
+	}
+
+	Highcharts.setOptions({
+        colors: ['#3eb6c4', '#079bf3', '#ac68b1']
+    });
+    $('#donutchart').highcharts({
+        chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 50
+            }
+        },
+		legend: {
+                enabled: true,
+                align: 'right',
+                verticalAlign: 'right',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 120,
+                depth: 10,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+			name : 'Count',
+            data: [
+                [' Members Interested', interestedMemCount],
+                ['Later', laterMembersCount],
+                ['Not Interested', notIntereMemCount],
+                
+            ]
+        }]
+    });
+
+}
+
 </script>
 <script>
 getScheduleCallStatusCount();
 getBatchWiseCallStatusCount();
-getCallStatusCountByTrainingCampCallerId();
-getCallBackDayWiseDetails();
+//getCallStatusCountByTrainingCampCallerId();
+//getCallBackDayWiseDetails();
+getAgentCallDetailsByCampCallerId();
 
 </script>
 </script>
