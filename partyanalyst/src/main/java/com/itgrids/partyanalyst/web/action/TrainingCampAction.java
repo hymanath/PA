@@ -328,6 +328,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		try{
 			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
 			jObj = new JSONObject(getTask());
+			
 			TraingCampDataVO inputVo = new TraingCampDataVO();
 			inputVo.setCampId(jObj.getLong("campId"));
 			inputVo.setProgramId(jObj.getLong("programId"));
@@ -338,6 +339,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			inputVo.setBatchId(jObj.getLong("batchId"));
 			inputVo.setStatusType(jObj.getString("statusType"));
 			inputVo.setDateStr(jObj.getString("toDayDate"));
+			if(jObj.getString("task").equalsIgnoreCase("filterWiseCount"))
+			{
+				inputVo.setDistrictId(jObj.getLong("districtId"));
+				inputVo.setConstituencyId(jObj.getLong("constituencyId"));
+				inputVo.setMandalId(jObj.getLong("mandalId"));
+				inputVo.setVillageId(jObj.getLong("villageId"));
+				inputVo.setCommitteeLevelId(jObj.getLong("committeeLevelId"));
+				inputVo.setSearchType("filter");
+			}
 			memberList = trainingCampService.getScheduleCallMemberDetails(inputVo);
 			}
 			catch (Exception e) {
@@ -785,6 +795,54 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCallerAgentDistricts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			idNameList = trainingCampService.getCallerAgentDistricts(regVo.getRegistrationID());
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}
+	public String getCallerAgentConstituenciesByDistrict()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			idNameList = trainingCampService. getCallerAgentConstituencies(regVo.getRegistrationID(),jObj.getLong("id"));
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}
+	public String getCallerAgentMandalsByConstiteuncy()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			idNameList = trainingCampService.getCallerAgentMandals(regVo.getRegistrationID(),jObj.getLong("id"));
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}
+	public String getCallerAgentVillagesByMandal()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			idNameList = trainingCampService.getCallerAgentVillages(regVo.getRegistrationID(),jObj.getLong("id"));
+		}
+		catch (Exception e) {
+			// TODO: handle exception
 		}
 		return Action.SUCCESS;
 	}

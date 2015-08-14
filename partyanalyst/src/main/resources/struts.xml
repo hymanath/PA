@@ -10522,6 +10522,26 @@
 	       <param name="root">partyMeetingVO</param>
 	  </result>
 	</action>
+	<action name="getCallerAgentDistrictsAction" class="trainingCampAction" method="getCallerAgentDistricts">
+	    <result type="json" name="success">
+	       <param name="root">idNameList</param>
+	  </result>
+	</action>
+	<action name="getCallerAgentConstituenciesByDistrictAction" class="trainingCampAction" method="getCallerAgentConstituenciesByDistrict">
+	    <result type="json" name="success">
+	       <param name="root">idNameList</param>
+	  </result>
+	</action>
+	<action name="getCallerAgentMandalsByConstiteuncyAction" class="trainingCampAction" method="getCallerAgentMandalsByConstiteuncy">
+	    <result type="json" name="success">
+	       <param name="root">idNameList</param>
+	  </result>
+	</action>
+	<action name="getCallerAgentVillagesByMandalAction" class="trainingCampAction" method="getCallerAgentVillagesByMandal">
+	    <result type="json" name="success">
+	       <param name="root">idNameList</param>
+	  </result>
+	</action>
 	<action name="getEventsOverviewFortdpCadre" class="mahaNaduAction" method="getCadreWiseEventDetails">
 	    <result type="json" name="success">
 	       <param name="root">partyMeetingVO</param>
@@ -10538,7 +10558,6 @@
 	       <param name="root">locations</param>
 	  </result>
 	</action>
-	
 	
 </package>
 </struts>      

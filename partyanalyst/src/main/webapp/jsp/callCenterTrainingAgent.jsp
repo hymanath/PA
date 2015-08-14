@@ -10,6 +10,13 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+.filters-div
+{
+	background-color:#CCC;
+	padding:10px;
+}
+</style>
 </head>
 <body>
 <header>
@@ -28,9 +35,91 @@
                                     	<option>Not Dialled Calls</option>
                                     </select>
                                 </span>-->
+								<span class="pull-right">
+									<button class="btn btn-success btn-xs">FILTERS</button>
+								</span>
                             </h4>
                         </div>
                         <div class="panel-body">
+							<div class="filters-div">
+								<div class="row">
+									<div class="col-md-12">
+										<h4 class="m_0">
+											COMMITTEE LOCATION
+											<span class="pull-right"><i class="glyphicon glyphicon-remove remove-filters" style="font-size:16px;background-color:#E6E6E6;padding:7px;top:-10px;right:-10px;cursor:pointer"></i></span>
+											<hr class="m_0" style="border-color:#666"/>
+										</h4>
+									</div>
+									<div class="col-md-3 m_top10">
+										<label>District</label>
+										<select class="form-control" id="districtId" onchange="getConstituenciesByDistrict();">
+											<option value="0">Select</option>
+										</select>
+									</div>
+									<div class="col-md-3 m_top10">
+										<label>Constituency</label>
+										<select class="form-control" id="constituencyId" onchange="getMandalsByConstiteuncy();">
+											<option value="0">Select</option>
+										</select>
+									</div>
+									<div class="col-md-3 m_top10">
+										<label>Mandal</label>
+										<select class="form-control" id="mandalId" onchange="getVillagesByMandal();">
+											<option value="0">Select</option>
+										</select>
+									</div>
+									<div class="col-md-3 m_top10">
+										<label>Village</label>
+										<select class="form-control" id="villageId">
+											<option value="0">Select</option>
+										</select>
+									</div>
+								</div>
+								<div class="row m_top20">
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-12">
+												<h4 class="m_0">
+													ROLE WISE
+													<hr class="m_0" style="border-color:#666"/>
+												</h4>
+											</div>
+											<div class="col-md-6 m_top10">
+												<label>Committee Level</label>
+												<select class="form-control">
+													<option value="0">Select</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-12">
+												<h4 class="m_0">
+													CALL STATUS WISE 
+													<hr class="m_0" style="border-color:#666"/>
+												</h4>
+											</div>
+											<div class="col-md-6 m_top10">
+												<label>Status Type</label>
+												<select class="form-control" id="callstatusSelect">
+													<option value="all">All</option>
+													<option value="busy">Switch off /User Busy / Not Ans</option>
+													<option value="dialed">Dialled</option>
+													<option value="dialed">UN Dialled</option>
+													<option value="callback">Call Back</option>
+													
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row m_top20">
+									<div class="col-md-12">
+										<button class="btn btn-success" onclick="getFilterWiseDetails();">GET FILTER DETAILS</button>
+									</div>
+								</div>
+							</div>
                         	<div id="memberInfoDiv">
                             	
                             </div>
@@ -178,6 +267,16 @@ $('.switchoff input:checkbox').change(function(){
     }
 });*/
 $(document).ready(function() {
+$(".filters-div").hide();
+$(".filters-button").click(function(){
+	$(".filters-div").show();
+});
+$(".remove-filters").click(function(){
+	$(".filters-div").hide();
+});
+
+
+filters-button
 $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,locale: {
             format: 'MM/DD/YYYY'
         } }, function(start, end, label) {
@@ -185,7 +284,7 @@ $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,lo
   });
 });
 $('#timepicker4').datetimepicker({format: 'LT'});
-$("#titleId").html(" ${status} CALLS LIST ");
+$("#titleId").html(" ${status} CALLS LIST <span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
 
 function getMemberDetails()
 {
@@ -231,7 +330,7 @@ callFor = "Schedule";
 else
 callFor = "Batch";
 var str='';
-str+='<table class="table table-bordered">';
+str+='<table class="table table-bordered m_top20">';
 str+='<thead class="bg_d">';
 str+='<th>Image</th>';
 str+='<th>Name</th>';
@@ -659,6 +758,129 @@ function setDefaultImage(img){
     
    }
    
+   function getCallerAgentDistricts()
+   {
+   $('#districtId').find('option:not(:first)').remove();
+   var jObj={
+	task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getCallerAgentDistrictsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				if(result != null && result.length > 0)
+				for(var i in result)
+				$("#districtId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		   })
+   }
+   
+      function getConstituenciesByDistrict()
+   {
+   var id = $("#districtId").val();
+   $('#constituencyId').find('option:not(:first)').remove();
+   if(id == 0)
+   return;
+   
+   var jObj={
+   id:id,
+	task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getCallerAgentConstituenciesByDistrictAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				if(result != null && result.length > 0)
+				for(var i in result)
+				$("#constituencyId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		   })
+   }
+         function getMandalsByConstiteuncy()
+   {
+   $('#mandalId').find('option:not(:first)').remove();
+   var id = $("#constituencyId").val();
+   if(id == 0)
+   return;
+   
+   var jObj={
+   id:id,
+	task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getCallerAgentMandalsByConstiteuncyAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				if(result != null && result.length > 0)
+				for(var i in result)
+				$("#mandalId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		   })
+   }
+    function getVillagesByMandal()
+   {
+   $('#villageId').find('option:not(:first)').remove();
+   var id = $("#mandalId").val();
+   if(id == 0)
+   return;
+   
+   var jObj={
+   id:id,
+	task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getCallerAgentVillagesByMandalAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 	
+			  
+				if(result != null && result.length > 0)
+				for(var i in result)
+				$("#villageId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		   })
+   }
+   
+   function getFilterWiseDetails()
+   {
+   $("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
+   var districtId = $("#districtId").val();
+   var constituencyId = $("#constituencyId").val();
+   var mandalId = $("#mandalId").val();
+   var villageId = $("#villageId").val();
+   var status1 = $("#callstatusSelect").val();
+	if(batchId == "")
+	batchId = 0;
+	if(today == null)
+	today = '';
+	var jObj={
+		purposeId : purposeId,
+		programId:programId,
+		campId:campId,
+		scheduleId:scheduleId,
+		status:status1,
+		batchId :batchId,
+		statusType:statusType,
+		toDayDate : today,
+		districtId:districtId,
+		constituencyId:constituencyId,
+		mandalId:mandalId,
+		villageId:villageId,
+		committeeLevelId:0,
+		task:"filterWiseCount"
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getScheduleCallMemberDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			buildScheduleCallMemberDetailsCount(result,jObj);
+		   });	
+   }
    
 </script>
 <script>
@@ -670,6 +892,7 @@ getBatchesForSchedule();
 getCallStatusList();
 getScheduleStatusList();
 ClearDiv();
+getCallerAgentDistricts();
 </script>
 </body>
 </html>
