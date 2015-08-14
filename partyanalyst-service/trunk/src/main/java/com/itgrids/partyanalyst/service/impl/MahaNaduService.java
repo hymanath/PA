@@ -2849,35 +2849,52 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			List<Object[]> attendedList = eventAttendeeDAO.getAttendedEventsCountforCandidate(tdpCadreId);
 			Long attendedCount = 0L;
+			boolean isNonInvitee = false;
 			if(attendedList != null && attendedList.size()>0)
 			{
+				
 				for (Object[] param : attendedList) {
 					Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
 					attendedCount = attendedCount+count;
-					if(invitationEventsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
-					{
-						invitationEventsList.remove(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+					if(!isNonInvitee && invitationEventsList != null && invitationEventsList.size()>0){
+						if(invitationEventsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
+						{
+							invitationEventsList.remove(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+						}
+						else{
+							isNonInvitee = true;
+							invitationEventsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+						}
+					}
+					else{
+						isNonInvitee = true;
+						invitationEventsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
 					}
 				}
+				
 			}
-			
-			Long absentCount = Long.valueOf(String.valueOf(invitationEventsList.size()));
-			
-			if(absentCount > 0L)
+			Long absentCount = 0L;
+			if(!isNonInvitee)
 			{
-				List<Object[]> eventNames = eventDAO.getEventNames(invitationEventsList);
-				if(eventNames != null && eventNames.size()>0)
+				absentCount = Long.valueOf(String.valueOf(invitationEventsList.size()));
+				
+				if(absentCount > 0L)
 				{
-					List<PartyMeetingVO> partyMeetingList = new ArrayList<PartyMeetingVO>(0);
-					for (Object[] param : eventNames) {
-						PartyMeetingVO vo = new PartyMeetingVO();
-						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-						vo.setName(param[1] != null ? param[1].toString():"");
-						partyMeetingList.add(vo);
+					List<Object[]> eventNames = eventDAO.getEventNames(invitationEventsList);
+					if(eventNames != null && eventNames.size()>0)
+					{
+						List<PartyMeetingVO> partyMeetingList = new ArrayList<PartyMeetingVO>(0);
+						for (Object[] param : eventNames) {
+							PartyMeetingVO vo = new PartyMeetingVO();
+							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+							vo.setName(param[1] != null ? param[1].toString():"");
+							partyMeetingList.add(vo);
+						}
+						returnVO.setPartyMeetingVOList(partyMeetingList);
 					}
-					returnVO.setPartyMeetingVOList(partyMeetingList);
 				}
 			}
+			
 			
 			returnVO.setAbsentCount(absentCount);
 			returnVO.setInvitedCount(invitationCount);
