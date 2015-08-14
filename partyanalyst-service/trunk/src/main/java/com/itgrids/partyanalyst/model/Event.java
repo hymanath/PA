@@ -4,13 +4,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 /**
  * 
  * @author Srishailam Pittala
@@ -41,7 +47,10 @@ public class Event implements java.io.Serializable{
 	
 	private Integer orderId;
 	private String syncType;
-
+	private Long eventTypeId;
+	private EventType eventType;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "event_id", unique = true, nullable = false)
@@ -183,6 +192,27 @@ public class Event implements java.io.Serializable{
 
 	public void setSyncType(String syncType) {
 		this.syncType = syncType;
+	}
+	
+	@Column(name="event_type_id")
+	public Long getEventTypeId() {
+		return eventTypeId;
+	}
+	
+	public void setEventTypeId(Long eventTypeId) {
+		this.eventTypeId = eventTypeId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "event_type_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public EventType getEventType() {
+		return eventType;
+	}
+	
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
 	}
 	
 	
