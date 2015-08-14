@@ -29,6 +29,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dao.IEventTypeDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
@@ -83,8 +85,26 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IInsuranceTypeDAO insuranceTypeDAO;
 	private ICandidateContestedLocationDAO candidateContestedLocationDAO; 
+	private IEventTypeDAO eventTypeDAO;
+	private IEventInviteeDAO eventInviteeDAO;
 	
-	
+	public IEventInviteeDAO getEventInviteeDAO() {
+		return eventInviteeDAO;
+	}
+
+	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
+		this.eventInviteeDAO = eventInviteeDAO;
+	}
+
+	public IEventTypeDAO getEventTypeDAO() {
+		return eventTypeDAO;
+	}
+
+	public void setEventTypeDAO(IEventTypeDAO eventTypeDAO) {
+		this.eventTypeDAO = eventTypeDAO;
+	}
+
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -1187,20 +1207,46 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		List<CadreCommitteeMemberVO> finalList=new ArrayList<CadreCommitteeMemberVO>();
 		
-		try{
+		try{  
+			
+			
+			List<Object[]> eventTypeList = eventTypeDAO.getEventTypeDetails();
+			Map<Long,String> evetTypeNamesMap = new LinkedHashMap<Long, String>(0);
+			if(eventTypeList != null && eventTypeList.size()>0)
+			{
+				for (Object[] event : eventTypeList) {
+					evetTypeNamesMap.put(event[0] !=null ? Long.parseLong(event[0].toString()) :0l, event[1] !=null ? event[1].toString():"");
+				}
+			}
+			List<Object[]> eventInviteesList = eventInviteeDAO.getInvitationCountforCandidate(cadreId);
+			Map<Long,Long> eventInviteeMap = new LinkedHashMap<Long, Long>(0);
+			if(eventInviteesList != null && eventInviteesList.size()>0)
+			{
+				for (Object[] event : eventInviteesList) {
+					eventInviteeMap.put(event[0] !=null ? Long.parseLong(event[0].toString()) :0l,event[2] !=null ? Long.parseLong(event[2].toString()) :0l);
+				}
+			}
+			
 			//0.tdpCadreId,1.eventId,2.name,3.description,4.parentEventId,5.count
 			List<Object[]> eventDetails=eventAttendeeDAO.getEventDetailsOfCadre(cadreId);
 			
-			Map<Long,Map<Long,CadreCommitteeMemberVO>> finalMap=new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>();
+			
 			//parentId,eventId
 			List<CadreCommitteeMemberVO> list=new ArrayList<CadreCommitteeMemberVO>();
 			
-			
-			if(eventDetails !=null){
+			Map<Long,Map<Long,Map<Long,CadreCommitteeMemberVO>>> eventTypeWiseEventsMap = new LinkedHashMap<Long, Map<Long,Map<Long,CadreCommitteeMemberVO>>>();
+			if(eventDetails !=null && eventDetails.size()>0){
 				
 				for (Object[] event : eventDetails) {
 					CadreCommitteeMemberVO subEventDetails = null;
-					Map<Long,CadreCommitteeMemberVO>  mainEventMap=finalMap.get(Long.parseLong(event[4].toString()));
+					Map<Long,CadreCommitteeMemberVO>  mainEventMap = null;
+					Map<Long,Map<Long,CadreCommitteeMemberVO>> finalMap=new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>();
+					if(eventTypeWiseEventsMap.get(event[6] !=null ? Long.parseLong(event[6].toString()) :0l) != null)
+					{
+						finalMap = eventTypeWiseEventsMap.get(event[6] !=null ? Long.parseLong(event[6].toString()) :0l);
+					}
+					
+					mainEventMap=finalMap.get(Long.parseLong(event[4].toString()));
 					
 					if(mainEventMap ==null){
 						subEventDetails = new CadreCommitteeMemberVO();
@@ -1216,7 +1262,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							subEventDetails.setId(Long.parseLong(event[1].toString()));//eventId
 							subEventDetails.setName(event[2] !=null ? event[2].toString():"");//eventName
 							subEventDetails.setLevel(Long.parseLong(event[4].toString()));//parentEventId
-							
+							subEventDetails.setInvitationCount(eventInviteeMap.get(event[4] !=null ? Long.parseLong(event[4].toString()) :0l));
 							String parentEventName=eventDAO.getEventName(subEventDetails.getLevel());
 							
 							if(parentEventName !=null){
@@ -1224,11 +1270,88 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 							subEventDetails.setTotal(event[5] !=null ? Long.parseLong(event[5].toString()) :0l);
+							subEventDetails.setEventTypeId(event[6] !=null ? Long.parseLong(event[6].toString()) :0l);
+							subEventDetails.setEventTypeStr(evetTypeNamesMap.get(subEventDetails.getEventTypeId()).trim());
+							
+							if(subEventDetails.getInvitationCount() != null && subEventDetails.getInvitationCount()>0L)
+							{
+								Long attendedCount = subEventDetails.getTotal();
+								if(attendedCount != null && attendedCount.longValue() ==0L)
+									subEventDetails.setAbsentCount(0L);
+							}
+							else
+							{
+								subEventDetails.setInvitationCount(0L);
+							}
 							mainEventMap.put(Long.parseLong(event[1].toString()), subEventDetails);
 							
 							finalMap.put(Long.parseLong(event[4].toString()), mainEventMap);
+							eventTypeWiseEventsMap.put(subEventDetails.getEventTypeId(), finalMap);
 					 }
 				
+			}
+			else if(eventInviteeMap != null && eventInviteeMap.size()>0)
+			{
+				if(eventInviteesList != null && eventInviteesList.size()>0)
+				{
+					for (Object[] events : eventInviteesList) {
+						CadreCommitteeMemberVO subEventDetails = null;
+						Map<Long,CadreCommitteeMemberVO>  mainEventMap = null;
+						Map<Long,Map<Long,CadreCommitteeMemberVO>> finalMap=new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>();
+						if(eventTypeWiseEventsMap.get(events[3] !=null ? Long.parseLong(events[3].toString()) :0l) != null)
+						{
+							finalMap = eventTypeWiseEventsMap.get(events[3] !=null ? Long.parseLong(events[3].toString()) :0l);
+						}
+						
+						mainEventMap=finalMap.get(Long.parseLong(events[0].toString()));
+						
+						if(mainEventMap ==null){
+							subEventDetails = new CadreCommitteeMemberVO();
+							mainEventMap=new HashMap<Long, CadreCommitteeMemberVO>();
+							finalMap.put(Long.parseLong(events[0].toString()),mainEventMap);//parentEventId,Map<EventId,CadreCommitteeMemberVO>
+						}else{
+							subEventDetails=mainEventMap.get(Long.parseLong(events[1].toString()));
+							if(subEventDetails ==null){ 
+								subEventDetails=new CadreCommitteeMemberVO();
+							}
+						}
+								subEventDetails.setVtrId(cadreId);//cadreId
+								subEventDetails.setId(Long.parseLong(events[0].toString()));//eventId
+								subEventDetails.setName(events[1] !=null ? events[1].toString():"");//eventName
+								subEventDetails.setLevel(Long.parseLong(events[0].toString()));//parentEventId
+								subEventDetails.setInvitationCount(eventInviteeMap.get(events[0] !=null ? Long.parseLong(events[0].toString()) :0l));
+								String parentEventName=eventDAO.getEventName(subEventDetails.getLevel());
+								
+								if(parentEventName !=null){
+									subEventDetails.setType(parentEventName);//parentEventName
+								}
+								
+								subEventDetails.setTotal(0l);
+								subEventDetails.setEventTypeId(events[3] !=null ? Long.parseLong(events[3].toString()) :0l);
+								subEventDetails.setEventTypeStr(evetTypeNamesMap.get(subEventDetails.getEventTypeId()).trim());
+								
+								if(subEventDetails.getInvitationCount() != null && subEventDetails.getInvitationCount()>0L)
+								{
+									Long attendedCount = subEventDetails.getTotal();
+									if(attendedCount != null && attendedCount.longValue() ==0L)
+										subEventDetails.setAbsentCount(subEventDetails.getInvitationCount());
+								}
+								
+								mainEventMap.put(Long.parseLong(events[0].toString()), subEventDetails);
+								
+								finalMap.put(Long.parseLong(events[0].toString()), mainEventMap);
+								eventTypeWiseEventsMap.put(subEventDetails.getEventTypeId(), finalMap);
+						 }
+				}
+			}
+			
+			if(eventTypeWiseEventsMap != null && eventTypeWiseEventsMap.size()>0)
+			{
+				for (Long eventTypeId : eventTypeWiseEventsMap.keySet()) {
+					CadreCommitteeMemberVO eventTypeWiseVO = new CadreCommitteeMemberVO();
+					eventTypeWiseVO.setEventTypeStr(evetTypeNamesMap.get(eventTypeId));
+					List<CadreCommitteeMemberVO> eventsList = new ArrayList<CadreCommitteeMemberVO>(0);
+					Map<Long,Map<Long,CadreCommitteeMemberVO>> finalMap = eventTypeWiseEventsMap.get(eventTypeId);
 					if(finalMap !=null && finalMap.size()>0){
 						for (Map.Entry<Long,Map<Long,CadreCommitteeMemberVO>> entry : finalMap.entrySet())
 						{
@@ -1246,10 +1369,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 							if(subMap !=null && subMap.size()>0){
 								cadreCommitteeMemberVO.setKnownList(new ArrayList<CadreCommitteeMemberVO>(subMap.values()));//List Of SubEvents
 							}
-							finalList.add(cadreCommitteeMemberVO);
+							eventsList.add(cadreCommitteeMemberVO);
 						}
-					}	
+					}
+					eventTypeWiseVO.setKnownList(eventsList);
+					finalList.add(eventTypeWiseVO);
+				}
 			}
+
 			return finalList;
 
 		}catch (Exception e) {
