@@ -1024,15 +1024,36 @@ public class TrainingCampService implements ITrainingCampService{
 		try {
 			Date startDate= format.parse(startDateStr);
 			Date endDate= format.parse(endDateStr);
-			List<Object[]> interestedMembersList = trainingCampScheduleInviteeDAO.getBatchWiseProgramWiseInterestedMembersDetails("interested",  searchType,  startDate,  endDate);
-			Map<String,Map<String,List<TrainingCampVO>>> programWiseInterestedMembersMap = new LinkedHashMap<String,Map<String, List<TrainingCampVO>>>(0);
+			
+			List<Object[]> interestedMembersList = trainingCampScheduleInviteeDAO.getBatchWiseConformationDetails(searchType,  startDate,  endDate);
+			//0.allocatedCount, 1.dailedCount, 2.batchId .....
+			List<Object[]> allocatedCallsCountList = trainingCampScheduleInviteeCallerDAO.getAllocatedCallsForBatchConfirmationDetails(searchType,  startDate,  endDate);
+			
+			Map<Long,Long> allocatedCountMap = new HashMap<Long, Long>(0);
+			Map<Long,Long> dialedCountMap = new HashMap<Long, Long>(0);
+			
+			if(allocatedCallsCountList != null && allocatedCallsCountList.size() > 0)
+			{
+				for (Object[] objects : allocatedCallsCountList) {
+					Long allocatedcount = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					Long dialedCount = commonMethodsUtilService.getLongValueForObject(objects[1]);
+					Long batchId = commonMethodsUtilService.getLongValueForObject(objects[2]);
+					
+					allocatedCountMap.put(batchId,allocatedcount);
+					dialedCountMap.put(batchId, dialedCount);
+				}
+			}
+			
+			Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseInterestedMembersMap = new LinkedHashMap<String,Map<String, Map<Long,List<TrainingCampVO>>>>(0);
 			if(interestedMembersList != null && interestedMembersList.size()>0)
 			{
 				for (Object[] member : interestedMembersList) {
 					String programName = commonMethodsUtilService.getStringValueForObject(member[1]);
 					String campName = commonMethodsUtilService.getStringValueForObject(member[3]);
-					Map<String,List<TrainingCampVO>> campsWiseInterestedMembersMap = new LinkedHashMap<String, List<TrainingCampVO>>(0);
-					List<TrainingCampVO>  scheduleVOList = new ArrayList<TrainingCampVO>(0);
+					Map<String,Map<Long,List<TrainingCampVO>>> campsWiseInterestedMembersMap = new LinkedHashMap<String,Map<Long,List<TrainingCampVO>>>(0);
+					Map<Long,List<TrainingCampVO>> batchwiseInterestedMembersMap = new LinkedHashMap<Long, List<TrainingCampVO>>(0);
+					
+					List<TrainingCampVO>  batchVOList = new ArrayList<TrainingCampVO>(0);
 					
 					if(programWiseInterestedMembersMap.get(programName) != null)
 					{
@@ -1040,17 +1061,29 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 					if(campsWiseInterestedMembersMap.get(campName) != null)
 					{
-						scheduleVOList = campsWiseInterestedMembersMap.get(campName);
+						batchwiseInterestedMembersMap = campsWiseInterestedMembersMap.get(campName);
 					}
+					if(batchwiseInterestedMembersMap.get(commonMethodsUtilService.getLongValueForObject(member[4])) != null)
+					{
+						batchVOList = batchwiseInterestedMembersMap.get(commonMethodsUtilService.getLongValueForObject(member[4]));
+					}
+						TrainingCampVO vo = new TrainingCampVO();
+						vo.setName(programName);
+						vo.setTrainingCampName(campName);
+						vo.setBatchId(commonMethodsUtilService.getLongValueForObject(member[4]));
+						vo.setStartDateStr(commonMethodsUtilService.getStringValueForObject(member[5]));
+						vo.setEndDateStr(commonMethodsUtilService.getStringValueForObject(member[6]));
+						vo.setBatchConfirmationCount(commonMethodsUtilService.getLongValueForObject(member[7]));
+						vo.setSchdlStatusId(commonMethodsUtilService.getLongValueForObject(member[8]));
+						vo.setSchdlStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
+						
+						vo.setDialedCallsCount(dialedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
+						vo.setAllocatedCallsCount(allocatedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
+						
+						batchVOList.add(vo);
 					
-					TrainingCampVO vo = new TrainingCampVO();
-					vo.setName(programName);
-					vo.setTrainingCampName(campName);
-					vo.setStartDateStr(commonMethodsUtilService.getStringValueForObject(member[4]));
-					vo.setEndDateStr(commonMethodsUtilService.getStringValueForObject(member[5]));
-					vo.setBatchConfirmationCount(commonMethodsUtilService.getLongValueForObject(member[6]));
-					scheduleVOList.add(vo);
-					campsWiseInterestedMembersMap.put(campName, scheduleVOList);
+					batchwiseInterestedMembersMap.put(commonMethodsUtilService.getLongValueForObject(member[4]), batchVOList);
+					campsWiseInterestedMembersMap.put(campName, batchwiseInterestedMembersMap);
 					programWiseInterestedMembersMap.put(programName, campsWiseInterestedMembersMap);
 					
 				}
@@ -1062,24 +1095,62 @@ public class TrainingCampService implements ITrainingCampService{
 						TrainingCampVO programVO = new TrainingCampVO();
 						programVO.setName(programNameStr);
 						
-						Map<String,List<TrainingCampVO>> campsWiseInterestedMembersMap = programWiseInterestedMembersMap.get(programNameStr);
+						Map<String,Map<Long,List<TrainingCampVO>>> campsWiseInterestedMembersMap = programWiseInterestedMembersMap.get(programNameStr);
+						
 						if(campsWiseInterestedMembersMap != null && campsWiseInterestedMembersMap.size()>0)
 						{
-							List<TrainingCampVO> campusVOList = new ArrayList<TrainingCampVO>(0);
 							for (String campusName : campsWiseInterestedMembersMap.keySet()) {
-								TrainingCampVO campVO = new TrainingCampVO();
-								campVO.setTrainingCampVOList(campsWiseInterestedMembersMap.get(campusName));
-								campusVOList.add(campVO);
+								Map<Long,List<TrainingCampVO>> batchwiseMap = campsWiseInterestedMembersMap.get(campusName);
+								if(batchwiseMap != null && batchwiseMap.size()>0)
+								{
+									
+									List<TrainingCampVO> batchVOList = new ArrayList<TrainingCampVO>(0);
+									for (Long batchId : batchwiseMap.keySet()) {
+										TrainingCampVO campVO = new TrainingCampVO();
+										
+										campVO.setTrainingCampVOList(batchwiseMap.get(batchId));
+										
+										TrainingCampVO batchVO = new TrainingCampVO();
+										Long othrsCount = 0l;
+											List<TrainingCampVO> vo = campVO.getTrainingCampVOList();
+											for (TrainingCampVO trainingCampVO2 : vo) {
+												batchVO.setName(trainingCampVO2.getName());
+												batchVO.setTrainingCampName(trainingCampVO2.getTrainingCampName());
+												batchVO.setStartDateStr(trainingCampVO2.getStartDateStr());
+												batchVO.setEndDateStr(trainingCampVO2.getEndDateStr());
+												batchVO.setAllocatedCallsCount(trainingCampVO2.getAllocatedCallsCount());
+												batchVO.setDialedCallsCount(trainingCampVO2.getDialedCallsCount());
+												String countBelongsTo = trainingCampVO2.getSchdlStatus();
+												if(countBelongsTo.equalsIgnoreCase("Interested")){
+													batchVO.setInterestedCount(trainingCampVO2.getBatchConfirmationCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase("Not Interested")){
+													batchVO.setNotInterestedCount(trainingCampVO2.getBatchConfirmationCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase("Call Back - Confirm Later")){
+													batchVO.setConformLaterCount(trainingCampVO2.getBatchConfirmationCount());
+												}
+												else{
+													othrsCount = othrsCount+trainingCampVO2.getBatchConfirmationCount();
+													batchVO.setOthersCount(othrsCount);
+												}
+											}
+											batchVOList.add(batchVO);
+									}
+									if(batchVOList != null && batchVOList.size()>0)
+									{
+										programVO.setTrainingCampVOList(batchVOList);
+									}
+									
+									if(batchVOList != null && batchVOList.size()>0)
+									{
+										programVO.setTrainingCampVOList(batchVOList);
+									}
+								}
 							}
-							if(campusVOList != null && campusVOList.size()>0)
-							{
-								programVO.setTrainingCampVOList(campusVOList);
-							}
-							
 						}
 						trainingProgramsList.add(programVO);
 					}
-					
 					returnVO.setTrainingCampVOList(trainingProgramsList);
 				}
 			}

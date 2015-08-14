@@ -767,5 +767,35 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getAllocatedCallsForBatchConfirmationDetails(String searchType, Date startDate, Date endDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(TCSIC.trainingCampScheduleInviteeCallerId), count(TCSIC.callStatusId), TCB.trainingCampBatchId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName, ");
+		str.append(" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName, date(TCB.fromDate), date(TCB.toDate) ");
+		
+		str.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB where TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId = TCB.trainingCampBatchId and TCSIC.callStatusId is not null ");
+		
+		if(startDate != null && endDate != null)
+		{
+			str.append(" and (date(TCB.fromDate) >=:startDate and date(TCB.toDate) <=:endDate) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("planned"))
+		{
+			str.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status = 'Not Started' ");
+		}
+		
+		str.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCB.trainingCampBatchId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		if(startDate != null && endDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+	
 
 }
