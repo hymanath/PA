@@ -645,6 +645,7 @@
 				 <value>com.itgrids.partyanalyst.model.AttendanceTabUser</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingAttendanceTabUser</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingUser</value>
+				 <value>com.itgrids.partyanalyst.model.EventType</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampUserRelation</value>
 				</list>
 			
