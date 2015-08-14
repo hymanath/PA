@@ -111,24 +111,68 @@
 									<td style="text-align:center;"  class="pad_0">
 										<table class="table table-bordered m_0">
 											<tr>
-												<td style="text-align:center;"  colspan="3" class="pad_15">
-													<h3 class="m_0">ALLOCATED CALLS TO CALLER - <span id="totalCallsPerCallerId">
+												<td style="text-align:center;"  class="pad_15">
+													<h4 class="m_0">TOTAL CALLS ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
 														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
-													</span></h3>
+													</span></h4>
 													<span class="pull-right font-12">Allocated Today - <span id="todayCallsPerCallerId">
 													<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
 													</span></span>
 												</td>
 											</tr>
 											<tr>
-												<td style="text-align:center;"  colspan="2" class="pad_0" id="callPurposeCountDivId">
+												<td class="pad_0 font-10">
+													<table class="table table-bordered m_0">
+														<tr class="font-10">
+															<td></td>
+															<td>Calls</td>
+															<td class="text-yellow">Not Dialled</td>
+															<td class="text-yellow">Dialled</td>
+															<td>Call Back/<br/>User Busy / Others</td>
+															<td class="interested-text">Interested</td>
+															<td class="text-info">Later</td>
+															<td class="text-danger">Not Interested</td>
+														</tr>
+														<tr>
+															<td>Assigned to Agents</td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td>Calendar Schedule</td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td>Batch Confirmation</td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</table>
+												</td>
+												<!--<td style="text-align:center;"  colspan="2" class="pad_0" id="callPurposeCountDivId">
 												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
 													
-												</td>
-												<td style="text-align:center;"  class="pad_0" id="statusWiseCountArraId">
+												</td>-->
+												<!--<td style="text-align:center;"  class="pad_0" id="statusWiseCountArraId">
 												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
 													
-												</td>
+												</td>-->
 											</tr>
 										</table>
 									</td>
@@ -175,184 +219,163 @@
 										</ul>
 									</td>
 								</tr>
-								<tr>
+								<!--<tr>
 									<td style="text-align:center;"  colspan="2">
 									<center><img id="dataLoadingsImgForCircleForConfirmed" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
 										<div id="circleForConfirmed"></div>
-										<!--<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>-->
+										<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>
 										<p style="margin-top:-70px;margin-bottom:0px;color:#40b6c0;text-align:center;">MEMBERS FILLED IN CALENDAR BATCHES</p>
 									</td>
+								</tr>-->
+							</table>
+							<table class="table table-bordered">
+								<tr>
+									<td rowspan="2">UPCOMING SCHEDULE<br/><p class="text-center">04</p></td>
+									<td>Allocated to Agents <span class="pull-right">03</span></td>
+								</tr>
+								<tr>
+									<td>Not Allocated<span class="pull-right">03</span></td>
+								</tr>
+							</table>
+							<table class="table table-bordered">
+								<tr>
+									<td rowspan="2">BATCH CONFIRMATION<br/><p class="text-center">04</p></td>
+									<td>Allocated to Agents <span class="pull-right">03</span></td>
+								</tr>
+								<tr>
+									<td>Not Allocated<span class="pull-right">03</span></td>
 								</tr>
 							</table>
 						</div>
 					</div>
-                    <div class="row">
-                    	<div class="col-md-12">
-                        	<div class="panel panel-default">
-								<div class="panel-heading pad_5 pad_bottom0">
-									<ul class="nav nav-tabs tab-list-sch searchTypeCls" role="tablist">
-										<li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULED</a></li>
-										<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING BATCH</a></li>
-										<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED BATCH</a></li>
-										<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED BATCH</a></li>
-                                       
-									</ul>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
+										<button class="btn btn-success btn-sm pull-right" style="margin-top:-7px">Assign to Agents</button>
+										<span class="pull-right col-md-3" style="margin-top:-8px">
+											<div class="input-group">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+													<span class="caret"></span>
+												</span>
+												<input type="text" class="form-control" id="reportrange">
+											</div>
+										</span>
+									</h4>
 								</div>
 								<div class="panel-body pad_0">
-									<div>
-									  <!-- Tab panes -->
-									  <div class="tab-content">
-									  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
-										<div role="tabpanel" class="tab-pane" id="running"> </div>
-                                        <div role="tabpanel" class="tab-pane" id="completed">   </div>
-                                        <div role="tabpanel" class="tab-pane" id="cancelled"></div>
-									  </div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="panel panel-default">
+												<div class="panel-heading pad_5 pad_bottom0">
+													<ul class="nav nav-tabs tab-list-sch searchTypeCls" role="tablist">
+														<li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">UPCOMING SCHEDULE</a></li>
+														<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING SCHEDULE</a></li>
+														<li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED SCHEDULE</a></li>
+														<li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED SCHEDULE</a></li>
+													   
+													</ul>
+												</div>
+												<div class="panel-body pad_0">
+													<div>
+													  <!-- Tab panes -->
+													  <div class="tab-content">
+													  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
+														<div role="tabpanel" class="tab-pane" id="running"> </div>
+														<div role="tabpanel" class="tab-pane" id="completed">   </div>
+														<div role="tabpanel" class="tab-pane" id="cancelled"></div>
+													  </div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
+									
 								</div>
 							</div>
-                        </div>
-                    </div>
+						</div>
+					</div>
 					<div class="row">
-						<div class="col-md-4">
-							<div class="assign_box">
-								<!--<label class="checkbox-inline font-10">
-                                	<input type="checkbox">
-                                    Assign Members <br/>to check availability
-                                </label>
-                                <label class="checkbox-inline font-10">
-                                	<input type="checkbox">
-                                    Assign Members<br/>For acceptance
-                                </label>-->
-								<h5>Select Member/Batch</h5>
-								<select class="form-control" id="memeberBatchConformationId" onchange="getAllCampBatches(this.value);">
-									<option value="0" selected>Select Member/Batch</option>
-									<option value="1">Member Confirmation</option>
-									<option value="2">Batch Confirmation</option>
-								</select>
-								<h5>Select Camp</h5>
-								<select class="form-control" id="campId" onchange="getAllProgramsList(this.value);">
-									<option value="0">Select Camp</option>
-								</select>
-                                <h5>Select Program Name</h5>
-								<!--<input class="form-control" placeholder="Leasdership Skills">-->
-								<select class="form-control" id="programId" onchange="getAllSchedulesDatesList(this.value);">
-									<option value="0">Select Program</option>
-								</select>
-                                <h5>Select Calendar Schedule Dates</h5>
-								<select class="form-control" id="scheduleId" onchange="getAvailableCountForMemberConfirmation(this.value);">
-									<option value="0">Select Schedule</option>
-								</select>
-								<div id="memberConfirmationDivId">
-								<h5 class="m_top20">
-									Select no of calls
-									<!--<span class="text-danger pull-right text-italic">Avail Calls 500</span>-->
-									<br> <div id="availableCallsDivId" style="display:none">
-									<label><input type="radio"><span class="text-danger pull-right text-italic">Avail Calls <span id="availCountId"></span></span></input></label>
-									</div>
-								</h5>
-								<input class="form-control" type="text" id="membersCountId">
-								<h5>Select Call Center Caller Name</h5>
-								<select class="form-control callerId">
-									<option value="0">Select Caller</option>
-								</select>
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										BATCH CONFIRMATION DETAILS
+										<button class="btn btn-success btn-sm pull-right" style="margin-top:-6px">Assign to Agents</button>
+									</h4>
 								</div>
-								<div id="batchConfirmationDivId" style="display:none">
-								<h5>Select Call Center Caller Name</h5>
-								<select class="form-control callerId" onchange="getAvailableMembersCountDetails(this.value);">
-									<option value="0">Select Caller</option>
-									<option value="1">Harish</option>
-								</select>
-								<h5 class="m_top20">
-									Select no of calls
-									<br> <div id="availableCounstDivId" style="display:none;">
-									<label><input type="radio" class="availTypeCls" name="availCalls" id="ownCallsId"><span class="text-danger pull-right text-italic">Avail Own Calls <span id="ownCountId"></span></span></input></label>
-									<label><input type="radio" class="availTypeCls" name="availCalls" id="othersCallsId"> <span class="text-danger pull-right text-italic">Avail Others Calls <span id="othersCountId"></span></span></label>
-									<input type="hidden" id="availCallsId"/>
-									</div>
-								</h5>
-								<input class="form-control" type="text" id="membersCountId">
+								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
+								<!--	<table class="table table-bordered m_0">
+										<tr>
+											<td>TRAINING <br/>PROGRAM NAME</td>
+											<td>TRAINING CENTER</td>
+											<td>TRAINING <br/>START DATE</td>
+											<td>TRAINING <br/>END DATE</td>
+											<td>ALLOCATED <br/>CALLS</td>
+											<td>DIALED/<br/> UNDIALED</td>
+											<td class="font-12">CALL BACK/<br/>USER BUSY/<br/>OTHERS</td>
+											<td>INTERESTED <br/>MEMBERS</td>
+											<td>LATER</td>
+											<td>NOT <br/>INTERESTED</td>
+										</tr>
+										<tr>
+											<td rowspan="4">Leadership Skills</td>
+											<td rowspan="2">SVV Center</td>
+											<td>Sep_01_2015</td>
+											<td>Sep_03_2015</td>
+											<td>100</td>
+											<td>95/05</td>
+											<td>05</td>
+											<td>90</td>
+											<td>02</td>
+											<td>03</td>
+										</tr>
+										<tr>
+											<td>Sep_01_2015</td>
+											<td>Sep_03_2015</td>
+											<td>100</td>
+											<td>95/05</td>
+											<td>05</td>
+											<td>90</td>
+											<td>02</td>
+											<td>03</td>
+										</tr>
+										<tr>
+											<td>AKKC Center</td>
+											<td>Sep_01_2015</td>
+											<td>Sep_03_2015</td>
+											<td>100</td>
+											<td>95/05</td>
+											<td>05</td>
+											<td>90</td>
+											<td>02</td>
+											<td>03</td>
+										</tr>
+										<tr>
+											<td>GPN Center</td>
+											<td>Sep_01_2015</td>
+											<td>Sep_03_2015</td>
+											<td>100</td>
+											<td>95/05</td>
+											<td>05</td>
+											<td>90</td>
+											<td>02</td>
+											<td>03</td>
+										</tr>
+									</table>-->
 								</div>
-								<div id="searchErrDivID"></div>
-								<button class="btn btn-success btn-block m_top20" type="button" onclick="saveAllDetails();">ASSIGN TO CALLER</button>
 							</div>
 						</div>
-						<div role="tabpanel" class="tab-pane active InterestedMembersCountDivId table-responsive" id="interestedDivId">
-						<center><img id="dataLoadingsImgForInterestedMembersCountId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
-						</div>
-						<!--<div class="col-md-8">
-							<div class="table-scroll">
-								<table class="table table-bordered m_0">
-									<thead class="bg_d">
-									    <th>TRAINING <br/> PROGRAM NAME</th>
-										<th>TRAINING CAMP<br/> NAME</th>
-										<th>START <br/> DATE</th>
-										<th>END <br/> DATE</th>											
-										<th>MEMBERS <br/>ACCEPTED</th>
-									</thead>
-									<tbody>
-										<tr>
-										<td style="text-align:center;"  rowspan="4">Leadership Skills</td>
-											<td style="text-align:center;" >SVV Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >EWK Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >GPN Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >AKKC Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;"  rowspan="4">Election Year</td>
-											<td style="text-align:center;" >SVV Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >AKKC Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >AKKC Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										<tr>
-											<td style="text-align:center;" >AKKC Batch Campus</td>
-											<td style="text-align:center;" ></td>											
-											<td style="text-align:center;" ></td>
-											<td style="text-align:center;" >100</td>
-										</tr>
-										
-									</tbody>
-								</table>
-							</div>
-						</div>-->
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 m_top20">
 							<div class="panel panel-default">
 								<div class="panel-heading pad_5 pad_bottom0">
 									<ul class="nav nav-tabs tab-list" role="tablist">
-										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">CALLERS CALL DATA PROGRESS - MEMBERS AVAILABILITY</a></li>
-										<!--<li><a href="#participated" class="text-bold" data-toggle="tab">MEMBERS ACCEPTANCE</a></li>-->
+										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">SCHEDULE CONFIRMATION CALLS AGENT WISE</a></li>
+										<li><a href="#participated" class="text-bold" data-toggle="tab">BATCH CONFIRMATION CALLS AGENT WISE</a></li>
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
@@ -423,7 +446,7 @@
 											</table>-->
 										</div>
 										<div role="tabpanel" class="tab-pane" id="participated">
-											
+											<table><tr><td>STATIC TABLE</td></tr></table>
 										</div>
 									  </div>
 									</div>
@@ -705,8 +728,8 @@ $(document).ready(function() {
 							str+='<thead >';
 								str+='<th>Caller Name</th>';
 								str+='<th>Assigned Calls</th>';
-								str+='<th>Completed Calls</th>';
-								str+='<th>Pending Calls</th>';
+								str+='<th>Dialed Calls</th>';//completed calls
+								str+='<th>Un Dialed</th>';//pending calls
 								
 									if(result.trainingCampVOList[0].trainingCampVOList !=null){
 									for(var i in result.trainingCampVOList[0].trainingCampVOList){
@@ -769,6 +792,7 @@ $(document).ready(function() {
 					$('#myStathalf').circliful();
 				}
 	}
+	
 	
 	//balu chart
 var trainingColorArr = [];
@@ -1135,7 +1159,34 @@ function buildingMembersFilledInCalenderBatch(result){
 		getScheduleAndConfirmationCallsOfCallerToAgent();
 		getCampusWiseDateWiseInterestedMembersDetails('interested');
 		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
-	})
+	});
+	
+	//New Changes By Balu For New Html
+	
+	/* function getCallsDetailsOfCallCenterAdmin(){
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+
+		var jsObj={
+			fromDate:fromDate,
+			toDate : toDate
+		}
+		$.ajax({
+			type:'POST',
+			 url: 'getCallsDetailsOfCallCenterAdminAction.action',
+			 data : {task:JSON.stringify()} ,
+			}).done(function(result){
+				if(result !=null){
+					alert("Result came Successfully..");
+				}
+				else {
+					alert("error occuered..");
+				}
+			});
+		
+		
+	} */
 	
 	$("#mainheading").html("TRAINING PROGRAM");
 </script>
