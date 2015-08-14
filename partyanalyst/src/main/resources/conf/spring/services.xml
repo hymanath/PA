@@ -2576,7 +2576,8 @@
 		 <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		 <property name="insuranceTypeDAO" ref="insuranceTypeDAO" />
 		 <property name="candidateContestedLocationDAO" ref="candidateContestedLocationDAO" />
-		 
+		 <property name="eventTypeDAO" ref="eventTypeDAO" />
+		 <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
