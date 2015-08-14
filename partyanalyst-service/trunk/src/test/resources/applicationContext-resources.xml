@@ -654,6 +654,7 @@
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingAttendance</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendance</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinute</value>
+				 <value>com.itgrids.partyanalyst.model.EventType</value>
 			</list>
 		</property>
 	</bean>
@@ -3052,7 +3053,8 @@
 	<bean id="trainingCampUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="trainingCampBatchAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchAttendeeDAO">
+	<bean id="eventTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventTypeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 </beans>
