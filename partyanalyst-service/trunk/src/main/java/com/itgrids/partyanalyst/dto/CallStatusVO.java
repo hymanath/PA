@@ -13,8 +13,16 @@ private String location;
 private String startTime;
 private String endTime;
 private String meetingName;
+private Long partyMeetingId;
 
 
+
+public Long getPartyMeetingId() {
+	return partyMeetingId;
+}
+public void setPartyMeetingId(Long partyMeetingId) {
+	this.partyMeetingId = partyMeetingId;
+}
 public Long getLocationLevelId() {
 	return locationLevelId;
 }
