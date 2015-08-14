@@ -102,27 +102,30 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-8">
-							<table class="table table-bordered">
+							<table class="table table-bordered ">
 								<tr>
 									<td style="text-align:center;" >
 										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
-										<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:190px;"></div>
+										<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:190px; margin-top:40px;"></div>
 									</td>
 									<td style="text-align:center;"  class="pad_0">
-										<table class="table table-bordered m_0">
+										<table class="table table-bordered m_0 text-left">
 											<tr>
-												<td style="text-align:center;"  class="pad_15">
+												<td style="text-align:center;"  class="pad_5">
 													<h4 class="m_0">TOTAL CALLS ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
 														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
 													</span></h4>
-													<span class="pull-right font-12">Allocated Today - <span id="todayCallsPerCallerId">
+													<span class="pull-right font-12" style="margin-right:55px;">Allocated Today - <span id="todayCallsPerCallerId">
 													<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
 													</span></span>
 												</td>
 											</tr>
-											<tr>
-												<td class="pad_0 font-10">
-													<table class="table table-bordered m_0">
+											<tr style="font-size: 12px;">
+												<td class="pad_0"  id="adminAssignedTdId">
+													
+													<center><img id="dataLoadingImgForAdminAssignedTdId" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
+													
+													<!--<table class="table table-bordered m_0">
 														<tr class="font-10">
 															<td></td>
 															<td>Calls</td>
@@ -163,7 +166,7 @@
 															<td></td>
 															<td></td>
 														</tr>
-													</table>
+													</table>  -->
 												</td>
 												<!--<td style="text-align:center;"  colspan="2" class="pad_0" id="callPurposeCountDivId">
 												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
@@ -180,7 +183,7 @@
 							</table>
 						</div>
 						<div class="col-md-4">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-condensed">
 								<tr>
 									<td style="text-align:center;" >
 										<ul class="list-inline m_bottom0">
@@ -228,7 +231,7 @@
 									</td>
 								</tr>-->
 							</table>
-							<table class="table table-bordered">
+							<table class="table table-bordered table-condensed">
 								<tr>
 									<td rowspan="2">UPCOMING SCHEDULE<br/><p class="text-center">04</p></td>
 									<td>Allocated to Agents <span class="pull-right">03</span></td>
@@ -374,8 +377,8 @@
 							<div class="panel panel-default">
 								<div class="panel-heading pad_5 pad_bottom0">
 									<ul class="nav nav-tabs tab-list" role="tablist">
-										<li class="active"><a href="#area" class="text-bold" data-toggle="tab">SCHEDULE CONFIRMATION CALLS AGENT WISE</a></li>
-										<li><a href="#participated" class="text-bold" data-toggle="tab">BATCH CONFIRMATION CALLS AGENT WISE</a></li>
+										<li class="active"><a href="#area" class="text-bold" data-toggle="tab" onclick="getCallerWiseCallsDetails('Invitation')">SCHEDULE CONFIRMATION CALLS AGENT WISE</a></li>
+										<li><a href="#participated" class="text-bold scheduled" data-toggle="tab" onclick="getCallerWiseCallsDetails('Confirmation')">BATCH CONFIRMATION CALLS AGENT WISE</a></li>
 									</ul>
 								</div>
 								<div class="panel-body pad_0">
@@ -445,8 +448,8 @@
 												</tbody>
 											</table>-->
 										</div>
-										<div role="tabpanel" class="tab-pane" id="participated">
-											<table><tr><td>STATIC TABLE</td></tr></table>
+										<div role="tabpanel" class="tab-pane confirmationMemberAvailabilityDivCls" id="participated">
+											<center><img id="dataLoadingsImgForProgressOfConfirmationId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
 										</div>
 									  </div>
 									</div>
@@ -637,11 +640,13 @@ $(document).ready(function() {
   });
   
   	getAllUserIdsByUserType();
-	getCallerWiseCallsDetails();
+	getCallerWiseCallsDetails("Invitation");
 	getTrainingProgramMembersBatchCount();
 	getScheduleAndConfirmationCallsOfCallerToAgent();
 	getCampusWiseDateWiseInterestedMembersDetails('interested');
 	getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
+	getCallsDetailsOfCallCenterAdmin();
+	getUpComingBatchDetails();
 
 });
 
@@ -671,7 +676,7 @@ $(document).ready(function() {
 		
 	}
 	
-	function getCallerWiseCallsDetails(){
+	function getCallerWiseCallsDetails(agentType){
 		
 		$("#memberAvailabilityDivCls").html("");
 		$("#statusWiseCountArraId").html("");
@@ -685,6 +690,12 @@ $(document).ready(function() {
 		$("#dataLoadingsImgForDonutchartStatus").show();
 		$("#dataLoadingsImgForCircleForConfirmed").show();
 		
+		//members count block data loading
+		$("#dataLoadingsImgForProgressOfAgentCountId").show();
+		$("#dataLoadingsImgForProgressOfConfirmationId").show();
+		
+		
+		
 		setcolorsForTrainingchart();
 		
 		var fromDate=$(".dp_startDate").val();
@@ -692,10 +703,9 @@ $(document).ready(function() {
 		
 		var jsObj={
 			searchType:"",
-			 /* fromdate:"09/01/2015",
-			toDate :"09/11/2015" */
 			fromdate : fromDate,
-			toDate   : toDate
+			toDate   : toDate,
+			agentType : agentType
 		}
 		$.ajax({
 				type:'POST',
@@ -709,10 +719,13 @@ $(document).ready(function() {
 					$("#dataLoadingsImgForDonutchartStatus").hide();
 					$("#dataLoadingsImgForCircleForConfirmed").hide();
 					
+					$("#dataLoadingsImgForProgressOfAgentCountId").hide();
+					$("#dataLoadingsImgForProgressOfConfirmationId").hide();
+					
 					if(result !=null){ 
 						$("#totalCallsPerCallerId").html(result.totalCount);
 						$("#todayCallsPerCallerId").html(result.todayAllocatedCalls);
-						buildingCallerWiseCallsDetails(result);
+						buildingCallerWiseCallsDetails(result,agentType);
 					}
 					else{
 						$("#memberAvailabilityDivCls").html("problem occured.please contact admin.");
@@ -720,7 +733,7 @@ $(document).ready(function() {
 				});
 		
 	}
-	function buildingCallerWiseCallsDetails(result){
+	function buildingCallerWiseCallsDetails(result,agentType){
 		var str='';
 		var str1='';
 				if(result.trainingCampVOList !=null){
@@ -777,10 +790,20 @@ $(document).ready(function() {
 								
 							str+='</tbody>';
 						str+='</table>';
-					$(".memberAvailabilityDivCls").html(str);	
-				}else{
-					$(".memberAvailabilityDivCls").html("Data Not Available.");
+					if(agentType == "Invitation"){
+						$(".memberAvailabilityDivCls").html(str);	
+					}
+					 else if(agentType == "Confirmation"){
+						$(".confirmationMemberAvailabilityDivCls").html(str);	
+					}
 					
+				}else{
+					if(agentType == "Invitation"){
+						$(".memberAvailabilityDivCls").html("Data Not Available.");
+					}
+					else if(agentType == "Confirmation"){
+						$(".confirmationMemberAvailabilityDivCls").html("Data Not Available.");	
+					}
 					//highchart and circle filling
 					
 					$("#donutchartForStatus").html("<div style='margin-top:100px;text-align:center;'>Status Data Not Available.</div>");
@@ -1147,26 +1170,32 @@ function buildingMembersFilledInCalenderBatch(result){
 			return;
 		}
 	
-		getCallerWiseCallsDetails();
+		getCallerWiseCallsDetails("Invitation");
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
 		getCampusWiseDateWiseInterestedMembersDetails('interested');
 		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
+		getCallsDetailsOfCallCenterAdmin();
+		getUpComingBatchDetails();
 	});	
 	$(document).on("click",".newsSubmitBtn",function(){
-		getCallerWiseCallsDetails();
+		getCallerWiseCallsDetails("Invitation");
 		getTrainingProgramMembersBatchCount();
 		getScheduleAndConfirmationCallsOfCallerToAgent();
 		getCampusWiseDateWiseInterestedMembersDetails('interested');
 		getCampusWiseBatchWiseMembersDetails('notStarted','scheduled');
+		getCallsDetailsOfCallCenterAdmin();
+		getUpComingBatchDetails();
 	});
 	
-	//New Changes By Balu For New Html
-	
-	/* function getCallsDetailsOfCallCenterAdmin(){
+	 function getCallsDetailsOfCallCenterAdmin(){
+		
+		$("#adminAssignedTdId").html("");
+		
 		
 		var fromDate=$(".dp_startDate").val();
 		var toDate=$(".dp_endDate").val();
+		
 
 		var jsObj={
 			fromDate:fromDate,
@@ -1175,18 +1204,132 @@ function buildingMembersFilledInCalenderBatch(result){
 		$.ajax({
 			type:'POST',
 			 url: 'getCallsDetailsOfCallCenterAdminAction.action',
-			 data : {task:JSON.stringify()} ,
+			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				
+				var str='';
 				if(result !=null){
-					alert("Result came Successfully..");
+					str+='<table class="table table-bordered m_0 table-condensed">';
+							str+='<tr style="font-size:12px;">';
+								str+='<td></td>';
+								str+='<td>Calls</td>';
+								str+='<td class="text-yellow">Dialled</td>';
+								str+='<td class="text-yellow">Not Dialled</td>';
+								
+								/* for(var i in result){
+									
+									if(result[i].trainingCampVOList !=null && result[i].trainingCampVOList.length >0){
+										
+										if(result[i].trainingCampVOList[0].status == "Call Back - Busy"){
+											
+										}
+										
+									}
+									
+									
+								} */
+								
+								str+='<td>Interested</td>';
+								str+='<td class="interested-text">Not Interested</td>';
+								str+='<td class="text-info">Call Back - Busy</td>';
+								str+='<td class="text-danger">Call Back - Confirm Later</td>';
+							str+='</tr>';
+							for(var i in result){
+								
+								str+='<tr>';
+								if(result[i].name == "Assigned"){	
+									str+='<td>Assigned to Agents</td>';
+									str+='<td>'+result[i].assignedCallsCount+'</td>';
+									str+='<td>'+result[i].dialedCallsCount+'</td>';
+									str+='<td>'+result[i].pendingCallsCount+'</td>';
+									
+									if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length>0){
+										
+										for(var j in result[i].trainingCampVOList){
+											
+											if(result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==7){	
+												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											}
+										}
+										
+									}
+									
+									
+								}else if(result[i].name == "Scheduled"){
+									str+='<td>Calendar Schedule</td>';
+									str+='<td>'+result[i].assignedCallsCount+'</td>';
+									str+='<td>'+result[i].dialedCallsCount+'</td>';
+									str+='<td>'+result[i].pendingCallsCount+'</td>';
+									
+									if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length>0){
+										
+										for(var j in result[i].trainingCampVOList){
+											
+											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5){	
+												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											}
+										}
+										
+									}
+									
+								}
+								else if(result[i].name == "Confirmed"){
+									str+='<td>Batch Confirmation</td>';
+									str+='<td>'+result[i].assignedCallsCount+'</td>';
+									str+='<td>'+result[i].dialedCallsCount+'</td>';
+									str+='<td>'+result[i].pendingCallsCount+'</td>';
+									
+									if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length>0){
+										
+										for(var j in result[i].trainingCampVOList){
+											
+											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5){	
+												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											}
+										}
+										
+									}
+									
+								}
+								str+='</tr>';
+								
+							}
+							
+					str+='</table>';
+					
+					
+					$("#adminAssignedTdId").html(str);
+					
 				}
 				else {
-					alert("error occuered..");
-				}
+					$("#adminAssignedTdId").html("Problem occured For this Module.Please contact admin.");
+				} 
+			});
+	}
+	
+	function getUpComingBatchDetails(){
+		
+		var fromDate=$(".dp_startDate").val();
+		var toDate=$(".dp_endDate").val();
+		
+
+		var jsObj={
+			fromDate:fromDate,
+			toDate : toDate
+		}
+		$.ajax({
+			type:'POST',
+			 url: 'getUpComingBatchDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				
+				
 			});
 		
-		
-	} */
+	}
+	
+	
+	
 	
 	$("#mainheading").html("TRAINING PROGRAM");
 </script>
