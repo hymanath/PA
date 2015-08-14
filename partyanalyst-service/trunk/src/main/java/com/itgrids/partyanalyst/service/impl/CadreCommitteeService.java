@@ -15285,7 +15285,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
-		        	vo.setLocationName(localBodi[1].toString());
+		        	vo.setLocationName(localBodi[1].toString() +" "+ localBodi[2].toString());
 		        	locationsList.add(vo);
 	        	}else{
 	        		greaterCorpIds.add(localBdyId);
@@ -15355,5 +15355,19 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        	}
 	        }
 	        return locationsList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getConstituencyOfDistrict(Long stateId, Long districtId){
+		List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+		List<LocationWiseBoothDetailsVO> finalList =  new ArrayList<LocationWiseBoothDetailsVO>();
+		if(rslt!=null && rslt.size()>0){
+			for(Object[] temp:rslt){
+        		LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(Long.valueOf(temp[0].toString()));
+	        	vo.setLocationName(temp[1].toString());
+	        	finalList.add(vo);
+        	}
+		}
+		return finalList;
 	}
 }
