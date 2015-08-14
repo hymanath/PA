@@ -64,41 +64,19 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String today;
 	private List<LocationWiseBoothDetailsVO> locations;
 	private ICadreCommitteeService cadreCommitteeService;
-	private String meetingType;
-	private String meetingLocationLevel;
-	private Long locationLevelId;
-	private Long locationId;
 	private Long campCallerId;
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
-
-	public void setLocationLevelId(Long locationLevelId) {
-		this.locationLevelId = locationLevelId;
-	}
-
-	public Long getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
-	}
-
-	public String getMeetingType() {
-		return meetingType;
-	}
-
-	public void setMeetingType(String meetingType) {
-		this.meetingType = meetingType;
-	}
-
-	public String getMeetingLocationLevel() {
-		return meetingLocationLevel;
-	}
-
-	public void setMeetingLocationLevel(String meetingLocationLevel) {
-		this.meetingLocationLevel = meetingLocationLevel;
-	}
+	private Long partyMeetingId;
 	
+	
+	public Long getPartyMeetingId() {
+		return partyMeetingId;
+	}
+
+	public void setPartyMeetingId(Long partyMeetingId) {
+		this.partyMeetingId = partyMeetingId;
+	}
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -119,11 +97,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public List<CallStatusVO> getRetResult() {
 		return retResult;
 	}
-	
-	public Long getLocationLevelId() {
-		return locationLevelId;
-	}
-	
+
 	public void setRetResult(List<CallStatusVO> retResult) {
 		this.retResult = retResult;
 	}
