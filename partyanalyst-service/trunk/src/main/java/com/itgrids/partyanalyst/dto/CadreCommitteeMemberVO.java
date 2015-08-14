@@ -3,6 +3,10 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Administrator
+ *
+ */
 public class CadreCommitteeMemberVO {
 
 	private Long id;
@@ -29,7 +33,9 @@ public class CadreCommitteeMemberVO {
 	private String tehsilName;
 	private String partyPosition;
 	private String representativeType;
-	
+	private Long eventTypeId;
+	private String eventTypeStr;
+	private Long absentCount=0l;
 	List<CadreCommitteeMemberVO> knownList;
 	List<CadreCommitteeMemberVO> unKnownList;
 	
@@ -102,8 +108,27 @@ public class CadreCommitteeMemberVO {
 	private Long cadreId;
 	private String relativeName;
 	private String areaType;
+	private Long invitationCount=0l;
 	
 	
+	public Long getInvitationCount() {
+		return invitationCount;
+	}
+	public void setInvitationCount(Long invitationCount) {
+		this.invitationCount = invitationCount;
+	}
+	public Long getEventTypeId() {
+		return eventTypeId;
+	}
+	public String getEventTypeStr() {
+		return eventTypeStr;
+	}
+	public void setEventTypeId(Long eventTypeId) {
+		this.eventTypeId = eventTypeId;
+	}
+	public void setEventTypeStr(String eventTypeStr) {
+		this.eventTypeStr = eventTypeStr;
+	}
 	public Long getActualOthers() {
 		return actualOthers;
 	}
@@ -624,6 +649,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
+	}
+	public Long getAbsentCount() {
+		return absentCount;
+	}
+	public void setAbsentCount(Long absentCount) {
+		this.absentCount = absentCount;
 	}
 	
 	
