@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.omg.CosNaming.IstringHelper;
+import org.apache.poi.hssf.record.formula.functions.Char;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -20,13 +20,17 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
 import com.itgrids.partyanalyst.dao.ICampCallStatusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
@@ -37,12 +41,13 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -52,10 +57,15 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
+import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.Ward;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -87,8 +97,62 @@ public class TrainingCampService implements ITrainingCampService{
 	private IPartyMeetingDAO partyMeetingDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IUserAddressDAO userAddressDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IWardDAO wardDAO;
+	private IPanchayatDAO panchayatDAO;
 	
 	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
+	public IWardDAO getWardDAO() {
+		return wardDAO;
+	}
+
+	public void setWardDAO(IWardDAO wardDAO) {
+		this.wardDAO = wardDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
@@ -2110,38 +2174,96 @@ public class TrainingCampService implements ITrainingCampService{
 		return meetingTypes;
 	}
 	
-	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long meetingLocation){
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString){
 		List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
 		try {
 			LOG.info("Entered into getAllMeetings");
 			
-			//meetingtypeId,meetingtype,meetinglevelid,level,location value,starttime,endtime
-			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,meetingLocation);
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate=sdf.parse(startDateString);
+			Date endDate=sdf.parse(endDateString);
+			
+			Long mandalId=0l;
+			Long townId = 0l;
+			Long divisonId=0l;
+			Long villageId = 0l;
+			Long wardId = 0l;
+			
+			if(locationLevel==4l){
+				String manTowDiv = mandalTownDivisonId.toString();
+				char temp = manTowDiv.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				if(locationLevel==4l){
+					mandalId = Long.parseLong(manTowDiv.substring(1));
+				}
+				if(locationLevel==5l){
+					townId = Long.parseLong(manTowDiv.substring(1));
+				}
+				if(locationLevel==6l){
+					divisonId = Long.parseLong(manTowDiv.substring(1));
+				}
+				
+			}
+			
+			if(locationLevel==5l){
+				String vilwrdId = villageWardId.toString();
+				char temp = vilwrdId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				
+				if(locationLevel==7l){
+					villageId=Long.parseLong(vilwrdId.substring(1));
+				}
+				if(locationLevel==8l){
+					wardId=Long.parseLong(vilwrdId.substring(1));
+				}
+			}
+			
+			
+			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateId,districtId,constituencyId,mandalId,townId,divisonId,villageId,wardId,startDate,endDate);
 			
 			List<Long> level1List = new ArrayList<Long>();
 			List<Long> level2List = new ArrayList<Long>();
 			List<Long> level3List = new ArrayList<Long>();
 			List<Long> level4List = new ArrayList<Long>();
 			List<Long> level5List = new ArrayList<Long>();
-			
+			List<Long> level6List = new ArrayList<Long>();
+			List<Long> level7List = new ArrayList<Long>();
+			List<Long> level8List = new ArrayList<Long>();
+						
 			Map<Long,String> level1Map = new HashMap<Long,String>();
 			Map<Long,String> level2Map = new HashMap<Long,String>();
 			Map<Long,String> level3Map = new HashMap<Long,String>();
 			Map<Long,String> level4Map = new HashMap<Long,String>();
 			Map<Long,String> level5Map = new HashMap<Long,String>();
-			
+			Map<Long,String> level6Map = new HashMap<Long,String>();
+			Map<Long,String> level7Map = new HashMap<Long,String>();
+			Map<Long,String> level8Map = new HashMap<Long,String>();
+						
 			if(meetings!=null && meetings.size()>0){
 				for (Object[] objects : meetings) {
 					if(objects[2]!=null && (Long)objects[2]==1l){
-						level1List.add((Long)objects[2]);
-					}else if(objects[2]!=null && (Long)objects[2]==2l){
-						level2List.add((Long)objects[2]);
-					}else if(objects[2]!=null && (Long)objects[2]==3l){
-						level3List.add((Long)objects[2]);
-					}else if(objects[2]!=null && (Long)objects[2]==4l){
-						level4List.add((Long)objects[2]);
-					}else if(objects[2]!=null && (Long)objects[2]==5l){
-						level5List.add((Long)objects[2]);
+						level1List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==2l){
+						level2List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==3l){
+						level3List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==4l){
+						level4List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==5l){
+						level5List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==6l){
+						level6List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==7l){
+						level7List.add((Long)objects[4]);
+					}
+					else if(objects[2]!=null && (Long)objects[2]==8l){
+						level8List.add((Long)objects[4]);
 					}
 				}
 			}
@@ -2166,6 +2288,105 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
+			if(level3List!=null && level3List.size()>0){
+				List<Object[]> constDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(level3List);
+				
+				if(constDetails!=null && constDetails.size()>0){
+					for (Object[] objects : constDetails) {
+						level3Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(level4List!=null && level4List.size()>0){
+				List<Object[]> mandalDetails = tehsilDAO.getTehsilNameByTehsilIdsList(level4List);
+				
+				if(mandalDetails!=null && mandalDetails.size()>0){
+					for (Object[] objects : mandalDetails) {
+						level4Map.put((Long)objects[0],objects[1].toString());
+					}
+				}
+			}
+			
+			if(level5List!=null && level5List.size()>0){
+				List<Object[]> townDetails = localElectionBodyDAO.findByLocalElecBodyIds(level5List);
+				if(townDetails!=null && townDetails.size()>0){
+					for (Object[] objects : townDetails) {
+						level5Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(level6List!=null && level6List.size()>0){
+				List<Object[]> divisonDetails = wardDAO.getWardDetailsForList(level6List);
+				if(divisonDetails!=null && divisonDetails.size()>0){
+					for (Object[] objects : divisonDetails) {
+						level6Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(level7List!=null && level7List.size()>0){
+				List<Object[]> villageDetails = panchayatDAO.getPanchayatIdsByMandalIdsList(level7List);
+				if(villageDetails!=null && villageDetails.size()>0){
+					for (Object[] objects : villageDetails) {
+						level7Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(level8List!=null && level8List.size()>0){
+				List<Object[]> wardDetails = wardDAO.getWardDetailsForList(level8List);
+				if(wardDetails!=null && wardDetails.size()>0){
+					for (Object[] objects : wardDetails) {
+						level8Map.put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName
+			if(meetings!=null && meetings.size()>0){
+				for (Object[] objects : meetings) {
+					CallStatusVO vo = new CallStatusVO();
+					
+					vo.setMeetingTypeId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setMeetingType(objects[1]!=null?objects[1].toString():"");
+					
+					if(objects[2]!=null && (Long)objects[2]==1l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level1Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==2l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level2Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==3l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level3Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==4l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level4Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==5l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level5Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==6l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level6Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==7l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level7Map.get((Long)objects[4]));
+					}else if(objects[2]!=null && (Long)objects[2]==8l){
+						vo.setLocationId((Long)objects[4]);
+						vo.setLocation(level8Map.get((Long)objects[4]));
+					}
+					
+					vo.setLocationLevelId(locationLevel);
+					vo.setStartTime(objects[5].toString());
+					vo.setEndTime(objects[6].toString());
+					vo.setMeetingName(objects[8].toString());
+					allMeetings.add(vo);
+					
+				}
+			}
+						
 		} catch (Exception e) {
 			LOG.error("Exception raised in getAllMeetings",e);
 		}
