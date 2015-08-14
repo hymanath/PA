@@ -342,6 +342,9 @@ callFor = "Schedule";
 else
 callFor = "Batch";
 var str='';
+
+if(result.subList != null && result.subList .length > 0)
+{
 str+='<table class="table table-bordered m_top20">';
 str+='<thead class="bg_d">';
 str+='<th>Image</th>';
@@ -356,8 +359,6 @@ str+='<th>Remarks</th>';
 str+='<th>Status</th>';
 str+='<th>Update</th>';
 str+='</thead>';
-if(result.subList != null && result.subList .length > 0)
-{
 for(var i in result.subList)
 {
 str+='<tr>';
@@ -380,9 +381,12 @@ str+='<button type="button" class="btn btn-success btn-sm" data-toggle="modal" d
 str+='</td>';
 str+='</tr>';
 }
-}
 
 str+='</table>';
+}
+else{
+str+='No Data Available...';
+}
 $("#memberInfoDiv").html(str);
 
 }
