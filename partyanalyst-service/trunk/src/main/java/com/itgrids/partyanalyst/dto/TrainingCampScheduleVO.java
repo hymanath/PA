@@ -24,6 +24,15 @@ public class TrainingCampScheduleVO implements Serializable{
 	private Long campCount=0l;
 	
 	
+	private Long upcomingscheduleCnt=0l;
+	private Long upcomingAllocatedAgnt=0l;
+	private Long upNotAllocated =0l;
+	private Long batchConfirmCnt=0l;
+	private Long btchAllocatedCnt=0l;
+	private Long btchNotAllocated=0l;
+	
+	
+	
 	
 	private List<TrainingCampScheduleVO> trainingCampVOList;
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOList;
@@ -131,6 +140,43 @@ public class TrainingCampScheduleVO implements Serializable{
 	}
 	public void setTotalDialedCallsCount(Long totalDialedCallsCount) {
 		this.totalDialedCallsCount = totalDialedCallsCount;
+	}
+	public Long getUpcomingscheduleCnt() {
+		return upcomingscheduleCnt;
+	}
+	public void setUpcomingscheduleCnt(Long upcomingscheduleCnt) {
+		this.upcomingscheduleCnt = upcomingscheduleCnt;
+	}
+	public Long getUpcomingAllocatedAgnt() {
+		return upcomingAllocatedAgnt;
+	}
+	public void setUpcomingAllocatedAgnt(Long upcomingAllocatedAgnt) {
+		this.upcomingAllocatedAgnt = upcomingAllocatedAgnt;
+	}
+	
+	public Long getUpNotAllocated() {
+		return upNotAllocated;
+	}
+	public void setUpNotAllocated(Long upNotAllocated) {
+		this.upNotAllocated = upNotAllocated;
+	}
+	public Long getBatchConfirmCnt() {
+		return batchConfirmCnt;
+	}
+	public void setBatchConfirmCnt(Long batchConfirmCnt) {
+		this.batchConfirmCnt = batchConfirmCnt;
+	}
+	public Long getBtchAllocatedCnt() {
+		return btchAllocatedCnt;
+	}
+	public void setBtchAllocatedCnt(Long btchAllocatedCnt) {
+		this.btchAllocatedCnt = btchAllocatedCnt;
+	}
+	public Long getBtchNotAllocated() {
+		return btchNotAllocated;
+	}
+	public void setBtchNotAllocated(Long btchNotAllocated) {
+		this.btchNotAllocated = btchNotAllocated;
 	}
 	
 	

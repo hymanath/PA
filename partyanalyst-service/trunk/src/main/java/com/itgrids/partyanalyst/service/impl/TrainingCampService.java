@@ -513,7 +513,7 @@ public class TrainingCampService implements ITrainingCampService{
 		return status;
 	}
 	
-	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString)
+	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString,String agentType)
 	{
 		List<TrainingCampScheduleVO> finalList=null;
 		TrainingCampScheduleVO finalCallersVODetails=new TrainingCampScheduleVO();
@@ -538,10 +538,10 @@ public class TrainingCampService implements ITrainingCampService{
 			//1)getting All status and set to list.
 			  List<Object[]>  allStatus=scheduleInviteeStatusDAO.getAllStatusList();
 			//DAO calls.
-			  List<Object[]> totalAssignedList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, null);//callerId,count
-			  List<Object[]> completedCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "completedCount");
-			  List<Object[]> pendingCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds,startDate,endDate,"pendingCount");
-		      List<Object[]> callStatusOfinviteesList = trainingCampScheduleInviteeCallerDAO.getCallStatusContsOfInvitees(userIds,startDate,endDate);//0.callerId,1.scheduleInviteeStatusId,2.status,3.count
+			  List<Object[]> totalAssignedList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, null,agentType);//callerId,count
+			  List<Object[]> completedCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "completedCount",agentType);
+			  List<Object[]> pendingCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds,startDate,endDate,"pendingCount",agentType);
+		      List<Object[]> callStatusOfinviteesList = trainingCampScheduleInviteeCallerDAO.getCallStatusContsOfInvitees(userIds,startDate,endDate,agentType);//0.callerId,1.scheduleInviteeStatusId,2.status,3.count
 		      
 			
 			//iterating.
@@ -607,7 +607,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			
-			 List<Object[]> totalDialedCalls=trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "dialedCalls");
+			 List<Object[]> totalDialedCalls=trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "dialedCalls",null);
 			
 			 Long dialedCallsCount =0l;
 			if(totalDialedCalls !=null && totalDialedCalls.size()>0){
@@ -725,7 +725,7 @@ public class TrainingCampService implements ITrainingCampService{
 						agentExist=false;
 						assignCampVo=new TrainingCampScheduleVO();
 						assignCampVo.setId(callerId);
-						assignCampVo.setName("");
+						assignCampVo.setName(assingedCount.getName());
 						assignCampVo.setAssignedCallsCount(0l);
 						assignCampVo.setCompletedCallsCount(0l);
 						assignCampVo.setPendingCallsCount(0l);
@@ -733,15 +733,12 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 					if(type.equalsIgnoreCase("assigned")){
 						assignCampVo.setAssignedCallsCount(assingedCount.getCount());
-						assignCampVo.setName(assingedCount.getName());
 					}
 					else if(type.equalsIgnoreCase("completed")){
 						assignCampVo.setCompletedCallsCount(assingedCount.getCount());
-						assignCampVo.setName(assingedCount.getName());
 					}
 					else if(type.equalsIgnoreCase("pending")){
 						assignCampVo.setPendingCallsCount(assingedCount.getCount());
-						assignCampVo.setName(assingedCount.getName());
 					}
 					if(!agentExist){
 						finalMap.put(callerId, assignCampVo);
@@ -2557,6 +2554,235 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		
 		return basicVOList;
+	}
+	
+	public List<TrainingCampScheduleVO>  getStausList(List<Object[]>  allStatus){
+		
+		List<TrainingCampScheduleVO> statusList=new ArrayList<TrainingCampScheduleVO>();
+		 for (Object[] stuts : allStatus) {
+			  TrainingCampScheduleVO vo =new TrainingCampScheduleVO();
+			  vo.setStatusId((Long)stuts[0]);
+			  vo.setStatus(stuts[1].toString());
+			  vo.setCount(0l);
+			  statusList.add(vo);
+		  }
+		return statusList;
+	}
+	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString){
+		
+		
+		List<TrainingCampScheduleVO> finalList = null ;
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		Date startDate = sdf.parse(startDateString);
+    		Date endDate=sdf.parse(endDateString);
+    		
+    		//1)getting All status and set to list.//0.statusId,status
+			 List<Object[]>  allStatus=scheduleInviteeStatusDAO.getAllStatusList();
+    		
+    		//FINALmAP
+    		Map<String,TrainingCampScheduleVO> finalMap = new LinkedHashMap<String, TrainingCampScheduleVO>();
+    		TrainingCampScheduleVO assignedVO=new TrainingCampScheduleVO();
+    		assignedVO.setTrainingCampVOList(getStausList(allStatus));
+    		assignedVO.setAssignedCallsCount(0l);
+    		assignedVO.setDialedCallsCount(0l);
+    		assignedVO.setPendingCallsCount(0l);
+    		
+    		TrainingCampScheduleVO scheduledVO=new TrainingCampScheduleVO();
+    		scheduledVO.setTrainingCampVOList(getStausList(allStatus));
+    		scheduledVO.setAssignedCallsCount(0l);
+    		scheduledVO.setDialedCallsCount(0l);
+    		scheduledVO.setPendingCallsCount(0l);
+    		
+    		TrainingCampScheduleVO confirmedVO=new TrainingCampScheduleVO();
+    		confirmedVO.setTrainingCampVOList(getStausList(allStatus));
+    		confirmedVO.setAssignedCallsCount(0l);
+    		confirmedVO.setDialedCallsCount(0l);
+    		confirmedVO.setPendingCallsCount(0l);
+    		
+    		finalMap.put("Assigned",assignedVO);
+    		finalMap.put("Scheduled",scheduledVO);
+    		finalMap.put("Confirmed",confirmedVO);
+    		
+			 
+    		
+    		 /*Map<String,TrainingCampScheduleVO> invitationMap = new HashMap<String, TrainingCampScheduleVO>();  
+    		 TrainingCampScheduleVO assignedMainVo = new TrainingCampScheduleVO();
+    		 List<TrainingCampScheduleVO> voList = new ArrayList<TrainingCampScheduleVO>();*/
+    		
+    		
+    		  Long asgAgent = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,null);
+			  Long dialedAsgAgent = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls",null);
+			  Long undialedAsgAgent = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed",null); 
+			  
+			  //0.statusId,1.status,2.count
+			  List<Object[]> statusAsigned = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,null);
+			  
+			  if(statusAsigned !=null && statusAsigned.size()>0){
+				
+				  for (Object[] status : statusAsigned) {
+					  
+					  TrainingCampScheduleVO assignedAgentvo= finalMap.get("Assigned");
+					  if(status[0] !=null){
+						  Long statusId=(Long)status[0];
+						  for(TrainingCampScheduleVO statusVO :assignedAgentvo.getTrainingCampVOList()){
+							  if(statusVO.getStatusId().longValue()==statusId.longValue()){
+								  statusVO.setCount(status[2] !=null ? (Long)status[2] : 0l);
+							  }
+						  }
+					  }  
+						 
+					}
+			  }
+			TrainingCampScheduleVO assigvo= finalMap.get("Assigned");
+			assigvo.setAssignedCallsCount(asgAgent !=null ? asgAgent.longValue() : 0l);
+			assigvo.setDialedCallsCount(dialedAsgAgent !=null ? dialedAsgAgent.longValue() :0l);
+			assigvo.setPendingCallsCount(undialedAsgAgent !=null ? undialedAsgAgent.longValue() : 0l);//not dialedCallsCount
+			assigvo.setName("Assigned");
+    		
+    		 
+			  //Scheduled
+			  Long asgInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,"Invitation");
+			  Long dialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls","Invitation");
+			  Long undialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed","Invitation"); 
+			  
+			  //0.statusId,1.status,2.count
+			  List<Object[]> statusInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,"Invitation");
+			  
+			  if(statusInvit !=null && statusInvit.size()>0){
+				
+				  for (Object[] status : statusInvit) {
+					  
+					  TrainingCampScheduleVO assignedvo= finalMap.get("Scheduled");
+					  if(status[0] !=null){
+						  Long statusId=(Long)status[0];
+						  for(TrainingCampScheduleVO statusVO :assignedvo.getTrainingCampVOList()){
+							  if(statusVO.getStatusId().longValue()==statusId.longValue()){
+								  statusVO.setCount(status[2] !=null ? (Long)status[2] : 0l);
+							  }
+						  }
+					  }  
+						 
+					}
+			  }
+			TrainingCampScheduleVO assignedvo= finalMap.get("Scheduled");
+			assignedvo.setAssignedCallsCount(asgInvit !=null ? asgInvit.longValue() : 0l);
+			assignedvo.setDialedCallsCount(dialedInvit !=null ? dialedInvit.longValue() :0l);
+			assignedvo.setPendingCallsCount(undialedInvit !=null ? undialedInvit.longValue() : 0l);//not dialedCallsCount
+			assignedvo.setName("Scheduled");
+			
+			
+		  //Confirmation.
+			  
+			  Long asgCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,"Confirmation");
+			  Long dialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls","Confirmation");
+			  Long undialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed","Confirmation"); 
+			  List<Object[]> statusCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,"Confirmation");
+			 
+			  
+			  if(statusCon !=null && statusCon.size()>0){
+				
+				  for (Object[] status : statusCon) {
+					  
+					  TrainingCampScheduleVO confvo= finalMap.get("Confirmed");
+					  if(status[0] !=null){
+						  Long statusId=(Long)status[0];
+						  for(TrainingCampScheduleVO statusVO :confvo.getTrainingCampVOList()){
+							  if(statusVO.getStatusId().longValue()==statusId.longValue()){
+								  statusVO.setCount(status[2] !=null ? (Long)status[2] : 0l);
+							  }
+						  }
+					  }  
+						 
+					}
+			  }
+			TrainingCampScheduleVO confvo= finalMap.get("Confirmed");
+			confvo.setAssignedCallsCount(asgCon !=null ? asgCon.longValue() : 0l);
+			confvo.setDialedCallsCount(dialedCon !=null ? dialedCon.longValue() :0l);
+			confvo.setPendingCallsCount(undialedCon !=null ? undialedCon.longValue() : 0l);//not dialedCallsCount
+			confvo.setName("Confirmed");
+			
+			if(finalMap !=null && finalMap.size()>0){
+				finalList =new ArrayList<TrainingCampScheduleVO>(finalMap.values());
+			}
+			
+			return finalList;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getCallsDetailsOfCallCenterAdmin() method, Exception - ",e);
+		}
+		
+		return finalList;
+	}
+	
+	public TrainingCampScheduleVO getUpComingBatchDetails(String startDatestr,String endDateStr){
+		
+		TrainingCampScheduleVO finalVo = new TrainingCampScheduleVO();
+		
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date startDate= format.parse(startDatestr);
+			Date endDate= format.parse(endDateStr);
+			
+			
+			//get All Upcoming Schedules
+			List<Long>  scheduleIds=trainingCampScheduleDAO.getAllUpcomingTrainingCampSchedules(startDate,endDate,"Not Started");
+			
+			Long upcomingScheduleCount=0l;
+			if(scheduleIds !=null){
+				upcomingScheduleCount=(long) scheduleIds.size();
+			}
+			List<Long> returnScheduleIds=  trainingCampScheduleInviteeCallerDAO.getAllUpcomingTrainingCampScheduleDetails(scheduleIds,startDate,endDate,"Invitation");
+			
+			Long upAllocatedToagents=0l;
+			Long upNotAllcoated =0l;
+			if(returnScheduleIds !=null){
+				upAllocatedToagents=(long) returnScheduleIds.size();
+			}
+			if(upcomingScheduleCount !=null && upcomingScheduleCount !=0l){
+				upNotAllcoated=upcomingScheduleCount - upAllocatedToagents;
+			}
+			
+			//batch Confirmation
+			/*List<Long> batchesCount = trainingCampBatchDAO.getUpcomingBatchConfirmation(startDate,endDate,"Not Started");*/
+			
+			List<Long> batches=trainingCampScheduleInviteeDAO.getUpcomingBatchConfirmation(startDate,endDate,"Not Started");
+			
+			Long btchTotalCnt=0l;
+			if(batches !=null){
+				btchTotalCnt=(long) batches.size();
+			}
+			
+			
+			List<Long> allocatedConfirmed = trainingCampScheduleInviteeCallerDAO.getAllocatedCountForConfirmation(startDate,endDate,"Not Started",2l);
+			
+			Long allocatedconfirmedCnt=0l;
+			Long btchNotAllocated =0l; 
+			
+			if(allocatedConfirmed !=null){
+				allocatedconfirmedCnt =(long) allocatedConfirmed.size();
+			}
+			
+			if(btchTotalCnt !=null && btchTotalCnt !=0l){
+				btchNotAllocated = btchTotalCnt - allocatedconfirmedCnt;
+			}
+			
+			
+			finalVo.setUpcomingscheduleCnt(upcomingScheduleCount);
+			finalVo.setUpcomingAllocatedAgnt(upAllocatedToagents);
+			finalVo.setUpNotAllocated(upNotAllcoated);
+			finalVo.setBatchConfirmCnt(btchTotalCnt);
+			finalVo.setBtchAllocatedCnt(allocatedconfirmedCnt);
+			finalVo.setBtchNotAllocated(btchNotAllocated);
+			
+			return finalVo;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return finalVo;
 	}
 	
 }

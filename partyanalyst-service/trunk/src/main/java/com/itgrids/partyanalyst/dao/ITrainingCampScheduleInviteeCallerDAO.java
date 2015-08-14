@@ -12,8 +12,8 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Long> getAlreadyInvitedMembersInviteeIdsListByScheduleId(Long scheduleId,Long assignId);
 	public List<Object[]> getScheduleWiseCallStatusCount(Long callerId,Long callPurposeId);
 	public List<Object[]> getBatchWiseWiseCallStatusCount(Long callerId,Long callPurposeId);
-	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type);
-	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate);
+	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type,String agetType);
+	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate,String agentType);
 	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
 	public Long getAllCallersCount(Date startDate,Date endDate,String type);
 	public List<Object[]> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,Date startDate,Date endDate,String type);
@@ -45,5 +45,10 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getAllocatedCallsForBatchConfirmationDetails(String searchType, Date startDate, Date endDate);
 	
 	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId);
+	
+	public Long getCallDetailsOfCaller(List<Long> userIds,Date startDate,Date endDate,String type,String agentType);
+	public List<Object[]> getCallDetailsOfCallerByStatus(List<Long> userIds,Date startDate,Date endDate,String agentType);
+	public List<Long> getAllUpcomingTrainingCampScheduleDetails(List<Long> scheduleIds,Date fromDate,Date toDate,String type);
+	public List<Long> getAllocatedCountForConfirmation(Date fromDate,Date toDate,String type,Long callPurpose);
 	
 }
