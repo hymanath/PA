@@ -59,4 +59,6 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getCallerAgentVillages(Long userId,Long mandalId);
 	public List<TraingCampCallerVO> getAgentCallDetailsByCampCallerId(Long campCallerId);
 	
+	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId);
+	
 }

@@ -44,4 +44,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	
 	public List<Object[]> getAllocatedCallsForBatchConfirmationDetails(String searchType, Date startDate, Date endDate);
 	
+	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId);
+	
 }
