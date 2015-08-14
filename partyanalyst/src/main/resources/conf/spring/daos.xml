@@ -2206,5 +2206,9 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 
+	 <bean id="trainingCampUserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserRelationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+
 	<!--  end -->
 </beans>		

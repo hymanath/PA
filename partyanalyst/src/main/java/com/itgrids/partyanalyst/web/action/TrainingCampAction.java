@@ -68,6 +68,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String meetingLocationLevel;
 	private Long locationLevelId;
 	private Long locationId;
+	private Long campCallerId;
 	
 	
 	public Long getLocationLevelId() {
@@ -327,6 +328,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		this.today = today;
 	}
 
+	public Long getCampCallerId() {
+		return campCallerId;
+	}
+
+	public void setCampCallerId(Long campCallerId) {
+		this.campCallerId = campCallerId;
+	}
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -350,8 +359,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	{
 		try{
 		RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+		Long campCallerId = null;
 		jObj = new JSONObject(getTask());
-		statusCountList = trainingCampService.getScheduleCallStatusCount(regVo.getRegistrationID(),jObj.getLong("callPurposeId"));
+		
+		campCallerId = jObj.getLong("campCallerId");
+		if(campCallerId == null || campCallerId.longValue() == 0l)
+			campCallerId = regVo.getRegistrationID();
+		
+		statusCountList = trainingCampService.getScheduleCallStatusCount(campCallerId,jObj.getLong("callPurposeId"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -394,9 +409,13 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public String getBatchCallStatusCount()
 	{
 		try{
+			Long campCallerId = null;
 			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
 			jObj = new JSONObject(getTask());
-			statusCountList = trainingCampService.getBatchCallStatusCount(regVo.getRegistrationID(),jObj.getLong("callPurposeId"));
+			campCallerId = jObj.getLong("campCallerId");
+			if(campCallerId == null || campCallerId.longValue() == 0l)
+				campCallerId = regVo.getRegistrationID();
+			statusCountList = trainingCampService.getBatchCallStatusCount(campCallerId,jObj.getLong("callPurposeId"));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -914,10 +933,28 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	{
 		try{
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			statusCountList =  trainingCampService.getAgentCallDetailsByCampCallerId(regVO.getRegistrationID());
+			Long campCallerId = null;
+			 campCallerId = new Long(request.getParameter("campCallerId"));
+			if(campCallerId == null || campCallerId.longValue() == 0l)
+				campCallerId = regVO.getRegistrationID();
+			
+			statusCountList =  trainingCampService.getAgentCallDetailsByCampCallerId(campCallerId);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getAgentCallDetailsByCampCallerId() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getAgentsByCampCallerAdminId()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			basicList = trainingCampService.getAgentsByCampCallerAdminId(new Long(regVO.getRegistrationID()));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAgentsByCampCallerAdminId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

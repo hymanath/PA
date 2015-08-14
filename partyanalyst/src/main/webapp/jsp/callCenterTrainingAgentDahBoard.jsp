@@ -1,4 +1,8 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="utf-8">
@@ -14,7 +18,7 @@ table th
 	padding:6px !important;
 	font-size:13px !important
 }
-
+#agentsDiv{margin-bottom: 5px;margin-top: 5px;}
 </style>
 </head>
 <body>
@@ -31,6 +35,13 @@ table th
                         	CALL CENTER AGENT DASHBOARD
                         </h4>
                     </div>
+				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Caller Admin')}">
+					<div id="agentsDiv" class="col-md-4 col-md-offset-8">
+					  <select id="agentId" onchange="getSelectedAgentDetails()" class="form-control">
+					  <!--<option value="0">Select Agent</option> -->
+					 </select>
+					</div>
+				 </c:if>
                     <div class="panel-body">
 					 <div id="agentCallDetailsDiv">
 						<!--<table class="table table-bordered">
@@ -170,7 +181,7 @@ table th
                                 </section>-->
                             </div>
                             <section>
-                            	<div class="col-md-12">
+                            	<div class="col-md-12" id="ScheduleConforMainDiv">
                                 	<div class="panel panel-default panel-custom">
                                     	<div class="panel-heading pad_5 pad_bottom0">
                                             <ul class="nav nav-tabs tab-list-sch" role="tablist">
@@ -252,12 +263,12 @@ $(".table-scroll").mCustomScrollbar({
 </script>
 <script type="text/javascript">
 
-function getScheduleCallStatusCount()
+function getScheduleCallStatusCount(campCallerId)
 {
 	$("#scheduled").html("<img src='images/icons/search.gif'>");
 		var jObj={
 		callPurposeId : 1,
-		
+		campCallerId  : campCallerId,
 		task:"scheduleWiseCount"
 		};
 		$.ajax({
@@ -265,11 +276,20 @@ function getScheduleCallStatusCount()
 			  url: 'getScheduleCallStatusCountAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
-			  }).done(function(result){ 			  
+			  }).done(function(result){ 
+			   $("#scheduled").html("");
+            if(result != null && result.length > 0)			  
 			  buildScheduleWiseCount(result,jObj);
+		  else
+			 $("#scheduled").html("No Data Available");
 		   });	
 } 
+
+var scheduleCampCallerId = 0;
+
 function buildScheduleWiseCount(result,jObj) {
+  scheduleCampCallerId = result[0].campCallerId;
+  
 var str='';
 str+='<table class="table table-bordered m_0">';
 str+='<tr>';
@@ -394,12 +414,12 @@ str+='</tr>';
 str+=' </table>';
 $("#scheduled").html(str);
 }
-function getBatchWiseCallStatusCount()
+function getBatchWiseCallStatusCount(campCallerId)
 {
 	$("#bacthdate").html("<img src='images/icons/search.gif'>");
 		var jObj={
 		callPurposeId : 2,
-		
+		campCallerId  : campCallerId,
 		task:"batchWiseCount"
 		};
 		$.ajax({
@@ -407,12 +427,18 @@ function getBatchWiseCallStatusCount()
 			  url: 'getBatchCallStatusCountAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
-			  }).done(function(result){ 			  
+			  }).done(function(result){
+				  $("#bacthdate").html("");
+            if(result != null && result.length > 0)				  
 			  buildBatchWiseCount(result,jObj);
+		  else
+		   $("#bacthdate").html("No Data Available.");
 		   });	
 } 
 
+var batchCampCallerId = 0;
 function buildBatchWiseCount(result,jObj) {
+ batchCampCallerId = result[0].campCallerId;
 var str='';
 str+='<table class="table table-bordered m_0">';
 str+='<tr>';
@@ -559,7 +585,7 @@ if(todayDate != null && todayDate.length > 0)
 		} 
 		var todayDate = dd+'/'+mm+'/'+yyyy;
  }
-var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&statusType="+statusType+"&today="+todayDate+"");
+var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&statusType="+statusType+"&today="+todayDate+"&campCallerId="+scheduleCampCallerId+"");
     browser1.focus();
 }
 function redirectToAgentwithBatch(purposeId,programId,campId,scheduleId,status,batchId,statusType,todayDate)
@@ -581,7 +607,7 @@ function redirectToAgentwithBatch(purposeId,programId,campId,scheduleId,status,b
  }
   
   
-  var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&batchId="+batchId+"&statusType="+statusType+"&today="+todayDate+"");
+  var browser1 = window.open("callCenterTrainingAgent.action?purposeId="+purposeId+"&programId="+programId+"&campId="+campId+"&scheduleId="+scheduleId+"&status="+status+"&batchId="+batchId+"&statusType="+statusType+"&today="+todayDate+"&campCallerId="+batchCampCallerId+"");
     browser1.focus();
 }
 
@@ -712,6 +738,7 @@ function getMembersCountByBatchStatus(batchStatus,divId)
 	type : "POST",
     url  : "getMembersCountByBatchStatusAction.action"	
   }).done(function(result){
+	  $("#"+divId+"").html("");
 	  buildMembersCountByBatchStatus(result,divId);
   })	
 }
@@ -775,7 +802,11 @@ function getCallBackDayWiseDetails()
 		type : "POST",
 		url  : "getCallBackDayWiseDetailsAction.action"
 	}).done(function(result){
-		buildCallBackDayWiseDetails(result);
+		$("#callBackDayDiv").html("");
+		if(result != null && result.length > 0)
+		 buildCallBackDayWiseDetails(result);
+	 else
+	  $("#callBackDayDiv").html("No Data Available.");
 		
 	});
 }
@@ -804,16 +835,20 @@ function buildCallBackDayWiseDetails(result)
 }
 
 
-function getAgentCallDetailsByCampCallerId()
+function getAgentCallDetailsByCampCallerId(campCallerId)
 {
 	$("#agentCallDetailsDiv").html("");
 	$("#agentCallDetailsDiv").html("<img src='images/icons/search.gif'>");
 	$.ajax({
+		data : {campCallerId:campCallerId},
 		type:"POST",
 		url : "getAgentCallDetailsByCampCallerIdAction.action"
 	}).done(function(result){
-		
-		buildAgentCallDetailsByCampCallerId(result);
+		$("#agentCallDetailsDiv").html("");
+		if(result != null && result.length > 0)
+		  buildAgentCallDetailsByCampCallerId(result);
+	  else
+		$("#agentCallDetailsDiv").html("No Data Avaliable");
 		
 	})
 }
@@ -903,7 +938,7 @@ str +='</tbody></table></td>';
 
 function buildChartForCallStatus(result)
 {
-	$('#donutchart').html("<img src='images/icons/search.gif'>");
+	//$('#donutchart').html("<img src='images/icons/search.gif'>");
 	var interestedMemCount = 0;
 	var laterMembersCount = 0;
 	var notIntereMemCount = 0;
@@ -971,13 +1006,49 @@ function buildChartForCallStatus(result)
 
 }
 
+function getAgentsByCampCallerAdminId()
+{
+	$.ajax({
+		type : "POST",
+		url  : "getAgentsByCampCallerAdminIdAction.action"
+		
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+			  $("#agentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+			}
+			getSelectedAgentDetails();
+		}
+		
+	});
+}
+function getSelectedAgentDetails()
+{
+	var agentId = $("#agentId").val();
+	if(agentId != null && agentId > 0)
+	{
+		getAgentCallDetailsByCampCallerId(agentId);
+		getScheduleCallStatusCount(agentId);
+		getBatchWiseCallStatusCount(agentId);
+	}
+	
+}
 </script>
 <script>
-getScheduleCallStatusCount();
-getBatchWiseCallStatusCount();
-//getCallStatusCountByTrainingCampCallerId();
-//getCallBackDayWiseDetails();
-getAgentCallDetailsByCampCallerId();
+<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'Caller Admin')}">
+	getScheduleCallStatusCount(0);
+	getBatchWiseCallStatusCount(0);
+	//getCallStatusCountByTrainingCampCallerId();
+	//getCallBackDayWiseDetails();
+	getAgentCallDetailsByCampCallerId(0);
+</c:if>
+
+<c:if test="${fn:contains(sessionScope.USER.entitlements, 'Caller Admin')}">
+ getAgentsByCampCallerAdminId();
+</c:if>
+
 
 </script>
 </script>

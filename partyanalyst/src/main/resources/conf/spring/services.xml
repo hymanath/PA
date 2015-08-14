@@ -2721,7 +2721,7 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="wardDAO" ref="wardDAO" />
 		<property name="panchayatDAO" ref="panchayatDAO" />
-		
+		<property name="trainingCampUserRelationDAO" ref="trainingCampUserRelationDAO"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
