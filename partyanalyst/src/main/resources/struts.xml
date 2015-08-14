@@ -10565,5 +10565,11 @@
 	  </result>
 	</action>
 	
+	<action name="getAgentsByCampCallerAdminIdAction" class="trainingCampAction" method="getAgentsByCampCallerAdminId">
+	  <result type ="json" name="success">
+	    <param name="root">basicList</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      
