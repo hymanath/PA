@@ -594,5 +594,123 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 
+	public List<Object[]> getCallerDistricts(Long userId)
+	{
+		Query query = getSession().createQuery("select distinct model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtId," +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName " +
+				" from TrainingCampScheduleInviteeCaller model" +
+				" where model.trainingCampCallerId =:userId  ");
+		query.setParameter("userId", userId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCallerConstituenciesByDistrict(Long userId,Long districtId)
+	{
+		Query query = getSession().createQuery("select distinct constituency.constituencyId," +
+				"  constituency.name " +
+				" from TrainingCampScheduleInviteeCaller model" +
+				" left join model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency constituency" +
+				" where model.trainingCampCallerId =:userId and " +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtId = :districtId");
+		query.setParameter("userId", userId);
+		query.setParameter("districtId", districtId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCallerAgentMandalsByConstituency(Long userId,Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct tehsil.tehsilId," +
+				"  tehsil.tehsilName " +
+				" from TrainingCampScheduleInviteeCaller model" +
+				" left join model.trainingCampScheduleInvitee.tdpCadre.userAddress.tehsil tehsil" +
+				" where model.trainingCampCallerId =:userId and " +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
+		query.setParameter("userId", userId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCallerAgentVillagesByMandal(Long userId,Long mandalId)
+	{
+		Query query = getSession().createQuery("select distinct panchayat.panchayatId," +
+				"  panchayat.panchayatName " +
+				" from TrainingCampScheduleInviteeCaller model" +
+				" left join model.trainingCampScheduleInvitee.tdpCadre.userAddress.panchayat panchayat" +
+				" where model.trainingCampCallerId =:userId and " +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.tehsil.tehsilId = :mandalId");
+		query.setParameter("userId", userId);
+		query.setParameter("mandalId", mandalId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getScheduleWisememberDetailsCountForSearch(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId," +
+				" model.trainingCampScheduleInvitee.tdpCadre.firstname," +
+				" model.trainingCampScheduleInvitee.tdpCadre.lastname," +
+				" model.trainingCampScheduleInvitee.tdpCadre.mobileNo," +
+				" model.trainingCampScheduleInvitee.tdpCadre.image," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status," +
+				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName," +
+				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
+				" model.trainingCampScheduleInvitee.remarks," +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name " +
+				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
+				" " +
+				" where model.trainingCampCallerId = :callerId " +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
+				" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+		if(status.equalsIgnoreCase("undialed"))
+			str.append(" and campCallStatus.campCallStatusId is null");
+		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
+					str.append(" and campCallStatus.campCallStatusId in(:statusIds)");
+		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("scheduleCallStatus"))
+			str.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(:statusIds)");
+		if(inputVo.getBatchId() > 0)
+			str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId = :batchId " );
+		str.append(" and model.callPurposeId = :callPurposeId");
+		
+		if(toDayDate != null)
+		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
+		if(inputVo.getDistrictId() != null)
+		{
+			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtId =:districtId ");
+		}
+		if(inputVo.getConstituencyId() != null)
+		{
+			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.constituencyId =:constituencyId ");
+		}
+		if(inputVo.getMandalId() != null)
+		{
+			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.tehsil.tehsilId =:tehsilId ");
+		}
+		if(inputVo.getVillageId() != null)
+		{
+			 str.append(" and model.trainingCampScheduleInvitee.tdpCadre.userAddress.panchayat.panchayatId =:panchayatId ");
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("callerId", inputVo.getUserId());
+		query.setParameter("callPurposeId", inputVo.getPurposeId());
+		query.setParameter("programId", inputVo.getProgramId());
+		query.setParameter("campId", inputVo.getCampId());
+		query.setParameter("scheduleId", inputVo.getScheduleId());
+		if(statusIds != null && statusIds.size() > 0)
+		query.setParameterList("statusIds", statusIds);
+		if(inputVo.getBatchId() > 0)
+		query.setParameter("batchId", inputVo.getBatchId());	
+		
+		if(toDayDate != null)
+		 query.setDate("toDayDate", toDayDate);
+		
+		return query.list();
+	}
 	
 }
