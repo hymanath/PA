@@ -239,9 +239,9 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 					}
 				}
 			}
-			else{
+			/*else{
 				str+='<tr>Data Not Available</tr>';
-			}
+			}*/
 			str+='</tbody>';
 			str+='</table>';
 			
