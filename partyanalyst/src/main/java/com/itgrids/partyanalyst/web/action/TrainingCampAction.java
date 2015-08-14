@@ -64,7 +64,43 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String today;
 	private List<LocationWiseBoothDetailsVO> locations;
 	private ICadreCommitteeService cadreCommitteeService;
+	private String meetingType;
+	private String meetingLocationLevel;
+	private Long locationLevelId;
+	private Long locationId;
 	
+	
+	public Long getLocationLevelId() {
+		return locationLevelId;
+	}
+
+	public void setLocationLevelId(Long locationLevelId) {
+		this.locationLevelId = locationLevelId;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getMeetingType() {
+		return meetingType;
+	}
+
+	public void setMeetingType(String meetingType) {
+		this.meetingType = meetingType;
+	}
+
+	public String getMeetingLocationLevel() {
+		return meetingLocationLevel;
+	}
+
+	public void setMeetingLocationLevel(String meetingLocationLevel) {
+		this.meetingLocationLevel = meetingLocationLevel;
+	}
 	
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
@@ -749,7 +785,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.info("Entered into getTheMeetingLevelDetails");
 			
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			if(regVo.getRegistrationID()!=null){
+			if(regVo!=null && regVo.getRegistrationID()!=null){
 				Long userId=regVo.getRegistrationID();
 				retResult = trainingCampService.getTheMeetingLevelDetails(userId);
 			}
@@ -777,8 +813,16 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 			Long meetingType = jObj.getLong("meetingType");
 			Long locationLevel = jObj.getLong("locationLevel");
-			Long meetingLocation = jObj.getLong("meetingLocation");
-			trainingCampService.getAllMeetings(meetingType,locationLevel,meetingLocation);
+			//Long meetingLocation = jObj.getLong("meetingLocation");
+			Long stateId = jObj.getLong("sateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long mandalTownDivisonId = jObj.getLong("mandalTownDivisonId");
+			Long villageWardId = jObj.getLong("villageWardId");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			retResult = trainingCampService.getAllMeetings(meetingType,locationLevel,stateId,districtId,constituencyId,mandalTownDivisonId,villageWardId,startDate,endDate);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllMeetings",e);
