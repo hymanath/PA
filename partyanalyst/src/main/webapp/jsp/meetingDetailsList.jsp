@@ -65,12 +65,11 @@ header.eventsheader {
             	<div class="col-md-12">
                 	<div class="panel panel-default">
                     	<div class="panel-heading">
-                        	<h4 class="panel-title">GENERAL BODY MEETING <span class="font-10">(meeting title)</span>
-                            </h4>
+                        	<h4 class="panel-title" id="meetingType"></h4><h6 id="location"></h6>
                         </div>
                         <div class="panel-body">
                         	<div class="row">
-                            	<div class="col-md-3">
+                            	<!--<div class="col-md-3">
                                 	<label>Type Of Meeting</label>
                                     <select class="form-control" disabled>
                                     	<option>District level</option>
@@ -94,14 +93,14 @@ header.eventsheader {
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="birthday">
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-md-6 m_top20">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading">
                                         	<h4 class="panel-title">Meeting Minutes</h4>
                                         </div>
                                         <div class="panel-body">
-                                        	<div class="input-group bin-div">
+                                        	<!-- <div class="input-group bin-div">
                                             	<input type="text" class="form-control">
                                                 <span class="input-group-addon">
                                                 	<i class="glyphicon glyphicon-trash"></i>
@@ -121,7 +120,26 @@ header.eventsheader {
                                             </div>
                                             <div class="pull-right m_top10">
                                             	<button class="btn btn-success btn-xs" id="add-fields">ADD</button>
-                                            </div>
+                                            </div> -->
+											
+											<div id="addMoreDiv">
+												<div class="input-group bin-div m_top10" id="list1">
+													<input type="text" class="form-control" id="minutes1"></input>
+													<span class="input-group-addon trash" attr_txt="minutes1">
+														<i class="glyphicon glyphicon-trash"></i>
+													</span>
+												</div>
+											</div>	
+											
+												<div class="input-group bin-div m_top10" id="list" style="display:none;">
+													<input type="text" class="form-control txtbox"></input>
+													<span class="input-group-addon trash">
+														<i class="glyphicon glyphicon-trash"></i>
+													</span>
+												</div>
+											
+											<button class="btn btn-success btn-xs pull-right m_top20" onclick="myFunction()">ADD</button>
+											
                                             <div class="row">
                                             	<div class="col-md-12">
                                                 	<h4><i class="icon-upload"></i> Upload File</h4>
@@ -245,13 +263,15 @@ header.eventsheader {
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+	var meetingType='${meetingType}';
+	var meetingLocationLevel='${meetingLocationLevel}';
+	
 	$('.btn-custom-g').click(function(){
 		$('.data-edit').show();
 		$('.data').hide();
 	});
-	$('.glyphicon-trash').click(function(){
-		$('div.bin-div').hide();
-	});
+	
 	$('#add-fields').click(function(){
 		$('div.bin-div').show();
 	});
@@ -265,9 +285,31 @@ header.eventsheader {
 	  }, function(start, end, label) {
 		console.log(start.toISOString(), end.toISOString(), label);
 	  });
+	  
+	  $("#meetingType").html(meetingType);
+	  $("#location").html("("+meetingLocationLevel+")");
+	  
    });
 			   
 	$("#mainheading").html("TRAINING PROGRAM");
+	
+	var mainDivCount=1;
+	function myFunction() {
+		mainDivCount = parseInt(mainDivCount)+1;
+		var c = $("#list").clone(true);
+			c.removeAttr("style");
+			c.attr("id","list"+mainDivCount)
+			c.find(".txtbox").attr("id","minutes"+mainDivCount); 
+			c.find(".trash").attr("attr_txt","list"+mainDivCount)
+		$("#addMoreDiv").append(c);
+	}
+	
+	$(".trash").click(function(){
+		var divId = $(this).attr("attr_txt");
+		$("#"+divId).remove();
+		$(this).remove();
+	});
+	
 </script>
 </body>
 </html>
