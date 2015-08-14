@@ -257,6 +257,7 @@ var status = '${status}';
 var batchId = '${batchId}';
 var statusType = '${statusType}';
 var today = '${today}';
+var campCallerId = '${campCallerId}';
 /*$('.callback input:checkbox').change(function(){
      if($(this).is(":checked")) {
         $('.Answered-div').addClass("disnone");
@@ -315,6 +316,7 @@ var jObj={
 		batchId :batchId,
 		statusType:statusType,
 		toDayDate : today,
+		campCallerId:campCallerId,
 		task:"scheduleWiseCount"
 		};
 		$.ajax({

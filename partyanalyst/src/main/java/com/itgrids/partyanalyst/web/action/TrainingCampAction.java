@@ -386,7 +386,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			inputVo.setScheduleId(jObj.getLong("scheduleId"));
 			inputVo.setPurposeId(jObj.getLong("purposeId"));
 			inputVo.setStatus(jObj.getString("status"));
-			inputVo.setUserId(regVo.getRegistrationID());
+			//inputVo.setUserId(regVo.getRegistrationID());
+			inputVo.setUserId(jObj.getLong("campCallerId"));
 			inputVo.setBatchId(jObj.getLong("batchId"));
 			inputVo.setStatusType(jObj.getString("statusType"));
 			inputVo.setDateStr(jObj.getString("toDayDate"));
