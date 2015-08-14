@@ -2715,6 +2715,12 @@
 		<property name="partyMeetingDAO" ref="partyMeetingDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="wardDAO" ref="wardDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO" />
 		
 	</bean>
 	
