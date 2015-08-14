@@ -46,7 +46,7 @@
 									<div class="col-md-12">
 										<h4 class="m_0">
 											COMMITTEE LOCATION
-											<span class="pull-right"><i class="glyphicon glyphicon-remove remove-filters" style="font-size:16px;background-color:#E6E6E6;padding:7px;top:-10px;right:-10px;cursor:pointer"></i></span>
+											<span class="pull-right"><i class="glyphicon glyphicon-remove remove-filters" style="font-size:16px;background-color:#E6E6E6;padding:7px;top:-10px;right:-10px;cursor:pointer" onclick="setDefault();"></i></span>
 											<hr class="m_0" style="border-color:#666"/>
 										</h4>
 									</div>
@@ -86,8 +86,16 @@
 											</div>
 											<div class="col-md-6 m_top10">
 												<label>Committee Level</label>
-												<select class="form-control">
+												<select class="form-control" id="committeLevelId">
 													<option value="0">Select</option>
+													<option value="1">State</option>
+													<option value="2">District</option>
+													<!--<option value="3">Constituency</option>
+													<option value="4">Parliament</option>-->
+													<option value="5">Mandal</option>
+													<option value="6">Panchayat</option>
+													<!--<option value="7">Booth</option>
+													<option value="8">Incharge</option>-->
 												</select>
 											</div>
 										</div>
@@ -103,11 +111,14 @@
 											<div class="col-md-6 m_top10">
 												<label>Status Type</label>
 												<select class="form-control" id="callstatusSelect">
-													<option value="all">All</option>
-													<option value="busy">Switch off /User Busy / Not Ans</option>
+													<option value="0">Select</option>
 													<option value="dialed">Dialled</option>
-													<option value="dialed">UN Dialled</option>
+													<option value="busy">Switch off /User Busy / Not Ans</option>
+													<option value="undialed">UN Dialled</option>
 													<option value="callback">Call Back</option>
+													<option value="interested">Interested</option>
+													<option value="later">Later</option>
+													<option value="notInterested">Not Interested</option>
 													
 												</select>
 											</div>
@@ -190,6 +201,7 @@
 								<option value="0">Select CallBack Type</option>
                             	<option value="6">Call Back - Busy</option>
 								<option value="7">Call Back - Confirm Later</option>
+								
                             </select>
                         </div>
                         
@@ -846,12 +858,26 @@ function setDefaultImage(img){
    
    function getFilterWiseDetails()
    {
+   var typeOfStatus = "";
    $("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
    var districtId = $("#districtId").val();
    var constituencyId = $("#constituencyId").val();
    var mandalId = $("#mandalId").val();
    var villageId = $("#villageId").val();
    var status1 = $("#callstatusSelect").val();
+   var committeLevelId = $("#committeLevelId").val();
+
+	if(status1 == 'busy' || status1 == 'dialed' || status1 == 'undialed')
+	{
+		typeOfStatus = "callStatus"	;
+		
+	}
+	else
+	{
+	typeOfStatus ="scheduleCallStatus";	
+	
+	}
+
 	if(batchId == "")
 	batchId = 0;
 	if(today == null)
@@ -863,13 +889,13 @@ function setDefaultImage(img){
 		scheduleId:scheduleId,
 		status:status1,
 		batchId :batchId,
-		statusType:statusType,
-		toDayDate : today,
+		statusType:typeOfStatus,
+		toDayDate : "",
 		districtId:districtId,
 		constituencyId:constituencyId,
 		mandalId:mandalId,
 		villageId:villageId,
-		committeeLevelId:0,
+		committeeLevelId:committeLevelId,
 		task:"filterWiseCount"
 		};
 		$.ajax({
@@ -880,6 +906,16 @@ function setDefaultImage(img){
 			  }).done(function(result){ 			  
 			buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
+   }
+   function setDefault()
+   {
+   $("#districtId").val(0);
+   $("#constituencyId").val(0);
+   $("#mandalId").val(0);
+   $("#villageId").val(0);
+   $("#committeLevelId").val(0);
+   $("#callstatusSelect").val(0);
+   
    }
    
 </script>
