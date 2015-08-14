@@ -1127,6 +1127,116 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return returnList;
 	}
+
+	public List<TraingCampCallerVO> getAgentCallDetailsByCampCallerId(Long campCallerId)
+	{
+		List<TraingCampCallerVO> resultList = new ArrayList<TraingCampCallerVO>(0);
+		List<Long> batchStatusIds = new ArrayList<Long>(0);
+		batchStatusIds.add(1l);
+		batchStatusIds.add(2l);
+		Date toDayDate = new DateUtilService().getCurrentDateAndTime();
+		
+		try{
+			
+		List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, null, null);
+		if(list != null && list.size() > 0)
+		{
+			TraingCampCallerVO agentCallStatusVO = new TraingCampCallerVO();
+			agentCallStatusVO.setName("Assigned to Agents");
+			agentCallStatusVO.setSubList(getStatusList());
+			agentCallStatusVO.setScheduleStatusList(getScheduleStatusList());
+			setAgentCallDetailsByCampCallerId(agentCallStatusVO, list);
+			
+			List<Object[]> todayAgentList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, toDayDate, null);
+			if(todayAgentList != null && todayAgentList.size() > 0)
+			 setTodayAgentCallDetailsByCampCallerId(agentCallStatusVO, todayAgentList);
+			
+			resultList.add(agentCallStatusVO);
+			
+		}
+		
+		List<Object[]> calendarScheduleList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, 1l, null, batchStatusIds);
+		if(calendarScheduleList != null && calendarScheduleList.size() > 0)
+		{
+			TraingCampCallerVO calendarScheduleCallStatusVO = new TraingCampCallerVO();
+			calendarScheduleCallStatusVO.setName("Calendar Schedule");
+			calendarScheduleCallStatusVO.setSubList(getStatusList());
+			calendarScheduleCallStatusVO.setScheduleStatusList(getScheduleStatusList());
+			setAgentCallDetailsByCampCallerId(calendarScheduleCallStatusVO, calendarScheduleList);
+			
+			List<Object[]> toDaycalendarScheduleList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, 1l, toDayDate, batchStatusIds);
+			if(toDaycalendarScheduleList != null && toDaycalendarScheduleList.size() > 0)
+			  setTodayAgentCallDetailsByCampCallerId(calendarScheduleCallStatusVO, toDaycalendarScheduleList);
+			
+			resultList.add(calendarScheduleCallStatusVO);
+			
+			
+		}
+		
+		List<Object[]> batchConfirmationList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, 2l, null, batchStatusIds);
+		if(batchConfirmationList != null && batchConfirmationList.size() > 0)
+		{
+			TraingCampCallerVO batchConfirmationCallStatusVO = new TraingCampCallerVO();
+			batchConfirmationCallStatusVO.setName("Batch Confirmation");
+			batchConfirmationCallStatusVO.setSubList(getStatusList());
+			batchConfirmationCallStatusVO.setScheduleStatusList(getScheduleStatusList());
+			setAgentCallDetailsByCampCallerId(batchConfirmationCallStatusVO, batchConfirmationList);
+			
+			List<Object[]> toDayBatchConfirmationList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, 2l, toDayDate, batchStatusIds);
+			if(toDayBatchConfirmationList != null && toDayBatchConfirmationList.size() > 0)
+			  setTodayAgentCallDetailsByCampCallerId(batchConfirmationCallStatusVO, toDayBatchConfirmationList);
+			
+			resultList.add(batchConfirmationCallStatusVO);
+			
+		}
+		
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAgentCallDetailsByCampCallerId() method, Exception - ",e) ;
+		}
+		
+		return resultList;
+		
+	}
+	
+	public void setAgentCallDetailsByCampCallerId(TraingCampCallerVO agentCallStatusVO,List<Object[]> list)
+	{
+		try{
+			for(Object[] params:list)
+			{
+				TraingCampCallerVO statusVo = getMatchedVo(agentCallStatusVO.getSubList(), (Long)params[2]);
+				if(statusVo != null)
+				 statusVo.setCount(statusVo.getCount() + (Long)params[0]);
+				
+			  TraingCampCallerVO scheduleStatusVo = getMatchedVo(agentCallStatusVO.getScheduleStatusList(), (Long)params[4]);
+				if(scheduleStatusVo != null)
+				{
+					scheduleStatusVo.setCount(scheduleStatusVo.getCount()+(Long)params[0]);
+					
+				}
+				agentCallStatusVO.setTotal(agentCallStatusVO.getTotal()+(Long)params[0]);
+			}
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in setAgentCallDetailsByCampCallerId() method, Exception - ",e);
+		}
+	}
+	
+	public void setTodayAgentCallDetailsByCampCallerId(TraingCampCallerVO agentCallStatusVO,List<Object[]> list)
+	{
+	  try{
+		   for(Object[] params:list)
+		   {
+			  TraingCampCallerVO scheduleStatusVo = getMatchedVo(agentCallStatusVO.getScheduleStatusList(), (Long)params[4]);
+				if(scheduleStatusVo != null)
+					scheduleStatusVo.setTodayCnt(scheduleStatusVo.getTodayCnt()+(Long)params[0]);
+					
+		   }
+		  
+	  }catch (Exception e) {
+		  LOG.error(" Exception Occured in setTodayAgentCallDetailsByCampCallerId() method, Exception - ",e);
+	}
+	}
+	
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId)
 	{
 		List<TraingCampCallerVO> returnList = new ArrayList<TraingCampCallerVO>();
