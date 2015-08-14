@@ -158,7 +158,7 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 {
 	//alert(1);
 	var str='';
-	if(result.trainingCampVOList != null)
+	if(result.trainingCampVOList != null && result.trainingCampVOList.length>0)
 	{//alert(2);
 		str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
@@ -247,6 +247,9 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 			
 			$(".batchConforCls").html(str);
 	}
+	else{
+		$(".batchConforCls").html('<div class="text-center"><b> Batch Confirmation Data Not Available...</b></div>');
+	}
 }
 
 function getCampusWiseBatchWiseMembersDetails(searchType,divId)
@@ -272,7 +275,7 @@ function getCampusWiseBatchWiseMembersDetails(searchType,divId)
 					buildBAtchWiseMembersDetails(result,divId,searchType);
 			}
 			else{
-				$('#'+divId+'').html('<div class="text-center"><b> No Data Available...</b></div>');
+				$('#'+divId+'').html('<div class="text-center"><b> Calender Schedule Data Not Available...</b></div>');
 			}
 		});
 }
