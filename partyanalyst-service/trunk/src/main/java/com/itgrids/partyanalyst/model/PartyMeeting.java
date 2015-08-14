@@ -51,6 +51,7 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	private Long partyMeetingOccurrenceId;
 	private Long insertedById;
 	private Long updatedById;
+	private String isActive;
 	
 	public PartyMeeting(){}
 
@@ -281,5 +282,15 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
 	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
 	
 }
