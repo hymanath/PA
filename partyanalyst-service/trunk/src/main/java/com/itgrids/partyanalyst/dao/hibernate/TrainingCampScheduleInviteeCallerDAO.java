@@ -713,4 +713,40 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgentCallDetailsByCampCallerId(Long campCallerId,Long callPurposeId,Date toDayDate,List<Long> batchStatusIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(model.trainingCampScheduleInviteeCallerId),campCallStatus.status,campCallStatus.campCallStatusId," +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
+				" from TrainingCampScheduleInviteeCaller model " +
+				" left join model.campCallStatus campCallStatus where model.trainingCampCallerId = :campCallerId ");
+		
+		if(callPurposeId != null)
+		 str.append(" and model.campCallPurpose.campCallPurpose =:callPurposeId ");
+		
+		if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
+		 str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(:batchStatusIdsList) ");
+		
+		if(toDayDate != null)
+		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
+		
+		str.append(" group by campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+			
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("campCallerId", campCallerId);
+		
+		if(callPurposeId != null)
+		 query.setParameter("callPurposeId", callPurposeId);
+		
+		if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
+			 query.setParameterList("batchStatusIdsList", batchStatusIdsList);
+		
+		if(toDayDate != null)
+		 query.setDate("toDayDate", toDayDate);
+		
+		return query.list();
+	}
+
 }
