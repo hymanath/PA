@@ -323,22 +323,23 @@ var userbusy  = 0;
 var dialed = 0;
 var allocated = 0;
 var undialed = 0;
+var callBack  = 0;
+var interested  = 0;
+var later = 0;
+var notInterested = 0;
+var todaycallBack =0;
 str+=' <td>'+result[i].subList[j].subList[k].name+'</td>';
 for(var l=0;l<result[i].subList[j].subList[k].subList.length;l++) //callStatus
 {
 if(result[i].subList[j].subList[k].subList[l].name == "Call Answered")
- answered = result[i].subList[j].subList[k].subList[l].count;
+ answered = answered+result[i].subList[j].subList[k].subList[l].count;
  else
 userbusy = userbusy + result[i].subList[j].subList[k].subList[l].count;
 }
 dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].total;
 undialed = allocated - dialed;
-var callBack  = 0;
-var interested  = 0;
-var later = 0;
-var notInterested = 0;
-var todaycallBack =0;
+
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
 
@@ -348,11 +349,11 @@ callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].coun
 todaycallBack = todaycallBack + result[i].subList[j].subList[k].scheduleStatusList[m].todayCnt;
 }
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
-interested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
+interested = interested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
-notInterested = result[i].subList[j].subList[k].scheduleStatusList[m].count;
+notInterested = notInterested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Now")
-later = result[i].subList[j].subList[k].scheduleStatusList[m].count;
+later = later+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 
 if(allocated > 0)
@@ -477,22 +478,23 @@ var userbusy  = 0;
 var dialed = 0;
 var allocated = 0;
 var undialed = 0;
+var callBack  = 0;
+var interested  = 0;
+var later = 0;
+var notInterested = 0;
+var todaycallBack  = 0;
 str+=' <td>'+result[i].subList[j].subList[k].subList[p].name+'</td>';
 for(var l=0;l<result[i].subList[j].subList[k].subList[p].subList.length;l++) //callStatus
 {
 if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Call Answered")
- answered = result[i].subList[j].subList[k].subList[p].subList[l].count;
+ answered = answered+result[i].subList[j].subList[k].subList[p].subList[l].count;
  else
 userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].count;
 }
 dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].subList[p].total;
 undialed = allocated - dialed;
-var callBack  = 0;
-var interested  = 0;
-var later = 0;
-var notInterested = 0;
-var todaycallBack  = 0;
+
 for(var m=0;m<result[i].subList[j].subList[k].subList[p].scheduleStatusList.length;m++) // invitee Status
 {
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].id == 7)
@@ -501,11 +503,11 @@ callBack = callBack + result[i].subList[j].subList[k].subList[p].scheduleStatusL
 todaycallBack = todaycallBack + result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].todayCnt;
 }
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Interested")
-interested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+interested = interested+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Interested")
-notInterested = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+notInterested = notInterested+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Now")
-later = result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+later = later+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 /*if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
