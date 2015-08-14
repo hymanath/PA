@@ -18,7 +18,7 @@ import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 public interface ITrainingCampService {
 
 	public List<TraingCampCallerVO> getScheduleCallStatusCount(Long userId,Long callPurposeId);
-	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
+	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate,String agentType);
 	public TrainingCampVO getCampusWiseBatchWiseMembersDetails(List<Long> callerIdsList,String searchTypeId,String startDate,String endDate);
 	public TrainingCampVO getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	//public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
@@ -60,5 +60,6 @@ public interface ITrainingCampService {
 	public List<TraingCampCallerVO> getAgentCallDetailsByCampCallerId(Long campCallerId);
 	
 	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId);
-	
+	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
+	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
 }

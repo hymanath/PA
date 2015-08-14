@@ -16,7 +16,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		super(TrainingCampScheduleInviteeCaller.class);
 	}
 	
-	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type){
+	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type,String agentType){
 		
 		StringBuilder str=new StringBuilder();
 		
@@ -30,13 +30,22 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 			str.append(" and model.trainingCampUser.userId in (:userIds) ");
 		}
 		
+		if(agentType !=null && agentType.equalsIgnoreCase("Invitation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =1 ");
+		}
+		else if(agentType !=null && agentType.equalsIgnoreCase("Confirmation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =2 ");
+		}
+		
+		
 		if(type !=null){
-			if(type.equalsIgnoreCase("completedCount")){
+			if(type.equalsIgnoreCase("completedCount")){//dialed calls
 				str.append(" and model.callStatusId is not null ");
-				str.append(" and model.callStatusId =1 ");
+				//str.append(" and model.callStatusId =1 ");
 			}
-			else if(type.equalsIgnoreCase("pendingCount")){
-				str.append(" and (model.callStatusId is null or model.callStatusId !=1) ");
+			else if(type.equalsIgnoreCase("pendingCount")){//pending calls
+				str.append(" and model.callStatusId is null ");
+				//str.append(" and (model.callStatusId is null or model.callStatusId !=1) ");
 			}
 			else if(type.equalsIgnoreCase("dialedCalls")){
 				str.append(" and model.callStatusId is not null ");
@@ -93,13 +102,20 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 	 and SIS.schedule_invitee_status_id is not null 
 	 group by TCSIC.training_camp_caller_id,SIS.schedule_invitee_status_id;*/
 	
-	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate){
+	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate,String agentType){
 		
 		StringBuilder str=new StringBuilder();
 		
 		str.append(" select model.trainingCampUser.user.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.user.lastName " +
 				" from  TrainingCampScheduleInviteeCaller model " +
 				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
+		
+		if(agentType.equalsIgnoreCase("Invitation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =1 ");
+		}
+		else if(agentType.equalsIgnoreCase("Confirmation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =2 ");
+		}
 		
 		if(startDate !=null && endDate !=null){
 			str.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
@@ -514,6 +530,49 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			query.setDate("todayDate", todayDate);
 		return query.list();
 	}
+	public Long getCallDetailsOfCaller(List<Long> userIds,Date startDate,Date endDate,String type,String agentType){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
+				" where  ");
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		if(userIds !=null && userIds.size()>0){
+			str.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		if(agentType !=null){
+			if(agentType.equalsIgnoreCase("Invitation")){
+				str.append(" and model.campCallPurpose.campCallPurpose =1 ");
+			}
+			else if(agentType.equalsIgnoreCase("Confirmation")){
+				str.append(" and model.campCallPurpose.campCallPurpose =2 ");
+			}
+		}
+		
+		if(type !=null){
+			if(type.equalsIgnoreCase("dialedCalls")){
+				str.append(" and model.callStatusId is not null ");
+			}
+			else if(type.equalsIgnoreCase("notDialed")){
+				str.append(" and model.callStatusId is null ");
+			}
+		}
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			query.setParameterList("userIds",userIds);
+		}
+		
+		return  (Long) query.uniqueResult();
+		
+	}
 	
 	public List<Object[]> getScheduleWiseDayWiseCallBackCount(Long callerId,Long callPurposeId,Date date)
 	{
@@ -540,6 +599,43 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		query.setDate("date", date);
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getCallDetailsOfCallerByStatus(List<Long> userIds,Date startDate,Date endDate,String agentType){
+		
+		StringBuilder str=new StringBuilder();
+		
+		str.append(" select model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
+				" from  TrainingCampScheduleInviteeCaller model " +
+				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
+		
+		if(agentType !=null){
+			if(agentType.equalsIgnoreCase("Invitation")){
+				str.append(" and model.campCallPurpose.campCallPurpose =1 ");
+			}
+			else if(agentType.equalsIgnoreCase("Confirmation")){
+				str.append(" and model.campCallPurpose.campCallPurpose =2 ");
+			}
+		}
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		if(userIds !=null && userIds.size()>0){
+			str.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		str.append(" group by model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			query.setParameterList("userIds",userIds);
+		}
+		return query.list();
 	}
 	
 	public List<Object[]> getBatchWiseDayWiseCallBackCount(Long callerId,Long callPurposeId,Date date)
@@ -593,7 +689,62 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			query.setDate("todayDate", todayDate);
 		return query.list();
 	}
-
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllUpcomingTrainingCampScheduleDetails(List<Long> scheduleIds,Date fromDate,Date toDate,String type){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId from TrainingCampScheduleInviteeCaller model " +
+				" where  ");
+		
+		if(fromDate !=null && toDate !=null){
+			queryStr.append("  (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:toDate) ");
+		}
+		if(scheduleIds !=null && scheduleIds.size() > 0){
+			queryStr.append( " and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId in (:scheduleIds) " );
+		}
+		if(type !=null){
+			queryStr.append(" and model.campCallPurpose = '"+type+"' ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(scheduleIds !=null){
+			query.setParameterList("scheduleIds", scheduleIds);
+		}
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		return query.list();
+	}
+	
+	public List<Long> getAllocatedCountForConfirmation(Date fromDate,Date toDate,String type,Long callPurpose){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct model.trainingCampScheduleInvitee.attendingBatchId  from TrainingCampScheduleInviteeCaller model " +
+				" where (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:todate) ");
+		if(type !=null){
+			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status = '"+type+"' ");
+		}
+		queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId is not null ");
+		if(callPurpose !=null && callPurpose !=0l){
+			queryStr.append(" and model.campCallPurpose.campCallPurpose = :callPurpose ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("todate",toDate);
+		
+		if(callPurpose !=null && callPurpose !=0l){
+			query.setParameter("callPurpose",callPurpose);
+		}
+		
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getCallerDistricts(Long userId)
 	{
 		Query query = getSession().createQuery("select distinct model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtId," +

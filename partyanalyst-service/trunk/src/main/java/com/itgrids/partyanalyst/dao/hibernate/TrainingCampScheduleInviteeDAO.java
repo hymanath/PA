@@ -186,6 +186,27 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		query.setParameter("scheduleId", scheduleId);
 		return (Long) query.uniqueResult();
 	}
+	public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String type){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct model.attendingBatchId  from TrainingCampScheduleInvitee model " +
+				" where (date(model.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampSchedule.toDate)<=:todate) ");
+		if(type !=null){
+			queryStr.append(" and model.trainingCampSchedule.status = '"+type+"' ");
+		}
+		queryStr.append(" and model.attendingBatchId is not null ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("todate",toDate);
+		
+		return query.list();
+	}
+	
+	
+	
 	
 	public List<Object[]> getBatchWiseConformationDetails(String searchType, Date startDate, Date endDate)
 	{

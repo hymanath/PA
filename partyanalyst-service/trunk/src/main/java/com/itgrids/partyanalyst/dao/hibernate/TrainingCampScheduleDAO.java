@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -54,6 +55,29 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 		Query query = getSession().createQuery(queryStr.toString());
 		if(programmesList != null && programmesList.size()>0)
 			query.setParameterList("programmesList", programmesList);
+		return query.list();
+	}
+	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type){
+		
+		StringBuilder scheduleStr = new StringBuilder();
+		
+		scheduleStr.append("select distinct model.trainingCampScheduleId from TrainingCampSchedule model where ");
+				
+		if(fromDate !=null && toDate !=null){
+			scheduleStr.append(" (date(model.fromDate)>=:fromDate and date(model.toDate)<=:toDate) ");
+		}
+		
+		if(type !=null){
+			scheduleStr.append(" and model.status = '"+type+"' ");
+		}
+		
+		Query query = getSession().createQuery(scheduleStr.toString());
+		
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		return query.list();
 	}
 	
