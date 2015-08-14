@@ -34,5 +34,10 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getBatchWiseDayWiseCallBackCount(Long callerId,Long callPurposeId,Date date);
 	
 	public List<Object[]> getSchduleBatchConfirmationCallBackDetails(Long campCallerId,Long callPurposeId,Date todayDate,List<Long> scheduleInviteeStatusIdsList,List<Long> batchStatusIdsList);
+	public List<Object[]> getCallerDistricts(Long userId);
+	public List<Object[]> getCallerConstituenciesByDistrict(Long userId,Long districtId);
+	public List<Object[]> getCallerAgentMandalsByConstituency(Long userId,Long constituencyId);
+	public List<Object[]> getCallerAgentVillagesByMandal(Long userId,Long mandalId);
+	public List<Object[]> getScheduleWisememberDetailsCountForSearch(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
 	
 }

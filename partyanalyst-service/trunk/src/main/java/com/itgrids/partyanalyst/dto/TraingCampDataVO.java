@@ -11,7 +11,50 @@ public class TraingCampDataVO {
 	private Long scheduleId;
 	private String statusType;
 	private String dateStr;
+	private Long districtId;
+	private Long constituencyId;
+	private Long villageId;
+	private Long mandalId;
+	private Long committeeLevelId;
+	private String searchType;
 	
+	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getCommitteeLevelId() {
+		return committeeLevelId;
+	}
+	public void setCommitteeLevelId(Long committeeLevelId) {
+		this.committeeLevelId = committeeLevelId;
+	}
 	public String getStatusType() {
 		return statusType;
 	}

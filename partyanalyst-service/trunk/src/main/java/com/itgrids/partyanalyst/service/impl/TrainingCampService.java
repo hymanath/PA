@@ -1303,7 +1303,7 @@ public class TrainingCampService implements ITrainingCampService{
 	{
 		List<Long> statusIds = new ArrayList<Long>();
 		TrainingMemberVO inputVO = new TrainingMemberVO();
-		
+		List<Object[]> list = null;
 		try{
 			statusIds = getCallStatusIds(inputVo.getStatus());
 			
@@ -1313,8 +1313,13 @@ public class TrainingCampService implements ITrainingCampService{
 			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			   toDayDate = sdf.parse(inputVo.getDateStr());
 			}
-			
-			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			if(inputVo.getSearchType() == null)
+			 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			else
+			{
+				 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCountForSearch(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+				
+			}
 			if(list != null && list.size() > 0)
 			{
 				List<TrainingMemberVO> resultList = setMemberDetails(list);
@@ -2126,5 +2131,71 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return callBackCountVO;
 		
+	}
+	
+	public List<IdNameVO> getCallerAgentDistricts(Long userId)
+	{
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getCallerDistricts(userId);
+			return getSelectOptions(list);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	public List<IdNameVO> getCallerAgentConstituencies(Long userId,Long districtId)
+	{
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getCallerConstituenciesByDistrict(userId,districtId);
+			return getSelectOptions(list);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	public List<IdNameVO> getCallerAgentMandals(Long userId,Long constituencyId)
+	{
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getCallerAgentMandalsByConstituency(userId,constituencyId);
+			return getSelectOptions(list);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	public List<IdNameVO> getCallerAgentVillages(Long userId,Long mandalId)
+	{
+		try{
+			List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getCallerAgentVillagesByMandal(userId,mandalId);
+			return getSelectOptions(list);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	public List<IdNameVO> getSelectOptions(List<Object[]> list)
+	{
+		List<IdNameVO>  returnList = new ArrayList<IdNameVO>();
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					IdNameVO vo = new IdNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
+					returnList.add(vo);
+					
+				}
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnList;
 	}
 }
