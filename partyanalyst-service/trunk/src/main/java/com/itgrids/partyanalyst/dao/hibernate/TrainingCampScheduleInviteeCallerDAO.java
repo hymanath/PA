@@ -438,21 +438,26 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
-	public List<Long> getInterestedAndInvitedMembersListForBatchConfirmation(Long callerId,Long scheduleId,String callPurposeStr,String memberTypeStr)
+	public List<Long> getInterestedAndInvitedMembersListForBatchConfirmation(List<Long> callerIdsList,Long scheduleId,Long batchId,String callPurposeStr,String memberTypeStr)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId  from TrainingCampScheduleInviteeCaller model where " +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId and model.campCallPurpose.purpose like '%"+callPurposeStr+"%'  and " +
 				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.status like '%"+memberTypeStr+"%' ");
-		if(callerId != null && callerId.longValue() >0L)
-			queryStr.append(" and model.trainingCampCallerId =:callerId ");
+		if(batchId != null && batchId.longValue()>0L)
+			queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId =:batchId ");
+		
+		if(callerIdsList != null && callerIdsList.size() >0L)
+			queryStr.append(" and model.trainingCampCallerId  in( :callerIdsList) ");
 		
 		queryStr.append(" order by  model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("scheduleId", scheduleId);
-		if(callerId != null && callerId.longValue() >0L)
-			query.setParameter("callerId", callerId);
+		if(callerIdsList != null && callerIdsList.size() >0L)
+			query.setParameterList("callerIdsList", callerIdsList);
+		if(batchId != null && batchId.longValue()>0L)
+			query.setParameter("batchId", batchId);
 		return query.list();
 	}	
 	

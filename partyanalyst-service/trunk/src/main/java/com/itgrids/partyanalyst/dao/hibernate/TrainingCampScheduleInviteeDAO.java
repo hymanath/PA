@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<TrainingCampScheduleInvitee, Long> implements ITrainingCampScheduleInviteeDAO{
 
@@ -234,6 +235,25 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			query.setDate("endDate", endDate);
 		}
 		
+		return query.list();
+	}
+	
+	public List<Long> getScheduleWiseInviteesListByLocationIdLocationType(Long scheduleId,Long locationTypeId,List<Long> locationIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.trainingCampScheduleInviteeId from TrainingCampScheduleInvitee model where model.scheduleInviteeStatusId = 1 and model.attendingBatchId is null ");
+		if(scheduleId != null && scheduleId.longValue()>0L)
+			queryStr.append(" and model.trainingcampScheduleId = :scheduleId ");
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			if(locationTypeId != null && locationTypeId.longValue() == IConstants.DISTRICT_SCOPE_ID)
+				queryStr.append(" and model.tdpCadre.userAddress.district.districtId =(:locationIdsList) and model.tdpCadre.isDeleted ='Y' and model.tdpCadre.enrollmentYear=2014 ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(scheduleId != null && scheduleId.longValue()>0L)
+			query.setParameter("scheduleId", scheduleId);
+		if(locationIdsList != null && locationIdsList.size()>0)
+			query.setParameterList("locationIdsList", locationIdsList);
 		return query.list();
 	}
 }
