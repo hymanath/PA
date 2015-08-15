@@ -29,6 +29,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String memberStatus;
 	private String startDateStr;
 	private String endDateStr;
+	private Long locationTypeId;
 	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
 	
 	private Long schdlStatusId;
@@ -38,6 +39,12 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long batchId;
 	
 	
+	public Long getLocationTypeId() {
+		return locationTypeId;
+	}
+	public void setLocationTypeId(Long locationTypeId) {
+		this.locationTypeId = locationTypeId;
+	}
 	public Long getBatchId() {
 		return batchId;
 	}
