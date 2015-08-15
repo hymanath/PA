@@ -37,8 +37,28 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long othersCount;
 	private Long conformLaterCount;
 	private Long batchId;
+	private Long allocatedCalls;
+	private Long dialedCount;
+	private Long unDialedCount;
 	
-	
+	public Long getAllocatedCalls() {
+		return allocatedCalls;
+	}
+	public void setAllocatedCalls(Long allocatedCalls) {
+		this.allocatedCalls = allocatedCalls;
+	}
+	public Long getDialedCount() {
+		return dialedCount;
+	}
+	public void setDialedCount(Long dialedCount) {
+		this.dialedCount = dialedCount;
+	}
+	public Long getUnDialedCount() {
+		return unDialedCount;
+	}
+	public void setUnDialedCount(Long unDialedCount) {
+		this.unDialedCount = unDialedCount;
+	}
 	public Long getLocationTypeId() {
 		return locationTypeId;
 	}

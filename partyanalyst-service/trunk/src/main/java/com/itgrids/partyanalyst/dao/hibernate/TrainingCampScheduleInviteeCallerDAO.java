@@ -963,5 +963,65 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		query.setParameter("campCallerAdminId", campCallerAdminId);
 		return query.list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getScheduleWiseDetailsCount(List<Long> callerIdsList,Date fromDate,Date toDate,String dataType,String searchType){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select TCSI.trainingCampSchedule.trainingCamp.campName," +
+				"TCSI.trainingCampSchedule.trainingCampProgram.programName," +
+				"TCSI.trainingCampSchedule.trainingCampScheduleCode, " +
+				"TCSI.trainingCampSchedule.trainingCampScheduleId,count(TCSIC.trainingCampScheduleInviteeCallerId) ");
+		
+		str.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampScheduleInvitee TCSI,TrainingCampBatch TCB where " +
+				" TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId = TCSI.trainingCampScheduleInviteeId and TCSI.trainingCampSchedule.trainingCampId = TCB.trainingCampBatchId ");
+		
+		if(fromDate != null && toDate != null)
+		{
+			str.append(" and (date(TCSI.trainingCampSchedule.fromDate) >=:fromDate and date(TCSI.trainingCampSchedule.toDate) <=:toDate) ");
+		}
+		
+		if(callerIdsList !=null && callerIdsList.size()>0){
+			str.append(" and  TCSIC.trainingCampUser.userId in (:callerIdsList) ");
+		}
+		if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+			str.append(" and TCSI.trainingCampSchedule.status = 'Not Started' ");
+		}
+		else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+			str.append(" and TCSI.trainingCampSchedule.status ='Progress' ");
+		}
+		else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+			
+			str.append(" and TCSI.trainingCampSchedule.status ='Completed' ");
+			
+		}else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+			str.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
+		}
+		
+		if(dataType !=null && dataType.equalsIgnoreCase("dialedCalls")){
+			str.append(" and TCSIC.campCallStatus.campCallStatusId is not null ");
+		}
+		else if(dataType !=null && dataType.equalsIgnoreCase("notDialed")){
+			str.append( " and TCSIC.campCallStatus.campCallStatusId is null " );
+		}
+		
+		str.append(" group by TCSI.trainingCampSchedule.trainingCamp.trainingCampId,TCSI.trainingCampSchedule.trainingCampScheduleId " +
+				"  order by " +
+				" TCSI.trainingCampSchedule.trainingCamp.trainingCampId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		if(callerIdsList !=null && callerIdsList.size()>0){
+			query.setParameterList("callerIdsList",callerIdsList);
+		}
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
 }
