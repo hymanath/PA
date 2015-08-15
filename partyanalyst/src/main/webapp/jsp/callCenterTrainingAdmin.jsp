@@ -286,7 +286,8 @@
 													<div>
 													  <!-- Tab panes -->
 													  <div class="tab-content">
-													  <div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
+													 <center><img id="dataLoadingsImgForCalenderScheduleId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
+														<div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
 														<div role="tabpanel" class="tab-pane" id="running"> </div>
 														<div role="tabpanel" class="tab-pane" id="completed">   </div>
 														<div role="tabpanel" class="tab-pane" id="cancelled"></div>
@@ -1243,22 +1244,26 @@ function buildingMembersFilledInCalenderBatch(result){
 	
 	$(document).on("click",".searchTypeCls li",function(){
 		 var text=$(this).text();
+		 
+		 $("#"+divId+"").html("");
+		 
 		 var searchType="";
 		 var divId='';
-		 if(text == "SCHEDULED"){
+		 if(text == "UPCOMING SCHEDULE"){
 		 searchType = "notStarted";
 		 divId ='scheduled';
 		 }
-		 else if(text == "RUNNING BATCH"){
+		 else if(text == "RUNNING SCHEDULE"){
 		 searchType = "running";
 		 divId ='running';
-		 }else if(text == "COMPLETED BATCH"){
+		 }else if(text == "COMPLETED SCHEDULE"){
 		 searchType = "completed";
 		 divId ='completed';
-		 }else if(text == "CANCELLED BATCH"){
+		 }else if(text == "CANCELLED SCHEDULE"){
 		 searchType = "cancelled";
 		 divId ='cancelled';
 		 }
+		 
 		 getCampusWiseBatchWiseMembersDetails(searchType,divId);
 		 
 	});
