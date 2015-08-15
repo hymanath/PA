@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocument,Long>{
 
 	public List<Object[]> getPartyMeetingsDocumentsDetls(Long partyMeetingTypeId);
+	public List<Object[]> getDocumentDetailsForMinutesAtr(Long partyMeetingId);
 }
