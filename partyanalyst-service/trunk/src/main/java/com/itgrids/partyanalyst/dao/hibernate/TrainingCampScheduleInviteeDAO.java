@@ -32,7 +32,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		if(startDate != null && endDate != null)
 		{
-			queryStr.append(" and (date(TCSI.trainingCampSchedule.fromDate) >=:startDate and date(TCSI.trainingCampSchedule.fromDate) <=:endDate) ");
+			queryStr.append(" and (date(TCSI.trainingCampSchedule.fromDate) >=:startDate and date(TCSI.trainingCampSchedule.toDate) <=:endDate) ");
 		}
 		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
 		{
