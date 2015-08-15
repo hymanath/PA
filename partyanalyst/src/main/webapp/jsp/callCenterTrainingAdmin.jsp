@@ -307,7 +307,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										BATCH CONFIRMATION DETAILS
+										<b>BATCH CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-sm pull-right" style="margin-top:-6px">Assign to Agents</button>
 									</h4>
 								</div>
