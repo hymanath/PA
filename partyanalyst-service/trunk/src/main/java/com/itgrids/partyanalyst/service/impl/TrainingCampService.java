@@ -2841,4 +2841,59 @@ public class TrainingCampService implements ITrainingCampService{
 		return finalVo;
 	}
 	
+	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId)
+	{
+		List<TraingCampCallerVO> returnList = new ArrayList<TraingCampCallerVO>();
+		
+		try{
+		 List<Object[]> list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountLocationWiseInfo(campId,programId,scheduleId,1l);
+		 if(list != null && list.size() > 0)
+		 {
+			 for(Object[] params : list)
+			 {
+				if(params[1] != null)
+				{
+					 TraingCampCallerVO districtVo = getMatchedVo(returnList, commonMethodsUtilService.getLongValueForObject(params[1])); // District
+					 if(districtVo == null)
+					 {
+						 districtVo = new TraingCampCallerVO();
+						 districtVo.setName(params[2].toString());
+						 districtVo.setId((Long)params[1]);
+						 returnList.add(districtVo);
+					 }
+					 districtVo.setCount(districtVo.getCount() + (Long)params[0]);
+					 if(params[3] != null)
+						{
+						 TraingCampCallerVO constituencyVo = getMatchedVo(districtVo.getSubList(), commonMethodsUtilService.getLongValueForObject(params[3])); // Constituency
+						 if(constituencyVo == null)
+						 {
+							 constituencyVo = new TraingCampCallerVO();
+							 constituencyVo.setName(params[4].toString());
+							 constituencyVo.setId((Long)params[3]);
+							 districtVo.getSubList().add(constituencyVo);
+						 }
+						 constituencyVo.setCount(constituencyVo.getCount() + (Long)params[0]);
+						 if(params[5] != null)
+							{
+							 TraingCampCallerVO mandalVo = getMatchedVo(constituencyVo.getSubList(), commonMethodsUtilService.getLongValueForObject(params[5])); // Mandal
+							 if(mandalVo == null)
+							 {
+								 mandalVo = new TraingCampCallerVO();
+								 mandalVo.setName(params[6].toString());
+								 mandalVo.setId((Long)params[5]);
+								 constituencyVo.getSubList().add(mandalVo);
+							 }
+							 mandalVo.setCount(mandalVo.getCount() + (Long)params[0]);
+					 }
+				   }
+				}
+			 }
+		 }
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getScheduleAvailableCallsCountLocationWiseInfo() method", e);
+		}
+		return returnList;
+	}
+	
 }

@@ -62,4 +62,5 @@ public interface ITrainingCampService {
 	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId);
 	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
+	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
 }
