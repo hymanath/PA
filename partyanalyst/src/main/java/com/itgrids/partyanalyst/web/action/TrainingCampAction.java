@@ -597,11 +597,16 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long callerId = jObj.getLong("callerId");
 			Long callPurposeId = jObj.getLong("callPurposeId");
 			Boolean isOwnMembers = jObj.getBoolean("availCalls");
+			
+			
 			if(callPurposeId == 1){
-				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId);
+				List<TrainingCampVO> areasVOList = new ArrayList<TrainingCampVO>();
+				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
 			}
 			else if(callPurposeId == 2){
-				resultStatus = trainingCampService.assignMembersToCallerForBatchConfirmation(regVo.getRegistrationID(),isOwnMembers,scheduleId,membersCount,callerId,callPurposeId);
+				Long batchId = jObj.getLong("batchId");
+				List<Long> otherUserIdsList = new ArrayList<Long>(0);
+				resultStatus = trainingCampService.assignMembersToCallerForBatchConfirmation(regVo.getRegistrationID(),isOwnMembers,scheduleId,membersCount,callerId,callPurposeId,batchId,otherUserIdsList);
 			}
 			
 		}catch (Exception e) {
