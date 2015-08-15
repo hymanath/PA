@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.model.Ward;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TrainingCampService implements ITrainingCampService{
 
@@ -413,8 +414,10 @@ public class TrainingCampService implements ITrainingCampService{
 	{
 		TrainingMemberVO returnVO = new TrainingMemberVO();
 		try {
-			List<Long> alreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation( callerId, scheduleId, "Invitation", "Interested");
-			List<Long> AllalreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation( null, scheduleId, "Invitation", "Interested");
+			List<Long> callerIdsList = new ArrayList<Long>();
+			callerIdsList.add(callerId);
+			List<Long> alreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(callerIdsList, scheduleId,null, IConstants.INVITATION, IConstants.INTERESTED);
+			List<Long> AllalreadyInvitedMemberIdsForCallerList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation( null, scheduleId,null, IConstants.INVITATION, IConstants.INTERESTED);
 			
 			if(alreadyInvitedMemberIdsForCallerList != null && alreadyInvitedMemberIdsForCallerList.size()>0)
 				returnVO.setAvailableCount(commonMethodsUtilService.getIntegerToLong(alreadyInvitedMemberIdsForCallerList.size()));
@@ -428,30 +431,79 @@ public class TrainingCampService implements ITrainingCampService{
 		return returnVO;
 	}
 	
-	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
+	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId,final List<TrainingCampVO> locationTypeList)
 	{
 		ResultStatus status  = new ResultStatus();
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					List<Long> alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
-					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,null,Integer.valueOf(membersCount.toString()));
-					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
+					if(locationTypeList != null && locationTypeList.size()>0)
 					{
-						DateUtilService dateutilService = new DateUtilService();
-						if(alreadyInvitedMemberIdsList == null) alreadyInvitedMemberIdsList = new ArrayList<Long>(0);
-						for (Long trainingCampScheduleInviteeId : invitedMemberIdsList) {
-							if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
+						List<Long> inviteeIdsList = new ArrayList<Long>(0);
+						List<Long> alreadyInvitedMemberIdsList = new ArrayList<Long>(0);
+						for (TrainingCampVO trainingCampVO : locationTypeList) {
+							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.DISTRICT_SCOPE_ID)
 							{
-								TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
-								trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
-								trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
-								trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
-								trainingCampScheduleInviteeCaller.setInsertedBy(userId);
-								trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
-								trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
-								trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
-								trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+								List<TrainingCampVO> districtsIdsVoList = trainingCampVO.getTrainingCampVOList();
+								List<Long> districtIdsList = new ArrayList<Long>(0);
+								if(districtsIdsVoList != null && districtsIdsVoList.size()>0)
+								{
+									for (TrainingCampVO districtVO : districtsIdsVoList) {
+										districtIdsList.add(districtVO.getId());
+									}
+								}
+								List<Long> distirctInviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), districtIdsList);
+								inviteeIdsList.addAll(distirctInviteeIdsList);
+							}					
+							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.CONSTITUENCY_SCOPE_ID)
+							{
+								List<TrainingCampVO> constituencysIdsVoList = trainingCampVO.getTrainingCampVOList();
+								List<Long> constituencyIdsList = new ArrayList<Long>(0);
+								if(constituencysIdsVoList != null && constituencysIdsVoList.size()>0)
+								{
+									for (TrainingCampVO districtVO : constituencysIdsVoList) {
+										constituencyIdsList.add(districtVO.getId());
+									}
+								}
+								List<Long>  constiinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), constituencyIdsList);
+								inviteeIdsList.addAll(constiinviteeIdsList);
+							}
+							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.TEHSIL_SCOPE_ID)
+							{
+								List<TrainingCampVO> tehsilsIdsVoList = trainingCampVO.getTrainingCampVOList();
+								List<Long> tehsilIdsList = new ArrayList<Long>(0);
+								if(tehsilsIdsVoList != null && tehsilsIdsVoList.size()>0)
+								{
+									for (TrainingCampVO districtVO : tehsilsIdsVoList) {
+										tehsilIdsList.add(districtVO.getId());
+									}
+								}
+								List<Long>  tehsilinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), tehsilIdsList);
+								inviteeIdsList.addAll(tehsilinviteeIdsList);
+							}
+						}
+						
+						if(inviteeIdsList != null && inviteeIdsList.size()>0)
+						{
+							alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getAlreadyInvitedMembersInviteeIdsListByScheduleId(scheduleId,callPurposeId);
+							if(inviteeIdsList != null && inviteeIdsList.size()>0)
+							{
+								DateUtilService dateutilService = new DateUtilService();
+								if(alreadyInvitedMemberIdsList == null) alreadyInvitedMemberIdsList = new ArrayList<Long>(0);
+								for (Long trainingCampScheduleInviteeId : inviteeIdsList) {
+									if(!alreadyInvitedMemberIdsList.contains(trainingCampScheduleInviteeId))
+									{
+										TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
+										trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+										trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
+										trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
+										trainingCampScheduleInviteeCaller.setInsertedBy(userId);
+										trainingCampScheduleInviteeCaller.setUpdatedBy(userId);
+										trainingCampScheduleInviteeCaller.setInsertedTime(dateutilService.getCurrentDateAndTime());
+										trainingCampScheduleInviteeCaller.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+										trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+									}
+								}
 							}
 						}
 					}
@@ -468,18 +520,21 @@ public class TrainingCampService implements ITrainingCampService{
 		return status;
 	}
 	 
-	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId)
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId,final Long batchId, final List<Long> callerIdsList)
 	{
 		ResultStatus status  = new ResultStatus();
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					List<Long> alreadyInvitedMemberIdsList = null;
+					List<Long> schdlConfCallrIds = new ArrayList<Long>(0);
 					if(isOwnMembers){
-						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(callerId,scheduleId, "Invited", "Interested");
+						schdlConfCallrIds.add(callerId);
+						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(schdlConfCallrIds,scheduleId,batchId, IConstants.INVITATION, IConstants.INTERESTED);
 					}
 					else{
-						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(null,scheduleId, "Invited", "Interested");
+						schdlConfCallrIds.addAll(callerIdsList);
+						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(schdlConfCallrIds,scheduleId,batchId, IConstants.INVITATION, IConstants.INTERESTED);
 					}
 					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,null,Integer.valueOf(membersCount.toString()));
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
@@ -790,8 +845,8 @@ public class TrainingCampService implements ITrainingCampService{
 						
 						
 						String memberStatus = commonMethodsUtilService.getStringValueForObject(campObj[4]);
-						if(memberStatus != null && ( memberStatus.equalsIgnoreCase("NOT NOW") || memberStatus.equalsIgnoreCase("Interested") || 
-								memberStatus.equalsIgnoreCase("Not Interested")) )
+						if(memberStatus != null && ( memberStatus.equalsIgnoreCase(IConstants.NOTNOW) || memberStatus.equalsIgnoreCase(IConstants.INTERESTED) || 
+								memberStatus.equalsIgnoreCase(IConstants.NOTINTERESTED)) )
 						{
 
 							String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
@@ -826,7 +881,7 @@ public class TrainingCampService implements ITrainingCampService{
 							TrainingCampVO trainingCampVO = getMatchedVOforMemberStatus(trainingCampVOList,memberStatus);
 							if(trainingCampVO != null)
 							{
-								if(memberStatus != null && memberStatus.equalsIgnoreCase("NOT NOW"))
+								if(memberStatus != null && memberStatus.equalsIgnoreCase(IConstants.NOTNOW))
 									trainingCampVO.setMemberStatus("LATER");
 								
 								trainingCampVO.setTrainingCampName(campName);
@@ -846,7 +901,7 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 					
 					Map<Long,Long> scheduleWiseBatchConfirmedCountMap = new LinkedHashMap<Long,Long>(0);
-					List<Object[]> batchConfirmedDetails = trainingCampScheduleInviteeCallerDAO.getBatchConfirmedMemberDetails(null, startDate, endDate,"Interested","confirmation");
+					List<Object[]> batchConfirmedDetails = trainingCampScheduleInviteeCallerDAO.getBatchConfirmedMemberDetails(null, startDate, endDate,IConstants.INTERESTED,IConstants.CONFIRMATION);
 					if(batchConfirmedDetails != null && batchConfirmedDetails.size()>0)
 					{
 						for (Object[] campObj : batchConfirmedDetails) {
@@ -1758,8 +1813,8 @@ public class TrainingCampService implements ITrainingCampService{
 			
 		
 			//0.id,1.program/camp name 3.membersCount 4.batchCount 
-			List<Object[]> programDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, "Interested","program");
-			List<Object[]> campDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, "Interested","camp");
+			List<Object[]> programDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"program");
+			List<Object[]> campDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"camp");
 			
 			
 			List<TrainingCampScheduleVO> listForProgramVo=new ArrayList<TrainingCampScheduleVO>();
@@ -2070,7 +2125,7 @@ public class TrainingCampService implements ITrainingCampService{
 					if(params[1] !=null && params[1].toString().equalsIgnoreCase("Call Answered"))
 						callStatusVO.setAnswerdeCallsCount((Long)params[0]);
 						
-					else if(params[1] !=null && (params[1].toString().equalsIgnoreCase("Switchoff") || params[1].toString().equalsIgnoreCase("User Busy")))
+					else if(params[1] !=null && (params[1].toString().equalsIgnoreCase(IConstants.SWITCHOFF) || params[1].toString().equalsIgnoreCase(IConstants.TRAINING_USER_BUSY)))
 						callStatusVO.setUserBusyCallsCount(callStatusVO.getUserBusyCallsCount()+(Long)params[0]);
 					
 					
@@ -2085,10 +2140,10 @@ public class TrainingCampService implements ITrainingCampService{
 			{
 				for(Object[] obj: list1)
 				{
-					if(obj[1] !=null && obj[1].toString().equalsIgnoreCase("Interested"))
+					if(obj[1] !=null && obj[1].toString().equalsIgnoreCase(IConstants.INTERESTED))
 						callStatusVO.setInterestedMemCount((Long)obj[0]);
 						
-					else if(obj[1] !=null && obj[1].toString().equalsIgnoreCase("Not Interested"))
+					else if(obj[1] !=null && obj[1].toString().equalsIgnoreCase(IConstants.NOTINTERESTED))
 						callStatusVO.setNotIntereMemCount((Long)obj[0]);
 					
 					else
@@ -2644,12 +2699,12 @@ public class TrainingCampService implements ITrainingCampService{
     		
     		 
 			  //Scheduled
-			  Long asgInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,"Invitation");
-			  Long dialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls","Invitation");
-			  Long undialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed","Invitation"); 
+			  Long asgInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,IConstants.INVITATION);
+			  Long dialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls",IConstants.INVITATION);
+			  Long undialedInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed",IConstants.INVITATION); 
 			  
 			  //0.statusId,1.status,2.count
-			  List<Object[]> statusInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,"Invitation");
+			  List<Object[]> statusInvit = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,IConstants.INVITATION);
 			  
 			  if(statusInvit !=null && statusInvit.size()>0){
 				
@@ -2676,10 +2731,10 @@ public class TrainingCampService implements ITrainingCampService{
 			
 		  //Confirmation.
 			  
-			  Long asgCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,"Confirmation");
-			  Long dialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls","Confirmation");
-			  Long undialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed","Confirmation"); 
-			  List<Object[]> statusCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,"Confirmation");
+			  Long asgCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, null,IConstants.CONFIRMATION);
+			  Long dialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds, startDate, endDate, "dialedCalls",IConstants.CONFIRMATION);
+			  Long undialedCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCaller(userIds,startDate,endDate,"notDialed",IConstants.CONFIRMATION); 
+			  List<Object[]> statusCon = trainingCampScheduleInviteeCallerDAO.getCallDetailsOfCallerByStatus(userIds,startDate,endDate,IConstants.CONFIRMATION);
 			 
 			  
 			  if(statusCon !=null && statusCon.size()>0){
@@ -2735,7 +2790,7 @@ public class TrainingCampService implements ITrainingCampService{
 			if(scheduleIds !=null){
 				upcomingScheduleCount=(long) scheduleIds.size();
 			}
-			List<Long> returnScheduleIds=  trainingCampScheduleInviteeCallerDAO.getAllUpcomingTrainingCampScheduleDetails(scheduleIds,startDate,endDate,"Invitation");
+			List<Long> returnScheduleIds=  trainingCampScheduleInviteeCallerDAO.getAllUpcomingTrainingCampScheduleDetails(scheduleIds,startDate,endDate,IConstants.INVITATION);
 			
 			Long upAllocatedToagents=0l;
 			Long upNotAllcoated =0l;
