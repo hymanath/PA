@@ -151,7 +151,7 @@ public class PartyMeeting extends BaseModel implements Serializable{
 		this.endDate = endDate;
 	}
 	
-	@Column(name="dailt_start_time")
+	@Column(name="daily_start_time")
 	public String getDailyStartTime() {
 		return dailyStartTime;
 	}
