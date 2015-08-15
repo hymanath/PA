@@ -10581,6 +10581,11 @@
 	       <param name="root">trainingCampScheduleVO</param>
 	  </result>
 	</action>
+	<action name="getScheduleAvailableCallsCountLocationWiseInfoAction" class="trainingCampAction" method="getScheduleAvailableCallsCountLocationWiseInfo">
+	    <result type="json" name="success">
+	       <param name="root">statusCountList</param>
+	  </result>
+	</action>
 	
 	
 </package>
