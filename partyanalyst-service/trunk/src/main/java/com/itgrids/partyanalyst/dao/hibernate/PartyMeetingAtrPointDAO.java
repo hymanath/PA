@@ -25,4 +25,19 @@ public class PartyMeetingAtrPointDAO extends GenericDaoHibernate<PartyMeetingAtr
 		query.setParameter("partyMeetingTypeId", partyMeetingTypeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAtrDetailsForAMeeting(Long partyMeetingId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.partyMeetingAtrPointId,model.partyMeetingId,model.request,model.actionTaken,model.requestFrom, " +
+				" model.locationScopeId,model.locationValue, " +
+				" model.raisedBy,model.insertedBy.userId,model.insertedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName," +
+				"model.insertedTime,model.updatedTime  " +
+				" from PartyMeetingAtrPoint model where " +
+				"  model.partyMeeting.partyMeetingId=:partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("partyMeetingId", partyMeetingId);
+		return query.list();
+	}
+	
 }
