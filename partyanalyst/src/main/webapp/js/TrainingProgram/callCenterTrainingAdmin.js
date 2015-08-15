@@ -161,15 +161,15 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 	if(result.trainingCampVOList != null && result.trainingCampVOList.length>0)
 	{//alert(2);
 		str+='<table class="table table-bordered m_0">';
-			str+='<thead class="bg_d">';
+			str+='<thead class="bg_d" style="font-size:12px;">';
 			str+='<tr>';
 				str+='<th>TRAINING <br/>PROGRAM NAME</th>';
 				str+='<th>TRAINING CENTER</th>';
 				str+='<th>TRAINING <br/>START DATE</th>';
 				str+='<th>TRAINING <br/>END DATE</th>';
 				str+='<th>ALLOCATED <br/>CALLS</th>';
-				str+='<th>DIALED/<br/> UNDIALED</th>';
-				str+='<th>INTERESTED <br/>MEMBERS</th>';
+				str+='<th class="text-yellow">DIALED/<br/> UN DIALED</th>';
+				str+='<th class="interested-text">INTERESTED <br/>MEMBERS</th>';
 				str+='<th>NOT <br/>INTERESTED</th>';
 				str+='<th>LATER</th>';
 				str+='<th class="font-12">CALL BACK/<br/>USER BUSY/<br/>OTHERS</th>';
@@ -192,49 +192,49 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 							if(result.trainingCampVOList[i].trainingCampVOList[k].trainingCampName != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampName+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].startDateStr != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].startDateStr+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].endDateStr != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].endDateStr+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							var unDialedCount=result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount-result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount;
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount != null)
-								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+'/'+unDialedCount+'</td>';
+								str+='<td style="text-align:center;" class="text-yellow">'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+'/'+unDialedCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > -/- </td>';
+								str+='<td style="text-align:center;" > 0/0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].interestedCount != null)
-								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
+								str+='<td style="text-align:center;" class="interested-text">'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].conformLaterCount != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].conformLaterCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > - </td>';
+								str+='<td style="text-align:center;" > 0 </td>';
 						}
 					}
 				}
@@ -376,18 +376,18 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 	if(result.trainingCampVOList != null)
 	{//alert(1);
 		str+='<table class="table table-bordered m_0">';
-			str+='<thead>';
+			str+='<thead class="bg_d" style="font-size:12px;">';
 				str+='<th>TRAINING PROGRAM <br/> NAME</th>';
 				str+='<th>TRAINING CAMP <br/> NAME</th>';
 				str+='<th>SCHEDULED <br/> CALENDAR DATES</th>';
 				str+='<th>ALLOCATED CALLS</th>';
-				str+='<th>DIALED / UN DIALED</th>';
-				str+='<th>CALL BACK / <br> BUSY / <br> OTHERS</th>';				
-				str+='<th>INTERESTED <br/> MEMBERS</th>';				
+				str+='<th class="text-yellow">DIALED / UN DIALED</th>';
+				str+='<th class="interested-text">INTERESTED <br/> MEMBERS</th>';				
 				str+='<th>LATER</th>';
 				str+='<th>NOT <br/> INTERESTED</th>';
 				str+='<th>ASSIGNED TO <br/> <span>BATCH CONFORMATION</span> </th>';
 				str+='<th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>';
+				str+='<th>CALL BACK / <br> BUSY / <br> OTHERS</th>';
 			str+='</thead>';
 			str+='<tbody>';
 			
@@ -412,17 +412,12 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 									str+='<td style="text-align:center;" > 0 </td>';
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+' / '+result.trainingCampVOList[i].trainingCampVOList[k].unDialedCount+'</td>';
-								else
-									str+='<td style="text-align:center;" > 0 </td>';
-								
-								if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
+									str+='<td style="text-align:center;" class="text-yellow" >'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+' / '+result.trainingCampVOList[i].trainingCampVOList[k].unDialedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].interestedCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
+									str+='<td style="text-align:center;" class="interested-text" >'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								
@@ -445,6 +440,11 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								str+='</tr>';
