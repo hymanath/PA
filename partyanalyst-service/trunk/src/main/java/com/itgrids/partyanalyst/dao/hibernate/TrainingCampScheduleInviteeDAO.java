@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
@@ -237,7 +238,6 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		return query.list();
 	}
-	
 	public List<Long> getScheduleWiseInviteesListByLocationIdLocationType(Long scheduleId,Long locationTypeId,List<Long> locationIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
@@ -256,4 +256,40 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			query.setParameterList("locationIdsList", locationIdsList);
 		return query.list();
 	}
+	public List<Object[]> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId)
+	{
+		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as count,UA.district_id as distId,Dist.district_name as distName,UA.constituency_id as constId" +
+				",const.name as constName,UA.tehsil_id as tehsilId" +
+				",tehsil.tehsil_name as tehsilName from training_camp_schedule_invitee TCSI" +
+				",tdp_cadre TC ,user_address UA,training_camp_schedule TCS" +
+				",district Dist,constituency const,tehsil tehsil" +
+				" where TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
+				" UA.user_address_id = TC.address_id and " +
+				" UA.district_id = Dist.district_id and " +
+				" UA.constituency_id = const.constituency_id and " +
+				" UA.tehsil_id = tehsil.tehsil_id and " +
+				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
+				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
+				" and TCS.training_camp_id = :campId and TCS.training_camp_program_id = :programId and TCS.training_camp_schedule_id =:scheduleId " +
+				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) group by UA.district_id,UA.constituency_id,UA.tehsil_id")
+				.addScalar("count", Hibernate.LONG)
+				.addScalar("distId",Hibernate.LONG)
+				.addScalar("distName",Hibernate.STRING)
+				.addScalar("constId",Hibernate.LONG)
+				.addScalar("constName",Hibernate.STRING)
+				.addScalar("tehsilId",Hibernate.LONG)
+				.addScalar("tehsilName",Hibernate.STRING);
+		
+		query.setParameter("scheduleStatusId", scheduleStatusId);
+		
+		query.setParameter("campId", campId);
+		
+		query.setParameter("programId", programId);
+		
+		query.setParameter("scheduleId", scheduleId);
+		
+		return query.list();
+		
+	}
+	
 }
