@@ -2723,6 +2723,9 @@
 		<property name="wardDAO" ref="wardDAO" />
 		<property name="panchayatDAO" ref="panchayatDAO" />
 		<property name="trainingCampUserRelationDAO" ref="trainingCampUserRelationDAO"/>
+		<property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO"/>
+		<property name="partyMeetingAtrPointDAO" ref="partyMeetingAtrPointDAO"/>
+		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
