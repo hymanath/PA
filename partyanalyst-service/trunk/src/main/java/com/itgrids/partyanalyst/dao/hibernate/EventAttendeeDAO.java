@@ -691,7 +691,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	{
 		Query query = getSession().createQuery(" select model.eventId,model.event.name, count(distinct model.tdpCadreId)  from EventAttendee model" +
 				" where model.tdpCadreId =:tdpCadreId and " +
-				" model.event.isActive ='true' group by model.event.parentEventId  ");
+				" model.event.isActive ='true' and model.event.eventTypeId != 2 group by model.event.parentEventId  ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return  query.list(); 	
 	}
