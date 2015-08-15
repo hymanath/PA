@@ -3,9 +3,10 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
@@ -51,7 +52,8 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getUserIdsByType();
 	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId);
 	public List<CallStatusVO> getMeetingTypes();
-	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString);
+	//public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString);
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString);
 	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId);
 	public List<IdNameVO> getCallerAgentDistricts(Long userId);
 	public List<IdNameVO> getCallerAgentConstituencies(Long userId,Long districtId);
@@ -63,4 +65,5 @@ public interface ITrainingCampService {
 	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
+	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 }
