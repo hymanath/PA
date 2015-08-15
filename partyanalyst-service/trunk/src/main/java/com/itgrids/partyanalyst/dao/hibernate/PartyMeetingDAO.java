@@ -18,7 +18,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		super(PartyMeeting.class);
 	}
 	
-	public List<Object[]> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalId,Long townId,Long divisonId,Long villageId,Long wardId,Date startDate,Date endDate){
+	public List<Object[]> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type, " +
@@ -35,55 +35,55 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}
 		
 		if(locationLevel!=null && locationLevel==1l){//state level
-			if(stateId==0l){
+			if(stateList.get(0)==0l){
 				sb.append(" and model.meetingAddress.state.stateId is not null ");
 			}else{
-				sb.append(" and model.meetingAddress.state.stateId = :stateId ");
+				sb.append(" and model.meetingAddress.state.stateId in (:stateList) ");
 			}
 		}else if(locationLevel!=null && locationLevel==2l){//district level
-			if(districtId==0l){
+			if(districtList.get(0)==0l){
 				sb.append(" and model.meetingAddress.district.districtId is not null ");
-			}else if(districtId>0l){
-				sb.append(" and model.meetingAddress.district.districtId=:districtId ");
+			}else{
+				sb.append(" and model.meetingAddress.district.districtId in (:districtList) ");
 			}
 		}else if(locationLevel!=null && locationLevel==3l){//constituency level
-			if(constituencyId==0l){
+			if(constituencyList.get(0)==0l){
 				sb.append(" and model.meetingAddress.constituency.constituencyId is not null ");
-			}else if(constituencyId>0l){
-				sb.append(" and model.meetingAddress.constituency.constituencyId=:constituencyId ");
+			}else{
+				sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 			}
 		}else if(locationLevel!=null && locationLevel==4l){//mandal level
-			if(mandalId==0l){
+			if(mandalList.get(0)==0l){
 				sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
 			}else{
-				sb.append(" and model.meetingAddress.tehsil.tehsilId = :mandalId ");
+				sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 			}
 		}else if(locationLevel!=null && locationLevel==5l){//town level
-			if(townId>0l){
+			if(townList.get(0)==0l){
 				sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId is not null ");
 			}else{
-				sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId=:localElectionBodyId ");
+				sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:townList) ");
 			}
 		}else if((locationLevel!=null) && (locationLevel==6l || locationLevel==8l)){//divison or ward level
 			if(locationLevel==6l){
-				if(divisonId==0l){
+				if(divisonList.get(0)==0l){
 					sb.append(" and model.meetingAddress.ward.wardId is not null ");
 				}else{
-					sb.append(" and model.meetingAddress.ward.wardId=:divisonId ");
+					sb.append(" and model.meetingAddress.ward.wardId in (:divisonList) ");
 				}
 			}else{
-				if(wardId==0l){
+				if(wardList.get(0)==0l){
 					sb.append(" and model.meetingAddress.ward.wardId is not null ");
 				}else{
-					sb.append(" and model.meetingAddress.ward.wardId=:wardId ");
+					sb.append(" and model.meetingAddress.ward.wardId in (:wardList) ");
 				}
 			}
 			
 		}else if(locationLevel!=null && locationLevel==7l){//village level
-			if(villageId==0l){
+			if(villageList.get(0)==0l){
 				sb.append(" and model.meetingAddress.panchayat.panchayatId is not null ");
 			}else{
-				sb.append(" and model.meetingAddress.panchayat.panchayatId=:villageId ");
+				sb.append(" and model.meetingAddress.panchayat.panchayatId in (:villageList) ");
 			}
 		}
 		
@@ -104,48 +104,50 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}
 		
 		if(locationLevel!=null && locationLevel==1l){
-			if(stateId>0l){
-				query.setParameter("stateId", stateId);
+			if(stateList.get(0)>0l){
+				query.setParameterList("stateList", stateList);
 			}
 		}
 		
 		if(locationLevel!=null && locationLevel==2l){
-			if(districtId>0l){
-				query.setParameter("districtId", districtId);
+			if(districtList.get(0)>0l){
+				query.setParameterList("districtList", districtList);
 			}
 		}
 		
 		if(locationLevel!=null && locationLevel==3l){
-			if(constituencyId>0l){
-				query.setParameter("constituencyId", constituencyId);
+			if(constituencyList.get(0)>0l){
+				query.setParameterList("constituencyList", constituencyList);
 			}
 		}
 		
 		if(locationLevel!=null && locationLevel==4l){
-			if(mandalId>0l){
-				query.setParameter("mandalId", mandalId);
+			if(mandalList.get(0)>0l){
+				query.setParameterList("mandalList", mandalList);
 			}
 		}
 		
 		if(locationLevel!=null && locationLevel==5l){
-			if(townId>0){
-				query.setParameter("townId", townId);
+			if(townList.get(0)>0){
+				query.setParameterList("townList", townList);
 			}
 		}
 		
 		if(locationLevel!=null && (locationLevel==6l || locationLevel==8l)){
 			if(locationLevel==6l){
-				if(divisonId>0l){
-					query.setParameter("divisonId", divisonId);
+				if(divisonList.get(0)>0l){
+					query.setParameterList("divisonList", divisonList);
 				}
 			}else{
-				query.setParameter("wardId", wardId);
+				if(wardList.get(0)==0l){
+					query.setParameterList("wardList", wardList);
+				}
 			}
 		}
 		
 		if(locationLevel!=null && locationLevel==7l){
-			if(villageId>0l){
-				query.setParameter("villageId", villageId);
+			if(villageList.get(0)>0l){
+				query.setParameterList("villageList", villageList);
 			}
 		}
 		
