@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -27,7 +28,6 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
-import com.itgrids.partyanalyst.service.impl.CadreCommitteeService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -69,8 +69,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long campCallerId;
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private Long partyMeetingId;
+	private PartyMeetingVO meetingDetails;
 	
 	
+	public PartyMeetingVO getMeetingDetails() {
+		return meetingDetails;
+	}
+
+	public void setMeetingDetails(PartyMeetingVO meetingDetails) {
+		this.meetingDetails = meetingDetails;
+	}
+
 	public Long getPartyMeetingId() {
 		return partyMeetingId;
 	}
@@ -822,18 +831,53 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.info("entered into getAllMeetings");
 			jObj = new JSONObject(getTask());
 			
+			List<Long> stateIds = new ArrayList<Long>();
+			List<Long> distIds = new ArrayList<Long>();
+			List<Long> constIds = new ArrayList<Long>();
+			List<Long> manTowDivIds = new ArrayList<Long>();
+			List<Long> villWardIds = new ArrayList<Long>();
+			
+			JSONArray jsonArray = jObj.getJSONArray("sateId");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Long sateId1 = Long.valueOf(jsonArray.get(i).toString());
+				stateIds.add(sateId1);
+			}
+			
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}
+			
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			for (int i = 0; i < jsonArray2.length(); i++) {
+				Long constId1 = Long.valueOf(jsonArray2.get(i).toString());
+				constIds.add(constId1);
+			}
+			
+			JSONArray jsonArray3 = jObj.getJSONArray("mandalTownDivisonId");
+			for (int i = 0; i < jsonArray3.length(); i++) {
+				Long mtdId1 = Long.valueOf(jsonArray3.get(i).toString());
+				manTowDivIds.add(mtdId1);
+			}
+			
+			JSONArray jsonArray4 = jObj.getJSONArray("villageWardId");
+			for (int i = 0; i < jsonArray4.length(); i++) {
+				Long vwId1 = Long.valueOf(jsonArray4.get(i).toString());
+				villWardIds.add(vwId1);
+			}
+			
 			Long meetingType = jObj.getLong("meetingType");
 			Long locationLevel = jObj.getLong("locationLevel");
-			//Long meetingLocation = jObj.getLong("meetingLocation");
-			Long stateId = jObj.getLong("sateId");
-			Long districtId = jObj.getLong("districtId");
-			Long constituencyId = jObj.getLong("constituencyId");
-			Long mandalTownDivisonId = jObj.getLong("mandalTownDivisonId");
-			Long villageWardId = jObj.getLong("villageWardId");
+			//Long stateId = jObj.getLong("sateId");
+			//Long districtId = jObj.getLong("districtId");
+			//Long constituencyId = jObj.getLong("constituencyId");
+			//Long mandalTownDivisonId = jObj.getLong("mandalTownDivisonId");
+			//Long villageWardId = jObj.getLong("villageWardId");
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
 			
-			retResult = trainingCampService.getAllMeetings(meetingType,locationLevel,stateId,districtId,constituencyId,mandalTownDivisonId,villageWardId,startDate,endDate);
+			retResult = trainingCampService.getAllMeetings(meetingType,locationLevel,stateIds,distIds,constIds,manTowDivIds,villWardIds,startDate,endDate);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllMeetings",e);
@@ -984,6 +1028,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		
 	} 
 	
+	public String getPartyMeetingMinutesAtrDetails(){
+		try{
+			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
+			jObj = new JSONObject(getTask());
+			Long partyMeetingId = jObj.getLong("partyMeetingID");
+			
+			meetingDetails = trainingCampService.getPartyMeetingMinutesAtrDetails(partyMeetingId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getPartyMeetingMinutesAtrDetails",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getScheduleAvailableCallsCountLocationWiseInfo()
 	{
