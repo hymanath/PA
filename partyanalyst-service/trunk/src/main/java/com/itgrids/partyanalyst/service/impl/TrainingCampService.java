@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Char;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -24,7 +23,10 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
@@ -46,9 +48,10 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -58,15 +61,13 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.Panchayat;
+import com.itgrids.partyanalyst.model.PartyMeeting;
+import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
+import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
-import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
-import com.itgrids.partyanalyst.model.UserAddress;
-import com.itgrids.partyanalyst.model.Ward;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -106,8 +107,39 @@ public class TrainingCampService implements ITrainingCampService{
 	private IWardDAO wardDAO;
 	private IPanchayatDAO panchayatDAO;
 	private ITrainingCampUserRelationDAO trainingCampUserRelationDAO;
+	private IPartyMeetingMinuteDAO partyMeetingMinuteDAO;
+	private IPartyMeetingAtrPointDAO partyMeetingAtrPointDAO;
+	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
 	
 	
+	
+	public IPartyMeetingDocumentDAO getPartyMeetingDocumentDAO() {
+		return partyMeetingDocumentDAO;
+	}
+
+	public void setPartyMeetingDocumentDAO(
+			IPartyMeetingDocumentDAO partyMeetingDocumentDAO) {
+		this.partyMeetingDocumentDAO = partyMeetingDocumentDAO;
+	}
+
+	public IPartyMeetingMinuteDAO getPartyMeetingMinuteDAO() {
+		return partyMeetingMinuteDAO;
+	}
+
+	public void setPartyMeetingMinuteDAO(
+			IPartyMeetingMinuteDAO partyMeetingMinuteDAO) {
+		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
+	}
+
+	public IPartyMeetingAtrPointDAO getPartyMeetingAtrPointDAO() {
+		return partyMeetingAtrPointDAO;
+	}
+
+	public void setPartyMeetingAtrPointDAO(
+			IPartyMeetingAtrPointDAO partyMeetingAtrPointDAO) {
+		this.partyMeetingAtrPointDAO = partyMeetingAtrPointDAO;
+	}
+
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
@@ -2228,7 +2260,7 @@ public class TrainingCampService implements ITrainingCampService{
 		return meetingTypes;
 	}
 	
-	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString){
+	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString){
 		List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
 		try {
 			LOG.info("Entered into getAllMeetings");
@@ -2237,43 +2269,47 @@ public class TrainingCampService implements ITrainingCampService{
 			Date startDate=sdf.parse(startDateString);
 			Date endDate=sdf.parse(endDateString);
 			
-			Long mandalId=0l;
-			Long townId = 0l;
-			Long divisonId=0l;
-			Long villageId = 0l;
-			Long wardId = 0l;
+			List<Long> mandalList=new ArrayList<Long>();
+			List<Long> townList=new ArrayList<Long>();
+			List<Long> divisonList=new ArrayList<Long>();
+			List<Long> villageList=new ArrayList<Long>();
+			List<Long> wardList=new ArrayList<Long>();
 			
 			if(locationLevel==4l){
-				String manTowDiv = mandalTownDivisonId.toString();
-				char temp = manTowDiv.charAt(0);
-				locationLevel=Long.parseLong(temp+"");
-				if(locationLevel==4l){
-					mandalId = Long.parseLong(manTowDiv.substring(1));
+				for(int i=0;i<mandalTownDivisonIds.size();i++){
+					String manTowDiv = mandalTownDivisonIds.get(i).toString();
+					char temp = manTowDiv.charAt(0);
+					locationLevel=Long.parseLong(temp+"");
+					if(locationLevel==4l){
+						mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					if(locationLevel==5l){
+						townList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					if(locationLevel==6l){
+						divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					
 				}
-				if(locationLevel==5l){
-					townId = Long.parseLong(manTowDiv.substring(1));
-				}
-				if(locationLevel==6l){
-					divisonId = Long.parseLong(manTowDiv.substring(1));
-				}
-				
 			}
 			
 			if(locationLevel==5l){
-				String vilwrdId = villageWardId.toString();
-				char temp = vilwrdId.charAt(0);
-				locationLevel=Long.parseLong(temp+"");
-				
-				if(locationLevel==7l){
-					villageId=Long.parseLong(vilwrdId.substring(1));
-				}
-				if(locationLevel==8l){
-					wardId=Long.parseLong(vilwrdId.substring(1));
+				for(int i=0;i<villageWardIds.size();i++){
+					String vilwrdId = villageWardIds.get(i).toString();
+					char temp = vilwrdId.charAt(0);
+					locationLevel=Long.parseLong(temp+"");
+					
+					if(locationLevel==7l){
+						villageList.add(Long.parseLong(vilwrdId.substring(1)));
+					}
+					if(locationLevel==8l){
+						wardList.add(Long.parseLong(vilwrdId.substring(1)));
+					}
 				}
 			}
 			
 			
-			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateId,districtId,constituencyId,mandalId,townId,divisonId,villageId,wardId,startDate,endDate);
+			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate);
 			
 			List<Long> level1List = new ArrayList<Long>();
 			List<Long> level2List = new ArrayList<Long>();
@@ -2896,4 +2932,103 @@ public class TrainingCampService implements ITrainingCampService{
 		return returnList;
 	}
 	
+	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId){
+		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
+		
+		try{
+			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
+			
+			PartyMeeting partyMeetingDetails = partyMeetingDAO.get(partyMeeingId);
+			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(partyMeeingId);
+			List<Object[]> atrDetails = partyMeetingAtrPointDAO.getAtrDetailsForAMeeting(partyMeeingId);
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeeingId);
+			
+			if(partyMeetingDetails != null){
+				partyMeetingVO.setId(partyMeetingDetails.getPartyMeetingId()!=null?partyMeetingDetails.getPartyMeetingId():0l);
+				partyMeetingVO.setName(partyMeetingDetails.getMeetingName()!=null?partyMeetingDetails.getMeetingName():"");
+				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
+				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
+				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
+				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
+				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
+				if(partyMeetingDetails.getStartDate()!=null && partyMeetingDetails.getEndDate()!=null){
+					partyMeetingVO.setStartDate(partyMeetingDetails.getStartDate());
+					partyMeetingVO.setEndDate(partyMeetingDetails.getEndDate());
+				}
+				
+			}
+			
+			if(minutesDetails!=null && minutesDetails.size()>0){
+				List<PartyMeetingVO> vo = new ArrayList<PartyMeetingVO>();
+				for (Object[] objects : minutesDetails) {
+					PartyMeetingVO subVO = new PartyMeetingVO();
+					
+					subVO.setPartyMeetingMinuteId(objects[0]!=null?(Long)objects[0]:0l);
+					subVO.setId(objects[1]!=null?(Long)objects[1]:0l);
+					subVO.setMinutePoint(objects[2]!=null?objects[2].toString():"");
+					subVO.setInsertedById(objects[3]!=null?(Long)objects[3]:0l);
+					subVO.setInsertedBy(objects[4]!=null?objects[4].toString():"");
+					subVO.setUpdatedById(objects[5]!=null?(Long)objects[5]:0l);
+					subVO.setUpdatedBy(objects[6]!=null?objects[6].toString():"");
+					subVO.setInsertedTime(objects[7]!=null?objects[7].toString():"");
+					subVO.setUpdatedTime(objects[8]!=null?objects[8].toString():"");
+					
+					vo.add(subVO);
+					
+				}
+				partyMeetingVO.setMinutesDetails(vo);
+			}
+			
+			if(atrDetails!=null && atrDetails.size()>0){
+				List<PartyMeetingVO> vo = new ArrayList<PartyMeetingVO>();
+				for (Object[] objects : atrDetails) {
+					PartyMeetingVO subVO = new PartyMeetingVO();
+					
+					subVO.setPartyMeetingAtrPointId(objects[0]!=null?(Long)objects[0]:0l);
+					subVO.setId(objects[1]!=null?(Long)objects[1]:0l);
+					subVO.setRequest(objects[2]!=null?objects[2].toString():"");
+					subVO.setActionTaken(objects[3]!=null?objects[3].toString():"");
+					subVO.setRequestFrom(objects[4]!=null?objects[4].toString():"");
+					subVO.setLocationScopeId(objects[5]!=null?(Long)objects[5]:0l);
+					subVO.setLocationValue(objects[6]!=null?(Long)objects[6]:0l);
+					subVO.setRaisedBy(objects[7]!=null?objects[7].toString():"");
+					subVO.setInsertedById(objects[8]!=null?(Long)objects[8]:0l);
+					subVO.setInsertedBy(objects[9]!=null?objects[9].toString():"");
+					subVO.setUpdatedById(objects[10]!=null?(Long)objects[10]:0l);
+					subVO.setUpdatedBy(objects[11]!=null?objects[11].toString():"");
+					subVO.setInsertedTime(objects[12]!=null?objects[12].toString():"");
+					subVO.setUpdatedTime(objects[13]!=null?objects[13].toString():"");
+					
+					vo.add(subVO);
+				}
+				partyMeetingVO.setAtrDetails(vo);
+			}
+			
+			if(documentDetails!=null && documentDetails.size()>0){
+				String minutesDocuments="";
+				String atrDocuments="";
+				
+				for (Object[] objects : documentDetails) {
+					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("MINUTE")){
+						if(objects[2]!=null){
+							minutesDocuments=minutesDocuments.concat(" "+objects[2].toString()+" ");
+						}
+					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("ATR")){
+						if(objects[2]!=null){
+							atrDocuments=atrDocuments.concat(" "+objects[2].toString()+" ");
+						}
+					}
+				}
+				
+				partyMeetingVO.setMinuteDocuments(minutesDocuments);
+				partyMeetingVO.setAtrDocuments(atrDocuments);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getPartyMeetingMinutesAtrDetails",e);
+		}
+		
+		return partyMeetingVO;
+	}
 }
