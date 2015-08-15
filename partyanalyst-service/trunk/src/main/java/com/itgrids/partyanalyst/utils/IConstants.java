@@ -772,8 +772,9 @@ public interface IConstants {
     public static final Long VOTER_DATA_PUBLICATION_ID = 11L;
     
     public static final Long OTHER_STATE_PUBLICATION_ID = 13L;
-    
+    public static final Long DISTRICT_SCOPE_ID = 3L;
     public static final Long CONSTITUENCY_SCOPE_ID = 4L;
+    public static final Long TEHSIL_SCOPE_ID = 5L;
     public static final Long BOOTH_SCOPE_ID = 9L;
     
     public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
@@ -897,4 +898,21 @@ public interface IConstants {
     public static final String  SURVEY_WEBSERVICE_PASSWORD = "servey@android";
     public static final String PARTY_OFFICE_USER_IDS = "PARTY OFFICE,3930";
     public static final String MAHANADU_USER_IDS = "MAHANADU,7287,7288,7289,7290,7291,7292";
+    
+    public static final String INVITED ="Invited";
+    public static final String NOTNOW="Not Now";
+    public static final String INTERESTED="Interested";
+    public static final String NOTINTERESTED="Not Interested";
+    public static final String CALLBACK_BUSY="Call Back - Busy";
+    public static final String CALLBACK_CONFIRM_LATER="Call Back - Confirm Later";
+    public static final String WRONG_MOBILE_NO="Wrong Mobile No";
+    public static final String INVALID_MOBILE_NO="Invalid Mobile No";
+    public static final String CONFIRMED="Confirmed";
+    public static final String CALL_ANSWERED="Call Answered";
+    public static final String SWITCHOFF="Switchoff";
+    public static final String TRAINING_USER_BUSY="User Busy";
+    public static final String INVITATION="Invitation";
+    public static final String CONFIRMATION="Confirmation";
+    public static final String BATCH_CHANGE="Batch Change";
+
 }
