@@ -676,6 +676,7 @@ $(document).ready(function() {
 	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	  // 'Next 30 Days': [moment().add(29, 'days'), moment()],
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	},
@@ -837,7 +838,7 @@ $(document).ready(function() {
 		var str1='';
 				if(result.trainingCampVOList !=null){
 						str+='<table class="table table-bordered m_0" id="dataNotAvailableDiv">';
-							str+='<thead >';
+							str+='<thead class="bg_d" style="font-size:12px;">';
 								str+='<th>Caller Name</th>';
 								str+='<th>Assigned Calls</th>';
 								str+='<th>Dialed Calls</th>';//completed calls
@@ -898,10 +899,10 @@ $(document).ready(function() {
 					
 				}else{
 					if(agentType == "Invitation"){
-						$(".memberAvailabilityDivCls").html("Data Not Available.");
+						$(".memberAvailabilityDivCls").html('<div class="text-center"><b> Schedule Data Not Available...</b></div>');
 					}
 					else if(agentType == "Confirmation"){
-						$(".confirmationMemberAvailabilityDivCls").html("Data Not Available.");	
+						$(".confirmationMemberAvailabilityDivCls").html('<div class="text-center"><b> Confirmation Data Not Available...</b></div>');	
 					}
 					//highchart and circle filling
 					
@@ -1322,8 +1323,8 @@ function buildingMembersFilledInCalenderBatch(result){
 								str+='<td class="text-yellow">Dialled</td>';
 								str+='<td class="text-yellow">Not Dialled</td>';
 								
-								str+='<td>Interested</td>';
-								str+='<td class="interested-text">Not Interested</td>';
+								str+='<td class="interested-text">Interested</td>';
+								str+='<td >Not Interested</td>';
 								str+='<td class="text-info">Busy</td>';
 								str+='<td class="text-danger">Confirm Later</td>';
 							str+='</tr>';
