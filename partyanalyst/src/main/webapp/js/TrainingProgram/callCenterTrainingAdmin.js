@@ -254,7 +254,10 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 
 function getCampusWiseBatchWiseMembersDetails(searchType,divId)
 {
+	$("#"+divId+"").html("");
 
+	$("#dataLoadingsImgForCalenderScheduleId").show();
+	
 	var fromDate=$(".dp_startDate").val();
 	var toDate=$(".dp_endDate").val();
 	var jsObj={
@@ -268,11 +271,12 @@ function getCampusWiseBatchWiseMembersDetails(searchType,divId)
 		 url: 'getCampusWiseBatchWiseMembersDetails.action',
 		 data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+			$("#dataLoadingsImgForCalenderScheduleId").hide();
 			if(result != null){
-				if(searchType=='notStarted')
+				//if(searchType=='notStarted')
 					buildCampusWiseBatchWiseMembersDetails(result,divId);
-				else
-					buildBAtchWiseMembersDetails(result,divId,searchType);
+				//else
+				//	buildBAtchWiseMembersDetails(result,divId,searchType);
 			}
 			else{
 				$('#'+divId+'').html('<div class="text-center"><b> Calender Schedule Data Not Available...</b></div>');
@@ -299,8 +303,9 @@ function buildBAtchWiseMembersDetails(result,divId,searchType)
 				else if(searchType=='completed'){
 					str+='<th>COMPLETED</th>';
 				}
+				
 				else if(searchType=='cancelled'){
-					str+='<th>status</th>';
+					str+='<th>STATUS</th>';
 				}
 				
 			str+='</thead>';
@@ -362,6 +367,7 @@ function buildBAtchWiseMembersDetails(result,divId,searchType)
 			$("#"+divId+"").html(str);										
     									
 	}
+		
 }
 
 function buildCampusWiseBatchWiseMembersDetails(result,divId)
@@ -374,10 +380,13 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 				str+='<th>TRAINING PROGRAM <br/> NAME</th>';
 				str+='<th>TRAINING CAMP <br/> NAME</th>';
 				str+='<th>SCHEDULED <br/> CALENDAR DATES</th>';
-				str+='<th>INTERESTED <br/> MEMBERS</th>';
+				str+='<th>ALLOCATED CALLS</th>';
+				str+='<th>DIALED / UN DIALED</th>';
+				str+='<th>CALL BACK / <br> BUSY / <br> OTHERS</th>';				
+				str+='<th>INTERESTED <br/> MEMBERS</th>';				
 				str+='<th>LATER</th>';
 				str+='<th>NOT <br/> INTERESTED</th>';
-				str+='<th>ASSIGNED TO <br/> <span class="font-12">BATCH CONFORMATION</span> </th>';
+				str+='<th>ASSIGNED TO <br/> <span>BATCH CONFORMATION</span> </th>';
 				str+='<th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -397,36 +406,49 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 									str+='<td style="text-align:center;" > - </td>';
 								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampName+'</td>';							
 								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
-								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								if(result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(k<statusCount-1)
-									k=parseInt(k)+parseInt(1);
-								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+' / '+result.trainingCampVOList[i].trainingCampVOList[k].unDialedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(k<statusCount-1)
-									k=parseInt(k)+parseInt(1);
-								if(result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].nextBatchInterestedCount+'</td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(k<statusCount-1)
-									k=parseInt(k)+parseInt(1);
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].interestedCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].conformLaterCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].conformLaterCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount != null)
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								
+								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].batchConfirmationCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].batchConfirmationCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(k<statusCount-1)
-									k=parseInt(k)+parseInt(1);
+								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].availableMembersCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								str+='</tr>';
-								break;
+								
 					}
 				}
 				
@@ -439,6 +461,9 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 			$("#"+divId+"").html(str);										
     									
 	}
+	else{
+			$('#'+divId+'').html('<div class="text-center"><b> Calender Schedule Data Not Available...</b></div>');
+		}
 }
 
 function getAvailableMembersCountDetails(caallerrId)
