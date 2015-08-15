@@ -7,4 +7,5 @@ import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 
 public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Long>{
 	public List<Object[]> getPartyMeetingsMinutsDetlsByCadreIds(Long partyMeetingTypeId);
+	public List<Object[]> getMinuteDetailsForAMeeting(Long partyMeetingId);
 }
