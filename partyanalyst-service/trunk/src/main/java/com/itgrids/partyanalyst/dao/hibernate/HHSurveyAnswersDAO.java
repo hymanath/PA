@@ -141,7 +141,11 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 				" model.houseHold.panchayat.panchayatName," +  // 6 -- PANCHAYAT NAME
 				" model.hhOptions.optionsId, " +//7 -- OPTION ID
 				" model2.voter.voterId, " +
-				" model2.ownerMobileNo " +
+				" model2.ownerMobileNo," +
+				" model2.voter.relativeName, " +
+				" model2.voter.relationshipType, " +
+				" model.houseHold.panchayat.tehsil.tehsilId," +// 12 -- TEHSIL ID
+				" model.houseHold.panchayat.tehsil.tehsilName" +  // 13 -- TEHSIL NAME
 				//" model.hhOptions.options" +//8 -- OPTION
 				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
 				" where " +
@@ -152,7 +156,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 				" and model2.isDelete = 'FALSE' " +
 				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
 				" and model.hhOptions.optionsId =:optionId" +
-				" order by model.houseHold.panchayat.panchayatName ");
+				" order by model.houseHold.panchayat.tehsil.tehsilName,model.houseHold.panchayat.panchayatName ");
 		
 		query.setParameter("optionId", optionId);
 		query.setParameterList("panchayatIds", panchayatIds);
