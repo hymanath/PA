@@ -16,11 +16,11 @@
 
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <style>
-header.eventsheader { 
+header.eventsheader {
  background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
  background-origin: border-box;
  background-repeat: no-repeat;
- height: 71px; 
+ height: 71px;
 }
 .grievance-training ul li
 {
@@ -156,7 +156,9 @@ header.eventsheader {
                                                 </div>
                                            
                                             <button class="btn btn-success btn-xs pull-right m_top20" onclick="myFunction()">ADD</button>
-                                           
+											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
+												<div class="" id="mintueDocumentDivId"></div>
+											</div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h4><i class="icon-upload"></i> Upload File</h4>
@@ -174,7 +176,7 @@ header.eventsheader {
                                             <h4 class="panel-title">ATR</h4>
                                         </div>
                                             <div class="panel-body">
-                                                <div class="row">
+                                                <div class="row" id="atrDivId">
                                                     <!--<div class="col-md-12">
                                                       <input type="text" class="form-control" placeholder="ATR Raised by"/>
                                                        
@@ -252,24 +254,11 @@ header.eventsheader {
                                                             </div>
                                                         </div>
                                                        
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <h4><i class="icon-upload"></i> Upload File</h4>
-                                                                <p class="m_0">Drag and drop file below box or click on box to upload file</p>
-                                                                <form action="/target" class="dropzone"></form>
-                                                                <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
-                                                            </div>
-                                                        </div>
-                                                       
                                                         <div class="pull-right m_top10">
                                                             <button class="btn btn-success btn-xs">ADD</button>
                                                         </div>
-                                                       
-                                                       
-                                                    </div>
-                                               
-                                                   
-                                                    <!--<div class="row m_top20">
+													</div>
+												<!--<div class="row m_top20">
                                                         <div class="col-md-12" style="margin-left: -42px;">
                                                             <div class="grievance-training">
                                                                 <ul>
@@ -312,6 +301,17 @@ header.eventsheader {
                                                     </div>-->
                                                
                                             </div>
+											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
+												<div  class="" id="atrDocumentDivId"></div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<h4><i class="icon-upload"></i> Upload File</h4>
+													<p class="m_0">Drag and drop file below box or click on box to upload file</p>
+													<form action="/target" class="dropzone"></form>
+													<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
+												</div>
+											</div>
                                     </div>
                                 </div>
                             </div>
@@ -336,9 +336,8 @@ header.eventsheader {
 
 <script type="text/javascript">
 
-    var meetingType='${meetingType}';
-    var meetingLocationLevel='${meetingLocationLevel}';
-   
+    var partyMeetingId='${partyMeetingId}';
+    
     $('.btn-custom-g').click(function(){
         $('.data-edit').toggle();
         //$('.data').hide();
@@ -357,8 +356,8 @@ header.eventsheader {
       }, function(start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
       });
-       $("#meetingType").html(meetingType);
-      $("#location").html("("+meetingLocationLevel+")");
+      
+	 getPartyMeetingMinutesAtrDetails(partyMeetingId);
      getTheMeetingLevelDetails()
    });
               
@@ -400,9 +399,9 @@ header.eventsheader {
         });
     }
    
-    function getDistrictsForStates(state){
+    function getDistrictsForStates(state,atrId){
        
-    $("#searchDataImgForDist").show();
+    $("#searchDataImgForDist"+atrId).show();
    
    
    var jsObj=
@@ -418,18 +417,18 @@ header.eventsheader {
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-       $("#searchDataImgForDist").hide();
+       $("#searchDataImgForDist"+atrId).hide();
      for(var i in result){
        if(result[i].id == 0){
-         // $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+         //$("#districtId").append('<option value='+result[i].id+'>ALL</option>');
        }else{
-          $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+          $("#districtId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
        }
      }
    });
   }
- function getConstituenciesForDistricts(district){
-        $("#searchDataImgForman").show();
+ function getConstituenciesForDistricts(district,atrId){
+        $("#searchDataImgForman"+atrId).show();
         var jsObj={               
             districtId:district,
             elmtId:"districtList_d",
@@ -442,12 +441,12 @@ header.eventsheader {
               dataType: 'json',
               data: {task:JSON.stringify(jsObj)}
        }).done(function(result){
-           $("#searchDataImgForman").hide();
+           $("#searchDataImgForman"+atrId).hide();
             for(var i in result){
                if(result[i].id == 0){
                  // $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
                }else{
-                  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+                  $("#constituencyId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
                }
             }
         });
@@ -455,13 +454,13 @@ header.eventsheader {
 
 
    
-    function getMandalVillageDetails(locationId, locationLevel){
-          $("#searchDataImgForcons").show();
+    function getMandalVillageDetails(locationId, locationLevel,atrId){
+          $("#searchDataImgForcons"+atrId).show();
         var constituencyId = 0;
         var mandalId = 0;
        
         if(locationLevel==4){
-             $("#searchDataImgForcons").show();
+             $("#searchDataImgForcons"+atrId).show();
             constituencyId =  locationId;
         }
         if(locationLevel==5){
@@ -483,11 +482,11 @@ header.eventsheader {
               dataType: 'json',
               data: {task:JSON.stringify(jsObj)}
        }).done(function(result){
-            $("#searchDataImgForcons").hide();
-              var divId = "#manTowDivId";
+            $("#searchDataImgForcons"+atrId).hide();
+              var divId = "#manTowDivId"+atrId;
             //  $(divId).append("<option value=''>SELECT MANDAL/ TOWN/ DIVISION</option>");
               if(locationLevel ==5){
-                  divId = "#villWardId";
+                  divId = "#villWardId"+atrId;
                 //  $(divId).append("<option value=''>SELECT VILLAGE/ WARD </option>");
               }
               
@@ -499,42 +498,171 @@ header.eventsheader {
         });
     }
    
-    getmeetinglocationlevel(3, 219);
-    function getmeetinglocationlevel(locationLevel, locationId){
+    //getmeetinglocationlevel(1, 36);
+    function getmeetinglocationlevel(locationLevel, locationId,atrId){
        
         if(locationLevel == 1){
-            $("#stateShowId").hide();
-            $("#DistrictShowId").show();
-            $("#ConstShowId").hide();
-            $("#ManTwnDivShowId").hide();
-            $("#VillWardShowId").hide();
-            getDistrictsForStates(locationId);
+            $("#stateShowId"+atrId).hide();
+            $("#DistrictShowId"+atrId).show();
+            $("#ConstShowId"+atrId).hide();
+            $("#ManTwnDivShowId"+atrId).hide();
+            $("#VillWardShowId"+atrId).hide();
+            getDistrictsForStates(locationId,atrId);
         }
         else if(locationLevel == 2){
-            $("#stateShowId").hide();
-            $("#DistrictShowId").hide();
-            $("#ConstShowId").show();
-            $("#ManTwnDivShowId").hide();
-            $("#VillWardShowId").hide();
-            getConstituenciesForDistricts(locationId);
+            $("#stateShowId"+atrId).hide();
+            $("#DistrictShowId"+atrId).hide();
+            $("#ConstShowId"+atrId).show();
+            $("#ManTwnDivShowId"+atrId).hide();
+            $("#VillWardShowId"+atrId).hide();
+            getConstituenciesForDistricts(locationId,atrId);
         }
         else if(locationLevel == 3){
-            $("#stateShowId").hide();
-            $("#DistrictShowId").hide();
-            $("#ConstShowId").hide();
-            $("#ManTwnDivShowId").show();
-            $("#VillWardShowId").hide();
-            getMandalVillageDetails(locationId, 4);
+            $("#stateShowId"+atrId).hide();
+            $("#DistrictShowId"+atrId).hide();
+            $("#ConstShowId"+atrId).hide();
+            $("#ManTwnDivShowId"+atrId).show();
+            $("#VillWardShowId"+atrId).hide();
+            getMandalVillageDetails(locationId, 4,atrId);
         }
         else if(locationLevel == 4){
-            $("#stateShowId").hide();
-            $("#DistrictShowId").hide();
-            $("#ConstShowId").hide();
-            $("#ManTwnDivShowId").hide();
-            $("#VillWardShowId").show();
-            getMandalVillageDetails(locationId, 5);
+            $("#stateShowId"+atrId).hide();
+            $("#DistrictShowId"+atrId).hide();
+            $("#ConstShowId"+atrId).hide();
+            $("#ManTwnDivShowId"+atrId).hide();
+            $("#VillWardShowId"+atrId).show();
+            getMandalVillageDetails(locationId, 5,atrId);
         }
     }
+	
+	function getPartyMeetingMinutesAtrDetails(partyMeetingID){
+		
+		var jsObj={				
+			partyMeetingID : partyMeetingID
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getPartyMeetingMinutesAtrDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   
+		   if(result!=null){
+			   $("#meetingType").html(result.partyMeetingType);
+			   $("#location").html(result.meetingLevel);
+			   
+			   if(result.minuteDocuments!=null){
+					$("#mintueDocumentDivId").html(result.minuteDocuments);
+			   }
+			   if(result.atrDocuments!=null){
+				   $("#atrDocumentDivId").html(result.atrDocuments);
+			   }
+			   
+			   
+			   if(result.minutesDetails!=null && result.minutesDetails.length>0){
+				   var str='';
+				   for(var i in result.minutesDetails){
+					   mainDivCount=i;
+						str+='<div class="input-group bin-div m_top10" id="list'+mainDivCount+'">';
+						str+='<input type="text" class="form-control" id="minutes'+mainDivCount+'" value="'+result.minutesDetails[i].minutePoint+'"></input>';
+						str+='<span class="input-group-addon trash" attr_txt="minutes'+mainDivCount+'">';
+						str+='<i class="glyphicon glyphicon-trash"></i>';
+						str+='</span>';
+						str+='</div>';
+				   }
+				   $("#addMoreDiv").html(str);
+			   }
+			   
+			   if(result.atrDetails!=null && result.atrDetails.length>0){
+				   var str='';
+				   for(var i in result.atrDetails){
+					   str+='<div class="panel-body">';
+					   str+='<div class="row">';
+					   str+='<div class="col-md-12">';
+					   str+='<label>REQUEST</label><br/>';
+					   str+='<textarea rows="4" cols="40" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"></textarea>';
+					   str+='</div>';
+					   str+='<div class="col-md-12 m_top20">';
+					   str+='<label>ACTION TAKEN</label><br/>';
+					   str+='<textarea rows="4" cols="40" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'"></textarea>';
+					   str+='</div>';
+					   str+='<div class="col-md-12 m_top20">';
+					   str+='<label>RAISED BY</label><br/>';
+					   str+='<input type="text" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" value="'+result.atrDetails[i].raisedBy+'"/>';
+					   str+='</div>';
+					   str+='</div>';
+					   str+='<div class="col-md-12 m_top20">';
+					   str+='<div class="col-md-12" id="stateShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
+					   str+='<label>State</label>';
+					   str+='<select class="form-control" id="statesDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<option>Select State</option>';
+					   str+='<option value="0">All</option>';
+					   str+='<option value="1">AndhraPradesh</option>';
+					   str+='<option value="36">Telangana</option>';
+					   str+='</select>';
+					   str+='</div>';
+					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='</div>';
+					   str+='<div class="col-md-12" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
+					   str+='<label>District</label>';
+					   str+='<select class="form-control" id="districtId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<option>Select District</option>';
+					   str+='</select>';
+					   str+='</div>';
+					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='</div>';
+					   str+='<div class="col-md-12" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
+					   str+='<label>Constituency</label>';
+					   str+='<select class="form-control" id="constituencyId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<option>Select Constituency</option>';
+					   str+='</select>';
+					   str+='</div>';
+					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='</div>';
+					   str+='<div class="col-md-12" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
+					   str+='<label>Mandal/Town/Division</label>';
+					   str+='<select class="form-control" id="manTowDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<option>Select Mandal/Town/Division</option>';
+					   str+='</select>';
+					   str+='</div>';
+					   str+='<div class="col-md-12" id="VillWardShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
+					   str+='<label>Village/Ward</label>';
+					   str+='<select class="form-control" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<option>Select Village/Ward</option>';
+					   str+='</select>';
+					   str+='</div>';
+					   str+='</div>';
+					   /* str+='<div class="row">';
+					   str+='<div class="col-md-12">';
+					   str+='<h4><i class="icon-upload"></i> Upload File</h4>';
+					   str+='<p class="m_0">Drag and drop file below box or click on box to upload file</p>';
+					   str+='<form action="/target" class="dropzone"></form>';
+					   str+='<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>';
+					   str+='</div>';
+					   str+='</div>'; */
+					   str+='<div class="pull-right m_top10">';
+					   str+='<button class="btn btn-success btn-xs">ADD</button>';
+					   str+='</div>';
+					   str+='</div>';
+					   
+				   }
+				   
+				   $("#atrDivId").html(str);
+				   
+				   for(var i in result.atrDetails){
+					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
+					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
+					   
+					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.atrDetails[i].locationValue,result.atrDetails[i].partyMeetingAtrPointId);
+					   
+				   }
+			   }
+		   }
+	   });
+	}
 </script>
 </body>
 </html>

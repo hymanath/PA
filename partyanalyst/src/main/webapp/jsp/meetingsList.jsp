@@ -386,18 +386,18 @@ $(document).ready(function() {
 		}
 		var meetingType = $("#typeOfMeeting").val();
 		
-		var sateId=0;
-		var districtId=0;
-		var constituencyId=0;
-		var mandalTownDivisonId=0;
-		var villageWardId =0;
+		var sateId=[];
+		var districtId=[];
+		var constituencyId=[];
+		var mandalTownDivisonId=[];
+		var villageWardId =[];
 		
 		if(locationLevel==1){
 			if($("#statesDivId").val()=="Select State"){
 				alert("Please Select State");
 				return;
 			}else{
-				sateId = $("#statesDivId").val();
+				sateId.push($("#statesDivId").val());
 			}
 		}
 		
@@ -410,8 +410,8 @@ $(document).ready(function() {
 				alert("Please Select District");
 				return;
 			}else{
-				sateId = $("#statesDivId").val();
-				districtId = $("#districtId").val();
+				sateId.push($("#statesDivId").val());
+				districtId.push($("#districtId").val());
 			}
 			
 		}
@@ -428,9 +428,9 @@ $(document).ready(function() {
 				alert("Please Select Constituency");
 				return;
 			}else{
-				sateId = $("#statesDivId").val();
-				districtId = $("#districtId").val();
-				constituencyId = $("#constituencyId").val();
+				sateId.push($("#statesDivId").val());
+				districtId.push($("#districtId").val());
+				constituencyId.push($("#constituencyId").val());
 			}
 		}	
 		
@@ -449,10 +449,10 @@ $(document).ready(function() {
 				alert("Please Select Mandal/Town/Division");
 				return;
 			}else{
-				sateId = $("#statesDivId").val();
-				districtId = $("#districtId").val();
-				constituencyId = $("#constituencyId").val();
-				mandalTownDivisonId = $("#manTowDivId").val();
+				sateId.push($("#statesDivId").val());
+				districtId.push($("#districtId").val());
+				constituencyId.push($("#constituencyId").val());
+				mandalTownDivisonId.push($("#manTowDivId").val());
 			}
 		}
 		
@@ -474,11 +474,11 @@ $(document).ready(function() {
 				alert("Please Select Village/Ward");
 				return;
 			}else{
-				sateId = $("#statesDivId").val();
-				districtId = $("#districtId").val();
-				constituencyId = $("#constituencyId").val();
-				mandalTownDivisonId = $("#manTowDivId").val();
-				villageWardId = $("#villWardId").val();
+				sateId.push($("#statesDivId").val());
+				districtId.push($("#districtId").val());
+				constituencyId.push($("#constituencyId").val());
+				mandalTownDivisonId.push($("#manTowDivId").val());
+				villageWardId.push($("#villWardId").val());
 			}
 		}
 		
