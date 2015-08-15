@@ -39,8 +39,8 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getAllTrainingCampsInfoByDistrictIds(List<Long> districtIds);
 	public List<IdNameVO> getProgrammesDetailsByCamps(List<Long> campIdsList);
 	public List<IdNameVO> getScheduledDetailsByProgrammes(List<Long> programIds);
-	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
-	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId);
+	public ResultStatus assignMembersToCallerForMemberConfirmation(final Long userId, final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId,final List<TrainingCampVO> locationTypeList);
+	public ResultStatus assignMembersToCallerForBatchConfirmation(final Long userId, final boolean isOwnMembers , final Long scheduleId, final Long membersCount,final Long callerId,final Long callPurposeId,final Long batchId, final List<Long> areaList);
 	public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(String searchType,String startDateStr,String endDateStr);
 	public TrainingMemberVO getAvailableMembersCountDetails(Long scheduleId,Long callerId);
 	public ResultStatus updateCallBackCadreStatusForTraining(final TrainingCadreVO inputVO);
