@@ -148,9 +148,12 @@ public class HHSurveyAnswerDAOHibernateTest extends BaseDaoTestCase{
 		
 		List<Object[]> list = hhSurveyAnswersDAO.getHouseHoldsOfPanchayatsWithOption(44l, List);
 		if(list!=null && list.size()>0){
-			System.out.println("VOTER ID\t CARD NO\t NAME \t PANCHAYAT NAME \t HOUSENO \t VOTERID \t MOBILE \t");
+			System.out.println("VOTER ID\t CARD NO\t NAME \t PANCHAYATID \t PANCHAYAT NAME \t HOUSENO \t VOTERID \t MOBILE \t  RELATIVE \t  RELATION \t  TEHSILID \t  TEHSILNAME \t");
 			for(Object[] obj:list){
-				System.out.println(obj[0].toString()+"\t"+obj[4].toString()+"\t"+obj[3].toString()+"\t"+obj[6].toString()+"\t"+"#"+obj[2].toString()+"\t"+obj[8].toString()+"\t"+obj[9].toString());
+				System.out.println(obj[0].toString()+"\t"+obj[4].toString()+"\t"+obj[3].toString()+"\t"
+			+obj[5].toString()+"\t"+obj[6].toString()+"\t"+"#"+obj[2].toString()+"\t"+obj[8].toString()+
+			"\t"+obj[9].toString()+"\t"+obj[10].toString()+"\t"+obj[11].toString()+"\t"
+			+obj[12].toString()+"\t"+obj[13].toString());
 			}
 		}
 		//System.out.println(list.size());
