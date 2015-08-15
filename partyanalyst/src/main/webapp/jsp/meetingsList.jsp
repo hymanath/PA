@@ -694,8 +694,8 @@ $("#meetingLocationLevel").change(function(){
 		});
 	}
 		
-	function updateMeeting(meetingMeetingId){
-		window.open('meetingDetailsList.action?meetingMeetingId='+meetingMeetingId+'', '_blank');
+	function updateMeeting(partyMeetingId){
+		window.open('meetingDetailsList.action?partyMeetingId='+partyMeetingId+'', '_blank');
 		//alert(meetingType+"--"+meetingLocationLevel);
 	}
 </script>
