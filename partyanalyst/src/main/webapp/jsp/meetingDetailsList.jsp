@@ -22,6 +22,23 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px; 
 }
+.grievance-training ul li
+{
+	border:1px solid #999;
+	list-style:none;
+}
+.grievance-training ul li p
+{
+	margin:0px;
+}
+.grievance-training ul li .data
+{
+	padding:10px;
+}
+.grievance-training ul li .data-edit .row
+{
+	padding:10px;
+}
 </style>
 
 </head>
@@ -159,34 +176,71 @@ header.eventsheader {
                                         <div class="panel-body">
                                         	<div class="row">
                                                 <div class="col-md-12">
-                                                    <label>ATR Raised by</label>
-                                                    <select class="form-control">
-                                                        <option>Kavali</option>
-                                                    </select>
+                                                  <input type="text" class="form-control" placeholder="ATR Raised by"/>
+                                                    
                                                 </div>
                                                 <div class="col-md-12 m_top20">
-                                                    <label>Grievance Given</label>
-                                                    <select class="form-control">
-                                                        <option>Kavali</option>
-                                                    </select>
-                                                </div>
+                                                 	<input type="text" class="form-control" placeholder="Grievance Given"/>
+                                                   </div>
                                                 <div class="col-md-12 m_top20">
-                                                    <label>Action Taken</label>
-                                                    <select class="form-control">
-                                                        <option>Kavali</option>
-                                                    </select>
+                                                  <input type="text" class="form-control" placeholder="Action Taken"/>
                                                 </div>
                                             </div>
                                             
                                             <div class="pull-right m_top10">
                                             	<button class="btn btn-success btn-xs">ADD</button>
                                             </div>
-                                            <div class="row">
-                                            	<div class="col-md-12">
+										<div class="row m_top10" >
+											<div class="col-md-5" id="stateShowId" style="display:none;">
+													<label>State</label>
+													<select class="form-control" id="statesDivId">
+													<option>Select State</option>
+													<option value="0">All</option>
+													<option value="1">AndhraPradesh</option>
+													<option value="36">Telangana</option>
+													</select>
+											</div>
+											<div class="col-md-1" style="height: 44px; width: 10px;">
+												<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+											</div>
+											<div class="col-md-5" id="DistrictShowId" style="display:none;">
+													<label>District</label>
+													<select class="form-control" id="districtId">
+													<option>Select District</option>
+													</select>
+											</div>
+											<div class="col-md-1" style="height: 44px; width: 10px;">
+												<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+											</div>
+											<div class="col-md-5" id="ConstShowId" style="display:none;">
+													<label>Constituency</label>
+													<select class="form-control" id="constituencyId">
+													<option>Select Constituency</option>
+													</select>
+											</div>
+											<div class="col-md-1" style="height: 44px; width: 10px;">
+												<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+											</div>
+											<div class="col-md-5" id="ManTwnDivShowId" style="display:none;">
+													<label>Mandal/Town/Division</label>
+													<select class="form-control" id="manTowDivId">
+													<option>Select Mandal/Town/Division</option>
+													</select>
+											</div>
+											
+											<div class="col-md-5" id="VillWardShowId" style="display:none;">
+													<label>Village/Ward</label>
+													<select class="form-control" id="villWardId">
+													<option>Select Village/Ward</option>
+													</select>
+											</div>
+										</div>
+                                            <div class="row m_top20">
+                                            	<div class="col-md-12" style="margin-left: -42px;">
                                                 	<div class="grievance-training">
                                                         <ul>
                                                             <li>
-                                                            	<button class="btn btn-custom-g btn-xs">Edit</button>
+                                                            	<button class="btn btn-custom-g btn-xs pull-right">Edit</button>
                                                              	<div class="data">
 	                                                                <p class="m_0"><span class="text-bold">ATR Raised by</span> - kavali</p>   
                                                                     <p><span class="text-bold">Grievance Given:</span>
@@ -217,16 +271,7 @@ header.eventsheader {
                                                                     </div>
                                                                 </div>
                                                              </li>
-                                                            <li>
-                                                            	<button class="btn btn-custom-g btn-xs">Edit</button>
-                                                             	<div class="data">
-	                                                                <p class="m_0">ATR Raised by - kavali</p>   
-                                                                    <p><span class="text-bold">Grievance Given:</span>
-                                                                    Grievance text</p>
-                                                                    <p class="m_top10"><span class="text-bold">Action Taken:</span>
-                                                                    Grievance text</p>
-                                                                </div>
-                                                             </li>
+                                                           
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -264,9 +309,12 @@ header.eventsheader {
 
 <script type="text/javascript">
 
+	var meetingType='${meetingType}';
+	var meetingLocationLevel='${meetingLocationLevel}';
+	
 	$('.btn-custom-g').click(function(){
-		$('.data-edit').show();
-		$('.data').hide();
+		$('.data-edit').toggle();
+		//$('.data').hide();
 	});
 	
 	$('#add-fields').click(function(){
@@ -282,10 +330,12 @@ header.eventsheader {
 	  }, function(start, end, label) {
 		console.log(start.toISOString(), end.toISOString(), label);
 	  });
+	   $("#meetingType").html(meetingType);
+	  $("#location").html("("+meetingLocationLevel+")");
+	 getTheMeetingLevelDetails()
    });
 			   
 	$("#mainheading").html("TRAINING PROGRAM");
-	
 	var mainDivCount=1;
 	function myFunction() {
 		mainDivCount = parseInt(mainDivCount)+1;
@@ -303,6 +353,161 @@ header.eventsheader {
 		$(this).remove();
 	});
 	
+	function getTheMeetingLevelDetails(){
+		var jsObj =	{}
+		
+		$.ajax(
+		{
+			type: "POST",
+			url:"getTheMeetingLevelDetailsAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}
+		).done(function(result){
+			$("#meetingLocationLevel").append('<option value="0">Select Location Type</option>');
+			if(result!=null && result.length>0){
+				for(var i in result){
+				$("#meetingLocationLevel").append('<option value="'+result[i].locationId+'">'+result[i].locationLevel+'</option>');
+				}
+			}
+			
+		});
+	}
+	
+	function getDistrictsForStates(state){
+		
+	$("#searchDataImgForDist").show();
+	
+	
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getDistrictsForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForStateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#searchDataImgForDist").hide();
+     for(var i in result){
+	   if(result[i].id == 0){
+         // $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+ function getConstituenciesForDistricts(district){
+	    $("#searchDataImgForman").show();
+		var jsObj={				
+			districtId:district,
+			elmtId:"districtList_d",
+            type:"default",
+			task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForADistrictAjaxAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForman").hide();
+			for(var i in result){
+			   if(result[i].id == 0){
+				 // $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+			   }else{
+				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+		});
+	}
+
+
+	
+	function getMandalVillageDetails(locationId, locationLevel){
+		  $("#searchDataImgForcons").show();
+		var constituencyId = 0;
+		var mandalId = 0;
+		
+		if(locationLevel==4){
+			 $("#searchDataImgForcons").show();
+			constituencyId =  locationId;
+		}
+		if(locationLevel==5){
+			
+			mandalId = locationId;
+		}
+		
+	   var jsObj={				
+			stateId : 0,
+			districtId : 0,
+			constituencyId : constituencyId,//228
+			mandalId : mandalId,
+			locationLevel : locationLevel,
+			task:"getConstituenciesForDistricts"
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		    $("#searchDataImgForcons").hide();
+			  var divId = "#manTowDivId";
+			//  $(divId).append("<option value=''>SELECT MANDAL/ TOWN/ DIVISION</option>");
+			  if(locationLevel ==5){
+				  divId = "#villWardId";
+				//  $(divId).append("<option value=''>SELECT VILLAGE/ WARD </option>");
+			  }
+			   
+			  //$(divId).append("<option value='0'>ALL</option>");
+			  
+			for(var i in result){
+				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+		});
+	}
+	
+	getmeetinglocationlevel(3, 219);
+	function getmeetinglocationlevel(locationLevel, locationId){
+		
+		if(locationLevel == 1){
+			$("#stateShowId").hide();
+			$("#DistrictShowId").show();
+			$("#ConstShowId").hide();
+			$("#ManTwnDivShowId").hide();
+			$("#VillWardShowId").hide();
+			getDistrictsForStates(locationId);
+		}
+		else if(locationLevel == 2){
+			$("#stateShowId").hide();
+			$("#DistrictShowId").hide();
+			$("#ConstShowId").show();
+			$("#ManTwnDivShowId").hide();
+			$("#VillWardShowId").hide();
+			getConstituenciesForDistricts(locationId);
+		}
+		else if(locationLevel == 3){
+			$("#stateShowId").hide();
+			$("#DistrictShowId").hide();
+			$("#ConstShowId").hide();
+			$("#ManTwnDivShowId").show();
+			$("#VillWardShowId").hide();
+			getMandalVillageDetails(locationId, 4);
+		}
+		else if(locationLevel == 4){
+			$("#stateShowId").hide();
+			$("#DistrictShowId").hide();
+			$("#ConstShowId").hide();
+			$("#ManTwnDivShowId").hide();
+			$("#VillWardShowId").show();
+			getMandalVillageDetails(locationId, 5);
+		}
+	}
 </script>
 </body>
 </html>
