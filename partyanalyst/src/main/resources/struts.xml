@@ -10587,6 +10587,11 @@
 	  </result>
 	</action>
 	
+	<action name="getPartyMeetingMinutesAtrDetailsAction" class="trainingCampAction" method="getPartyMeetingMinutesAtrDetails">
+	    <result type="json" name="success">
+	       <param name="root">meetingDetails</param>
+	  </result>
+	</action>
 	
 </package>
 </struts>      
