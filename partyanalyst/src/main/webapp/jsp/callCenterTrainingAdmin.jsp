@@ -256,7 +256,8 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
-										<button class="btn btn-success btn-sm pull-right" style="margin-top:-7px">Assign to Agents</button>
+										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
+										data-toggle="modal" data-target="#myModal">Assign to Agents</button>
 										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
 											<div class="input-group">
 												<span class="input-group-addon">
@@ -461,6 +462,103 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<!-- Shedule -->
+	<!---Modal-1----------------->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header  bg_d">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title text-uppercase">Assign Members to Schedule Confirmation</h5>
+      </div>
+      <div class="modal-body">
+      		<div class="row">
+				<div class="col-md-12 m_top5">
+					<label>Select Center</label>
+					<select class="form-control border-radius-0"  id="campId" onchange="getAllProgramsList();">
+					</select>
+				</div>   
+				<div class="col-md-12 m_top10">
+					<label>Select Program Name</label>
+					<select class="form-control border-radius-0" id="programId" onchange="getAllSchedulesDatesList();">
+					</select>
+				</div>   
+				<div class="col-md-12 m_top10">
+					<label>Select Calender Scheduled Dates</label>
+					<select class="form-control border-radius-0" id="scheduleId" onchange="getScheduleAvailableCallsCount();" >
+						
+					</select>
+					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>
+				</div>   
+				<div class="col-md-12 ">
+					<label>Select Call Center Agent Name</label>
+					<select class="form-control border-radius-0" >
+						<option>Harish ( Pending Calls - 30 )</option>
+						<option>Ramesh ( Pending Calls - 30 )</option>
+						<option>Suresh ( Pending Calls - 30 )</option>
+					</select>					
+				</div>   
+				<div class="col-md-12 m_top5">
+					<table class="table table-condensed"  style="font-size:11px;">
+						<tr class="custom-info">
+							<td>&nbsp;</td>
+							<td>ASSIGNED</td>
+							<td >COMPLETED</td>
+							<td>PENDING</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Scheduled Confirmation </small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Batch Confirmation</small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>	
+					</table>			
+				</div>  
+				<div class="col-md-12 m_top5" id="scheduleMembersDiv">
+					<!--<label>Select No Of Calls</label>
+					<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">
+						<li>Srikakulam  - 70 <input class="pull-right" type="checkbox"> </li>
+						<li>Visakhapatnam  - 80 <input class="pull-right" type="checkbox"> 
+							<ul>
+								<li>Srungavarapukota -20 <input class="pull-right" type="checkbox"> </li>
+								<li>Bhimli  -20 <input class="pull-right" type="checkbox"> 
+									<ul>
+										<li>Bobbili  -06 <input class="pull-right" type="checkbox"> </li>
+										<li>Ramabhadrapuram  -08 <input class="pull-right" type="checkbox"> </li>
+										<li>Badangi  -04 <input class="pull-right" type="checkbox"> </li>
+										<li>Therlam  -04 <input class="pull-right" type="checkbox"> </li>
+									</ul>
+								</li>
+								<li>Visakhapatnam East  -20 <input class="pull-right" type="checkbox"> </li>
+								<li>Visakhapatnam South  -20 <input class="pull-right" type="checkbox"> </li>
+							</ul>
+						</li>
+						<li>Srikakulam  - 70 <input class="pull-right" type="checkbox"> </li>
+					</ul>-->					
+				</div>   
+				
+				
+				<div class="col-md-12">
+					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
+				</div>
+				<div class="col-md-12 m_top20">
+					<button class="btn btn-success btn-block border-radius-0">Assign to Agent</button>
+				</div>  
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+<!---Modal-2----------------->
+	<!-- End -- >
 </section>
 <footer>
 		<img src="css/Training/img/footer.jpg" width="100%">
@@ -1328,10 +1426,144 @@ function buildingMembersFilledInCalenderBatch(result){
 	
 	
 	$("#mainheading").html("TRAINING PROGRAM");
+	
+	function getAllCamps()
+	{
+	$("#campId  option").remove();
+	$("#campId").append('<option value="0">Select Camp</option>');
+	
+		var districtIds = 0;
+		var jsObj={
+				districtIds:districtIds
+		}
+		
+		$.ajax({
+			type:'POST',
+			url :'getAllCampBatchesAction.action',
+			data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null)
+			{
+				for(var i in result)
+				{
+					if(result[i].id == 0){
+					  $("#campId").append('<option value='+result[i].id+'>ALL</option>');
+				   }else{
+					  $("#campId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   }
+				}
+			}
+		});
+	}
+function getAllProgramsList()
+{
+	var campId =$("#campId").val();
+	if(campId == 0)
+	return;
+	$("#programId  option").remove();
+	$("#programId").append('<option value="0">Select Program</option>');
+	var jsObj={
+		campId:campId
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getAllProgramsListAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null){
+			for(var i in result){
+				if(result[i].id == 0){
+				  $("#programId").append('<option value='+result[i].id+'>ALL</option>');
+			   }else{
+				  $("#programId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+		}
+	});
+}
+
+function getAllSchedulesDatesList()
+{
+var programId =$("#programId").val();
+if(programId == 0)
+return 0;
+$("#scheduleId  option").remove();
+$("#scheduleId").append('<option value="0">Select Schedule</option>');
+	
+	var jsObj={
+		programId:programId
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getAllScheduleListAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null){
+			for(var i in result){
+				if(result[i].id == 0){
+				  $("#scheduleId").append('<option value='+result[i].id+'>ALL</option>');
+			   }else{
+				  $("#scheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+		}
+	});
+}
+function getScheduleAvailableCallsCount()
+{
+var campId =$("#campId").val();
+var programId =$("#programId").val();
+var scheduleId = $("#scheduleId").val();
+	var jsObj={
+		campId:campId,
+		programId:programId,
+		scheduleId:scheduleId,
+		task : ""
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getScheduleAvailableCallsCountLocationWiseInfoAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		buildScheduleMembers(result)
+	});
+}
+function buildScheduleMembers(result)
+{
+var str = '';
+if(result != null && result.length > 0)
+{
+for(var i in result)
+{
+	str+='<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">';
+	str+='<li>'+result[i].name+'  - '+result[i].count+'  <input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'"> ';
+	str+='<ul>';
+	for(var j in result[i].subList)
+	{
+	str+='<li>'+result[i].subList[j].name+'  -'+result[i].subList[j].count+' <input class="pull-right constituencyCheck" type="checkbox" value="'+result[i].subList[j].id+'"> ';
+	}
+	str+='<ul>';
+	for(var k in result[i].subList[j].subList)
+	{
+	str+='<li>'+result[i].subList[j].subList[k].name+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck" type="checkbox" value="'+result[i].subList[j].subList[k].id+'"> </li>';
+	}
+	str+='</ul>';
+	str+='</li>';
+	str+='</ul>';
+	str+='</li>';
+	str+='</ul>';
+	}
+}
+			
+
+$("#scheduleMembersDiv").html(str);
+}
 </script>
 <script>
+getAllCamps();
 </script>
-
-
 </body>
 </html>

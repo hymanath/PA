@@ -43,6 +43,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	//private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
 	private TrainingCampScheduleVO trainingCampScheduleVO;
+	
+	
 	private String status;
 	private Long purposeId;
 	private Long programId;
@@ -982,6 +984,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		
 	} 
 	
+	
+	public String getScheduleAvailableCallsCountLocationWiseInfo()
+	{
+		try{
+
+			jObj = new JSONObject(getTask());
+			statusCountList = trainingCampService.getScheduleAvailableCallsCountLocationWiseInfo(jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"));
+				
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getScheduleAvailableCallsCountLocationWiseInfo() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 }
