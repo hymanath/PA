@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 
 public class PartyMeetingVO implements java.io.Serializable{
 
@@ -23,7 +26,183 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private Long documentsCount=0L;
 	private String memberStatus;
 	public List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>(0);
+	private Long partyMeetingTypeId;
+	private String partyMeetingType;
+	private Long meetingLevelId;
+	private String meetingLevel;
+	private Long locationValue;
+	private Date startDate;
+	private Date endDate;
+	private List<PartyMeetingVO> minutesDetails;
+	private List<PartyMeetingVO> atrDetails;
+	private Long partyMeetingMinuteId;
+	private String minutePoint;
+	private Long insertedById;
+	private String insertedBy;
+	private Long updatedById;
+	private String updatedBy;
+	private String insertedTime;
+	private String updatedTime;
+	private Long partyMeetingAtrPointId;
+	private String request;
+	private String actionTaken;
+	private String requestFrom;
+	private Long locationScopeId;
+	private String raisedBy;
+	private String minuteDocuments;
+	private String atrDocuments;
 	
+	
+	public String getMinuteDocuments() {
+		return minuteDocuments;
+	}
+	public void setMinuteDocuments(String minuteDocuments) {
+		this.minuteDocuments = minuteDocuments;
+	}
+	public String getAtrDocuments() {
+		return atrDocuments;
+	}
+	public void setAtrDocuments(String atrDocuments) {
+		this.atrDocuments = atrDocuments;
+	}
+	public List<PartyMeetingVO> getAtrDetails() {
+		return atrDetails;
+	}
+	public void setAtrDetails(List<PartyMeetingVO> atrDetails) {
+		this.atrDetails = atrDetails;
+	}
+	public String getRaisedBy() {
+		return raisedBy;
+	}
+	public void setRaisedBy(String raisedBy) {
+		this.raisedBy = raisedBy;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	public String getRequest() {
+		return request;
+	}
+	public void setRequest(String request) {
+		this.request = request;
+	}
+	public String getActionTaken() {
+		return actionTaken;
+	}
+	public void setActionTaken(String actionTaken) {
+		this.actionTaken = actionTaken;
+	}
+	public String getRequestFrom() {
+		return requestFrom;
+	}
+	public void setRequestFrom(String requestFrom) {
+		this.requestFrom = requestFrom;
+	}
+	public Long getPartyMeetingAtrPointId() {
+		return partyMeetingAtrPointId;
+	}
+	public void setPartyMeetingAtrPointId(Long partyMeetingAtrPointId) {
+		this.partyMeetingAtrPointId = partyMeetingAtrPointId;
+	}
+	public String getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	public String getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(String insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	public Long getInsertedById() {
+		return insertedById;
+	}
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+	public String getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(String insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+	public String getMinutePoint() {
+		return minutePoint;
+	}
+	public void setMinutePoint(String minutePoint) {
+		this.minutePoint = minutePoint;
+	}
+	public Long getPartyMeetingMinuteId() {
+		return partyMeetingMinuteId;
+	}
+	public void setPartyMeetingMinuteId(Long partyMeetingMinuteId) {
+		this.partyMeetingMinuteId = partyMeetingMinuteId;
+	}
+	public List<PartyMeetingVO> getMinutesDetails() {
+		return minutesDetails;
+	}
+	public void setMinutesDetails(List<PartyMeetingVO> minutesDetails) {
+		this.minutesDetails = minutesDetails;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+	public Long getMeetingLevelId() {
+		return meetingLevelId;
+	}
+	public void setMeetingLevelId(Long meetingLevelId) {
+		this.meetingLevelId = meetingLevelId;
+	}
+	public String getMeetingLevel() {
+		return meetingLevel;
+	}
+	public void setMeetingLevel(String meetingLevel) {
+		this.meetingLevel = meetingLevel;
+	}
+	public Long getPartyMeetingTypeId() {
+		return partyMeetingTypeId;
+	}
+	public void setPartyMeetingTypeId(Long partyMeetingTypeId) {
+		this.partyMeetingTypeId = partyMeetingTypeId;
+	}
+	public String getPartyMeetingType() {
+		return partyMeetingType;
+	}
+	public void setPartyMeetingType(String partyMeetingType) {
+		this.partyMeetingType = partyMeetingType;
+	}
 	public String getMemberStatus() {
 		return memberStatus;
 	}
