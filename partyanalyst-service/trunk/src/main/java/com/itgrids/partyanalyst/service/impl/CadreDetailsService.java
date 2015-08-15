@@ -1317,7 +1317,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						}
 								subEventDetails.setVtrId(cadreId);//cadreId
 								subEventDetails.setId(Long.parseLong(events[0].toString()));//eventId
-								subEventDetails.setName(events[1] !=null ? events[1].toString():"");//eventName
+								subEventDetails.setName(" - ");//eventName
 								subEventDetails.setLevel(Long.parseLong(events[0].toString()));//parentEventId
 								subEventDetails.setInvitationCount(eventInviteeMap.get(events[0] !=null ? Long.parseLong(events[0].toString()) :0l));
 								String parentEventName=eventDAO.getEventName(subEventDetails.getLevel());
