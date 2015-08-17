@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -3429,4 +3430,150 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		return partyMeetingVO;
 	}
+	
+	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList)
+	{
+		TrainingCampVO returnVO = new TrainingCampVO();
+		try {
+			Map<Long,List<TrainingCampVO>> userWiseCallStatusMap = new LinkedHashMap<Long, List<TrainingCampVO>>(0);
+			if(callerIdsList != null && callerIdsList.size()>0)
+			{
+				List<Object[]> assignedListscheduleList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCount("schedule", callerIdsList);
+				List<Object[]> assignedListbatchList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCount("batch", callerIdsList);
+				
+				if(assignedListscheduleList != null && assignedListscheduleList.size()>0)
+				{
+					for (Object[] caller : assignedListscheduleList) {
+						Long callerId = commonMethodsUtilService.getLongValueForObject(caller[0]);
+						Long count =  commonMethodsUtilService.getLongValueForObject(caller[2]);
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						if(userWiseCallStatusMap.get(callerId) != null)
+						{
+							trainingCampVOList = userWiseCallStatusMap.get(callerId);
+						}
+						else
+						{
+							TrainingCampVO scheduleVO = new TrainingCampVO();
+							scheduleVO.setMemberStatus("schedule");
+							trainingCampVOList.add(scheduleVO);
+							
+							TrainingCampVO batchVO = new TrainingCampVO();
+							batchVO.setMemberStatus("batch");
+							trainingCampVOList.add(batchVO);
+						}
+						TrainingCampVO scheduleVO = trainingCampVOList.get(0);
+						scheduleVO.setId(callerId);
+						scheduleVO.setName(commonMethodsUtilService.getStringValueForObject(caller[1]));
+						scheduleVO.setAllocatedCalls(count);
+						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+					}
+				}
+				
+				if(assignedListbatchList != null && assignedListbatchList.size()>0)
+				{
+					for (Object[] caller : assignedListbatchList) {
+						Long callerId = commonMethodsUtilService.getLongValueForObject(caller[0]);
+						Long count =  commonMethodsUtilService.getLongValueForObject(caller[2]);
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						if(userWiseCallStatusMap.get(callerId) != null)
+						{
+							trainingCampVOList = userWiseCallStatusMap.get(callerId);
+						}
+						else
+						{
+							TrainingCampVO scheduleVO = new TrainingCampVO();
+							scheduleVO.setMemberStatus("schedule");
+							trainingCampVOList.add(scheduleVO);
+							
+							TrainingCampVO batchVO = new TrainingCampVO();
+							batchVO.setMemberStatus("batch");
+							trainingCampVOList.add(batchVO);
+						}
+						TrainingCampVO scheduleVO = trainingCampVOList.get(1);
+						scheduleVO.setAllocatedCalls(count);
+						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+					}
+				}
+				List<Object[]> scheduleList = trainingCampScheduleInviteeCallerDAO.getCallStatusWiseCountDetailsForCallers("schedule", callerIdsList);
+				List<Object[]> batchList = trainingCampScheduleInviteeCallerDAO.getCallStatusWiseCountDetailsForCallers("batch", callerIdsList);
+				
+				if(scheduleList != null && scheduleList.size()>0)
+				{
+					for (Object[] caller : scheduleList) {
+						Long callerId = commonMethodsUtilService.getLongValueForObject(caller[0]);
+						Long statusId = commonMethodsUtilService.getLongValueForObject(caller[1]);
+						String statusStr = commonMethodsUtilService.getStringValueForObject(caller[2]);
+						Long count =  commonMethodsUtilService.getLongValueForObject(caller[3]);
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						
+						if(userWiseCallStatusMap.get(callerId) != null)
+						{
+							trainingCampVOList = userWiseCallStatusMap.get(callerId);
+						}
+						TrainingCampVO trainingCampVO = trainingCampVOList.get(0);
+						trainingCampVO.setCompletedCalls(count);
+						Long pendingCalls = 0L;
+						if(trainingCampVO.getAllocatedCalls() == null)
+							trainingCampVO.setAllocatedCalls(0L);
+						if(trainingCampVO.getCompletedCalls() == null)
+							trainingCampVO.setCompletedCalls(0L);
+						
+						pendingCalls = trainingCampVO.getAllocatedCalls() - trainingCampVO.getCompletedCalls();
+						trainingCampVO.setPendingCalls(pendingCalls);
+						
+						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+					}
+				}
+				
+				if(batchList != null && batchList.size()>0)
+				{
+					for (Object[] caller : batchList) {
+						Long callerId = commonMethodsUtilService.getLongValueForObject(caller[0]);
+						Long statusId = commonMethodsUtilService.getLongValueForObject(caller[1]);
+						String statusStr = commonMethodsUtilService.getStringValueForObject(caller[2]);
+						Long count =  commonMethodsUtilService.getLongValueForObject(caller[3]);
+						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						
+						if(userWiseCallStatusMap.get(callerId) != null)
+						{
+							trainingCampVOList = userWiseCallStatusMap.get(callerId);
+						}
+						TrainingCampVO trainingCampVO = trainingCampVOList.get(1);
+						trainingCampVO.setCompletedCalls(count);
+						Long pendingCalls = 0L;
+						if(trainingCampVO.getAllocatedCalls() == null)
+							trainingCampVO.setAllocatedCalls(0L);
+						if(trainingCampVO.getCompletedCalls() == null)
+							trainingCampVO.setCompletedCalls(0L);
+						
+						pendingCalls = trainingCampVO.getAllocatedCalls() - trainingCampVO.getCompletedCalls();
+						trainingCampVO.setPendingCalls(pendingCalls);
+						
+						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+					}
+				}
+				
+				List<TrainingCampVO> trainingCampvoList = new LinkedList<TrainingCampVO>();
+				if(userWiseCallStatusMap != null && userWiseCallStatusMap.size()>0)
+				{
+					for (Long callerId : userWiseCallStatusMap.keySet()) {
+						List<TrainingCampVO> list = userWiseCallStatusMap.get(callerId);
+						TrainingCampVO userVO = new TrainingCampVO();
+						userVO.setName(list.get(0).getName());
+						userVO.setTrainingCampVOList(list);
+						trainingCampvoList.add(userVO);
+					}
+					
+					returnVO.setTrainingCampVOList(trainingCampvoList);
+				}
+					
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCallerWiseOverView",e);
+		}
+		
+		return returnVO;
+	}
+	
 }
