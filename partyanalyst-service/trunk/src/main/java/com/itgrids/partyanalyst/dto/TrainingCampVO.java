@@ -40,7 +40,15 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long allocatedCalls;
 	private Long dialedCount;
 	private Long unDialedCount;
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getAllocatedCalls() {
 		return allocatedCalls;
 	}
