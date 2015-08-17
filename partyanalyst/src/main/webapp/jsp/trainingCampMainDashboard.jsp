@@ -22,7 +22,30 @@
 	<link href="dist/css/jquery.circliful.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"> -->
-</head>
+<style type="text/css">
+
+.glyphicon-trash
+{
+	cursor:pointer
+}
+
+.add-plus
+{
+	background-color:#ccc;
+	color:#666;
+	padding:5px;
+	border-radius:50%;
+}
+.addRemove
+{
+	background-color:#ccc;
+	color:#666;
+	padding:5px;
+	border-radius:50%;
+	cursor:pointer
+}
+</style>
+	</head>
 <body>
 <header>
 	<img src="dist/img/header.jpg" width="100%" alt="">
@@ -381,33 +404,96 @@
         <h4 class="modal-title" id="myModalLabel">UPDATE USER</h4>
       </div>
       <div class="modal-body">
-        <div class="row">
-        	<div class="col-md-11">
-            	<label>Achievments</label>
-                <input class="form-control" type="text">
-            </div>
-            <div class="col-md-1">
-            	<i class="glyphicon glyphicon-plus m_top20 add-plus"></i>
-            </div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+				<table class="table table-bordered m_0">
+					
+					<tr>
+						<td></td>
+						<td>Name</td>
+						<td>Designation</td>
+						<td>Mobile No</td>
+						<td>Constituency</td>
+						<td>District</td>
+						<td>Trained On</td>
+					</tr>
+					<tr>
+						<td><img src="dist/img/profile-img.png" class="img-responsive" style="width:30px;"></td>
+						<td>Mahendar</td>
+						<td>Mandal President</td>
+						<td>9848021364</td>
+						<td>Makthal</td>
+						<td>Adilabad</td>
+						<td>Leadership Skills</td>
+					</tr>
+					
+				</table>
+				</div>
+			</div>
+		</div>
+		
+        <div class="row m_top20">
+			<div class="col-md-12">
+				<label>Achievements</label>
+				<div class="row">
+					<div class="col-md-11">
+						<input class="form-control" type="text" disabled value="First in Debate">
+					</div>
+					<div class="col-md-1">
+						<i class="glyphicon glyphicon-minus m_top10 add-plus"></i>
+					</div>
+				</div>
+				<div class="row m_top10">
+					<div class="col-md-11">
+						<input class="form-control" type="text" disabled value="Batch Topper">
+					</div>
+					<div class="col-md-1">
+						<i class="glyphicon glyphicon-minus m_top10 add-plus"></i>
+					</div>
+				</div>
+				<div class="row m_top10">
+					<div class="col-md-11">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-1">
+						<i class="glyphicon glyphicon-plus m_top10 add-plus"></i>
+					</div>
+				</div>
+			</div>
         </div>
-        <div class="row">
-        	<div class="col-md-6">
-            	<label>Goals</label>
-                <input class="form-control" type="text">
-            </div>
-            <div class="col-md-5">
-            	<label>Date & Time</label>
-                <div class="input-group">
-                	<span class="input-group-addon">
-                    	<i class="glyphicon glyphicon-calendar"></i>
-                    </span>
-                    <input class="form-control" type="text">
-                </div>
-            </div>
-            <div class="col-md-1">
-            	<i class="glyphicon glyphicon-plus m_top20 add-plus"></i>
-            </div>
-        </div>
+        <div class="row m_top20">
+			<div class="col-md-6">
+				<label>Goals</label>
+				<input type="text" class="form-control" disabled value="To become a leader">
+			</div>
+			<div class="col-md-4">
+				<label>Date & TIme</label>
+				<div class="input-group">
+					<input type="text" class="form-control" disabled>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<i class="glyphicon glyphicon-minus addRemove m_top20"></i>
+				<i class="glyphicon glyphicon-edit addRemove m_top30"></i>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-md-6">
+				<input type="text" class="form-control">
+			</div>
+			<div class="col-md-4">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2">
+				<i class="glyphicon glyphicon-plus addRemove"></i>
+			</div>
+		</div>
         <div class="row">
         	<div class="col-md-12">
             	<label>Leadership Level</label>
@@ -450,6 +536,12 @@
                 </select>
             </div>
         </div>
+		<div class="row">
+			<div class="col-md-12">
+				<label>Comments</label>
+				<textarea class="form-control"></textarea>
+			</div>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
