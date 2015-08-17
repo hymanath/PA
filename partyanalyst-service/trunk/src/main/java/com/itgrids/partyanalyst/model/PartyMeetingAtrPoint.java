@@ -46,6 +46,7 @@ public class PartyMeetingAtrPoint extends BaseModel implements Serializable{
 	private Long addressId;
 	private Long insertedById;
 	private Long updatedById;
+	private String isDeleted;
 	
 	public PartyMeetingAtrPoint(){}
 
@@ -227,5 +228,15 @@ public class PartyMeetingAtrPoint extends BaseModel implements Serializable{
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
 	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }

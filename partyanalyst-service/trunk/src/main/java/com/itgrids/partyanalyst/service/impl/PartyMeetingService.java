@@ -1,10 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +12,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
@@ -26,7 +23,11 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointHistoryDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
+import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
@@ -50,8 +51,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IPartyMeetingMinuteHistoryDAO partyMeetingMinuteHistoryDAO;
 	private TransactionTemplate transactionTemplate;
+	private IPartyMeetingAtrPointHistoryDAO partyMeetingAtrPointHistoryDAO;
 	
 	
+	
+	
+	public IPartyMeetingAtrPointHistoryDAO getPartyMeetingAtrPointHistoryDAO() {
+		return partyMeetingAtrPointHistoryDAO;
+	}
+	public void setPartyMeetingAtrPointHistoryDAO(
+			IPartyMeetingAtrPointHistoryDAO partyMeetingAtrPointHistoryDAO) {
+		this.partyMeetingAtrPointHistoryDAO = partyMeetingAtrPointHistoryDAO;
+	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -556,6 +567,96 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}catch (Exception e) {
 			LOG.error("Exception raised at deleteMeetingMinutePoint", e);
 		}
-		return "failed";
+		return updateStatusString;
+	}
+	
+	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId){
+		String updateStatusString="failed";
+		try {
+			LOG.info("Entered into updateMeetingAtrPoint");
+			
+			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+	    	{
+			  public Object doInTransaction(TransactionStatus status) 
+			  {
+				  String updated = "success";
+				  PartyMeetingAtrPoint pmap = partyMeetingAtrPointDAO.get(atrId);
+				  
+				  PartyMeetingAtrPointHistory pmaph = new PartyMeetingAtrPointHistory();
+				  
+				  pmaph.setPartyMeetingAtrPointId(pmap.getPartyMeetingAtrPointId());
+				  pmaph.setPartyMeetingId(pmap.getPartyMeetingId());
+				  pmaph.setRequest(pmap.getRequest());
+				  pmaph.setActionTaken(pmap.getActionTaken());
+				  //pmaph.setRequestFrom(pmap.getRequestFrom());
+				  pmaph.setLocationScopeId(pmap.getLocationScopeId());
+				  pmaph.setLocationValue(pmap.getLocationValue());
+				  pmaph.setAddressId(pmap.getAddressId());
+				  pmaph.setRaisedBy(pmap.getRaisedBy());
+				  pmaph.setInsertedById(pmap.getInsertedById());
+				  pmaph.setUpdatedById(pmap.getUpdatedById());
+				  pmaph.setInsertedTime(pmap.getInsertedTime());
+				  pmaph.setUpdatedTime(pmap.getUpdatedTime());
+				  
+				  
+				  partyMeetingAtrPointHistoryDAO.save(pmaph);
+				  
+				  Integer updateStatus = partyMeetingAtrPointDAO.updateMeetingAtrPoint(atrId,request,actionTaken,raisedBy,updatedBy,new DateUtilService().getCurrentDateAndTime(),locationId);
+				  if(updateStatus.intValue()==0){
+						updated  = "failed";
+					}
+					
+					return updated;
+				  
+			  }
+	    	});
+		}catch (Exception e) {
+			LOG.error("Exception raised at updateMeetingAtrPoint", e);
+		}
+		return updateStatusString;
+	}
+	
+	public String deleteMeetingAtrPoint(final Long atrId,final Long updatedBy){
+		String updateStatusString="failed";
+		try {
+			LOG.info("Entered into deleteMeetingAtrPoint");
+			
+			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+	    	{
+			  public Object doInTransaction(TransactionStatus status) 
+			  {
+				  String updated = "success";
+				  PartyMeetingAtrPoint pmap = partyMeetingAtrPointDAO.get(atrId);
+					
+					PartyMeetingAtrPointHistory pmaph = new PartyMeetingAtrPointHistory();
+					
+					pmaph.setPartyMeetingAtrPointId(pmap.getPartyMeetingAtrPointId());
+					pmaph.setPartyMeetingId(pmap.getPartyMeetingId());
+					pmaph.setRequest(pmap.getRequest());
+					pmaph.setActionTaken(pmap.getActionTaken());
+					//pmaph.setRequestFrom(pmap.getRequestFrom());
+					pmaph.setLocationScopeId(pmap.getLocationScopeId());
+					pmaph.setLocationValue(pmap.getLocationValue());
+					pmaph.setAddressId(pmap.getAddressId());
+					pmaph.setRaisedBy(pmap.getRaisedBy());
+					pmaph.setInsertedById(pmap.getInsertedById());
+					pmaph.setUpdatedById(pmap.getUpdatedById());
+					pmaph.setInsertedTime(pmap.getInsertedTime());
+					pmaph.setUpdatedTime(pmap.getUpdatedTime());
+					  
+					partyMeetingAtrPointHistoryDAO.save(pmaph);
+					
+					
+					Integer deleteStatus = partyMeetingAtrPointDAO.deleteMeetingAtrPoint(atrId,updatedBy,new DateUtilService().getCurrentDateAndTime());
+					if(deleteStatus.intValue()==0){
+						updated  = "failed";
+					}
+					return updated;
+			  }
+	       });
+		}catch (Exception e) {
+			LOG.error("Exception raised at deleteMeetingAtrPoint", e);
+		}
+		return updateStatusString;
 	}
 }

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -34,10 +35,39 @@ public class PartyMeetingAtrPointDAO extends GenericDaoHibernate<PartyMeetingAtr
 				" model.raisedBy,model.insertedBy.userId,model.insertedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName," +
 				"model.insertedTime,model.updatedTime  " +
 				" from PartyMeetingAtrPoint model where " +
-				"  model.partyMeeting.partyMeetingId=:partyMeetingId ");
+				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("partyMeetingId", partyMeetingId);
 		return query.list();
 	}
 	
+	public Integer updateMeetingAtrPoint(Long atrId,String request,String actionTaken,String raisedBy,Long updatedBy,Date updatedTime,Long locationId){
+		StringBuilder query = new StringBuilder();
+		query.append("update PartyMeetingAtrPoint model set model.request = ?,model.actionTaken=?,model.updatedTime=?,model.raisedBy=?,model.updatedById=?,model.locationValue=? " +
+				"where model.partyMeetingAtrPointId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, request);
+		queryObject.setParameter(1, actionTaken);
+		queryObject.setParameter(2, updatedTime);
+		queryObject.setParameter(3, raisedBy);
+		queryObject.setParameter(4, updatedBy);
+		queryObject.setParameter(5, locationId);
+		queryObject.setParameter(6, atrId);
+		
+		return queryObject.executeUpdate();
+	}
+	
+	public Integer deleteMeetingAtrPoint(Long atrId,Long updatedBy,Date updatedTime){
+		StringBuilder query = new StringBuilder();
+		query.append("update PartyMeetingAtrPoint model set model.isDeleted = 'Y',model.updatedById=?,model.updatedTime=? " +
+				"where model.partyMeetingAtrPointId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, updatedBy);
+		queryObject.setParameter(1, updatedTime);
+		queryObject.setParameter(2, atrId);
+
+		return queryObject.executeUpdate();
+	}
 }
