@@ -1024,4 +1024,55 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getCallerWiseAssignedCount(String searchType,List<Long> callerIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.trainingCampCallerId,model.trainingCampUser.user.firstName,count(model.trainingCampScheduleInviteeCallerId) " );
+		queryStr.append(" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
+		queryStr.append(" where model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+		if(callerIdsList != null && callerIdsList.size()>0)
+		{
+			queryStr.append(" and model.trainingCampCallerId in (:callerIdsList) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
+		{
+			queryStr.append(" and model.callPurposeId = 1 ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
+		{
+			queryStr.append(" and model.callPurposeId = 2  ");
+		}
+		queryStr.append(" group by model.trainingCampCallerId " +
+				" order by  model.trainingCampCallerId  ");
+		Query query = getSession().createQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getCallStatusWiseCountDetailsForCallers(String searchType,List<Long> callerIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.trainingCampCallerId, campCallStatus.campCallStatusId,campCallStatus.status, count(model.trainingCampScheduleInviteeCallerId)" +
+				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" );
+		queryStr.append(" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
+		queryStr.append(" where model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+		if(callerIdsList != null && callerIdsList.size()>0)
+		{
+			queryStr.append(" and model.trainingCampCallerId in (:callerIdsList) ");
+		}
+		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
+		{
+			queryStr.append(" and model.callPurposeId = 1 ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
+		{
+			queryStr.append(" and model.callPurposeId = 2  ");
+		}
+		queryStr.append(" group by model.trainingCampCallerId, model.campCallStatus.campCallStatusId " +
+				" order by  model.trainingCampCallerId , campCallStatus.status ");
+		Query query = getSession().createQuery(queryStr.toString());
+		return query.list();
+	}
+	
 }
