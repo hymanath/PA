@@ -2731,6 +2731,8 @@
 		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO"/>
 		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO"/>
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
+		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
+		
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
