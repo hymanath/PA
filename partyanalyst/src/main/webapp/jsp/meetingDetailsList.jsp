@@ -693,6 +693,7 @@ header.eventsheader {
 	}
 	
 	$(document).on('click', '.saveMinute', function(){
+		 var saveBtnId = $(this).attr("id");
 		var textBoxId = $(this).attr("attr_txt");
 		var minuteText = $("#"+textBoxId).val();
 		var minuteId = $(this).attr("attr_minuteId");
@@ -709,6 +710,7 @@ header.eventsheader {
 		}).done(function(result){
 		   if(result=="success"){
 			   alert("Updated Successfully");
+			  $("#"+saveBtnId).hide();
 		   }
 		});
 	});
