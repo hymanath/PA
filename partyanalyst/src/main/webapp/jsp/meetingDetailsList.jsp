@@ -13,7 +13,6 @@
 <link href="css/Training/css/basic.css" rel="stylesheet" type="text/css">
 <link href="css/Training/css/dropzone.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <style>
 header.eventsheader {
@@ -41,6 +40,28 @@ header.eventsheader {
 }
 </style>
 
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<!-- YUI Dependency files (End) -->
+	
 </head>
 <body>
 <header  class="eventsheader">
@@ -86,59 +107,12 @@ header.eventsheader {
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <!--<div class="col-md-3">
-                                    <label>Type Of Meeting</label>
-                                    <select class="form-control" disabled>
-                                        <option>District level</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Meeting Location</label>
-                                    <select class="form-control" disabled>
-                                        <option>District level</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Meeting Called By</label>
-                                    <select class="form-control" disabled>
-                                        <option>District level</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Meeting Date & TIme</label>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                        <input type="text" class="form-control" id="birthday">
-                                    </div>
-                                </div>-->
                                 <div class="col-md-6 m_top20">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">Meeting Minutes</h4>
                                         </div>
                                         <div class="panel-body">
-                                            <!-- <div class="input-group bin-div">
-                                                <input type="text" class="form-control">
-                                                <span class="input-group-addon">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </span>
-                                            </div>
-                                            <div class="input-group bin-div m_top10">
-                                                <input type="text" class="form-control">
-                                                <span class="input-group-addon">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </span>
-                                            </div>
-                                            <div class="input-group bin-div m_top10">
-                                                <input type="text" class="form-control">
-                                                <span class="input-group-addon">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </span>
-                                            </div>
-                                            <div class="pull-right m_top10">
-                                                <button class="btn btn-success btn-xs" id="add-fields">ADD</button>
-                                            </div> -->
-                                           
                                             <div id="addMoreDiv">
                                                 <div class="input-group bin-div m_top10" id="list1">
                                                     <input type="text" class="form-control" id="minutes1"></input>
@@ -162,11 +136,20 @@ header.eventsheader {
 											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
 												<div class="" id="mintueDocumentDivId"></div>
 											</div>
+											<div style="display:none;" id="fileDiv" class="row col-md-12">
+												<input type="file" class="m_top10 fileCls col-md-6" name="imageForDisplay" style="width: 225px;"/>
+												<div class="col-md-6"><span class="btn btn-success btn-xs m_top10 removeBtnCls">-</span></div>
+											</div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h4><i class="icon-upload"></i> Upload File</h4>
-                                                    <p class="m_0">Drag and drop file below box or click on box to upload file</p>
-                                                    <form id="my-awesome-dropzone" action="/target" class="dropzone"></form>
+                                                    <form id="uploadMinutesDocs" name="uploadMinutesDocs">
+														<input type="file" class="m_top10" name="imageForDisplay" id="fileId" style="width: 225px;margin-left:15px;"/>
+														<div id="ExtraFiles"></div>
+														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;" id="uploadMinutesDocsId"></input>
+														<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
+														<input type="hidden" name="partyMeetingType" value="MINUTE"/>
+													</form>
+													<button class="btn btn-success btn-xs pull-right m_top20" id="addFiles">+</button>
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
                                             </div>
@@ -181,16 +164,6 @@ header.eventsheader {
                                             <div class="panel-body">
 											<div>
                                                 <div class="row" id="atrDivId">
-                                                    <!--<div class="col-md-12">
-                                                      <input type="text" class="form-control" placeholder="ATR Raised by"/>
-                                                       
-                                                    </div>
-                                                    <div class="col-md-12 m_top20">
-                                                        <input type="text" class="form-control" placeholder="Grievance Given"/>
-                                                       </div>
-                                                    <div class="col-md-12 m_top20">
-                                                      <input type="text" class="form-control" placeholder="Action Taken"/>
-                                                    </div>-->
                                                     <div class="panel-body m_top20"  style="border:1px solid #c3c3c3;">
                                                         <div class="row">
 														 <div class="pull-right" style="margin-right:5px;">
@@ -316,12 +289,17 @@ header.eventsheader {
 												<div  class="" id="atrDocumentDivId"></div>
 											</div>
 											<div class="row">
-												<div class="col-md-12">
-													<h4><i class="icon-upload"></i> Upload File</h4>
-													<p class="m_0">Drag and drop file below box or click on box to upload file</p>
-													<form action="/target" class="dropzone"></form>
-													<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
-												</div>
+												 <div class="col-md-12">
+                                                    <form id="uploadATRDocs" name="uploadATRDocs">
+														<input type="file" class="m_top10" name="imageForDisplay" id="fileIdATR" style="width: 225px;margin-left:15px;"/>
+														<div id="ExtraFilesATR"></div>
+														<input type= "button" value="Upload ATR Files" style="margin-left:15px;margin-top:10px;" id="uploadATRDocsId"></input>
+														<input type="hidden" name="partyMeeting" id="partyMeetingATRId"/>
+														<input type="hidden" name="partyMeetingType" value="ATR"/>
+													</form>
+													<button class="btn btn-success btn-xs pull-right m_top20" id="addATRFiles">+</button>
+                                                    <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
+                                                </div>
 											</div>
                                     </div>
                                 </div>
@@ -346,6 +324,32 @@ header.eventsheader {
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+	var minutesFiles = 0;
+	$("#addFiles").click(function(){
+		minutesFiles = minutesFiles +1;
+		var c = $("#fileDiv").clone(true);
+			c.removeAttr("style");
+			c.attr("id","fileDivId"+minutesFiles);
+            c.find(".fileCls").attr("id","fileId"+minutesFiles);
+            c.find(".removeBtnCls").attr("id","remove"+minutesFiles);
+			c.find(".removeBtnCls").attr("attr_count",minutesFiles);
+	    $("#ExtraFiles").append(c);
+	});
+	
+	var atrFiles = 0;
+	$("#addATRFiles").click(function(){
+		atrFiles = atrFiles +1;
+		var c = $("#fileDiv").clone(true);
+			c.removeAttr("style");
+			c.attr("id","atrFileDivId"+atrFiles);
+            c.find(".fileCls").attr("id","atrFileId"+atrFiles);
+            c.find(".removeBtnCls").attr("id","removeATR"+atrFiles);
+			c.find(".removeBtnCls").attr("attr_count",atrFiles);
+	    $("#ExtraFilesATR").append(c);
+	});
+	
+	
 
     var partyMeetingId='${partyMeetingId}';
     
@@ -380,7 +384,7 @@ header.eventsheader {
             c.removeAttr("style");
             c.attr("id","list"+mainDivCount)
             c.find(".txtbox").attr("id","minutes"+mainDivCount);
-            c.find(".trash").attr("attr_txt","list"+mainDivCount)
+            c.find(".trash").attr("attr_txt","list"+mainDivCount);
         $("#addMoreDiv").append(c);
     }
    var maximumDivCount=1;
@@ -761,6 +765,49 @@ header.eventsheader {
 		});
 	});
 	
+	$("#uploadMinutesDocsId").click(function(){
+		$("#partyMeetingId").val(partyMeetingId);
+		var uploadHandler = {
+				upload: function(o) {
+				    uploadResult = o.responseText;
+					showingStatus(uploadResult);
+				}
+			};
+
+		YAHOO.util.Connect.setForm('uploadMinutesDocs',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadMinutesDocAction.action',uploadHandler);
+	});
+	
+	$("#uploadATRDocsId").click(function(){
+		$("#partyMeetingATRId").val(partyMeetingId);
+		var uploadHandler = {
+				upload: function(o) {
+				    uploadResult = o.responseText;
+					showingStatus(uploadResult);
+				}
+			};
+
+		YAHOO.util.Connect.setForm('uploadATRDocs',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadMinutesDocAction.action',uploadHandler);
+	});
+	
+	
+	function showingStatus(myResult){
+		
+		var result = myResult;
+		if (result.indexOf("success") >= 0){alert("File Uploaded Successfully");}
+		else{
+			alert("Failed to Upload.. Please Try Again");
+		}
+		
+		
+	}
+	
+	$(document).on("click",".removeBtnCls",function(){
+		$(this).parent().parent().remove();
+	});
+	
+	
 	function showBtnsDiv(atrId){
 		$("#btnsDiv"+atrId).show();
 	}
@@ -821,7 +868,6 @@ header.eventsheader {
 		});
 		
 	});
-	
 	
 </script>
 </body>
