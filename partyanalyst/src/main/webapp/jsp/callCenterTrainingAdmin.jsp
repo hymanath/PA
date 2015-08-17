@@ -17,8 +17,42 @@
 	<link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 
+
 </head>
-<style>
+
+
+<style type="text/css">
+.border_0
+{
+	border:0px !important;
+	box-shadow:none;
+}
+.border_0 .panel-heading
+{
+	padding:0px;
+}
+
+.accordion-toggle:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: left;
+    color: inherit;
+}
+.accordion-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+
+.panel-group .panel-default .panel-heading
+{
+	background-color:#fff;
+}
+.panel-group , ul
+{
+	margin-bottom:0px;
+}
+
     header.eventsheader {  
     background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
     background-origin: border-box;
@@ -257,7 +291,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal">Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal" >Assign to Agents</button>
 										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
 											<div class="input-group">
 												<span class="input-group-addon">
@@ -308,7 +342,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<b>BATCH CONFIRMATION DETAILS</b>
-										<button class="btn btn-success btn-sm pull-right" style="margin-top:-6px">Assign to Agents</button>
+										<button class="btn btn-success btn-sm pull-right" style="margin-top:-6px" >Assign to Agents</button>
 									</h4>
 								</div>
 								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
@@ -551,13 +585,201 @@
 					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
 				</div>
 				<div class="col-md-12 m_top20">
-					<button class="btn btn-success btn-block border-radius-0">Assign to Agent</button>
+					<button class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button>
 				</div>  
 			</div>
 		</div>
     </div>
   </div>
 </div>
+<!-- Demo Modal-->
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <h4 class="panel-title">
+                          SRIKAKULAM - 70
+                          <input type="checkbox" class="pull-right">
+                      </h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          VISAKAPATNAM - 80
+                          <input type="checkbox" class="pull-right">
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                   	<div>
+                    	<div class="panel-group" id="accordionInner" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headingInnerOne">
+                              <h4 class="panel-title">
+                                <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerOne" aria-expanded="true" aria-controls="collapseInnerOne">
+                                	
+                                  Srungavarapukota - 20
+                                  <span class="pull-right">
+                                  	<input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseInnerOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInnerOne">
+                              <div class="panel-body border_0">
+									<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"></li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headingInnerTwo">
+                              <h4 class="panel-title">
+                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerTwo" aria-expanded="false" aria-controls="collapseInnerTwo">
+                                  
+                                  Srungavarapukota - 20
+                                  <span class="pull-right">
+                                  	<input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseInnerTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInnerTwo">
+                              <div class="panel-body border_0">
+                               		<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headingInnerThree">
+                              <h4 class="panel-title">
+                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerThree" aria-expanded="false" aria-controls="collapseInnerThree">
+	                                
+                                    Srungavarapukota - 20
+                                  <span class="pull-right">
+                                    <input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseInnerThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInnerThree">
+                              <div class="panel-body border_0">
+                                	<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                     
+                        Srungavarapukota - 20
+                      <span class="pull-right">
+                        <input type="checkbox">
+                      </span>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                  <div class="panel-body">
+                    <div>
+                    	<div class="panel-group" id="accordioninner1" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headinginner1One">
+                              <h4 class="panel-title">
+                                <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1One" aria-expanded="true" aria-controls="collapseinner1One">
+                                	
+                                  Srungavarapukota - 20
+                                  <span class="pull-right">
+                                  	<input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseinner1One" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headinginner1One">
+                              <div class="panel-body border_0">
+									<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headinginner1Two">
+                              <h4 class="panel-title">
+                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1Two" aria-expanded="false" aria-controls="collapseinner1Two">
+                                  
+                                  Srungavarapukota - 20
+                                  <span class="pull-right">
+                                  	<input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseinner1Two" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinginner1Two">
+                              <div class="panel-body border_0">
+                               		<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default border_0">
+                            <div class="panel-heading" role="tab" id="headinginner1Three">
+                              <h4 class="panel-title">
+                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1Three" aria-expanded="false" aria-controls="collapseinner1Three">
+	                                
+                                    Srungavarapukota - 20
+                                  <span class="pull-right">
+                                    <input type="checkbox">
+                                  </span>
+                                </a>
+                              </h4>
+                            </div>
+                            <div id="collapseinner1Three" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinginner1Three">
+                              <div class="panel-body border_0">
+                                	<ul  >
+                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
+                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
+                                    </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 <!---Modal-2----------------->
 	<!-- End -- >
 </section>
@@ -1544,7 +1766,7 @@ if(result != null && result.length > 0)
 {
 for(var i in result)
 {
-	str+='<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">';
+	/*str+='<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">';
 	str+='<li>'+result[i].name+'  - '+result[i].count+'  <input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'"> ';
 	str+='<ul>';
 	for(var j in result[i].subList)
@@ -1561,12 +1783,157 @@ for(var i in result)
 	str+='</ul>';
 	str+='</li>';
 	str+='</ul>';
+	}*/
+	/*Schedule */
+	str+='<div class="panel-group distaccordion" id="distaccordion" role="tablist" aria-multiselectable="true">';
+	str+='<div class="panel panel-default">';
+	str+='<div class="panel-heading" role="tab"  style="padding:5px" id="distheading'+i+'">';
+	/*District*/
+	str+='	<h4 class="panel-title">';
+	str+='<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#distaccordion" href="#distcollapse'+i+'" aria-expanded="true" aria-controls="distcollapse'+i+'">'+result[i].name+'  - '+result[i].count+'  </a>';
+	str+='<input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'">';
+	str+='</h4>';
+	str+='</div>';
+	str+='<div id="distcollapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distheading'+i+'">';
+	/*District body*/
+	str+=' <div class="panel-body "  style="padding:5px 5px 5px 8px">';
+	
+	/*Const*/
+	str+=' <div class="panel-group constaccor" id="accordionInner'+i+'" role="tablist" aria-multiselectable="true">';
+    for(var j in result[i].subList)
+	{  
+	str+=' <div class="panel panel-default border_0">';
+    str+='<div class="panel-heading " role="tab" id="consheading'+j+'">';
+    str+='<h4 class="panel-title">';
+        str+=' <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInner'+j+'" href="#conscollapse'+j+'" aria-expanded="true" aria-controls="conscollapse'+j+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
+		str+='<input class="pull-right constituencyCheck dist'+result[i].id+'" type="checkbox" value="'+result[i].subList[j].id+'"> ';
+	
+    str+='</h4>';
+    str+='</div>';
+	/*Mandal*/
+		for(var k in result[i].subList[j].subList)
+	{
+    str+='<div id="conscollapse'+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+j+'">';
+    str+='<div class="panel-body border_0" style="padding:5px 5px 5px 8px">';
+	str+='<ul>';
+	str+='<li>'+result[i].subList[j].subList[k].name.toLowerCase()+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck dist'+result[i].id+' const'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].subList[k].id+'"> </li>';
+	str+='</ul>';
+	str+='</div>';
+    str+='</div>';
 	}
+    str+='</div>';
+	}
+	str+='</div>';
+	
+	str+='</div>';	
+	str+='</div>';
+	str+=' </div>';
+	str+=' </div>';
 }
-			
+}			
 
 $("#scheduleMembersDiv").html(str);
+$(".constituencyCheck").click(function() {
+ 
+	   if($(this).is(':checked'))
+		{
+		var constituencyID = $(this).val();
+		//alert($(this).closest(".distaccordion").find(".districtCheck").html())
+			$(this).closest(".distaccordion").find(".districtCheck").prop('checked', false);
+			$(".const"+constituencyID).prop('checked', false);
+		}
+ });
+ 
+$(".districtCheck").click(function(){
+if($(this).is(':checked'))
+	{
+	var districtID = $(this).val();
+	$(".dist"+districtID).each(function(){
+							if($(this).is(':checked'))
+							{
+								$(".dist"+districtID).prop('checked', false);
+								//$(this).prop('checked', false);
+							}
+					}) 	
+		  }
+});
+
+
+$(".mandalCheck").click(function(){
+if($(this).is(':checked'))
+	{
+	$(this).closest(".constaccor").find(".constituencyCheck").prop('checked', false);
+	}
+});
+
 }
+
+
+/*function assignSchedule()
+{
+var districtIds = new Array();
+var constiIds = new Array();
+var mandalIds = new Array();
+$(".districtCheck").each(function(){
+if($(this).is(':checked'))
+{
+			var constiflag = false;
+			$(this).closest("li").find(".constituencyCheck").each(function(){
+							if($(this).is(':checked'))
+							{
+						$(this).closest("li").find(".constituencyCheck").each(function(){
+							if($(this).is(':checked'))
+							{
+							constiIds.push($(this).val());
+							constiflag = true;
+							}
+					}) 	
+				}
+	   })
+  }
+});
+
+}*/
+
+function assignSchedule()
+{
+var districtIds = new Array();
+var constiIds = new Array();
+var mandalIds = new Array();
+$(".districtCheck").each(function(){
+if($(this).is(':checked'))
+districtIds.push($(this).val());
+
+});
+$(".constituencyCheck").each(function()
+{
+if($(this).is(':checked'))
+	constiIds.push($(this).val());		
+});
+$(".mandalCheck").each(function()
+{
+if($(this).is(':checked'))
+	mandalIds.push($(this).val());		
+});
+
+var jObj={
+		districtIds:districtIds,
+		constiIds:constiIds,
+		mandalIds:mandalIds,
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'assignScheduleMembersToCallerAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			//buildScheduleCallMemberDetailsCount(result,jObj);
+		   });	
+}
+
+
+
 </script>
 <script>
 getAllCamps();
