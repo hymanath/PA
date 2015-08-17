@@ -5639,8 +5639,8 @@
 		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
 		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
 		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
-		    <result name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
-		    <result name="callCenterTrainingAgent">callCenterTrainingAgent.action</result>
+		    <result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
+		    <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgent.action</result>
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>	       
 		</action>
 		
