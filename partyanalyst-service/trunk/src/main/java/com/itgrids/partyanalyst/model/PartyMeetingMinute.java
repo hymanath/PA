@@ -37,6 +37,7 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	private Long partyMeetingId;
 	private Long insertedById;
 	private Long updatedById;
+	public String isDeleted;
 	
 	public PartyMeetingMinute(){}
 
@@ -140,5 +141,16 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
 	}
+
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 	
 }

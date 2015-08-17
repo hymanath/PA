@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -33,11 +34,37 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
 				"model.updatedTime " +
 				" from PartyMeetingMinute model where " +
-				"  model.partyMeeting.partyMeetingId=:partyMeetingId ");
+				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("partyMeetingId", partyMeetingId);
 		
 		return query.list();
 	}
 	
+	public Integer updateMeetingPoint(Long minuteId,String minuteText,Long updatedBy,Date updateTime){
+		
+		StringBuilder query = new StringBuilder();
+		query.append("update PartyMeetingMinute model set model.minutePoint = ?,model.updatedBy.userId=?,model.updatedTime=? where model.partyMeetingMinuteId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, minuteText);
+		queryObject.setParameter(1, updatedBy);
+		queryObject.setParameter(2, updateTime);
+		queryObject.setParameter(3, minuteId);
+		
+		return queryObject.executeUpdate();	
+	}
+	
+	public Integer deleteMeetingMinutePoint(Long minuteId,Long updatedBy,Date updateTime){
+		StringBuilder query = new StringBuilder();
+		query.append("update PartyMeetingMinute model set model.isDeleted = 'Y',model.updatedBy.userId=?,model.updatedTime=? where model.partyMeetingMinuteId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setParameter(0, updatedBy);
+		queryObject.setParameter(1, updateTime);
+		queryObject.setParameter(2, minuteId);
+		return queryObject.executeUpdate();	
+		
+	}
 }
