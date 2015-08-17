@@ -188,7 +188,7 @@ header.eventsheader {
                                                     <div class="col-md-12 m_top20">
                                                       <input type="text" class="form-control" placeholder="Action Taken"/>
                                                     </div>-->
-                                                    <div class="panel-body m_top20" id="requestDivId" style="border:1px solid #c3c3c3;">
+                                                    <div class="panel-body m_top20"  style="border:1px solid #c3c3c3;">
                                                         <div class="row">
 														 <div class="pull-right" style="margin-right:5px;">
 															<button class="btn btn-danger btn-xs removebtn">REMOVE</button>
@@ -259,7 +259,7 @@ header.eventsheader {
                                                         </div>
                                                        
                                                         <div class="pull-right m_top10">
-                                                            <button class="btn btn-success btn-xs" onclick="addingRequests()">ADD</button>
+                                                            <button class="btn btn-success btn-xs" >ADD</button>
                                                         </div>
 													</div>
 												<!--<div class="row m_top20">
@@ -377,14 +377,14 @@ header.eventsheader {
         $("#addMoreDiv").append(c);
     }
    var maximumDivCount=1;
-   function addingRequests() {
+   $(document).on('click', '.addingRequests', function(){
 	   maximumDivCount = parseInt(maximumDivCount)+1;
 	   var c = $("#requestDivId").clone(true);
-            c.attr("id","requestDivId"+maximumDivCount)
-             c.find(".removebtn").attr("id","removeDivId"+maximumDivCount);
-			  c.find(".removebtn").attr("id","requestDivId"+maximumDivCount);
-			$("#atrDivId").append(c);
-   }
+           c.attr("id","requestDivId"+maximumDivCount)
+           c.find(".removebtn").attr("id","removeDivId"+maximumDivCount);
+		   c.find(".removebtn").attr("id","requestDivId"+maximumDivCount);
+		  $("#atrDivId").append(c);
+    });
    
     $(document).on('click', '.removebtn', function(){
 		
@@ -617,7 +617,7 @@ header.eventsheader {
 				   var str='';
 				   for(var i in result.atrDetails){
 					   maximumDivCount=i;
-					   str+='<div class="panel-body" id="requestDivId'+maximumDivCount+'">';
+					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
 				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
@@ -688,7 +688,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='</div>'; */
 					   str+='<div class="pull-right m_top10">';
-					   str+='<button class="btn btn-success btn-xs" >ADD</button>';
+					   str+='<button class="btn btn-success btn-xs addingRequests">ADD</button>';
 					   str+='</div>';
 					   str+='</div>';
 					   
