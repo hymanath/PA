@@ -1,11 +1,18 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
@@ -15,12 +22,16 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.model.PartyMeetingMinute;
+import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class PartyMeetingService implements IPartyMeetingService{
 	private static final Logger LOG = Logger.getLogger(PartyMeetingService.class);
@@ -37,7 +48,23 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPartyMeetingAtrPointDAO partyMeetingAtrPointDAO;
 	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IPartyMeetingMinuteHistoryDAO partyMeetingMinuteHistoryDAO;
+	private TransactionTemplate transactionTemplate;
 	
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+	public IPartyMeetingMinuteHistoryDAO getPartyMeetingMinuteHistoryDAO() {
+		return partyMeetingMinuteHistoryDAO;
+	}
+	public void setPartyMeetingMinuteHistoryDAO(
+			IPartyMeetingMinuteHistoryDAO partyMeetingMinuteHistoryDAO) {
+		this.partyMeetingMinuteHistoryDAO = partyMeetingMinuteHistoryDAO;
+	}
 	public IPartyMeetingAtrPointDAO getPartyMeetingAtrPointDAO() {
 		return partyMeetingAtrPointDAO;
 	}
@@ -455,5 +482,80 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		return returnVO;
 	}
+	
+	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy){
+			String updateStatusString="failed";
+		try {
+			LOG.info("Entered into updateMeetingPoint");
+			
+			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+	    	{
+			  public Object doInTransaction(TransactionStatus status) 
+			  {
+				  String updated = "success";
+				  PartyMeetingMinute pmm = partyMeetingMinuteDAO.get(minuteId);
+					
+					PartyMeetingMinuteHistory pmmh = new PartyMeetingMinuteHistory();
+					
+					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
+					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
+					pmmh.setMinutePoint(pmm.getMinutePoint());
+					pmmh.setInsertedBy(pmm.getInsertedBy());
+					pmmh.setUpdatedBy(pmm.getUpdatedBy());
+					pmmh.setInsertedTime(pmm.getInsertedTime());
+					pmmh.setUpdatedTime(pmm.getUpdatedTime());
+					
+					partyMeetingMinuteHistoryDAO.save(pmmh);
+					
+					Integer updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime());
+					if(updateStatus.intValue()==0){
+						updated  = "failed";
+					}
+					
+					return updated;
+			  }
+           });
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateMeetingPoint", e);
+		}
+		return updateStatusString;
+	}
 		
+	public String deleteMeetingMinutePoint(final Long minuteId,final Long updatedBy){
+		String updateStatusString="failed";
+		try {
+			LOG.info("Entered into deleteMeetingMinutePoint");
+			
+			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+	    	{
+			  public Object doInTransaction(TransactionStatus status) 
+			  {
+				  String updated = "success";
+				  PartyMeetingMinute pmm = partyMeetingMinuteDAO.get(minuteId);
+					
+					PartyMeetingMinuteHistory pmmh = new PartyMeetingMinuteHistory();
+					
+					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
+					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
+					pmmh.setMinutePoint(pmm.getMinutePoint());
+					pmmh.setInsertedBy(pmm.getInsertedBy());
+					pmmh.setUpdatedBy(pmm.getUpdatedBy());
+					pmmh.setInsertedTime(pmm.getInsertedTime());
+					pmmh.setUpdatedTime(pmm.getUpdatedTime());
+					
+					partyMeetingMinuteHistoryDAO.save(pmmh);
+					
+					Integer deleteStatus = partyMeetingMinuteDAO.deleteMeetingMinutePoint(minuteId,updatedBy,new DateUtilService().getCurrentDateAndTime());
+					if(deleteStatus.intValue()==0){
+						updated  = "failed";
+					}
+					return updated;
+			  }
+	       });
+		}catch (Exception e) {
+			LOG.error("Exception raised at deleteMeetingMinutePoint", e);
+		}
+		return "failed";
+	}
 }
