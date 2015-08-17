@@ -15235,10 +15235,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			if(constituencyIds!=null && constituencyIds.size()>0){
 				constiIds = constituencyIds;
 			}else{
-				List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
+				//List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
+				List<LocationWiseBoothDetailsVO> rslt = getConstituencyOfDistrict(stateId, districtIds);
 				if(rslt!=null && rslt.size()>0){
-					for(Object[] obj:rslt){
-						constiIds.add(Long.valueOf(obj[0].toString()));
+					for(LocationWiseBoothDetailsVO obj:rslt){
+						constiIds.add(obj.getLocationId());
 					}
 				}
 				
@@ -15256,10 +15257,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				
 			}else{
 				if(constituencyIds!=null && constituencyIds.size()>0){
-					List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
+					List<LocationWiseBoothDetailsVO> rslt = getConstituencyOfDistrict(stateId, districtIds);
 					if(rslt!=null && rslt.size()>0){
-						for(Object[] obj:rslt){
-							constiIds.add(Long.valueOf(obj[0].toString()));
+						for(LocationWiseBoothDetailsVO obj:rslt){
+							constiIds.add(obj.getLocationId());
 						}
 					}
 				}else{

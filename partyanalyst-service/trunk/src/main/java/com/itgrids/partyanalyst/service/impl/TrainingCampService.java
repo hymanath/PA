@@ -3162,7 +3162,7 @@ public class TrainingCampService implements ITrainingCampService{
 							List<Long> stateIds = getStatesOfDistrict(temp.getLevelValues());
 							if(stateIds!=null && stateIds.size()>0){
 									Set<Long> statesSet = new HashSet<Long>(states);
-									statesSet.addAll(states);
+									statesSet.addAll(stateIds);
 									stateVO.setLevelValues(new ArrayList<Long>(statesSet));
 							}
 							

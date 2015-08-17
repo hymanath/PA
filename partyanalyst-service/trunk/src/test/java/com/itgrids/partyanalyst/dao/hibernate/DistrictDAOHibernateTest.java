@@ -66,6 +66,7 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 	
 	public void testgetDistrictList()
 	{
-		districtDAO.getDistrictList();
+		List<Object[]> rslt = districtDAO.getDistrictsWithNewSplitted(36l);
+		System.out.println(rslt.size());
 	}
 }
