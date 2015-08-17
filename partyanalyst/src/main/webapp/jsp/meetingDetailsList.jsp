@@ -487,6 +487,10 @@ header.eventsheader {
           
        }
      }
+	 $("#DistrictShowIdSpan"+atrId).val($("#districtId"+atrId).text());
+	 
+	 var lctn = $("#districtId"+atrId+" option:selected").text();
+	 $("#DistrictShowIdSpan"+atrId).html("<h4>"+lctn+" District</h4>");
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -516,6 +520,9 @@ header.eventsheader {
                   
                }
             }
+			
+			var lctn = $("#constituencyId"+atrId+" option:selected").text();
+			$("#ConstShowIdSpan"+atrId).html("<h4>"+lctn+" Constituency</h4>");
         });
     }
 
@@ -525,13 +532,15 @@ header.eventsheader {
           $("#searchDataImgForcons"+atrId).show();
         var constituencyId = 0;
         var mandalId = 0;
-       
+        var locationTemp = "#ManTwnDivShowIdSpan"+atrId;
+		
+	   
         if(locationLevel==4){
              $("#searchDataImgForcons"+atrId).show();
             constituencyId =  locationId;
         }
         if(locationLevel==5){
-           
+           locationTemp = "#VillWardShowIdSpan"+atrId;
             mandalId = locationId;
         }
        
@@ -567,6 +576,10 @@ header.eventsheader {
 				}
                 
             }
+			
+			$(locationTemp).val($(divId).text());
+			var lctn = $(""+divId+" option:selected").text();
+			$(locationTemp).html("<h4>"+lctn+"</h4>");
         });
     }
    
@@ -574,35 +587,41 @@ header.eventsheader {
     function getmeetinglocationlevel(locationLevel, locationId,atrId,locationLevelValue){
        
         if(locationLevel == 1){
-            $("#stateShowId"+atrId).hide();
-            $("#DistrictShowId"+atrId).show();
-            $("#ConstShowId"+atrId).hide();
-            $("#ManTwnDivShowId"+atrId).hide();
-            $("#VillWardShowId"+atrId).hide();
-            getDistrictsForStates(locationId,atrId,locationLevelValue);
+            $("#stateShowIdSpan"+atrId).hide();
+            $("#DistrictShowIdSpan"+atrId).show();
+            $("#ConstShowIdSpan"+atrId).hide();
+            $("#ManTwnDivShowIdSpan"+atrId).hide();
+            $("#VillWardShowIdSpan"+atrId).hide();
+			
+			getDistrictsForStates(locationId,atrId,locationLevelValue);
         }
         else if(locationLevel == 2){
-            $("#stateShowId"+atrId).hide();
-            $("#DistrictShowId"+atrId).hide();
-            $("#ConstShowId"+atrId).show();
-            $("#ManTwnDivShowId"+atrId).hide();
-            $("#VillWardShowId"+atrId).hide();
+            $("#stateShowIdSpan"+atrId).hide();
+            $("#DistrictShowIdSpan"+atrId).hide();
+            $("#ConstShowIdSpan"+atrId).show();
+            $("#ManTwnDivShowIdSpan"+atrId).hide();
+            $("#VillWardShowIdSpan"+atrId).hide();
+			
             getConstituenciesForDistricts(locationId,atrId,locationLevelValue);
         }
         else if(locationLevel == 3){
-            $("#stateShowId"+atrId).hide();
-            $("#DistrictShowId"+atrId).hide();
-            $("#ConstShowId"+atrId).hide();
-            $("#ManTwnDivShowId"+atrId).show();
-            $("#VillWardShowId"+atrId).hide();
+            $("#stateShowIdSpan"+atrId).hide();
+            $("#DistrictShowIdSpan"+atrId).hide();
+            $("#ConstShowIdSpan"+atrId).hide();
+            $("#ManTwnDivShowIdSpan"+atrId).show();
+            $("#VillWardShowIdSpan"+atrId).hide();
+			
+			
             getMandalVillageDetails(locationId, 4,atrId,locationLevelValue);
         }
         else if(locationLevel == 4){
-            $("#stateShowId"+atrId).hide();
-            $("#DistrictShowId"+atrId).hide();
-            $("#ConstShowId"+atrId).hide();
-            $("#ManTwnDivShowId"+atrId).hide();
-            $("#VillWardShowId"+atrId).show();
+            $("#stateShowIdSpan"+atrId).hide();
+            $("#DistrictShowIdSpan"+atrId).hide();
+            $("#ConstShowIdSpan"+atrId).hide();
+            $("#ManTwnDivShowIdSpan"+atrId).hide();
+            $("#VillWardShowIdSpan"+atrId).show();
+			
+			$("#VillWardShowIdSpan"+atrId).val($("#VillWardId"+atrId).text());
             getMandalVillageDetails(locationId, 5,atrId,locationLevelValue);
         }
     }
@@ -657,18 +676,19 @@ header.eventsheader {
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
 				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
+					   str+=' <button class="btn btn-danger btn-xs editBtn" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
 					   str+='<label>REQUEST</label><br/>';
-					   str+='<textarea rows="4" cols="40" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></textarea>';
+					   str+='<span id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>ACTION TAKEN</label><br/>';
-					   str+='<textarea rows="4" cols="40" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></textarea>';
+					   str+='<span id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>RAISED BY</label><br/>';
-					   str+='<input type="text" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" value="'+result.atrDetails[i].raisedBy+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"/>';
+					   str+='<span id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
 					   str+='</div>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
@@ -690,6 +710,7 @@ header.eventsheader {
 					   str+='<option>Select District</option>';
 					   str+='</select>';
 					   str+='</div>';
+					   str+='<span style="display:none;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
 					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
 					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
 					   str+='</div>';
@@ -699,6 +720,8 @@ header.eventsheader {
 					   str+='<option>Select Constituency</option>';
 					   str+='</select>';
 					   str+='</div>';
+					   str+='<span style="display:none;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
+					   
 					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
 					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
 					   str+='</div>';
@@ -708,12 +731,15 @@ header.eventsheader {
 					   str+='<option>Select Mandal/Town/Division</option>';
 					   str+='</select>';
 					   str+='</div>';
+					   str+='<span style="display:none;" id="ManTwnDivShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
+					   
 					   str+='<div class="col-md-12" id="VillWardShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Village/Ward</label>';
 					   str+='<select class="form-control" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<option>Select Village/Ward</option>';
 					   str+='</select>';
 					   str+='</div>';
+					   str+='<span style="display:none;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
 					   str+='</div>';
 					   /* str+='<div class="row">';
 					   str+='<div class="col-md-12">';
