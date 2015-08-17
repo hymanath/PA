@@ -1806,7 +1806,7 @@ for(var i in result)
     str+='<div class="panel-heading " role="tab" id="consheading'+j+'">';
     str+='<h4 class="panel-title">';
         str+=' <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInner'+j+'" href="#conscollapse'+j+'" aria-expanded="true" aria-controls="conscollapse'+j+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
-		str+='<input class="pull-right constituencyCheck dist'+result[i].id+'" type="checkbox" value="'+result[i].subList[j].id+'"> ';
+		str+='<input class="pull-right constituencyCheck subdist'+result[i].id+' parentConst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].id+'"> ';
 	
     str+='</h4>';
     str+='</div>';
@@ -1816,7 +1816,7 @@ for(var i in result)
     str+='<div id="conscollapse'+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+j+'">';
     str+='<div class="panel-body border_0" style="padding:5px 5px 5px 8px">';
 	str+='<ul>';
-	str+='<li>'+result[i].subList[j].subList[k].name.toLowerCase()+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck dist'+result[i].id+' const'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].subList[k].id+'"> </li>';
+	str+='<li>'+result[i].subList[j].subList[k].name.toLowerCase()+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck subdist'+result[i].id+' subconst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].subList[k].id+'" id="consti'+result[i].subList[j].id+'"> </li>';
 	str+='</ul>';
 	str+='</div>';
     str+='</div>';
@@ -1834,13 +1834,13 @@ for(var i in result)
 
 $("#scheduleMembersDiv").html(str);
 $(".constituencyCheck").click(function() {
- 
+
 	   if($(this).is(':checked'))
 		{
 		var constituencyID = $(this).val();
 		//alert($(this).closest(".distaccordion").find(".districtCheck").html())
-			$(this).closest(".distaccordion").find(".districtCheck").prop('checked', false);
-			$(".const"+constituencyID).prop('checked', false);
+			$(this).closest(".distaccordion").find(".districtCheck").prop('checked', false);//district
+			$(".subconst"+constituencyID).prop('checked', false); // mandal
 		}
  });
  
@@ -1848,10 +1848,10 @@ $(".districtCheck").click(function(){
 if($(this).is(':checked'))
 	{
 	var districtID = $(this).val();
-	$(".dist"+districtID).each(function(){
+	$(".subdist"+districtID).each(function(){
 							if($(this).is(':checked'))
 							{
-								$(".dist"+districtID).prop('checked', false);
+								$(".subdist"+districtID).prop('checked', false);
 								//$(this).prop('checked', false);
 							}
 					}) 	
@@ -1860,10 +1860,21 @@ if($(this).is(':checked'))
 
 
 $(".mandalCheck").click(function(){
+
 if($(this).is(':checked'))
 	{
-	$(this).closest(".constaccor").find(".constituencyCheck").prop('checked', false);
+	var constituencyID = $(this).attr("id").replace ( /[^\d.]/g, '' );
+	
+	$(".parentConst"+constituencyID).each(function(){
+							if($(this).is(':checked'))
+							{
+								$(".parentConst"+constituencyID).prop('checked', false);
+								
+							}
+					}) 	
+	
 	}
+	
 });
 
 }
@@ -1924,7 +1935,7 @@ var jObj={
 		};
 		$.ajax({
 			  type:'POST',
-			  url: 'assignScheduleMembersToCallerAction.action',
+			  url: 'saveAllDetailsAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 			  
