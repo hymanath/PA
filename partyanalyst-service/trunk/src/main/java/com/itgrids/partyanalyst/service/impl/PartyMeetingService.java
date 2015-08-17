@@ -699,4 +699,20 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return updateStatusString;
 	}
+	
+	public String deletePartyMeetingDocument(Long docId){
+		String status = "failed";
+		try {
+			LOG.info("Entered into deletePartyMeetingDocument");
+			Integer count = partyMeetingDocumentDAO.deletePartyMeetingDocument(docId);
+			
+			if(count.intValue()>0){
+				status="success";
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at deletePartyMeetingDocument", e);
+		}
+		return status;
+	}
 }

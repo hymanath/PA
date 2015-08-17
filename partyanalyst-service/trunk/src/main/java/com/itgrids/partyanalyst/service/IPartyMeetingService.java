@@ -10,4 +10,5 @@ public interface IPartyMeetingService {
 	public String deleteMeetingMinutePoint(Long minuteId,Long updateBy);
 	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId);
 	public String deleteMeetingAtrPoint(final Long atrId,final Long updatedBy);
+	public String deletePartyMeetingDocument(Long docId);
 }
