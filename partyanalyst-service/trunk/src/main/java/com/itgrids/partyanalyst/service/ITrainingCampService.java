@@ -26,7 +26,7 @@ public interface ITrainingCampService {
 	public TrainingCampVO getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	//public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
-	public List<Long> getTrainingCampUserTypeIds();
+	public List<Long> getTrainingCampUserTypeIds(Long adminId);
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
 	public List<BasicVO> getAllPrograms();
 	public List<BasicVO> getCampsByProgramId(Long programId);
