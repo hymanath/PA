@@ -15289,14 +15289,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				
 			}else{
 				if(constituencyIds!=null && constituencyIds.size()>0){
+					constiIds = constituencyIds;
+				}else{
 					List<LocationWiseBoothDetailsVO> rslt = getConstituencyOfDistrict(stateId, districtIds);
 					if(rslt!=null && rslt.size()>0){
 						for(LocationWiseBoothDetailsVO obj:rslt){
 							constiIds.add(obj.getLocationId());
 						}
 					}
-				}else{
-					constiIds = constituencyIds;
 				}
 			}
 		}

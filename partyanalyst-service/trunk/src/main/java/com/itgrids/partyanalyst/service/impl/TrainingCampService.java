@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
@@ -74,6 +75,9 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
+import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
+import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
@@ -3715,4 +3719,40 @@ public class TrainingCampService implements ITrainingCampService{
 		} 
 		return finalList;
 	}
+	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId){
+		LOG.debug("Entered Into saveFilePaths");
+		try{
+			
+			PartyMeetingDocument partyMeetingDocument = new PartyMeetingDocument();
+			partyMeetingDocument.setPartyMeetingId(partyMeetingId);
+			partyMeetingDocument.setUploadedById(userId);
+			partyMeetingDocument.setUpdatedById(userId);
+			partyMeetingDocument.setPath(filePath);
+			partyMeetingDocument.setUploadedTime(new DateUtilService().getCurrentDateAndTime());
+			partyMeetingDocument.setDocumentFormat(getStandardFormatOfFile(fileType));
+			partyMeetingDocument.setDocumentType(documentType);
+			
+			partyMeetingDocumentDAO.save(partyMeetingDocument);
+			return "success";
+		}catch (Exception e) {
+			LOG.error(" Error in saveFilePaths",e);
+			return "failed";
+		}
+		
+	}
+	
+	public String getStandardFormatOfFile(String type){
+		String format = "OTHERS";
+		if(type.equalsIgnoreCase("jpeg") || type.equalsIgnoreCase("jpg") || type.equalsIgnoreCase("png") || type.equalsIgnoreCase("gif")){
+			format = "IMAGE";
+		}else if(type.equalsIgnoreCase("doc") || type.equalsIgnoreCase("docx")){
+			format = "WORD";
+		}else if(type.equalsIgnoreCase("xls") || type.equalsIgnoreCase("xlsx") || type.equalsIgnoreCase("csv")){
+			format = "EXCEL";
+		}else if(type.equalsIgnoreCase("pdf")){
+			format = "PDF";
+		}
+		return format;
+	}
+	
 }
