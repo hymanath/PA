@@ -200,4 +200,16 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String deletePartyMeetingDocument(){
+		try{
+			LOG.info("Entered into deletePartyMeetingDocument");
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingService.deletePartyMeetingDocument(jObj.getLong("docId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at deletePartyMeetingDocument",e);
+		}
+		return Action.SUCCESS;
+	}
 }

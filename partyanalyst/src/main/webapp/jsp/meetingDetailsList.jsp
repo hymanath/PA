@@ -147,7 +147,7 @@ header.eventsheader {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <form id="uploadMinutesDocs" name="uploadMinutesDocs">
-														<input type="file" class="m_top10" name="imageForDisplay" id="fileId" style="width: 225px;margin-left:15px;"/>
+														<input type="file" class="m_top10" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFiles"></div>
 														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;" id="uploadMinutesDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
@@ -295,7 +295,7 @@ header.eventsheader {
 											<div class="row">
 												 <div class="col-md-12">
                                                     <form id="uploadATRDocs" name="uploadATRDocs">
-														<input type="file" class="m_top10" name="imageForDisplay" id="fileIdATR" style="width: 225px;margin-left:15px;"/>
+														<input type="file" class="m_top10" name="imageForDisplay" id="atrFileId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFilesATR"></div>
 														<input type= "button" value="Upload ATR Files" style="margin-left:15px;margin-top:10px;" id="uploadATRDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingATRId"/>
@@ -704,11 +704,26 @@ header.eventsheader {
 			   $("#meetingType").html(result.partyMeetingType);
 			   $("#location").html(result.meetingLevel);
 			   
-			   if(result.minuteDocuments!=null){
-					$("#mintueDocumentDivId").html(result.minuteDocuments);
+			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
+				   var str='';
+				   for(var i in result.minutesDocuments){
+					   str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
+					   str+='<span>'+result.minutesDocuments[i].url+'<span>';
+					   str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+					   str+='</div><br/>';
+				   }
+				   $("#mintueDocumentDivId").html(str);
 			   }
-			   if(result.atrDocuments!=null){
-				   $("#atrDocumentDivId").html(result.atrDocuments);
+			   
+			   if(result.atrDocuments!=null && result.atrDocuments.length>0){
+				   var str='';
+				   for(var i in result.atrDocuments){
+					   str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
+					   str+='<span>'+result.atrDocuments[i].url+'<span>';
+					   str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+					   str+='</div><br/>';
+				   }
+				   $("#atrDocumentDivId").html(str);
 			   }
 			   
 			   
@@ -963,6 +978,25 @@ header.eventsheader {
 			}
 		});
 		
+	});
+	
+	$(document).on('click', '.deleteDoc', function(){
+		var docId = $(this).attr("id");
+		var jsObj={		
+			docId : docId
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'deletePartyMeetingDocumentAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result=="success"){
+				alert("Document Deleted");
+			}else{
+				alert("Please Try Again");
+			}
+		});
 	});
 	
 	var editAtrId='';
