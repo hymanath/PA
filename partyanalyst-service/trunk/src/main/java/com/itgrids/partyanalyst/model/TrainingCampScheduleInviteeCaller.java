@@ -33,7 +33,7 @@ private Long insertedBy;
 private Long updatedBy;
 private Date insertedTime;
 private Date updatedTime;
-private TrainingCampUser trainingCampUser;
+private User trainingCampUser;
 
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -136,10 +136,10 @@ public void setTrainingCampScheduleInvitee(
 
 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 @JoinColumn(name = "training_camp_caller_id",insertable =false,updatable = false)
-public TrainingCampUser getTrainingCampUser() {
+public User getTrainingCampUser() {
 	return trainingCampUser;
 }
-public void setTrainingCampUser(TrainingCampUser trainingCampUser) {
+public void setTrainingCampUser(User trainingCampUser) {
 	this.trainingCampUser = trainingCampUser;
 }
 
