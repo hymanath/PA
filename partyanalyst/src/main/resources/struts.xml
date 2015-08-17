@@ -10637,5 +10637,11 @@
 	       <param name="root">trainingCampVO</param>
 	  </result>
 	</action>
+	<action name="getTdpCadreDetailsforAScheduleAction" class="trainingCampAction" method="getTdpCadreDetailsforASchedule">
+	    <result type="json" name="success">
+	       <param name="root">finalList</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      

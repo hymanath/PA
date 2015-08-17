@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -73,8 +74,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long partyMeetingId;
 	private MeetingVO userAccessDetailsVO;
 	private PartyMeetingVO meetingDetails;
+	private List<CadreDetailsVO> finalList;
 	
 	
+	public List<CadreDetailsVO> getFinalList() {
+		return finalList;
+	}
+
+	public void setFinalList(List<CadreDetailsVO> finalList) {
+		this.finalList = finalList;
+	}
+
 	public MeetingVO getUserAccessDetailsVO() {
 		return userAccessDetailsVO;
 	}
@@ -1203,4 +1213,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
 	}
 	
+	public String getTdpCadreDetailsforASchedule(){
+		
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long scheduleId = jObj.getLong("scheduleId");
+			
+			finalList = trainingCampService.getTdpCadreDetailsforASchedule(scheduleId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
