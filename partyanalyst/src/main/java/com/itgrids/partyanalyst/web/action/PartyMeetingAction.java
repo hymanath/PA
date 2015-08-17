@@ -140,7 +140,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 				loggedUser = regVo.getRegistrationID();
 			}
 			
-			status = partyMeetingService.updateMeetingPoint(minuteId,minuteText,loggedUser);
+			status = partyMeetingService.updateMeetingPoint(minuteId,minuteText,loggedUser,jObj.getLong("partyMeetingId"));
 		} catch (Exception e) {
 			LOG.error("Exception raise at updateMeetingPoint", e);
 		}

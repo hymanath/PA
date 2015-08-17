@@ -130,6 +130,9 @@ header.eventsheader {
                                                     <span class="input-group-addon trash">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
+													<span class="input-group-addon saveMinute">
+														<i class="glyphicon glyphicon-ok"></i>
+													</span>
                                                 </div>
                                            
                                             <button class="btn btn-success btn-xs pull-right m_top20" onclick="myFunction()">ADD</button>
@@ -282,7 +285,7 @@ header.eventsheader {
                                                
                                             </div>
 											<div class="pull-right m_top10">
-											<button class="btn btn-success btn-xs">ADD</button>
+											<button class="btn btn-success btn-xs addingRequests">ADD</button>
 											</div>
 											</div>
 											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
@@ -384,7 +387,12 @@ header.eventsheader {
             c.removeAttr("style");
             c.attr("id","list"+mainDivCount)
             c.find(".txtbox").attr("id","minutes"+mainDivCount);
-            c.find(".trash").attr("attr_txt","list"+mainDivCount);
+            c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
+			c.find(".saveMinute").attr("id","save"+mainDivCount);
+			c.find(".saveMinute").attr("attr_txt","minutes"+mainDivCount);
+			c.find(".saveMinute").attr("attr_minuteId","0");
+			c.find(".trash").attr("attr_minuteId","0");
+			
         $("#addMoreDiv").append(c);
     }
    var maximumDivCount=1;
@@ -716,7 +724,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='</div>'; */
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<button class="btn btn-success btn-xs addingRequests updateAtr" style="padding:3px;" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_locationScope="'+result.atrDetails[i].locationScopeId+'">UPDATE</button>';
+					   str+='<button class="btn btn-success btn-xs  updateAtr" style="padding:3px;" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_locationScope="'+result.atrDetails[i].locationScopeId+'">UPDATE</button>';
 					   str+='<button class="btn btn-success btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="padding:3px;" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'">DELETE</button>';
 					   str+='</div>';
 					   str+='</div>';
@@ -743,14 +751,14 @@ header.eventsheader {
 	}
 	
 	$(document).on('click', '.saveMinute', function(){
-		 var saveBtnId = $(this).attr("id");
+		var saveBtnId = $(this).attr("id");
 		var textBoxId = $(this).attr("attr_txt");
 		var minuteText = $("#"+textBoxId).val();
 		var minuteId = $(this).attr("attr_minuteId");
-		
 		var jsObj={		
 			minuteId : minuteId,
-			minuteText : minuteText
+			minuteText : minuteText,
+			partyMeetingId : partyMeetingId//global var
 		}
 		$.ajax({
 			  type:'GET',
