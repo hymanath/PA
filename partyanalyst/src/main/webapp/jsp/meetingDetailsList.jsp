@@ -145,6 +145,9 @@ header.eventsheader {
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
+													<span class="input-group-addon saveMinute" attr_txt="minutes1">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </span>
                                                 </div>
                                             </div>   
                                            
@@ -373,10 +376,28 @@ header.eventsheader {
         $("#addMoreDiv").append(c);
     }
    
-    $(".trash").click(function(){
-        var divId = $(this).attr("attr_txt");
+    $(document).on('click', '.trash', function(){
+        
+		var divId = $(this).attr("attr_txt");
         $("#"+divId).remove();
         $(this).remove();
+		
+		var minuteId = $(this).attr("attr_minuteId");
+		
+		var jsObj =    {minuteId : minuteId}
+       
+        $.ajax(
+        {
+            type: "POST",
+            url:"deleteMeetingMinuteAction.action",
+            data:{task :JSON.stringify(jsObj)}
+        }
+        ).done(function(result){
+			if(result=="success"){
+			   alert("Minute Deleted");
+		   }
+		});
+		
     });
    
     function getTheMeetingLevelDetails(){
@@ -564,9 +585,12 @@ header.eventsheader {
 				   for(var i in result.minutesDetails){
 					   mainDivCount=i;
 						str+='<div class="input-group bin-div m_top10" id="list'+mainDivCount+'">';
-						str+='<input type="text" class="form-control" id="minutes'+mainDivCount+'" value="'+result.minutesDetails[i].minutePoint+'"></input>';
-						str+='<span class="input-group-addon trash" attr_txt="minutes'+mainDivCount+'">';
-						str+='<i class="glyphicon glyphicon-trash"></i>';
+						str+='<input type="text" class="form-control" id="minutes'+mainDivCount+'" onclick=enableSaveOption("'+mainDivCount+'"); value="'+result.minutesDetails[i].minutePoint+'"></input>';
+						str+='<span class="input-group-addon trash" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
+							str+='<i class="glyphicon glyphicon-trash"></i>';
+						str+='</span>';
+						str+='<span class="input-group-addon saveMinute" style="display:none;" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'">';
+							str+='<i class="glyphicon glyphicon-ok"></i>';
 						str+='</span>';
 						str+='</div>';
 				   }
@@ -663,6 +687,33 @@ header.eventsheader {
 		   }
 	   });
 	}
+	
+	function enableSaveOption(txtBoxCnt){
+		$("#save"+txtBoxCnt).show();
+	}
+	
+	$(document).on('click', '.saveMinute', function(){
+		var textBoxId = $(this).attr("attr_txt");
+		var minuteText = $("#"+textBoxId).val();
+		var minuteId = $(this).attr("attr_minuteId");
+		
+		var jsObj={		
+			minuteId : minuteId,
+			minuteText : minuteText
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'updateMeetingMinutePointAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if(result=="success"){
+			   alert("Updated Successfully");
+		   }
+		});
+	});
+	
+	
 </script>
 </body>
 </html>

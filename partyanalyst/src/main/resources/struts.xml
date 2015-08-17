@@ -10616,5 +10616,17 @@
 	  </result>
 	</action>
 	
+	<action name="updateMeetingMinutePointAction" class="partyMeetingAction" method="updateMeetingPoint">
+	    <result type="json" name="success">
+	       <param name="root">status</param>
+	  </result>
+	</action>
+	
+	<action name="deleteMeetingMinuteAction" class="partyMeetingAction" method="deleteMeetingMinutePoint">
+	    <result type="json" name="success">
+	       <param name="root">status</param>
+	  </result>
+	</action>
+	
 </package>
 </struts>      
