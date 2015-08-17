@@ -311,4 +311,34 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		
 	}
 	
+	public List<Object[]> getDistrictsWithNewSplitted(Long stateId){
+		StringBuilder str = new StringBuilder();
+	    str.append("select distinct model.districtId, model.districtName " +
+	    		" from District model where " );
+	    if(stateId!=0){
+	    	str.append(" model.state.stateId =:stateId");
+	    }else{
+	    	str.append(" model.state.stateId in(1,36)");
+	    }
+		if(stateId.longValue() == 1){
+			str.append(" and (model.districtId > 10 or model.districtId = 517)");
+		}else if(stateId.longValue()==36){
+			str.append(" and (model.districtId < 11 or model.districtId = 518)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(stateId!=0){
+			query.setParameter("stateId", stateId);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getStatesForDistricts(List<Long> distIds){
+		Query query = getSession().createQuery(" select distinct model.state.stateId, model.state.stateName " +
+				" from District model" +
+				" where model.district.districtId in(:distIds)");
+		query.setParameterList("distIds", distIds);
+		return query.list();
+	}
+	
+	
 }
