@@ -3437,6 +3437,27 @@ public class TrainingCampService implements ITrainingCampService{
 		return partyMeetingVO;
 	}
 	
+	
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId)
+	{
+		try{
+			List<Long> callerIdsList = new ArrayList<Long>();
+			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(userId);
+			if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+				if(!callerIdsList.contains((Long)params[0]))
+						callerIdsList.add((Long)params[0]);	
+				}
+			
+			if(callerIdsList != null && callerIdsList.size() > 0)
+			return getCallerWiseOverView(callerIdsList);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList)
 	{
 		TrainingCampVO returnVO = new TrainingCampVO();
@@ -3517,6 +3538,8 @@ public class TrainingCampService implements ITrainingCampService{
 						{
 							trainingCampVOList = userWiseCallStatusMap.get(callerId);
 						}
+						if((trainingCampVOList != null && trainingCampVOList.size() > 0) && trainingCampVOList.get(0) != null)
+						{
 						TrainingCampVO trainingCampVO = trainingCampVOList.get(0);
 						trainingCampVO.setStatus(statusStr);
 						trainingCampVO.setCompletedCalls(count);
@@ -3530,6 +3553,7 @@ public class TrainingCampService implements ITrainingCampService{
 						trainingCampVO.setPendingCalls(pendingCalls);
 						
 						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+						}
 					}
 				}
 				
@@ -3546,6 +3570,8 @@ public class TrainingCampService implements ITrainingCampService{
 						{
 							trainingCampVOList = userWiseCallStatusMap.get(callerId);
 						}
+						if((trainingCampVOList != null && trainingCampVOList.size() > 0) && trainingCampVOList.get(1) != null)
+								{
 						TrainingCampVO trainingCampVO = trainingCampVOList.get(1);
 						trainingCampVO.setStatus(statusStr);
 						trainingCampVO.setCompletedCalls(count);
@@ -3559,6 +3585,7 @@ public class TrainingCampService implements ITrainingCampService{
 						trainingCampVO.setPendingCalls(pendingCalls);
 						
 						userWiseCallStatusMap.put(callerId, trainingCampVOList);
+								}
 					}
 				}
 				

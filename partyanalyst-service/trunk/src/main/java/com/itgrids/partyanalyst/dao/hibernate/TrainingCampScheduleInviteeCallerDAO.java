@@ -20,7 +20,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.user.userId,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.user.lastName from  TrainingCampScheduleInviteeCaller model " +
+		str.append(" select model.trainingCampUser.userId,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.user.lastName from  TrainingCampScheduleInviteeCaller model " +
 				" where  ");
 		
 		if(startDate !=null && endDate !=null){
@@ -106,7 +106,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.user.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.user.lastName " +
+		str.append(" select model.trainingCampUser.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.user.lastName " +
 				" from  TrainingCampScheduleInviteeCaller model " +
 				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
 		
@@ -151,7 +151,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
 				
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId  " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -177,7 +177,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
@@ -224,8 +224,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
-				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
-				" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId");
+				//" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
 		if(status.equalsIgnoreCase("undialed"))
 			str.append(" and campCallStatus.campCallStatusId is null");
 		if((statusIds != null && statusIds.size() > 0) && statusType.equalsIgnoreCase("callStatus"))
@@ -594,7 +594,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				
 				
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId  " +
 				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
@@ -658,7 +658,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId in(1,2) " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId " +
 				" and date(model.trainingCampScheduleInvitee.callBackTime) = :date and model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId in(6,7) " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
@@ -823,8 +823,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				str.append(" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId =:campId" +
-				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId" +
-				" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId =:scheduleId");
 				if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
 				{
 					str.append(" and model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
@@ -957,7 +956,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId)
 	{
-		Query query = getSession().createQuery(" select distinct model.trainingCampUser.user.userId,model.trainingCampUser.user.firstName,model.trainingCampUser.user.lastName" +
+		Query query = getSession().createQuery(" select distinct model.trainingCampUser.userId,model.trainingCampUser.firstName,model.trainingCampUser.lastName" +
 				" from TrainingCampScheduleInviteeCaller model where model.trainingCampCallerAdminId =:campCallerAdminId ");
 		
 		query.setParameter("campCallerAdminId", campCallerAdminId);
@@ -1028,24 +1027,27 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	public List<Object[]> getCallerWiseAssignedCount(String searchType,List<Long> callerIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select model.trainingCampCallerId,model.trainingCampUser.user.firstName,count(model.trainingCampScheduleInviteeCallerId) " );
+		queryStr.append("select model.trainingCampCallerId,model.trainingCampUser.firstName,count(model.trainingCampScheduleInviteeCallerId) " );
 		queryStr.append(" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
-		queryStr.append(" where model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+		queryStr.append(" where ");
+		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
+		{
+			queryStr.append(" model.callPurposeId = 1 ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
+		{
+			queryStr.append(" model.callPurposeId = 2  ");
+		}
 		if(callerIdsList != null && callerIdsList.size()>0)
 		{
 			queryStr.append(" and model.trainingCampCallerId in (:callerIdsList) ");
 		}
-		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
-		{
-			queryStr.append(" and model.callPurposeId = 1 ");
-		}
-		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
-		{
-			queryStr.append(" and model.callPurposeId = 2  ");
-		}
+		
+		
 		queryStr.append(" group by model.trainingCampCallerId " +
 				" order by  model.trainingCampCallerId  ");
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("callerIdsList", callerIdsList);
 		return query.list();
 	}
 	
@@ -1054,24 +1056,26 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.trainingCampCallerId, campCallStatus.campCallStatusId,campCallStatus.status, count(model.trainingCampScheduleInviteeCallerId)" +
-				"  model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" );
+				"  ,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" );
 		queryStr.append(" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
-		queryStr.append(" where model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(1,2) ");
+		queryStr.append(" where  ");
+		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
+		{
+			queryStr.append(" model.callPurposeId = 1 ");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
+		{
+			queryStr.append(" model.callPurposeId = 2  ");
+		}
 		if(callerIdsList != null && callerIdsList.size()>0)
 		{
 			queryStr.append(" and model.trainingCampCallerId in (:callerIdsList) ");
 		}
-		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
-		{
-			queryStr.append(" and model.callPurposeId = 1 ");
-		}
-		else if(searchType != null && searchType.equalsIgnoreCase("batch"))
-		{
-			queryStr.append(" and model.callPurposeId = 2  ");
-		}
+	
 		queryStr.append(" group by model.trainingCampCallerId, model.campCallStatus.campCallStatusId " +
 				" order by  model.trainingCampCallerId , campCallStatus.status ");
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("callerIdsList", callerIdsList);
 		return query.list();
 	}
 	
