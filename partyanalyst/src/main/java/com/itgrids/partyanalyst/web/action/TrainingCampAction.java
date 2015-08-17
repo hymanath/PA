@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -634,10 +635,55 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long callerId = jObj.getLong("callerId");
 			Long callPurposeId = jObj.getLong("callPurposeId");
 			Boolean isOwnMembers = jObj.getBoolean("availCalls");
-			
-			
+					
 			if(callPurposeId == 1){
 				List<TrainingCampVO> areasVOList = new ArrayList<TrainingCampVO>();
+				JSONArray distarr = jObj.getJSONArray("districtIds");
+				if(distarr != null && distarr.length() > 0)
+				{
+					TrainingCampVO vo = new TrainingCampVO();
+					vo.setLocationTypeId(IConstants.DISTRICT_SCOPE_ID);
+					for(int i=0; i<distarr.length();i++)
+					{
+						TrainingCampVO vo1 = new TrainingCampVO();
+						
+						vo1.setId(Long.parseLong(distarr.get(i).toString()));
+						vo.getTrainingCampVOList().add(vo1);
+					}
+					areasVOList.add(vo);
+					
+					
+					JSONArray constarr = jObj.getJSONArray("constiIds");
+					if(constarr != null && constarr.length() > 0)
+					{
+						TrainingCampVO constvo = new TrainingCampVO();
+						vo.setLocationTypeId(IConstants.CONSTITUENCY_SCOPE_ID);
+						for(int i=0; i<constarr.length();i++)
+						{
+							TrainingCampVO vo2 = new TrainingCampVO();
+							
+							vo2.setId(Long.parseLong(constarr.get(i).toString()));
+							constvo.getTrainingCampVOList().add(vo2);
+						}
+						areasVOList.add(constvo);
+						
+						
+						JSONArray mandalarr = jObj.getJSONArray("mandalIds");
+						if(mandalarr != null && mandalarr.length() > 0)
+						{
+							TrainingCampVO mandalvo = new TrainingCampVO();
+							mandalvo.setLocationTypeId(IConstants.TEHSIL_SCOPE_ID);
+							for(int i=0; i<mandalarr.length();i++)
+							{
+								TrainingCampVO vo3 = new TrainingCampVO();
+								
+								vo3.setId(Long.parseLong(mandalarr.get(i).toString()));
+								mandalvo.getTrainingCampVOList().add(vo3);
+							}
+							areasVOList.add(mandalvo);
+				}
+						
+				
 				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
 			}
 			else if(callPurposeId == 2){
@@ -1130,16 +1176,6 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	}
 	
 	
-	public String assignScheduleMembersToCaller()
-	{
-		try{
-			jObj = new JSONObject();
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-		}
-		return Action.SUCCESS;
-	}
 	
 	
 }
