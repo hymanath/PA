@@ -315,6 +315,30 @@ header.eventsheader {
     </div>
 </main>
 
+<div class="modal fade" id="myModashow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <div class="modal-dialog popupborder">
+		 <div class="modal-content " style="padding: 15px;">
+			 <div class="col-md-12">
+				 <label>REQUEST</label><br/>
+				 <textarea rows="4" cols="40" id="request"></textarea>
+			 </div>
+			 <div class="col-md-12 m_top20">
+				 <label>ACTION TAKEN</label><br/>
+				 <textarea rows="4" cols="40" id="actionTaken"></textarea>
+			 </div>
+			 
+			 <div class="col-md-12 m_top20">
+				 <label>RAISED BY</label><br/>
+				 <input type="text" id="raisedBy"/>
+			 </div>
+			 <div class="col-md-12" id="locationInPop"></div>
+			 
+			 <button type="button" class="btn btn-info" style="margin-top:10px;"><i class="icon-check"></i> SAVE </button>
+			 <button type="button" class="btn btn-info" data-dismiss="modal" style="margin-top:10px;"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
+		 </div>
+	 </div>
+ </div>
+
 <footer>
         <img src="css/Training/img/footer.jpg" width="100%">
 </footer>
@@ -396,14 +420,14 @@ header.eventsheader {
         $("#addMoreDiv").append(c);
     }
    var maximumDivCount=1;
-   $(document).on('click', '.addingRequests', function(){
+   /* $(document).on('click', '.addingRequests', function(){
 	   maximumDivCount = parseInt(maximumDivCount)+1;
 	   var c = $("#requestDivId").clone(true);
            c.attr("id","requestDivId"+maximumDivCount)
            c.find(".removebtn").attr("id","removeDivId"+maximumDivCount);
 		   c.find(".removebtn").attr("id","requestDivId"+maximumDivCount);
 		  $("#atrDivId").append(c);
-    });
+    }); */
    
     $(document).on('click', '.removebtn', function(){
 		
@@ -487,10 +511,12 @@ header.eventsheader {
           
        }
      }
-	 $("#DistrictShowIdSpan"+atrId).val($("#districtId"+atrId).text());
+	 $("#locationInPop").html("");
+	 $("#locationInPop").html($("#DistrictShowId"+atrId).html());
 	 
 	 var lctn = $("#districtId"+atrId+" option:selected").text();
-	 $("#DistrictShowIdSpan"+atrId).html("<h4>"+lctn+" District</h4>");
+	 var lctnId = $("#districtId"+atrId+" option:selected").val();
+	 $("#DistrictShowIdSpan"+atrId).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+" District</h4>");
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -521,8 +547,12 @@ header.eventsheader {
                }
             }
 			
+			$("#locationInPop").html("");
+			$("#locationInPop").html($("#ConstShowId"+atrId).html());
+			
 			var lctn = $("#constituencyId"+atrId+" option:selected").text();
-			$("#ConstShowIdSpan"+atrId).html("<h4>"+lctn+" Constituency</h4>");
+			var lctnId = $("#constituencyId"+atrId+" option:selected").val();
+			$("#ConstShowIdSpan"+atrId).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+" Constituency</h4>");
         });
     }
 
@@ -579,7 +609,8 @@ header.eventsheader {
 			
 			$(locationTemp).val($(divId).text());
 			var lctn = $(""+divId+" option:selected").text();
-			$(locationTemp).html("<h4>"+lctn+"</h4>");
+			var lctnId = $(""+divId+" option:selected").val();
+			$(locationTemp).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+"</h4>");
         });
     }
    
@@ -676,19 +707,19 @@ header.eventsheader {
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
 				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
-					   str+=' <button class="btn btn-danger btn-xs editBtn" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
+					   str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
 					   str+='<label>REQUEST</label><br/>';
-					   str+='<span id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
+					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>ACTION TAKEN</label><br/>';
-					   str+='<span id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
+					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>RAISED BY</label><br/>';
-					   str+='<span id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
+					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
 					   str+='</div>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
@@ -901,6 +932,33 @@ header.eventsheader {
 			}
 		});
 		
+	});
+	
+	var editAtrId='';
+	 $(document).on('click', '.editBtn', function(){
+		 $("#myModashow").modal("show");
+		 var req=$(this).parent().parent().find(".updaterequest").text();
+		 var actn=$(this).parent().parent().find(".updateaction").text();
+		 var raised=$(this).parent().parent().find(".updateraisedBy").text();
+		 var attrId = $(this).attr("attr_atrid");
+		 var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
+		 
+		 $("#request").val(req);
+		 $("#actionTaken").val(actn);
+		 $("#raisedBy").val(raised);
+		 
+		 $('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
+		 editAtrId=attrId;
+	});
+	
+	$(document).on('click', '.addingRequests', function(){
+		 
+		 $("#request").val("");
+		 $("#actionTaken").val("");
+		 $("#raisedBy").val("");
+		 $('#locationInPop option:selected').prop('selected', false);
+		 
+		 $("#myModashow").modal("show");
 	});
 	
 </script>
