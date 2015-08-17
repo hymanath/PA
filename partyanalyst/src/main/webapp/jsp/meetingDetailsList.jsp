@@ -145,9 +145,7 @@ header.eventsheader {
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
-													<span class="input-group-addon saveMinute" attr_txt="minutes1">
-                                                        <i class="glyphicon glyphicon-trash"></i>
-                                                    </span>
+													
                                                 </div>
                                             </div>   
                                            
@@ -190,8 +188,11 @@ header.eventsheader {
                                                     <div class="col-md-12 m_top20">
                                                       <input type="text" class="form-control" placeholder="Action Taken"/>
                                                     </div>-->
-                                                    <div class="panel-body">
+                                                    <div class="panel-body m_top20" id="requestDivId" style="border:1px solid #c3c3c3;">
                                                         <div class="row">
+														 <div class="pull-right" style="margin-right:5px;">
+															<button class="btn btn-danger btn-xs removebtn">REMOVE</button>
+														</div>
                                                             <div class="col-md-12">
                                                                 <label>REQUEST</label><br/>
                                                                 <textarea rows="4" cols="40" id="requestId"></textarea>
@@ -258,7 +259,7 @@ header.eventsheader {
                                                         </div>
                                                        
                                                         <div class="pull-right m_top10">
-                                                            <button class="btn btn-success btn-xs">ADD</button>
+                                                            <button class="btn btn-success btn-xs" onclick="addingRequests()">ADD</button>
                                                         </div>
 													</div>
 												<!--<div class="row m_top20">
@@ -375,7 +376,22 @@ header.eventsheader {
             c.find(".trash").attr("attr_txt","list"+mainDivCount)
         $("#addMoreDiv").append(c);
     }
+   var maximumDivCount=1;
+   function addingRequests() {
+	   maximumDivCount = parseInt(maximumDivCount)+1;
+	   var c = $("#requestDivId").clone(true);
+            c.attr("id","requestDivId"+maximumDivCount)
+             c.find(".removebtn").attr("id","removeDivId"+maximumDivCount);
+			  c.find(".removebtn").attr("id","requestDivId"+maximumDivCount);
+			$("#atrDivId").append(c);
+   }
    
+    $(document).on('click', '.removebtn', function(){
+		
+		var removedivId = $(this).attr("id");
+        $("#"+removedivId).remove();
+        //$(this).remove();
+    });
     $(document).on('click', '.trash', function(){
         
 		var divId = $(this).attr("attr_txt");
@@ -600,8 +616,12 @@ header.eventsheader {
 			   if(result.atrDetails!=null && result.atrDetails.length>0){
 				   var str='';
 				   for(var i in result.atrDetails){
-					   str+='<div class="panel-body">';
+					   maximumDivCount=i;
+					   str+='<div class="panel-body" id="requestDivId'+maximumDivCount+'">';
 					   str+='<div class="row">';
+					   str+='<div class="pull-right" style="margin-right:5px;">';
+				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
+					   str+=' </div>';
 					   str+='<div class="col-md-12">';
 					   str+='<label>REQUEST</label><br/>';
 					   str+='<textarea rows="4" cols="40" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"></textarea>';
@@ -668,7 +688,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='</div>'; */
 					   str+='<div class="pull-right m_top10">';
-					   str+='<button class="btn btn-success btn-xs">ADD</button>';
+					   str+='<button class="btn btn-success btn-xs" >ADD</button>';
 					   str+='</div>';
 					   str+='</div>';
 					   
