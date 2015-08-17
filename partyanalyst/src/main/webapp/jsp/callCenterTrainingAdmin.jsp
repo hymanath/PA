@@ -958,8 +958,10 @@ $(document).ready(function() {
 	function getAllUserIdsByUserType(){
 		
 		$('.callerId').find('option').remove();
+		$('#agentId').find('option').remove();
 		
 		$('.callerId').append('<option value="0">Select Caller</option>');
+		$('#agentId').append('<option value="0">Select Caller</option>');
 		
 		$.ajax({
 			type:'POST',
@@ -973,6 +975,7 @@ $(document).ready(function() {
 					}
 					
 					$(".callerId").append(str);
+					$("#agentId").append(str);
 				}
 			});
 		
@@ -1907,10 +1910,18 @@ if($(this).is(':checked'))
 	mandalIds.push($(this).val());		
 });
 
+var scheduleId = $('#scheduleId').val();
+var callerId  = $('#agentId').val();
+var callPurposeId = 1;
+
 var jObj={
 		districtIds:districtIds,
 		constiIds:constiIds,
 		mandalIds:mandalIds,
+		membersCount:0,
+		scheduleId:scheduleId,
+		callerId : callerId,
+		callPurposeId : callPurposeId,
 		task:""
 		};
 		$.ajax({
