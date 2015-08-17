@@ -1176,7 +1176,31 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
 	}
 	
+	public String getCallerWiseOverView()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> ids = new ArrayList<Long>();
+			ids.add(jObj.getLong("callerId"));
+			trainingCampVO= trainingCampService.getCallerWiseOverView(ids);
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getCallerWiseOverView() method, Exception - ",e);
+		} 
+		return Action.SUCCESS;
+	}
 	
-	
+	public String getAdminCallersWiseOverView()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			trainingCampVO= trainingCampService.getAdminCallersWiseOverView(regVo.getRegistrationID());
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getCallerWiseOverView() method, Exception - ",e);
+		} 
+		return Action.SUCCESS;
+	}
 	
 }

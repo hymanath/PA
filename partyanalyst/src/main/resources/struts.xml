@@ -10627,6 +10627,15 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
-	
+		<action name="callerWiseOverViewAction" class="trainingCampAction" method="getCallerWiseOverView">
+	    <result type="json" name="success">
+	       <param name="root">trainingCampVO</param>
+	  </result>
+	</action>
+	<action name="AdminCallersWiseOverViewAction" class="trainingCampAction" method="getAdminCallersWiseOverView">
+	    <result type="json" name="success">
+	       <param name="root">trainingCampVO</param>
+	  </result>
+	</action>
 </package>
 </struts>      

@@ -529,31 +529,12 @@
 				</div>   
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
-					<select class="form-control border-radius-0" id="agentId">
+					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView();">
 						
 					</select>					
 				</div>   
-				<div class="col-md-12 m_top5">
-					<table class="table table-condensed"  style="font-size:11px;">
-						<tr class="custom-info">
-							<td>&nbsp;</td>
-							<td>ASSIGNED</td>
-							<td >COMPLETED</td>
-							<td>PENDING</td>
-						</tr>
-						<tr class="custom-info">
-							<td><small>Scheduled Confirmation </small></td>
-							<td>250</td>
-							<td>220</td>
-							<td>30</td>
-						</tr>
-						<tr class="custom-info">
-							<td><small>Batch Confirmation</small></td>
-							<td>250</td>
-							<td>220</td>
-							<td>30</td>
-						</tr>	
-					</table>			
+				<div class="col-md-12 m_top5" id="callerOverViewDiv">
+							
 				</div>  
 				<div class="col-md-12 m_top5">
 					<div class="panel-group distaccordion scheduleMembersDiv" id="distaccordion" role="tablist" aria-multiselectable="true">
@@ -1885,6 +1866,8 @@ if($(this).is(':checked'))
 
 function getAgentsByCampCallerAdminId()
 {
+$("#agentId  option").remove();
+$("#agentId").append('<option value="0">Select Caller</option>');
 	$.ajax({
 		type : "POST",
 		url  : "getAgentsByCampCallerAdminIdAction.action"
@@ -1939,7 +1922,73 @@ var jObj={
 			//buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
 }
+function getCallerOverView()
+{
+var agentId = $("#agentId").val();
+if(agentId == 0)
+return;
 
+var jObj={
+		callerId:agentId,
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'callerWiseOverViewAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 
+			buildCallerOverView(result);			  
+			//buildScheduleCallMemberDetailsCount(result,jObj);
+		   });
+}
+function buildCallerOverView(resultList)
+{
+var result = resultList.trainingCampVOList[0].trainingCampVOList;
+var str ='';
+str+='<table class="table table-condensed"  style="font-size:11px;">';
+str+='<tr class="custom-info">';
+str+='<td>&nbsp;</td>';
+str+='<td>ASSIGNED</td>';
+str+='<td >COMPLETED</td>';
+str+='<td>PENDING</td>';
+str+='</tr>';
+console.log(result[0].allocatedCalls)
+str+='<tr class="custom-info">';
+str+='<td><small>Scheduled Confirmation </small></td>';
+if(result[0].allocatedCalls !=null)
+str+='<td>'+result[0].allocatedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result[0].completedCalls !=null)
+str+='<td>'+result[0].completedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result[0].pendingCalls !=null)
+str+='<td>'+result[0].pendingCalls+'</td>';
+else
+str+='<td>0</td>';
+str+='</tr>';
+
+str+='<tr class="custom-info">';
+str+='<td><small>Batch Confirmation</small></td>';
+if(result[1].allocatedCalls !=null)
+str+='<td>'+result[1].allocatedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result[1].completedCalls !=null)
+str+='<td>'+result[1].completedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result[1].pendingCalls !=null)
+str+='<td>'+result[1].pendingCalls+'</td>';
+else
+str+='<td>0</td>';
+str+='</tr>	';
+
+str+='</table>';
+$("#callerOverViewDiv").html(str);
+}
 
 
 </script>
