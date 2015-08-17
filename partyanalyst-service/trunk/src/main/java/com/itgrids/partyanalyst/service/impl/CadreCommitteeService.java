@@ -38,7 +38,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -12870,7 +12869,7 @@ return mandalList;
 						 if(mandalList != null && mandalList.size()>0)
 						 {
 							 for (InviteesVO inviteesVO : mandalList) {
-								 if(!inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))								 
+								 if(inviteesVO.getName().trim().equalsIgnoreCase("PublicRepresentatives"))								 
 								 {
 									 List<Long> positions = inviteesVO.getRolesIds();
 									 
@@ -13042,7 +13041,7 @@ return mandalList;
 										 
 										 if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
 										 {										
-											 locationValuesList.add(inviteesVO.getMandalId());
+											 locationValuesList.add(Long.valueOf(inviteesVO.getMandalId().toString().substring(1)));
 										 }
 										 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
 										 {
@@ -13051,6 +13050,17 @@ return mandalList;
 											 {
 												 for (Object[] tehsil : tehsilIds) {
 													 locationValuesList.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);
+												}
+											 }
+											 
+											 List<Long> localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(locationValuesList);
+											 if(localElectionBodyIds != null && localElectionBodyIds.size()>0)
+											 {
+												 for (Long localElectionBodyId : localElectionBodyIds) {
+													List<Object[]> wardsList =  constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyId.toString());
+													 for (Object[] panchayat : wardsList) {
+														 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
+													}
 												}
 											 }
 										 }
@@ -13143,12 +13153,22 @@ return mandalList;
 										 locationLevelIdsList.add(8L);
 										 if(inviteesVO.getPanchayatId() != null && inviteesVO.getPanchayatId().longValue() != 0L) // mandal/muncipality selected
 										 {
-											 locationValuesList.add(inviteeVO.getPanchayatId());
+											 locationValuesList.add(inviteesVO.getPanchayatId());
 										 }
 										 else if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
 										 {
 											 List<Long> tehsilIds = new ArrayList<Long>();
-											 tehsilIds.add(Long.valueOf(inviteesVO.getMandalId().toString().substring(1)));									 
+											 tehsilIds.add(Long.valueOf(inviteesVO.getMandalId().toString().substring(1)));	
+											 List<Long> localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+											 if(localElectionBodyIds != null && localElectionBodyIds.size()>0)
+											 {
+												 for (Long localElectionBodyId : localElectionBodyIds) {
+													List<Object[]> wardsList =  constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyId.toString());
+													 for (Object[] panchayat : wardsList) {
+														 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
+													}
+												}
+											 }
 											 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
 											 if(panchayatLsit != null && panchayatLsit.size()>0)
 											 {
@@ -13159,6 +13179,18 @@ return mandalList;
 										 }
 										 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
 										 {
+											 List<Long> tehsilIds = boothDAO.getTehsildByConstituency(inviteesVO.getConstituencyId(), IConstants.VOTER_DATA_PUBLICATION_ID);
+											 List<Long> localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+											 if(localElectionBodyIds != null && localElectionBodyIds.size()>0)
+											 {
+												 for (Long localElectionBodyId : localElectionBodyIds) {
+													List<Object[]> wardsList =  constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyId.toString());
+													 for (Object[] panchayat : wardsList) {
+														 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
+													}
+												}
+											 }
+											
 											 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatsByConstituencyId(inviteesVO.getConstituencyId());
 											 if(panchayatLsit != null && panchayatLsit.size()>0)
 											 {
