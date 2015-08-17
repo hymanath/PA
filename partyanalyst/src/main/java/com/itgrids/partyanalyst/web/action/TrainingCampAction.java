@@ -1106,7 +1106,6 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getConstituenciesOfDistrict(){
 		try{
 
@@ -1130,6 +1129,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
 	}
 	
+	
+	public String assignScheduleMembersToCaller()
+	{
+		try{
+			jObj = new JSONObject();
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 }

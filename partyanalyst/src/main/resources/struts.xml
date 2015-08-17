@@ -10604,6 +10604,11 @@
 	       <param name="root">meetingDetails</param>
 	  </result>
 	</action>
+	<action name="assignScheduleMembersToCallerAction" class="trainingCampAction" method="assignScheduleMembersToCaller">
+	    <result type="json" name="success">
+	       <param name="root">resultStatus</param>
+	  </result>
+	</action>
 	
 	<action name="getConstituenciesOfDistrictWithSplittedAction" class="trainingCampAction" method="getConstituenciesOfDistrict">
 	    <result type="json" name="success">
