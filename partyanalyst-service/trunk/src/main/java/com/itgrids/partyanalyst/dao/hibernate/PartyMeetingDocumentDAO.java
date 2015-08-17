@@ -30,9 +30,17 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		Query query = getSession().createQuery(" select model.partyMeetingDocumentId,model.partyMeetingId,model.path,model.documentType,model.documentFormat," +
 				"model.uploadedBy.userId,model.uploadedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName,model.uploadedTime " +
 				" from PartyMeetingDocument model " +
-				" where model.partyMeetingId=:partyMeetingId ");
+				" where model.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		query.setParameter("partyMeetingId", partyMeetingId);
 		
 		return query.list();
+	}
+	
+	public Integer deletePartyMeetingDocument(Long docId){
+		Query query = getSession().createQuery("update PartyMeetingDocument model set model.isDeleted = 'Y' where model.partyMeetingDocumentId = ?");
+		
+		query.setParameter(0, docId);
+		
+		return query.executeUpdate();
 	}
 }

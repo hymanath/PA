@@ -38,6 +38,7 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private Long partyMeetingId;
 	private Long uploadedById;
 	private Long updatedById;
+	private String isDeleted;
 	
 	public PartyMeetingDocument(){}
 
@@ -150,5 +151,17 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	public void setDocumentFormat(String documentFormat) {
 		this.documentFormat = documentFormat;
 	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
+	
 	
 }

@@ -17,8 +17,22 @@ public class CallTrackingVO implements Serializable {
 	private Long status;
 	private Long totalCount;
 	private List<CallTrackingVO> callTrackingVO;
+	private Long id;
+	private String Url;
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getUrl() {
+		return Url;
+	}
+	public void setUrl(String url) {
+		Url = url;
+	}
 	public Long getProblemId() {
 		return problemId;
 	}

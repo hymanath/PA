@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -3427,23 +3428,26 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(documentDetails!=null && documentDetails.size()>0){
-				String minutesDocuments="";
-				String atrDocuments="";
+				
+				List<CallTrackingVO> atrDocs = new ArrayList<CallTrackingVO>();
+				List<CallTrackingVO> minDocs = new ArrayList<CallTrackingVO>();
 				
 				for (Object[] objects : documentDetails) {
+			
+					CallTrackingVO vo = new CallTrackingVO();
+					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setUrl(objects[2]!=null?objects[2].toString().trim():"");
+					
 					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("MINUTE")){
-						if(objects[2]!=null){
-							minutesDocuments=minutesDocuments.concat(" "+objects[2].toString()+" ");
-						}
+						minDocs.add(vo);
 					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("ATR")){
-						if(objects[2]!=null){
-							atrDocuments=atrDocuments.concat(" "+objects[2].toString()+" ");
-						}
+						atrDocs.add(vo);
 					}
 				}
 				
-				partyMeetingVO.setMinuteDocuments(minutesDocuments);
-				partyMeetingVO.setAtrDocuments(atrDocuments);
+				partyMeetingVO.setMinutesDocuments(minDocs);
+				partyMeetingVO.setAtrDocuments(atrDocs);
+				
 			}
 			
 			

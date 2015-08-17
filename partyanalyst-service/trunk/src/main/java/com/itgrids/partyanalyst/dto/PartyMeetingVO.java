@@ -49,21 +49,21 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String requestFrom;
 	private Long locationScopeId;
 	private String raisedBy;
-	private String minuteDocuments;
-	private String atrDocuments;
+	private List<CallTrackingVO> atrDocuments;
+	private List<CallTrackingVO> minutesDocuments;
 	
 	
-	public String getMinuteDocuments() {
-		return minuteDocuments;
-	}
-	public void setMinuteDocuments(String minuteDocuments) {
-		this.minuteDocuments = minuteDocuments;
-	}
-	public String getAtrDocuments() {
+	public List<CallTrackingVO> getAtrDocuments() {
 		return atrDocuments;
 	}
-	public void setAtrDocuments(String atrDocuments) {
+	public void setAtrDocuments(List<CallTrackingVO> atrDocuments) {
 		this.atrDocuments = atrDocuments;
+	}
+	public List<CallTrackingVO> getMinutesDocuments() {
+		return minutesDocuments;
+	}
+	public void setMinutesDocuments(List<CallTrackingVO> minutesDocuments) {
+		this.minutesDocuments = minutesDocuments;
 	}
 	public List<PartyMeetingVO> getAtrDetails() {
 		return atrDetails;
