@@ -631,8 +631,8 @@ $(document).ready(function() {
 			var assembly = $("#constituencyId").val();
 			var constituencyId = [];
 			if(assembly==0){
-				if(assemblyArr.length>0){
-					constituencyId = assemblyArr;
+				if(assmblyArr.length>0){
+					constituencyId = assmblyArr;
 				}else{
 					constituencyId.push(0);
 				}
