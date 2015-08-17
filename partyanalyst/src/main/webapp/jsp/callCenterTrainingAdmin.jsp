@@ -529,10 +529,8 @@
 				</div>   
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
-					<select class="form-control border-radius-0" >
-						<option>Harish ( Pending Calls - 30 )</option>
-						<option>Ramesh ( Pending Calls - 30 )</option>
-						<option>Suresh ( Pending Calls - 30 )</option>
+					<select class="form-control border-radius-0" id="agentId">
+						
 					</select>					
 				</div>   
 				<div class="col-md-12 m_top5">
@@ -557,7 +555,8 @@
 						</tr>	
 					</table>			
 				</div>  
-				<div class="col-md-12 m_top5" id="scheduleMembersDiv">
+				<div class="col-md-12 m_top5">
+					<div class="panel-group distaccordion scheduleMembersDiv" id="distaccordion" role="tablist" aria-multiselectable="true">
 					<!--<label>Select No Of Calls</label>
 					<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">
 						<li>Srikakulam  - 70 <input class="pull-right" type="checkbox"> </li>
@@ -1759,6 +1758,7 @@ var scheduleId = $("#scheduleId").val();
 		buildScheduleMembers(result)
 	});
 }
+var index = 0;
 function buildScheduleMembers(result)
 {
 var str = '';
@@ -1766,6 +1766,7 @@ if(result != null && result.length > 0)
 {
 for(var i in result)
 {
+index ++;
 	/*str+='<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">';
 	str+='<li>'+result[i].name+'  - '+result[i].count+'  <input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'"> ';
 	str+='<ul>';
@@ -1785,54 +1786,57 @@ for(var i in result)
 	str+='</ul>';
 	}*/
 	/*Schedule */
-	str+='<div class="panel-group distaccordion" id="distaccordion" role="tablist" aria-multiselectable="true">';
+	
 	str+='<div class="panel panel-default">';
-	str+='<div class="panel-heading" role="tab"  style="padding:5px" id="distheading'+i+'">';
+	str+='<div class="panel-heading" role="tab"  style="padding:5px" id="distheading'+index+'">';
 	/*District*/
 	str+='	<h4 class="panel-title">';
-	str+='<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#distaccordion" href="#distcollapse'+i+'" aria-expanded="true" aria-controls="distcollapse'+i+'">'+result[i].name+'  - '+result[i].count+'  </a>';
+	str+='<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#distaccordion" href="#distcollapse'+index+'" aria-expanded="true" aria-controls="distcollapse'+index+'">'+result[i].name+'  - '+result[i].count+'  </a>';
 	str+='<input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'">';
 	str+='</h4>';
 	str+='</div>';
-	str+='<div id="distcollapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distheading'+i+'">';
+	str+='<div id="distcollapse'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distheading'+index+'">';
 	/*District body*/
 	str+=' <div class="panel-body "  style="padding:5px 5px 5px 8px">';
 	
 	/*Const*/
-	str+=' <div class="panel-group constaccor" id="accordionInner'+i+'" role="tablist" aria-multiselectable="true">';
+	str+=' <div class="panel-group constaccor" id="accordionInner" role="tablist" aria-multiselectable="true">';
     for(var j in result[i].subList)
-	{  
+	{ 
+	index ++;	
 	str+=' <div class="panel panel-default border_0">';
-    str+='<div class="panel-heading " role="tab" id="consheading'+j+'">';
+    str+='<div class="panel-heading " role="tab" id="consheading'+index+'">';
     str+='<h4 class="panel-title">';
-        str+=' <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInner'+j+'" href="#conscollapse'+j+'" aria-expanded="true" aria-controls="conscollapse'+j+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
+        str+=' <a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#conscollapse'+index+'" aria-expanded="true" aria-controls="conscollapse'+index+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
 		str+='<input class="pull-right constituencyCheck subdist'+result[i].id+' parentConst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].id+'"> ';
 	
     str+='</h4>';
     str+='</div>';
 	/*Mandal*/
-		for(var k in result[i].subList[j].subList)
-	{
-    str+='<div id="conscollapse'+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+j+'">';
+	
+    str+='<div id="conscollapse'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+index+'">';
     str+='<div class="panel-body border_0" style="padding:5px 5px 5px 8px">';
 	str+='<ul>';
+	for(var k in result[i].subList[j].subList)
+	{
 	str+='<li>'+result[i].subList[j].subList[k].name.toLowerCase()+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck subdist'+result[i].id+' subconst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].subList[k].id+'" id="consti'+result[i].subList[j].id+'"> </li>';
+	}
 	str+='</ul>';
 	str+='</div>';
     str+='</div>';
-	}
+	
     str+='</div>';
 	}
 	str+='</div>';
 	
 	str+='</div>';	
 	str+='</div>';
-	str+=' </div>';
-	str+=' </div>';
+	str+='</div>';
+	
 }
 }			
 
-$("#scheduleMembersDiv").html(str);
+$(".scheduleMembersDiv").html(str);
 $(".constituencyCheck").click(function() {
 
 	   if($(this).is(':checked'))
@@ -1879,32 +1883,25 @@ if($(this).is(':checked'))
 
 }
 
-
-/*function assignSchedule()
+function getAgentsByCampCallerAdminId()
 {
-var districtIds = new Array();
-var constiIds = new Array();
-var mandalIds = new Array();
-$(".districtCheck").each(function(){
-if($(this).is(':checked'))
-{
-			var constiflag = false;
-			$(this).closest("li").find(".constituencyCheck").each(function(){
-							if($(this).is(':checked'))
-							{
-						$(this).closest("li").find(".constituencyCheck").each(function(){
-							if($(this).is(':checked'))
-							{
-							constiIds.push($(this).val());
-							constiflag = true;
-							}
-					}) 	
-				}
-	   })
-  }
-});
+	$.ajax({
+		type : "POST",
+		url  : "getAgentsByCampCallerAdminIdAction.action"
+		
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+			  $("#agentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+			}
+			
+		}
+		
+	});
+}
 
-}*/
 
 function assignSchedule()
 {
@@ -1948,6 +1945,7 @@ var jObj={
 </script>
 <script>
 getAllCamps();
+getAgentsByCampCallerAdminId();
 </script>
 </body>
 </html>
