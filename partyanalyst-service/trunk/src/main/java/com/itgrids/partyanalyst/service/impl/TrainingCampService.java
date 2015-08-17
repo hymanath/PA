@@ -594,6 +594,7 @@ public class TrainingCampService implements ITrainingCampService{
 									{
 										TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
 										trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+										trainingCampScheduleInviteeCaller.setTrainingCampCallerAdminId(userId);
 										trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
 										trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
 										trainingCampScheduleInviteeCaller.setInsertedBy(userId);
@@ -645,6 +646,7 @@ public class TrainingCampService implements ITrainingCampService{
 								{
 									TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = new TrainingCampScheduleInviteeCaller();
 									trainingCampScheduleInviteeCaller.setTrainingCampScheduleInviteeId(trainingCampScheduleInviteeId);
+									trainingCampScheduleInviteeCaller.setTrainingCampCallerAdminId(userId);
 									trainingCampScheduleInviteeCaller.setCallPurposeId(callPurposeId);
 									trainingCampScheduleInviteeCaller.setTrainingCampCallerId(callerId);
 									trainingCampScheduleInviteeCaller.setInsertedBy(userId);
@@ -1958,9 +1960,20 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
-	public List<Long> getTrainingCampUserTypeIds(){
+	public List<Long> getTrainingCampUserTypeIds(Long adminId){
 	
-		List<Long> users=trainingCampUserDAO.getTrainingCampUserTypeIds(5l);
+		List<Long> users = new ArrayList<Long>(0);
+		try {
+			List<Object[]> callerAdminCallersList=trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(adminId);
+			if(callerAdminCallersList != null && callerAdminCallersList.size()>0)
+			{
+				for (Object[] caller : callerAdminCallersList) {
+					users.add(commonMethodsUtilService.getLongValueForObject(caller[0]));
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		return users;
 	}
