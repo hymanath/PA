@@ -1406,7 +1406,35 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		
 	}
 	
-	public List<Object[]> getConstituenciesByStateAndDistrict(Long stateId, Long districtId){
+	public List<Object[]> getConstituenciesByStateAndDistrict(Long stateId, List<Long> districtIds){
+		 StringBuilder str = new StringBuilder();
+			 
+			  str.append("select model.constituencyId , model.name from Constituency model" +
+					" where model.electionScope.electionType.electionTypeId = :electionTypeId and model.deformDate is null");
+			  
+				  if(stateId.equals(36l)){
+					  str.append(" and model.state.stateId =36 and model.district.districtId between 1 and 10 ");
+				  }else if(stateId.equals(1l)){
+					  str.append(" and model.state.stateId = 1 and model.district.districtId between 11 and 23 ");
+				  }else{
+					  str.append(" and model.district.state.stateId in(1,36) ");
+				  }
+				  
+				  if(districtIds!=null && districtIds.size()>0){
+					  str.append(" and model.district.districtId in(:districtIds) order by model.district.districtName");
+				  }else{
+					  str.append(" order by model.district.districtName ");
+				  }
+			 
+			  Query query = getSession().createQuery(str.toString());
+			  query.setParameter("electionTypeId", 2l);
+			  if(districtIds!=null && districtIds.size()>0){
+				  query.setParameterList("districtIds", districtIds);
+			  }
+			return query.list();
+	}
+	
+	public List<Object[]> getConstituenciesByStateAndDistrictNew(Long stateId, Long districtId){
 		 StringBuilder str = new StringBuilder();
 			 
 			  str.append("select model.constituencyId , model.name from Constituency model" +
@@ -1430,5 +1458,16 @@ public List<Long> getConstituenciesByState(Long stateId) {
 			  }
 			return query.list();
 	}
+	
+	public List<Object[]> getStateAndDistricsOfConstituency(List<Long> constituencyIds){
+		Query query = getSession().createQuery("select model.constituencyId,model.district.districtId,model.state.stateId" +
+				" from Constituency model" +
+				" where model.constituencyId in (:constituencyIds)");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+		
+	}
+	
+	
 	
 }

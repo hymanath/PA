@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
@@ -64,6 +65,7 @@ public interface ITrainingCampService {
 	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId);
 	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
+	public MeetingVO getUserAccessLevelAndLocations(Long userId);
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 }

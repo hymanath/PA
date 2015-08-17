@@ -38,6 +38,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -229,8 +231,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICandidateResultDAO candidateResultDAO;
 	private INewDistrictConstituencyDAO newDistrictConstituencyDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	
 	
+	
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
+
 	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
 		return tdpCadreCandidateDAO;
 	}
@@ -15213,21 +15226,22 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return panachatiesList;
 	}
 
-	public List<LocationWiseBoothDetailsVO> getLocationsOfSublevelConstituencyMandal(Long stateId, Long districtId, Long constituencyId, String mandalStr, Long locationLevelId){
+	public List<LocationWiseBoothDetailsVO> getLocationsOfSublevelConstituencyMandal(Long stateId, List<Long> districtIds, List<Long> constituencyIds, String mandalStr, Long locationLevelId){
 		
 		List<Long> constiIds = new ArrayList<Long>();
 		List<Long> mandalIds = new ArrayList<Long>();
 		List<Long> localBodyIds = new ArrayList<Long>();
 		if(locationLevelId.equals(4l)){
-			if(constituencyId.equals(0l)){
-				List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+			if(constituencyIds!=null && constituencyIds.size()>0){
+				constiIds = constituencyIds;
+			}else{
+				List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
 				if(rslt!=null && rslt.size()>0){
 					for(Object[] obj:rslt){
 						constiIds.add(Long.valueOf(obj[0].toString()));
 					}
 				}
-			}else{
-				constiIds.add(constituencyId);
+				
 			}
 		}else{
 			if(!mandalStr.equalsIgnoreCase("0")){
@@ -15241,15 +15255,15 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				}
 				
 			}else{
-				if(constituencyId.equals(0l)){
-					List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+				if(constituencyIds!=null && constituencyIds.size()>0){
+					List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
 					if(rslt!=null && rslt.size()>0){
 						for(Object[] obj:rslt){
 							constiIds.add(Long.valueOf(obj[0].toString()));
 						}
 					}
 				}else{
-					constiIds.add(constituencyId);
+					constiIds = constituencyIds;
 				}
 			}
 		}
@@ -15357,17 +15371,80 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        return locationsList;
 	}
 	
-	public List<LocationWiseBoothDetailsVO> getConstituencyOfDistrict(Long stateId, Long districtId){
-		List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtId);
+	public List<LocationWiseBoothDetailsVO> getConstituencyOfDistrict(Long stateId, List<Long> districtIds){
+		List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
+		List<Object[]> rsltNew = districtConstituenciesDAO.getConstituenciesOfDistrict();
+		Map<Long,List<Long>> distMap = new HashMap<Long, List<Long>>();
+		Map<Long, Long> constisSplttdMap = new HashMap<Long, Long>();
+		Map<Long,String> constiNameMap = new HashMap<Long, String>();
+		
+		
+		if(rsltNew!=null && rsltNew.size()>0){
+			for(Object[] obj:rsltNew){
+				List<Long> consties = distMap.get(Long.valueOf(obj[0].toString()));
+				if(consties==null){
+					consties = new ArrayList<Long>();
+				}
+				consties.add(Long.valueOf(obj[2].toString()));
+				constisSplttdMap.put(Long.valueOf(obj[2].toString()),Long.valueOf(obj[0].toString()));
+				distMap.put(Long.valueOf(obj[0].toString()), consties);
+				constiNameMap.put(Long.valueOf(obj[2].toString()), obj[3].toString());
+				
+			}
+		}
+		
 		List<LocationWiseBoothDetailsVO> finalList =  new ArrayList<LocationWiseBoothDetailsVO>();
 		if(rslt!=null && rslt.size()>0){
 			for(Object[] temp:rslt){
-        		LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
-	        	vo.setLocationId(Long.valueOf(temp[0].toString()));
-	        	vo.setLocationName(temp[1].toString());
-	        	finalList.add(vo);
-        	}
+				if(constisSplttdMap.get(Long.valueOf(temp[0].toString()))==null){
+					LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+			       	vo.setLocationId(Long.valueOf(temp[0].toString()));
+			       	vo.setLocationName(temp[1].toString());
+			       	finalList.add(vo);
+				}
+			}
+		}else{
+			List<Long> distList = new ArrayList<Long>();
+			if(districtIds!=null && districtIds.size()>0){
+				for(Long districtId:districtIds){
+					distList.addAll(distMap.get(districtId));
+				}
+			}
+			if(distList!=null && distList.size()>0){
+				for(Long temp:distList){
+					if(distList.contains(temp)){
+						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+			        	vo.setLocationId(temp);
+			        	vo.setLocationName(constiNameMap.get(temp));
+			        	finalList.add(vo);
+					}
+				}
+				
+			}
 		}
+		
 		return finalList;
 	}
+	
+	
+	public List<IdNameVO> getDistrictsOfStateWithSplitted(Long stateId){
+		List<Object[]> rslt = districtDAO.getDistrictsWithNewSplitted(stateId);
+		
+		List<IdNameVO> finalList =  new ArrayList<IdNameVO>();
+		if(rslt!=null && rslt.size()>0){
+			
+			for(Object[] temp:rslt){
+					IdNameVO vo = new IdNameVO();
+		        	vo.setId(Long.valueOf(temp[0].toString()));
+		        	vo.setName(temp[1].toString());
+		        	finalList.add(vo);
+				}
+				
+        	}
+		return finalList;
+	}
+	
+	
+	
+	
 }
