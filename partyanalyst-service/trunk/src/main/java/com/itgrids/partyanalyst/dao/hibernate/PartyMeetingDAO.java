@@ -67,15 +67,15 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}else if((locationLevel!=null) && (locationLevel==6l || locationLevel==8l)){//divison or ward level
 			if(locationLevel==6l){
 				if(divisonList.get(0)==0l){
-					sb.append(" and model.meetingAddress.ward.wardId is not null ");
+					sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
 				}else{
-					sb.append(" and model.meetingAddress.ward.wardId in (:divisonList) ");
+					sb.append(" and model.meetingAddress.ward.constituencyId in (:divisonList) ");
 				}
 			}else{
 				if(wardList.get(0)==0l){
-					sb.append(" and model.meetingAddress.ward.wardId is not null ");
+					sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
 				}else{
-					sb.append(" and model.meetingAddress.ward.wardId in (:wardList) ");
+					sb.append(" and model.meetingAddress.ward.constituencyId in (:wardList) ");
 				}
 			}
 			

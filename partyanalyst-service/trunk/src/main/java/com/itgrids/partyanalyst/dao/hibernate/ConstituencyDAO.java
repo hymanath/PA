@@ -1413,9 +1413,9 @@ public List<Long> getConstituenciesByState(Long stateId) {
 					" where model.electionScope.electionType.electionTypeId = :electionTypeId and model.deformDate is null");
 			  
 				  if(stateId.equals(36l)){
-					  str.append(" and model.state.stateId =36 and model.district.districtId between 1 and 10 ");
+					  str.append(" and model.district.state.stateId = 1 and model.district.districtId between 1 and 10 ");
 				  }else if(stateId.equals(1l)){
-					  str.append(" and model.state.stateId = 1 and model.district.districtId between 11 and 23 ");
+					  str.append(" and model.district.state.stateId = 1 and model.district.districtId between 11 and 23 ");
 				  }else{
 					  str.append(" and model.district.state.stateId in(1,36) ");
 				  }

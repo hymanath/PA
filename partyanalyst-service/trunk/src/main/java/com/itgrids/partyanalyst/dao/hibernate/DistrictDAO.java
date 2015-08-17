@@ -321,9 +321,9 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 	    	str.append(" model.state.stateId in(1,36)");
 	    }
 		if(stateId.longValue() == 1){
-			str.append(" and (model.districtId > 10 or model.districtId = 517)");
+			str.append(" and model.districtId > 10 or model.districtId = 517");
 		}else if(stateId.longValue()==36){
-			str.append(" and (model.districtId < 11 or model.districtId = 518)");
+			str.append(" and model.districtId = 518 or model.districtId < 11");
 		}
 		Query query = getSession().createQuery(str.toString());
 		if(stateId!=0){
@@ -335,7 +335,7 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 	public List<Object[]> getStatesForDistricts(List<Long> distIds){
 		Query query = getSession().createQuery(" select distinct model.state.stateId, model.state.stateName " +
 				" from District model" +
-				" where model.district.districtId in(:distIds)");
+				" where model.districtId in(:distIds)");
 		query.setParameterList("distIds", distIds);
 		return query.list();
 	}
