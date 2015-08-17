@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -46,7 +47,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	//private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private List<TraingCampCallerVO> statusCountList;
 	private TrainingCampScheduleVO trainingCampScheduleVO;
-	
+	private EntitlementsHelper entitlementsHelper;
 	
 	private String status;
 	private Long purposeId;
@@ -77,6 +78,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<CadreDetailsVO> finalList;
 	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public List<CadreDetailsVO> getFinalList() {
 		return finalList;
 	}
@@ -357,11 +366,20 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	{
 		try
 		{
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO!=null){
+				Long userId = regVO.getRegistrationID();
+			}else{
+				return Action.INPUT;
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN")){
+				return Action.SUCCESS;
+			}
 			
 		}catch (Exception e) {
 			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
 		}
-		return Action.SUCCESS;
+		return Action.INPUT;
 	}
 	public String callCenterTrainingAgent(){
 		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
@@ -370,7 +388,11 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}else{
 			return Action.INPUT;
 		}
-		return Action.SUCCESS;
+		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER") || 
+				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") ){
+			return Action.SUCCESS;
+		}
+		return Action.INPUT;
 	}
 	
 	public String getUserAccessLocationDetails(){
@@ -458,13 +480,13 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		
 		try{
 			jObj=new JSONObject(getTask());
-			
+			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
 			String searchType=jObj.getString("searchType");
 			String fromDate=jObj.getString("fromdate");
 			String toDate=jObj.getString("toDate");
 			String agentType = jObj.getString("agentType");
 			
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVo.getRegistrationID()); 
 			
 			if(userIds !=null){
 				trainingCampScheduleVO = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate,agentType);
@@ -575,8 +597,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj=new JSONObject(getTask());
 			String fromDate=jObj.getString("fromdate");
 			String toDate=jObj.getString("toDate");
-			
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(); 
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID()); 
 			
 			if(fromDate !=null && toDate !=null){
 				trainingCampScheduleVO=trainingCampService.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,fromDate,toDate);
@@ -644,7 +666,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long membersCount = Long.parseLong(jObj.getString("membersCount"));
 			Long callerId = jObj.getLong("callerId");
 			Long callPurposeId = jObj.getLong("callPurposeId");
-			Boolean isOwnMembers = jObj.getBoolean("availCalls");
+			
 					
 			if(callPurposeId == 1){
 				List<TrainingCampVO> areasVOList = new ArrayList<TrainingCampVO>();
@@ -700,6 +722,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			else if(callPurposeId == 2){
 				Long batchId = jObj.getLong("batchId");
 				List<Long> otherUserIdsList = new ArrayList<Long>(0);
+				Boolean isOwnMembers = jObj.getBoolean("availCalls");
 				resultStatus = trainingCampService.assignMembersToCallerForBatchConfirmation(regVo.getRegistrationID(),isOwnMembers,scheduleId,membersCount,callerId,callPurposeId,batchId,otherUserIdsList);
 			}
 			
@@ -1094,8 +1117,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
-			
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds();
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID());
 			
 			trainingCampScheduleVOs=trainingCampService.getCallsDetailsOfCallCenterAdmin(userIds,fromDate,toDate);
 			
