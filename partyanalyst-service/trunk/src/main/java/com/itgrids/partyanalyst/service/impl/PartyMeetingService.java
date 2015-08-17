@@ -500,8 +500,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
 					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
 					pmmh.setMinutePoint(pmm.getMinutePoint());
-					pmmh.setInsertedBy(pmm.getInsertedBy());
-					pmmh.setUpdatedBy(pmm.getUpdatedBy());
+					pmmh.setInsertedById(pmm.getInsertedBy().getUserId());
+					pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
 					pmmh.setInsertedTime(pmm.getInsertedTime());
 					pmmh.setUpdatedTime(pmm.getUpdatedTime());
 					
@@ -539,8 +539,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
 					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
 					pmmh.setMinutePoint(pmm.getMinutePoint());
-					pmmh.setInsertedBy(pmm.getInsertedBy());
-					pmmh.setUpdatedBy(pmm.getUpdatedBy());
+					pmmh.setInsertedById(pmm.getInsertedBy().getUserId());
+					pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
 					pmmh.setInsertedTime(pmm.getInsertedTime());
 					pmmh.setUpdatedTime(pmm.getUpdatedTime());
 					
