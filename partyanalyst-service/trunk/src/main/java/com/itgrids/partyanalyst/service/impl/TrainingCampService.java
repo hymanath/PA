@@ -3490,6 +3490,7 @@ public class TrainingCampService implements ITrainingCampService{
 							trainingCampVOList.add(batchVO);
 						}
 						TrainingCampVO scheduleVO = trainingCampVOList.get(1);
+						scheduleVO.setName(commonMethodsUtilService.getStringValueForObject(caller[1]));
 						scheduleVO.setAllocatedCalls(count);
 						userWiseCallStatusMap.put(callerId, trainingCampVOList);
 					}
@@ -3511,6 +3512,7 @@ public class TrainingCampService implements ITrainingCampService{
 							trainingCampVOList = userWiseCallStatusMap.get(callerId);
 						}
 						TrainingCampVO trainingCampVO = trainingCampVOList.get(0);
+						trainingCampVO.setStatus(statusStr);
 						trainingCampVO.setCompletedCalls(count);
 						Long pendingCalls = 0L;
 						if(trainingCampVO.getAllocatedCalls() == null)
@@ -3539,6 +3541,7 @@ public class TrainingCampService implements ITrainingCampService{
 							trainingCampVOList = userWiseCallStatusMap.get(callerId);
 						}
 						TrainingCampVO trainingCampVO = trainingCampVOList.get(1);
+						trainingCampVO.setStatus(statusStr);
 						trainingCampVO.setCompletedCalls(count);
 						Long pendingCalls = 0L;
 						if(trainingCampVO.getAllocatedCalls() == null)
@@ -3558,16 +3561,16 @@ public class TrainingCampService implements ITrainingCampService{
 				{
 					for (Long callerId : userWiseCallStatusMap.keySet()) {
 						List<TrainingCampVO> list = userWiseCallStatusMap.get(callerId);
-						TrainingCampVO userVO = new TrainingCampVO();
-						userVO.setName(list.get(0).getName());
-						userVO.setTrainingCampVOList(list);
-						trainingCampvoList.add(userVO);
+						if(list != null)
+						{
+							TrainingCampVO userVO = new TrainingCampVO();
+							userVO.setName(list.get(0).getName());
+							userVO.setTrainingCampVOList(list);
+							trainingCampvoList.add(userVO);
+						}
 					}
-					
 					returnVO.setTrainingCampVOList(trainingCampvoList);
 				}
-					
-				
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCallerWiseOverView",e);
