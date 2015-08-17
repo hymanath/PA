@@ -25,7 +25,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private String 		task;
 	private IPartyMeetingService partyMeetingService;
 	private PartyMeetingVO partyMeetingVO;
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public IPartyMeetingService getPartyMeetingService() {
 		return partyMeetingService;
 	}
@@ -118,4 +128,40 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String updateMeetingPoint(){
+		try {
+			LOG.info("Entered into updateMeetingPoint");
+			jObj = new JSONObject(getTask());
+			Long minuteId = jObj.getLong("minuteId");
+			String minuteText = jObj.getString("minuteText");
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
+			status = partyMeetingService.updateMeetingPoint(minuteId,minuteText,loggedUser);
+		} catch (Exception e) {
+			LOG.error("Exception raise at updateMeetingPoint", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String deleteMeetingMinutePoint(){
+		try {
+			LOG.info("Entered into deleteMeetingMinutePoint");
+			jObj = new JSONObject(getTask());
+			Long minuteId = jObj.getLong("minuteId");
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
+			status = partyMeetingService.deleteMeetingMinutePoint(minuteId,loggedUser);
+		} catch (Exception e) {
+			LOG.error("Exception raise at deleteMeetingMinutePoint", e);
+		}
+		return Action.SUCCESS;
+	}
 }

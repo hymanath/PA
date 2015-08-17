@@ -2753,6 +2753,8 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="partyMeetingAtrPointDAO" ref="partyMeetingAtrPointDAO" />
 		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
+		<property name="partyMeetingMinuteHistoryDAO" ref="partyMeetingMinuteHistoryDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate"/>
 	</bean>
 </beans>		
 	
