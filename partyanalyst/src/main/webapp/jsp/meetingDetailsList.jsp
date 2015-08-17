@@ -145,7 +145,9 @@ header.eventsheader {
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
-													
+													<span class="input-group-addon saveMinute" attr_txt="minutes1">
+                                                        <i class="glyphicon glyphicon-ok"></i>
+                                                    </span>
                                                 </div>
                                             </div>   
                                            
@@ -177,6 +179,7 @@ header.eventsheader {
                                             <h4 class="panel-title">ATR</h4>
                                         </div>
                                             <div class="panel-body">
+											<div>
                                                 <div class="row" id="atrDivId">
                                                     <!--<div class="col-md-12">
                                                       <input type="text" class="form-control" placeholder="ATR Raised by"/>
@@ -305,6 +308,10 @@ header.eventsheader {
                                                     </div>-->
                                                
                                             </div>
+											<div class="pull-right m_top10">
+											<button class="btn btn-success btn-xs">ADD</button>
+											</div>
+											</div>
 											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
 												<div  class="" id="atrDocumentDivId"></div>
 											</div>
@@ -436,7 +443,7 @@ header.eventsheader {
         });
     }
    
-    function getDistrictsForStates(state,atrId){
+    function getDistrictsForStates(state,atrId,locationLevelValue){
        
     $("#searchDataImgForDist"+atrId).show();
    
@@ -459,12 +466,18 @@ header.eventsheader {
        if(result[i].id == 0){
          //$("#districtId").append('<option value='+result[i].id+'>ALL</option>');
        }else{
-          $("#districtId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   if(locationLevelValue==result[i].id){
+			   $("#districtId"+atrId).append('<option selected value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		   else{
+				$("#districtId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+          
        }
      }
    });
   }
- function getConstituenciesForDistricts(district,atrId){
+ function getConstituenciesForDistricts(district,atrId,locationLevelValue){
         $("#searchDataImgForman"+atrId).show();
         var jsObj={               
             districtId:district,
@@ -483,7 +496,12 @@ header.eventsheader {
                if(result[i].id == 0){
                  // $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
                }else{
-                  $("#constituencyId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   if(locationLevelValue==result[i].id){
+					   $("#constituencyId"+atrId).append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+				   }else{
+						$("#constituencyId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   }
+                  
                }
             }
         });
@@ -491,7 +509,7 @@ header.eventsheader {
 
 
    
-    function getMandalVillageDetails(locationId, locationLevel,atrId){
+    function getMandalVillageDetails(locationId, locationLevel,atrId,locationLavelValue){
           $("#searchDataImgForcons"+atrId).show();
         var constituencyId = 0;
         var mandalId = 0;
@@ -530,13 +548,18 @@ header.eventsheader {
               //$(divId).append("<option value='0'>ALL</option>");
              
             for(var i in result){
-                $(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				if(locationLavelValue==result[i].locationId){
+					$(divId).append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
+				}else{
+					$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+                
             }
         });
     }
    
     //getmeetinglocationlevel(1, 36);
-    function getmeetinglocationlevel(locationLevel, locationId,atrId){
+    function getmeetinglocationlevel(locationLevel, locationId,atrId,locationLevelValue){
        
         if(locationLevel == 1){
             $("#stateShowId"+atrId).hide();
@@ -544,7 +567,7 @@ header.eventsheader {
             $("#ConstShowId"+atrId).hide();
             $("#ManTwnDivShowId"+atrId).hide();
             $("#VillWardShowId"+atrId).hide();
-            getDistrictsForStates(locationId,atrId);
+            getDistrictsForStates(locationId,atrId,locationLevelValue);
         }
         else if(locationLevel == 2){
             $("#stateShowId"+atrId).hide();
@@ -552,7 +575,7 @@ header.eventsheader {
             $("#ConstShowId"+atrId).show();
             $("#ManTwnDivShowId"+atrId).hide();
             $("#VillWardShowId"+atrId).hide();
-            getConstituenciesForDistricts(locationId,atrId);
+            getConstituenciesForDistricts(locationId,atrId,locationLevelValue);
         }
         else if(locationLevel == 3){
             $("#stateShowId"+atrId).hide();
@@ -560,7 +583,7 @@ header.eventsheader {
             $("#ConstShowId"+atrId).hide();
             $("#ManTwnDivShowId"+atrId).show();
             $("#VillWardShowId"+atrId).hide();
-            getMandalVillageDetails(locationId, 4,atrId);
+            getMandalVillageDetails(locationId, 4,atrId,locationLevelValue);
         }
         else if(locationLevel == 4){
             $("#stateShowId"+atrId).hide();
@@ -568,7 +591,7 @@ header.eventsheader {
             $("#ConstShowId"+atrId).hide();
             $("#ManTwnDivShowId"+atrId).hide();
             $("#VillWardShowId"+atrId).show();
-            getMandalVillageDetails(locationId, 5,atrId);
+            getMandalVillageDetails(locationId, 5,atrId,locationLevelValue);
         }
     }
 	
@@ -616,7 +639,8 @@ header.eventsheader {
 			   if(result.atrDetails!=null && result.atrDetails.length>0){
 				   var str='';
 				   for(var i in result.atrDetails){
-					   maximumDivCount=i;
+				   	   maximumDivCount=i;
+					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
@@ -624,15 +648,15 @@ header.eventsheader {
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
 					   str+='<label>REQUEST</label><br/>';
-					   str+='<textarea rows="4" cols="40" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"></textarea>';
+					   str+='<textarea rows="4" cols="40" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></textarea>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>ACTION TAKEN</label><br/>';
-					   str+='<textarea rows="4" cols="40" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'"></textarea>';
+					   str+='<textarea rows="4" cols="40" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></textarea>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
 					   str+='<label>RAISED BY</label><br/>';
-					   str+='<input type="text" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" value="'+result.atrDetails[i].raisedBy+'"/>';
+					   str+='<input type="text" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" value="'+result.atrDetails[i].raisedBy+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"/>';
 					   str+='</div>';
 					   str+='</div>';
 					   str+='<div class="col-md-12 m_top20">';
@@ -687,8 +711,10 @@ header.eventsheader {
 					   str+='<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>';
 					   str+='</div>';
 					   str+='</div>'; */
-					   str+='<div class="pull-right m_top10">';
-					   str+='<button class="btn btn-success btn-xs addingRequests">ADD</button>';
+					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<button class="btn btn-success btn-xs addingRequests updateAtr" style="padding:3px;" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_locationScope="'+result.atrDetails[i].locationScopeId+'">UPDATE</button>';
+					   str+='<button class="btn btn-success btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="padding:3px;" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'">DELETE</button>';
+					   str+='</div>';
 					   str+='</div>';
 					   str+='</div>';
 					   
@@ -700,7 +726,7 @@ header.eventsheader {
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
 					   
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.atrDetails[i].locationValue,result.atrDetails[i].partyMeetingAtrPointId);
+					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
 					   
 				   }
 			   }
@@ -733,6 +759,67 @@ header.eventsheader {
 			  $("#"+saveBtnId).hide();
 		   }
 		});
+	});
+	
+	function showBtnsDiv(atrId){
+		$("#btnsDiv"+atrId).show();
+	}
+	
+	$(document).on('click', '.updateAtr', function(){
+		var atrId = $(this).attr("attr_atrid");
+		var request = $(this).attr("attr_reqid");
+		var ActionTaken = $(this).attr("attr_actntknid");
+		var raisedBy = $(this).attr("attr_rsdbyid");
+		var locationLevel = $(this).attr("attr_locationScope");
+		var locationId;
+		if(locationLevel==1){
+			locationId = $("#districtId"+atrId).val();
+		}else if(locationLevel==2){
+			locationId = $("#constituencyId"+atrId).val();
+		}else if(locationLevel==3){
+			locationId = $("#manTowDivId"+atrId).val();
+		}else if(locationLevel==4){
+			locationId = $("#villWardId"+atrId).val();
+		}
+		alert(locationLevel);
+		var jsObj={		
+			atrId : atrId,
+			request : $("#"+request).val(),
+			ActionTaken : $("#"+ActionTaken).val(),
+			raisedBy : $("#"+raisedBy).val(),
+			locationId : locationId
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'updateMeetingAtrPointAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result=="success"){
+				alert("Updated Successfully");
+			}
+		});	
+		
+	});
+	
+	$(document).on('click', '.deleteAtr', function(){
+		var atrId = $(this).attr("attr_atrid");
+		
+		var jsObj={		
+			atrId : atrId
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'deleteMeetingAtrPointAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result=="success"){
+				alert("ATR Deleted");
+				$("#atrInnerDiv"+atrId).remove();
+			}
+		});
+		
 	});
 	
 	
