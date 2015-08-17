@@ -247,7 +247,11 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			if(locationTypeId != null && locationTypeId.longValue() == IConstants.DISTRICT_SCOPE_ID)
-				queryStr.append(" and model.tdpCadre.userAddress.district.districtId =(:locationIdsList) and model.tdpCadre.isDeleted ='Y' and model.tdpCadre.enrollmentYear=2014 ");
+				queryStr.append(" and model.tdpCadre.userAddress.district.districtId  in (:locationIdsList)  ");
+			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.CONSTITUENCY_SCOPE_ID)
+				queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in  (:locationIdsList)  ");
+			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.TEHSIL_SCOPE_ID)
+				queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId  in  (:locationIdsList) ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 		if(scheduleId != null && scheduleId.longValue()>0L)
@@ -262,15 +266,15 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				",const.name as constName,UA.tehsil_id as tehsilId" +
 				",tehsil.tehsil_name as tehsilName from training_camp_schedule_invitee TCSI" +
 				",tdp_cadre TC ,user_address UA,training_camp_schedule TCS" +
-				",district Dist,constituency const,tehsil tehsil" +
-				" where TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
+				",district Dist,constituency const,tehsil tehsil, training_camp_district TCD " +
+				" where TCS.training_camp_id = TCD.training_camp_id and  TCD.district_id = UA.district_id and  TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
 				" UA.user_address_id = TC.address_id and " +
 				" UA.district_id = Dist.district_id and " +
 				" UA.constituency_id = const.constituency_id and " +
 				" UA.tehsil_id = tehsil.tehsil_id and " +
 				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
 				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
-				" and TCS.training_camp_id = :campId and TCS.training_camp_program_id = :programId and TCS.training_camp_schedule_id =:scheduleId " +
+				" and TCS.training_camp_id = :campId  " +
 				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) group by UA.district_id,UA.constituency_id,UA.tehsil_id")
 				.addScalar("count", Hibernate.LONG)
 				.addScalar("distId",Hibernate.LONG)
@@ -284,9 +288,9 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		query.setParameter("campId", campId);
 		
-		query.setParameter("programId", programId);
+		//query.setParameter("programId", programId);
 		
-		query.setParameter("scheduleId", scheduleId);
+		//query.setParameter("scheduleId", scheduleId);
 		
 		return query.list();
 		

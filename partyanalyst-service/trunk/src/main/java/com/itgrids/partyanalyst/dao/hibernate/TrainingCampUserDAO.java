@@ -30,4 +30,14 @@ public class TrainingCampUserDAO extends GenericDaoHibernate<TrainingCampUser, L
 		return query.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getuserDetailsByUserId(Long userId)
+	{
+		Query query=getSession().createQuery("select distinct model.user.userId,model.user.lastName from TrainingCampUser model " +
+				" where model.user.userId =:userId ");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	
 }

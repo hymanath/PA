@@ -10,4 +10,5 @@ public interface ITrainingCampUserDAO extends GenericDao<TrainingCampUser, Long>
 
 	public List<Long> getTrainingCampUserTypeIds(Long typeId);
 	public List<Object[]> getUserIdsByType(Long typeId);
+	public List<Object[]> getuserDetailsByUserId(Long userId);
 }

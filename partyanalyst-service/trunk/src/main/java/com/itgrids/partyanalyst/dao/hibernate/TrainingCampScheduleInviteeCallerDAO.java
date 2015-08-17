@@ -20,7 +20,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.userId,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.user.lastName from  TrainingCampScheduleInviteeCaller model " +
+		str.append(" select model.trainingCampUser.userId,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.lastName from  TrainingCampScheduleInviteeCaller model " +
 				" where  ");
 		
 		if(startDate !=null && endDate !=null){
@@ -41,11 +41,9 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		if(type !=null){
 			if(type.equalsIgnoreCase("completedCount")){//dialed calls
 				str.append(" and model.callStatusId is not null ");
-				//str.append(" and model.callStatusId =1 ");
 			}
 			else if(type.equalsIgnoreCase("pendingCount")){//pending calls
 				str.append(" and model.callStatusId is null ");
-				//str.append(" and (model.callStatusId is null or model.callStatusId !=1) ");
 			}
 			else if(type.equalsIgnoreCase("dialedCalls")){
 				str.append(" and model.callStatusId is not null ");
@@ -58,8 +56,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds",userIds);
@@ -83,11 +81,11 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		Query query=getSession().createQuery(str.toString());
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		else if(startDate !=null){
-			query.setParameter("startDate", startDate);
+			query.setDate("startDate", startDate);
 		}
 		return (Long) query.uniqueResult();
 	}
@@ -106,7 +104,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" select model.trainingCampUser.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.user.lastName " +
+		str.append(" select model.trainingCampUser.userId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),model.trainingCampUser.lastName " +
 				" from  TrainingCampScheduleInviteeCaller model " +
 				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
 		
@@ -128,8 +126,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		Query query=getSession().createQuery(str.toString());
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds",userIds);
@@ -315,8 +313,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		Query scheduleAndConfirmationCallsQuery = getSession().createQuery(scheduleAndConfirmationCalls.toString());
 		
 		if(startDate !=null && endDate !=null){
-			scheduleAndConfirmationCallsQuery.setParameter("startDate", startDate);
-			scheduleAndConfirmationCallsQuery.setParameter("endDate", endDate);
+			scheduleAndConfirmationCallsQuery.setDate("startDate", startDate);
+			scheduleAndConfirmationCallsQuery.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			scheduleAndConfirmationCallsQuery.setParameterList("userIds", userIds);
@@ -360,8 +358,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds", userIds);
@@ -414,8 +412,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds", userIds);
@@ -568,8 +566,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		Query query=getSession().createQuery(str.toString());
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds",userIds);
@@ -634,8 +632,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		Query query=getSession().createQuery(str.toString());
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(userIds !=null && userIds.size()>0){
 			query.setParameterList("userIds",userIds);
