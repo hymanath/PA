@@ -651,13 +651,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 						vo.getTrainingCampVOList().add(vo1);
 					}
 					areasVOList.add(vo);
-					
+				}
 					
 					JSONArray constarr = jObj.getJSONArray("constiIds");
 					if(constarr != null && constarr.length() > 0)
 					{
 						TrainingCampVO constvo = new TrainingCampVO();
-						vo.setLocationTypeId(IConstants.CONSTITUENCY_SCOPE_ID);
+						constvo.setLocationTypeId(IConstants.CONSTITUENCY_SCOPE_ID);
 						for(int i=0; i<constarr.length();i++)
 						{
 							TrainingCampVO vo2 = new TrainingCampVO();
@@ -666,7 +666,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 							constvo.getTrainingCampVOList().add(vo2);
 						}
 						areasVOList.add(constvo);
-						
+					}		
 						
 						JSONArray mandalarr = jObj.getJSONArray("mandalIds");
 						if(mandalarr != null && mandalarr.length() > 0)
@@ -686,6 +686,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				
 				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
 			}
+				
 			else if(callPurposeId == 2){
 				Long batchId = jObj.getLong("batchId");
 				List<Long> otherUserIdsList = new ArrayList<Long>(0);
