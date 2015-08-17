@@ -213,11 +213,11 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	public List<Object[]> getBatchWiseConformationDetails(String searchType, Date startDate, Date endDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCampProgram.programName, ");
-		queryStr.append(" TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCSI.trainingCampSchedule.trainingCamp.campName, TCB.trainingCampBatchId, date(TCB.fromDate), ");
-		queryStr.append(" date(TCB.toDate), count(distinct TCSI.trainingCampScheduleInviteeId), TCSI.scheduleInviteeStatus.scheduleInviteeStatusId, TCSI.scheduleInviteeStatus.status ");
+		queryStr.append(" select TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName, ");
+		queryStr.append(" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName, TCB.trainingCampBatchId, date(TCB.fromDate), ");
+		queryStr.append(" date(TCB.toDate), count(distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId), TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ");
 		
-		queryStr.append(" from TrainingCampScheduleInvitee TCSI, TrainingCampBatch TCB  where TCSI.trainingCampSchedule.trainingCampScheduleId = TCB.trainingCampBatchId ");
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId = TCB.trainingCampBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' " );
 		
 		if(startDate != null && endDate != null)
 		{
@@ -225,10 +225,10 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		}
 		if(searchType != null && searchType.equalsIgnoreCase("planned"))
 		{
-			queryStr.append(" and TCSI.trainingCampSchedule.status = 'Not Started' ");
+			queryStr.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status = 'Not Started' ");
 		}
 		
-		queryStr.append(" group by TCSI.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSI.trainingCampSchedule.trainingCamp.trainingCampId, TCB.trainingCampBatchId, TCSI.scheduleInviteeStatus.scheduleInviteeStatusId ");
+		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCB.trainingCampBatchId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(startDate != null && endDate != null)
 		{
