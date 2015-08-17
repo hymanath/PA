@@ -568,5 +568,25 @@
 	<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 	<script src="dist/HighCharts/highcharts.js" type="text/javascript"></script> -->
 
+	
+	<script type="javascript">
+		getTdpCadreDetailsforASchedule(1);
+		
+		function getTdpCadreDetailsforASchedule(scheduleId)
+		{
+			alert(1);
+			var jsObj={
+				scheduleId:scheduleId
+			}
+			
+			$.ajax({
+			type:'POST',
+			url :'getTdpCadreDetailsforAScheduleAction.action',
+			data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			
+			});
+		}
+	</script>
 </body>
 </html>
