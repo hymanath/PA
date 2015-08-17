@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
-import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
@@ -56,6 +58,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -71,8 +74,6 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
-import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
-import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
@@ -124,7 +125,7 @@ public class TrainingCampService implements ITrainingCampService{
 	private IPartyMeetingMinuteDAO partyMeetingMinuteDAO;
 	private IPartyMeetingAtrPointDAO partyMeetingAtrPointDAO;
 	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
-	
+	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	
 	
 	
@@ -404,6 +405,11 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setTrainingCampUserRelationDAO(
 			ITrainingCampUserRelationDAO trainingCampUserRelationDAO) {
 		this.trainingCampUserRelationDAO = trainingCampUserRelationDAO;
+	}
+    
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
 	}
 
 	public List<BasicVO> getAllPrograms()
@@ -3578,5 +3584,95 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		return returnVO;
 	}
-	
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId){
+		 
+		List<CadreDetailsVO> finalList=null;
+		try{
+			Map<Long,CadreDetailsVO> batchMap=new LinkedHashMap<Long,CadreDetailsVO>();
+			
+			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(scheduleId);
+			
+			if(cadreDetails!=null && cadreDetails.size()>0){
+				
+				 for(Object[] obj :cadreDetails){//scid,bid,bcode,,cadreid,firstname,mobileno,image,cid,cname,llid,csid,lsid,hid
+					 
+					 Long batchId=Long.valueOf(((Integer)obj[1]).longValue());
+					 CadreDetailsVO batchVO=batchMap.get(batchId);
+					 boolean batchExist=true;
+					 if(batchVO==null){
+						 batchExist=false;
+						 batchVO=new CadreDetailsVO();
+						 batchVO.setId(batchId);
+						 batchVO.setName(obj[2]!=null?obj[2].toString():"");
+					 }
+					
+					 if(batchVO.getSubMap()==null){
+						 batchVO.setSubMap(new LinkedHashMap<Long, CadreDetailsVO>());
+					 }
+					 Long cadreId=Long.valueOf(((BigInteger)obj[3]).longValue());
+					 CadreDetailsVO cadreVO=new CadreDetailsVO();
+					 cadreVO.setId(cadreId);
+					 cadreVO.setName(obj[4]!=null?obj[4].toString():"");
+					 cadreVO.setMobileno(obj[5]!=null?obj[5].toString():"");	 
+					 cadreVO.setImage(obj[6]!=null?obj[6].toString():"");
+					 cadreVO.setConstituencyId(obj[7]!=null?Long.valueOf(((BigInteger)obj[7]).longValue()):0l);
+					 cadreVO.setConstituency(obj[8]!=null?obj[8].toString():"");
+					 cadreVO.setLeaderShipLevels(obj[9]!=null?true:false);
+					 cadreVO.setCommunicationSkills(obj[10]!=null?true:false);
+					 cadreVO.setLeaderShipSkills(obj[11]!=null?true:false);
+					 cadreVO.setHealth(obj[12]!=null?true:false);
+					 cadreVO.setAchievements(false);
+					 cadreVO.setGoals(false);
+					 batchVO.getSubMap().put(cadreId, cadreVO);
+					 if(!batchExist){
+						 batchMap.put(batchId, batchVO);
+					 }
+				 }
+			 }
+			List<Object[]> achievements=trainingCampBatchAttendeeDAO.getAchievementsForCadreBySchedule(scheduleId);
+			if(achievements!=null && achievements.size()>0){
+				for(Object[] param:achievements){//bid,bcode,cid,ach
+					
+					if(param[0]!=null){
+						CadreDetailsVO batchVO=batchMap.get((Long)param[0]);
+						if(param[2]!=null){
+							batchVO.getSubMap().get((Long)param[2]).setAchievements(true);
+						}
+						
+					}
+				}
+			}
+			List<Object[]> goals=trainingCampBatchAttendeeDAO.getGoalsForCadreBySchedule(scheduleId);
+			if(goals!=null && goals.size()>0){
+				for(Object[] param:goals){//bid,bcode,cid,ach
+					
+					if(param[0]!=null){
+						CadreDetailsVO batchVO=batchMap.get((Long)param[0]);
+						if(param[2]!=null){
+							batchVO.getSubMap().get((Long)param[2]).setGoals(true);
+						}
+						
+					}
+				}
+			}
+		
+			if(batchMap!=null && batchMap.size()>0){
+				
+            for (Map.Entry<Long, CadreDetailsVO> entry : batchMap.entrySet())
+            {
+            	CadreDetailsVO batchVO= entry.getValue();
+            	if(batchVO.getSubMap()!=null && batchVO.getSubMap().size()>0){
+            		batchVO.setSubList(new ArrayList<CadreDetailsVO>(batchVO.getSubMap().values()));
+            		batchVO.getSubMap().clear();
+            	}
+            }				
+				finalList=new ArrayList<CadreDetailsVO>(batchMap.values());
+				batchMap.clear();
+			}
+		}catch(Exception e){
+			
+			LOG.error(" Exception occured in getTdpCadreDetailsforASchedule method in TrainingCampService class.",e);
+		} 
+		return finalList;
+	}
 }
