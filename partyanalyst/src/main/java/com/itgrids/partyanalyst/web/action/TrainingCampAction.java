@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -69,9 +70,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long campCallerId;
 	private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
 	private Long partyMeetingId;
+	private MeetingVO userAccessDetailsVO;
 	private PartyMeetingVO meetingDetails;
 	
 	
+	public MeetingVO getUserAccessDetailsVO() {
+		return userAccessDetailsVO;
+	}
+
+	public void setUserAccessDetailsVO(MeetingVO userAccessDetailsVO) {
+		this.userAccessDetailsVO = userAccessDetailsVO;
+	}
 	public PartyMeetingVO getMeetingDetails() {
 		return meetingDetails;
 	}
@@ -344,6 +353,23 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	public String callCenterTrainingAgent(){
+		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null){
+			Long userId = regVO.getRegistrationID();
+		}else{
+			return Action.INPUT;
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserAccessLocationDetails(){
+		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null){
+			Long userId = regVO.getRegistrationID();
+			userAccessDetailsVO = trainingCampService.getUserAccessLevelAndLocations(userId);
+		}else{
+			return Action.INPUT;
+		}
 		return Action.SUCCESS;
 	}
 	public String getTrainingAdminDashboard(){
@@ -954,12 +980,24 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj = new JSONObject(getTask());
 			
 			Long stateId = jObj.getLong("stateId");
-			Long districtId = jObj.getLong("districtId");
-			Long constituencyId = jObj.getLong("constituencyId");
 			String mandalId = jObj.getString("mandalId");
 			Long locationLevel = jObj.getLong("locationLevel");
+			
+			List<Long> distIds = new ArrayList<Long>();
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}
+			
+			List<Long> constiIds = new ArrayList<Long>();
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			for (int i = 0; i < jsonArray2.length(); i++) {
+				Long constiId = Long.valueOf(jsonArray2.get(i).toString());
+				constiIds.add(constiId);
+			}
 						
-			locations = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(stateId,districtId,constituencyId,mandalId,locationLevel);
+			locations = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(stateId,distIds,constiIds,mandalId,locationLevel);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCallBackDayWiseDetails() method, Exception - ",e);
@@ -1028,6 +1066,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		
 	} 
 	
+	public String getNewDistrictsOfStateSplitted(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			idnemIdNameVOs=cadreCommitteeService.getDistrictsOfStateWithSplitted(stateId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCallsDetailsOfCallCenterAdmin() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public String getPartyMeetingMinutesAtrDetails(){
 		try{
 			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
@@ -1055,6 +1106,30 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getConstituenciesOfDistrict(){
+		try{
+
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			
+			List<Long> distIds = new ArrayList<Long>();
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}
+			
+			
+			locations = cadreCommitteeService.getConstituencyOfDistrict(stateId, distIds);
+				
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getScheduleAvailableCallsCountLocationWiseInfo() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	
 }

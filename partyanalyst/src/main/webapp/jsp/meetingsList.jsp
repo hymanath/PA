@@ -109,10 +109,7 @@ header.eventsheader {
 							<div class="col-md-3" id="stateShowId" style="display:none;">
                                 	<label>State</label>
                                     <select class="form-control" id="statesDivId">
-									<option>Select State</option>
-									<option value="0">All</option>
-									<option value="1">AndhraPradesh</option>
-									<option value="36">Telangana</option>
+									
 									</select>
                             </div>
 							<div class="col-md-1" style="height: 44px; width: 10px;">
@@ -139,7 +136,7 @@ header.eventsheader {
 									<option>Select Mandal/Town/Division</option>
 									</select>
                             </div>
-							<div class="col-md-3" id="VillWardShowId" style="display:none;">
+							<div class="col-md-3" id="VillWardShowId" style="display:none;margin-left:30px;">
                                 	<label>Village/Ward</label>
                                     <select class="form-control" id="villWardId">
 									<option>Select Village/Ward</option>
@@ -220,6 +217,67 @@ header.eventsheader {
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+getUserAccessLocationDetails();
+	
+	var stateArr = [];
+	var distArr = [];
+	var parlArr = [];
+	var assmblyArr = [];
+	function getUserAccessLocationDetails(){
+	    var jsObj={				
+			task:"getUserAccessLocationDetails"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getUserAccessLocationDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   $("#meetingLocationLevel").append('<option value="0">Select Location Type</option>');
+		   var rslt = result.userAccessLevelList;
+			if(rslt!=null && rslt.length>0){
+				var isAddedMandal = false;
+				var isAddedVillage = false;
+				for(var i in rslt){
+					if(rslt[i].levelId ==4 || rslt[i].levelId ==5 || rslt[i].levelId ==6){
+						var locationLevel = " Mandal/ Town/ Division";
+						if(!isAddedMandal){
+							$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+locationLevel+'</option>');
+						}
+						isAddedMandal = true;
+					}else if(rslt[i].levelId ==7 || rslt[i].levelId ==8){
+						locationLevel = " Village/ Ward";
+						if(!isAddedVillage){
+							$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+locationLevel+'</option>');
+						}
+						isAddedVillage = true;
+					}else{
+						$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+rslt[i].name+'</option>');
+					}
+					
+				}
+			}
+			$("#searchDataImgForMeetingsList").hide();
+			
+			var rsltValues = result.userAccessLevelValuesList;
+			if(rsltValues!=null && rsltValues.length>0){
+				for(var i in rsltValues){
+					if(rsltValues[i].levelId==1){
+						stateArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==2){
+						distArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==3){
+						parlArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==4){
+						assmblyArr = rsltValues[i].levelValues;
+					}
+				}
+			}
+		});
+	}
+	
+	
+	
 $(document).ready(function() {
 	   /* $('#fromDate').daterangepicker(
 	  {
@@ -322,7 +380,7 @@ $(document).ready(function() {
 		 });
 	  
 	  
-	getTheMeetingLevelDetails();
+	//getTheMeetingLevelDetails();
 	getMeetingTypes();
 });
    
@@ -386,18 +444,29 @@ $(document).ready(function() {
 		}
 		var meetingType = $("#typeOfMeeting").val();
 		
-		var sateId=[];
+		var stateId=[];
 		var districtId=[];
 		var constituencyId=[];
 		var mandalTownDivisonId=[];
 		var villageWardId =[];
+		
+		
+		if(locationLevel == 5 || locationLevel == 6){
+			locationLevel = 4;
+		}
+		if(locationLevel == 7 || locationLevel == 8){
+			locationLevel = 5;
+		}
+		
+		
+		
 		
 		if(locationLevel==1){
 			if($("#statesDivId").val()=="Select State"){
 				alert("Please Select State");
 				return;
 			}else{
-				sateId.push($("#statesDivId").val());
+				stateId = getStateDistrictAssemblySelection("state");
 			}
 		}
 		
@@ -410,8 +479,8 @@ $(document).ready(function() {
 				alert("Please Select District");
 				return;
 			}else{
-				sateId.push($("#statesDivId").val());
-				districtId.push($("#districtId").val());
+				stateId = getStateDistrictAssemblySelection("state");
+				districtId = getStateDistrictAssemblySelection("district");
 			}
 			
 		}
@@ -428,9 +497,9 @@ $(document).ready(function() {
 				alert("Please Select Constituency");
 				return;
 			}else{
-				sateId.push($("#statesDivId").val());
-				districtId.push($("#districtId").val());
-				constituencyId.push($("#constituencyId").val());
+				stateId = getStateDistrictAssemblySelection("state");
+				districtId = getStateDistrictAssemblySelection("district");
+				constituencyId = getStateDistrictAssemblySelection("constituency");
 			}
 		}	
 		
@@ -449,9 +518,9 @@ $(document).ready(function() {
 				alert("Please Select Mandal/Town/Division");
 				return;
 			}else{
-				sateId.push($("#statesDivId").val());
-				districtId.push($("#districtId").val());
-				constituencyId.push($("#constituencyId").val());
+				stateId = getStateDistrictAssemblySelection("state");
+				districtId = getStateDistrictAssemblySelection("district");
+				constituencyId = getStateDistrictAssemblySelection("constituency");
 				mandalTownDivisonId.push($("#manTowDivId").val());
 			}
 		}
@@ -474,9 +543,9 @@ $(document).ready(function() {
 				alert("Please Select Village/Ward");
 				return;
 			}else{
-				sateId.push($("#statesDivId").val());
-				districtId.push($("#districtId").val());
-				constituencyId.push($("#constituencyId").val());
+				stateId = getStateDistrictAssemblySelection("state");
+				districtId = getStateDistrictAssemblySelection("district");
+				constituencyId = getStateDistrictAssemblySelection("constituency");
 				mandalTownDivisonId.push($("#manTowDivId").val());
 				villageWardId.push($("#villWardId").val());
 			}
@@ -488,7 +557,7 @@ $(document).ready(function() {
 		var jsObj =	{
 						meetingType:meetingType,
 						locationLevel:locationLevel,
-						sateId:sateId,
+						sateId:stateId,
 						districtId:districtId,
 						constituencyId:constituencyId,
 						mandalTownDivisonId:mandalTownDivisonId,
@@ -532,66 +601,125 @@ $(document).ready(function() {
 			$('#meetingDetailsTableId').html(str);
 		});
 	});
-	function getDistrictsForStates(state){
-		
-	$("#searchDataImgForDist").show();
 	
-	$("#districtId  option").remove();
-	$("#districtId").append('<option value="">Select District</option>');
-	$("#constituencyId  option").remove();
-	$("#constituencyId").append('<option value="">Select Constituency</option>');
-	$("#manTowDivId  option").remove();
-	$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');
-	$("#villWardId  option").remove();
-	$("#villWardId").append('<option value="">Select Village/Ward</option>');
-   var jsObj=
-   {				
-				stateId:state,
-				elmtId:"districtList_d",
-                type:"default",
-				task:"getDistrictsForState"				
+	function getStateDistrictAssemblySelection(forLocation){
+		var resultArr = [];
+		if(forLocation=="state"){
+			var state = $("#statesDivId").val();
+			var stateId = [];
+			if(state==0){
+				stateId.push(1);
+				stateId.push(36);
+			}else{
+				stateId.push(state);
+			}
+			resultArr = stateId;
+		}else if(forLocation=="district"){
+			var district = $("#districtId").val();
+			var districtId = [];
+			if(district==0){
+				if(distArr.length>0){
+					districtId = distArr;
+				}else{
+					districtId.push(0);
+				}
+			}else{
+				districtId.push(district);
+			}
+			resultArr = districtId;
+		}else if(forLocation=="constituency"){
+			var assembly = $("#constituencyId").val();
+			var constituencyId = [];
+			if(assembly==0){
+				if(assemblyArr.length>0){
+					constituencyId = assemblyArr;
+				}else{
+					constituencyId.push(0);
+				}
+			}else{
+				constituencyId.push(assembly);
+			}
+			
+			resultArr = constituencyId;
+		}
+		return resultArr;
+		
 	}
-    $.ajax({
-          type:'GET',
-          url: 'getDistrictsForStateAction.action',
-          dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
-	   $("#searchDataImgForDist").hide();
-     for(var i in result){
-	   if(result[i].id == 0){
-          $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
-	   }else{
-	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	   }
-	 }
-   });
-  }
+	function getDistrictsForStates(state){
+		$("#searchDataImgForDist").show();
+		
+		$("#districtId  option").remove();
+		$("#districtId").append('<option value="">Select District</option>');
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="">Select Constituency</option>');
+		$("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="">Select Village/Ward</option>');
+	   var jsObj=
+	   {				
+					stateId:state,
+					elmtId:"districtList_d",
+					type:"default",
+					task:"getDistrictsForState"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getNewDistrictsOfStateSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForDist").hide();
+		    $("#districtId").append('<option value=0>ALL</option>');
+			for(var i in result){
+				if(distArr.length>0){
+				   if($.inArray(result[i].id, distArr) > -1){
+						$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   }
+				}else{
+					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			}
+	   });
+	}
 	function getConstituenciesForDistricts(district){
 	    $("#searchDataImgForcons").show();
 		$("#constituencyId  option").remove();
 		$("#constituencyId").append('<option value="">Select Constituency</option>');
+		var stateId = $("#statesDivId").val();
+		
+		var distArrTemp = [];
+		if(district==0){
+			distArrTemp = distArr;
+		}else{
+			distArrTemp.push(district);
+		}
 		
 		var jsObj={				
-			districtId:district,
-			elmtId:"districtList_d",
-            type:"default",
+			districtId:distArrTemp,
+			stateId:stateId,
 			task:"getConstituenciesForDistricts"				
 		}
 		$.ajax({
 			  type:'GET',
-			  url: 'getConstituenciesForADistrictAjaxAction.action',
+			  url: 'getConstituenciesOfDistrictWithSplittedAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   $("#searchDataImgForcons").hide();
+		   $("#constituencyId").append('<option value=0>ALL</option>');
 			for(var i in result){
-			   if(result[i].id == 0){
-				  $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
-			   }else{
-				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   if(assmblyArr.length>0){
+				   if($.inArray(result[i].locationId, assmblyArr) > -1){
+						$("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
 			   }
+				else{
+					$("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+				
 			}
+			
 		});
 	}
 	$( "#statesDivId" ).change(function() {
@@ -600,47 +728,57 @@ $(document).ready(function() {
 	$( "#districtId" ).change(function() {
 		getConstituenciesForDistricts(this.value);
 	});
-$("#meetingLocationLevel").change(function(){
-	if($("#meetingLocationLevel").val()== 2 ){
-		$("#stateShowId").show();
-		$("#DistrictShowId").show();
-		$("#ConstShowId").hide();
-		$("#ManTwnDivShowId").hide();
-		$("#VillWardShowId").hide();
-		
-	}else if($("#meetingLocationLevel").val()== 3){
-		$("#stateShowId").show();
-		$("#DistrictShowId").show();
-		$("#ConstShowId").show();
-		$("#ManTwnDivShowId").hide();
-		$("#VillWardShowId").hide();
-		
-	}else if($("#meetingLocationLevel").val()== 4){
-		$("#stateShowId").show();
-		$("#DistrictShowId").show();
-		$("#ConstShowId").show();
-		$("#ManTwnDivShowId").show();
-		$("#VillWardShowId").hide();
-		
-	}else if($("#meetingLocationLevel").val()== 5){
-		$("#stateShowId").show();
-		$("#DistrictShowId").show();
-		$("#ConstShowId").show();
-		$("#ManTwnDivShowId").show();
-		$("#VillWardShowId").show();
-		
-	}else if($("#meetingLocationLevel").val()== 1){
-	
-			$("#stateShowId").show();
-			$("#DistrictShowId").hide();
-			$("#ConstShowId").hide();
-			$("#ManTwnDivShowId").hide();
-			$("#VillWardShowId").hide();
-			
-	}else{
-		
-	}
-	
+		$("#meetingLocationLevel").change(function(){
+				$("#statesDivId").html("");
+				
+				$("#statesDivId").append('<option value=""> Select State </option>');
+				$("#statesDivId").append('<option value=0> All </option>');
+				
+				if($.inArray(1, stateArr) > -1){
+					$("#statesDivId").append('<option value=1> AndhraPradesh </option>');
+				}
+				if($.inArray(36, stateArr) > -1){
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+				}
+				
+				
+			if($("#meetingLocationLevel").val()== 2 ){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 3){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").show();
+				
+			}else if($("#meetingLocationLevel").val()== 1){
+				
+					
+				$("#stateShowId").show();
+				$("#DistrictShowId").hide();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+			}
 		});
 		
 		$("#constituencyId").change(function(){
@@ -656,6 +794,22 @@ $("#meetingLocationLevel").change(function(){
 		var stateId = $("#statesDivId").val();
 		var districtId = $("#districtId").val();
 		var constituencyId = $("#constituencyId").val();
+		
+		var distArrTemp = [];
+		if(districtId==0){
+			distArrTemp = distArr;
+		}else{
+			distArrTemp.push(districtId);
+		}
+		
+		var assmblyArrTemp = [];
+		if(constituencyId==0){
+			assmblyArrTemp = assmblyArr;
+		}else{
+			assmblyArrTemp.push(constituencyId);
+		}
+		
+		
 		var mandalId = "0";
 		if(locationLevel==4){
 			$("#manTowDivId").html("")
@@ -667,8 +821,8 @@ $("#meetingLocationLevel").change(function(){
 		
 	   var jsObj={				
 			stateId : stateId,
-			districtId : districtId,
-			constituencyId : constituencyId,//228
+			districtId : distArrTemp,
+			constituencyId : assmblyArrTemp,//228
 			mandalId : mandalId,
 			locationLevel : locationLevel,
 			task:"getConstituenciesForDistricts"

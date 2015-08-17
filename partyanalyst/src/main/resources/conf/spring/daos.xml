@@ -2214,6 +2214,17 @@
 	 <bean id="trainingCampUserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserRelationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="userAccessLevelValueDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAccessLevelValueDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="partyMeetingUserAccessLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUserAccessLevelDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	 <bean id="districtConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictConstituenciesDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		

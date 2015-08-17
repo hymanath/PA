@@ -2640,6 +2640,7 @@
            <property name="candidateResultDAO" ref="candidateResultDAO" />
            <property name="newDistrictConstituencyDAO" ref="newDistrictConstituencyDAO" />
            <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
+		   <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
@@ -2723,9 +2724,13 @@
 		<property name="wardDAO" ref="wardDAO" />
 		<property name="panchayatDAO" ref="panchayatDAO" />
 		<property name="trainingCampUserRelationDAO" ref="trainingCampUserRelationDAO"/>
+		<property name="partyMeetingUserAccessLevelDAO" ref="partyMeetingUserAccessLevelDAO" />
+		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO"/>
 		<property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO"/>
 		<property name="partyMeetingAtrPointDAO" ref="partyMeetingAtrPointDAO"/>
 		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO"/>
+		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO"/>
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
