@@ -801,11 +801,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 						
 				
 				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
-			}
-				}
-			}
-				
-			else if(callPurposeId == 2){
+			}else if(callPurposeId == 2){
 				Long batchId = jObj.getLong("batchId");
 				List<Long> otherUserIdsList = new ArrayList<Long>(0);
 				Boolean isOwnMembers = jObj.getBoolean("availCalls");
