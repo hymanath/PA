@@ -1,11 +1,15 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
@@ -31,6 +35,7 @@ import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -75,8 +80,87 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long partyMeetingId;
 	private MeetingVO userAccessDetailsVO;
 	private PartyMeetingVO meetingDetails;
+	private String fileType;
 	private List<CadreDetailsVO> finalList;
 	
+	private List<File> imageForDisplay = new ArrayList<File>();
+	private List<String> imageForDisplayContentType = new ArrayList<String>();
+	private List<String> imageForDisplayFileName = new ArrayList<String>();
+	
+	private StringBufferInputStream inputStream;
+	private String documentType;
+	
+	private Long partyMeeting;
+	private String partyMeetingType;
+	
+	
+	
+	
+
+	public Long getPartyMeeting() {
+		return partyMeeting;
+	}
+
+	public void setPartyMeeting(Long partyMeeting) {
+		this.partyMeeting = partyMeeting;
+	}
+
+	public String getPartyMeetingType() {
+		return partyMeetingType;
+	}
+
+	public void setPartyMeetingType(String partyMeetingType) {
+		this.partyMeetingType = partyMeetingType;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
+	public StringBufferInputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(StringBufferInputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public List<File> getImageForDisplay() {
+		return imageForDisplay;
+	}
+
+	public void setImageForDisplay(List<File> imageForDisplay) {
+		this.imageForDisplay = imageForDisplay;
+	}
+
+	public List<String> getImageForDisplayContentType() {
+		return imageForDisplayContentType;
+	}
+
+	public void setImageForDisplayContentType(
+			List<String> imageForDisplayContentType) {
+		this.imageForDisplayContentType = imageForDisplayContentType;
+	}
+
+	public List<String> getImageForDisplayFileName() {
+		return imageForDisplayFileName;
+	}
+
+	public void setImageForDisplayFileName(List<String> imageForDisplayFileName) {
+		this.imageForDisplayFileName = imageForDisplayFileName;
+	}
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -379,7 +463,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}catch (Exception e) {
 			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
 		}
-		return Action.INPUT;
+		return Action.SUCCESS;
 	}
 	public String callCenterTrainingAgent(){
 		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
@@ -717,6 +801,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 						
 				
 				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
+			}
+				}
 			}
 				
 			else if(callPurposeId == 2){
@@ -1209,6 +1295,52 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
 	}
 	
+	public String uploadDocsAction(){
+		try{
+			 String imageName=null;
+			 
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			 
+			 if(regVO!=null){
+				 Long userId = regVO.getRegistrationID();
+				 
+				 for(int i=0;i<imageForDisplay.size();i++){
+		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+			        	 
+			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+			          
+			          String dtOfArticle=new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+				         String ttlDir = FolderForArticles(dtOfArticle);
+				         if(ttlDir.equalsIgnoreCase("FAILED")){
+				        	 inputStream = new StringBufferInputStream("fail");
+				        	 return "SUCCESS";
+				         }
+				         String filePath=IConstants.LOCAL_FILES_FOLDER+"/"+ttlDir;
+			        	 
+			          File fileToCreate = new File(filePath,imageName);
+					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+					  
+					  trainingCampService.saveFilePaths(partyMeeting,fileType,partyMeetingType,filePath+"/"+imageName,userId);
+					  
+					  inputStream = new StringBufferInputStream("success");
+		          }
+			 }else{
+				 inputStream = new StringBufferInputStream("login failed");
+			 }
+		      
+		}catch(Exception e){
+			inputStream = new StringBufferInputStream("failed");
+			LOG.error(e);
+		}
+		
+		return Action.SUCCESS;
+		  //getting image path to store the image.
+			 
+	         
+	         //copy image to folder.
+	         
+	}
+	
 	public String getCallerWiseOverView()
 	{
 		try{
@@ -1234,6 +1366,69 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.error("Exception Occured in getCallerWiseOverView() method, Exception - ",e);
 		} 
 		return Action.SUCCESS;
+	}
+	
+	public static String FolderForArticles(String totalDate){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+			String string = totalDate;
+			 String[] parts = string.split("-");
+			
+			 String yr = parts[0]; // YEAR YYYY
+			 String yrDir = IConstants.LOCAL_FILES_FOLDER+"/"+yr;
+			 String yrFldrSts = createFolderForArticles(yrDir);
+			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 String mnth = parts[1];
+			 String mnthDir = IConstants.LOCAL_FILES_FOLDER+"/"+yr+"/"+mnth;
+			 String mnthDirSts = createFolderForArticles(mnthDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 String ttlDateDir = IConstants.LOCAL_FILES_FOLDER+"/"+yr+"/"+mnth+"/"+totalDate;
+			 String ttlDateDirStts = createFolderForArticles(ttlDateDir);
+			 if(!ttlDateDirStts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return yr+"/"+mnth+"/"+totalDate;
+			 
+		} catch (Exception e) {
+			LOG.error(totalDate+" Failed to Create");
+			return "FAILED";
+		}
+		 
+		 
+		 
+ }
+	
+	public static String createFolderForArticles(String dir){
+	 	try {
+			File theDir = new File(dir);
+			  // if the directory does not exist, create it
+			  if (!theDir.exists()) {
+			    boolean result = false;
+
+			    try{
+			        theDir.mkdir();
+			        result = true;
+			     } catch(SecurityException se){
+			        //handle it
+			     }        
+			     if(result) {    
+			      LOG.debug("DIR With Name "+dir+" created");  
+			     }
+			  }else{
+				  LOG.debug("DIR With Name "+dir+" EXISTS");
+			  }
+			  return "SUCCESS";
+		} catch (Exception e) {
+			LOG.error(dir+" Failed to Create");
+			return "FAILED";
+		}
 	}
 	
 	public String getTdpCadreDetailsforASchedule(){
