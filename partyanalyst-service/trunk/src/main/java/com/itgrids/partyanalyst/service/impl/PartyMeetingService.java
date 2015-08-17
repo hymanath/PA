@@ -494,38 +494,55 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return returnVO;
 	}
 	
-	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy){
+	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,Long partyMeetingId){
 			String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingPoint");
 			
-			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
-	    	{
-			  public Object doInTransaction(TransactionStatus status) 
-			  {
-				  String updated = "success";
-				  PartyMeetingMinute pmm = partyMeetingMinuteDAO.get(minuteId);
-					
-					PartyMeetingMinuteHistory pmmh = new PartyMeetingMinuteHistory();
-					
-					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
-					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
-					pmmh.setMinutePoint(pmm.getMinutePoint());
-					pmmh.setInsertedById(pmm.getInsertedBy().getUserId());
-					pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
-					pmmh.setInsertedTime(pmm.getInsertedTime());
-					pmmh.setUpdatedTime(pmm.getUpdatedTime());
-					
-					partyMeetingMinuteHistoryDAO.save(pmmh);
-					
-					Integer updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime());
-					if(updateStatus.intValue()==0){
-						updated  = "failed";
-					}
-					
-					return updated;
-			  }
-           });
+			if(minuteId.longValue()>0l){
+				updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+		    	{
+				  public Object doInTransaction(TransactionStatus status) 
+				  {
+					  String updated = "success";
+					  PartyMeetingMinute pmm = partyMeetingMinuteDAO.get(minuteId);
+						
+						PartyMeetingMinuteHistory pmmh = new PartyMeetingMinuteHistory();
+						
+						pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
+						pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
+						pmmh.setMinutePoint(pmm.getMinutePoint());
+						pmmh.setInsertedById(pmm.getInsertedBy().getUserId());
+						pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
+						pmmh.setInsertedTime(pmm.getInsertedTime());
+						pmmh.setUpdatedTime(pmm.getUpdatedTime());
+						
+						partyMeetingMinuteHistoryDAO.save(pmmh);
+						
+						Integer updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime());
+						if(updateStatus.intValue()==0){
+							updated  = "failed";
+						}
+						
+						return updated;
+				  }
+	           });
+			}else{
+				PartyMeetingMinute pmm = new PartyMeetingMinute();
+				
+				pmm.setPartyMeetingId(partyMeetingId);
+				pmm.setMinutePoint(minuteText);
+				pmm.setInsertedById(updatedBy);
+				pmm.setUpdatedById(updatedBy);
+				pmm.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+				pmm.setIsDeleted("N");
+				
+				partyMeetingMinuteDAO.save(pmm);
+				
+				return "success";
+			}
+			
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at updateMeetingPoint", e);
@@ -575,41 +592,64 @@ public class PartyMeetingService implements IPartyMeetingService{
 		try {
 			LOG.info("Entered into updateMeetingAtrPoint");
 			
-			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
-	    	{
-			  public Object doInTransaction(TransactionStatus status) 
-			  {
-				  String updated = "success";
-				  PartyMeetingAtrPoint pmap = partyMeetingAtrPointDAO.get(atrId);
-				  
-				  PartyMeetingAtrPointHistory pmaph = new PartyMeetingAtrPointHistory();
-				  
-				  pmaph.setPartyMeetingAtrPointId(pmap.getPartyMeetingAtrPointId());
-				  pmaph.setPartyMeetingId(pmap.getPartyMeetingId());
-				  pmaph.setRequest(pmap.getRequest());
-				  pmaph.setActionTaken(pmap.getActionTaken());
-				  //pmaph.setRequestFrom(pmap.getRequestFrom());
-				  pmaph.setLocationScopeId(pmap.getLocationScopeId());
-				  pmaph.setLocationValue(pmap.getLocationValue());
-				  pmaph.setAddressId(pmap.getAddressId());
-				  pmaph.setRaisedBy(pmap.getRaisedBy());
-				  pmaph.setInsertedById(pmap.getInsertedById());
-				  pmaph.setUpdatedById(pmap.getUpdatedById());
-				  pmaph.setInsertedTime(pmap.getInsertedTime());
-				  pmaph.setUpdatedTime(pmap.getUpdatedTime());
-				  
-				  
-				  partyMeetingAtrPointHistoryDAO.save(pmaph);
-				  
-				  Integer updateStatus = partyMeetingAtrPointDAO.updateMeetingAtrPoint(atrId,request,actionTaken,raisedBy,updatedBy,new DateUtilService().getCurrentDateAndTime(),locationId);
-				  if(updateStatus.intValue()==0){
-						updated  = "failed";
-					}
-					
-					return updated;
-				  
-			  }
-	    	});
+			//if(atrId.longValue()>0l){
+				updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+		    	{
+				  public Object doInTransaction(TransactionStatus status) 
+				  {
+					  String updated = "success";
+					  PartyMeetingAtrPoint pmap = partyMeetingAtrPointDAO.get(atrId);
+					  
+					  PartyMeetingAtrPointHistory pmaph = new PartyMeetingAtrPointHistory();
+					  
+					  pmaph.setPartyMeetingAtrPointId(pmap.getPartyMeetingAtrPointId());
+					  pmaph.setPartyMeetingId(pmap.getPartyMeetingId());
+					  pmaph.setRequest(pmap.getRequest());
+					  pmaph.setActionTaken(pmap.getActionTaken());
+					  //pmaph.setRequestFrom(pmap.getRequestFrom());
+					  pmaph.setLocationScopeId(pmap.getLocationScopeId());
+					  pmaph.setLocationValue(pmap.getLocationValue());
+					  pmaph.setAddressId(pmap.getAddressId());
+					  pmaph.setRaisedBy(pmap.getRaisedBy());
+					  pmaph.setInsertedById(pmap.getInsertedById());
+					  pmaph.setUpdatedById(pmap.getUpdatedById());
+					  pmaph.setInsertedTime(pmap.getInsertedTime());
+					  pmaph.setUpdatedTime(pmap.getUpdatedTime());
+					  
+					  
+					  partyMeetingAtrPointHistoryDAO.save(pmaph);
+					  
+					  Integer updateStatus = partyMeetingAtrPointDAO.updateMeetingAtrPoint(atrId,request,actionTaken,raisedBy,updatedBy,new DateUtilService().getCurrentDateAndTime(),locationId);
+					  if(updateStatus.intValue()==0){
+							updated  = "failed";
+						}
+						
+						return updated;
+					  
+				  }
+		    	});
+			/*}else{
+				
+				PartyMeetingAtrPoint pmap = new PartyMeetingAtrPoint();
+				
+				//pmap.setPartyMeeting(partyMeetingid);
+				pmap.setRequest(request);
+				pmap.setActionTaken(actionTaken);
+				pmap.setRequestFrom("");
+				//pmap.setlocationScopeId(locationScopeId);
+				pmap.setLocationValue(locationId);
+				pmap.setAddressId(updatedBy);
+				pmap.setRaisedBy(raisedBy);
+				pmap.setInsertedById(updatedBy);
+				pmap.setUpdatedById(updatedBy);
+				pmap.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				pmap.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+				pmap.setIsDeleted("Y");
+				
+				partyMeetingAtrPointDAO.save(pmap);
+				
+			}*/
+			
 		}catch (Exception e) {
 			LOG.error("Exception raised at updateMeetingAtrPoint", e);
 		}
