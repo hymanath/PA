@@ -10587,9 +10587,27 @@
 	  </result>
 	</action>
 	
+	<action name="getUserAccessLocationDetailsAction" class="trainingCampAction" method="getUserAccessLocationDetails">
+	    <result type="json" name="success">
+	       <param name="root">userAccessDetailsVO</param>
+	  </result>
+	</action>
+	
+	<action name="getNewDistrictsOfStateSplittedAction" class="trainingCampAction" method="getNewDistrictsOfStateSplitted">
+	    <result type="json" name="success">
+	       <param name="root">idnemIdNameVOs</param>
+	  </result>
+	</action>
+	
 	<action name="getPartyMeetingMinutesAtrDetailsAction" class="trainingCampAction" method="getPartyMeetingMinutesAtrDetails">
 	    <result type="json" name="success">
 	       <param name="root">meetingDetails</param>
+	  </result>
+	</action>
+	
+	<action name="getConstituenciesOfDistrictWithSplittedAction" class="trainingCampAction" method="getConstituenciesOfDistrict">
+	    <result type="json" name="success">
+	       <param name="root">locations</param>
 	  </result>
 	</action>
 	

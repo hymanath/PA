@@ -647,6 +647,10 @@
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingUser</value>
 				 <value>com.itgrids.partyanalyst.model.EventType</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampUserRelation</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingUserAccessLevel</value>
+				 <value>com.itgrids.partyanalyst.model.UserAccessLevelValue</value>
+				 <value>com.itgrids.partyanalyst.model.AccessLevel</value>
+				 <value>com.itgrids.partyanalyst.model.DistrictConstituencies</value>
 				</list>
 			
 		</property>
