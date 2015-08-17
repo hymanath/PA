@@ -66,7 +66,8 @@ header.eventsheader {
                 	<div class="panel panel-default">
                     	<div class="panel-heading">
                         	<h4 class="panel-title">Meetings List
-                            	<span class="pull-right">
+						    	<span class="pull-right">
+									<span id="meetingLocationErrorMessage" style="color: red;"></span>
                                 	<select id="meetingLocationLevel"></select>
                                 </span>
 								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
@@ -76,6 +77,7 @@ header.eventsheader {
                         	<div class="row">
                             	<div class="col-md-3">
                                 	<label>Type Of Meeting</label>
+									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
                                     <select class="form-control" id="typeOfMeeting"></select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
                                 </div>
@@ -91,10 +93,15 @@ header.eventsheader {
                                 </div>-->
                             	<div class="col-md-3">
                                 	<label>Select Date</label>
-                                    <div class="input-group">
+									<small><div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;margin:5px 0px;">
+									  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+									  <span></span> <b class="caret"></b>
+									</div></small>
+                                 <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
-                                    </div>
+										<span></span>
+                                    </div> -->
 								</div>
 								<!--<div class="col-md-3">
                                 	<label>Meeting End Date</label> 
@@ -108,8 +115,9 @@ header.eventsheader {
 							<div class="row m_top10" >
 							<div class="col-md-3" id="stateShowId" style="display:none;">
                                 	<label>State</label>
+									<span id="stateErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="statesDivId">
-									
+									<option>Select State</option>
 									</select>
                             </div>
 							<div class="col-md-1" style="height: 44px; width: 10px;">
@@ -117,6 +125,7 @@ header.eventsheader {
 							</div>
 							<div class="col-md-3" id="DistrictShowId" style="display:none;">
                                 	<label>District</label>
+									<span id="districtErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="districtId">
 									<option>Select District</option>
 									</select>
@@ -126,18 +135,21 @@ header.eventsheader {
 							</div>
 							<div class="col-md-3" id="ConstShowId" style="display:none;">
                                 	<label>Constituency</label>
+									<span id="ConsErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="constituencyId">
 									<option>Select Constituency</option>
 									</select>
                             </div>
 							<div class="col-md-3" id="ManTwnDivShowId" style="display:none;">
                                 	<label>Mandal/Town/Division</label>
+									<span id="ManErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="manTowDivId">
 									<option>Select Mandal/Town/Division</option>
 									</select>
                             </div>
 							<div class="col-md-3" id="VillWardShowId" style="display:none;margin-left:30px;">
                                 	<label>Village/Ward</label>
+										<span id="VillErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="villWardId">
 									<option>Select Village/Ward</option>
 									</select>
@@ -299,6 +311,7 @@ $(document).ready(function() {
 	  
 	  var cb = function(start, end, label) {
 		 console.log(start.toISOString(), end.toISOString(), label);
+		  $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 		 }
 
 		 var optionSet1 = {
@@ -431,16 +444,23 @@ $(document).ready(function() {
 	}
 	
 	$("#viewMeetings").click(function() {
-		$("#searchDataImgForResults").show();
+				
 		if($("#meetingLocationLevel").val()==0){
-			alert("Please Select Meeting Location");
+			$("#meetingLocationErrorMessage").html("Please Select Meeting Location");
 			return;
+		}else {
+			$("#meetingLocationErrorMessage").html('');
 		}
+		
 		var locationLevel = $("#meetingLocationLevel").val();
 		
 		if($("#typeOfMeeting").val()==0){
-			alert("Pleas Select Meeting");
+			$("#typeofMeetingErrorMessage").html("Pleas Select Meeting");
+			//alert("Pleas Select Meeting");
 			return;
+		}
+		else{
+			$("#typeofMeetingErrorMessage").html('');
 		}
 		var meetingType = $("#typeOfMeeting").val();
 		
@@ -460,25 +480,30 @@ $(document).ready(function() {
 		
 		
 		
-		
-		if(locationLevel==1){
-			if($("#statesDivId").val()=="Select State"){
-				alert("Please Select State");
+		if(locationLevel == 1){
+			if($("#statesDivId").val()==""){
+				$("#stateErrorMSgShow").html("Please Select State");
+				
 				return;
 			}else{
+				$("#stateErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 			}
 		}
 		
 		
-		if(locationLevel==2){
-			if($("#statesDivId").val()=="Select State"){
-				alert("Please Select State");
+		if(locationLevel == 2){
+			if($("#statesDivId").val()==""){
+				$("#stateErrorMSgShow").html("Please Select State");
 				return;
 			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
-				alert("Please Select District");
+				$("#districtErrorMSgShow").html("Please Select District");
+				//alert("Please Select District");
 				return;
-			}else{
+			}
+			else{
+				$("#stateErrorMSgShow").html('');
+				$("#districtErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 			}
@@ -487,16 +512,21 @@ $(document).ready(function() {
 		
 		
 		if(locationLevel==3){
-			if($("#statesDivId").val()=="Select State"){
-				alert("Please Select State");
+			if($("#statesDivId").val()==""){
+				$("#stateErrorMSgShow").html("Please Select State");
 				return;
 			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
-				alert("Please Select District");
+				$("#districtErrorMSgShow").html("Please Select District");
+				//alert("Please Select District");
 				return;
 			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
-				alert("Please Select Constituency");
+				$("#ConsErrorMSgShow").html("Please Select Constituency");
+				//alert("Please Select Constituency");
 				return;
 			}else{
+				$("#stateErrorMSgShow").html('');
+				$("#districtErrorMSgShow").html('');
+				$("#ConsErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 				constituencyId = getStateDistrictAssemblySelection("constituency");
@@ -505,19 +535,26 @@ $(document).ready(function() {
 		
 		
 		if(locationLevel==4){
-			if($("#statesDivId").val()=="Select State"){
-				alert("Please Select State");
+			if($("#statesDivId").val()==""){
+				$("#stateErrorMSgShow").html("Please Select State");
 				return;
 			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
-				alert("Please Select District");
+				$("#districtErrorMSgShow").html("Please Select District");
+				//alert("Please Select District");
 				return;
 			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
-				alert("Please Select Constituency");
+				$("#ConsErrorMSgShow").html("Please Select Constituency");
+				//alert("Please Select Constituency");
 				return;
 			}else if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
-				alert("Please Select Mandal/Town/Division");
+				$("#ManErrorMSgShow").html("Please Select Mandal/Town/Division");
+				//alert("Please Select Mandal/Town/Division");
 				return;
 			}else{
+				$("#stateErrorMSgShow").html('');
+				$("#districtErrorMSgShow").html('');
+				$("#ConsErrorMSgShow").html('');
+				$("#ManErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 				constituencyId = getStateDistrictAssemblySelection("constituency");
@@ -527,22 +564,31 @@ $(document).ready(function() {
 		
 		
 		if(locationLevel==5){
-			if($("#statesDivId").val()=="Select State"){
-				alert("Please Select State");
+			if($("#statesDivId").val()==""){
+				$("#stateErrorMSgShow").html("Please Select State");
 				return;
 			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
-				alert("Please Select District");
+				$("#districtErrorMSgShow").html("Please Select District");
+				//alert("Please Select District");
 				return;
 			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
-				alert("Please Select Constituency");
+				$("#ConsErrorMSgShow").html("Please Select Constituency");
+				//alert("Please Select Constituency");
 				return;
 			}else if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
-				alert("Please Select Mandal/Town/Division");
+				$("#ManErrorMSgShow").html("Please Select Mandal/Town/Division");
+				//alert("Please Select Mandal/Town/Division");
 				return;
 			}else if($("#villWardId").val()=="" || $("#villWardId").val()=="Select Village/Ward"){
-				alert("Please Select Village/Ward");
+				$("#VillErrorMSgShow").html("Please Select Village/Ward");
+				//alert("Please Select Village/Ward");
 				return;
 			}else{
+				$("#stateErrorMSgShow").html('');
+				$("#districtErrorMSgShow").html('');
+				$("#ConsErrorMSgShow").html('');
+				$("#ManErrorMSgShow").html('');
+				$("#VillErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 				constituencyId = getStateDistrictAssemblySelection("constituency");
@@ -551,7 +597,7 @@ $(document).ready(function() {
 			}
 		}
 		
-				
+		$("#searchDataImgForResults").show();
 		var startDate = $(".dp_startDate").val();
 		var endDate = $(".dp_endDate").val();
 		var jsObj =	{
