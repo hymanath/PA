@@ -164,4 +164,40 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateMeetingAtrPoint(){
+		try{
+			LOG.info("Entered into updateMeetingAtrPoint");
+			jObj = new JSONObject(getTask());
+			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
+			status = partyMeetingService.updateMeetingAtrPoint(jObj.getLong("atrId"),jObj.getString("request"),jObj.getString("ActionTaken"),jObj.getString("raisedBy"),loggedUser,jObj.getLong("locationId"));
+		}catch (Exception e) {
+			LOG.error("Exception raise at updateMeetingAtrPoint", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String deleteMeetingAtrPoint(){
+		try{
+			LOG.info("Entered into deleteMeetingAtrPoint");
+			jObj = new JSONObject(getTask());
+			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
+			status = partyMeetingService.deleteMeetingAtrPoint(jObj.getLong("atrId"),loggedUser);
+		}catch (Exception e) {
+			LOG.error("Exception raise at deleteMeetingAtrPoint", e);
+		}
+		return Action.SUCCESS;
+	}
 }
