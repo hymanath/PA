@@ -10659,5 +10659,11 @@
 	  		</result>
 	</action>
 	
+	<action name="uploadMinutesDocAction" class="trainingCampAction" method="uploadDocsAction">
+	   <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
