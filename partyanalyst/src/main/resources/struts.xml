@@ -207,6 +207,8 @@
 		    <result type="redirect" name="memberShipCardPrintStatusAction">memberShipCardPrintStatusAction.action</result>
 			<result type="redirect" name="memberShipCardSamplePrint">memberShipCardSamplePrint.action</result>
 			<result type="redirect" name="tdpCadreVolunteersDetailsAction">tdpCadreVolunteersDetailsAction.action</result>
+			<result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
+			<result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgent.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5637,6 +5639,8 @@
 		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
 		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
 		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
+		    <result name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
+		    <result name="callCenterTrainingAgent">callCenterTrainingAgent.action</result>
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>	       
 		</action>
 		
@@ -10322,13 +10326,13 @@
 	
 	<action name="callCenterTrainingAdmin" class="trainingCampAction" method="callCenterTrainingAdmin">
 			<result name="success">/jsp/callCenterTrainingAdmin.jsp</result>
-			<result name="input">/jsp/loginForm.jsp</result>
+			   <result name="input">/jsp/loginForm.jsp?src=callCenterTrainingAdmin</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
 	<action name="callCenterTrainingAgent" class="trainingCampAction" method="callCenterTrainingAgent">
 			<result name="success">/jsp/callCenterTrainingAgent.jsp</result>
-			<result name="input">/jsp/loginForm.jsp</result>
+			   <result name="input">/jsp/loginForm.jsp?src=callCenterTrainingAgent</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	<action name="getCallerWiseCallsDetailsAction" class="trainingCampAction" method="getCallerWiseCallsDetails">
