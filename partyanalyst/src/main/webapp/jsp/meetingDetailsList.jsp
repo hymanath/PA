@@ -60,6 +60,7 @@ header.eventsheader {
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
 	<!-- YUI Dependency files (End) -->
 	
 </head>
@@ -349,9 +350,39 @@ header.eventsheader {
 <script src="js/TrainingProgram/component.js" type="text/javascript"></script>
 <script src="js/TrainingProgram/fileupload.js" type="text/javascript"></script>
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
+// Load the Google Transliterate API
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+	
+    function onLoad() {
+      var options = {
+          sourceLanguage:
+              google.elements.transliteration.LanguageCode.ENGLISH,
+          destinationLanguage:
+              [google.elements.transliteration.LanguageCode.TELUGU],
+          shortcutKey: 'alt+t',
+          transliterationEnabled: true
+      };
+
+      // Create an instance on TransliterationControl with the required
+      // options.
+      var control =
+          new google.elements.transliteration.TransliterationControl(options);
+
+      // Enable transliteration in the textbox with id
+      // 'descrptionId'.
+      
+		control.makeTransliteratable(['request']);
+		control.makeTransliteratable(['actionTaken']);
+		control.makeTransliteratable(['raisedBy']);
+		
+    }
+    google.setOnLoadCallback(onLoad);
+	
 	var minutesFiles = 0;
 	$("#addFiles").click(function(){
 		minutesFiles = minutesFiles +1;
@@ -402,7 +433,7 @@ header.eventsheader {
 	 getPartyMeetingMinutesAtrDetails(partyMeetingId);
      getTheMeetingLevelDetails()
    });
-              
+
     $("#mainheading").html("TRAINING PROGRAM");
     var mainDivCount=1;
     function myFunction() {
