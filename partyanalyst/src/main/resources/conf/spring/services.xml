@@ -2757,6 +2757,7 @@
 		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
 		<property name="partyMeetingMinuteHistoryDAO" ref="partyMeetingMinuteHistoryDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate"/>
+		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />		
 	</bean>
 </beans>		
 	
