@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -68,4 +69,6 @@ public interface ITrainingCampService {
 	public MeetingVO getUserAccessLevelAndLocations(Long userId);
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
+	
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId);
 }
