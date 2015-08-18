@@ -29,11 +29,13 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
@@ -1351,6 +1353,36 @@ public class WebServiceHandler {
 	public AttendanceVO saveAttendance(AttendanceVO inputVo){
 		try{
 			return attendanceService.saveAttendance(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAttendance() Method - ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/loginAttendanceTabUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AttendanceTabUserVO loginAttendanceTabUser(AttendanceTabUserVO inputVo){
+		try{
+			return attendanceService.loginAttendanceTabUser(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAttendance() Method - ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getAttendanceMeetingAndCamps")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public UserAttendanceDetailsVO getAttendanceMeetingAndCamps(AttendanceTabUserVO inputVo){
+		try{
+			return attendanceService.getAttendanceMeetingAndCamps(inputVo);
 		}
 		catch(Exception e)
 		{
