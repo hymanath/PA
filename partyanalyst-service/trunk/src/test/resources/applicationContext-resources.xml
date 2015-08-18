@@ -654,6 +654,13 @@
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingAttendance</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendance</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinute</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingDocument</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingAtrPoint</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingAttendanceTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendanceTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingUser</value>
 				 <value>com.itgrids.partyanalyst.model.EventType</value>
 				 <value>com.itgrids.partyanalyst.model.DistrictConstituencies</value>
 				 
@@ -727,6 +734,34 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="partyMeetingUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyMeetingAtrPointHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointHistoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyMeetingMinuteHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteHistoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="trainingCampAttendanceTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampAttendanceTabUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyMeetingAttendanceTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAttendanceTabUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyMeetingAtrPointDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyMeetingDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="partyMeetingMinuteDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -3063,40 +3098,7 @@
 	<bean id="trainingCampUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampUserDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="eventTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventTypeDAO">
+	<bean id="trainingCampBatchAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchAttendeeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="districtConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictConstituenciesDAO">
-	  <property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	 <bean id="cadreLeadershipLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLeadershipLevelDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="cadreComminicationSkillsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreComminicationSkillsStatusDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="cadreLeadershipSkillsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLeadershipSkillsStatusDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="cadreHealthStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreHealthStatusDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="trainingCampCadreAchievementDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreAchievementDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="trainingCampCadreGoalDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreGoalDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="trainingCampCadreFeedbackDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackDetailsDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	
 </beans>
