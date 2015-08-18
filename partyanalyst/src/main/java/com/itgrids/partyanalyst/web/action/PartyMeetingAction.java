@@ -176,7 +176,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 				loggedUser = regVo.getRegistrationID();
 			}
 			
-			status = partyMeetingService.updateMeetingAtrPoint(jObj.getLong("atrId"),jObj.getString("request"),jObj.getString("ActionTaken"),jObj.getString("raisedBy"),loggedUser,jObj.getLong("locationId"));
+			status = partyMeetingService.updateMeetingAtrPoint(jObj.getLong("atrId"),jObj.getString("request"),jObj.getString("ActionTaken"),jObj.getString("raisedBy"),loggedUser,jObj.getLong("locationId"),jObj.getLong("partyMeetingId"),jObj.getLong("locationscope"));
 		}catch (Exception e) {
 			LOG.error("Exception raise at updateMeetingAtrPoint", e);
 		}
@@ -209,6 +209,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			partyMeetingService.deletePartyMeetingDocument(jObj.getLong("docId"));
 		}catch (Exception e) {
 			LOG.error("Exception raised at deletePartyMeetingDocument",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAtrPointsForAMeeting(){
+		try {
+			LOG.info("Entered into getAtrPointsForAMeeting");
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingVO = partyMeetingService.getAtrPointsForAMeeting(jObj.getLong("partyMeetingId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAtrPointsForAMeeting",e);
 		}
 		return Action.SUCCESS;
 	}
