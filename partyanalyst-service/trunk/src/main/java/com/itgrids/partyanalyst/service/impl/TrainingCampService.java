@@ -21,6 +21,10 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
+import com.itgrids.partyanalyst.dao.ICadreComminicationSkillsStatusDAO;
+import com.itgrids.partyanalyst.dao.ICadreHealthStatusDAO;
+import com.itgrids.partyanalyst.dao.ICadreLeadershipLevelDAO;
+import com.itgrids.partyanalyst.dao.ICadreLeadershipSkillsStatusDAO;
 import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
 import com.itgrids.partyanalyst.dao.ICampCallStatusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -43,6 +47,9 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
@@ -68,6 +75,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
@@ -131,8 +139,14 @@ public class TrainingCampService implements ITrainingCampService{
 	private IPartyMeetingAtrPointDAO partyMeetingAtrPointDAO;
 	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
-	
-	
+	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;
+    private ITrainingCampCadreAchievementDAO trainingCampCadreAchievementDAO;
+    private ITrainingCampCadreGoalDAO trainingCampCadreGoalDAO;
+    
+	private ICadreLeadershipLevelDAO cadreLeadershipLevelDAO; 
+    private ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO; 
+    private ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO; 
+    private ICadreHealthStatusDAO cadreHealthStatusDAO;
 	
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -416,7 +430,40 @@ public class TrainingCampService implements ITrainingCampService{
 			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
 		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
 	}
+    
+	
+	public void setTrainingCampCadreFeedbackDetailsDAO(
+			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
+		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
+	}
 
+	public void setTrainingCampCadreAchievementDAO(
+			ITrainingCampCadreAchievementDAO trainingCampCadreAchievementDAO) {
+		this.trainingCampCadreAchievementDAO = trainingCampCadreAchievementDAO;
+	}
+
+	public void setTrainingCampCadreGoalDAO(
+			ITrainingCampCadreGoalDAO trainingCampCadreGoalDAO) {
+		this.trainingCampCadreGoalDAO = trainingCampCadreGoalDAO;
+	}
+	public void setCadreLeadershipLevelDAO(
+			ICadreLeadershipLevelDAO cadreLeadershipLevelDAO) {
+		this.cadreLeadershipLevelDAO = cadreLeadershipLevelDAO;
+	}
+
+	public void setCadreComminicationSkillsStatusDAO(
+			ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO) {
+		this.cadreComminicationSkillsStatusDAO = cadreComminicationSkillsStatusDAO;
+	}
+
+	public void setCadreLeadershipSkillsStatusDAO(
+			ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO) {
+		this.cadreLeadershipSkillsStatusDAO = cadreLeadershipSkillsStatusDAO;
+	}
+
+	public void setCadreHealthStatusDAO(ICadreHealthStatusDAO cadreHealthStatusDAO) {
+		this.cadreHealthStatusDAO = cadreHealthStatusDAO;
+	}
 	public List<BasicVO> getAllPrograms()
 	{
 		try{
@@ -3792,15 +3839,106 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return format;
 	}
-	public List<Object[]> getDetailsForACadre(Long tdpCadreId,Long batchId){
+	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId){
+		CadreDetailsVO vo=new CadreDetailsVO();
 		try{
-			 
-			//getDetailsForTdpCadre();
+			
+			Object[] cadreInfo= trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId);
+			if(cadreInfo!=null && cadreInfo.length>0){//cid,fname,mobile,cname,dname,pname,image
+				vo.setId(tdpCadreId);
+				vo.setName(cadreInfo[1]!=null?cadreInfo[1].toString():"");
+				vo.setMobileno(cadreInfo[2]!=null?cadreInfo[2].toString():"");
+				vo.setConstituency(cadreInfo[3]!=null?cadreInfo[3].toString():"");
+				vo.setDistrictName(cadreInfo[4]!=null?cadreInfo[4].toString():"");
+				vo.setProgramName(cadreInfo[5]!=null?cadreInfo[5].toString():"");
+				vo.setImage(cadreInfo[6]!=null?cadreInfo[6].toString():"");
+			}
+			
+			Object[] feedBackInfo=trainingCampCadreFeedbackDetailsDAO.getFeedBackDetailsforCadre(tdpCadreId,batchId);
+			if(feedBackInfo!=null && feedBackInfo.length>0){//ll,css,lss,hea,rem
+				vo.setLeaderShipLevelId(feedBackInfo[0]!=null?(Long)feedBackInfo[0]:0l);
+				vo.setCommunicationSkillsStatusId(feedBackInfo[1]!=null?(Long)feedBackInfo[1]:0l);
+				vo.setLeaderShipSkillsStatusId(feedBackInfo[2]!=null?(Long)feedBackInfo[2]:0l);
+				vo.setHealthStatusId(feedBackInfo[3]!=null?(Long)feedBackInfo[3]:0l);
+				vo.setRemarks(feedBackInfo[4]!=null?feedBackInfo[4].toString():"");
+			}
+			List<Object[]> achievments=trainingCampCadreAchievementDAO.getAchievmentDetailsforCadre(tdpCadreId,batchId);
+			if(achievments!=null && achievments.size()>0){
+				if(vo.getAchievementsList()==null){
+					vo.setAchievementsList(new ArrayList<SimpleVO>());
+				}
+				for(Object[] param:achievments){
+					  SimpleVO simplevo=new SimpleVO();
+					  simplevo.setId(param[0]!=null?(Long)param[0]:0l);
+					  simplevo.setName(param[1]!=null?param[1].toString():"");
+					  vo.getAchievementsList().add(simplevo);
+				}
+			}
+			List<Object[]> goals=trainingCampCadreGoalDAO.getGoalsDetailsforCadre(tdpCadreId,batchId);
+			if(goals!=null && goals.size()>0){
+				if(vo.getGoalsList()==null){
+					vo.setGoalsList(new ArrayList<SimpleVO>());
+				}
+				for(Object[] param:goals){
+					SimpleVO simplevo=new SimpleVO();
+					 simplevo.setId(param[0]!=null?(Long)param[0]:0l);
+					 simplevo.setName(param[1]!=null?param[1].toString():"");
+					 simplevo.setDate(param[2]!=null?(Date)param[2]:null);
+					 vo.getGoalsList().add(simplevo);
+				}
+			}
 			
 		}catch(Exception e){
-			LOG.error(" Exception occured in getDetailsForACadre method in TrainingCampService class.",e);
+			LOG.error(" Error in getDetailsForACadre",e);
 		}
-		return null;
+		return vo;
+	}
+	public CadreDetailsVO getAllStatusForCadre(){
+		 CadreDetailsVO finalVO=new CadreDetailsVO();
+		try{
+			List<Object[]> leaderShiplevels=cadreLeadershipLevelDAO.getAllLeaderShipLevels();//id,name
+			List<Object[]> communicationSkills=cadreComminicationSkillsStatusDAO.getAllCadreComminicationSkills();//id,name
+			List<Object[]> leaderShipSkills=cadreLeadershipSkillsStatusDAO.getAllCadreLeadershipSkills();////id,name
+			List<Object[]> healthStatus=cadreHealthStatusDAO.getAllCadreHealthStatus();
+			
+			if(leaderShiplevels!=null && leaderShiplevels.size()>0){
+				if( finalVO.getLeadershiplevelslist()==null){
+					finalVO.setLeadershiplevelslist(new ArrayList<IdNameVO>());
+				}
+				setDetails(finalVO.getLeadershiplevelslist(),leaderShiplevels);
+			}
+			if(communicationSkills!=null && communicationSkills.size()>0){
+				if( finalVO.getCommunicationsSkillslist()==null){
+					finalVO.setCommunicationsSkillslist(new ArrayList<IdNameVO>());
+				}
+				setDetails(finalVO.getCommunicationsSkillslist(),communicationSkills);
+			}
+			if(leaderShipSkills!=null && leaderShipSkills.size()>0){
+				if( finalVO.getLeadershipSkillslist()==null){
+					finalVO.setLeadershipSkillslist(new ArrayList<IdNameVO>());
+				}
+				setDetails(finalVO.getLeadershipSkillslist(),leaderShipSkills);
+			}
+			if(healthStatus!=null && healthStatus.size()>0){
+				if( finalVO.getHealthStatuslist()==null){
+					finalVO.setHealthStatuslist(new ArrayList<IdNameVO>());
+				}
+				setDetails(finalVO.getLeadershipSkillslist(),healthStatus);
+			}
+			
+		}catch(Exception e){
+			LOG.error(" Error in getCadreStatus",e);
+		}
+		return finalVO;
+	}
+	public void setDetails(List<IdNameVO> finalList,List<Object[]> valuesList){
+		
+		for(Object[] obj:valuesList){
+			IdNameVO idNameVO=new IdNameVO();
+			idNameVO.setId(obj[0]!=null?(Long)obj[0]:0l);
+			idNameVO.setName(obj[1]!=null?obj[1].toString():"");
+			finalList.add(idNameVO);
+		}
 	}
 	
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType){
