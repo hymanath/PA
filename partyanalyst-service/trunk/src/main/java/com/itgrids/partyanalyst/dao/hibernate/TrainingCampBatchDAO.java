@@ -48,4 +48,13 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		
 		return query.list();
 	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTrainingCampBatchesOfSchedule(Long trainingCampScheduleId)
+	{
+		Query query = getSession().createQuery("SELECT model.trainingCampBatchId,model.trainingCampBatchName,model.trainingCampBatchCode,model.fromDate,model.toDate from TrainingCampBatch model " +
+				" where model.trainingCampSchedule.trainingCampScheduleId = :trainingCampScheduleId");
+		query.setParameter("trainingCampScheduleId",trainingCampScheduleId);
+		return query.list();
+	}
 }
