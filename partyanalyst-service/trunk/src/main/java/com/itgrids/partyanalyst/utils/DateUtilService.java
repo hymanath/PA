@@ -147,8 +147,8 @@ public class DateUtilService {
 		/*System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
 		System.out.println( new  DateUtilService().getYesterdayDateString());*/
 		
-		Long l = new DateUtilService().noOfDayBetweenDates("2014-11-03","2014-11-17");
-		System.out.println(l);
+		String string = new DateUtilService().getDateInStringFormatByDate(new Date(),"HH:mm:ss");
+		System.out.println(string);
 	}
 	
 	public Date getDateAndTime(String DateString)
@@ -220,6 +220,18 @@ public class DateUtilService {
 			log.error("Exception occured in getDateByStringAndFormat - ",e);
 		}
 		return null;
+	}
+	
+	public String getDateInStringFormatByDate(Date date,String format)
+	{
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			return sdf.format(date);
+		}catch(Exception e)
+		{
+			log.error("Exception occured in getDateByStringAndFormat - ",e);
+		}
+		return "";
 	}
 	
 }
