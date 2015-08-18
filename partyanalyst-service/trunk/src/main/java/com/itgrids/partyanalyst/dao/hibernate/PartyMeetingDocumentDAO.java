@@ -28,7 +28,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 	
 	public List<Object[]> getDocumentDetailsForMinutesAtr(Long partyMeetingId){
 		Query query = getSession().createQuery(" select model.partyMeetingDocumentId,model.partyMeetingId,model.path,model.documentType,model.documentFormat," +
-				"model.uploadedBy.userId,model.uploadedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName,model.uploadedTime " +
+				"model.uploadedBy.userId,model.uploadedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName,model.uploadedTime, model.documentName " +
 				" from PartyMeetingDocument model " +
 				" where model.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		query.setParameter("partyMeetingId", partyMeetingId);

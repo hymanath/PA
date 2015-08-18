@@ -3436,7 +3436,8 @@ public class TrainingCampService implements ITrainingCampService{
 			
 					CallTrackingVO vo = new CallTrackingVO();
 					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
-					vo.setUrl(objects[2]!=null?objects[2].toString().trim():"");
+					vo.setUrl(objects[2]!=null?IConstants.LOCAL_FILES_FOLDER+"/"+objects[2].toString().trim():"");
+					vo.setName(objects[10].toString());
 					
 					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("MINUTE")){
 						minDocs.add(vo);
@@ -3723,7 +3724,7 @@ public class TrainingCampService implements ITrainingCampService{
 		} 
 		return finalList;
 	}
-	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId){
+	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName){
 		LOG.debug("Entered Into saveFilePaths");
 		try{
 			
@@ -3735,6 +3736,7 @@ public class TrainingCampService implements ITrainingCampService{
 			partyMeetingDocument.setUploadedTime(new DateUtilService().getCurrentDateAndTime());
 			partyMeetingDocument.setDocumentFormat(getStandardFormatOfFile(fileType));
 			partyMeetingDocument.setDocumentType(documentType);
+			partyMeetingDocument.setDocumentName(fileName);
 			
 			partyMeetingDocumentDAO.save(partyMeetingDocument);
 			return "success";
