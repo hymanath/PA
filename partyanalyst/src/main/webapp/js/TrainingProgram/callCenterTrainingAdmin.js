@@ -134,8 +134,15 @@ function saveAllDetails()
 
 function getCampusWiseDateWiseInterestedMembersDetails(searchType)
 {
-	var fromDate=$(".dp_startDate").val();
-	var toDate=$(".dp_endDate").val();
+	var fromDate='';
+	var toDate='';
+	var dateStr=$("#reportrange").val();
+	var dateArr=[];
+	if(dateStr !=null && dateStr.length>0){
+		dateArr=dateStr.split("to");
+		fromDate= dateArr[0];
+		toDate=  dateArr[1];
+	}
 	
 	var jsObj={
 			searchType:searchType,
@@ -252,14 +259,21 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 	}
 }
 
-function getCampusWiseBatchWiseMembersDetails(searchType,divId)
+function getCampusWiseBatchWiseMembersDetails(searchType,divId,typeId)
 {
 	$("#"+divId+"").html("");
 
 	$("#dataLoadingsImgForCalenderScheduleId").show();
+	var fromDate='';
+	var toDate='';
+	var dateStr=$("#reportrange").val();
+	var dateArr=[];
+	if(dateStr !=null && dateStr.length>0){
+		dateArr=dateStr.split("to");
+		fromDate= dateArr[0];
+		toDate=  dateArr[1];
+	}
 	
-	var fromDate=$(".dp_startDate").val();
-	var toDate=$(".dp_endDate").val();
 	var jsObj={
 			searchType:searchType,
 			fromdate : fromDate,
