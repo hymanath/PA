@@ -245,8 +245,35 @@
 
 	
 	<script>
-	
+	     //global variables
+		 var leaderShipLevelArray = [];
+		 var communicationSkillsArray = [];
+		 var leaderShipSkillsArray = [];
+		 var healthStatusArray = [];
+		 
+	     //on load calls.
+	     getAllStatusForCadre();
 		 getTdpCadreDetailsforASchedule(1);
+		 
+		 function getAllStatusForCadre(scheduleId)
+		 {
+			$.ajax({
+			  type:'POST',
+			  url :'getAllStatusForCadreAction.action',
+			  data:{},
+		    }).done(function(result){
+			    populateData(result);
+			});
+		}
+		function populateData(result){
+		  if(result!=null){
+		    leaderShipLevelArray=result.leadershiplevelslist;
+			communicationSkillsArray=result.communicationsSkillslist;
+			leaderShipSkillsArray=result.leadershipSkillslist;
+			healthStatusArray=result.healthStatuslist;
+			console.log(leaderShipLevelArray);
+		  }
+		}
 		 function getTdpCadreDetailsforASchedule(scheduleId)
 		 { 
 			var jsObj={scheduleId:scheduleId }
@@ -327,7 +354,7 @@
 		}
 		
 	
-	/* $(document).on('click','#updateId',function(){
+	 $(document).on('click','#updateId',function(){
 	
        var tdpCadreId=$(this).attr('attr-cadreId');
 	   var batchId=$(this).attr('attr-batchId');
@@ -340,7 +367,7 @@
 			
 	   });
 	   
-   }); */
+     }); 
 	</script>
 </body>
 </html>

@@ -93,6 +93,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	
 	private Long partyMeeting;
 	private String partyMeetingType;
+	private CadreDetailsVO cadreDetailsVO;
 	private List<CallTrackingVO> docsResultList;
 	
 	
@@ -455,6 +456,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public String execute(){
 		return Action.SUCCESS;
 	}
+	
+	public CadreDetailsVO getCadreDetailsVO() {
+		return cadreDetailsVO;
+	}
+
+	public void setCadreDetailsVO(CadreDetailsVO cadreDetailsVO) {
+		this.cadreDetailsVO = cadreDetailsVO;
+	}
+
 	public String callCenterTrainingAdmin()
 	{
 		try
@@ -1469,10 +1479,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
 			Long batchId = jObj.getLong("batchId");
 			
-			//finalList = trainingCampService.getDetailsForACadre(tdpCadreId,batchId);
+			cadreDetailsVO= trainingCampService.getDetailsForACadre(tdpCadreId,batchId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+     public String getAllStatusForCadre(){
+		
+		try{
+			cadreDetailsVO= trainingCampService.getAllStatusForCadre();
+			
+		}catch(Exception e) {
+			LOG.error("Exception Occured in getAllStatusForCadre() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
