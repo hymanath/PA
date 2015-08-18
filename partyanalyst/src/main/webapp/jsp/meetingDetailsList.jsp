@@ -150,7 +150,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
-													<span class="input-group-addon saveMinute" attr_txt="minutes1">
+													<span class="input-group-addon saveMinute" attr_minuteid="0" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-ok"></i>
                                                     </span>
                                                 </div>
@@ -256,7 +256,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				 </div>
 			 </div>
 			 <div class="modal-footer">
-				 <button type="button" class="btn btn-success btn-sm"><i class="icon-check"></i> SAVE </button>
+				 <button type="button" class="btn btn-success btn-sm" id="saveBtn" data-dismiss="modal"><i class="icon-check"></i> SAVE </button>
 				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 			 </div>
 		 </div>
@@ -407,12 +407,12 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		  $("#atrDivId").append(c);
     }); */
    
-    $(document).on('click', '.removebtn', function(){
+   /*  $(document).on('click', '.removebtn', function(){
 		
 		var removedivId = $(this).attr("id");
         $("#"+removedivId).remove();
         //$(this).remove();
-    });
+    }); */
     $(document).on('click', '.trash', function(){
         
 		var divId = $(this).attr("attr_txt");
@@ -614,7 +614,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    
     //getmeetinglocationlevel(1, 36);
     function getmeetinglocationlevel(locationLevel, locationId,atrId,locationLevelValue){
-       
+       //alert(locationLevel+"---"+locationId+"---"+atrId+"---"+locationLevelValue);
+	   
         if(locationLevel == 1){
             $("#stateShowIdSpan"+atrId).hide();
             $("#DistrictShowIdSpan"+atrId).show();
@@ -655,6 +656,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         }
     }
 	
+	var globalLocationId=0;
 	function getPartyMeetingMinutesAtrDetails(partyMeetingID){
 		
 		var jsObj={				
@@ -726,7 +728,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
-				       str+=' <button class="btn btn-default btn-xs removebtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Delete" style="background-color:#CCC" attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
+				       str+=' <button class="btn btn-default btn-xs ToolTipDiv deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" data-toggle="tooltip" data-placement="top" title="Delete" style="background-color:#CCC" attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					   str+=' <button class="btn btn-default btn-xs editBtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
@@ -812,6 +814,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#atrDivId").html(str);
 				    $('.ToolTipDiv').tooltip()
 				   for(var i in result.atrDetails){
+					   globalLocationId = result.locationValue;
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
 					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
@@ -1021,8 +1024,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 $("#myModashow").modal("show");
 	});
 	
+	
 	$(document).on('click', '#saveBtn', function(){
-		
+		//alert($("#locationDivId option:selected").val());
 		var request = $("#request").val();
 		var ActionTaken = $("#actionTaken").val();
 		var raisedBy = $("#raisedBy").val();
@@ -1055,7 +1059,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		
 	});
 	
-	function getAtrPointsForAMeeting(partyMeetingId){alert(partyMeetingId);
+	function getAtrPointsForAMeeting(partyMeetingId){
 		var jsObj={		
 			partyMeetingId : partyMeetingId
 		}
@@ -1075,8 +1079,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
-				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
-					   str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
+					  
+					  str+=' <button class="btn btn-default btn-xs ToolTipDiv deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" data-toggle="tooltip" data-placement="top" title="Delete" style="background-color:#CCC" attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   
+					   //str+=' <button class="btn btn-danger btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"  attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
+					   
+					   str+=' <button class="btn btn-default btn-xs editBtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
+					   
+					   //str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
 					   str+='<label>REQUEST</label><br/>';
@@ -1163,7 +1173,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
+					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,globalLocationId,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
 					   
 				   }
 				   
@@ -1213,7 +1223,25 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		});	
 	}
 	
+	$(document).on('click', '.deleteAtr', function(){
+		var atrId = $(this).attr("attr_atrid");
 		
+		var jsObj={		
+			atrId : atrId
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'deleteMeetingAtrPointAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result=="success"){
+				alert("ATR Deleted");
+				$("#atrInnerDiv"+atrId).remove();
+			}
+		});
+		
+	});
 	
 </script>
 </body>
