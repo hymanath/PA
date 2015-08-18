@@ -373,7 +373,7 @@ function buildBAtchWiseMembersDetails(result,divId,searchType)
 function buildCampusWiseBatchWiseMembersDetails(result,divId)
 {
 	var str='';
-	if(result.trainingCampVOList != null)
+	if(result.trainingCampVOList != null && result.trainingCampVOList.length>0)
 	{//alert(1);
 		str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d" style="font-size:12px;">';
