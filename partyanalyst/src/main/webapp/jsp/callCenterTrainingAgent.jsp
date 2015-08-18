@@ -705,11 +705,11 @@ function setDefaultImage(img){
 					$("#myModal").modal('hide');
 					 if(callstatusId == 1)
 					   {
-						$("#ajaxImage").show();
+						$("#ajaxImage").hide();
 					  }
 					  else
 					   {
-						$("#ajaxImage2").show();
+						$("#ajaxImage2").hide();
 					  }
 		   })
     
