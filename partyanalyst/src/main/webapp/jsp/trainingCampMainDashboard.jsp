@@ -23,7 +23,7 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"> -->
 <style type="text/css">
-
+.add-plus{cursor:pointer}
 .glyphicon-trash
 {
 	cursor:pointer
@@ -44,11 +44,45 @@
 	border-radius:50%;
 	cursor:pointer
 }
+header.eventsheader {  
+    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    height: 71px;   
+}
 </style>
 	</head>
 <body>
-<header>
-	<img src="dist/img/header.jpg" width="100%" alt="">
+<header class="eventsheader">
+	<!--<img src="dist/img/header.jpg" width="100%" alt="">-->
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:34px;"></p>               
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
+                    Menu <img src="images/menu_icon.png" />
+                    </a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
+					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					    <!-- <li><a href="callCenterTrainingAgent.action"><span>CALLERS DASHBOARD</span></a> </li>-->
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					
+                    </ul>   
+            </div>			
+        </div>       
+    </div>
 </header>
 <!--  accordian start-->
 <main>
@@ -80,7 +114,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="table-responsive">
-				<table class="table table-bordered m_0">
+				<table class="table table-bordered m_0" style="font-size:12px">
 					
 					<tr>
 						<td></td>
@@ -109,68 +143,77 @@
         <div class="row m_top20">
 			<div class="col-md-12">
 				<label>Achievements</label>
-				<div class="row">
+				<div class="row" id="list" style="display:none;">
 					<div class="col-md-11">
-						<input class="form-control" type="text" disabled value="First in Debate">
+						<input class="form-control txtbox achievmentCls m_top10" type="text">
 					</div>
-					<div class="col-md-1">
-						<i class="glyphicon glyphicon-minus m_top10 add-plus"></i>
+					<div class="col-md-1 ">
+						<i class="glyphicon glyphicon-minus m_top10 add-plus trash"></i>
 					</div>
+				</div>
+				<div id="addMoreDiv">
 				</div>
 				<div class="row m_top10">
 					<div class="col-md-11">
-						<input class="form-control" type="text" disabled value="Batch Topper">
+						<input class="form-control achievmentCls" type="text">
 					</div>
 					<div class="col-md-1">
-						<i class="glyphicon glyphicon-minus m_top10 add-plus"></i>
+						<i class="glyphicon glyphicon-plus m_top10 add-plus" onclick="myFunction();"></i>
 					</div>
 				</div>
-				<div class="row m_top10">
-					<div class="col-md-11">
-						<input class="form-control" type="text">
-					</div>
-					<div class="col-md-1">
-						<i class="glyphicon glyphicon-plus m_top10 add-plus"></i>
-					</div>
-				</div>
+				
 			</div>
         </div>
         <div class="row m_top20">
-			<div class="col-md-6">
+			<div class="col-md-12">
+				<div class="col-md-6">
 				<label>Goals</label>
-				<input type="text" class="form-control" disabled value="To become a leader">
-			</div>
-			<div class="col-md-4">
+				</div>
+				<div class="col-md-4">
 				<label>Date & TIme</label>
-				<div class="input-group">
-					<input type="text" class="form-control" disabled>
 				</div>
-			</div>
-			<div class="col-md-2">
-				<i class="glyphicon glyphicon-minus addRemove m_top20"></i>
-				<i class="glyphicon glyphicon-edit addRemove m_top30"></i>
-			</div>
-		</div>
-		<div class="row m_top10">
-			<div class="col-md-6">
-				<input type="text" class="form-control">
-			</div>
-			<div class="col-md-4">
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-calendar"></i>
-					</span>
-					<input type="text" class="form-control">
+				<div class="row" id="dateList" style="display:none;">
+					<div class="col-md-6">
+						<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" disabled>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group datetxtboxD m_top10">
+							<span class="input-group-addon caret">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							<input type="text" class="form-control goalsDateCls" disabled>
+						</div>
+						
+					</div>
+					<div class="col-md-1">
+						<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>
+					</div>
 				</div>
-			</div>
-			<div class="col-md-2">
-				<i class="glyphicon glyphicon-plus addRemove"></i>
-			</div>
+				<div id="addMoreDateDiv">
+				</div>
+				<div class="row m_top10">
+					<div class="col-md-6">
+						<input class="form-control goalsTxtCls" type="text">
+					</div>
+					<div class="col-md-4">
+						<div class="input-group datetxtboxD">
+							<span class="input-group-addon caret">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							<input type="text" class="form-control goalsDateCls" id="reportrange">
+						</div>
+					</div>
+					<div class="col-md-1">
+						<i class="glyphicon glyphicon-plus add-plus" onclick="myDateFunction();"></i>
+					</div>
+				</div>
 		</div>
+		</div>
+		
         <div class="row">
         	<div class="col-md-12">
             	<label>Leadership Level</label>
-                <select class="form-control">
+                <select class="form-control" id="leadershipLevelId">
                 	<option>District</option>
                     <option>State</option>
                     <option>Constituency</option>
@@ -180,7 +223,7 @@
         <div class="row">
         	<div class="col-md-12">
             	<label>Communication Skills</label>
-                <select class="form-control">
+                <select class="form-control" id="communicationSkillsId">
                 	<option>Average</option>
                     <option>Poor</option>
                     <option>Good</option>
@@ -192,7 +235,7 @@
         <div class="row">
         	<div class="col-md-12">
             	<label>Leadership Skills</label>
-                <select class="form-control">
+                <select class="form-control" id="leaderShipSkillsId">
                 	<option>Average</option>
                     <option>Poor</option>
                     <option>Good</option>
@@ -204,21 +247,25 @@
         <div class="row">
         	<div class="col-md-12">
             	<label>Health</label>
-                <select class="form-control">
-                	<option></option>
+                <select class="form-control" id="healthId">
+                	<option>Average</option>
+                    <option>Poor</option>
+                    <option>Good</option>
+                    <option>Very Good</option>
+                    <option>Excellent</option>
                 </select>
             </div>
         </div>
 		<div class="row">
 			<div class="col-md-12">
 				<label>Comments</label>
-				<textarea class="form-control"></textarea>
+				<textarea class="form-control" id="commentsId"></textarea>
 			</div>
 		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" onclick="saveAllDetails();">Save</button>
       </div>
     </div>
   </div>
@@ -244,7 +291,152 @@
 	<script src="dist/HighCharts/highcharts.js" type="text/javascript"></script> -->
 
 	
-	<script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+   var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	minDate: '01/01/2012',
+	maxDate: '12/31/2015',
+	//dateLimit: { days: 60 },
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: true,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Next 30 Days': [moment(),moment().add(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary newsSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+
+  var optionSet2 = {
+	startDate: moment().subtract(7, 'days'),
+	endDate: moment(),
+	opens: 'left',
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	}
+  };
+
+  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#reportrange').daterangepicker(optionSet1, cb);
+
+  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+  $('#options1').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+  });
+
+  $('#options2').click(function() {
+	$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+  });
+
+  $('#destroy').click(function() {
+	$('#reportrange').data('daterangepicker').remove();
+  });
+  
+});
+
+$("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");	
+	
+		$(document).on('click', '.trash', function(){
+        
+		var divId = $(this).attr("attr_txt");
+        $("#"+divId).remove();
+        $(this).remove();
+		
+		var minuteId = $(this).attr("removeTxtbox");
+		
+		var jsObj =    {minuteId : minuteId}
+       
+        
+		
+    });
+	
+	$(document).on('click', '.datetrash', function(){
+        
+		var divId = $(this).attr("attr_txt");
+		var divDId = $(this).attr("attr_date_txt");
+        $("#"+divId).remove();
+		$("#"+divDId).remove();
+        $(this).remove();
+		
+		var minuteId = $(this).attr("add-plus");
+		
+		var jsObj =    {minuteId : minuteId}
+       
+        
+		
+    });
+   
+		var mainDivCount=1;
+    function myFunction() {
+        mainDivCount = parseInt(mainDivCount)+1;
+        var c = $("#list").clone(true);
+            c.removeAttr("style");
+            c.attr("id","list"+mainDivCount)
+            c.find(".txtbox").attr("id","minutes"+mainDivCount);
+            c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
+			c.find(".trash").attr("attr_minuteId","0");
+			
+        $("#addMoreDiv").append(c);
+    }
+	
+	var mainDateDivCount=1;
+	function myDateFunction() {
+        mainDateDivCount = parseInt(mainDateDivCount)+1;
+        var c = $("#dateList").clone(true);
+            c.removeAttr("style");
+            c.attr("id","dateList"+mainDateDivCount)
+            c.find(".datetxtbox").attr("id","minutes"+mainDateDivCount);
+			c.find(".datetxtboxD").attr("id","Dateminutes"+mainDateDivCount);
+            c.find(".datetrash").attr("attr_txt","minutes"+mainDateDivCount);
+			c.find(".datetrash").attr("attr_date_txt","Dateminutes"+mainDateDivCount);
+			c.find(".datetrash").attr("attr_minuteId","0");
+			
+        $("#addMoreDateDiv").append(c);
+    }
 	     //global variables
 		 var leaderShipLevelArray = [];
 		 var communicationSkillsArray = [];
@@ -300,7 +492,8 @@
                 str+='</div>';                
                 str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">'
                   str+='<div class="panel-body">';
-                      str+='<table class="table table-bordered m_0">'
+					str+='<div class="table-responsive">';
+                      str+='<table class="table table-bordered m_0" style="font-size:12px">'
                       str+='<thead>';
 					  str+='<th></th>';
                       str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Achievements</th><th>Goals</th>'
@@ -308,7 +501,12 @@
                       str+='</thead>';                 
                       for(var j in results[i].subList){
 					   str+='<tr>';
-					   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>'
+					   if(results[i].subList[j].image != null){
+						   str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+results[i].subList[j].image+'" style="height:40px" class="img-reponsive"></td>'
+					   }
+					   else{
+						   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>'
+					   }
 					   str+='<td>'+results[i].subList[j].name+'</td>'
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
@@ -347,6 +545,7 @@
                     }
 					str+='</table>'
                   str+='</div>'
+				  str+='</div>'
                 str+='</div>'
               str+='</div>'
 		   }
@@ -368,6 +567,38 @@
 	   });
 	   
      }); 
+   
+   function saveAllDetails()
+   {
+	   var achievements = $.trim($(".achievmentCls").val());
+	   var goals = $.trim($(".goalsTxtCls").val());
+	   var goalsDate = $(".goalsDateCls").val();
+	   var leaderShipLevel = $("#leadershipLevelId").val();
+	   var communicationSkills = $("#communicationSkillsId").val();
+	   var leaderShipSkills = $("#leaderShipSkillsId").val();
+	   var health = $("#healthId").val();
+	   var comments = $("#commentsId").val();
+	   
+	   var jsObj=
+		{
+			achievements:achievements,
+			goals:goals,
+			goalsDate:goalsDate,
+			leaderShipLevel:leaderShipLevel,
+			communicationSkills:communicationSkills,
+			leaderShipSkills:leaderShipSkills,
+			health:health,
+			comments:comments
+		}
+		
+		$.ajax({
+		  type:'POST',
+		  url :'saveDetailsOfCadreAction.action',
+		  data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			
+		});
+   }
 	</script>
 </body>
 </html>
