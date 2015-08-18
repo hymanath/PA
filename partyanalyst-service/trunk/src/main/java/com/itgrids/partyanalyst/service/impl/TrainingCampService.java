@@ -3964,4 +3964,11 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return finalDocs;
 	}
+	
+	public String saveDetailsOfCadre(String achievements,String goals,String goalsDate,Long leaderShipLevel,Long communicationSkills,Long leaderShipSkills,Long health,String comments)
+	{
+		
+		
+		return "success";
+	}
 }
