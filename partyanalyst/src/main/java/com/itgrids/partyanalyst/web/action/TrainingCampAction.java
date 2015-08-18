@@ -804,7 +804,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			}else if(callPurposeId == 2){
 				Long batchId = jObj.getLong("batchId");
 				List<Long> otherUserIdsList = new ArrayList<Long>(0);
-				Boolean isOwnMembers = jObj.getBoolean("availCalls");
+				JSONArray userIdsArr = jObj.getJSONArray("userIds");
+				if(userIdsArr != null && userIdsArr.length() > 0)
+				{
+					
+					for(int i=0; i<userIdsArr.length();i++)
+					{
+						if(!otherUserIdsList.contains(Long.valueOf(userIdsArr.get(i).toString())))
+						otherUserIdsList.add(Long.valueOf(userIdsArr.get(i).toString()));
+					}
+					
+				}
+				Boolean isOwnMembers = false;
 				resultStatus = trainingCampService.assignMembersToCallerForBatchConfirmation(regVo.getRegistrationID(),isOwnMembers,scheduleId,membersCount,callerId,callPurposeId,batchId,otherUserIdsList);
 			}
 			

@@ -99,7 +99,7 @@
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
 					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
-					   <li><a href="callCenterTrainingAgent.action"><span>CALLERS DASHBOARD</span></a> </li>
+					   <li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
                     </ul>   
@@ -110,7 +110,9 @@
 	
 </header>
 <section>
+	
 	<div class="container">
+		
 		<div class="col-md-12">
 			<div class="panel panel-default panel-custom">
 				<div class="panel-heading">
@@ -343,7 +345,8 @@
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<b>BATCH CONFIRMATION DETAILS</b>
-										<button class="btn btn-success btn-sm pull-right" style="margin-top:-6px" >Assign to Agents</button>
+										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
+										data-toggle="modal" data-target="#myModal1" onclick="getAllCampsForBatch();getCallerOverViewForAdmin();">Assign to Agents</button>
 									</h4>
 								</div>
 								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
@@ -498,7 +501,162 @@
 			</div>
 		</div>
 	</div>
-	
+	<!-- batch -->
+	<!---Modal-1----------------->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header  bg_d">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title text-uppercase">Assign Members to Batch Confirmation</h5>
+      </div>
+      <div class="modal-body">
+      		<div class="row">
+				<div class="col-md-12 m_top5">
+					<label>Select Center</label>
+					<select class="form-control border-radius-0" id="batchCampId" onchange="getAllProgramsList('batch');">
+						
+					</select>
+				</div>   
+				<div class="col-md-12 m_top10">
+					<label>Select Program Name</label>
+					<select class="form-control border-radius-0" id="batchProgramId"  onchange="getAllSchedulesDatesList('batch');">
+						
+					</select>
+				</div>   
+				<div class="col-md-12 m_top10">
+					<label>Select Calender Scheduled Dates</label>
+					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();">
+						
+					</select>
+					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>
+				</div>  
+				<div class="col-md-12 m_top10">
+					<label>Select Training Batch / Date</label>
+					<select class="form-control border-radius-0" id="batchId">
+						
+					</select>
+					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 110</i></small>
+				</div>  			
+				
+				<div class="col-md-12 m_top5" id="AdminCallersOverview">
+					<!--<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">
+						<tr class="custom-info">
+							<td colspan="4" style="background:#99cccc;">Harish <small class="pull-right" >Selected Batch Confirmed Members - 50&nbsp;<input type="checkbox"> </small>  </td>
+						</tr>
+						<tr class="custom-info">
+							<td>&nbsp;</td>
+							<td>ASSIGNED</td>
+							<td >COMPLETED</td>
+							<td>PENDING</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Scheduled Confirmation </small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Batch Confirmation</small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>	
+					</table>	
+					
+					<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">
+						<tr class="custom-info">
+							<td colspan="4" style="background:#99cccc;">Ramesh <small class="pull-right" >Selected Batch Confirmed Members - 50&nbsp;<input type="checkbox"> </small>  </td>
+						</tr>
+						<tr class="custom-info">
+							<td>&nbsp;</td>
+							<td>ASSIGNED</td>
+							<td >COMPLETED</td>
+							<td>PENDING</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Scheduled Confirmation </small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Batch Confirmation</small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>	
+					</table>
+					
+					<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">
+						<tr class="custom-info">
+							<td colspan="4" style="background:#99cccc;">Suresh <small class="pull-right" >Selected Batch Confirmed Members - 50&nbsp;<input type="checkbox"> </small>  </td>
+						</tr>
+						<tr class="custom-info">
+							<td>&nbsp;</td>
+							<td>ASSIGNED</td>
+							<td >COMPLETED</td>
+							<td>PENDING</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Scheduled Confirmation </small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Batch Confirmation</small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>	
+					</table>-->
+					
+				</div>  
+				
+				<div class="col-md-12 ">
+					<label>Select Call Center Agent Name</label>
+					<select class="form-control border-radius-0" id="batchAgentId" onchange="getCallerOverView('batch');">
+						
+					</select>					
+				</div>  
+				<div class="col-md-12 m_top5" id="batchcallerOverViewDiv">
+					<!--<table class="table table-condensed"  style="font-size:11px; margin-bottom: 0px;">
+						<tr class="custom-info">
+							<td>&nbsp;</td>
+							<td>ASSIGNED</td>
+							<td >COMPLETED</td>
+							<td>PENDING</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Scheduled Confirmation </small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>
+						<tr class="custom-info">
+							<td><small>Batch Confirmation</small></td>
+							<td>250</td>
+							<td>220</td>
+							<td>30</td>
+						</tr>	
+					</table>	-->		
+				</div>  
+				<div class="col-md-12">
+					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
+				</div>
+				<div class="col-md-12 m_top20">
+					<button class="btn btn-success btn-block border-radius-0" 
+					onclick="assignBatch();">Assign to Agent</button>
+				</div>  
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+<!---Modal-2----------------->
+
+	<!-- end -->	
 	
 	<!-- Shedule -->
 	<!---Modal-1----------------->
@@ -513,12 +671,12 @@
       		<div class="row">
 				<div class="col-md-12 m_top5">
 					<label>Select Center</label>
-					<select class="form-control border-radius-0"  id="campId" onchange="getAllProgramsList();">
+					<select class="form-control border-radius-0"  id="campId" onchange="getAllProgramsList('schedule');">
 					</select>
 				</div>   
 				<div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
-					<select class="form-control border-radius-0" id="programId" onchange="getAllSchedulesDatesList();">
+					<select class="form-control border-radius-0" id="programId" onchange="getAllSchedulesDatesList('schedule');">
 					</select>
 				</div>   
 				<div class="col-md-12 m_top10">
@@ -530,7 +688,7 @@
 				</div>   
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
-					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView();">
+					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView('schedule');">
 						
 					</select>					
 				</div>   
@@ -573,196 +731,11 @@
     </div>
   </div>
 </div>
-<!-- Demo Modal-->
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                    <a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      <h4 class="panel-title">
-                          SRIKAKULAM - 70
-                          <input type="checkbox" class="pull-right">
-                      </h4>
-                    </a>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                  <div class="panel-body">
-                  </div>
-                </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                  <h4 class="panel-title">
-                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          VISAKAPATNAM - 80
-                          <input type="checkbox" class="pull-right">
-                    </a>
-                  </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div class="panel-body">
-                   	<div>
-                    	<div class="panel-group" id="accordionInner" role="tablist" aria-multiselectable="true">
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headingInnerOne">
-                              <h4 class="panel-title">
-                                <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerOne" aria-expanded="true" aria-controls="collapseInnerOne">
-                                	
-                                  Srungavarapukota - 20
-                                  <span class="pull-right">
-                                  	<input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseInnerOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInnerOne">
-                              <div class="panel-body border_0">
-									<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"></li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headingInnerTwo">
-                              <h4 class="panel-title">
-                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerTwo" aria-expanded="false" aria-controls="collapseInnerTwo">
-                                  
-                                  Srungavarapukota - 20
-                                  <span class="pull-right">
-                                  	<input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseInnerTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInnerTwo">
-                              <div class="panel-body border_0">
-                               		<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headingInnerThree">
-                              <h4 class="panel-title">
-                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInnerThree" aria-expanded="false" aria-controls="collapseInnerThree">
-	                                
-                                    Srungavarapukota - 20
-                                  <span class="pull-right">
-                                    <input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseInnerThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInnerThree">
-                              <div class="panel-body border_0">
-                                	<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingThree">
-                  <h4 class="panel-title">
-                    <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                     
-                        Srungavarapukota - 20
-                      <span class="pull-right">
-                        <input type="checkbox">
-                      </span>
-                    </a>
-                  </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                  <div class="panel-body">
-                    <div>
-                    	<div class="panel-group" id="accordioninner1" role="tablist" aria-multiselectable="true">
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headinginner1One">
-                              <h4 class="panel-title">
-                                <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1One" aria-expanded="true" aria-controls="collapseinner1One">
-                                	
-                                  Srungavarapukota - 20
-                                  <span class="pull-right">
-                                  	<input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseinner1One" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headinginner1One">
-                              <div class="panel-body border_0">
-									<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headinginner1Two">
-                              <h4 class="panel-title">
-                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1Two" aria-expanded="false" aria-controls="collapseinner1Two">
-                                  
-                                  Srungavarapukota - 20
-                                  <span class="pull-right">
-                                  	<input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseinner1Two" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinginner1Two">
-                              <div class="panel-body border_0">
-                               		<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default border_0">
-                            <div class="panel-heading" role="tab" id="headinginner1Three">
-                              <h4 class="panel-title">
-                                <a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordioninner1" href="#collapseinner1Three" aria-expanded="false" aria-controls="collapseinner1Three">
-	                                
-                                    Srungavarapukota - 20
-                                  <span class="pull-right">
-                                    <input type="checkbox">
-                                  </span>
-                                </a>
-                              </h4>
-                            </div>
-                            <div id="collapseinner1Three" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinginner1Three">
-                              <div class="panel-body border_0">
-                                	<ul  >
-                                    	<li>Bobbili - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Ramabhadrapuram - 06 <input type="checkbox" class="pull-right"></li>
-                                    	<li>Badangi - 06 <input type="checkbox" class="pull-right"> </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 <!---Modal-2----------------->
 	<!-- End -- >
+
+
 </section>
 <footer>
 		<img src="css/Training/img/footer.jpg" width="100%">
@@ -1654,26 +1627,77 @@ function buildingMembersFilledInCalenderBatch(result){
 			url :'getAllCampBatchesAction.action',
 			data:{task:JSON.stringify(jsObj)},
 		}).done(function(result){
+		camps = new Array();
+		camps = result;
 			if(result != null)
 			{
 				for(var i in result)
 				{
+				
 					if(result[i].id == 0){
 					  $("#campId").append('<option value='+result[i].id+'>ALL</option>');
+					  
 				   }else{
 					  $("#campId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					   
 				   }
 				}
 			}
 		});
 	}
-function getAllProgramsList()
+	
+	function getAllCampsForBatch()
+	{
+	$("#batchCampId  option").remove();
+	$("#batchCampId").append('<option value="0">Select Camp</option>');
+	
+		var districtIds = 0;
+		var jsObj={
+				districtIds:districtIds
+		}
+		
+		$.ajax({
+			type:'POST',
+			url :'getAllCampBatchesAction.action',
+			data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+		camps = new Array();
+		camps = result;
+			if(result != null)
+			{
+				for(var i in result)
+				{
+				
+					if(result[i].id == 0){
+					  $("#batchCampId").append('<option value='+result[i].id+'>ALL</option>');
+					  
+				   }else{
+					  $("#batchCampId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					   
+				   }
+				}
+			}
+		});
+	}
+function getAllProgramsList(type)
+{
+
+if(type == "batch")
+{
+var campId =$("#batchCampId").val();
+	if(campId == 0)
+	return;
+	$("#batchProgramId  option").remove();
+	$("#batchProgramId").append('<option value="0">Select Program</option>');
+}
+else
 {
 	var campId =$("#campId").val();
 	if(campId == 0)
 	return;
 	$("#programId  option").remove();
 	$("#programId").append('<option value="0">Select Program</option>');
+	}
 	var jsObj={
 		campId:campId
 	}
@@ -1687,21 +1711,45 @@ function getAllProgramsList()
 			for(var i in result){
 				if(result[i].id == 0){
 				  $("#programId").append('<option value='+result[i].id+'>ALL</option>');
+				   if(type == "batch")
+					{
+				   $("#batchProgramId").append('<option value='+result[i].id+'>ALL</option>');
+				   }
+				   else
+				   $("#programId").append('<option value='+result[i].id+'>ALL</option>');
 			   }else{
-				  $("#programId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				
+				  if(type == "batch")
+					{
+				   $("#batchProgramId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   }
+				   else
+				     $("#programId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			}
 		}
 	});
 }
 
-function getAllSchedulesDatesList()
+function getAllSchedulesDatesList(type)
+{
+
+if(type == "batch")
+{
+var programId =$("#batchProgramId").val();
+if(programId == 0)
+return 0;
+$("#batchScheduleId  option").remove();
+$("#batchScheduleId").append('<option value="0">Select Schedule</option>');
+}
+else
 {
 var programId =$("#programId").val();
 if(programId == 0)
 return 0;
 $("#scheduleId  option").remove();
 $("#scheduleId").append('<option value="0">Select Schedule</option>');
+}
 	
 	var jsObj={
 		programId:programId
@@ -1715,8 +1763,19 @@ $("#scheduleId").append('<option value="0">Select Schedule</option>');
 		if(result != null){
 			for(var i in result){
 				if(result[i].id == 0){
+				if(type == "batch")
+					{
+				  $("#batchScheduleId").append('<option value='+result[i].id+'>ALL</option>');
+				  }
+				  else
 				  $("#scheduleId").append('<option value='+result[i].id+'>ALL</option>');
+				  
 			   }else{
+			   if(type == "batch")
+					{
+					$("#batchScheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					}
+					else
 				  $("#scheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			}
@@ -1868,10 +1927,18 @@ if($(this).is(':checked'))
 
 }
 
-function getAgentsByCampCallerAdminId()
+function getAgentsByCampCallerAdminId(type)
+{
+if(type == 'batch')
+{
+$("#batchAgentId  option").remove();
+$("#batchAgentId").append('<option value="0">Select Caller</option>');
+}
+else
 {
 $("#agentId  option").remove();
 $("#agentId").append('<option value="0">Select Caller</option>');
+}
 	$.ajax({
 		type : "POST",
 		url  : "getAgentsByCampCallerAdminIdAction.action"
@@ -1881,7 +1948,14 @@ $("#agentId").append('<option value="0">Select Caller</option>');
 		{
 			for(var i in result)
 			{
-			  $("#agentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				if(type == 'batch')
+					{
+				  $("#batchAgentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				  }
+				  else
+				  {
+				 $("#agentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				  }
 			}
 			
 		}
@@ -1934,11 +2008,19 @@ var jObj={
 			//buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
 }
-function getCallerOverView()
+function getCallerOverView(type)
 {
+if(type == "batch")
+{
+var agentId = $("#batchAgentId").val();
+if(agentId == 0)
+return;
+}
+else{
 var agentId = $("#agentId").val();
 if(agentId == 0)
 return;
+}
 
 var jObj={
 		callerId:agentId,
@@ -1950,13 +2032,23 @@ var jObj={
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 
-			buildCallerOverView(result);			  
-			//buildScheduleCallMemberDetailsCount(result,jObj);
+			  if(type == "batch")
+			  {
+			  $("#batchcallerOverViewDiv").html('');
+				buildCallerOverView(result,'batchcallerOverViewDiv');
+			}
+			else
+			{
+			$("#callerOverViewDiv").html('');
+			buildCallerOverView(result,'callerOverViewDiv');
+			}
+			
 		   });
 }
-function buildCallerOverView(resultList)
+function buildCallerOverView(resultList,divId)
 {
 var result = resultList.trainingCampVOList[0].trainingCampVOList;
+
 var str ='';
 str+='<table class="table table-condensed"  style="font-size:11px;">';
 str+='<tr class="custom-info">';
@@ -1999,14 +2091,143 @@ str+='<td>0</td>';
 str+='</tr>	';
 
 str+='</table>';
-$("#callerOverViewDiv").html(str);
+$("#"+divId).html(str);
 }
 
+   function getBatchesForSchedule()
+   {
+   var scheduleId = $("#batchScheduleId").val();
+   var jObj={
+		scheduleId:scheduleId,
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getBatchesByScheduleIdAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				buildBatches(result);
+		   });	
+   }
+    function buildBatches(result)
+   {
+   var str = '';
+     $('#batchId').find('option:not(:first)').remove();
+    for(var i in result)
+	{
+	if(result[i].id == batchId)
+	$("#batchId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	else
+	$("#batchId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	}
+   }
+   
+function getCallerOverViewForAdmin()
+{
+  var jObj={
+		
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'AdminCallersWiseOverViewAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 
+			   buildAdminCallerOverView(result);			  
+			
+		   });
+}
+function buildAdminCallerOverView(resultList)
+{
+var str='';
+var result = resultList.trainingCampVOList;
+for(var i in result)
+{
+var result1 = result[i].trainingCampVOList;
+str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
+str+='<tr class="custom-info">';
+str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - 50&nbsp;';
+str+='<input type="checkbox" class="callerscheck" value="'+result[i].id+'"/> </small></td>';
+str+='</tr>';
+str+='<tr class="custom-info">';
+str+='<td>&nbsp;</td>';
+str+='<td>ASSIGNED</td>';
+str+='<td >COMPLETED</td>';
+str+='<td>PENDING</td>';
+str+='</tr>';
 
+str+='<tr class="custom-info">';
+str+='<td><small>Scheduled Confirmation </small></td>';
+if(result1[0].allocatedCalls !=null)
+str+='<td>'+result1[0].allocatedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result1[0].completedCalls !=null)
+str+='<td>'+result1[0].completedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result1[0].pendingCalls !=null)
+str+='<td>'+result1[0].pendingCalls+'</td>';
+else
+str+='<td>0</td>';
+str+='</tr>';
+str+='<tr class="custom-info">';
+str+='<td><small>Batch Confirmation</small></td>';
+if(result1[1].allocatedCalls !=null)
+str+='<td>'+result1[1].allocatedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result1[1].completedCalls !=null)
+str+='<td>'+result1[1].completedCalls+'</td>';
+else
+str+='<td>0</td>';
+if(result1[1].pendingCalls !=null)
+str+='<td>'+result1[1].pendingCalls+'</td>';
+else
+str+='<td>0</td>';
+str+='</tr>	';
+
+str+='</table>	';
+}
+$("#AdminCallersOverview").html(str);
+					
+}
+function assignBatch()
+{
+var userIds = new Array();
+$(".callerscheck").each(function(){
+if($(this).is(':checked'))
+	userIds.push($(this).val());		
+});
+var scheduleId = $('#batchScheduleId').val();
+var callerId  = $('#batchAgentId').val();
+var batchId = $("#batchId").val();
+var callPurposeId = 2;
+var jObj={
+		membersCount:0,
+		scheduleId:scheduleId,
+		callerId : callerId,
+		callPurposeId : callPurposeId,
+		batchId:batchId,
+		userIds:userIds,
+		task:""
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'saveAllDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			//buildScheduleCallMemberDetailsCount(result,jObj);
+		   });	
+}
 </script>
 <script>
 getAllCamps();
-getAgentsByCampCallerAdminId();
+getAgentsByCampCallerAdminId('batch');
+getAgentsByCampCallerAdminId('schedule');
 </script>
 </body>
 </html>
