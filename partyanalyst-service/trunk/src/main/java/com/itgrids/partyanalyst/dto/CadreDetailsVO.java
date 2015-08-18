@@ -11,9 +11,8 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String image;
 	private Long constituencyId;
 	private String constituency;
-	
-	private Long batchId;
-	private String batchCode;
+	private String districtName;
+	private String programName;
 	
 	private boolean achievements;
 	private boolean goals;
@@ -22,8 +21,22 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private boolean leaderShipSkills;
 	private boolean health;
 	
+	private Long leaderShipLevelId;
+	private Long communicationSkillsStatusId;
+	private Long leaderShipSkillsStatusId;
+	private Long healthStatusId;
+	private String remarks;
+	
 	private Map<Long,CadreDetailsVO> subMap;
 	private List<CadreDetailsVO> subList;
+	
+	private List<SimpleVO> achievementsList;
+	private List<SimpleVO> goalsList;
+	
+	private List<IdNameVO> leadershiplevelslist;
+	private List<IdNameVO> communicationsSkillslist;
+	private List<IdNameVO> leadershipSkillslist;
+	private List<IdNameVO> healthStatuslist;
 	
 	public Long getId() {
 		return id;
@@ -74,18 +87,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setHealth(boolean health) {
 		this.health = health;
 	}
-	public Long getBatchId() {
-		return batchId;
-	}
-	public void setBatchId(Long batchId) {
-		this.batchId = batchId;
-	}
-	public String getBatchCode() {
-		return batchCode;
-	}
-	public void setBatchCode(String batchCode) {
-		this.batchCode = batchCode;
-	}
+	
 	public Map<Long, CadreDetailsVO> getSubMap() {
 		return subMap;
 	}
@@ -122,5 +124,83 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setSubList(List<CadreDetailsVO> subList) {
 		this.subList = subList;
 	}
-	
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getProgramName() {
+		return programName;
+	}
+	public void setProgramName(String programName) {
+		this.programName = programName;
+	}
+	public Long getLeaderShipLevelId() {
+		return leaderShipLevelId;
+	}
+	public void setLeaderShipLevelId(Long leaderShipLevelId) {
+		this.leaderShipLevelId = leaderShipLevelId;
+	}
+	public Long getCommunicationSkillsStatusId() {
+		return communicationSkillsStatusId;
+	}
+	public void setCommunicationSkillsStatusId(Long communicationSkillsStatusId) {
+		this.communicationSkillsStatusId = communicationSkillsStatusId;
+	}
+	public Long getLeaderShipSkillsStatusId() {
+		return leaderShipSkillsStatusId;
+	}
+	public void setLeaderShipSkillsStatusId(Long leaderShipSkillsStatusId) {
+		this.leaderShipSkillsStatusId = leaderShipSkillsStatusId;
+	}
+	public Long getHealthStatusId() {
+		return healthStatusId;
+	}
+	public void setHealthStatusId(Long healthStatusId) {
+		this.healthStatusId = healthStatusId;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public List<SimpleVO> getAchievementsList() {
+		return achievementsList;
+	}
+	public void setAchievementsList(List<SimpleVO> achievementsList) {
+		this.achievementsList = achievementsList;
+	}
+	public List<SimpleVO> getGoalsList() {
+		return goalsList;
+	}
+	public void setGoalsList(List<SimpleVO> goalsList) {
+		this.goalsList = goalsList;
+	}
+	public List<IdNameVO> getLeadershiplevelslist() {
+		return leadershiplevelslist;
+	}
+	public void setLeadershiplevelslist(List<IdNameVO> leadershiplevelslist) {
+		this.leadershiplevelslist = leadershiplevelslist;
+	}
+	public List<IdNameVO> getCommunicationsSkillslist() {
+		return communicationsSkillslist;
+	}
+	public void setCommunicationsSkillslist(List<IdNameVO> communicationsSkillslist) {
+		this.communicationsSkillslist = communicationsSkillslist;
+	}
+	public List<IdNameVO> getLeadershipSkillslist() {
+		return leadershipSkillslist;
+	}
+	public void setLeadershipSkillslist(List<IdNameVO> leadershipSkillslist) {
+		this.leadershipSkillslist = leadershipSkillslist;
+	}
+	public List<IdNameVO> getHealthStatuslist() {
+		return healthStatuslist;
+	}
+	public void setHealthStatuslist(List<IdNameVO> healthStatuslist) {
+		this.healthStatuslist = healthStatuslist;
+	}
+         	
 }
