@@ -257,6 +257,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in  (:locationIdsList)  ");
 			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.TEHSIL_SCOPE_ID)
 				queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId  in  (:locationIdsList) ");
+			else if(locationTypeId !=null && locationTypeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID);
+				queryStr.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId  in  (:locationIdsList) ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 		if(scheduleId != null && scheduleId.longValue()>0L)
@@ -269,7 +271,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	{
 		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as count,UA.district_id as distId,Dist.district_name as distName,UA.constituency_id as constId" +
 				",const.name as constName,UA.tehsil_id as tehsilId" +
-				",tehsil.tehsil_name as tehsilName from training_camp_schedule_invitee TCSI" +
+				",tehsil.tehsil_name as tehsilName,UA.local_election_body as localElectionBodyId " +
+				" from training_camp_schedule_invitee TCSI" +
 				",tdp_cadre TC ,user_address UA,training_camp_schedule TCS" +
 				",district Dist,constituency const,tehsil tehsil, training_camp_district TCD " +
 				" where TCS.training_camp_id = TCD.training_camp_id and  TCD.district_id = UA.district_id and  TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
@@ -281,14 +284,15 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
 				" and TCS.training_camp_id = :campId  " +
 				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) " +
-				" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id")
+				" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id,UA.local_election_body")
 				.addScalar("count", Hibernate.LONG)
 				.addScalar("distId",Hibernate.LONG)
 				.addScalar("distName",Hibernate.STRING)
 				.addScalar("constId",Hibernate.LONG)
 				.addScalar("constName",Hibernate.STRING)
 				.addScalar("tehsilId",Hibernate.LONG)
-				.addScalar("tehsilName",Hibernate.STRING);
+				.addScalar("tehsilName",Hibernate.STRING)
+				.addScalar("localElectionBodyId",Hibernate.LONG);
 		
 		query.setParameter("scheduleStatusId", scheduleStatusId);
 		

@@ -632,6 +632,19 @@ public class TrainingCampService implements ITrainingCampService{
 								List<Long>  tehsilinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), tehsilIdsList);
 								inviteeIdsList.addAll(tehsilinviteeIdsList);
 							}
+							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID)
+							{
+								List<TrainingCampVO> municipalityList = trainingCampVO.getTrainingCampVOList();
+								List<Long> municipalityIdsList = new ArrayList<Long>(0);
+								if(municipalityList != null && municipalityList.size()>0)
+								{
+									for (TrainingCampVO munivipalityVo : municipalityList) {
+										municipalityIdsList.add(munivipalityVo.getId());
+									}
+								}
+								List<Long> munipaliteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), municipalityIdsList);
+								inviteeIdsList.addAll(munipaliteeIdsList);
+							}
 						}
 						
 						if(inviteeIdsList != null && inviteeIdsList.size()>0)
@@ -3390,6 +3403,26 @@ public class TrainingCampService implements ITrainingCampService{
 							 districtVo.getSubList().add(constituencyVo);
 						 }
 						 constituencyVo.setCount(constituencyVo.getCount() + (Long)params[0]);
+						 
+						 if(params[7] !=null){
+							 
+							 List<String> namesList=localElectionBodyDAO.getLocalElectionBodyNameById((Long)params[7]);
+							 String name="";
+							 if(namesList !=null && namesList.size()>0){
+								 name = namesList.get(0).concat(" Municipality");
+							 }
+							 //Municipality Allocation
+							 TraingCampCallerVO municipalityVo = getMatchedVo(constituencyVo.getScheduleStatusList(), commonMethodsUtilService.getLongValueForObject(params[7])); // Municipality
+							 
+							 if(municipalityVo ==null){
+								 municipalityVo = new TraingCampCallerVO();
+								 municipalityVo.setName(name);
+								 municipalityVo.setId((Long)params[7]);
+								 constituencyVo.getScheduleStatusList().add(municipalityVo); 
+							 }
+							 municipalityVo.setCount(municipalityVo.getCount() + (Long)params[0]);
+						 }
+						 
 						 if(params[5] != null)
 							{
 							 TraingCampCallerVO mandalVo = getMatchedVo(constituencyVo.getSubList(), commonMethodsUtilService.getLongValueForObject(params[5])); // Mandal
@@ -3401,7 +3434,7 @@ public class TrainingCampService implements ITrainingCampService{
 								 constituencyVo.getSubList().add(mandalVo);
 							 }
 							 mandalVo.setCount(mandalVo.getCount() + (Long)params[0]);
-					 }
+					    }
 				   }
 				}
 			 }
