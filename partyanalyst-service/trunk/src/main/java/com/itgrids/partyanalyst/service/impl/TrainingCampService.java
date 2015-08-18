@@ -3518,7 +3518,7 @@ public class TrainingCampService implements ITrainingCampService{
 	}
 	
 	
-	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId)
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId)
 	{
 		TrainingCampVO returnVo = new TrainingCampVO();
 		try{
@@ -3536,7 +3536,7 @@ public class TrainingCampService implements ITrainingCampService{
 				returnVo =  getCallerWiseOverView(callerIdsList);
 			if(returnVo.getTrainingCampVOList() != null && returnVo.getTrainingCampVOList().size() > 0)
 			{
-				List<Object[]> list1 = trainingCampScheduleInviteeDAO.getAvailableCallCountsForBatch(campId,programId,scheduleId,4l);
+				List<Object[]> list1 = trainingCampScheduleInviteeDAO.getAvailableCallCountsForBatch(campId,programId,scheduleId,4l,batchId);
 				if(list1 != null && list1.size() > 0)
 				{
 					for(Object[] params : list1)

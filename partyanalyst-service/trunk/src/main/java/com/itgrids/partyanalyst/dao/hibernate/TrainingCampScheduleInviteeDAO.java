@@ -302,7 +302,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 	}
 	
-	public List<Object[]> getAvailableCallCountsForBatch(Long campId,Long programId,Long scheduleId,Long scheduleStatusId)
+	public List<Object[]> getAvailableCallCountsForBatch(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,Long batchId)
 	{
 		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as count,TCSIC.training_camp_caller_id as callerId from training_camp_schedule_invitee TCSI," +
 				" training_camp_schedule_invitee_caller TCSIC,tdp_cadre TC, training_camp_schedule TCS" +
@@ -312,7 +312,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" and TCSI.schedule_invitee_status_id = :scheduleStatusId and TCSIC.call_purpose_id =1 " +
 				" and TCSI.training_camp_schedule_id = :scheduleId and  TCS.training_camp_id = :campId " +
 				" and TCSI.training_camp_schedule_invitee_id not in(select distinct TCSIC1.training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC1 " +
-				" where TCSIC1.call_purpose_id = 2) group by TCSIC.training_camp_caller_id ")
+				" where TCSIC1.call_purpose_id = 2) and TCSI.attending_batch_id =:batchId  group by TCSIC.training_camp_caller_id ")
 				.addScalar("count", Hibernate.LONG)
 				.addScalar("callerId",Hibernate.LONG);
 		query.setParameter("scheduleStatusId", scheduleStatusId);
@@ -320,7 +320,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		//query.setParameter("programId", programId);
 		
 		query.setParameter("scheduleId", scheduleId);
-		
+		query.setParameter("batchId", batchId);
 		return query.list();	
 	}
 	
