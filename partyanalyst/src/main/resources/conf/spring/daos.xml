@@ -2253,6 +2253,10 @@
 	 <bean id="trainingCampCadreFeedbackDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackDetailsDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="trainingCampAttendanceTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampAttendanceTabUserDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		
