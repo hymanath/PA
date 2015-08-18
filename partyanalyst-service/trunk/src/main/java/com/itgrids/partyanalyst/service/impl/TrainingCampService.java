@@ -3770,4 +3770,28 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
+	
+	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType){
+		LOG.debug("Entered into getDocsOfPartyMeetingId");
+		List<CallTrackingVO> finalDocs = new ArrayList<CallTrackingVO>();
+		try{
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getPartyMeetingDocsOf(partyMeetingId, docSourceType);
+			if(documentDetails!=null && documentDetails.size()>0){
+				
+				for (Object[] objects : documentDetails) {
+			
+					CallTrackingVO vo = new CallTrackingVO();
+					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setUrl(objects[2]!=null?IConstants.LOCAL_FILES+"/"+objects[2].toString().trim():"");
+					vo.setName(objects[10]!=null?objects[10].toString():"");
+					
+					finalDocs.add(vo);
+				}
+				
+			}
+		}catch (Exception e) {
+			LOG.error(" Error Occured in getDocsOfPartyMeetingId" ,e);
+		}
+		return finalDocs;
+	}
 }

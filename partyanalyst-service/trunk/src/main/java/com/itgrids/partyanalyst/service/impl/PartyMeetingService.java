@@ -708,6 +708,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			if(count.intValue()>0){
 				status="success";
+			}else{
+				status = "failed";
 			}
 			
 		} catch (Exception e) {

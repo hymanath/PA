@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -73,4 +74,5 @@ public interface ITrainingCampService {
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId);
 	public TrainingCampVO getAdminCallersWiseOverView(Long userId);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
+	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 }
