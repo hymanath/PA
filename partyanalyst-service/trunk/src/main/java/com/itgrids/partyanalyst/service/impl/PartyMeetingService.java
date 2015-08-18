@@ -585,12 +585,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return updateStatusString;
 	}
 	
-	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId){
+	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId,Long partyMeetingId,Long locationScope){
 		String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingAtrPoint");
 			
-			//if(atrId.longValue()>0l){
+			if(atrId.longValue()>0l){
 				updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
 		    	{
 				  public Object doInTransaction(TransactionStatus status) 
@@ -626,15 +626,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 					  
 				  }
 		    	});
-			/*}else{
+			}else{
 				
 				PartyMeetingAtrPoint pmap = new PartyMeetingAtrPoint();
 				
-				//pmap.setPartyMeeting(partyMeetingid);
+				pmap.setPartyMeetingId(partyMeetingId);
 				pmap.setRequest(request);
 				pmap.setActionTaken(actionTaken);
-				pmap.setRequestFrom("");
-				//pmap.setlocationScopeId(locationScopeId);
+				//pmap.setRequestFrom(null);
+				pmap.setLocationScopeId(locationScope);
 				pmap.setLocationValue(locationId);
 				pmap.setAddressId(updatedBy);
 				pmap.setRaisedBy(raisedBy);
@@ -642,11 +642,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 				pmap.setUpdatedById(updatedBy);
 				pmap.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 				pmap.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-				pmap.setIsDeleted("Y");
+				pmap.setIsDeleted("N");
 				
 				partyMeetingAtrPointDAO.save(pmap);
-				
-			}*/
+				updateStatusString="success";
+			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at updateMeetingAtrPoint", e);
@@ -712,5 +712,42 @@ public class PartyMeetingService implements IPartyMeetingService{
 			LOG.error("Exception raised at deletePartyMeetingDocument", e);
 		}
 		return status;
+	}
+	
+	public PartyMeetingVO getAtrPointsForAMeeting(Long partyMeeingId){
+		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
+		try {
+			LOG.info("Entered into getAtrPointsForAMeeting");
+			List<Object[]> atrDetails = partyMeetingAtrPointDAO.getAtrDetailsForAMeeting(partyMeeingId);
+			
+			if(atrDetails!=null && atrDetails.size()>0){
+				List<PartyMeetingVO> vo = new ArrayList<PartyMeetingVO>();
+				for (Object[] objects : atrDetails) {
+					PartyMeetingVO subVO = new PartyMeetingVO();
+					
+					subVO.setPartyMeetingAtrPointId(objects[0]!=null?(Long)objects[0]:0l);
+					subVO.setId(objects[1]!=null?(Long)objects[1]:0l);
+					subVO.setRequest(objects[2]!=null?objects[2].toString():"");
+					subVO.setActionTaken(objects[3]!=null?objects[3].toString():"");
+					subVO.setRequestFrom(objects[4]!=null?objects[4].toString():"");
+					subVO.setLocationScopeId(objects[5]!=null?(Long)objects[5]:0l);
+					subVO.setLocationValue(objects[6]!=null?(Long)objects[6]:0l);
+					subVO.setRaisedBy(objects[7]!=null?objects[7].toString():"");
+					subVO.setInsertedById(objects[8]!=null?(Long)objects[8]:0l);
+					subVO.setInsertedBy(objects[9]!=null?objects[9].toString():"");
+					subVO.setUpdatedById(objects[10]!=null?(Long)objects[10]:0l);
+					subVO.setUpdatedBy(objects[11]!=null?objects[11].toString():"");
+					subVO.setInsertedTime(objects[12]!=null?objects[12].toString():"");
+					subVO.setUpdatedTime(objects[13]!=null?objects[13].toString():"");
+					
+					vo.add(subVO);
+				}
+				partyMeetingVO.setAtrDetails(vo);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAtrPointsForAMeeting", e);
+		}
+		return partyMeetingVO;
 	}
 }
