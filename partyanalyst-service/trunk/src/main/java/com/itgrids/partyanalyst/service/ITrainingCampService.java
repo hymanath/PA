@@ -72,7 +72,7 @@ public interface ITrainingCampService {
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId);
-	public TrainingCampVO getAdminCallersWiseOverView(Long userId);
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 }
