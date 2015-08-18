@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyMeetingService implements IPartyMeetingService{
 	private static final Logger LOG = Logger.getLogger(PartyMeetingService.class);
@@ -747,6 +749,43 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAtrPointsForAMeeting", e);
+		}
+		return partyMeetingVO;
+	}
+	
+	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId){
+		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
+		try {
+			LOG.info("Entered into getDocumentDetailsForAMeeting");
+			
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeetingId);
+			
+			if(documentDetails!=null && documentDetails.size()>0){
+				
+				List<CallTrackingVO> atrDocs = new ArrayList<CallTrackingVO>();
+				List<CallTrackingVO> minDocs = new ArrayList<CallTrackingVO>();
+				
+				for (Object[] objects : documentDetails) {
+			
+					CallTrackingVO vo = new CallTrackingVO();
+					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setUrl(objects[2]!=null?IConstants.LOCAL_FILES_FOLDER+"/"+objects[2].toString().trim():"");
+					vo.setName(objects[10].toString());
+					
+					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("MINUTE")){
+						minDocs.add(vo);
+					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("ATR")){
+						atrDocs.add(vo);
+					}
+				}
+				
+				partyMeetingVO.setMinutesDocuments(minDocs);
+				partyMeetingVO.setAtrDocuments(atrDocs);
+				
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getDocumentDetailsForAMeeting", e);
 		}
 		return partyMeetingVO;
 	}
