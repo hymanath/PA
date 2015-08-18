@@ -166,7 +166,7 @@ header.eventsheader {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <form id="uploadMinutesDocs" name="uploadMinutesDocs">
-														<input type="file" class="m_top10" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
+														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFiles"></div>
 														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;" id="uploadMinutesDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
@@ -197,7 +197,7 @@ header.eventsheader {
 											<div class="row">
 												 <div class="col-md-12">
                                                     <form id="uploadATRDocs" name="uploadATRDocs">
-														<input type="file" class="m_top10" name="imageForDisplay" id="atrFileId0" style="width: 225px;margin-left:15px;"/>
+														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="atrFileId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFilesATR"></div>
 														<input type= "button" value="Upload ATR Files" style="margin-left:15px;margin-top:10px;" id="uploadATRDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingATRId"/>
@@ -652,41 +652,27 @@ header.eventsheader {
 			   
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   var str='';
-				   for(var i in result.minutesDocuments){
-					   str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
-					   str+='<span>'+result.minutesDocuments[i].url+'<span>';
-					   str+='<div class="pdf-scroll">';
-						str+='<a class="fancybox mouse-over" href="#inline'+i+'">';
-						str+='<object data="images/Himachal.png" type="application/pdf" width="100%" height="300px;"></object>';
-						str+='<div id="inline'+i+'" style="width:100%;display: none;">';
-						str+='<object data="images/Himachal.png" type="application/pdf" width="1000px" height="1000px;"></object>';
-						str+='</div>';
-						str+='</div>';
-					   str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
-					   str+='</div><br/>';
+				    for(var i in result.minutesDocuments){
+					    str+='<div>';
+					    str+='<a href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</div><br/>';
+						
 				   }
 				   $("#mintueDocumentDivId").html(str);
-				    $('.fancybox').fancybox();
 			   }
 			   
 			   if(result.atrDocuments!=null && result.atrDocuments.length>0){
 				   var str='';
 				   for(var i in result.atrDocuments){
-					    str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
-					    str+='<span>'+result.atrDocuments[i].url+'<span>';
-					    str+='<div class="pdf-scroll">';
-						str+='<a class="fancybox mouse-over" href="#inline1'+i+'">';
-						str+='<object data="images/Himachal.png" type="application/pdf" width="100%" height="300px;"></object>';
-						str+='<div id="inline1'+i+'" style="width:100%;display: none;">';
-						str+='<object data="images/Himachal.png" type="application/pdf" width="1000px" height="1000px;"></object>';
-						str+='</div>';
-						str+='</div>';
-					  
-					   str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
-					   str+='</div><br/>';
+					    str+='<div>';
+					    str+='<a href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</div><br/>';
+						
 				   }
 				   $("#atrDocumentDivId").html(str);
-				   $('.fancybox').fancybox();
+				  // $('.fancybox').fancybox();
 			   }
 			   
 			   
@@ -847,6 +833,19 @@ header.eventsheader {
 	
 	$("#uploadMinutesDocsId").click(function(){
 		$("#partyMeetingId").val(partyMeetingId);
+		
+		var files = [];
+		$("#uploadMinutesDocs input[type=file]").each(function() {
+			if($(this).val().trim().length>0){
+				files.push($(this).val());
+			}
+		});
+	
+		if(files.length==0){
+			alert("Please Select Documents");
+			return;
+		}
+		
 		var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
@@ -860,6 +859,18 @@ header.eventsheader {
 	
 	$("#uploadATRDocsId").click(function(){
 		$("#partyMeetingATRId").val(partyMeetingId);
+		var files = [];
+		$("#uploadATRDocs input[type=file]").each(function() {
+			if($(this).val().trim().length>0){
+				files.push($(this).val());
+			}
+		});
+	
+		if(files.length==0){
+			alert("Please Select Documents");
+			return;
+		}
+		
 		var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
