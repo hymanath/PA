@@ -22,6 +22,10 @@
 
 
 <style type="text/css">
+.padding_left30
+{
+	padding-left:30px;
+}
 .border_0
 {
 	border:0px !important;
@@ -38,6 +42,9 @@
     content:"\2212";
     float: left;
     color: inherit;
+	margin-top:3px;
+	margin-right:3px;
+	font-size:9px;
 }
 .accordion-toggle.collapsed:before {
     /* symbol for "collapsed" panels */
@@ -671,7 +678,7 @@
 	<!-- Shedule -->
 	<!---Modal-1----------------->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header  bg_d">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -710,7 +717,7 @@
 							
 				</div>  
 				<div class="col-md-12 m_top5">
-					<div class="panel-group distaccordion scheduleMembersDiv" id="distaccordion" role="tablist" aria-multiselectable="true">
+					<div class="panel-group distaccordion scheduleMembersDiv m_top10" id="distaccordion" role="tablist" aria-multiselectable="true">
 					<!--<label>Select No Of Calls</label>
 					<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">
 						<li>Srikakulam  - 70 <input class="pull-right" type="checkbox"> </li>
@@ -1872,7 +1879,7 @@ index ++;
     for(var j in result[i].subList)
 	{ 
 	index ++;	
-	str+=' <div class="panel panel-default border_0">';
+	str+=' <div class="panel panel-default border_0 padding_left30">';
     str+='<div class="panel-heading " role="tab" id="consheading'+index+'">';
     str+='<h4 class="panel-title">';
         str+=' <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#conscollapse'+index+'" aria-expanded="true" aria-controls="conscollapse'+index+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
@@ -1883,7 +1890,7 @@ index ++;
 	/*Mandal*/
 	
     str+='<div id="conscollapse'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+index+'">';
-    str+='<div class="panel-body border_0" style="padding:5px 5px 5px 8px">';
+    str+='<div class="panel-body border_0" style="padding:5px 0px 5px 8px">';
 	str+='<ul>';
 	for(var k in result[i].subList[j].subList)   
 	{
@@ -2036,6 +2043,8 @@ $(".municipalityCheck").each(function()
 if($(this).is(':checked'))
 	municipalitys.push($(this).val());		
 });
+
+
 
 
 
