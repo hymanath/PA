@@ -3619,6 +3619,7 @@ public class TrainingCampService implements ITrainingCampService{
 							TrainingCampVO userVO = new TrainingCampVO();
 							userVO.setName(list.get(0).getName());
 							userVO.setTrainingCampVOList(list);
+							userVO.setId(callerId);
 							trainingCampvoList.add(userVO);
 						}
 					}
