@@ -1486,7 +1486,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
-     public String getAllStatusForCadre(){
+    public String getAllStatusForCadre(){
 		
 		try{
 			cadreDetailsVO= trainingCampService.getAllStatusForCadre();
@@ -1510,6 +1510,30 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
+    }
+    
+    public String saveDetailsOfCadreAction()
+    {
+    	
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		String achievements = jObj.getString("achievements");
+    		String goals = jObj.getString("goals");
+    		String goalsDate = jObj.getString("goalsDate");
+    		Long leaderShipLevel = jObj.getLong("leaderShipLevel");
+    		Long communicationSkills = jObj.getLong("communicationSkills");
+    		Long leaderShipSkills = jObj.getLong("leaderShipSkills");
+    		Long health = jObj.getLong("health");
+    		String comments = jObj.getString("comments");
+    		
+    		//status = trainingCampService.saveDetailsOfCadre(achievements,goals,goalsDate,leaderShipLevel,communicationSkills,leaderShipSkills,health,comments);
+    		
+    	}catch(Exception e) {
+    		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
     }
 	
 }
