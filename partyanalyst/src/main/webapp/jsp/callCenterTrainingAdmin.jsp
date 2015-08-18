@@ -353,7 +353,7 @@
 									<h4 class="panel-title">
 										<b>BATCH CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal1" onclick="getAllCampsForBatch();getCallerOverViewForAdmin();">Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal1" onclick="getAllCampsForBatch();">Assign to Agents</button>
 									</h4>
 								</div>
 								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
@@ -533,17 +533,17 @@
 				</div>   
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
-					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();">
+					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();getCallerOverViewForAdmin();">
 					 <option value="0">Select Program</option>		
 					</select>
-					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>
+					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>-->
 				</div>  
 				<div class="col-md-12 m_top10">
 					<label>Select Training Batch / Date</label>
 					<select class="form-control border-radius-0" id="batchId">
 						
 					</select>
-					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 110</i></small>
+					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 110</i></small>-->
 				</div>  			
 				
 				<div class="col-md-12 m_top5" id="AdminCallersOverview">
@@ -649,9 +649,9 @@
 						</tr>	
 					</table>	-->		
 				</div>  
-				<div class="col-md-12">
+				<!--comment<div class="col-md-12">
 					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
-				</div>
+				</div>-->
 				<div class="col-md-12 m_top20">
 					<button class="btn btn-success btn-block border-radius-0" 
 					onclick="assignBatch();">Assign to Agent</button>
@@ -2192,8 +2192,14 @@ $("#"+divId).html(str);
    
 function getCallerOverViewForAdmin()
 {
+var campId =$("#batchCampId").val();
+var programId =$("#batchProgramId").val();
+var scheduleId = $("#batchScheduleId").val();
+$("#AdminCallersOverview").html('');
   var jObj={
-		
+  campId:campId,
+  programId:programId,
+  scheduleId:scheduleId,
 		task:""
 		};
 		$.ajax({
@@ -2215,7 +2221,7 @@ for(var i in result)
 var result1 = result[i].trainingCampVOList;
 str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
 str+='<tr class="custom-info">';
-str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - 50&nbsp;';
+str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - '+result[i].interestedCount+'&nbsp;';
 str+='<input type="checkbox" class="callerscheck" value="'+result[i].id+'"/> </small></td>';
 str+='</tr>';
 str+='<tr class="custom-info">';
@@ -2224,7 +2230,6 @@ str+='<td>ASSIGNED</td>';
 str+='<td >COMPLETED</td>';
 str+='<td>PENDING</td>';
 str+='</tr>';
-
 str+='<tr class="custom-info">';
 str+='<td><small>Scheduled Confirmation </small></td>';
 if(result1[0].allocatedCalls !=null)
