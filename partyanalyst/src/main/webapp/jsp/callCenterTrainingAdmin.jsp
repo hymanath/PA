@@ -2299,8 +2299,10 @@ var jObj={
 function clearAssignAgent()
 {
 	$("#campId").val(0);
-	$("#programId").val(0);
-	$("#scheduleId").val(0);
+	$("#programId").find("option").remove();
+	$("#programId").append("<option value='0'>Select Program</option>");
+	$("#scheduleId").find("option").remove();
+	$("#scheduleId").append("<option value='0'>Select Schedule</option>");
 	$("#agentId").val(0);
 	$("#callerOverViewDiv").html("");
 	$("#distaccordion").html("");
