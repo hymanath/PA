@@ -112,7 +112,8 @@ public class AttendanceMessagesConsumer {
     		inputVO.setTrainingCampBatchId(dataObj.getLong("trainingCampBatchId"));
     		inputVO.setTrainingCampTopicId(dataObj.getLong("trainingCampTopicId"));
     		inputVO.setType(dataObj.getString("type"));
-    		inputVO.setMembershipId(dataObj.getString("partyMeetingId"));
+    		inputVO.setPartyMeetingId(dataObj.getLong("partyMeetingId"));
+    		inputVO.setMembershipId(dataObj.getString("membershipId"));
     		inputVO.setAttendedTime(dataObj.getString("attendedTime"));
     		inputVO.setRfid(dataObj.getString("rfid"));
     		inputVO.setImei(dataObj.getString("imei"));
