@@ -10671,12 +10671,18 @@
 	</action>
 	
 	<action name="deletePartyMeetingDocumentAction" class="partyMeetingAction" method="deletePartyMeetingDocument">
-	   <result name="success" type="stream">			   
-		    <param name="inputName">inputStream</param>
-		</result>
+	   <result type="json" name="success">
+	    	<param name="root">status</param>
+	  	</result>
 	</action>
 	
 	<action name="getAtrPointsForAMeetingAction" class="partyMeetingAction" method="getAtrPointsForAMeeting">
+	   <result type="json" name="success">
+	       		<param name="root">partyMeetingVO</param>
+	  	</result>
+	</action>
+	
+	<action name="getDocumentDetailsForAMeetingAction" class="partyMeetingAction" method="getDocumentDetailsForAMeeting">
 	   <result type="json" name="success">
 	       		<param name="root">partyMeetingVO</param>
 	  	</result>

@@ -206,7 +206,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			LOG.info("Entered into deletePartyMeetingDocument");
 			jObj = new JSONObject(getTask());
 			
-			partyMeetingService.deletePartyMeetingDocument(jObj.getLong("docId"));
+			status = partyMeetingService.deletePartyMeetingDocument(jObj.getLong("docId"));
 		}catch (Exception e) {
 			LOG.error("Exception raised at deletePartyMeetingDocument",e);
 		}
@@ -221,6 +221,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			partyMeetingVO = partyMeetingService.getAtrPointsForAMeeting(jObj.getLong("partyMeetingId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAtrPointsForAMeeting",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDocumentDetailsForAMeeting(){
+		try {
+			LOG.info("Entered into getDocumentDetailsForAMeeting");
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingVO = partyMeetingService.getDocumentDetailsForAMeeting(jObj.getLong("partyMeetingId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDocumentDetailsForAMeeting",e);
 		}
 		return Action.SUCCESS;
 	}

@@ -676,7 +676,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   var str='';
 				    for(var i in result.minutesDocuments){
-					    str+='<div>';
+					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
@@ -687,7 +687,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			    if(result.atrDocuments!=null && result.atrDocuments.length>0){
 				   var str='';
 				   for(var i in result.atrDocuments){
-					    str+='<div>';
+					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
@@ -872,7 +872,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
-					showingStatus(uploadResult);
+					showingStatus(uploadResult,"MINUTE");
 				}
 			};
 
@@ -897,7 +897,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
-					showingStatus(uploadResult);
+					showingStatus(uploadResult,"ATR");
 				}
 			};
 
@@ -906,16 +906,58 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	});
 	
 	
-	function showingStatus(myResult){
+	function showingStatus(myResult,fromType){
 		
 		var result = myResult;
-		if (result.indexOf("success") >= 0){alert("File Uploaded Successfully");}
+		if (result.indexOf("success") >= 0){
+			alert("File Uploaded Successfully");
+			rebuildTheDocumentsDiv(fromType);
+		}
 		else{
 			alert("Failed to Upload.. Please Try Again");
 		}
-		
-		
 	}
+	
+	function rebuildTheDocumentsDiv(fromType){
+		var jsObj={		
+			partyMeetingId : '${partyMeetingId}'
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDocumentDetailsForAMeetingAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(fromType=="MINUTE"){
+				if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
+				   var str='';
+				    for(var i in result.minutesDocuments){
+					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
+					    str+='<a href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</div><br/>';
+						
+				   }
+				   $("#mintueDocumentDivId").html(str);
+			   }
+			}
+			else if(fromType=="ATR"){
+				if(result.atrDocuments!=null && result.atrDocuments.length>0){
+				   var str='';
+				   for(var i in result.atrDocuments){
+					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
+					    str+='<a href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</div><br/>';
+						
+				   }
+				   $("#atrDocumentDivId").html(str);
+			   }
+			}
+			    
+		});
+	}
+	
 	
 	$(document).on("click",".removeBtnCls",function(){
 		$(this).parent().parent().remove();
@@ -994,7 +1036,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result=="success"){
-				alert("Document Deleted");
+				//alert("Document Deleted");
+				$("#docDiv"+docId).remove();
 			}else{
 				alert("Please Try Again");
 			}
