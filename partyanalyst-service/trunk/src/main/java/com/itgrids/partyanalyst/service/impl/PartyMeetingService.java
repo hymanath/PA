@@ -23,8 +23,6 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingAtrPointHistoryDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;

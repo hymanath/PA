@@ -39,6 +39,7 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private Long uploadedById;
 	private Long updatedById;
 	private String isDeleted;
+	private String documentName;
 	
 	public PartyMeetingDocument(){}
 
@@ -160,6 +161,17 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	
+	@Column(name="document_name")
+	public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
+	}
+	
 	
 	
 	
