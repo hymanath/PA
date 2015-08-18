@@ -38,6 +38,23 @@ header.eventsheader {
 {
     padding:10px;
 }
+.mouse-over
+    {
+        padding:0px;
+    }
+    
+    .mouse-over:hover:after
+    {
+        content:"click here to expand";
+        position:absolute;
+        left:35px;
+        z-index:9999;
+        color:#fff;
+        background:rgba(0,0,0,0.5);
+        padding:10px;
+        font-size:22px;
+		margin-top:20px;
+    }
 </style>
 
 <!-- YUI Dependency files (Start) -->
@@ -253,6 +270,9 @@ header.eventsheader {
 <script src="js/TrainingProgram/fileupload.js" type="text/javascript"></script>
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="pdfexpand/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 <script type="text/javascript">
 
 // Load the Google Transliterate API
@@ -629,21 +649,38 @@ header.eventsheader {
 				   for(var i in result.minutesDocuments){
 					   str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
 					   str+='<span>'+result.minutesDocuments[i].url+'<span>';
+					   str+='<div class="pdf-scroll">';
+						str+='<a class="fancybox mouse-over" href="#inline'+i+'">';
+						str+='<object data="images/Himachal.png" type="application/pdf" width="100%" height="300px;"></object>';
+						str+='<div id="inline'+i+'" style="width:100%;display: none;">';
+						str+='<object data="images/Himachal.png" type="application/pdf" width="1000px" height="1000px;"></object>';
+						str+='</div>';
+						str+='</div>';
 					   str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 					   str+='</div><br/>';
 				   }
 				   $("#mintueDocumentDivId").html(str);
+				    $('.fancybox').fancybox();
 			   }
 			   
 			   if(result.atrDocuments!=null && result.atrDocuments.length>0){
 				   var str='';
 				   for(var i in result.atrDocuments){
-					   str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
-					   str+='<span>'+result.atrDocuments[i].url+'<span>';
+					    str+='<div style="border:1px #ababab solid; border-radius:3px;padding:5px;">';
+					    str+='<span>'+result.atrDocuments[i].url+'<span>';
+					    str+='<div class="pdf-scroll">';
+						str+='<a class="fancybox mouse-over" href="#inline1'+i+'">';
+						str+='<object data="images/Himachal.png" type="application/pdf" width="100%" height="300px;"></object>';
+						str+='<div id="inline1'+i+'" style="width:100%;display: none;">';
+						str+='<object data="images/Himachal.png" type="application/pdf" width="1000px" height="1000px;"></object>';
+						str+='</div>';
+						str+='</div>';
+					  
 					   str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 					   str+='</div><br/>';
 				   }
 				   $("#atrDocumentDivId").html(str);
+				   $('.fancybox').fancybox();
 			   }
 			   
 			   
