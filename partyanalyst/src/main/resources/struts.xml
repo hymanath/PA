@@ -10682,6 +10682,12 @@
 	  	</result>
 	</action>
 	
+	<action name="getDocsOfMeetingAction" class="trainingCampAction" method="getDocsOfMeeting">
+			<result type="json" name="success">
+	       		<param name="root">docsResultList</param>
+	  		</result>
+	</action>
+	
 	<action name="getDocumentDetailsForAMeetingAction" class="partyMeetingAction" method="getDocumentDetailsForAMeeting">
 	   <result type="json" name="success">
 	       		<param name="root">partyMeetingVO</param>
