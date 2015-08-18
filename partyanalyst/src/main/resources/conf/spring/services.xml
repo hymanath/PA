@@ -2732,6 +2732,14 @@
 		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO"/>
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
+		<property name="trainingCampCadreFeedbackDetailsDAO" ref="trainingCampCadreFeedbackDetailsDAO"/>
+		<property name="trainingCampCadreAchievementDAO" ref="trainingCampCadreAchievementDAO"/>
+		<property name="trainingCampCadreGoalDAO" ref="trainingCampCadreGoalDAO"/>
+		<property name="cadreLeadershipLevelDAO" ref="cadreLeadershipLevelDAO"/>
+		<property name="cadreComminicationSkillsStatusDAO" ref="cadreComminicationSkillsStatusDAO"/>
+		<property name="cadreLeadershipSkillsStatusDAO" ref="cadreLeadershipSkillsStatusDAO"/>
+		<property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO"/>
+		
 		
 	</bean>
 	
