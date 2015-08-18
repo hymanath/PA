@@ -280,7 +280,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
 				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
 				" and TCS.training_camp_id = :campId  " +
-				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) group by UA.district_id,UA.constituency_id,UA.tehsil_id")
+				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) " +
+				" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id")
 				.addScalar("count", Hibernate.LONG)
 				.addScalar("distId",Hibernate.LONG)
 				.addScalar("distName",Hibernate.STRING)
@@ -295,7 +296,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		//query.setParameter("programId", programId);
 		
-		//query.setParameter("scheduleId", scheduleId);
+		query.setParameter("scheduleId", scheduleId);
 		
 		return query.list();
 		
