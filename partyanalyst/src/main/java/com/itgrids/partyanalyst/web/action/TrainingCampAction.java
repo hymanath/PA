@@ -1367,7 +1367,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			trainingCampVO= trainingCampService.getAdminCallersWiseOverView(regVo.getRegistrationID());
+			trainingCampVO= trainingCampService.getAdminCallersWiseOverView(regVo.getRegistrationID(),jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"));
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getCallerWiseOverView() method, Exception - ",e);
