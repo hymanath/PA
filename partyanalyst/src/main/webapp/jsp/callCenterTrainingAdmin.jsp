@@ -353,7 +353,7 @@
 									<h4 class="panel-title">
 										<b>BATCH CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal1" onclick="getAllCampsForBatch();">Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal1" onclick="clearBatchPopupFields();getAllCampsForBatch();">Assign to Agents</button>
 									</h4>
 								</div>
 								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
@@ -519,6 +519,7 @@
       </div>
       <div class="modal-body">
       		<div class="row">
+			 <div id="batchErrorDiv"></div>
 				<div class="col-md-12 m_top5">
 					<label>Select Center</label>
 					<select class="form-control border-radius-0" id="batchCampId" onchange="getAllProgramsList('batch');">
@@ -528,20 +529,20 @@
 				<div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
 					<select class="form-control border-radius-0" id="batchProgramId"  onchange="getAllSchedulesDatesList('batch');">
-						
+					 <option value="0">Select Program</option>
 					</select>
 				</div>   
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
 					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();getCallerOverViewForAdmin();">
-					 <option value="0">Select Program</option>		
+					 <option value="0">Select Schedule</option>		
 					</select>
 					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>-->
 				</div>  
 				<div class="col-md-12 m_top10">
 					<label>Select Training Batch / Date</label>
-					<select class="form-control border-radius-0" id="batchId">
-						
+					<select class="form-control border-radius-0" id="batchId" onchange="clearErrMsg()">
+					<option value="0">Select Batch</option>	
 					</select>
 					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 110</i></small>-->
 				</div>  			
@@ -1700,6 +1701,7 @@ var campId =$("#batchCampId").val();
 	return;
 	$("#batchProgramId  option").remove();
 	$("#batchProgramId").append('<option value="0">Select Program</option>');
+	$("#batchErrorDiv").html("");
 }
 else
 {
@@ -1753,6 +1755,7 @@ if(programId == 0)
 return 0;
 $("#batchScheduleId  option").remove();
 $("#batchScheduleId").append('<option value="0">Select Schedule</option>');
+$("#batchErrorDiv").html("");
 }
 else
 {
@@ -2081,6 +2084,8 @@ if(type == "batch")
 var agentId = $("#batchAgentId").val();
 if(agentId == 0)
 return;
+$("#batchErrorDiv").html("");
+
 }
 else{
 var agentId = $("#agentId").val();
@@ -2163,6 +2168,7 @@ $("#"+divId).html(str);
 
    function getBatchesForSchedule()
    {
+	   $("#batchErrorDiv").html("");
    var scheduleId = $("#batchScheduleId").val();
    var jObj={
 		scheduleId:scheduleId,
@@ -2272,6 +2278,7 @@ $("#AdminCallersOverview").html(str);
 }
 function assignBatch()
 {
+$("#batchErrorDiv").html("");
 var userIds = new Array();
 $(".callerscheck").each(function(){
 if($(this).is(':checked'))
@@ -2280,6 +2287,38 @@ if($(this).is(':checked'))
 var scheduleId = $('#batchScheduleId').val();
 var callerId  = $('#batchAgentId').val();
 var batchId = $("#batchId").val();
+var batchCampId = $("#batchCampId").val();
+var batchProgramId = $("#batchProgramId").val();
+
+if(batchCampId == null || batchCampId == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Please Select Camp</div>");
+  return;
+}
+
+if(batchProgramId == null || batchProgramId == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Please Select Program</div>");
+  return;
+}
+
+if(scheduleId == null || scheduleId == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Please Select Schedule</div>");
+  return;
+}
+
+if(batchId == null || batchId == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Please Select Batch</div>");
+  return;
+}
+if(callerId == null || callerId == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Please Select Agent</div>");
+  return;
+}
+
 var callPurposeId = 2;
 var jObj={
 		membersCount:0,
@@ -2313,6 +2352,29 @@ function clearAssignAgent()
 	$("#avaliableCallsCount").html("");
 	$("#callCenterErrorDiv").html("");
 	$("#errorMsgDivId").html("");
+}
+
+function clearBatchPopupFields()
+{
+	$("#batchErrorDiv").html("");
+	$("#batchCampId").val(0);
+	$("#batchProgramId").find("option").remove();
+	$("#batchProgramId").append("<option value='0'>Select Program</option>");
+	$("#batchScheduleId").find("option").remove();
+	$("#batchScheduleId").append("<option value='0'>Select Schedule</option>");
+	$("#batchId").find("option").remove();
+	$("#batchId").append("<option value='0'>Select Batch</option>");
+	$("#batchAgentId").val(0);
+	$("#AdminCallersOverview").html("");
+	
+}
+function clearErrMsg()
+{
+	var batchId = $("#batchId").val();
+	if(batchId == null || batchId == 0)
+		return;
+	else
+	 $("#batchErrorDiv").html("");
 }
 </script>
 <script>
