@@ -1441,4 +1441,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+    public String getDetailsForACadre(){
+		
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			Long batchId = jObj.getLong("batchId");
+			
+			//finalList = trainingCampService.getDetailsForACadre(tdpCadreId,batchId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
