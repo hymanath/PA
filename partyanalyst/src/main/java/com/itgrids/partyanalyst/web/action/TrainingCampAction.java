@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
@@ -92,10 +93,18 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	
 	private Long partyMeeting;
 	private String partyMeetingType;
+	private List<CallTrackingVO> docsResultList;
 	
 	
 	
-	
+
+	public List<CallTrackingVO> getDocsResultList() {
+		return docsResultList;
+	}
+
+	public void setDocsResultList(List<CallTrackingVO> docsResultList) {
+		this.docsResultList = docsResultList;
+	}
 
 	public Long getPartyMeeting() {
 		return partyMeeting;
@@ -1467,5 +1476,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
 		return Action.SUCCESS;
 	}
+    
+    public String getDocsOfMeeting(){
+    	try{
+			
+			jObj = new JSONObject(getTask());
+			Long partyMeetingId = jObj.getLong("partyMeetingId");
+			String docSourceType = jObj.getString("docSourceType");
+			
+			docsResultList = trainingCampService.getDocsOfPartyMeetingId(partyMeetingId,docSourceType);
+			
+		}catch(Exception e) {
+			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+    }
 	
 }
