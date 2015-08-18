@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CALLS List</title>
-<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="training/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="training/dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .filters-div
 {
@@ -379,7 +379,7 @@ str+='<td>'+result.subList[i].constituency+'</td>';
 str+='<td>'+result.subList[i].remarks+'</td>';
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'
-str+='<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\');">Update Status</button>';
+str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\');">Update Status</button>';
 str+='</td>';
 str+='</tr>';
 }
@@ -401,6 +401,12 @@ tdpCadreId = cadreId;
 inviteeId = inviteId;
 inviteeCallerId = inviteCallerId;
 ClearDiv();
+$(".callstatuscheckbox").prop( "checked", false );
+$(".scheduleStatuscehckbox").prop( "checked", false );
+   $('.Answered-div').show();;
+   $('.callback-div').hide();
+	$('.switchoff-div').hide();
+	$("#messageDiv").html("");
 }
 function setDefaultImage(img){
 	  img.src = "dist/img/profileimage.png";
@@ -780,6 +786,7 @@ function setDefaultImage(img){
    {
    $('#districtId').find('option:not(:first)').remove();
    var jObj={
+	   campCallerId:campCallerId,
 	task:""
 		};
 		$.ajax({
