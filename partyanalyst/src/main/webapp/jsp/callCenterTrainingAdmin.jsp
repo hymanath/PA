@@ -2195,11 +2195,13 @@ function getCallerOverViewForAdmin()
 var campId =$("#batchCampId").val();
 var programId =$("#batchProgramId").val();
 var scheduleId = $("#batchScheduleId").val();
+var batchId =$("#batchId").val();
 $("#AdminCallersOverview").html('');
   var jObj={
   campId:campId,
   programId:programId,
   scheduleId:scheduleId,
+  batchId:batchId,
 		task:""
 		};
 		$.ajax({
@@ -2219,6 +2221,8 @@ var result = resultList.trainingCampVOList;
 for(var i in result)
 {
 var result1 = result[i].trainingCampVOList;
+if(result[i].interestedCount == null)
+result[i].interestedCount =0;
 str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
 str+='<tr class="custom-info">';
 str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - '+result[i].interestedCount+'&nbsp;';
