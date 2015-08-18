@@ -50,6 +50,7 @@
 <header>
 	<img src="dist/img/header.jpg" width="100%" alt="">
 </header>
+<!--  accordian start-->
 <main>
 	<div class="container">
     	<div class="row">
@@ -59,343 +60,15 @@
                     	<h4 class="panel-title"></h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                          <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                              	<h4 class="panel-title">
-                                  SVV_Batch_2015_3
-                                  <span class="pull-right">
-                                  	<i class="glyphicon glyphicon-chevron-down"></i>
-                                  </span>
-                                </h4>
-                              </a>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                              <div class="panel-body">
-                                <table class="table table-bordered m_0">
-                                	<thead>
-										<th></th>
-                                    	<th>Name</th>
-                                        <th>Mobile</th>
-                                        <th>Constituency</th>
-                                        <th>Achievements</th>
-                                        <th>Goals</th>
-                                        <th>Leadership <br/>Level</th>
-                                        <th>Communication<br/> Skills</th>
-                                        <th>Leadership Skills</th>
-                                        <th>Health</th>
-                                        <th></th>
-                                    </thead>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                              	<h4 class="panel-title">
-                                  SVV_Batch_2015_2
-                                  <span class="pull-right">
-                                  	<i class="glyphicon glyphicon-chevron-down"></i>
-                                  </span>
-                                </h4>
-                                </a>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                              <div class="panel-body">
-                                <table class="table table-bordered m_0">
-                                	<thead>
-										<th></th>
-										<th>Name</th>
-                                        <th>Mobile</th>
-                                        <th>Constituency</th>
-                                        <th>Achievements</th>
-                                        <th>Goals</th>
-                                        <th>Leadership <br/>Level</th>
-                                        <th>Communication<br/> Skills</th>
-                                        <th>Leadership Skills</th>
-                                        <th>Health</th>
-                                        <th></th>
-                                    </thead>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                </table>
-
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                              	<h4 class="panel-title">
-                                  SVV_Batch_2015_1
-                                  <span class="pull-right">
-                                  	<i class="glyphicon glyphicon-chevron-down"></i>
-                                  </span>
-                                </h4>
-                                </a>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                              <div class="panel-body">
-                                <table class="table table-bordered m_0">
-                                	<thead>
-										<th></th>
-										<th>Name</th>
-                                        <th>Mobile</th>
-                                        <th>Constituency</th>
-                                        <th>Achievements</th>
-                                        <th>Goals</th>
-                                        <th>Leadership <br/>Level</th>
-                                        <th>Communication<br/> Skills</th>
-                                        <th>Leadership Skills</th>
-                                        <th>Health</th>
-                                        <th></th>
-                                    </thead>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-										<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>
-                                    	<td>Mahendar</td>
-                                        <td>9986448445</td>
-                                        <td>Makthal</td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>
-                                        <td><button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">UPDATE</button></td>
-                                    </tr>
-                                </table>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-              </div>
-            </div>
-        </div>
-    </div>
+                    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
+					</div>	
+               </div>          
+			</div>			  
+        </div>                 
+	</div>					  
 </main>
+<!--  accordian start-->
+                  <!-- pop up modal start-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -550,6 +223,8 @@
     </div>
   </div>
 </div>
+                  <!-- pop up modal end -->
+
 <footer>
 		<img src="dist/img/footer.jpg" width="100%">
 </footer>
@@ -569,24 +244,103 @@
 	<script src="dist/HighCharts/highcharts.js" type="text/javascript"></script> -->
 
 	
-	<script type="javascript">
-		getTdpCadreDetailsforASchedule(1);
-		
-		function getTdpCadreDetailsforASchedule(scheduleId)
-		{
-			alert(1);
-			var jsObj={
-				scheduleId:scheduleId
-			}
-			
+	<script>
+	
+		 getTdpCadreDetailsforASchedule(1);
+		 function getTdpCadreDetailsforASchedule(scheduleId)
+		 { 
+			var jsObj={scheduleId:scheduleId }
 			$.ajax({
-			type:'POST',
-			url :'getTdpCadreDetailsforAScheduleAction.action',
-			data:{task:JSON.stringify(jsObj)},
-		}).done(function(result){
-			
+			  type:'POST',
+			  url :'getTdpCadreDetailsforAScheduleAction.action',
+			  data:{task:JSON.stringify(jsObj)},
+		    }).done(function(results){
+			    if(results!=null && results.length>0){
+				     buildCadreDetails(results);
+				}else{
+				    alert("NO Data Available.");
+				}
 			});
 		}
+		function buildCadreDetails(results){
+		   var str='';
+		   for(var i in results){
+		     str+='<div class="panel panel-default">'
+				str+='<div class="panel-heading" role="tab" id="heading'+i+'">'
+                   str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'
+                   str+='<h4 class="panel-title">'+results[i].name+'<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>'
+                   str+='</a>';               
+                str+='</div>';                
+                str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">'
+                  str+='<div class="panel-body">';
+                      str+='<table class="table table-bordered m_0">'
+                      str+='<thead>';
+					  str+='<th></th>';
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Achievements</th><th>Goals</th>'
+					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th> <th></th>';
+                      str+='</thead>';                 
+                      for(var j in results[i].subList){
+					   str+='<tr>';
+					   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>'
+					   str+='<td>'+results[i].subList[j].name+'</td>'
+					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
+					   str+='<td>'+results[i].subList[j].constituency+'</td>'
+					   if(results[i].subList[j].achievements){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }
+					   if(results[i].subList[j].goals){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }  
+					   if(results[i].subList[j].leaderShipLevels){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }
+					   if(results[i].subList[j].communicationSkills){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }
+					   if(results[i].subList[j].leaderShipSkills){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }
+					   if(results[i].subList[j].health){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					   }
+					   str+='<td><button  type="button" id="updateId" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+                       str+='</tr>';
+                    }
+					str+='</table>'
+                  str+='</div>'
+                str+='</div>'
+              str+='</div>'
+		   }
+		   $("#accordion").html(str);
+		}
+		
+	
+	/* $(document).on('click','#updateId',function(){
+	
+       var tdpCadreId=$(this).attr('attr-cadreId');
+	   var batchId=$(this).attr('attr-batchId');
+	   var jsObj={tdpCadreId:tdpCadreId,batchId:batchId}
+	   $.ajax({
+		  type:'POST',
+		  url :'getDetailsForACadreAction.action',
+		  data:{task:JSON.stringify(jsObj)},
+	   }).done(function(results){
+			
+	   });
+	   
+   }); */
 	</script>
 </body>
 </html>
