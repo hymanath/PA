@@ -140,6 +140,9 @@ header.eventsheader {
 									<option>Select Constituency</option>
 									</select>
                             </div>
+							<div class="col-md-1" style="height: 44px; width: 10px;">
+								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+							</div>
 							<div class="col-md-3" id="ManTwnDivShowId" style="display:none;">
                                 	<label>Mandal/Town/Division</label>
 									<span id="ManErrorMSgShow" style="color: red;"></span>
@@ -147,6 +150,7 @@ header.eventsheader {
 									<option>Select Mandal/Town/Division</option>
 									</select>
                             </div>
+							
 							<div class="col-md-3" id="VillWardShowId" style="display:none;margin-left:30px;">
                                 	<label>Village/Ward</label>
 										<span id="VillErrorMSgShow" style="color: red;"></span>
@@ -489,6 +493,7 @@ $(document).ready(function() {
 				$("#stateErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 			}
+			$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -507,7 +512,7 @@ $(document).ready(function() {
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 			}
-			
+			$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -531,6 +536,7 @@ $(document).ready(function() {
 				districtId = getStateDistrictAssemblySelection("district");
 				constituencyId = getStateDistrictAssemblySelection("constituency");
 			}
+			$("#searchDataImgForResults").show();
 		}	
 		
 		
@@ -560,6 +566,7 @@ $(document).ready(function() {
 				constituencyId = getStateDistrictAssemblySelection("constituency");
 				mandalTownDivisonId.push($("#manTowDivId").val());
 			}
+			$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -595,9 +602,10 @@ $(document).ready(function() {
 				mandalTownDivisonId.push($("#manTowDivId").val());
 				villageWardId.push($("#villWardId").val());
 			}
+			$("#searchDataImgForResults").show();
 		}
 		
-		$("#searchDataImgForResults").show();
+		
 		var startDate = $(".dp_startDate").val();
 		var endDate = $(".dp_endDate").val();
 		var jsObj =	{
@@ -835,6 +843,7 @@ $(document).ready(function() {
 		});
 		
 	function getMandalVillageDetails(locationLevel){
+		$("#searchDataImgForman").show();
 		//$("#manTowDivId  option").remove();
 		//$("#villWardId option").remove();
 		var stateId = $("#statesDivId").val();
@@ -879,6 +888,7 @@ $(document).ready(function() {
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		   $("#searchDataImgForman").hide();
 			  var divId = "#manTowDivId";
 			  $(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
 			  if(locationLevel ==5){
