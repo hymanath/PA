@@ -114,18 +114,21 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		return query.list();
 	}
    
-   public List<Object[]> getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId){
+   public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId){
 	   
 	   Query query=getSession().createQuery("" +
 	   " select model1.tdpCadreId,model1.firstname,model1.mobileNo,model1.userAddress.constituency.name," +
-	   " model1.userAddress.district.districtName,model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName" +
+	   " model1.userAddress.district.districtName,model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName,model1.image " +
 	   " from TrainingCampBatchAttendee model,TdpCadre model1 " +
 	   " where model.tdpCadreId=model1.tdpCadreId and " +
 	   " model.tdpCadreId=:tdpCadreId and model.trainingCampBatch.trainingCampBatchId=:batchId " +
 	   " and model1.isDeleted='N' and model1.enrollmentYear=2014");
 	   query.setParameter("tdpCadreId",tdpCadreId);
 	   query.setParameter("batchId",batchId);
-	   return query.list();
+	   return (Object[])query.uniqueResult();
    }
+   
+   
+   
 	
 }
