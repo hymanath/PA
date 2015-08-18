@@ -659,7 +659,7 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreGoal</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreAchievement</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendanceTabUser</value>
 				 
 				</list>
 			
