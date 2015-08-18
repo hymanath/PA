@@ -105,19 +105,24 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return query.list();
 	}
 	
-	public List<Long> getInvitedCandidatesListByScheduleIdAndCount(Long scheduleId,List<Long> alreadyInvitedMemberIdsList,int membersCount)
+	public List<Long> getInvitedCandidatesListByScheduleIdAndCount(List<Long> callerIdsList , Long scheduleId,List<Long> alreadyInvitedMemberIdsList,int membersCount)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct TCSI.trainingCampScheduleInviteeId from TrainingCampScheduleInvitee TCSI where TCSI.scheduleInviteeStatusId =1 and TCSI.trainingcampScheduleId =:scheduleId ");
+		queryStr.append(" select distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId from TrainingCampScheduleInviteeCaller TCSIC where TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatusId = 4 " +
+				" and TCSIC.callPurposeId = 1 and TCSIC.trainingCampScheduleInvitee.trainingcampScheduleId =:scheduleId ");
 		if(alreadyInvitedMemberIdsList != null && alreadyInvitedMemberIdsList.size()>0)
-			queryStr.append(" and TCSI.trainingCampScheduleInviteeId not in (:alreadyInvitedMemberIdsList) ");
-		queryStr.append("order by TCSI.trainingCampScheduleInviteeId ");
+			queryStr.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId not in (:alreadyInvitedMemberIdsList) ");
+		if(callerIdsList != null && callerIdsList.size()>0)
+			queryStr.append(" and TCSIC.trainingCampCallerId in (:callerIdsList) ");
+			
+		queryStr.append("order by TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("scheduleId", scheduleId);
 		if(alreadyInvitedMemberIdsList != null && alreadyInvitedMemberIdsList.size()>0)
 			query.setParameterList("alreadyInvitedMemberIdsList", alreadyInvitedMemberIdsList);
-		query.setFirstResult(0);
-		query.setMaxResults(membersCount);
+		if(callerIdsList != null && callerIdsList.size()>0)
+			query.setParameterList("callerIdsList", callerIdsList);
+		
 		return query.list();
 	}
 	
