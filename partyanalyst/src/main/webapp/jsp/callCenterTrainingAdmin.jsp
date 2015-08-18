@@ -534,14 +534,14 @@
 				</div>   
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
-					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();getCallerOverViewForAdmin();">
+					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();">
 					 <option value="0">Select Schedule</option>		
 					</select>
 					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>-->
 				</div>  
 				<div class="col-md-12 m_top10">
 					<label>Select Training Batch / Date</label>
-					<select class="form-control border-radius-0" id="batchId" onchange="clearErrMsg()">
+					<select class="form-control border-radius-0" id="batchId" onchange="clearErrMsg();getCallerOverViewForAdmin();">
 					<option value="0">Select Batch</option>	
 					</select>
 					<!--comment<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 110</i></small>-->
