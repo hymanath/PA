@@ -34,6 +34,8 @@ public class TrainingCampCadreAchievement extends BaseModel implements Serializa
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private TrainingCampBatch trainingCampBatch;
+	private Long trainingCampBatchId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -103,5 +105,22 @@ public class TrainingCampCadreAchievement extends BaseModel implements Serializa
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "training_camp_batch_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TrainingCampBatch getTrainingCampBatch() {
+		return trainingCampBatch;
+	}
+	public void setTrainingCampBatch(TrainingCampBatch trainingCampBatch) {
+		this.trainingCampBatch = trainingCampBatch;
+	}
+	@Column(name = "training_camp_batch_id")
+	public Long getTrainingCampBatchId() {
+		return trainingCampBatchId;
+	}
+	public void setTrainingCampBatchId(Long trainingCampBatchId) {
+		this.trainingCampBatchId = trainingCampBatchId;
 	}
 }

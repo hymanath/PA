@@ -3758,5 +3758,14 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return format;
 	}
-	
+	public List<Object[]> getDetailsForACadre(Long tdpCadreId,Long batchId){
+		try{
+			 
+			//getDetailsForTdpCadre();
+			
+		}catch(Exception e){
+			LOG.error(" Exception occured in getDetailsForACadre method in TrainingCampService class.",e);
+		}
+		return null;
+	}
 }
