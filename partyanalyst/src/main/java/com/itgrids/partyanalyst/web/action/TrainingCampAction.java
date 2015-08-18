@@ -1316,7 +1316,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			          File fileToCreate = new File(filePath,imageName);
 					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
 					  
-					  trainingCampService.saveFilePaths(partyMeeting,fileType,partyMeetingType,filePath+"/"+imageName,userId);
+					  trainingCampService.saveFilePaths(partyMeeting,fileType,partyMeetingType,ttlDir+"/"+imageName,userId, imageForDisplayFileName.get(i));
 					  
 					  inputStream = new StringBufferInputStream("success");
 		          }

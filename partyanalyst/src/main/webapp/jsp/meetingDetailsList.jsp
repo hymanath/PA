@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meeting</title>
+<title>Party Meetings - MINUTES & ATR POINTS</title>
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -167,124 +167,7 @@ header.eventsheader {
                                         </div>
                                             <div class="panel-body">
 											<div>
-                                                <div class="row" id="atrDivId">
-                                                    <div class="panel-body m_top20"  style="border:1px solid #c3c3c3;">
-                                                        <div class="row">
-														 <div class="pull-right" style="margin-right:5px;">
-															<button class="btn btn-danger btn-xs removebtn">REMOVE</button>
-														</div>
-                                                            <div class="col-md-12">
-                                                                <label>REQUEST</label><br/>
-                                                                <textarea rows="4" cols="40" id="requestId"></textarea>
-                                                            </div>
-                                                            <div class="col-md-12 m_top20">
-                                                                <label>ACTION TAKEN</label><br/>
-                                                                <textarea rows="4" cols="40" id="actionTakenId"></textarea>
-                                                            </div>
-                                                            <!--<div class="col-md-12 m_top20">
-                                                                <label>REQUEST FROM</label>
-                                                                <input type="radio" name="requestFrom" value="private" checked>Individual
-                                                                <input type="radio" name="requestFrom" value="public" checked>Public
-                                                            </div>-->
-                                                            <div class="col-md-12 m_top20">
-                                                                <label>RAISED BY</label><br/>
-                                                                <input type="text" id="raisedById"/>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                        <div class="col-md-12 m_top20">
-                                                            <div class="col-md-5" id="stateShowId" style="display:none;">
-                                                                    <label>State</label>
-                                                                    <select class="form-control" id="statesDivId">
-                                                                    <option>Select State</option>
-                                                                    <option value="0">All</option>
-                                                                    <option value="1">AndhraPradesh</option>
-                                                                    <option value="36">Telangana</option>
-                                                                    </select>
-                                                            </div>
-                                                            <div class="col-md-1" style="height: 44px; width: 10px;">
-                                                                <img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
-                                                            </div>
-                                                            <div class="col-md-5" id="DistrictShowId" style="display:none;">
-                                                                    <label>District</label>
-                                                                    <select class="form-control" id="districtId">
-                                                                    <option>Select District</option>
-                                                                    </select>
-                                                            </div>
-                                                            <div class="col-md-1" style="height: 44px; width: 10px;">
-                                                                <img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
-                                                            </div>
-                                                            <div class="col-md-5" id="ConstShowId" style="display:none;">
-                                                                    <label>Constituency</label>
-                                                                    <select class="form-control" id="constituencyId">
-                                                                    <option>Select Constituency</option>
-                                                                    </select>
-                                                            </div>
-                                                            <div class="col-md-1" style="height: 44px; width: 10px;">
-                                                                <img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
-                                                            </div>
-                                                            <div class="col-md-5" id="ManTwnDivShowId" style="display:none;">
-                                                                    <label>Mandal/Town/Division</label>
-                                                                    <select class="form-control" id="manTowDivId">
-                                                                    <option>Select Mandal/Town/Division</option>
-                                                                    </select>
-                                                            </div>
-                                                           
-                                                            <div class="col-md-5" id="VillWardShowId" style="display:none;">
-                                                                    <label>Village/Ward</label>
-                                                                    <select class="form-control" id="villWardId">
-                                                                    <option>Select Village/Ward</option>
-                                                                    </select>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                        <div class="pull-right m_top10">
-                                                            <button class="btn btn-success btn-xs" >ADD</button>
-                                                        </div>
-													</div>
-												<!--<div class="row m_top20">
-                                                        <div class="col-md-12" style="margin-left: -42px;">
-                                                            <div class="grievance-training">
-                                                                <ul>
-                                                                    <li>
-                                                                        <button class="btn btn-custom-g btn-xs pull-right">Edit</button>
-                                                                        <div class="data">
-                                                                            <p class="m_0"><span class="text-bold">ATR Raised by</span> - kavali</p>  
-                                                                            <p><span class="text-bold">Grievance Given:</span>
-                                                                            Grievance text</p>
-                                                                            <p class="m_top10"><span class="text-bold">Action Taken:</span>
-                                                                            Grievance text</p>
-                                                                        </div>
-                                                                        <div class="data-edit">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12">
-                                                                                    <label>ATR Raised by</label>
-                                                                                    <select class="form-control">
-                                                                                        <option>Kavali</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-md-12 m_top20">
-                                                                                    <label>Grievance Given</label>
-                                                                                    <select class="form-control">
-                                                                                        <option>Kavali</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-md-12 m_top20">
-                                                                                    <label>Action Taken</label>
-                                                                                    <select class="form-control">
-                                                                                        <option>Kavali</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                     </li>
-                                                                  
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
-                                               
-                                            </div>
+                                                <div class="row" id="atrDivId"></div>
 											<div class="pull-right m_top10">
 											<button class="btn btn-success btn-xs addingRequests">ADD</button>
 											</div>
@@ -338,6 +221,25 @@ header.eventsheader {
 			 <button type="button" class="btn btn-info" data-dismiss="modal" style="margin-top:10px;"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 		 </div>
 	 </div>
+ </div>
+ <div style="display:none;">
+	<div id="DistrictShowId0">
+		<label>DISTRICT</label>
+		<select id="districtId0" class="form-control locationCls"><option value="0"> Select District</option></select>
+	</div>
+	<div id="ConstShowId0">
+		<label>CONSTITUENCY</label>
+		<select id="constituencyId0" class="form-control locationCls"><option value="0"> Select Constituency</option></select>
+	</div>
+	<div id="ManTwnDivShowId0">
+		<label>MANDAL/ TOWN/ DIVISION</label>
+		<select id="manTowDivId0" class="form-control locationCls"><option value="0"> Select Mandal/Town/Division</option></select>
+	</div>
+	<div id="VillWardShowIdSpan0">
+		<label>VILLAGE/ WARD</label>
+		<select id="villWardId0" class="form-control locationCls"><option value="0"> Select Village/Ward</option></select>
+	</div>
+	
  </div>
 
 <footer>
@@ -434,7 +336,7 @@ header.eventsheader {
      getTheMeetingLevelDetails()
    });
 
-    $("#mainheading").html("TRAINING PROGRAM");
+    $("#mainheading").html("PARTY MEETINGS");
     var mainDivCount=1;
     function myFunction() {
         mainDivCount = parseInt(mainDivCount)+1;
@@ -500,7 +402,7 @@ header.eventsheader {
             data:{task :JSON.stringify(jsObj)}
         }
         ).done(function(result){
-            $("#meetingLocationLevel").append('<option value="0">Select Location Type</option>');
+            $("#meetingLocationLevel").append('<option value="0">Meeting Level</option>');
             if(result!=null && result.length>0){
                 for(var i in result){
                 $("#meetingLocationLevel").append('<option value="'+result[i].locationId+'">'+result[i].locationLevel+'</option>');
@@ -542,12 +444,18 @@ header.eventsheader {
           
        }
      }
-	 $("#locationInPop").html("");
-	 $("#locationInPop").html($("#DistrictShowId"+atrId).html());
+	 
+	 $("#locationInPop").html("");//locationCls
+	 
 	 
 	 var lctn = $("#districtId"+atrId+" option:selected").text();
 	 var lctnId = $("#districtId"+atrId+" option:selected").val();
 	 $("#DistrictShowIdSpan"+atrId).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+" District</h4>");
+	 
+	 var locationDiv = $("#DistrictShowId"+atrId);
+	 locationDiv.find(".locationCls").attr("id","locationDivId");
+	 
+	 $("#locationInPop").html($("#DistrictShowId"+atrId).html());
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -579,11 +487,15 @@ header.eventsheader {
             }
 			
 			$("#locationInPop").html("");
-			$("#locationInPop").html($("#ConstShowId"+atrId).html());
 			
 			var lctn = $("#constituencyId"+atrId+" option:selected").text();
 			var lctnId = $("#constituencyId"+atrId+" option:selected").val();
 			$("#ConstShowIdSpan"+atrId).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+" Constituency</h4>");
+			
+			var locationDiv = $("#ConstShowId"+atrId);
+			locationDiv.find(".locationCls").attr("id","locationDivId");
+			
+			$("#locationInPop").html($("#ConstShowId"+atrId).html());
         });
     }
 
@@ -638,10 +550,16 @@ header.eventsheader {
                 
             }
 			
-			$(locationTemp).val($(divId).text());
+			
 			var lctn = $(""+divId+" option:selected").text();
 			var lctnId = $(""+divId+" option:selected").val();
+			
 			$(locationTemp).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+"</h4>");
+			
+			var locationDiv = $(locationTemp);
+			locationDiv.find(".locationCls").attr("id","locationDivId");
+			
+			$(locationTemp).val($(divId).text());
         });
     }
    
@@ -704,6 +622,8 @@ header.eventsheader {
 			   $("#meetingType").html(result.partyMeetingType);
 			   $("#location").html(result.meetingLevel);
 			   
+			   
+			   
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   var str='';
 				   for(var i in result.minutesDocuments){
@@ -728,6 +648,7 @@ header.eventsheader {
 			   
 			   
 			   if(result.minutesDetails!=null && result.minutesDetails.length>0){
+				   minutesFiles = result.minutesDetails.length;
 				   var str='';
 				   for(var i in result.minutesDetails){
 					   mainDivCount=i;
@@ -745,6 +666,7 @@ header.eventsheader {
 			   }
 			   
 			   if(result.atrDetails!=null && result.atrDetails.length>0){
+				   atrFiles = result.atrDetails.length;
 				   var str='';
 				   for(var i in result.atrDetails){
 				   	   maximumDivCount=i;
@@ -783,7 +705,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>District</label>';
-					   str+='<select class="form-control" id="districtId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<select class="form-control locationCls" id="districtId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<option>Select District</option>';
 					   str+='</select>';
 					   str+='</div>';
@@ -793,7 +715,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Constituency</label>';
-					   str+='<select class="form-control" id="constituencyId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<select class="form-control locationCls" id="constituencyId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<option>Select Constituency</option>';
 					   str+='</select>';
 					   str+='</div>';
@@ -804,7 +726,7 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Mandal/Town/Division</label>';
-					   str+='<select class="form-control" id="manTowDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<select class="form-control locationCls" id="manTowDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<option>Select Mandal/Town/Division</option>';
 					   str+='</select>';
 					   str+='</div>';
@@ -812,7 +734,7 @@ header.eventsheader {
 					   
 					   str+='<div class="col-md-12" id="VillWardShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Village/Ward</label>';
-					   str+='<select class="form-control" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<select class="form-control locationCls" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<option>Select Village/Ward</option>';
 					   str+='</select>';
 					   str+='</div>';
@@ -840,10 +762,14 @@ header.eventsheader {
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   
 					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
 					   
 				   }
+				   
+				   
+			   }else{
+				   $("#atrDivId").html("<h5>No ATR Points</h5>");
+				   getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
 			   }
 		   }
 	   });
@@ -1017,7 +943,6 @@ header.eventsheader {
 	});
 	
 	$(document).on('click', '.addingRequests', function(){
-		 
 		 $("#request").val("");
 		 $("#actionTaken").val("");
 		 $("#raisedBy").val("");
