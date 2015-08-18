@@ -75,4 +75,6 @@ public interface ITrainingCampService {
 	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
+	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
+	public CadreDetailsVO getAllStatusForCadre();
 }
