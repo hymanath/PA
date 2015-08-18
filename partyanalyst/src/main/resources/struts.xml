@@ -10479,13 +10479,13 @@
 	  </result>
 	</action>
 	
-	<action name="meetingList" class="trainingCampAction" method="callCenterTrainingAgent">
+	<action name="meetingList" class="trainingCampAction" method="checkLoginForPartyMeeting">
 		<result name="success">/jsp/meetingsList.jsp</result>
 		<result name="input">/jsp/loginForm.jsp</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
-	<action name="meetingDetailsList" class="trainingCampAction" method="callCenterTrainingAgent">
+	<action name="meetingDetailsList" class="trainingCampAction" method="checkLoginForPartyMeeting">
 		<result name="success">/jsp/meetingDetailsList.jsp</result>
 		<result name="input">/jsp/loginForm.jsp</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>

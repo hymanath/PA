@@ -498,6 +498,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		return Action.INPUT;
 	}
 	
+	public String checkLoginForPartyMeeting(){
+		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null && regVO.getRegistrationID() >0l){
+			return "success";
+		}else{
+			return "input";
+		}
+	}
+	
 	public String getUserAccessLocationDetails(){
 		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null){
