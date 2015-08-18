@@ -962,10 +962,10 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getScheduleWiseDetailsCount(List<Long> callerIdsList,Date fromDate,Date toDate,String dataType,String searchType){
+	public List<Object[]> getScheduleWiseDetailsCount(List<Long> callerIdsList,Date fromDate,Date toDate,String dataType,String searchType,Date todayDate){
 		
 		StringBuilder str = new StringBuilder();
-		
+		boolean isDatesNull = false;
 		str.append("select TCSI.trainingCampSchedule.trainingCamp.campName," +
 				"TCSI.trainingCampSchedule.trainingCampProgram.programName," +
 				"TCSI.trainingCampSchedule.trainingCampScheduleCode, " +
@@ -976,26 +976,41 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		if(fromDate != null && toDate != null)
 		{
-			str.append(" and (date(TCSI.trainingCampSchedule.fromDate) >=:fromDate and date(TCSI.trainingCampSchedule.toDate) <=:toDate) ");
+			str.append(" and (date(TCSIC.updatedTime) >=:fromDate and date(TCSIC.updatedTime) <=:toDate) ");
+			
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				str.append(" and date(TCSI.trainingCampSchedule.fromDate) >:toDate ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				str.append(" and :toDate between date(TCSI.trainingCampSchedule.fromDate) and date(TCSI.trainingCampSchedule.toDate) ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				str.append(" and date(TCSI.trainingCampSchedule.toDate) < :fromDate  ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+				str.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
+			}
+		}
+		else
+		{
+			isDatesNull = true;
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				str.append(" and date(TCSI.trainingCampSchedule.fromDate) >:todayDate ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				str.append(" and :todayDate between date(TCSI.trainingCampSchedule.fromDate) and date(TCSI.trainingCampSchedule.toDate) ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				str.append(" and date(TCSI.trainingCampSchedule.toDate) < :todayDate  ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+				str.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
+			}
 		}
 		
 		if(callerIdsList !=null && callerIdsList.size()>0){
 			str.append(" and  TCSIC.trainingCampUser.userId in (:callerIdsList) ");
 		}
-		if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
-			str.append(" and TCSI.trainingCampSchedule.status = 'Not Started' ");
-		}
-		else if(searchType !=null && searchType.equalsIgnoreCase("running")){
-			str.append(" and TCSI.trainingCampSchedule.status ='Progress' ");
-		}
-		else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
-			
-			str.append(" and TCSI.trainingCampSchedule.status ='Completed' ");
-			
-		}else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
-			str.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
-		}
-		
 		if(dataType !=null && dataType.equalsIgnoreCase("dialedCalls")){
 			str.append(" and TCSIC.campCallStatus.campCallStatusId is not null ");
 		}
@@ -1008,14 +1023,33 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				" TCSI.trainingCampSchedule.trainingCamp.trainingCampId ");
 		
 		Query query = getSession().createQuery(str.toString());
-		
-		
+		if(isDatesNull){
+			if(!searchType.equalsIgnoreCase("cancelled"))
+				query.setDate("todayDate", todayDate);
+		}
+		else
+		{
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				query.setDate("toDate", toDate);
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				query.setDate("toDate", toDate);
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				query.setDate("fromDate", fromDate);
+			}
+			/*else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+				str.append(" and TCSI.trainingCampSchedule.status ='Cancelled' ");
+			}*/
+			
+		}
 		if(callerIdsList !=null && callerIdsList.size()>0){
 			query.setParameterList("callerIdsList",callerIdsList);
 		}
+		
 		if(fromDate !=null && toDate !=null){
-			query.setParameter("fromDate", fromDate);
-			query.setParameter("toDate", toDate);
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
 		}
 		
 		return query.list();
