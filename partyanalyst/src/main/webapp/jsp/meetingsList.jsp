@@ -501,13 +501,17 @@ $(document).ready(function() {
 			if($("#statesDivId").val()==""){
 				$("#stateErrorMSgShow").html("Please Select State");
 				return;
-			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
+			}
+			else{
+				$("#stateErrorMSgShow").html('');
+			}
+			 if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
 				$("#districtErrorMSgShow").html("Please Select District");
 				//alert("Please Select District");
 				return;
 			}
 			else{
-				$("#stateErrorMSgShow").html('');
+				
 				$("#districtErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
@@ -520,17 +524,24 @@ $(document).ready(function() {
 			if($("#statesDivId").val()==""){
 				$("#stateErrorMSgShow").html("Please Select State");
 				return;
-			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
+			}
+			else{
+				$("#stateErrorMSgShow").html('');
+			}
+			if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
 				$("#districtErrorMSgShow").html("Please Select District");
 				//alert("Please Select District");
 				return;
-			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
+			}
+			else{
+				$("#districtErrorMSgShow").html('');
+			}
+			if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
 				$("#ConsErrorMSgShow").html("Please Select Constituency");
 				//alert("Please Select Constituency");
 				return;
 			}else{
-				$("#stateErrorMSgShow").html('');
-				$("#districtErrorMSgShow").html('');
+				
 				$("#ConsErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
@@ -544,22 +555,28 @@ $(document).ready(function() {
 			if($("#statesDivId").val()==""){
 				$("#stateErrorMSgShow").html("Please Select State");
 				return;
-			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
+			}else{
+				$("#stateErrorMSgShow").html('');
+			}
+			if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
 				$("#districtErrorMSgShow").html("Please Select District");
 				//alert("Please Select District");
 				return;
-			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
+			}else{
+				$("#districtErrorMSgShow").html('');
+			}
+			if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
 				$("#ConsErrorMSgShow").html("Please Select Constituency");
 				//alert("Please Select Constituency");
 				return;
-			}else if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
+			}else{
+				$("#ConsErrorMSgShow").html('');
+			}
+			if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
 				$("#ManErrorMSgShow").html("Please Select Mandal/Town/Division");
 				//alert("Please Select Mandal/Town/Division");
 				return;
 			}else{
-				$("#stateErrorMSgShow").html('');
-				$("#districtErrorMSgShow").html('');
-				$("#ConsErrorMSgShow").html('');
 				$("#ManErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
@@ -574,27 +591,36 @@ $(document).ready(function() {
 			if($("#statesDivId").val()==""){
 				$("#stateErrorMSgShow").html("Please Select State");
 				return;
-			}else if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
+			}else{
+				$("#stateErrorMSgShow").html('');
+			}
+			if($("#districtId").val()=="" || $("#districtId").val()=="Select District"){
 				$("#districtErrorMSgShow").html("Please Select District");
 				//alert("Please Select District");
 				return;
-			}else if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
+			}else{
+				$("#districtErrorMSgShow").html('');
+			}
+			if($("#constituencyId").val()=="" || $("#constituencyId").val()=="Select Constituency"){
 				$("#ConsErrorMSgShow").html("Please Select Constituency");
 				//alert("Please Select Constituency");
 				return;
-			}else if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
+			}else{
+				$("#ConsErrorMSgShow").html('');
+			}
+			if($("#manTowDivId").val()=="" || $("#manTowDivId").val()=="Select Mandal/Town/Division"){
 				$("#ManErrorMSgShow").html("Please Select Mandal/Town/Division");
 				//alert("Please Select Mandal/Town/Division");
 				return;
-			}else if($("#villWardId").val()=="" || $("#villWardId").val()=="Select Village/Ward"){
+			}else{
+				$("#ManErrorMSgShow").html('');
+			}
+			if($("#villWardId").val()=="" || $("#villWardId").val()=="Select Village/Ward"){
 				$("#VillErrorMSgShow").html("Please Select Village/Ward");
 				//alert("Please Select Village/Ward");
 				return;
 			}else{
-				$("#stateErrorMSgShow").html('');
-				$("#districtErrorMSgShow").html('');
-				$("#ConsErrorMSgShow").html('');
-				$("#ManErrorMSgShow").html('');
+				
 				$("#VillErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
