@@ -23,6 +23,17 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px;
 }
+body,h1,h2,h3,h4,h5,h6{color:#666 !important}
+.text-bold{font-weight:bold}
+.m_0
+{
+	margin:0px
+}
+.uploadBox
+{
+	border:1px solid #ccc;
+	padding:8px;
+}
 .grievance-training ul li
 {
     border:1px solid #999;
@@ -122,15 +133,15 @@ header.eventsheader {
             <section>
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title" id="meetingType"></h4><h6 id="location"></h6>
+                        <div class="panel-heading" style="background-color:#CCC">
+                            <h4 class="panel-title" id="meetingType"></h4><h6 id="location" class="text-bold"></h6>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-6 m_top20">
                                     <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">Meeting Minutes</h4>
+                                        <div class="panel-heading" style="background-color:#DDD">
+                                            <h4 class="panel-title text-bold">Meeting Minutes</h4>
                                         </div>
                                         <div class="panel-body">
                                             <div id="addMoreDiv">
@@ -147,32 +158,33 @@ header.eventsheader {
                                            
                                                 <div class="input-group bin-div m_top10" id="list" style="display:none;">
                                                     <input type="text" class="form-control txtbox"></input>
-                                                    <span class="input-group-addon trash">
+                                                    <span class="input-group-addon trash" style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
-													<span class="input-group-addon saveMinute">
+													<span class="input-group-addon saveMinute" style="background-color:#CCC;cursor:pointer;border-left:1px solid #ddd" data-toggle="tooltip" data-placement="top" title="Save">
 														<i class="glyphicon glyphicon-ok"></i>
 													</span>
                                                 </div>
                                            
                                             <button class="btn btn-success btn-xs pull-right m_top20" onclick="myFunction()">ADD</button>
-											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
+											<br/><br/><div class="m_top20"><h4 class="text-bold"> Uploaded Documents<hr class="m_0" style="border-color:#666"/> </h4>
+
 												<div class="" id="mintueDocumentDivId"></div>
 											</div>
 											<div style="display:none;" id="fileDiv" class="row col-md-12">
 												<input type="file" class="m_top10 fileCls col-md-6" name="imageForDisplay" style="width: 225px;"/>
-												<div class="col-md-6"><span class="btn btn-success btn-xs m_top10 removeBtnCls">-</span></div>
+												<div class="col-md-6"><span class="btn btn-success btn-xs m_top10 removeBtnCls tooltipBtnDiv" data-toggle="tooltip" data-placement="top" title="Remove File"><i class="glyphicon glyphicon-minus"></i></span></div>
 											</div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <form id="uploadMinutesDocs" name="uploadMinutesDocs">
+                                                    <form id="uploadMinutesDocs" name="uploadMinutesDocs" class="uploadBox">
 														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFiles"></div>
-														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;" id="uploadMinutesDocsId"></input>
+														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-success btn-sm" id="uploadMinutesDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
 														<input type="hidden" name="partyMeetingType" value="MINUTE"/>
 													</form>
-													<button class="btn btn-success btn-xs pull-right m_top20" id="addFiles">+</button>
+													<button class="btn btn-success btn-xs pull-right m_top20 tooltipBtnDiv" data-toggle="tooltip" data-placement="top" title="Add one more file" id="addFiles"><i class="glyphicon glyphicon-plus"></i></button>
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
                                             </div>
@@ -181,29 +193,29 @@ header.eventsheader {
                                 </div>
                                  <div class="col-md-6 m_top20">
                                     <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">ATR</h4>
+                                        <div class="panel-heading" style="background-color:#DDD">
+                                            <h4 class="panel-title text-bold">ATR</h4>
                                         </div>
                                             <div class="panel-body">
 											<div>
-                                                <div class="row" id="atrDivId"></div>
+                                                <div id="atrDivId"></div>
 											<div class="pull-right m_top10">
 											<button class="btn btn-success btn-xs addingRequests">ADD</button>
 											</div>
 											</div>
-											<br/><br/><div class="m_top20"><h4> Uploaded Documents </h4>
+											<br/><br/><div class="m_top20"><h4 class="text-bold"> Uploaded Documents <hr class="m_0" style="border-color:#666"/></h4>
 												<div  class="" id="atrDocumentDivId"></div>
 											</div>
 											<div class="row">
 												 <div class="col-md-12">
-                                                    <form id="uploadATRDocs" name="uploadATRDocs">
+                                                    <form id="uploadATRDocs" name="uploadATRDocs" class="uploadBox	">
 														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="atrFileId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraFilesATR"></div>
-														<input type= "button" value="Upload ATR Files" style="margin-left:15px;margin-top:10px;" id="uploadATRDocsId"></input>
+														<input type= "button" value="Upload ATR Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-success btn-sm" id="uploadATRDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingATRId"/>
 														<input type="hidden" name="partyMeetingType" value="ATR"/>
 													</form>
-													<button class="btn btn-success btn-xs pull-right m_top20" id="addATRFiles">+</button>
+													<button class="btn btn-success btn-xs pull-right m_top20" id="addATRFiles"><i class="glyphicon glyphicon-plus"></i></button>
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
 											</div>
@@ -219,25 +231,34 @@ header.eventsheader {
 </main>
 
 <div class="modal fade" id="myModashow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	 <div class="modal-dialog popupborder">
-		 <div class="modal-content " style="padding: 15px;">
-			 <div class="col-md-12">
-				 <label>REQUEST</label><br/>
-				 <textarea rows="4" cols="40" id="request"></textarea>
+	 <div class="modal-dialog">
+		 <div class="modal-content">
+			<div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">ATR Points</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					 <div class="col-md-12">
+						 <label>REQUEST</label><br/>
+						 <textarea rows="2" id="request" class="form-control"></textarea>
+					 </div>
+					 <div class="col-md-12 m_top20">
+						 <label>ACTION TAKEN</label><br/>
+						 <textarea rows="2" id="actionTaken" class="form-control"></textarea>
+					 </div>
+					 
+					 <div class="col-md-12 m_top20">
+						 <label>RAISED BY</label><br/>
+						 <input type="text" id="raisedBy"  class="form-control"/>
+					 </div>
+					 <div class="col-md-12" id="locationInPop"></div>
+				 </div>
 			 </div>
-			 <div class="col-md-12 m_top20">
-				 <label>ACTION TAKEN</label><br/>
-				 <textarea rows="4" cols="40" id="actionTaken"></textarea>
+			 <div class="modal-footer">
+				 <button type="button" class="btn btn-success btn-sm"><i class="icon-check"></i> SAVE </button>
+				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 			 </div>
-			 
-			 <div class="col-md-12 m_top20">
-				 <label>RAISED BY</label><br/>
-				 <input type="text" id="raisedBy"/>
-			 </div>
-			 <div class="col-md-12" id="locationInPop"></div>
-			 
-			 <button type="button" class="btn btn-info" data-dismiss="modal" style="margin-top:10px;" id="saveBtn" attr_id="0"><i class="icon-check"></i> SAVE </button>
-			 <button type="button" class="btn btn-info" data-dismiss="modal" style="margin-top:10px;"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 		 </div>
 	 </div>
  </div>
@@ -318,7 +339,7 @@ header.eventsheader {
 			c.find(".removeBtnCls").attr("attr_count",minutesFiles);
 	    $("#ExtraFiles").append(c);
 	});
-	
+	$('.tooltipBtnDiv').tooltip();
 	var atrFiles = 0;
 	$("#addATRFiles").click(function(){
 		atrFiles = atrFiles +1;
@@ -371,9 +392,11 @@ header.eventsheader {
 			c.find(".saveMinute").attr("attr_txt","minutes"+mainDivCount);
 			c.find(".saveMinute").attr("attr_minuteId","0");
 			c.find(".trash").attr("attr_minuteId","0");
-			
+			c.find(".trash").attr("title",'Delete');
         $("#addMoreDiv").append(c);
-    }
+		$('.saveMinute').tooltip();
+		$('.trash').tooltip();
+}
    var maximumDivCount=1;
    /* $(document).on('click', '.addingRequests', function(){
 	   maximumDivCount = parseInt(maximumDivCount)+1;
@@ -580,7 +603,7 @@ header.eventsheader {
 			var lctn = $(""+divId+" option:selected").text();
 			var lctnId = $(""+divId+" option:selected").val();
 			
-			$(locationTemp).html("<h4 class='selectedLctn' attr_lctnId='"+lctnId+"'>"+lctn+"</h4>");
+			$(locationTemp).html("<h4 class='selectedLctn m_0' attr_lctnId='"+lctnId+"'>"+lctn+"</h4>");
 			
 			var locationDiv = $(locationTemp);
 			locationDiv.find(".locationCls").attr("id","locationDivId");
@@ -661,8 +684,7 @@ header.eventsheader {
 				   }
 				   $("#mintueDocumentDivId").html(str);
 			   }
-			   
-			   if(result.atrDocuments!=null && result.atrDocuments.length>0){
+			    if(result.atrDocuments!=null && result.atrDocuments.length>0){
 				   var str='';
 				   for(var i in result.atrDocuments){
 					    str+='<div>';
@@ -683,7 +705,7 @@ header.eventsheader {
 					   mainDivCount=i;
 						str+='<div class="input-group bin-div m_top10" id="list'+mainDivCount+'">';
 						str+='<input type="text" class="form-control" id="minutes'+mainDivCount+'" onclick=enableSaveOption("'+mainDivCount+'"); value="'+result.minutesDetails[i].minutePoint+'"></input>';
-						str+='<span class="input-group-addon trash" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
+						str+='<span class="input-group-addon trash" style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
 							str+='<i class="glyphicon glyphicon-trash"></i>';
 						str+='</span>';
 						str+='<span class="input-group-addon saveMinute" style="display:none;" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'">';
@@ -692,6 +714,7 @@ header.eventsheader {
 						str+='</div>';
 				   }
 				   $("#addMoreDiv").html(str);
+				   $('.trash').tooltip()
 			   }
 			   
 			   if(result.atrDetails!=null && result.atrDetails.length>0){
@@ -699,27 +722,27 @@ header.eventsheader {
 				   var str='';
 				   for(var i in result.atrDetails){
 				   	   maximumDivCount=i;
-					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'" class="m_top10">';
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="pull-right" style="margin-right:5px;">';
-				       str+=' <button class="btn btn-danger btn-xs removebtn" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
-					   str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
+				       str+=' <button class="btn btn-default btn-xs removebtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Delete" style="background-color:#CCC" attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   str+=' <button class="btn btn-default btn-xs editBtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					   str+='<div class="col-md-12">';
-					   str+='<label>REQUEST</label><br/>';
+					   str+='<span class="text-bold">REQUEST : </span>';
 					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
-					   str+='<div class="col-md-12 m_top20">';
-					   str+='<label>ACTION TAKEN</label><br/>';
+					   str+='<div class="col-md-12 m_top10">';
+					   str+='<span class="text-bold">ACTION TAKEN : </span>';
 					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					   str+='</div>';
-					   str+='<div class="col-md-12 m_top20">';
-					   str+='<label>RAISED BY</label><br/>';
+					   str+='<div class="col-md-12 m_top10">';
+					   str+='<span class="text-bold">RAISED BY : </span>';
 					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
 					   str+='</div>';
 					   str+='</div>';
-					   str+='<div class="col-md-12 m_top20">';
+					   str+='<div class="col-md-12 m_top10">';
 					   str+='<div class="col-md-12" id="stateShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>State</label>';
 					   str+='<select class="form-control" id="statesDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
@@ -729,8 +752,8 @@ header.eventsheader {
 					   str+='<option value="36">Telangana</option>';
 					   str+='</select>';
 					   str+='</div>';
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='<div class="col-md-1">';
+					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>District</label>';
@@ -739,8 +762,8 @@ header.eventsheader {
 					   str+='</select>';
 					   str+='</div>';
 					   str+='<span style="display:none;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
-					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='<div class="col-md-1">';
+					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Constituency</label>';
@@ -750,8 +773,8 @@ header.eventsheader {
 					   str+='</div>';
 					   str+='<span style="display:none;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></span>';
 					   
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
+					   str+='<div class="col-md-1">';
+					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
 					   str+='<label>Mandal/Town/Division</label>';
@@ -787,7 +810,7 @@ header.eventsheader {
 				   }
 				   
 				   $("#atrDivId").html(str);
-				   
+				    $('.ToolTipDiv').tooltip()
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
