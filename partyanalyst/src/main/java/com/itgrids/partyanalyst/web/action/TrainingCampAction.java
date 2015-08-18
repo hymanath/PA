@@ -818,6 +818,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 							areasVOList.add(mandalvo);
 				}
 						
+					JSONArray municipalityArr = jObj.getJSONArray("municipalitys");
+						if(municipalityArr != null && municipalityArr.length() > 0)
+						{
+							TrainingCampVO municipalityVo = new TrainingCampVO();
+							municipalityVo.setLocationTypeId(IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID);
+							for(int i=0; i<municipalityArr.length();i++)
+							{
+								TrainingCampVO vo3 = new TrainingCampVO();
+								
+								vo3.setId(Long.parseLong(municipalityArr.get(i).toString()));
+								municipalityVo.getTrainingCampVOList().add(vo3);
+							}
+							areasVOList.add(municipalityVo);
+				}
+						
 				
 				resultStatus = trainingCampService.assignMembersToCallerForMemberConfirmation(regVo.getRegistrationID(),scheduleId,membersCount,callerId,callPurposeId,areasVOList);
 			}else if(callPurposeId == 2){
@@ -1251,7 +1266,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			trainingCampScheduleVO=trainingCampService.getUpComingBatchDetails(fromDate,toDate);
 			
 		}catch (Exception e) {
-			LOG.error("Exception Occured in getCallsDetailsOfCallCenterAdmin() method, Exception - ",e);
+			LOG.error("Exception Occured in getUpComingBatchDetails() method, Exception - ",e);
 		}
 		
 		return Action.SUCCESS;

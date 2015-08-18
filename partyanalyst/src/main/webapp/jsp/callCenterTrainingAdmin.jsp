@@ -1541,7 +1541,7 @@ function buildingMembersFilledInCalenderBatch(result){
 									
 									
 								}else if(result[i].name == "Scheduled"){
-									str+='<td>Calendar Schedule</td>';
+									str+='<td>Schedule Confirmation</td>';
 									str+='<td>'+result[i].assignedCallsCount+'</td>';
 									str+='<td>'+result[i].dialedCallsCount+'</td>';
 									str+='<td>'+result[i].pendingCallsCount+'</td>';
@@ -1883,9 +1883,12 @@ index ++;
     str+='<div id="conscollapse'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="consheading'+index+'">';
     str+='<div class="panel-body border_0" style="padding:5px 5px 5px 8px">';
 	str+='<ul>';
-	for(var k in result[i].subList[j].subList)
+	for(var k in result[i].subList[j].subList)   
 	{
 	str+='<li>'+result[i].subList[j].subList[k].name.toLowerCase()+'  -'+result[i].subList[j].subList[k].count+' <input class="pull-right mandalCheck subdist'+result[i].id+' subconst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].subList[k].id+'" id="consti'+result[i].subList[j].id+'"> </li>';
+	}
+	for(var l in result[i].subList[j].scheduleStatusList){
+		str+='<li>'+result[i].subList[j].scheduleStatusList[l].name.toLowerCase()+'  -'+result[i].subList[j].scheduleStatusList[l].count+' <input class="pull-right municipalityCheck subdist'+result[i].id+' subconst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].scheduleStatusList[l].id+'" id="consti'+result[i].subList[j].id+'"> </li>';
 	}
 	str+='</ul>';
 	str+='</div>';
@@ -1947,6 +1950,22 @@ if($(this).is(':checked'))
 	}
 	
 });
+$(".municipalityCheck").click(function(){
+
+if($(this).is(':checked'))
+	{
+	var constituencyID = $(this).attr("id").replace ( /[^\d.]/g, '' );
+	//var mandalId   =  $(this).attr("id").replace ( /[^\d.]/g, '' );
+	$(".parentConst"+constituencyID).each(function(){
+							if($(this).is(':checked'))
+							{
+								$(".parentConst"+constituencyID).prop('checked', false);
+								
+							}
+					}) 	
+	}
+	
+});
 
 }
 
@@ -1994,6 +2013,7 @@ $("#errorMsgDivId").html("");
 var districtIds = new Array();
 var constiIds = new Array();
 var mandalIds = new Array();
+var municipalitys  = new Array();
 $(".districtCheck").each(function(){
 if($(this).is(':checked'))
 districtIds.push($(this).val());
@@ -2009,6 +2029,13 @@ $(".mandalCheck").each(function()
 if($(this).is(':checked'))
 	mandalIds.push($(this).val());		
 });
+$(".municipalityCheck").each(function()
+{
+if($(this).is(':checked'))
+	municipalitys.push($(this).val());		
+});
+
+
 
 var scheduleId = $('#scheduleId').val();
 var callerId  = $('#agentId').val();
@@ -2052,6 +2079,7 @@ var jObj={
 		districtIds:districtIds,
 		constiIds:constiIds,
 		mandalIds:mandalIds,
+		municipalitys : municipalitys,
 		membersCount:0,
 		scheduleId:scheduleId,
 		callerId : callerId,
