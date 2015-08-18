@@ -12,5 +12,5 @@ public interface ITrainingCampScheduleDAO extends GenericDao<TrainingCampSchedul
 	public List<Object[]> getScheduledDetailsByProgrammes(List<Long> programmesList);
 	public List<Object[]> getSchedules(Long campId);
 	public List<Object[]> getCampsForProgram(Long programId);
-	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type);
+	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type,Date todayDate);
 }

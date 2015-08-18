@@ -57,18 +57,20 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 			query.setParameterList("programmesList", programmesList);
 		return query.list();
 	}
-	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type){
+	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type,Date todayDate){
 		
 		StringBuilder scheduleStr = new StringBuilder();
-		
+		boolean isDateNull = false;
 		scheduleStr.append("select distinct model.trainingCampScheduleId from TrainingCampSchedule model where ");
 				
 		if(fromDate !=null && toDate !=null){
 			scheduleStr.append(" (date(model.fromDate)>=:fromDate and date(model.toDate)<=:toDate) ");
+			scheduleStr.append(" or date(model.fromDate) > :toDate ");
 		}
-		
-		if(type !=null){
-			scheduleStr.append(" and model.status = '"+type+"' ");
+		else
+		{
+			isDateNull = true;
+			scheduleStr.append(" (date(model.fromDate)>:todayDate ) ");
 		}
 		
 		Query query = getSession().createQuery(scheduleStr.toString());
@@ -77,7 +79,10 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 			query.setParameter("fromDate",fromDate);
 			query.setParameter("toDate", toDate);
 		}
-		
+		if(isDateNull)
+		{
+			query.setParameter("todayDate", todayDate);
+		}
 		return query.list();
 	}
 	
