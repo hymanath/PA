@@ -916,5 +916,6 @@ public interface IConstants {
     public static final String BATCH_CHANGE="Batch Change";
     
     public static final String LOCAL_FILES_FOLDER =	"D:/tomcat 6.0/webapps/DocFiles";
+    public static final String LOCAL_FILES =	"http://localhost:8080/DocFiles";
 
 }
