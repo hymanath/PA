@@ -1963,6 +1963,19 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
+	public TrainingCampVO getMatchedCampVo(List<TrainingCampVO> resultList,Long id)
+	{
+		if(resultList == null || resultList.size() == 0)
+			return null;
+		for(TrainingCampVO vo : resultList)
+		{
+			if(vo.getId().longValue() == id.longValue())
+			{
+			return vo;	
+			}
+		}
+		return null;
+	}
 	public List<Long> getTrainingCampUserTypeIds(Long adminId){
 	
 		List<Long> users = new ArrayList<Long>(0);
@@ -3458,9 +3471,11 @@ public class TrainingCampService implements ITrainingCampService{
 	}
 	
 	
-	public TrainingCampVO getAdminCallersWiseOverView(Long userId)
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId)
 	{
+		TrainingCampVO returnVo = new TrainingCampVO();
 		try{
+		
 			List<Long> callerIdsList = new ArrayList<Long>();
 			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(userId);
 			if(list != null && list.size() > 0)
@@ -3471,12 +3486,29 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			
 			if(callerIdsList != null && callerIdsList.size() > 0)
-			return getCallerWiseOverView(callerIdsList);
+				returnVo =  getCallerWiseOverView(callerIdsList);
+			if(returnVo.getTrainingCampVOList() != null && returnVo.getTrainingCampVOList().size() > 0)
+			{
+				List<Object[]> list1 = trainingCampScheduleInviteeDAO.getAvailableCallCountsForBatch(campId,programId,scheduleId,4l);
+				if(list1 != null && list1.size() > 0)
+				{
+					for(Object[] params : list1)
+					{
+						TrainingCampVO vo = getMatchedCampVo(returnVo.getTrainingCampVOList(),commonMethodsUtilService.getLongValueForObject(params[1]));
+						if(vo != null)
+						{
+							if(vo.getInterestedCount() == null )
+								vo.setInterestedCount(0l);
+							vo.setInterestedCount(vo.getInterestedCount() + (Long)params[0]);
+						}
+					}
+				}
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return returnVo;
 	}
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList)
 	{
