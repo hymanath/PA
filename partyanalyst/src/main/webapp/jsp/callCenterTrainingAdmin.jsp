@@ -80,6 +80,7 @@
     margin-bottom: 5px;
     margin-left: 15px;}
 #processingImg{clear: both; margin: -26px -25px 0px 0px; float: right;}
+.errorCls{color: red; font-size: 13px; margin-left: 14px;}
 </style>
 <body>
 <header  class="eventsheader">
@@ -697,6 +698,7 @@
 				<div id="callCenterErrorDiv"></div>
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
+					<img src="images/icons/search.gif" id="scheduleProcessImg" style="display:none;"/>
 					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView('schedule');">
 						
 					</select>					
@@ -1706,6 +1708,7 @@ else
 	return;
 	$("#programId  option").remove();
 	$("#programId").append('<option value="0">Select Program</option>');
+	$("#errorMsgDivId").html("");
 	}
 	var jsObj={
 		campId:campId
@@ -1758,6 +1761,7 @@ if(programId == 0)
 return 0;
 $("#scheduleId  option").remove();
 $("#scheduleId").append('<option value="0">Select Schedule</option>');
+$("#errorMsgDivId").html("");
 }
 	
 	var jsObj={
@@ -1793,9 +1797,11 @@ $("#scheduleId").append('<option value="0">Select Schedule</option>');
 }
 function getScheduleAvailableCallsCount()
 {
+ $("#errorMsgDivId").html("");
 var campId =$("#campId").val();
 var programId =$("#programId").val();
 var scheduleId = $("#scheduleId").val();
+$("#scheduleProcessImg").show();
 	var jsObj={
 		campId:campId,
 		programId:programId,
@@ -1808,6 +1814,7 @@ var scheduleId = $("#scheduleId").val();
 		url :'getScheduleAvailableCallsCountLocationWiseInfoAction.action',
 		data:{task:JSON.stringify(jsObj)},
 	}).done(function(result){
+		$("#scheduleProcessImg").hide();
 		$(".successDivCls").html("");
 		buildScheduleMembers(result);
 	});
@@ -2002,6 +2009,25 @@ if($(this).is(':checked'))
 
 var scheduleId = $('#scheduleId').val();
 var callerId  = $('#agentId').val();
+var campId = $("#campId").val();
+var programId = $("#programId").val();
+
+if(campId == null || campId == 0)
+{
+	$("#errorMsgDivId").html("<div class='errorCls'>Please Select Camp.</div>");
+	return;
+}
+if(programId == null || programId == 0)
+{
+	$("#errorMsgDivId").html("<div class='errorCls'>Please Select Program.</div>");
+	return;
+}
+if(scheduleId == null || scheduleId == 0)
+{
+	$("#errorMsgDivId").html("<div class='errorCls'>Please Select Schedule.</div>");
+	return;
+}
+
 if(callerId == null || callerId == 0)
 {
   $("#callCenterErrorDiv").html("Please Select Agent.").css("color:red");
@@ -2015,7 +2041,7 @@ if(districtIds.length == 0 && constiIds.length == 0)
       return;
 	}
 }
-$("#processingImg").css("display:block");
+$("#processingImg").show();
 
 var callPurposeId = 1;
 
@@ -2035,7 +2061,7 @@ var jObj={
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 	
-			  $("#processingImg").css("display:none");			  
+			  $("#processingImg").hide();			  
 			  if(result.message == "SUCCESS")
 			  {
 				 $("#errorMsgDivId").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
@@ -2060,6 +2086,7 @@ else{
 var agentId = $("#agentId").val();
 if(agentId == 0)
 return;
+$("#callCenterErrorDiv").html("");
 }
 
 var jObj={
