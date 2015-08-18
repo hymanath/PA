@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Undialled List</title>
+<title>Party Meetings</title>
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
@@ -397,7 +397,7 @@ $(document).ready(function() {
 	getMeetingTypes();
 });
    
-   $("#mainheading").html("TRAINING PROGRAM");
+   $("#mainheading").html(" PARTY MEETINGS");
 </script>
 <script>
 	function getTheMeetingLevelDetails(){
