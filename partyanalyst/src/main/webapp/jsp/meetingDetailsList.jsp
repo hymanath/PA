@@ -677,7 +677,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				    for(var i in result.minutesDocuments){
 					    str+='<div class="col-md-12 row" id="minuteDocFileId'+result.minutesDocuments[i].id+'" style="padding:6px;">';
-					    str+='<a class="col-md-10" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
+					    str+='<a target="_tab" class="col-md-10" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="deleteDoc col-md-2" attr_type="minute" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div>';
 						
@@ -688,7 +688,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				   for(var i in result.atrDocuments){
 					    str+='<div class="col-md-12 row" style="padding:6px;" id="atrDocFileId'+result.atrDocuments[i].id+'">';
-					    str+='<a class="col-md-10" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
+					    str+='<a target="_tab" class="col-md-10" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc col-md-2" attr_type="atr" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div>';
 						
@@ -935,7 +935,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				    for(var i in result.minutesDocuments){
 					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
-					    str+='<a href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
+					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
 						
@@ -948,7 +948,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				   for(var i in result.atrDocuments){
 					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
-					    str+='<a href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
+					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
 						
