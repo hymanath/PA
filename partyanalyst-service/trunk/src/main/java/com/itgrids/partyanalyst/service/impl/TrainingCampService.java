@@ -632,16 +632,8 @@ public class TrainingCampService implements ITrainingCampService{
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					List<Long> alreadyInvitedMemberIdsList = null;
-					List<Long> schdlConfCallrIds = new ArrayList<Long>(0);
-					if(isOwnMembers){
-						schdlConfCallrIds.add(callerId);
-						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(schdlConfCallrIds,scheduleId,batchId, IConstants.INVITATION, IConstants.INTERESTED);
-					}
-					else{
-						schdlConfCallrIds.addAll(callerIdsList);
-						alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(schdlConfCallrIds,scheduleId,batchId, IConstants.INVITATION, IConstants.INTERESTED);
-					}
-					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(scheduleId,null,Integer.valueOf(membersCount.toString()));
+					alreadyInvitedMemberIdsList = trainingCampScheduleInviteeCallerDAO.getInterestedAndInvitedMembersListForBatchConfirmation(null,scheduleId,batchId, IConstants.CONFIRMATION, IConstants.INTERESTED);
+					List<Long> invitedMemberIdsList = trainingCampScheduleInviteeDAO.getInvitedCandidatesListByScheduleIdAndCount(callerIdsList,scheduleId,null,Integer.valueOf(membersCount.toString()));
 					if(invitedMemberIdsList != null && invitedMemberIdsList.size()>0)
 					{
 						DateUtilService dateutilService = new DateUtilService();
@@ -936,13 +928,19 @@ public class TrainingCampService implements ITrainingCampService{
 		TrainingCampVO returnVO = null;
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-			Date startDate= format.parse(startDateStr);
-			Date endDate= format.parse(endDateStr);
+			Date startDate= null;
+			Date endDate= null;
+			Date today = new DateUtilService().getCurrentDateAndTime();
+			if(!startDateStr.isEmpty())
+				startDate= format.parse(startDateStr);
+			if(!endDateStr.isEmpty())
+			 endDate= format.parse(endDateStr);
+			today = format.parse(new SimpleDateFormat("MM/dd/yyyy").format(today));
 			Map<String,Map<String,Map<Long,Long>>> programWiseCallsSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,Long>>>(0);
 			Map<String,Map<String,Map<Long,Long>>> programWiseNotDialdCallsSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,Long>>>(0);
 			Map<String,Map<String,Map<Long,Long>>> programWiseDialdCallsSceduleWiseMap = new LinkedHashMap<String,Map<String,Map<Long,Long>>>(0);
 			
-				List<Object[]> assignedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,null,searchType);
+				List<Object[]> assignedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,null,searchType,today);
 				for (Object[] campObj : assignedSchedulesList) {
 						String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
 						String programName = commonMethodsUtilService.getStringValueForObject(campObj[1]);
@@ -972,7 +970,7 @@ public class TrainingCampService implements ITrainingCampService{
 						programWiseCallsSceduleWiseMap.put(programName, campWiseMap);
 				}
 				
-				List<Object[]> dialedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,"dialedCalls",searchType);
+				List<Object[]> dialedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,"dialedCalls",searchType,today);
 				
 				for (Object[] campObj : assignedSchedulesList) {
 						String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
@@ -1003,7 +1001,7 @@ public class TrainingCampService implements ITrainingCampService{
 						programWiseDialdCallsSceduleWiseMap.put(programName, campWiseMap);
 				}
 				
-				List<Object[]> notDialedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,"notDialed",searchType);
+				List<Object[]> notDialedSchedulesList=trainingCampScheduleInviteeCallerDAO.getScheduleWiseDetailsCount(callerIdsList,startDate,endDate,"notDialed",searchType,today);
 				
 				for (Object[] campObj : notDialedSchedulesList) {
 						String campName = commonMethodsUtilService.getStringValueForObject(campObj[0]);
