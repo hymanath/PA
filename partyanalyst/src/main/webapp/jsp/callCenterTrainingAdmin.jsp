@@ -80,6 +80,7 @@
     margin-bottom: 5px;
     margin-left: 15px;}
 #processingImg{clear: both; margin: -26px -25px 0px 0px; float: right;}
+#batchProcessingImg{clear: both; margin: -26px -15px 0px 0px; float: right;}
 .errorCls{color: red; font-size: 13px; margin-left: 14px;}
 </style>
 <body>
@@ -655,7 +656,8 @@
 				</div>-->
 				<div class="col-md-12 m_top20">
 					<button class="btn btn-success btn-block border-radius-0" 
-					onclick="assignBatch();">Assign to Agent</button>
+					onclick="assignBatch();">Assign to Agent</button><img src="images/icons/search.gif" id="batchProcessingImg" style="display:none;"/>
+					<div id="batchSuccessMsgDiv"></div>
 				</div>  
 			</div>
 		</div>
@@ -2306,6 +2308,7 @@ $("#AdminCallersOverview").html(str);
 }
 function assignBatch()
 {
+	$("#batchSuccessMsgDiv").html("");
 $("#batchErrorDiv").html("");
 var userIds = new Array();
 $(".callerscheck").each(function(){
@@ -2346,7 +2349,7 @@ if(callerId == null || callerId == 0)
   $("#batchErrorDiv").html("<div class='errorCls'>Please Select Agent</div>");
   return;
 }
-
+$("#batchProcessingImg").show();
 var callPurposeId = 2;
 var jObj={
 		membersCount:0,
@@ -2363,6 +2366,16 @@ var jObj={
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 			  
+			  $("#batchProcessingImg").hide();	
+			 if(result.message == "SUCCESS")
+			  {
+				 $("#batchSuccessMsgDiv").html("<div class='successDivCls'>Assign Members to Batch Successfully</div>");
+				 //getCallerOverView('batch');
+			  }  
+			  else
+			  {
+				 $("#batchSuccessMsgDiv").html("Error Occured! Try Again...").css("color:red;"); 
+			  }
 			//buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
 }
@@ -2385,6 +2398,7 @@ function clearAssignAgent()
 function clearBatchPopupFields()
 {
 	$("#batchErrorDiv").html("");
+	$("#batchSuccessMsgDiv").html("");
 	$("#batchCampId").val(0);
 	$("#batchProgramId").find("option").remove();
 	$("#batchProgramId").append("<option value='0'>Select Program</option>");
@@ -2394,7 +2408,7 @@ function clearBatchPopupFields()
 	$("#batchId").append("<option value='0'>Select Batch</option>");
 	$("#batchAgentId").val(0);
 	$("#AdminCallersOverview").html("");
-	
+	$("#batchcallerOverViewDiv").html("");
 }
 function clearErrMsg()
 {
