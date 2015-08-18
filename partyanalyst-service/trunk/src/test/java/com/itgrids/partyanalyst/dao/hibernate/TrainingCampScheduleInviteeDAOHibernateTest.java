@@ -37,7 +37,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 		}
 	}*/
 	
-	public void testDetails()
+	/*public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
 		try{
@@ -52,6 +52,6 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 }

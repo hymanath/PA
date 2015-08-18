@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
+import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 
 public class TrainingCampAttendanceTabUserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -13,8 +16,15 @@ public class TrainingCampAttendanceTabUserDAOHibernateTest extends BaseDaoTestCa
 		this.trainingCampAttendanceTabUserDAO = trainingCampAttendanceTabUserDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		trainingCampAttendanceTabUserDAO.getAll();
+	}*/
+	
+	public void testGetTrainingCampSchedulesOfAttendanceTabUser()
+	{
+		List<TrainingCampSchedule> list = trainingCampAttendanceTabUserDAO.getTrainingCampSchedulesOfAttendanceTabUser(1l);
+		System.out.println(list.size());
+	
 	}
 }
