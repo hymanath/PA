@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementDAO;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
@@ -9,7 +12,16 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 
 	public TrainingCampCadreAchievementDAO() {
 		super(TrainingCampCadreAchievement.class);
-		
+	}
+	
+	public List<Object[]> getAchievmentDetailsforCadre(Long tdpCadreId,Long batchId){
+		Query query=getSession().createQuery("" +
+		" select model.trainingCampCadreAchievementId,model.achievement " +
+		" from TrainingCampCadreAchievement model " +
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null ");
+		query.setParameter("tdpCadreId",tdpCadreId);
+		query.setParameter("trainingCampBatchId",batchId);
+		return query.list();
 	}
 
 }

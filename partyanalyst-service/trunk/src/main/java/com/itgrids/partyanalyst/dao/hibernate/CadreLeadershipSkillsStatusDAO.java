@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreLeadershipSkillsStatusDAO;
 import com.itgrids.partyanalyst.model.CadreLeadershipSkillsStatus;
@@ -9,7 +12,12 @@ public class CadreLeadershipSkillsStatusDAO extends GenericDaoHibernate<CadreLea
 
 	public CadreLeadershipSkillsStatusDAO() {
 		super(CadreLeadershipSkillsStatus.class);
-		
 	}
-
-}
+    
+    public List<Object[]> getAllCadreLeadershipSkills(){
+		
+		Query query=getSession().createQuery(" select model.cadreLeadershipSkillsStatusId,model.status " +
+				"from  CadreLeadershipSkillsStatus model ");
+	    return query.list();
+	}
+} 
