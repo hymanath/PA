@@ -74,6 +74,12 @@
 .pending-text{color:rgb(255,0,0) !important;}
 .interested-text{color:rgb(64,181,191) !important;}
 .confirmed-text{color:rgb(0,255,0) !important;}
+.successDivCls{color:green;margin-bottom:10px;margin-left:10px;}
+#callCenterErrorDiv{color: red;
+    font-size: 13px;
+    margin-bottom: 5px;
+    margin-left: 15px;}
+#processingImg{clear: both; margin: -26px -25px 0px 0px; float: right;}
 </style>
 <body>
 <header  class="eventsheader">
@@ -294,7 +300,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal" >Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal" onclick="clearAssignAgent()">Assign to Agents</button>
 										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
 											<div class="input-group">
 												<span class="input-group-addon">
@@ -527,7 +533,7 @@
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
 					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();">
-						
+					 <option value="0">Select Program</option>		
 					</select>
 					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>
 				</div>  
@@ -669,6 +675,7 @@
       </div>
       <div class="modal-body">
       		<div class="row">
+			<div id="errorMsgDivId"></div>
 				<div class="col-md-12 m_top5">
 					<label>Select Center</label>
 					<select class="form-control border-radius-0"  id="campId" onchange="getAllProgramsList('schedule');">
@@ -677,15 +684,17 @@
 				<div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
 					<select class="form-control border-radius-0" id="programId" onchange="getAllSchedulesDatesList('schedule');">
+					<option value="0">Select Program</option>	
 					</select>
 				</div>   
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
 					<select class="form-control border-radius-0" id="scheduleId" onchange="getScheduleAvailableCallsCount();" >
-						
+					<option value="0">Select Scheduled</option>	
 					</select>
-					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;"><i>Avail Calls - 220</i></small>
+					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;" id="avaliableCallsCount"></small>
 				</div>   
+				<div id="callCenterErrorDiv"></div>
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
 					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView('schedule');">
@@ -720,11 +729,11 @@
 				</div>   
 				
 				
-				<div class="col-md-12">
+				<!--<div class="col-md-12">
 					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
-				</div>
+				</div>-->
 				<div class="col-md-12 m_top20">
-					<button class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button>
+					<button class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button><img src="images/icons/search.gif" id="processingImg" style="display:none;"/>
 				</div>  
 			</div>
 		</div>
@@ -1799,17 +1808,20 @@ var scheduleId = $("#scheduleId").val();
 		url :'getScheduleAvailableCallsCountLocationWiseInfoAction.action',
 		data:{task:JSON.stringify(jsObj)},
 	}).done(function(result){
-		buildScheduleMembers(result)
+		$(".successDivCls").html("");
+		buildScheduleMembers(result);
 	});
 }
 var index = 0;
 function buildScheduleMembers(result)
 {
+var total = 0;	
 var str = '';
 if(result != null && result.length > 0)
 {
 for(var i in result)
 {
+	total += result[i].count;
 index ++;
 	/*str+='<ul class="list-unstyled" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(153, 153, 153); padding: 5px;">';
 	str+='<li>'+result[i].name+'  - '+result[i].count+'  <input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'"> ';
@@ -1835,7 +1847,7 @@ index ++;
 	str+='<div class="panel-heading" role="tab"  style="padding:5px" id="distheading'+index+'">';
 	/*District*/
 	str+='	<h4 class="panel-title">';
-	str+='<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#distaccordion" href="#distcollapse'+index+'" aria-expanded="true" aria-controls="distcollapse'+index+'">'+result[i].name+'  - '+result[i].count+'  </a>';
+	str+='<a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#distaccordion" href="#distcollapse'+index+'" aria-expanded="true" aria-controls="distcollapse'+index+'">'+result[i].name+'  - '+result[i].count+'  </a>';
 	str+='<input class="pull-right districtCheck" type="checkbox" value="'+result[i].id+'">';
 	str+='</h4>';
 	str+='</div>';
@@ -1851,7 +1863,7 @@ index ++;
 	str+=' <div class="panel panel-default border_0">';
     str+='<div class="panel-heading " role="tab" id="consheading'+index+'">';
     str+='<h4 class="panel-title">';
-        str+=' <a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#conscollapse'+index+'" aria-expanded="true" aria-controls="conscollapse'+index+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
+        str+=' <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#accordionInner" href="#conscollapse'+index+'" aria-expanded="true" aria-controls="conscollapse'+index+'">'+result[i].subList[j].name.toLowerCase()+'  -'+result[i].subList[j].count+'</a>';
 		str+='<input class="pull-right constituencyCheck subdist'+result[i].id+' parentConst'+result[i].subList[j].id+'" type="checkbox" value="'+result[i].subList[j].id+'"> ';
 	
     str+='</h4>';
@@ -1878,6 +1890,7 @@ index ++;
 	str+='</div>';
 	
 }
+$("#avaliableCallsCount").html("<i>Available Calls - "+total+"</i>");
 }			
 
 $(".scheduleMembersDiv").html(str);
@@ -1966,6 +1979,8 @@ $("#agentId").append('<option value="0">Select Caller</option>');
 
 function assignSchedule()
 {
+$("#callCenterErrorDiv").html("");	
+$("#errorMsgDivId").html("");
 var districtIds = new Array();
 var constiIds = new Array();
 var mandalIds = new Array();
@@ -1987,6 +2002,21 @@ if($(this).is(':checked'))
 
 var scheduleId = $('#scheduleId').val();
 var callerId  = $('#agentId').val();
+if(callerId == null || callerId == 0)
+{
+  $("#callCenterErrorDiv").html("Please Select Agent.").css("color:red");
+  return;
+}
+if(districtIds.length == 0 && constiIds.length == 0)
+{
+	if(mandalIds.length == 0)
+	{
+	  $("#callCenterErrorDiv").html("Please Select At Least One Location.").css("color:red");;
+      return;
+	}
+}
+$("#processingImg").css("display:block");
+
 var callPurposeId = 1;
 
 var jObj={
@@ -2004,8 +2034,18 @@ var jObj={
 			  url: 'saveAllDetailsAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
-			  }).done(function(result){ 			  
-			//buildScheduleCallMemberDetailsCount(result,jObj);
+			  }).done(function(result){ 	
+			  $("#processingImg").css("display:none");			  
+			  if(result.message == "SUCCESS")
+			  {
+				 $("#errorMsgDivId").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
+				getScheduleAvailableCallsCount();
+			  }  
+			  else
+			  {
+				 $("#errorMsgDivId").html("Error Occured! Try Again...").css("color:red;"); 
+			  }
+			  //buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
 }
 function getCallerOverView(type)
@@ -2222,6 +2262,19 @@ var jObj={
 			  }).done(function(result){ 			  
 			//buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
+}
+
+function clearAssignAgent()
+{
+	$("#campId").val(0);
+	$("#programId").val(0);
+	$("#scheduleId").val(0);
+	$("#agentId").val(0);
+	$("#callerOverViewDiv").html("");
+	$("#distaccordion").html("");
+	$("#avaliableCallsCount").html("");
+	$("#callCenterErrorDiv").html("");
+	$("#errorMsgDivId").html("");
 }
 </script>
 <script>

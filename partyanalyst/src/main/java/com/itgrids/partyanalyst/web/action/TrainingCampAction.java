@@ -1102,7 +1102,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			idNameList = trainingCampService.getCallerAgentDistricts(regVo.getRegistrationID());
+			idNameList = trainingCampService.getCallerAgentDistricts(jObj.getLong("campCallerId"));
 		}
 		catch (Exception e) {
 			// TODO: handle exception
