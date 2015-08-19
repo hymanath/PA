@@ -54,7 +54,7 @@ public interface ITrainingCampService {
 	public List<TraingCampCallerVO> getMembersCountByBatchStatus(Long campCallerId,String batchStatus);
 	public List<IdNameVO> getUserIdsByType();
 	public List<CallStatusVO> getTheMeetingLevelDetails(Long userId);
-	public List<CallStatusVO> getMeetingTypes();
+	public List<CallStatusVO> getMeetingTypes(Long locationLevel);
 	//public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,Long stateId,Long districtId,Long constituencyId,Long mandalTownDivisonId,Long villageWardId,String startDateString,String endDateString);
 	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString);
 	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId);
