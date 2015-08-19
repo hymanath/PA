@@ -301,7 +301,7 @@ footer
 							</table>
 							<table class="table table-bordered">
 								<tr>
-									<td rowspan="2">BATCH CONFIRMATION<br/><p class="text-center"><span id="btchConfId">0</span></p></td>
+									<td rowspan="2">UPCOMING <br/>BATCH CONFIRMATION<br/><p class="text-center"><span id="btchConfId">0</span></p></td>
 									<td>Allocated to Agents <span class="pull-right" id="btchAlcId">0</span></td>
 								</tr>
 								<tr>
@@ -1918,8 +1918,6 @@ if($(this).is(':checked'))
 
 
 
-
-
 var scheduleId = $('#scheduleId').val();
 var callerId  = $('#agentId').val();
 var campId = $("#campId").val();
@@ -1948,7 +1946,7 @@ if(callerId == null || callerId == 0)
 }
 if(districtIds.length == 0 && constiIds.length == 0)
 {
-	if(mandalIds.length == 0)
+	if(mandalIds.length == 0 && municipalitys.length == 0)
 	{
 	  $("#callCenterErrorDiv").html("Please Select At Least One Location.").css("color:red");;
       return;
