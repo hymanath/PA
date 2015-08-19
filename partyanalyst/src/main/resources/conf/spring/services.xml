@@ -2739,7 +2739,7 @@
 		<property name="cadreComminicationSkillsStatusDAO" ref="cadreComminicationSkillsStatusDAO"/>
 		<property name="cadreLeadershipSkillsStatusDAO" ref="cadreLeadershipSkillsStatusDAO"/>
 		<property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO"/>
-		
+		 <property name="userDAO" ref="userDAO"/>
 		
 	</bean>
 	
