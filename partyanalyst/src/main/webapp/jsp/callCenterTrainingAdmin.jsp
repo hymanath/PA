@@ -265,7 +265,7 @@ footer
 									</td>
 									<td style="text-align:center;" >
 										<ul class="list-inline m_bottom0">
-											<li><h4>TRAINING <br/>CAMPS</h4></li>
+											<li><h4>TRAINING <br/>CENTRES</h4></li>
 											<li class="show-dropdown">
 												<div><h1 class="m_0"><span id="totalCampsCountId">
 												<img id="dataLoadingsImgFortotalCampsCountId" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
