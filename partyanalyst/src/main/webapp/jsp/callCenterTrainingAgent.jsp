@@ -965,6 +965,7 @@ function setDefaultImage(img){
 		mandalId:mandalId,
 		villageId:villageId,
 		committeeLevelId:committeLevelId,
+		campCallerId:campCallerId,
 		task:"filterWiseCount"
 		};
 		$.ajax({
