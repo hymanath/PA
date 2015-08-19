@@ -13,6 +13,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String constituency;
 	private String districtName;
 	private String programName;
+	private String designation;
 	
 	private boolean achievements;
 	private boolean goals;
@@ -135,6 +136,12 @@ public class CadreDetailsVO implements java.io.Serializable{
 	}
 	public void setProgramName(String programName) {
 		this.programName = programName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 	public Long getLeaderShipLevelId() {
 		return leaderShipLevelId;
