@@ -3253,7 +3253,7 @@ public class TrainingCampService implements ITrainingCampService{
 			//batch Confirmation
 			/*List<Long> batchesCount = trainingCampBatchDAO.getUpcomingBatchConfirmation(startDate,endDate,"Not Started");*/
 			
-			List<Long> batches = trainingCampScheduleInviteeDAO.getUpcomingBatchConfirmation(startDate,endDate,IConstants.INTERESTED,today);
+			List<Long> batches = trainingCampScheduleInviteeCallerDAO.getUpcomingBatchConfirmation(startDate,endDate,IConstants.INTERESTED,today);
 			
 			Long btchTotalCnt=0l;
 			if(batches !=null && batches.size()>0){
