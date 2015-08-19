@@ -159,15 +159,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                            
                                                 <div class="input-group bin-div m_top10" id="list" style="display:none;">
                                                     <input type="text" class="form-control txtbox"></input>
-                                                    <span class="input-group-addon trash" style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <span class="input-group-addon trash" style="background-color:#CCC;cursor:pointer"  title="Delete">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
-													<span class="input-group-addon saveMinute" style="background-color:#CCC;cursor:pointer;border-left:1px solid #ddd" data-toggle="tooltip" data-placement="top" title="Save">
+													<span class="input-group-addon saveMinute" style="background-color:#CCC;cursor:pointer;border-left:1px solid #ddd"  title="Save">
 														<i class="glyphicon glyphicon-ok"></i>
 													</span>
                                                 </div>
                                            
-                                            <button class="btn btn-primary btn-xs pull-right addMeetMint" onclick="myFunction()" style="border-radius:1px;">ADD</button>
+                                            <button class="btn btn-primary btn-xs pull-right addMeetMint" style="border-radius:1px;">ADD</button>
 											<br/><br/>
 											
 												  
@@ -177,7 +177,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											
 											<div style="display:none;" id="fileDiv" class="row col-md-12">
 												<input type="file" class="m_top10 fileCls col-md-6" name="imageForDisplay" style="width: 225px;"/>
-												<div class="col-md-6"><span class="btn btn-primary btn-xs m_top10 removeBtnCls tooltipBtnDiv" data-toggle="tooltip" data-placement="top" title="Remove File"><i class="glyphicon glyphicon-minus"></i></span></div>
+												<div class="col-md-6"><span class="btn btn-primary btn-xs m_top10 removeBtnCls "  title="Remove File"><i class="glyphicon glyphicon-minus"></i></span></div>
 											</div>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -188,7 +188,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 														<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
 														<input type="hidden" name="partyMeetingType" value="MINUTE"/>
 													</form>
-													<button class="btn btn-primary btn-xs pull-right m_top20 tooltipBtnDiv" data-toggle="tooltip" data-placement="top" title="Add one more file" id="addFiles"><i class="glyphicon glyphicon-plus"></i></button>
+													<button class="btn btn-primary btn-xs pull-right m_top20 "   title="Add one more file" id="addFiles"><i class="glyphicon glyphicon-plus"></i></button>
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
                                             </div>
@@ -366,7 +366,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			c.find(".removeBtnCls").attr("attr_count",minutesFiles);
 	    $("#ExtraFiles").append(c);
 	});
-	$('.tooltipBtnDiv').tooltip();
+	//$('.tooltipBtnDiv').tooltip();
 	var atrFiles = 0;
 	$("#addATRFiles").click(function(){
 		atrFiles = atrFiles +1;
@@ -762,8 +762,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						str+='<li class="list-group-item " id="list'+mainDivCount+'">';
 						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-				       str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
+				       str+=' <button class="btn btn-default trash"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 						str+=' </li>';
 						
@@ -779,7 +779,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   }
 				   str+='</ul>';
 				   $("#addMoreDiv").html(str);
-				   $('.trash').tooltip()
+				 //  $('.trash').tooltip()
 			   }else{
 				   $("#addMoreDiv").html("<h5>No Meeting Minutes</h5>");
 				   
@@ -794,8 +794,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
-				       str+=' <button class="btn btn-default ToolTipDiv deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" data-toggle="tooltip" data-placement="top" title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default editBtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
+				       str+=' <button class="btn btn-default  deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					    str+='<ul class="" style="padding-left: 0px;margin-top: -48px;">';
 					   str+='<li class="col-md-12 list-group-item" >';
@@ -880,7 +880,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   }
 				   
 				   $("#atrDivId").html(str);
-				    $('.ToolTipDiv').tooltip()
+				    //$('.ToolTipDiv').tooltip();
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
@@ -956,13 +956,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					str+='<div class=" m_top10" id="list'+mainDivCount+'">';
 					str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					str+='<div class="pull-right" style="margin-right:5px;">';
-				   str+=' <button class="btn btn-default btn-xs ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
-				   str+=' <button class="btn btn-default btn-xs updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
+				   str+=' <button class="btn btn-default btn-xs  trash"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
+				   str+=' <button class="btn btn-default btn-xs updatedMeetMin  " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
 				   str+=' </div>';
 					str+=' </div>';
 				}
 			   $("#addMoreDiv").html(str);
-			   $('.trash').tooltip()
+			   //$('.trash').tooltip()
 			}
 			$.unblockUI();
 			alert("Updated Successfully");
@@ -1207,11 +1207,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
 					  
-					  str+=' <button class="btn btn-default  ToolTipDiv deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" data-toggle="tooltip" data-placement="top" title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					  str+=' <button class="btn btn-default   deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					   
 					   //str+=' <button class="btn btn-danger btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"  attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
 					   
-					   str+=' <button class="btn btn-default editBtn ToolTipDiv"  data-toggle="tooltip" data-placement="top" title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
+					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
 					   
 					   //str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
 					   str+=' </div>';
@@ -1221,11 +1221,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 						str+='</li>';
 					    str+='<li class="col-md-12 list-group-item" >';
-					   str+='<span>ACTION TAKEN</span>';
+					   str+='<span>ACTION TAKEN : </span>';
 					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
 					  str+='</li>';
 					   str+='<li class="col-md-12 list-group-item" >';
-					   str+='<span>RAISED BY</span>';
+					   str+='<span>RAISED BY : </span>';
 					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
 					   str+='</li>';
 					   str+='</div>';
@@ -1302,7 +1302,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,globalLocationId,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
+					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
 					   
 				   }
 				   
