@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
+import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -28,14 +30,13 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
-import com.itgrids.partyanalyst.dto.AttendanceVO;
-import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
@@ -1383,6 +1384,21 @@ public class WebServiceHandler {
 	public UserAttendanceDetailsVO getAttendanceMeetingAndCamps(AttendanceTabUserVO inputVo){
 		try{
 			return attendanceService.getAttendanceMeetingAndCamps(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAttendance() Method - ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getPartyMeetingInvittees")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PartyMeetingInviteeVO getPartyMeetingInvittees(PartyMeetingInviteeVO inputVO){
+		try{
+			return attendanceService.getPartyMeetingInvittees(inputVO.getPartyMeetingId());
 		}
 		catch(Exception e)
 		{
