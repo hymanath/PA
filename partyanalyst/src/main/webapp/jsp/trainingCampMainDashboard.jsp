@@ -64,7 +64,7 @@ header.eventsheader {
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:34px;"></p>               
+                 <p class="header-text display-style" id="mainheading" style="font-size:32px;"></p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -102,6 +102,7 @@ header.eventsheader {
 	</div>					  
 </main>
 <!--  accordian start-->
+
                   <!-- pop up modal start-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -110,162 +111,9 @@ header.eventsheader {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">UPDATE USER</h4>
       </div>
-      <div class="modal-body">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="table-responsive">
-				<table class="table table-bordered m_0" style="font-size:12px">
-					
-					<tr>
-						<td></td>
-						<td>Name</td>
-						<td>Designation</td>
-						<td>Mobile No</td>
-						<td>Constituency</td>
-						<td>District</td>
-						<td>Trained On</td>
-					</tr>
-					<tr>
-						<td><img src="dist/img/profile-img.png" class="img-responsive" style="width:30px;"></td>
-						<td>Mahendar</td>
-						<td>Mandal President</td>
-						<td>9848021364</td>
-						<td>Makthal</td>
-						<td>Adilabad</td>
-						<td>Leadership Skills</td>
-					</tr>
-					
-				</table>
-				</div>
-			</div>
-		</div>
-		
-        <div class="row m_top20">
-			<div class="col-md-12">
-				<label>Achievements</label>
-				<div class="row" id="list" style="display:none;">
-					<div class="col-md-11">
-						<input class="form-control txtbox achievmentCls m_top10" type="text">
-					</div>
-					<div class="col-md-1 ">
-						<i class="glyphicon glyphicon-minus m_top10 add-plus trash"></i>
-					</div>
-				</div>
-				<div id="addMoreDiv">
-				</div>
-				<div class="row m_top10">
-					<div class="col-md-11">
-						<input class="form-control achievmentCls" type="text">
-					</div>
-					<div class="col-md-1">
-						<i class="glyphicon glyphicon-plus m_top10 add-plus" onclick="myFunction();"></i>
-					</div>
-				</div>
-				
-			</div>
-        </div>
-        <div class="row m_top20">
-			<div class="col-md-12">
-				<div class="col-md-6">
-				<label>Goals</label>
-				</div>
-				<div class="col-md-4">
-				<label>Date & TIme</label>
-				</div>
-				<div class="row" id="dateList" style="display:none;">
-					<div class="col-md-6">
-						<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" disabled>
-					</div>
-					<div class="col-md-4">
-						<div class="input-group datetxtboxD m_top10">
-							<span class="input-group-addon caret">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-							<input type="text" class="form-control goalsDateCls" disabled>
-						</div>
-						
-					</div>
-					<div class="col-md-1">
-						<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>
-					</div>
-				</div>
-				<div id="addMoreDateDiv">
-				</div>
-				<div class="row m_top10">
-					<div class="col-md-6">
-						<input class="form-control goalsTxtCls" type="text">
-					</div>
-					<div class="col-md-4">
-						<div class="input-group datetxtboxD">
-							<span class="input-group-addon caret">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-							<input type="text" class="form-control goalsDateCls" id="reportrange">
-						</div>
-					</div>
-					<div class="col-md-1">
-						<i class="glyphicon glyphicon-plus add-plus" onclick="myDateFunction();"></i>
-					</div>
-				</div>
-		</div>
-		</div>
-		
-        <div class="row">
-        	<div class="col-md-12">
-            	<label>Leadership Level</label>
-                <select class="form-control" id="leadershipLevelId">
-                	<option>District</option>
-                    <option>State</option>
-                    <option>Constituency</option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="col-md-12">
-            	<label>Communication Skills</label>
-                <select class="form-control" id="communicationSkillsId">
-                	<option>Average</option>
-                    <option>Poor</option>
-                    <option>Good</option>
-                    <option>Very Good</option>
-                    <option>Excellent</option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="col-md-12">
-            	<label>Leadership Skills</label>
-                <select class="form-control" id="leaderShipSkillsId">
-                	<option>Average</option>
-                    <option>Poor</option>
-                    <option>Good</option>
-                    <option>Very Good</option>
-                    <option>Excellent</option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="col-md-12">
-            	<label>Health</label>
-                <select class="form-control" id="healthId">
-                	<option>Average</option>
-                    <option>Poor</option>
-                    <option>Good</option>
-                    <option>Very Good</option>
-                    <option>Excellent</option>
-                </select>
-            </div>
-        </div>
-		<div class="row">
-			<div class="col-md-12">
-				<label>Comments</label>
-				<textarea class="form-control" id="commentsId"></textarea>
-			</div>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="saveAllDetails();">Save</button>
+      <div id="modalBodyId"></div>
+      <div class="modal-footer" id="modalFooterId">
+        
       </div>
     </div>
   </div>
@@ -380,19 +228,7 @@ header.eventsheader {
 
 $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");	
 	
-		$(document).on('click', '.trash', function(){
-        
-		var divId = $(this).attr("attr_txt");
-        $("#"+divId).remove();
-        $(this).remove();
 		
-		var minuteId = $(this).attr("removeTxtbox");
-		
-		var jsObj =    {minuteId : minuteId}
-       
-        
-		
-    });
 	
 	$(document).on('click', '.datetrash', function(){
         
@@ -410,18 +246,18 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
     });
    
-		var mainDivCount=1;
-    function myFunction() {
-        mainDivCount = parseInt(mainDivCount)+1;
-        var c = $("#list").clone(true);
-            c.removeAttr("style");
-            c.attr("id","list"+mainDivCount)
-            c.find(".txtbox").attr("id","minutes"+mainDivCount);
-            c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
-			c.find(".trash").attr("attr_minuteId","0");
+	// var mainDivCount=1;
+    // function myFunction() {
+        // mainDivCount = parseInt(mainDivCount)+1;
+        // var c = $("#list").clone(true);
+            // c.removeAttr("style");
+            // c.attr("id","list"+mainDivCount)
+            // c.find(".txtbox").attr("id","minutes"+mainDivCount);
+            // c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
+			// c.find(".trash").attr("attr_minuteId","0");
 			
-        $("#addMoreDiv").append(c);
-    }
+        // $("#addMoreDiv").append(c);
+    // }
 	
 	var mainDateDivCount=1;
 	function myDateFunction() {
@@ -540,7 +376,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
 					   }
-					   str+='<td><button  type="button" id="updateId" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+					   str+='<td><button  type="button" id="updateId" class="btn btn-success btn-xs"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
                        str+='</tr>';
                     }
 					str+='</table>'
@@ -554,7 +390,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
 	
 	 $(document).on('click','#updateId',function(){
-	
+	   
        var tdpCadreId=$(this).attr('attr-cadreId');
 	   var batchId=$(this).attr('attr-batchId');
 	   var jsObj={tdpCadreId:tdpCadreId,batchId:batchId}
@@ -563,32 +399,255 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		  url :'getDetailsForACadreAction.action',
 		  data:{task:JSON.stringify(jsObj)},
 	   }).done(function(results){
-			
+	      if(results!=null){
+		    buildingData(results,tdpCadreId,batchId);
+		  }
 	   });
 	   
-     }); 
+     });
+	 
+   function myFunction(){
+	var str='';
+	str+='<div class="row" id="list" >'
+		str+='<div class="col-md-11">'
+			str+='<input class="form-control txtbox achievmentCls m_top10" type="text">'
+		str+='</div>'
+		str+='<div class="col-md-1 ">'
+			str+='<i class="glyphicon glyphicon-minus m_top10 add-plus trash"></i>'
+		str+='</div>'
+	str+='</div>'
+	$("#addMoreDiv").append(str);
+	}
+	
+	
+   function buildingData(results,tdpCadreId,batchId){
    
-   function saveAllDetails()
+   var str=''
+   str+='<div id="popupdivId" class="modal-body">';
+		str+='<div class="row">'
+			str+='<div class="col-md-12">'
+				str+='<div class="table-responsive">'
+				str+='<table class="table table-bordered m_0" style="font-size:12px">'
+					
+					str+='<tr>'
+						str+='<td></td>'
+						str+='<td>Name</td>'
+						str+='<td>Designation</td>'
+						str+='<td>Mobile No</td>'
+						str+='<td>Constituency</td>'
+						str+='<td>District</td>'
+						str+='<td>Trained On</td>'
+					str+='</tr>'
+					str+='<tr>'
+					    if(results.image==null || results.image.trim().length<=0)
+						 str+='<td><img src="dist/img/profile-img.png" class="img-responsive" style="width:30px;"></td>'
+						else
+						str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+results.image+'" class="img-responsive" style="width:30px;"></td>'
+						str+='<td>'+results.name+'</td>'
+						str+='<td>-</td>'
+						str+='<td>'+results.mobileno+'</td>'
+						str+='<td>'+results.constituency+'</td>'
+						str+='<td>'+results.districtName+'</td>'
+						str+='<td>'+results.programName+'</td>'
+					str+='</tr>'
+					
+				str+='</table>'
+				str+='</div>'
+			str+='</div>'
+		str+='</div>'
+		//Achievements
+        str+='<div class="row m_top20">'
+			str+='<div class="col-md-12">'
+				str+='<label>Achievements</label>'
+				
+				if(results.achievementsList!=null && results.achievementsList.length>0){
+				   str+='<div id="addMoreDiv">'
+				   for(var i in results.achievementsList){
+				    str+='<div class="row">'
+					str+='<div class="col-md-11">'
+						str+='<input class="form-control txtbox achievmentCls m_top10" type="text" attr-id="'+results.achievementsList[i].id+'" value="'+results.achievementsList[i].name+'">'
+					str+='</div>'
+					str+='<div class="col-md-1 ">'
+						str+='<i class="glyphicon glyphicon-minus m_top10 add-plus trash"></i>'
+					str+='</div>'
+				    str+='</div>'
+				   }
+				   str+='</div>'
+				}else{
+				   str+='<div id="addMoreDiv">'
+				   str+='</div>'
+				}
+				
+				str+='<div class="row m_top10">'
+					str+='<div class="col-md-11">'
+						str+='<input class="form-control achievmentCls" type="text">'
+					str+='</div>'
+					str+='<div class="col-md-1">'
+						str+='<i class="glyphicon glyphicon-plus m_top10 add-plus" onclick="myFunction();"></i>'
+					str+='</div>'
+				str+='</div>'
+				
+			str+='</div>'
+        str+='</div>'
+		//Goals
+        str+='<div class="row m_top20">'
+			str+='<div class="col-md-12">'
+				str+='<div class="col-md-6">'
+				str+='<label>Goals</label>'
+				str+='</div>'
+				str+='<div class="col-md-4">'
+				str+='<label>Date & TIme</label>'
+				str+='</div>'
+				str+='<div class="row" id="dateList" style="display:none;">'
+					str+='<div class="col-md-6">'
+						str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" disabled>'
+					str+='</div>'
+					str+='<div class="col-md-4">'
+						str+='<div class="input-group datetxtboxD m_top10">'
+							str+='<span class="input-group-addon caret">'
+								str+='<i class="glyphicon glyphicon-calendar"></i>'
+							str+='</span>'
+							str+='<input type="text" class="form-control goalsDateCls" disabled>'
+						str+='</div>'
+						
+					str+='</div>'
+					str+='<div class="col-md-1">'
+						str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
+					str+='</div>'
+				str+='</div>'
+				str+='<div id="addMoreDateDiv">'
+				str+='</div>'
+				str+='<div class="row m_top10">'
+					str+='<div class="col-md-6">'
+						str+='<input class="form-control goalsTxtCls" type="text">'
+					str+='</div>'
+					str+='<div class="col-md-4">'
+						str+='<div class="input-group datetxtboxD">'
+							str+='<span class="input-group-addon caret">'
+								str+='<i class="glyphicon glyphicon-calendar"></i>'
+							str+='</span>'
+							str+='<input type="text" class="form-control goalsDateCls" id="reportrange">'
+						str+='</div>'
+					str+='</div>'
+					str+='<div class="col-md-1">'
+						str+='<i class="glyphicon glyphicon-plus add-plus" onclick="myDateFunction();"></i>'
+					str+='</div>'
+				str+='</div>'
+		str+='</div>'
+		str+='</div>'
+		
+        str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Leadership Level</label>'
+                str+='<select class="form-control" id="leadershipLevelId">'
+				str+='<option value="0">Select</option>'
+                for(var i in leaderShipLevelArray){
+				  if(results.leaderShipLevelId==leaderShipLevelArray[i].id)
+				    str+='<option value="'+leaderShipLevelArray[i].id+'" selected>'+leaderShipLevelArray[i].name+'</option>'
+				  else
+                  str+='<option value="'+leaderShipLevelArray[i].id+'">'+leaderShipLevelArray[i].name+'</option>'
+				}				
+               str+=' </select>'
+            str+='</div>'
+        str+='</div>'
+		
+        str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Communication Skills</label>'
+                str+='<select class="form-control" id="communicationSkillsId">'
+                str+='<option value="0">Select</option>'
+                 for(var i in communicationSkillsArray){
+				  if(results.communicationSkillsStatusId==communicationSkillsArray[i].id)
+				    str+='<option value="'+communicationSkillsArray[i].id+'" selected>'+communicationSkillsArray[i].name+'</option>'
+				  else
+                  str+='<option value="'+communicationSkillsArray[i].id+'">'+communicationSkillsArray[i].name+'</option>'
+				}	    
+                str+='</select>'
+            str+='</div>'
+        str+='</div>'
+		
+        str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Leadership Skills</label>'
+                str+='<select class="form-control" id="leaderShipSkillsId">'
+                str+='<option value="0">Select</option>'
+                for(var i in leaderShipSkillsArray){
+				  if(results.leaderShipSkillsStatusId==leaderShipSkillsArray[i].id)
+				    str+='<option value="'+leaderShipSkillsArray[i].id+'" selected>'+leaderShipSkillsArray[i].name+'</option>'
+				  else
+                  str+='<option value="'+leaderShipSkillsArray[i].id+'">'+leaderShipSkillsArray[i].name+'</option>'
+				}	    
+                str+='</select>'
+            str+='</div>'
+        str+='</div>'
+		
+        str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Health</label>'
+                str+='<select class="form-control" id="healthId">'
+                str+='<option value="0">Select</option>'
+                for(var i in healthStatusArray){
+				  if(results.healthStatusId==healthStatusArray[i].id)
+				    str+='<option value="'+healthStatusArray[i].id+'" selected>'+healthStatusArray[i].name+'</option>'
+				  else
+                  str+='<option value="'+healthStatusArray[i].id+'">'+healthStatusArray[i].name+'</option>'
+				}	   
+               str+='</select>'
+            str+='</div>'
+        str+='</div>'
+		
+		str+='<div class="row">'
+			str+='<div class="col-md-12">'
+				str+='<label>Comments</label>'
+				if(results.remarks!=null)
+				  str+='<textarea class="form-control" id="commentsId">'+results.remarks+'</textarea>'
+				else
+				 str+='<textarea class="form-control" id="commentsId"></textarea>'
+			str+='</div>'
+		str+='</div>'
+      str+='</div>'
+	  
+	$("#modalBodyId").html(str);
+	var str1='';
+    str1+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+    str1+='<button type="button" class="btn btn-primary" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
+	$("#modalFooterId").html(str1);
+	$("#myModal").modal("show");
+   }
+   var existDeleteAchieveArray=[];
+	$(document).on('click', '.trash', function(){
+	   if($(this).attr('attr-id')){
+		   existDeleteAchieveArray.push($(this).attr('attr-id'));
+		}
+	   $(this).parent().parent().remove();
+		   
+    });
+   function saveAllDetails(tdpCadreId,batchId)
    {
-	   var achievements = $.trim($(".achievmentCls").val());
-	   var goals = $.trim($(".goalsTxtCls").val());
-	   var goalsDate = $(".goalsDateCls").val();
+       //feedbacks   
 	   var leaderShipLevel = $("#leadershipLevelId").val();
 	   var communicationSkills = $("#communicationSkillsId").val();
 	   var leaderShipSkills = $("#leaderShipSkillsId").val();
 	   var health = $("#healthId").val();
 	   var comments = $("#commentsId").val();
 	   
+	   //Achievements.
+	   var achieveArray=[];
+	   $(".achievmentCls").each(function(){
+	      if($(this).val().trim().length>0){
+	        achieveArray.push($(this).val());
+		  }
+	   });
 	   var jsObj=
-		{
-			achievements:achievements,
-			goals:goals,
-			goalsDate:goalsDate,
+	   {	
+			achieveArray:achieveArray,
 			leaderShipLevel:leaderShipLevel,
 			communicationSkills:communicationSkills,
 			leaderShipSkills:leaderShipSkills,
 			health:health,
-			comments:comments
+			comments:comments,
+			tdpCadreId:tdpCadreId,
+			batchId:batchId
 		}
 		
 		$.ajax({

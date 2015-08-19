@@ -1540,18 +1540,29 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     {
     	
     	try{
-    		
+    		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+    		Long userId = regVO.getRegistrationID();
+    		/*if(regVO!=null){
+    			Long userId = regVO.getRegistrationID();
+    		}else{
+    			return Action.INPUT;
+    		}*/
     		jObj = new JSONObject(getTask());
-    		String achievements = jObj.getString("achievements");
-    		String goals = jObj.getString("goals");
-    		String goalsDate = jObj.getString("goalsDate");
-    		Long leaderShipLevel = jObj.getLong("leaderShipLevel");
-    		Long communicationSkills = jObj.getLong("communicationSkills");
-    		Long leaderShipSkills = jObj.getLong("leaderShipSkills");
-    		Long health = jObj.getLong("health");
+    		Long tdpCadreId = jObj.getLong("tdpCadreId");
+    		Long batchId = jObj.getLong("batchId");
+    		
+    		List<String> achieveList=new ArrayList<String>();
+    		JSONArray achieveArray = jObj.getJSONArray("achieveArray");
+    		for(int i = 0; i < achieveArray.length(); i++){
+    			achieveList.add(achieveArray.get(i).toString());
+    		}
+    		Long leaderShipLevelId = jObj.getLong("leaderShipLevel");
+    		Long communicationSkillsId = jObj.getLong("communicationSkills");
+    		Long leaderShipSkillsId = jObj.getLong("leaderShipSkills");
+    		Long healthId = jObj.getLong("health");
     		String comments = jObj.getString("comments");
     		
-    		//status = trainingCampService.saveDetailsOfCadre(achievements,goals,goalsDate,leaderShipLevel,communicationSkills,leaderShipSkills,health,comments);
+    		resultStatus = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId);
     		
     	}catch(Exception e) {
     		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
