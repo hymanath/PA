@@ -748,7 +748,7 @@ public class TrainingCampService implements ITrainingCampService{
 			today = sdf.parse(new SimpleDateFormat("MM/dd/yyyy").format(today));*/
 			
 			
-			Map<Long,TrainingCampScheduleVO> finalmap=new HashMap<Long,TrainingCampScheduleVO>();
+			Map<Long,TrainingCampScheduleVO> finalmap=new LinkedHashMap<Long,TrainingCampScheduleVO>();
 			
 			//1)getting All status and set to list.
 			  List<Object[]>  allStatus=scheduleInviteeStatusDAO.getAllStatusList();
