@@ -13,6 +13,7 @@
 	<link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="css/Training/css/custom.css" rel="stylesheet" type="text/css"/>
 	<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+	<link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -126,7 +127,8 @@ header.eventsheader {
 	<script src="js/jquery-1.11.2.min.js" type="text/javascript"></script>
 	<script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script>
-	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+	<!--<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>-->
+	<script src="training/dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 	<script src="css/Training/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 	<script src="css/Training/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 	<script src="js/highcharts/js/highcharts.js" type="text/javascript"></script>
@@ -140,97 +142,100 @@ header.eventsheader {
 
 	
 	<script type="text/javascript">
+	
+   
 	$(document).ready(function() {
-   var cb = function(start, end, label) {
-	console.log(start.toISOString(), end.toISOString(), label);
-  }
+   // var cb = function(start, end, label) {
+	// console.log(start.toISOString(), end.toISOString(), label);
+  // }
 
-  var optionSet1 = {
-	startDate: moment().subtract(29, 'days'),
-	endDate: moment(),
-	minDate: '01/01/2012',
-	maxDate: '12/31/2015',
+  // var optionSet1 = {
+	// startDate: moment().subtract(29, 'days'),
+	// endDate: moment(),
+	// minDate: '01/01/2012',
+	// maxDate: '12/31/2015',
 	//dateLimit: { days: 60 },
-	showDropdowns: true,
-	showWeekNumbers: true,
-	timePicker: true,
-	timePickerIncrement: 1,
-	timePicker12Hour: true,
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'Next 30 Days': [moment(),moment().add(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	},
-	opens: 'left',
-	buttonClasses: ['btn btn-default'],
-	applyClass: 'btn-small btn-primary newsSubmitBtn',
-	cancelClass: 'btn-small',
-	format: 'MM/DD/YYYY',
-	separator: ' to ',
-	locale: {
-		applyLabel: 'Submit',
-		cancelLabel: 'Clear',
-		fromLabel: 'From',
-		toLabel: 'To',
-		customRangeLabel: 'Custom',
-		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		firstDay: 1
-	}
-  };
+	// showDropdowns: true,
+	// showWeekNumbers: true,
+	// timePicker: true,
+	// timePickerIncrement: 1,
+	// timePicker12Hour: true,
+	// ranges: {
+	   // 'Today': [moment(), moment()],
+	   // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   // 'Next 30 Days': [moment(),moment().add(29, 'days'), moment()],
+	   // 'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	// },
+	// opens: 'left',
+	// buttonClasses: ['btn btn-default'],
+	// applyClass: 'btn-small btn-primary newsSubmitBtn',
+	// cancelClass: 'btn-small',
+	// format: 'MM/DD/YYYY',
+	// separator: ' to ',
+	// locale: {
+		// applyLabel: 'Submit',
+		// cancelLabel: 'Clear',
+		// fromLabel: 'From',
+		// toLabel: 'To',
+		// customRangeLabel: 'Custom',
+		// daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		// monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		// firstDay: 1
+	// }
+  // };
 
-  var optionSet2 = {
-	startDate: moment().subtract(7, 'days'),
-	endDate: moment(),
-	opens: 'left',
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	}
-  };
+  // var optionSet2 = {
+	// startDate: moment().subtract(7, 'days'),
+	// endDate: moment(),
+	// opens: 'left',
+	// ranges: {
+	   // 'Today': [moment(), moment()],
+	   // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   // 'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	// }
+  // };
 
-  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+  // $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
-  $('#reportrange').daterangepicker(optionSet1, cb);
+  // $('#reportrange').daterangepicker(optionSet1, cb);
 
-  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-	console.log("apply event fired, start/end dates are " 
-	  + picker.startDate.format('MMMM D, YYYY') 
-	  + " to " 
-	  + picker.endDate.format('MMMM D, YYYY')
-	); 
-  });
-  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+  // $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  // $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  // $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	// console.log("apply event fired, start/end dates are " 
+	  // + picker.startDate.format('MMMM D, YYYY') 
+	  // + " to " 
+	  // + picker.endDate.format('MMMM D, YYYY')
+	// ); 
+  // });
+  // $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
-  $('#options1').click(function() {
-	$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-  });
+  // $('#options1').click(function() {
+	// $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+  // });
 
-  $('#options2').click(function() {
-	$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-  });
+  // $('#options2').click(function() {
+	// $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+  // });
 
-  $('#destroy').click(function() {
-	$('#reportrange').data('daterangepicker').remove();
-  });
+  // $('#destroy').click(function() {
+	// $('#reportrange').data('daterangepicker').remove();
+  // });
   
-});
+ });
 
+		 
 $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");	
 	
 		
 	
-	$(document).on('click', '.datetrash', function(){
+	/*$(document).on('click', '.datetrash', function(){
         
 		var divId = $(this).attr("attr_txt");
 		var divDId = $(this).attr("attr_date_txt");
@@ -244,7 +249,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
        
         
 		
-    });
+    });*/
    
 	// var mainDivCount=1;
     // function myFunction() {
@@ -259,11 +264,12 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
         // $("#addMoreDiv").append(c);
     // }
 	
-	var mainDateDivCount=1;
+	/* var mainDateDivCount=1;
 	function myDateFunction() {
         mainDateDivCount = parseInt(mainDateDivCount)+1;
         var c = $("#dateList").clone(true);
             c.removeAttr("style");
+			//c.attr("class","reportRange"+mainDateDivCount);
             c.attr("id","dateList"+mainDateDivCount)
             c.find(".datetxtbox").attr("id","minutes"+mainDateDivCount);
 			c.find(".datetxtboxD").attr("id","Dateminutes"+mainDateDivCount);
@@ -272,13 +278,16 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 			c.find(".datetrash").attr("attr_minuteId","0");
 			
         $("#addMoreDateDiv").append(c);
-    }
+		//datetxtClsCount = parseInt(datetxtClsCount)+1;
+		//dateClsCount = parseInt(dateClsCount)+1;
+    } */
+	
 	     //global variables
 		 var leaderShipLevelArray = [];
 		 var communicationSkillsArray = [];
 		 var leaderShipSkillsArray = [];
 		 var healthStatusArray = [];
-		 
+		 var globalDateCount=0;
 	     //on load calls.
 	     getAllStatusForCadre();
 		 getTdpCadreDetailsforASchedule(1);
@@ -419,7 +428,28 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	$("#addMoreDiv").append(str);
 	}
 	
+   function myDateFunction(){
+   globalDateCount=globalDateCount+1;
+   var str='';
+   str+='<div class="row" id="dateList">'
+		str+='<div class="col-md-6">'
+			str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'">'
+		str+='</div>'
+		str+='<div class="col-md-4">'
+			str+='<div class="input-group date reportrange datetxtboxD m_top10">';
+				str+='<input type="text" class="form-control goalsDateClass"  id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
+				str+='<span class="input-group-addon">';
+					str+='<span class="glyphicon glyphicon-calendar"></span>';
+				str+='</span>';
+			str+='</div>';
+		str+='</div>'
+		str+='<div class="col-md-1">'
+			str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
+		str+='</div>'
+    str+='</div>'
+	$("#addMoreDateDiv").append(str);
 	
+   }
    function buildingData(results,tdpCadreId,batchId){
    
    var str=''
@@ -444,7 +474,11 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 						else
 						str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+results.image+'" class="img-responsive" style="width:30px;"></td>'
 						str+='<td>'+results.name+'</td>'
-						str+='<td>-</td>'
+						if(results.designation == null || results.designation.trim().lenght == 0){
+							str+='<td>-</td>'
+						}else{
+							str+='<td>'+results.designation+'</td>'
+						}
 						str+='<td>'+results.mobileno+'</td>'
 						str+='<td>'+results.constituency+'</td>'
 						str+='<td>'+results.districtName+'</td>'
@@ -498,41 +532,52 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				str+='<div class="col-md-4">'
 				str+='<label>Date & TIme</label>'
 				str+='</div>'
-				str+='<div class="row" id="dateList" style="display:none;">'
-					str+='<div class="col-md-6">'
-						str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" disabled>'
-					str+='</div>'
-					str+='<div class="col-md-4">'
-						str+='<div class="input-group datetxtboxD m_top10">'
-							str+='<span class="input-group-addon caret">'
-								str+='<i class="glyphicon glyphicon-calendar"></i>'
-							str+='</span>'
-							str+='<input type="text" class="form-control goalsDateCls" disabled>'
+				
+				if(results.goalsList!=null && results.goalsList.length>0){
+				  str+='<div id="addMoreDateDiv">'
+				  for(var i in results.goalsList){
+				   globalDateCount=globalDateCount+1;
+				      str+='<div class="row" id="dateList">'
+						str+='<div class="col-md-6">'
+							str+='<input class="form-control datetxtbox goalsTxtCls m_top10" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'" type="text" value="'+results.goalsList[i].name+'">'
 						str+='</div>'
-						
-					str+='</div>'
-					str+='<div class="col-md-1">'
-						str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
-					str+='</div>'
-				str+='</div>'
-				str+='<div id="addMoreDateDiv">'
-				str+='</div>'
+						str+='<div class="col-md-4">'
+							str+='<div class="input-group date reportrange datetxtboxD m_top10">';
+								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].date+'"/>';
+								str+='<span class="input-group-addon">';
+									str+='<span class="glyphicon glyphicon-calendar"></span>';
+								str+='</span>';
+							str+='</div>';
+						str+='</div>'
+						str+='<div class="col-md-1">'
+							str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
+						str+='</div>'
+				      str+='</div>'
+				  }
+				  str+='</div>'
+				}else{
+				  str+='<div id="addMoreDateDiv">'
+				  str+='</div>'
+				}
+				
 				str+='<div class="row m_top10">'
 					str+='<div class="col-md-6">'
-						str+='<input class="form-control goalsTxtCls" type="text">'
+						str+='<input class="form-control goalsTxtCls" id="goalsClass0" attr-id="0" type="text">'
 					str+='</div>'
 					str+='<div class="col-md-4">'
-						str+='<div class="input-group datetxtboxD">'
-							str+='<span class="input-group-addon caret">'
-								str+='<i class="glyphicon glyphicon-calendar"></i>'
-							str+='</span>'
-							str+='<input type="text" class="form-control goalsDateCls" id="reportrange">'
-						str+='</div>'
+						str+='<div class="input-group date reportrange">';
+							str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass0" attr-id="0" />';
+							str+='<span class="input-group-addon">';
+								str+='<span class="glyphicon glyphicon-calendar"></span>';
+							str+='</span>';
+						str+='</div>';
 					str+='</div>'
+					
 					str+='<div class="col-md-1">'
 						str+='<i class="glyphicon glyphicon-plus add-plus" onclick="myDateFunction();"></i>'
 					str+='</div>'
 				str+='</div>'
+				
 		str+='</div>'
 		str+='</div>'
 		
@@ -608,6 +653,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
       str+='</div>'
 	  
 	$("#modalBodyId").html(str);
+	
 	var str1='';
     str1+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
     str1+='<button type="button" class="btn btn-primary" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
@@ -622,6 +668,19 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	   $(this).parent().parent().remove();
 		   
     });
+	
+	$(document).on('click', '.datetrash', function(){
+	   
+	   $(this).parent().parent().remove();
+		   
+    });
+	
+	 $('body').on('click','.goalsDateClass', function() {
+		
+			$(this).datetimepicker();
+		});
+
+	
    function saveAllDetails(tdpCadreId,batchId)
    {
        //feedbacks   
