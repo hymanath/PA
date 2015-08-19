@@ -2739,7 +2739,8 @@
 		<property name="cadreComminicationSkillsStatusDAO" ref="cadreComminicationSkillsStatusDAO"/>
 		<property name="cadreLeadershipSkillsStatusDAO" ref="cadreLeadershipSkillsStatusDAO"/>
 		<property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO"/>
-		 <property name="userDAO" ref="userDAO"/>
+		<property name="cadreCommitteeService" ref="cadreCommitteeService"/>
+    	<property name="userDAO" ref="userDAO"/>
 		
 	</bean>
 	
@@ -2770,7 +2771,8 @@
 		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
 		<property name="partyMeetingMinuteHistoryDAO" ref="partyMeetingMinuteHistoryDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate"/>
-		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />		
+		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />		
 	</bean>
 </beans>		
 	
