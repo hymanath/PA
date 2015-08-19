@@ -998,8 +998,15 @@ $(document).ready(function() {
 		
 		setcolorsForTrainingchart();
 		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
+		var fromDate='';
+		var toDate='';
+		var dateStr=$("#reportrange").val();
+		var dateArr=[];
+		if(dateStr !=null && dateStr.length>0){
+			dateArr=dateStr.split("to");
+			fromDate= dateArr[0];
+			toDate=  dateArr[1];
+		}
 		
 		var jsObj={
 			searchType:"",
@@ -1253,8 +1260,15 @@ function buildingMembersFilledInCalenderBatch(result){
 	
 	function getTrainingProgramMembersBatchCount(){
 		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
+		var fromDate='';
+		var toDate='';
+		var dateStr=$("#reportrange").val();
+		var dateArr=[];
+		if(dateStr !=null && dateStr.length>0){
+			dateArr=dateStr.split("to");
+			fromDate= dateArr[0];
+			toDate=  dateArr[1];
+		}
 		
 		var jsObj={
 			fromdate:fromDate,
@@ -1363,8 +1377,15 @@ function buildingMembersFilledInCalenderBatch(result){
 		
 		$("#callPurposeCountDivId").html("");
 		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
+		var fromDate='';
+		var toDate='';
+		var dateStr=$("#reportrange").val();
+		var dateArr=[];
+		if(dateStr !=null && dateStr.length>0){
+			dateArr=dateStr.split("to");
+			fromDate= dateArr[0];
+			toDate=  dateArr[1];
+		}
 		
 		var jsObj={
 				fromdate:fromDate,
@@ -1378,7 +1399,7 @@ function buildingMembersFilledInCalenderBatch(result){
 				 data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(results){
 					var str='';
-					if(results !=null && results.trainingCampScheduleVOList.length>0){
+					if(results.trainingCampScheduleVOList !=null && results.trainingCampScheduleVOList.length>0){
 						var result = results.trainingCampScheduleVOList;
 						str+='<table class="table table-bordered m_0">';
 							str+='<tr>';
@@ -1498,8 +1519,16 @@ function buildingMembersFilledInCalenderBatch(result){
 		
 		$("#dataLoadingImgForAdminAssignedTdId").show();
 		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
+		var fromDate='';
+		var toDate='';
+		var dateStr=$("#reportrange").val();
+		var dateArr=[];
+		if(dateStr !=null && dateStr.length>0){
+			dateArr=dateStr.split("to");
+			fromDate= dateArr[0];
+			toDate=  dateArr[1];
+		}
+		
 		
 
 		var jsObj={
@@ -1603,8 +1632,15 @@ function buildingMembersFilledInCalenderBatch(result){
 	
 	function getUpComingBatchDetails(){
 		
-		var fromDate=$(".dp_startDate").val();
-		var toDate=$(".dp_endDate").val();
+		var fromDate='';
+		var toDate='';
+		var dateStr=$("#reportrange").val();
+		var dateArr=[];
+		if(dateStr !=null && dateStr.length>0){
+			dateArr=dateStr.split("to");
+			fromDate= dateArr[0];
+			toDate=  dateArr[1];
+		}
 		
 
 		var jsObj={
