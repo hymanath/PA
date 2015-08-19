@@ -760,7 +760,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			queryStr.append( " and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId in (:scheduleIds) " );
 		}
 		if(type !=null){
-			queryStr.append(" and model.campCallPurpose = '"+type+"' ");
+			queryStr.append(" and model.campCallPurpose.purpose = '"+type+"' ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
