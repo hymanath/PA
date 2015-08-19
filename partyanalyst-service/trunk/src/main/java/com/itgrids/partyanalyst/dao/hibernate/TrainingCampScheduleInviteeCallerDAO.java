@@ -789,9 +789,9 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		/*if(type !=null){
 			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status = '"+type+"' ");
 		}*/
-		queryStr.append(" model.trainingCampScheduleInvitee.attendingBatchId is not null ");
+		
 		if(callPurpose !=null && callPurpose !=0l){
-			queryStr.append(" and model.campCallPurpose.campCallPurpose = :callPurpose ");
+			queryStr.append(" model.campCallPurpose.campCallPurpose = :callPurpose ");
 		}
 		if(fromDate !=null && toDate !=null){
 			queryStr.append(" and (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:todate)");
@@ -802,6 +802,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			isDateNull = true;
 			queryStr.append(" and date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>:todayDate ");
 		}
+		queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId is not null ");
 		
 		/*if(type !=null){
 			queryStr.append(" and model.scheduleInviteeStatus.status = '"+type+"' ");
