@@ -3240,7 +3240,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			
-			List<Long> allocatedConfirmed = trainingCampScheduleInviteeCallerDAO.getAllocatedCountForConfirmation(startDate,endDate,"Not Started",2l);
+			List<Long> allocatedConfirmed = trainingCampScheduleInviteeCallerDAO.getAllocatedCountForConfirmation(startDate,endDate,"Not Started",2l,today);
 			
 			Long allocatedconfirmedCnt=0l;
 			Long btchNotAllocated =0l; 
