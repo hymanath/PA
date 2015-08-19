@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 
 public interface IAttendanceService {
@@ -11,4 +12,6 @@ public interface IAttendanceService {
 	public AttendanceTabUserVO loginAttendanceTabUser(AttendanceTabUserVO inputVO);
 	
 	public UserAttendanceDetailsVO getAttendanceMeetingAndCamps(AttendanceTabUserVO inputVo);
+	
+	public PartyMeetingInviteeVO getPartyMeetingInvittees(Long partyMeetingId);
 }
