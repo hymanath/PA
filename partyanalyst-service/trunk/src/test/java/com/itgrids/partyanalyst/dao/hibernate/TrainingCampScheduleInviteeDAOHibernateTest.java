@@ -53,5 +53,22 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 			e.printStackTrace();
 		}
 	}*/
+	
+	public void testDetails()
+	{
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		try{
+			
+			Date startDate= format.parse("09/01/2015");
+			Date endDate= format.parse("09/15/2015");
+			List<Object[]> batchAndProgramWiseInterestedMembersDetails = trainingCampScheduleInviteeDAO.getBatchWiseConformationDetails("Planned", startDate, endDate);
+			if(batchAndProgramWiseInterestedMembersDetails != null && batchAndProgramWiseInterestedMembersDetails.size() > 0)
+			{
+				System.out.println(batchAndProgramWiseInterestedMembersDetails.size());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
 }
