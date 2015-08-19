@@ -814,7 +814,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#atrDivId").html(str);
 				    $('.ToolTipDiv').tooltip()
 				   for(var i in result.atrDetails){
-					   globalLocationId = result.locationValue;
+					   //globalLocationId = result.locationValue;
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
 					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
@@ -1173,7 +1173,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.atrDetails){
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,globalLocationId,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
+					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
 					   
 				   }
 				   
