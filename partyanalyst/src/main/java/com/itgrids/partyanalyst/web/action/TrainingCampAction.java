@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
@@ -1558,13 +1559,28 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		for(int i = 0; i < achieveArray.length(); i++){
     			achieveList.add(achieveArray.get(i).toString());
     		}
+    	   List<SimpleVO> goallist=new ArrayList<SimpleVO>();
+           JSONArray goalArray = jObj.getJSONArray("goalArray");
+			
+			if(goalArray != null && goalArray.length() > 0)
+			{
+			  for(int i=0;i<goalArray.length();i++)
+			 {
+				JSONObject jObj=(JSONObject)goalArray.get(i);
+				SimpleVO goal=new SimpleVO();
+				goal.setName(jObj.getString("goal"));
+				goal.setDateString(jObj.getString("date"));
+				goallist.add(goal);
+			  }
+			}
+    		
     		Long leaderShipLevelId = jObj.getLong("leaderShipLevel");
     		Long communicationSkillsId = jObj.getLong("communicationSkills");
     		Long leaderShipSkillsId = jObj.getLong("leaderShipSkills");
     		Long healthId = jObj.getLong("health");
     		String comments = jObj.getString("comments");
     		
-    		resultStatus = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId);
+    		resultStatus = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId);
     		
     	}catch(Exception e) {
     		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);

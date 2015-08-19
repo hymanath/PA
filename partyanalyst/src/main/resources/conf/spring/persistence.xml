@@ -661,6 +661,10 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreAchievement</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampAttendanceTabUser</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory</value>
+				 
 				</list>
 			
 		</property>
