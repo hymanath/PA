@@ -22,5 +22,13 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		query.setParameter("trainingCampBatchId", batchId);
 		return (Object[])query.uniqueResult();
 	}
-
+    public Long  checkFeedBackForCadreBycadreAndBatch(Long tdpCadreId,Long batchId){
+    	Query query=getSession().createQuery("" +
+    			" select model.trainingCampCadreFeedbackDetailsId" +
+    			" from TrainingCampCadreFeedbackDetails model " +
+    			" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId");
+        query.setParameter("tdpCadreId", tdpCadreId);
+    	query.setParameter("trainingCampBatchId", batchId);
+    	return (Long)query.uniqueResult();
+    }
 }

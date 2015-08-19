@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 public interface ITrainingCampCadreAchievementDAO extends GenericDao<TrainingCampCadreAchievement, Long>{
 
 	public List<Object[]> getAchievmentDetailsforCadre(Long tdpCadreId,Long batchId);
+	public Long checkAchievementsForCadreBycadreAndBatch(Long tdpCadreId,Long batchId);
+	public int deleteAchievementsforACadre(Long tdpCadreId,Long batchId);
 }

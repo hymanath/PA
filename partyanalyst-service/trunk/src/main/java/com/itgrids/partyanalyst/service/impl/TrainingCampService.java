@@ -88,6 +88,8 @@ import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
+import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
+import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
@@ -3233,7 +3235,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			
-			List<Long> allocatedConfirmed = trainingCampScheduleInviteeCallerDAO.getAllocatedCountForConfirmation(startDate,endDate,"Not Started",2l,today);
+			List<Long> allocatedConfirmed = trainingCampScheduleInviteeCallerDAO.getAllocatedCountForConfirmation(startDate,endDate,"Not Started",2l);
 			
 			Long allocatedconfirmedCnt=0l;
 			Long btchNotAllocated =0l; 
@@ -4043,7 +4045,7 @@ public class TrainingCampService implements ITrainingCampService{
 				if( finalVO.getHealthStatuslist()==null){
 					finalVO.setHealthStatuslist(new ArrayList<IdNameVO>());
 				}
-				setDetails(finalVO.getLeadershipSkillslist(),healthStatus);
+				setDetails(finalVO.getHealthStatuslist(),healthStatus);
 			}
 			
 		}catch(Exception e){
@@ -4085,10 +4087,71 @@ public class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public String saveDetailsOfCadre(String achievements,String goals,String goalsDate,Long leaderShipLevel,Long communicationSkills,Long leaderShipSkills,Long health,String comments)
+	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
 	{
-		
-		
-		return "success";
+		final ResultStatus resultStatus=new ResultStatus();
+		try{
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+			   public void doInTransactionWithoutResult(TransactionStatus arg0) {
+					  
+				  
+					//feedback details saving or updating.
+					TrainingCampCadreFeedbackDetails feedBackDetails=null;
+					Long trainingCampCadreFeedBackDetailsId=trainingCampCadreFeedbackDetailsDAO.checkFeedBackForCadreBycadreAndBatch(tdpCadreId,batchId);
+					if(trainingCampCadreFeedBackDetailsId!=null){//update
+						feedBackDetails=trainingCampCadreFeedbackDetailsDAO.get(trainingCampCadreFeedBackDetailsId);
+						
+					}else{//save
+						feedBackDetails=new TrainingCampCadreFeedbackDetails();
+						feedBackDetails.setTdpCadreId(tdpCadreId);
+						feedBackDetails.setTrainingCampBatchId(batchId);
+					    feedBackDetails.setInsertedBy(userId);
+					    feedBackDetails.setUpdatedBy(userId);
+					    Date date=new DateUtilService().getCurrentDateAndTime();
+					    feedBackDetails.setInsertedTime(date);
+					    feedBackDetails.setUpdatedTime(date);
+					}
+					feedBackDetails.setCadreLeadershipLevelId(leaderShipLevelId!=0l?leaderShipLevelId:null);
+					feedBackDetails.setCadreComminicationSkillsStatusId(communicationSkillsId!=0l?communicationSkillsId:null);
+					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
+					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
+					feedBackDetails.setRemarks(comments.trim().length()>0?comments:null);
+					trainingCampCadreFeedbackDetailsDAO.save(feedBackDetails);
+					
+					
+					
+					//Achievement details saving or updating.
+					Long achieveCount=trainingCampCadreAchievementDAO.checkAchievementsForCadreBycadreAndBatch(tdpCadreId,batchId);
+					if(achieveCount==0){ //save
+						
+					}else{//update=delete+save
+						trainingCampCadreAchievementDAO.deleteAchievementsforACadre(tdpCadreId,batchId);
+					}
+					if(achieveList!=null && achieveList.size()>0){
+						
+						for(String achieve:achieveList){
+							
+							TrainingCampCadreAchievement tca=new TrainingCampCadreAchievement();
+							tca.setTdpCadreId(tdpCadreId);
+							tca.setTrainingCampBatchId(batchId);
+							tca.setAchievement(achieve);
+							tca.setInsertedBy(userId);
+							tca.setUpdatedBy(userId);
+							Date date=new DateUtilService().getCurrentDateAndTime();
+							tca.setInsertedTime(date);
+							tca.setUpdatedTime(date);
+							trainingCampCadreAchievementDAO.save(tca);
+						}
+					}
+		  }
+		});
+		resultStatus.setResultCode(1);	
+		}catch(Exception e){
+			LOG.error(" Error Occured in getDocsOfPartyMeetingId" ,e);
+			resultStatus.setResultCode(0);
+		}
+		return resultStatus;
 	}
 }

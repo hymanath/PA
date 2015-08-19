@@ -77,5 +77,5 @@ public interface ITrainingCampService {
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
 	public CadreDetailsVO getAllStatusForCadre();
-	public String saveDetailsOfCadre(String achievements,String goals,String goalsDate,Long leaderShipLevel,Long communicationSkills,Long leaderShipSkills,Long health,String comments);
+	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId);
 }
