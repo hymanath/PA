@@ -1061,7 +1061,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	public String getMeetingTypes(){
 		try{
 			LOG.info("Entered into getMeetingTypes");
-			retResult = trainingCampService.getMeetingTypes();
+			jObj = new JSONObject(getTask());
+			
+			retResult = trainingCampService.getMeetingTypes(jObj.getLong("locationLevel"));
 		}catch (Exception e) {
 			LOG.error("Exception raised into getMeetingTypes",e);
 		}
