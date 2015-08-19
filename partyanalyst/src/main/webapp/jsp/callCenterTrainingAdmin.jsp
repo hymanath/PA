@@ -22,6 +22,12 @@
 
 
 <style type="text/css">
+footer
+{
+	padding:30px;
+	background-color:#5c2d25;
+	color:#fff;
+}
 .padding_left30
 {
 	padding-left:30px;
@@ -309,7 +315,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal" onclick="clearAssignAgent()">Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal" onclick="clearAssignAgent();getPrograms('schedule');">Assign to Agents</button>
 										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
 											<div class="input-group">
 												<span class="input-group-addon">
@@ -361,7 +367,7 @@
 									<h4 class="panel-title">
 										<b>BATCH CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
-										data-toggle="modal" data-target="#myModal1" onclick="clearBatchPopupFields();getAllCampsForBatch();">Assign to Agents</button>
+										data-toggle="modal" data-target="#myModal1" onclick="clearBatchPopupFields();getPrograms('batch');";">Assign to Agents</button>
 									</h4>
 								</div>
 								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
@@ -528,18 +534,19 @@
       <div class="modal-body">
       		<div class="row">
 			 <div id="batchErrorDiv"></div>
-				<div class="col-md-12 m_top5">
-					<label>Select Center</label>
-					<select class="form-control border-radius-0" id="batchCampId" onchange="getAllProgramsList('batch');">
-						
-					</select>
-				</div>   
-				<div class="col-md-12 m_top10">
+			 <div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
-					<select class="form-control border-radius-0" id="batchProgramId"  onchange="getAllSchedulesDatesList('batch');">
+					<select class="form-control border-radius-0" id="batchProgramId"  onchange="getCampsForProgram('batch');">
 					 <option value="0">Select Program</option>
 					</select>
+				</div> 
+				<div class="col-md-12 m_top5">
+					<label>Select Center</label>
+					<select class="form-control border-radius-0" id="batchCampId" onchange="getSchedulesForCamp('batch');">
+						 <option value="0">Select Camp</option>
+					</select>
 				</div>   
+				  
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
 					<select class="form-control border-radius-0" id="batchScheduleId" onchange="getBatchesForSchedule();">
@@ -687,21 +694,23 @@
       <div class="modal-body">
       		<div class="row">
 			<div id="errorMsgDivId"></div>
-				<div class="col-md-12 m_top5">
-					<label>Select Center</label>
-					<select class="form-control border-radius-0"  id="campId" onchange="getAllProgramsList('schedule');">
-					</select>
-				</div>   
-				<div class="col-md-12 m_top10">
+			<div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
-					<select class="form-control border-radius-0" id="programId" onchange="getAllSchedulesDatesList('schedule');">
+					<select class="form-control border-radius-0" id="programId" onchange="getCampsForProgram('schedule');">
 					<option value="0">Select Program</option>	
 					</select>
+				</div> 
+				<div class="col-md-12 m_top5">
+					<label>Select Center</label>
+					<select class="form-control border-radius-0"  id="campId" onchange="getSchedulesForCamp('schedule');">
+					<option value="0">Select Camp</option>	
+					</select>
 				</div>   
+				  
 				<div class="col-md-12 m_top10">
 					<label>Select Calender Scheduled Dates</label>
 					<select class="form-control border-radius-0" id="scheduleId" onchange="getScheduleAvailableCallsCount();" >
-					<option value="0">Select Scheduled</option>	
+					<option value="0">Select Schedule</option>	
 					</select>
 					<small class="help-block pull-right" style="color:#996633;  margin-bottom: 0px;" id="avaliableCallsCount"></small>
 				</div>   
@@ -757,10 +766,10 @@
 <!---Modal-2----------------->
 	<!-- End -- >
 
-
+-->
 </section>
 <footer>
-		<img src="css/Training/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -1665,185 +1674,7 @@ function buildingMembersFilledInCalenderBatch(result){
 		
 	}
 	
-	
-	
-	
-	$("#mainheading").html("TRAINING PROGRAM");
-	
-	function getAllCamps()
-	{
-	$("#campId  option").remove();
-	$("#campId").append('<option value="0">Select Camp</option>');
-	
-		var districtIds = 0;
-		var jsObj={
-				districtIds:districtIds
-		}
-		
-		$.ajax({
-			type:'POST',
-			url :'getAllCampBatchesAction.action',
-			data:{task:JSON.stringify(jsObj)},
-		}).done(function(result){
-		camps = new Array();
-		camps = result;
-			if(result != null)
-			{
-				for(var i in result)
-				{
-				
-					if(result[i].id == 0){
-					  $("#campId").append('<option value='+result[i].id+'>ALL</option>');
-					  
-				   }else{
-					  $("#campId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-					   
-				   }
-				}
-			}
-		});
-	}
-	
-	function getAllCampsForBatch()
-	{
-	$("#batchCampId  option").remove();
-	$("#batchCampId").append('<option value="0">Select Camp</option>');
-	
-		var districtIds = 0;
-		var jsObj={
-				districtIds:districtIds
-		}
-		
-		$.ajax({
-			type:'POST',
-			url :'getAllCampBatchesAction.action',
-			data:{task:JSON.stringify(jsObj)},
-		}).done(function(result){
-		camps = new Array();
-		camps = result;
-			if(result != null)
-			{
-				for(var i in result)
-				{
-				
-					if(result[i].id == 0){
-					  $("#batchCampId").append('<option value='+result[i].id+'>ALL</option>');
-					  
-				   }else{
-					  $("#batchCampId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-					   
-				   }
-				}
-			}
-		});
-	}
-function getAllProgramsList(type)
-{
-
-if(type == "batch")
-{
-var campId =$("#batchCampId").val();
-	if(campId == 0)
-	return;
-	$("#batchProgramId  option").remove();
-	$("#batchProgramId").append('<option value="0">Select Program</option>');
-	$("#batchErrorDiv").html("");
-}
-else
-{
-	var campId =$("#campId").val();
-	if(campId == 0)
-	return;
-	$("#programId  option").remove();
-	$("#programId").append('<option value="0">Select Program</option>');
-	$("#errorMsgDivId").html("");
-	}
-	var jsObj={
-		campId:campId
-	}
-	
-	$.ajax({
-		type:'POST',
-		url :'getAllProgramsListAction.action',
-		data:{task:JSON.stringify(jsObj)},
-	}).done(function(result){
-		if(result != null){
-			for(var i in result){
-				if(result[i].id == 0){
-				  $("#programId").append('<option value='+result[i].id+'>ALL</option>');
-				   if(type == "batch")
-					{
-				   $("#batchProgramId").append('<option value='+result[i].id+'>ALL</option>');
-				   }
-				   else
-				   $("#programId").append('<option value='+result[i].id+'>ALL</option>');
-			   }else{
-				
-				  if(type == "batch")
-					{
-				   $("#batchProgramId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-				   }
-				   else
-				     $("#programId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			   }
-			}
-		}
-	});
-}
-
-function getAllSchedulesDatesList(type)
-{
-
-if(type == "batch")
-{
-var programId =$("#batchProgramId").val();
-if(programId == 0)
-return 0;
-$("#batchScheduleId  option").remove();
-$("#batchScheduleId").append('<option value="0">Select Schedule</option>');
-$("#batchErrorDiv").html("");
-}
-else
-{
-var programId =$("#programId").val();
-if(programId == 0)
-return 0;
-$("#scheduleId  option").remove();
-$("#scheduleId").append('<option value="0">Select Schedule</option>');
-$("#errorMsgDivId").html("");
-}
-	
-	var jsObj={
-		programId:programId
-	}
-	
-	$.ajax({
-		type:'POST',
-		url :'getAllScheduleListAction.action',
-		data:{task:JSON.stringify(jsObj)},
-	}).done(function(result){
-		if(result != null){
-			for(var i in result){
-				if(result[i].id == 0){
-				if(type == "batch")
-					{
-				  $("#batchScheduleId").append('<option value='+result[i].id+'>ALL</option>');
-				  }
-				  else
-				  $("#scheduleId").append('<option value='+result[i].id+'>ALL</option>');
-				  
-			   }else{
-			   if(type == "batch")
-					{
-					$("#batchScheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-					}
-					else
-				  $("#scheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			   }
-			}
-		}
-	});
-}
+$("#mainheading").html("TRAINING PROGRAM");
 function getScheduleAvailableCallsCount()
 {
  $("#errorMsgDivId").html("");
@@ -2480,9 +2311,112 @@ function clearErrMsg()
 	else
 	 $("#batchErrorDiv").html("");
 }
+ function getPrograms(type)
+   {
+   var jObj={
+		task:"programs"
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getAllProgramsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				buildPrograms(result,type);
+		   });	
+   }
+   function buildPrograms(result,type)
+   {
+   var str = '';
+   if(type == "schedule")
+  $('#programId').find('option:not(:first)').remove();
+  else
+  $('#batchProgramId').find('option:not(:first)').remove();
+    for(var i in result)
+	{
+	 if(type == "schedule")
+	$("#programId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	else
+	$("#batchProgramId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	}
+   
+   }
+   
+     function getCampsForProgram(type)
+   {
+   if(type == "schedule")
+   var programId = $("#programId").val();
+   else
+    var programId = $("#batchProgramId").val();
+   var jObj={
+		programId:programId,
+		task:"programs"
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getCampsByProgramIdAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				buildCamps(result,type);
+		   });	
+   }
+   function buildCamps(result,type)
+   {
+   var str = '';
+   if(type == "schedule")
+   $('#campId').find('option:not(:first)').remove();
+   else
+   $('#batchCampId').find('option:not(:first)').remove();
+    for(var i in result)
+	{
+	 if(type == "schedule")
+	$("#campId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	else
+	$("#batchCampId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	}
+   
+   }
+   
+   function getSchedulesForCamp(type)
+   {
+	 if(type == "schedule")
+   var campId = $("#campId").val();
+   else
+    var campId = $("#batchCampId").val();
+   var jObj={
+		campId:campId,
+		task:"programs"
+		};
+		$.ajax({
+			  type:'POST',
+			  url: 'getSchedulesByCampIdAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+				buildSchedules(result,type);
+		   });	
+   }
+   function buildSchedules(result,type)
+   {
+   var str = '';
+   if(type == "schedule")
+     $('#scheduleId').find('option:not(:first)').remove();
+	 else
+	  $('#batchScheduleId').find('option:not(:first)').remove();
+    for(var i in result)
+	{
+	  if(type == "schedule")
+	$("#scheduleId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	else
+	$("#batchScheduleId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	}
+   }
+   
 </script>
 <script>
-getAllCamps();
+//getAllCamps();
+
 getAgentsByCampCallerAdminId('batch');
 getAgentsByCampCallerAdminId('schedule');
 </script>
