@@ -1696,15 +1696,20 @@ public class TrainingCampService implements ITrainingCampService{
 		try{
 			for(Object[] params:list)
 			{
+				if(params[2] != null)
+				{
 				TraingCampCallerVO statusVo = getMatchedVo(agentCallStatusVO.getSubList(), (Long)params[2]);
 				if(statusVo != null)
 				 statusVo.setCount(statusVo.getCount() + (Long)params[0]);
-				
-			  TraingCampCallerVO scheduleStatusVo = getMatchedVo(agentCallStatusVO.getScheduleStatusList(), (Long)params[4]);
-				if(scheduleStatusVo != null)
+				}
+				if(params[4] != null)
 				{
-					scheduleStatusVo.setCount(scheduleStatusVo.getCount()+(Long)params[0]);
-					
+				  TraingCampCallerVO scheduleStatusVo = getMatchedVo(agentCallStatusVO.getScheduleStatusList(), (Long)params[4]);
+					if(scheduleStatusVo != null)
+					{
+						scheduleStatusVo.setCount(scheduleStatusVo.getCount()+(Long)params[0]);
+						
+					}
 				}
 				agentCallStatusVO.setTotal(agentCallStatusVO.getTotal()+(Long)params[0]);
 			}
