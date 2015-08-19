@@ -431,7 +431,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
    function myDateFunction(){
    globalDateCount=globalDateCount+1;
    var str='';
-   str+='<div class="row" id="dateList">'
+   str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 		str+='<div class="col-md-6">'
 			str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 		str+='</div>'
@@ -448,7 +448,6 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		str+='</div>'
     str+='</div>'
 	$("#addMoreDateDiv").append(str);
-	
    }
    function buildingData(results,tdpCadreId,batchId){
    
@@ -537,13 +536,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				  str+='<div id="addMoreDateDiv">'
 				  for(var i in results.goalsList){
 				   globalDateCount=globalDateCount+1;
-				      str+='<div class="row" id="dateList">'
+				      str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 						str+='<div class="col-md-6">'
 							str+='<input class="form-control datetxtbox goalsTxtCls m_top10" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'" type="text" value="'+results.goalsList[i].name+'">'
 						str+='</div>'
 						str+='<div class="col-md-4">'
 							str+='<div class="input-group date reportrange datetxtboxD m_top10">';
-								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].date+'"/>';
+								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].dateString+'"/>';
 								str+='<span class="input-group-addon">';
 									str+='<span class="glyphicon glyphicon-calendar"></span>';
 								str+='</span>';
@@ -560,7 +559,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				  str+='</div>'
 				}
 				
-				str+='<div class="row m_top10">'
+				str+='<div class="row m_top10 dateListClass" id="dateList0" attr-id="0">'
 					str+='<div class="col-md-6">'
 						str+='<input class="form-control goalsTxtCls" id="goalsClass0" attr-id="0" type="text">'
 					str+='</div>'
@@ -697,9 +696,36 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	        achieveArray.push($(this).val());
 		  }
 	   });
+	   //goals
+	   var goalArray=[];
+	   
+	   $(".dateListClass").each(function(){
+	      var id=$(this).attr("attr-id");
+		  var goal=$("#goalsClass"+id).val();
+		  var date=$("#goalsDateClass"+id).val();
+		  
+           /* if(goal.trim().length>0){
+			  if(date.trim().length<=0){
+				  alert("Enter Date.");
+				  return;
+			  }
+		  }
+         if(date.trim().length>0){
+			 if(goal.trim().length<=0){
+				 alert("Enter Goal.");
+				 return;
+			 }
+		 }  */
+		 var goalObject = new Object();
+         goalObject.goal = goal; 
+         goalObject.date = date;
+         goalArray.push(goalObject);
+	   });
+	   
 	   var jsObj=
 	   {	
 			achieveArray:achieveArray,
+			goalArray:goalArray,
 			leaderShipLevel:leaderShipLevel,
 			communicationSkills:communicationSkills,
 			leaderShipSkills:leaderShipSkills,

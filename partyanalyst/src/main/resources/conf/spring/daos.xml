@@ -2257,6 +2257,16 @@
 	 <bean id="trainingCampAttendanceTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampAttendanceTabUserDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="trainingCampCadreFeedbackDetailsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackDetailsHistoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="trainingCampCadreAchievementHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreAchievementHistoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="trainingCampCadreGoalHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreGoalHistoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		
