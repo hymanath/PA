@@ -24,6 +24,7 @@ public class TrainingMemberVO implements Serializable{
 	private List<TrainingMemberVO> subList = new ArrayList<TrainingMemberVO>();
 	private String remarks;
 	private String constituency;
+	private Long trainingCampBatch;
 	
 	
 	public String getConstituency() {
@@ -116,5 +117,12 @@ public class TrainingMemberVO implements Serializable{
 	public void setSubList(List<TrainingMemberVO> subList) {
 		this.subList = subList;
 	}
+	public Long getTrainingCampBatch() {
+		return trainingCampBatch;
+	}
+	public void setTrainingCampBatch(Long trainingCampBatch) {
+		this.trainingCampBatch = trainingCampBatch;
+	}
+	
 	
 }

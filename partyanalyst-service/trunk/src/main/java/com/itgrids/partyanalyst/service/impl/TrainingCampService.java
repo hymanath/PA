@@ -2014,6 +2014,7 @@ public class TrainingCampService implements ITrainingCampService{
 					vo.setInviteeCallerId(params[10] != null ? (Long)params[10] : 0l);
 					vo.setRemarks(params[11] != null ? params[11].toString() : "");
 					vo.setConstituency(params[12] != null ? params[12].toString() : "");
+					vo.setTrainingCampBatch(params[13]!= null?(Long)params[13]:null);
 					returnList.add(vo);
 					if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(params[0])))
 						cadreIds.add(commonMethodsUtilService.getLongValueForObject(params[0]));
@@ -2092,7 +2093,7 @@ public class TrainingCampService implements ITrainingCampService{
 			return null;
 		for(TraingCampCallerVO vo : resultList)
 		{
-			if(vo.getId().longValue() == id.longValue())
+			if(id!= null && vo.getId().longValue() == id.longValue())
 			{
 			return vo;	
 			}
