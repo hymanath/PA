@@ -1468,6 +1468,18 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		
 	}
 	
+	public List<Object[]> getWardDetailsById(List<Long> locations) {
+		Query query = getSession().createQuery("select model.constituencyId," +
+				" model.name," +
+				" model.localElectionBody.name," +
+				" model.localElectionBody.electionType.electionType" +
+				" from Constituency model" +
+				" where model.constituencyId in (:locations)");
+		
+		query.setParameterList("locations", locations);
+		return query.list();
+	}
+	
 	
 	
 }

@@ -152,4 +152,14 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 			return query.list();
 	}
 	
+	public List<Object[]> getWardDetailsById(List<Long> locationIds){
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,concat(model.constituency.name,'(',model1.wardName,')')  " +
+				" from AssemblyLocalElectionBodyWard model,LocalElectionBodyWard model1 " +
+				" where model1.constituency.constituencyId = model.constituency.constituencyId " +
+				" and model.constituency.constituencyId  in (:locationIds) ");
+		
+		query.setParameterList("locationIds", locationIds);
+		return query.list();
+	}
+	
 }

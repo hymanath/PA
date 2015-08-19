@@ -24,12 +24,14 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -53,10 +55,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPartyMeetingMinuteHistoryDAO partyMeetingMinuteHistoryDAO;
 	private TransactionTemplate transactionTemplate;
 	private IPartyMeetingAtrPointHistoryDAO partyMeetingAtrPointHistoryDAO;
+	private ICadreCommitteeService cadreCommitteeService;
 	
 	
 	
-	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	public IPartyMeetingAtrPointHistoryDAO getPartyMeetingAtrPointHistoryDAO() {
 		return partyMeetingAtrPointHistoryDAO;
 	}
@@ -739,6 +748,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 					partyMeetingVO.setEndDate(partyMeetingDetails.getEndDate());
 				}
 				
+				if(partyMeetingVO.getMeetingLevelId()!=0 && partyMeetingVO.getLocationValue()!=0){
+					List<Long> locationIds = new ArrayList<Long>();
+					locationIds.add(partyMeetingVO.getLocationValue());
+					List<IdNameVO> rslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, partyMeetingVO.getMeetingLevelId());
+					if(rslt!=null && rslt.size()>0){
+						partyMeetingVO.setLocationName(rslt.get(0).getName());
+					}
+				}
+				
 			}
 			
 			if(atrDetails!=null && atrDetails.size()>0){
@@ -760,6 +778,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 					subVO.setUpdatedBy(objects[11]!=null?objects[11].toString():"");
 					subVO.setInsertedTime(objects[12]!=null?objects[12].toString():"");
 					subVO.setUpdatedTime(objects[13]!=null?objects[13].toString():"");
+					
+					if(subVO.getLocationValue()!=0 && subVO.getLocationScopeId()!=0){
+						List<Long> locationIds = new ArrayList<Long>();
+						locationIds.add(subVO.getLocationValue());
+						List<IdNameVO> rslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, subVO.getLocationScopeId()+1);
+						if(rslt!=null && rslt.size()>0){
+							subVO.setLocationName(rslt.get(0).getName());
+						}
+					}
 					
 					vo.add(subVO);
 				}

@@ -94,6 +94,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -150,9 +151,19 @@ public class TrainingCampService implements ITrainingCampService{
     private ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO; 
     private ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO; 
     private ICadreHealthStatusDAO cadreHealthStatusDAO;
+    private ICadreCommitteeService cadreCommitteeService;
+    
+    
 	
-    
-    
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+	
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -3625,6 +3636,15 @@ public class TrainingCampService implements ITrainingCampService{
 					subVO.setUpdatedBy(objects[11]!=null?objects[11].toString():"");
 					subVO.setInsertedTime(objects[12]!=null?objects[12].toString():"");
 					subVO.setUpdatedTime(objects[13]!=null?objects[13].toString():"");
+					
+					if(subVO.getLocationValue()!=0 && subVO.getLocationScopeId()!=0){
+						List<Long> locationIds = new ArrayList<Long>();
+						locationIds.add(subVO.getLocationValue());
+						List<IdNameVO> rslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, subVO.getLocationScopeId()+1);
+						if(rslt!=null && rslt.size()>0){
+							subVO.setLocationName(rslt.get(0).getName());
+						}
+					}
 					
 					vo.add(subVO);
 				}

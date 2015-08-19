@@ -51,8 +51,15 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String raisedBy;
 	private List<CallTrackingVO> atrDocuments;
 	private List<CallTrackingVO> minutesDocuments;
+	private String locationName;
 	
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public List<CallTrackingVO> getAtrDocuments() {
 		return atrDocuments;
 	}
