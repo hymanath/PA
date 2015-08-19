@@ -54,5 +54,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getCallerWiseAssignedCount(String searchType,List<Long> callerIdsList);
 	public List<Object[]> getCallStatusWiseCountDetailsForCallers(String searchType,List<Long> callerIdsList);
 	public List<Object[]> getdialedCallsForBatchConfirmationDetails(String searchType, Date startDate, Date endDate,Date todayDate);
+	public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String type,Date todayDate);
 	
 }

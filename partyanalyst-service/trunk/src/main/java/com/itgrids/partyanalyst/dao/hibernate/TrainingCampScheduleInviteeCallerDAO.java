@@ -1216,4 +1216,37 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
+	public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String type,Date todayDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		boolean isDateNull = false;
+		queryStr.append(" select distinct model.trainingCampScheduleInvitee.attendingBatchId  from TrainingCampScheduleInviteeCaller model " +
+				" where  ");
+		if(fromDate !=null && toDate !=null){
+			queryStr.append("  (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:todate) ");
+			queryStr.append(" or date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) > :todate ");
+		}
+		else
+		{
+			isDateNull = true;
+			queryStr.append(" date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>:todayDate ");
+		}
+		
+		if(type !=null){
+			queryStr.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status = '"+type+"' ");
+		}
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate !=null && toDate !=null){
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("todate",toDate);
+		}
+		if(isDateNull)
+		{
+			query.setParameter("todayDate", todayDate);
+		}
+		return query.list();
+	}
+	
+	
 }
