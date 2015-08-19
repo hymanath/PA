@@ -164,7 +164,7 @@ header.eventsheader {
 							<div class="row col-xs-1 pull-right" >
 							<button class="btn btn-success btn-sm btn-block" id="viewMeetings">View</button>
 							</div>
-							<div class="row m_top20" style="padding:10px;">
+							<div class="row m_top20" style="padding:10px;margin-top:35px;">
 								<div id="meetingDetailsTableId"><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></div>
                             	<!--<table class="m_top20 table table-bordered">
                                 	<thead class="bg_d">
