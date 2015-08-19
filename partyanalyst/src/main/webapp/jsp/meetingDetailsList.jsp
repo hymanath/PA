@@ -9,9 +9,8 @@
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/daterange/daterangepicker-bs3.css" type="text/css" rel="stylesheet">
 <link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
-<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+
 <link href="css/Training/css/basic.css" rel="stylesheet" type="text/css">
 <link href="css/Training/css/dropzone.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
@@ -312,8 +311,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="js/TrainingProgram/component.js" type="text/javascript"></script>
 <script src="js/TrainingProgram/fileupload.js" type="text/javascript"></script>
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
@@ -393,16 +390,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     });
    
     $(document).ready(function() {
-      $('#birthday').daterangepicker(
-      {
-           singleDatePicker: true,
-           timePicker: true,
-           format: 'DD/MM/YYYY h:mm A'
-      }, function(start, end, label) {
-        console.log(start.toISOString(), end.toISOString(), label);
-      });
-      
-	 getPartyMeetingMinutesAtrDetails(partyMeetingId);
+     getPartyMeetingMinutesAtrDetails(partyMeetingId);
      getTheMeetingLevelDetails()
    });
 
