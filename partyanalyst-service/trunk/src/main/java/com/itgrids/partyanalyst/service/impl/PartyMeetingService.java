@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
@@ -722,7 +723,23 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 		try {
 			LOG.info("Entered into getAtrPointsForAMeeting");
+			PartyMeeting partyMeetingDetails = partyMeetingDAO.get(partyMeeingId);
 			List<Object[]> atrDetails = partyMeetingAtrPointDAO.getAtrDetailsForAMeeting(partyMeeingId);
+			
+			if(partyMeetingDetails != null){
+				partyMeetingVO.setId(partyMeetingDetails.getPartyMeetingId()!=null?partyMeetingDetails.getPartyMeetingId():0l);
+				partyMeetingVO.setName(partyMeetingDetails.getMeetingName()!=null?partyMeetingDetails.getMeetingName():"");
+				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
+				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
+				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
+				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
+				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
+				if(partyMeetingDetails.getStartDate()!=null && partyMeetingDetails.getEndDate()!=null){
+					partyMeetingVO.setStartDate(partyMeetingDetails.getStartDate());
+					partyMeetingVO.setEndDate(partyMeetingDetails.getEndDate());
+				}
+				
+			}
 			
 			if(atrDetails!=null && atrDetails.size()>0){
 				List<PartyMeetingVO> vo = new ArrayList<PartyMeetingVO>();
