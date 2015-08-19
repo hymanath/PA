@@ -597,7 +597,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return updateStatusString;
 	}
 	
-	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId,Long partyMeetingId,Long locationScope){
+	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId,Long partyMeetingId,final Long locationScope){
 		String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingAtrPoint");
@@ -629,7 +629,39 @@ public class PartyMeetingService implements IPartyMeetingService{
 					  
 					  partyMeetingAtrPointHistoryDAO.save(pmaph);
 					  
-					  Integer updateStatus = partyMeetingAtrPointDAO.updateMeetingAtrPoint(atrId,request,actionTaken,raisedBy,updatedBy,new DateUtilService().getCurrentDateAndTime(),locationId);
+					  Long locationScopeTemp = locationScope;
+					  Long locationIdTemp = locationId; 
+					  
+					  if(locationScope==4l){
+								String manTowDiv = locationId.toString();
+								char temp = manTowDiv.charAt(0);
+								locationScopeTemp=Long.parseLong(temp+"");
+								if(locationScopeTemp==4l){
+									locationIdTemp = Long.parseLong(manTowDiv.substring(1));
+								}
+								if(locationScopeTemp==5l){
+									locationIdTemp = Long.parseLong(manTowDiv.substring(1));
+								}
+								if(locationScopeTemp==6l){
+									locationIdTemp = Long.parseLong(manTowDiv.substring(1));
+								}
+								
+					  }
+						
+						if(locationScope==5l){
+								String vilwrdId = locationId.toString();
+								char temp = vilwrdId.charAt(0);
+								locationScopeTemp=Long.parseLong(temp+"");
+								
+								if(locationScopeTemp==7l){
+									locationIdTemp = Long.parseLong(vilwrdId.substring(1));
+								}
+								if(locationScopeTemp==8l){
+									locationIdTemp = Long.parseLong(vilwrdId.substring(1));
+								}
+						}
+					  
+					  Integer updateStatus = partyMeetingAtrPointDAO.updateMeetingAtrPoint(atrId,request,actionTaken,raisedBy,updatedBy,new DateUtilService().getCurrentDateAndTime(),locationIdTemp);
 					  if(updateStatus.intValue()==0){
 							updated  = "failed";
 						}
@@ -833,6 +865,58 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}catch (Exception e) {
 			LOG.error("Exception raised at getDocumentDetailsForAMeeting", e);
 		}
+		return partyMeetingVO;
+	}
+	
+	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId){
+		
+		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
+		
+		try{
+			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
+			
+			PartyMeeting partyMeetingDetails = partyMeetingDAO.get(meetingId);
+			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId);
+			
+			if(partyMeetingDetails != null){
+				partyMeetingVO.setId(partyMeetingDetails.getPartyMeetingId()!=null?partyMeetingDetails.getPartyMeetingId():0l);
+				partyMeetingVO.setName(partyMeetingDetails.getMeetingName()!=null?partyMeetingDetails.getMeetingName():"");
+				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
+				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
+				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
+				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
+				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
+				if(partyMeetingDetails.getStartDate()!=null && partyMeetingDetails.getEndDate()!=null){
+					partyMeetingVO.setStartDate(partyMeetingDetails.getStartDate());
+					partyMeetingVO.setEndDate(partyMeetingDetails.getEndDate());
+				}
+				
+			}
+			
+			if(minutesDetails!=null && minutesDetails.size()>0){
+				List<PartyMeetingVO> vo = new ArrayList<PartyMeetingVO>();
+				for (Object[] objects : minutesDetails) {
+					PartyMeetingVO subVO = new PartyMeetingVO();
+					
+					subVO.setPartyMeetingMinuteId(objects[0]!=null?(Long)objects[0]:0l);
+					subVO.setId(objects[1]!=null?(Long)objects[1]:0l);
+					subVO.setMinutePoint(objects[2]!=null?objects[2].toString():"");
+					subVO.setInsertedById(objects[3]!=null?(Long)objects[3]:0l);
+					subVO.setInsertedBy(objects[4]!=null?objects[4].toString():"");
+					subVO.setUpdatedById(objects[5]!=null?(Long)objects[5]:0l);
+					subVO.setUpdatedBy(objects[6]!=null?objects[6].toString():"");
+					subVO.setInsertedTime(objects[7]!=null?objects[7].toString():"");
+					subVO.setUpdatedTime(objects[8]!=null?objects[8].toString():"");
+					
+					vo.add(subVO);
+					
+				}
+				partyMeetingVO.setMinutesDetails(vo);
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at getTheMinutePointsForAMeeting", e);
+		}
+		
 		return partyMeetingVO;
 	}
 }

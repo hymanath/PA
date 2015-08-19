@@ -13,4 +13,5 @@ public interface IPartyMeetingService {
 	public String deletePartyMeetingDocument(Long docId);
 	public PartyMeetingVO getAtrPointsForAMeeting(Long partyMeeingId);
 	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId);
+	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId);
 }
