@@ -79,7 +79,7 @@ header.eventsheader {
                                 	<label>Type Of Meeting</label>
 									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
                                     <select class="form-control" id="typeOfMeeting">
-										<option> Select Meeting </option>
+										<option> Select Meeting Type </option>
 									</select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
                                 </div>
