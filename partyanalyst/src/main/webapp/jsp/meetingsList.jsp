@@ -396,9 +396,6 @@ $(document).ready(function() {
 		 $('#reportrange').data('daterangepicker').remove();
 		 });
 	  
-	  
-	//getTheMeetingLevelDetails();
-	getMeetingTypes();
 });
    
    $("#mainheading").html(" PARTY MEETINGS");
@@ -425,9 +422,10 @@ $(document).ready(function() {
 		});
 	}
 	
-	function getMeetingTypes(){
-		$("#searchDataImgFortypeOfMeeting").show();
-		var jsObj =	{}
+	$( "#meetingLocationLevel" ).change(function() {
+	 
+	  $("#searchDataImgFortypeOfMeeting").show();
+		var jsObj =	{locationLevel:$(this).val()}
 		
 		$.ajax(
 		{
@@ -436,6 +434,7 @@ $(document).ready(function() {
 			data:{task :JSON.stringify(jsObj)}
 		}
 		).done(function(result){
+			$("#typeOfMeeting  option").remove();
 			$("#typeOfMeeting").append('<option value="0">Select Meeting Type</option>');
 			if(result!=null && result.length>0){
 				for(var i in result){
@@ -445,7 +444,8 @@ $(document).ready(function() {
 			
 			$("#searchDataImgFortypeOfMeeting").hide();
 		});
-	}
+		
+	});
 	
 	$("#viewMeetings").click(function() {
 				
