@@ -363,7 +363,7 @@ margin-top:10px;
 								<!-- <li><a href="trainingAdminDashboard.action"><span>Admin Dashboard</span></a></li> -->
 								<li><a href="callCenterTrainingAdmin.action"><span>Caller Admin Dashboard</span></a></li>
 								<li><a href="callCenterTrainingAgentDashBoard.action"><span>Caller Dashboard</span></a></li>
-								<!-- <li><a href="trainingCampMainDashboard.action"><span>Training Feedback</span></a></li> -->
+								<li><a href="trainingCampMainDashboard.action"><span>Training Feedback</span></a></li>
 							</ul>
 						</div>
 					</li>
