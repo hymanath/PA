@@ -51,6 +51,9 @@ header.eventsheader {
     background-repeat: no-repeat;
     height: 71px;   
 }
+.mandatory{
+color: red !important;
+}
 </style>
 	</head>
 <body>
@@ -95,6 +98,7 @@ header.eventsheader {
                     	<h4 class="panel-title"></h4>
                     </div>
                     <div class="panel-body">
+						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;"/></center>
                     	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
 					</div>	
                </div>          
@@ -132,6 +136,7 @@ header.eventsheader {
 	<script src="css/Training/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 	<script src="css/Training/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 	<script src="js/highcharts/js/highcharts.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/blockui.js"></script>
 	<!-- <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 	<script src="dist/js/bootstrap.js" type="text/javascript"></script>
 	<script src="dist/DateRange/moment.js" type="text/javascript"></script>	
@@ -313,6 +318,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		}
 		 function getTdpCadreDetailsforASchedule(scheduleId)
 		 { 
+			$("#ajaxImage").show();
 			var jsObj={scheduleId:scheduleId }
 			$.ajax({
 			  type:'POST',
@@ -394,12 +400,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
                 str+='</div>'
               str+='</div>'
 		   }
+		   $("#ajaxImage").hide();
 		   $("#accordion").html(str);
 		}
 		
 	
 	 $(document).on('click','#updateId',function(){
-	   
+	   $.blockUI({image: src="./images/Optimizing Please Wait.gif"});
        var tdpCadreId=$(this).attr('attr-cadreId');
 	   var batchId=$(this).attr('attr-batchId');
 	   var jsObj={tdpCadreId:tdpCadreId,batchId:batchId}
@@ -529,7 +536,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				str+='<label>Goals</label>'
 				str+='</div>'
 				str+='<div class="col-md-4">'
-				str+='<label>Date & TIme</label>'
+				str+='<label>Date </label>'
 				str+='</div>'
 				
 				if(results.goalsList!=null && results.goalsList.length>0){
@@ -582,7 +589,8 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
-            	str+='<label>Leadership Level</label>'
+            	str+='<label>Leadership Level</label><span class="mandatory">*</span>'
+				str+='<div class="mandatory" id="leadershipLvlErrDivId"></div>';
                 str+='<select class="form-control" id="leadershipLevelId">'
 				str+='<option value="0">Select</option>'
                 for(var i in leaderShipLevelArray){
@@ -597,7 +605,8 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
-            	str+='<label>Communication Skills</label>'
+            	str+='<label>Communication Skills</label><span class="mandatory">*</span>'
+				str+='<div class="mandatory" id="commSkillsErrDivId"></div>';
                 str+='<select class="form-control" id="communicationSkillsId">'
                 str+='<option value="0">Select</option>'
                  for(var i in communicationSkillsArray){
@@ -612,7 +621,8 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
-            	str+='<label>Leadership Skills</label>'
+            	str+='<label>Leadership Skills</label><span class="mandatory">*</span>'
+				str+='<div class="mandatory" id="leadershipSkillsErrDivId"></div>';
                 str+='<select class="form-control" id="leaderShipSkillsId">'
                 str+='<option value="0">Select</option>'
                 for(var i in leaderShipSkillsArray){
@@ -627,7 +637,8 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
-            	str+='<label>Health</label>'
+            	str+='<label>Health</label><span class="mandatory">*</span>'
+				str+='<div class="mandatory" id="healthErrDivId"></div>';
                 str+='<select class="form-control" id="healthId">'
                 str+='<option value="0">Select</option>'
                 for(var i in healthStatusArray){
@@ -654,9 +665,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	$("#modalBodyId").html(str);
 	
 	var str1='';
-    str1+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	str1+='<span id="updatedId" style="display:none" class="text-success pull-left">Updated Successfully...</span>';
+	str1+='<span id="notUpdatedId" style="display:none" class="text-success pull-left">Sorry..Details Are Not Updated...</span>';
+	str1+='<span id="processingId" style="display:none" class="text-danger pull-left"><span><img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:15px;display:none;"/></span>Please Wait Updating Details...</span>';
+    str1+='<button type="button" class="btn btn-default" data-dismiss="modal" id="closePopUp">Close</button>';
     str1+='<button type="button" class="btn btn-primary" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
 	$("#modalFooterId").html(str1);
+	$.unblockUI();
 	$("#myModal").modal("show");
    }
    var existDeleteAchieveArray=[];
@@ -682,6 +697,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	
    function saveAllDetails(tdpCadreId,batchId)
    {
+   
        //feedbacks   
 	   var leaderShipLevel = $("#leadershipLevelId").val();
 	   var communicationSkills = $("#communicationSkillsId").val();
@@ -696,7 +712,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	        achieveArray.push($(this).val());
 		  }
 	   });
-	   //goals
+	    //goals
 	   var goalArray=[];
 	   
 	   $(".dateListClass").each(function(){
@@ -722,6 +738,26 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
          goalArray.push(goalObject);
 	   });
 	   
+	   if(leaderShipLevel == 0){
+	        $("#leadershipLvlErrDivId").html("Please Select Leadership Level");
+			return;
+	   }
+	   if(communicationSkills == 0){
+	        $("#commSkillsErrDivId").html("Please Select Communication Skills");
+			return;
+	   }
+	   if(leaderShipSkills == 0){
+	        $("#leadershipSkillsErrDivId").html("Please Select Leadership Skills");
+			return;
+	   }
+	   if(health == 0){
+	        $("#healthErrDivId").html("Please Select Health Level");
+			return;
+	   }
+	   
+	   $("#processingId").show();
+	$("#ajaxImage1").show();
+	   
 	   var jsObj=
 	   {	
 			achieveArray:achieveArray,
@@ -740,7 +776,18 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		  url :'saveDetailsOfCadreAction.action',
 		  data:{task:JSON.stringify(jsObj)},
 		}).done(function(result){
-			
+			if(result.resultCode == 1){
+				setTimeout(function(){
+				  $("#closePopUp").trigger("click");
+				}, 2000);
+				 $("#processingId").hide();
+				 $("#ajaxImage1").hide();
+				 $("#updatedId").show();
+			}else{
+				$("#processingId").hide();
+				 $("#ajaxImage1").hide();
+				 $("#notUpdatedId").show();
+			}
 		});
    }
 	</script>
