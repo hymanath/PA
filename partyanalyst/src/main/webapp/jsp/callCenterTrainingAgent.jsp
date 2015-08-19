@@ -471,7 +471,7 @@ str+='<td>'+result.subList[i].constituency+'</td>';
 str+='<td>'+result.subList[i].remarks+'</td>';
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'
-str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\');">Update Status</button>';
+str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');">Update Status</button>';
 str+='</td>';
 str+='</tr>';
 }
@@ -487,7 +487,7 @@ $("#memberInfoDiv").html(str);
 var tdpCadreId;
 var inviteeId;
 var inviteeCallerId;
-function setCadreInfo(cadreId,inviteId,inviteCallerId)
+function setCadreInfo(cadreId,inviteId,inviteCallerId,trainingCampBatchId)
 {
 tdpCadreId = cadreId;
 inviteeId = inviteId;
@@ -499,6 +499,10 @@ $(".scheduleStatuscehckbox").prop( "checked", false );
    $('.callback-div').hide();
 	$('.switchoff-div').hide();
 	$("#messageDiv").html("");
+	
+	if(trainingCampBatchId != null && trainingCampBatchId > 0)
+		$("#batchId").val(trainingCampBatchId);
+
 }
 function setDefaultImage(img){
 	  img.src = "dist/img/profileimage.png";
@@ -605,10 +609,10 @@ function setDefaultImage(img){
      $('#batchId').find('option:not(:first)').remove();
     for(var i in result)
 	{
-	if(result[i].id == batchId)
-	$("#batchId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
-	else
-	$("#batchId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	  /*if(result[i].id == batchId)
+	   $("#batchId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	   else*/
+	  $("#batchId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	}
    }
    
