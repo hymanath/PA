@@ -1157,7 +1157,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			idNameList = trainingCampService. getCallerAgentConstituencies(regVo.getRegistrationID(),jObj.getLong("id"));
+			idNameList = trainingCampService. getCallerAgentConstituencies(jObj.getLong("campCallerId"),jObj.getLong("id"));
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -1169,7 +1169,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			idNameList = trainingCampService.getCallerAgentMandals(regVo.getRegistrationID(),jObj.getLong("id"));
+			idNameList = trainingCampService.getCallerAgentMandals(jObj.getLong("campCallerId"),jObj.getLong("id"));
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -1181,7 +1181,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			idNameList = trainingCampService.getCallerAgentVillages(regVo.getRegistrationID(),jObj.getLong("id"));
+			idNameList = trainingCampService.getCallerAgentVillages(jObj.getLong("campCallerId"),jObj.getLong("id"));
 		}
 		catch (Exception e) {
 			// TODO: handle exception

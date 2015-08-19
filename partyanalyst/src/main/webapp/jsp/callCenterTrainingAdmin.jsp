@@ -2185,13 +2185,13 @@ var jObj={
 			  if(type == "batch")
 			  {
 			    $("#batchcallerOverViewDiv").html('');
-				if(result != null && result.length > 0)
+				
 				buildCallerOverView(result,'batchcallerOverViewDiv');
 			}
 			else
 			{
 			 $("#callerOverViewDiv").html('');
-			 if(result != null && result.length > 0)
+			
 			 buildCallerOverView(result,'callerOverViewDiv');
 			}
 			
@@ -2199,6 +2199,10 @@ var jObj={
 }
 function buildCallerOverView(resultList,divId)
 {
+
+if(resultList.trainingCampVOList == null || resultList.trainingCampVOList.length == 0)
+return;
+
 var result = resultList.trainingCampVOList[0].trainingCampVOList;
 
 var str ='';
@@ -2312,6 +2316,7 @@ result[i].interestedCount =0;
 str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
 str+='<tr class="custom-info">';
 str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - '+result[i].interestedCount+'&nbsp;';
+if(result[i].interestedCount > 0)
 str+='<input type="checkbox" class="callerscheck" value="'+result[i].id+'"/> </small></td>';
 str+='</tr>';
 str+='<tr class="custom-info">';
@@ -2371,6 +2376,7 @@ var batchId = $("#batchId").val();
 var batchCampId = $("#batchCampId").val();
 var batchProgramId = $("#batchProgramId").val();
 
+
 if(batchCampId == null || batchCampId == 0)
 {
   $("#batchErrorDiv").html("<div class='errorCls'>Please Select Camp</div>");
@@ -2397,6 +2403,11 @@ if(batchId == null || batchId == 0)
 if(callerId == null || callerId == 0)
 {
   $("#batchErrorDiv").html("<div class='errorCls'>Please Select Agent</div>");
+  return;
+}
+if(userIds == null || userIds.length == 0)
+{
+  $("#batchErrorDiv").html("<div class='errorCls'>Atleast One User Required</div>");
   return;
 }
 $("#batchProcessingImg").show();

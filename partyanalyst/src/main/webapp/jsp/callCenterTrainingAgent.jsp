@@ -866,6 +866,7 @@ function setDefaultImage(img){
    
    var jObj={
    id:id,
+   campCallerId:campCallerId,
 	task:""
 		};
 		$.ajax({
@@ -888,6 +889,7 @@ function setDefaultImage(img){
    
    var jObj={
    id:id,
+    campCallerId:campCallerId,
 	task:""
 		};
 		$.ajax({
@@ -910,6 +912,7 @@ function setDefaultImage(img){
    
    var jObj={
    id:id,
+    campCallerId:campCallerId,
 	task:""
 		};
 		$.ajax({
