@@ -779,23 +779,42 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
-	public List<Long> getAllocatedCountForConfirmation(Date fromDate,Date toDate,String type,Long callPurpose){
+	public List<Long> getAllocatedCountForConfirmation(Date fromDate,Date toDate,String type,Long callPurpose,Date todayDate){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
+		boolean isDateNull = false;
 		queryStr.append(" select distinct model.trainingCampScheduleInvitee.attendingBatchId  from TrainingCampScheduleInviteeCaller model " +
-				" where (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:todate) ");
-		if(type !=null){
+				" where  ");
+		/*if(type !=null){
 			queryStr.append(" and model.trainingCampScheduleInvitee.trainingCampSchedule.status = '"+type+"' ");
-		}
-		queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId is not null ");
+		}*/
+		queryStr.append(" model.trainingCampScheduleInvitee.attendingBatchId is not null ");
 		if(callPurpose !=null && callPurpose !=0l){
 			queryStr.append(" and model.campCallPurpose.campCallPurpose = :callPurpose ");
 		}
+		if(fromDate !=null && toDate !=null){
+			queryStr.append(" and (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:fromDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:todate)");
+			queryStr.append(" or date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) > :todate");
+		}
+		else
+		{
+			isDateNull = true;
+			queryStr.append(" and date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>:todayDate ");
+		}
 		
+		/*if(type !=null){
+			queryStr.append(" and model.scheduleInviteeStatus.status = '"+type+"' ");
+		}*/
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("todate",toDate);
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("todate",toDate);
+			}
+			if(isDateNull)
+			{
+				query.setParameter("todayDate", todayDate);
+			}
 		
 		if(callPurpose !=null && callPurpose !=0l){
 			query.setParameter("callPurpose",callPurpose);
