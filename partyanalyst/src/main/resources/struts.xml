@@ -10705,5 +10705,11 @@
 	  </result>
 	</action>
 	
+	<action name="getTheMinutePointsForAMeetingAction" class="partyMeetingAction" method="getTheMinutePointsForAMeeting">
+	   <result type="json" name="success">
+	       		<param name="root">partyMeetingVO</param>
+	  	</result>
+	</action>
+	
 </package>
 </struts>      
