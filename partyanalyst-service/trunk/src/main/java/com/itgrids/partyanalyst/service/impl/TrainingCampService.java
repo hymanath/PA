@@ -740,7 +740,12 @@ public class TrainingCampService implements ITrainingCampService{
 			if(!startDateString.isEmpty())
 				startDate= sdf.parse(startDateString);
 			if(!endDateString.isEmpty())
-			 endDate= sdf.parse(endDateString);
+				endDate= sdf.parse(endDateString);
+			
+			/*Date today = new DateUtilService().getCurrentDateAndTime();
+			today = sdf.parse(new SimpleDateFormat("MM/dd/yyyy").format(today));*/
+			
+			
 			Map<Long,TrainingCampScheduleVO> finalmap=new HashMap<Long,TrainingCampScheduleVO>();
 			
 			//1)getting All status and set to list.
@@ -3199,7 +3204,7 @@ public class TrainingCampService implements ITrainingCampService{
 			Date today = new DateUtilService().getCurrentDateAndTime();
 			today = format.parse(new SimpleDateFormat("MM/dd/yyyy").format(today));
 			
-			//get All Upcoming Schedules
+			//get All Upcoming Schedules 
 			List<Long>  scheduleIds=trainingCampScheduleDAO.getAllUpcomingTrainingCampSchedules(startDate,endDate,"Not Started",today);
 			
 			Long upcomingScheduleCount=0l;
