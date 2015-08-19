@@ -3992,6 +3992,11 @@ public class TrainingCampService implements ITrainingCampService{
 		try{
 			
 			Object[] cadreInfo= trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId);
+			Object[] designationDetails = tdpCommitteeMemberDAO.getPartyPositionBycadre(tdpCadreId);//tdpCommitteeLevel,role
+			String designation = "";
+			if(designationDetails != null && designationDetails.length > 0){
+				designation = designationDetails[0]+" level "+designationDetails[1];
+			}
 			if(cadreInfo!=null && cadreInfo.length>0){//cid,fname,mobile,cname,dname,pname,image
 				vo.setId(tdpCadreId);
 				vo.setName(cadreInfo[1]!=null?cadreInfo[1].toString():"");
@@ -4000,6 +4005,9 @@ public class TrainingCampService implements ITrainingCampService{
 				vo.setDistrictName(cadreInfo[4]!=null?cadreInfo[4].toString():"");
 				vo.setProgramName(cadreInfo[5]!=null?cadreInfo[5].toString():"");
 				vo.setImage(cadreInfo[6]!=null?cadreInfo[6].toString():"");
+				if(designation != null && designation.length() > 0){
+					vo.setDesignation(designation);
+				}
 			}
 			
 			Object[] feedBackInfo=trainingCampCadreFeedbackDetailsDAO.getFeedBackDetailsforCadre(tdpCadreId,batchId);
