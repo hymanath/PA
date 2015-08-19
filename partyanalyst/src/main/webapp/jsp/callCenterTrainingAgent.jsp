@@ -8,7 +8,8 @@
 <link href="training/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<!--<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">-->
+<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 <link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .filters-div
@@ -206,14 +207,14 @@
                         </div>
                         
                         <div class="col-md-4 m_top20">
-                        	<label>Call Back Date & Time</label>
+                        	<label>Call Back Date</label>
                             <div class="input-group">
                             	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <input class="form-control clearEl" id="CallbackTime">
                             </div>
                         </div>
                     	<div class="col-md-4 m_top20">
-                        	<label>Call Back Date & Time</label>
+                        	<label>Call Back Time</label>
                             <div class="input-group">
                             	<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 <input class="form-control clearEl" id="timepicker4">
@@ -245,8 +246,11 @@
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>	
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<!--<script src="dist/DateRange/moment.js" type="text/javascript"></script>	
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>-->
+<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
+	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+	
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 var purposeId = '${purposeId}';
@@ -287,9 +291,61 @@ $(".filters-button").click(function(){
 $(".remove-filters").click(function(){
 	$(".filters-div").hide();
 });
+/*
+ var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+	$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+  }
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#CallbackTime span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
+  $('#CallbackTime').daterangepicker(optionSet1, cb);
 
-filters-button
+  $('#CallbackTime').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#CallbackTime').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#CallbackTime').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#CallbackTime').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+});
+*/
 $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,locale: {
             format: 'MM/DD/YYYY'
         } }, function(start, end, label) {
