@@ -78,7 +78,9 @@ header.eventsheader {
                             	<div class="col-md-3">
                                 	<label>Type Of Meeting</label>
 									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
-                                    <select class="form-control" id="typeOfMeeting"></select>
+                                    <select class="form-control" id="typeOfMeeting">
+										<option> Select Meeting </option>
+									</select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
                                 </div>
                             	<!--<div class="col-md-3">
@@ -92,7 +94,7 @@ header.eventsheader {
                                     </select>
                                 </div>-->
                             	<div class="col-md-3">
-                                	<label>Select Date</label>
+                                	<label style="margin-left: 44px;">Select Date</label>
 									<small><div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;margin:5px 0px;">
 									  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
 									  <span></span> <b class="caret"></b>
