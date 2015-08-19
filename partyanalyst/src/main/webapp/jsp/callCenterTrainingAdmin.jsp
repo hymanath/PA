@@ -161,7 +161,7 @@ footer
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-8">
-							<table class="table table-bordered ">
+							<table class="table table-bordered "  style="margin-bottom:10px">
 								<tr>
 									<td style="text-align:center;" >
 										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
@@ -242,7 +242,7 @@ footer
 							</table>
 						</div>
 						<div class="col-md-4">
-							<table class="table table-bordered table-condensed">
+							<table class="table table-bordered table-condensed" style="margin-bottom:12px">
 								<tr>
 									<td style="text-align:center;" >
 										<ul class="list-inline m_bottom0">
@@ -290,7 +290,7 @@ footer
 									</td>
 								</tr>-->
 							</table>
-							<table class="table table-bordered table-condensed">
+							<table class="table table-bordered table-condensed" style="margin-bottom:12px">
 								<tr>
 									<td rowspan="2">UPCOMING SCHEDULE<br/><p class="text-center"><span id="upcmngSchCountId">0</span></p></td>
 									<td>Allocated to Agents <span class="pull-right" id="upAlctId">0</span></td>
