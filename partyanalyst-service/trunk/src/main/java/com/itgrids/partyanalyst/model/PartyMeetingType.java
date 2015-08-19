@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="party_meeting_type")
@@ -22,6 +29,9 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 	private String type;
 	private Integer orderNo;
 	private String code;
+	private PartyMeetingLevel partyMeetingLevel;
+	
+	private Long partyMeetingLevelId;
 	
 	public PartyMeetingType(){}
 
@@ -62,5 +72,27 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_meeting_level_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingLevel getPartyMeetingLevel() {
+		return partyMeetingLevel;
+	}
+
+	public void setPartyMeetingLevel(PartyMeetingLevel partyMeetingLevel) {
+		this.partyMeetingLevel = partyMeetingLevel;
+	}
+
+	@Column(name="party_meeting_level_id")
+	public Long getPartyMeetingLevelId() {
+		return partyMeetingLevelId;
+	}
+
+	public void setPartyMeetingLevelId(Long partyMeetingLevelId) {
+		this.partyMeetingLevelId = partyMeetingLevelId;
+	}
+	
 	
 }

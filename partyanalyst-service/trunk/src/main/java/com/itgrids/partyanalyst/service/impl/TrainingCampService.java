@@ -2634,21 +2634,25 @@ public class TrainingCampService implements ITrainingCampService{
 		return levelDetails;
 	}
 	
-	public List<CallStatusVO> getMeetingTypes(){
+	public List<CallStatusVO> getMeetingTypes(Long locationLevel){
 		
 		List<CallStatusVO> meetingTypes = new ArrayList<CallStatusVO>();
 		try {
 			LOG.info("Entered into getMeetingTypes");
-			List<PartyMeetingType> meetingTypesList = partyMeetingTypeDAO.getAll();
+			
+			List<Object[]> meetingTypesList = partyMeetingTypeDAO.getMeetingTypesBasedOnLocationLevel(locationLevel);
+			
 			if(meetingTypesList!=null && meetingTypesList.size()>0){
-				for (PartyMeetingType partyMeetingType : meetingTypesList) {
+				for (Object[] objects : meetingTypesList) {
 					CallStatusVO vo = new CallStatusVO();
-					vo.setId(partyMeetingType.getPartyMeetingTypeId());
-					vo.setMeetingType(partyMeetingType.getType());
+					
+					vo.setId((Long)objects[0]);
+					vo.setMeetingType(objects[1].toString());
+					
 					meetingTypes.add(vo);
 				}
-				
 			}
+			
 		}catch (Exception e) {
 			LOG.error("Exception raised in getMeetingTypes",e);
 		}
