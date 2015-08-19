@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,11 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
@@ -65,7 +69,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
@@ -85,12 +88,14 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
-import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
-import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingType;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
+import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
+import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory;
+import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
+import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
@@ -151,9 +156,13 @@ public class TrainingCampService implements ITrainingCampService{
     private ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO; 
     private ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO; 
     private ICadreHealthStatusDAO cadreHealthStatusDAO;
+
     private ICadreCommitteeService cadreCommitteeService;
     
-    
+    private ITrainingCampCadreFeedbackDetailsHistoryDAO trainingCampCadreFeedbackDetailsHistoryDAO;
+    private ITrainingCampCadreAchievementHistoryDAO trainingCampCadreAchievementHistoryDAO;
+    private ITrainingCampCadreGoalHistoryDAO trainingCampCadreGoalHistoryDAO;
+   
 	
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
@@ -171,6 +180,7 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+
 
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -488,6 +498,22 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setCadreHealthStatusDAO(ICadreHealthStatusDAO cadreHealthStatusDAO) {
 		this.cadreHealthStatusDAO = cadreHealthStatusDAO;
 	}
+	
+	public void setTrainingCampCadreFeedbackDetailsHistoryDAO(
+			ITrainingCampCadreFeedbackDetailsHistoryDAO trainingCampCadreFeedbackDetailsHistoryDAO) {
+		this.trainingCampCadreFeedbackDetailsHistoryDAO = trainingCampCadreFeedbackDetailsHistoryDAO;
+	}
+
+	public void setTrainingCampCadreAchievementHistoryDAO(
+			ITrainingCampCadreAchievementHistoryDAO trainingCampCadreAchievementHistoryDAO) {
+		this.trainingCampCadreAchievementHistoryDAO = trainingCampCadreAchievementHistoryDAO;
+	}
+
+	public void setTrainingCampCadreGoalHistoryDAO(
+			ITrainingCampCadreGoalHistoryDAO trainingCampCadreGoalHistoryDAO) {
+		this.trainingCampCadreGoalHistoryDAO = trainingCampCadreGoalHistoryDAO;
+	}
+
 	public List<BasicVO> getAllPrograms()
 	{
 		try{
@@ -4051,6 +4077,7 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			List<Object[]> goals=trainingCampCadreGoalDAO.getGoalsDetailsforCadre(tdpCadreId,batchId);
+			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 			if(goals!=null && goals.size()>0){
 				if(vo.getGoalsList()==null){
 					vo.setGoalsList(new ArrayList<SimpleVO>());
@@ -4059,7 +4086,7 @@ public class TrainingCampService implements ITrainingCampService{
 					SimpleVO simplevo=new SimpleVO();
 					 simplevo.setId(param[0]!=null?(Long)param[0]:0l);
 					 simplevo.setName(param[1]!=null?param[1].toString():"");
-					 simplevo.setDate(param[2]!=null?(Date)param[2]:null);
+					 simplevo.setDateString(param[2]!=null?sdf.format((Date)param[2]):null);
 					 vo.getGoalsList().add(simplevo);
 				}
 			}
@@ -4141,7 +4168,7 @@ public class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
+	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
 	{
 		final ResultStatus resultStatus=new ResultStatus();
 		try{
@@ -4172,9 +4199,23 @@ public class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
 					feedBackDetails.setRemarks(comments.trim().length()>0?comments:null);
-					trainingCampCadreFeedbackDetailsDAO.save(feedBackDetails);
+					feedBackDetails=trainingCampCadreFeedbackDetailsDAO.save(feedBackDetails);
 					
-					
+					//feedback details history.
+					TrainingCampCadreFeedbackDetailsHistory feedBackDetailshistory=new TrainingCampCadreFeedbackDetailsHistory();
+					feedBackDetailshistory.setTrainingCampCadreFeedbackDetailsId(feedBackDetails.getTrainingCampCadreFeedbackDetailsId());
+					feedBackDetailshistory.setTdpCadreId(feedBackDetails.getTdpCadreId());
+					feedBackDetailshistory.setCadreLeadershipLevelId(feedBackDetails.getCadreLeadershipLevelId());
+					feedBackDetailshistory.setCadreComminicationSkillsStatusId(feedBackDetails.getCadreComminicationSkillsStatusId());
+					feedBackDetailshistory.setCadreLeadershipSkillsStatusId(feedBackDetails.getCadreLeadershipSkillsStatusId());
+					feedBackDetailshistory.setCadreHealthStatusId(feedBackDetails.getCadreHealthStatusId());
+					feedBackDetailshistory.setRemarks(feedBackDetails.getRemarks());
+					feedBackDetailshistory.setInsertedBy(feedBackDetails.getInsertedBy());
+					feedBackDetailshistory.setUpdatedBy(feedBackDetails.getUpdatedBy());
+					feedBackDetailshistory.setInsertedTime(feedBackDetails.getInsertedTime());
+					feedBackDetailshistory.setUpdatedTime(feedBackDetails.getUpdatedTime());
+					feedBackDetailshistory.setTrainingCampBatchId(feedBackDetails.getTrainingCampBatchId());
+					trainingCampCadreFeedbackDetailsHistoryDAO.save(feedBackDetailshistory);
 					
 					//Achievement details saving or updating.
 					Long achieveCount=trainingCampCadreAchievementDAO.checkAchievementsForCadreBycadreAndBatch(tdpCadreId,batchId);
@@ -4196,9 +4237,62 @@ public class TrainingCampService implements ITrainingCampService{
 							Date date=new DateUtilService().getCurrentDateAndTime();
 							tca.setInsertedTime(date);
 							tca.setUpdatedTime(date);
-							trainingCampCadreAchievementDAO.save(tca);
+							tca=trainingCampCadreAchievementDAO.save(tca);
+							
+							//Achievement details history.
+							TrainingCampCadreAchievementHistory tcah=new TrainingCampCadreAchievementHistory();
+							tcah.setTrainingCampCadreAchievementId(tca.getTrainingCampCadreAchievementId());
+							tcah.setTdpCadreId(tca.getTdpCadreId());
+							tcah.setTrainingCampBatchId(tca.getTrainingCampBatchId());
+							tcah.setAchievement(tca.getAchievement());
+							tcah.setInsertedBy(tca.getInsertedBy());
+							tcah.setUpdatedBy(tca.getUpdatedBy());
+							tcah.setInsertedTime(tca.getInsertedTime());
+							tcah.setUpdatedTime(tca.getUpdatedTime());
+							trainingCampCadreAchievementHistoryDAO.save(tcah);
 						}
 					}
+				   //Goals details saving or updating.
+					Long goalCount=trainingCampCadreGoalDAO.checkGoalsForCadreBycadreAndBatch(tdpCadreId,batchId);
+                    if(goalCount==0){ //save
+						
+					}else{//update=delete+save
+						trainingCampCadreGoalDAO.deleteGoalsforACadre(tdpCadreId,batchId);
+					}
+                    if( goalsList!=null && goalsList.size()>0){
+                      SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+                      for(SimpleVO goal:goalsList){
+                    	  
+                    	  TrainingCampCadreGoal tcg=new TrainingCampCadreGoal();
+                    	  tcg.setTdpCadreId(tdpCadreId);
+                    	  tcg.setTrainingCampBatchId(batchId);
+                    	  tcg.setGoal(goal.getName());
+                    	  try{
+							tcg.setAchievedOn(sdf.parse(goal.getDateString()));
+						  }catch(ParseException e){
+							e.printStackTrace();
+						  }
+                    	  tcg.setInsertedBy(userId);
+                    	  tcg.setUpdatedBy(userId);
+						  Date date=new DateUtilService().getCurrentDateAndTime();
+						  tcg.setInsertedTime(date);
+						  tcg.setUpdatedTime(date);
+						  tcg=trainingCampCadreGoalDAO.save(tcg);
+						  
+						 //Goals details history.
+						   TrainingCampCadreGoalHistory tcgh=new TrainingCampCadreGoalHistory();
+						   tcgh.setTrainingCampCadreGoalId(tcg.getTrainingCampCadreGoalId());
+						   tcgh.setTdpCadreId(tcg.getTdpCadreId());
+						   tcgh.setTrainingCampBatchId(tcg.getTrainingCampBatchId());
+						   tcgh.setGoal(tcg.getGoal());
+						   tcgh.setAchievedOn(tcg.getAchievedOn());
+						   tcgh.setInsertedBy(tcg.getInsertedBy());
+						   tcgh.setUpdatedBy(tcg.getUpdatedBy());
+						   tcgh.setInsertedTime(tcg.getInsertedTime());
+						   tcgh.setUpdatedTime(tcg.getUpdatedTime());
+						   trainingCampCadreGoalHistoryDAO.save(tcgh);
+                      }
+                    }
 		  }
 		});
 		resultStatus.setResultCode(1);	
