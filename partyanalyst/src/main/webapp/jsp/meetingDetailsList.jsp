@@ -146,7 +146,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                         <div class="panel-body">
                                             <div id="addMoreDiv">
                                                 <div class="input-group bin-div m_top10" id="list1">
-                                                    <input type="text" class="form-control" id="minutes1"></input>
+                                                    <span type="text" class="form-control" id="minutes1"></span>
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </span>
@@ -166,7 +166,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 													</span>
                                                 </div>
                                            
-                                            <button class="btn btn-success btn-xs pull-right m_top20" onclick="myFunction()">ADD</button>
+                                            <button class="btn btn-success btn-xs pull-right m_top20 addMeetMint" onclick="myFunction()">ADD</button>
 											<br/><br/><div class="m_top20"><h4 class="text-bold"> Uploaded Documents<hr class="m_0" style="border-color:#666"/> </h4>
 
 												<div class="" id="mintueDocumentDivId"></div>
@@ -229,7 +229,25 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         </div>
     </div>
 </main>
-
+<!--------Minutes popup-------->
+<div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Meeting Minutes</h4>
+      </div>
+      <div class="modal-body">
+         	<input type="text" id="meetRaised"  class="form-control"/>
+		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveBtnMeetMin" data-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------->
 <div class="modal fade" id="myModashow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	 <div class="modal-dialog">
 		 <div class="modal-content">
@@ -381,8 +399,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 
     $("#mainheading").html("PARTY MEETINGS");
     var mainDivCount=1;
-    function myFunction() {
-        mainDivCount = parseInt(mainDivCount)+1;
+	/* function myFunction(){
+    	
+         mainDivCount = parseInt(mainDivCount)+1;
         var c = $("#list").clone(true);
             c.removeAttr("style");
             c.attr("id","list"+mainDivCount)
@@ -396,7 +415,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         $("#addMoreDiv").append(c);
 		$('.saveMinute').tooltip();
 		$('.trash').tooltip();
-}
+ } */
    var maximumDivCount=1;
    /* $(document).on('click', '.addingRequests', function(){
 	   maximumDivCount = parseInt(maximumDivCount)+1;
@@ -413,6 +432,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         $("#"+removedivId).remove();
         //$(this).remove();
     }); */
+	
+	$(document).on('click', '.addMeetMint', function(){
+			$("#mintModal").modal("show");
+			$("#meetRaised").val("");
+	 }); 		
     $(document).on('click', '.trash', function(){
         
 		var divId = $(this).attr("attr_txt");
@@ -705,15 +729,22 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				   for(var i in result.minutesDetails){
 					   mainDivCount=i;
-						str+='<div class="input-group bin-div m_top10" id="list'+mainDivCount+'">';
-						str+='<input type="text" class="form-control" id="minutes'+mainDivCount+'" onclick=enableSaveOption("'+mainDivCount+'"); value="'+result.minutesDetails[i].minutePoint+'"></input>';
-						str+='<span class="input-group-addon trash" style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
-							str+='<i class="glyphicon glyphicon-trash"></i>';
+						str+='<div class=" m_top10" id="list'+mainDivCount+'">';
+						str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
+						str+='<div class="pull-right" style="margin-right:5px;">';
+				       str+=' <button class="btn btn-default btn-xs ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
+					   str+=' <button class="btn btn-default btn-xs updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
+					   str+=' </div>';
+					    str+=' </div>';
+					   
+						/* str+='<span class="input-group-addon trash " style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
+						str+='<i class="glyphicon glyphicon-trash"></i>';
 						str+='</span>';
 						str+='<span class="input-group-addon saveMinute" style="display:none;" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'">';
-							str+='<i class="glyphicon glyphicon-ok"></i>';
-						str+='</span>';
-						str+='</div>';
+						str+='<i class="glyphicon glyphicon-ok"></i>';
+						str+='</span>'; */
+						
+						
 				   }
 				   $("#addMoreDiv").html(str);
 				   $('.trash').tooltip()
@@ -829,10 +860,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		   }
 	   });
 	}
+	$(document).on('click', '.updatedMeetMin', function(){
+		$("#mintModal").modal("show");
+		var meetmin=$(this).parent().parent().find(".updatedMeetMintValue").text();
+		$("#meetRaised").val(meetmin);
+		
+		var attrId1 = $(this).attr("attr_minuteId");
+		 $("#saveBtnMeetMin").attr("attr_minuteId",attrId1);
+		
+	});
 	
-	function enableSaveOption(txtBoxCnt){
+	/* function enableSaveOption(txtBoxCnt){
+		
 		$("#save"+txtBoxCnt).show();
-	}
+	} */
 	
 	$(document).on('click', '.saveMinute', function(){
 		var saveBtnId = $(this).attr("id");
@@ -852,7 +893,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}).done(function(result){
 		   if(result=="success"){
 			   alert("Updated Successfully");
-			  $("#"+saveBtnId).hide();
+			 // $("#"+saveBtnId).hide();
 		   }
 		});
 	});
