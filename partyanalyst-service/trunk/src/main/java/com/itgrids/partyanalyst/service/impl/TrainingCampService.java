@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO;
@@ -144,12 +145,22 @@ public class TrainingCampService implements ITrainingCampService{
 	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;
     private ITrainingCampCadreAchievementDAO trainingCampCadreAchievementDAO;
     private ITrainingCampCadreGoalDAO trainingCampCadreGoalDAO;
-    
+    private IUserDAO userDAO;
 	private ICadreLeadershipLevelDAO cadreLeadershipLevelDAO; 
     private ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO; 
     private ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO; 
     private ICadreHealthStatusDAO cadreHealthStatusDAO;
 	
+    
+    
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -1181,6 +1192,7 @@ public class TrainingCampService implements ITrainingCampService{
 					if(programWiseSceduleWiseMap != null && programWiseSceduleWiseMap.size()>0)
 					{
 						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+						Map<Long,Long> allDiaCallsscheduleWiseMap = null;
 						for (String programStr : programWiseSceduleWiseMap.keySet()) {
 							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = programWiseSceduleWiseMap.get(programStr);
 							Map<String,Map<Long,Long>> allCallsCampWiseMap =  programWiseCallsSceduleWiseMap.get(programStr);
@@ -1193,7 +1205,8 @@ public class TrainingCampService implements ITrainingCampService{
 								for (String campNameStr : campWiseMap.keySet()) {
 									Map<Long,List<TrainingCampVO>> scheduleWiseCountMap = campWiseMap.get(campNameStr);
 									Map<Long,Long> allCallsscheduleWiseMap =  allCallsCampWiseMap.get(campNameStr);
-									Map<Long,Long> allDiaCallsscheduleWiseMap =  allDiaCallsCampWiseMap.get(campNameStr);
+									if(allDiaCallsCampWiseMap != null){
+								      allDiaCallsscheduleWiseMap =  allDiaCallsCampWiseMap.get(campNameStr);}
 									//Map<Long,Long> allNotDialdCallsscheduleWiseMap =  allNotDialdCallsCampWiseMap.get(campNameStr);
 									
 									programVO.setTrainingCampName(campNameStr);
@@ -1210,7 +1223,10 @@ public class TrainingCampService implements ITrainingCampService{
 											Long unDialdCallsCount=0l;
 											
 											allocatedCallsCount =  allCallsscheduleWiseMap.get(scheduleId);
+											if(allDiaCallsscheduleWiseMap != null)
+											{
 											dialdCallsCount =  allDiaCallsscheduleWiseMap.get(scheduleId);
+											}
 											
 											if(allocatedCallsCount !=null && allocatedCallsCount !=0l){
 												unDialdCallsCount =  allocatedCallsCount - dialdCallsCount;
@@ -3823,7 +3839,7 @@ public class TrainingCampService implements ITrainingCampService{
 						if(list != null)
 						{
 							TrainingCampVO userVO = new TrainingCampVO();
-							userVO.setName(list.get(0).getName());
+							userVO.setName(userDAO.get(callerId).getFirstName());
 							userVO.setTrainingCampVOList(list);
 							userVO.setId(callerId);
 							trainingCampvoList.add(userVO);
