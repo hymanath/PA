@@ -2135,7 +2135,7 @@ $("#trainingBatchProcessImg").show();
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 
 			  $("#trainingBatchProcessImg").hide();
-			   buildAdminCallerOverView(resultList);
+			   buildAdminCallerOverView(result);
 			$("#assignBatchId").prop('disabled', false);
 		   });
 }
