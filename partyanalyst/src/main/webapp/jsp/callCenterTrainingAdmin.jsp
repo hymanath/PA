@@ -95,6 +95,7 @@ footer
 #processingImg{clear: both; margin: -26px -25px 0px 0px; float: right;}
 #batchProcessingImg{clear: both; margin: -26px -15px 0px 0px; float: right;}
 .errorCls{color: red; font-size: 13px; margin-left: 14px;}
+#agentProcessingImg,#trainingBatchProcessImg{margin-left: 12px;}
 </style>
 <body>
 <header  class="eventsheader">
@@ -556,6 +557,7 @@ footer
 				</div>  
 				<div class="col-md-12 m_top10">
 					<label>Select Training Batch / Date</label>
+					<img src="images/icons/search.gif" style="display:none" id="trainingBatchProcessImg"/>
 					<select class="form-control border-radius-0" id="batchId" onchange="clearErrMsg();getCallerOverViewForAdmin();">
 					<option value="0">Select Batch</option>	
 					</select>
@@ -638,7 +640,7 @@ footer
 				</div>  
 				
 				<div class="col-md-12 ">
-					<label>Select Call Center Agent Name</label>
+					<label>Select Call Center Agent Name</label><img src="images/icons/search.gif" style="display:none;" id="agentProcessingImg">
 					<select class="form-control border-radius-0" id="batchAgentId" onchange="getCallerOverView('batch');">
 						
 					</select>					
@@ -1994,7 +1996,7 @@ var agentId = $("#batchAgentId").val();
 if(agentId == 0)
 return;
 $("#batchErrorDiv").html("");
-
+$("#agentProcessingImg").show();
 }
 else{
 var agentId = $("#agentId").val();
@@ -2016,7 +2018,7 @@ var jObj={
 			  if(type == "batch")
 			  {
 			    $("#batchcallerOverViewDiv").html('');
-				
+				$("#agentProcessingImg").hide();
 				buildCallerOverView(result,'batchcallerOverViewDiv');
 			}
 			else
@@ -2118,6 +2120,7 @@ var programId =$("#batchProgramId").val();
 var scheduleId = $("#batchScheduleId").val();
 var batchId =$("#batchId").val();
 $("#AdminCallersOverview").html('');
+$("#trainingBatchProcessImg").show();
   var jObj={
   campId:campId,
   programId:programId,
@@ -2131,6 +2134,7 @@ $("#AdminCallersOverview").html('');
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 
+			  $("#trainingBatchProcessImg").hide();
 			   buildAdminCallerOverView(result);			  
 			
 		   });
