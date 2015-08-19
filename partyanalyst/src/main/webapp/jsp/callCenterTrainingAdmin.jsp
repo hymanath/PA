@@ -662,9 +662,9 @@
 					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
 				</div>-->
 				<div class="col-md-12 m_top20">
+				   <div id="batchSuccessMsgDiv"></div>
 					<button class="btn btn-success btn-block border-radius-0" 
 					onclick="assignBatch();">Assign to Agent</button><img src="images/icons/search.gif" id="batchProcessingImg" style="display:none;"/>
-					<div id="batchSuccessMsgDiv"></div>
 				</div>  
 			</div>
 		</div>
@@ -745,6 +745,7 @@
 					<h5 style="color:#ff6666 !important;">Pending Calls 30 + New Calls 20 = 50</h5>
 				</div>-->
 				<div class="col-md-12 m_top20">
+				   <div id="agentSuccessMsgDiv"></div>
 					<button class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button><img src="images/icons/search.gif" id="processingImg" style="display:none;"/>
 				</div>  
 			</div>
@@ -1863,6 +1864,7 @@ $("#scheduleProcessImg").show();
 		data:{task:JSON.stringify(jsObj)},
 	}).done(function(result){
 		$("#scheduleProcessImg").hide();
+		$("#agentSuccessMsgDiv").html("");
 		$(".successDivCls").html("");
 		buildScheduleMembers(result);
 	});
@@ -2055,6 +2057,7 @@ function assignSchedule()
 {
 $("#callCenterErrorDiv").html("");	
 $("#errorMsgDivId").html("");
+$("#agentSuccessMsgDiv").html("");
 var districtIds = new Array();
 var constiIds = new Array();
 var mandalIds = new Array();
@@ -2142,12 +2145,12 @@ var jObj={
 			  $("#processingImg").hide();			  
 			  if(result.message == "SUCCESS")
 			  {
-				 $("#errorMsgDivId").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
+				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
 				getScheduleAvailableCallsCount();
 			  }  
 			  else
 			  {
-				 $("#errorMsgDivId").html("Error Occured! Try Again...").css("color:red;"); 
+				 $("#agentSuccessMsgDiv").html("Error Occured! Try Again...").css("color:red;"); 
 			  }
 			  //buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
@@ -2181,13 +2184,15 @@ var jObj={
 			  }).done(function(result){ 
 			  if(type == "batch")
 			  {
-			  $("#batchcallerOverViewDiv").html('');
+			    $("#batchcallerOverViewDiv").html('');
+				if(result != null && result.length > 0)
 				buildCallerOverView(result,'batchcallerOverViewDiv');
 			}
 			else
 			{
-			$("#callerOverViewDiv").html('');
-			buildCallerOverView(result,'callerOverViewDiv');
+			 $("#callerOverViewDiv").html('');
+			 if(result != null && result.length > 0)
+			 buildCallerOverView(result,'callerOverViewDiv');
 			}
 			
 		   });
@@ -2438,6 +2443,7 @@ function clearAssignAgent()
 	$("#avaliableCallsCount").html("");
 	$("#callCenterErrorDiv").html("");
 	$("#errorMsgDivId").html("");
+	$("#agentSuccessMsgDiv").html("");
 }
 
 function clearBatchPopupFields()
