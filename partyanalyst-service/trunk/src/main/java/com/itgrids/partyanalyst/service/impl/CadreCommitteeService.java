@@ -15477,6 +15477,106 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return finalList;
 	}
 	
+	public List<IdNameVO> getLocationNameByLocationIds(List<Long> locationIds, Long locationLevel){
+		LOG.debug(" ENTERED INTO getLocationNameByLocationIds");
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			if(locationLevel.equals(1l)){
+				if(locationIds.get(0).equals(1)){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(1l);
+					vo.setName("AndhraPradesh");
+					finalList.add(vo);
+				}else if(locationIds.get(0).equals(1)){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(36l);
+					vo.setName("Telangana");
+					finalList.add(vo);
+				}
+			}else if(locationLevel.equals(2l)){
+				List<Object[]> distRslt = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+				if(distRslt!=null && distRslt.size()>0){
+					for(Object[] obj:distRslt){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(3l)){
+				List<Object[]> constRslt = constituencyDAO.getConstituencyNameByConstituencyIdsList(locationIds);
+				if(constRslt!=null && constRslt.size()>0){
+					for(Object[] obj:constRslt){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(4l)){
+				List<Object[]> tehsilRslt = tehsilDAO.getTehsilNameByTehsilIdsList(locationIds);
+				if(tehsilRslt!=null && tehsilRslt.size()>0){
+					for(Object[] obj:tehsilRslt){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(5l)){
+				List<Object[]> lebRslt = localElectionBodyDAO.findByLocalElecBodyIds(locationIds);
+				if(lebRslt!=null && lebRslt.size()>0){
+					for(Object[] obj:lebRslt){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString()+" "+obj[2].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(6l)){
+				List<Object[]> divisions = assemblyLocalElectionBodyWardDAO.getWardDetailsById(locationIds);
+				if(divisions!=null && divisions.size()>0){
+					for(Object[] obj:divisions){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(7l)){
+				List<Object[]> panchayats = panchayatDAO.getPanchayatsByPanchayatIdsList(locationIds);
+				if(panchayats!=null && panchayats.size()>0){
+					for(Object[] obj:panchayats){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}else if(locationLevel.equals(8l)){
+				List<Object[]> wards = constituencyDAO.getWardDetailsById(locationIds);
+				if(wards!=null && wards.size()>0){
+					for(Object[] obj:wards){
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						finalList.add(vo);
+					}
+					
+				}
+			}
+		}catch (Exception e) {
+			LOG.error(" ERROR in getLocationNameByLocationIds",e);
+		}
+		return finalList;
+	}
+	
 	
 	
 	

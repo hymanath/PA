@@ -33,14 +33,11 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		
 	public void testFindByLocalElectionBody()
 	{
-		List result = assemblyLocalElectionBodyWardDAO.findWardsByAssemblyLocalBody(132l,"2009");
-		System.out.println("Results Size:"+result.size());
-		for(int i = 0;i<result.size();i++)
-		{
-			Object[] obj = (Object[])result.get(i);
-			System.out.println("id:"+Long.parseLong(obj[0].toString()));
-			System.out.println("name:"+obj[1].toString());
-		}
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(31811l);
+
+		List<Object[]> rslt = assemblyLocalElectionBodyWardDAO.getWardDetailsById(locationIds);
+		System.out.println(rslt.get(0)[0]+" "+rslt.get(0)[1]);
 	}
 	
 	/*public void testFindByConstituencyIdAndYear(){
