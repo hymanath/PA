@@ -672,7 +672,7 @@ footer
 				</div>-->
 				<div class="col-md-12 m_top20">
 				   <div id="batchSuccessMsgDiv"></div>
-					<button class="btn btn-success btn-block border-radius-0" 
+					<button class="btn btn-success btn-block border-radius-0" id="assignBatchId"
 					onclick="assignBatch();">Assign to Agent</button><img src="images/icons/search.gif" id="batchProcessingImg" style="display:none;"/>
 				</div>  
 			</div>
@@ -757,7 +757,7 @@ footer
 				</div>-->
 				<div class="col-md-12 m_top20">
 				   <div id="agentSuccessMsgDiv"></div>
-					<button class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button><img src="images/icons/search.gif" id="processingImg" style="display:none;"/>
+					<button id="assignSchedulebtn" class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button><img src="images/icons/search.gif" id="processingImg" style="display:none;"/>
 				</div>  
 			</div>
 		</div>
@@ -1700,6 +1700,7 @@ $("#scheduleProcessImg").show();
 		$("#agentSuccessMsgDiv").html("");
 		$(".successDivCls").html("");
 		buildScheduleMembers(result);
+		$("#assignSchedulebtn").prop('disabled', false);
 	});
 }
 var index = 0;
@@ -1917,7 +1918,6 @@ if($(this).is(':checked'))
 });
 
 
-
 var scheduleId = $('#scheduleId').val();
 var callerId  = $('#agentId').val();
 var campId = $("#campId").val();
@@ -1955,7 +1955,7 @@ if(districtIds.length == 0 && constiIds.length == 0)
 $("#processingImg").show();
 
 var callPurposeId = 1;
-
+$("#assignSchedulebtn").prop('disabled', true);
 var jObj={
 		districtIds:districtIds,
 		constiIds:constiIds,
@@ -1978,10 +1978,12 @@ var jObj={
 			  {
 				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
 				getScheduleAvailableCallsCount();
+				
 			  }  
 			  else
 			  {
 				 $("#agentSuccessMsgDiv").html("Error Occured! Try Again...").css("color:red;"); 
+				 $("#assignSchedulebtn").prop('disabled', false);
 			  }
 			  //buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
@@ -2133,8 +2135,7 @@ $("#trainingBatchProcessImg").show();
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 
 			  $("#trainingBatchProcessImg").hide();
-			   buildAdminCallerOverView(result);			  
-			
+			$("#assignBatchId").prop('disabled', false);
 		   });
 }
 function buildAdminCallerOverView(resultList)
@@ -2244,6 +2245,7 @@ if(userIds == null || userIds.length == 0)
   return;
 }
 $("#batchProcessingImg").show();
+$("#assignBatchId").prop('disabled', true);
 var callPurposeId = 2;
 var jObj={
 		membersCount:0,
@@ -2265,10 +2267,12 @@ var jObj={
 			  {
 				 $("#batchSuccessMsgDiv").html("<div class='successDivCls'>Assign Members to Batch Successfully</div>");
 				 //getCallerOverView('batch');
+				 getCallerOverViewForAdmin();
 			  }  
 			  else
 			  {
 				 $("#batchSuccessMsgDiv").html("Error Occured! Try Again...").css("color:red;"); 
+				 $("#assignBatchId").prop('disabled', false);
 			  }
 			//buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
