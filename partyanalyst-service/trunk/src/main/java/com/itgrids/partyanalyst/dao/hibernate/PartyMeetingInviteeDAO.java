@@ -55,4 +55,12 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<String> getPartyMeetingInvittees(Long partyMeetingId)
+	{
+		Query query = getSession().createQuery("SELECT DISTINCT model.tdpCadre.memberShipNo FROM PartyMeetingInvitee model where model.partyMeeting.partyMeetingId = :partyMeetingId");
+		query.setParameter("partyMeetingId",partyMeetingId);
+		return query.list();
+	}
+	
 }
