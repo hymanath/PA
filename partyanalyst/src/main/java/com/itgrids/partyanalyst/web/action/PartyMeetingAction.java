@@ -236,4 +236,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getTheMinutePointsForAMeeting(){
+		try {
+			LOG.info("Entered into getTheMinutePointsForAMeeting");
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingVO = partyMeetingService.getTheMinutePointsForAMeeting(jObj.getLong("partyMeetingId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTheMinutePointsForAMeeting",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

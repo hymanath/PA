@@ -248,7 +248,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveBtnMeetMin" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-primary saveMinute" id="saveBtnMeetMin" attr_minuteid="0" data-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>
@@ -320,6 +320,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
 <link rel="stylesheet" type="text/css" href="pdfexpand/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+<script type="text/javascript" src="js/blockui.js"></script>
 <script type="text/javascript">
 
 // Load the Google Transliterate API
@@ -446,8 +447,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     $(document).on('click', '.trash', function(){
         
 		var divId = $(this).attr("attr_txt");
+		var divCount = $(this).attr("attr_div_count");
         $("#"+divId).remove();
-        $(this).remove();
+        $("#save"+divCount).remove();
+		$(this).remove();
+		
 		
 		var minuteId = $(this).attr("attr_minuteId");
 		
@@ -500,7 +504,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                 task:"getDistrictsForState"               
     }
     $.ajax({
-          type:'GET',
+          type:'POST',
           url: 'getDistrictsForStateAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)}
@@ -543,7 +547,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             task:"getConstituenciesForDistricts"               
         }
         $.ajax({
-              type:'GET',
+              type:'POST',
               url: 'getConstituenciesForADistrictAjaxAction.action',
               dataType: 'json',
               data: {task:JSON.stringify(jsObj)}
@@ -686,14 +690,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         }
     }
 	
-	var globalLocationId=0;
 	function getPartyMeetingMinutesAtrDetails(partyMeetingID){
 		
 		var jsObj={				
 			partyMeetingID : partyMeetingID
 		}
 		$.ajax({
-			  type:'POST',
+			  type:'GET',
 			  url: 'getPartyMeetingMinutesAtrDetailsAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -738,7 +741,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						str+='<div class=" m_top10" id="list'+mainDivCount+'">';
 						str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 						str+='<div class="pull-right" style="margin-right:5px;">';
-				       str+=' <button class="btn btn-default btn-xs ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
+				       str+=' <button class="btn btn-default btn-xs ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
 					   str+=' <button class="btn btn-default btn-xs updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					    str+=' </div>';
@@ -851,7 +854,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#atrDivId").html(str);
 				    $('.ToolTipDiv').tooltip()
 				   for(var i in result.atrDetails){
-					   //globalLocationId = result.locationValue;
 					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
 					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
 					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
@@ -882,10 +884,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	} */
 	
 	$(document).on('click', '.saveMinute', function(){
-		var saveBtnId = $(this).attr("id");
-		var textBoxId = $(this).attr("attr_txt");
-		var minuteText = $("#"+textBoxId).val();
-		var minuteId = $(this).attr("attr_minuteId");
+		//var saveBtnId = $(this).attr("id");
+		//var textBoxId = $(this).attr("attr_txt");
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ababab;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		var minuteText = $("#meetRaised").val();
+		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
 			minuteId : minuteId,
 			minuteText : minuteText,
@@ -898,11 +901,45 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   if(result=="success"){
-			   alert("Updated Successfully");
-			 // $("#"+saveBtnId).hide();
+			   //alert("Updated Successfully");
+			   rebuildMinutes(partyMeetingId)
+		   }else{
+			   alert("Please Try Again");
+			   $.unblockUI();
 		   }
 		});
 	});
+	
+	function rebuildMinutes(partyMeetingId){
+		var jsObj={		
+			partyMeetingId : partyMeetingId//global var
+		}
+		$.ajax({
+			  type:'POST',
+			  url: 'getTheMinutePointsForAMeetingAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.minutesDetails!=null && result.minutesDetails.length>0){
+			   minutesFiles = result.minutesDetails.length;
+			   var str='';
+			   for(var i in result.minutesDetails){
+				   mainDivCount=i;
+					str+='<div class=" m_top10" id="list'+mainDivCount+'">';
+					str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
+					str+='<div class="pull-right" style="margin-right:5px;">';
+				   str+=' <button class="btn btn-default btn-xs ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
+				   str+=' <button class="btn btn-default btn-xs updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
+				   str+=' </div>';
+					str+=' </div>';
+				}
+			   $("#addMoreDiv").html(str);
+			   $('.trash').tooltip()
+			}
+			$.unblockUI();
+			alert("Updated Successfully");
+		});
+	}
 	
 	$("#uploadMinutesDocsId").click(function(){
 		$("#partyMeetingId").val(partyMeetingId);
@@ -975,7 +1012,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			partyMeetingId : '${partyMeetingId}'
 		}
 		$.ajax({
-			  type:'POST',
+			  type:'post',
 			  url: 'getDocumentDetailsForAMeetingAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -1029,7 +1066,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			docId : docId
 		}
 		$.ajax({
-			  type:'POST',
+			  type:'post',
 			  url: 'deletePartyMeetingDocumentAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -1080,6 +1117,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	$(document).on('click', '#saveBtn', function(){
 		//alert($("#locationDivId option:selected").val());
+		//$.blockUI({ message: "<h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ababab;'><h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var request = $("#request").val();
 		var ActionTaken = $("#actionTaken").val();
 		var raisedBy = $("#raisedBy").val();
@@ -1103,10 +1142,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result=="success"){
-				alert("Updated Successfully");
+				//alert("Updated Successfully");
 				getAtrPointsForAMeeting(partyMeetingId);
 			}else{
 				alert("Please Try Again");
+				$.unblockUI();
 			}
 		});	
 		
@@ -1179,6 +1219,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#atrDivId").html("<h5>No ATR Points</h5>");
 				  // getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
 			   }
+			   $.unblockUI();
+			   alert("Updated Successfully");
 		});
 	}
 	
@@ -1202,7 +1244,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			docSourceType:docSourceType
 		}
 		$.ajax({
-			type:'GET',
+			type:'POST',
 			url: 'getDocsOfMeetingAction.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
