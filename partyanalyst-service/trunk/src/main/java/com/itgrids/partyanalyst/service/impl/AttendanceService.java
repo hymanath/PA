@@ -12,12 +12,14 @@ import com.itgrids.partyanalyst.dao.IAttendanceErrorDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceTabUserDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingLocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
@@ -48,7 +50,13 @@ public class AttendanceService implements IAttendanceService{
 	private IPartyMeetingAttendanceTabUserDAO partyMeetingAttendanceTabUserDAO;
 	private ITrainingCampAttendanceTabUserDAO trainingCampAttendanceTabUserDAO;
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
+	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO;
 	
+	public void setPartyMeetingInviteeDAO(
+			IPartyMeetingInviteeDAO partyMeetingInviteeDAO) {
+		this.partyMeetingInviteeDAO = partyMeetingInviteeDAO;
+	}
+
 	public void setTrainingCampBatchDAO(ITrainingCampBatchDAO trainingCampBatchDAO) {
 		this.trainingCampBatchDAO = trainingCampBatchDAO;
 	}
@@ -441,5 +449,19 @@ public class AttendanceService implements IAttendanceService{
 			LOG.error("Exception Occured in setPartyMeetingLocationVODetailsByPartyMeeting() Method - ",e);
 		}
 		return locationVO;
+	}
+	
+	public PartyMeetingInviteeVO getPartyMeetingInvittees(Long partyMeetingId)
+	{
+		PartyMeetingInviteeVO result = new PartyMeetingInviteeVO();
+		try{
+			List<String> list = partyMeetingInviteeDAO.getPartyMeetingInvittees(partyMeetingId);
+			result.setPartyMeetingId(partyMeetingId);
+			result.setInviteeList(list);
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in getPartyMeetingInvittees Method() - ",e);
+		}
+		return result;
 	}
 }
