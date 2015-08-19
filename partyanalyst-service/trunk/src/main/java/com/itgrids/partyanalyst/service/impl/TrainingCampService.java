@@ -3256,7 +3256,7 @@ public class TrainingCampService implements ITrainingCampService{
 			List<Long> batches = trainingCampScheduleInviteeDAO.getUpcomingBatchConfirmation(startDate,endDate,IConstants.INTERESTED,today);
 			
 			Long btchTotalCnt=0l;
-			if(batches !=null){
+			if(batches !=null && batches.size()>0){
 				btchTotalCnt=(long) batches.size();
 			}
 			
@@ -3266,7 +3266,7 @@ public class TrainingCampService implements ITrainingCampService{
 			Long allocatedconfirmedCnt=0l;
 			Long btchNotAllocated =0l; 
 			
-			if(allocatedConfirmed !=null){
+			if(allocatedConfirmed !=null && allocatedConfirmed.size()>0){
 				allocatedconfirmedCnt =(long) allocatedConfirmed.size();
 			}
 			
