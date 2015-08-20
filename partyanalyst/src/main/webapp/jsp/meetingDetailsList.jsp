@@ -158,7 +158,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											<table class="table table-bordered">
 												<tr>
 													<td>
-														<h4 class="m_0 text-center">Total MinitePoints </h4>
+														<h4 class="m_0 text-center">Total Minute Points </h4>
 														<h2 class="m_0 text-center"><span id="minitePointsCount">0</span></h2>
 													</td>
 													<td>
@@ -233,7 +233,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 										<table class="table table-bordered">
 											<tr>
 												<td>
-													<h4 class="m_0 text-center">Total ATRPoints </h4>
+													<h4 class="m_0 text-center">Total ATR Points </h4>
 													<h2 class="m_0 text-center"><span id="atrPointsCount">0</span></h2>
 												</td>
 												<td>
