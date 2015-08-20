@@ -486,7 +486,7 @@ margin-top:10px;
 							<div>
 							<ul>
 					
-					<li><a href="meetingList.action"><span> Meeting DashBoard  </span></a></li>
+					<li><a href="meetingList.action"><span> Meeting Min & Atr  </span></a></li>
 					</ul>
 						</div>
 					</li>
