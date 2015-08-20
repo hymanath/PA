@@ -110,6 +110,8 @@ public class CadreCommitteeMemberVO {
 	private String areaType;
 	private Long invitationCount=0l;
 	
+	private String enrollmentYears;
+	
 	
 	public Long getInvitationCount() {
 		return invitationCount;
@@ -656,7 +658,11 @@ public class CadreCommitteeMemberVO {
 	public void setAbsentCount(Long absentCount) {
 		this.absentCount = absentCount;
 	}
-	
-	
+	public String getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(String enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	
 }

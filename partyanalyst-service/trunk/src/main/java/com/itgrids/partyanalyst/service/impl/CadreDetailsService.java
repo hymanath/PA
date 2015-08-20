@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -87,6 +88,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ICandidateContestedLocationDAO candidateContestedLocationDAO; 
 	private IEventTypeDAO eventTypeDAO;
 	private IEventInviteeDAO eventInviteeDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	
 	
 	public IEventInviteeDAO getEventInviteeDAO() {
 		return eventInviteeDAO;
@@ -323,7 +326,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 			ICandidateContestedLocationDAO candidateContestedLocationDAO) {
 		this.candidateContestedLocationDAO = candidateContestedLocationDAO;
 	}
+	
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
 
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
@@ -923,7 +934,24 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Long localElctioniBodyId=boothDAO.getLocalElectionBody(cadreDetailsVO.getTehsilId());
 				
 				cadreDetailsVO.setLocalElectionBody(localElctioniBodyId !=null ? localElctioniBodyId.longValue() : 0l);
-			} 
+			}
+			
+			//adding previous Enrollment Years
+			
+			//Long maxEnrollmentYear=tdpCadreEnrollmentYearDAO.getMaxRecordFromEnrollmentYear(cadreId);
+			List<Long> enrollmentYears = tdpCadreEnrollmentYearDAO.getPreviousElectionYearsOfCadre(cadreId);
+			
+			String cadreEnrollmentYears = "";
+			if(enrollmentYears !=null && enrollmentYears.size() >0 ){
+				for (Long long1 : enrollmentYears) {
+					cadreEnrollmentYears += long1.toString()+",";
+				}
+			}
+			if(cadreEnrollmentYears !=null && !cadreEnrollmentYears.isEmpty()){
+				cadreEnrollmentYears = cadreEnrollmentYears.substring(0,cadreEnrollmentYears.length()-1);
+			}
+			
+			cadreDetailsVO.setEnrollmentYears(cadreEnrollmentYears);
 			
 			return cadreDetailsVO;
 			
