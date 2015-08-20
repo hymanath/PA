@@ -293,10 +293,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
       <div class="modal-body">
          	<input type="text" id="meetRaised"  class="form-control"/>
 		</div>
-		<span id="momError" style="color:red;"></span>
+		<span id="momError" style="color:red;margin-left:20px;"></span>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary saveMinute" id="saveBtnMeetMin" attr_minuteid="0" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-primary saveMinute" id="saveBtnMeetMin" attr_minuteid="0">Save changes</button>
       </div>
     </div>
   </div>
@@ -328,9 +328,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 <div class="col-md-12" id="locationInPop"></div>
 				 </div>
 			 </div>
-			 <span id="atrError" style="color:red;"></span>
+			 <span id="atrError" style="color:red;margin-left:20px;"></span>
 			 <div class="modal-footer">
-				 <button type="button" class="btn btn-success btn-sm" id="saveBtn" data-dismiss="modal"><i class="icon-check"></i> SAVE </button>
+				 <button type="button" class="btn btn-success btn-sm" id="saveBtn"><i class="icon-check"></i> SAVE </button>
 				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 			 </div>
 		 </div>
@@ -446,40 +446,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 
     $("#mainheading").html("PARTY MEETINGS");
     var mainDivCount=1;
-	/* function myFunction(){
-    	
-         mainDivCount = parseInt(mainDivCount)+1;
-        var c = $("#list").clone(true);
-            c.removeAttr("style");
-            c.attr("id","list"+mainDivCount)
-            c.find(".txtbox").attr("id","minutes"+mainDivCount);
-            c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
-			c.find(".saveMinute").attr("id","save"+mainDivCount);
-			c.find(".saveMinute").attr("attr_txt","minutes"+mainDivCount);
-			c.find(".saveMinute").attr("attr_minuteId","0");
-			c.find(".trash").attr("attr_minuteId","0");
-			c.find(".trash").attr("title",'Delete');
-        $("#addMoreDiv").append(c);
-		$('.saveMinute').tooltip();
-		$('.trash').tooltip();
- } */
-   var maximumDivCount=1;
-   /* $(document).on('click', '.addingRequests', function(){
-	   maximumDivCount = parseInt(maximumDivCount)+1;
-	   var c = $("#requestDivId").clone(true);
-           c.attr("id","requestDivId"+maximumDivCount)
-           c.find(".removebtn").attr("id","removeDivId"+maximumDivCount);
-		   c.find(".removebtn").attr("id","requestDivId"+maximumDivCount);
-		  $("#atrDivId").append(c);
-    }); */
-   
-   /*  $(document).on('click', '.removebtn', function(){
-		
-		var removedivId = $(this).attr("id");
-        $("#"+removedivId).remove();
-        //$(this).remove();
-    }); */
 	
+   var maximumDivCount=1;
+ 	
 	$(document).on('click', '.addMeetMint', function(){
 			$("#mintModal").modal("show");
 			$("#meetRaised").val("");
@@ -517,6 +486,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		
     });
    
+   function updateMinCount(type){
+		if(type=="delete"){
+			$("#minitePointsCount").text(parseInt($("#minitePointsCount").text())-1);
+		}else{
+			$("#minitePointsCount").text(type);
+		}
+		
+	}
+	
     function getTheMeetingLevelDetails(){
         var jsObj =    {}
        
@@ -570,13 +548,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
        }
      }
 	 
-	 	 $("#locationInPop").html("");//locationCls
+	  $("#locationInPop").html("");//locationCls
 		 
 		 var locationDiv = $("#DistrictShowId0");
 		 locationDiv.find(".locationCls").attr("id","locationDivId");
 		 
 		 $("#locationInPop").html($("#DistrictShowId0").html());
 		 $("#locationInPop").attr("locationScope",1);
+		 
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -621,29 +600,30 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    
     function getMandalVillageDetails(locationId, locationLevel,atrId,locationLavelValue){
           $("#searchDataImgForcons"+atrId).show();
-        var constituencyId = 0;
-        var mandalId = 0;
-        var locationTemp = "#ManTwnDivShowIdSpan0";
+        var constituencyId = [];
+        var mandalId = [];
+        var locationTemp = "#ManTwnDivShowId0";
 		
+		var districts = [];
 	   
         if(locationLevel==4){
 			$("#locationInPop").attr("locationScope",3);
              $("#searchDataImgForcons"+atrId).show();
-            constituencyId =  locationId;
+            constituencyId.push(locationId);
         }
         if(locationLevel==5){
 			$("#locationInPop").attr("locationScope",4);
            locationTemp = "#VillWardShowIdSpan0";
-            mandalId = locationId;
+            mandalId.push(locationId);
         }
        
        var jsObj={               
             stateId : 0,
-            districtId : 0,
+            districtId : districts,
             constituencyId : constituencyId,//228
             mandalId : mandalId,
             locationLevel : locationLevel,
-            task:"getConstituenciesForDistricts"
+            task:""
         }
         $.ajax({
               type:'POST',
@@ -671,19 +651,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			var locationDiv = $(locationTemp);
 			locationDiv.find(".locationCls").attr("id","locationDivId");
 			
-			$(locationTemp).html(locationTemp);
-			
-			/* 
-			var lctn = $(""+divId+" option:selected").text();
-			var lctnId = $(""+divId+" option:selected").val();
-			
-			$(locationTemp).html("<span class='selectedLctn m_0 text-bold' attr_lctnId='"+lctnId+"'>"+lctn+"</span>");
-			
-			var locationDiv = $(locationTemp);
-			locationDiv.find(".locationCls").attr("id","locationDivId");
-			
-			$(locationTemp).val($(divId).text()); */
-        });
+			$("#locationInPop").html($(locationTemp).html());
+		});
     }
    
     //getmeetinglocationlevel(1, 36);
@@ -877,15 +846,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	} */
 	
 	$(document).on('click', '.saveMinute', function(){
+		$("#momError").text("");
 		var reslt;
-		//var saveBtnId = $(this).attr("id");
-		//var textBoxId = $(this).attr("attr_txt");
-		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteText = $("#meetRaised").val();
 		if(minuteText.trim().length==0){
 			$("#momError").text(" Please Enter Minute Text");
 			return;
 		}
+		
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
 			minuteId : minuteId,
@@ -898,25 +867,24 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$('#mintModal').modal('hide');
+			
 		   if(result=="success"){
-			   //alert("Saved Successfully");
-			   rebuildMinutes(partyMeetingId)
-			  
+				rebuildMinutes(partyMeetingId)
 		   }else{
-			reslt = "Please Try Again"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
-			   //alert("Please Try Again");
-			  $.unblockUI();
+				reslt = "Please Try Again"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
+				$.unblockUI();
 		   }
 		   if(minuteId == 0){
-			reslt = "Saved Successfully"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
+				reslt = "Saved Successfully"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
 			}else if(minuteId >0){
-			reslt = "Updated Successfully"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
+				reslt = "Updated Successfully"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
 			}
 		});
 	});
@@ -933,6 +901,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}).done(function(result){
 			if(result != null && result.minutesDetails!=null && result.minutesDetails.length>0){
 			   minutesFiles = result.minutesDetails.length;
+			   updateMinCount(minutesFiles);
 			   var str='';
 			   for(var i in result.minutesDetails){
 				   mainDivCount=i;
@@ -940,7 +909,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 //str+='<div class=" m_top10" id="list'+mainDivCount+'">';
 					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					 str+=' </div>';
 					 str+=' </li>';
@@ -1046,17 +1015,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}).done(function(result){
 			if(fromType=="MINUTE"){
 				if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
+					$("#miniteDocsCount").text(result.minutesDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
 				    for(var i in result.minutesDocuments){
-					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
+					    str+='<li class="list-group-item col-md-12" id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</div><br/>';
+						str+='</li><br/>';
 						
 				   }
+				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
@@ -1065,17 +1037,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			}
 			else if(fromType=="ATR"){
 				if(result.atrDocuments!=null && result.atrDocuments.length>0){
+					$("#atrDocsCount").text(result.atrDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
 				   for(var i in result.atrDocuments){
-					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
+					    str+='<li class="col-md-12  list-group-item" id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</div><br/>';
+						str+='</li><br/>';
 						
 				   }
+				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
@@ -1111,7 +1086,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result=="success"){
-				//alert("Document Deleted");
+				updateMinDocCount(type);
 				$("#docDiv"+docId).remove();
 				$(""+divId+"").remove();
 			}else{
@@ -1124,15 +1099,22 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		});
 	});
 	
+	function updateMinDocCount(type){
+		if(type=="atr"){
+			$("#atrDocsCount").text(parseInt($("#atrDocsCount").text())-1);
+		}else{
+			$("#miniteDocsCount").text(parseInt($("#miniteDocsCount").text())-1);
+		}
+	}
+	
 	var editAtrId='';
 	 $(document).on('click', '.editBtn', function(){
 		 $("#myModashow").modal("show");
-		 
 		 var req=$(this).parent().parent().find(".updaterequest").text();
 		 var actn=$(this).parent().parent().find(".updateaction").text();
 		 var raised=$(this).parent().parent().find(".updateraisedBy").text();
 		 var attrId = $(this).attr("attr_id");
-		 
+		 //var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
 		 var lctnVal = $(this).attr("attr_location_value");
 		 
 		 $("#saveBtn").attr("attr_id",attrId);
@@ -1141,8 +1123,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 $("#raisedBy").val(raised);
 		 
 		 $("#locationDivId").val(lctnVal);
-
-	 });
+		 
+		 //$('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
+	});
 	
 	$(document).on('click', '.addingRequests', function(){
 		 $("#request").val("");
@@ -1158,7 +1141,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	$(document).on('click', '#saveBtn', function(){
 		//alert($("#locationDivId option:selected").val());
 		//$.blockUI({ message: "<h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
-		$.blockUI({ message: "<div style='padding:10px; background-color:#CCC;'><h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		$("#atrError").text("");
 		var reslt;
 		var request = $("#request").val();
 		var ActionTaken = $("#actionTaken").val();
@@ -1168,7 +1151,43 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var partyMeetingId = '${partyMeetingId}';
 		var locationscope = $("#locationInPop").attr("locationscope");
 		
-		if(request.trim().length==0){}
+		var errorTxt = "Please Enter";
+		var isError = false;
+		if(request.trim().length==0){
+			errorTxt+=" Request"; 
+			isError = true;
+		}
+		if(ActionTaken.trim().length==0){
+			
+			if(isError){
+				errorTxt+=",";
+			}
+			errorTxt+=" Action Taken";
+			isError = true;
+		}
+		if(raisedBy.trim().length==0){
+			
+			if(isError){
+				errorTxt+=",";
+			}
+			errorTxt+=" Raised By";
+			isError = true;
+		}
+		if(locationId==0){
+			
+			if(isError){
+				errorTxt+=",";
+			}
+			errorTxt+=" Location";
+			isError = true;
+		}
+		
+		if(isError){
+			$("#atrError").text(errorTxt);
+			return;
+		}
+		
+		$.blockUI({ message: "<div style='padding:10px; background-color:#CCC;'><h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		
 		var jsObj={		
 			atrId : atrId,
@@ -1185,6 +1204,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#myModashow").modal("hide");
 			if(result=="success"){
 				//alert("Updated Successfully");
 				getAtrPointsForAMeeting(partyMeetingId);
@@ -1219,6 +1239,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result.atrDetails!=null && result.atrDetails.length>0){
+				updateAtrCount(result.atrDetails.length);
 				$("#atrDivId").html("");
 				   atrFiles = result.atrDetails.length;
 				   var str='';
@@ -1325,10 +1346,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$('#alertmintsave').modal('show');
 				//alert("ATR Deleted");
 				$("#atrInnerDiv"+atrId).remove();
+				updateAtrCount("delete");
 			}
 		});
 		
 	});
+	
+	function updateAtrCount(type){
+		if(type=="delete"){
+			$("#atrPointsCount").text(parseInt($("#atrPointsCount").text())-1);
+		}else{
+			$("#atrPointsCount").text(type);
+		}
+	}
+	
 	alertmssgshowing();
 	function alertmssgshowing(){
 		var str='';
