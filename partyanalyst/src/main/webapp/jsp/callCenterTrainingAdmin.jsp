@@ -1974,7 +1974,8 @@ var jObj={
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 	
 			  $("#processingImg").hide();
-			  $("#agentId1").val(0);			  
+			  $("#agentId1").val(0);
+              $("#callerOverViewDiv").html("");			  
 			  if(result.message == "SUCCESS")
 			  {
 				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
@@ -2266,6 +2267,7 @@ var jObj={
 			  }).done(function(result){ 			  
 			  $("#batchProcessingImg").hide();	
 			  $("#batchAgentId").val(0);
+			  $("#batchcallerOverViewDiv").html("");
 			 if(result.message == "SUCCESS")
 			  {
 				 $("#batchSuccessMsgDiv").html("<div class='successDivCls'>Assign Members to Batch Successfully</div>");
