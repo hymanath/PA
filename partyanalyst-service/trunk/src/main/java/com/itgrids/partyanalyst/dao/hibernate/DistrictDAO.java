@@ -333,7 +333,7 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 	}
 	
 	public List<Object[]> getStatesForDistricts(List<Long> distIds){
-		Query query = getSession().createQuery(" select distinct model.state.stateId, model.state.stateName " +
+		Query query = getSession().createQuery(" select model.state.stateId, model.state.stateName, model.districtId " +
 				" from District model" +
 				" where model.districtId in(:distIds)");
 		query.setParameterList("distIds", distIds);
