@@ -105,12 +105,7 @@ color: red !important;
 								<label>Program</label>
 								<div class="mandatory" id="programSelErrDivId"></div>
 								<div id="programSelDivId"></div>
-								<select class="form-control" id="programId">
-									<option value="0">Select Program</option>
-									<option value="1">Leadership Skills</option>
-									<option value="2">Communication Skills</option>
-									<option value="3">Election Program</option>
-								</select>
+								
 							</div>
 							<div class="col-md-3">
 								<label>Center</label>
@@ -118,10 +113,6 @@ color: red !important;
 								<div id="campSelDivId"></div>
 								<select class="form-control" id="centerId">
 									<option value="0">Select Center</option>
-									<option value="1">SVV Center</option>
-									<option value="2">EWK Center</option>
-									<option value="3">GPN Center</option>
-									<option value="4">AKKC Center</option>
 								</select>
 							</div>
 							<div class="col-md-2 m_top30">
@@ -179,143 +170,10 @@ color: red !important;
 	<script type="text/javascript">
 	
    
-	$(document).ready(function() {
-   // var cb = function(start, end, label) {
-	// console.log(start.toISOString(), end.toISOString(), label);
-  // }
+	$(document).ready(function(){
+    });
 
-  // var optionSet1 = {
-	// startDate: moment().subtract(29, 'days'),
-	// endDate: moment(),
-	// minDate: '01/01/2012',
-	// maxDate: '12/31/2015',
-	//dateLimit: { days: 60 },
-	// showDropdowns: true,
-	// showWeekNumbers: true,
-	// timePicker: true,
-	// timePickerIncrement: 1,
-	// timePicker12Hour: true,
-	// ranges: {
-	   // 'Today': [moment(), moment()],
-	   // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   // 'Next 30 Days': [moment(),moment().add(29, 'days'), moment()],
-	   // 'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	// },
-	// opens: 'left',
-	// buttonClasses: ['btn btn-default'],
-	// applyClass: 'btn-small btn-primary newsSubmitBtn',
-	// cancelClass: 'btn-small',
-	// format: 'MM/DD/YYYY',
-	// separator: ' to ',
-	// locale: {
-		// applyLabel: 'Submit',
-		// cancelLabel: 'Clear',
-		// fromLabel: 'From',
-		// toLabel: 'To',
-		// customRangeLabel: 'Custom',
-		// daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-		// monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		// firstDay: 1
-	// }
-  // };
-
-  // var optionSet2 = {
-	// startDate: moment().subtract(7, 'days'),
-	// endDate: moment(),
-	// opens: 'left',
-	// ranges: {
-	   // 'Today': [moment(), moment()],
-	   // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   // 'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	// }
-  // };
-
-  // $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-  // $('#reportrange').daterangepicker(optionSet1, cb);
-
-  // $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-  // $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-  // $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-	// console.log("apply event fired, start/end dates are " 
-	  // + picker.startDate.format('MMMM D, YYYY') 
-	  // + " to " 
-	  // + picker.endDate.format('MMMM D, YYYY')
-	// ); 
-  // });
-  // $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-
-  // $('#options1').click(function() {
-	// $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-  // });
-
-  // $('#options2').click(function() {
-	// $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-  // });
-
-  // $('#destroy').click(function() {
-	// $('#reportrange').data('daterangepicker').remove();
-  // });
-  
- });
-
-		 
-$("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");	
-	
-		
-	
-	/*$(document).on('click', '.datetrash', function(){
-        
-		var divId = $(this).attr("attr_txt");
-		var divDId = $(this).attr("attr_date_txt");
-        $("#"+divId).remove();
-		$("#"+divDId).remove();
-        $(this).remove();
-		
-		var minuteId = $(this).attr("add-plus");
-		
-		var jsObj =    {minuteId : minuteId}
-       
-        
-		
-    });*/
-   
-	// var mainDivCount=1;
-    // function myFunction() {
-        // mainDivCount = parseInt(mainDivCount)+1;
-        // var c = $("#list").clone(true);
-            // c.removeAttr("style");
-            // c.attr("id","list"+mainDivCount)
-            // c.find(".txtbox").attr("id","minutes"+mainDivCount);
-            // c.find(".trash").attr("attr_txt","minutes"+mainDivCount);
-			// c.find(".trash").attr("attr_minuteId","0");
-			
-        // $("#addMoreDiv").append(c);
-    // }
-	
-	/* var mainDateDivCount=1;
-	function myDateFunction() {
-        mainDateDivCount = parseInt(mainDateDivCount)+1;
-        var c = $("#dateList").clone(true);
-            c.removeAttr("style");
-			//c.attr("class","reportRange"+mainDateDivCount);
-            c.attr("id","dateList"+mainDateDivCount)
-            c.find(".datetxtbox").attr("id","minutes"+mainDateDivCount);
-			c.find(".datetxtboxD").attr("id","Dateminutes"+mainDateDivCount);
-            c.find(".datetrash").attr("attr_txt","minutes"+mainDateDivCount);
-			c.find(".datetrash").attr("attr_date_txt","Dateminutes"+mainDateDivCount);
-			c.find(".datetrash").attr("attr_minuteId","0");
-			
-        $("#addMoreDateDiv").append(c);
-		//datetxtClsCount = parseInt(datetxtClsCount)+1;
-		//dateClsCount = parseInt(dateClsCount)+1;
-    } */
+	$("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	
 	     //global variables
 		 var leaderShipLevelArray = [];
@@ -324,10 +182,10 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		 var healthStatusArray = [];
 		 var globalDateCount=0;
 	     //on load calls.
+		 getPrograms();
 	     getAllStatusForCadre();
-		 //getTdpCadreDetailsforASchedule(1);
-		 
-		 function getAllStatusForCadre(scheduleId)
+		
+		 function getAllStatusForCadre()
 		 {
 			$.ajax({
 			  type:'POST',
@@ -343,25 +201,9 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 			communicationSkillsArray=result.communicationsSkillslist;
 			leaderShipSkillsArray=result.leadershipSkillslist;
 			healthStatusArray=result.healthStatuslist;
-			console.log(leaderShipLevelArray);
 		  }
 		}
-		/* function getTdpCadreDetailsforASchedule(scheduleId)
-		 { 
-			$("#ajaxImage").show();
-			var jsObj={scheduleId:scheduleId }
-			$.ajax({
-			  type:'POST',
-			  url :'getTdpCadreDetailsforAScheduleAction.action',
-			  data:{task:JSON.stringify(jsObj)},
-		    }).done(function(results){
-			    if(results!=null && results.length>0){
-				     buildCadreDetails(results);
-				}else{
-				    alert("NO Data Available.");
-				}
-			});
-		}*/
+		
 		function buildCadreDetails(results){
 		   var str='';
 		   for(var i in results){
@@ -914,6 +756,73 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		}
 	});
    }
+   
+     function getPrograms(){
+			 $.ajax({
+			  type:'POST',
+			  url :'getProgramsAction.action',
+			  data:{},
+		    }).done(function(result){
+				
+			  <c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">
+				
+				var str='';
+				str+='<select class="form-control" id="programId">';
+				str+='<option value="0">Select Program</option>';
+				if(result.simpleVOList1!=null &&result.simpleVOList1.length>0){
+                 for(var i in result.simpleVOList1){
+                    str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
+                  }
+                }
+               str+='</select>';				
+			$("#programSelDivId").html(str);
+			
+			$('#centerId').find('option').remove();
+			$('#centerId').append('<option value="0">Select Center</option>');
+			if(result.simpleVOList2!=null &&result.simpleVOList2.length>0){
+			 for(var i in result.simpleVOList2){
+			   $('#centerId').append('<option value="'+result.simpleVOList2[i].id+'">'+result.simpleVOList2[i].name+'</option>');
+			  }
+			}
+			  </c:if>
+			  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT' )}">
+				var str='';
+				str+='<select class="form-control" id="programId" onChange="getCampsByProgramAndUser()">';
+				str+='<option value="0">Select Program</option>';
+				if(result.simpleVOList1!=null &&result.simpleVOList1.length>0){
+                 for(var i in result.simpleVOList1){
+                    str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
+                  }
+                }
+               str+='</select>';				
+			$("#programSelDivId").html(str);
+				
+		      </c:if>	
+			});
+		 }
+	  function getCampsByProgramAndUser(){
+		 
+		  $('#centerId').find('option').remove();
+          $('#centerId').append('<option value="0">Select Center</option>');
+		  var campProgramId=$("#programId option:selected").val();
+		  if(campProgramId==0){
+			  return;
+		  }
+		  var jsObj={campProgramId:campProgramId}
+	      $.ajax({
+		    type:'POST',
+		    url :'getCampsByProgramAndUserAction.action',
+		    data:{task:JSON.stringify(jsObj)},
+	      }).done(function(results){
+			   
+			  if(results!=null && results.length>0){
+				  for(var i in results){
+					 $('#centerId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+				  }
+			  }
+			  
+		  });
+	  }
 	</script>
 </body>
 </html>
