@@ -23,6 +23,12 @@
     background-repeat: no-repeat;
     height: 71px;   
 }
+footer
+{
+	background-color:#5c2d25;
+	padding:30px;
+	color:#fff
+}
 </style>
 </head>
 <body>
@@ -60,6 +66,7 @@
 	
 </header>
 <main>
+  <section style="margin-top:40px;">
 	<div class="container">
     	<div class="row">
         	<section>
@@ -177,6 +184,7 @@
             </section>
         </div>
     </div>
+	</section>
 </main>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -278,7 +286,7 @@
   </div>
 </div>
 <footer>
-		<img src="training/dist/img/footer.jpg" width="100%">
+	<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
