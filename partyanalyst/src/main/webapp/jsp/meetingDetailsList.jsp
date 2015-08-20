@@ -941,13 +941,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   var str='';
 			   for(var i in result.minutesDetails){
 				   mainDivCount=i;
-					str+='<div class=" m_top10" id="list'+mainDivCount+'">';
-					str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
-					str+='<div class="pull-right" style="margin-right:5px;">';
-				   str+=' <button class="btn btn-default btn-xs  trash"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"style="background-color:#CCC"><i class="glyphicon glyphicon-trash"></i></button>';
-				   str+=' <button class="btn btn-default btn-xs updatedMeetMin  " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit" style="background-color:#CCC;"  ><i class="glyphicon glyphicon-edit"></i></button>';
-				   str+=' </div>';
-					str+=' </div>';
+					str+='<li class="list-group-item " id="list'+mainDivCount+'">';
+					 //str+='<div class=" m_top10" id="list'+mainDivCount+'">';
+					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
+					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
+					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+					 str+=' </div>';
+					 str+=' </li>';
 				}
 			   $("#addMoreDiv").html(str);
 			   //$('.trash').tooltip()
