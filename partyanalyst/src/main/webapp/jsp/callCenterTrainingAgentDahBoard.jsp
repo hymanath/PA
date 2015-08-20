@@ -25,6 +25,12 @@ header.eventsheader {
     background-repeat: no-repeat;
     height: 71px;   
 }
+footer
+{
+	background-color:#5c2d25;
+	padding:30px;
+	color:#fff
+}
 </style>
 </head>
 <body>
@@ -62,6 +68,7 @@ header.eventsheader {
 	
 </header>
 <main>
+<section style="margin-top:40px;">
 	<div class="container">
     	<div class="row">
         	<div class="col-md-12">
@@ -281,10 +288,11 @@ header.eventsheader {
              </div>
         </div>
     </div>
+  </section>
 </main>
 
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -992,7 +1000,7 @@ function buildChartForCallStatus(result)
 	}
 	if(interestedMemCount == 0 && laterMembersCount == 0)
 	{
-		if(notIntereMemCount = 0)
+		if(notIntereMemCount == 0)
 		{
 	       $('#donutchart').html("No Data Available.");
            return;	   

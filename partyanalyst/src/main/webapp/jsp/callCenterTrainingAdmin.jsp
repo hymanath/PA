@@ -2291,7 +2291,7 @@ function clearAssignAgent()
 	$("#programId").append("<option value='0'>Select Program</option>");
 	$("#scheduleId").find("option").remove();
 	$("#scheduleId").append("<option value='0'>Select Schedule</option>");
-	$("#agentId1").val(0);
+	$("#agentId").val(0);
 	$("#callerOverViewDiv").html("");
 	$("#distaccordion").html("");
 	$("#avaliableCallsCount").html("");
