@@ -2759,6 +2759,7 @@
 		<property name="trainingCampAttendanceTabUserDAO" ref="trainingCampAttendanceTabUserDAO" />
 		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO" />
 		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
+		<property name="voterDAO" ref="voterDAO" />
 	</bean>
 	
 	<bean name="partyMeetingService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingService">
