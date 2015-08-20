@@ -692,8 +692,12 @@ $(document).ready(function() {
 			var state = $("#statesDivId").val();
 			var stateId = [];
 			if(state==0){
-				stateId.push(1);
-				stateId.push(36);
+				if(stateArr.length>0){
+					stateId = stateArr;
+				}else{
+					stateId.push(1);
+					stateId.push(36);
+				}
 			}else{
 				stateId.push(state);
 			}

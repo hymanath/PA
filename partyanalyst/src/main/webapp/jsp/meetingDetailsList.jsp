@@ -517,15 +517,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		
     });
    
-   function updateMinCount(type){
-		if(type=="delete"){
-			$("#minitePointsCount").text(parseInt($("#minitePointsCount").text())-1);
-		}else{
-			$("#minitePointsCount").text(type);
-		}
-		
-	}
-	
     function getTheMeetingLevelDetails(){
         var jsObj =    {}
        
@@ -579,18 +570,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
        }
      }
 	 
-	/*  $("#locationInPop").html("");//locationCls
-	 
-	 
-	 var lctn = $("#districtId"+atrId+" option:selected").text();
-	 var lctnId = $("#districtId"+atrId+" option:selected").val();
-	 $("#DistrictShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>LOCATION </span> :"+lctn+" ");
-	 
-	 var locationDiv = $("#DistrictShowId"+atrId);
-	 locationDiv.find(".locationCls").attr("id","locationDivId");
-	 
-	 $("#locationInPop").html($("#DistrictShowId"+atrId).html());
-	 $("#locationInPop").attr("locationScope",1); */
+	 	 $("#locationInPop").html("");//locationCls
+		 
+		 var locationDiv = $("#DistrictShowId0");
+		 locationDiv.find(".locationCls").attr("id","locationDivId");
+		 
+		 $("#locationInPop").html($("#DistrictShowId0").html());
+		 $("#locationInPop").attr("locationScope",1);
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -637,7 +623,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
           $("#searchDataImgForcons"+atrId).show();
         var constituencyId = 0;
         var mandalId = 0;
-        var locationTemp = "#ManTwnDivShowIdSpan"+atrId;
+        var locationTemp = "#ManTwnDivShowIdSpan0";
 		
 	   
         if(locationLevel==4){
@@ -647,7 +633,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         }
         if(locationLevel==5){
 			$("#locationInPop").attr("locationScope",4);
-           locationTemp = "#VillWardShowIdSpan"+atrId;
+           locationTemp = "#VillWardShowIdSpan0";
             mandalId = locationId;
         }
        
@@ -680,6 +666,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                 
             }
 			
+			$("#locationInPop").html("");
+			
+			var locationDiv = $(locationTemp);
+			locationDiv.find(".locationCls").attr("id","locationDivId");
+			
+			$(locationTemp).html(locationTemp);
+			
 			/* 
 			var lctn = $(""+divId+" option:selected").text();
 			var lctnId = $(""+divId+" option:selected").val();
@@ -690,8 +683,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			locationDiv.find(".locationCls").attr("id","locationDivId");
 			
 			$(locationTemp).val($(divId).text()); */
-		
-		
         });
     }
    
@@ -942,7 +933,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}).done(function(result){
 			if(result != null && result.minutesDetails!=null && result.minutesDetails.length>0){
 			   minutesFiles = result.minutesDetails.length;
-			   updateMinCount(minutesFiles);
 			   var str='';
 			   for(var i in result.minutesDetails){
 				   mainDivCount=i;
@@ -950,7 +940,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 //str+='<div class=" m_top10" id="list'+mainDivCount+'">';
 					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					 str+=' </div>';
 					 str+=' </li>';
@@ -1056,20 +1046,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}).done(function(result){
 			if(fromType=="MINUTE"){
 				if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
-					$("#miniteDocsCount").text(result.minutesDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
-					str+='<ul class="list-group row">';
 				    for(var i in result.minutesDocuments){
-					    str+='<li class="list-group-item col-md-12" id="docDiv'+result.minutesDocuments[i].id+'">';
+					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</li><br/>';
+						str+='</div><br/>';
 						
 				   }
-				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
@@ -1078,20 +1065,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			}
 			else if(fromType=="ATR"){
 				if(result.atrDocuments!=null && result.atrDocuments.length>0){
-					$("#atrDocsCount").text(result.atrDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
-					str+='<ul class="list-group row">';
 				   for(var i in result.atrDocuments){
-					    str+='<li class="col-md-12  list-group-item" id="docDiv'+result.atrDocuments[i].id+'">';
+					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</li><br/>';
+						str+='</div><br/>';
 						
 				   }
-				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
@@ -1127,7 +1111,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result=="success"){
-				updateMinDocCount(type);
+				//alert("Document Deleted");
 				$("#docDiv"+docId).remove();
 				$(""+divId+"").remove();
 			}else{
@@ -1140,22 +1124,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		});
 	});
 	
-	function updateMinDocCount(type){
-		if(type=="atr"){
-			$("#atrDocsCount").text(parseInt($("#atrDocsCount").text())-1);
-		}else{
-			$("#miniteDocsCount").text(parseInt($("#miniteDocsCount").text())-1);
-		}
-	}
-	
 	var editAtrId='';
 	 $(document).on('click', '.editBtn', function(){
 		 $("#myModashow").modal("show");
+		 
 		 var req=$(this).parent().parent().find(".updaterequest").text();
 		 var actn=$(this).parent().parent().find(".updateaction").text();
 		 var raised=$(this).parent().parent().find(".updateraisedBy").text();
 		 var attrId = $(this).attr("attr_id");
-		 //var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
+		 
 		 var lctnVal = $(this).attr("attr_location_value");
 		 
 		 $("#saveBtn").attr("attr_id",attrId);
@@ -1164,9 +1141,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 $("#raisedBy").val(raised);
 		 
 		 $("#locationDivId").val(lctnVal);
-		 
-		 //$('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
-	});
+
+	 });
 	
 	$(document).on('click', '.addingRequests', function(){
 		 $("#request").val("");
@@ -1243,7 +1219,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result.atrDetails!=null && result.atrDetails.length>0){
-				updateAtrCount(result.atrDetails.length);
 				$("#atrDivId").html("");
 				   atrFiles = result.atrDetails.length;
 				   var str='';
@@ -1268,23 +1243,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='</li>';
 					   str+='<li class="col-md-12 list-group-item">';
 					   str+='<span class="text-bold">RAISED BY : </span>';
-					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span> - <i>'+result.atrDetails[i].locationName+'<i>';
+					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span> - <i>'+result.atrDetails[i].locationName+'</i>';
 					   str+='</li>';
 					   str+='</div>';
 					   
-					  /*  str+='<div class="col-md-12 m_top20">';
-							str+='<span class="text-bold">LOCATION : </span>';
-							if(result.atrDetails[i].locationScopeId==1){
-								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' District</li>';
-							}else if(result.atrDetails[i].locationScopeId==2){
-								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' Constituency</li>';
-							}else if(result.atrDetails[i].locationScopeId==3){
-								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="ManTwnDivShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' </li>';
-							}else if(result.atrDetails[i].locationScopeId==4){
-								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' </li>';
-							}
-					   str+='</div>'; */
-					  
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					  
 					   str+='</div>';
@@ -1363,20 +1325,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$('#alertmintsave').modal('show');
 				//alert("ATR Deleted");
 				$("#atrInnerDiv"+atrId).remove();
-				updateAtrCount("delete");
 			}
 		});
 		
 	});
-	
-	function updateAtrCount(type){
-		if(type=="delete"){
-			$("#atrPointsCount").text(parseInt($("#atrPointsCount").text())-1);
-		}else{
-			$("#atrPointsCount").text(type);
-		}
-	}
-	
 	alertmssgshowing();
 	function alertmssgshowing(){
 		var str='';
