@@ -1215,6 +1215,40 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		query.setParameterList("callerIdsList", callerIdsList);
 		return query.list();
 	}
+	public List<Object[]> getTrainingProgramMembersBatchCount(Date startDate,Date endDate,String status,String type){
+		
+		StringBuilder str =new StringBuilder();
+		
+		if(type.equalsIgnoreCase("program")){
+			str.append(" select  model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.programName ");
+		}else if(type.equalsIgnoreCase("camp")){
+			str.append(" select  model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName ");
+		}
+		
+		str.append(" ,count(distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),count(distinct model1.trainingCampBatchId) " +
+				"  from TrainingCampScheduleInviteeCaller model,TrainingCampBatch model1" +
+				" where model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId = model1.trainingCampSchedule.trainingCampScheduleId " +
+				" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status like '%"+status+"%' ");	
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:startDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:endDate)  ");
+		}
+		
+		if(type.equalsIgnoreCase("program")){
+			str.append(" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
+		}else if(type.equalsIgnoreCase("camp")){
+			str.append(" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId ");
+		}
+	
+		Query query = getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
 	
 	public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String type,Date todayDate){
 		
@@ -1235,7 +1269,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		if(type !=null){
 			queryStr.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status = '"+type+"' ");
 		}
-			
+		
+		queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId is not null");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate !=null && toDate !=null){
 		query.setParameter("fromDate", fromDate);

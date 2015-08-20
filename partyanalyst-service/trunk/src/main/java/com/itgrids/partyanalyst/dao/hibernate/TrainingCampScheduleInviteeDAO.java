@@ -247,7 +247,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		if(type !=null){
 			queryStr.append(" and model.scheduleInviteeStatus.status = '"+type+"' ");
 		}
-			
+		
+		queryStr.append(" and model.attendingBatchId is not null");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate !=null && toDate !=null){
 		query.setParameter("fromDate", fromDate);

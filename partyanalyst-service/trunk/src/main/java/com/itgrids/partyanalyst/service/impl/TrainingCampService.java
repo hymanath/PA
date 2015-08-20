@@ -2273,8 +2273,8 @@ public class TrainingCampService implements ITrainingCampService{
 
 		
 			//0.id,1.program/camp name 3.membersCount 4.batchCount 
-			List<Object[]> programDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"program");
-			List<Object[]> campDetails = trainingCampScheduleInviteeDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"camp");
+			List<Object[]> programDetails = trainingCampScheduleInviteeCallerDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"program");
+			List<Object[]> campDetails = trainingCampScheduleInviteeCallerDAO.getTrainingProgramMembersBatchCount(startDate, endDate, IConstants.INTERESTED,"camp");
 			
 			
 			List<TrainingCampScheduleVO> listForProgramVo=new ArrayList<TrainingCampScheduleVO>();
