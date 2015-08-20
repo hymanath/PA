@@ -98,7 +98,7 @@ header.eventsheader {
                                 	<label >Select Date</label>
 									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;width:315px !important;">
 									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
-									  <span style="margin-left: 25px;"></span> 
+									  <span></span> 
 									</div>
                                  <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
