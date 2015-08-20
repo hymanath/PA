@@ -24,7 +24,21 @@ public class AttendanceVO implements Serializable{
 	private String type;
 	private String status;
 	private Long tdpCadreId;
+	private Long tabPrimaryKey;
+	private Long serverPrimaryKey;
 	
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
+	}
+	public Long getServerPrimaryKey() {
+		return serverPrimaryKey;
+	}
+	public void setServerPrimaryKey(Long serverPrimaryKey) {
+		this.serverPrimaryKey = serverPrimaryKey;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
@@ -133,5 +147,4 @@ public class AttendanceVO implements Serializable{
 	public void setCurrentTabUserId(Long currentTabUserId) {
 		this.currentTabUserId = currentTabUserId;
 	}
-	
 }
