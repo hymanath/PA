@@ -3446,16 +3446,20 @@ public class TrainingCampService implements ITrainingCampService{
 	}
 	
 	public List<Long> getStatesOfDistrict(List<Long> dists){
-		List<Long> states = new ArrayList<Long>();
+		Set<Long> states = new HashSet<Long>();
 		if(dists.size()>0){
 			List<Object[]> statesRslt = districtDAO.getStatesForDistricts(dists);
 			if(statesRslt!=null && statesRslt.size()>0){
 				for(Object[] obj:statesRslt){
-					states.add(Long.valueOf(obj[0].toString()));
+					Long stateId = Long.valueOf(obj[0].toString());
+					if(Long.valueOf(obj[2].toString())<11 || Long.valueOf(obj[2].toString()).equals(518l)){
+						stateId = 36l;
+					}
+					states.add(stateId);
 				}
 			}
 		}
-		return states;
+		return new ArrayList<Long>(states);
 	}
 	
 	public void getDistsOfConstituencies(List<Long> constis, List<MeetingVO> meetingLevels){
