@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class SimpleVO implements java.io.Serializable{
 	
@@ -9,6 +10,9 @@ public class SimpleVO implements java.io.Serializable{
    
    private String dateString;
    private Date date;
+   
+   private List<SimpleVO> simpleVOList1;
+   private List<SimpleVO> simpleVOList2;
    
 	public Long getId() {
 		return id;
@@ -34,7 +38,17 @@ public class SimpleVO implements java.io.Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-   
-   
+	public List<SimpleVO> getSimpleVOList1() {
+		return simpleVOList1;
+	}
+	public void setSimpleVOList1(List<SimpleVO> simpleVOList1) {
+		this.simpleVOList1 = simpleVOList1;
+	}
+	public List<SimpleVO> getSimpleVOList2() {
+		return simpleVOList2;
+	}
+	public void setSimpleVOList2(List<SimpleVO> simpleVOList2) {
+		this.simpleVOList2 = simpleVOList2;
+	}
    
 }
