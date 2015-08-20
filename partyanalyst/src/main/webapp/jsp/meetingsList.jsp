@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Party Meetings</title>
+<title>Party Meetings - ATR & MOM</title>
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
@@ -402,7 +402,7 @@ $(document).ready(function() {
 	  
 });
    
-   $("#mainheading").html(" PARTY MEETINGS");
+   $("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
 </script>
 <script>
 	function getTheMeetingLevelDetails(){

@@ -63,7 +63,7 @@
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) }">
 					  <li><a tabindex="-1" href="cadreSearchPageAction.action"> Cadre Search </a></li>
 					  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
-					  <li><a tabindex="-1" href="meetingList.action"> Party Meeting DashBoard </a></li>
+					  <li><a tabindex="-1" href="meetingList.action"> Party Meetings - ATR & MOM </a></li>
 					</c:if>
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATIONFOR_OTHERSTATES' ) }">

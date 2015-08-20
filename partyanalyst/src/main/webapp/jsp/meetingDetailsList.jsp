@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Party Meetings - MINUTES & ATR POINTS</title>
+<title>Party Meetings - MOM & ATR POINTS</title>
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -127,7 +127,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
                        <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
                        <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
-					   <li><a href="meetingList.action"><span>PARTY MEETING DASHBOARD</span></a> </li>
+					   <li><a href="meetingList.action"><span>PARTY MEETING - MOM & ATR </span></a> </li>
                        <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                    
                     </ul>  
@@ -444,7 +444,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
      getTheMeetingLevelDetails()
    });
 
-    $("#mainheading").html("PARTY MEETINGS");
+    $("#mainheading").html("PARTY MEETINGS - MOM & ATR ");
     var mainDivCount=1;
 	
    var maximumDivCount=1;
