@@ -1126,14 +1126,22 @@
   		<div class="row">
         	<div class="col-md-10 col-md-offset-1 m_top10">
                 <label>Meeting Level</label>
-                <select class="form-control custom-select">
-                    <option>Village</option>
+                <select class="form-control custom-select" id="meetingLevel" onchange="getTypeOfMeeting();">
+					<option value="0">Select Level</option> 
+                     <option value="1">STATE</option> 
+					<option value="2">DISTRICT</option> 
+					<option value="3">CONSTITUENCY</option> 
+					<option value="4">MANDAL</option> 
+					<option value="5">TOWN</option> 
+					<option value="6">DIVISION</option> 
+					<option value="7">VILLAGE</option> 
+					<option value="8">WARD</option> 
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1">
                 <label>Type Of Meeting</label>
-                <select class="form-control custom-select">
-                    <option>General Body Meeting</option>
+                <select class="form-control custom-select" id="typeOfMeeting">
+                   <option value="0">Select Type</option> 
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1">
@@ -1147,7 +1155,7 @@
             </div>
             <div class="col-md-10 col-md-offset-1" id="stateDiv">
                 <label>Select State</label>
-                <select class="form-control custom-select" id="stateId" onchange="getDistrictsForStates();showHide();">
+                <select class="form-control custom-select" id="stateId" onchange="showHide();getDistrictsForStates();">
                    	<option value="0">All</option>
 					<option value="1">AndhraPradesh</option>
 					<option value="36">Telangana</option>
@@ -1155,14 +1163,14 @@
             </div>
             <div class="col-md-10 col-md-offset-1" id="districtDiv">
                 <label>Select District</label>
-                <select class="form-control custom-select" id="districtId">
+                <select class="form-control custom-select" id="districtId" onchange="showHide();getConstituenciesForDistricts(this.value);">
                     <option>Visakapatnam</option>
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1" id="constituencyDiv">
                 <label>Select Constituency</label>
-                <select class="form-control custom-select">
-                    <option>Bhimli</option>
+                <select class="form-control custom-select" id="constituencyId">
+                    <option>Select Constituency</option>
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1" id="mandalDiv">
@@ -1249,24 +1257,83 @@ $(document).ready(function(e) {
   function showHide()
   {
    var stateId = $("#stateId").val();
+  
    var districtId = $("#districtId").val();
    if(stateId == 0)
    {
+  
     $("#districtDiv").hide();
 	$("#constituencyDiv").hide();
 	$("#mandalDiv").hide();
    }
-   if(districtId == 0)
+   else if(districtId == 0)
    {
+  
 	$("#constituencyDiv").hide();
 	$("#mandalDiv").hide();
    }
    else{
-   $("#districtDiv").show();
+	$("#districtDiv").show();
 	$("#constituencyDiv").show();
 	$("#mandalDiv").show();
    }
   }
+  	function getTypeOfMeeting()
+	{
+	 var locationLevel = $("#meetingLevel").val();
+		var jsObj =	{locationLevel:locationLevel}
+		
+		$.ajax(
+		{
+			type: "POST",
+			url:"getMeetingTypesAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}
+		).done(function(result){
+			$("#typeOfMeeting  option").remove();
+			$("#typeOfMeeting").append('<option value="0">Select Meeting Type</option>');
+			if(result!=null && result.length>0){
+				for(var i in result){
+					$("#typeOfMeeting").append('<option value="'+result[i].id+'">'+result[i].meetingType+'</option>');
+				}
+			}
+			
+			
+		});
+	}
+	function getConstituenciesForDistricts(district){
+	$("#constituencyId  option").remove();
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	var jsObj=
+   {				
+				districtId:district,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getConstituenciesForDistricts"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForADistrictAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#constituencyId").empty();
+	  
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+</script>
+<script>
+showHide();
 </script>
 </body>
 </html>
