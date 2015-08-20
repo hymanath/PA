@@ -1599,5 +1599,9 @@
 	<bean id="partyMeetingAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingAction" singleton="false"> 
 		<property name="partyMeetingService" ref="partyMeetingService" />
 	</bean>
+	<bean id="partyMeetingsDashBoardAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingsDashBoardAction" singleton="false"> 
+		
+	</bean>
+	
 </beans>	
 	
