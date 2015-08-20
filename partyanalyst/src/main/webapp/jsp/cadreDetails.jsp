@@ -207,6 +207,17 @@ var globalCadreId = '${cadreId}';
                             </span>
                         </td>
                     </tr>
+                    <tr style="display:none;" class="enrollmentCls">
+						<td class="text-bold"><i class="glyphicon glyphicon-bookmark"></i> PREVIOUS ENROLEMENTS</td>
+					</tr>
+					<tr style="display:none;" class="enrollmentCls">
+					  <td>
+						<ul class="list-inline" id="cadreYearsUlId">
+						  <!--<li class="badge">2010</li> 
+						  <li class="badge">2012</li>  -->
+						 </ul>
+					  </td>
+					</tr>
                     <tr>
                     	<td class="text-bold"><i class="icon-articles"></i> IDENTITY</td>
                     </tr>
@@ -716,6 +727,7 @@ var globalCadreId = '${cadreId}';
 				 $("#dataLoadingsImgForImagePath").hide();
 				 
 				var str='';
+				var strEnrollment='';
 				if(result !=null){
 						$("#dataLoadingsImgForownBoothDetailsId").show();
 						$("#dataLoadingsImgForImagePath").show();
@@ -750,6 +762,23 @@ var globalCadreId = '${cadreId}';
 					 $("#casteFormalId").html(result.casteName);
 					 $("#registeredOnId").html(result.registeredTime);
 					 $("#registeredAtId").html(result.registeredOn);
+					 
+					 
+					 //previous enrollmetYears building
+					 var preEnrollemets=[];
+					 var preEnrolleArray=new Array();
+					 if(result.enrollmentYears !=null && result.enrollmentYears !=""){
+						preEnrollemets = result.enrollmentYears.split(",");
+					 }
+					 
+					 if(preEnrollemets !=null && preEnrollemets.length>0){
+						 $(".enrollmentCls").show();
+						 for(var e in preEnrollemets){
+							  strEnrollment+='<li class="badge">'+preEnrollemets[e]+'</li> ';
+						 }
+						 $("#cadreYearsUlId").html(strEnrollment);
+					 }
+					 
 					 
 					 if(result.candidate !=null && result.candidate !=0){
 						 globalCandidateId=result.candidate;
@@ -1066,7 +1095,6 @@ var globalCadreId = '${cadreId}';
 	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
 		$("#"+divId+"").html("");
 
-		//balu
 		if($("#"+divId).hasClass("showSurveyCls")){
 			return;
 		}

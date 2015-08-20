@@ -2267,6 +2267,12 @@
 	 <bean id="trainingCampCadreGoalHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreGoalHistoryDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 <bean id="tdpCadreEnrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreEnrollmentYearDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="enrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.EnrollmentYearDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		
