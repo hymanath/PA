@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeCallerDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeTrackDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampUserProgramDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
@@ -89,7 +90,6 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
-import com.itgrids.partyanalyst.model.PartyMeetingType;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
@@ -162,7 +162,7 @@ public class TrainingCampService implements ITrainingCampService{
     private ITrainingCampCadreFeedbackDetailsHistoryDAO trainingCampCadreFeedbackDetailsHistoryDAO;
     private ITrainingCampCadreAchievementHistoryDAO trainingCampCadreAchievementHistoryDAO;
     private ITrainingCampCadreGoalHistoryDAO trainingCampCadreGoalHistoryDAO;
-   
+    private ITrainingCampUserProgramDAO trainingCampUserProgramDAO;
 	
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
@@ -512,6 +512,11 @@ public class TrainingCampService implements ITrainingCampService{
 	public void setTrainingCampCadreGoalHistoryDAO(
 			ITrainingCampCadreGoalHistoryDAO trainingCampCadreGoalHistoryDAO) {
 		this.trainingCampCadreGoalHistoryDAO = trainingCampCadreGoalHistoryDAO;
+	}
+    
+	public void setTrainingCampUserProgramDAO(
+			ITrainingCampUserProgramDAO trainingCampUserProgramDAO) {
+		this.trainingCampUserProgramDAO = trainingCampUserProgramDAO;
 	}
 
 	public List<BasicVO> getAllPrograms()
@@ -4339,4 +4344,77 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return cadreDetailsVO;
 	}
+	
+    public SimpleVO getProgramsByUser(Long userId){
+		
+		SimpleVO simplevo=new SimpleVO();
+		try{
+			List<Object[]> programs=trainingCampUserProgramDAO.getProgramsByUser(userId);
+			if(programs!=null && programs.size()>0){
+				simplevo.setSimpleVOList1(new ArrayList<SimpleVO>());
+				for(Object[] obj:programs){
+					SimpleVO vo=new SimpleVO();
+					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+					vo.setName(obj[1]!=null?obj[1].toString():"");
+					simplevo.getSimpleVOList1().add(vo);
+				}
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return simplevo;
+	}
+    
+    public SimpleVO getAllProgramsAndCamps(){
+		
+		SimpleVO simpleVO=new SimpleVO();
+		try{
+			List<Object[]> programs=trainingCampProgramDAO.getPrograms();
+			List<Object[]> camps=trainingCampDAO.getAllCamps();
+			if(programs!=null && programs.size()>0){
+				simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>());
+				for(Object[] obj:programs){
+					SimpleVO vo=new SimpleVO();
+					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+					vo.setName(obj[1]!=null?obj[1].toString():"");
+					simpleVO.getSimpleVOList1().add(vo);
+					
+				}
+			}
+			if(camps!=null && camps.size()>0){
+				simpleVO.setSimpleVOList2(new ArrayList<SimpleVO>());
+				for(Object[] obj:camps){
+					SimpleVO vo=new SimpleVO();
+					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+					vo.setName(obj[1]!=null?obj[1].toString():"");
+					simpleVO.getSimpleVOList2().add(vo);
+					
+				}
+			}
+			
+		}catch (Exception e){
+		   e.printStackTrace();
+		}
+		return simpleVO;
+	}
+    public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId){
+		
+		List<IdNameVO> campsList=null;
+		try{
+			List<Object[]> camps=trainingCampUserProgramDAO.getCampsByProgramAndUser(campProgramId,userId);
+			if(camps!=null && camps.size()>0){
+				campsList=new ArrayList<IdNameVO>();
+				for(Object[] obj:camps){
+					IdNameVO vo=new IdNameVO();
+					vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+					vo.setName(obj[1]!=null?obj[1].toString():"");
+					campsList.add(vo);
+				}
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return campsList;
+	}
+    
 }

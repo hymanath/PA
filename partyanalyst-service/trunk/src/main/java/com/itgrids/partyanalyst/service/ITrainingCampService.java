@@ -81,4 +81,7 @@ public interface ITrainingCampService {
 	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId);
 	
 	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId);
+	public SimpleVO getProgramsByUser(Long userId);
+	public SimpleVO getAllProgramsAndCamps();
+	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
 }
