@@ -505,7 +505,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         ).done(function(result){
 			$.unblockUI();
 			if(result=="success"){
-				updateMinCount("delete");
 			var reslt;
 			reslt = "Minute Deleted Successfully"
 			$("#mintupdatealertmag").html(reslt);
@@ -693,6 +692,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			locationDiv.find(".locationCls").attr("id","locationDivId");
 			
 			$(locationTemp).val($(divId).text());
+		
         });
     }
    
@@ -1117,13 +1117,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
 				    for(var i in result.minutesDocuments){
-					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
+					    str+='<li class="list-group-item col-md-12" id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</div><br/>';
+						str+='</li><br/>';
 						
 				   }
+				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
@@ -1137,13 +1139,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
 				   for(var i in result.atrDocuments){
-					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
+					    str+='<li class="col-md-12  list-group-item" id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</div><br/>';
+						str+='</li><br/>';
 						
 				   }
+				   str+='</ul>';
 				   str+='</div>';
 				   str+='</div>';
 				   str+='</div>';
