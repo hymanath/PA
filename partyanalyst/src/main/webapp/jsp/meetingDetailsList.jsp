@@ -492,7 +492,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         $("#"+divId).remove();
         $("#save"+divCount).remove();
 		$(this).remove();
-		
+		$("#list"+divCount).remove();		
 		
 		var minuteId = $(this).attr("attr_minuteId");
 		
@@ -511,7 +511,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			reslt = "Minute Deleted Successfully"
 			$("#mintupdatealertmag").html(reslt);
 			$('#alertmintsave').modal('show');
-			   //alert("Minute Deleted");
+			updateMinCount("delete");
 		   }
 		});
 		
