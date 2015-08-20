@@ -560,27 +560,27 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
         $("#searchDataImgForman"+atrId).show();
-        var jsObj={               
-            districtId:district,
-            elmtId:"districtList_d",
-            type:"default",
-            task:"getConstituenciesForDistricts"               
-        }
-        $.ajax({
-              type:'POST',
-              url: 'getConstituenciesForADistrictAjaxAction.action',
-              dataType: 'json',
-              data: {task:JSON.stringify(jsObj)}
-       }).done(function(result){
+        var distArrTemp = [district];
+       var jsObj={				
+			districtId:distArrTemp,
+			stateId:0,
+			task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesOfDistrictWithSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
            $("#searchDataImgForman"+atrId).hide();
             for(var i in result){
                if(result[i].id == 0){
                  // $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
                }else{
 				   if(locationLevelValue==result[i].id){
-					   $("#constituencyId"+atrId).append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+					   $("#constituencyId"+atrId).append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
 				   }else{
-						$("#constituencyId"+atrId).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						$("#constituencyId"+atrId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				   }
                   
                }
