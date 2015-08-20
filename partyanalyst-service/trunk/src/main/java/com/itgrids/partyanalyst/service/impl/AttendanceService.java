@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
@@ -51,7 +52,12 @@ public class AttendanceService implements IAttendanceService{
 	private ITrainingCampAttendanceTabUserDAO trainingCampAttendanceTabUserDAO;
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
 	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO;
+	private IVoterDAO voterDAO;
 	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	public void setPartyMeetingInviteeDAO(
 			IPartyMeetingInviteeDAO partyMeetingInviteeDAO) {
 		this.partyMeetingInviteeDAO = partyMeetingInviteeDAO;
@@ -101,6 +107,7 @@ public class AttendanceService implements IAttendanceService{
 	{
 		AttendanceVO result = new AttendanceVO();
 		result.setUniqueKey(attendanceVO.getUniqueKey());
+		result.setTabPrimaryKey(attendanceVO.getTabPrimaryKey());
 		try{
 			
 			String membershipId = attendanceVO.getMembershipId();
@@ -151,7 +158,7 @@ public class AttendanceService implements IAttendanceService{
 			attendance.setTabUserId(attendanceVO.getTabUserId());
 			attendance.setCurrentTabUserId(attendanceVO.getCurrentTabUserId());
 			attendance.setSyncSource(attendanceVO.getSyncSource());
-			
+			attendance.setTabPrimaryKey(attendanceVO.getTabPrimaryKey());
 			attendance = attendanceDAO.save(attendance);
 			
 			if(attendanceVO.getType().equalsIgnoreCase("Meeting"))
@@ -160,7 +167,7 @@ public class AttendanceService implements IAttendanceService{
 				partyMeetingAttendance.setAttendance(attendance);
 				partyMeetingAttendance.setPartyMeetingId(attendanceVO.getPartyMeetingId());
 				partyMeetingAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				partyMeetingAttendanceDAO.save(partyMeetingAttendance);
+				partyMeetingAttendance = partyMeetingAttendanceDAO.save(partyMeetingAttendance);
 			}
 			else if(attendanceVO.getType().equalsIgnoreCase("Training"))
 			{
@@ -169,16 +176,21 @@ public class AttendanceService implements IAttendanceService{
 				trainingCampAttendance.setTrainingCampScheduleId(attendanceVO.getTrainingCampScheduleId());
 				trainingCampAttendance.setTrainingCampBatchId(attendanceVO.getTrainingCampBatchId());
 				trainingCampAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				trainingCampAttendanceDAO.save(trainingCampAttendance);
+				trainingCampAttendance = trainingCampAttendanceDAO.save(trainingCampAttendance);
 			}
 			result.setStatus("Success");
+			voterDAO.flushAndclearSession();
+			
+			List<Long> idList = attendanceDAO.getPrimarykey(attendanceVO.getUniqueKey(),attendanceVO.getImei(),attendanceVO.getTabPrimaryKey());
+			if(idList != null && list.size() > 0)
+				result.setServerPrimaryKey(idList.get(0));
 			
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in saveAttendance Method- ",e);
 			attendanceVO.setErrorDescription(e.toString());
 			saveAttendanceError(attendanceVO);
-			result.setStatus("Success");
+			result.setStatus("Failure");
 		}
 		return result;
 	}
@@ -205,6 +217,7 @@ public class AttendanceService implements IAttendanceService{
 			attendanceError.setCurrentTabUserId(attendanceVO.getCurrentTabUserId());
 			attendanceError.setSyncSource(attendanceVO.getSyncSource());
 			attendanceError.setErrorDescription(attendanceVO.getErrorDescription());
+			attendanceError.setTabPrimaryKey(attendanceVO.getTabPrimaryKey());
 			attendanceErrorDAO.save(attendanceError);
 			saveAttendanceInFatalLog(attendanceVO);
 		}catch(Exception e)
@@ -223,7 +236,7 @@ public class AttendanceService implements IAttendanceService{
 					"\tTrainingCampBatchId - "+attendanceVO.getTrainingCampBatchId()+"\tTrainingCampTopicId - "+attendanceVO.getTrainingCampTopicId()+"\tTdpCadreId - "+attendanceVO.getTdpCadreId()+
 					"\tMembershopId - "+attendanceVO.getMembershipId()+"\tAttendedTime - "+attendanceVO.getAttendedTime()+"\tRfid - "+attendanceVO.getRfid()+"\tImei - "+attendanceVO.getImei()+"\tUniqueKey - "+attendanceVO.getUniqueKey()+
 					"\tInsertedTime - "+dateUtilService.getCurrentDateAndTimeInStringFormat()+"\tLatitude - "+attendanceVO.getLatitude()+"\tLongitude - "+attendanceVO.getLongitude()+"\tTabUserId - "+attendanceVO.getTabUserId()+"\tCurrentTabUserId - "+attendanceVO.getCurrentTabUserId()+
-					"\tSyncSource - "+attendanceVO.getSyncSource());
+					"\tSyncSource - "+attendanceVO.getSyncSource()+"\tTab Primary Kay - "+attendanceVO.getTabPrimaryKey());
 			LOG.fatal("----------------------------------------------------");
 		}catch(Exception e)
 		{
