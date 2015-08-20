@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -1801,7 +1803,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 	}*/
 	
-	public void test() throws Exception
+	/*public void test() throws Exception
 	{
 		try {
 			FileInputStream file = new FileInputStream(new File("G:/Sample.xls"));
@@ -1827,6 +1829,18 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+	}*/
+	
+	public Long getUUID()
+	{
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+			return Long.parseLong(sdf.format(new Date()));
+		}
+		catch(Exception e)
+		{
+			return null;
 		}
 	}
 	
