@@ -6177,6 +6177,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(list != null && list.size()>0)
 			{
 				for (CadreCommitteeReportVO cadreCommitteeReportVO : list) {
+						if(locationId != null)
 					if(cadreCommitteeReportVO.getLocationId() != null && cadreCommitteeReportVO.getLocationId().longValue() == locationId.longValue()){
 						return cadreCommitteeReportVO;
 					}
