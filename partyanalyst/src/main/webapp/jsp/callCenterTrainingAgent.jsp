@@ -278,16 +278,16 @@
   </div>
 </div>
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<img src="training/dist/img/footer.jpg" width="100%">
 </footer>
-<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
 <!--<script src="dist/DateRange/moment.js" type="text/javascript"></script>	
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>-->
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 	
-<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="training/dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 var purposeId = '${purposeId}';
 var programId = '${programId}';
