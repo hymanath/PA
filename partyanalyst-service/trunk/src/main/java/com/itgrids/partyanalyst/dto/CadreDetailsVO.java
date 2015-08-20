@@ -39,6 +39,14 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private List<IdNameVO> leadershipSkillslist;
 	private List<IdNameVO> healthStatuslist;
 	
+	private int resultCode;
+	
+	public int getResultCode() {
+		return resultCode;
+	}
+	public void setResultCode(int resultCode) {
+		this.resultCode = resultCode;
+	}
 	public Long getId() {
 		return id;
 	}

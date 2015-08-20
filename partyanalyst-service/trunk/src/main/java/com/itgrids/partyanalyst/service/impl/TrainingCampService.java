@@ -3937,14 +3937,6 @@ public class TrainingCampService implements ITrainingCampService{
 		return finalList;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList){
 		 
 		List<CadreDetailsVO> finalList=null;
@@ -4208,9 +4200,9 @@ public class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
 	{
-		final ResultStatus resultStatus=new ResultStatus();
+		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -4265,6 +4257,7 @@ public class TrainingCampService implements ITrainingCampService{
 						trainingCampCadreAchievementDAO.deleteAchievementsforACadre(tdpCadreId,batchId);
 					}
 					if(achieveList!=null && achieveList.size()>0){
+						cadreDetailsVO.setAchievements(true);
 						
 						for(String achieve:achieveList){
 							
@@ -4300,6 +4293,8 @@ public class TrainingCampService implements ITrainingCampService{
 						trainingCampCadreGoalDAO.deleteGoalsforACadre(tdpCadreId,batchId);
 					}
                     if( goalsList!=null && goalsList.size()>0){
+                    	cadreDetailsVO.setGoals(true);
+                    	
                       SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
                       for(SimpleVO goal:goalsList){
                     	  
@@ -4335,11 +4330,13 @@ public class TrainingCampService implements ITrainingCampService{
                     }
 		  }
 		});
-		resultStatus.setResultCode(1);	
+			cadreDetailsVO.setResultCode(1);
+			//resultStatus.setResultCode(1);	
 		}catch(Exception e){
 			LOG.error(" Error Occured in getDocsOfPartyMeetingId" ,e);
-			resultStatus.setResultCode(0);
+			cadreDetailsVO.setResultCode(0);
+			//resultStatus.setResultCode(0);
 		}
-		return resultStatus;
+		return cadreDetailsVO;
 	}
 }
