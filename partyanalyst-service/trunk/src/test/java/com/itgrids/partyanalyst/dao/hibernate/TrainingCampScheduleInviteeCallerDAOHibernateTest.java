@@ -21,7 +21,7 @@ public class TrainingCampScheduleInviteeCallerDAOHibernateTest extends BaseDaoTe
 		this.trainingCampScheduleInviteeCallerDAO = trainingCampScheduleInviteeCallerDAO;
 	}
 	
-	public void testDetails()
+	/*public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		try{
@@ -36,6 +36,6 @@ public class TrainingCampScheduleInviteeCallerDAOHibernateTest extends BaseDaoTe
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 }
