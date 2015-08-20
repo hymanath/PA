@@ -152,8 +152,27 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                         <div class="panel-heading" style="background-color:#DDD">
                                             <h4 class="panel-title text-bold">Meeting Minutes</h4>
                                         </div>
+										<div class="table-responsive">
+											<table class="table table-bordered">
+												<tr>
+													<td>
+														<h4 class="m_0 text-center">Total MinitePoints </h4>
+														<h2 class="m_0 text-center"><span id="minitePointsCount">0</span></h2>
+													</td>
+													<td>
+														<h4 class="m_0 text-center">Total Documents Uploaded </h4>
+														<h2 class="m_0 text-center"><span id="miniteDocsCount">0</span></h2>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<!--<div style="border:1px solid #ababab; margin:5px;padding:5px;">
+											<h4>Total MinitePoints : 
+											<span style="margin-left:20px;"></span>
+										</div>-->
+										
                                         <div class="panel-body">
-                                            <div id="addMoreDiv">
+											<div id="addMoreDiv">
                                                 <div class="input-group bin-div m_top10" id="list1" style="display:none">
                                                     <span type="text" class="form-control" id="minutes1"></span>
                                                     <span class="input-group-addon trash" attr_txt="minutes1">
@@ -208,6 +227,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                         <div class="panel-heading" style="background-color:#DDD">
                                             <h4 class="panel-title text-bold">ATR</h4>
                                         </div>
+										
+										<table class="table table-bordered">
+											<tr>
+												<td>
+													<h4 class="m_0 text-center">Total ATRPoints </h4>
+													<h2 class="m_0 text-center"><span id="atrPointsCount">0</span></h2>
+												</td>
+												<td>
+													<h4 class="m_0 text-center">Total Documents Uploaded </h4>
+													<h2 class="m_0 text-center"><span id="atrDocsCount">0</span></h2>
+												</td>
+											</tr>
+										</table>
+										
                                             <div class="panel-body">
 											<div>
                                                 <div id="atrDivId"></div>
@@ -712,12 +745,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	   }).done(function(result){
 		   
 		   if(result!=null){
-			   $("#meetingType").html(result.partyMeetingType);
+			   $("#meetingType").html(result.partyMeetingType+" - "+result.name);
 			   $("#location").html(result.meetingLevel);
 			   
 			   
 			   
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
+				   $("#miniteDocsCount").html(result.minutesDocuments.length);
 				   var str='';
 				    str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
@@ -738,6 +772,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#mintueDocumentDivId").html(str);
 			   }
 			    if(result.atrDocuments!=null && result.atrDocuments.length>0){
+					$("#atrDocsCount").html(result.atrDocuments.length);
 				   var str='';
 				    str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
@@ -760,6 +795,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   
 			   
 			   if(result.minutesDetails!=null && result.minutesDetails.length>0){
+				   $("#minitePointsCount").html(result.minutesDetails.length);
 				   minutesFiles = result.minutesDetails.length;
 				   var str='';
 				    mainDivCount=i;
@@ -793,11 +829,12 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   }
 			   
 			   if(result.atrDetails!=null && result.atrDetails.length>0){
+				   $("#atrPointsCount").html(result.atrDetails.length);
 				   atrFiles = result.atrDetails.length;
 				   var str='';
 				   for(var i in result.atrDetails){
 				   	   maximumDivCount=i;
-					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'" class="m_top10">';
+					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
