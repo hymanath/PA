@@ -15492,12 +15492,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				if(locationIds.get(0).equals(1)){
 					IdNameVO vo = new IdNameVO();
 					vo.setId(1l);
-					vo.setName("AndhraPradesh");
+					vo.setName("AndhraPradesh State");
 					finalList.add(vo);
 				}else if(locationIds.get(0).equals(1)){
 					IdNameVO vo = new IdNameVO();
 					vo.setId(36l);
-					vo.setName("Telangana");
+					vo.setName("Telangana State");
 					finalList.add(vo);
 				}
 			}else if(locationLevel.equals(2l)){
@@ -15506,7 +15506,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:distRslt){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString() + " District");
 						finalList.add(vo);
 					}
 					
@@ -15517,7 +15517,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:constRslt){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString()  + " Constituency");
 						finalList.add(vo);
 					}
 					
@@ -15528,7 +15528,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:tehsilRslt){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString() + " Mandal");
 						finalList.add(vo);
 					}
 					
@@ -15550,7 +15550,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:divisions){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString() + " Division");
 						finalList.add(vo);
 					}
 					
@@ -15561,7 +15561,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:panchayats){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString() + " Village");
 						finalList.add(vo);
 					}
 					
@@ -15572,7 +15572,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					for(Object[] obj:wards){
 						IdNameVO vo = new IdNameVO();
 						vo.setId(Long.valueOf(obj[0].toString()));
-						vo.setName(obj[1].toString());
+						vo.setName(obj[1].toString() + " Ward");
 						finalList.add(vo);
 					}
 					

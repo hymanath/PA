@@ -3624,6 +3624,15 @@ public class TrainingCampService implements ITrainingCampService{
 					partyMeetingVO.setEndDate(partyMeetingDetails.getEndDate());
 				}
 				
+				if(partyMeetingVO.getMeetingLevelId()!=0 && partyMeetingVO.getLocationValue()!=0){
+					List<Long> locationIds = new ArrayList<Long>();
+					locationIds.add(partyMeetingVO.getLocationValue());
+					List<IdNameVO> rslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, partyMeetingVO.getMeetingLevelId());
+					if(rslt!=null && rslt.size()>0){
+						partyMeetingVO.setLocationName(rslt.get(0).getName());
+					}
+				}
+				
 			}
 			
 			if(minutesDetails!=null && minutesDetails.size()>0){
