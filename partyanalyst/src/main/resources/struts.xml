@@ -10701,7 +10701,7 @@
 	
 	<action name="saveDetailsOfCadreAction" class="trainingCampAction" method="saveDetailsOfCadreAction">
 	    <result type="json" name="success">
-	       <param name="root">resultStatus</param>
+	       <param name="root">cadreDetailsVO</param>
 	  </result>
 	</action>
 	
