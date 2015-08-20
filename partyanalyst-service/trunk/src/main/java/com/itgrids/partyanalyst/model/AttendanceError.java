@@ -38,6 +38,7 @@ public class AttendanceError extends BaseModel implements Serializable{
 	private String errorDescription;
 	private String membershopId;
 	private Long tdpCadreId;
+	private Long tabPrimaryKey;
 	
 	public AttendanceError(){}
 
@@ -203,6 +204,15 @@ public class AttendanceError extends BaseModel implements Serializable{
 
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
+	}
+
+	@Column(name="tab_primary_key")
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
 	}
 	
 }
