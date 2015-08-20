@@ -127,6 +127,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
                        <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
                        <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a href="meetingList.action"><span>PARTY MEETING DASHBOARD</span></a> </li>
                        <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                    
                     </ul>  
@@ -572,7 +573,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	 
 	 var lctn = $("#districtId"+atrId+" option:selected").text();
 	 var lctnId = $("#districtId"+atrId+" option:selected").val();
-	 $("#DistrictShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>Location</span> :"+lctn+" ");
+	 $("#DistrictShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>LOCATION </span> :"+lctn+" ");
 	 
 	 var locationDiv = $("#DistrictShowId"+atrId);
 	 locationDiv.find(".locationCls").attr("id","locationDivId");
@@ -613,7 +614,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			
 			var lctn = $("#constituencyId"+atrId+" option:selected").text();
 			var lctnId = $("#constituencyId"+atrId+" option:selected").val();
-			$("#ConstShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>Location</span>  :"+lctn+" ");
+			$("#ConstShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>LOCATION </span>  :"+lctn+" ");
 			
 			var locationDiv = $("#ConstShowId"+atrId);
 			locationDiv.find(".locationCls").attr("id","locationDivId");
@@ -652,21 +653,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             task:"getConstituenciesForDistricts"
         }
         $.ajax({
-              type:'GET',
+              type:'POST',
               url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
               dataType: 'json',
               data: {task:JSON.stringify(jsObj)}
        }).done(function(result){
             $("#searchDataImgForcons"+atrId).hide();
               var divId = "#manTowDivId"+atrId;
-            //  $(divId).append("<option value=''>SELECT MANDAL/ TOWN/ DIVISION</option>");
               if(locationLevel ==5){
                   divId = "#villWardId"+atrId;
-                //  $(divId).append("<option value=''>SELECT VILLAGE/ WARD </option>");
               }
               
-              //$(divId).append("<option value='0'>ALL</option>");
-             
             for(var i in result){
 				if(locationLavelValue==result[i].locationId){
 					$(divId).append('<option value='+result[i].locationId+' selected>'+result[i].locationName+'</option>');
@@ -739,7 +736,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			partyMeetingID : partyMeetingID
 		}
 		$.ajax({
-			  type:'GET',
+			  type:'POST',
 			  url: 'getPartyMeetingMinutesAtrDetailsAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -811,15 +808,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+=' </div>';
 						str+=' </li>';
 						
-						
-						/* str+='<span class="input-group-addon trash " style="background-color:#CCC;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'">';
-						str+='<i class="glyphicon glyphicon-trash"></i>';
-						str+='</span>';
-						str+='<span class="input-group-addon saveMinute" style="display:none;" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'">';
-						str+='<i class="glyphicon glyphicon-ok"></i>';
-						str+='</span>'; */
-						
-						
+							
 				   }
 				   str+='</ul>';
 				   $("#addMoreDiv").html(str);
@@ -907,17 +896,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<li class="" style="display:none;list-style:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
 					    str+='</ul>';
 					   str+='</div>';
-					   /* str+='<div class="row">';
-					   str+='<div class="col-md-12">';
-					   str+='<h4><i class="icon-upload"></i> Upload File</h4>';
-					   str+='<p class="m_0">Drag and drop file below box or click on box to upload file</p>';
-					   str+='<form action="/target" class="dropzone"></form>';
-					   str+='<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>';
-					   str+='</div>';
-					   str+='</div>'; */
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   //str+='<button class="btn btn-success btn-xs  updateAtr" style="padding:3px;" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_locationScope="'+result.atrDetails[i].locationScopeId+'">UPDATE</button>';
-					   //str+='<button class="btn btn-success btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="padding:3px;" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'">DELETE</button>';
 					   str+='</div>';
 					   str+='</div>';
 					   str+='</div>';
@@ -969,7 +948,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			partyMeetingId : partyMeetingId//global var
 		}
 		$.ajax({
-			  type:'GET',
+			  type:'POST',
 			  url: 'updateMeetingMinutePointAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -1250,7 +1229,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			locationscope : locationscope
 		}
 		$.ajax({
-			  type:'GET',
+			  type:'POST',
 			  url: 'updateMeetingAtrPointAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
@@ -1259,20 +1238,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				//alert("Updated Successfully");
 				getAtrPointsForAMeeting(partyMeetingId);
 			}else{
-			reslt = "Please Try Again"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
+				reslt = "Please Try Again"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
 				//alert("Please Try Again");
 				$.unblockUI();
 			}
 			if(atrId == 0){
-			reslt = "Saved Successfully"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
+				reslt = "Saved Successfully"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
 			}else if(atrId >0){
-			reslt = "Updated Successfully"
-			$("#mintupdatealertmag").html(reslt);
-			$('#alertmintsave').modal('show');
+				reslt = "Updated Successfully"
+				$("#mintupdatealertmag").html(reslt);
+				$('#alertmintsave').modal('show');
 			}
 		});	
 		
@@ -1294,114 +1273,55 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   var str='';
 				   for(var i in result.atrDetails){
 				   	   maximumDivCount=i;
-					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
+					   
+					   str+='<div id="atrInnerDiv'+result.atrDetails[i].partyMeetingAtrPointId+'" class="m_top10">';
 					   str+='<div class="panel-body" id="requestDivId" style="border:1px solid #c3c3c3;">';
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
-					  
-					  str+=' <button class="btn btn-default   deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   
-					   //str+=' <button class="btn btn-danger btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'"  attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="removeDivId'+maximumDivCount+'">REMOVE</button>';
-					   
+				       str+=' <button class="btn btn-default  deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
-					   
-					   //str+=' <button class="btn btn-danger btn-xs editBtn" attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'">EDIT</button>';
 					   str+=' </div>';
 					    str+='<ul class="" style="padding-left: 0px;margin-top: -48px;">';
-					    str+='<li class="col-md-12 list-group-item" >';
-					   str+='<span class="text-bold">REQUEST : </span>';
-					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
-						str+='</li>';
-					    str+='<li class="col-md-12 list-group-item" >';
-					   str+='<span>ACTION TAKEN : </span>';
-					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
-					  str+='</li>';
 					   str+='<li class="col-md-12 list-group-item" >';
-					   str+='<span>RAISED BY : </span>';
+					   str+='<span class="text-bold">REQUEST : </span>';
+					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].request+'</span>';
+					   str+='</li>';
+					   str+='<li class="col-md-12 list-group-item">';
+					   str+='<span class="text-bold">ACTION TAKEN : </span>';
+					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].actionTaken+'</span>';
+					   str+='</li>';
+					   str+='<li class="col-md-12 list-group-item">';
+					   str+='<span class="text-bold">RAISED BY : </span>';
 					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
 					   str+='</li>';
 					   str+='</div>';
+					   
 					   str+='<div class="col-md-12 m_top20">';
-					   str+='<div class="col-md-12 " id="stateShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>State</label>';
-					   str+='<select class="form-control" id="statesDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select State</option>';
-					   str+='<option value="0">All</option>';
-					   str+='<option value="1">AndhraPradesh</option>';
-					   str+='<option value="36">Telangana</option>';
-					   str+='</select>';
+							str+='<span class="text-bold">LOCATION : </span>';
+							if(result.atrDetails[i].locationScopeId==1){
+								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' District</li>';
+							}else if(result.atrDetails[i].locationScopeId==2){
+								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' Constituency</li>';
+							}else if(result.atrDetails[i].locationScopeId==3){
+								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="ManTwnDivShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' </li>';
+							}else if(result.atrDetails[i].locationScopeId==4){
+								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' </li>';
+							}
 					   str+='</div>';
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>District</label>';
-					   str+='<select class="form-control locationCls" id="districtId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select District</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Constituency</label>';
-					   str+='<select class="form-control locationCls" id="constituencyId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Constituency</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Mandal/Town/Division</label>';
-					   str+='<select class="form-control locationCls" id="manTowDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Mandal/Town/Division</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="ManTwnDivShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   
-					   str+='<div class="col-md-12" id="VillWardShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Village/Ward</label>';
-					   str+='<select class="form-control locationCls" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Village/Ward</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   str+='</ul>';
-					   str+='</div>';
-					   /* str+='<div class="row">';
-					   str+='<div class="col-md-12">';
-					   str+='<h4><i class="icon-upload"></i> Upload File</h4>';
-					   str+='<p class="m_0">Drag and drop file below box or click on box to upload file</p>';
-					   str+='<form action="/target" class="dropzone"></form>';
-					   str+='<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>';
-					   str+='</div>';
-					   str+='</div>'; */
+					  
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   //str+='<button class="btn btn-success btn-xs  updateAtr" style="padding:3px;" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_locationScope="'+result.atrDetails[i].locationScopeId+'">UPDATE</button>';
-					   //str+='<button class="btn btn-success btn-xs deleteAtr" attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="padding:3px;" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'">DELETE</button>';
+					  
 					   str+='</div>';
 					   str+='</div>';
 					   str+='</div>';
 					   
+					  
 				   }
 				   
 				   $("#atrDivId").html(str);
-				   
-				   for(var i in result.atrDetails){
-					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
-					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
-					   
-				   }
-				   
-				   
 			   }else{
 				   $("#atrDivId").html("<h5>No ATR Points</h5>");
-				   getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
+				  // getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
 			   }
 			   $.unblockUI();
 			   //alert("Updated Successfully");
@@ -1492,6 +1412,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		str+='</div>';
 		$("#showmsshmin").html(str);
 	}
+	
+	$(document).on("change","#locationDivId",function(){
+		var someVal = $(this).val();
+		$('#locationDivId').find('option[value='+someVal+']').prop('selected',true);
+	});
 	
 </script>
 </body>
