@@ -96,8 +96,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String partyMeetingType;
 	private CadreDetailsVO cadreDetailsVO;
 	private List<CallTrackingVO> docsResultList;
-	
-	
+	private SimpleVO simpleVO;
 	
 
 	public List<CallTrackingVO> getDocsResultList() {
@@ -465,6 +464,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	public void setCadreDetailsVO(CadreDetailsVO cadreDetailsVO) {
 		this.cadreDetailsVO = cadreDetailsVO;
 	}
+    
+	public SimpleVO getSimpleVO() {
+		return simpleVO;
+	}
+
+	public void setSimpleVO(SimpleVO simpleVO) {
+		this.simpleVO = simpleVO;
+	}
 
 	public String callCenterTrainingAdmin()
 	{
@@ -485,6 +492,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String callCenterTrainingAgent(){
 		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null){
@@ -1483,7 +1491,63 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			return "FAILED";
 		}
 	}
-	
+	public String trainingCampMainDashboard()
+	{
+		try
+		{
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO!=null){
+				Long userId = regVO.getRegistrationID();
+				if(!regVO.getIsAdmin().equalsIgnoreCase("true")){
+					if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
+						return Action.ERROR;
+					}
+				}
+			}else{
+				return Action.INPUT;
+			}
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getProgramsAction(){
+		
+		try{
+			
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId = regVO.getRegistrationID();
+			
+			if(regVO.getIsAdmin().equalsIgnoreCase("true")){//Admin
+				
+				simpleVO=trainingCampService.getAllProgramsAndCamps();
+				
+			}else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
+				
+				simpleVO=trainingCampService.getProgramsByUser(userId);
+			}
+			
+		}catch(Exception e){
+			LOG.error(" Exception occured in getProgramsAction method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCampsByProgramAndUser(){
+		
+		try{
+			
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long campProgramId = jObj.getLong("campProgramId");
+			idNameList=trainingCampService.getCampsByProgramAndUser(campProgramId,userId);
+			
+		}catch(Exception e){
+			LOG.error(" Exception occured in getProgramsAction method in TrainingCampAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getTdpCadreDetailsforASchedule(){
 		
 		try{

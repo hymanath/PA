@@ -5641,7 +5641,8 @@
 		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
 		    <result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
 		    <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
-		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>	       
+		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
+		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -10626,7 +10627,7 @@
 	       <param name="root">status</param>
 	  </result>
 	</action>
-		<action name="trainingCampMainDashboard" class="trainingCampAction" method="callCenterTrainingAdmin">
+		<action name="trainingCampMainDashboard" class="trainingCampAction" method="trainingCampMainDashboard">
 			<result name="success">/jsp/trainingCampMainDashboard.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
@@ -10714,6 +10715,16 @@
 	<action name="getAllBatchesByProgramAndCenterAction" class="trainingCampAction" method="getAllBatchesByProgramAndCenter">
 	   <result type="json" name="success">
 	       		<param name="root">finalList</param>
+	  	</result>
+	</action>
+	<action name="getProgramsAction" class="trainingCampAction" method="getProgramsAction">
+	   <result type="json" name="success">
+	       		<param name="root">simpleVO</param>
+	  	</result>
+	</action>
+	<action name="getCampsByProgramAndUserAction" class="trainingCampAction" method="getCampsByProgramAndUser">
+	   <result type="json" name="success">
+	       		<param name="root">idNameList</param>
 	  	</result>
 	</action>
 	<action name="partyMeetingsDashBoard" class="partyMeetingsDashBoardAction" >
