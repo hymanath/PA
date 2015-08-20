@@ -4545,11 +4545,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(ivrDetailsVO != null)
 					{
 						Long totalIVRCount = 0L;
+						int wardListLength = 0;
+						int villageListLength =0;
 						List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
 						List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
-						
-						int villageListLength = villageIVRDetails.size();
-						int wardListLength = wardIVRDetails.size();
+						if(villageIVRDetails != null && villageIVRDetails.size() > 0)
+						villageListLength = villageIVRDetails.size();
+						if(wardIVRDetails != null && wardIVRDetails.size() > 0)
+						 wardListLength = wardIVRDetails.size();
 						
 						int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
 						
@@ -6470,11 +6473,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(ivrDetailsVO != null)
 			{
 				Long totalIVRCount = 0L;
+				int wardListLength = 0;
+				int villageListLength  =0;
 				List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
 				List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
-				
-				int villageListLength = villageIVRDetails.size();
-				int wardListLength = wardIVRDetails.size();
+				if(villageIVRDetails != null && villageIVRDetails.size() > 0)
+				 villageListLength = villageIVRDetails.size();
+				if(wardIVRDetails != null && wardIVRDetails.size() > 0)
+					wardListLength = wardIVRDetails.size();
 				
 				int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
 				
@@ -7111,7 +7117,7 @@ return constiLst;
         			constiIds = new ArrayList<Long>();
         			localBodiesMap.put(localBdyId,constiIds);
         		}
-        		constiIds.add((Long)localBody[1]);
+        		constiIds.add((Long)localBody[3]);
         	}
 		}
 		if(divisionLclIds.size() > 0){
