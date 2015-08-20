@@ -103,6 +103,7 @@ color: red !important;
 						<div class="row m_top10">
 							<div class="col-md-3">
 								<label>Program</label>
+								<div class="mandatory" id="programSelErrDivId"></div>
 								<div id="programSelDivId"></div>
 								<select class="form-control" id="programId">
 									<option value="0">Select Program</option>
@@ -113,6 +114,7 @@ color: red !important;
 							</div>
 							<div class="col-md-3">
 								<label>Center</label>
+								<div class="mandatory" id="centerSelErrDivId"></div>
 								<div id="campSelDivId"></div>
 								<select class="form-control" id="centerId">
 									<option value="0">Select Center</option>
@@ -390,36 +392,36 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
 					   if(results[i].subList[j].achievements){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i></td>'
 					   }
 					   if(results[i].subList[j].goals){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i></td>'
 					   }  
 					   if(results[i].subList[j].leaderShipLevels){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipLvlsCls"></i></td>'
 					   }
 					   if(results[i].subList[j].communicationSkills){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center communicationSklsCls"></i></td>'
 					   }
 					   if(results[i].subList[j].leaderShipSkills){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipSklsCls"></i></td>'
 					   }
 					   if(results[i].subList[j].health){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center healthCls"></i></td>'
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>'
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
 					   }
-					   str+='<td><button  type="button" id="updateId" class="btn btn-success btn-xs"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+					   str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
                        str+='</tr>';
                     }
 					str+='</table>'
@@ -433,7 +435,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		}
 		
 	
-	 $(document).on('click','#updateId',function(){
+	 $(document).on('click','.updateClass',function(){
 	   $.blockUI({image: src="./images/Optimizing Please Wait.gif"});
        var tdpCadreId=$(this).attr('attr-cadreId');
 	   var batchId=$(this).attr('attr-batchId');
@@ -468,11 +470,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
    var str='';
    str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 		str+='<div class="col-md-6">'
+			str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 			str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 		str+='</div>'
 		str+='<div class="col-md-4">'
+			str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 			str+='<div class="input-group date reportrange datetxtboxD m_top10">';
-				str+='<input type="text" class="form-control goalsDateClass"  id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
+				str+='<input type="text" class="form-control goalsDateClass"  id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
 				str+='<span class="input-group-addon">';
 					str+='<span class="glyphicon glyphicon-calendar"></span>';
 				str+='</span>';
@@ -573,11 +577,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				   globalDateCount=globalDateCount+1;
 				      str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 						str+='<div class="col-md-6">'
+							str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 							str+='<input class="form-control datetxtbox goalsTxtCls m_top10" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'" type="text" value="'+results.goalsList[i].name+'">'
 						str+='</div>'
 						str+='<div class="col-md-4">'
+							str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 							str+='<div class="input-group date reportrange datetxtboxD m_top10">';
-								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].dateString+'"/>';
+								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].dateString+'"/>';
 								str+='<span class="input-group-addon">';
 									str+='<span class="glyphicon glyphicon-calendar"></span>';
 								str+='</span>';
@@ -596,11 +602,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				
 				str+='<div class="row m_top10 dateListClass" id="dateList0" attr-id="0">'
 					str+='<div class="col-md-6">'
+						str+='<div class="mandatory" id="goalErrDivId0"></div>'
 						str+='<input class="form-control goalsTxtCls" id="goalsClass0" attr-id="0" type="text">'
 					str+='</div>'
 					str+='<div class="col-md-4">'
+						str+='<div class="mandatory" id="dateErrDivId0"></div>'
 						str+='<div class="input-group date reportrange">';
-							str+='<input type="text" class="form-control goalsDateClass" id="goalsDateClass0" attr-id="0" />';
+							str+='<input type="text" class="form-control goalsDateClass" id="goalsDateId0" attr-id="0" />';
 							str+='<span class="input-group-addon">';
 								str+='<span class="glyphicon glyphicon-calendar"></span>';
 							str+='</span>';
@@ -695,7 +703,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	var str1='';
 	str1+='<span id="updatedId" style="display:none" class="text-success pull-left">Updated Successfully...</span>';
 	str1+='<span id="notUpdatedId" style="display:none" class="text-success pull-left">Sorry..Details Are Not Updated...</span>';
-	str1+='<span id="processingId" style="display:none" class="text-danger pull-left"><span><img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:15px;display:none;"/></span>Please Wait Updating Details...</span>';
+	str1+='<span id="processingId" style="display:none" class="text-danger pull-left"><span><img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:15px;display:none;"/></span>Please Wait While Updating...</span>';
     str1+='<button type="button" class="btn btn-default" data-dismiss="modal" id="closePopUp">Close</button>';
     str1+='<button type="button" class="btn btn-primary" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
 	$("#modalFooterId").html(str1);
@@ -725,6 +733,10 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	
    function saveAllDetails(tdpCadreId,batchId)
    {
+		$("#leadershipLvlErrDivId").html('');
+		$("#commSkillsErrDivId").html('');
+		$("#leadershipSkillsErrDivId").html('');
+		$("#healthErrDivId").html('');
    
        //feedbacks   
 	   var leaderShipLevel = $("#leadershipLevelId").val();
@@ -742,11 +754,32 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	   });
 	    //goals
 	   var goalArray=[];
-	   
+	   var flag=false;
 	   $(".dateListClass").each(function(){
 	      var id=$(this).attr("attr-id");
 		  var goal=$("#goalsClass"+id).val();
-		  var date=$("#goalsDateClass"+id).val();
+		  var date=$("#goalsDateId"+id).val();
+		  
+		  $("#dateErrDivId"+id).html('');
+		  $("#goalErrDivId"+id).html('');
+		  
+		  if(goal.trim().length>0 && date.trim().length<=0){
+			$("#dateErrDivId"+id).html("Please Give Date");
+			flag=true;
+			return flag;
+		  }
+		  if(goal.trim().length<=0 && date.trim().length>0){
+			$("#goalErrDivId"+id).html("Please Give Goal");
+			flag=true;
+			return flag;
+		  }
+		  
+		  if(goal.trim().length>0 && date.trim().length>0){
+			 var goalObject = new Object();
+			 goalObject.goal = goal; 
+			 goalObject.date = date;
+			 goalArray.push(goalObject);
+			 }
 		  
            /* if(goal.trim().length>0){
 			  if(date.trim().length<=0){
@@ -760,11 +793,15 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				 return;
 			 }
 		 }  */
-		 var goalObject = new Object();
+		 /*var goalObject = new Object();
          goalObject.goal = goal; 
          goalObject.date = date;
-         goalArray.push(goalObject);
+         goalArray.push(goalObject);*/
 	   });
+	   
+	   if(flag){
+		return;
+	   }
 	   
 	   if(leaderShipLevel == 0){
 	        $("#leadershipLvlErrDivId").html("Please Select Leadership Level");
@@ -811,6 +848,24 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				 $("#processingId").hide();
 				 $("#ajaxImage1").hide();
 				 $("#updatedId").show();
+				 
+                 
+				  if(result.achievements){
+				  $("#updateId"+tdpCadreId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i>'); 
+				 }
+				 else{
+				 $("#updateId"+tdpCadreId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i>');
+				} 
+				if(result.goals){
+                 $("#updateId"+tdpCadreId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i>');
+				 }else{
+				 $("#updateId"+tdpCadreId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i>');
+			     }
+                $("#updateId"+tdpCadreId).parent().parent().find(".leadershipLvlsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i>');				 
+			    $("#updateId"+tdpCadreId).parent().parent().find(".communicationSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i>');
+				$("#updateId"+tdpCadreId).parent().parent().find(".leadershipSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i>');
+				$("#updateId"+tdpCadreId).parent().parent().find(".healthCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center healthCls"></i>');
+				
 			}else{
 				$("#processingId").hide();
 				 $("#ajaxImage1").hide();
@@ -821,10 +876,24 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
    
    function getBatchesByProgramAndCenter()
    {
-	  $("#ajaxImage").show();
+	  $("#programSelErrDivId").html('');
+	  $("#centerSelErrDivId").html('');
+	  
 	  var programId = $("#programId").val();
 	  var centerId = $("#centerId").val();
 	  
+	  if(programId == 0){
+		$("#programSelErrDivId").html("Please Select Any Program");
+		return;
+	  }
+	  if(centerId == 0){
+		$("#centerSelErrDivId").html("Please Select Any Center");
+		return;
+	  }
+	  
+	  $("#ajaxImage").show();
+	  $("#accordion").html('');
+	  	  
 	  var jsObj=
 	  {
 		 programId:programId,
@@ -840,7 +909,8 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		     buildCadreDetails(results);
 		}else{
 			$("#ajaxImage").hide();
-		    alert("NO Data Available.");
+			 $("#accordion").html("No Data Available...");
+		    //alert("NO Data Available.");
 		}
 	});
    }
