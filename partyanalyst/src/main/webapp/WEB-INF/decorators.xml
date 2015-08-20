@@ -158,6 +158,8 @@
 		<pattern>/meetingList*</pattern>
 		<pattern>/meetingDetailsList*</pattern>
 		<pattern>/trainingCampMainDashboard*</pattern>
+		<pattern>/partyMeetingsDashBoard*</pattern>
+		
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
