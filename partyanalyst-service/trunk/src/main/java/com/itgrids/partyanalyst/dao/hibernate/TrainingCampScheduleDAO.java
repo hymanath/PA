@@ -86,4 +86,15 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 		return query.list();
 	}
 	
+	public List<Long> getSchedulesByProgramAndCenter(Long programId, Long centerId)
+	{
+		Query query = getSession().createQuery(" select model.trainingCampScheduleId from TrainingCampSchedule model where model.trainingCampProgram.trainingCampProgramId =:programId " +
+						" and model.trainingCamp.trainingCampId =:centerId ");
+		
+		query.setParameter("programId", programId);
+		query.setParameter("centerId", centerId);
+		
+		return query.list();
+	}
+	
 }
