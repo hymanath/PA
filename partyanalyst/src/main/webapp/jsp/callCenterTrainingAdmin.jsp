@@ -720,7 +720,7 @@ footer
 				<div class="col-md-12 ">
 					<label>Select Call Center Agent Name</label>
 					<img src="images/icons/search.gif" id="scheduleProcessImg" style="display:none;"/>
-					<select class="form-control border-radius-0" id="agentId" onchange="getCallerOverView('schedule');">
+					<select class="form-control border-radius-0" id="agentId1" onchange="getCallerOverView('schedule');">
 						
 					</select>					
 				</div>   
@@ -1859,8 +1859,8 @@ $("#batchAgentId").append('<option value="0">Select Caller</option>');
 }
 else
 {
-$("#agentId  option").remove();
-$("#agentId").append('<option value="0">Select Caller</option>');
+$("#agentId1  option").remove();
+$("#agentId1").append('<option value="0">Select Caller</option>');
 }
 	$.ajax({
 		type : "POST",
@@ -1877,7 +1877,7 @@ $("#agentId").append('<option value="0">Select Caller</option>');
 				  }
 				  else
 				  {
-				 $("#agentId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				 $("#agentId1").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 				  }
 			}
 			
@@ -1919,7 +1919,7 @@ if($(this).is(':checked'))
 
 
 var scheduleId = $('#scheduleId').val();
-var callerId  = $('#agentId').val();
+var callerId  = $('#agentId1').val();
 var campId = $("#campId").val();
 var programId = $("#programId").val();
 
@@ -1973,7 +1973,8 @@ var jObj={
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 	
-			  $("#processingImg").hide();			  
+			  $("#processingImg").hide();
+			  $("#agentId1").val(0);			  
 			  if(result.message == "SUCCESS")
 			  {
 				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
@@ -1999,7 +2000,7 @@ $("#batchErrorDiv").html("");
 $("#agentProcessingImg").show();
 }
 else{
-var agentId = $("#agentId").val();
+var agentId = $("#agentId1").val();
 if(agentId == 0)
 return;
 $("#callCenterErrorDiv").html("");
@@ -2264,6 +2265,7 @@ var jObj={
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 			  
 			  $("#batchProcessingImg").hide();	
+			  $("#batchAgentId").val(0);
 			 if(result.message == "SUCCESS")
 			  {
 				 $("#batchSuccessMsgDiv").html("<div class='successDivCls'>Assign Members to Batch Successfully</div>");
@@ -2414,9 +2416,9 @@ function clearErrMsg()
     for(var i in result)
 	{
 	  if(type == "schedule")
-	$("#scheduleId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	$("#scheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	else
-	$("#batchScheduleId").append('<option value='+result[i].id+' selected>'+result[i].name+'</option>');
+	$("#batchScheduleId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	}
    }
    
