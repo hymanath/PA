@@ -16,6 +16,7 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <style>
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.eventsheader {
  background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
  background-origin: border-box;
@@ -353,7 +354,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
  </div>
 
 <footer>
-        <img src="css/Training/img/footer.jpg" width="100%">
+        <p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>

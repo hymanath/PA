@@ -16,6 +16,7 @@
 
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <style>
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.eventsheader { 
  background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
  background-origin: border-box;
@@ -94,14 +95,15 @@ header.eventsheader {
                                     </select>
                                 </div>-->
                             	<div class="col-md-3">
-                                	<label style="margin-left: 44px;">Select Date</label>
-									<small><div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;margin:5px 0px;">
-									  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-									  <span></span> <b class="caret"></b>
-									</div></small>
+                                	<label >Select Date</label>
+									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
+									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
+									  <span></span> 
+									</div>
                                  <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
+										<span class="caret"></span>
 										<span></span>
                                     </div> -->
 								</div>
@@ -227,7 +229,7 @@ header.eventsheader {
     </div>
 </main>
 <footer>
-		<img src="css/Training/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
