@@ -10711,5 +10711,11 @@
 	  	</result>
 	</action>
 	
+	<action name="getAllBatchesByProgramAndCenterAction" class="trainingCampAction" method="getAllBatchesByProgramAndCenter">
+	   <result type="json" name="success">
+	       		<param name="root">resultStatus</param>
+	  	</result>
+	</action>
+	
 </package>
 </struts>      

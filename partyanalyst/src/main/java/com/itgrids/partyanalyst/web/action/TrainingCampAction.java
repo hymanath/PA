@@ -1588,5 +1588,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	
     	return Action.SUCCESS;
     }
+    
+    public String getAllBatchesByProgramAndCenter()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long centerId = jObj.getLong("centerId");
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getAllBatchesByProgramAndCenter() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
 	
 }
