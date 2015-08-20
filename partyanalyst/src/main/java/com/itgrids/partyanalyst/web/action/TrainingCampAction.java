@@ -1491,7 +1491,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj = new JSONObject(getTask());
 			Long scheduleId = jObj.getLong("scheduleId");
 			
-			finalList = trainingCampService.getTdpCadreDetailsforASchedule(scheduleId);
+			//finalList = trainingCampService.getTdpCadreDetailsforASchedule(scheduleId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
@@ -1596,6 +1596,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		jObj = new JSONObject(getTask());
     		Long programId = jObj.getLong("programId");
     		Long centerId = jObj.getLong("centerId");
+    		
+    		finalList = trainingCampService.getSchedulesListByProgramAndCenter(programId,centerId);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAllBatchesByProgramAndCenter() method, Exception - ",e);
