@@ -92,32 +92,7 @@ color: red !important;
 <!--  accordian start-->
 <main style="margin-top: 40px;">
 	<div class="container">
-		<div class="row m_top10">
-			<div class="col-md-3">
-				<label>Program</label>
-				<div id="programSelDivId"></div>
-				<select class="form-control" id="programId">
-					<option value="0">Select Program</option>
-					<option value="1">Leadership Skills</option>
-					<option value="2">Communication Skills</option>
-					<option value="3">Election Program</option>
-				</select>
-			</div>
-			<div class="col-md-3">
-				<label>Center</label>
-				<div id="campSelDivId"></div>
-				<select class="form-control" id="centerId">
-					<option value="0">Select Center</option>
-					<option value="1">SVV Center</option>
-					<option value="2">EWK Center</option>
-					<option value="3">GPN Center</option>
-					<option value="4">AKKC Center</option>
-				</select>
-			</div>
-			<div class="col-md-2 m_top30">
-				<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getBatchesByProgramAndCenter();">Submit</button>
-			</div>
-		</div>
+		
     	<div class="row">
         	<div class="col-md-12 m_top10">
            	  <div class="panel panel-default">
@@ -125,8 +100,34 @@ color: red !important;
                     	<h4 class="panel-title"></h4>
                     </div>
                     <div class="panel-body">
-						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;"/></center>
-                    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
+						<div class="row m_top10">
+							<div class="col-md-3">
+								<label>Program</label>
+								<div id="programSelDivId"></div>
+								<select class="form-control" id="programId">
+									<option value="0">Select Program</option>
+									<option value="1">Leadership Skills</option>
+									<option value="2">Communication Skills</option>
+									<option value="3">Election Program</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label>Center</label>
+								<div id="campSelDivId"></div>
+								<select class="form-control" id="centerId">
+									<option value="0">Select Center</option>
+									<option value="1">SVV Center</option>
+									<option value="2">EWK Center</option>
+									<option value="3">GPN Center</option>
+									<option value="4">AKKC Center</option>
+								</select>
+							</div>
+							<div class="col-md-2 m_top30">
+								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getBatchesByProgramAndCenter();">Submit</button>
+							</div>
+						</div>
+						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
+                    	<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
 					</div>	
                </div>          
 			</div>			  
@@ -322,7 +323,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		 var globalDateCount=0;
 	     //on load calls.
 	     getAllStatusForCadre();
-		 getTdpCadreDetailsforASchedule(1);
+		 //getTdpCadreDetailsforASchedule(1);
 		 
 		 function getAllStatusForCadre(scheduleId)
 		 {
@@ -343,7 +344,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 			console.log(leaderShipLevelArray);
 		  }
 		}
-		 function getTdpCadreDetailsforASchedule(scheduleId)
+		/* function getTdpCadreDetailsforASchedule(scheduleId)
 		 { 
 			$("#ajaxImage").show();
 			var jsObj={scheduleId:scheduleId }
@@ -358,7 +359,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 				    alert("NO Data Available.");
 				}
 			});
-		}
+		}*/
 		function buildCadreDetails(results){
 		   var str='';
 		   for(var i in results){
@@ -820,6 +821,7 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
    
    function getBatchesByProgramAndCenter()
    {
+	  $("#ajaxImage").show();
 	  var programId = $("#programId").val();
 	  var centerId = $("#centerId").val();
 	  
@@ -833,8 +835,13 @@ $("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 		type:'POST',
 		url :'getAllBatchesByProgramAndCenterAction.action',
 		data:{task:JSON.stringify(jsObj)},
-	 }).done(function(result){
-		
+	 }).done(function(results){
+		 if(results!=null && results.length>0){
+		     buildCadreDetails(results);
+		}else{
+			$("#ajaxImage").hide();
+		    alert("NO Data Available.");
+		}
 	});
    }
 	</script>

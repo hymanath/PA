@@ -10713,7 +10713,7 @@
 	
 	<action name="getAllBatchesByProgramAndCenterAction" class="trainingCampAction" method="getAllBatchesByProgramAndCenter">
 	   <result type="json" name="success">
-	       		<param name="root">resultStatus</param>
+	       		<param name="root">finalList</param>
 	  	</result>
 	</action>
 	
