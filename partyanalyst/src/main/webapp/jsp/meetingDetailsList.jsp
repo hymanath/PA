@@ -67,6 +67,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         font-size:22px;
 		margin-top:20px;
     }
+	.alertstyle{background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);color:#fff !important;height:75px;width:420px;}
+	.alerttop{top:215px;}
+	.mleft_190{margin-left:190px;font-weight:bold;}
+	.mtop-5{margin-top:-5px;}
+	.alertstyle h5{font-weight:bold;}
+	.colorchange{color:#fff !important;}
+	.bt{
+		border:none;
+	}
 </style>
 
 <!-- YUI Dependency files (Start) -->
@@ -233,6 +242,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         </div>
     </div>
 </main>
+<!---------alert pop up----------------->
+
+<div id="showmsshmin"></div>
+<!----------------------------->
 <!--------Minutes popup-------->
 <div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -435,7 +448,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#meetRaised").val("");
 	 }); 		
     $(document).on('click', '.trash', function(){
-        
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+        $("#deletedmsg").modal("show");
 		var divId = $(this).attr("attr_txt");
 		var divCount = $(this).attr("attr_div_count");
         $("#"+divId).remove();
@@ -454,8 +468,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             data:{task :JSON.stringify(jsObj)}
         }
         ).done(function(result){
+			$.unblockUI();
 			if(result=="success"){
-			   alert("Minute Deleted");
+			var reslt;
+			reslt = "Minute Deleted Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			   //alert("Minute Deleted");
 		   }
 		});
 		
@@ -707,7 +726,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				    for(var i in result.minutesDocuments){
 						str+='<li class="col-md-12 list-group-item" id="minuteDocFileId'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" class="col-md-10" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
-						str+='<div class="deleteDoc pull-right" attr_type="minute" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='<div class="deleteDoc pull-right" attr_type="minute" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</li>';
 						
 						
@@ -727,7 +746,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.atrDocuments){
 					    str+='<li class="col-md-12 list-group-item" id="atrDocFileId'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" class="col-md-10" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
-						str+='<div class="pull-right deleteDoc" attr_type="atr" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='<div class="pull-right deleteDoc" attr_type="atr" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</li>';
 						
 				   }
@@ -900,9 +919,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	} */
 	
 	$(document).on('click', '.saveMinute', function(){
+		var reslt;
 		//var saveBtnId = $(this).attr("id");
 		//var textBoxId = $(this).attr("attr_txt");
-		$.blockUI({ message: "<div style='padding:10px; background-color:#ababab;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteText = $("#meetRaised").val();
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
@@ -917,12 +937,25 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   if(result=="success"){
-			   //alert("Updated Successfully");
+			   //alert("Saved Successfully");
 			   rebuildMinutes(partyMeetingId)
+			  
 		   }else{
-			   alert("Please Try Again");
-			   $.unblockUI();
+			reslt = "Please Try Again"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			   //alert("Please Try Again");
+			  $.unblockUI();
 		   }
+		   if(minuteId == 0){
+			reslt = "Saved Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			}else if(minuteId >0){
+			reslt = "Updated Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			}
 		});
 	});
 	
@@ -954,7 +987,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   //$('.trash').tooltip()
 			}
 			$.unblockUI();
-			alert("Updated Successfully");
+			//alert("Updated Successfully");
+			
 		});
 	}
 	
@@ -969,7 +1003,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		});
 	
 		if(files.length==0){
-			alert("Please Select Documents");
+			var reslt;
+			reslt = "Please Select Documents"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			//alert("Please Select Documents");
 			return;
 		}
 		
@@ -994,7 +1032,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		});
 	
 		if(files.length==0){
-			alert("Please Select Documents");
+			var reslt;
+			reslt = "Please Select Documents"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			//alert("Please Select Documents");
 			return;
 		}
 		
@@ -1011,14 +1053,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	
 	function showingStatus(myResult,docSourceType){
-		
+		var reslt;
 		var result = myResult;
 		if (result.indexOf("success") >= 0){
-			alert("File Uploaded Successfully");
+			reslt = "File Uploaded Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show')
+			//alert("File Uploaded Successfully");
 			rebuildTheDocumentsDiv(docSourceType);
 		}
 		else{
-			alert("Failed to Upload.. Please Try Again");
+			reslt = "Failed to Upload.. Please Try Again"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			//alert("Failed to Upload.. Please Try Again");
 		}
 		
 		partyMeetingDocs(docSourceType);
@@ -1043,7 +1091,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				    for(var i in result.minutesDocuments){
 					    str+='<div id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
-						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
 						
 				   }
@@ -1062,7 +1110,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.atrDocuments){
 					    str+='<div id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
-						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div><br/>';
 						
 				   }
@@ -1105,7 +1153,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				$("#docDiv"+docId).remove();
 				$(""+divId+"").remove();
 			}else{
-				alert("Please Try Again");
+			var reslt;
+			reslt = "Please Try Again"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+				//alert("Please Try Again");
 			}
 		});
 	});
@@ -1141,7 +1193,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	$(document).on('click', '#saveBtn', function(){
 		//alert($("#locationDivId option:selected").val());
 		//$.blockUI({ message: "<h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
-		$.blockUI({ message: "<div style='padding:10px; background-color:#ababab;'><h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		$.blockUI({ message: "<div style='padding:10px; background-color:#CCC;'><h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
+		var reslt;
 		var request = $("#request").val();
 		var ActionTaken = $("#actionTaken").val();
 		var raisedBy = $("#raisedBy").val();
@@ -1168,8 +1221,20 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				//alert("Updated Successfully");
 				getAtrPointsForAMeeting(partyMeetingId);
 			}else{
-				alert("Please Try Again");
+			reslt = "Please Try Again"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+				//alert("Please Try Again");
 				$.unblockUI();
+			}
+			if(atrId == 0){
+			reslt = "Saved Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			}else if(atrId >0){
+			reslt = "Updated Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
 			}
 		});	
 		
@@ -1228,7 +1293,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<option value="36">Telangana</option>';
 					   str+='</select>';
 					   str+='</div>';
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<div class="col-md-1">';
 					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
@@ -1238,7 +1303,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='</select>';
 					   str+='</div>';
 					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<div class="col-md-1">';
 					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
@@ -1249,7 +1314,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='</div>';
 					   str+='<li style="display:none;margin-top: 7px; margin-left: -13px;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
 					   
-					   str+='<div class="col-md-1" style="height: 44px; width: 10px;">';
+					   str+='<div class="col-md-1">';
 					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>';
 					   str+='</div>';
 					   str+='<div class="col-md-12" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
@@ -1301,7 +1366,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
 			   }
 			   $.unblockUI();
-			   alert("Updated Successfully");
+			   //alert("Updated Successfully");
 		});
 	}
 	
@@ -1335,7 +1400,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				    for(var i in result){
 					    str+='<div class="col-md-12 row" id="minuteDocFileId'+result[i].id+'" style="padding:6px;">';
 					    str+='<a class="col-md-10" href="'+result[i].url+'">'+result[i].name+'</a>';
-						str+='<div class="deleteDoc col-md-2" attr_type="minute" id="'+result[i].id+'"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='<div class="deleteDoc col-md-2" attr_type="minute" id="'+result[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
 						str+='</div>';
 				   }
 				   $(""+divId+"").html(str);
@@ -1344,6 +1409,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	}
 	
 	$(document).on('click', '.deleteAtr', function(){
+		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var atrId = $(this).attr("attr_atrid");
 		
 		var jsObj={		
@@ -1355,13 +1421,39 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$.unblockUI();
 			if(result=="success"){
-				alert("ATR Deleted");
+			var reslt;
+			reslt = "ATR Deleted Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+				//alert("ATR Deleted");
 				$("#atrInnerDiv"+atrId).remove();
 			}
 		});
 		
 	});
+	alertmssgshowing();
+	function alertmssgshowing(){
+		var str='';
+		str+='<div class="modal fade alerttop" id="alertmintsave" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="z-index:99999">';
+		str+='<div class="modal-dialog modal-sm">';
+		str+=' <div class="modal-content modal-sm alertstyle">';
+		str+='<div class="modal-body ">';
+		str+=' <div><h5 class="text-center colorchange" id="mintupdatealertmag"></h5></div>';
+		str+=' </div>';
+		str+=' <div class="modal-footer pad-0 bt">';
+		str+='<div class="row">';
+		str+='<div class="mtop-5">';
+		str+='<button type="button" class="btn btn-primary btn-xs mleft_190 pull-left" data-dismiss="modal" style="margin-top: -11px;">Close</button>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		$("#showmsshmin").html(str);
+	}
 	
 </script>
 </body>
