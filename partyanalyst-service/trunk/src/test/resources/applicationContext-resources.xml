@@ -671,6 +671,8 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreGoal</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreAchievement</value>
+				 <value>com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear</value>
+				 <value>com.itgrids.partyanalyst.model.EnrollmentYear</value>
 				 
 			</list>
 		</property>
@@ -3101,4 +3103,10 @@
 	<bean id="trainingCampBatchAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampBatchAttendeeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	 <bean id="tdpCadreEnrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreEnrollmentYearDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="enrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.EnrollmentYearDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 </beans>
