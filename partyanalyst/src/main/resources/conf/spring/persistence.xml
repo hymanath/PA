@@ -664,6 +664,8 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory</value>
+				 <value>com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear</value>
+				 <value>com.itgrids.partyanalyst.model.EnrollmentYear</value>
 				 
 				</list>
 			
