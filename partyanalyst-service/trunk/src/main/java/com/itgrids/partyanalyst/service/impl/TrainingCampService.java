@@ -3918,13 +3918,40 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		return returnVO;
 	}
-	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId){
+	
+	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId)
+	{
+		List<CadreDetailsVO> finalList=null;
+		try{
+			List<Long> schedulesList = new ArrayList<Long>(0);
+			
+			schedulesList = trainingCampScheduleDAO.getSchedulesByProgramAndCenter(programId, centerId);
+			
+			if(schedulesList != null && schedulesList.size() > 0){
+				finalList = getTdpCadreDetailsforASchedule(schedulesList);
+			}
+			
+		}catch(Exception e){
+			LOG.error(" Exception occured in getSchedulesListByProgramAndCenter method in TrainingCampService class.",e);
+		}
+		return finalList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList){
 		 
 		List<CadreDetailsVO> finalList=null;
 		try{
 			Map<Long,CadreDetailsVO> batchMap=new LinkedHashMap<Long,CadreDetailsVO>();
 			
-			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(scheduleId);
+			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(schedulesList);
 			
 			if(cadreDetails!=null && cadreDetails.size()>0){
 				
@@ -3963,7 +3990,7 @@ public class TrainingCampService implements ITrainingCampService{
 					 }
 				 }
 			 }
-			List<Object[]> achievements=trainingCampBatchAttendeeDAO.getAchievementsForCadreBySchedule(scheduleId);
+			List<Object[]> achievements=trainingCampBatchAttendeeDAO.getAchievementsForCadreBySchedule(schedulesList);
 			if(achievements!=null && achievements.size()>0){
 				for(Object[] param:achievements){//bid,bcode,cid,ach
 					
@@ -3976,7 +4003,7 @@ public class TrainingCampService implements ITrainingCampService{
 					}
 				}
 			}
-			List<Object[]> goals=trainingCampBatchAttendeeDAO.getGoalsForCadreBySchedule(scheduleId);
+			List<Object[]> goals=trainingCampBatchAttendeeDAO.getGoalsForCadreBySchedule(schedulesList);
 			if(goals!=null && goals.size()>0){
 				for(Object[] param:goals){//bid,bcode,cid,ach
 					

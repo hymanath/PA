@@ -72,11 +72,13 @@ public interface ITrainingCampService {
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
-	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(Long scheduleId);
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList);
 	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
 	public CadreDetailsVO getAllStatusForCadre();
 	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId);
+	
+	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId);
 }
