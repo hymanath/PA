@@ -46,6 +46,7 @@ public class Attendance extends BaseModel implements Serializable{
 	private Long tabUserId;
 	private Long currentTabUserId;
 	private Long insertedById;
+	private Long tabPrimaryKey;
 	
 	public Attendance(){}
 
@@ -233,6 +234,15 @@ public class Attendance extends BaseModel implements Serializable{
 
 	public void setInsertedById(Long insertedById) {
 		this.insertedById = insertedById;
+	}
+
+	@Column(name="tab_primary_key")
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
 	}
 	
 }
