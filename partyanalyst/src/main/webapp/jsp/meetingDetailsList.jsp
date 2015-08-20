@@ -293,6 +293,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
       <div class="modal-body">
          	<input type="text" id="meetRaised"  class="form-control"/>
 		</div>
+		<span id="momError" style="color:red;"></span>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary saveMinute" id="saveBtnMeetMin" attr_minuteid="0" data-dismiss="modal">Save changes</button>
@@ -327,6 +328,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 <div class="col-md-12" id="locationInPop"></div>
 				 </div>
 			 </div>
+			 <span id="atrError" style="color:red;"></span>
 			 <div class="modal-footer">
 				 <button type="button" class="btn btn-success btn-sm" id="saveBtn" data-dismiss="modal"><i class="icon-check"></i> SAVE </button>
 				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
@@ -550,18 +552,18 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    
    
    var jsObj=
-   {               
-                stateId:state,
-                elmtId:"districtList_d",
-                type:"default",
-                task:"getDistrictsForState"               
-    }
-    $.ajax({
-          type:'POST',
-          url: 'getDistrictsForStateAction.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
+	   {				
+					stateId:state,
+					elmtId:"districtList_d",
+					type:"default",
+					task:"getDistrictsForState"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getNewDistrictsOfStateSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
        $("#searchDataImgForDist"+atrId).hide();
      for(var i in result){
        if(result[i].id == 0){
@@ -577,7 +579,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
        }
      }
 	 
-	 $("#locationInPop").html("");//locationCls
+	/*  $("#locationInPop").html("");//locationCls
 	 
 	 
 	 var lctn = $("#districtId"+atrId+" option:selected").text();
@@ -588,7 +590,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	 locationDiv.find(".locationCls").attr("id","locationDivId");
 	 
 	 $("#locationInPop").html($("#DistrictShowId"+atrId).html());
-	 $("#locationInPop").attr("locationScope",1);
+	 $("#locationInPop").attr("locationScope",1); */
    });
   }
  function getConstituenciesForDistricts(district,atrId,locationLevelValue){
@@ -621,14 +623,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			
 			$("#locationInPop").html("");
 			
-			var lctn = $("#constituencyId"+atrId+" option:selected").text();
-			var lctnId = $("#constituencyId"+atrId+" option:selected").val();
-			$("#ConstShowIdSpan"+atrId).html("<span class='selectedLctn text-bold' attr_lctnId='"+lctnId+"'>LOCATION </span>  :"+lctn+" ");
-			
-			var locationDiv = $("#ConstShowId"+atrId);
+			var locationDiv = $("#ConstShowId0");
 			locationDiv.find(".locationCls").attr("id","locationDivId");
 			
-			$("#locationInPop").html($("#ConstShowId"+atrId).html());
+			$("#locationInPop").html($("#ConstShowId0").html());
 			$("#locationInPop").attr("locationScope",2);
         });
     }
@@ -682,7 +680,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                 
             }
 			
-			
+			/* 
 			var lctn = $(""+divId+" option:selected").text();
 			var lctnId = $(""+divId+" option:selected").val();
 			
@@ -691,7 +689,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			var locationDiv = $(locationTemp);
 			locationDiv.find(".locationCls").attr("id","locationDivId");
 			
-			$(locationTemp).val($(divId).text());
+			$(locationTemp).val($(divId).text()); */
+		
 		
         });
     }
@@ -735,7 +734,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             $("#ManTwnDivShowIdSpan"+atrId).hide();
             $("#VillWardShowIdSpan"+atrId).show();
 			
-			$("#VillWardShowIdSpan"+atrId).val($("#VillWardId"+atrId).text());
+			//$("#VillWardShowIdSpan"+atrId).val($("#VillWardId"+atrId).text());
             getMandalVillageDetails(locationId, 5,atrId,locationLevelValue);
         }
     }
@@ -754,9 +753,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		   
 		   if(result!=null){
 			   $("#meetingType").html(result.partyMeetingType+" - "+result.name);
-			   $("#location").html(result.meetingLevel);
-			   
-			   
+			   $("#location").html(result.locationName);
 			   
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   $("#miniteDocsCount").html(result.minutesDocuments.length);
@@ -839,73 +836,23 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
 				       str+=' <button class="btn btn-default  deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
+					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'" attr_location_value='+result.atrDetails[i].locationValue+'><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					    str+='<ul class="" style="padding-left: 0px;margin-top: -48px;">';
 					   str+='<li class="col-md-12 list-group-item" >';
 					   str+='<span class="text-bold">REQUEST : </span>';
-					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
+					   str+='<span class="updaterequest" id="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].request+'</span>';
 					   str+='</li>';
 					   str+='<li class="col-md-12 list-group-item">';
 					   str+='<span class="text-bold">ACTION TAKEN : </span>';
-					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');"></span>';
+					   str+='<span class="updateaction" id="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].actionTaken+'</span>';
 					   str+='</li>';
 					   str+='<li class="col-md-12 list-group-item">';
 					   str+='<span class="text-bold">RAISED BY : </span>';
-					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
+					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span> - <i>'+result.atrDetails[i].locationName+'</i>';
 					   str+='</li>';
 					   str+='</div>';
-					   str+='<div class="col-md-12">';
-					   str+='<li class="col-md-12 list-group-item" id="stateShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>State</label>';
-					   str+='<select class="form-control" id="statesDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select State</option>';
-					   str+='<option value="0">All</option>';
-					   str+='<option value="1">AndhraPradesh</option>';
-					   str+='<option value="36">Telangana</option>';
-					   str+='</select>';
-					   str+='</li>';
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForDist'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12 list-group-item" id="DistrictShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>District</label>';
-					   str+='<select class="form-control locationCls" id="districtId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select District</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li class="" style="display:none;list-style:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif"" class="offset7"  id="searchDataImgForcons'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12 list-group-item" id="ConstShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Constituency</label>';
-					   str+='<select class="form-control locationCls" id="constituencyId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Constituency</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li class="" style="display:none;list-style:none;margin-top: 7px; margin-left: -13px;" id="ConstShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
 					   
-					   str+='<div class="col-md-1">';
-					   str+='<img src="./images/icons/search.gif" class="offset7"  id="searchDataImgForman'+result.atrDetails[i].partyMeetingAtrPointId+'" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;height: 22px; width: 15px;"/>';
-					   str+='</div>';
-					   str+='<div class="col-md-12 list-group-item" id="ManTwnDivShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Mandal/Town/Division</label>';
-					   str+='<select class="form-control locationCls" id="manTowDivId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Mandal/Town/Division</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li style="display:none;list-style:none;margin-top: 7px; margin-left: -13px;" class="" id="ManTwnDivShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					   
-					   str+='<div class="col-md-12 " id="VillWardShowId'+result.atrDetails[i].partyMeetingAtrPointId+'" style="display:none;">';
-					   str+='<label>Village/Ward</label>';
-					   str+='<select class="form-control locationCls" id="villWardId'+result.atrDetails[i].partyMeetingAtrPointId+'">';
-					   str+='<option>Select Village/Ward</option>';
-					   str+='</select>';
-					   str+='</div>';
-					   str+='<li class="" style="display:none;list-style:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'"></li>';
-					    str+='</ul>';
-					   str+='</div>';
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					   str+='</div>';
 					   str+='</div>';
@@ -914,14 +861,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   }
 				   
 				   $("#atrDivId").html(str);
-				    //$('.ToolTipDiv').tooltip();
-				   for(var i in result.atrDetails){
-					   $("#requestId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].request);
-					   $("#actionTakenId"+result.atrDetails[i].partyMeetingAtrPointId).html(result.atrDetails[i].actionTaken);
-					   getmeetinglocationlevel(result.atrDetails[i].locationScopeId,result.locationValue,result.atrDetails[i].partyMeetingAtrPointId,result.atrDetails[i].locationValue);
-					   
-				   }
-				   
+				   getmeetinglocationlevel(result.meetingLevelId,result.locationValue,0,0);
 				   
 			   }else{
 				   $("#atrDivId").html("<h5>No ATR Points</h5>");
@@ -951,6 +891,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		//var textBoxId = $(this).attr("attr_txt");
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteText = $("#meetRaised").val();
+		if(minuteText.trim().length==0){
+			$("#momError").text(" Please Enter Minute Text");
+			return;
+		}
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
 			minuteId : minuteId,
@@ -1211,14 +1155,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 var actn=$(this).parent().parent().find(".updateaction").text();
 		 var raised=$(this).parent().parent().find(".updateraisedBy").text();
 		 var attrId = $(this).attr("attr_id");
-		 var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
+		 //var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
+		 var lctnVal = $(this).attr("attr_location_value");
 		 
 		 $("#saveBtn").attr("attr_id",attrId);
 		 $("#request").val(req);
 		 $("#actionTaken").val(actn);
 		 $("#raisedBy").val(raised);
 		 
-		 $('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
+		 $("#locationDivId").val(lctnVal);
+		 
+		 //$('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
 	});
 	
 	$(document).on('click', '.addingRequests', function(){
@@ -1244,6 +1191,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var atrId = $(this).attr("attr_id");
 		var partyMeetingId = '${partyMeetingId}';
 		var locationscope = $("#locationInPop").attr("locationscope");
+		
+		if(request.trim().length==0){}
+		
 		var jsObj={		
 			atrId : atrId,
 			request : request,
@@ -1305,7 +1255,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='<div class="row">';
 					   str+='<div class="btn-group btn-group-sm pull-right" style="margin-top: -16px; margin-right: -1px; z-index: 999;margin-bottom: 2px;">';
 				       str+=' <button class="btn btn-default  deleteAtr"  attr_reqId="requestId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_actntknId="actionTakenId'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_rsdById="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_atrId="'+result.atrDetails[i].partyMeetingAtrPointId+'"  title="Delete"  attr_txt="removeDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'"><i class="glyphicon glyphicon-edit"></i></button>';
+					   str+=' <button class="btn btn-default editBtn "   title="Edit"  attr_id="'+result.atrDetails[i].partyMeetingAtrPointId+'" attr_txt="editDivId'+maximumDivCount+'" attr_location_value='+result.atrDetails[i].locationValue+'><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 					    str+='<ul class="" style="padding-left: 0px;margin-top: -48px;">';
 					   str+='<li class="col-md-12 list-group-item" >';
@@ -1318,11 +1268,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   str+='</li>';
 					   str+='<li class="col-md-12 list-group-item">';
 					   str+='<span class="text-bold">RAISED BY : </span>';
-					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span>';
+					   str+='<span class="updateraisedBy" id="raisedById'+result.atrDetails[i].partyMeetingAtrPointId+'" onclick="showBtnsDiv(\''+result.atrDetails[i].partyMeetingAtrPointId+'\');">'+result.atrDetails[i].raisedBy+'</span> - <i>'+result.atrDetails[i].locationName+'<i>';
 					   str+='</li>';
 					   str+='</div>';
 					   
-					   str+='<div class="col-md-12 m_top20">';
+					  /*  str+='<div class="col-md-12 m_top20">';
 							str+='<span class="text-bold">LOCATION : </span>';
 							if(result.atrDetails[i].locationScopeId==1){
 								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="DistrictShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' District</li>';
@@ -1333,7 +1283,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 							}else if(result.atrDetails[i].locationScopeId==4){
 								str+='<li class="" style="list-style:none;margin-top: 7px; margin-left: -13px;" id="VillWardShowIdSpan'+result.atrDetails[i].partyMeetingAtrPointId+'">'+result.atrDetails[i].locationName+' </li>';
 							}
-					   str+='</div>';
+					   str+='</div>'; */
 					  
 					   str+='<div class="pull-right m_top10" style="display:none;" id="btnsDiv'+result.atrDetails[i].partyMeetingAtrPointId+'">';
 					  
