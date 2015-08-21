@@ -40,6 +40,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private List<IdNameVO> healthStatuslist;
 	
 	private int resultCode;
+	private String isFeedbackUpdatable;
 	
 	public int getResultCode() {
 		return resultCode;
@@ -217,5 +218,11 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setHealthStatuslist(List<IdNameVO> healthStatuslist) {
 		this.healthStatuslist = healthStatuslist;
 	}
-         	
+	public String getIsFeedbackUpdatable() {
+		return isFeedbackUpdatable;
+	}
+	public void setIsFeedbackUpdatable(String isFeedbackUpdatable) {
+		this.isFeedbackUpdatable = isFeedbackUpdatable;
+	}
+             	
 }
