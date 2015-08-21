@@ -103,17 +103,16 @@ color: red !important;
 						<div class="row m_top10">
 							<div class="col-md-3">
 								<label>Program</label>
-								<div class="mandatory" id="programSelErrDivId"></div>
 								<div id="programSelDivId"></div>
-								
+								<div class="mandatory" id="programSelErrDivId"></div>
 							</div>
 							<div class="col-md-3">
 								<label>Center</label>
-								<div class="mandatory" id="centerSelErrDivId"></div>
 								<div id="campSelDivId"></div>
 								<select class="form-control" id="centerId">
 									<option value="0">Select Center</option>
 								</select>
+								<div class="mandatory" id="centerSelErrDivId"></div>
 							</div>
 							<div class="col-md-2 m_top30">
 								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getBatchesByProgramAndCenter();">Submit</button>
@@ -263,7 +262,7 @@ color: red !important;
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
 					   }
-					   str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+					   str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
                        str+='</tr>';
                     }
 					str+='</table>'
@@ -312,17 +311,17 @@ color: red !important;
    var str='';
    str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 		str+='<div class="col-md-6">'
-			str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 			str+='<input class="form-control datetxtbox goalsTxtCls m_top10" type="text" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'">'
+			str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 		str+='</div>'
 		str+='<div class="col-md-4">'
-			str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 			str+='<div class="input-group date reportrange datetxtboxD m_top10">';
 				str+='<input type="text" class="form-control goalsDateClass"  id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
 				str+='<span class="input-group-addon">';
 					str+='<span class="glyphicon glyphicon-calendar"></span>';
 				str+='</span>';
 			str+='</div>';
+			str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 		str+='</div>'
 		str+='<div class="col-md-1">'
 			str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
@@ -419,17 +418,17 @@ color: red !important;
 				   globalDateCount=globalDateCount+1;
 				      str+='<div class="row dateListClass" id="dateList'+globalDateCount+'" attr-id="'+globalDateCount+'">'
 						str+='<div class="col-md-6">'
-							str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 							str+='<input class="form-control datetxtbox goalsTxtCls m_top10" id="goalsClass'+globalDateCount+'" attr-id="'+globalDateCount+'" type="text" value="'+results.goalsList[i].name+'">'
+							str+='<div class="mandatory" id="goalErrDivId'+globalDateCount+'"></div>'
 						str+='</div>'
 						str+='<div class="col-md-4">'
-							str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 							str+='<div class="input-group date reportrange datetxtboxD m_top10">';
 								str+='<input type="text" class="form-control goalsDateClass" id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'" value="'+results.goalsList[i].dateString+'"/>';
 								str+='<span class="input-group-addon">';
 									str+='<span class="glyphicon glyphicon-calendar"></span>';
 								str+='</span>';
 							str+='</div>';
+							str+='<div class="mandatory" id="dateErrDivId'+globalDateCount+'"></div>'
 						str+='</div>'
 						str+='<div class="col-md-1">'
 							str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
@@ -444,17 +443,17 @@ color: red !important;
 				
 				str+='<div class="row m_top10 dateListClass" id="dateList0" attr-id="0">'
 					str+='<div class="col-md-6">'
-						str+='<div class="mandatory" id="goalErrDivId0"></div>'
 						str+='<input class="form-control goalsTxtCls" id="goalsClass0" attr-id="0" type="text">'
+						str+='<div class="mandatory" id="goalErrDivId0"></div>'
 					str+='</div>'
 					str+='<div class="col-md-4">'
-						str+='<div class="mandatory" id="dateErrDivId0"></div>'
 						str+='<div class="input-group date reportrange">';
 							str+='<input type="text" class="form-control goalsDateClass" id="goalsDateId0" attr-id="0" />';
 							str+='<span class="input-group-addon">';
 								str+='<span class="glyphicon glyphicon-calendar"></span>';
 							str+='</span>';
 						str+='</div>';
+						str+='<div class="mandatory" id="dateErrDivId0"></div>'
 					str+='</div>'
 					
 					str+='<div class="col-md-1">'
@@ -469,7 +468,7 @@ color: red !important;
         	str+='<div class="col-md-12">'
             	str+='<label>Leadership Level</label><span class="mandatory">*</span>'
 				str+='<div class="mandatory" id="leadershipLvlErrDivId"></div>';
-                str+='<select class="form-control" id="leadershipLevelId">'
+				str+='<select class="form-control" id="leadershipLevelId">'
 				str+='<option value="0">Select</option>'
                 for(var i in leaderShipLevelArray){
 				  if(results.leaderShipLevelId==leaderShipLevelArray[i].id)
@@ -478,14 +477,14 @@ color: red !important;
                   str+='<option value="'+leaderShipLevelArray[i].id+'">'+leaderShipLevelArray[i].name+'</option>'
 				}				
                str+=' </select>'
-            str+='</div>'
+			str+='</div>'
         str+='</div>'
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
             	str+='<label>Communication Skills</label><span class="mandatory">*</span>'
 				str+='<div class="mandatory" id="commSkillsErrDivId"></div>';
-                str+='<select class="form-control" id="communicationSkillsId">'
+				str+='<select class="form-control" id="communicationSkillsId">'
                 str+='<option value="0">Select</option>'
                  for(var i in communicationSkillsArray){
 				  if(results.communicationSkillsStatusId==communicationSkillsArray[i].id)
@@ -494,14 +493,14 @@ color: red !important;
                   str+='<option value="'+communicationSkillsArray[i].id+'">'+communicationSkillsArray[i].name+'</option>'
 				}	    
                 str+='</select>'
-            str+='</div>'
+			str+='</div>'
         str+='</div>'
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
             	str+='<label>Leadership Skills</label><span class="mandatory">*</span>'
 				str+='<div class="mandatory" id="leadershipSkillsErrDivId"></div>';
-                str+='<select class="form-control" id="leaderShipSkillsId">'
+				str+='<select class="form-control" id="leaderShipSkillsId">'
                 str+='<option value="0">Select</option>'
                 for(var i in leaderShipSkillsArray){
 				  if(results.leaderShipSkillsStatusId==leaderShipSkillsArray[i].id)
@@ -510,14 +509,14 @@ color: red !important;
                   str+='<option value="'+leaderShipSkillsArray[i].id+'">'+leaderShipSkillsArray[i].name+'</option>'
 				}	    
                 str+='</select>'
-            str+='</div>'
+			str+='</div>'
         str+='</div>'
 		
         str+='<div class="row">'
         	str+='<div class="col-md-12">'
             	str+='<label>Health</label><span class="mandatory">*</span>'
 				str+='<div class="mandatory" id="healthErrDivId"></div>';
-                str+='<select class="form-control" id="healthId">'
+				str+='<select class="form-control" id="healthId">'
                 str+='<option value="0">Select</option>'
                 for(var i in healthStatusArray){
 				  if(results.healthStatusId==healthStatusArray[i].id)
@@ -526,7 +525,7 @@ color: red !important;
                   str+='<option value="'+healthStatusArray[i].id+'">'+healthStatusArray[i].name+'</option>'
 				}	   
                str+='</select>'
-            str+='</div>'
+			 str+='</div>'
         str+='</div>'
 		
 		str+='<div class="row">'
@@ -686,27 +685,27 @@ color: red !important;
 			if(result.resultCode == 1){
 				setTimeout(function(){
 				  $("#closePopUp").trigger("click");
-				}, 2000);
+				}, 1000);
 				 $("#processingId").hide();
 				 $("#ajaxImage1").hide();
 				 $("#updatedId").show();
 				 
                  
 				  if(result.achievements){
-				  $("#updateId"+tdpCadreId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i>'); 
+				  $("#updateId"+tdpCadreId+batchId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i>'); 
 				 }
 				 else{
-				 $("#updateId"+tdpCadreId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i>');
+				 $("#updateId"+tdpCadreId+batchId).parent().parent().find(".achievmentsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i>');
 				} 
 				if(result.goals){
-                 $("#updateId"+tdpCadreId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i>');
+                 $("#updateId"+tdpCadreId+batchId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i>');
 				 }else{
-				 $("#updateId"+tdpCadreId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i>');
+				 $("#updateId"+tdpCadreId+batchId).parent().parent().find(".goalsCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i>');
 			     }
-                $("#updateId"+tdpCadreId).parent().parent().find(".leadershipLvlsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i>');				 
-			    $("#updateId"+tdpCadreId).parent().parent().find(".communicationSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i>');
-				$("#updateId"+tdpCadreId).parent().parent().find(".leadershipSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i>');
-				$("#updateId"+tdpCadreId).parent().parent().find(".healthCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center healthCls"></i>');
+                $("#updateId"+tdpCadreId+batchId).parent().parent().find(".leadershipLvlsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i>');				 
+			    $("#updateId"+tdpCadreId+batchId).parent().parent().find(".communicationSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i>');
+				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".leadershipSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i>');
+				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".healthCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center healthCls"></i>');
 				
 			}else{
 				$("#processingId").hide();
