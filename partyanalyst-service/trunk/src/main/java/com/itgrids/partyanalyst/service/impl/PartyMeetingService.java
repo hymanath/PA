@@ -1,11 +1,15 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -25,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
@@ -918,5 +923,250 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		
 		return partyMeetingVO;
+	}
+	
+	
+	 /**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 21-AUG-2015
+     * Service To Give Meetings Summary For Locations
+     * @param List<Long> LocationIds, Long LocationLevel, String startDate, String endDate
+     * @return PartyMeetingSummaryVO
+     */
+	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr){
+		LOG.debug(" Entered Into getMeetingSummaryForLocation");
+		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
+		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
+		try{
+			
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date startDate= null;
+			Date endDate= null;
+			
+			if(startDateStr.trim().length()>0){
+				startDate= format.parse(startDateStr);
+			}
+			if(startDateStr.trim().length()>0){
+				endDate= format.parse(endDateStr);
+			}
+			
+			List<Long> statesList = new ArrayList<Long>();
+			statesList.add(0l);
+			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
+			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(null, locationLevel, statesList, locationIds, null, null, null, null, null, null, startDate, endDate);
+			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
+			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
+				for(Object[] obj:partyMeetingsRslt){
+					PartyMeetingSummaryVO tmp = new PartyMeetingSummaryVO();
+					tmp.setMeetingId(Long.valueOf(obj[9].toString()));
+					tmp.setMeetingName(obj[8].toString());
+					tmp.setScheduledOn(obj[5].toString());
+					List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+					if(nameRslt!=null && nameRslt.size()>0){
+						tmp.setLocation(nameRslt.get(0).getName());
+					}
+					fnlLst.add(tmp);
+					prtyMtngIdsLst.add(tmp.getMeetingId());
+				}
+			}
+			
+			if(prtyMtngIdsLst.size()>0){
+				// GETTING & SETTING OF MEETING ATTENDANCE DETAILS,ATR,MOM DETAILS OF MEETINGS
+				List<PartyMeetingSummaryVO> attndnceRsltLst = getAttendentsInformation(prtyMtngIdsLst);
+				List<PartyMeetingSummaryVO> momAndAtrRsltLst = getAtrAndMOMOfMeetings(prtyMtngIdsLst);
+				
+				if(attndnceRsltLst!=null && attndnceRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
+					for(PartyMeetingSummaryVO temp:fnlLst){
+						PartyMeetingSummaryVO attndncVO = getMatchedMeeting(temp.getMeetingId(), attndnceRsltLst);
+						if(attndncVO!=null){
+							temp.setAttendanceInfo(attndncVO);
+						}
+					}
+				}
+				
+				if(momAndAtrRsltLst!=null && momAndAtrRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
+					for(PartyMeetingSummaryVO temp:fnlLst){
+						PartyMeetingSummaryVO docsTxtVO = getMatchedMeeting(temp.getMeetingId(), momAndAtrRsltLst);
+						if(docsTxtVO!=null){
+							temp.setDocTxtInfo(docsTxtVO);
+						}
+					}
+				}
+			}
+		}catch (Exception e) {
+			LOG.error(" Error in getMeetingSummaryForLocation",e);
+		}
+		
+		finalVO.setPartyMeetingsList(fnlLst);
+		return finalVO;
+	}
+	
+	
+	/**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 21-AUG-2015
+     * Service To Give Attendents Information (Invitees Total, Attended, Absented, Others)
+     * @param List<Long> PartyMeetingIds
+     * @return PartyMeetingSummaryVO
+     */
+	public List<PartyMeetingSummaryVO> getAttendentsInformation(List<Long> partyMeetingIds){
+		LOG.debug("Entered Into getAttendentsInformation");
+		List<PartyMeetingSummaryVO> finalVOLst = new ArrayList<PartyMeetingSummaryVO>();
+		try{
+			List<Object[]> ttlRslt = partyMeetingAttendanceDAO.getTotalAttendentsOfMeetings(partyMeetingIds);
+			List<Object[]> invtsAttndRslt = partyMeetingAttendanceDAO.getInviteesAttendedCountOfMeetings(partyMeetingIds);
+			List<Object[]> invtsTtlRslt = partyMeetingInviteeDAO.getPartyMeetingInviteesForMeetings(partyMeetingIds);
+			
+			if(ttlRslt!=null && ttlRslt.size()>0){
+				for(Object[] obj:ttlRslt){
+					PartyMeetingSummaryVO temp = new PartyMeetingSummaryVO();
+					temp.setMeetingId(Long.valueOf(obj[0].toString()));
+					temp.setLocationId(Long.valueOf(obj[1].toString()));
+					temp.setTotalAttended(Long.valueOf(obj[2].toString()));
+					
+					temp.setInviteesAttendedPercent("0.0");
+					temp.setAbsentPercentage("0.0");
+					temp.setNonInviteesAttendedPercent("0.0");
+					finalVOLst.add(temp);
+				}
+			}
+			
+			if(invtsTtlRslt!=null && invtsTtlRslt.size()>0){
+				for(Object[] obj:invtsTtlRslt){
+					if(obj[0]!=null){
+						Long meetingId = Long.valueOf(obj[0].toString());
+						
+						PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+						if(temp==null){
+							temp = new PartyMeetingSummaryVO();
+						}
+						temp.setTotalInvitees(Long.valueOf(obj[2].toString()));
+					}
+				}
+			}
+			
+			if(invtsAttndRslt!=null && invtsAttndRslt.size()>0){
+				for(Object[] obj:invtsAttndRslt){
+					if(obj[0]!=null){
+						Long meetingId = Long.valueOf(obj[0].toString());
+						Long invitsAttended = Long.valueOf(obj[2].toString());
+						PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+						if(temp==null){
+							temp = new PartyMeetingSummaryVO();
+						}
+						temp.setInviteesAttended(invitsAttended);
+					}
+				}
+			}
+			
+			if(finalVOLst!=null && finalVOLst.size()>0){
+				for(PartyMeetingSummaryVO temp:finalVOLst){
+					Long ttlAttended = temp.getTotalAttended();
+					Long ttlInvits = temp.getTotalInvitees();
+					Long invitsAttended = temp.getInviteesAttended();
+					
+					Long othrsAttnd = ttlAttended - ttlInvits;
+					Long invitsAbsent = ttlInvits - invitsAttended;
+					
+					temp.setTotalAbsent(invitsAbsent);
+					temp.setNonInviteesAttended(othrsAttnd);
+					
+					if(ttlAttended!=null && ttlInvits!=null && invitsAttended!=null && invitsAbsent!=null){
+						String invtsAttnddPrcnt = (new BigDecimal(ttlInvits*(100.0)/invitsAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						String othrsAttnddPrcnt = (new BigDecimal(othrsAttnd*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						String invtsAbsntAttnddPrcnt = (new BigDecimal(othrsAttnd*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						
+						temp.setAbsentPercentage(invtsAbsntAttnddPrcnt);
+						temp.setNonInviteesAttendedPercent(othrsAttnddPrcnt);
+						temp.setInviteesAttendedPercent(invtsAttnddPrcnt);
+					}
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Error In getAttendentsInformation",e);
+		}
+		return finalVOLst;
+	}
+	
+	
+	/**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 21-AUG-2015
+     * Helper Service Method To Get Matched Meeting to Set Other Values for the Same Meeting
+     * @param Long PartyMeetingId, List<Long> PartyMeetingIds
+     * @return PartyMeetingSummaryVO
+     */
+	public PartyMeetingSummaryVO getMatchedMeeting(Long meetingId,List<PartyMeetingSummaryVO> meetings){
+		if(meetingId !=null && meetings!=null && meetings.size()>0){
+			for(PartyMeetingSummaryVO temp:meetings){
+				if(temp.getMeetingId().equals(meetingId)){
+					return temp;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 21-AUG-2015
+     * Service To Give MOM,ATR & Documents Information
+     * @param List<Long> PartyMeetingIds
+     * @return PartyMeetingSummaryVO
+     */
+	public List<PartyMeetingSummaryVO> getAtrAndMOMOfMeetings(List<Long> partyMeetingIds){
+		LOG.debug("Entered Into getAttendentsInformation");
+		List<PartyMeetingSummaryVO> finalVOLst = new ArrayList<PartyMeetingSummaryVO>();
+		try{
+			List<Object[]> ttlRslt = partyMeetingDocumentDAO.getPartyMeetingDocsOfMeetingIds(partyMeetingIds);
+			List<Object[]> momRslt = partyMeetingMinuteDAO.getMinuteDetailsForMeetings(partyMeetingIds);
+			List<Object[]> atrRslt = partyMeetingAtrPointDAO.getAtrPointsOfMeetings(partyMeetingIds);
+			
+			if(ttlRslt!=null && ttlRslt.size()>0){
+				for(Object[] obj:ttlRslt){
+					PartyMeetingSummaryVO temp = new PartyMeetingSummaryVO();
+					temp.setMeetingId(Long.valueOf(obj[0].toString()));
+					if(obj[1].toString().equalsIgnoreCase("ATR")){
+						temp.setAtrFilesExist(true);
+						temp.setAtrFilesCount(Long.valueOf(obj[2].toString()));
+					}else{
+						temp.setMomFilesExist(true);
+						temp.setMomFilesCount(Long.valueOf(obj[2].toString()));
+					}
+					finalVOLst.add(temp);
+				}
+			}
+			
+			if(momRslt!=null && momRslt.size()>0){
+				for(Object[] obj:momRslt){
+					Long meetingId = Long.valueOf(obj[0].toString());
+					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					if(temp==null){
+						temp = new PartyMeetingSummaryVO();
+					}
+					temp.setMomTextExist(true);
+					temp.setMomFilesCount(Long.valueOf(obj[1].toString()));
+				}
+			}
+			
+			if(atrRslt!=null && atrRslt.size()>0){
+				for(Object[] obj:atrRslt){
+					Long meetingId = Long.valueOf(obj[0].toString());
+					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					if(temp==null){
+						temp = new PartyMeetingSummaryVO();
+					}
+					temp.setAtrTextExist(true);
+					temp.setAtrFilesCount(Long.valueOf(obj[1].toString()));
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Error In getAttendentsInformation",e);
+		}
+		return finalVOLst;
 	}
 }

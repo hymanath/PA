@@ -21,10 +21,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	 public List<Object[]> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate){
 	        StringBuilder sb = new StringBuilder();
 	        
-	        sb.append(" select model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type, " +
-	                " model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level, " +
-	                " model.locationValue, date(model.startDate), date(model.endDate),model.meetingAddress.userAddressId,model.meetingName,model.partyMeetingId " +
-	                "from PartyMeeting model " +
+	        sb.append(" select model.partyMeetingType.partyMeetingTypeId," +//0 - MeetingTypeId
+	        		" model.partyMeetingType.type, " +//1 - Meeting Type
+	                " model.partyMeetingLevel.partyMeetingLevelId," + // 2- Meeting Level Id
+	                " model.partyMeetingLevel.level, " + // 3 - Meeting Level
+	                " model.locationValue," + // 4 -- Location Value
+	                " date(model.startDate)," + // 5 -- Start Date
+	                " date(model.endDate)," + // 6 -- End Date
+	                " model.meetingAddress.userAddressId," + // 7 -- User Address Id
+	                " model.meetingName," + // 8 -- Meeting Name
+	                " model.partyMeetingId " + // 9 -- Party Meeting Id 
+	                " from PartyMeeting model " +
 	                " where model.isActive='Y' " );
 	        if(meetingType!=null && meetingType>0l){
 	            sb.append(" and model.partyMeetingType.partyMeetingTypeId=:meetingType ");

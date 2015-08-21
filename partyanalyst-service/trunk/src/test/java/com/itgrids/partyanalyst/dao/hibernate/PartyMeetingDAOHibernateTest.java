@@ -12,8 +12,7 @@ public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 		this.partyMeetingDAO = partyMeetingDAO;
 	}
 	
-	public void test()
-	{
+	public void test(){
 		partyMeetingDAO.getAll();
 	}
 }

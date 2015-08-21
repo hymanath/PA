@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -20,11 +21,13 @@ public class PartyMeetingInviteeDAOHibernateTest extends BaseDaoTestCase{
 		partyMeetingInviteeDAO.getAll();
 	}*/
 	
-	public void testGetPartyMeetingInvittees()
-	{
-		List<String> list = partyMeetingInviteeDAO.getPartyMeetingInvittees(1l);
+	public void test(){
+		List<Long> partyMeetingIds = new ArrayList<Long>();
+		partyMeetingIds.add(1l);
+		partyMeetingIds.add(3l);
+		partyMeetingIds.add(4l);
+		List<Object[]> list = partyMeetingInviteeDAO.getPartyMeetingInviteesForMeetings(partyMeetingIds);
+		
 		System.out.println(list.size());
-		for(String str : list)
-			System.out.println(str);
 	}
 }

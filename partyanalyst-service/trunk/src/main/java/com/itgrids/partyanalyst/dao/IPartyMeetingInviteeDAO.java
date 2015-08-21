@@ -13,4 +13,6 @@ public interface IPartyMeetingInviteeDAO extends GenericDao<PartyMeetingInvitee,
 	public List<Object[]> getPartyMeetingsInvitationDetlsByCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId);
 	
 	public List<String> getPartyMeetingInvittees(Long partyMeetingId);
+	
+	public List<Object[]> getPartyMeetingInviteesForMeetings(List<Long> partyMeetingIds);
 }

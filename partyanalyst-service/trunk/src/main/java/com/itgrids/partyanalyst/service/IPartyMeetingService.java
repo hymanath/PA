@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 
 public interface IPartyMeetingService {
@@ -14,4 +17,7 @@ public interface IPartyMeetingService {
 	public PartyMeetingVO getAtrPointsForAMeeting(Long partyMeeingId);
 	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId);
 	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId);
+	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr);
+	public List<PartyMeetingSummaryVO> getAttendentsInformation(List<Long> partyMeetingIds);
+	public List<PartyMeetingSummaryVO> getAtrAndMOMOfMeetings(List<Long> partyMeetingIds);
 }

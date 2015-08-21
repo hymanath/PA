@@ -67,4 +67,25 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		return queryObject.executeUpdate();	
 		
 	}
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total Minutes Of Meeting
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, Count of Minutes
+	 */
+	public List<Object[]> getMinuteDetailsForMeetings(List<Long> partyMeetingIds){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.partyMeeting.partyMeetingId," +
+				" count(model.partyMeetingMinuteId)" +
+				" from PartyMeetingMinute model where " +
+				" model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.isDeleted='N'" +
+				" group by model.partyMeeting.partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		
+		return query.list();
+	}
 }

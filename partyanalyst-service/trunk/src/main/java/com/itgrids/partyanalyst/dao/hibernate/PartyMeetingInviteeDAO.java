@@ -63,4 +63,26 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		return query.list();
 	}
 	
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total Invitees Of Meetings
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, LocationValue, Count of Invitee Attendents
+	 */
+	public List<Object[]> getPartyMeetingInviteesForMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
+				" model.partyMeeting.locationValue," +
+				" count(model.tdpCadre.tdpCadreId)" +
+				" from PartyMeetingInvitee model" +
+				" where " +
+				" model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" group by model.partyMeeting.partyMeetingId " +
+				" order by model.partyMeeting.partyMeetingId desc ");
+		
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
+	
 }
