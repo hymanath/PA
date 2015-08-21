@@ -1187,12 +1187,7 @@
                 </select>
             </div>
 			
-            <div class="col-md-10 col-md-offset-1">
-                <label>Level</label>
-                <select class="form-control custom-select">
-                    <option>All</option>
-                </select>
-            </div>
+           
             <div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
 			  <button class="btn btn-block btn-success btn-sm btn-custom">UPDATE</button>
             </div>
