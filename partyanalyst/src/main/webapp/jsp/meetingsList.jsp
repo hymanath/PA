@@ -960,6 +960,26 @@ $(document).ready(function() {
 		window.open('meetingDetailsList.action?partyMeetingId='+partyMeetingId+'', '_blank');
 		//alert(meetingType+"--"+meetingLocationLevel);
 	}
+	
+	getPartyMeetingDetails();
+	function getPartyMeetingDetails(){
+		var locationLevelValues = [11];
+		var locationLevel= 2;
+		var jsObj =	{
+			locationLevel:locationLevel,
+			locationLevelValues:locationLevelValues,
+			startDate:"08/25/2015",
+			endDate:"08/28/2015"
+		}
+					
+		$.ajax({
+			type: "POST",
+			url:"getMeetingSummaryForLocationAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
 </script>
 </body>
 </html>

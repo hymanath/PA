@@ -10732,5 +10732,10 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
+	<action name="getMeetingSummaryForLocationAction" class="partyMeetingAction" method="getMeetingSummaryForLocation">
+	   <result type="json" name="success">
+	       		<param name="root">partyMeetingsSummary</param>
+	  	</result>
+	</action>
 </package>
 </struts>      
