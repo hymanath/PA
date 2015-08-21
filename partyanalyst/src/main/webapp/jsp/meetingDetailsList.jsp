@@ -278,7 +278,34 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     </div>
 </main>
 <!---------alert pop up----------------->
-
+<div class="modal fade" id="deletedmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4>Are you Sure,want to Delete This Meeting Minutes ?</h4>
+      </div>
+     
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="deletedMinMsg" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deletedmsgAtr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4>Are you Sure,want to Delete This ATR  ?</h4>
+      </div>
+     
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="AtrdeletedMsg" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="showmsshmin"></div>
 <!----------------------------->
 <!--------Minutes popup-------->
@@ -296,7 +323,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		<span id="momError" style="color:red;margin-left:20px;"></span>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary saveMinute" id="saveBtnMeetMin" attr_minuteid="0">Save changes</button>
+        <button type="button" class="btn btn-primary saveMinute"  id="saveBtnMeetMin" attr_minuteid="0">Save changes</button>
       </div>
     </div>
   </div>
@@ -330,7 +357,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			 </div>
 			 <span id="atrError" style="color:red;margin-left:20px;"></span>
 			 <div class="modal-footer">
-				 <button type="button" class="btn btn-success btn-sm" id="saveBtn"><i class="icon-check"></i> SAVE </button>
+				 <button type="button" class="btn btn-success btn-sm" id="saveBtn" ><i class="icon-check"></i> SAVE </button>
 				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
 			 </div>
 		 </div>
@@ -452,15 +479,31 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	$(document).on('click', '.addMeetMint', function(){
 			$("#mintModal").modal("show");
 			$("#meetRaised").val("");
-	 }); 		
-    $(document).on('click', '.trash', function(){
+	 }); 	
+	 
+ $(document).on('click', '.conformDel', function(){
+		  $("#deletedmsg").modal("show");
+		  
+		  var attrId4 = $(this).attr("attr_div_count");
+		 $("#deletedMinMsg").attr("attr_div_count",attrId4);
+		 
+		 var attrId2 = $(this).attr("attr_txt");
+		 $("#deletedMinMsg").attr("attr_txt",attrId2);
+		 
+		 var attrId3 = $(this).attr("attr_minuteId");
+		 $("#deletedMinMsg").attr("attr_minuteId",attrId3);
+		 
+		 
+	 });deletedmsgAtr
+	 
+	 
+    $(document).on('click', '#deletedMinMsg', function(){
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
-        $("#deletedmsg").modal("show");
 		var divId = $(this).attr("attr_txt");
 		var divCount = $(this).attr("attr_div_count");
         $("#"+divId).remove();
-        $("#save"+divCount).remove();
-		$(this).remove();
+        //$("#save"+divCount).remove(); 
+		//$(this).remove();
 		$("#list"+divCount).remove();		
 		
 		var minuteId = $(this).attr("attr_minuteId");
@@ -768,9 +811,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   for(var i in result.minutesDetails){
 					  	 mainDivCount=i;
 						str+='<li class="list-group-item " id="list'+mainDivCount+'">';
-						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
+						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-				       str+=' <button class="btn btn-default trash"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 						str+=' </li>';
@@ -880,11 +923,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		   if(minuteId == 0){
 				reslt = "Saved Successfully"
 				$("#mintupdatealertmag").html(reslt);
-				$('#alertmintsave').modal('show');
-			}else if(minuteId >0){
+				setTimeout(function(){$('#alertmintsave').modal('show')}, 1000);
+			}else if(minuteId > 0){
 				reslt = "Updated Successfully"
 				$("#mintupdatealertmag").html(reslt);
-				$('#alertmintsave').modal('show');
+				setTimeout(function(){$('#alertmintsave').modal('show')}, 1000);
 			}
 			$("#saveBtnMeetMin").attr("attr_minuteId",0);
 		});
@@ -910,7 +953,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 //str+='<div class=" m_top10" id="list'+mainDivCount+'">';
 					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-					 str+=' <button class="btn btn-default ToolTipDiv trash" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					 str+=' </div>';
 					 str+=' </li>';
@@ -926,7 +969,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	$("#uploadMinutesDocsId").click(function(){
 		$("#partyMeetingId").val(partyMeetingId);
-		
 		var files = [];
 		$("#uploadMinutesDocs input[type=file]").each(function() {
 			if($(this).val().trim().length>0){
@@ -1221,11 +1263,12 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			if(atrId == 0){
 				reslt = "Saved Successfully"
 				$("#mintupdatealertmag").html(reslt);
-				$('#alertmintsave').modal('show');
+				setTimeout(function(){$('#alertmintsave').modal('show')}, 4000);
+				
 			}else if(atrId >0){
 				reslt = "Updated Successfully"
 				$("#mintupdatealertmag").html(reslt);
-				$('#alertmintsave').modal('show');
+				setTimeout(function(){$('#alertmintsave').modal('show')}, 4000);
 			}
 		});	
 		
@@ -1327,8 +1370,16 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   }	
 		});	
 	}
-	
-	$(document).on('click', '.deleteAtr', function(){
+	 $(document).on('click', '.deleteAtr', function(){
+		  $("#deletedmsgAtr").modal("show");
+		  
+		  var attrId5 = $(this).attr("attr_atrid");
+		 $("#AtrdeletedMsg").attr("attr_atrid",attrId5);
+		 
+		
+		 
+	 });
+	$(document).on('click', '#AtrdeletedMsg', function(){
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var atrId = $(this).attr("attr_atrid");
 		
