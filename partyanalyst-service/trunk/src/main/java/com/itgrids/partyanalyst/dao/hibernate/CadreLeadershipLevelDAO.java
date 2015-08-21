@@ -17,7 +17,8 @@ public class CadreLeadershipLevelDAO extends GenericDaoHibernate<CadreLeadership
 	public List<Object[]> getAllLeaderShipLevels(){
 		
 		Query query=getSession().createQuery(" select model.cadreLeadershipLevelId,model.leadershipLevel " +
-				"from  CadreLeadershipLevel model ");
+				" from  CadreLeadershipLevel model " +
+				" order by model.orderNo asc ");
 	    return query.list();
 	}
 }

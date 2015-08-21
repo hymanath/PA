@@ -17,7 +17,8 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     public List<Object[]> getAllCadreHealthStatus(){
 		
 		Query query=getSession().createQuery(" select model.cadreHealthStatusId,model.status " +
-				"from  CadreHealthStatus model ");
+				" from  CadreHealthStatus model " +
+				" order by model.orderNo asc");
 	    return query.list();
 	}
 }

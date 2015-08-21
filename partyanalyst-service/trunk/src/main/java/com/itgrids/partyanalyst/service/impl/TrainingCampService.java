@@ -4237,6 +4237,9 @@ public class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
 					feedBackDetails.setRemarks(comments.trim().length()>0?comments:null);
+					feedBackDetails.setUpdatedBy(userId);
+					Date date1=new DateUtilService().getCurrentDateAndTime();
+					feedBackDetails.setUpdatedTime(date1);
 					feedBackDetails=trainingCampCadreFeedbackDetailsDAO.save(feedBackDetails);
 					
 					//feedback details history.
