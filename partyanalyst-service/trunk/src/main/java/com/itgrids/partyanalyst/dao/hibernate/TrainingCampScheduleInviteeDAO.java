@@ -33,19 +33,20 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		if(startDate != null && endDate != null)
 		{
-			queryStr.append(" and (date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:startDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) <=:endDate) ");
+			//queryStr.append(" and (date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:startDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) <=:endDate) ");
 			
 			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
-				queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
-				queryStr.append(" or :endDate between date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
+				queryStr.append(" and  (:startDate BETWEEN date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)  AND date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) OR " +
+						" :endDate  BETWEEN  date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)  AND date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate)) ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
-				queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :startDate  ");
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :startDate  ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
-				queryStr.append(" or TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+				queryStr.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
 			}
 		}
 		else
@@ -55,7 +56,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:todayDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
-				queryStr.append(" and :todayDate between date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
+				queryStr.append(" and :todayDate BETWEEN date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) AND  date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
 				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :todayDate  ");
@@ -79,17 +80,14 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				query.setDate("endDate", endDate);
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
 				query.setDate("startDate", startDate);
 			}
 		}
-		if(startDate != null && endDate != null)
-		{
-			query.setDate("startDate", startDate);
-			query.setDate("endDate", endDate);
-		}
+		
 		return query.list();
 	}
 	
