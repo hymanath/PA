@@ -3952,7 +3952,7 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			if(cadreDetails!=null && cadreDetails.size()>0){
 				
-				 for(Object[] obj :cadreDetails){//scid,bid,bcode,,cadreid,firstname,mobileno,image,cid,cname,llid,csid,lsid,hid
+				 for(Object[] obj :cadreDetails){//scid,bid,bcode,,cadreid,firstname,mobileno,image,cid,cname,llid,csid,lsid,hid,isUpdatable
 					 
 					 Long batchId=Long.valueOf(((Integer)obj[1]).longValue());
 					 CadreDetailsVO batchVO=batchMap.get(batchId);
@@ -3962,6 +3962,7 @@ public class TrainingCampService implements ITrainingCampService{
 						 batchVO=new CadreDetailsVO();
 						 batchVO.setId(batchId);
 						 batchVO.setName(obj[2]!=null?obj[2].toString():"");
+						 batchVO.setIsFeedbackUpdatable(obj[13].toString());
 					 }
 					
 					 if(batchVO.getSubMap()==null){

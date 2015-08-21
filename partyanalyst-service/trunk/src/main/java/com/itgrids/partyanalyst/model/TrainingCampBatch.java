@@ -31,6 +31,7 @@ private Date toDate;
 private Long batchStatusId;
 private Long maxMembers;
 private BatchStatus batchStatus;
+private String isFeedbackUpdatable;
 
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -104,9 +105,17 @@ public void setTrainingCampSchedule(TrainingCampSchedule trainingCampSchedule) {
 public BatchStatus getBatchStatus() {
 	return batchStatus;
 }
+
+
 public void setBatchStatus(BatchStatus batchStatus) {
 	this.batchStatus = batchStatus;
 }
-
+@Column(name="is_feedback_updatable")
+public String getIsFeedbackUpdatable() {
+	return isFeedbackUpdatable;
+}
+public void setIsFeedbackUpdatable(String isFeedbackUpdatable) {
+	this.isFeedbackUpdatable = isFeedbackUpdatable;
+}
 
 }
