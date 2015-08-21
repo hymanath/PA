@@ -1,17 +1,20 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -26,7 +29,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private IPartyMeetingService partyMeetingService;
 	private PartyMeetingVO partyMeetingVO;
 	private String status;
-	
+	private PartyMeetingSummaryVO partyMeetingsSummary; 
 	
 	public String getStatus() {
 		return status;
@@ -88,6 +91,16 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		this.request = request;
 	}
 	
+	
+	
+	public PartyMeetingSummaryVO getPartyMeetingsSummary() {
+		return partyMeetingsSummary;
+	}
+
+	public void setPartyMeetingsSummary(PartyMeetingSummaryVO partyMeetingsSummary) {
+		this.partyMeetingsSummary = partyMeetingsSummary;
+	}
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -245,6 +258,30 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			partyMeetingVO = partyMeetingService.getTheMinutePointsForAMeeting(jObj.getLong("partyMeetingId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getTheMinutePointsForAMeeting",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMeetingSummaryForLocation(){
+		try {
+			LOG.info("Entered into getMeetingSummaryForLocation");
+			jObj = new JSONObject(getTask());
+			
+			Long locationLevel = jObj.getLong("locationLevel");
+			
+			List<Long> locationIds = new ArrayList<Long>();
+			JSONArray jsonArray = jObj.getJSONArray("locationLevelValues");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Long locationId = Long.valueOf(jsonArray.get(i).toString());
+				locationIds.add(locationId);
+			}
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(locationLevel, locationIds, startDate, endDate);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
 		return Action.SUCCESS;
 	}

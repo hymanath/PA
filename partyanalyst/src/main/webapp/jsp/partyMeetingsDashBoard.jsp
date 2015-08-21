@@ -164,7 +164,7 @@
                                                         <th>Text</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="individualResultBody">
                                                 	<tr>
                                                     	<td>District Committee Body Meeting</td>
                                                         <td>Srikakulam</td>
@@ -1406,6 +1406,83 @@ $(document).ready(function(e) {
   $(".locationCls").change(function() {
   showHide();
   });
+  
+  getPartyMeetingDetails();
+	function getPartyMeetingDetails(){
+		var locationLevelValues = [11];
+		var locationLevel= 2;
+		var jsObj =	{
+			locationLevel:locationLevel,
+			locationLevelValues:locationLevelValues,
+			startDate:"08/25/2015",
+			endDate:"08/28/2015"
+		}
+					
+		$.ajax({
+			type: "POST",
+			url:"getMeetingSummaryForLocationAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			var pmList = result.partyMeetingsList;
+			var str = "";
+			if(pmList!=null && pmList.length>0){
+				for(var i in pmList){
+					str+="<tr>";
+					str+="<td>"+pmList[i].meetingName+"</td>";
+					str+="<td>"+pmList[i].location+"</td>";
+					str+="<td>"+pmList[i].scheduledOn+"</td>";
+					if(pmList[i].attendanceInfo!=null){
+						str+="<td>"+pmList[i].attendanceInfo.totalInvitees+"</td>";
+						str+="<td>"+pmList[i].attendanceInfo.totalAttended+"</td>";
+						str+="<td>"+pmList[i].attendanceInfo.inviteesAttended+"</td>";
+						str+="<td>"+pmList[i].attendanceInfo.nonInviteesAttended+"</td>";
+						str+="<td>"+pmList[i].attendanceInfo.totalAbsent+"</td>";
+					}else{
+						str+="<td> - </td>";
+						str+="<td> - </td>";
+						str+="<td> - </td>";
+						str+="<td> - </td>";
+						str+="<td> - </td>";
+					}
+					
+					if(pmList[i].docTxtInfo!=null){
+						if(pmList[i].docTxtInfo.momFilesExist){
+							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						}else{
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						}
+						
+						if(pmList[i].docTxtInfo.momTextExist){
+							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						}else{
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						}
+						
+						if(pmList[i].docTxtInfo.atrFilesExist){
+							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						}else{
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						}
+						
+						if(pmList[i].docTxtInfo.atrTextExist){
+							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						}else{
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						}
+					}else{
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+					}
+					
+					str+="</tr>";
+				}
+				
+			}
+			$("#individualResultBody").html(str);
+		});
+	}
 </script>
 <script>
 showHide();
