@@ -116,10 +116,11 @@ public class AttendanceService implements IAttendanceService{
 			if(attendanceVO.getSyncSource() == null)
 				attendanceVO.setSyncSource("WS");
 			
-			if(membershipId == null || membershipId.trim().length() < 8)
+			if(membershipId == null || membershipId.trim().length() < 8 || (membershipId.trim().length() > 8  && membershipId.trim().length() < 12) || membershipId.trim().length() > 12)
 			{
 				attendanceVO.setErrorDescription("Invalid Membership Id");
 				saveAttendanceError(attendanceVO);
+				result.setErrorDescription("Invalid Membership Id");
 				result.setStatus("Success");
 				return result;
 			}
@@ -132,6 +133,7 @@ public class AttendanceService implements IAttendanceService{
 			{
 				attendanceVO.setErrorDescription("Membership Id not Exist");
 				saveAttendanceError(attendanceVO);
+				result.setErrorDescription("Membership Id not Exist");
 				result.setStatus("Success");
 				return result;
 			}
@@ -139,6 +141,7 @@ public class AttendanceService implements IAttendanceService{
 			{
 				attendanceVO.setErrorDescription("Multiple Membership Ids Exist");
 				saveAttendanceError(attendanceVO);
+				result.setErrorDescription("Multiple Membership Ids Exist");
 				result.setStatus("Success");
 				return result;
 			}
