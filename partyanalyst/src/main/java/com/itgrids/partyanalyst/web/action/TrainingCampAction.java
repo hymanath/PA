@@ -501,7 +501,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			return Action.INPUT;
 		}
 		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER") || 
-				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") ){
+				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") || 
+				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"ADMIN_PAGE")){
 			return Action.SUCCESS;
 		}
 		return Action.INPUT;
