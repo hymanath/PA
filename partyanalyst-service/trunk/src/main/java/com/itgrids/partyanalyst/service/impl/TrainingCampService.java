@@ -1234,7 +1234,7 @@ public class TrainingCampService implements ITrainingCampService{
 					if(programWiseSceduleWiseMap != null && programWiseSceduleWiseMap.size()>0)
 					{
 						List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
-						Map<Long,Long> allDiaCallsscheduleWiseMap = null;
+						Map<Long,Long> allDiaCallsscheduleWiseMap = new LinkedHashMap<Long, Long>(0);
 						for (String programStr : programWiseSceduleWiseMap.keySet()) {
 							Map<String,Map<Long,List<TrainingCampVO>>> campWiseMap = programWiseSceduleWiseMap.get(programStr);
 							Map<String,Map<Long,Long>> allCallsCampWiseMap =  programWiseCallsSceduleWiseMap.get(programStr);
@@ -1242,13 +1242,16 @@ public class TrainingCampService implements ITrainingCampService{
 							//Map<String,Map<Long,Long>> allNotDialdCallsCampWiseMap =  programWiseDialdCallsSceduleWiseMap.get(programStr);
 							TrainingCampVO programVO = new TrainingCampVO();
 							programVO.setName(programStr);
-							if(campWiseMap != null && campWiseMap.size()>0)
+							if(campWiseMap != null && campWiseMap.size()>0 )
 							{
 								for (String campNameStr : campWiseMap.keySet()) {
 									Map<Long,List<TrainingCampVO>> scheduleWiseCountMap = campWiseMap.get(campNameStr);
-									Map<Long,Long> allCallsscheduleWiseMap =  allCallsCampWiseMap.get(campNameStr);
+									Map<Long,Long> allCallsscheduleWiseMap = new LinkedHashMap<Long, Long>(0);
+									if(allCallsCampWiseMap != null)
+										allCallsscheduleWiseMap=  allCallsCampWiseMap.get(campNameStr);
+									
 									if(allDiaCallsCampWiseMap != null){
-								      allDiaCallsscheduleWiseMap =  allDiaCallsCampWiseMap.get(campNameStr);}
+										allDiaCallsscheduleWiseMap =  allDiaCallsCampWiseMap.get(campNameStr);}
 									//Map<Long,Long> allNotDialdCallsscheduleWiseMap =  allNotDialdCallsCampWiseMap.get(campNameStr);
 									
 									programVO.setTrainingCampName(campNameStr);
@@ -1267,10 +1270,10 @@ public class TrainingCampService implements ITrainingCampService{
 											allocatedCallsCount =  allCallsscheduleWiseMap.get(scheduleId);
 											if(allDiaCallsscheduleWiseMap != null)
 											{
-											dialdCallsCount =  allDiaCallsscheduleWiseMap.get(scheduleId);
+											dialdCallsCount =  allDiaCallsscheduleWiseMap.get(scheduleId) !=null ?allDiaCallsscheduleWiseMap.get(scheduleId):0L ;
 											}
 											
-											if(allocatedCallsCount !=null && allocatedCallsCount !=0l){
+											if(allocatedCallsCount !=null && allocatedCallsCount !=0l && dialdCallsCount !=null ){
 												unDialdCallsCount =  allocatedCallsCount - dialdCallsCount;
 											}
 											
@@ -1326,7 +1329,7 @@ public class TrainingCampService implements ITrainingCampService{
 												}
 
 											finalList.add(finalVO);
-											programVO.setTrainingCampVOList(finalList);
+											programVO.getTrainingCampVOList().addAll(finalList);
 										}
 									}
 								}
