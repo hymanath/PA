@@ -262,8 +262,11 @@ color: red !important;
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
 					   }
-					   str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
-                       str+='</tr>';
+					   if(results[i].isFeedbackUpdatable=='Y')
+					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+                       else
+						   str+='<td><button  disabled type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+					   str+='</tr>';
                     }
 					str+='</table>'
                   str+='</div>'
@@ -316,7 +319,7 @@ color: red !important;
 		str+='</div>'
 		str+='<div class="col-md-4">'
 			str+='<div class="input-group date reportrange datetxtboxD m_top10">';
-				str+='<input type="text" class="form-control goalsDateClass"  id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
+				str+='<input type="text"  class="form-control goalsDateClass"  id="goalsDateId'+globalDateCount+'" attr-id="'+globalDateCount+'"/>';
 				str+='<span class="input-group-addon">';
 					str+='<span class="glyphicon glyphicon-calendar"></span>';
 				str+='</span>';
@@ -328,9 +331,12 @@ color: red !important;
 		str+='</div>'
     str+='</div>'
 	$("#addMoreDateDiv").append(str);
+	
+	var datePickerId ="#goalsDateId"+globalDateCount;
+	$(datePickerId).datetimepicker({format: "MM/DD/YYYY"});
    }
    function buildingData(results,tdpCadreId,batchId){
-   
+   var datePkrIds = [];
    var str=''
    str+='<div id="popupdivId" class="modal-body">';
 		str+='<div class="row">'
@@ -434,6 +440,8 @@ color: red !important;
 							str+='<i class="glyphicon glyphicon-minus add-plus datetrash m_top10"></i>'
 						str+='</div>'
 				      str+='</div>'
+					  datePkrIds.push("#goalsDateId"+globalDateCount);
+					  
 				  }
 				  str+='</div>'
 				}else{
@@ -460,7 +468,7 @@ color: red !important;
 						str+='<i class="glyphicon glyphicon-plus add-plus" onclick="myDateFunction();"></i>'
 					str+='</div>'
 				str+='</div>'
-				
+				datePkrIds.push("#goalsDateId0");
 		str+='</div>'
 		str+='</div>'
 		
@@ -541,6 +549,18 @@ color: red !important;
 	  
 	$("#modalBodyId").html(str);
 	
+	for(var i in datePkrIds){
+		var datePickerId =datePkrIds[i];
+		var dpIdVal = $(datePickerId).val();
+		$(datePickerId).datetimepicker({
+            format: "MM/DD/YYYY"
+        });
+		if(dpIdVal!=""){
+			$(datePickerId).val(dpIdVal)
+		}
+	}
+	
+	
 	var str1='';
 	str1+='<span id="updatedId" style="display:none" class="text-success pull-left">Updated Successfully...</span>';
 	str1+='<span id="notUpdatedId" style="display:none" class="text-success pull-left">Sorry..Details Are Not Updated...</span>';
@@ -566,11 +586,11 @@ color: red !important;
 		   
     });
 	
-	 $('body').on('click','.goalsDateClass', function() {
+	/*  $('body').on('click','.goalsDateClass', function() {
 		
 			$(this).datetimepicker();
 		});
-
+ */
 	
    function saveAllDetails(tdpCadreId,batchId)
    {
