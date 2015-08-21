@@ -426,8 +426,12 @@ $(document).ready(function() {
 		});
 	}
 	
+	$( "#typeOfMeeting" ).change(function() {
+		$("#typeofMeetingErrorMessage").html("");
+	});
+	
 	$( "#meetingLocationLevel" ).change(function() {
-	 
+	 $("#meetingLocationErrorMessage").html("");
 	  $("#searchDataImgFortypeOfMeeting").show();
 		var jsObj =	{locationLevel:$(this).val()}
 		
@@ -635,6 +639,9 @@ $(document).ready(function() {
 			$("#searchDataImgForResults").show();
 		}
 		
+		$("#villWardId").change(function(){
+			$("#VillErrorMSgShow").html();
+		});
 		
 		var startDate = $(".dp_startDate").val();
 		var endDate = $(".dp_endDate").val();
@@ -811,12 +818,20 @@ $(document).ready(function() {
 		});
 	}
 	$( "#statesDivId" ).change(function() {
+		$("#stateErrorMSgShow").html("");
 		getDistrictsForStates(this.value);
 	});
 	$( "#districtId" ).change(function() {
+		$("#districtErrorMSgShow").html("");
 		getConstituenciesForDistricts(this.value);
 	});
 		$("#meetingLocationLevel").change(function(){
+				
+			$("#districtId").val($("#districtId option:first").val());
+			$("#constituencyId").val($("#constituencyId option:first").val());
+			$("#manTowDivId").val($("#manTowDivId option:first").val());
+			$("#villWardId").val($("#villWardId option:first").val());
+
 				$("#statesDivId").html("");
 				
 				$("#statesDivId").append('<option value=""> Select State </option>');
@@ -870,9 +885,11 @@ $(document).ready(function() {
 		});
 		
 		$("#constituencyId").change(function(){
+			$("#ConsErrorMSgShow").html("");
 			getMandalVillageDetails(4);
 		});
 		$("#manTowDivId").change(function(){
+			$("#ManErrorMSgShow").html("");
 			getMandalVillageDetails(5);
 		});
 		
