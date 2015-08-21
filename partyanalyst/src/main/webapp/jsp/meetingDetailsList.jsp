@@ -886,6 +886,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				$("#mintupdatealertmag").html(reslt);
 				$('#alertmintsave').modal('show');
 			}
+			$("#saveBtnMeetMin").attr("attr_minuteId",0);
 		});
 	});
 	
@@ -987,11 +988,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var reslt;
 		var result = myResult;
 		if (result.indexOf("success") >= 0){
-			reslt = "File Uploaded Successfully"
-			$("#mintupdatealertmag").html(reslt);
 			$('#alertmintsave').modal('show')
 			//alert("File Uploaded Successfully");
-			rebuildTheDocumentsDiv(docSourceType);
+			rebuildTheDocumentsDiv(docSourceType,reslt);
 		}
 		else{
 			reslt = "Failed to Upload.. Please Try Again"
@@ -1003,7 +1002,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		partyMeetingDocs(docSourceType);
 	}
 	
-	function rebuildTheDocumentsDiv(fromType){
+	function rebuildTheDocumentsDiv(fromType,result){
 		var jsObj={		
 			partyMeetingId : '${partyMeetingId}'
 		}
@@ -1025,7 +1024,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					    str+='<li class="list-group-item col-md-12" id="docDiv'+result.minutesDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.minutesDocuments[i].url+'">'+result.minutesDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.minutesDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</li><br/>';
+						str+='</li>';
 						
 				   }
 				   str+='</ul>';
@@ -1034,6 +1033,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   str+='</div>';
 				   $("#mintueDocumentDivId").html(str);
 			   }
+			   $("#ExtraFiles").html("");
 			}
 			else if(fromType=="ATR"){
 				if(result.atrDocuments!=null && result.atrDocuments.length>0){
@@ -1047,7 +1047,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					    str+='<li class="col-md-12  list-group-item" id="docDiv'+result.atrDocuments[i].id+'">';
 					    str+='<a target="_tab" href="'+result.atrDocuments[i].url+'">'+result.atrDocuments[i].name+'</a>';
 						str+='<div class="pull-right deleteDoc" id="'+result.atrDocuments[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
-						str+='</li><br/>';
+						str+='</li>';
 						
 				   }
 				   str+='</ul>';
@@ -1056,8 +1056,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   str+='</div>';
 				   $("#atrDocumentDivId").html(str);
 			   }
+			   $("#ExtraFilesATR").html("");
 			}
-			    
+			reslt = "File Uploaded Successfully"
+			$("#mintupdatealertmag").html(reslt);
+			
 		});
 	}
 	
