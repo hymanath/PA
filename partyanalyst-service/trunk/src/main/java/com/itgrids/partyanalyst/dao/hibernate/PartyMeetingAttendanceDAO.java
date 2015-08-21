@@ -86,4 +86,43 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total Attendents Of Meeting
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, LocationValue, Count of Attendents
+	 */
+	public List<Object[]> getTotalAttendentsOfMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
+				" model.partyMeeting.locationValue," +
+				" count(distinct model.attendance.tdpCadreId) " +
+				" from PartyMeetingAttendance model" +
+				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" group by model.partyMeeting.partyMeetingId");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
+	
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total Invitee Attendents Of Meeting
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, LocationValue, Count of Invitee Attendents
+	 */
+	public List<Object[]> getInviteesAttendedCountOfMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
+				" model.partyMeeting.locationValue," +
+				" count(distinct model1.tdpCadreId) " +
+				" from PartyMeetingAttendance model, PartyMeetingInvitee model1 " +
+				" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId " +
+				" and model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" group by model.partyMeeting.partyMeetingId");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
+	
 }

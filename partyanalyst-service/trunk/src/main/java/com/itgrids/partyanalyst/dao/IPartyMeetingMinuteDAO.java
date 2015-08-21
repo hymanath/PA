@@ -12,4 +12,5 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getMinuteDetailsForAMeeting(Long partyMeetingId);
 	public Integer updateMeetingPoint(Long minuteId,String minuteText,Long updatedBy,Date updateTime);	
 	public Integer deleteMeetingMinutePoint(Long minuteId,Long updatedBy,Date updateTime);
+	public List<Object[]> getMinuteDetailsForMeetings(List<Long> partyMeetingIds);
 }

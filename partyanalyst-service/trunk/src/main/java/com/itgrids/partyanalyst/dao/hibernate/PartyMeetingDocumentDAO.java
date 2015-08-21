@@ -55,4 +55,26 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		
 		return query.list();
 	}
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total Documents Of Meeting
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, Count of Documents
+	 */
+	public List<Object[]> getPartyMeetingDocsOfMeetingIds(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
+				" model.documentType," +
+				" count(model.partyMeetingDocumentId)" +
+				" from PartyMeetingDocument model" +
+				" where " +
+				" model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.isDeleted = 'N'" +
+				" group by model.partyMeeting.partyMeetingId," +
+				" model.documentType ");
+		
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
 }

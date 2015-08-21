@@ -70,4 +70,23 @@ public class PartyMeetingAtrPointDAO extends GenericDaoHibernate<PartyMeetingAtr
 
 		return queryObject.executeUpdate();
 	}
+	
+	
+	/*
+	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+	 * @since 21-AUG-2015
+	 * This DAO Call is to Get Total ATR Points Of Meeting
+	 * @param List<Long> partyMeetingIds
+	 * @return List<Object[]>  of PartyMeetingId, Count of ATR
+	 */
+	public List<Object[]> getAtrPointsOfMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
+				" count(model.partyMeetingAtrPointId)" +
+				" from PartyMeetingAtrPoint model " +
+				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.isDeleted = 'N'" +
+				" group by model.partyMeeting.partyMeetingId ");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
 }
