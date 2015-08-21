@@ -1155,30 +1155,38 @@
             </div>
             <div class="col-md-10 col-md-offset-1" id="stateDiv">
                 <label>Select State</label>
-                <select class="form-control custom-select" id="stateId" onchange="showHide();getDistrictsForStates();">
+                <select class="form-control custom-select locationCls" id="stateId" onchange="getDistrictsForStates();">
                    	<option value="0">All</option>
 					<option value="1">AndhraPradesh</option>
 					<option value="36">Telangana</option>
                 </select>
             </div>
-            <div class="col-md-10 col-md-offset-1" id="districtDiv">
-                <label>Select District</label>
-                <select class="form-control custom-select" id="districtId" onchange="showHide();getConstituenciesForDistricts(this.value);">
-                    <option>Visakapatnam</option>
+            <div class="col-md-10 col-md-offset-1 " id="districtDiv">
+                <label>Select District</label><img src='./images/icons/search.gif' class="offset7"  id="imgForDist" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="districtId" onchange="getConstituenciesForDistricts(this.value);">
+                   
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1" id="constituencyDiv">
-                <label>Select Constituency</label>
-                <select class="form-control custom-select" id="constituencyId">
+                <label>Select Constituency</label><img src='./images/icons/search.gif' class="offset7"  id="imgForConsti" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="constituencyId" onchange="getMandalCorporationsByConstituency();">
                     <option>Select Constituency</option>
                 </select>
             </div>
-            <div class="col-md-10 col-md-offset-1" id="mandalDiv">
-                <label>Mandal</label>
-                <select class="form-control custom-select">
-                    <option>Bobbili</option>
+			
+			<div class="col-md-10 col-md-offset-1" id="mandalDiv">
+                <label>Mandal</label><img src='./images/icons/search.gif' class="offset7"  id="imgForMandl" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="mandalId" onchange="getPanchayatWardByMandal();">
+                   <option>Select Mandal</option>
                 </select>
             </div>
+			<div class="col-md-10 col-md-offset-1" id="panchayatDiv">
+                <label>Panchayat</label><img src='./images/icons/search.gif' class="offset7"  id="imgForPanc" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="panchayatId">
+                   <option>Select Panchayat</option>
+                </select>
+            </div>
+			
             <div class="col-md-10 col-md-offset-1">
                 <label>Level</label>
                 <select class="form-control custom-select">
@@ -1227,6 +1235,7 @@ $(document).ready(function(e) {
   var state = $("#stateId").val();
 	$("#districtId  option").remove();
 	$("#districtId").append('<option value="0">Select District</option>');
+	$("#imgForDist").show();
 	var jsObj=
 	{				
 				stateId:state,
@@ -1240,6 +1249,7 @@ $(document).ready(function(e) {
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+   $("#imgForDist").hide();
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -1256,26 +1266,45 @@ $(document).ready(function(e) {
   }
   function showHide()
   {
+
    var stateId = $("#stateId").val();
-  
    var districtId = $("#districtId").val();
+   var constituencyId = $("#constituencyId").val();
+   var mandalId = $("#mandalId").val();
+  
    if(stateId == 0)
    {
-  
-    $("#districtDiv").hide();
+	$("#districtDiv").hide();
 	$("#constituencyDiv").hide();
 	$("#mandalDiv").hide();
-   }
+	$("#panchayatDiv").hide();
+  }
    else if(districtId == 0)
    {
-  
+	$("#districtDiv").show();
 	$("#constituencyDiv").hide();
 	$("#mandalDiv").hide();
+	$("#panchayatDiv").hide();
+   }
+    else if(constituencyId == 0)
+   {
+	$("#districtDiv").show();
+	$("#constituencyDiv").show();
+	$("#mandalDiv").hide();
+	$("#panchayatDiv").hide();
+   }
+    else if(mandalId == 0)
+   {
+	$("#districtDiv").show();
+	$("#constituencyDiv").show();
+	$("#mandalDiv").show();
+	$("#panchayatDiv").hide();
    }
    else{
 	$("#districtDiv").show();
 	$("#constituencyDiv").show();
 	$("#mandalDiv").show();
+	$("#panchayatDiv").show();
    }
   }
   	function getTypeOfMeeting()
@@ -1304,6 +1333,7 @@ $(document).ready(function(e) {
 	function getConstituenciesForDistricts(district){
 	$("#constituencyId  option").remove();
 	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$("#imgForConsti").show();
 	var jsObj=
    {				
 				districtId:district,
@@ -1317,6 +1347,7 @@ $(document).ready(function(e) {
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+   	$("#imgForConsti").hide();
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -1331,6 +1362,55 @@ $(document).ready(function(e) {
 	 }
    });
   }
+   function getMandalCorporationsByConstituency()
+	{	
+			$("#imgForMandl").show();
+			var constituencyId = $('#constituencyId').val();
+			$("#mandalId  option").remove();
+			$("#mandalId").append('<option value="0">All</option>');
+			
+				var jsObj ={					
+					constituencyId:constituencyId
+				};
+				 $.ajax({
+					type : "GET",
+					url : "getMandalDetailsByConstituencyAction.action",
+					data : {task:JSON.stringify(jsObj)} 
+				}).done(function(result){
+				$("#imgForMandl").hide();
+				if(result !=null)
+				{
+					for(var i in result)
+					{
+						$("#mandalId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+					}	
+				}				
+				});
+	}
+	
+	function getPanchayatWardByMandal(){
+			$("#imgForPanc").show();
+			var mandalId=$("#mandalId").val();
+			$("#panchayatId  option").remove();
+			$("#panchayatId").append('<option value="0">Select Panchayat</option>');
+			
+			var jsObj={
+				mandalId:mandalId
+			}
+			$.ajax({
+				type : "POST",
+				url : "getPanchayatWardByMandalAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				$("#imgForPanc").hide();
+			for(var i in result){
+				$("#panchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+		});	
+	}
+  $(".locationCls").change(function() {
+  showHide();
+  });
 </script>
 <script>
 showHide();
