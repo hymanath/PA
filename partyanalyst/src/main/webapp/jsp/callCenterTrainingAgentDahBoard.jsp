@@ -358,8 +358,12 @@ var rowSpanCnt = result[i].subList.length;
 str+='<td rowspan="'+result[i].spanCnt+'">'+result[i].name+'</td>';
 for(var j=0;j< result[i].subList.length;j++) //camp
 {
-
-str+=' <td rowspan="'+result[i].spanCnt+'">'+result[i].subList[j].name+'</td>';
+	var scheduleLength; 
+	if(result[i].subList[j].subList !=null){
+		scheduleLength=result[i].subList[j].subList.length;
+	}
+	
+str+=' <td rowspan="'+scheduleLength+'">'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
 var answered  = 0;
