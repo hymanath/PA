@@ -16,13 +16,25 @@ public class TrainingCampUserRelationDAO extends GenericDaoHibernate<TrainingCam
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId)
+	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId,boolean isAdmin)
 	{
-		Query query = getSession().createQuery(" select distinct model.trainingCampCaller.userId,model.trainingCampCaller.middleName,model.trainingCampCaller.lastName" +
-				" from TrainingCampUserRelation model where model.trainingCampCallAdmin.userId =:campCallerAdminId and model.isDeleted = 'N' order by" +
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select distinct model.trainingCampCaller.userId,model.trainingCampCaller.middleName,model.trainingCampCaller.lastName" +
+				" from TrainingCampUserRelation model where model.isDeleted = 'N' ");
+		
+		if(!isAdmin){
+			str.append(" and model.trainingCampCallAdmin.userId =:campCallerAdminId ");
+		}
+		str.append(" order by " +
 				" model.trainingCampCaller.firstName ");
 		
-		query.setParameter("campCallerAdminId", campCallerAdminId);
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(!isAdmin){
+			query.setParameter("campCallerAdminId", campCallerAdminId);
+		}
 		return query.list();
 	}
 

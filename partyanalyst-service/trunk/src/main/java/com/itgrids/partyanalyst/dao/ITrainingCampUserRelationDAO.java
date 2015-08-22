@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.TrainingCampUserRelation;
 
 public interface ITrainingCampUserRelationDAO extends GenericDao<TrainingCampUserRelation, Long>{
 	
-	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId);
+	public List<Object[]> getAgentsByCampCallerAdminId(Long campCallerAdminId,boolean isAdmin);
 
 }
