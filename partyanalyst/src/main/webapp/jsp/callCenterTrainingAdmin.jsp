@@ -161,7 +161,7 @@ footer
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-8">
-							<table class="table table-bordered "  style="margin-bottom:10px">
+							<table class="table table-bordered "  style="margin-bottom:10px;height: 245px; ">
 								<tr>
 									<td style="text-align:center;" >
 										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
@@ -171,12 +171,21 @@ footer
 										<table class="table table-bordered m_0 text-left">
 											<tr>
 												<td style="text-align:center;"  class="pad_5">
-													<h4 class="m_0">TOTAL CALLS ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
+													<h4 class="m_0">TOTAL CADRE ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
 														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
 													</span></h4>
-													<span class="pull-right font-12" style="margin-right:55px;">Allocated Today - <span id="todayCallsPerCallerId">
-													<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
-													</span></span>
+													
+												</td>
+												
+											</tr>
+											<tr>
+											  <td>
+												<span class="pull-right font-12" style="margin-right:55px;">TODAY ALLOCATED CADRE TO ADMIN- <span id="todayCallsPerCallerId">
+														<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
+														</span></span>
+														<span class="pull-right font-12" style="margin-right:55px;">ASSIGNED TO AGENTS - <span id="assignedToAgentsId">
+														<img id="dataLoadingsImgForAssigning" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
+												</span></span>
 												</td>
 											</tr>
 											<tr style="font-size: 12px;">
@@ -1095,11 +1104,30 @@ $(document).ready(function() {
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].completedCallsCount+'</td>';
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].pendingCallsCount+'</td>';
 									
-									if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0){
-										for(var j in result.trainingCampVOList[i].trainingCampVOList){
-											str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+									
+									if(agentType == "Confirmation"){
+										if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+										{
+											for(var j in result.trainingCampVOList[i].trainingCampVOList){
+													if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Interested"){
+														str+='<td style="text-align:center;" >-</td>';
+													}else{
+														str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+													}
+													
+											}
 										}
 									}
+									else{
+										if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+										{
+											for(var j in result.trainingCampVOList[i].trainingCampVOList){
+												str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+											}
+										}
+									}
+									
+									
 									str+='</tr>';
 								}
 							}
@@ -1560,19 +1588,19 @@ function buildingMembersFilledInCalenderBatch(result){
 					str+='<table class="table table-bordered m_0 table-condensed">';
 							str+='<tr style="font-size:12px;">';
 								str+='<td></td>';
-								str+='<td>Calls</td>';
+								str+='<td>Assigned</td>';
 								str+='<td class="text-yellow">Dialled</td>';
 								str+='<td class="text-yellow">Not Dialled</td>';
-								
 								str+='<td class="interested-text">Interested</td>';
 								str+='<td >Not Interested</td>';
 								str+='<td class="text-info">Busy</td>';
 								str+='<td class="text-danger">Confirm Later</td>';
+								str+='<td class="">Accepted</td>';
 							str+='</tr>';
 							for(var i in result){
 								
 								str+='<tr>';
-								if(result[i].name == "Assigned"){	
+								/* if(result[i].name == "Assigned"){	
 									str+='<td>Assigned to Agents</td>';
 									str+='<td>'+result[i].assignedCallsCount+'</td>';
 									str+='<td>'+result[i].dialedCallsCount+'</td>';
@@ -1590,6 +1618,9 @@ function buildingMembersFilledInCalenderBatch(result){
 									}
 									
 									
+								} */
+								if(result[i].name == "Assigned"){	
+									$("#assignedToAgentsId").html(result[i].assignedCallsCount);
 								}else if(result[i].name == "Scheduled"){
 									str+='<td>Schedule Confirmation</td>';
 									str+='<td>'+result[i].assignedCallsCount+'</td>';
@@ -1600,7 +1631,7 @@ function buildingMembersFilledInCalenderBatch(result){
 										
 										for(var j in result[i].trainingCampVOList){
 											
-											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5){	
+											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId == 10){	
 												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
 											}
 										}
@@ -1618,8 +1649,14 @@ function buildingMembersFilledInCalenderBatch(result){
 										
 										for(var j in result[i].trainingCampVOList){
 											
-											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5){	
-												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId == 10){
+												if(result[i].trainingCampVOList[j].statusId ==4){
+													str+='<td>-</td>';
+												}
+												else{
+													str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+												}
+												
 											}
 										}
 										
