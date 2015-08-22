@@ -28,7 +28,7 @@ public interface ITrainingCampService {
 	public TrainingCampVO getCampusWiseDateWiseCampDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	//public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
-	public List<Long> getTrainingCampUserTypeIds(Long adminId);
+	public List<Long> getTrainingCampUserTypeIds(Long adminId,boolean isAdmin);
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
 	public List<BasicVO> getAllPrograms();
 	public List<BasicVO> getCampsByProgramId(Long programId);
@@ -65,7 +65,7 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getCallerAgentVillages(Long userId,Long mandalId);
 	public List<TraingCampCallerVO> getAgentCallDetailsByCampCallerId(Long campCallerId);
 	
-	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId);
+	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId,boolean isAdmin);
 	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
 	public MeetingVO getUserAccessLevelAndLocations(Long userId);
@@ -73,7 +73,7 @@ public interface ITrainingCampService {
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList);
-	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId);
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId,boolean isAdmin);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);

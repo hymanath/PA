@@ -2171,11 +2171,11 @@ public class TrainingCampService implements ITrainingCampService{
 		}
 		return null;
 	}
-	public List<Long> getTrainingCampUserTypeIds(Long adminId){
+	public List<Long> getTrainingCampUserTypeIds(Long adminId,boolean isAdmin){
 	
 		List<Long> users = new ArrayList<Long>(0);
 		try {
-			List<Object[]> callerAdminCallersList=trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(adminId);
+			List<Object[]> callerAdminCallersList=trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(adminId,isAdmin);
 			if(callerAdminCallersList != null && callerAdminCallersList.size()>0)
 			{
 				for (Object[] caller : callerAdminCallersList) {
@@ -3066,11 +3066,11 @@ public class TrainingCampService implements ITrainingCampService{
 		return returnList;
 	}
 	
-	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId)
+	public List<BasicVO> getAgentsByCampCallerAdminId(Long campCallerAdminId,boolean isAdmin)
 	{
 		List<BasicVO> basicVOList = null;
 		try{
-			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(campCallerAdminId);
+			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(campCallerAdminId,isAdmin);
 			if(list != null && list.size() > 0)
 			{
 				basicVOList = new ArrayList<BasicVO>(0);
@@ -3731,13 +3731,13 @@ public class TrainingCampService implements ITrainingCampService{
 	}
 	
 	
-	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId)
+	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId,boolean isAdmin)
 	{
 		TrainingCampVO returnVo = new TrainingCampVO();
 		try{
 		
 			List<Long> callerIdsList = new ArrayList<Long>();
-			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(userId);
+			List<Object[]> list = trainingCampUserRelationDAO.getAgentsByCampCallerAdminId(userId,isAdmin);
 			if(list != null && list.size() > 0)
 				for(Object[] params : list)
 				{
