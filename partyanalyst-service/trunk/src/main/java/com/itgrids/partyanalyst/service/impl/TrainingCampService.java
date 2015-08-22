@@ -1398,7 +1398,7 @@ public class TrainingCampService implements ITrainingCampService{
 			if(dialedCallsCountList != null && dialedCallsCountList.size() > 0)
 			{
 				for (Object[] objects : dialedCallsCountList) {
-					Long dialedCount = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					Long dialedCount = commonMethodsUtilService.getLongValueForObject(objects[7]);
 					Long batchId = commonMethodsUtilService.getLongValueForObject(objects[2]);
 					
 					dialedCountMap.put(batchId, dialedCount);
@@ -1428,10 +1428,7 @@ public class TrainingCampService implements ITrainingCampService{
 					{
 						batchVOList = batchwiseInterestedMembersMap.get(commonMethodsUtilService.getLongValueForObject(member[4]));
 					}
-						if(allocatedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])) != null)
-						{
-							
-						}
+
 						TrainingCampVO vo = new TrainingCampVO();
 						vo.setName(programName);
 						vo.setTrainingCampName(campName);
@@ -1556,12 +1553,7 @@ public class TrainingCampService implements ITrainingCampService{
 									}
 									if(batchVOList != null && batchVOList.size()>0)
 									{
-										programVO.setTrainingCampVOList(batchVOList);
-									}
-									
-									if(batchVOList != null && batchVOList.size()>0)
-									{
-										programVO.setTrainingCampVOList(batchVOList);
+										programVO.getTrainingCampVOList().addAll(batchVOList);
 									}
 								}
 							}
@@ -2403,7 +2395,7 @@ public class TrainingCampService implements ITrainingCampService{
 				 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
 				 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
 			     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-			     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+			    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
 			trainingCampScheduleInviteeTrack.setCallBackTime(oldDate);
 			}
@@ -3537,7 +3529,10 @@ public class TrainingCampService implements ITrainingCampService{
 		List<TraingCampCallerVO> returnList = new ArrayList<TraingCampCallerVO>();
 		
 		try{
-		 List<Object[]> list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountLocationWiseInfo(campId,programId,scheduleId,1l);
+			
+		 List<Long> inviteeIdsList = null;//trainingCampScheduleInviteeCallerDAO.getAssignedInviteesIdsList();
+		 List<Object[]> list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountLocationWiseInfo(campId,programId,scheduleId,1l,inviteeIdsList);
+		 
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
