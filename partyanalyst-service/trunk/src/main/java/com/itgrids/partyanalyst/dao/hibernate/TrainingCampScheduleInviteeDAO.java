@@ -276,9 +276,9 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
 		}
 		else
-			queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
+			queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:todayDate ");
 		
-		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,TCSIC.trainingCampScheduleInvitee.attendingBatchId  ");
+		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,TCSIC.trainingCampScheduleInvitee.attendingBatchId , TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(startDate != null && endDate != null)
 		{
@@ -286,7 +286,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			query.setDate("endDate", endDate);
 		}
 		else
-			query.setDate("endDate", endDate);
+			query.setDate("todayDate", todayDate);
 		
 		return query.list();
 	}
@@ -314,9 +314,10 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			query.setParameterList("locationIdsList", locationIdsList);
 		return query.list();
 	}
-	public List<Object[]> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId)
+	public List<Object[]> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,List<Long> inviteeIdsList)
 	{
-		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as count,UA.district_id as distId,Dist.district_name as distName,UA.constituency_id as constId" +
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct TCSI.tdp_cadre_id) as count,UA.district_id as distId,Dist.district_name as distName,UA.constituency_id as constId" +
 				",const.name as constName,UA.tehsil_id as tehsilId" +
 				",tehsil.tehsil_name as tehsilName,UA.local_election_body as localElectionBodyId " +
 				" from training_camp_schedule_invitee TCSI" +
@@ -329,17 +330,19 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" UA.tehsil_id = tehsil.tehsil_id and " +
 				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
 				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
-				" and TCS.training_camp_id = :campId  " +
-				"  and TCSI.training_camp_schedule_invitee_id not in(select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC) " +
-				" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id,UA.local_election_body")
-				.addScalar("count", Hibernate.LONG)
+				" and TCS.training_camp_id = :campId  " );
+		if(inviteeIdsList != null && inviteeIdsList.size()>0)
+			queryStr.append(" and TCSI.training_camp_schedule_invitee_id not in (:inviteeIdsList) ");
+		queryStr.append(" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id,UA.local_election_body");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString()).addScalar("count", Hibernate.LONG)
 				.addScalar("distId",Hibernate.LONG)
 				.addScalar("distName",Hibernate.STRING)
 				.addScalar("constId",Hibernate.LONG)
 				.addScalar("constName",Hibernate.STRING)
 				.addScalar("tehsilId",Hibernate.LONG)
 				.addScalar("tehsilName",Hibernate.STRING)
-				.addScalar("localElectionBodyId",Hibernate.LONG);
+				.addScalar("localElectionBodyId",Hibernate.LONG);;
 		
 		query.setParameter("scheduleStatusId", scheduleStatusId);
 		
@@ -348,6 +351,9 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		//query.setParameter("programId", programId);
 		
 		query.setParameter("scheduleId", scheduleId);
+		
+		if(inviteeIdsList != null && inviteeIdsList.size()>0)
+			query.setParameterList("inviteeIdsList", inviteeIdsList);
 		
 		return query.list();
 		

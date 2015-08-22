@@ -1283,5 +1283,10 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		return query.list();
 	}
 	
+	public List<Long> getAssignedInviteesIdsList()
+	{
+		return getSession().createQuery("select distinct model.trainingCampScheduleInviteeId from TrainingCampScheduleInviteeCaller model " +
+				" where model.callPurposeId = 1 ").list();
+	}
 	
 }
