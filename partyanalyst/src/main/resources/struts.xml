@@ -10737,5 +10737,10 @@
 	       		<param name="root">partyMeetingsSummary</param>
 	  	</result>
 	</action>
+	<action name="trainingProgramDashboard" class="trainingCampAction" >
+			<result name="success">/jsp/trainingProgramDashboard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
 </package>
 </struts>      

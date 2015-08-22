@@ -159,6 +159,7 @@
 		<pattern>/meetingDetailsList*</pattern>
 		<pattern>/trainingCampMainDashboard*</pattern>
 		<pattern>/partyMeetingsDashBoard*</pattern>
+		<pattern>/trainingProgramDashboard*</pattern>
 		
  	</excludes>  
 	
