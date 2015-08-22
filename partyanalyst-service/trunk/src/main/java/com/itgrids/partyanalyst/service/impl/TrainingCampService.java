@@ -860,15 +860,14 @@ public class TrainingCampService implements ITrainingCampService{
 			
 			//building For allocated Calls
 			finalCallersVODetails.setTotalAssignedCount(totalAssignedCountofAgents);//allocating totalAssigned Count
-			
-			Long countForTotalCallers=trainingCampScheduleInviteeCallerDAO.getAllCallersCount(startDate,endDate,"totalCallers");
+			Long countForTotalCallers=trainingCampScheduleInviteeDAO.getAllCallersCount(startDate,endDate,"totalCallers");
 			if(countForTotalCallers !=null){
 				finalCallersVODetails.setTotalCount(countForTotalCallers);//allocating calls To caller
 			}
 				
 			Date currentDate =dateUtilService.getCurrentDateAndTime();
 
-			Long todayAllocatedCount= trainingCampScheduleInviteeCallerDAO.getAllCallersCount(currentDate,null,"todayCallers");
+			Long todayAllocatedCount= trainingCampScheduleInviteeDAO.getAllCallersCount(currentDate,null,"todayCallers");
 			
 			if(todayAllocatedCount !=null){
 				finalCallersVODetails.setTodayAllocatedCalls(todayAllocatedCount);//today Allocated Calls Count

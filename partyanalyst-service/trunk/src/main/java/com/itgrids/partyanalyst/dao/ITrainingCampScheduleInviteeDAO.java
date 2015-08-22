@@ -21,5 +21,6 @@ public interface ITrainingCampScheduleInviteeDAO extends GenericDao<TrainingCamp
 	public List<Object[]> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId);
 	public List<Long> getScheduleWiseInviteesListByLocationIdLocationType(Long scheduleId,Long locationTypeId,List<Long> locationIdsList);
 	public List<Object[]> getAvailableCallCountsForBatch(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,Long batchId);
+	public Long getAllCallersCount(Date startDate,Date endDate,String type);
 	
 }

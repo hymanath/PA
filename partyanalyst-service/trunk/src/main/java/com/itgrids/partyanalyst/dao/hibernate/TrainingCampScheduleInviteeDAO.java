@@ -374,5 +374,43 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		query.setParameter("batchId", batchId);
 		return query.list();	
 	}
+	public Long getAllCallersCount(Date startDate,Date endDate,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		boolean flag =false;
+		str.append("select count(model.trainingCampScheduleInviteeId) from  TrainingCampScheduleInvitee model  where ");
+		
+		
+		if(type.equalsIgnoreCase("totalCallers")){
+			if(startDate !=null && endDate !=null){
+				flag=true;
+				str.append(" (date(model.insertedTime)>=:startDate and date(model.insertedTime)<=:endDate) ");
+			}
+		}
+		else if(type.equalsIgnoreCase("todayCallers")){
+			flag =true;
+			str.append(" date(model.insertedTime) =:startDate ");
+		}
+		
+		Query query=null;
+		if(flag){
+			query=getSession().createQuery(str.toString());
+		}
+		else{
+			 query=getSession().createQuery(str.substring(0,str.length()-6).trim());
+		}
+		
+		if(startDate !=null && endDate !=null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		else if(startDate !=null){
+			query.setDate("startDate", startDate);
+		}
+		return (Long) query.uniqueResult();
+	}
+	
+	
 	
 }
