@@ -608,7 +608,12 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			String toDate=jObj.getString("toDate");
 			String agentType = jObj.getString("agentType");
 			
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVo.getRegistrationID()); 
+			boolean isAdmin=false;
+			if(regVo.getIsAdmin().equalsIgnoreCase("true")){
+				isAdmin = true;
+			}
+			
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVo.getRegistrationID(),isAdmin); 
 			
 			if(userIds !=null){
 				trainingCampScheduleVO = trainingCampService.getCallerWiseCallsDetails(userIds, searchType, fromDate, toDate,agentType);
@@ -720,7 +725,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String fromDate=jObj.getString("fromdate");
 			String toDate=jObj.getString("toDate");
 			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID()); 
+			boolean isAdmin=false;
+			if(regVO.getIsAdmin().equalsIgnoreCase("true")){
+				isAdmin = true;
+			}
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID(),isAdmin); 
 			
 			if(fromDate !=null && toDate !=null){
 				trainingCampScheduleVO=trainingCampService.getScheduleAndConfirmationCallsOfCallerToAgent(userIds,fromDate,toDate);
@@ -1252,7 +1261,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	{
 		try{
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			basicList = trainingCampService.getAgentsByCampCallerAdminId(new Long(regVO.getRegistrationID()));
+			
+			boolean isAdmin=false;
+			if(regVO.getIsAdmin().equalsIgnoreCase("true")){
+				isAdmin = true;
+			}
+			
+			basicList = trainingCampService.getAgentsByCampCallerAdminId(new Long(regVO.getRegistrationID()),isAdmin);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getAgentsByCampCallerAdminId() method, Exception - ",e);
@@ -1266,7 +1281,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID());
+			boolean isAdmin=false;
+			if(regVO.getIsAdmin().equalsIgnoreCase("true")){
+				isAdmin = true;
+			}
+			List<Long> userIds=trainingCampService.getTrainingCampUserTypeIds(regVO.getRegistrationID(),isAdmin);
 			
 			trainingCampScheduleVOs=trainingCampService.getCallsDetailsOfCallCenterAdmin(userIds,fromDate,toDate);
 			
@@ -1422,7 +1441,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 			jObj = new JSONObject(getTask());
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
-			trainingCampVO= trainingCampService.getAdminCallersWiseOverView(regVo.getRegistrationID(),jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"),jObj.getLong("batchId"));
+			
+			boolean isAdmin=false;
+			if(regVo.getIsAdmin().equalsIgnoreCase("true")){
+				isAdmin = true;
+			}
+			
+			trainingCampVO= trainingCampService.getAdminCallersWiseOverView(regVo.getRegistrationID(),jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"),jObj.getLong("batchId"),isAdmin);
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getCallerWiseOverView() method, Exception - ",e);
