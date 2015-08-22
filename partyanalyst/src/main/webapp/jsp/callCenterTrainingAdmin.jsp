@@ -161,7 +161,7 @@ footer
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-8">
-							<table class="table table-bordered "  style="margin-bottom:10px;height: 245px; ">
+							<table class="table table-bordered "  style="margin-bottom:10px;height: 246px;margin-left:-10px; ">
 								<tr>
 									<td style="text-align:center;" >
 										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
@@ -1119,10 +1119,30 @@ $(document).ready(function() {
 										}
 									}
 									else{
+										
+										var interestecCount=0;
 										if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0)
 										{
 											for(var j in result.trainingCampVOList[i].trainingCampVOList){
-												str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+												if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Interested" || result.trainingCampVOList[i].trainingCampVOList[j].status == "Confirmed"){
+													interestecCount = interestecCount + result.trainingCampVOList[i].trainingCampVOList[j].count;
+												}
+											}
+										}
+										if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0)
+										{
+											for(var j in result.trainingCampVOList[i].trainingCampVOList){
+												
+												if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Interested"){
+													str+='<td style="text-align:center;" >'+interestecCount+'</td>';
+												}
+												else if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Confirmed"){
+													str+='<td style="text-align:center;" >-</td>';
+												}
+												else{
+													str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
+												}
+												
 											}
 										}
 									}
@@ -1598,6 +1618,17 @@ function buildingMembersFilledInCalenderBatch(result){
 								str+='<td class="">Accepted</td>';
 							str+='</tr>';
 							for(var i in result){
+
+							var interestedCount =0;
+								if(result[i].name == "Scheduled"){
+									if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length>0){										
+										for(var j in result[i].trainingCampVOList){											
+											if( result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId == 10){	
+												interestedCount = interestedCount + parseInt(result[i].trainingCampVOList[j].count);
+											}
+										}										
+									}									
+								}
 								
 								str+='<tr>';
 								/* if(result[i].name == "Assigned"){	
@@ -1631,8 +1662,15 @@ function buildingMembersFilledInCalenderBatch(result){
 										
 										for(var j in result[i].trainingCampVOList){
 											
-											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId == 10){	
+											if(result[i].trainingCampVOList[j].statusId ==4){	
+												str+='<td>'+interestedCount+'</td>';
+											}
+											else if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 ){	
 												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											}
+											else if(result[i].trainingCampVOList[j].statusId == 10)
+											{
+												str+='<td> - </td>';
 											}
 										}
 										
