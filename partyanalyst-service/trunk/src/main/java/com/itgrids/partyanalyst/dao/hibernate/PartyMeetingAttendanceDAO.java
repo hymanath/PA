@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -15,15 +16,17 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		super(PartyMeetingAttendance.class);
 	}
 	
-	public List<Object[]> getPartyMeetingsAttendenceDetailsByCadreId(List<Long> tdpCadreIdsList)
+	public List<Object[]> getPartyMeetingsAttendenceDetailsByCadreId(List<Long> tdpCadreIdsList,Date toDayDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct  PMA.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMA.partyMeeting.partyMeetingLevel.level, " +
-				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count(PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  ");
+				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count(PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  where " +
+				" date(PMA.partyMeeting.startDate) <= :toDayDate ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
-			queryStr.append(" where PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+			queryStr.append("  and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
 		queryStr.append(" group by PMA.partyMeeting.partyMeetingType.partyMeetingTypeId order by PMA.attendance.tdpCadreId ");
 		Query query = getSession().createQuery(queryStr.toString());
+		 query.setDate("toDayDate", toDayDate);
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
@@ -75,14 +78,15 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
-	public List<Object[]> getAttendenceForCadre(Long tdpCadreId)
+	public List<Object[]> getAttendenceForCadre(Long tdpCadreId,Date todayDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName, count(distinct PMA.attendance.tdpCadreId) " +
-				" from PartyMeetingAttendance PMA where PMA.attendance.tdpCadreId =:tdpCadreId ");
+				" from PartyMeetingAttendance PMA where PMA.attendance.tdpCadreId =:tdpCadreId and date(PMA.partyMeeting.startDate) <= :todayDate ");
 		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("tdpCadreId", tdpCadreId);		
+		query.setParameter("tdpCadreId", tdpCadreId);	
+		query.setDate("todayDate", todayDate);
 		return query.list();
 	}
 	
