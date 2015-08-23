@@ -176,10 +176,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PartyMeetingVO returnVO = new PartyMeetingVO();
 		try {
 			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
-			tdpCadreIdsList.add(tdpCadreId);
+			tdpCadreIdsList.add(tdpCadreId);Date toDayDate = new DateUtilService().getCurrentDateAndTime();
 			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			{
-				List<Object[]> invitationList =  partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList,null);
+				List<Object[]> invitationList =  partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList,null,toDayDate);
 				Long invitationCount = 0L;
 				List<Long> invitationMeetingsList = new ArrayList<Long>(0);
 				if(invitationList != null && invitationList.size()>0)
@@ -191,7 +191,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 				}
 				 
-				 List<Object[]> attendedList =  partyMeetingAttendanceDAO.getAttendenceForCadre(tdpCadreId);
+				 List<Object[]> attendedList =  partyMeetingAttendanceDAO.getAttendenceForCadre(tdpCadreId,toDayDate);
 					Long attendedCount = 0L;
 					if(attendedList != null && attendedList.size()>0)
 					{
@@ -209,7 +209,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 					if(absentCount > 0L)
 					{
-						List<Object[]> eventNames = partyMeetingDAO.getPartyMeetingDetailsByMeetingIdList(invitationMeetingsList);
+						List<Object[]> eventNames = partyMeetingDAO.getPartyMeetingDetailsByMeetingIdList(invitationMeetingsList,toDayDate);
 						if(eventNames != null && eventNames.size()>0)
 						{
 							List<PartyMeetingVO> partyMeetingList = new ArrayList<PartyMeetingVO>(0);
@@ -243,10 +243,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PartyMeetingVO returnVO = new PartyMeetingVO();
 		try {
 			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
-			tdpCadreIdsList.add(tdpCadreId);
+			tdpCadreIdsList.add(tdpCadreId);Date toDayDate = new DateUtilService().getCurrentDateAndTime();
 			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			{
-				List<Object[]> availMeetingDetls =  partyMeetingInviteeDAO.getPartyMeetingsInvitationsDetailsByCadreIds(tdpCadreIdsList);
+				List<Object[]> availMeetingDetls =  partyMeetingInviteeDAO.getPartyMeetingsInvitationsDetailsByCadreIds(tdpCadreIdsList,toDayDate);
 				Map<String,PartyMeetingVO> levelTypeWiseMeetingsMap = new LinkedHashMap<String,PartyMeetingVO>(0);
 				if(availMeetingDetls != null && availMeetingDetls.size()>0)
 				{
@@ -272,7 +272,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 				}
 				
-				List<Object[]> attendedMeetingDetls =   partyMeetingAttendanceDAO.getPartyMeetingsAttendenceDetailsByCadreId(tdpCadreIdsList);
+				List<Object[]> attendedMeetingDetls =   partyMeetingAttendanceDAO.getPartyMeetingsAttendenceDetailsByCadreId(tdpCadreIdsList,toDayDate);
 				if(attendedMeetingDetls != null && attendedMeetingDetls.size()>0)
 				{
 					for (Object[] meeting : attendedMeetingDetls) {
@@ -356,7 +356,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		try {
 			
 		//	List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreIdByMembershipId(memberShipNo, constituencyId);
-			
+			Date toDayDate = new DateUtilService().getCurrentDateAndTime();
 			List<Object[]> partyMeetingDtls = partyMeetingAttendanceDAO.getTotalAttendedDetailsForCadreIds(null,partyMeetingTypeId);
 			Map<String ,PartyMeetingVO> meetingWisedetlsMap = new LinkedHashMap<String, PartyMeetingVO>(0);
 			if(partyMeetingDtls != null && partyMeetingDtls.size()>0)
@@ -390,7 +390,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
-			List<Object[]> mettingWiseInvitationcountsList = partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(null, partyMeetingTypeId);
+			List<Object[]> mettingWiseInvitationcountsList = partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(null, partyMeetingTypeId,toDayDate);
 			if(mettingWiseInvitationcountsList != null && mettingWiseInvitationcountsList.size()>0)
 			{
 				for (Object[] meeting : mettingWiseInvitationcountsList) {
