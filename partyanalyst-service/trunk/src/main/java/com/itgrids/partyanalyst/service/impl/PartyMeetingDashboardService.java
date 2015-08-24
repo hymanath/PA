@@ -66,8 +66,6 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 				Long totalCandidateInviteeAttended = 0L;
 				Long totalCandidateAbsent = 0L;
 				Long totalCommitteeMemberInviteeAttended = 0L;
-				Long totalNonInviteeCandidate = 0L;
-				Long totalNonInviteeCommitteeMember = 0L;
 				Long totalCommitteeMemberAbsent = 0L;
 				Long totalCandidateNonInvitees = 0L;
 				Long totalCommitteeMemberNonInvitees = 0L;
@@ -185,11 +183,13 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 				meetingSummeryVO.setTotalCandidateInviteeAttended(totalCandidateInviteeAttended);
 				meetingSummeryVO.setTotalCandidateAbsent(totalCandidateAbsent);
 				meetingSummeryVO.setTotalCommitteeMemberInviteeAttended(totalCommitteeMemberInviteeAttended);
-				meetingSummeryVO.setTotalNonInviteeCandidate(totalNonInviteeCandidate);
-				meetingSummeryVO.setTotalNonInviteeCommitteeMember(totalNonInviteeCommitteeMember);
 				meetingSummeryVO.setTotalCommitteeMemberAbsent(totalCommitteeMemberAbsent);
 				meetingSummeryVO.setTotalCandidateNonInvitees(totalCandidateNonInvitees);
 				meetingSummeryVO.setTotalCommitteeMemberNonInvitees(totalCommitteeMemberNonInvitees);
+				meetingSummeryVO.setTotalNoRoleInvitees(totalInvitees-(totalCandidateInvitees+totalCommitteeMemberInvitees));
+				meetingSummeryVO.setTotalNoRoleAttended(totalAttended-(totalCandidateAttended+totalCommitteeMemberAttended));
+				meetingSummeryVO.setTotalNoRoleAbsent(totalAbsent-(totalCandidateAbsent+totalCommitteeMemberAbsent));
+				meetingSummeryVO.setTotalNoRoleNonInvitees(totalNonInvitees-(totalCandidateNonInvitees+totalCommitteeMemberNonInvitees));
 			}
 		}catch(Exception e)
 		{
