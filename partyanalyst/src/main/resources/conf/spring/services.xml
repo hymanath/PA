@@ -2779,7 +2779,11 @@
 		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" />		
 	</bean>
-	<bean name="partyMeetingsDashBoardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingsDashBoardService">
+	
+	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
+		<property name="partyMeetingDAO" ref="partyMeetingDAO" />
+		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
+		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 	</bean>
 	
 </beans>		
