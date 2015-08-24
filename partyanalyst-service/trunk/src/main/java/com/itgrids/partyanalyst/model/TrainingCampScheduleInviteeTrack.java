@@ -52,6 +52,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long trainingCampCallerId;
+	private CampCallStatus campCallStatus;
 	
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -228,6 +229,15 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.campCallStatusId = campCallStatusId;
 	}
 
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "camp_call_status_id",insertable =false,updatable = false)
+	public CampCallStatus getCampCallStatus() {
+		return campCallStatus;
+	}
+	public void setCampCallStatus(CampCallStatus campCallStatus) {
+		this.campCallStatus = campCallStatus;
+	}
+	
 	@Column(name = "schedule_invitee_status_id")
 	public Long getScheduleInviteeStatusId() {
 		return scheduleInviteeStatusId;

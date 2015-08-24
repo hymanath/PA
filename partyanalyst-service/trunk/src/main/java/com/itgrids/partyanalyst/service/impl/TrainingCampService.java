@@ -2338,15 +2338,31 @@ public class TrainingCampService implements ITrainingCampService{
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
 					if(inputVO.getScheduleStatusId() > 0)
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
-						trainingCampScheduleInvitee.setInsertedBy(inputVO.getUserId());
-						trainingCampScheduleInvitee.setInsertedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
+						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 			}
-					
+			else if(inputVO.getCallStatusId() == 2l)// switch-off
+			{
+				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+				trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
+				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
+				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
+				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+			}
+			else if(inputVO.getCallStatusId() == 3l)// User-busy
+			{
+				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+				trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
+				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
+				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
+				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+			}
+			
 			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
 			trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
-			trainingCampScheduleInviteeCaller.setInsertedBy(inputVO.getUserId());
-			trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
+			trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
+			//trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 			trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
 			voterDAO.flushAndclearSession();
@@ -3581,8 +3597,7 @@ public class TrainingCampService implements ITrainingCampService{
 							 districtVo.setCount(districtVo.getCount() + municipalityVo.getCount());
 							 constituencyVo.setCount(constituencyVo.getCount() + municipalityVo.getCount());
 						 }
-						 
-						 if(params[5] != null)
+						 else if(params[5] != null)
 							{
 							 TraingCampCallerVO mandalVo = getMatchedVo(constituencyVo.getSubList(), commonMethodsUtilService.getLongValueForObject(params[5])); // Mandal
 							 if(mandalVo == null)
