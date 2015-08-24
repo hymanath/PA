@@ -180,7 +180,7 @@ footer
 											</tr>
 											<tr>
 											  <td>
-												<span class="pull-right font-12" style="margin-right:55px;">TODAY ALLOCATED CADRE TO ADMIN- <span id="todayCallsPerCallerId">
+												<span class="pull-right font-12" style="margin-right:55px;">TODAY CADRE ALLOCATED TO ADMIN- <span id="todayCallsPerCallerId">
 														<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
 														</span></span>
 														<span class="pull-right font-12" style="margin-right:55px;">ASSIGNED TO AGENTS - <span id="assignedToAgentsId">
