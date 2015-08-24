@@ -1600,7 +1600,7 @@
 		<property name="partyMeetingService" ref="partyMeetingService" />
 	</bean>
 	<bean id="partyMeetingsDashBoardAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingsDashBoardAction" singleton="false"> 
-		
+		<property name="partyMeetingDashboardService" ref="partyMeetingDashboardService" />
 	</bean>
 	
 </beans>	
