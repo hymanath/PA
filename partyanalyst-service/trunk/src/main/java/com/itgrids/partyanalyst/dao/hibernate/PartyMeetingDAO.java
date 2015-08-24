@@ -323,5 +323,96 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        
 	        return query.list();
 	    }
-	
+	    
+	    @SuppressWarnings("unchecked")
+		public List<Long> getPartyMeetingIdsByLevelAndLocation(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
+	    {
+	    	boolean flag = false;
+	    	StringBuilder sb = new StringBuilder("SELECT model.partyMeetingId FROM PartyMeeting model where model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and date(model.startDate) between date(:fromDate) and date(:toDate) and date(model.endDate) between date(:fromDate) and date(:toDate)");
+	    	
+	    	if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() != 0)
+	    		sb.append(" and model.partyMeetingType.partyMeetingTypeId = :partyMeetingTypeId");
+	    		
+	    	if(locationLevelId.longValue() == 1)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.state.stateId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.state IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 2)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.district.districtId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.district IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 3)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.constituency.constituencyId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.constituency IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 4)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.tehsil.tehsilId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.tehsil IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 5)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.localElectionBody IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 6 || locationLevelId.longValue() == 8)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.ward.constituencyId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.ward IS NOT NULL");
+	    	}
+	    	else if(locationLevelId.longValue() == 7)
+	    	{
+	    		if(locationValue != null && locationValue != 0)
+	    		{
+	    			sb.append(" and model.meetingAddress.panchayat.panchayatId = :locationValue");
+	    			flag = true;
+	    		}
+	    		else
+	    			sb.append(" and model.meetingAddress.panchayat IS NOT NULL");
+	    	}
+	    	
+	    	Query query = getSession().createQuery(sb.toString());
+	    	query.setParameter("partyMeetingLevelId",partyMeetingLevelId);
+	    	query.setParameter("fromDate",fromDate);
+	    	query.setParameter("toDate",toDate);
+	    	
+	    	if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() != 0)
+	    		query.setParameter("partyMeetingTypeId",partyMeetingTypeId);
+	    	if(flag)
+	    		query.setParameter("locationValue",locationValue);
+	    	return query.list();
+	    }
 }
