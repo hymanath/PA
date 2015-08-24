@@ -61,9 +61,10 @@ public class Attendance extends BaseModel implements Serializable{
 		this.attendanceId = attendanceId;
 	}
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="tdp_cadre_id", unique=true, nullable=false)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public TdpCadre getTdpCadre() {
 		return tdpCadre;
 	}
@@ -72,9 +73,10 @@ public class Attendance extends BaseModel implements Serializable{
 		this.tdpCadre = tdpCadre;
 	}
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="public_representative_id", unique=true, nullable=false)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="public_representative_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public PublicRepresentative getPublicRepresentative() {
 		return publicRepresentative;
 	}
