@@ -17,10 +17,11 @@ public class PartyMeetingAttendanceDAOHibernateTest extends BaseDaoTestCase{
 	
 	/*public void test(){
 		List<Long> partyMeetingIds = new ArrayList<Long>();
-		partyMeetingIds.add(32l);
-		List<Object[]> list = partyMeetingAttendanceDAO.getTotalAttendentsOfMeetings(partyMeetingIds);
+		partyMeetingIds.add(20l);
+		//partyMeetingIds.add(20l);
+		//List<Object[]> list = partyMeetingAttendanceDAO.getTotalAttendentsOfMeetings(partyMeetingIds);
 		List<Object[]> list1 = partyMeetingAttendanceDAO.getInviteesAttendedCountOfMeetings(partyMeetingIds);
-		System.out.println(list.size());
+		System.out.println(list1.size());
 	}*/
 	
 	/*public void testGetAttendanceForMeetings()
