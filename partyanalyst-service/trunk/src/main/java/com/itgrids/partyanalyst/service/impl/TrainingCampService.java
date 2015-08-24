@@ -3577,6 +3577,9 @@ public class TrainingCampService implements ITrainingCampService{
 								 constituencyVo.getScheduleStatusList().add(municipalityVo); 
 							 }
 							 municipalityVo.setCount(municipalityVo.getCount() + (Long)params[0]);
+							 
+							 districtVo.setCount(districtVo.getCount() + municipalityVo.getCount());
+							 constituencyVo.setCount(constituencyVo.getCount() + municipalityVo.getCount());
 						 }
 						 
 						 if(params[5] != null)
