@@ -78,7 +78,7 @@ footer
                         	CALL CENTER AGENT DASHBOARD
                         </h4>
                     </div>
-				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN')}">
+				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN') || fn:contains(sessionScope.USER.entitlements, 'ADMIN_PAGE')}">
 					<div id="agentsDiv" class="col-md-4 col-md-offset-8">
 					  <select id="agentId" onchange="getSelectedAgentDetails()" class="form-control">
 					  <!--<option value="0">Select Agent</option> -->
@@ -1087,7 +1087,7 @@ function getSelectedAgentDetails()
 }
 </script>
 <script>
-<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN')}">
+<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN') || !fn:contains(sessionScope.USER.entitlements, 'ADMIN_PAGE')}">
 	getScheduleCallStatusCount(0);
 	getBatchWiseCallStatusCount(0);
 	//getCallStatusCountByTrainingCampCallerId();
@@ -1095,7 +1095,7 @@ function getSelectedAgentDetails()
 	getAgentCallDetailsByCampCallerId(0);
 </c:if>
 
-<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN')}">
+<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN') || fn:contains(sessionScope.USER.entitlements, 'ADMIN_PAGE')}">
  getAgentsByCampCallerAdminId();
 </c:if>
 
