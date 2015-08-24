@@ -67,8 +67,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		query.setParameter("partyMeetingId",partyMeetingId);
 		return query.list();
 	}
-	
-	
+
 	/*
 	 * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
 	 * @since 21-AUG-2015
@@ -87,6 +86,38 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 				" order by model.partyMeeting.partyMeetingId desc ");
 		
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getInviteesForPartyMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model where model.partyMeeting.partyMeetingId in(:partyMeetingsList) " +
+				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
+		
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPublicRepresentativeInviteesForPartyMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model,TdpCadreCandidate model2 where " +
+				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) " +
+				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
+		
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCommitteeMemberInviteesForPartyMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model,TdpCommitteeMember model2 where " +
+				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) and model2.isActive = 'Y'" +
+				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
+		
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
 	}
 	

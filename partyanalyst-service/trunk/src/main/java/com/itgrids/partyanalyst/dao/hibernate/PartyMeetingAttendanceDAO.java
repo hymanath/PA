@@ -129,4 +129,33 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAttendanceForMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
+ 		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidateAttendanceForMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model,TdpCadreCandidate model2 where " +
+				"model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
+ 		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model,TdpCommitteeMember model2 where " +
+				"model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model2.isActive = 'Y' and model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
+ 		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
 }
