@@ -60,38 +60,51 @@
                                         <div class="panel-body pad_0">
                                         	<div class="table-responsive">
                                             	<table class="table m_0">
-                                                	<tr style="background-color:#F4F2E6">
-                                                    	<td colspan="2">
-                                                        	<h3 class="m_0">TOTAL INVITEES - 800</h3>
-                                                        </td>
-                                                        <td colspan="2">
-                                                        	<h3 class="m_0">TOTAL ABSENT - 50</h3>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="font-12">
-                                                    	<td></td>
-                                                    	<td>Total<br/> Invitees</td>
-                                                        <td>Total<br/>Non Invitees</td>
-                                                        <td>Total Invitees<br/> Absent</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>PARTY ROLE</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>PUBLIC <br/>REPRESENTATIVE</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>NO ROLE</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                        <td>50</td>
-                                                    </tr>
+													<thead align="center">
+														<tr style="background-color:#F4F2E6">
+															<td colspan="2">
+																<h4 class="m_0">&nbsp;&nbsp;TOTAL INVITEES<br/><span id="totalInvitieesHead">0</span></h4>
+															</td>
+															<td>
+																<h4 class="m_0">Attended<br/><span id="attendedHead">0</span></h4>
+															</td>
+															<td colspan="2">
+																<h4 class="m_0">TOTAL ABSENT<br/><span id="totalAbsentHead">0</span></h4>
+															</td>
+														</tr>
+													</thead>
+													<tbody id="meetingSummaryBodyId" align="center">
+														<!--<tr class="font-12">
+															<td  width="100px"></td>
+															<td  width="100px">Total Invitees</td>
+															<td>Total Non Invitees</td>
+															<td>Total Invitees Absent</td>
+														</tr>
+														<tr>
+															<td>PARTY ROLE</td>
+															<td>50</td>
+															<td>50</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>PUBLIC REPRESENTATIVE</td>
+															<td>50</td>
+															<td>50</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>ATTENDED</td>
+															<td>50</td>
+															<td>50</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>NO ROLE</td>
+															<td>50</td>
+															<td>50</td>
+															<td>50</td>
+														</tr>-->
+													</tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -1146,11 +1159,11 @@
             </div>
             <div class="col-md-10 col-md-offset-1">
                 <label>Meeting Duration</label>
-                <select class="form-control custom-select">
-                	<option>Last 1 Months</option>
-                    <option>Last 3 Months</option>
-                    <option>Last 6 Months</option>
-                    <option>Last 9 Months</option>
+                <select class="form-control custom-select" id="meetingDuration">
+                	<option value="1">Last 1 Months</option>
+                    <option value="2">Last 3 Months</option>
+                    <option value="3">Last 6 Months</option>
+                    <option value="4">Last 9 Months</option>
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1" id="stateDiv">
@@ -1189,7 +1202,7 @@
 			
            
             <div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
-			  <button class="btn btn-block btn-success btn-sm btn-custom">UPDATE</button>
+			  <button class="btn btn-block btn-success btn-sm btn-custom" onClick="getMeetingSummary();">UPDATE</button>
             </div>
         </div>
   </div>
@@ -1483,6 +1496,82 @@ $(document).ready(function(e) {
 			$("#individualResultBody").html(str);
 		});
 	}
+	
+	function getMeetingSummary()
+	{	
+		var dateType=$("#meetingDuration").val();
+		var fromDate,temp1=new Date(),toDate;
+		fromDate = temp1.getFullYear()+"/"+(temp1.getMonth()+1)+"/"+temp1.getDate()
+		var temp = new Date();
+		if(dateType==1){
+			temp.setDate(temp.getDate() - 30);
+		}
+		else if(dateType==2){
+			temp.setDate(temp.getDate() - 90);
+		}
+		else if(dateType==3){
+			temp.setDate(temp.getDate() - 180);
+		}
+		else if(dateType==4){
+			temp.setDate(temp.getDate() - 270);
+		}
+		toDate = temp.getFullYear()+"/"+(temp.getMonth()+1)+"/"+temp.getDate();
+		
+		var meetingLevel = $("#meetingLevel").val();
+		var typeOfMeeting = $("#typeOfMeeting").val();
+		
+		var jsObj ={
+				meetingLevel:meetingLevel,
+				typeOfMeeting:typeOfMeeting,
+				fromDate:fromDate,
+				toDate:toDate
+			};
+		 $.ajax({
+			type : "GET",
+			url : "getMeetingSummaryAction.action",
+			data : {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			if(result!=null){
+				
+				$("#totalInvitieesHead").html(result.totalInvitees);
+				$("#attendedHead").html(result.totalAttended);
+				$("#totalAbsentHead").html(result.totalAbsent);
+				
+				var str='';
+				str+='<tr class="font-12">';
+				str+='<td  width="80px"></td>';
+				str+='<td  width="80px">Total Invitees</td>';
+				str+='<td width="140px">ATTENDED</td>';
+				str+='<td>Total Non Invitees</td>';
+				str+='<td>Total Invitees Absent</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>PARTY ROLE</td>';
+				str+='<td>'+result.totalCommitteeMemberInvitees+'</td>';
+				str+='<td>'+result.totalCommitteeMemberAttended+'</td>';
+				str+='<td>'+result.totalCommitteeMemberNonInvitees+'</td>';
+				str+='<td>'+result.totalCommitteeMemberAbsent+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>PUBLIC REPRESENTATIVE</td>';
+				str+='<td>'+result.totalCandidateInvitees+'</td>';
+				str+='<td>'+result.totalCandidateAttended+'</td>';
+				str+='<td>'+result.totalCandidateNonInvitees+'</td>';
+				str+='<td>'+result.totalCandidateAbsent+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>NO ROLE</td>';
+				str+='<td>'+result.totalNoRoleInvitees+'</td>';
+				str+='<td>'+result.totalNoRoleAttended+'</td>';
+				str+='<td>'+result.totalNoRoleNonInvitees+'</td>';
+				str+='<td>'+result.totalNoRoleAbsent+'</td>';
+				str+='</tr>';
+				
+				$("#meetingSummaryBodyId").html(str);
+			}
+		});
+	}
+					
 </script>
 <script>
 showHide();

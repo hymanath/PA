@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingSummeryVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IPartyMeetingDashboardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
@@ -25,8 +26,18 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 	private String 		task;
 	private IPartyMeetingDashboardService partyMeetingDashboardService;
 	private MeetingSummeryVO MeetingsDashboardSummary;
+	private MeetingSummeryVO meetingSummeryVO;
 	
 	
+	public MeetingSummeryVO getMeetingSummeryVO() {
+		return meetingSummeryVO;
+	}
+	public void setMeetingSummeryVO(MeetingSummeryVO meetingSummeryVO) {
+		this.meetingSummeryVO = meetingSummeryVO;
+	}
+	public IPartyMeetingDashboardService getPartyMeetingDashboardService() {
+		return partyMeetingDashboardService;
+	}
 	public void setMeetingsDashboardSummary(
 			MeetingSummeryVO meetingsDashboardSummary) {
 		MeetingsDashboardSummary = meetingsDashboardSummary;
@@ -65,10 +76,16 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 	
 	public String execute()
 	{
-		Date d1 = new DateUtilService().getDateByStringAndFormat("2015-08-22","yyyy-MM-dd");
-		Date d2 = new DateUtilService().getDateByStringAndFormat("2015-08-28","yyyy-MM-dd");
-		MeetingSummeryVO meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(2L,d1,d2,null,2l,null);
-		return Action.SUCCESS;
+		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null && regVO.getRegistrationID() >0l){
+			return Action.SUCCESS;
+		}else{
+			return "input";
+		}
+		//Date d1 = new DateUtilService().getDateByStringAndFormat("2015-08-22","yyyy-MM-dd");
+		//Date d2 = new DateUtilService().getDateByStringAndFormat("2015-08-28","yyyy-MM-dd");
+		//MeetingSummeryVO meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(2L,d1,d2,null,2l,null);
+		
 	}
 	
 	public String getMeetingsDashboardSummary()
@@ -82,6 +99,25 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getMeetingSummary(){
+		try {
+			LOG.info("entered into getMeetingSummary");
+			
+			jObj = new JSONObject(getTask());
+			
+			Long partyMeetingLevelId=2l;
+			String fromDateString="2015/01/01";
+			String toDateString="2015/12/31";
+			Long partyMeetingTypeId=0l;
+			Long locationLevelId=2l;
+			Long locationValue=0l;
+			
+			meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(partyMeetingLevelId,fromDateString,toDateString,partyMeetingTypeId,locationLevelId,locationValue);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMeetingSummary", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }

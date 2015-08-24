@@ -10748,5 +10748,13 @@
 	       		<param name="root">MeetingsDashboardSummary</param>
 	  	</result>
 	</action>
+	
+	<action name="getMeetingSummaryAction" class="partyMeetingsDashBoardAction" method="getMeetingSummary">
+	   <result type="json" name="success">
+	       		<param name="root">meetingSummeryVO</param>
+	  	</result>
+	</action>
+	
+	
 </package>
 </struts>      
