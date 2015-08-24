@@ -23,7 +23,35 @@ public class MeetingSummeryVO implements Serializable{
 	private Long totalCommitteeMemberAbsent;
 	private Long totalCandidateNonInvitees;
 	private Long totalCommitteeMemberNonInvitees;
+	private Long totalNoRoleInvitees;
+	private Long totalNoRoleAttended;
+	private Long totalNoRoleAbsent;
+	private Long totalNoRoleNonInvitees;
 	
+	public Long getTotalNoRoleInvitees() {
+		return totalNoRoleInvitees;
+	}
+	public void setTotalNoRoleInvitees(Long totalNoRoleInvitees) {
+		this.totalNoRoleInvitees = totalNoRoleInvitees;
+	}
+	public Long getTotalNoRoleAttended() {
+		return totalNoRoleAttended;
+	}
+	public void setTotalNoRoleAttended(Long totalNoRoleAttended) {
+		this.totalNoRoleAttended = totalNoRoleAttended;
+	}
+	public Long getTotalNoRoleAbsent() {
+		return totalNoRoleAbsent;
+	}
+	public void setTotalNoRoleAbsent(Long totalNoRoleAbsent) {
+		this.totalNoRoleAbsent = totalNoRoleAbsent;
+	}
+	public Long getTotalNoRoleNonInvitees() {
+		return totalNoRoleNonInvitees;
+	}
+	public void setTotalNoRoleNonInvitees(Long totalNoRoleNonInvitees) {
+		this.totalNoRoleNonInvitees = totalNoRoleNonInvitees;
+	}
 	public Long getTotalInvitees() {
 		return totalInvitees;
 	}
