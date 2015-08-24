@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -956,6 +957,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
 			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
 			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(null, locationLevel, statesList, locationIds, null, null, null, null, null, null, startDate, endDate);
+			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+			Map<Long,String> lctnNmsMap = new HashMap<Long, String>();
+			if(nameRslt!=null && nameRslt.size()>0){
+				for(IdNameVO temp:nameRslt){
+					lctnNmsMap.put(temp.getId(), temp.getName());
+				}
+			}
+			
 			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
 			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
 				for(Object[] obj:partyMeetingsRslt){
@@ -963,10 +972,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					tmp.setMeetingId(Long.valueOf(obj[9].toString()));
 					tmp.setMeetingName(obj[8].toString());
 					tmp.setScheduledOn(obj[5].toString());
-					List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
-					if(nameRslt!=null && nameRslt.size()>0){
-						tmp.setLocation(nameRslt.get(0).getName());
-					}
+					tmp.setLocation(lctnNmsMap.get(Long.valueOf(obj[4].toString())));
 					fnlLst.add(tmp);
 					prtyMtngIdsLst.add(tmp.getMeetingId());
 				}
@@ -1029,6 +1035,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 					temp.setInviteesAttendedPercent("0.0");
 					temp.setAbsentPercentage("0.0");
 					temp.setNonInviteesAttendedPercent("0.0");
+					
+					temp.setInviteesAttended(0l);
+					temp.setTotalInvitees(0l);
+					temp.setNonInviteesAttended(0l);
 					finalVOLst.add(temp);
 				}
 			}
@@ -1064,23 +1074,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 			if(finalVOLst!=null && finalVOLst.size()>0){
 				for(PartyMeetingSummaryVO temp:finalVOLst){
 					Long ttlAttended = temp.getTotalAttended();
-					Long ttlInvits = temp.getTotalInvitees();
-					Long invitsAttended = temp.getInviteesAttended();
-					
-					Long othrsAttnd = ttlAttended - ttlInvits;
-					Long invitsAbsent = ttlInvits - invitsAttended;
-					
-					temp.setTotalAbsent(invitsAbsent);
-					temp.setNonInviteesAttended(othrsAttnd);
-					
-					if(ttlAttended!=null && ttlInvits!=null && invitsAttended!=null && invitsAbsent!=null){
-						String invtsAttnddPrcnt = (new BigDecimal(ttlInvits*(100.0)/invitsAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						String othrsAttnddPrcnt = (new BigDecimal(othrsAttnd*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						String invtsAbsntAttnddPrcnt = (new BigDecimal(othrsAttnd*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					if(ttlAttended!=null && ttlAttended>0){
+						Long ttlInvits = temp.getTotalInvitees();
+						Long invitsAttended = temp.getInviteesAttended();
 						
-						temp.setAbsentPercentage(invtsAbsntAttnddPrcnt);
-						temp.setNonInviteesAttendedPercent(othrsAttnddPrcnt);
-						temp.setInviteesAttendedPercent(invtsAttnddPrcnt);
+						Long othrsAttnd = ttlAttended - invitsAttended;
+						Long invitsAbsent = ttlInvits - invitsAttended;
+						
+						temp.setTotalAbsent(invitsAbsent);
+						temp.setNonInviteesAttended(othrsAttnd);
+						
+						if(ttlAttended!=null && ttlInvits!=null && invitsAttended!=null && invitsAbsent!=null){
+							String invtsAttnddPrcnt = (new BigDecimal(invitsAttended*(100.0)/ttlInvits)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							String othrsAttnddPrcnt = (new BigDecimal(othrsAttnd*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							String invtsAbsntAttnddPrcnt = (new BigDecimal(invitsAbsent*(100.0)/ttlAttended)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							
+							temp.setAbsentPercentage(invtsAbsntAttnddPrcnt);
+							temp.setNonInviteesAttendedPercent(othrsAttnddPrcnt);
+							temp.setInviteesAttendedPercent(invtsAttnddPrcnt);
+						}
 					}
 				}
 			}

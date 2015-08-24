@@ -120,9 +120,10 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	public List<Object[]> getInviteesAttendedCountOfMeetings(List<Long> partyMeetingIds){
 		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
 				" model.partyMeeting.locationValue," +
-				" count(distinct model1.tdpCadreId) " +
+				" count(distinct model.attendance.tdpCadreId) " +
 				" from PartyMeetingAttendance model, PartyMeetingInvitee model1 " +
-				" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId " +
+				" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId" +
+				" and model.attendance.tdpCadreId = model1.tdpCadre.tdpCadreId " +
 				" and model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
 				" group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
