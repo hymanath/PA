@@ -9,11 +9,17 @@ import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
 
 public interface IPartyMeetingInviteeDAO extends GenericDao<PartyMeetingInvitee,Long>{
 	
-	public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> tdpCadreIdsList,Date toDayDate);
+public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> tdpCadreIdsList,Date toDayDate);
 	
 	public List<Object[]> getPartyMeetingsInvitationDetlsByCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId,Date todayDate);
 	
 	public List<String> getPartyMeetingInvittees(Long partyMeetingId);
 	
 	public List<Object[]> getPartyMeetingInviteesForMeetings(List<Long> partyMeetingIds);
+	
+	public List<Object[]> getInviteesForPartyMeetings(List<Long> partyMeetingsList);
+	
+	public List<Object[]> getPublicRepresentativeInviteesForPartyMeetings(List<Long> partyMeetingsList);
+	
+	public List<Object[]> getCommitteeMemberInviteesForPartyMeetings(List<Long> partyMeetingsList);
 }
