@@ -1409,12 +1409,12 @@ $(document).ready(function(e) {
   
   getPartyMeetingDetails();
 	function getPartyMeetingDetails(){
-		var locationLevelValues = [11];
+		var locationLevelValues = [11,12,13,14,15,16,17,18,19,20,21,22,23,517];
 		var locationLevel= 2;
 		var jsObj =	{
 			locationLevel:locationLevel,
 			locationLevelValues:locationLevelValues,
-			startDate:"08/25/2015",
+			startDate:"07/28/2015",
 			endDate:"08/28/2015"
 		}
 					
