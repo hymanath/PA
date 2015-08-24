@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 
@@ -12,7 +15,19 @@ public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 		this.partyMeetingDAO = partyMeetingDAO;
 	}
 	
-	public void test(){
+	/*public void test()
+	{
 		partyMeetingDAO.getAll();
+	}*/
+	
+	public void testGetPartyMeetingIdsByLevelAndLocation()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		System.out.println(dateUtilService.getDateAndTime("2015-08-22 00:00:00"));
+		List<Long> list = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(2l,dateUtilService.getDateAndTime("2015-08-22 00:00:00"),dateUtilService.getDateAndTime("2015-08-26 00:00:00"),2l,2l,12l);
+		System.out.println("-->"+ list.size());
+		for(Long l : list)
+			System.out.println(l);
+		
 	}
 }
