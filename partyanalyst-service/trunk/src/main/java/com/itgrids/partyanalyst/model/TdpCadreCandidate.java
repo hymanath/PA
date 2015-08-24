@@ -21,6 +21,8 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdpCadreCandidate extends BaseModel implements java.io.Serializable{
 
+	private static final long serialVersionUID = 5434458773890660518L;
+	
 	private Long    tdpCadreCandidateId;
 	private TdpCadre tdpCadre;
 	private Candidate candidate;
