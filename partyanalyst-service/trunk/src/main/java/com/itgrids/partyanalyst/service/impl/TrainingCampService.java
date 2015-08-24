@@ -1682,28 +1682,11 @@ public class TrainingCampService implements ITrainingCampService{
 		
 		try{
 			
-		List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, null, null);
-		if(list != null && list.size() > 0)
-		{
-			TraingCampCallerVO agentCallStatusVO = new TraingCampCallerVO();
-			agentCallStatusVO.setName("Assigned to Agents");
-			agentCallStatusVO.setSubList(getStatusList());
-			agentCallStatusVO.setScheduleStatusList(getScheduleStatusList());
-			setAgentCallDetailsByCampCallerId(agentCallStatusVO, list);
-			
-			List<Object[]> todayAgentList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, toDayDate, null);
-			if(todayAgentList != null && todayAgentList.size() > 0)
-			 setTodayAgentCallDetailsByCampCallerId(agentCallStatusVO, todayAgentList);
-			
-			resultList.add(agentCallStatusVO);
-			
-		}
-		
 		List<Object[]> calendarScheduleList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, 1l, null, batchStatusIds);
 		if(calendarScheduleList != null && calendarScheduleList.size() > 0)
 		{
 			TraingCampCallerVO calendarScheduleCallStatusVO = new TraingCampCallerVO();
-			calendarScheduleCallStatusVO.setName("Calendar Schedule");
+			calendarScheduleCallStatusVO.setName("Schedule Confirmation");
 			calendarScheduleCallStatusVO.setSubList(getStatusList());
 			calendarScheduleCallStatusVO.setScheduleStatusList(getScheduleStatusList());
 			setAgentCallDetailsByCampCallerId(calendarScheduleCallStatusVO, calendarScheduleList);
@@ -1721,7 +1704,7 @@ public class TrainingCampService implements ITrainingCampService{
 		if(batchConfirmationList != null && batchConfirmationList.size() > 0)
 		{
 			TraingCampCallerVO batchConfirmationCallStatusVO = new TraingCampCallerVO();
-			batchConfirmationCallStatusVO.setName("Batch Confirmation");
+			batchConfirmationCallStatusVO.setName(" Batch Confirmation ");
 			batchConfirmationCallStatusVO.setSubList(getStatusList());
 			batchConfirmationCallStatusVO.setScheduleStatusList(getScheduleStatusList());
 			setAgentCallDetailsByCampCallerId(batchConfirmationCallStatusVO, batchConfirmationList);
@@ -1731,6 +1714,23 @@ public class TrainingCampService implements ITrainingCampService{
 			  setTodayAgentCallDetailsByCampCallerId(batchConfirmationCallStatusVO, toDayBatchConfirmationList);
 			
 			resultList.add(batchConfirmationCallStatusVO);
+			
+		}
+		
+		List<Object[]> list = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, null, null);
+		if(list != null && list.size() > 0)
+		{
+			TraingCampCallerVO agentCallStatusVO = new TraingCampCallerVO();
+			agentCallStatusVO.setName(" Total ");
+			agentCallStatusVO.setSubList(getStatusList());
+			agentCallStatusVO.setScheduleStatusList(getScheduleStatusList());
+			setAgentCallDetailsByCampCallerId(agentCallStatusVO, list);
+			
+			List<Object[]> todayAgentList = trainingCampScheduleInviteeCallerDAO.getAgentCallDetailsByCampCallerId(campCallerId, null, toDayDate, null);
+			if(todayAgentList != null && todayAgentList.size() > 0)
+			 setTodayAgentCallDetailsByCampCallerId(agentCallStatusVO, todayAgentList);
+			  
+			resultList.add(agentCallStatusVO);
 			
 		}
 		

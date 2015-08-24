@@ -331,8 +331,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
 				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
 				" and TCS.training_camp_id = :campId  " );
-		if(inviteeIdsList != null && inviteeIdsList.size()>0)
-			queryStr.append(" and TCSI.training_camp_schedule_invitee_id not in (:inviteeIdsList) ");
+		queryStr.append(" and TCSI.training_camp_schedule_invitee_id not in ( select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC ) ");
 		queryStr.append(" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.district_id,UA.constituency_id,UA.tehsil_id,UA.local_election_body");
 		
 		Query query = getSession().createSQLQuery(queryStr.toString()).addScalar("count", Hibernate.LONG)
@@ -352,8 +351,6 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		query.setParameter("scheduleId", scheduleId);
 		
-		if(inviteeIdsList != null && inviteeIdsList.size()>0)
-			query.setParameterList("inviteeIdsList", inviteeIdsList);
 		
 		return query.list();
 		

@@ -975,8 +975,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		if(callPurposeId != null)
 		 str.append(" and model.campCallPurpose.campCallPurpose =:callPurposeId ");
 		
-		if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
-		 str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(:batchStatusIdsList) ");
+		//if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
+		// str.append(" and model.trainingCampScheduleInvitee.trainingCampBatch.batchStatus.batchStatusId in(:batchStatusIdsList) ");
 		
 		if(toDayDate != null)
 		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
@@ -989,8 +989,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		if(callPurposeId != null)
 		 query.setParameter("callPurposeId", callPurposeId);
 		
-		if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
-			 query.setParameterList("batchStatusIdsList", batchStatusIdsList);
+		//if(batchStatusIdsList != null && batchStatusIdsList.size() > 0)
+		//	 query.setParameterList("batchStatusIdsList", batchStatusIdsList);
 		
 		if(toDayDate != null)
 		 query.setDate("toDayDate", toDayDate);
@@ -1080,7 +1080,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleCode, " +
 				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,count(distinct TCSIC.trainingCampScheduleInviteeCallerId) ");
 		
-		str.append(" from TrainingCampScheduleInviteeCaller TCSIC where " );
+		str.append(" from TrainingCampScheduleInviteeCaller TCSIC where TCSIC.callPurposeId = 1 and " );
 				//" TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId = TCSI.trainingCampScheduleInviteeId and TCSI.trainingCampSchedule.trainingCampId = TCB.trainingCampBatchId ");
 		
 		if(fromDate != null && toDate != null)
