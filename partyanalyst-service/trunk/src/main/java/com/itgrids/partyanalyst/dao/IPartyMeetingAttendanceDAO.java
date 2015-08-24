@@ -15,4 +15,10 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	
 	public List<Object[]> getTotalAttendentsOfMeetings(List<Long> partyMeetingIds);
 	public List<Object[]> getInviteesAttendedCountOfMeetings(List<Long> partyMeetingIds);
+	
+	public List<Object[]> getAttendanceForMeetings(List<Long> partyMeetingsList);
+	
+	public List<Object[]> getCandidateAttendanceForMeetings(List<Long> partyMeetingsList);
+	
+	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList);
 }
