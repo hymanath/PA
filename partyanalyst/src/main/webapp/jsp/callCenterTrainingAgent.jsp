@@ -705,12 +705,12 @@ function setDefaultImage(img){
    var str ='';
 	for(var i in result)
 	{
-	if(result[i].name.indexOf("Call Back") ==-1)
-	{
-	 str+='<label class="checkbox-inline">';
-	 str+='<input type="checkbox" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
-	 str+='</label>';
-	 }
+		if(i>0 && i<10 && result[i].name.indexOf("Call Back") ==-1)
+		{
+		 str+='<label class="checkbox-inline">';
+		 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
+		 str+='</label>';
+		 }
 	 }
        $("#scheduleStatusDiv").html(str);                    
    }

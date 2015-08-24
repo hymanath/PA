@@ -228,7 +228,7 @@ footer
                                 	<div class="panel panel-default panel-custom">
                                     	<div class="panel-heading pad_5 pad_bottom0">
                                             <ul class="nav nav-tabs tab-list-sch" role="tablist">
-                                                <li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULE CONFORMATION</a></li>
+                                                <li class="active"><a href="#scheduled" class="text-bold" data-toggle="tab">SCHEDULE CONFIRMATION</a></li>
                                                 <!--<li><a href="#running" class="text-bold" data-toggle="tab">RUNNING</a></li>
                                                 <li><a href="#completed" class="text-bold" data-toggle="tab">COMPLETED</a></li>
                                                 <li><a href="#cancelled" class="text-bold" data-toggle="tab">CANCELLED</a></li> -->
@@ -261,9 +261,9 @@ footer
                                 	<div class="panel panel-default panel-custom">
                                     	<div class="panel-heading pad_5 pad_bottom0">
                                             <ul class="nav nav-tabs tab-list-sch" role="tablist">
-                                                <li class="active"><a href="#bacthdate" class="text-bold" data-toggle="tab">BATCH DATE CONFORMATION</a></li>
-                                                <li><a href="#running1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Progress','running1')">RUNNING</a></li>
-                                                <li><a href="#completed1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Completed','completed1')">COMPLETED</a></li>
+                                                <li class="active"><a href="#bacthdate" class="text-bold" data-toggle="tab">BATCH  CONFIRMATION</a></li>
+                                                <!--<li><a href="#running1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Progress','running1')">RUNNING</a></li>
+                                                <li><a href="#completed1" class="text-bold" data-toggle="tab" onclick="getMembersCountByBatchStatus('Completed','completed1')">COMPLETED</a></li> -->
                                             </ul>
                                         </div>
                                         <div class="panel-body pad_0">
@@ -495,7 +495,9 @@ str+='<td>Program</td>';
 str+=' <td>Traing Camp </td>';
 str+=' <td>Schedule</td>';
 str+=' <td>Batch</td>';
-str+='<td class="pad_5 font-12">Interested</td>';
+str+='<td class="pad_5 font-12">Allocated</td>';
+str+='<td class="pad_5 font-12">Accepted</td>';
+//str+='<td class="pad_5 font-12">Interested</td>';
 str+='<td>UN Dialled</td>';
 //str+='<td>Allocated</td>';
 //str+='<td>Answered</td>';
@@ -530,18 +532,22 @@ var callBack  = 0;
 var interested  = 0;
 var later = 0;
 var notInterested = 0;
+var accepted = 0;
 var todaycallBack  = 0;
+
 str+=' <td>'+result[i].subList[j].subList[k].subList[p].name+'</td>';
 for(var l=0;l<result[i].subList[j].subList[k].subList[p].subList.length;l++) //callStatus
 {
-if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Call Answered")
- answered = answered+result[i].subList[j].subList[k].subList[p].subList[l].count;
- else
-userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].count;
+	if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Call Answered")
+		answered = answered+result[i].subList[j].subList[k].subList[p].subList[l].count;
+	else
+		userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].count;
 }
 dialed = answered + userbusy;
 allocated = result[i].subList[j].subList[k].subList[p].total;
 undialed = allocated - dialed;
+
+//str+=' <td>'+allocated+'</td>';
 
 for(var m=0;m<result[i].subList[j].subList[k].subList[p].scheduleStatusList.length;m++) // invitee Status
 {
@@ -554,22 +560,29 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Int
 interested = interested+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Interested")
 notInterested = notInterested+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Confirmed")
+accepted = accepted+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Now")
 later = later+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
-/*if(allocated > 0)
+if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
-str+=' <td>'+allocated+'</td>';*/
+str+=' <td>'+allocated+'</td>';
 /*if(answered > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';*/
-
+/*
 if(interested > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
 str+=' <td>'+interested+'</td>';
+
+if(accepted > 0)
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'confirmed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+accepted+'</a></td>';
+else*/
+	str+='<td>'+accepted+'</td>';
 
 if(undialed > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+undialed+'</a></td>';
@@ -609,6 +622,8 @@ if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
 str+='<td>'+notInterested+'</td>';
+
+
 
 str+='</tr>';
 
@@ -916,7 +931,7 @@ function buildAgentCallDetailsByCampCallerId(result)
 	str +='<table class="table table-bordered m_0">';
 	str +='<tr>';
 	str +='<td></td>';
-	str +='<td>Calls</td>';
+	str +='<td> Assigned Calls </td>';
 	str +='<td class="text-dialled">Not Dialled</td>';
 	str +='<td class="text-dialled">Dialed</td>';
 	str +='<td colspan="2" style="padding: 0px; text-align: center;">Call Back';
@@ -928,7 +943,7 @@ str +='<tbody>';
  str +=' </tr>';
   str +='</tbody><tbody>';
 str +='</tbody></table></td>';
-	str +='<td class="text-custom">Interested</td>';
+	str +='<td class="text-custom">Interested / Accepted </td>';
 	str +='<td class="text-not-interested"> Later</td>';
 	str +='<td class="text-totally-not">Not Interested</td>';
 	str +='</tr>';
@@ -965,8 +980,14 @@ str +='</tbody></table></td>';
 			 callBackConfirm += result[i].scheduleStatusList[k].count;
 			 todayCallBackConfirm += result[i].scheduleStatusList[k].todayCnt;
 			}
-		    if(result[i].scheduleStatusList[k].id == 4)
-			 interested += result[i].scheduleStatusList[k].count;
+		    if( i==1 && k == 9 && result[i].scheduleStatusList[9].id == 10)
+			{
+				interested += result[i].scheduleStatusList[k].count;
+			}
+			else if((i==0 || i==2)  && result[i].scheduleStatusList[k].id == 4)
+			{
+				interested += result[i].scheduleStatusList[k].count;
+			}
 		   if(result[i].scheduleStatusList[k].id == 3)
 			 later += result[i].scheduleStatusList[k].count;
 		   if(result[i].scheduleStatusList[k].id == 5)
