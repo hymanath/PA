@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,10 +47,15 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 		return result;
 	}
 	
-	public MeetingSummeryVO getMeetingsSummeryForDashboard(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
+	public MeetingSummeryVO getMeetingsSummeryForDashboard(Long partyMeetingLevelId,String fromDateString,String toDateString,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
 	{
 		MeetingSummeryVO meetingSummeryVO = new MeetingSummeryVO();
 		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			Date fromDate = sdf.parse(fromDateString);
+			Date toDate = sdf.parse(toDateString);
+			
 			List<Long> partyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
 			
 			if(partyMeetingsList != null && partyMeetingsList.size() > 0)
