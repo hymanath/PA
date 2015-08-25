@@ -1364,7 +1364,7 @@ public class TrainingCampService implements ITrainingCampService{
 										}
 									}
 									else
-									{/*
+									{
 										Map<Long,Long> allocatedScheduleWiseCountMap = allocatedCampWisesMap.get(campNameStr);
 										if(allCallsCampWiseMap != null)
 											allCallsscheduleWiseMap=  allCallsCampWiseMap.get(campNameStr);
@@ -1378,7 +1378,7 @@ public class TrainingCampService implements ITrainingCampService{
 										{
 											List<TrainingCampVO> finalList = new ArrayList<TrainingCampVO>(0);
 											TrainingCampVO finalVO = new TrainingCampVO();
-											
+											finalVO.setTrainingCampName(campNameStr);
 											for (Long scheduleId : allocatedScheduleWiseCountMap.keySet()) {
 												
 												Long allocatedCallsCount=0l;
@@ -1386,6 +1386,7 @@ public class TrainingCampService implements ITrainingCampService{
 												Long unDialdCallsCount=0l;
 												
 												allocatedCallsCount =  allocatedScheduleWiseCountMap.get(scheduleId);
+												finalVO.setScheduleName(trainingCampScheduleDAO.get(scheduleId).getTrainingCampScheduleCode());
 												if(allDiaCallsscheduleWiseMap != null){
 													dialdCallsCount =  allDiaCallsscheduleWiseMap.get(scheduleId) !=null ?allDiaCallsscheduleWiseMap.get(scheduleId):0L ;
 												}
@@ -1402,9 +1403,9 @@ public class TrainingCampService implements ITrainingCampService{
 												programVO.getTrainingCampVOList().addAll(finalList);
 											}
 										}
-									*/}
-									trainingCampVOList.add(programVO);
+									}
 								}
+								trainingCampVOList.add(programVO);
 							}
 							
 							returnVO.setTrainingCampVOList(trainingCampVOList);
@@ -1610,22 +1611,24 @@ public class TrainingCampService implements ITrainingCampService{
 												String countBelongsTo = trainingCampVO2.getSchdlStatus();
 												
 												if(countBelongsTo.equalsIgnoreCase("Interested")){
-													batchVO.setInterestedCount(trainingCampVO2.getBatchConfirmationCount());
+													batchVO.setInterestedCount(trainingCampVO2.getAllocatedCallsCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Confirmed")){
-													batchVO.setAcceptedCount(trainingCampVO2.getBatchConfirmationCount());
+													batchVO.setAcceptedCount(trainingCampVO2.getAllocatedCallsCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Not Interested")){
-													batchVO.setNotInterestedCount(trainingCampVO2.getBatchConfirmationCount());
+													batchVO.setNotInterestedCount(trainingCampVO2.getAllocatedCallsCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Call Back - Busy")){
-													batchVO.setBusyCount(trainingCampVO2.getBatchConfirmationCount());
+													batchVO.setBusyCount(trainingCampVO2.getAllocatedCallsCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Call Back - Confirm Later")){
-													batchVO.setConformLaterCount(trainingCampVO2.getBatchConfirmationCount());
+													batchVO.setConformLaterCount(trainingCampVO2.getAllocatedCallsCount());
 												}
 												else{
-													othrsCount = othrsCount+trainingCampVO2.getBatchConfirmationCount();
+													if(trainingCampVO2.getAllocatedCallsCount() != null)
+														othrsCount = othrsCount+trainingCampVO2.getAllocatedCallsCount();
+													
 													batchVO.setOthersCount(othrsCount);
 												}
 											}
@@ -2417,11 +2420,11 @@ public class TrainingCampService implements ITrainingCampService{
 			if(inputVO.getCallStatusId() == 1l && inputVO.getStatus().equalsIgnoreCase("callstatus"))//Answered
 			{
 			TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-					if(inputVO.getBatchId() > 0)
+					if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId().longValue() == 4L  && inputVO.getBatchId().longValue() > 0L)
 						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
-					if(inputVO.getScheduleStatusId() > 0)
+					if(inputVO.getScheduleStatusId().longValue() > 0L)
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
 						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
@@ -2430,6 +2433,7 @@ public class TrainingCampService implements ITrainingCampService{
 			else if(inputVO.getCallStatusId() == 2l)// switch-off
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+				trainingCampScheduleInvitee.setAttendingBatchId(null);
 				trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
@@ -2438,6 +2442,7 @@ public class TrainingCampService implements ITrainingCampService{
 			else if(inputVO.getCallStatusId() == 3l)// User-busy
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+				trainingCampScheduleInvitee.setAttendingBatchId(null);
 				trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
@@ -2530,14 +2535,16 @@ public class TrainingCampService implements ITrainingCampService{
 					
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
-					if(inputVO.getScheduleStatusId() > 0)
+					if(inputVO.getScheduleStatusId().longValue() > 0L)
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
-						trainingCampScheduleInvitee.setInsertedBy(inputVO.getUserId());
-						String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
+					if(inputVO.getScheduleStatusId().longValue() != 4L)
+						trainingCampScheduleInvitee.setAttendingBatchId(null);
+						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
+						//String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
 
 						 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
 					     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-					     DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+					    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 					     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
 						trainingCampScheduleInvitee.setCallBackTime(oldDate);
 						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());

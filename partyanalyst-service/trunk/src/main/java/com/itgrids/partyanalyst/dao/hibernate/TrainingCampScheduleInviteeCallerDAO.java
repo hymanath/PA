@@ -1016,8 +1016,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, "+
-				" TCSIC.trainingCampScheduleInvitee.attendingBatchId," +
-				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId  ");
+				" TCSIC.trainingCampScheduleInvitee.attendingBatchId  ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(startDate != null && endDate != null)
 		{
