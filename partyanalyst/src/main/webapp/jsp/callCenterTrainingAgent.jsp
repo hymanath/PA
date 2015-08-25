@@ -201,12 +201,7 @@ footer
                            
                     </div>
                     <div class="Answered-div ">
-                        <div class="col-md-12 m_top20 clearDiv">
-                            <label>Call Back Remarks</label>
-                            <ul class="callback-remarks">
-                            	<textarea class="form-control clearEl" id="remarks"></textarea>
-                            </ul>
-                        </div>
+                        
                         <div class="col-md-4 m_top20 clearDiv">
                             <label>Select Program</label>
                             <select class="form-control" id="programId" disabled onchange="getCampsForProgram();">
@@ -230,6 +225,12 @@ footer
                             <select class="form-control" id="batchId">
                                  <option value="0">Select</option> 
                             </select>
+                        </div>
+						 <div class="col-md-12 m_top20 clearDiv">
+                             <label>Remarks <span style="color:red;"> * </span></label>
+                            <ul class="callback-remarks">
+                            	<textarea class="form-control clearEl" id="remarks"></textarea>
+                            </ul>
                         </div>
                         <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
                            
@@ -265,7 +266,7 @@ footer
                             </div>
                         </div>
                         <div class="col-md-12 m_top20">
-                            <label>Remarks</label>
+                            <label> Call Back Remarks <span style="color:red;"> * </span></label>
                             <textarea class="form-control clearEl" id="callbackremarks"></textarea>
                         </div>
                         <div class="col-md-12 m_top20 clearDiv">
@@ -703,14 +704,29 @@ function setDefaultImage(img){
    function buildScheduleStatus(result)
    {
    var str ='';
+      var callPurposeId = '${purposeId}';
+   console.log(callPurposeId);
 	for(var i in result)
 	{
-		if(i>0 && i<10 && result[i].name.indexOf("Call Back") ==-1)
+		if(callPurposeId == 1)
 		{
-		 str+='<label class="checkbox-inline">';
-		 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
-		 str+='</label>';
-		 }
+			if(i>0 && i<9 && result[i].name.indexOf("Call Back") ==-1)
+			{
+			 str+='<label class="checkbox-inline">';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
+			 str+='</label>';
+			}
+		}
+		else
+		{
+			if(i>0 && i<10 && i != 3 && result[i].name.indexOf("Call Back") ==-1)
+			{
+			 str+='<label class="checkbox-inline">';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
+			 str+='</label>';
+			}
+		}
+		
 	 }
        $("#scheduleStatusDiv").html(str);                    
    }

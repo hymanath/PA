@@ -310,7 +310,7 @@ footer
 							</table>
 							<table class="table table-bordered">
 								<tr>
-									<td rowspan="2">UPCOMING <br/>BATCH CONFIRMATION<br/><p class="text-center"><span id="btchConfId">0</span></p></td>
+									<td rowspan="2">UPCOMING BATCHES FOR <br/>BATCH CONFIRMATION  <br/><p class="text-center"><span id="btchConfId">0</span></p></td>
 									<td>Allocated to Agents <span class="pull-right" id="btchAlcId">0</span></td>
 								</tr>
 								<tr>
@@ -536,7 +536,7 @@ footer
 	<!---Modal-1----------------->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 600px;">
       <div class="modal-header  bg_d">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h5 class="modal-title text-uppercase">Assign Members to Batch Confirmation</h5>
@@ -1743,6 +1743,7 @@ function buildingMembersFilledInCalenderBatch(result){
 					$("#upcmngSchCountId").html(result.upcomingscheduleCnt);
 					$("#upAlctId").html(result.upcomingAllocatedAgnt);
 					$("#upNtAlctId").html(result.upNotAllocated);
+					
 					$("#btchConfId").html(result.batchConfirmCnt);
 					$("#btchAlcId").html(result.btchAllocatedCnt);
 					$("#btchNtalctedId").html(result.btchNotAllocated);
