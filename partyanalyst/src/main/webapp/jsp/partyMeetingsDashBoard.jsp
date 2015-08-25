@@ -250,7 +250,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            </div>
+                                            <!-- </div>
                                             <div class="table-responsive cumulative">
                                         	<table class="table table-bordered m_0">
                                             	<thead>
@@ -347,8 +347,8 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            </div>
-                                            <div class="checkbox-select">
+                                            </div> -->
+                                            <!-- <div class="checkbox-select">
                                                 <div class="panel-group" id="accordion10" role="tablist" aria-multiselectable="true">
                                                   <div class="panel panel-default border_custom">
                                                     <div class="panel-heading" role="tab" id="heading10One">
@@ -1121,7 +1121,7 @@
                                                   </div>
                                                 </div>
                                             	
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1436,6 +1436,7 @@ $(document).ready(function(e) {
 			url:"getMeetingSummaryForLocationAction.action",
 			data:{task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			$('.individual').show();
 			var pmList = result.partyMeetingsList;
 			var str = "";
 			if(pmList!=null && pmList.length>0){
