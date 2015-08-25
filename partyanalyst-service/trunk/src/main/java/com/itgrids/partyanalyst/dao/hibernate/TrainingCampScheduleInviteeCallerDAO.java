@@ -1192,8 +1192,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 	public List<Object[]> getCallStatusWiseCountDetailsForCallers(String searchType,List<Long> callerIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select model.trainingCampCallerId, campCallStatus.campCallStatusId,campCallStatus.status, count(model.trainingCampScheduleInviteeCallerId)" +
-				"  ,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" );
+		queryStr.append("select model.trainingCampCallerId, count(model.trainingCampScheduleInviteeCallerId) " );
 		queryStr.append(" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
 		queryStr.append(" where  campCallStatus is not null ");
 		if(searchType != null && searchType.equalsIgnoreCase("schedule"))
@@ -1209,7 +1208,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			queryStr.append(" and model.trainingCampCallerId in (:callerIdsList) ");
 		}
 	
-		queryStr.append("  group by model.trainingCampCallerId, model.campCallStatus.campCallStatusId " +
+		queryStr.append("  group by model.trainingCampCallerId " +
 				" order by  model.trainingCampCallerId , campCallStatus.status ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("callerIdsList", callerIdsList);
@@ -1267,7 +1266,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		}
 		
 		if(type !=null){
-			queryStr.append(" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status = '"+type+"' ");
+			queryStr.append(" and (model.trainingCampScheduleInvitee.scheduleInviteeStatus.status = '"+type+"' OR model.trainingCampScheduleInvitee.scheduleInviteeStatus.status = 'Interested' ) ");
 		}
 		
 		queryStr.append(" and model.trainingCampScheduleInvitee.attendingBatchId is not null");
