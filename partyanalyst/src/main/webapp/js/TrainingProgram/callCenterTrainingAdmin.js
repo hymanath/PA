@@ -176,7 +176,7 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 				str+='<th>TRAINING <br/>END DATE</th>';
 				str+='<th>ALLOCATED <br/>CALLS</th>';
 				str+='<th class="text-yellow">DIALED/<br/> UN DIALED</th>';
-				str+='<th class="interested-text">INTERESTED <br/>MEMBERS</th>';
+				str+='<th class="interested-text"> ACCEPTED <br/>MEMBERS</th>';
 				str+='<th>NOT <br/>INTERESTED</th>';
 				str+='<th>LATER</th>';
 				str+='<th class="font-12">CALL BACK/<br/>USER BUSY/<br/>OTHERS</th>';
@@ -223,8 +223,13 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 							else
 								str+='<td style="text-align:center;" > 0/0 </td>';
 								
-							if(result.trainingCampVOList[i].trainingCampVOList[k].interestedCount != null)
-								str+='<td style="text-align:center;" class="interested-text">'+result.trainingCampVOList[i].trainingCampVOList[k].interestedCount+'</td>';
+							var acceptedCount=0;
+							console.log(result.trainingCampVOList[i].trainingCampVOList[k].acceptedCount);
+							if(result.trainingCampVOList[i].trainingCampVOList[k].acceptedCount != null )
+								acceptedCount = result.trainingCampVOList[i].trainingCampVOList[k].acceptedCount;
+								
+							if(acceptedCount != null)
+								str+='<td style="text-align:center;" class="interested-text"> '+acceptedCount+' </td>';
 							else
 								str+='<td style="text-align:center;" > 0 </td>';
 								
@@ -401,7 +406,7 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 				str+='<th>NOT <br/> INTERESTED</th>';
 				str+='<th>ASSIGNED TO <br/> <span>BATCH CONFORMATION</span> </th>';
 				str+='<th>AVAILABLE MEMBERS <br/> IN CALENDAR DATES</th>';
-				str+='<th>CALL BACK / <br> BUSY / <br> OTHERS</th>';
+				str+='<th>CALL BACK - BUSY / <br> OTHERS</th>';
 			str+='</thead>';
 			str+='<tbody>';
 			
@@ -418,6 +423,7 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 									str+='<td style="text-align:center;"  rowspan="'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampVOList.length+'">'+result.trainingCampVOList[i].name+'</td>';
 								else if(result.trainingCampVOList[i].name == null)
 									str+='<td style="text-align:center;" > - </td>';
+								
 								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].trainingCampName+'</td>';							
 								str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].scheduleName+'</td>';
 								if(result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls != null)
@@ -458,7 +464,7 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 									str+='<td style="text-align:center;" > 0 </td>';
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
-									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
+									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].busyCount+' / '+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								str+='</tr>';
