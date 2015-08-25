@@ -2050,6 +2050,7 @@ public class TrainingCampService implements ITrainingCampService{
 	
 	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo)
 	{
+
 		List<Long> statusIds = new ArrayList<Long>();
 		TrainingMemberVO inputVO = new TrainingMemberVO();
 		List<Object[]> list = null;
@@ -2062,8 +2063,83 @@ public class TrainingCampService implements ITrainingCampService{
 			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			   toDayDate = sdf.parse(inputVo.getDateStr());
 			}
-			if(inputVo.getSearchType() == null)
-			 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			if(inputVo.getSearchType() == null){
+			 //list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+				if(inputVo.getPurposeId()==1l){
+					List<Object[]> sdlCnfmDtls1 = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
+					list = sdlCnfmDtls1;
+					
+						List<Object[]> sdlCnfmDtls2 = trainingCampScheduleInviteeTrackDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
+						boolean flag=true;
+						if(sdlCnfmDtls2!=null && sdlCnfmDtls2.size()>0){
+							Map<Long,String> subMap = new HashMap<Long, String>();
+							
+							for (Object[] objects : sdlCnfmDtls1) {
+								if(objects[9]!=null && objects[11]!=null){
+									subMap.put((Long)objects[9], "");
+								}
+							}
+						
+							for (Object[] objects : sdlCnfmDtls2) {
+								if(subMap.get((Long)objects[9])!=null){
+									String temp = subMap.get((Long)objects[9]);
+									if(flag){
+										temp=objects[11].toString();
+										flag=false;
+									}else{
+										temp=temp+","+objects[11].toString();
+									}
+									subMap.put((Long)objects[9], temp);
+								}
+							}
+						
+							for (Object[] objects : sdlCnfmDtls1) {
+								String temp = subMap.get((Long)objects[9]);
+								objects[11]=(Object)temp;
+							}
+						}
+						
+						list = sdlCnfmDtls1;
+					
+					
+					
+				}else if(inputVo.getPurposeId()==2l){
+					List<Object[]> sdlCnfmDtls1 = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
+					List<Object[]> sdlCnfmDtls2 = trainingCampScheduleInviteeTrackDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
+					boolean flag=true;
+					if(sdlCnfmDtls2!=null && sdlCnfmDtls2.size()>0){
+						
+						Map<Long,String> subMap = new HashMap<Long, String>();
+						
+						for (Object[] objects : sdlCnfmDtls1) {
+							if(objects[9]!=null && objects[11]!=null){
+								subMap.put((Long)objects[9], "");
+							}
+						}
+					
+						for (Object[] objects : sdlCnfmDtls2) {
+							if(subMap.get((Long)objects[9])!=null){
+								String temp = subMap.get((Long)objects[9]);
+								if(flag){
+									temp=objects[11].toString();
+									flag=false;
+								}else{
+									temp=temp+","+objects[11].toString();
+								}
+								subMap.put((Long)objects[9], temp);
+							}
+						}
+					
+						for (Object[] objects : sdlCnfmDtls1) {
+							String temp = subMap.get((Long)objects[9]);
+							objects[11]=(Object)temp;
+						}
+					}
+					
+					list = sdlCnfmDtls1;
+					
+				}
+			}
 			else
 			{
 				 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCountForSearch(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
@@ -2079,6 +2155,7 @@ public class TrainingCampService implements ITrainingCampService{
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallMemberDetails() method", e);
 		}
 		return inputVO;
+	
 	}
 	
 	
