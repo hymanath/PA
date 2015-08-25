@@ -1576,6 +1576,7 @@ $(document).ready(function(e) {
 </script>
 <script>
 showHide();
+getMeetingSummary();
 </script>
 </body>
 </html>
