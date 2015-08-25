@@ -15,10 +15,14 @@ public class TrainingCadreVO {
 	private Long inviteeCallerId;
 	private String callBackTime;
 	private String callBackDate;
+	private Long trainingCampCallerId;
 	
-	
-	
-	
+	public Long getTrainingCampCallerId() {
+		return trainingCampCallerId;
+	}
+	public void setTrainingCampCallerId(Long trainingCampCallerId) {
+		this.trainingCampCallerId = trainingCampCallerId;
+	}
 	public String getCallBackDate() {
 		return callBackDate;
 	}
