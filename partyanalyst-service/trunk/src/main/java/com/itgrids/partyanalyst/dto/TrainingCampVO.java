@@ -10,6 +10,8 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String trainingCampName;
 	private String trainerName;
 	private String scheduledDate;
+	private Long busyCount;
+	private Long acceptedCount;
 	private Long interestedCount;
 	private Long notInterestedCount;
 	private Long nextBatchInterestedCount;
@@ -43,6 +45,18 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String status;
 	
 	
+	public Long getBusyCount() {
+		return busyCount;
+	}
+	public void setBusyCount(Long busyCount) {
+		this.busyCount = busyCount;
+	}
+	public Long getAcceptedCount() {
+		return acceptedCount;
+	}
+	public void setAcceptedCount(Long acceptedCount) {
+		this.acceptedCount = acceptedCount;
+	}
 	public String getStatus() {
 		return status;
 	}
