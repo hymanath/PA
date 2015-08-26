@@ -379,7 +379,7 @@ public class AttendanceService implements IAttendanceService{
 						scheduleVO.setScheduleStartDate(dateUtilService.getDateInStringFormatByDate(trainingCampSchedule.getFromDate(),"yyyy-MM-dd"));
 						scheduleVO.setScheduleEndDate(dateUtilService.getDateInStringFormatByDate(trainingCampSchedule.getToDate(),"yyyy-MM-dd"));
 						scheduleVO.setScheduleStatusId(1l);
-						scheduleVO.setBatchList(getTrainingCampBatchesOfSchedule(trainingCampSchedule.getTrainingCampScheduleId()));
+						scheduleVO.setBatchList(getTrainingCampBatchesOfScheduleForTabUser(trainingCampSchedule.getTrainingCampScheduleId(),userId));
 					}catch(Exception e)
 					{
 						LOG.error(e);
@@ -399,6 +399,40 @@ public class AttendanceService implements IAttendanceService{
 		List<UserTrainingCampBatchVO> result = null;
 		try{
 			List<Object[]> list = trainingCampBatchDAO.getTrainingCampBatchesOfSchedule(trainingCampScheduleId);
+			
+			if(list != null && list.size() > 0)
+			{
+				result = new ArrayList<UserTrainingCampBatchVO>(0);
+				UserTrainingCampBatchVO batchVO = null;
+				
+				for(Object[] params : list)
+				{
+					batchVO = new UserTrainingCampBatchVO();
+					try{
+						batchVO.setTrainingCampBatchId((Long)params[0]);
+						batchVO.setTrainingCampBatchName(params[1] != null ? params[1].toString() : "");
+						batchVO.setTrainingCampBatchCode(params[2] != null ? params[2].toString() : "");
+						batchVO.setBatchStartDate(dateUtilService.getDateInStringFormatByDate((Date)params[3],"yyyy-MM-dd"));
+						batchVO.setBatchEndDate(dateUtilService.getDateInStringFormatByDate((Date)params[4],"yyyy-MM-dd"));
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+					result.add(batchVO);
+				}
+			}
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in getTrainingCampBatchesOfSchedule() Method - ",e);
+		}
+		return result;
+	}
+	
+	public List<UserTrainingCampBatchVO> getTrainingCampBatchesOfScheduleForTabUser(Long trainingCampScheduleId,Long attendanceTabUserId)
+	{
+		List<UserTrainingCampBatchVO> result = null;
+		try{
+			List<Object[]> list = trainingCampAttendanceTabUserDAO.getTrainingCampBatchesOfScheduleForTabUser(trainingCampScheduleId,attendanceTabUserId);
 			
 			if(list != null && list.size() > 0)
 			{
