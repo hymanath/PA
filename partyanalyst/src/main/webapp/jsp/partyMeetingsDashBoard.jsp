@@ -62,11 +62,14 @@
                                             	<table class="table m_0">
 													<thead align="center">
 														<tr style="background-color:#F4F2E6">
-															<td colspan="2">
-																<h4 class="m_0">&nbsp;&nbsp;TOTAL INVITEES<br/><span id="totalInvitieesHead">0</span></h4>
+															<td>
+																<h4 class="m_0">INVITEES<br/><span id="totalInvitieesHead">0</span></h4>
 															</td>
 															<td>
-																<h4 class="m_0">Attended<br/><span id="attendedHead">0</span></h4>
+																<h4 class="m_0">ATTENDED<br/><span id="attendedHead">0</span></h4>
+															</td>
+															<td>
+																<h4 class="m_0">NON INVITEES<br/><span id="nonInviteeHead">0</span></h4>
 															</td>
 															<td colspan="2">
 																<h4 class="m_0">TOTAL ABSENT<br/><span id="totalAbsentHead">0</span></h4>
@@ -1542,6 +1545,7 @@ $(document).ready(function(e) {
 				
 				$("#totalInvitieesHead").html(result.totalInvitees);
 				$("#attendedHead").html(result.totalAttended);
+				$("#nonInviteeHead").html(result.totalNonInvitees);
 				$("#totalAbsentHead").html(result.totalAbsent);
 				
 				var str='';
@@ -1549,8 +1553,8 @@ $(document).ready(function(e) {
 				str+='<td  width="80px"></td>';
 				str+='<td  width="80px">Total Invitees</td>';
 				str+='<td width="140px">ATTENDED</td>';
-				str+='<td>Total Non Invitees</td>';
-				str+='<td>Total Invitees Absent</td>';
+				str+='<td>Non Invitees</td>';
+				str+='<td>Invitees Absent</td>';
 				str+='</tr>';
 				str+='<tr>';
 				str+='<td>PARTY ROLE</td>';
