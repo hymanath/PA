@@ -49,6 +49,37 @@ public class PartyMeetingSummaryVO implements Serializable{
 	private Long atrTextCount;
 	private PartyMeetingSummaryVO docTxtInfo;
 	
+	private int meetingsCount;
+	private int plannedMeetings;
+	private int conductedMeetings;
+	private int averageInviteesAttended;
+	
+	
+	
+	public int getMeetingsCount() {
+		return meetingsCount;
+	}
+	public void setMeetingsCount(int meetingsCount) {
+		this.meetingsCount = meetingsCount;
+	}
+	public int getPlannedMeetings() {
+		return plannedMeetings;
+	}
+	public void setPlannedMeetings(int plannedMeetings) {
+		this.plannedMeetings = plannedMeetings;
+	}
+	public int getConductedMeetings() {
+		return conductedMeetings;
+	}
+	public void setConductedMeetings(int conductedMeetings) {
+		this.conductedMeetings = conductedMeetings;
+	}
+	public int getAverageInviteesAttended() {
+		return averageInviteesAttended;
+	}
+	public void setAverageInviteesAttended(int averageInviteesAttended) {
+		this.averageInviteesAttended = averageInviteesAttended;
+	}
 	public Long getTotalCommittees() {
 		return totalCommittees;
 	}
