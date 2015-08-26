@@ -2276,6 +2276,10 @@
 	 <bean id="enrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.EnrollmentYearDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="tdpCadreContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreContestedLocationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		

@@ -668,6 +668,8 @@
 				 <value>com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear</value>
 				 <value>com.itgrids.partyanalyst.model.EnrollmentYear</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.TdpCadreContestedLocation</value>
+				 
 				</list>
 			
 		</property>
