@@ -159,4 +159,12 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConductedMeetings(List<Long> partyMeetingsList)
+	{
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.attendance.tdpCadre is not null group by model.partyMeeting.partyMeetingId");
+		query.setParameterList("partyMeetingsList",partyMeetingsList);
+		return query.list();
+	}
+	
 }
