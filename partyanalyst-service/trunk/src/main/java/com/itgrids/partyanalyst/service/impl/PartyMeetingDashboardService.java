@@ -56,7 +56,8 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 			Date fromDate = sdf.parse(fromDateString);
 			Date toDate = sdf.parse(toDateString);
 			
-			List<Long> partyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
+			List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
+			List<Long> partyMeetingsList = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList);
 			
 			if(partyMeetingsList != null && partyMeetingsList.size() > 0)
 			{
@@ -122,10 +123,10 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 						candidateInvitees.add(params[0].toString()+"-"+params[1].toString());
 				}
 				
-				List<Object[]> committeeMemberInviteeList = partyMeetingInviteeDAO.getPublicRepresentativeInviteesForPartyMeetings(partyMeetingsList);
+				List<Object[]> committeeMemberInviteeList = partyMeetingInviteeDAO.getCommitteeMemberInviteesForPartyMeetings(partyMeetingsList);
 				if(committeeMemberInviteeList != null && committeeMemberInviteeList.size() > 0)
 				{
-					for(Object[] params : candidateInviteesList)
+					for(Object[] params : committeeMemberInviteeList)
 					{
 						String str = params[0].toString()+"-"+params[1].toString();
 						
@@ -159,7 +160,7 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 					}
 				}
 				
-				for(String str : candidateAttendees)
+				for(String str : candidateInvitees)
 				{
 					if(candidateAttendees.contains(str))
 						totalCandidateInviteeAttended++;
@@ -196,6 +197,8 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 				meetingSummeryVO.setTotalNoRoleAttended(totalAttended-(totalCandidateAttended+totalCommitteeMemberAttended));
 				meetingSummeryVO.setTotalNoRoleAbsent(totalAbsent-(totalCandidateAbsent+totalCommitteeMemberAbsent));
 				meetingSummeryVO.setTotalNoRoleNonInvitees(totalNonInvitees-(totalCandidateNonInvitees+totalCommitteeMemberNonInvitees));
+				
+				
 			}
 		}catch(Exception e)
 		{
