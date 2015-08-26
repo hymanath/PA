@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
@@ -1406,4 +1407,23 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	
+	@POST
+	@Path("/getCadreOverviewDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CadreOverviewVO getTdpCadreOverViewDetails(CadreOverviewVO inputVo){
+		CadreOverviewVO returnVO = new CadreOverviewVO();
+		try{
+			
+			returnVO = webServiceHandlerService.getTdpCadreOverViewDetails(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getTdpCadreOverViewDetails() Method, Exception is ",e);
+			returnVO = null;
+		}
+		return returnVO;
+	}
+	
 }
