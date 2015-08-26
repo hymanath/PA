@@ -21,4 +21,6 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getCandidateAttendanceForMeetings(List<Long> partyMeetingsList);
 	
 	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList);
+	
+	public List<Long> getConductedMeetings(List<Long> partyMeetingsList);
 }
