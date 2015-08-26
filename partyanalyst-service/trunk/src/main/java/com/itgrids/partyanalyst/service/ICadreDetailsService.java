@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
@@ -47,4 +48,7 @@ public interface ICadreDetailsService {
 	public Long getTdpCadreIdBymembershipId(String membershipId);
 	
 	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(Long locationId,String locationType,Long insuranceTypeId);
+	
+	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId);
+	
 }
