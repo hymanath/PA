@@ -115,22 +115,22 @@
                                         <table class="table m_0 table-bordered">
                                             <tr class="font-12">
                                                 <td><h4 class="m_top20">
-                                                	TOTAL DISTRICT COMMITTEES<span class="pull-right">10</span>
+                                                	TOTAL DISTRICT COMMITTEES<span class="pull-right" id="ttlDistMtngsSpanId">0</span>
                                                 </h4></td>
                                             </tr>
                                             <tr>
                                                 <td><h4 class="m_top20">
-                                                NO OF PLANNED MEETINGS<span class="pull-right">10</span>
+                                                NO OF PLANNED MEETINGS<span class="pull-right" id="ttlPlnndMtngsSpanId">0</span>
                                                 </h4></td>
                                             </tr>
                                             <tr>
                                                 <td><h4 class="m_top20">
-                                                	TOTAL NO OF MEETINGS CONDUCTED<span class="pull-right">10(10%)</span>
+                                                	TOTAL NO OF MEETINGS CONDUCTED<span class="pull-right" id="ttlCndctdMtngsSpanId">0(0%)</span>
                                                 </h4></td>
                                             </tr>
                                             <tr>
                                                 <td><h4 class="m_top20">
-                                                	AVERAGE ATTENDANCE OF INVITEES<span class="pull-right">10</span>
+                                                	AVERAGE ATTENDANCE OF INVITEES<span class="pull-right" id="avgAttndInvtsSpanId">0</span>
                                                 </h4></td>
                                             </tr>
                                         </table>
@@ -1438,6 +1438,12 @@ $(document).ready(function(e) {
 		}).done(function(result){
 			$('.individual').show();
 			var pmList = result.partyMeetingsList;
+			
+			$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
+			$("#ttlPlnndMtngsSpanId").html(pmList[0].plannedMeetings);
+			$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" %)");
+			$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttended);
+			
 			var str = "";
 			if(pmList!=null && pmList.length>0){
 				for(var i in pmList){
