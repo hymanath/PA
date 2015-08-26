@@ -674,6 +674,8 @@
 				 <value>com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear</value>
 				 <value>com.itgrids.partyanalyst.model.EnrollmentYear</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.TdpCadreContestedLocation</value>
+				 
 			</list>
 		</property>
 	</bean>
@@ -3109,4 +3111,9 @@
 	 <bean id="enrollmentYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.EnrollmentYearDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	 <bean id="tdpCadreContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreContestedLocationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
 </beans>
