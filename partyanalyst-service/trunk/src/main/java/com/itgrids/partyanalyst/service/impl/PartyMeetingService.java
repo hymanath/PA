@@ -958,6 +958,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
 			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(null, locationLevel, statesList, locationIds, null, null, null, null, null, null, startDate, endDate);
 			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+			
+			List<Long> mtngLctnsLst = new ArrayList<Long>();
 			Map<Long,String> lctnNmsMap = new HashMap<Long, String>();
 			if(nameRslt!=null && nameRslt.size()>0){
 				for(IdNameVO temp:nameRslt){
@@ -968,6 +970,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
 			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
 				for(Object[] obj:partyMeetingsRslt){
+					if(!mtngLctnsLst.contains(Long.valueOf(obj[4].toString()))){
+						mtngLctnsLst.add(Long.valueOf(obj[4].toString()));					// For Overall Summary -- Unique Meetings
+					}
 					PartyMeetingSummaryVO tmp = new PartyMeetingSummaryVO();
 					tmp.setMeetingId(Long.valueOf(obj[9].toString()));
 					tmp.setMeetingName(obj[8].toString());
@@ -984,6 +989,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 				List<PartyMeetingSummaryVO> momAndAtrRsltLst = getAtrAndMOMOfMeetings(prtyMtngIdsLst);
 				
 				if(attndnceRsltLst!=null && attndnceRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
+					
+					fnlLst.get(0).setConductedMeetings(attndnceRsltLst.get(0).getConductedMeetings());					// For Overall Summary -- Meetings Conducted (If Attendance is Greter Than Zero)
+					fnlLst.get(0).setAverageInviteesAttended(attndnceRsltLst.get(0).getAverageInviteesAttended());		// For Overall Summary -- Total Invitees Attended / Meetings Conducted 
+					
 					for(PartyMeetingSummaryVO temp:fnlLst){
 						PartyMeetingSummaryVO attndncVO = getMatchedMeeting(temp.getMeetingId(), attndnceRsltLst);
 						if(attndncVO!=null){
@@ -1001,6 +1010,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 				}
 			}
+			
+			if(fnlLst.size()>0){
+				fnlLst.get(0).setMeetingsCount(mtngLctnsLst.size());													// For Overall Summary -- Meetings Count( Unique Locations for overall Meetings)
+				fnlLst.get(0).setPlannedMeetings(fnlLst.size());
+				fnlLst.get(0).setConductedMeetingsPercent((new BigDecimal(fnlLst.get(0).getConductedMeetings()*(100.0)/fnlLst.get(0).getPlannedMeetings())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());// For Overall Summary -- All Meetings
+			}
+			
 		}catch (Exception e) {
 			LOG.error(" Error in getMeetingSummaryForLocation",e);
 		}
@@ -1071,12 +1087,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
+			int mtngNtCnductd = 0;
+			Long ttlAttnddInvts = 0l;
 			if(finalVOLst!=null && finalVOLst.size()>0){
 				for(PartyMeetingSummaryVO temp:finalVOLst){
 					Long ttlAttended = temp.getTotalAttended();
 					if(ttlAttended!=null && ttlAttended>0){
 						Long ttlInvits = temp.getTotalInvitees();
 						Long invitsAttended = temp.getInviteesAttended();
+						
+						ttlAttnddInvts = ttlAttnddInvts + ttlAttended ; 				// For Overall Summary  
+						mtngNtCnductd = mtngNtCnductd + 1;								// For Overall Summary  
 						
 						Long othrsAttnd = ttlAttended - invitsAttended;
 						Long invitsAbsent = ttlInvits - invitsAttended;
@@ -1093,8 +1114,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 							temp.setNonInviteesAttendedPercent(othrsAttnddPrcnt);
 							temp.setInviteesAttendedPercent(invtsAttnddPrcnt);
 						}
+						
 					}
+					
 				}
+			}
+			
+			if(finalVOLst.size()>0){
+				finalVOLst.get(0).setConductedMeetings(mtngNtCnductd);
+				finalVOLst.get(0).setAverageInviteesAttended((int)Math.ceil((double)ttlAttnddInvts/mtngNtCnductd));
 			}
 			
 		}catch (Exception e) {
@@ -1139,8 +1167,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			if(ttlRslt!=null && ttlRslt.size()>0){
 				for(Object[] obj:ttlRslt){
-					PartyMeetingSummaryVO temp = new PartyMeetingSummaryVO();
-					temp.setMeetingId(Long.valueOf(obj[0].toString()));
+					Long meetingId = Long.valueOf(obj[0].toString());
+					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					boolean isNew = false;
+					if(temp==null){
+						isNew = true;
+						temp = new PartyMeetingSummaryVO();
+						temp.setMeetingId(meetingId);
+					}
 					if(obj[1].toString().equalsIgnoreCase("ATR")){
 						temp.setAtrFilesExist(true);
 						temp.setAtrFilesCount(Long.valueOf(obj[2].toString()));
@@ -1148,7 +1182,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 						temp.setMomFilesExist(true);
 						temp.setMomFilesCount(Long.valueOf(obj[2].toString()));
 					}
-					finalVOLst.add(temp);
+					if(isNew){
+						finalVOLst.add(temp);
+					}
 				}
 			}
 			
