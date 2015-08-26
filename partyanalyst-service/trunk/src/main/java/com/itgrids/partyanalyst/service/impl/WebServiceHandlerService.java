@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
@@ -2809,5 +2810,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  	return webserviceResultVO;
 	  }
 	  
+	  public CadreOverviewVO getTdpCadreOverViewDetails(CadreOverviewVO inputVO)
+	  {
+		  CadreOverviewVO returnVO = null;
+		  try {
+			  returnVO = cadreDetailsService.getTdpcadreDetailsByTdpCadreId(inputVO.getCadreId());
+		} catch (Exception e) {
+			 log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
+		}
+		  return returnVO;
+	  }
 }
 

@@ -40,10 +40,12 @@ import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -55,6 +57,8 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -89,8 +93,26 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IEventTypeDAO eventTypeDAO;
 	private IEventInviteeDAO eventInviteeDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	private IPartyMeetingService partyMeetingService;
+	private IMahaNaduService mahaNaduService;
 	
 	
+	public IMahaNaduService getMahaNaduService() {
+		return mahaNaduService;
+	}
+
+	public void setMahaNaduService(IMahaNaduService mahaNaduService) {
+		this.mahaNaduService = mahaNaduService;
+	}
+
+	public IPartyMeetingService getPartyMeetingService() {
+		return partyMeetingService;
+	}
+
+	public void setPartyMeetingService(IPartyMeetingService partyMeetingService) {
+		this.partyMeetingService = partyMeetingService;
+	}
+
 	public IEventInviteeDAO getEventInviteeDAO() {
 		return eventInviteeDAO;
 	}
@@ -3179,4 +3201,76 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return finalcadreVo;
 	}
 	
+	
+	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId)
+	{
+		CadreOverviewVO returnVO = new CadreOverviewVO();
+		try {
+			
+			CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId);
+			
+			if(cadreVO != null )
+			{
+				returnVO.setAge(cadreVO.getAge());
+				returnVO.setAreaType(cadreVO.getAreaType());
+				returnVO.setBoothId(cadreVO.getBoothId());
+				returnVO.setCadreId(cadreVO.getCadreId());
+				returnVO.setCandidateId(cadreVO.getCandidate());
+				returnVO.setCasteName(cadreVO.getCasteName());
+				returnVO.setConstituencyName(cadreVO.getCommiteeName());
+				returnVO.setDob(cadreVO.getDateOfBirth());
+				returnVO.setDistrictId(cadreVO.getDistrictId());
+				returnVO.setDistrictName(cadreVO.getDistrictName());
+				returnVO.setEmail(cadreVO.getEmailId());
+				returnVO.setEnrollmentYears(cadreVO.getEnrollmentYears());
+				returnVO.setHouseNo(cadreVO.getHouseNo());
+				returnVO.setImagePath(cadreVO.getImagePath());
+				returnVO.setLocalElectionBodyId(cadreVO.getLocalElectionBody().toString());
+				returnVO.setMembershipNo(Long.valueOf(cadreVO.getMembershipNo()));
+				returnVO.setMobileNo(Long.valueOf(cadreVO.getMobileNo()));
+				returnVO.setCandidateName(cadreVO.getName());
+				returnVO.setOccupation(cadreVO.getOccupation());
+				returnVO.setParliamentId(cadreVO.getpConstituencyId());
+				returnVO.setParlimentName(cadreVO.getpConstituencyName());
+				returnVO.setPanchayatId(cadreVO.getPanchayatId());
+				returnVO.setPanchayatName(cadreVO.getPanchayatName());
+				returnVO.setPartNo(Long.valueOf(cadreVO.getPartNo()));
+				returnVO.setPartyPosition(cadreVO.getPartyPosition());
+				returnVO.setRegisteredAt(cadreVO.getRegisteredOn());
+				returnVO.setRegisteredTime(cadreVO.getRegisteredTime());
+				returnVO.setRepresentativeType(cadreVO.getRepresentativeType());
+				returnVO.setStateId(cadreVO.getStateId());
+				returnVO.setStateName(cadreVO.getStateName());
+				returnVO.setTehsilId(cadreVO.getTehsilId());
+				returnVO.setTehsilName(cadreVO.getTehsilName());
+				returnVO.setVoterId(Long.valueOf(cadreVO.getVoterId()));
+				returnVO.setVoterCardNo(cadreVO.getVoterIdCardNo());
+				
+				returnVO.getFamilyMembersList().addAll(getCadreFamilyDetails(tdpCadreId));
+				returnVO.getElectionResultsPerfList().addAll(getElectionPerformanceInCadreLocation(tdpCadreId));
+				
+				PartyMeetingVO partyMeetingVO = partyMeetingService.getPartyMeetingDetailsBySearchType(tdpCadreId);
+				if(partyMeetingVO != null)
+				{
+					returnVO.setMeetingAttendenceCount(partyMeetingVO.getAttendedCount());
+					returnVO.setMeetingInvitationCount(partyMeetingVO.getInvitedCount());
+					returnVO.setMeetingAbsentCount(partyMeetingVO.getAbsentCount());
+				}
+				
+				PartyMeetingVO eventsVO =  mahaNaduService.getParticipatedCandidateEventDetails(tdpCadreId);
+				if(eventsVO != null)
+				{
+					returnVO.setEventAttendedCount(eventsVO.getAttendedCount());
+					returnVO.setEventInvitationCount(eventsVO.getInvitedCount());
+					returnVO.setEventAbsentCount(eventsVO.getAbsentCount());
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getTdpcadreDetailsByTdpCadreId() Method - ",e);
+		}
+		
+		return returnVO;
+	}
 }
