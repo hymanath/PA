@@ -21,10 +21,16 @@ public class TrainingCampAttendanceTabUserDAOHibernateTest extends BaseDaoTestCa
 		trainingCampAttendanceTabUserDAO.getAll();
 	}*/
 	
-	public void testGetTrainingCampSchedulesOfAttendanceTabUser()
+	/*public void testGetTrainingCampSchedulesOfAttendanceTabUser()
 	{
 		List<TrainingCampSchedule> list = trainingCampAttendanceTabUserDAO.getTrainingCampSchedulesOfAttendanceTabUser(1l);
 		System.out.println(list.size());
 	
+	}*/
+	
+	public void testGetTrainingCampBatchesOfScheduleForTabUser()
+	{
+		List<Object[]> list = trainingCampAttendanceTabUserDAO.getTrainingCampBatchesOfScheduleForTabUser(1l,1l);
+		System.out.println(list.size());
 	}
 }
