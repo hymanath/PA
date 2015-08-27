@@ -1156,9 +1156,10 @@ public class PartyMeetingService implements IPartyMeetingService{
      * Service To Give MOM,ATR & Documents Information
      * @param List<Long> PartyMeetingIds
      * @return PartyMeetingSummaryVO
-     * $LastChangedDate$
-	 * $Rev$
-	 * $Id$
+     * Last modified   : $LastChangedDate$
+	 * Revision		   : $Rev$
+	 * Version		   : $Id$
+	 * Last modified by: $Author$
      */
 	
 	public List<PartyMeetingSummaryVO> getAtrAndMOMOfMeetings(List<Long> partyMeetingIds){
