@@ -105,14 +105,26 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 			
 			jObj = new JSONObject(getTask());
 			
-			Long partyMeetingLevelId=2l;
+			Long meetingLevel = jObj.getLong("meetingLevel");
+			Long typeOfMeeting = jObj.getLong("typeOfMeeting");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long locationscope = jObj.getLong("locationscope");
+			Long stateId = jObj.getLong("stateId");
+			Long distId = jObj.getLong("distId");
+			Long constId = jObj.getLong("constId");
+			Long manTowDivId = jObj.getLong("manTowDivId");
+			Long wardPanId = jObj.getLong("wardPanId");
+			
+			/*Long partyMeetingLevelId=2l;
 			String fromDateString="2015/01/01";
 			String toDateString="2015/12/31";
 			Long partyMeetingTypeId=0l;
 			Long locationLevelId=2l;
-			Long locationValue=0l;
+			Long locationValue=0l;*/
 			
-			meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(partyMeetingLevelId,fromDateString,toDateString,partyMeetingTypeId,locationLevelId,locationValue);
+			//meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(partyMeetingLevelId,fromDateString,toDateString,partyMeetingTypeId,locationLevelId,locationValue);
+			meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(meetingLevel,fromDate,toDate,typeOfMeeting,locationscope,stateId,distId,constId,manTowDivId,wardPanId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getMeetingSummary", e);
