@@ -103,7 +103,10 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 			
 			//List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
 			List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,statesList,districtList,constituencyList,mandalList,townList,divisonList,villageList,wardList);
-			List<Long> partyMeetingsList = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList);
+			List<Long> partyMeetingsList = new ArrayList<Long>(0);
+			if(allPartyMeetingsList!=null && allPartyMeetingsList.size()>0){
+				partyMeetingsList = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList);
+			}
 			
 			if(partyMeetingsList != null && partyMeetingsList.size() > 0)
 			{
