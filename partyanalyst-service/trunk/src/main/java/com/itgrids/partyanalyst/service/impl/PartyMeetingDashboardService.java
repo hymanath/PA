@@ -47,7 +47,8 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 		return result;
 	}
 	
-	public MeetingSummeryVO getMeetingsSummeryForDashboard(Long partyMeetingLevelId,String fromDateString,String toDateString,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
+	//public MeetingSummeryVO getMeetingsSummeryForDashboard(Long partyMeetingLevelId,String fromDateString,String toDateString,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
+	public MeetingSummeryVO getMeetingsSummeryForDashboard(Long partyMeetingLevelId,String fromDateString,String toDateString,Long partyMeetingTypeId,Long locationLevelId,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId)
 	{
 		MeetingSummeryVO meetingSummeryVO = new MeetingSummeryVO();
 		try{
@@ -56,7 +57,52 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 			Date fromDate = sdf.parse(fromDateString);
 			Date toDate = sdf.parse(toDateString);
 			
-			List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
+			List<Long> statesList = new ArrayList<Long>(0);
+			statesList.add(stateId);
+			
+			List<Long> districtList = new ArrayList<Long>(0);
+			districtList.add(distId);
+			
+			List<Long> constituencyList = new ArrayList<Long>(0);
+			constituencyList.add(constId);
+			
+			List<Long> mandalList = new ArrayList<Long>(0);
+			List<Long> townList = new ArrayList<Long>(0);
+			List<Long> divisonList = new ArrayList<Long>(0);
+			List<Long> villageList = new ArrayList<Long>(0);
+			List<Long> wardList = new ArrayList<Long>(0);
+			
+			if(locationLevelId==4){
+				String mtdId = manTowDivId.toString();
+				char temp = mtdId.charAt(0);
+				locationLevelId=Long.parseLong(temp+"");
+				if(locationLevelId==1l){
+					mandalList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevelId = 4l;
+				}else if(locationLevelId==2l){
+					townList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevelId = 5l;
+				}else if(locationLevelId==3l){
+					divisonList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevelId = 6l;
+				}
+			}
+			
+			if(locationLevelId==5){
+				String vwId = wardPanId.toString();
+				char temp = vwId.charAt(0);
+				locationLevelId=Long.parseLong(temp+"");
+				if(locationLevelId==1l){
+					villageList.add(Long.parseLong(vwId.substring(1)));
+					locationLevelId=7l;
+				}else if(locationLevelId==2l){
+					wardList.add(Long.parseLong(vwId.substring(1)));
+					locationLevelId=8l;
+				}
+			}
+			
+			//List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
+			List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,statesList,districtList,constituencyList,mandalList,townList,divisonList,villageList,wardList);
 			List<Long> partyMeetingsList = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList);
 			
 			if(partyMeetingsList != null && partyMeetingsList.size() > 0)
