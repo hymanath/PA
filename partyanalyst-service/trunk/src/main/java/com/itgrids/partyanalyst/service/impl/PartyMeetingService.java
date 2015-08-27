@@ -934,13 +934,14 @@ public class PartyMeetingService implements IPartyMeetingService{
      * @param List<Long> LocationIds, Long LocationLevel, String startDate, String endDate
      * @return PartyMeetingSummaryVO
      */
-	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr){
+	//public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr){
+	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr){
 		LOG.debug(" Entered Into getMeetingSummaryForLocation");
 		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
 		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
 		try{
 			
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 			
 			Date startDate= null;
 			Date endDate= null;
@@ -952,11 +953,80 @@ public class PartyMeetingService implements IPartyMeetingService{
 				endDate= format.parse(endDateStr);
 			}
 			
-			List<Long> statesList = new ArrayList<Long>();
-			statesList.add(0l);
+			List<Long> statesList = new ArrayList<Long>(0);
+			statesList.add(stateId);
+			
+			List<Long> districtList = new ArrayList<Long>(0);
+			districtList.add(distId);
+			
+			List<Long> constituencyList = new ArrayList<Long>(0);
+			constituencyList.add(constId);
+			
+			List<Long> mandalList = new ArrayList<Long>(0);
+			List<Long> townList = new ArrayList<Long>(0);
+			List<Long> divisonList = new ArrayList<Long>(0);
+			List<Long> villageList = new ArrayList<Long>(0);
+			List<Long> wardList = new ArrayList<Long>(0);
+			
+			if(locationLevel==4){
+				String mtdId = manTowDivId.toString();
+				char temp = mtdId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				if(locationLevel==1l){
+					mandalList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 4l;
+				}else if(locationLevel==2l){
+					townList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 5l;
+				}else if(locationLevel==3l){
+					divisonList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 6l;
+				}
+			}
+			
+			if(locationLevel==5){
+				String vwId = wardPanId.toString();
+				char temp = vwId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				if(locationLevel==1l){
+					villageList.add(Long.parseLong(vwId.substring(1)));
+					locationLevel=7l;
+				}else if(locationLevel==2l){
+					wardList.add(Long.parseLong(vwId.substring(1)));
+					locationLevel=8l;
+				}
+			}
 			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
 			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
-			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(null, locationLevel, statesList, locationIds, null, null, null, null, null, null, startDate, endDate);
+			
+			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			
+			List<Long> locationIds = new ArrayList<Long>(0);
+			
+			if(locationLevel==1l){
+				locationIds.addAll(statesList);
+			}else if(locationLevel==2l){
+				locationIds.addAll(districtList);
+			}else if(locationLevel==3l){
+				locationIds.addAll(constituencyList);
+			}else if(locationLevel==4l){
+				locationIds.addAll(mandalList);
+			}else if(locationLevel==5l){
+				locationIds.addAll(townList);
+			}else if(locationLevel==6l){
+				locationIds.addAll(divisonList);
+			}else if(locationLevel==7l){
+				locationIds.addAll(villageList);
+			}else if(locationLevel==8l){
+				locationIds.addAll(wardList);
+			}
+			
+			if(locationIds.get(0)==0l && partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
+				for(Object[] obj:partyMeetingsRslt){
+					locationIds.add((Long)(obj[4]));
+				}
+			}
+			
 			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
 			
 			List<Long> mtngLctnsLst = new ArrayList<Long>();
