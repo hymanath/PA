@@ -1286,6 +1286,11 @@ $(document).ready(function(e) {
 		$(".themeControll").toggleClass("active");
 	});
 	
+	$('#locationLevelSelId').val('2').trigger('change');
+	$('#stateId').val('1').trigger('change');
+	setTimeout(function(){
+	  $('#districtId').val(0);
+	}, 2000);
 	getMeetingSummary(2,0,1,2,0,0,0,0,0);//meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,mtdId,vwId
 	getPartyMeetingDetails(0,0,1,2,0,0,0,0,0);
 });
@@ -1488,71 +1493,76 @@ $(document).ready(function(e) {
 			url:"getMeetingSummaryForLocationAction.action",
 			data:{task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			 $('.individual').show();
-			var pmList = result.partyMeetingsList;
-			
-			$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
-			$("#ttlPlnndMtngsSpanId").html(pmList[0].plannedMeetings);
-			$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" %)");
-			$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttended);
-			
-			var str = "";
-			if(pmList!=null && pmList.length>0){
-				for(var i in pmList){
-					str+="<tr>";
-					str+="<td>"+pmList[i].meetingName+"</td>";
-					str+="<td>"+pmList[i].location+"</td>";
-					str+="<td>"+pmList[i].scheduledOn+"</td>";
-					if(pmList[i].attendanceInfo!=null){
-						str+="<td>"+pmList[i].attendanceInfo.totalInvitees+"</td>";
-						str+="<td>"+pmList[i].attendanceInfo.totalAttended+"</td>";
-						str+="<td>"+pmList[i].attendanceInfo.inviteesAttended+"</td>";
-						str+="<td>"+pmList[i].attendanceInfo.nonInviteesAttended+"</td>";
-						str+="<td>"+pmList[i].attendanceInfo.totalAbsent+"</td>";
-					}else{
-						str+="<td> - </td>";
-						str+="<td> - </td>";
-						str+="<td> - </td>";
-						str+="<td> - </td>";
-						str+="<td> - </td>";
-					}
-					
-					if(pmList[i].docTxtInfo!=null){
-						if(pmList[i].docTxtInfo.momFilesExist){
-							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
-						}else{
-							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						}
-						
-						if(pmList[i].docTxtInfo.momTextExist){
-							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
-						}else{
-							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						}
-						
-						if(pmList[i].docTxtInfo.atrFilesExist){
-							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
-						}else{
-							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						}
-						
-						if(pmList[i].docTxtInfo.atrTextExist){
-							str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
-						}else{
-							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						}
-					}else{
-						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
-					}
-					
-					str+="</tr>";
-				}
+			if(result!=null && result.partyMeetingsList!=null && result.partyMeetingsList.length>0){
+				 $('.individual').show();
+				var pmList = result.partyMeetingsList;
 				
+				$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
+				$("#ttlPlnndMtngsSpanId").html(pmList[0].plannedMeetings);
+				$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" %)");
+				$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttended);
+				
+				var str = "";
+				if(pmList!=null && pmList.length>0){
+					for(var i in pmList){
+						str+="<tr>";
+						str+="<td>"+pmList[i].meetingName+"</td>";
+						str+="<td>"+pmList[i].location+"</td>";
+						str+="<td>"+pmList[i].scheduledOn+"</td>";
+						if(pmList[i].attendanceInfo!=null){
+							str+="<td>"+pmList[i].attendanceInfo.totalInvitees+"</td>";
+							str+="<td>"+pmList[i].attendanceInfo.totalAttended+"</td>";
+							str+="<td>"+pmList[i].attendanceInfo.inviteesAttended+"</td>";
+							str+="<td>"+pmList[i].attendanceInfo.nonInviteesAttended+"</td>";
+							str+="<td>"+pmList[i].attendanceInfo.totalAbsent+"</td>";
+						}else{
+							str+="<td> - </td>";
+							str+="<td> - </td>";
+							str+="<td> - </td>";
+							str+="<td> - </td>";
+							str+="<td> - </td>";
+						}
+						
+						if(pmList[i].docTxtInfo!=null){
+							if(pmList[i].docTxtInfo.momFilesExist){
+								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+							}else{
+								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							}
+							
+							if(pmList[i].docTxtInfo.momTextExist){
+								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+							}else{
+								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							}
+							
+							if(pmList[i].docTxtInfo.atrFilesExist){
+								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+							}else{
+								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							}
+							
+							if(pmList[i].docTxtInfo.atrTextExist){
+								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+							}else{
+								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							}
+						}else{
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+							str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						}
+						
+						str+="</tr>";
+					}
+					
+				}
+				$("#individualResultBody").html(str); 
+			}else{
+				$('.individual').show();
+				$("#individualResultBody").html("No Records Found"); 
 			}
-			$("#individualResultBody").html(str); 
 		});
 	}
 	
@@ -1674,7 +1684,7 @@ $(document).ready(function(e) {
 			}
 		}
 		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
-		
+		$(".tbtn").trigger( "click" );
 		getMeetingSummary($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
 		getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
 	}
@@ -1731,11 +1741,30 @@ $(document).ready(function(e) {
 			data : {task:JSON.stringify(jsObj)} 
 		}).done(function(result){
 			if(result!=null){
+				if(result.totalInvitees!=null){
+					$("#totalInvitieesHead").html(result.totalInvitees);
+				}else{
+					$("#totalInvitieesHead").html("0");
+				}
 				
-				$("#totalInvitieesHead").html(result.totalInvitees);
-				$("#attendedHead").html(result.totalAttended);
-				$("#nonInviteeHead").html(result.totalNonInvitees);
-				$("#totalAbsentHead").html(result.totalAbsent);
+				if(result.totalAttended!=null){
+					$("#attendedHead").html(result.totalAttended);
+				}else{
+					$("#attendedHead").html("0");
+				}
+				
+				if(result.totalNonInvitees!=null){
+					$("#nonInviteeHead").html(result.totalNonInvitees);
+				}else{
+					$("#nonInviteeHead").html("0");
+				}
+				
+				if(result.totalAbsent!=null){
+					$("#totalAbsentHead").html(result.totalAbsent);
+				}else{
+					$("#totalAbsentHead").html("0");
+				}
+				
 				
 				var str='';
 				str+='<tr class="font-12">';
@@ -1748,23 +1777,83 @@ $(document).ready(function(e) {
 				str+='<tr>';
 				str+='<tr>';
 				str+='<td>PUBLIC REPRESENTATIVE</td>';
-				str+='<td>'+result.totalCandidateInvitees+'</td>';
-				str+='<td>'+result.totalCandidateAttended+'</td>';
-				str+='<td>'+result.totalCandidateNonInvitees+'</td>';
-				str+='<td>'+result.totalCandidateAbsent+'</td>';
+				if(result.totalCandidateInvitees!=null){
+					str+='<td>'+result.totalCandidateInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				if(result.totalCandidateAttended!=null){
+					str+='<td>'+result.totalCandidateAttended+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalCandidateNonInvitees!=null){
+					str+='<td>'+result.totalCandidateNonInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalCandidateAbsent!=null){
+					str+='<td>'+result.totalCandidateAbsent+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
 				str+='</tr>';
 				str+='<td>PARTY ROLE</td>';
-				str+='<td>'+result.totalCommitteeMemberInvitees+'</td>';
-				str+='<td>'+result.totalCommitteeMemberAttended+'</td>';
-				str+='<td>'+result.totalCommitteeMemberNonInvitees+'</td>';
-				str+='<td>'+result.totalCommitteeMemberAbsent+'</td>';
+				
+				if(result.totalCommitteeMemberInvitees!=null){
+					str+='<td>'+result.totalCommitteeMemberInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalCommitteeMemberAttended!=null){
+					str+='<td>'+result.totalCommitteeMemberAttended+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalCommitteeMemberNonInvitees!=null){
+					str+='<td>'+result.totalCommitteeMemberNonInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalCommitteeMemberAbsent!=null){
+					str+='<td>'+result.totalCommitteeMemberAbsent+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
 				str+='</tr>';
 				str+='<tr>';
 				str+='<td>NO ROLE</td>';
-				str+='<td>'+result.totalNoRoleInvitees+'</td>';
-				str+='<td>'+result.totalNoRoleAttended+'</td>';
-				str+='<td>'+result.totalNoRoleNonInvitees+'</td>';
-				str+='<td>'+result.totalNoRoleAbsent+'</td>';
+				
+				if(result.totalNoRoleInvitees!=null){
+					str+='<td>'+result.totalNoRoleInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalNoRoleAttended!=null){
+					str+='<td>'+result.totalNoRoleAttended+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalNoRoleNonInvitees!=null){
+					str+='<td>'+result.totalNoRoleNonInvitees+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				
+				if(result.totalNoRoleAbsent!=null){
+					str+='<td>'+result.totalNoRoleAbsent+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
 				str+='</tr>';
 				
 				$("#meetingSummaryBodyId").html(str);
