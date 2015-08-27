@@ -34,12 +34,47 @@
 {
 	border:0px;
 }
+header.eventsheader { 
+ background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
+ background-origin: border-box;
+ background-repeat: no-repeat;
+ height: 71px; 
+}
 </style>
 
 </head>
 <body>
-<header>
-	<img src="dist/img/header.jpg" width="100%">
+<header  class="eventsheader">
+<!-- <img src="css/Training/img/header.jpg" width="100%"> -->
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:38px;"></p>               
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
+                    Menu <img src="images/menu_icon.png" />
+                    </a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
+					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					
+                    </ul>   
+            </div>			
+        </div>       
+    </div>
+	
+	
 </header>
 <main>
 	<div class="container">
@@ -1169,43 +1204,55 @@
                     <option value="4">Last 9 Months</option>
                 </select>
             </div>
-            <div class="col-md-10 col-md-offset-1" id="stateDiv">
+			<div class="col-md-10 col-md-offset-1">
+                <label>Location Level</label>
+                <select class="form-control custom-select" id="locationLevelSelId">
+                   	<option value="">Select Location Level</option>
+					<option value="1">State</option>
+					<option value="2">District</option>
+					<option value="3">Constituency</option>
+					<option value="4">Mandal/Town/Divison</option>
+					<option value="5">Village/Ward</option>
+                </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="stateDiv" style="display:none;">
                 <label>Select State</label>
                 <select class="form-control custom-select locationCls" id="stateId" onchange="getDistrictsForStates();">
+					<option value="">Select State</option>
                    	<option value="0">All</option>
 					<option value="1">AndhraPradesh</option>
 					<option value="36">Telangana</option>
                 </select>
             </div>
-            <div class="col-md-10 col-md-offset-1 " id="districtDiv">
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="districtDiv" style="display:none;">
                 <label>Select District</label><img src='./images/icons/search.gif' class="offset7"  id="imgForDist" style="width:15px;height:15px;display:none;"/>
                 <select class="form-control custom-select locationCls" id="districtId" onchange="getConstituenciesForDistricts(this.value);">
-                   
+                   <option>Select District</option>
                 </select>
             </div>
-            <div class="col-md-10 col-md-offset-1" id="constituencyDiv">
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="constituencyDiv" style="display:none;">
                 <label>Select Constituency</label><img src='./images/icons/search.gif' class="offset7"  id="imgForConsti" style="width:15px;height:15px;display:none;"/>
                 <select class="form-control custom-select locationCls" id="constituencyId" onchange="getMandalCorporationsByConstituency();">
                     <option>Select Constituency</option>
                 </select>
             </div>
 			
-			<div class="col-md-10 col-md-offset-1" id="mandalDiv">
-                <label>Mandal</label><img src='./images/icons/search.gif' class="offset7"  id="imgForMandl" style="width:15px;height:15px;display:none;"/>
+			<div class="col-md-10 col-md-offset-1 locationDiv" id="mandalDiv" style="display:none;">
+                <label>Mandal/Town/Divison</label><img src='./images/icons/search.gif' class="offset7"  id="imgForMandl" style="width:15px;height:15px;display:none;"/>
                 <select class="form-control custom-select locationCls" id="mandalId" onchange="getPanchayatWardByMandal();">
-                   <option>Select Mandal</option>
+                   <option>Select Mandal/Town/Divison</option>
                 </select>
             </div>
-			<div class="col-md-10 col-md-offset-1" id="panchayatDiv">
-                <label>Panchayat</label><img src='./images/icons/search.gif' class="offset7"  id="imgForPanc" style="width:15px;height:15px;display:none;"/>
+			<div class="col-md-10 col-md-offset-1 locationDiv" id="panchayatDiv" style="display:none;">
+                <label>Village/Ward</label><img src='./images/icons/search.gif' class="offset7"  id="imgForPanc" style="width:15px;height:15px;display:none;"/>
                 <select class="form-control custom-select locationCls" id="panchayatId">
-                   <option>Select Panchayat</option>
+                   <option>Select Village/Ward</option>
                 </select>
             </div>
 			
            
             <div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
-			  <button class="btn btn-block btn-success btn-sm btn-custom" onClick="getMeetingSummary();">UPDATE</button>
+			  <button class="btn btn-block btn-success btn-sm btn-custom" onClick="updateFunctions();">UPDATE</button>
             </div>
         </div>
   </div>
@@ -1218,6 +1265,7 @@
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
+$("#mainheading").html(" PARTY MEETINGS DASHBOARD ");
 $(document).ready(function(e) {
 
 	$('.cumulative,.individual').hide();
@@ -1237,6 +1285,9 @@ $(document).ready(function(e) {
 	$(".tbtn").click(function(){
 		$(".themeControll").toggleClass("active");
 	});
+	
+	getMeetingSummary(2,0,1,2,0,0,0,0,0);//meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,mtdId,vwId
+	getPartyMeetingDetails(0,0,1,2,0,0,0,0,0);
 });
 
 
@@ -1268,6 +1319,7 @@ $(document).ready(function(e) {
 	  
      for(var i in result){
 	   if(result[i].id == 0){
+		  $("#districtId").append('<option value="">Select District</option>');
           $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
 	   }else{
 	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1275,49 +1327,7 @@ $(document).ready(function(e) {
 	 }
    });
   }
-  function showHide()
-  {
 
-   var stateId = $("#stateId").val();
-   var districtId = $("#districtId").val();
-   var constituencyId = $("#constituencyId").val();
-   var mandalId = $("#mandalId").val();
-  
-   if(stateId == 0)
-   {
-	$("#districtDiv").hide();
-	$("#constituencyDiv").hide();
-	$("#mandalDiv").hide();
-	$("#panchayatDiv").hide();
-  }
-   else if(districtId == 0)
-   {
-	$("#districtDiv").show();
-	$("#constituencyDiv").hide();
-	$("#mandalDiv").hide();
-	$("#panchayatDiv").hide();
-   }
-    else if(constituencyId == 0)
-   {
-	$("#districtDiv").show();
-	$("#constituencyDiv").show();
-	$("#mandalDiv").hide();
-	$("#panchayatDiv").hide();
-   }
-    else if(mandalId == 0)
-   {
-	$("#districtDiv").show();
-	$("#constituencyDiv").show();
-	$("#mandalDiv").show();
-	$("#panchayatDiv").hide();
-   }
-   else{
-	$("#districtDiv").show();
-	$("#constituencyDiv").show();
-	$("#mandalDiv").show();
-	$("#panchayatDiv").show();
-   }
-  }
   	function getTypeOfMeeting()
 	{
 	 var locationLevel = $("#meetingLevel").val();
@@ -1366,6 +1376,7 @@ $(document).ready(function(e) {
 	  
      for(var i in result){
 	   if(result[i].id == 0){
+		  $("#constituencyId").append('<option value="">Select Constituency</option>');
           $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
 	   }else{
 	      $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1378,8 +1389,7 @@ $(document).ready(function(e) {
 			$("#imgForMandl").show();
 			var constituencyId = $('#constituencyId').val();
 			$("#mandalId  option").remove();
-			$("#mandalId").append('<option value="0">All</option>');
-			
+			$("#mandalId").append('<option value="">Select Mandal/Town/Divison</option>');
 				var jsObj ={					
 					constituencyId:constituencyId
 				};
@@ -1390,7 +1400,7 @@ $(document).ready(function(e) {
 				}).done(function(result){
 				$("#imgForMandl").hide();
 				if(result !=null)
-				{
+				{	$("#mandalId").append('<option value="0">All</option>');
 					for(var i in result)
 					{
 						$("#mandalId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
@@ -1403,7 +1413,7 @@ $(document).ready(function(e) {
 			$("#imgForPanc").show();
 			var mandalId=$("#mandalId").val();
 			$("#panchayatId  option").remove();
-			$("#panchayatId").append('<option value="0">Select Panchayat</option>');
+			$("#panchayatId").append('<option value="">Select Village/Ward</option>');
 			
 			var jsObj={
 				mandalId:mandalId
@@ -1414,32 +1424,71 @@ $(document).ready(function(e) {
 				data : {task:JSON.stringify(jsObj)} 
 			}).done(function(result){
 				$("#imgForPanc").hide();
-			for(var i in result){
-				$("#panchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			if(result!=null && result.length>0){
+				$("#panchayatId").append('<option value="0">Select Panchayat</option>');
+				for(var i in result){
+					$("#panchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
 			}
+			
 		});	
 	}
   $(".locationCls").change(function() {
-  showHide();
   });
   
-  getPartyMeetingDetails();
-	function getPartyMeetingDetails(){
-		var locationLevelValues = [11,12,13,14,15,16,17,18,19,20,21,22,23,517];
-		var locationLevel= 2;
-		var jsObj =	{
-			locationLevel:locationLevel,
-			locationLevelValues:locationLevelValues,
-			startDate:"07/28/2015",
-			endDate:"08/28/2015"
+ 
+	function getPartyMeetingDetails(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
+		var dateType=meetingduration;
+		var fromDate,temp1=new Date(),toDate;
+		var month;
+		if((temp1.getMonth()+1)<10){
+			month=0+""+(temp1.getMonth()+1);
+		}else{
+			month=(temp1.getMonth()+1);
 		}
-					
+		toDate = temp1.getFullYear()+"/"+month+"/"+temp1.getDate();
+		var temp = new Date();
+		if(dateType==1){
+			temp.setDate(temp.getDate() - 30);
+		}
+		else if(dateType==2){
+			temp.setDate(temp.getDate() - 90);
+		}
+		else if(dateType==3){
+			temp.setDate(temp.getDate() - 180);
+		}
+		else if(dateType==4){
+			temp.setDate(temp.getDate() - 270);
+		}
+		
+		var finalmonth;
+		if((temp.getMonth()+1)<10){
+			finalmonth=0+""+(temp.getMonth()+1);
+		}else{
+			finalmonth=temp.getMonth()+1;
+		}
+		
+		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+		
+		var jsObj =	{
+			meetinglevel:meetinglevel,
+			typeOfMeeting:typeOfMeeting,
+			locationLevel:locationscope,
+			stateId:stateId,
+			distId:distId,
+			constId:constId,
+			manTowDivId:manTowDivId,
+			wardPanId:wardPanId,
+			startDate:fromDate,
+			endDate:toDate
+		}
+			
 		$.ajax({
 			type: "POST",
 			url:"getMeetingSummaryForLocationAction.action",
 			data:{task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			$('.individual').show();
+			 $('.individual').show();
 			var pmList = result.partyMeetingsList;
 			
 			$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
@@ -1503,15 +1552,144 @@ $(document).ready(function(e) {
 				}
 				
 			}
-			$("#individualResultBody").html(str);
+			$("#individualResultBody").html(str); 
 		});
 	}
 	
-	function getMeetingSummary()
+	function updateFunctions(){
+		var stateId=0,distId=0,constId=0,manTowDivId=0,wardPanId=0;
+		
+		if($("#locationLevelSelId").val()==0){
+			alert("Please Select Location Level");
+			return;
+		}
+		else if($("#locationLevelSelId").val()==1){
+			if($("#stateId").val()==""){
+				alert("Please Select State");
+				return;
+			}else{
+				stateId=$("#stateId").val();
+			}
+		}else if($("#locationLevelSelId").val()==2){
+			
+			if($("#stateId").val()==""){
+				alert("Please Select State");
+				return;
+			}else{
+				stateId=$("#stateId").val();
+			}
+			
+			if($("#districtId").val()==""){
+				alert("Please Select District");
+				return;
+			}else{
+				distId=$("#districtId").val();
+			}
+		}else if($("#locationLevelSelId").val()==3){
+			
+			if($("#stateId").val()==""){
+				alert("Please Select State");
+				return;
+			}else{
+				stateId=$("#stateId").val();
+			}
+			
+			if($("#districtId").val()==""){
+				alert("Please Select District");
+				return;
+			}else{
+				distId=$("#districtId").val();
+			}
+			
+			if($("#constituencyId").val()==""){
+				alert("Please Select Constituency");
+				return;
+			}else{
+				constId=$("#constituencyId").val();
+			}
+		}else if($("#locationLevelSelId").val()==4){
+			
+			if($("#stateId").val()==""){
+				alert("Please Select State");
+				return;
+			}else{
+				stateId=$("#stateId").val();
+			}
+			
+			if($("#districtId").val()==""){
+				alert("Please Select District");
+				return;
+			}else{
+				distId=$("#districtId").val();
+			}
+			
+			if($("#constituencyId").val()==""){
+				alert("Please Select Constituency");
+				return;
+			}else{
+				constId=$("#constituencyId").val();
+			}
+			
+			if($("#mandalId").val()==""){
+				alert("Please Select Mandal/Town/Divison");
+				return;
+			}else{
+				manTowDivId=$("#mandalId").val();
+			}
+		}else if($("#locationLevelSelId").val()==5){
+			
+			if($("#stateId").val()==""){
+				alert("Please Select State");
+				return;
+			}else{
+				stateId=$("#stateId").val();
+			}
+			
+			if($("#districtId").val()==""){
+				alert("Please Select District");
+				return;
+			}else{
+				distId=$("#districtId").val();
+			}
+			
+			if($("#constituencyId").val()==""){
+				alert("Please Select Constituency");
+				return;
+			}else{
+				constId=$("#constituencyId").val();
+			}
+			
+			if($("#mandalId").val()==""){
+				alert("Please Select Mandal/Town/Divison");
+				return;
+			}else{
+				manTowDivId=$("#mandalId").val();
+			}
+			
+			if($("#panchayatId").val()==""){
+				alert("Please Select Village/Ward");
+				return;
+			}else{
+				wardPanId=$("#panchayatId").val();
+			}
+		}
+		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
+		
+		getMeetingSummary($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
+		getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
+	}
+	
+	function getMeetingSummary(meetingLevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId)
 	{	
-		var dateType=$("#meetingDuration").val();
+		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
-		fromDate = temp1.getFullYear()+"/"+(temp1.getMonth()+1)+"/"+temp1.getDate()
+		var month;
+		if((temp1.getMonth()+1)<10){
+			month=0+""+(temp1.getMonth()+1);
+		}else{
+			month=(temp1.getMonth()+1);
+		}
+		toDate = temp1.getFullYear()+"/"+month+"/"+temp1.getDate();
 		var temp = new Date();
 		if(dateType==1){
 			temp.setDate(temp.getDate() - 30);
@@ -1525,16 +1703,27 @@ $(document).ready(function(e) {
 		else if(dateType==4){
 			temp.setDate(temp.getDate() - 270);
 		}
-		toDate = temp.getFullYear()+"/"+(temp.getMonth()+1)+"/"+temp.getDate();
 		
-		var meetingLevel = $("#meetingLevel").val();
-		var typeOfMeeting = $("#typeOfMeeting").val();
+		var finalmonth;
+		if((temp.getMonth()+1)<10){
+			finalmonth=0+""+(temp.getMonth()+1);
+		}else{
+			finalmonth=temp.getMonth()+1;
+		}
+		
+		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
 		
 		var jsObj ={
 				meetingLevel:meetingLevel,
 				typeOfMeeting:typeOfMeeting,
 				fromDate:fromDate,
-				toDate:toDate
+				toDate:toDate,
+				locationscope:locationscope,
+				stateId:stateId,
+				distId:distId,
+				constId:constId,
+				manTowDivId:manTowDivId,
+				wardPanId:wardPanId
 			};
 		 $.ajax({
 			type : "GET",
@@ -1557,18 +1746,18 @@ $(document).ready(function(e) {
 				str+='<td>Invitees Absent</td>';
 				str+='</tr>';
 				str+='<tr>';
-				str+='<td>PARTY ROLE</td>';
-				str+='<td>'+result.totalCommitteeMemberInvitees+'</td>';
-				str+='<td>'+result.totalCommitteeMemberAttended+'</td>';
-				str+='<td>'+result.totalCommitteeMemberNonInvitees+'</td>';
-				str+='<td>'+result.totalCommitteeMemberAbsent+'</td>';
-				str+='</tr>';
 				str+='<tr>';
 				str+='<td>PUBLIC REPRESENTATIVE</td>';
 				str+='<td>'+result.totalCandidateInvitees+'</td>';
 				str+='<td>'+result.totalCandidateAttended+'</td>';
 				str+='<td>'+result.totalCandidateNonInvitees+'</td>';
 				str+='<td>'+result.totalCandidateAbsent+'</td>';
+				str+='</tr>';
+				str+='<td>PARTY ROLE</td>';
+				str+='<td>'+result.totalCommitteeMemberInvitees+'</td>';
+				str+='<td>'+result.totalCommitteeMemberAttended+'</td>';
+				str+='<td>'+result.totalCommitteeMemberNonInvitees+'</td>';
+				str+='<td>'+result.totalCommitteeMemberAbsent+'</td>';
 				str+='</tr>';
 				str+='<tr>';
 				str+='<td>NO ROLE</td>';
@@ -1582,11 +1771,33 @@ $(document).ready(function(e) {
 			}
 		});
 	}
+	
+	$("#locationLevelSelId").change(function(){
+		$(".locationDiv").hide();
+		$(".locationCls").val($(".locationCls option:first").val());
+		if($("#locationLevelSelId").val()==1){
+			$("#stateDiv").show();
+		}else if($("#locationLevelSelId").val()==2){
+			$("#stateDiv").show();
+			$("#districtDiv").show();
+		}else if($("#locationLevelSelId").val()==3){
+			$("#stateDiv").show();
+			$("#districtDiv").show();
+			$("#constituencyDiv").show();
+		}else if($("#locationLevelSelId").val()==4){
+			$("#stateDiv").show();
+			$("#districtDiv").show();
+			$("#constituencyDiv").show();
+			$("#mandalDiv").show();
+		}else if($("#locationLevelSelId").val()==5){
+			$("#stateDiv").show();
+			$("#districtDiv").show();
+			$("#constituencyDiv").show();
+			$("#mandalDiv").show();
+			$("#panchayatDiv").show();
+		}
+	});
 					
-</script>
-<script>
-showHide();
-getMeetingSummary();
 </script>
 </body>
 </html>
