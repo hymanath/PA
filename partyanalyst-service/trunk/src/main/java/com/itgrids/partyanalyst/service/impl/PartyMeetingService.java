@@ -1156,7 +1156,11 @@ public class PartyMeetingService implements IPartyMeetingService{
      * Service To Give MOM,ATR & Documents Information
      * @param List<Long> PartyMeetingIds
      * @return PartyMeetingSummaryVO
+     * $LastChangedDate$
+	 * $Rev$
+	 * $Id$
      */
+	
 	public List<PartyMeetingSummaryVO> getAtrAndMOMOfMeetings(List<Long> partyMeetingIds){
 		LOG.debug("Entered Into getAttendentsInformation");
 		List<PartyMeetingSummaryVO> finalVOLst = new ArrayList<PartyMeetingSummaryVO>();
