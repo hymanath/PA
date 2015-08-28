@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
@@ -1424,6 +1426,53 @@ public class WebServiceHandler {
 			returnVO = null;
 		}
 		return returnVO;
+	}
+	
+	
+	@GET
+	@Path("/getPartyMeetingsForCadrePeople/{tdpCadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PartyMeetingVO getPartyMeetingsForCadrePeople(@PathParam("tdpCadreId") String tdpCadreId){
+		
+		try{
+			return webServiceHandlerService.getPartyMeetingsForCadrePeople(tdpCadreId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getPartyMeetingsForCadrePeople() Method, Exception is ",e);
+		}
+		return null;
+	}
+	
+	@GET
+	@Path("/getParticipatedCandidateEventDetails/{tdpCadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PartyMeetingVO getParticipatedCandidateEventDetails(@PathParam("tdpCadreId") String tdpCadreId){
+		
+		try{
+			return webServiceHandlerService.getParticipatedCandidateEventDetails(tdpCadreId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getParticipatedCandidateEventDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	
+	@GET
+	@Path("/getEventDetailsOfCadre/{tdpCadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(@PathParam("tdpCadreId") String tdpCadreId){
+		
+		try{
+			return webServiceHandlerService.getEventDetailsOfCadre(tdpCadreId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getEventDetailsOfCadre() Method, Exception is ",e);
+			
+		}
+		return null;
 	}
 	
 }

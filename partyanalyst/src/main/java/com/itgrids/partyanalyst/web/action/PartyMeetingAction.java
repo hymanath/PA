@@ -134,7 +134,8 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		try {
 			 jObj = new JSONObject(getTask());
 		     Long meetingTypeId = jObj.getLong("meetingTypeId");
-		    partyMeetingVO = partyMeetingService.getMeetingTypeWiseDescription(meetingTypeId);
+		     Long tdpCadreId = jObj.getLong("tdpCadreId");
+		    partyMeetingVO = partyMeetingService.getMeetingTypeWiseDescription(meetingTypeId,tdpCadreId);
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getPartyMeetingDetailsForCadre in PartyMeetingAction Class.",e);
 		}
