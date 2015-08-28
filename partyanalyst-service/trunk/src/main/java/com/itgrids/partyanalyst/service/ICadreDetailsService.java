@@ -49,6 +49,6 @@ public interface ICadreDetailsService {
 	
 	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(Long locationId,String locationType,Long insuranceTypeId);
 	
-	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId);
+	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId,String houseNo, String voterCardNo);
 	
 }
