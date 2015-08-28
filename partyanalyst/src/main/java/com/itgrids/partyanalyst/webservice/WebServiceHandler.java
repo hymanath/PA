@@ -1435,7 +1435,7 @@ public class WebServiceHandler {
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(@PathParam("tdpCadreId") String tdpCadreId){
 		
 		try{
-			return webServiceHandlerService.getPartyMeetingsForCadrePeople(tdpCadreId);
+			return webServiceHandlerService.getPartyMeetingsForCadrePeople(Long.valueOf(tdpCadreId));
 		}
 		catch(Exception e)
 		{
@@ -1450,7 +1450,7 @@ public class WebServiceHandler {
 	public PartyMeetingVO getParticipatedCandidateEventDetails(@PathParam("tdpCadreId") String tdpCadreId){
 		
 		try{
-			return webServiceHandlerService.getParticipatedCandidateEventDetails(tdpCadreId);
+			return webServiceHandlerService.getParticipatedCandidateEventDetails(Long.valueOf(tdpCadreId));
 		}
 		catch(Exception e)
 		{
@@ -1465,7 +1465,7 @@ public class WebServiceHandler {
 	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(@PathParam("tdpCadreId") String tdpCadreId){
 		
 		try{
-			return webServiceHandlerService.getEventDetailsOfCadre(tdpCadreId);
+			return webServiceHandlerService.getEventDetailsOfCadre(Long.valueOf(tdpCadreId));
 		}
 		catch(Exception e)
 		{
