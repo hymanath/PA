@@ -50,7 +50,7 @@
 		   <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
-	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
+	       <link media="screen" type="text/css" href="https://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
 		   
 		   	<link rel="stylesheet" type="text/css" href="styles/engine3/style.css" />
 			
@@ -460,7 +460,7 @@ Quick Links</h2>
 					<s:if test="%{#videoGallaryDetails.fileType == 'Special Page'}" >
 					<a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' >
 					</s:if>
-					<img src='http://img.youtube.com/vi/<s:property value="pathOfFile"/>/1.jpg' alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>
+					<img src='https://img.youtube.com/vi/<s:property value="pathOfFile"/>/1.jpg' alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>
 					
 					<s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
 					<a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' >

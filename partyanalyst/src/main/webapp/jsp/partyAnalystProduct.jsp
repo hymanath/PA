@@ -345,17 +345,17 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
 <div id="videogallery">
     <div>
-	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
+	    <a rel="#voverlay" href='https://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='https://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
     </div>
 	
     <div>
-       <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+       <a rel="#voverlay"  href="https://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
         <img style="width:180px;height:170px;margin-left:10px;margin-top: 10px; " src="https://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
        </a>
     </div>
    <div>
-      <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+      <a rel="#voverlay"  href="https://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
        <img style="width:180px;height:175px;margin-left:10px;margin-top: 10px;margin-bottom: 10px;" src="https://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
       </a>
    </div>

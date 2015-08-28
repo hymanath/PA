@@ -17,7 +17,7 @@
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
 <script src="js/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">	</script>
-<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
 <link type="text/css" rel="stylesheet" href="styles/bubble.css">
@@ -327,17 +327,17 @@
    <h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
   <!--<div id="videogallery">
     <div>
-	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
+	    <a rel="#voverlay" href='https://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='https://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
     </div>
 	
     <div>
-       <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+       <a rel="#voverlay"  href="https://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
         <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="https://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
        </a>
     </div>
    <div>
-      <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+      <a rel="#voverlay"  href="https://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="https://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
       </a>
    </div>

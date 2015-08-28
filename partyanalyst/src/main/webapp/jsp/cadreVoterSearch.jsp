@@ -28,7 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="js/cadreSearch/Naturallanguage/css/component.css" />
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
-	<!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />-->
+	<!--<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />-->
 	<link href="js/StaticFiles/StaticCssFiles/family=Roboto.css" rel='stylesheet' type='text/css' />
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
@@ -66,7 +66,7 @@ table.dataTable tr.odd td.sorting_1 {background-color: #eee;}
 
 /*--------*/
 .styled-select {
-   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+   background: url(https://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
    height: 29px;
    overflow: hidden;
    width: 180px;
@@ -2302,9 +2302,9 @@ var constiSel =0;
 					{
 						str+='<tr>';
 						if(!isVoter)
-							str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+imageUrL+'/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+							str+='<td width="5%"><img class="profile-border" src="'+imageUrL+'/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
 						else{
-							str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+							str+='<td width="5%"><img class="profile-border" src="'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
 						}
 						
 						str+='<td width="">'+myresult[j].cadreName+'</td>';

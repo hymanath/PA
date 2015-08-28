@@ -507,7 +507,7 @@ function buildCandidateVideoGallery()
 {
 	
 
-	var value="http://www.youtube.com/v/8jhiIWiCch8?enablejsapi=1&playerapiid=ytplayer&rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
+	var value="https://www.youtube.com/v/8jhiIWiCch8?enablejsapi=1&playerapiid=ytplayer&rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
 	var params = { allowScriptAccess: "always" };	 
 	var atts = { id: "myytplayer" };
 	swfobject.embedSWF(value, "videoBarOne", "500", "300", "15", null, null, params,atts);

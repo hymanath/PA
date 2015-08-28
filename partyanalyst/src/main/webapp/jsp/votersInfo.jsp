@@ -233,7 +233,7 @@ h3{
 			  function shareInFacebook(urlStr)
 				{	
 					var url = encodeURL(urlStr);
-					var shareInFacebook_window = window.open("http://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+					var shareInFacebook_window = window.open("https://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
 					shareInFacebook_window.focus();
 				}
 			</script>
@@ -555,19 +555,19 @@ h3{
 <div id="videogallery">
 <h3>Video's</h3>
 	<div>
-      <a rel="#voverlay"  href="http://www.youtube.com/v/Kwilrv3LVLA?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+      <a rel="#voverlay"  href="https://www.youtube.com/v/Kwilrv3LVLA?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
        <img style="width:180px;height:175px;margin-left:10px;margin-top: 10px;margin-bottom: 10px;" src="https://img.youtube.com/vi/Kwilrv3LVLA/1.jpg">
       </a>
    </div>
 
     <div>
-	   <a rel="#voverlay" href='http://www.youtube.com/v/2Kexv-ec7Jg?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/2Kexv-ec7Jg/2.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
+	   <a rel="#voverlay" href='https://www.youtube.com/v/2Kexv-ec7Jg?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='https://img.youtube.com/vi/2Kexv-ec7Jg/2.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
     </div>
 	
 	<div>
-	   <a rel="#voverlay" href='http://www.youtube.com/v/BUVly4H7kGU?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/BUVly4H7kGU/1.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
+	   <a rel="#voverlay" href='https://www.youtube.com/v/BUVly4H7kGU?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='https://img.youtube.com/vi/BUVly4H7kGU/1.jpg' style="width: 180px; height: 175px;margin-left:10px;margin-top: 10px;"/></a>
     </div>
 	
    

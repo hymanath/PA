@@ -220,7 +220,7 @@ h3{
 			  function shareInFacebook(urlStr)
 				{	
 					var url = encodeURL(urlStr);
-					var shareInFacebook_window = window.open("http://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+					var shareInFacebook_window = window.open("https://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
 					shareInFacebook_window.focus();
 				}
 			</script>

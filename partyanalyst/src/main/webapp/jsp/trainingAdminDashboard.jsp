@@ -10,14 +10,14 @@
 	<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 	<link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
-	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 <link href="dist/css/jquery.circliful.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
 </head>
 <body>
 <header>
