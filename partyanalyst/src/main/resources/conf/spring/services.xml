@@ -2125,6 +2125,9 @@
 	  <property name="surveyUserAuthDAO" ref="surveyUserAuthDAO"/>
 	  <property name="messagingPropsDetailsDAO" ref="messagingPropsDetailsDAO"/>
 	  <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO"/>
+	  <property name="partyMeetingService" ref="partyMeetingService"/>
+	  <property name="mahaNaduService" ref="mahaNaduService"/>
+	  
 	  <!-- <property name="eventDAO" ref="eventDAO"/>   -->
 	    
  </bean>
@@ -2581,6 +2584,15 @@
 		 <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		 <property name="partyMeetingService" ref="partyMeetingService" />
 		 <property name="mahaNaduService" ref="mahaNaduService" />
+		 <property name="voterDAO" ref="voterDAO" />
+		 <property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
+		 <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />		 
+		 <property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
+		 <property name="tehsilDAO" ref="tehsilDAO" />
+		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		 <property name="panchayatDAO" ref="panchayatDAO" />
+		 <property name="districtDAO" ref="districtDAO" />
+		 <property name="stateDAO" ref="stateDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
