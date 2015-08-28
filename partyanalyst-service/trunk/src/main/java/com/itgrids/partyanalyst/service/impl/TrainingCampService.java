@@ -3619,7 +3619,7 @@ public class TrainingCampService implements ITrainingCampService{
 						constiIds.addAll(constiVO.getLevelValues());
 						constiVO.setLevelValues(new ArrayList<Long>(constiIds));
 						
-						getDistsOfConstituencies(temp.getLevelValues(), meetingAccessValues);
+						getDistsOfConstituencies(new ArrayList<Long>(constiIds), meetingAccessValues);
 					}
 				}
 			}

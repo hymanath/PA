@@ -1201,25 +1201,6 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return finalVOLst;
 	}
 	
-	
-	/**
-     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
-     * @since 21-AUG-2015
-     * Helper Service Method To Get Matched Meeting to Set Other Values for the Same Meeting
-     * @param Long PartyMeetingId, List<Long> PartyMeetingIds
-     * @return PartyMeetingSummaryVO
-     */
-	public PartyMeetingSummaryVO getMatchedMeeting(Long meetingId,List<PartyMeetingSummaryVO> meetings){
-		if(meetingId !=null && meetings!=null && meetings.size()>0){
-			for(PartyMeetingSummaryVO temp:meetings){
-				if(temp.getMeetingId().equals(meetingId)){
-					return temp;
-				}
-			}
-		}
-		return null;
-	}
-	
 	/**
      * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
      * @since 21-AUG-2015
@@ -1291,5 +1272,318 @@ public class PartyMeetingService implements IPartyMeetingService{
 			LOG.error("Error In getAttendentsInformation",e);
 		}
 		return finalVOLst;
+	}
+	
+	
+	/**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 21-AUG-2015
+     * Helper Service Method To Get Matched Meeting to Set Other Values for the Same Meeting
+     * @param Long PartyMeetingId, List<Long> PartyMeetingIds
+     * @return PartyMeetingSummaryVO
+     */
+	public PartyMeetingSummaryVO getMatchedMeeting(Long meetingId,List<PartyMeetingSummaryVO> meetings){
+		if(meetingId !=null && meetings!=null && meetings.size()>0){
+			for(PartyMeetingSummaryVO temp:meetings){
+				if(temp.getMeetingId().equals(meetingId)){
+					return temp;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * @Author  Sasi
+	 * @Version PartyMeetingService.java  Aug 27, 2015 7:06:45 PM 
+	 * @param locationId
+	 * @param resultList
+	 * @return
+	 */
+	public PartyMeetingSummaryVO getMatchedLocation(Long locationId,List<PartyMeetingSummaryVO> resultList){
+		if(locationId !=null && resultList!=null && resultList.size()>0){
+			for(PartyMeetingSummaryVO temp:resultList){
+				if(temp.getLocationId().equals(locationId)){
+					return temp;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * ${Id}
+	 * @Author  Sasi
+	 * @Version PartyMeetingService.java  Aug 27, 2015 5:00:20 PM 
+	 * @param typeOfMeeting
+	 * @param locationLevel
+	 * @param stateId
+	 * @param distId
+	 * @param constId
+	 * @param manTowDivId
+	 * @param wardPanId
+	 * @param startDateStr
+	 * @param endDateStr
+	 * @return
+	 * 
+	 */
+	public PartyMeetingSummaryVO getMeetingSummaryForLocationCumulative(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr){
+		LOG.debug(" Entered Into getMeetingSummaryForLocation");
+		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
+		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
+		try{
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			
+			Date startDate= null;
+			Date endDate= null;
+			
+			if(startDateStr.trim().length()>0){
+				startDate= format.parse(startDateStr);
+			}
+			if(startDateStr.trim().length()>0){
+				endDate= format.parse(endDateStr);
+			}
+			
+			List<Long> statesList = new ArrayList<Long>(0);
+			statesList.add(stateId);
+			
+			List<Long> districtList = new ArrayList<Long>(0);
+			districtList.add(distId);
+			
+			List<Long> constituencyList = new ArrayList<Long>(0);
+			constituencyList.add(constId);
+			
+			List<Long> mandalList = new ArrayList<Long>(0);
+			List<Long> townList = new ArrayList<Long>(0);
+			List<Long> divisonList = new ArrayList<Long>(0);
+			List<Long> villageList = new ArrayList<Long>(0);
+			List<Long> wardList = new ArrayList<Long>(0);
+			
+			if(locationLevel==4){
+				String mtdId = manTowDivId.toString();
+				char temp = mtdId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				if(locationLevel==1l){
+					mandalList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 4l;
+				}else if(locationLevel==2l){
+					townList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 5l;
+				}else if(locationLevel==3l){
+					divisonList.add(Long.parseLong(mtdId.substring(1)));
+					locationLevel = 6l;
+				}
+			}
+			
+			if(locationLevel==5){
+				String vwId = wardPanId.toString();
+				char temp = vwId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				if(locationLevel==1l){
+					villageList.add(Long.parseLong(vwId.substring(1)));
+					locationLevel=7l;
+				}else if(locationLevel==2l){
+					wardList.add(Long.parseLong(vwId.substring(1)));
+					locationLevel=8l;
+				}
+			}
+			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
+			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			
+			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			
+			List<Long> locationIds = new ArrayList<Long>(0);
+			
+			if(locationLevel==1l){
+				locationIds.addAll(statesList);
+			}else if(locationLevel==2l){
+				locationIds.addAll(districtList);
+			}else if(locationLevel==3l){
+				locationIds.addAll(constituencyList);
+			}else if(locationLevel==4l){
+				locationIds.addAll(mandalList);
+			}else if(locationLevel==5l){
+				locationIds.addAll(townList);
+			}else if(locationLevel==6l){
+				locationIds.addAll(divisonList);
+			}else if(locationLevel==7l){
+				locationIds.addAll(villageList);
+			}else if(locationLevel==8l){
+				locationIds.addAll(wardList);
+			}
+			
+			if(locationIds.get(0)==0l && partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
+				for(Object[] obj:partyMeetingsRslt){
+					locationIds.add((Long)(obj[4]));
+				}
+			}
+			
+			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+			
+			Map<Long,String> lctnNmsMap = new HashMap<Long, String>();
+			if(nameRslt!=null && nameRslt.size()>0){
+				for(IdNameVO temp:nameRslt){
+					lctnNmsMap.put(temp.getId(), temp.getName());
+				}
+			}
+			
+			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
+			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
+				for(Object[] obj:partyMeetingsRslt){
+					PartyMeetingSummaryVO tmp = getMatchedLocation(Long.valueOf(obj[4].toString()), fnlLst);
+					if(tmp==null){
+						tmp = new PartyMeetingSummaryVO();
+					}
+					tmp.setLocationId(Long.valueOf(obj[4].toString()));
+					tmp.setLocation(lctnNmsMap.get(Long.valueOf(obj[4].toString())));
+					List<PartyMeetingSummaryVO> meetings = tmp.getPartyMeetingsList();
+					if(meetings!=null && meetings.size()>0){
+						meetings = new ArrayList<PartyMeetingSummaryVO>();
+					}
+					PartyMeetingSummaryVO attndncVO = getMatchedMeeting(tmp.getMeetingId(), meetings);
+					if(attndncVO==null){
+						attndncVO = new PartyMeetingSummaryVO();
+						attndncVO.setMeetingId(Long.valueOf(obj[9].toString()));
+						attndncVO.setMeetingName(obj[8].toString());
+						attndncVO.setScheduledOn(obj[5].toString());
+						meetings.add(attndncVO);
+						tmp.setPartyMeetingsList(meetings);
+					}
+					fnlLst.add(tmp);
+					prtyMtngIdsLst.add(tmp.getMeetingId());
+				}
+			}
+			
+			if(prtyMtngIdsLst.size()>0){
+				// GETTING & SETTING OF MEETING ATTENDANCE DETAILS,ATR,MOM DETAILS OF MEETINGS
+				List<PartyMeetingSummaryVO> attndnceRsltLst = getAttendentsInformation(prtyMtngIdsLst);
+				List<PartyMeetingSummaryVO> momAndAtrRsltLst = getAtrAndMOMOfMeetings(prtyMtngIdsLst);
+				
+				if(attndnceRsltLst!=null && attndnceRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
+					for(PartyMeetingSummaryVO temp:fnlLst){
+						if(temp!=null && temp.getPartyMeetingsList()!=null && temp.getPartyMeetingsList().size()>0){
+							for(PartyMeetingSummaryVO temp1:temp.getPartyMeetingsList()){
+								PartyMeetingSummaryVO attndncVO = getMatchedMeeting(temp1.getMeetingId(), attndnceRsltLst);
+								if(attndncVO!=null){
+									temp1.setAttendanceInfo(attndncVO);
+								}
+							}
+						}
+						
+					}
+				}
+				
+				if(momAndAtrRsltLst!=null && momAndAtrRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
+					for(PartyMeetingSummaryVO temp:fnlLst){
+						if(temp!=null && temp.getPartyMeetingsList()!=null && temp.getPartyMeetingsList().size()>0){
+							for(PartyMeetingSummaryVO temp1:temp.getPartyMeetingsList()){
+								PartyMeetingSummaryVO docsTxtVO = getMatchedMeeting(temp1.getMeetingId(), momAndAtrRsltLst);
+								if(docsTxtVO!=null){
+									temp1.setDocTxtInfo(docsTxtVO);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			cumilateTheResult(fnlLst);
+			
+		}catch (Exception e) {
+			LOG.error(" Error in getMeetingSummaryForLocation",e);
+		}
+		
+		finalVO.setPartyMeetingsList(fnlLst);
+		return finalVO;
+	}
+	
+	/**
+	 * @Author  Sasi
+	 * @Version PartyMeetingService.java  Aug 27, 2015 8:44:56 PM 
+	 * @param resultList
+	 */
+	public void cumilateTheResult(List<PartyMeetingSummaryVO> resultList){
+		if(resultList!=null && resultList.size()>0){
+			for(PartyMeetingSummaryVO temp:resultList){
+				List<PartyMeetingSummaryVO> meetings = temp.getPartyMeetingsList();
+				
+				int  ttlMtngs 		= 0;
+				Long ttlInvts 		= 0l;
+				Long ttlAttnd 		= 0l;
+				Long invtsAttnd 	= 0l;
+				Long nonInvtsAttnd 	= 0l;
+				Long ttlAbsnt 		= 0l;
+				
+				int bothCount_atr 		= 0;
+				int fileCount_atr		= 0;
+				int txtCount_atr		= 0;
+				int nothingCount_atr	= 0;
+				
+				int bothCount_mom 		= 0;
+				int fileCount_mom		= 0;
+				int txtCount_mom		= 0;
+				int nothingCount_mom	= 0;
+				
+				if(meetings!=null && meetings.size()>0){
+					for(PartyMeetingSummaryVO temp1:meetings){
+						if(temp1.getAttendanceInfo()!=null){
+							if(temp1.getTotalAttended()>0l){
+								++ttlMtngs;										//  Increments meetings 
+								ttlAttnd+= 		temp1.getTotalAttended();		//	Adding attended
+								ttlInvts+= 		temp1.getTotalInvitees();		//	Adding total invitees
+								invtsAttnd+= 	temp1.getInviteesAttended();	//	Adding invitees attended
+								nonInvtsAttnd+=	temp1.getNonInviteesAttended();	//	Adding non-invitees
+								ttlAbsnt+=		temp1.getTotalAbsent();			//	Adding Absentees
+							}
+						}
+						
+						if(temp1.isAtrFilesExist() && temp1.isAtrTextExist()){
+							++bothCount_atr;
+						}else if(temp1.isAtrFilesExist()){
+							++fileCount_atr;
+						}else if(temp1.isAtrTextExist()){
+							++txtCount_atr;
+						}else{
+							++nothingCount_atr;
+						}
+						
+						
+						if(temp1.isMomFilesExist() && temp1.isMomTextExist()){
+							++bothCount_mom;
+						}else if(temp1.isMomFilesExist()){
+							++fileCount_mom;
+						}else if(temp1.isMomTextExist()){
+							++txtCount_mom;
+						}else{
+							++nothingCount_mom;
+						}
+					}
+				}
+				
+				PartyMeetingSummaryVO atrDocTemp = new PartyMeetingSummaryVO();
+				atrDocTemp.setBothCount(bothCount_atr);
+				atrDocTemp.setOnlyFileCount(fileCount_atr);
+				atrDocTemp.setOnlyTxtCount(txtCount_atr);
+				atrDocTemp.setNothingCount(nothingCount_atr);
+				temp.setAtrDocTxtInfo(atrDocTemp);
+				
+				PartyMeetingSummaryVO momDocTemp = new PartyMeetingSummaryVO();
+				momDocTemp.setBothCount(bothCount_mom);
+				momDocTemp.setOnlyFileCount(fileCount_mom);
+				momDocTemp.setOnlyTxtCount(txtCount_mom);
+				momDocTemp.setNothingCount(nothingCount_mom);
+				temp.setAtrDocTxtInfo(momDocTemp);
+				
+				temp.setMeetingsCount(ttlMtngs);
+				temp.setTotalAttended(ttlAttnd);
+				temp.setTotalInvitees(ttlInvts);
+				temp.setInviteesAttended(invtsAttnd);
+				temp.setNonInviteesAttended(nonInvtsAttnd);
+				temp.setTotalAbsent(ttlAbsnt);
+			}
+		}
 	}
 }

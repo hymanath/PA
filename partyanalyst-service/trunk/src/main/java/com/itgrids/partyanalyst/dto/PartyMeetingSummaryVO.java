@@ -55,7 +55,52 @@ public class PartyMeetingSummaryVO implements Serializable{
 	private int averageInviteesAttended;
 	private String conductedMeetingsPercent;
 	
+	private int bothCount;
+	private int onlyFileCount;
+	private int onlyTxtCount;
+	private int nothingCount;
 	
+	private PartyMeetingSummaryVO atrDocTxtInfo;
+	private PartyMeetingSummaryVO momDocTxtInfo;
+	
+	
+	
+	public PartyMeetingSummaryVO getAtrDocTxtInfo() {
+		return atrDocTxtInfo;
+	}
+	public void setAtrDocTxtInfo(PartyMeetingSummaryVO atrDocTxtInfo) {
+		this.atrDocTxtInfo = atrDocTxtInfo;
+	}
+	public PartyMeetingSummaryVO getMomDocTxtInfo() {
+		return momDocTxtInfo;
+	}
+	public void setMomDocTxtInfo(PartyMeetingSummaryVO momDocTxtInfo) {
+		this.momDocTxtInfo = momDocTxtInfo;
+	}
+	public int getBothCount() {
+		return bothCount;
+	}
+	public void setBothCount(int bothCount) {
+		this.bothCount = bothCount;
+	}
+	public int getOnlyFileCount() {
+		return onlyFileCount;
+	}
+	public void setOnlyFileCount(int onlyFileCount) {
+		this.onlyFileCount = onlyFileCount;
+	}
+	public int getOnlyTxtCount() {
+		return onlyTxtCount;
+	}
+	public void setOnlyTxtCount(int onlyTxtCount) {
+		this.onlyTxtCount = onlyTxtCount;
+	}
+	public int getNothingCount() {
+		return nothingCount;
+	}
+	public void setNothingCount(int nothingCount) {
+		this.nothingCount = nothingCount;
+	}
 	public String getConductedMeetingsPercent() {
 		return conductedMeetingsPercent;
 	}
