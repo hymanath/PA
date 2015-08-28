@@ -29,8 +29,43 @@ public class TdpCadreFamilyDetailsVO {
 	private Long count;
 	private String relativeName;
 	private String membershipNo;
+	private String publicRepresentativeStr;
+	private String partyPositionStr;
 	
+	private Long familySurveyCount=0L;
+	private Long partyRepresentativesCount=0L;
+	private Long partyPositionsCount=0L;
 	
+	public Long getFamilySurveyCount() {
+		return familySurveyCount;
+	}
+	public Long getPartyRepresentativesCount() {
+		return partyRepresentativesCount;
+	}
+	public Long getPartyPositionsCount() {
+		return partyPositionsCount;
+	}
+	public void setFamilySurveyCount(Long familySurveyCount) {
+		this.familySurveyCount = familySurveyCount;
+	}
+	public void setPartyRepresentativesCount(Long partyRepresentativesCount) {
+		this.partyRepresentativesCount = partyRepresentativesCount;
+	}
+	public void setPartyPositionsCount(Long partyPositionsCount) {
+		this.partyPositionsCount = partyPositionsCount;
+	}
+	public String getPublicRepresentativeStr() {
+		return publicRepresentativeStr;
+	}
+	public String getPartyPositionStr() {
+		return partyPositionStr;
+	}
+	public void setPublicRepresentativeStr(String publicRepresentativeStr) {
+		this.publicRepresentativeStr = publicRepresentativeStr;
+	}
+	public void setPartyPositionStr(String partyPositionStr) {
+		this.partyPositionStr = partyPositionStr;
+	}
 	public String getMembershipNo() {
 		return membershipNo;
 	}
