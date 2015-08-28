@@ -29,4 +29,5 @@ public interface IMobileNumbersDAO extends GenericDao<MobileNumbers, Long>{
 	public Set<String> getMobilenosBasedOnPriorityForLocationIDs(Long scopeId,List<Long> locations,int maxIndex,String priority);
 	public Integer updateMobileNos();
 	public Integer updateUsedMobileNos(List<String> mobileNos);
+	public List<Object[]> getVotersMobileNumberDetails(List<Long> voterIdsList);
 }
