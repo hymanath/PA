@@ -32,7 +32,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		return query.list();
 	}
 	
-	public List<Object[]> getTotalAttendedDetailsForCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId)
+	public List<Object[]> getTotalAttendedDetailsForCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId,Date todayDate)
 	{
 		boolean isSetWhere = false;
 		StringBuilder queryStr = new StringBuilder();
@@ -50,31 +50,38 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 			else
 				queryStr.append(" and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
 		}
+		if(todayDate != null )
+			queryStr.append(" and date(PMA.partyMeeting.startDate) <=:todayDate ");
+		
 		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
-		
+		if(todayDate != null )
+			query.setDate("todayDate", todayDate);
 		return query.list();
 	}
 	
-	public List<Object[]> getAbsentMemberDeails(Long partyMeetingTypeId)
+	public List<Object[]> getAbsentMemberDeails(List<Long> tdpCadreIdsList , Long partyMeetingTypeId)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName, count(distinct PMA.attendance.tdpCadreId) " +
 				" from PartyMeetingAttendance PMA ,PartyMeetingInvitee PMI where PMA.partyMeeting.partyMeetingId = PMI.partyMeeting.partyMeetingId and " +
 				" PMI.tdpCadreId = PMA.attendance.tdpCadreId ");
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
-			queryStr.append("  PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
+			queryStr.append(" and PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
 		}
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			queryStr.append(" and  PMA.attendance.tdpCadreId in (:tdpCadreIdsList)  ");
 		
 		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
-		
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
 	
