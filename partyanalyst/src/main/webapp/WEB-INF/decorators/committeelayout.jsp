@@ -108,6 +108,9 @@
 						 <li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 						</c:if>
                     </c:if>
+					<c:if test="${sessionScope.USER.accessType == 'MP'}">
+						<li><a tabindex="-1" href="meetingList.action"> Party Meeting ATR & MOM</a></li>
+					</c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>                 
             </div>
