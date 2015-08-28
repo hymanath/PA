@@ -246,7 +246,7 @@
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;">
 				<button href="#" class="btn btn-xs btn-warning pull-right" id="editFieldsId">EDIT</button>
-				<img src="http://www.mytdp.com/images/cadre_images/${cadreCommitteeVO.imageURL}" onerror="setDefaultImage(this);"  id="cadreLiveimg" class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
+				<img src="images/cadre_images/${cadreCommitteeVO.imageURL}" onerror="setDefaultImage(this);"  id="cadreLiveimg" class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
 				<h3>${cadreCommitteeVO.cadreName}</h3>
 				<h4>Cadre Number : ${cadreCommitteeVO.memberShipCardId}</h4>				
 			</div>			

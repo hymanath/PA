@@ -6,7 +6,7 @@
 
 <link type="text/css" href="styles/assets/css/problemmanagstyle.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
   <script src="styles/assets/js/jquery.js"></script>
 
 <script src="styles/assets/js/bootstrap-dropdown.js"></script>

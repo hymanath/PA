@@ -38,7 +38,7 @@
 	<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
 <!-- Local Files-->
 	<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
@@ -54,7 +54,7 @@
 <LINK rel="stylesheet" type="text/css" href="styles/styles.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
-<link href='http://fonts.googleapis.com/css?family=Asap' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Asap' rel='stylesheet' type='text/css'>
 <LINK rel="stylesheet" type="text/css" href="styles/jqueryDataTable/css/datatable.css">
 
 <!--<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>

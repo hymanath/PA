@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Survey Profilr Saving</title>
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
 <script type="text/javascript" src="js/surveyAnalysis/surveyAnalysis.js"></script>
 

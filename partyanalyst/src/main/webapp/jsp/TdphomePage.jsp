@@ -48,7 +48,7 @@
 		  <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 		  <script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>
 		  
-		   <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+		   <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">

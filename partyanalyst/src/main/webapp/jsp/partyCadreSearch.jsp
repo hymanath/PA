@@ -10,8 +10,8 @@
 	<title>CadreSearch Details</title>
 		<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<script src="http://code.jquery.com/jquery.js"></script>
-		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://code.jquery.com/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 		<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 

@@ -10,8 +10,8 @@
 
  <link href="css/bootstrap.min.css" rel="stylesheet">	
  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
- <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
- <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+ <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+ <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <title>IVR Report</title>
 <style>

@@ -44,15 +44,15 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script src="http://www.google.com/uds/api?file=uds.js&v=1.0"
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="https://www.google.com/uds/api?file=uds.js&v=1.0"
     type="text/javascript"></script>
-<link href="http://www.google.com/uds/css/gsearch.css"
+<link href="https://www.google.com/uds/css/gsearch.css"
     rel="stylesheet" type="text/css"/>
-<script src="http://www.google.com/uds/solutions/videobar/gsvideobar.js"
+<script src="https://www.google.com/uds/solutions/videobar/gsvideobar.js"
     type="text/javascript"></script>
 		
-<link href="http://www.google.com/uds/solutions/videobar/gsvideobar.css"
+<link href="https://www.google.com/uds/solutions/videobar/gsvideobar.js"
     rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 		google.load("elements", "1", {packages : ["newsshow"]});

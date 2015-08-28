@@ -214,11 +214,11 @@
 								<div>
 									<table style="margin-left: 0px;">
 										<tr><td>
-											<iframe width="150" height="135" src="http://www.youtube.com/embed/3k9vFj0Ca54" frameborder="0" allowfullscreen></iframe>
+											<iframe width="150" height="135" src="https://www.youtube.com/embed/3k9vFj0Ca54" frameborder="0" allowfullscreen></iframe>
 												</td><td></td><td></td><td></td><td>
-											<iframe width="150" height="135" src="http://www.youtube.com/embed/mMTRWXNVXCw" frameborder="0" allowfullscreen></iframe>	
+											<iframe width="150" height="135" src="https://www.youtube.com/embed/mMTRWXNVXCw" frameborder="0" allowfullscreen></iframe>	
 													</td><td></td><td><td>
-											<iframe width="140" height="135" src="http://www.youtube.com/embed/Dgz_evKCbBg" frameborder="0" allowfullscreen></iframe></td>
+											<iframe width="140" height="135" src="https://www.youtube.com/embed/Dgz_evKCbBg" frameborder="0" allowfullscreen></iframe></td>
 					
 										</tr>
 					

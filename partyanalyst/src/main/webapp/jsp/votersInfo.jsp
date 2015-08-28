@@ -529,11 +529,11 @@ h3{
 		<div class="">
 <h4 style="margin-left: 45px;" class="pr-title">videos<span class="or-down-arrow"><img alt="" src="images/candidatePage/or-down-arrow.png"></span> </h4>
         <a class="youtube" href="#" rel="Kwilrv3LVLA" >
-<img  width="236px;" style="margin-left:32px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding:4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/Kwilrv3LVLA/0.jpg"></a>
+<img  width="236px;" style="margin-left:32px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding:4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " title="Explaining the Indian Election System " src="https://img.youtube.com/vi/Kwilrv3LVLA/0.jpg"></a>
   <a class="youtube" href="#" rel="2Kexv-ec7Jg" >
-<img  width="116px;"title="VOTE INDIA - MAKE A DIFFERENCE " style="margin-top:10px; margin-left:28px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/2Kexv-ec7Jg/0.jpg"></a>
+<img  width="116px;"title="VOTE INDIA - MAKE A DIFFERENCE " style="margin-top:10px; margin-left:28px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/2Kexv-ec7Jg/0.jpg"></a>
   <a class="youtube" href="#" rel="BUVly4H7kGU" >
-<img  width="116px;" title="VOTE INDIA!!!! (Must see for every INDIAN)"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/BUVly4H7kGU/0.jpg"></a>
+<img  width="116px;" title="VOTE INDIA!!!! (Must see for every INDIAN)"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 4px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/BUVly4H7kGU/0.jpg"></a>
 
 </div>
 <script src="js/jquery.youtubepopup.min.js"></script>
@@ -556,7 +556,7 @@ h3{
 <h3>Video's</h3>
 	<div>
       <a rel="#voverlay"  href="http://www.youtube.com/v/Kwilrv3LVLA?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
-       <img style="width:180px;height:175px;margin-left:10px;margin-top: 10px;margin-bottom: 10px;" src="http://img.youtube.com/vi/Kwilrv3LVLA/1.jpg">
+       <img style="width:180px;height:175px;margin-left:10px;margin-top: 10px;margin-bottom: 10px;" src="https://img.youtube.com/vi/Kwilrv3LVLA/1.jpg">
       </a>
    </div>
 

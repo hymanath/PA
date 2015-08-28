@@ -7,7 +7,7 @@
 <html>
 <head>
  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
- <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 <script type="text/javaScript" >
 google.load("visualization", "1", {packages:["corechart"]});

@@ -7,7 +7,7 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>
 <div><c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections

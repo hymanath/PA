@@ -141,7 +141,7 @@
 }
 
 	</style>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script>
 
  $(document).ready(function(){

@@ -13,7 +13,7 @@
 
 	
 
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
   <script src="styles/assets/js/jquery.js"></script>
 
 <script src="styles/assets/js/bootstrap-dropdown.js"></script>
@@ -43,7 +43,7 @@
    <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 	<!-- YUI Dependency files (End) -->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <style type="text/css">
 
 	/*body

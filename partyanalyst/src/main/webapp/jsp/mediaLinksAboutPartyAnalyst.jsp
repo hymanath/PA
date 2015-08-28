@@ -51,7 +51,7 @@
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 	<!-- YUI Dependency files (End) -->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <style type="text/css">
 	
 	

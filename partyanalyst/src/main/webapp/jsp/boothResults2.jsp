@@ -28,7 +28,7 @@
 <script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
 <script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 
 <!-- YUI files dependencies (end) -->
 

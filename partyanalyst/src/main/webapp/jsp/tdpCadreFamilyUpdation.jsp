@@ -458,7 +458,7 @@ background-color: #E5E5E5 !important;
 		
 		
 			str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getFamilyDetails(\''+result[i].cadreId+'\');">'+result[i].nameType+'</a></td>';
-			str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageBase64String+'"  style="height:50px;width:50px;"/></td>';
+			str+='<td><img src="images/cadre_images/'+result[i].imageBase64String+'"  style="height:50px;width:50px;"/></td>';
 			str+=' <td>'+result[i].address+'</td>';
 			str+=' <td>'+result[i].mobileNumber+'</td>';
 			str+=' <td>'+result[i].constituencyId+'</td>';
@@ -2140,7 +2140,7 @@ $("#familyDetalsDiv").hide();
 			str+=' <tr>';
 			
 			str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getCadreWithFamilyDetailsOfEachCadre(\''+result[i].tdpCadreId+'\');">'+result[i].cadreName+'</a></td>';
-			str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'"  style="height:50px;width:50px;"/></td>';
+			str+='<td><img src="images/cadre_images/'+result[i].imageURL+'"  style="height:50px;width:50px;"/></td>';
 			str+=' <td>'+result[i].memberShipCardId+'</td>';
 			str+=' <td>'+result[i].mobileNo+'</td>';
 			//str+=' <td>'+result[i].constituencyId+'</td>';

@@ -9,8 +9,8 @@
 <title>MAHANADU</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
  <script type="text/javascript" src="js/LocationHierarchy/locationHierarchyMahaNadu.js"></script>
-	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/loginpopup1.js"> </script>

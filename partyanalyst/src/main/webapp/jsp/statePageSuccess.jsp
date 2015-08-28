@@ -50,7 +50,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
 	<!-- Local Files-->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/statePage/statePage.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">
 

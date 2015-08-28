@@ -37,7 +37,7 @@
 <script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
 <script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+<script type="text/javascript" src="https://www.google.com/jsapi"></script> 
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 <script type="text/javascript" src="js/partyStrength.js"></script>

@@ -551,19 +551,19 @@ The Appellate Authority will entertain and dispose off appeals against the decis
 	<div class="">
 <h4 style="margin-left: 45px;" class="pr-title">videos<span class="or-down-arrow"><img alt="" src="images/candidatePage/or-down-arrow.png"></span> </h4>
         <a class="youtube" href="#" rel="KbkZNLVpAdQ" >
-<img  width="260px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " title="RTI (right to information) ad : india inspired : IITK" src="http://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg"></a>
+<img  width="260px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " title="RTI (right to information) ad : india inspired : IITK" src="https://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg"></a>
   <a class="youtube" href="#" rel="RN3HvWYlAoo" >
-<img  width="121px;"title="RTI A Revolution Begins" style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/RN3HvWYlAoo/0.jpg"></a>
+<img  width="121px;"title="RTI A Revolution Begins" style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/RN3HvWYlAoo/0.jpg"></a>
   <a class="youtube" href="#" rel="00diQBA_6-k" >
-<img  width="121px;" title="RTI Act: Empowering India"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/00diQBA_6-k/0.jpg"></a>
+<img  width="121px;" title="RTI Act: Empowering India"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/00diQBA_6-k/0.jpg"></a>
 <a class="youtube" href="#" rel="bT2EgboKv3c" >
-<img  width="121px;" title="Govt may propose amendments to RTI ACT " style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/bT2EgboKv3c/0.jpg"></a>
+<img  width="121px;" title="Govt may propose amendments to RTI ACT " style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/bT2EgboKv3c/0.jpg"></a>
   <a class="youtube" href="#" rel="B5MzQ45Vk5M" >
-<img  width="121px;" title="RTI Help Forum"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/B5MzQ45Vk5M/0.jpg"></a>
+<img  width="121px;" title="RTI Help Forum"style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/B5MzQ45Vk5M/0.jpg"></a>
  <a class="youtube" href="#" rel="2S6XuHDpHG0" >
-<img  width="121px;" title="R T I animation in Telugu "style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/2S6XuHDpHG0/0.jpg"></a>
+<img  width="121px;" title="R T I animation in Telugu "style="margin-top:10px; margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/2S6XuHDpHG0/0.jpg"></a>
 <a class="youtube" href="#" rel="N2TxvvvT3xU" >
-<img  width="121px;" title="What is RTI or Right to Information? "style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/N2TxvvvT3xU/0.jpg"></a>
+<img  width="121px;" title="What is RTI or Right to Information? "style="margin-top:10px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/N2TxvvvT3xU/0.jpg"></a>
  
 </div>
 <!--<div class="more"><a onclick="contact3()" href="javascript:{}">More</a></div>-->
@@ -626,11 +626,11 @@ function contact3(){
   var str ='';
 
 /*str+='<a class="youtube" href="javascript:{}" rel="KbkZNLVpAdQ" >';
-str+='<img  width="270px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg">';
+str+='<img  width="270px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg">';
 str+='</a>';
 */
  str+='<a class="youtube" href="#" rel="KbkZNLVpAdQ" >';
- str+='<img  width="270px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="http://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg"></a>';
+ str+='<img  width="270px;" style="margin-left:45px; cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3; " src="https://img.youtube.com/vi/KbkZNLVpAdQ/0.jpg"></a>';
 
 
 
