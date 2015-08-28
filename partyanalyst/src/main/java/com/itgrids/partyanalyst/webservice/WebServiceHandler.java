@@ -1475,4 +1475,20 @@ public class WebServiceHandler {
 		return null;
 	}
 	
+	@GET
+	@Path("/getMeetingTypeWiseDescription/{tdpCadreId}/{partyMeetingTypeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CadreCommitteeMemberVO> getMeetingTypeWiseDescription(@PathParam("tdpCadreId") String tdpCadreId,@PathParam("partyMeetingTypeId") String partyMeetingTypeId){
+		
+		try{
+			return webServiceHandlerService.getMeetingTypeWiseDescription(Long.valueOf(tdpCadreId), Long.valueOf(partyMeetingTypeId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getEventDetailsOfCadre() Method, Exception is ",e);
+			
+		}
+		return null;
+	}
+	
 }
