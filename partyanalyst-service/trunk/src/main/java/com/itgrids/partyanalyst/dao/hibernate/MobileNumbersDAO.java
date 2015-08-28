@@ -38,7 +38,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 	}
 	public List<Object[]> getUservoterDetailsByUserId(Long userId,List<Long> voterIds)
 	{
-		Query query = getSession().createSQLQuery("Select uvd.voter_id,uvd.mobile_no,uvd." +
+		Query query = getSession().createSQLQuery("select uvd.voter_id,uvd.mobile_no,uvd." +
 			"user_voter_details_id from user_voter_details uvd where uvd.user_id = :userId and uvd.mobile_no is not null and uvd.voter_id in (:voterIds) ");
 		query.setParameter("userId", userId);
 		query.setParameterList("voterIds", voterIds);
@@ -46,6 +46,13 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		
 	}
 	
+	public List<Object[]> getVotersMobileNumberDetails(List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery(" select model.voterId, model.mobileNumber from  MobileNumbers model " +
+				" where model.voter.voterId in (:voterIdsList) and model.isDeleted='N' and model.isUsed='Y' ");
+		query.setParameterList("voterIdsList", voterIdsList);
+		return query.list();
+	}
 	public Integer updateMobileNo(String mobileNo,Long userVoterDetailsId)
 	{
 		Query query = getSession().createQuery("update UserVoterDetails model set model.mobileNo = :mobileNo where model.userVoterDetailsId = :userVoterDetailsId");

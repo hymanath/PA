@@ -6320,7 +6320,10 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
 	public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo){
 		Query query=getSession().createQuery("select model.booth.constituency.constituencyId,model.booth.boothId,model.booth.publicationDate.publicationDateId," +
-				" model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.booth.constituency.district.districtId,model.voter.relativeName,model.voter.houseNo " +
+				" model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.booth.constituency.district.districtId,model.voter.relativeName,model.voter.houseNo," +
+				" model.voter.relationshipType,model.booth.constituency.name,model.booth.constituency.district.districtName,model.booth.partNo,0," +
+				"  model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName," +
+				" model.booth.constituency.state.stateId,model.booth.constituency.state.stateName " +
 				" from BoothPublicationVoter model where model.voter.voterIDCardNo =:voterCardNo order by model.booth.publicationDate.publicationDateId desc ");
 		
 		query.setParameter("voterCardNo", voterCardNo);

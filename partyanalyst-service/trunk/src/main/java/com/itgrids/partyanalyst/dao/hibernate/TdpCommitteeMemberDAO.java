@@ -48,12 +48,28 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpCommitteeRoleId    " +
-				" from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId and model.isActive ='Y'");
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, " +
+				" model.tdpCommitteeRole.tdpCommitteeRoleId, model.tdpCommitteeRole.tdpRoles.role    " +
+				" from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId and model.isActive ='Y' ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 	//	query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+	
+	public List<Object[]> getMembersInfoByTdpCadreIdsList(List<Long> tdpCadreIdsList){
+
+		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId, model.tdpCadre.voter.voterIDCardNo, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, " +
+				" model.tdpCommitteeRole.tdpCommitteeRoleId, model.tdpCommitteeRole.tdpRoles.role    " +
+				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList)  and model.isActive ='Y' ");
+		
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+	//	query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
+	
 	public List<TdpCommitteeMember> getTdpCommitteeMemberByTdpCadreId(Long tdpCadreId){
 		Query query = getSession().createQuery("select model from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId  and model.isActive ='Y'");
 		query.setParameter("tdpCadreId", tdpCadreId);
