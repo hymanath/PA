@@ -485,7 +485,7 @@ margin-top:10px;
 					<li><a onmousedown="return false;" class="parent" ><span> Party Meetings </span></a>
 							<div>
 							<ul>
-					
+					<li><a href="partyMeetingsDashBoard.action"><span> Meeting DashBoard  </span></a></li>
 					<li><a href="meetingList.action"><span> Meeting Min & Atr  </span></a></li>
 					</ul>
 						</div>
