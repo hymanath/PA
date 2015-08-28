@@ -12,12 +12,12 @@
 <script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/userProfile/impDates.js"> </script>
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <!-- YUI Dependency files (Start) -->
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 

@@ -45,7 +45,7 @@
 
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
-   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
    <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
 	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
 

@@ -54,7 +54,7 @@
 	<!-- YUI Dependency files (End) -->
 	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <SCRIPT type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 	var stateId = '${stateId}';

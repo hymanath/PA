@@ -11,14 +11,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">	
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
  <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="js/bootStrapDateRange/moment.js"></script>
 <script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
 

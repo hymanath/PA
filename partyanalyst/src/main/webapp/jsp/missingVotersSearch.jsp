@@ -7,7 +7,7 @@ pageEncoding="ISO-8859-1"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title> Add Missing Voters </title>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script src="js/cleditor/jquery.cleditor.min.js"></script>
 <script src="js/sendUpdatesByEmail.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">

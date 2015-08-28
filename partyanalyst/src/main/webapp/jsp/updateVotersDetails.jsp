@@ -37,7 +37,7 @@
    <script type="text/javascript" src="js/blockui.js"></script>
   <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
 	
 	<script src="js/combobox.js" type="text/javascript"></script>
 <style>

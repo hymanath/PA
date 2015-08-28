@@ -683,9 +683,9 @@ var pollStatus = [];
                 <div class="prev1"></div>
                 <div class="slider1">
                   <ul>
-                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7593" title="Overview" target="_blank"><img src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg" alt="PartAnalyst" /> <span>PartyAnalyst Overview</span> </a></li>
-                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7592" title="Media" target="_blank"><img src="http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg" alt="PartAnalyst"/> <span>Media coverage</span> </a></li>
-                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7594" title="Media" target="_blank"><img src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg" alt="Title 3" /> <span>Media coverage</span> </a></li>
+                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7593" title="Overview" target="_blank"><img src="https://img.youtube.com/vi/mMTRWXNVXCw/0.jpg" alt="PartAnalyst" /> <span>PartyAnalyst Overview</span> </a></li>
+                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7592" title="Media" target="_blank"><img src="https://img.youtube.com/vi/PKZpPe1pYIw/0.jpg" alt="PartAnalyst"/> <span>Media coverage</span> </a></li>
+                    <li> <a href="specialPageAction.action?specialPageId=1&contentId=7594" title="Media" target="_blank"><img src="https://img.youtube.com/vi/3k9vFj0Ca54/0.jpg" alt="Title 3" /> <span>Media coverage</span> </a></li>
 					
                   </ul>
                 </div>

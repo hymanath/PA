@@ -4,8 +4,8 @@
 <link type="text/css" rel="stylesheet" href="css/loginpagestyle.css" media="screen" />
 <script type="text/javascript" src="js/md5.js"></script>
 <script type="text/javascript" src="js/loginpopup1.js"> </script>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -141,6 +141,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 });*/
 var userip = "";
 </script>
-<script type="text/javascript" src="http://l2.io/ip.js?var=userip"></script>
+<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
 </body>
 </html>

@@ -224,7 +224,7 @@ color: red !important;
                       for(var j in results[i].subList){
 					   str+='<tr>';
 					   if(results[i].subList[j].image != null){
-						   str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+results[i].subList[j].image+'" style="height:40px" class="img-reponsive"></td>'
+						   str+='<td><img src="images/cadre_images/'+results[i].subList[j].image+'" style="height:40px" class="img-reponsive"></td>'
 					   }
 					   else{
 						   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>'
@@ -357,7 +357,7 @@ color: red !important;
 					    if(results.image==null || results.image.trim().length<=0)
 						 str+='<td><img src="dist/img/profile-img.png" class="img-responsive" style="width:30px;"></td>'
 						else
-						str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+results.image+'" class="img-responsive" style="width:30px;"></td>'
+						str+='<td><img src="images/cadre_images/'+results.image+'" class="img-responsive" style="width:30px;"></td>'
 						str+='<td>'+results.name+'</td>'
 						if(results.designation == null || results.designation.trim().lenght == 0){
 							str+='<td>-</td>'

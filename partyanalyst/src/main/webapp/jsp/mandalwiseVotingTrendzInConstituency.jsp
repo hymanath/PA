@@ -65,7 +65,7 @@
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	
 
     <style type="text/css">

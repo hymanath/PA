@@ -1785,14 +1785,14 @@ function getCadreFamilyDetailsByCadreId()
 		 if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
 			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
 		 else
 		 {
 			 str += '<div class="media-left">';
 			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
          str += '<div class="media-body">';

@@ -17,8 +17,8 @@
 
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
   <style>#slider { margin: 10px; }	</style>
-  <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-1.8.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
 
 
 <style>

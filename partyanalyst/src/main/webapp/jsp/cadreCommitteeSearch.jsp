@@ -400,7 +400,7 @@
 			{			
 				str+='<div class="media">';
 				str+='<a href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
+				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</a>';
 				str+='<div class="media-body">';
 				str+='<h4 class="media-heading">'+result[i].cadreName+'</h4>';

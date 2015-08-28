@@ -10,18 +10,18 @@
   <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
  <!--<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>-->
-  <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
+  <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
 <link rel="stylesheet" href="/resources/demos/style.css" />
 <!--<link rel="stylesheet" href="styles/jqueryDataTable/css/datatable.css" />-->
 <link rel="stylesheet" href="styles/jQ_datatables/css/demo_page.css" />
 <link rel="stylesheet" href="styles/jQ_datatables/css/demo_table.css" />
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
- <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
  <script type="text/javascript" src="js/suggestiveModel.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 

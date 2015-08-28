@@ -178,7 +178,7 @@
 					
 				
 				str+='<div style="float: left;">';
-				str+='<img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageBase64String+'" style=" width:90px;	height:auto;" />';
+				str+='<img src="images/cadre_images/'+result[i].imageBase64String+'" style=" width:90px;	height:auto;" />';
 				str+='</div>';
 				str+='<b style="margin-left:20px;">'+result[i].previousEnrollmentNumber+'</b><br>';
 				str+='<b style="margin-left:18px;">2014-2016</b><br>';

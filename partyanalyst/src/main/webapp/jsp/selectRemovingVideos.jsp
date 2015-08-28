@@ -279,7 +279,7 @@ function  dispalyRemovingVideoImages(pathVOList)
 		   str +='<table>';
 		   str +='    <tr>';
 	       str +='      <td><input type="checkbox" id="myCheck" name="videoid" checked="checked" value= '+pathVOList[i]+'></td>';
-		   str +='      <td><a rel="#voverlay" href="http://www.youtube.com/v/'+pathVOList[i]+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer"><img alt="Title 3" src="http://img.youtube.com/vi/pathVOList[i]/0.jpg"></a> </td>';
+		   str +='      <td><a rel="#voverlay" href="http://www.youtube.com/v/'+pathVOList[i]+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer"><img alt="Title 3" src="https://img.youtube.com/vi/pathVOList[i]/0.jpg"></a> </td>';
 	       str +='   </tr>';
 		   str +='</table>';
 				}

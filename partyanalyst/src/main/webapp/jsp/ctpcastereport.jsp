@@ -13,8 +13,8 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
  <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
- <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
- <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.js"></script>
+ <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+ <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.js"></script>
 <style type="text/css">
 
 .labelClass{

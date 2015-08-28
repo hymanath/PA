@@ -453,7 +453,7 @@ table.dataTable thead th {
 	
 </style>
 
- <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
 <!--<script type="text/javascript" language="javascript" src="js/jQuery.min.js"></script>-->

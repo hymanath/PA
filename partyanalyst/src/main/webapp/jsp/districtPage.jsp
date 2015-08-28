@@ -37,7 +37,7 @@
  <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <!-- JQuery files (End) -->
 
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script> 
     <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	

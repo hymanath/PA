@@ -548,7 +548,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script src="dist/Invitees/Date/moment.min.js" type="text/javascript"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination_1.css"/>
 	

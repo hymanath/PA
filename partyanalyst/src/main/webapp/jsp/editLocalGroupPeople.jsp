@@ -9,7 +9,7 @@
 <head>
 <title> Local User Group Members  </title>
 <!-- Then get JQuery UI -->
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 

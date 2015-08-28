@@ -28,7 +28,7 @@
 		</script>
 	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 	<script src="${mapKey}" type="text/javascript"></script>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){   %>	
    <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>

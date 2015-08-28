@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script>	
 
 	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
-  	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+  	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- YUI Skin Sam -->    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">

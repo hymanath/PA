@@ -533,7 +533,7 @@ var votesRange= 0;
 
 <script type="text/javascript" src="js/highcharts4.1/js/highcharts.js"></script>
 <script type="text/javascript" src="js/highcharts4.1/js/highcharts-3d.js"></script>
-<script src="http://code.highcharts.com/modules/funnel.js"></script>
+<script src="https://code.highcharts.com/modules/funnel.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/politico.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet-lable.css">

@@ -268,12 +268,12 @@
 	
     <div>
        <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
-        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
+        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="https://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
        </a>
     </div>
    <div>
       <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
-       <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
+       <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="https://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
       </a>
    </div>
    

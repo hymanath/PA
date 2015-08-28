@@ -30,7 +30,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Revenue Villages Wise Election Results</title>

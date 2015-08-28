@@ -9,12 +9,12 @@
 <title>Profile Page</title>
 
 <script type="text/javascript" src="js/publicProfile/publicProfilePage.js"> </script>
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 
 <link type="text/css" href="styles/publicProfile/publicProfilePage.css" rel="stylesheet" />
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <style>

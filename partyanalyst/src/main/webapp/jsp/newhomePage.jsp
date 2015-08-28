@@ -47,7 +47,7 @@
 		  <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 		  <script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>
 		  
-		   <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+		   <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 		  <!-- 	<script type="text/javascript" src="js/bootstrapInHome/bootstrap-transition.js"></script> -->
 			<script type="text/javascript" src="js/raty/js/jquery.raty.min.js"></script>
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
@@ -586,7 +586,7 @@ Quick Links</h2>
 					<div class="widget blue videogallery" >
 				<h2 style="font-size:14px;">PartyAnalyst-2.0 Services</h2>
 				<a  href="specialPageAction.action?specialPageId=1&contentId=31753" rel="KeN4RHwpVAc" >
-				<img  class="thumbnail" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; border: 1px solid #ccc;margin-top:7px;width: 185px; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/KeN4RHwpVAc/1.jpg"></a>
+				<img  class="thumbnail" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; border: 1px solid #ccc;margin-top:7px;width: 185px; " title="Explaining the Indian Election System " src="https://img.youtube.com/vi/KeN4RHwpVAc/1.jpg"></a>
 				</div> 
 				
 				<!-----------Hot Topics--------------->

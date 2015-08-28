@@ -15,7 +15,7 @@
    <script type="text/javascript" src="js/blockui.js"></script>
   <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
  <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>--%>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	<script type="text/javascript" src="js/customVoterGroupAnalysis.js"></script>
@@ -54,12 +54,12 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
    <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
 	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
 

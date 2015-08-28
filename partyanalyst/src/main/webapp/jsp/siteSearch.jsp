@@ -54,7 +54,7 @@ background-position :right -81px;
 </div></td>
 </tr>
 </table>
-<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#searchId").css("background-position","left -54px");
