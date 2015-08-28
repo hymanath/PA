@@ -6,7 +6,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 
 public interface IPartyMeetingService {
-	public PartyMeetingVO getMeetingTypeWiseDescription(Long partyMeetingTypeId);
+	public PartyMeetingVO getMeetingTypeWiseDescription(Long partyMeetingTypeId,Long tdpCadreId);
 	public PartyMeetingVO getPartyMeetingDetailsBySearchType(Long tdpCadreId );
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId);
 	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,Long partyMeetingId);
