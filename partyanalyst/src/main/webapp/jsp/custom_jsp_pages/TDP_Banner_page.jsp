@@ -289,7 +289,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View N T Rama Rao Speeches Video Gallery" onclick="getVideoDetails(2534)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/Xcdzou_IR4Q/1.jpg">
+						<img src="https://img.youtube.com/vi/Xcdzou_IR4Q/1.jpg">
 						</a></td>
 					</tr>
 				</table>
@@ -304,7 +304,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Rythu Poru Video Gallery" onclick="getVideoDetails(1579)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/Qa3wAeJCQ-g/1.jpg">
+						<img src="https://img.youtube.com/vi/Qa3wAeJCQ-g/1.jpg">
 						</a>
 						</td>
 					</tr>
@@ -319,7 +319,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Mahanadu 2009 Video Gallery" onclick="getVideoDetails(1587)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/1rnQ08e6Hp4/1.jpg">
+						<img src="https://img.youtube.com/vi/1rnQ08e6Hp4/1.jpg">
 						</a></td>
 					</tr>
 				</table>
@@ -333,7 +333,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Rythu Poru - Ranga Reddy Dist Video Gallery" onclick="getVideoDetails(1644)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/Hjn66Z0lgVU/1.jpg">
+						<img src="https://img.youtube.com/vi/Hjn66Z0lgVU/1.jpg">
 						</a></td>
 					</tr>
 				</table>
@@ -347,7 +347,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Rythu Porubata in Khammam Video Gallery" onclick="getVideoDetails(1651)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/lYVSi6_c6V4/1.jpg">
+						<img src="https://img.youtube.com/vi/lYVSi6_c6V4/1.jpg">
 						</a></td>
 					</tr>
 				</table>
@@ -361,7 +361,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Rythu Porubata in Prakasam Video Gallery" onclick="getVideoDetails(1657)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/7OEFvX9h958/1.jpg">
+						<img src="https://img.youtube.com/vi/7OEFvX9h958/1.jpg">
 						</a></td>
 					</tr>
 				</table>
@@ -376,7 +376,7 @@
 					</tr>
 					<tr>
 						<td><a title="Click here to View Rythu Poru - Visakhapatnam Dist Video Gallery" onclick="getVideoDetails(1927)" href="javascript:{}">
-						<img src="http://img.youtube.com/vi/sx_SHnxwHyc/1.jpg">
+						<img src="https://img.youtube.com/vi/sx_SHnxwHyc/1.jpg">
 						</a></td>
 					</tr>
 				</table>
