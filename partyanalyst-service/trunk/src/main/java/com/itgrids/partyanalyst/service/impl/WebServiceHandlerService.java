@@ -2875,6 +2875,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 	}
 		 
-		 
+	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId)
+	 {
+		  try {
+			  return  partyMeetingService.getMeetingTypeWiseDescription(tdpCadreId,partyMeetingTypeId);
+		} catch (Exception e) {
+			log.debug("Entered into the getMeetingTypeWiseDescription  method in WebServiceHandlerService");
+		}
+		  return null;
+	  }
+	  
 }
 

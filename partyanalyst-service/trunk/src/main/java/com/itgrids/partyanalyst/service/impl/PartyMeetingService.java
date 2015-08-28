@@ -360,11 +360,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 			Date toDayDate = new DateUtilService().getCurrentDateAndTime();
 			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
 			tdpCadreIdsList.add(tdpCadreId);
-			List<Object[]> partyMeetingDtls = partyMeetingAttendanceDAO.getTotalAttendedDetailsForCadreIds(tdpCadreIdsList,partyMeetingTypeId,toDayDate);
 			Map<String ,PartyMeetingVO> meetingWisedetlsMap = new LinkedHashMap<String, PartyMeetingVO>(0);
-			if(partyMeetingDtls != null && partyMeetingDtls.size()>0)
+			List<Object[]> mettingWiseInvitationcountsList = partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList, partyMeetingTypeId,toDayDate);
+			List<String> partyMeetingsList = new ArrayList<String>(0);
+			
+			if(mettingWiseInvitationcountsList != null && mettingWiseInvitationcountsList.size()>0)
 			{
-				for (Object[] meeting : partyMeetingDtls) {
+				for (Object[] meeting : mettingWiseInvitationcountsList) {
+					
 					Long meetingId = commonMethodsUtilService.getLongValueForObject(meeting[0]);
 					String meetingName = commonMethodsUtilService.getStringValueForObject(meeting[1]);
 					//Long meetinglevelId = commonMethodsUtilService.getLongValueForObject(meeting[2]);
@@ -374,8 +377,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 					String meetingTypeStr = commonMethodsUtilService.getStringValueForObject(meeting[6]);
 					String fromDateStr = commonMethodsUtilService.getStringValueForObject(meeting[7]);
 					String toDateStr = commonMethodsUtilService.getStringValueForObject(meeting[8]);
-					Long attendedCount = commonMethodsUtilService.getLongValueForObject(meeting[9]);
+					
+					Long invitationCount = commonMethodsUtilService.getLongValueForObject(meeting[9]);
 					String locationStr = commonMethodsUtilService.getStringValueForObject(meeting[10]);
+					
+					partyMeetingsList.add(meetingName);
 					PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 					if(meetingWisedetlsMap.get(meetingName) != null)
 					{
@@ -388,25 +394,28 @@ public class PartyMeetingService implements IPartyMeetingService{
 					partyMeetingVO.setMeetingType(meetingTypeStr);
 					partyMeetingVO.setStartDateStr(fromDateStr);
 					partyMeetingVO.setEndDateStr(toDateStr);
-					partyMeetingVO.setAttendedCount(attendedCount);
+					partyMeetingVO.setInvitedCount(invitationCount);
 					meetingWisedetlsMap.put(meetingName, partyMeetingVO);
+					
 				}
 			}
-			
-			List<Object[]> mettingWiseInvitationcountsList = partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList, partyMeetingTypeId,toDayDate);
-			if(mettingWiseInvitationcountsList != null && mettingWiseInvitationcountsList.size()>0)
+
+			List<Object[]> partyMeetingDtls = partyMeetingAttendanceDAO.getTotalAttendedDetailsForCadreIds(tdpCadreIdsList,partyMeetingTypeId,toDayDate);
+		
+			if(partyMeetingDtls != null && partyMeetingDtls.size()>0)
 			{
-				for (Object[] meeting : mettingWiseInvitationcountsList) {
-					//Long meetingId = commonMethodsUtilService.getLongValueForObject(meeting[0]);
+				for (Object[] meeting : partyMeetingDtls) {
+					Long meetingId = commonMethodsUtilService.getLongValueForObject(meeting[0]);
 					String meetingName = commonMethodsUtilService.getStringValueForObject(meeting[1]);
-					Long invitedCount = commonMethodsUtilService.getLongValueForObject(meeting[2]);
+					Long attendedCount = commonMethodsUtilService.getLongValueForObject(meeting[9]);
 					
+					partyMeetingsList.remove(meetingName);
 					PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 					if(meetingWisedetlsMap.get(meetingName) != null)
 					{
 						partyMeetingVO = meetingWisedetlsMap.get(meetingName);
 					}
-					partyMeetingVO.setInvitedCount(invitedCount);
+					partyMeetingVO.setAttendedCount(attendedCount);
 					meetingWisedetlsMap.put(meetingName, partyMeetingVO);
 				}
 			}
@@ -500,6 +509,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 						resultList.add(partyMeetingVO);
 					}
 				}
+			}
+			
+			if(meetingWisedetlsMap != null && meetingWisedetlsMap.size()>0)
+			{
+				PartyMeetingVO partyMeetingVO  = resultList.get(0);
+				List<PartyMeetingVO> absentMeetingsList = new ArrayList<PartyMeetingVO>(0);
+				for (String meetingStr : meetingWisedetlsMap.keySet()) {
+					if(partyMeetingsList.contains(meetingStr))
+					{
+						absentMeetingsList.add(meetingWisedetlsMap.get(meetingStr));
+					}
+				}
+				partyMeetingVO.setPartyMeetingVOList(absentMeetingsList);
 			}
 			
 			if(resultList != null && resultList.size()>0)
