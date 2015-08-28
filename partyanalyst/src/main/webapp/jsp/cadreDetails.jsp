@@ -1785,14 +1785,14 @@ function getCadreFamilyDetailsByCadreId()
 		 if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
 			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
 		 else
 		 {
 			 str += '<div class="media-left">';
 			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
          str += '<div class="media-body">';
@@ -3144,53 +3144,23 @@ function getPartyMeetingDetaildReprt()
 					{
 						str+='<tr class="text-center">';
 						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
-						str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+result.partyMeetingVOList[i].invitedCount+'</u>';
-						str+='<ul class="count-hover right_arrow">';
+						str+='<td> <ul class="list-inline"><li class="show-dropdown invitedDetlsDiv" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'"><u style="color:#23527C;"> '+result.partyMeetingVOList[i].invitedCount+'</u> ';
+						str+='<ul class="count-hover right_arrow" >';
 						str+='<li>';
-						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
-						str+='<thead>';
-						str+='<tr>';
-						//str+='<th style=""> MEETING NAME </th>';
-						str+='<th style=""> LOCATION </th>';
-						str+='<th style=""> TIME </th>';						
-						//str+='<th> MEETING_TYPE </th>';
-						str+='<th style=""> START DATE</th>';
-						str+='<th style=""> END DATE</th>';
-						//str+='<th style=""> ATTENDED </th>';
-						//str+='<th style=""> INVITED </th>';
-						//str+='<th style=""> ABSENT </th>';
-						str+='</tr>';
-						str+='<thead>';
-						str+='<tbody>';
-						if(result.partyMeetingVOList[i].partyMeetingVOList != null && result.partyMeetingVOList[i].partyMeetingVOList.length>0)
-						{
-							for(var k in result.partyMeetingVOList[i].partyMeetingVOList)
-							{
-								str+='<tr>';
-									//str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].location+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].name+'</td>';
-									
-									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingLevelStr+' - //'+result.partyMeetingVOList[i].partyMeetingVOList[k].meetingType+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].startDateStr+'</td>';
-									str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].endDateStr+'</td>';
-									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].attendedCount	+'</td>';
-									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].invitedCount+'</td>';
-									//str+='<td>'+result.partyMeetingVOList[i].partyMeetingVOList[k].absentCount+'</td>';
-								str+='</tr>';
-							}
-						}
-						str+='</tbody>';
-						str+='</table>';
+							str+='<div id="invitedDetlsDiv'+i+'" class="invitationCls"></div>';
 						str+='</li>';
-						str+='</ul> </td>';
+						str+='</ul>';
+						
+						str+='</td>';
+						
 						if(parseInt(result.partyMeetingVOList[i].invitedCount) > parseInt(result.partyMeetingVOList[i].attendedCount))
 						{
 							var absentCount = parseInt(result.partyMeetingVOList[i].invitedCount) - parseInt(result.partyMeetingVOList[i].attendedCount);
 							str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
-							//str+='<td> '+absentCount+' </td>';
-						str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+absentCount+'</u>';
-						str+='<ul class="count-hover right_arrow">';
+							str+='<td> '+absentCount+' </td>';
+							
+						/*str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+absentCount+'</u>';
+						str+='<ul class="count-hover right_arrow" >';
 						str+='<li>';
 						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
 						str+='<thead>';
@@ -3218,7 +3188,7 @@ function getPartyMeetingDetaildReprt()
 						str+='</tbody>';
 						str+='</table>';
 						str+='</li>';
-						str+='</ul> </td>';
+						str+='</ul> </td>';*/
 						}
 						else if(parseInt(result.partyMeetingVOList[i].invitedCount) < parseInt(result.partyMeetingVOList[i].attendedCount))
 						{
@@ -3240,6 +3210,51 @@ function getPartyMeetingDetaildReprt()
 
 
 					$('#partyMetindetlsDivId').html(str);
+					str='';
+					$(".invitedDetlsDiv").hover(function(){
+						var divId = $(this).attr('name');
+						var meetingTypeId = $(this).attr('key');
+						var jsObj={
+							tdpCadreId:globalCadreId,
+							meetingTypeId:meetingTypeId
+						}	
+						$.ajax({
+								type:'POST',
+								 url: 'getPartyMeetingTypeWiseDetails.action',
+								 data : {task:JSON.stringify(jsObj)} ,
+								}).done(function(result){
+									var str='';
+									if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
+									{
+										str+='<table class="table table-bordered table-hover" style="margin: 10px">';
+										str+='<thead>';
+										str+='<tr>';
+										str+='<th style=""> LOCATION </th>';
+										str+='<th style=""> TIME </th>';
+										str+='<th style=""> START DATE</th>';
+										str+='<th style=""> END DATE</th>';
+										str+='</tr>';
+										str+='<thead>';
+										str+='<tbody>';
+										if(result.partyMeetingVOList != null && result.partyMeetingVOList.length>0)
+										{
+											for(var k in result.partyMeetingVOList)
+											{
+												str+='<tr>';
+												str+='<td>'+result.partyMeetingVOList[k].location+'</td>';
+												str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
+												str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
+												str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
+												str+='</tr>';
+											}
+										}
+										str+='</tbody>';
+										str+='</table>';
+										
+										$('#'+divId+'').html(str);
+									}
+								});
+					});
 				}
 			});
 }
