@@ -140,7 +140,7 @@ header.eventsheader {
 							<div class="col-md-3" id="ConstShowId" style="display:none;">
                                 	<label>Constituency</label>
 									<span id="ConsErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="constituencyId">
+                                    <select class="form-control" id="constituencyId" name="constBox">
 									<option>Select Constituency</option>
 									</select>
                             </div>
@@ -243,6 +243,7 @@ getUserAccessLocationDetails();
 	var distArr = [];
 	var parlArr = [];
 	var assmblyArr = [];
+	var firstMeetingId;
 	function getUserAccessLocationDetails(){
 	    var jsObj={				
 			task:"getUserAccessLocationDetails"				
@@ -293,6 +294,38 @@ getUserAccessLocationDetails();
 					}
 				}
 			}
+			
+			if(distArr.length==0 && parlArr.length==0){
+				$('#meetingLocationLevel').val('1').trigger('change');
+				$("#statesDivId").val(stateArr[0]).trigger('change');
+				setTimeout(function(){
+					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
+					$("#viewMeetings").trigger( "click" );
+				},1000); 
+			} else if(stateArr.length>0 && distArr.length>0 && parlArr.length==0){
+				$('#meetingLocationLevel').val('2').trigger('change');
+				$('#statesDivId').val(stateArr[0]).trigger('change');
+				setTimeout(function(){
+					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
+					$('#districtId').val(distArr[0]).trigger('change');
+					$("#viewMeetings").trigger( "click" );
+					
+				},1000); 
+				
+			}else if(parlArr.length>0){
+				$('#meetingLocationLevel').val('3').trigger('change');
+				$('#statesDivId').val(stateArr[0]).trigger('change');
+				setTimeout(function(){
+					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
+					$('#districtId').val(distArr[0]).trigger('change');
+					
+				},1000); 
+				
+				setTimeout(function(){
+					$('select[name="constBox"] option:eq(2)').attr('selected', 'selected');
+					$("#viewMeetings").trigger( "click" );
+				},2000);
+			} 
 		});
 	}
 	
@@ -445,6 +478,7 @@ $(document).ready(function() {
 			$("#typeOfMeeting  option").remove();
 			$("#typeOfMeeting").append('<option value="0">Select Meeting Type</option>');
 			if(result!=null && result.length>0){
+				firstMeetingId=result[0].id;
 				for(var i in result){
 					$("#typeOfMeeting").append('<option value="'+result[i].id+'">'+result[i].meetingType+'</option>');
 				}
@@ -834,7 +868,6 @@ $(document).ready(function() {
 
 				$("#statesDivId").html("");
 				
-				
 				$("#statesDivId").append('<option value=""> Select State </option>');
 				$("#statesDivId").append('<option value=0> All </option>');
 				
@@ -959,26 +992,6 @@ $(document).ready(function() {
 	function updateMeeting(partyMeetingId){
 		window.open('meetingDetailsList.action?partyMeetingId='+partyMeetingId+'', '_blank');
 		//alert(meetingType+"--"+meetingLocationLevel);
-	}
-	
-	getPartyMeetingDetails();
-	function getPartyMeetingDetails(){
-		var locationLevelValues = [11];
-		var locationLevel= 2;
-		var jsObj =	{
-			locationLevel:locationLevel,
-			locationLevelValues:locationLevelValues,
-			startDate:"08/25/2015",
-			endDate:"08/28/2015"
-		}
-					
-		$.ajax({
-			type: "POST",
-			url:"getMeetingSummaryForLocationAction.action",
-			data:{task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-		});
 	}
 </script>
 </body>
