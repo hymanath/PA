@@ -1499,8 +1499,8 @@ $(document).ready(function(e) {
 				
 				$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
 				$("#ttlPlnndMtngsSpanId").html(pmList[0].plannedMeetings);
-				$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" %)");
-				$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttended);
+				$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" % )");
+				$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttendedPercent +" % ");
 				
 				var str = "";
 				if(pmList!=null && pmList.length>0){
@@ -1525,25 +1525,25 @@ $(document).ready(function(e) {
 						
 						if(pmList[i].docTxtInfo!=null){
 							if(pmList[i].docTxtInfo.momFilesExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momFilesCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.momTextExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momPointsCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.atrFilesExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrFilesCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.atrTextExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrTextCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
