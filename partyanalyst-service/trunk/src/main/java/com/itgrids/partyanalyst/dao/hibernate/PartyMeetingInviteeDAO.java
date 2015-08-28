@@ -31,12 +31,46 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
-	
+	/*
+	 * public List<Object[]> getTotalAttendedDetailsForCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId,Date todayDate)
+	{
+		boolean isSetWhere = false;
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName,PMA.partyMeeting.partyMeetingLevelId,PMA.partyMeeting.partyMeetingLevel.level, " +
+				" PMA.partyMeeting.locationValue ,PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type," +
+				" date(PMA.partyMeeting.startDate),date(PMA.partyMeeting.endDate),  count(distinct PMA.attendance.tdpCadreId),PMA.partyMeeting.meetingAddress.localArea  from PartyMeetingAttendance PMA ");
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
+			queryStr.append(" where PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
+			isSetWhere = true;
+		}
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+		{
+			if(!isSetWhere)
+				queryStr.append(" where PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+			else
+				queryStr.append(" and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
+		}
+		if(todayDate != null )
+			queryStr.append(" and date(PMA.partyMeeting.startDate) <=:todayDate ");
+		
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
+			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		if(todayDate != null )
+			query.setDate("todayDate", todayDate);
+		return query.list();
+	}
+	*/
 	public List<Object[]> getPartyMeetingsInvitationDetlsByCadreIds(List<Long> tdpCadreIdsList,Long partyMeetingTypeId,Date todayDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		boolean isSetWhere = false;
-		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingId,PMI.partyMeeting.meetingName, count(distinct PMI.tdpCadreId)  from PartyMeetingInvitee PMI where ");
+		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingId,PMI.partyMeeting.meetingName,PMI.partyMeeting.partyMeetingLevelId,PMI.partyMeeting.partyMeetingLevel.level," +
+				" PMI.partyMeeting.locationValue ,PMI.partyMeeting.partyMeetingType.partyMeetingTypeId, PMI.partyMeeting.partyMeetingType.type," +
+				" date(PMI.partyMeeting.startDate),date(PMI.partyMeeting.endDate),count(distinct PMI.tdpCadreId),PMI.partyMeeting.meetingAddress.localArea   from PartyMeetingInvitee PMI where ");
 		queryStr.append(" date(PMI.partyMeeting.startDate) <= :todayDate ");
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
 			queryStr.append(" and  PMI.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
