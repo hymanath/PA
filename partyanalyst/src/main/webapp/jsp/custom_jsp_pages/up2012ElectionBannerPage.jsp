@@ -362,7 +362,7 @@ text-decoration:none;
 <tr>
 <td>
 <!--<br>
-<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="https://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center>-->
+<center><object height="220" width="320"><param value="https://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="https://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center>-->
 <table>
 <br>
 <span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances</span>
@@ -1006,7 +1006,7 @@ UttarPradesh Assembly Previous Election Results</h3>-->
 
 <tr>
   <td>
-   <center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="https://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center>
+   <center><object height="220" width="320"><param value="https://www.youtube.com/v/mMTRWXNVXCw?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="https://www.youtube.com/v/mMTRWXNVXCw?version=3"></object></center>
   </td>
 </tr>
 
