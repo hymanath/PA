@@ -1060,8 +1060,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 				
 				if(attndnceRsltLst!=null && attndnceRsltLst.size()>0 && fnlLst!=null && fnlLst.size()>0){
 					
-					fnlLst.get(0).setConductedMeetings(attndnceRsltLst.get(0).getConductedMeetings());					// For Overall Summary -- Meetings Conducted (If Attendance is Greter Than Zero)
-					fnlLst.get(0).setAverageInviteesAttended(attndnceRsltLst.get(0).getAverageInviteesAttended());		// For Overall Summary -- Total Invitees Attended / Meetings Conducted 
+					fnlLst.get(0).setConductedMeetings(attndnceRsltLst.get(0).getConductedMeetings());									// For Overall Summary -- Meetings Conducted (If Attendance is Greter Than Zero)
+					fnlLst.get(0).setAverageInviteesAttended(attndnceRsltLst.get(0).getAverageInviteesAttended());						// For Overall Summary -- Total Invitees Attended / Meetings Conducted
+					fnlLst.get(0).setAverageInviteesAttendedPercent(attndnceRsltLst.get(0).getAverageInviteesAttendedPercent());		// For Overall Summary -- Total Invitees Attended / All Invitees
 					
 					for(PartyMeetingSummaryVO temp:fnlLst){
 						PartyMeetingSummaryVO attndncVO = getMatchedMeeting(temp.getMeetingId(), attndnceRsltLst);
@@ -1159,6 +1160,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			int mtngNtCnductd = 0;
 			Long ttlAttnddInvts = 0l;
+			Long overAllInvitees = 0l;
 			if(finalVOLst!=null && finalVOLst.size()>0){
 				for(PartyMeetingSummaryVO temp:finalVOLst){
 					Long ttlAttended = temp.getTotalAttended();
@@ -1167,7 +1169,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 						Long invitsAttended = temp.getInviteesAttended();
 						
 						ttlAttnddInvts = ttlAttnddInvts + ttlAttended ; 				// For Overall Summary  
-						mtngNtCnductd = mtngNtCnductd + 1;								// For Overall Summary  
+						mtngNtCnductd = mtngNtCnductd + 1;								// For Overall Summary
+						overAllInvitees += ttlInvits;
 						
 						Long othrsAttnd = ttlAttended - invitsAttended;
 						Long invitsAbsent = ttlInvits - invitsAttended;
@@ -1192,7 +1195,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			if(finalVOLst.size()>0){
 				finalVOLst.get(0).setConductedMeetings(mtngNtCnductd);
-				finalVOLst.get(0).setAverageInviteesAttended((int)Math.ceil((double)ttlAttnddInvts/mtngNtCnductd));
+				//finalVOLst.get(0).setAverageInviteesAttended((int)Math.ceil((double)ttlAttnddInvts/mtngNtCnductd));
+				finalVOLst.get(0).setAverageInviteesAttendedPercent((new BigDecimal(ttlAttnddInvts*(100.0)/overAllInvitees)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			}
 			
 		}catch (Exception e) {
@@ -1248,11 +1252,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 				for(Object[] obj:momRslt){
 					Long meetingId = Long.valueOf(obj[0].toString());
 					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					boolean isNew = false;
 					if(temp==null){
+						isNew = true;
 						temp = new PartyMeetingSummaryVO();
+						temp.setMeetingId(meetingId);
 					}
 					temp.setMomTextExist(true);
-					temp.setMomFilesCount(Long.valueOf(obj[1].toString()));
+					temp.setMomPointsCount(Long.valueOf(obj[1].toString()));
+					
+					if(isNew){
+						finalVOLst.add(temp);
+					}
 				}
 			}
 			
@@ -1260,11 +1271,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 				for(Object[] obj:atrRslt){
 					Long meetingId = Long.valueOf(obj[0].toString());
 					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					boolean isNew = false;
 					if(temp==null){
+						isNew = true;
 						temp = new PartyMeetingSummaryVO();
+						temp.setMeetingId(meetingId);
 					}
 					temp.setAtrTextExist(true);
-					temp.setAtrFilesCount(Long.valueOf(obj[1].toString()));
+					temp.setAtrTextCount(Long.valueOf(obj[1].toString()));
+					
+					if(isNew){
+						finalVOLst.add(temp);
+					}
 				}
 			}
 			
@@ -1314,7 +1332,6 @@ public class PartyMeetingService implements IPartyMeetingService{
 	
 	
 	/**
-	 * ${Id}
 	 * @Author  Sasi
 	 * @Version PartyMeetingService.java  Aug 27, 2015 5:00:20 PM 
 	 * @param typeOfMeeting
@@ -1440,10 +1457,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 					tmp.setLocationId(Long.valueOf(obj[4].toString()));
 					tmp.setLocation(lctnNmsMap.get(Long.valueOf(obj[4].toString())));
 					List<PartyMeetingSummaryVO> meetings = tmp.getPartyMeetingsList();
-					if(meetings!=null && meetings.size()>0){
+					if(meetings==null){
 						meetings = new ArrayList<PartyMeetingSummaryVO>();
 					}
-					PartyMeetingSummaryVO attndncVO = getMatchedMeeting(tmp.getMeetingId(), meetings);
+					PartyMeetingSummaryVO attndncVO = getMatchedMeeting(Long.valueOf(obj[9].toString()), meetings);
 					if(attndncVO==null){
 						attndncVO = new PartyMeetingSummaryVO();
 						attndncVO.setMeetingId(Long.valueOf(obj[9].toString()));
@@ -1575,7 +1592,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				momDocTemp.setOnlyFileCount(fileCount_mom);
 				momDocTemp.setOnlyTxtCount(txtCount_mom);
 				momDocTemp.setNothingCount(nothingCount_mom);
-				temp.setAtrDocTxtInfo(momDocTemp);
+				temp.setMomDocTxtInfo(momDocTemp);
 				
 				temp.setMeetingsCount(ttlMtngs);
 				temp.setTotalAttended(ttlAttnd);
