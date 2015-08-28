@@ -913,27 +913,19 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$('#mintModal').modal('hide');
 			
 		   if(result=="success"){
-				rebuildMinutes(partyMeetingId)
+				rebuildMinutes(partyMeetingId,minuteId)
 		   }else{
 				reslt = "Please Try Again"
 				$("#mintupdatealertmag").html(reslt);
 				$('#alertmintsave').modal('show');
 				$.unblockUI();
 		   }
-		   if(minuteId == 0){
-				reslt = "Saved Successfully"
-				$("#mintupdatealertmag").html(reslt);
-				setTimeout(function(){$('#alertmintsave').modal('show')}, 1000);
-			}else if(minuteId > 0){
-				reslt = "Updated Successfully"
-				$("#mintupdatealertmag").html(reslt);
-				setTimeout(function(){$('#alertmintsave').modal('show')}, 1000);
-			}
+		   
 			$("#saveBtnMeetMin").attr("attr_minuteId",0);
 		});
 	});
 	
-	function rebuildMinutes(partyMeetingId){
+	function rebuildMinutes(partyMeetingId,minuteId){
 		var jsObj={		
 			partyMeetingId : partyMeetingId//global var
 		}
@@ -963,7 +955,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			}
 			$.unblockUI();
 			//alert("Updated Successfully");
-			
+			if(minuteId == 0){
+				var stts = "Saved Successfully"
+				$("#mintupdatealertmag").html(stts);
+				$('#alertmintsave').modal('show');
+			}else if(minuteId > 0){
+				var stts = "Updated Successfully"
+				$("#mintupdatealertmag").html(stts);
+				$('#alertmintsave').modal('show');
+			}
 		});
 	}
 	
@@ -1252,7 +1252,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#myModashow").modal("hide");
 			if(result=="success"){
 				//alert("Updated Successfully");
-				getAtrPointsForAMeeting(partyMeetingId);
+				getAtrPointsForAMeeting(partyMeetingId,atrId);
 			}else{
 				reslt = "Please Try Again"
 				$("#mintupdatealertmag").html(reslt);
@@ -1260,21 +1260,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				//alert("Please Try Again");
 				$.unblockUI();
 			}
-			if(atrId == 0){
-				reslt = "Saved Successfully"
-				$("#mintupdatealertmag").html(reslt);
-				setTimeout(function(){$('#alertmintsave').modal('show')}, 4000);
-				
-			}else if(atrId >0){
-				reslt = "Updated Successfully"
-				$("#mintupdatealertmag").html(reslt);
-				setTimeout(function(){$('#alertmintsave').modal('show')}, 4000);
-			}
 		});	
 		
 	});
 	
-	function getAtrPointsForAMeeting(partyMeetingId){
+	function getAtrPointsForAMeeting(partyMeetingId,atrId){
 		var jsObj={		
 			partyMeetingId : partyMeetingId
 		}
@@ -1330,6 +1320,15 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   }
 			   $.unblockUI();
 			   //alert("Updated Successfully");
+				if(atrId == 0){
+					var  stts = "Saved Successfully"
+					$("#mintupdatealertmag").html(stts);
+					$('#alertmintsave').modal('show');
+				}else if(atrId >0){
+					var stts = "Updated Successfully"
+					$("#mintupdatealertmag").html(stts);
+					$('#alertmintsave').modal('show');
+				}
 		});
 	}
 	
