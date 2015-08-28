@@ -61,7 +61,7 @@
  <link rel="stylesheet" href="styles/jQ_datatables/css/demo_page.css" />
 <link rel="stylesheet" href="styles/jQ_datatables/css/demo_table.css" />
 
- <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+ <link rel="stylesheet" type="text/css" href="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 
 
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">

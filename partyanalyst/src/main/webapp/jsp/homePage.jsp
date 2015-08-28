@@ -506,7 +506,7 @@ var pollStatus = [];
 					<s:if test="%{#videoGallaryDetails.fileType == 'Special Page'}" >
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 			        </s:if>
-                    <img src='http://img.youtube.com/vi/<s:property value="pathOfFile"/>/1.jpg' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+                    <img src='https://img.youtube.com/vi/<s:property value="pathOfFile"/>/1.jpg' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
 				  </td>		
 			      <td>
 			        <s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
@@ -924,7 +924,7 @@ var pollStatus = [];
 		
          <div class="social-icons"> <strong>We are SOCIAL</strong>
             <div class="clear"></div>
-            <div class="social-io"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img src="./images/new_homepage/facebook-io.jpg" alt=""/></a> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none" target="_blank"><img src="./images/new_homepage/twitter-io.jpg" alt=""/></a> <a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank"><img src="./images/new_homepage/in.jpg" alt=""/></a> <a href="http://www.youtube.com/partyanalyst" target="_blank"><img src="./images/new_homepage/youtube.jpg" alt=""/></a> </div>
+            <div class="social-io"><a title="Facebook" href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img src="./images/new_homepage/facebook-io.jpg" alt=""/></a> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none" target="_blank"><img src="./images/new_homepage/twitter-io.jpg" alt=""/></a> <a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank"><img src="./images/new_homepage/in.jpg" alt=""/></a> <a href="https://www.youtube.com/partyanalyst" target="_blank"><img src="./images/new_homepage/youtube.jpg" alt=""/></a> </div>
           </div>
         </div>
         

@@ -136,7 +136,7 @@
 					{
 						str+= '<tr id="image'+result[i].tdpCadreId+'">';
 						str+= '<td>'+result[i].name+'</td>';
-						var img = 'http://www.mytdp.com/images/cadre_images/'+result[i].image;
+						var img = 'images/cadre_images/'+result[i].image;
 						str+= '<td><img src='+img+' style="width:70px"></img></td>';
 						str+= '<td><a class="btn btn-mini btn-success"  style="margin-top: 15px;" onClick="getValidDetails('+result[i].tdpCadreId+',\'VALID\');"><i class="icon-ok icon-white"></i> VALID</a>&nbsp;&nbsp;<a class="btn btn-mini btn-danger" style="margin-top: 15px;" onClick="getValidDetails('+result[i].tdpCadreId+',\'INVALID\');"><i class="icon-remove icon-white"></i> INVALID</a></td>';
 						str+= '</tr>';
@@ -205,7 +205,7 @@
 					{
 						str+= '<tr id="image'+result[i].tdpCadreId+'">';
 						str+= '<td>'+result[i].name+'</td>';
-						var img = 'http://www.mytdp.com/images/cadre_images/'+result[i].image;
+						var img = 'images/cadre_images/'+result[i].image;
 						str+= '<td><img src='+img+' style="width:70px"></img></td>';
 						str+= '<td><a class="btn btn-mini btn-success"  style="margin-top: 15px;" onClick="getValidDetails('+result[i].tdpCadreId+',\'VALID\');"><i class="icon-ok icon-white"></i> VALID</a>&nbsp;&nbsp;<a class="btn btn-mini btn-danger" style="margin-top: 15px;" onClick="getValidDetails('+result[i].tdpCadreId+',\'INVALID\');"><i class="icon-remove icon-white"></i> INVALID</a></td>';
 						

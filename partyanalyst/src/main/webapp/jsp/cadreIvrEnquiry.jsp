@@ -4,10 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>IVR Report</title>
 <link href="css/Bootstrap2.2.1.css" rel="stylesheet" type="text/css" />
-<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
  <!-- Load jQuery from Google's CDN -->
     <!-- Load jQuery UI CSS  -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     
     <!-- Load jQuery JS -->
     <script src="https://code.jquery.com/jquery-1.9.1.js"></script>

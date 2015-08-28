@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ALL ARTICLES</title>
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/daterange/daterangepicker-bs3.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/> 
 

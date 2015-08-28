@@ -14,7 +14,7 @@
 <link href="dist/Invitees/css/normalize.css" rel="stylesheet" type="text/css">
 <link href="dist/Invitees/css/cs-skin-slide.css" rel="stylesheet" type="text/css">
 <link href="dist/Invitees/css/cs-select.css" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <link href="dist/Invitees/MultiSelect/css/component.css" rel="stylesheet" type="text/css">
 <link href="dist/Invitees/css/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 

@@ -661,7 +661,7 @@
 		      function checkForNetworkAndDisplayChart()
 			  {
 		          var img = new Image();
-				  img.src = "http://www.itgrids.com/images/slogan.gif";
+				  img.src = "https://www.itgrids.com/images/slogan.gif";
 				  
 				  if (img.complete) {
 					  		  

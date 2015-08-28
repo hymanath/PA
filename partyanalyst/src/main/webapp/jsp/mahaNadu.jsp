@@ -55,7 +55,7 @@
 
 <script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
 		<script type="text/javascript" src="js/photobooth/website/js/script.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
 		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
   <style>
   .yui-skin-sam.yui-dt table th {

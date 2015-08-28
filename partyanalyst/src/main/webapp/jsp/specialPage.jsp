@@ -1385,7 +1385,7 @@ Tweet</a>
           
             <!--PHOTO GALLERY SECTION END-->
           <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On ${specialPageVO.heading}</span>
-		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
+		  <div class="fb-comments" data-href="https://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
 		  </div>
 		  <div id="advVideoDiv" >
 		<b>
@@ -1452,7 +1452,7 @@ Tweet</a>
 		<s:if test="#stat.index == 0">
 		<DIV>
 		<a  title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
+		<img src='https://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
 	</s:iterator>
@@ -1462,7 +1462,7 @@ Tweet</a>
 			<s:iterator status="stat" value="fileVOList">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
 				<li><a title='<s:property value="title"/>' onclick="getVideoDetails(<s:property value='contentId'/>)">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
+				<img src='https://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
 		</ul>

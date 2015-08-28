@@ -11,7 +11,7 @@
 <script src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
   rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet"   
   href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />

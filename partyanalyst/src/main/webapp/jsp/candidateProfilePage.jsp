@@ -595,7 +595,7 @@ Tweet</a>
 		</s:if>
 
           <div> 
-		  <div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}" data-num-posts="500" data-width="420"></div>
+		  <div class="fb-comments" data-href="https://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}" data-num-posts="500" data-width="420"></div>
 		  </div>
 
 		  <div id="commentBoxDiv" style="margin-top:15px;"class="constituencyPageCenterInfoDiv.rounded">
@@ -663,7 +663,7 @@ Tweet</a>
 		<s:if test="#stat.index == 0">
 		<DIV>
 		<a rel="#voverlay" title='<s:property value="title"/>' onClick="getVideoDetails(<s:property value='contentId'/>)">
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
+		<img src='https://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
 	</s:iterator>
@@ -673,7 +673,7 @@ Tweet</a>
 			<s:iterator status="stat" value="fileVO">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
 				<li><a rel="#voverlay" title='<s:property value="title"/>' onClick="getVideoDetails(<s:property value='contentId'/>)" style="width:72px;">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
+				<img src='https://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
 		</ul>
@@ -2243,7 +2243,7 @@ function showFirstFourNewsRecords(results)
 	document.getElementById("showNewsDiv").innerHTML=str;
 
 	var lb = document.getElementById("facebookCommentsInNewsDiv");
-	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'" data-num-posts="5" data-width="500"></div>';
+	lb.innerHTML='<div class="fb-comments" data-href="https://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results.contentId+'" data-num-posts="5" data-width="500"></div>';
 	FB.XFBML.parse(lb);
  
  }
@@ -2928,7 +2928,7 @@ function buildVideoGallaryDiv(result)
 	var str = '';
 
 	str += '<DIV>';
-	str += '<a rel="#voverlay" href="http://www.youtube.com/v/'+result[0].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+	str += '<a rel="#voverlay" href="https://www.youtube.com/v/'+result[0].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
 	str += '<img src="https://img.youtube.com/vi/'+result[0].path+'/0.jpg" width="230px;" height="210px;"/></a>';
 	str += '</DIV>';
 
@@ -2937,7 +2937,7 @@ function buildVideoGallaryDiv(result)
 		str += '<DIV><table><tr>';
 		for(var i=1;i<result.length && i<5;i++)
 		{
-			str += '<td><a rel="#voverlay" href="http://www.youtube.com/v/'+result[i].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer" width="70px;">';
+			str += '<td><a rel="#voverlay" href="https://www.youtube.com/v/'+result[i].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer" width="70px;">';
 	str += '<img src="https://img.youtube.com/vi/'+result[i].path+'/0.jpg" width="75px;" height="70px;"/></a></td>';
 		}
 		str += '</tr></table></DIV>';

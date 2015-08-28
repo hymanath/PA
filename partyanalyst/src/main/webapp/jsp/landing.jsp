@@ -112,7 +112,7 @@
 						<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
 						<li><a id="supportLink" href="javascript:{}" onclick="supportLinkInHomePage()"class="navLinksAnc">Support</a></li>
 						<li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre" class="navLinksAnc">Who We Are</a></li>
-						<li><a href="http://partyanalyst.wordpress.com" target="_blank" class="navLinksAnc">Our Blog</a></li>
+						<li><a href="https://partyanalyst.wordpress.com" target="_blank" class="navLinksAnc">Our Blog</a></li>
 						<li>|</li>
 						<li><a href="loginInputAction.action"  class="navLinksAnc">
 						Login </a></li>

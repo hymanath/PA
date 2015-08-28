@@ -8,7 +8,7 @@
 <title>Party Meetings - MOM & ATR POINTS</title>
 
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 
 <link href="css/Training/css/basic.css" rel="stylesheet" type="text/css">
