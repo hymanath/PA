@@ -17,7 +17,7 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private String houseNo;
 	private String imagePath;
 	private Long membershipNo;
-	private Long mobileNo;
+	private String mobileNo;
 	private String candidateName;
 	private String occupation;
 	private String partyPosition;
@@ -27,7 +27,9 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private String representativeType;
 	private Long voterId;
 	private String voterCardNo;
-	
+	private String relativeName;
+	private String relationType;
+	private String gender;
 	
 	private Long partNo;
 	private String panchayatName;
@@ -52,11 +54,32 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private Long trainingInvititationCount=0L;
 	private Long trainingAttendedCount=0L;
 	private Long trainingAbsentCount=0L;
-	
+	private Long familyMembersSurveyCount = 0L;
+	private Long publicRepresentativesCount = 0L;
+	private Long partyPositionsCount =0L;
 	private  List<TdpCadreFamilyDetailsVO> familyMembersList = new ArrayList<TdpCadreFamilyDetailsVO>(0);
 	private List<RegisteredMembershipCountVO> electionResultsPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 	private List<RegisteredMembershipCountVO> membershipRegistrationPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 
+	
+	public Long getFamilyMembersSurveyCount() {
+		return familyMembersSurveyCount;
+	}
+	public Long getPublicRepresentativesCount() {
+		return publicRepresentativesCount;
+	}
+	public Long getPartyPositionsCount() {
+		return partyPositionsCount;
+	}
+	public void setFamilyMembersSurveyCount(Long familyMembersSurveyCount) {
+		this.familyMembersSurveyCount = familyMembersSurveyCount;
+	}
+	public void setPublicRepresentativesCount(Long publicRepresentativesCount) {
+		this.publicRepresentativesCount = publicRepresentativesCount;
+	}
+	public void setPartyPositionsCount(Long partyPositionsCount) {
+		this.partyPositionsCount = partyPositionsCount;
+	}
 	public String getAge() {
 		return age;
 	}
@@ -93,9 +116,7 @@ public class CadreOverviewVO implements java.io.Serializable{
 	public Long getMembershipNo() {
 		return membershipNo;
 	}
-	public Long getMobileNo() {
-		return mobileNo;
-	}
+	
 	public String getCandidateName() {
 		return candidateName;
 	}
@@ -201,9 +222,7 @@ public class CadreOverviewVO implements java.io.Serializable{
 	public void setMembershipNo(Long membershipNo) {
 		this.membershipNo = membershipNo;
 	}
-	public void setMobileNo(Long mobileNo) {
-		this.mobileNo = mobileNo;
-	}
+	
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
 	}
@@ -348,4 +367,29 @@ public class CadreOverviewVO implements java.io.Serializable{
 	public void setTrainingAbsentCount(Long trainingAbsentCount) {
 		this.trainingAbsentCount = trainingAbsentCount;
 	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getRelationType() {
+		return relationType;
+	}
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
 }
