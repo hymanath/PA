@@ -8,7 +8,7 @@
 
 <head>
 <title>Record And Upload Audio File</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 <style>
 ul li {list-style-type:square;}
