@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
@@ -80,8 +82,10 @@ import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
@@ -148,8 +152,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IMessagingPropsDetailsDAO messagingPropsDetailsDAO;
     private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
     private IEventDAO eventDAO;
+    private IPartyMeetingService partyMeetingService;
+    private IMahaNaduService mahaNaduService;
     
     
+	public IMahaNaduService getMahaNaduService() {
+		return mahaNaduService;
+	}
+
+	public void setMahaNaduService(IMahaNaduService mahaNaduService) {
+		this.mahaNaduService = mahaNaduService;
+	}
+
+	public IPartyMeetingService getPartyMeetingService() {
+		return partyMeetingService;
+	}
+
+	public void setPartyMeetingService(IPartyMeetingService partyMeetingService) {
+		this.partyMeetingService = partyMeetingService;
+	}
+
 	public void setEventDAO(IEventDAO eventDAO) {
 		this.eventDAO = eventDAO;
 	}
@@ -2820,5 +2842,39 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return returnVO;
 	  }
+	  
+	  public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
+	  {
+		  try {
+			  
+			return  partyMeetingService.getPartyMeetingsForCadrePeople(tdpCadreId);
+					
+		} catch (Exception e) {
+			log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
+		}
+		  return null;
+	  }
+	  
+	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId)
+	 {
+		  try {
+			  return  mahaNaduService.getParticipatedCandidateEventDetails(tdpCadreId);
+		} catch (Exception e) {
+			log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
+		}
+		  return null;
+	  }
+	 
+	 public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId)
+	 {
+	  try {
+		  return  cadreDetailsService.getEventDetailsOfCadre(tdpCadreId);
+		} catch (Exception e) {
+			log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
+		}
+		  return null;
+	}
+		 
+		 
 }
 
