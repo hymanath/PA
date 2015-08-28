@@ -7,7 +7,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
-import com.itgrids.partyanalyst.model.Mandal;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 
 
