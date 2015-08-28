@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
@@ -10,6 +11,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -102,4 +104,8 @@ public interface IWebServiceHandlerService {
 	 public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
 	 public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
 	 public CadreOverviewVO getTdpCadreOverViewDetails(CadreOverviewVO inputVO);
+	 public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId);
+	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
+	 public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId);
+	 
 }
