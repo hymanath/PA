@@ -877,7 +877,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
-				Object[] partyPositionDetails=tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);
+				Object[] partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);
 				//0.publicRepresentativeTypeId,1.type
 				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
@@ -997,8 +997,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				{
 					String level=partyPositionDetails[0] != null ? partyPositionDetails[0].toString() : "" ;
 					String role=partyPositionDetails[1] != null ? partyPositionDetails[1].toString() : "";
+					String commiteestr=partyPositionDetails[2] != null ? partyPositionDetails[2].toString() : "";
 					
-					cadreDetailsVO.setPartyPosition(level +" " +role);
+					cadreDetailsVO.setPartyPosition(level +" " +role+" ( "+commiteestr+" )");
 				}
 				else{
 					cadreDetailsVO.setPartyPosition("N/A");
@@ -2141,11 +2142,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 								    	
 								    	if(committeeLevelId!= null && committeeLevelId.longValue()>0L)
 								    	{
-								    		Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
+								    		//Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
 									    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
 									    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
+									    	String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
 									    	String committeeLocation ="";
-									    	if(committeeLevelId == 5L)
+									    	/*if(committeeLevelId == 5L)
 									    	{
 									    		committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
 									    	}
@@ -2172,7 +2174,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 									    	{
 									    		committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
 									    	}
-									    	vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");
+									    	vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");*/
+									    	
+									    	if(!committeeLocation.isEmpty())
+									    		vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");
+									    	else
+									    		vo.setPartyPositionStr(committeeStr+" -"+committeeLevelStr+" "+roleStr);
 								    	}
 								    }
 								}
@@ -3474,7 +3481,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 						returnVO.setEventInvitationCount(eventsVO.getInvitedCount());
 						returnVO.setEventAbsentCount(eventsVO.getAbsentCount());
 					}
-					
 				}
 				
 			}
@@ -3679,11 +3685,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 												    	
 												    	if(committeeLevelId!= null && committeeLevelId.longValue()>0L)
 												    	{
-												    		Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
+												    		//Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
 													    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
 													    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
+													    	String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
+													    	
 													    	String committeeLocation ="";
-													    	if(committeeLevelId == 5L)
+													    	/*if(committeeLevelId == 5L)
 													    	{
 													    		committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
 													    	}
@@ -3710,8 +3718,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 													    	{
 													    		committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
 													    	}
-													    	
-													    	vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");
+													    	*/
+													    	if(!committeeLocation.isEmpty())
+													    		vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");
+													    	else
+													    		vo.setPartyPositionStr(committeeStr+" -"+committeeLevelStr+" "+roleStr);
 												    	}
 												    }
 												}
@@ -3722,7 +3733,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 									}
 								}
 							}
-							
+							returnVO.getFamilyMembersList().addAll(familyVOList);
 							List<RegisteredMembershipCountVO> resultList = new ArrayList<RegisteredMembershipCountVO>();
 							UserAddress userAddress = new UserAddress();
 							
@@ -3750,9 +3761,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 									if(countVO != null)
 										resultList.add(countVO);
 									
-									/*countVO = setElectionPerformanceDetailsInCadreLocation(2009l, userAddress, partyIds);
-									if(countVO != null)
-										resultList.add(countVO);*/
+									/*
+									   countVO = setElectionPerformanceDetailsInCadreLocation(2009l, userAddress, partyIds);
+										if(countVO != null)
+											resultList.add(countVO);
+									*/
 								}
 						  }
 							
