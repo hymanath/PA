@@ -53,6 +53,7 @@ public class PartyMeetingSummaryVO implements Serializable{
 	private int plannedMeetings;
 	private int conductedMeetings;
 	private int averageInviteesAttended;
+	private String averageInviteesAttendedPercent;
 	private String conductedMeetingsPercent;
 	
 	private int bothCount;
@@ -65,6 +66,13 @@ public class PartyMeetingSummaryVO implements Serializable{
 	
 	
 	
+	public String getAverageInviteesAttendedPercent() {
+		return averageInviteesAttendedPercent;
+	}
+	public void setAverageInviteesAttendedPercent(
+			String averageInviteesAttendedPercent) {
+		this.averageInviteesAttendedPercent = averageInviteesAttendedPercent;
+	}
 	public PartyMeetingSummaryVO getAtrDocTxtInfo() {
 		return atrDocTxtInfo;
 	}
