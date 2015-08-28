@@ -146,8 +146,8 @@ margin:-1px 0px 0px 0px ;
 		
 				<h5>FOLLOW US</h5>
 		<div id="follow-icon" >
-				<a class="f-icon" title="Follow us on Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank" alt="Facebook Image"></a>
-				<a class="t-icon" title="Follow us on twitter" href="http://twitter.com/#!/partyanalyst" target="_blank" alt="Twitter Image"></a>
+				<a class="f-icon" title="Follow us on Facebook" href="https://www.facebook.com/PartyAnalyst" target="_blank" alt="Facebook Image"></a>
+				<a class="t-icon" title="Follow us on twitter" href="https://twitter.com/#!/partyanalyst" target="_blank" alt="Twitter Image"></a>
 			</div>
 		</div>
         <div class="lr-sec" >
@@ -196,7 +196,7 @@ margin:-1px 0px 0px 0px ;
 		<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
 %>
-		<!-- live2support.com tracking codes starts --><div id="l2s_trk" style="z-index:99;float: right; position: fixed; right: 10px;bottom:4px;width:130px;"><a href="http://live2support.com" style="font-size:1px;">Live Support Software</a></div><script type="text/javascript"><!--
+		<!-- live2support.com tracking codes starts --><div id="l2s_trk" style="z-index:99;float: right; position: fixed; right: 10px;bottom:4px;width:130px;"><a href="https://live2support.com" style="font-size:1px;">Live Support Software</a></div><script type="text/javascript"><!--
  var l2s_pht=escape(location.protocol); if(l2s_pht.indexOf("http")==-1) l2s_pht='http:'; var dept="0"; function l2s_load() { document.write('<scr'+'ipt type="text/javaScr'+'ipt" src="'+unescape(l2s_pht)+'//sa.live2support.com/js/lsjs1.php?stid=22424"  defer=true>'+'</scr'+'ipt>');  }
 l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //--></script><!-- live2support.com tracking codes closed -->
 <% }
@@ -451,13 +451,13 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 
 <div class="header2">
 <!--Facebook like icon-->
-	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
+	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="https://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
 	<!--Facebook and twitter follow us
 		<div class="follow-us" style="margin-left:180px;">
             <ul>
               <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
+              <li><a title="Facebook" href="https://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
             <h5 style="color:#08AAEC;">follow us</h5> 
 		</div>-->

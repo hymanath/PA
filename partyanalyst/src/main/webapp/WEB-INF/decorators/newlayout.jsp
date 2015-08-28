@@ -257,7 +257,7 @@ function buildAccordion()
 		</div>
 <% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 %>
-        <!-- live2support.com tracking codes starts --><div id="l2s_trk" style="z-index:99;float: right; position: fixed; right: 10px;bottom:4px;"><a href="http://live2support.com" style="font-size:1px;">Live Support Software</a></div><script type="text/javascript"><!--
+        <!-- live2support.com tracking codes starts --><div id="l2s_trk" style="z-index:99;float: right; position: fixed; right: 10px;bottom:4px;"><a href="https://live2support.com" style="font-size:1px;">Live Support Software</a></div><script type="text/javascript"><!--
  var l2s_pht=escape(location.protocol); if(l2s_pht.indexOf("http")==-1) l2s_pht='http:'; var dept="0"; function l2s_load() { document.write('<scr'+'ipt type="text/javaScr'+'ipt" src="'+unescape(l2s_pht)+'//sa.live2support.com/js/lsjs1.php?stid=22424"  defer=true>'+'</scr'+'ipt>');  }
 l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //--></script><!-- live2support.com tracking codes closed -->
   <% }
@@ -502,11 +502,11 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 <div style="width:100%;float:left;">
 <center>
 <div class="header2">
-<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
+<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="https://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
+              <li><a title="Facebook" href="https://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
             </ul>
             <span class="fright">follow us on</span> </div>
 </div>
@@ -954,7 +954,7 @@ function openAddNewProblemWindow()
 function shareInFacebook(urlStr)
 {	
 	var url = encodeURL(urlStr);
-	var shareInFacebook_window = window.open("http://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+	var shareInFacebook_window = window.open("https://www.facebook.com/sharer/sharer.php?app_id=309437425817038&sdk=joey&u="+url+"&display=popup&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
 	shareInFacebook_window.focus();
 }
 

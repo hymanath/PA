@@ -580,13 +580,13 @@ margin-top:10px;
 
 <!--<div class="header2">
 <!--Facebook like icon
-	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
+	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="https://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
 	Facebook and twitter follow us
 		<div class="follow-us" style="margin-left:180px;">
             <ul>
               <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
+              <li><a title="Facebook" href="https://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
             </ul>
             <h5 style="color:#08AAEC;">follow us</h5> 
 		</div>
