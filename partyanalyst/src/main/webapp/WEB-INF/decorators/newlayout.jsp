@@ -41,7 +41,7 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
