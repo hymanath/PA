@@ -2814,7 +2814,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  CadreOverviewVO returnVO = null;
 		  try {
-			  returnVO = cadreDetailsService.getTdpcadreDetailsByTdpCadreId(inputVO.getCadreId());
+			  returnVO = cadreDetailsService.getTdpcadreDetailsByTdpCadreId(inputVO.getCadreId(),inputVO.getHouseNo(),inputVO.getVoterCardNo());
 		} catch (Exception e) {
 			 log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
 		}
