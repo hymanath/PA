@@ -292,6 +292,8 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			
 			//partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(locationLevel, locationIds, startDate, endDate);
 			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
+			//PartyMeetingSummaryVO partyMeetingsSummary1 = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
+			//partyMeetingsSummary.setAtrDocTxtInfo(partyMeetingsSummary1);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
