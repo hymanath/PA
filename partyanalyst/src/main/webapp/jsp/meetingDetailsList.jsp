@@ -318,7 +318,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		<span>Press Alt+t to toggle between Telugu & English</span>
       </div>
       <div class="modal-body">
-         	<input type="text" id="meetRaised"  class="form-control"/>
+         	<textarea rows="5" id="meetRaised" class="form-control"></textarea>
 		</div>
 		<span id="momError" style="color:red;margin-left:20px;"></span>
       <div class="modal-footer">
@@ -341,11 +341,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				<div class="row">
 					 <div class="col-md-12">
 						 <label>REQUEST</label><br/>
-						 <textarea rows="2" id="request" class="form-control"></textarea>
+						 <textarea rows="5" id="request" class="form-control"></textarea>
 					 </div>
 					 <div class="col-md-12 m_top20">
 						 <label>ACTION TAKEN</label><br/>
-						 <textarea rows="2" id="actionTaken" class="form-control"></textarea>
+						 <textarea rows="5" id="actionTaken" class="form-control"></textarea>
 					 </div>
 					 
 					 <div class="col-md-12 m_top20">
