@@ -46,7 +46,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 		
 		contentStr += '<div id="slider-bg" class="yui-h-slider" tabindex="-1" title="Slider"> ';
 		contentStr += '    <div id="slider-thumb" class="yui-slider-thumb">';
-		contentStr += '		<img src="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/thumb-n.gif">';
+		contentStr += '		<img src="js/yahoo/yui-js-2.8/build/slider/assets/thumb-n.gif">';
 		contentStr += '	</div> ';
 		contentStr += '</div> ';
 		contentStr += ' Significance : <span id="slider-value">0</span></p> ';
