@@ -168,6 +168,8 @@ var globalCadreId = '${cadreId}';
 			<input type="hidden" value="" id="cadreConstituencyId" />
 			<input type="hidden" value="" id="cadrePConstituencyId" />
 			<input type="hidden" value="" id="cadreDistrictId" />
+			<input type="hidden" value="" id="cadreVoterCardNo" />
+			<input type="hidden" value="" id="cadreMemberShipId" />
 			
             	<table class="table table-bordered">
                 	<tr>
@@ -252,11 +254,13 @@ var globalCadreId = '${cadreId}';
                     </div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body">
-                    	<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h5>
-                        <div class="display-style">
-                            <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
+					  <div id="complaintCountDiv">
+						</div>
+                    	<!--<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h5>-->
+                        <div class="display-style" id="complaintsDiv">
+                          <!--  <div id="donutchart" class="display-style" style="height: 120px;float:left;width:150px;"></div>
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;" id="complaintStatusUL">
-                            </ul>
+                            </ul>-->
                         </div>
                     </div> 
                 </div>
@@ -264,12 +268,13 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
-					 <div class="panel-body">
-                   		<h5>TOTAL FINANCE REQUESTS <span id="headingId" class="text-bold"></span></h5>
+					 <div class="panel-body" id="familyMemberDiv">
+                   		<!--<h5>TOTAL FINANCE REQUESTS <span id="headingId" class="text-bold"></span></h5>
                     	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
                         
-                    </ul>
+                    </ul>-->
+					
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -746,7 +751,8 @@ var globalCadreId = '${cadreId}';
 					$('#cadreConstituencyId').val(result.constituencyId);	
 					$('#cadrePConstituencyId').val(result.pconstituencyId);						
 					$('#cadreDistrictId').val(result.districtId);
-
+					$('#cadreVoterCardNo').val(result.voterIdCardNo);
+					$('#cadreMemberShipId').val(result.membershipNo);
 					/* end Survey Fields */
 					
 					 $("#nameId").html(result.name);
@@ -1783,12 +1789,23 @@ function getCadreFamilyDetailsByCadreId()
  
  function buildCadreFamilyDetails(result)
  {
+	  familyInfoArr=[];
 	 var constId = $('#cadreConstituencyId').val();
 	 var partNo = $('#cadrePartNo').val();
 	 var str = '';
 	 str += '<ul>';
 	 for(var i in result)
 	 {
+	 
+	 var familyObj = {
+	 voterId:result[i].votercardNo,
+	 membershipId:result[i].membershipNo,
+	 name:result[i].name,
+	 relation:result[i].relation,
+	 };
+	 
+	 familyInfoArr.push(familyObj);
+	 
 		 str += '<li>';
          str += '<div class="media">';
 		 if(result[i].tdpCadreId != null ){
@@ -1842,9 +1859,12 @@ function getCadreFamilyDetailsByCadreId()
 	 }
 	 str += '</ul>';
 	$("#familyMembersDiv").html(str);
+	getMemberComplaints();
 	$(function () {
 	  $('.membershipno-cls').tooltip()
 	})
+	
+	
  }
  
  
@@ -3379,9 +3399,210 @@ function getEventsOverviewFortdpCadre()
 				}
 			});
 }
+function getTotalComplaintsForCandidate()
+{//9999
 
+var votercardNo = $('#cadreVoterCardNo').val();
+var membershipId = $('#cadreMemberShipId').val();
+
+	$.ajax({
+			type : "POST",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			  data: JSON.stringify([{"voterId":votercardNo,"membershipId" :membershipId,"name":"","relation":""}]),
+			 contentType: "application/json; charset=utf-8",
+			 dataType: "json",
+			  username: "grievance",
+                password: "grievance@!tG"
+			 }).done(function(myresult){
+			 buildTotalComplaints(myresult,0);
+			});
+}
+function buildTotalComplaints(result,complaintId)
+{
+
+	var str = '';
+	str += '<ul class="list-inline" style="border-top:1px solid #ccc;margin-top:5px">';
+	str += '<li>';
+	str += '<h1 class="m_0 text-center" style="font-size:50px;color:#666">'+result[0].count+'</h1>';
+	str += '<h6 class="m_0">TOTAL COMPLAINTS</h6>';
+	str += '</li>';
+	
+	str += '<li style="margin-top:5px">';
+	str += '<ul class="display-style pull-right graph-list count-list">';
+	for(var i in result[0].subList){
+		
+	
+		if(result[0].subList[i].status.toLowerCase() == ("In Progress").toLowerCase()){
+		 str += '<li><span class="inProgress"></span><span class="inProgress-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Completed").toLowerCase()){
+		 str += '<li style="color:#00B17D;"><span class="completed"></span><span>'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not Verified").toLowerCase()){
+		 str += '<li><span class="notverified"></span><span class="notverified-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+		 str += '<li><span class="notEligible"></span><span class="notEligible-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not possible").toLowerCase()){
+		 str += '<li><span class="notpossible"></span><span class="notpossible-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		} 
+	}
+	str += '</ul>';
+	str += '</li>';
+	str += '</ul>';
+	$("#complaintCountDiv").html(str);
+	
+	var comp = '';
+	if(result[0].amountVO != null){
+	if(result[0].amountVO.cmRefiedFund == null)
+	result[0].amountVO.cmRefiedFund =0;
+	if(result[0].amountVO.partyFund == null)
+	result[0].amountVO.partyFund =0;
+	comp+='<h4 class="m_0">TOTAL FINANCIAL REQUESTED '+result[0].amountVO.requested+'/-</h4>';
+	comp+='<h4 class="m_0">TOTAL APPROVED '+result[0].amountVO.approved+'/-</h4>';
+	comp+='<p>Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
+	comp+='<p>Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';}
+	
+	comp += '<ul class="inbox-messages" style="margin-bottom:0px;">';
+	for(var j in result){
+		if(result[j].complaintId == complaintId){
+			if(result[j].status.toLowerCase() == ("Not Verified").toLowerCase()){
+			  comp += '<li class="inbox-not-opened"';
+			}
+			else if(result[j].status.toLowerCase() == ("Completed").toLowerCase()){
+			  comp += '<li class="inbox-completed"';
+			}
+			else if(result[j].status.toLowerCase() == ("In Progress").toLowerCase()){
+			  comp += '<li class="inbox-in-process"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+			  comp += '<li class="inbox-not-eligible"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
+			  comp += '<li class="inbox-not-possible"';
+			}
+			
+			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+')">';
+			//comp += '<li class="inbox-not-opened">';
+			comp += '<p class="m_0">C ID - '+result[j].complaintId+'</p>';
+			comp += '<p class="m_0">'+result[j].subject+'</p>';
+			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[j].status+'</span></p>';
+			if(result[j].raisedDate != null)
+			 comp += '<p class="m_0">'+result[j].raisedDate+'</p>';
+			comp += '</li>';
+		}
+   }
+   for(var j in result){
+		if(result[j].complaintId != complaintId){
+			if(result[j].status.toLowerCase() == ("Not Verified").toLowerCase()){
+			  comp += '<li class="inbox-not-opened"';
+			}
+			else if(result[j].status.toLowerCase() == ("Completed").toLowerCase()){
+			  comp += '<li class="inbox-completed"';
+			}
+			else if(result[j].status.toLowerCase() == ("In Progress").toLowerCase()){
+			  comp += '<li class="inbox-in-process"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+			  comp += '<li class="inbox-not-eligible"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
+			  comp += '<li class="inbox-not-possible"';
+			}
+			
+			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+');">';
+			comp += '<p class="m_0">C ID - '+result[j].complaintId+'</p>';
+			comp += '<p class="m_0">'+result[j].subject+'</p>';
+			
+			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[j].status+'</span></p>';
+			if(result[j].raisedDate != null)
+			 comp += '<p class="m_0">'+result[j].raisedDate+'</p>';
+			comp += '</li>';
+		}
+   }
+   
+	comp += '</ul>';
+    $("#complaintsDiv").html(comp);
+		if(result[0].count>=7){
+			
+			   $("#complaintsDiv").css("height","760px");
+			 }else {
+			  
+			    $("#complaintsDiv").css("height","auto"); 
+		   }
+	
+}
+var familyInfoArr =new Array();
+function getMemberComplaints()
+{
+	$.ajax({
+			type : "POST",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			  data: JSON.stringify(familyInfoArr),
+			 contentType: "application/json; charset=utf-8",
+			 dataType: "json",
+			 username: "grievance",
+             password: "grievance@!tG"
+			 }).done(function(myresult){
+				buildFamilyMemberComplaint(myresult);
+			});
+
+}
+function buildFamilyMemberComplaint(result)
+{
+
+ try{
+	var comp = '';
+	if(result[0].amountVO != null){
+	if(result[0].amountVO.cmRefiedFund == null)
+	result[0].amountVO.cmRefiedFund =0;
+	if(result[0].amountVO.partyFund == null)
+	result[0].amountVO.partyFund =0;
+	comp+='<h4 class="m_0">TOTAL FINANCIAL REQUESTED :'+result[0].amountVO.requested+'/-</h4>';
+	comp+='<h4 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h4>';
+	comp+='<p>Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
+	comp+='<p>Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';}
+	comp += '<ul class="inbox-messages" style="margin-bottom:0px;box-shadow:none">';
+	
+	 for(var j in result){
+			comp+='<li>';
+			comp += '<p class="m_0">Name- '+result[j].name+'</p>';
+			comp += '<p class="m_0">Relation- '+result[j].relation+'</p>';
+			if(result[j].membershipId != null )
+			comp += '<p class="m_0">MemberShipID- '+result[j].membershipId+'</p>';
+			comp += '</li>';
+			if(result[j].subList != null && result[j].subList.length > 0)
+			{
+				comp+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages">';
+				for(var k in result[j].subList)
+				{
+				comp+='<li><p class="m_0">C ID - '+result[j].subList[k].complaintId+'</p><p class="m_0">'+result[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[j].subList[k].status+'</span></p><p class="m_0">'+result[j].subList[k].raisedDate+'</p></li>';
+				}
+				
+				comp+='</ul>';
+			}
+		}
+		
+	comp += '</ul>';
+	//$("#familyMemberImg").hide();
+    $("#familyMemberDiv").html(comp);
+		if(result[0].count>=7){
+			
+			   $("#familyMemberDiv").css("height","760px");
+			 }else {
+			  
+			    $("#familyMemberDiv").css("height","auto"); 
+		   }
+		   }
+		   catch(e)
+		   {
+		   }
+}
 getPartyMeetingsOverViewForCadre();
 getEventsOverviewFortdpCadre();
+getTotalComplaintsForCandidate();
+
 </script>
 </body>
 </html>
