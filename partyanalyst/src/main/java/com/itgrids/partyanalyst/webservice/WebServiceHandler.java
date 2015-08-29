@@ -1445,6 +1445,20 @@ public class WebServiceHandler {
 	}
 	
 	@GET
+	@Path("/getPartyMeetingsOverView/{tdpCadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PartyMeetingVO getPartyMeetingsOverView(@PathParam("tdpCadreId") String tdpCadreId){
+		
+		try{
+			return webServiceHandlerService.getPartyMeetingsForCadreOverview(Long.valueOf(tdpCadreId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getPartyMeetingsForCadrePeople() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@GET
 	@Path("/getParticipatedCandidateEventDetails/{tdpCadreId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public PartyMeetingVO getParticipatedCandidateEventDetails(@PathParam("tdpCadreId") String tdpCadreId){
