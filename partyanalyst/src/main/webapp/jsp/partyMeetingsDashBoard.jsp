@@ -179,9 +179,9 @@ header.eventsheader {
                             	<div class="col-md-12 m_top20">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading" style="background-color:#CCC">
-                                            	<select>
-                                                	<option id="cumulative">Cumulative</option>
-                                                    <option id="individual">Individual</option>
+                                            	<select id="resultTypeSelId">
+                                                    <option value="individual" selected>Individual</option>
+													<option value="cumulative">Cumulative</option>
                                                 </select>
                                             <div class="pull-right">
                                             	<label>GROUP BY : </label>
@@ -192,200 +192,59 @@ header.eventsheader {
                                             </div>
                                         </div>
                                         <div class="panel-body pad_0">
-                                        	<div class="table-responsive individual">
-                                        	<table class="table table-bordered m_0">
-                                            	<thead>
-                                                	<tr>
-                                                        <th rowspan="2">Meeting Name</th>
-                                                        <th rowspan="2">Location</th>
-                                                        <th rowspan="2">Schedule<br/> On</th>
-                                                        <th rowspan="2">Total <br/>Invitees</th>
-                                                        <th colspan="3" class="text-center">Attendance</th>
-                                                        <th rowspan="2">Total<br/> Absent</th>
-                                                        <th colspan="2"  class="text-center">MOM</th>
-                                                        <th colspan="2" class="text-center">ATR</th>
-                                                    </tr>
-                                                    <tr>
-                                                    	<th>Total Attended</th>
-                                                        <th>Invitees</th>
-                                                        <th>Non Inivtees</th>
-                                                        <th>File</th>
-                                                        <th>Text</th>
-                                                        <th>File</th>
-                                                        <th>Text</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="individualResultBody">
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <!-- </div>
-                                            <div class="table-responsive cumulative">
-                                        	<table class="table table-bordered m_0">
-                                            	<thead>
-                                                	<tr>
-                                                        <th rowspan="2">Meeting Name</th>
-                                                        <th rowspan="2">No Of Meetings</th>
-                                                        <th rowspan="2">Location</th>
-                                                        <th rowspan="2">Schedule<br/> On</th>
-                                                        <th rowspan="2">Total <br/>Invitees</th>
-                                                        <th colspan="3" class="text-center">Attendance</th>
-                                                        <th rowspan="2">Total<br/> Absent</th>
-                                                        <th colspan="3"  class="text-center">MOM</th>
-                                                        <th colspan="3" class="text-center">ATR</th>
-                                                    </tr>
-                                                    <tr>
-                                                    	<th>Total Attended</th>
-                                                        <th>Invitees</th>
-                                                        <th>Non Inivtees</th>
-                                                        <th></th>
-                                                        <th>File</th>
-                                                        <th>Text</th>
-                                                        <th></th>
-                                                        <th>File</th>
-                                                        <th>Text</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>8</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>8</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td>8</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td rowspan="3">District Committee Body Meeting</td>
-                                                        <td rowspan="3">6</td>
-                                                        <td rowspan="3">Srikakulam</td>
-                                                        <td rowspan="3">Aug-15-2015</td>
-                                                        <td rowspan="3">100</td>
-                                                        <td rowspan="3">10<span class="font-10">(10%)</span></td>
-                                                        <td rowspan="3">10<span class="font-10">(10%)</span></td>
-                                                        <td rowspan="3">10<span class="font-10">(10%)</span></td>
-                                                        <td rowspan="3"	>10<span class="font-10">(10%)</span></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-ok text-success"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                	<tr>
-                                                    	<td>District Committee Body Meeting</td>
-                                                        <td>2</td>
-                                                        <td>Srikakulam</td>
-                                                        <td>Aug-15-2015</td>
-                                                        <td>100</td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>10<span class="font-10">(10%)</span></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td>2</td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                        <td><i class="glyphicon glyphicon-remove text-danger"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            </div> -->
+                                        	<div class="table-responsive" id="individualMeetingResultId">
+												<table class="table table-bordered m_0">
+													<thead>
+														<tr>
+															<th rowspan="2">Meeting Name</th>
+															<th rowspan="2">Location</th>
+															<th rowspan="2">Schedule<br/> On</th>
+															<th rowspan="2">Total <br/>Invitees</th>
+															<th colspan="3" class="text-center">Attendance</th>
+															<th rowspan="2">Total<br/> Absent</th>
+															<th colspan="2"  class="text-center">MOM</th>
+															<th colspan="2" class="text-center">ATR</th>
+														</tr>
+														<tr>
+															<th>Total Attended</th>
+															<th>Invitees</th>
+															<th>Non Inivtees</th>
+															<th>File</th>
+															<th>Text</th>
+															<th>File</th>
+															<th>Text</th>
+														</tr>
+													</thead>
+													<tbody id="individualResultBody"></tbody>
+												</table>
+                                            </div>
+                                            <div class="table-responsive" id="cumulativeMeetingResultId" style="display:none;">
+												<table class="table table-bordered m_0">
+													<thead>
+														<tr>
+															<th rowspan="2">No Of Meetings</th>
+															<th rowspan="2">Location</th>
+															<th rowspan="2">Total <br/>Invitees</th>
+															<th colspan="3" class="text-center">Attendance</th>
+															<th rowspan="2">Total<br/> Absent</th>
+															<th colspan="3"  class="text-center">MOM</th>
+															<th colspan="3" class="text-center">ATR</th>
+														</tr>
+														<tr>
+															<th>Total Attended</th>
+															<th>Invitees</th>
+															<th>Non Inivtees</th>
+															<th></th>
+															<th>File</th>
+															<th>Text</th>
+															<th></th>
+															<th>File</th>
+															<th>Text</th>
+														</tr>
+													</thead>
+													<tbody id="cumulativeMeetingTableBodyId"></tbody>
+												</table>
+                                            </div>
                                             <!-- <div class="checkbox-select">
                                                 <div class="panel-group" id="accordion10" role="tablist" aria-multiselectable="true">
                                                   <div class="panel panel-default border_custom">
@@ -1296,6 +1155,16 @@ $(document).ready(function(e) {
 });
 
 
+	$("#resultTypeSelId").change(function(){
+		if($(this).val()=="cumulative"){
+			$("#cumulativeMeetingResultId").show();
+			$("#individualMeetingResultId").hide();
+		}else{
+			$("#cumulativeMeetingResultId").hide();
+			$("#individualMeetingResultId").show();
+		}
+		updateFunctions();
+	});
 
   
   function getDistrictsForStates(){
@@ -1685,8 +1554,15 @@ $(document).ready(function(e) {
 		}
 		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
 		$(".tbtn").trigger( "click" );
+		
 		getMeetingSummary($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
-		getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
+		
+		if($("#resultTypeSelId").val()=="individual"){
+			getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
+		}else{
+			getPartyMeetingDetailsCumulative($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
+		}
+		
 	}
 	
 	function getMeetingSummary(meetingLevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId)
@@ -1886,6 +1762,127 @@ $(document).ready(function(e) {
 			$("#panchayatDiv").show();
 		}
 	});
+	
+	function getPartyMeetingDetailsCumulative(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
+		var dateType=meetingduration;
+		var fromDate,temp1=new Date(),toDate;
+		var month;
+		if((temp1.getMonth()+1)<10){
+			month=0+""+(temp1.getMonth()+1);
+		}else{
+			month=(temp1.getMonth()+1);
+		}
+		toDate = temp1.getFullYear()+"/"+month+"/"+temp1.getDate();
+		var temp = new Date();
+		if(dateType==1){
+			temp.setDate(temp.getDate() - 30);
+		}
+		else if(dateType==2){
+			temp.setDate(temp.getDate() - 90);
+		}
+		else if(dateType==3){
+			temp.setDate(temp.getDate() - 180);
+		}
+		else if(dateType==4){
+			temp.setDate(temp.getDate() - 270);
+		}
+		
+		var finalmonth;
+		if((temp.getMonth()+1)<10){
+			finalmonth=0+""+(temp.getMonth()+1);
+		}else{
+			finalmonth=temp.getMonth()+1;
+		}
+		
+		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+		
+		var jsObj =	{
+			meetinglevel:meetinglevel,
+			typeOfMeeting:typeOfMeeting,
+			locationLevel:locationscope,
+			stateId:stateId,
+			distId:distId,
+			constId:constId,
+			manTowDivId:manTowDivId,
+			wardPanId:wardPanId,
+			startDate:fromDate,
+			endDate:toDate
+		}
+			
+		$.ajax({
+			type: "POST",
+			url:"getMeetingCumulativeSummaryForLocationAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result!=null && result.partyMeetingsList!=null && result.partyMeetingsList.length>0){
+				 $('.individual').show();
+				var pmList = result.partyMeetingsList;
+				var str = "";
+				if(pmList!=null && pmList.length>0){
+					for(var i in pmList){
+						str+="<tr>";
+						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
+						str+="<td rowspan=4>"+pmList[i].location+"</td>";
+						if(pmList[i].totalInvitees!=null){
+							str+="<td rowspan=4>"+pmList[i].totalInvitees+"</td>";
+							str+="<td rowspan=4>"+pmList[i].totalAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].inviteesAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].nonInviteesAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].totalAbsent+"</td>";
+						}else{
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+						}
+						
+						var atrDocs = pmList[i].atrDocTxtInfo;
+						var momDocs = pmList[i].momDocTxtInfo;
+						
+						str+="<td>"+momDocs.bothCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td>"+atrDocs.bothCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.onlyFileCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td>"+atrDocs.onlyFileCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.onlyTxtCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td>"+atrDocs.onlyTxtCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.nothingCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td>"+atrDocs.nothingCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="</tr>";
+					}
+					
+				}
+				$("#cumulativeMeetingTableBodyId").html(str); 
+			}else{
+				$("#cumulativeMeetingTableBodyId").html("No Records Found"); 
+			}
+		});
+	}
 					
 </script>
 </body>
