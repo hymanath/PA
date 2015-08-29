@@ -186,7 +186,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				if(invitationList != null && invitationList.size()>0)
 				{
 					for (Object[] param : invitationList) {
-						Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
+						Long count = param[9] != null ? Long.valueOf(param[9].toString()):0L;
 						invitationCount = invitationCount+count;
 						invitationMeetingsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
 					}
