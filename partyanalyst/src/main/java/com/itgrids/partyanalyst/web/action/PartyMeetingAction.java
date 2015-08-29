@@ -291,10 +291,30 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			String startDate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			
-			//partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(locationLevel, locationIds, startDate, endDate);
 			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
-			//PartyMeetingSummaryVO partyMeetingsSummary1 = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
-			//partyMeetingsSummary.setAtrDocTxtInfo(partyMeetingsSummary1);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMeetingCumulativeSummaryForLocation(){
+		try {
+			LOG.info("Entered into getMeetingSummaryForLocation");
+			jObj = new JSONObject(getTask());
+			
+			Long meetinglevel=jObj.getLong("meetinglevel");
+			Long typeOfMeeting=jObj.getLong("typeOfMeeting");
+			Long locationLevel=jObj.getLong("locationLevel");
+			Long stateId=jObj.getLong("stateId");
+			Long distId=jObj.getLong("distId");
+			Long constId=jObj.getLong("constId");
+			Long manTowDivId=jObj.getLong("manTowDivId");
+			Long wardPanId=jObj.getLong("wardPanId");
+			String startDate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
