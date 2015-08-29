@@ -19,9 +19,20 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title><decorator:title default="Party Analyst"/></title>
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/autocomplete/autocomplete-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script> 
 <!--  BootStrap Stating and pasted 'assert' folder in webapp folder-->
 <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 
@@ -505,7 +516,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 <div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="https://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
-              <li><a href="http://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
+              <li><a href="https://twitter.com/#!/partyanalyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
               <li><a title="Facebook" href="https://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
             </ul>
             <span class="fright">follow us on</span> </div>
