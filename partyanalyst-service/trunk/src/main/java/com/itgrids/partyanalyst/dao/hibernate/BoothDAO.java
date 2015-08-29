@@ -2533,15 +2533,15 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	return getHibernateTemplate().find("select distinct model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.publicationDate.publicationDateId = ? and model.constituency.state.stateId = ? order by model.panchayat.panchayatName ",params);
 	    }
 	 
-	 public Long getLocalElectionBody(Long tehsilId){
+	 public List<Long> getLocalElectionBody(Long tehsilId){
 		 
 		 Query query=getSession().createQuery("select distinct localBody.localElectionBodyId from Booth model" +
 		 		" left join model.localBody localBody " +
-		 		" where model.tehsil.tehsilId =:tehsilId ");
+		 		" where model.tehsil.tehsilId =:tehsilId and model.publicationDate.publicationDateId=:publicationDateId");
 		 
 		 query.setParameter("tehsilId", tehsilId);
-		 
-		 return (Long) query.uniqueResult();
+		 query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		 return query.list();
 	 }
 	 /*select distinct local_election_body_id from booth where constituency_id = 244 and publication_date_id = 3 and local_election_body_id=155;*/
 	 public Long getLocalElectionBodyDetails(Long localElectionBody,Long constituencyId,Long publicationDateId){
