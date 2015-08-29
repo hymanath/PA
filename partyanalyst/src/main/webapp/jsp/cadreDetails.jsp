@@ -1041,7 +1041,9 @@ var globalCadreId = '${cadreId}';
 				searchTypeStr: "All",
 				boothId: 0,
 				isPriority: "false",
-				voterCardNo:votercardNo
+				voterCardNo:votercardNo,
+				constituencyId: 232,
+				constiTypeStr: "assembly"
 			}
 			
 			$.ajax({
@@ -1111,7 +1113,9 @@ var globalCadreId = '${cadreId}';
 			searchTypeStr: searchTypeStr,
 			boothId: $('#cadreBoothId').val(),
 			isPriority: "false",
-			voterCardNo:voterCardNo
+			voterCardNo:voterCardNo,
+			constituencyId: 232,
+			constiTypeStr: "assembly"
 		}
 		
 		$.ajax({
@@ -1279,7 +1283,9 @@ var globalCadreId = '${cadreId}';
 				searchTypeStr: searchTypeStr,
 				boothId: $('#cadreBoothId').val(),
 				isPriority: isPriority,
-				voterCardNo:voterCardNo
+				voterCardNo:voterCardNo,
+				constituencyId: 232,
+				constiTypeStr: "assembly"
 			}
 			$('#'+divId+'').show();
 			$.ajax({
