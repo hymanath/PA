@@ -1049,9 +1049,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			
 			if(cadreDetailsVO.getTehsilId() !=null && cadreDetailsVO.getTehsilId() !=0l){
-				Long localElctioniBodyId=boothDAO.getLocalElectionBody(cadreDetailsVO.getTehsilId());
+				List<Long> localElctioniBodyIds=boothDAO.getLocalElectionBody(cadreDetailsVO.getTehsilId());
+				if(localElctioniBodyIds != null && localElctioniBodyIds.size()>0)
+				{
+					Long localElctioniBodyId = localElctioniBodyIds.get(0);
+					cadreDetailsVO.setLocalElectionBody(localElctioniBodyId !=null ? localElctioniBodyId.longValue() : 0l);
+				}
 				
-				cadreDetailsVO.setLocalElectionBody(localElctioniBodyId !=null ? localElctioniBodyId.longValue() : 0l);
 			}
 			
 			//adding previous Enrollment Years
