@@ -442,6 +442,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 					 str+='';
 				 }
 				str+=' <br/> <span> Constituency : '+result[i].constituencyName+' </span>';
+				str+=' <br/> <span> MemberShipNo : <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'"> '+result[i].id+' </a> </span>';
 				// }	 
 				  str+=' </td>';	  
 				// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
