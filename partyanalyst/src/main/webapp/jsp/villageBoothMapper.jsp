@@ -7,10 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Map Villages To Booth</title>
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
  
 <!-- Dependencies -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -35,13 +35,13 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script> 
 <!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script>
  
 <!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
  
 <!-- Source file -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript">
 var boothIds = new Array();

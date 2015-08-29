@@ -660,7 +660,7 @@ var globalCadreId = '${cadreId}';
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src=" http://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
+	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
 	<!--Circle js file-->
@@ -1785,14 +1785,14 @@ function getCadreFamilyDetailsByCadreId()
 		 if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
 			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
 		 else
 		 {
 			 str += '<div class="media-left">';
 			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
          str += '<div class="media-body">';
@@ -2160,7 +2160,6 @@ function getCandidateAndLocationSummaryNews(){
 
 	 $.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
 		$("#dataLoadingsImgForNewsId").hide();
 		$("#hideShowNewsDiv").show();

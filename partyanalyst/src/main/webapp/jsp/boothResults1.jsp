@@ -8,10 +8,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <!-- Dependencies --> 
-	<script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script> 
+	<script src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script> 
 	 
 	<!-- Source file --> 
-	<script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
 	 
 <title>Choose Constituency</title>
 <script type="text/javascript">

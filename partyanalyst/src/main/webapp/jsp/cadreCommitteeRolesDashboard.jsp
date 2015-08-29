@@ -169,7 +169,7 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src=" http://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
+	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
 	<script src=" https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>

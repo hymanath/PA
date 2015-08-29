@@ -49,10 +49,10 @@ th.thstyle{
 </style>
 
 <!-- Dependencies -->
-<script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 
 <!-- Source file -->
-<script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
 <script src="js/partyBoothResults/boothResults.js" ></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript">

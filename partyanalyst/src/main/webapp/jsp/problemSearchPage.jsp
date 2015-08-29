@@ -9,7 +9,7 @@
 <title>Party Analyst</title>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"></link> 
 <script type="text/javascript">
 
     var ScopeAll = false; 

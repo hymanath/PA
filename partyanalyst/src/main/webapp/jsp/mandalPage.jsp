@@ -7,42 +7,42 @@
 <html>
 <head>
 <!--CSS file (default YUI Sam Skin) --> 
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 	 
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css"> 	 
 	<!-- Dependencies --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script> 
 	 
 	<!-- OPTIONAL: JSON Utility (for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script> 
 	 
 	<!-- OPTIONAL: Connection Manager (enables XHR for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
 	 
 	<!-- OPTIONAL: Get Utility (enables dynamic script nodes for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/get/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script> 
 	 
 	<!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script> 
 	 
 	<!-- OPTIONAL: Calendar (enables calendar editors) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
  
 	<!-- Source files --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script> 
 	<!--  dependencies for tab view -->
 	<!-- Sam Skin CSS for TabView -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/tabview/assets/skins/sam/tabview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
  
 <!-- JavaScript Dependencies for Tabview: -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
  
 <!-- OPTIONAL: Connection (required for dynamic loading of data) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
  
 <!-- Source file for TabView -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/tabview/tabview-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
 <script type="text/javascript" src="js/yahoo/paginator-min.js"></script>	
 	
 <style type="text/css">

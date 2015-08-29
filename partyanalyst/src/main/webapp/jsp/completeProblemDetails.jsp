@@ -13,7 +13,7 @@
 <script src="styles/assets/js/bootstrap-tab.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/rating/jquery.rateit.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link href="styles/rating/rateit.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">

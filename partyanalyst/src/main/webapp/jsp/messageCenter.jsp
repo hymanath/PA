@@ -15,7 +15,7 @@
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script> <script type="text/javascript" src="js/blockui.js"></script>
 
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
   <style>#slider { margin: 10px; }	</style>
   <script src="https://code.jquery.com/jquery-1.8.2.js"></script>
   <script src="https://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>

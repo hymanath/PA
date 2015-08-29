@@ -10,9 +10,9 @@
 <meta name="description" content="Voters Pulse is an election or political survey to understand voters pulse towards parties, candidatures and aspirations based on geographical locations and demographics. We are exclusively in to Political Arena and our team provides you with the accurate data, detailed analytical reports and methodologies to analyze your goals" />
 
  <!-- Combo-handled YUI CSS files: --> 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>

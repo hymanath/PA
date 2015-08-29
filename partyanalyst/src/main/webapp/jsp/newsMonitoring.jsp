@@ -10,9 +10,9 @@
 <meta name="Keywords" content="News Monitering Service, News Analyzing Service, Review and Publish News, Election Software, Politian Software, Constituency problems, Opposition Party Activities, Monitoring the News in different Impact Levels, Categorization of News, News From Different Sources and Languages, News Based on Importance"/>
 <meta name="description" content="As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena. To review and publish the news related to you and your constituency/district/state. Lot of your constituency problems, activities, and your opposition party activities will come in different print and electronic media and disappear from the people. Party Analyst News Monitoring Service helps you lot on this. When you partner with Party Analyst, anything is possible, almost everything can be known" />
 	 <!-- Combo-handled YUI CSS files: --> 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>

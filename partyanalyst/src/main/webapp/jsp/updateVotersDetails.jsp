@@ -31,8 +31,8 @@
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 		
  
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css"> 
+	 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 
    <script type="text/javascript" src="js/blockui.js"></script>
   <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />

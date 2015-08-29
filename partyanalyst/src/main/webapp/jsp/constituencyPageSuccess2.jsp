@@ -43,10 +43,13 @@
 	
 	
 	<!-- Combo-handled YUI CSS files: --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/button/assets/skins/sam/button.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css"> 
 
 	<!-- Combo-handled YUI JS files: --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+ 
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css">	</link>
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />

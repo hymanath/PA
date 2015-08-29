@@ -26,7 +26,7 @@
 .sectionContent_head
 {
 	width:150px;
-	background: url("http://yui.yahooapis.com/2.8.2r1/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	background: url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
 	border-left: 1px solid #ADADAD;
 	border-right: 1px solid #ADADAD;
 	border-top: 1px solid #ADADAD;
