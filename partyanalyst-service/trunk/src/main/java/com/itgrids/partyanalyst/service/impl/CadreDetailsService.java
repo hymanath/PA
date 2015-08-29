@@ -1535,10 +1535,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return finalList;
 	}
-	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo){
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr){
 		VerifierVO verifierVO=new VerifierVO();
 		try{
-			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr,boothId,isPriority,voterCardNo);
+			verifierVO=webServiceHandlerService.getTdpCadreSurveyDetails(cadreId,surveyId,searchTypeStr,boothId,isPriority,voterCardNo,constituencyId,constiTypeStr);
 			return verifierVO;
 		}
 		catch(Exception e){
