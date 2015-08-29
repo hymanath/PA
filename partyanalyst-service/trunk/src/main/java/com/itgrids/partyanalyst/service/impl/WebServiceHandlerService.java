@@ -2847,7 +2847,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  try {
 			  
-			return  partyMeetingService.getPartyMeetingsForCadrePeople(tdpCadreId);
+		//	return  partyMeetingService.getPartyMeetingsForCadrePeople(tdpCadreId);
+			  return  partyMeetingService.getPartyMeetingDetailsBySearchType(tdpCadreId);
 					
 		} catch (Exception e) {
 			log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
@@ -2855,6 +2856,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 	  }
 	  
+	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId)
+	  {
+		  try {
+			  
+			return  partyMeetingService.getPartyMeetingsForCadrePeople(tdpCadreId);
+					
+		} catch (Exception e) {
+			log.debug("Entered into the getTdpCadreOverViewDetails  method in WebServiceHandlerService");
+		}
+		  return null;
+	  }
 	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId)
 	 {
 		  try {
@@ -2878,7 +2890,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId)
 	 {
 		  try {
-			  return  partyMeetingService.getMeetingTypeWiseDescription(tdpCadreId,partyMeetingTypeId);
+			  return  partyMeetingService.getMeetingTypeWiseDescription(partyMeetingTypeId,tdpCadreId);
 		} catch (Exception e) {
 			log.debug("Entered into the getMeetingTypeWiseDescription  method in WebServiceHandlerService");
 		}
