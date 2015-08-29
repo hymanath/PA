@@ -3428,7 +3428,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setCadreId(cadreVO.getCadreId());
 					returnVO.setCandidateId(cadreVO.getCandidate());
 					returnVO.setCasteName(cadreVO.getCasteName());
-					returnVO.setConstituencyName(cadreVO.getCommiteeName());
+					returnVO.setConstituencyName(cadreVO.getConstituencyName());
 					returnVO.setDob(cadreVO.getDateOfBirth());
 					returnVO.setDistrictId(cadreVO.getDistrictId());
 					returnVO.setDistrictName(cadreVO.getDistrictName());
