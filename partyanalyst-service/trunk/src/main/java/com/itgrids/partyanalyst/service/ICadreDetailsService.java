@@ -24,7 +24,7 @@ public interface ICadreDetailsService {
 	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId);
 	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId,String membershipId);
 	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long cadreId);
-	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo);
+	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
 	public List<CandidateDetailsVO>  getCandidateElectDetatails(Long cadreId);
 	
 	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId);
