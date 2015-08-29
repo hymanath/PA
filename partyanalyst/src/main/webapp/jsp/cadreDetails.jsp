@@ -23,13 +23,16 @@
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	
 <style>
-
+table
+{
+    border-collapse: separate !important;
+}
 .family-identity:after
 {
 	position:absolute;
@@ -82,7 +85,7 @@
 {
 	position:absolute;
 	padding:0px;
-	width:350px;
+	width:450px;
 	border-radius:3px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
 	background:#fff !important;
@@ -91,7 +94,7 @@
 	margin-right:41%;
 	bottom:-20px;
 }
-.count-hover li{list-style:none}
+.count-hover li{list-style:none; width:430px !important}
 
 #scrollator_holder{margin-left:25px}
 .table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
@@ -3167,7 +3170,7 @@ function getPartyMeetingDetaildReprt()
 						/*str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+absentCount+'</u>';
 						str+='<ul class="count-hover right_arrow" >';
 						str+='<li>';
-						str+='<table class="table table-bordered table-hover" style="margin: 10px">';
+						str+='<table class="table table-bordered" style="margin: 10px">';
 						str+='<thead>';
 						
 						str+='<tr>';
@@ -3230,8 +3233,8 @@ function getPartyMeetingDetaildReprt()
 								}).done(function(result){
 									var str='';
 									if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
-									{
-										str+='<table class="table table-bordered table-hover" style="margin: 10px">';
+									{//srish
+										str+='<table class="table table-bordered" style="margin: 10px">';
 										str+='<thead>';
 										str+='<tr>';
 										str+='<th style=""> LOCATION </th>';
