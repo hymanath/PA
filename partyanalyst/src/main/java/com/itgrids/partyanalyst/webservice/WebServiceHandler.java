@@ -1478,7 +1478,7 @@ public class WebServiceHandler {
 	@GET
 	@Path("/getMeetingTypeWiseDescription/{tdpCadreId}/{partyMeetingTypeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CadreCommitteeMemberVO> getMeetingTypeWiseDescription(@PathParam("tdpCadreId") String tdpCadreId,@PathParam("partyMeetingTypeId") String partyMeetingTypeId){
+	public PartyMeetingVO getMeetingTypeWiseDescription(@PathParam("tdpCadreId") String tdpCadreId,@PathParam("partyMeetingTypeId") String partyMeetingTypeId){
 		
 		try{
 			return webServiceHandlerService.getMeetingTypeWiseDescription(Long.valueOf(tdpCadreId), Long.valueOf(partyMeetingTypeId));
