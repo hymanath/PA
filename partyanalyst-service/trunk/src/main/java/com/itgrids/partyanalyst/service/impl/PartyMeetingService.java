@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -1477,7 +1476,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
 				for(Object[] obj:partyMeetingsRslt){
 					PartyMeetingSummaryVO tmp = getMatchedLocation(Long.valueOf(obj[4].toString()), fnlLst);
+					boolean isNew = false;
 					if(tmp==null){
+						isNew = true;
 						tmp = new PartyMeetingSummaryVO();
 					}
 					tmp.setLocationId(Long.valueOf(obj[4].toString()));
@@ -1493,10 +1494,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 						attndncVO.setMeetingName(obj[8].toString());
 						attndncVO.setScheduledOn(obj[5].toString());
 						meetings.add(attndncVO);
+						
+						prtyMtngIdsLst.add(attndncVO.getMeetingId());
 						tmp.setPartyMeetingsList(meetings);
 					}
-					fnlLst.add(tmp);
-					prtyMtngIdsLst.add(tmp.getMeetingId());
+					if(isNew){
+						fnlLst.add(tmp);
+					}
 				}
 			}
 			
@@ -1573,35 +1577,40 @@ public class PartyMeetingService implements IPartyMeetingService{
 				if(meetings!=null && meetings.size()>0){
 					for(PartyMeetingSummaryVO temp1:meetings){
 						if(temp1.getAttendanceInfo()!=null){
-							if(temp1.getTotalAttended()>0l){
+							PartyMeetingSummaryVO attendance = temp1.getAttendanceInfo(); 
+							if(attendance.getTotalAttended()>0l){
 								++ttlMtngs;										//  Increments meetings 
-								ttlAttnd+= 		temp1.getTotalAttended();		//	Adding attended
-								ttlInvts+= 		temp1.getTotalInvitees();		//	Adding total invitees
-								invtsAttnd+= 	temp1.getInviteesAttended();	//	Adding invitees attended
-								nonInvtsAttnd+=	temp1.getNonInviteesAttended();	//	Adding non-invitees
-								ttlAbsnt+=		temp1.getTotalAbsent();			//	Adding Absentees
+								ttlAttnd+= 		attendance.getTotalAttended();		//	Adding attended
+								ttlInvts+= 		attendance.getTotalInvitees();		//	Adding total invitees
+								invtsAttnd+= 	attendance.getInviteesAttended();	//	Adding invitees attended
+								nonInvtsAttnd+=	attendance.getNonInviteesAttended();	//	Adding non-invitees
+								ttlAbsnt+=		attendance.getTotalAbsent();			//	Adding Absentees
 							}
 						}
 						
-						if(temp1.isAtrFilesExist() && temp1.isAtrTextExist()){
-							++bothCount_atr;
-						}else if(temp1.isAtrFilesExist()){
-							++fileCount_atr;
-						}else if(temp1.isAtrTextExist()){
-							++txtCount_atr;
-						}else{
-							++nothingCount_atr;
-						}
-						
-						
-						if(temp1.isMomFilesExist() && temp1.isMomTextExist()){
-							++bothCount_mom;
-						}else if(temp1.isMomFilesExist()){
-							++fileCount_mom;
-						}else if(temp1.isMomTextExist()){
-							++txtCount_mom;
-						}else{
-							++nothingCount_mom;
+						if(temp1.getDocTxtInfo()!=null){
+							PartyMeetingSummaryVO docsInfo = temp1.getDocTxtInfo();
+							
+							if(docsInfo.isAtrFilesExist() && docsInfo.isAtrTextExist()){
+								++bothCount_atr;
+							}else if(docsInfo.isAtrFilesExist()){
+								++fileCount_atr;
+							}else if(docsInfo.isAtrTextExist()){
+								++txtCount_atr;
+							}else{
+								++nothingCount_atr;
+							}
+							
+							
+							if(docsInfo.isMomFilesExist() && docsInfo.isMomTextExist()){
+								++bothCount_mom;
+							}else if(docsInfo.isMomFilesExist()){
+								++fileCount_mom;
+							}else if(docsInfo.isMomTextExist()){
+								++txtCount_mom;
+							}else{
+								++nothingCount_mom;
+							}
 						}
 					}
 				}
