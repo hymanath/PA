@@ -29,10 +29,10 @@
 
  
 <!-- Slider skin (optional) --> 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-3.0/build/slider/assets/skins/sam/slider.css">
  
 <!-- Slider source file --> 
-<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/slider/slider-min.js"></script>
 
 
 <!-- JQuery files (Start) -->
@@ -49,7 +49,7 @@
 <style type="text/css">
 	#slider-bg
 	{ 
-		background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+		background:url(js/yahoo/yui-js-2.8/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
 	}
 
 	.yui-skin-sam .yui-h-slider
@@ -57,7 +57,7 @@
 		-moz-background-clip:border;
 		-moz-background-inline-policy:continuous;
 		-moz-background-origin:padding;
-		background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+		background:transparent url(js/yahoo/yui-js-2.8/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
 		height:28px;
 		width:110px;
 	} 

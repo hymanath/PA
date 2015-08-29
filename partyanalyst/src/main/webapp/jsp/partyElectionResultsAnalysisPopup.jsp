@@ -45,10 +45,10 @@
 <!-- JQuery files (End) -->
 
 	<!-- Slider skin (optional) --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-3.0/build/slider/assets/skins/sam/slider.css">
 
 	<!-- Slider source file --> 
-	<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/slider/slider-min.js"></script>
 
 <c:if test="${electionType != 'Parliament' && status =='analyzed'}">
 	<TITLE>${stateName} ${electionType} ${electionYear} Election Results Analyzed Constituencies </TITLE>
@@ -99,7 +99,7 @@
 	}
 	#slider-bg
 	{ 
-		background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+		background:url(js/yahoo/yui-js-2.8/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
 	}
 	.yui-skin-sam .yui-h-slider {		
 		width:110px;

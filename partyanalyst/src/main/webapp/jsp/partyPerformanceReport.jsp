@@ -765,7 +765,7 @@ function buildPartyPositionDataTable(info,rank)
 					partyPositionsDataGraph.push(obj);
 		</c:forEach>
 
-        YAHOO.widget.Chart.SWFURL = "http://yui.yahooapis.com/2.8.0r4/build/charts/assets/charts.swf";
+        YAHOO.widget.Chart.SWFURL = "js/yahoo/yui-js-2.8/build/charts/assets/charts.swf";
 
 		var incomeData = new YAHOO.util.DataSource(partyPositionsDataGraph);
 		incomeData.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;

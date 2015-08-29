@@ -68,14 +68,14 @@
 	<!-- JQuery files (End) -->
 
 	<!-- Dependencies --> 
-	<script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script src="http://yui.yahooapis.com/2.8.2r1/build/dragdrop/dragdrop-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
 
 	<!-- Slider skin (optional) --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-3.0/build/slider/assets/skins/sam/slider.css">
 
 	<!-- Slider source file --> 
-	<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/slider/slider-min.js"></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
@@ -200,13 +200,13 @@ body
 
 #slider-bg
 { 
-	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+	background:url(js/yahoo/yui-js-2.8/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
 }
 .yui-skin-sam .yui-h-slider {
 	-moz-background-clip:border;
 	-moz-background-inline-policy:continuous;
 	-moz-background-origin:padding;
-	background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+	background:transparent url(js/yahoo/yui-js-2.8/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
 	height:28px;
 	width:110px;
 } 
@@ -715,7 +715,7 @@ if(category == "candidate")
 			
 			str += '<div id="slider-bg" class="yui-h-slider" tabindex="-1" title="Slider"> ';
 			str += '    <div id="slider-thumb" class="yui-slider-thumb">';
-			str += '		<img src="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/thumb-n.gif">';
+			str += '		<img src="js/yahoo/yui-js-2.8/build/slider/assets/thumb-n.gif">';
 			str += '	</div> ';
 			str += '</div> ';
 			str += ' Significance : <span id="slider-value">0</span></p> ';

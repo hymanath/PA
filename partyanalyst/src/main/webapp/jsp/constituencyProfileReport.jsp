@@ -10,9 +10,9 @@
 <meta name="Keywords" content="Constituency Profile Report, Political Picture of Constituency, Constituency Overview, Election Software, Politian Software, Election, Demographic Wise Party's Performances in A Constituency, Polling Percentages Vs Party's Performances, Booth Wise Party Strength and Weak Areas, Cross Voting Report, Mandal Wise Election Results, Panchayat Wise Voting Percentage, Panchayat Wise Different Parties Performance, Voters Details, Caste wise Parties Performance, Census v/s Elections" />
 <meta name="description" content="Get the complete picture of your constituency to strategize the political picture up to village wise. In Constituency Profile Report you will get Demographic Wise Party's Performances, Polling Percentages Vs Party's Performances, Booth Wise Party Strength and Weak Areas, Cross Voting Report, Mandal Wise Election Results, Comparison of Different Mandal's between 2004 & 2009, Panchayat Wise Voting Percentage, Panchayat Wise Different Parties Performance in A Constituency" />
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
