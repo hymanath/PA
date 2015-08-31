@@ -2064,8 +2064,8 @@ public class TrainingCampService implements ITrainingCampService{
 			   toDayDate = sdf.parse(inputVo.getDateStr());
 			}
 			if(inputVo.getSearchType() == null){
-			 //list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
-				if(inputVo.getPurposeId()==1l){
+			 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+				/*if(inputVo.getPurposeId()==1l){
 					List<Object[]> sdlCnfmDtls1 = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
 					list = sdlCnfmDtls1;
 					
@@ -2138,7 +2138,7 @@ public class TrainingCampService implements ITrainingCampService{
 					
 					list = sdlCnfmDtls1;
 					
-				}
+				}*/
 			}
 			else
 			{
@@ -2230,6 +2230,8 @@ public class TrainingCampService implements ITrainingCampService{
 						 {
 							 vo.setRole(commonMethodsUtilService.getStringValueForObject(params[2]));
 							 vo.setRoleCategory(commonMethodsUtilService.getStringValueForObject(params[3]));
+							 String committeeLocation = cadreCommitteeService.getLocationName((Long)params[4], (Long)params[5]); 
+							 vo.setCommitteeLocation(committeeLocation != null?committeeLocation:"");
 						 }
 					 }
 				 }
