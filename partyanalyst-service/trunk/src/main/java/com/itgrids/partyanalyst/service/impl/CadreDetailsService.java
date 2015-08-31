@@ -3587,6 +3587,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setBoothId(cadreVO.getBoothId());
 					returnVO.setCadreId(cadreVO.getCadreId());
 					returnVO.setCandidateId(cadreVO.getCandidate());
+					returnVO.setConstituencyId(cadreVO.getConstituencyId());
 					returnVO.setCasteName(cadreVO.getCasteName());
 					returnVO.setConstituencyName(cadreVO.getConstituencyName());
 					returnVO.setDob(cadreVO.getDateOfBirth());
@@ -3616,7 +3617,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setTehsilName(cadreVO.getTehsilName());
 					returnVO.setVoterId(Long.valueOf(cadreVO.getVoterId()));
 					returnVO.setVoterCardNo(cadreVO.getVoterIdCardNo());
-					
+					returnVO.setQualification(cadreVO.getQualification());
 					List<TdpCadreFamilyDetailsVO> familyVOList = getCadreFamilyDetails(tdpCadreId);
 					if(familyVOList != null && familyVOList.size()>0)
 					{
