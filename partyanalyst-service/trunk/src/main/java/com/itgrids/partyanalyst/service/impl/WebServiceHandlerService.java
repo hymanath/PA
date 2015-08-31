@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
@@ -2897,5 +2898,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 	  }
 	  
+	 public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId){
+		 try {
+			  return  cadreDetailsService.getElectionPerformanceInCadreLocation(tdpCadreId);
+		} catch (Exception e) {
+			log.debug("Entered into the getElectionPerformanceInCadreLocation  method in WebServiceHandlerService");
+		}
+		  return null;
+	 }
 }
 
