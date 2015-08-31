@@ -232,9 +232,10 @@ var globalCadreId = '${cadreId}';
                             <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span></p>
                             <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
                             <p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+							<div id="participatedDivId" style="display:none"><p class="m_0"> PARTICIPATED CONSTITUENCY : <span id="participatedConstId"></span></p></div>
                         </td>
                     </tr>
-                    <tr>
+					<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-map-marker"></i> ADDRESS</td>
                     </tr>
                     <tr>
@@ -248,6 +249,14 @@ var globalCadreId = '${cadreId}';
                         </td>
                     </tr>
                 </table>
+				<!--<div class="panel panel-default" id="participatedDivId" style="display:none">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY</h4>
+                    </div>
+					<div class="panel-body">
+                    	<h5 class="m_0">Participated Constituency : <span id="participatedConstId" class="text-bold"></span></h5>
+                     </div> 
+                </div>-->
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> GRIEVANCE DETAILS</h4>
@@ -449,7 +458,7 @@ var globalCadreId = '${cadreId}';
 											<label class="radio-inline">
 												<input type="radio" name="radio" id="pConstiRadioNewsId" class="newsRadioCls">Parliament Constituency
 											</label>
-											<label class="radio-inline">
+											<label class="radio-inline hidingAssemlyCls">
 												<input type="radio" name="radio" id="aConstiRadioNewsId" class="newsRadioCls">Assembly Constituency
 											</label>
 											<label class="radio-inline hidingMandalCls" style="display:none;">
@@ -688,7 +697,16 @@ var globalCadreId = '${cadreId}';
 	
 	<script>
 	
+	
 	var globalCadreId = '${cadreId}';
+	
+	
+	var participatedConstituencyId=0;
+	var participatedConstituencyType="";
+	var participatedParliamentId = 0;
+	var participatedDistrictId = 0;
+	//getParticipatedConstituencyId(globalCadreId);
+	
 	//var globalCadreId;
 	/*  $(document).ready(function() {
 			globalCadreId='${param.cadreId}';
@@ -700,6 +718,46 @@ var globalCadreId = '${cadreId}';
 			
 			
 	 }); */
+	 
+	 
+	function getParticipatedConstituencyId(cadreId){
+		var jsObj={
+			tdpCadreId:cadreId
+		}	
+		$.ajax({
+				type:'POST',
+				 url: 'getParticipatedConstituencyAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result !=null){
+						//alert(1);
+						participatedConstituencyId =result.id;
+						participatedConstituencyType = result.electionType;
+						participatedParliamentId = result.parlimentId;
+						participatedDistrictId=result.districtId;
+						//alert(participatedConstituencyId);
+						if(participatedConstituencyId != null && participatedConstituencyId > 0){
+						//alert(1);
+							$("#participatedDivId").show();
+							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
+						}
+						
+						getCategoryWiseStatusCount();
+						getTotalMemberShipRegistrationsInCadreLocation();		
+						//getCadreFamilyDetailsByCadreId();
+						getElectionPerformanceInCadreLocation();
+						getApprovedFinancialSupprotForCadre();
+						cadreFormalDetailedInformation(globalCadreId);
+						getEventDetailsOfCadre(globalCadreId);
+						//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+						getLocationwiseCommitteesCount();
+						getPartyMeetingsOverViewForCadre();
+						getEventsOverviewFortdpCadre();
+						
+					}
+						
+				});
+	}
 	 
 	 //global Ids of CADRE
 	 
@@ -826,19 +884,38 @@ var globalCadreId = '${cadreId}';
 					 $("#panchayatRadioNewsId").val(result.panchayatId);
 					 $("#mandalRadioNewsId").val(result.tehsilId);
 					 
-					 //Hiding Panchayat && Mandal Div
-					 if(result.localElectionBody ==0 || result.localElectionBody ==null){
-						$(".hidingMandalCls").show();
-						//$('#panchayatRadioNewsId').prop('checked', true);
-					 }else{
-						//$('#aConstiRadioNewsId').prop('checked', true);
-						 $(".hidingMandalCls").hide();					 
+					 
+					 if(participatedConstituencyType == null || participatedConstituencyType =="" || participatedConstituencyType == undefined){
+						 
+						 //Hiding Panchayat && Mandal Div
+						 if(result.localElectionBody ==0 || result.localElectionBody ==null){
+							$(".hidingMandalCls").show();
+							//$('#panchayatRadioNewsId').prop('checked', true);
+						 }else{
+							//$('#aConstiRadioNewsId').prop('checked', true);
+							 $(".hidingMandalCls").hide();					 
+						 }
+						 
+						  $("#aConstiRadioNewsId").val(result.constituencyId);
+						  $("#pConstiRadioNewsId").val(result.pConstituencyId);
+						  $("#districtRadioNewsId").val(result.districtId);
+					 }
+					 else{
+						 
+						  $("#aConstiRadioNewsId").val(participatedConstituencyId);
+						  $("#pConstiRadioNewsId").val(participatedParliamentId);
+						  $("#districtRadioNewsId").val(participatedDistrictId);
+						  if(participatedConstituencyType == "Parliament"){
+							  $(".hidingAssemlyCls").hide();
+						  }
+						  else{
+							  $(".hidingAssemlyCls").show();
+						  }
+						  
+						  $(".hidingMandalCls").hide();	
 					 }
 					 $('#districtRadioNewsId').prop('checked', true);
 					 
-					  $("#aConstiRadioNewsId").val(result.constituencyId);
-					  $("#pConstiRadioNewsId").val(result.pConstituencyId);
-					  $("#districtRadioNewsId").val(result.districtId);
 					  
 					  //Calling WebService 
 						   getCandidateAndLocationSummaryNews();
@@ -1051,8 +1128,8 @@ var globalCadreId = '${cadreId}';
 				boothId: 0,
 				isPriority: "false",
 				voterCardNo:votercardNo,
-				constituencyId: 232,
-				constiTypeStr: "assembly"
+				constituencyId: participatedConstituencyId,
+				constiTypeStr: participatedConstituencyType
 			}
 			
 			$.ajax({
@@ -1123,8 +1200,8 @@ var globalCadreId = '${cadreId}';
 			boothId: $('#cadreBoothId').val(),
 			isPriority: "false",
 			voterCardNo:voterCardNo,
-			constituencyId: 232,
-			constiTypeStr: "assembly"
+			constituencyId: participatedConstituencyId,
+			constiTypeStr: participatedConstituencyType
 		}
 		
 		$.ajax({
@@ -1293,8 +1370,8 @@ var globalCadreId = '${cadreId}';
 				boothId: $('#cadreBoothId').val(),
 				isPriority: isPriority,
 				voterCardNo:voterCardNo,
-				constituencyId: 232,
-				constiTypeStr: "assembly"
+				constituencyId: participatedConstituencyId,
+				constiTypeStr: participatedConstituencyType
 			}
 			$('#'+divId+'').show();
 			$.ajax({
@@ -1666,16 +1743,22 @@ $(document).on("click",".newsSubmitBtn",function(){
  function getTotalMemberShipRegistrationsInCadreLocation()
  {
 	$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	//pcId:participatedConstituencyId,pcType:participatedConstituencyType
+	var pcType = participatedConstituencyType;
+	//pcType="Assembly";
 	  $.ajax({
 			type : "POST",
 			url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-			data : {tdpCadreId:globalCadreId}
+			data : {tdpCadreId:globalCadreId,pcId:participatedConstituencyId,pcType:participatedConstituencyType}
 		  }).done(function(result){
-			if(result != null)
-				  buildTotalMemberShipRegInCadreLocation(result);
-			  else
+			 // alert(1);
+			if(result != null){
+				  buildTotalMemberShipRegInCadreLocation(result,pcType);
+			}
+			  else{
 				$("#memberShipCountDiv").html('No Data Available.');  
-		})
+			  }
+		});
 			
 }
 
@@ -1729,39 +1812,62 @@ $(document).on("click",".newsSubmitBtn",function(){
 	 
 }*/
 
-function buildTotalMemberShipRegInCadreLocation(result)
+function buildTotalMemberShipRegInCadreLocation(result,pcType)
 {
-	
 	var str = '';
-	str += '<table class="table m_0">';
-	str += '<tr>';
-	str += '<td>';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
-	str += '</td>';
-	if(result.cadreLocation =="Mandal")
-	{
+		str += '<table class="table m_0">';
+		str += '<tr>';
+	//	alert(pcType);
+	if(pcType !=null && pcType !="" && pcType !=undefined){
+		
+		if(pcType == "Assembly"){
+			str += '<td>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+			str += '</td>';
+		}
 		str += '<td>';
-        str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
-        str += '</td>';
-	 }
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+		str += '</td>';
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+		str += '</td>';
+		
+	}
+	else{
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
+		str += '</td>';
+		if(result.cadreLocation =="Mandal")
+		{
+			str += '<td>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+			str += '</td>';
+		 }
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+		str += '</td>';
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+		str += '</td>';
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+		str += '</td>';
+		
+		str += '<td>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+		str += '</td>';
+		
+	}
+		str += '</tr>';
+		str += '</table>';
 	
-	str += '<td>';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
-    str += '</td>';
 	
-	str += '<td>';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
-    str += '</td>';
 	
-	str += '<td>';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
-	str += '</td>';
-	
-	str += '<td>';
-    str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
-    str += '</td>';
-	str += '</tr>';
-	str += '</table>';
 	
 	
 	 $("#memberShipCountDiv").html(str);
@@ -2629,17 +2735,20 @@ if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId 
 {
 		getCadreIdByMemberShipId();
 }
-else
+else 
 {
-		getCategoryWiseStatusCount();
-		getTotalMemberShipRegistrationsInCadreLocation();		
-		
-		getElectionPerformanceInCadreLocation();
-		getApprovedFinancialSupprotForCadre();
-		cadreFormalDetailedInformation(globalCadreId);
-		getEventDetailsOfCadre(globalCadreId);
-		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
-		getLocationwiseCommitteesCount();
+	getParticipatedConstituencyId(globalCadreId);
+	/* getCategoryWiseStatusCount();
+	getTotalMemberShipRegistrationsInCadreLocation();		
+	
+	getElectionPerformanceInCadreLocation();
+	getApprovedFinancialSupprotForCadre();
+	cadreFormalDetailedInformation(globalCadreId);
+	getEventDetailsOfCadre(globalCadreId);
+	//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+	getLocationwiseCommitteesCount();
+	getPartyMeetingsOverViewForCadre();
+	getEventsOverviewFortdpCadre(); */
 		
 }
 function getCadreIdByMemberShipId()
@@ -2654,15 +2763,34 @@ function getCadreIdByMemberShipId()
 		if(result != null)
 		{
 			globalCadreId = result;
-			getCategoryWiseStatusCount();
-			getTotalMemberShipRegistrationsInCadreLocation();		
-			//getCadreFamilyDetailsByCadreId();
-			getElectionPerformanceInCadreLocation();
-			getApprovedFinancialSupprotForCadre();
-			cadreFormalDetailedInformation(globalCadreId);
-			getEventDetailsOfCadre(globalCadreId);
-			//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
-			getLocationwiseCommitteesCount();
+			if((participatedConstituencyId == null || participatedConstituencyId.trim().length == 0) && (globalCadreId != null && globalCadreId > 0))
+			{
+				getParticipatedConstituencyId(globalCadreId);
+				/* getCategoryWiseStatusCount();
+				getTotalMemberShipRegistrationsInCadreLocation();		
+				//getCadreFamilyDetailsByCadreId();
+				getElectionPerformanceInCadreLocation();
+				getApprovedFinancialSupprotForCadre();
+				cadreFormalDetailedInformation(globalCadreId);
+				getEventDetailsOfCadre(globalCadreId);
+				//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+				getLocationwiseCommitteesCount();
+				getPartyMeetingsOverViewForCadre();
+				getEventsOverviewFortdpCadre(); */
+			}
+			else{
+				getCategoryWiseStatusCount();
+				getTotalMemberShipRegistrationsInCadreLocation();		
+				//getCadreFamilyDetailsByCadreId();
+				getElectionPerformanceInCadreLocation();
+				getApprovedFinancialSupprotForCadre();
+				cadreFormalDetailedInformation(globalCadreId);
+				getEventDetailsOfCadre(globalCadreId);
+				//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+				getLocationwiseCommitteesCount();
+				getPartyMeetingsOverViewForCadre();
+				getEventsOverviewFortdpCadre();
+			}
 		}
 		
 		
@@ -2672,6 +2800,16 @@ function getCadreIdByMemberShipId()
 
 function getLocationwiseCommitteesCount()
 {
+	var locationId=0;
+	var electionType="";
+	if(participatedConstituencyType !=null && participatedConstituencyType !="" && participatedConstituencyType !=undefined){
+		electionType = participatedConstituencyType;
+		if(participatedConstituencyId !=0){
+			locationId=participatedConstituencyId;
+		}else if(participatedParliamentId !=0){
+			locationId = participatedParliamentId;
+		}
+	}
 	
 	var locationType = $("input[name='committeeLocation']:checked").val();
 		
@@ -2680,7 +2818,7 @@ function getLocationwiseCommitteesCount()
 	$.ajax({
 		type : "POST",
 		url  : "getLocationwiseCommitteesCountAction.action",
-		data : {locationType : locationType,tdpCadreId:globalCadreId}
+		data : {locationType : locationType,tdpCadreId:globalCadreId,locationId:472,electionType:"Parliament"}
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		 buildLocationwiseCommitteesCount(result);
@@ -3017,15 +3155,20 @@ function hideAndShowCommittee(typeId)
 {
 	if(typeId == 1)
 	{
-		if(globalAreaType == "URBAN"){
+		if(participatedConstituencyType !=null && participatedConstituencyType !="" && participatedConstituencyType !=undefined){
 			$(".urbanClass").hide();
+		}else{
+			if(globalAreaType == "URBAN"){
+				$(".urbanClass").hide();
+			}
+			else{
+				$(".urbanClass").show();
+			}
 		}
-		else{
-			$(".urbanClass").show();
-		}
-		$('#committeesDivId').show();
-		$('#showId').hide();
-		$('#hideId').show();
+			$('#committeesDivId').show();
+			$('#showId').hide();
+			$('#hideId').show();
+		
 	}
 	else if(typeId == 2)
 	{
@@ -3401,6 +3544,9 @@ function getEventsOverviewFortdpCadre()
 }
 function getTotalComplaintsForCandidate()
 {//9999
+
+
+
 
 var votercardNo = $('#cadreVoterCardNo').val();
 var membershipId = $('#cadreMemberShipId').val();

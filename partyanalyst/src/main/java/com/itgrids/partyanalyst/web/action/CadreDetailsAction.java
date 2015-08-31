@@ -9,9 +9,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
-import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -49,6 +50,8 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private ComplaintStatusCountVO           complaintStatusCountVO;
 	private List<CommitteeBasicVO> 			committeeBasicVOList;
 	private Long						    constituencyId;
+	private List<BasicVO>					basicVoList;
+	private BasicVO							basicVo;
 	
 
 	public HttpServletRequest getRequest() {
@@ -236,6 +239,24 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		this.constituencyId = constituencyId;
 	}
 
+	public List<BasicVO> getBasicVoList() {
+		return basicVoList;
+	}
+
+
+	public void setBasicVoList(List<BasicVO> basicVoList) {
+		this.basicVoList = basicVoList;
+	}
+
+	public BasicVO getBasicVo() {
+		return basicVo;
+	}
+
+
+	public void setBasicVo(BasicVO basicVo) {
+		this.basicVo = basicVo;
+	}
+
 
 	public String execute(){
 		
@@ -327,8 +348,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public String getTotalMemberShipRegistrationsInCadreLocation()
 	{
 		try{
+			Long pcId =null;
+			String pcType = null;
+			String pcidString=request.getParameter("pcId");
+			if(pcidString.trim().length()>0){
+				pcId = Long.parseLong(request.getParameter("pcId"));
+				pcType = request.getParameter("pcType");
+			}
 			
-			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")));
+			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")),pcId,pcType);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getTotalMemberShipRegistrationsInCadreLocation() method, Exception - ",e);
@@ -414,7 +442,10 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public String getLocationwiseCommitteesCount()
 	{
 		try{
-			committeeBasicVOList =  cadreDetailsService.getLocationwiseCommitteesCount(request.getParameter("locationType"),new Long(request.getParameter("tdpCadreId")));
+			
+			Long locationId=Long.parseLong(request.getParameter("locationId"));
+			String electionType=request.getParameter("electionType");
+			committeeBasicVOList =  cadreDetailsService.getLocationwiseCommitteesCount(request.getParameter("locationType"),new Long(request.getParameter("tdpCadreId")),electionType,locationId);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);
@@ -453,8 +484,18 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
-	
-	
-	
+	public String getParticipatedConstituency(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("tdpCadreId");
+			
+			basicVo=cadreDetailsService.getParticipatedConstituency(tdpCadreId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadresDetailsOfDeathsAndHospitalization() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	
 }

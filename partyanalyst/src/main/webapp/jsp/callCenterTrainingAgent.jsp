@@ -472,7 +472,7 @@ result.subList[i].age ='';
 str+='<th>'+result.subList[i].age+'</th>';
 if(result.subList[i].role == null)
 result.subList[i].role = '';
-str+='<td>'+result.subList[i].role+'</td>';
+str+='<td>'+result.subList[i].role+'</br>'+result.subList[i].roleCategory+' Committee</td>';
 str+='<td>'+result.subList[i].mobileNumber+'</td>';
 str+='<td>'+callFor+' '+purpose+'</td>';
 str+='<td>'+result.subList[i].location+'</td>';

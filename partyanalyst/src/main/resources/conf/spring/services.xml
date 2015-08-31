@@ -2584,6 +2584,7 @@
 		 <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		 <property name="partyMeetingService" ref="partyMeetingService" />
 		 <property name="mahaNaduService" ref="mahaNaduService" />
+		 <property name="tdpCadreContestedLocationDAO" ref="tdpCadreContestedLocationDAO" />
 		 <property name="voterDAO" ref="voterDAO" />
 		 <property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
 		 <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />		 
