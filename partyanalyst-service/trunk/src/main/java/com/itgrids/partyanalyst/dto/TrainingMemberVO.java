@@ -26,6 +26,7 @@ public class TrainingMemberVO implements Serializable{
 	private String constituency;
 	private Long trainingCampBatch;
 	private String roleCategory;
+	private String committeeLocation;
 	
 	
 	public String getRoleCategory() {
@@ -129,6 +130,12 @@ public class TrainingMemberVO implements Serializable{
 	}
 	public void setTrainingCampBatch(Long trainingCampBatch) {
 		this.trainingCampBatch = trainingCampBatch;
+	}
+	public String getCommitteeLocation() {
+		return committeeLocation;
+	}
+	public void setCommitteeLocation(String committeeLocation) {
+		this.committeeLocation = committeeLocation;
 	}
 	
 	

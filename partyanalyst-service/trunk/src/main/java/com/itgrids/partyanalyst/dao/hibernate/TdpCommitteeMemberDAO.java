@@ -1785,7 +1785,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 	}
 	public List<Object[]> getRoleWiseAllocatedMembersCount(List<Long> cadreIds){
 		//0 count,1 id
-		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name from TdpCommitteeMember model where " +
+		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue from TdpCommitteeMember model where " +
 				" model.tdpCadre.tdpCadreId in(:cadreIds) and model.isActive ='Y'  ");
 		query.setParameterList("cadreIds", cadreIds);
 		
