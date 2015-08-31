@@ -454,7 +454,9 @@ str+='<th>Image</th>';
 str+='<th>Name</th>';
 str+='<th>Age</th>';
 str+='<th>Committee Roll Position</th>';
-str+='<th>Contact Number</th>';
+str += '<th>Level</th>';
+str += '<th>Location</th>';
+//str+='<th>Contact Number</th>';
 str+='<th>Calling For</th>';
 str+='<th>District</th>';
 str+='<th>Constituency</th>';
@@ -466,14 +468,35 @@ for(var i in result.subList)
 {
 str+='<tr>';
 str+='<td><img style="height:50px;width:50px;" class="media-object img-border profile-image img-circle" src="images/cadre_images/'+result.subList[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image"></td>';
-str+='<td>'+result.subList[i].name+'</td>';
+str+='<td>'+result.subList[i].name+'';
+if(result.subList[i].mobileNumber != null)
+ str += ' <br/>'+result.subList[i].mobileNumber+'';
+ str +='</td>';
 if(result.subList[i].age == null)
 result.subList[i].age ='';
 str+='<th>'+result.subList[i].age+'</th>';
 if(result.subList[i].role == null)
 result.subList[i].role = '';
-str+='<td>'+result.subList[i].role+'</br>'+result.subList[i].roleCategory+' Committee</td>';
-str+='<td>'+result.subList[i].mobileNumber+'</td>';
+str+='<td>'+result.subList[i].role+'</br>'+result.subList[i].roleCategory+' Committee </td>';
+if(result.subList[i].committeeLocation != null && result.subList[i].committeeLocation != "")
+{
+	var arr = result.subList[i].committeeLocation.split(" ");
+	var level = arr[arr.length-1];
+	var location = "";
+	for(var i in arr)
+	{
+	   if(i != arr.length-1)
+	     location+= arr[i];
+	}
+ 
+    str += '<td>'+level+'</td>';
+	str += '<td>'+location+'</td>';
+}else{
+	str += '<td> </td>';
+	str += '<td> </td>';
+}
+
+//str+='<td>'+result.subList[i].mobileNumber+'</td>';
 str+='<td>'+callFor+' '+purpose+'</td>';
 str+='<td>'+result.subList[i].location+'</td>';
 str+='<td>'+result.subList[i].constituency+'</td>';
