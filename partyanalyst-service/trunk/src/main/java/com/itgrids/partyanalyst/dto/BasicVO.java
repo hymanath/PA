@@ -33,6 +33,12 @@ public class BasicVO implements Serializable{
 	private Long totalVoters;
 	private String aliancedWith;
 	private List<String> ageRanges = new ArrayList<String>();
+	private Long electionTypeId;
+	private String electionType;
+	private Long districtId;
+	private String district;
+	private Long parlimentId;
+	private String parliament;
 	
 	public BasicVO(){}
 	
@@ -194,6 +200,54 @@ public class BasicVO implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public Long getParlimentId() {
+		return parlimentId;
+	}
+
+	public void setParlimentId(Long parlimentId) {
+		this.parlimentId = parlimentId;
+	}
+
+	public String getParliament() {
+		return parliament;
+	}
+
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
 	}
 	
 	
