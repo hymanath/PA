@@ -2843,7 +2843,7 @@ function getLocationwiseCommitteesCount()
 	$.ajax({
 		type : "POST",
 		url  : "getLocationwiseCommitteesCountAction.action",
-		data : {locationType : locationType,tdpCadreId:globalCadreId,locationId:472,electionType:"Parliament"}
+		data : {locationType : locationType,tdpCadreId:globalCadreId,locationId:locationId,electionType:electionType}
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		 buildLocationwiseCommitteesCount(result);
