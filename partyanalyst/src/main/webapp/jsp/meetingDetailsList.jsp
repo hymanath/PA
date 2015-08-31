@@ -15,6 +15,10 @@
 <link href="css/Training/css/dropzone.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+  
 <style>
 footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.eventsheader {
@@ -309,60 +313,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 <div id="showmsshmin"></div>
 <!----------------------------->
 <!--------Minutes popup-------->
-<div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Meeting Minutes</h4>
-		<span>Press Alt+t to toggle between Telugu & English</span>
-      </div>
-      <div class="modal-body">
-         	<textarea rows="5" id="meetRaised" class="form-control"></textarea>
-		</div>
-		<span id="momError" style="color:red;margin-left:20px;"></span>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary saveMinute"  id="saveBtnMeetMin" attr_minuteid="0">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <!----------------->
-<div class="modal fade" id="myModashow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	 <div class="modal-dialog">
-		 <div class="modal-content">
-			<div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">ATR Points</h4>
-				<span>Press Alt+t to toggle between Telugu & English</span>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					 <div class="col-md-12">
-						 <label>REQUEST</label><br/>
-						 <textarea rows="5" id="request" class="form-control"></textarea>
-					 </div>
-					 <div class="col-md-12 m_top20">
-						 <label>ACTION TAKEN</label><br/>
-						 <textarea rows="5" id="actionTaken" class="form-control"></textarea>
-					 </div>
-					 
-					 <div class="col-md-12 m_top20">
-						 <label>RAISED BY</label><br/>
-						 <input type="text" id="raisedBy"  class="form-control"/>
-					 </div>
-					 <div class="col-md-12" id="locationInPop"></div>
-				 </div>
-			 </div>
-			 <span id="atrError" style="color:red;margin-left:20px;"></span>
-			 <div class="modal-footer">
-				 <button type="button" class="btn btn-success btn-sm" id="saveBtn" ><i class="icon-check"></i> SAVE </button>
-				 <button type="button" class="btn btn-success btn-sm" style="background-color:#666;border-color:#666" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> CANCEL</button>
-			 </div>
-		 </div>
-	 </div>
- </div>
+
  <div style="display:none;">
 	<div id="DistrictShowId0">
 		<label>DISTRICT</label>
@@ -383,6 +336,33 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
  </div>
 
+ <div id="dialogMOM" style="display:none;">
+	<p>Press Alt+t to toggle between Telugu & English</p>
+    <textarea rows="5" id="meetRaised" class="form-control"></textarea>
+	<div class="col-md-12" id="momError" style="color:red;"></div>
+ </div>
+ 
+ <div id="dialogATR" style="display:none;">
+	<p>Press Alt+t to toggle between Telugu & English</p>
+    <div class="row">
+		<div class="col-md-12">
+			<label>REQUEST</label><br/>
+			<textarea rows="5" id="request" class="form-control"></textarea>
+		</div>
+		<div class="col-md-12 m_top20">
+			<label>ACTION TAKEN</label><br/>
+			<textarea rows="5" id="actionTaken" class="form-control"></textarea>
+		</div>
+					 
+		<div class="col-md-12 m_top20">
+			<label>RAISED BY</label><br/>
+			<input type="text" id="raisedBy"  class="form-control"/>
+		</div>
+		<div class="col-md-12" id="locationInPop"></div>
+		<div class="col-md-12" id="atrError" style="color:red;"></div>
+	</div>
+ </div>
+ 
 <footer>
         <p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
@@ -396,6 +376,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 <script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
 <link rel="stylesheet" type="text/css" href="pdfexpand/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 <script type="text/javascript" src="js/blockui.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
 
 // Load the Google Transliterate API
@@ -425,7 +406,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		control.makeTransliteratable(['actionTaken']);
 		control.makeTransliteratable(['raisedBy']);
 		control.makeTransliteratable(['meetRaised']);
-		
     }
     google.setOnLoadCallback(onLoad);
 	
@@ -477,7 +457,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    var maximumDivCount=1;
  	
 	$(document).on('click', '.addMeetMint', function(){
-			$("#mintModal").modal("show");
+			//$("#mintModal").modal("show");
+			openModalMOM();
 			$("#meetRaised").val("");
 	 }); 	
 	 
@@ -874,7 +855,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	   });
 	}
 	$(document).on('click', '.updatedMeetMin', function(){
-		$("#mintModal").modal("show");
+		//$("#mintModal").modal("show");
+		openModalMOM();
+		
 		var meetmin=$(this).parent().parent().find(".updatedMeetMintValue").text();
 		$("#meetRaised").val(meetmin);
 		
@@ -910,7 +893,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$('#mintModal').modal('hide');
+			//$('#mintModal').modal('hide');
+			$( "#dialogMOM" ).dialog('close');
 			
 		   if(result=="success"){
 				rebuildMinutes(partyMeetingId,minuteId)
@@ -1154,7 +1138,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	var editAtrId='';
 	 $(document).on('click', '.editBtn', function(){
-		 $("#myModashow").modal("show");
+		 //$("#myModashow").modal("show");
+		 
 		 var req=$(this).parent().parent().find(".updaterequest").text();
 		 var actn=$(this).parent().parent().find(".updateaction").text();
 		 var raised=$(this).parent().parent().find(".updateraisedBy").text();
@@ -1162,29 +1147,33 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 //var lctnVal = $(this).parent().parent().parent().find(".selectedLctn").attr("attr_lctnid");
 		 var lctnVal = $(this).attr("attr_location_value");
 		 
-		 $("#saveBtn").attr("attr_id",attrId);
+		 //$("#saveBtn").attr("attr_id",attrId);
 		 $("#request").val(req);
 		 $("#actionTaken").val(actn);
 		 $("#raisedBy").val(raised);
 		 
-		 $("#locationDivId").val(lctnVal);
+		 //$("#locationDivId").val(lctnVal);
+		 //$('#locationDivId').val(""+lctnVal+"").trigger('change');
 		 
-		 //$('#locationInPop option[value="'+lctnVal+'"]').prop('selected', true);
+		 $('#locationDivId option[value="'+lctnVal+'"]').prop('selected', true);
+		 
+		 openModalATR(attrId);
 	});
 	
 	$(document).on('click', '.addingRequests', function(){
+		 
 		 $("#request").val("");
 		 $("#actionTaken").val("");
 		 $("#raisedBy").val("");
-		  $("#saveBtn").attr("attr_id",0);
 		 $('#locationInPop option:selected').prop('selected', false);
 		 
-		 $("#myModashow").modal("show");
+		 openModalATR(0);
+		
+		// $("#myModashow").modal("show");
 	});
 	
 	
 	$(document).on('click', '#saveBtn', function(){
-		//alert($("#locationDivId option:selected").val());
 		//$.blockUI({ message: "<h5> Saving ATR Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		$("#atrError").text("");
 		var reslt;
@@ -1249,7 +1238,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#myModashow").modal("hide");
+			//$("#myModashow").modal("hide");
+			$( "#dialogATR" ).dialog('close');
 			if(result=="success"){
 				//alert("Updated Successfully");
 				getAtrPointsForAMeeting(partyMeetingId,atrId);
@@ -1439,6 +1429,60 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var someVal = $(this).val();
 		$('#locationDivId').find('option[value='+someVal+']').prop('selected',true);
 	});
+	
+	function openModalMOM(){
+		$("#momError").html("");
+		$( "#dialogMOM" ).dialog({
+		  height: 420,
+		  width: 700,
+		  title :"MOM Points ",
+		  buttons: [
+			{
+				text: "Cancel",
+				click: function() {
+					 $(this).dialog("close");
+				}
+			},
+			{
+				text: "Save",
+				"class": 'saveMinute',
+				"id": 'saveBtnMeetMin',
+				"attr_minuteid": '0'
+			}
+		],
+   	   close: function() {
+			 $(this).dialog("close");
+		  }
+		});
+	}
+	
+	
+	function openModalATR(atrId){
+		$("#atrError").html("");
+		$( "#dialogATR" ).dialog({
+		  height: 700,
+		  width: 700,
+		  title :"ATR Points ",
+		  buttons: [
+			{
+				text: "Cancel",
+				click: function() {
+					 $(this).dialog("close");
+				}
+			},
+			{
+				text: "Save",
+				"id": 'saveBtn',
+				"attr_id":atrId
+			}
+		],
+		close: function() {
+			 $(this).dialog("close");
+		  }
+		});
+	}
+	
+	
 	
 </script>
 </body>
