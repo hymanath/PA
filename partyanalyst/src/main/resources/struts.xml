@@ -10754,13 +10754,17 @@
 	       		<param name="root">meetingSummeryVO</param>
 	  	</result>
 	</action>
+	<action name="getParticipatedConstituencyAction" class="cadreDetailsAction" method="getParticipatedConstituency">
+	   <result type="json" name="success">
+	       		<param name="root">basicVo</param>
+	  	</result>
+	</action>
 	
 	<action name="getMeetingCumulativeSummaryForLocationAction" class="partyMeetingAction" method="getMeetingCumulativeSummaryForLocation">
 	   <result type="json" name="success">
 	       		<param name="root">partyMeetingsSummary</param>
 	  	</result>
 	</action>
-	
 	
 </package>
 </struts>      

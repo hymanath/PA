@@ -115,36 +115,36 @@
 						
 				     </div>
 					 </c:if>
-					<div class="col-md-1 col-xs-1 col-sm-1">
+				
 					<!--<img style="float: right; margin-right: 308px; display: none;" alt="Processing Image" src="./images/icons/search.gif" id="constiImge">-->
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
-					</div>
+					
 					<div class="col-md-8 col-md-offset-2 col-sm-1 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="districtDiv">
 							<label>District</label>
 							<select class="form-control " id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							</select>
 					</div>
-					<div class="col-md-1 col-xs-1 col-sm-1">
+					
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForConst" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
-					</div>
+					
 				   <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="constitunecyDiv">
 							<label>Constituency</label>
 							<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
 							<option value="0"> Select Constituency </option>
 							</select>
 					</div>
-					<div class="col-md-1 col-xs-1 col-sm-1">
+					
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMandl" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
-					</div>
+			
 					<div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" style="padding-top: 10px" id="mandalDiv">
 							<label>Mandal/Municipality</label>
 							<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandal();">
 							<option value="0"> Select Mandal/Municipality </option>
 							</select>
 					</div>
-					<div class="col-md-1 col-xs-1 col-sm-1">
+				
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForPanc" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
-					</div>
+					
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
 							<select class="form-control " id="panchaytList" class="form-control" onchange="getAllCadreInPanchayat()">
@@ -290,6 +290,12 @@
 					 getCadreDetailsBySearchCriteria(0);
 				}
 		  });
+		  
+		//alert(accessType);
+		if(accessType == "DISTRICT" || accessType == "MP"){
+			$("#districtDiv").hide();
+		} 
+		  
 			function getCadreDetailsBySearchCriteria(startIndex)
 		{
 		//committeTypeID means 
@@ -315,7 +321,7 @@
 		var gender = '';
 		var houseNo = '';
 		var membershipAndMobileNo = '';
-		
+				
 		
 $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 	if(startIndex == 0)
@@ -788,6 +794,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		
  
   function getAssemblyParlConstituencies(districtId,type){
+	  $("#searchDataImgForMandl").show();
 	 $("#constituencyId  option").remove();
 		var str='';
 		var jsObj={
@@ -800,6 +807,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			  data: {task:JSON.stringify(jsObj)}
 			
 	   }).done(function(result){
+		    $("#searchDataImgForMandl").hide();
 	   str +='<option value=0>ALL</option>';
 				for(var i in result)
 				{
