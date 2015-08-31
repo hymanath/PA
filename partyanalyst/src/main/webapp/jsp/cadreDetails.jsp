@@ -2319,7 +2319,7 @@ function getCandidateAndLocationSummaryNews(){
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
 
 	 $.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
+		url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
 		$("#dataLoadingsImgForNewsId").hide();
 		$("#hideShowNewsDiv").show();
@@ -3587,7 +3587,7 @@ arr.push(obj);
 console.log(arr)
 	$.ajax({
 			type : "POST",
-			url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
@@ -3836,7 +3836,7 @@ function getMemberComplaints()
 {
 	$.ajax({
 			type : "POST",
-			url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
