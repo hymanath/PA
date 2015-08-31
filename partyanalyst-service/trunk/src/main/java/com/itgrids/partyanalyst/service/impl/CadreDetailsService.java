@@ -3629,7 +3629,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						returnVO.setPublicRepresentativesCount(vo.getPartyRepresentativesCount());
 					}
 					
-					returnVO.getElectionResultsPerfList().addAll(getElectionPerformanceInCadreLocation(tdpCadreId));
+					//returnVO.getElectionResultsPerfList().addAll(getElectionPerformanceInCadreLocation(tdpCadreId));
 					
 					/*PartyMeetingVO partyMeetingVO = partyMeetingService.getPartyMeetingDetailsBySearchType(tdpCadreId);
 					if(partyMeetingVO != null)
