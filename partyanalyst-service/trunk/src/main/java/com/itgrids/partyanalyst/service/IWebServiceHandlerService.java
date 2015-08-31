@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -109,5 +110,5 @@ public interface IWebServiceHandlerService {
 	 public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId);
 	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
 	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
-	 
+	 public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId);
 }
