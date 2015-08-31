@@ -3596,7 +3596,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setEnrollmentYears(cadreVO.getEnrollmentYears());
 					returnVO.setHouseNo(cadreVO.getHouseNo());
 					returnVO.setImagePath(cadreVO.getImagePath());
-					returnVO.setLocalElectionBodyId(cadreVO.getLocalElectionBody().toString());
+					returnVO.setLocalElectionBodyId(cadreVO.getLocalElectionBody()!=null?cadreVO.getLocalElectionBody().toString():"");
 					returnVO.setMembershipNo(Long.valueOf(cadreVO.getMembershipNo()));
 					returnVO.setMobileNo(cadreVO.getMobileNo());
 					returnVO.setCandidateName(cadreVO.getName());
