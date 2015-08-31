@@ -27,12 +27,14 @@
 	
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
+	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	
 <style>
 table
 {
     border-collapse: separate !important;
 }
+#mCSB_1_container{margin-right:10px !important}
 .family-identity:after
 {
 	position:absolute;
@@ -43,7 +45,7 @@ table
 	height:20px;
 
 }
-
+.ul-li-scroll{height:230px;}
 .right_arrow {
 	position: relative;
 	background: #fff;
@@ -97,6 +99,7 @@ table
 .count-hover li{list-style:none; width:430px !important}
 
 #scrollator_holder{margin-left:25px}
+.table-scroll{max-height:400px;overflow-y:auto;z-index:999999}
 .table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
 .font-10{font-size:10px}
 h1,h2,h3,h4,h5{color:#666 !important}
@@ -232,7 +235,7 @@ var globalCadreId = '${cadreId}';
                             <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span></p>
                             <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
                             <p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
-							<div id="participatedDivId" style="display:none"><p class="m_0"> PARTICIPATED CONSTITUENCY : <span id="participatedConstId"></span></p></div>
+							<!-- <div id="participatedDivId" style="display:none"><p class="m_0"> PARTICIPATED CONSTITUENCY : <span id="participatedConstId"></span></p></div> -->
                         </td>
                     </tr>
 					<tr>
@@ -249,14 +252,14 @@ var globalCadreId = '${cadreId}';
                         </td>
                     </tr>
                 </table>
-				<!--<div class="panel panel-default" id="participatedDivId" style="display:none">
+				<div class="panel panel-default" id="participatedDivId" style="display:none">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY</h4>
                     </div>
 					<div class="panel-body">
                     	<h5 class="m_0">Participated Constituency : <span id="participatedConstId" class="text-bold"></span></h5>
                      </div> 
-                </div>-->
+                </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> GRIEVANCE DETAILS</h4>
@@ -271,6 +274,9 @@ var globalCadreId = '${cadreId}';
                             <ul class="display-style pull-right graph-list" style="padding-right:20px;padding-left:0px;" id="complaintStatusUL">
                             </ul>-->
                         </div>
+						<div id="financialDiv" class="m_top20">
+					   
+						</div>
                     </div> 
                 </div>
             	<div class="panel panel-default">
@@ -694,6 +700,8 @@ var globalCadreId = '${cadreId}';
 	<script type="text/javascript" src="js/highcharts/js/highcharts_cadre.js"></script>
 	<!-- scrollator -->
 	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
 	
 	<script>
 	
@@ -1121,6 +1129,8 @@ var globalCadreId = '${cadreId}';
 			$(".arrow_box3").hide();
 		
 			$('.familySurveyDetailsCls').html("");
+			if(participatedConstituencyId == null )
+				participatedConstituencyId=0;
 			var jsObj={
 				cadreId:0,
 				surveyId:0,
@@ -1192,7 +1202,8 @@ var globalCadreId = '${cadreId}';
 		var localCadreId=globalCadreId;
 		var surveyId=surveyId;
 		var indexId=indexId;
-		
+		if(participatedConstituencyId == null )
+				participatedConstituencyId=0;
 		var jsObj={
 			cadreId:localCadreId,
 			surveyId:surveyId,
@@ -1362,7 +1373,8 @@ var globalCadreId = '${cadreId}';
 				}
 				
 			}
-			
+			if(participatedConstituencyId == null )
+				participatedConstituencyId=0;
 			var jsObj={
 				cadreId:localCadreId,
 				surveyId:surveyId,
@@ -1908,6 +1920,7 @@ function getCadreFamilyDetailsByCadreId()
 	 membershipId:result[i].membershipNo,
 	 name:result[i].name,
 	 relation:result[i].relation,
+	 relativeName:result[i].relativeName
 	 };
 	 
 	 familyInfoArr.push(familyObj);
@@ -1917,22 +1930,24 @@ function getCadreFamilyDetailsByCadreId()
 		 if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
 			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
 		 else
 		 {
 			 str += '<div class="media-left">';
 			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
 		if(result[i].tdpCadreId != null )
 		str+=' [ <b><a href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" data-toggle="tooltip" data-placement="right" title="Membership No" class="membershipno-cls">'+result[i].membershipNo+'</a></b> ] ';
-	
-         str += '<span class="pull-right">';
+		/*if(result[i].publicRepresentativeStr != null){
+			str+='[<b>'+result[i].publicRepresentativeStr+'</b>]';
+		}*/
+		 str += '<span class="pull-right">';
 		 if(result[i].count != null && result[i].count> 0)
            str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" >';
 		   else
@@ -1959,6 +1974,14 @@ function getCadreFamilyDetailsByCadreId()
 		   str +=''+result[i].age+'';
 	   else
 		 str += '';
+		if(result[i].publicRepresentativeStr != null)
+		{
+			str += '<p class="m_0" style="font-weight:bold">Public Repr. : <span class="textTransFormCls" style="color:#2772C0">'+result[i].publicRepresentativeStr+'</span>';
+		}
+		if(result[i].partyPositionStr != null)
+		{
+			str += '<p class="m_0" style="font-weight:bold">Party Position: <span class="textTransFormCls" style="color:#2772C0">'+result[i].partyPositionStr+'</span>';
+		}
          str += '</p></div>';
          str += '</div>';
          str += '</li>';
@@ -3550,20 +3573,148 @@ function getTotalComplaintsForCandidate()
 
 var votercardNo = $('#cadreVoterCardNo').val();
 var membershipId = $('#cadreMemberShipId').val();
+var arr =[];
+var obj = {
+	"voterId":votercardNo,
+	"membershipId" :"12345678",
+	"name":"",
+	"relation":""
+}
 
+arr.push(obj);
+console.log(arr)
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			  data: JSON.stringify([{"voterId":votercardNo,"membershipId" :membershipId,"name":"","relation":""}]),
+			url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			  username: "grievance",
-                password: "grievance@!tG"
+			 username: "grievance",
+             password: "grievance@!tG"	
 			 }).done(function(myresult){
 			 buildTotalComplaints(myresult,0);
 			});
 }
+
 function buildTotalComplaints(result,complaintId)
+{
+
+	var str = '';
+	str += '<ul class="list-inline">';
+	str += '<li>';
+	str += '<h1 class="m_0 text-center" style="font-size:50px;color:#666">'+result[0].count+'</h1>';
+	str += '<h6 class="m_0">TOTAL COMPLAINTS</h6>';
+	str += '</li>';
+	
+	str += '<li style="margin-top:5px">';
+	str += '<ul class="display-style pull-right graph-list count-list">';
+	for(var i in result[0].subList){
+		
+	
+		if(result[0].subList[i].status.toLowerCase() == ("In Progress").toLowerCase()){
+		 str += '<li><span class="inProgress"></span><span class="inProgress-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Completed").toLowerCase()){
+		 str += '<li style="color:#00B17D;"><span class="completed"></span><span>'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not Verified").toLowerCase()){
+		 str += '<li><span class="notverified"></span><span class="notverified-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+		 str += '<li><span class="notEligible"></span><span class="notEligible-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
+		else if(result[0].subList[i].status.toLowerCase() == ("Not possible").toLowerCase()){
+		 str += '<li><span class="notpossible"></span><span class="notpossible-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		} 
+	}
+	str += '</ul>';
+	str += '</li>';
+	str += '</ul>';
+	$("#complaintCountDiv").html(str);
+	
+	var comp1='';
+	if(result[0].amountVO != null){
+	if(result[0].amountVO.cmRefiedFund == null)
+	result[0].amountVO.cmRefiedFund =0;
+	if(result[0].amountVO.partyFund == null)
+	result[0].amountVO.partyFund =0;
+
+	comp1+='<div>';
+	comp1+='<h4>Total Financial Requested '+result[0].amountVO.requested+'/-</h4>';
+	comp1+='<h4>Total Approved '+result[0].amountVO.approved+'/-</h4>';
+	comp1+='<p class="m_0"><span class="party_sup-box"></span><span class="party_sup">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</span></p>';
+	comp1+='<p class="m_0"><span class="govt_sup-box"></span><span class=" govt_sup">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</span></p>';}
+	comp1+='</div>';
+	$('#financialDiv').html(comp1);
+	
+	var comp = '';
+	comp += '<ul class="inbox-messages row ul-li-scroll" style="margin-bottom:0px;">';
+	for(var j in result){
+		
+		if(result[j].complaintId == complaintId){
+			if(result[j].status.toLowerCase() == ("Not Verified").toLowerCase()){
+			  comp += '<li class="inbox-not-opened"';
+			}
+			else if(result[j].status.toLowerCase() == ("Completed").toLowerCase()){
+			  comp += '<li class="inbox-completed"';
+			}
+			else if(result[j].status.toLowerCase() == ("In Progress").toLowerCase()){
+			  comp += '<li class="inbox-in-process"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+			  comp += '<li class="inbox-not-eligible"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
+			  comp += '<li class="inbox-not-possible"';
+			}
+			
+			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+')">';
+			//comp += '<li class="inbox-not-opened">';
+			comp += '<p class="m_0">C ID - '+result[j].complaintId+'</p>';
+			comp += '<p class="m_0">'+result[j].subject+'</p>';
+			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[j].status+'</span></p>';
+			if(result[j].raisedDate != null)
+			 comp += '<p class="m_0">'+result[j].raisedDate+'</p>';
+			 comp += '</li>';
+		}
+		 
+   }
+   for(var j in result){
+		if(result[j].complaintId != complaintId){
+			if(result[j].status.toLowerCase() == ("Not Verified").toLowerCase()){
+			  comp += '<li class="inbox-not-opened"';
+			}
+			else if(result[j].status.toLowerCase() == ("Completed").toLowerCase()){
+			  comp += '<li class="inbox-completed"';
+			}
+			else if(result[j].status.toLowerCase() == ("In Progress").toLowerCase()){
+			  comp += '<li class="inbox-in-process"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+			  comp += '<li class="inbox-not-eligible"';
+			}
+			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
+			  comp += '<li class="inbox-not-possible"';
+			}
+			
+			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+');">';
+			comp += '<p class="m_0">C ID - '+result[j].complaintId+'</p>';
+			comp += '<p class="m_0">'+result[j].subject+'</p>';
+			
+			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[j].status+'</span></p>';
+			if(result[j].raisedDate != null)
+			 comp += '<p class="m_0">'+result[j].raisedDate+'</p>';
+			comp += '</li>';
+		}
+   }
+   
+	comp += '</ul>';
+    $("#complaintsDiv").html(comp);
+	$('.ul-li-scroll').mCustomScrollbar();
+
+}
+/*function buildTotalComplaints(result,complaintId)
 {
 
 	var str = '';
@@ -3678,13 +3829,13 @@ function buildTotalComplaints(result,complaintId)
 			    $("#complaintsDiv").css("height","auto"); 
 		   }
 	
-}
+}*/
 var familyInfoArr =new Array();
 function getMemberComplaints()
 {
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -3712,14 +3863,15 @@ function buildFamilyMemberComplaint(result)
 	comp += '<ul class="inbox-messages" style="margin-bottom:0px;box-shadow:none">';
 	
 	 for(var j in result){
+		 if(result[j].subList != null && result[j].subList.length > 0)
+			{
 			comp+='<li>';
 			comp += '<p class="m_0">Name- '+result[j].name+'</p>';
 			comp += '<p class="m_0">Relation- '+result[j].relation+'</p>';
 			if(result[j].membershipId != null )
 			comp += '<p class="m_0">MemberShipID- '+result[j].membershipId+'</p>';
 			comp += '</li>';
-			if(result[j].subList != null && result[j].subList.length > 0)
-			{
+			
 				comp+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages">';
 				for(var k in result[j].subList)
 				{

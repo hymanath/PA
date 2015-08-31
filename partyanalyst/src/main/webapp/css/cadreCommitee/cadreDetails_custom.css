@@ -346,3 +346,85 @@ a .panel-title
 	border-width: 9px;
 	margin-left: -9px;
 }
+.inbox-messages
+{
+	padding:0px;
+}
+
+.inbox-messages li
+{
+	list-style:none;
+	padding:10px;
+	border-bottom:1px solid #DBDADA;
+}
+.inbox-messages li:hover
+{
+	background:#fff
+}
+.font-10
+{
+	font-size:10px;
+	line-height:11px !important;
+}
+.m_top5
+{
+	margin-top:5px;
+}
+.inbox-in-process
+{
+	background: rgba(102,205,204,0.5); /*#FFF5EB;*/
+	border-left:4px solid rgb(102,205,204);
+	cursor:pointer;
+}
+
+.inbox-not-opened
+{
+	background:rgba(214,77,84,0.5);/*#FBFBFB;*/
+	border-left:4px solid rgb(214,77,84);
+	cursor:pointer;
+}
+.inbox-not-opened:before
+{
+	content:'NEW';
+	background:#56206C;
+	color:#fff;
+	padding:2px;
+	position:relative;
+	top:-5px;
+	float:right;
+	font-size:9px;
+	border-radius:3px;
+}
+
+.inbox-completed
+{
+	background:rgba(0,177,125,0.5);
+	border-left:4px solid rgb(0,177,125);
+	cursor:pointer;
+}
+
+.inbox-not-eligible
+{
+	background:rgba(102,51,0,0.5); /*#FFE9EB;*/
+	border-left:4px solid rgb(102,51,0);
+	cursor:pointer;
+}
+
+.inbox-not-possible
+{
+	background:rgba(255,153,151,0.5);/*#EFEAE6; */ 
+	border-left:4px solid #421F0B;
+	cursor:pointer;
+}
+.inbox-verified
+{
+	background:rgba(72,21,87,0.5);
+	border-left:4px solid rgb(72,21,87);
+	cursor:pointer;
+}
+.inbox-approved
+{
+	background:rgba(105,167,143,0.5);
+	border-left:4px solid rgb(105,167,143);
+	cursor:pointer;
+}
