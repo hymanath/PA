@@ -3341,7 +3341,7 @@ function getPartyMeetingDetaildReprt()
 						str+='<tr class="text-center">';
 						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
 						str+='<td> <ul class="list-inline"><li class="show-dropdown invitedDetlsDiv" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'"><u style="color:#23527C;"> '+result.partyMeetingVOList[i].invitedCount+'</u> ';
-						str+='<ul class="count-hover right_arrow" >';
+						str+='<ul class="count-hover left_arrow" >';
 						str+='<li>';
 							str+='<div id="invitedDetlsDiv'+i+'" class="invitationCls"></div>';
 						str+='</li>';
