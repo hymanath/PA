@@ -283,7 +283,8 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FINANCE SUPPORT</h4>
                     </div>
-					 <div class="panel-body" id="familyMemberDiv">
+					 <div class="panel-body pad_0">
+						<div  id="familyMemberDiv"></div>
                    		<!--<h5>TOTAL FINANCE REQUESTS <span id="headingId" class="text-bold"></span></h5>
                     	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
@@ -953,6 +954,7 @@ var globalCadreId = '${cadreId}';
 					 getDeathsAndHospitalizationDetails();
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
+					getTotalComplaintsForCandidate();
 				}
 			});
 		}
@@ -3576,7 +3578,7 @@ var membershipId = $('#cadreMemberShipId').val();
 var arr =[];
 var obj = {
 	"voterId":votercardNo,
-	"membershipId" :"12345678",
+	"membershipId" :membershipId,
 	"name":"",
 	"relation":""
 }
@@ -3639,7 +3641,6 @@ function buildTotalComplaints(result,complaintId)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-
 	comp1+='<div>';
 	comp1+='<h4>Total Financial Requested '+result[0].amountVO.requested+'/-</h4>';
 	comp1+='<h4>Total Approved '+result[0].amountVO.approved+'/-</h4>';
@@ -3849,49 +3850,94 @@ function getMemberComplaints()
 function buildFamilyMemberComplaint(result)
 {
 
- try{
+ try{ var flag = false;
+	if(result!=null && result.length>0){
+		
 	var comp = '';
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	comp+='<h4 class="m_0">TOTAL FINANCIAL REQUESTED :'+result[0].amountVO.requested+'/-</h4>';
-	comp+='<h4 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h4>';
-	comp+='<p>Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
-	comp+='<p>Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';}
-	comp += '<ul class="inbox-messages" style="margin-bottom:0px;box-shadow:none">';
+	comp+='<div class="panel panel-default">';
+	/*comp+='<div class="panel-heading">';
+	comp+='<h4 class="panel-title">TOTAL MEMBER BENEFITED - 02</h4>';
+	comp+='</div>';*/
+	comp+='<div class="panel-body">';
+	comp+='<h4>TOTAL FINANCIAL REQUESTED :'+result[0].amountVO.requested+'/-</h4>';
+	comp+='<h4>TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h4>';
+	comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
+	comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';}
+	comp+='</div>';
+	comp+='</div>';
+	comp += '<div class="panel-group m_0" id="accordion155" role="tablist" aria-multiselectable="true">';
 	
 	 for(var j in result){
-		 if(result[j].subList != null && result[j].subList.length > 0)
+	 if(result[j].subList != null && result[j].subList.length > 0)
 			{
-			comp+='<li>';
+			flag = true;
+			comp += '<div class="panel panel-default">';
+			comp += '<div class="panel-heading" style="background-color:#FFF" role="tab" id="headingOne155'+j+'">';
+			comp += '<a role="button" style="color:#666" data-toggle="collapse" data-parent="#accordion155" href="#collapseOne155'+j+'" aria-expanded="true" aria-controls="collapseOne155'+j+'">';
+			comp += '<div class="media">';
+			comp += '<div class="media-left">';
+			comp += '<img src="" style="height:35px;width:35px;"  class="media-object img-border img-circle">';
+			comp += '</div>';
+			comp += '<div class="media-body">';
 			comp += '<p class="m_0">Name- '+result[j].name+'</p>';
-			comp += '<p class="m_0">Relation- '+result[j].relation+'</p>';
-			if(result[j].membershipId != null )
+			comp += '<p class="m_0">Relation- '+result[j].relation+' - '+result[j].status+' </p>';
 			comp += '<p class="m_0">MemberShipID- '+result[j].membershipId+'</p>';
-			comp += '</li>';
+			comp += '</div>';
+			comp += '</div>';
+			comp += '</a>';
+			comp += '</div>';
+			comp += '<div id="collapseOne155'+j+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne155'+j+'">';
+				comp += '<div class="panel-body pad_0">';
 			
-				comp+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages">';
+				comp+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages custom-scroll-ins">';
 				for(var k in result[j].subList)
 				{
-				comp+='<li><p class="m_0">C ID - '+result[j].subList[k].complaintId+'</p><p class="m_0">'+result[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[j].subList[k].status+'</span></p><p class="m_0">'+result[j].subList[k].raisedDate+'</p></li>';
+				    if( result[j].subList[k].status.toLowerCase() == ("Not Verified").toLowerCase()){
+						comp+='<li class="inbox-not-possible">';
+					}else if(result[j].subList[k].status.toLowerCase() == ("Completed").toLowerCase()){
+					   comp+='<li class="inbox-completed">';
+			        }
+			        else if(result[j].subList[k].status.toLowerCase() == ("In Progress").toLowerCase()){
+						 comp+='<li class="inbox-in-process">';
+			        }
+			        else if(result[j].subList[k].status.toLowerCase() == ("Not Eligible").toLowerCase()){
+				         comp+='<li class="inbox-not-eligible">';
+			        }
+			       else if(result[j].subList[k].status.toLowerCase() == ("Not possible").toLowerCase()){
+				         comp+='<li class="inbox-not-possible">';
+			        }
+				
+				comp+=' <p class="m_0">C ID - '+result[j].subList[k].complaintId+'</p><p class="m_0">'+result[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[j].subList[k].status+'</span></p><p class="m_0">'+result[j].subList[k].raisedDate+'</p></li>';
 				}
 				
 				comp+='</ul>';
 			}
+				comp += '</div>';
+			comp += '</div>';
+			comp += '</div>';
 		}
 		
-	comp += '</ul>';
-	//$("#familyMemberImg").hide();
-    $("#familyMemberDiv").html(comp);
-		if(result[0].count>=7){
-			
-			   $("#familyMemberDiv").css("height","760px");
-			 }else {
-			  
-			    $("#familyMemberDiv").css("height","auto"); 
-		   }
+	 
+	 comp += '</div>';
+	  $("#familyMemberImg").hide();
+      $("#familyMemberDiv").html(comp);
+	  if(result[0].count>=7){
+	    $("#familyMemberDiv").css("height","760px");
+	  }else{
+		$("#familyMemberDiv").css("height","auto"); 
+	  }
+	}
+	if(!flag)
+	{
+	  $("#familyMemberImg").hide();
+      $("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
+	}
+	
 		   }
 		   catch(e)
 		   {
@@ -3899,7 +3945,7 @@ function buildFamilyMemberComplaint(result)
 }
 getPartyMeetingsOverViewForCadre();
 getEventsOverviewFortdpCadre();
-getTotalComplaintsForCandidate();
+
 
 </script>
 </body>
