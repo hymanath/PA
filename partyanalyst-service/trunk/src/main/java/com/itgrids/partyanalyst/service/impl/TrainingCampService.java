@@ -2229,6 +2229,7 @@ public class TrainingCampService implements ITrainingCampService{
 						 if(vo != null)
 						 {
 							 vo.setRole(commonMethodsUtilService.getStringValueForObject(params[2]));
+							 vo.setRoleCategory(commonMethodsUtilService.getStringValueForObject(params[3]));
 						 }
 					 }
 				 }

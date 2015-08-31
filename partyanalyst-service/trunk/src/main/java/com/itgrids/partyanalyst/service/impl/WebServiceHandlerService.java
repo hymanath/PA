@@ -2481,7 +2481,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  List<VerifierVO> resultList = null;
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"");
+			  WebResource webResource = client.resource("http://www.mytdp.com/SMS/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"");
 			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"");
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {

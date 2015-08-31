@@ -1479,6 +1479,12 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameterList("locations", locations);
 		return query.list();
 	}
+	public Long getElectionScopeByConstituency(Long constituencyId){
+		Query query = getSession().createQuery(" select model.electionScope.electionScopeId from Constituency model where model.constituencyId =:constituencyId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return (Long) query.uniqueResult();
+	}
 	
 	
 	

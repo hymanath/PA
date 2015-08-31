@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -27,7 +28,7 @@ public interface ICadreDetailsService {
 	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
 	public List<CandidateDetailsVO>  getCandidateElectDetatails(Long cadreId);
 	
-	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId);
+	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId,Long pcId,String pcType);
 	
 	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId);
 	
@@ -41,14 +42,13 @@ public interface ICadreDetailsService {
 	
 	public ComplaintStatusCountVO getCategoryWiseStatusCount(Long tdpCadreId);
 	
-	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId);
+	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId,String electionType,Long locationId);
 	
 	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long parliamentId,Long districtId);
 	
 	public Long getTdpCadreIdBymembershipId(String membershipId);
 	
 	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(Long locationId,String locationType,Long insuranceTypeId);
-	
 	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId,String houseNo, String voterCardNo);
-	
+	public BasicVO getParticipatedConstituency(Long tdpCadreId);
 }

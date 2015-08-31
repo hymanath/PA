@@ -25,8 +25,15 @@ public class TrainingMemberVO implements Serializable{
 	private String remarks;
 	private String constituency;
 	private Long trainingCampBatch;
+	private String roleCategory;
 	
 	
+	public String getRoleCategory() {
+		return roleCategory;
+	}
+	public void setRoleCategory(String roleCategory) {
+		this.roleCategory = roleCategory;
+	}
 	public String getConstituency() {
 		return constituency;
 	}
