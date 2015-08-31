@@ -844,7 +844,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 					if(subVO.getLocationValue()!=0 && subVO.getLocationScopeId()!=0){
 						List<Long> locationIds = new ArrayList<Long>();
-						locationIds.add(subVO.getLocationValue());
+						if(subVO.getLocationScopeId().equals(3l)){
+							locationIds.add(Long.parseLong((subVO.getLocationValue().toString()).substring(1)));
+						}else{
+							locationIds.add(subVO.getLocationValue());
+						}
 						List<IdNameVO> rslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, subVO.getLocationScopeId()+1);
 						if(rslt!=null && rslt.size()>0){
 							subVO.setLocationName(rslt.get(0).getName());
