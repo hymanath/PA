@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
@@ -1504,5 +1505,22 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
+	
+	@GET
+	@Path("/getElectionPerformanceInCadreLocation/{tdpCadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<RegisteredMembershipCountVO> getElectionPerformanceForCadre(@PathParam("tdpCadreId") String tdpCadreId){
+		
+		try{
+			return webServiceHandlerService.getElectionPerformanceInCadreLocation(Long.valueOf(tdpCadreId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getEventDetailsOfCadre() Method, Exception is ",e);
+			
+		}
+		return null;
+	}
+	
 	
 }
