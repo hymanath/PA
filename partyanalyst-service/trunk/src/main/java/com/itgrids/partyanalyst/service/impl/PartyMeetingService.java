@@ -964,7 +964,7 @@ public class PartyMeetingService implements IPartyMeetingService{
      * @return PartyMeetingSummaryVO
      */
 	//public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr){
-	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr){
+	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr,Long meetingLevel){
 		LOG.debug(" Entered Into getMeetingSummaryForLocation");
 		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
 		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
@@ -1028,25 +1028,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
 			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
 			
-			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate,meetingLevel);
 			
 			List<Long> locationIds = new ArrayList<Long>(0);
 			
-			if(locationLevel==1l){
+			if(meetingLevel==1l){
 				locationIds.addAll(statesList);
-			}else if(locationLevel==2l){
+			}else if(meetingLevel==2l){
 				locationIds.addAll(districtList);
-			}else if(locationLevel==3l){
+			}else if(meetingLevel==3l){
 				locationIds.addAll(constituencyList);
-			}else if(locationLevel==4l){
+			}else if(meetingLevel==4l){
 				locationIds.addAll(mandalList);
-			}else if(locationLevel==5l){
+			}else if(meetingLevel==5l){
 				locationIds.addAll(townList);
-			}else if(locationLevel==6l){
+			}else if(meetingLevel==6l){
 				locationIds.addAll(divisonList);
-			}else if(locationLevel==7l){
+			}else if(meetingLevel==7l){
 				locationIds.addAll(villageList);
-			}else if(locationLevel==8l){
+			}else if(meetingLevel==8l){
 				locationIds.addAll(wardList);
 			}
 			
@@ -1056,7 +1056,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
-			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, meetingLevel);
 			
 			List<Long> mtngLctnsLst = new ArrayList<Long>();
 			Map<Long,String> lctnNmsMap = new HashMap<Long, String>();
@@ -1375,7 +1375,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	 * @return
 	 * 
 	 */
-	public PartyMeetingSummaryVO getMeetingSummaryForLocationCumulative(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr){
+	public PartyMeetingSummaryVO getMeetingSummaryForLocationCumulative(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr,Long meetingLevel){
 		LOG.debug(" Entered Into getMeetingSummaryForLocation");
 		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
 		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
@@ -1439,25 +1439,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 			// GETTING MEETINGS DETAILS WITH THE LOCATIONS 
 			//partyMeetingDAO.getAllMeetings(meetingType, locationLevel, stateList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
 			
-			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate);
+			List<Object[]> partyMeetingsRslt = partyMeetingDAO.getAllMeetings(typeOfMeeting, locationLevel, statesList, districtList, constituencyList, mandalList, townList, divisonList, villageList, wardList, startDate, endDate , meetingLevel);
 			
 			List<Long> locationIds = new ArrayList<Long>(0);
 			
-			if(locationLevel==1l){
+			if(meetingLevel==1l){
 				locationIds.addAll(statesList);
-			}else if(locationLevel==2l){
+			}else if(meetingLevel==2l){
 				locationIds.addAll(districtList);
-			}else if(locationLevel==3l){
+			}else if(meetingLevel==3l){
 				locationIds.addAll(constituencyList);
-			}else if(locationLevel==4l){
+			}else if(meetingLevel==4l){
 				locationIds.addAll(mandalList);
-			}else if(locationLevel==5l){
+			}else if(meetingLevel==5l){
 				locationIds.addAll(townList);
-			}else if(locationLevel==6l){
+			}else if(meetingLevel==6l){
 				locationIds.addAll(divisonList);
-			}else if(locationLevel==7l){
+			}else if(meetingLevel==7l){
 				locationIds.addAll(villageList);
-			}else if(locationLevel==8l){
+			}else if(meetingLevel==8l){
 				locationIds.addAll(wardList);
 			}
 			
@@ -1467,7 +1467,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
-			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, locationLevel);
+			List<IdNameVO> nameRslt = cadreCommitteeService.getLocationNameByLocationIds(locationIds, meetingLevel);
 			
 			Map<Long,String> lctnNmsMap = new HashMap<Long, String>();
 			if(nameRslt!=null && nameRslt.size()>0){
