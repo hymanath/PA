@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 
