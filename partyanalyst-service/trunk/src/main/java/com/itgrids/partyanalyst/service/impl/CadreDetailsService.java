@@ -2195,6 +2195,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 							    if(VO != null){
 							    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
 							    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
+							    	if(params[3]!=null){
+										String image=params[3].toString();
+										String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+										
+										VO.setImagePath(imagePath);
+									}
+									else{
+										VO.setImagePath("");
+									}
 							    	tdpCadreIDsList.add(params[1] != null?Long.parseLong(params[1].toString()):0l);
 							    }
 							}
