@@ -2408,7 +2408,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Long parliamentConId=0l;
 				Long districtId=0l;
 				
-					if(electionType.equalsIgnoreCase("Assembly")){
+					if(electionType.trim().equalsIgnoreCase("Assembly")){
 						List<Long> assembly = new ArrayList<Long>();
 						assembly.add(locationId);
 						
@@ -2433,7 +2433,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							districtId=list.get(0).getDistrictId();
 						}
 						
-					}else if(electionType.equalsIgnoreCase("Parliament")){
+					}else if(electionType.trim().equalsIgnoreCase("Parliament")){
 						parliamentConId = locationId;
 						
 						List<Long> districts = delimitationConstituencyAssemblyDetailsDAO.findDistrictsBYParliament(parliamentConId);
@@ -2443,22 +2443,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 					//comman code
 					
-					if(electionType.equalsIgnoreCase("Assembly")){
-						if(locationType.equalsIgnoreCase("assemblyConstituency")){
+					if(electionType.trim().equalsIgnoreCase("Assembly")){
+						if(locationType.trim().equalsIgnoreCase("assemblyConstituency")){
 							return  getConstituencyCommittesCount(locationId,"assemblyConstituency");
 						}
-						else if(locationType.equalsIgnoreCase("parliamentConstituency")){
+						else if(locationType.trim().equalsIgnoreCase("parliamentConstituency")){
 							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency");
 						}
-						else if(locationType.equalsIgnoreCase("district")){
+						else if(locationType.trim().equalsIgnoreCase("district")){
 							return getDistrictwiseCommitteCount(districtId,null);
 						}
 					}
 					else{
-						if(locationType.equalsIgnoreCase("parliamentConstituency")){
+						if(locationType.trim().equalsIgnoreCase("parliamentConstituency")){
 							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency");
 						}
-						else if(locationType.equalsIgnoreCase("district")){
+						else if(locationType.trim().equalsIgnoreCase("district")){
 							return getDistrictwiseCommitteCount(districtId,null);
 						}
 					}
@@ -2470,15 +2470,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 					String areaType = userAddress.getConstituency().getAreaType();
 					if(userAddress != null)
 					{
-						if(locationType.equalsIgnoreCase("district"))
+						if(locationType.trim().equalsIgnoreCase("district"))
 							return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId(),areaType);
 							
-						else if(locationType.equalsIgnoreCase("mandal"))
+						else if(locationType.trim().equalsIgnoreCase("mandal"))
 						{
 							return getMandalwiseCommitteCount(userAddress);
 							
 						}
-						else if(locationType.equalsIgnoreCase("panchayat") && (areaType != null && (areaType.trim().equalsIgnoreCase("RURAL") || areaType.trim().equalsIgnoreCase("RURAL-URBAN"))))
+						else if(locationType.trim().equalsIgnoreCase("panchayat") && (areaType != null && (areaType.trim().equalsIgnoreCase("RURAL") || areaType.trim().equalsIgnoreCase("RURAL-URBAN"))))
 						{
 							if(userAddress.getPanchayat() != null && userAddress.getPanchayat().getPanchayatId() != null)
 							{
@@ -2503,10 +2503,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 						}
-						else if(locationType.equalsIgnoreCase("assemblyConstituency"))
+						else if(locationType.trim().equalsIgnoreCase("assemblyConstituency"))
 							return  getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"assemblyConstituency");
 						
-						else if(locationType.equalsIgnoreCase("parliamentConstituency"))
+						else if(locationType.trim().equalsIgnoreCase("parliamentConstituency"))
 							return getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"parliamentConstituency");
 						
 						
@@ -3489,6 +3489,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Long districtId=0l;
 				Long assemblyConstituencyId = 0l;
 				String electionType = "";
+				String parliament = "";
+				String district = "";
 				if(voList !=null && voList.size()>0){
 					
 					if(voList.get(0).getElectionType().equalsIgnoreCase("Assembly")){
@@ -3507,8 +3509,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 								BasicVO vo=new BasicVO();
 								vo.setId(parliamentAndDistrict[1] !=null ? (Long)parliamentAndDistrict[1]:0l);//parliamentId
 								vo.setName(parliamentAndDistrict[2] !=null ? parliamentAndDistrict[2].toString():"");//parliamentName
+								parliament = parliamentAndDistrict[2] != null ? parliamentAndDistrict[2].toString():"";
 								vo.setDistrictId(parliamentAndDistrict[3] !=null ? (Long)parliamentAndDistrict[3]:0l);
 								vo.setDistrict(parliamentAndDistrict[4] !=null ? parliamentAndDistrict[4].toString() :"");
+								district = parliamentAndDistrict[4] !=null ? parliamentAndDistrict[4].toString() :"";
 								
 								basicList.add(vo);
 							}
@@ -3522,10 +3526,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}
 					else if(voList.get(0).getElectionType().equalsIgnoreCase("Parliament")){
 						parliamentConId = voList.get(0).getId();
+						parliament = voList.get(0).getName();
 						
 						List<Long> districts = delimitationConstituencyAssemblyDetailsDAO.findDistrictsBYParliament(parliamentConId);
 						
 						districtId = districts.get(0);
+						district = districtDAO.getDitrictNmaeById(districtId);
 						
 					}
 					
@@ -3534,6 +3540,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					finalVo.setParlimentId(parliamentConId);
 					finalVo.setDistrictId(districtId);
 					finalVo.setName(name);
+					finalVo.setParliament(parliament);
+					finalVo.setDistrict(district);
 				}
 				
 			}
