@@ -846,6 +846,7 @@ function setDefaultImage(img){
 			  }).done(function(result){ 			  
 					$("#messageDiv").html("Status Updated Successfully").css("color","green");
 					$("#myModal").modal('hide');
+					getMemberDetails();
 					 if(callstatusId == 1)
 					   {
 						$("#ajaxImage").hide();
