@@ -291,7 +291,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			String startDate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			
-			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocation(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,meetinglevel);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
@@ -314,7 +314,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			String startDate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			
-			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate);
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,meetinglevel);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
