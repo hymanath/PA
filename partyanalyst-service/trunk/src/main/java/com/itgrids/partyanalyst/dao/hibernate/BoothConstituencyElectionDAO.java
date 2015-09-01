@@ -833,7 +833,7 @@ public List<Long> getBoothIdsByLocalEleBody(Long localEleBodyId, Long electionId
 public Long getTotalVotesByLocationId(Long locationId,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList)
 {
 	StringBuilder str = new StringBuilder();
-	str.append(" select sum(model.booth.totalVoters) from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId and ");
+	str.append(" select sum(model.boothResult.validVotes) from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId and ");
 	
 	if(locationType.equalsIgnoreCase("constituency"))
 	  str.append(" model.booth.constituency.constituencyId =:locationId ");
