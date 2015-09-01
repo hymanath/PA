@@ -1720,7 +1720,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						districtId=list.get(0).getDistrictId();
 					}
 					
-				}else if(pcType.equalsIgnoreCase("Parliament")){
+				}else if(pcType.trim().equalsIgnoreCase("Parliament")){
 					parliamentConId = pcId;
 					
 					List<Long> districts = delimitationConstituencyAssemblyDetailsDAO.findDistrictsBYParliament(parliamentConId);
@@ -1729,7 +1729,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				
 				
-				if(pcType.equalsIgnoreCase("Assembly")){
+				if(pcType.trim().equalsIgnoreCase("Assembly")){
 					
 					//Assembly Performance
 					   countVO.setConsTotalVoters(getTotalVotersByLocationId(pcId, "Constituency", electionId, pcId,null));
@@ -1866,7 +1866,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public String calculatePercentage(Long totalVoters,Long count)
 	{
 		try{
-			if(totalVoters != null && totalVoters.longValue() > 0l)
+			if(totalVoters != null && totalVoters.longValue() > 0l && count != null && count.longValue()>0L)
 			  return (new BigDecimal((count * 100.0)/totalVoters.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 			else{
 				return "0";
@@ -1978,7 +1978,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 						countVO.setPanchayatCount(getTotalVotesEarnedForLocation(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId, partyIds,null));
 						countVO.setPanchayatTotVoters(getTotalVotersByLocationId(userAddress.getPanchayat().getPanchayatId(), "Panchayat", electionId, constituencyId,null));
-						countVO.setPanchPerc(calculatePercentage(countVO.getPanchayatTotVoters(), countVO.getPanchayatCount()));
+						if(countVO.getPanchayatCount() != null)
+							countVO.setPanchPerc(calculatePercentage(countVO.getPanchayatTotVoters(), countVO.getPanchayatCount()));
 						
 						if(countVO.getPanchayatTotVoters() != null && countVO.getPanchayatTotVoters() > 0)
 						{
