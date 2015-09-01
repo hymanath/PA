@@ -130,7 +130,12 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return (Object[])query.uniqueResult();
    }
    
-   
-   
+   @SuppressWarnings("unchecked")
+   public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId)
+   {
+	   Query query = getSession().createQuery("SELECT model.tdpCadre.memberShipNo FROM TrainingCampBatchAttendee model where model.trainingCampBatch.trainingCampBatchId = :trainingCampBatchId");
+	   query.setParameter("trainingCampBatchId",trainingCampBatchId);
+	   return query.list();
+   }
 	
 }
