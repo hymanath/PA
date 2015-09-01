@@ -21,16 +21,30 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        StringBuilder sb = new StringBuilder();
 	        
 	        sb.append(" select model.partyMeetingType.partyMeetingTypeId," +//0 - MeetingTypeId
-	        		" model.partyMeetingType.type, " +//1 - Meeting Type
-	                " model.partyMeetingLevel.partyMeetingLevelId," + // 2- Meeting Level Id
-	                " model.partyMeetingLevel.level, " + // 3 - Meeting Level
-	                " model.locationValue," + // 4 -- Location Value
-	                " date(model.startDate)," + // 5 -- Start Date
-	                " date(model.endDate)," + // 6 -- End Date
-	                " model.meetingAddress.userAddressId," + // 7 -- User Address Id
-	                " model.meetingName," + // 8 -- Meeting Name
-	                " model.partyMeetingId " + // 9 -- Party Meeting Id 
-	                " from PartyMeeting model " +
+	        		" model.partyMeetingType.type, " +						//1 - Meeting Type
+	                " model.partyMeetingLevel.partyMeetingLevelId," + 		// 2- Meeting Level Id
+	                " model.partyMeetingLevel.level, " + 					// 3 - Meeting Level
+	                " model.locationValue," + 								// 4 -- Location Value
+	                " date(model.startDate)," + 							// 5 -- Start Date
+	                " date(model.endDate)," + 								// 6 -- End Date
+	                " model.meetingAddress.userAddressId," +				// 7 -- User Address Id
+	                " model.meetingName," + 								// 8 -- Meeting Name
+	                " model.partyMeetingId, " ); 							// 9 -- Party Meeting Id
+	        
+	        sb.append(" model.meetingAddress.state.stateId ");				// 10 -- State Id
+	        sb.append(" ,model.meetingAddress.state.stateName ");			// 11 -- State Name
+	        
+	        if(locationLevel>=2){
+	        	sb.append(" ,model.meetingAddress.district.districtId ");	// 12 -- District Id
+	        	sb.append(" ,model.meetingAddress.district.districtName ");	// 13 -- District Name
+	        }
+	        if(locationLevel>=3){
+	        	sb.append(" ,model.meetingAddress.constituency.constituencyId "); // 14 -- Constituency Id
+	        	sb.append(" ,model.meetingAddress.constituency.name "); // 15 -- Constituency Name
+	        }
+	        
+	        
+	         sb.append(" from PartyMeeting model " +
 	                " where model.isActive='Y' " );
 	        if(meetingType!=null && meetingType>0l){
 	            sb.append(" and model.partyMeetingType.partyMeetingTypeId=:meetingType ");
