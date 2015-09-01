@@ -5537,7 +5537,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList)
 		{
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select distinct voter.voterIDCardNo,model.tdpCadreId,model.memberShipNo ");
+			queryStr.append(" select distinct voter.voterIDCardNo,model.tdpCadreId,model.memberShipNo,model.image ");
 			queryStr.append(" from TdpCadre model ");
 			queryStr.append(" left join model.voter voter ");
 			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
