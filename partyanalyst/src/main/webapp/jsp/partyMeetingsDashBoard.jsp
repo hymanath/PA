@@ -1151,7 +1151,7 @@ $(document).ready(function(e) {
 	  $('#districtId').val(0);
 	}, 2000);
 	getMeetingSummary(2,0,1,2,0,0,0,0,0);//meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,mtdId,vwId
-	getPartyMeetingDetails(0,0,1,2,0,0,0,0,0);
+	getPartyMeetingDetails(2,0,1,2,0,0,0,0,0);
 });
 
 
@@ -1551,6 +1551,11 @@ $(document).ready(function(e) {
 			}else{
 				wardPanId=$("#panchayatId").val();
 			}
+		}
+		if($("#meetingLevel").val()==0){
+			alert("Please Select MeetingLevel");
+			$(".tbtn").trigger( "click" );
+			return;
 		}
 		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
 		$(".tbtn").trigger( "click" );
