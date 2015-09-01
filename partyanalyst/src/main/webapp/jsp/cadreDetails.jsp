@@ -257,7 +257,7 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY</h4>
                     </div>
 					<div class="panel-body">
-                    	<h5 class="m_0">Participated Constituency : <span id="participatedConstId" class="text-bold"></span></h5>
+                    	<h5 class="m_0">Location : <span id="participatedConstId" class="text-bold"></span></h5>
                      </div> 
                 </div>
             	<div class="panel panel-default">
@@ -714,6 +714,10 @@ var globalCadreId = '${cadreId}';
 	var participatedConstituencyType="";
 	var participatedParliamentId = 0;
 	var participatedDistrictId = 0;
+	
+	var participatedConstName = "";
+	var participatedParlName = "";
+	var participatedDistName = "";
 	//getParticipatedConstituencyId(globalCadreId);
 	
 	//var globalCadreId;
@@ -744,10 +748,18 @@ var globalCadreId = '${cadreId}';
 						participatedConstituencyType = result.electionType;
 						participatedParliamentId = result.parlimentId;
 						participatedDistrictId=result.districtId;
+						
+						participatedConstName = result.name;
+						participatedParlName = result.parliament;
+						participatedDistName = result.district;
 						//alert(participatedConstituencyId);
 						if(participatedConstituencyId != null && participatedConstituencyId > 0){
 						//alert(1);
 							$("#participatedDivId").show();
+							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
+						}else if(participatedParliamentId != null && participatedParliamentId > 0){
+							$("#participatedDivId").show();
+							participatedConstituencyType=" Parliament";
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}
 						
@@ -775,6 +787,12 @@ var globalCadreId = '${cadreId}';
 	 var globalConstituencyId=0;
 	 var globalParliamentId=0;
 	 var globalDistrictId=0;
+	 
+	 var globalPancName = "";
+	 var globalTehsName = "";
+	 var globalConstName = "";
+	 var globalParlName = "";
+	 var globalDistName = "";
 	 
 	 var globalCandidateId; 
 	 var ownBoothDetailsVo;
@@ -947,7 +965,13 @@ var globalCadreId = '${cadreId}';
 					 globalConstituencyId=result.constituencyId;
 					 globalParliamentId=result.pConstituencyId;
 					 globalDistrictId=result.districtId;
-					 globalElectionBodyId=result.localElectionBody;					 
+					 globalElectionBodyId=result.localElectionBody;	
+
+					 globalPancName = result.panchayatName;
+					 globalTehsName = result.tehsilName;
+					 globalConstName = result.constituencyName;
+					 globalParlName = result.pConstituencyName;
+					 globalDistName = result.districtName;
 					 
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
@@ -1757,15 +1781,22 @@ $(document).on("click",".newsSubmitBtn",function(){
  function getTotalMemberShipRegistrationsInCadreLocation()
  {
 	$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	var pcId=0;
 	//pcId:participatedConstituencyId,pcType:participatedConstituencyType
+	//alert(participatedParliamentId);
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		pcId = participatedConstituencyId;
+	}else{
+		pcId = participatedParliamentId;
+	}
+
 	var pcType = participatedConstituencyType;
 	//pcType="Assembly";
 	  $.ajax({
 			type : "POST",
 			url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-			data : {tdpCadreId:globalCadreId,pcId:participatedConstituencyId,pcType:participatedConstituencyType}
+			data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType}
 		  }).done(function(result){
-			 // alert(1);
 			if(result != null){
 				  buildTotalMemberShipRegInCadreLocation(result,pcType);
 			}
@@ -1836,15 +1867,15 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType)
 		
 		if(pcType == "Assembly"){
 			str += '<td>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName+')"></div>';
 			str += '</td>';
 		}
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+participatedParlName+')"></div>';
 		str += '</td>';
 		
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName+')"></div>';
 		str += '</td>';
 		
 	}
@@ -2060,24 +2091,24 @@ function buildElectionPerformanceInCadreLocation(result)
 	if(result[i].cadreLocation =="Mandal")
 	{
 		str += '<td>';
-        str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+        str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName+')"></div>';
         str += '</td>';
 	 }
 	
 	str += '<td>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality ('+globalTehsName+')"></div>';
     str += '</td>';
 	
 	str += '<td>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName+')"></div>';
     str += '</td>';
 	
 	str += '<td>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName+')"></div>';
 	str += '</td>';
 	
 	str += '<td>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName+')"></div>';
     str += '</td>';
 	
 		str += '</tr>';
