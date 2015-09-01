@@ -14,4 +14,6 @@ public interface IAttendanceService {
 	public UserAttendanceDetailsVO getAttendanceMeetingAndCamps(AttendanceTabUserVO inputVo);
 	
 	public PartyMeetingInviteeVO getPartyMeetingInvittees(Long partyMeetingId);
+	
+	public PartyMeetingInviteeVO getTrainingCampBatchInvittees(Long trainingCampBatchId);
 }
