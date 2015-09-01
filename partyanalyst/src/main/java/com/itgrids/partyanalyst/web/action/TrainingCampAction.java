@@ -1696,4 +1696,51 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
 	
+    
+    //public String uploadDocsAction(){
+    public String uploadMeetingDocs(){
+		try{
+			 String imageName=null;
+			 
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			 
+			 if(regVO!=null){
+				 Long userId = regVO.getRegistrationID();
+				 
+				 for(int i=0;i<imageForDisplay.size();i++){
+		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+			        	 
+			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+			          
+			          String dtOfArticle=new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+				         String ttlDir = FolderForArticles(dtOfArticle);
+				         if(ttlDir.equalsIgnoreCase("FAILED")){
+				        	 inputStream = new StringBufferInputStream("fail");
+				        	 return "SUCCESS";
+				         }
+				         String filePath=IConstants.LOCAL_FILES_FOLDER+"/"+ttlDir;
+			        	 
+			          File fileToCreate = new File(filePath,imageName);
+					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+					  
+					  trainingCampService.saveFilePaths(partyMeeting,fileType,partyMeetingType,ttlDir+"/"+imageName,userId, imageForDisplayFileName.get(i));
+					  
+					  inputStream = new StringBufferInputStream("success");
+		          }
+			 }else{
+				 inputStream = new StringBufferInputStream("login failed");
+			 }
+		      
+		}catch(Exception e){
+			inputStream = new StringBufferInputStream("failed");
+			LOG.error(e);
+		}
+		
+		return Action.SUCCESS;
+		  //getting image path to store the image.
+			 
+	         
+	         //copy image to folder.
+	         
+	}
 }

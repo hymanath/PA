@@ -10772,5 +10772,11 @@
 	  	</result>
 	</action>
 	
+	<action name="uploadMeetingDocAction" class="trainingCampAction" method="uploadMeetingDocs">
+	   <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
