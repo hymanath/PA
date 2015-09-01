@@ -17,5 +17,6 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	
 	public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId);
 	
+	public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId);
 	
 }
