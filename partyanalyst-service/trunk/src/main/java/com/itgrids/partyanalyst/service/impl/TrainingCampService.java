@@ -3896,6 +3896,7 @@ public class TrainingCampService implements ITrainingCampService{
 				
 				List<CallTrackingVO> atrDocs = new ArrayList<CallTrackingVO>();
 				List<CallTrackingVO> minDocs = new ArrayList<CallTrackingVO>();
+				List<CallTrackingVO> meetingDocs = new ArrayList<CallTrackingVO>();
 				
 				for (Object[] objects : documentDetails) {
 			
@@ -3908,12 +3909,14 @@ public class TrainingCampService implements ITrainingCampService{
 						minDocs.add(vo);
 					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("ATR")){
 						atrDocs.add(vo);
+					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("MEETING")){
+						meetingDocs.add(vo);
 					}
 				}
 				
 				partyMeetingVO.setMinutesDocuments(minDocs);
 				partyMeetingVO.setAtrDocuments(atrDocs);
-				
+				partyMeetingVO.setMeetingDocs(meetingDocs);
 			}
 			
 			
