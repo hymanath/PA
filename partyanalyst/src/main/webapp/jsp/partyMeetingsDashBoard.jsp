@@ -192,7 +192,7 @@ header.eventsheader {
                                             </div>
                                         </div>
                                         <div class="panel-body pad_0">
-                                        	<div class="table-responsive" id="individualMeetingResultId">
+											<div class="table-responsive" id="individualMeetingResultId">
 												<table class="table table-bordered m_0">
 													<thead>
 														<tr>
@@ -215,6 +215,7 @@ header.eventsheader {
 															<th>Text</th>
 														</tr>
 													</thead>
+													<img src='./images/icons/search.gif' class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
 													<tbody id="individualResultBody"></tbody>
 												</table>
                                             </div>
@@ -242,6 +243,7 @@ header.eventsheader {
 															<th>Text</th>
 														</tr>
 													</thead>
+													<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>
 													<tbody id="cumulativeMeetingTableBodyId"></tbody>
 												</table>
                                             </div>
@@ -1312,6 +1314,8 @@ $(document).ready(function(e) {
   
  
 	function getPartyMeetingDetails(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
+		$("#indiAjax").show();
+		$("#individualResultBody").html("");
 		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
 		var month;
@@ -1432,6 +1436,7 @@ $(document).ready(function(e) {
 				$('.individual').show();
 				$("#individualResultBody").html("No Records Found"); 
 			}
+			$("#indiAjax").hide();
 		});
 	}
 	
@@ -1769,6 +1774,8 @@ $(document).ready(function(e) {
 	});
 	
 	function getPartyMeetingDetailsCumulative(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
+		$("#cummAjax").show();
+		$("#cumulativeMeetingTableBodyId").html("");
 		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
 		var month;
@@ -1886,6 +1893,7 @@ $(document).ready(function(e) {
 			}else{
 				$("#cumulativeMeetingTableBodyId").html("No Records Found"); 
 			}
+			$("#cummAjax").hide();
 		});
 	}
 					
