@@ -478,25 +478,25 @@ str+='<th>'+result.subList[i].age+'</th>';
 if(result.subList[i].role == null)
 result.subList[i].role = '';
 str+='<td>'+result.subList[i].role+'</br>'+result.subList[i].roleCategory+' Committee </td>';
-if(result.subList[i].committeeLocation != null && result.subList[i].committeeLocation != "")
+if(result.subList[i].committeeLocation != null && result.subList[i].committeeLocation.trim().length > 0)
 {
+
 	var arr = result.subList[i].committeeLocation.split(" ");
 	var level = arr[arr.length-1];
 	var location = "";
-	for(var i in arr)
+	for(var j in arr)
 	{
-	   if(i != arr.length-1)
-	     location+= arr[i];
+	   if(j != arr.length-1)
+	     location+= arr[j];
 	}
- 
-    str += '<td>'+level+'</td>';
+	str += '<td>'+level+'</td>';
 	str += '<td>'+location+'</td>';
-}else{
+}
+else{
+
 	str += '<td> </td>';
 	str += '<td> </td>';
 }
-
-//str+='<td>'+result.subList[i].mobileNumber+'</td>';
 str+='<td>'+callFor+' '+purpose+'</td>';
 str+='<td>'+result.subList[i].location+'</td>';
 str+='<td>'+result.subList[i].constituency+'</td>';
