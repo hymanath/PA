@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
@@ -53,7 +54,13 @@ public class AttendanceService implements IAttendanceService{
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
 	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO;
 	private IVoterDAO voterDAO;
+	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
+	}
+
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
 	}
@@ -508,9 +515,27 @@ public class AttendanceService implements IAttendanceService{
 			List<String> list = partyMeetingInviteeDAO.getPartyMeetingInvittees(partyMeetingId);
 			result.setPartyMeetingId(partyMeetingId);
 			result.setInviteeList(list);
+			result.setResult("Success");
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in getPartyMeetingInvittees Method() - ",e);
+			result.setResult("Failure");
+		}
+		return result;
+	}
+	
+	public PartyMeetingInviteeVO getTrainingCampBatchInvittees(Long trainingCampBatchId)
+	{
+		PartyMeetingInviteeVO result = new PartyMeetingInviteeVO();
+		try{
+			List<String> list = trainingCampBatchAttendeeDAO.getAttendeesForATrainingCampBatch(trainingCampBatchId);
+			result.setInviteeList(list);
+			result.setPartyMeetingId(trainingCampBatchId);
+			result.setResult("Success");
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in getTrainingCampBatchInvittees Method() - ",e);
+			result.setResult("Failure");
 		}
 		return result;
 	}
