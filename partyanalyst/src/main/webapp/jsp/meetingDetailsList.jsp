@@ -225,6 +225,23 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
                                             </div>
+											<!-- meeting docs -->
+											<div class="" id="meetingDocumentDivId"></div>
+												 
+											<div class="row">
+                                                <div class="col-md-12">
+                                                    <form id="uploadMeetingDocs" name="uploadMeetingDocs" class="uploadBox">
+														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="meetFileDivId0" style="width: 225px;margin-left:15px;"/>
+														<div id="ExtraMeetFiles"></div>
+														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-primary btn-sm" id="uploadMeetingDocsId"></input>
+														<input type="hidden" name="partyMeeting" id="partyMeetingMeetId"/>
+														<input type="hidden" name="partyMeetingType" value="MEETING"/>
+													</form>
+													<button class="btn btn-primary btn-xs pull-right m_top20 "   title="Add one more file" id="addMeetingFiles"><i class="glyphicon glyphicon-plus"></i></button>
+                                                    <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
+                                                </div>
+                                            </div>
+											<!-- meeting docs -->
                                         </div>
                                     </div>
                                 </div>
@@ -433,7 +450,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	    $("#ExtraFilesATR").append(c);
 	});
 	
-	
+	var meetDocFiles = 0;
+	$("#addMeetingFiles").click(function(){
+		meetDocFiles = meetDocFiles +1;
+		var c = $("#fileDiv").clone(true);
+			c.removeAttr("style");
+			c.attr("id","meetFileDivId"+meetDocFiles);
+            c.find(".fileCls").attr("id","meetFileDivId"+meetDocFiles);
+            c.find(".removeBtnCls").attr("id","removeMeet"+meetDocFiles);
+			c.find(".removeBtnCls").attr("attr_count",meetDocFiles);
+	    $("#ExtraMeetFiles").append(c);
+	});
 
     var partyMeetingId='${partyMeetingId}';
     
@@ -782,6 +809,28 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				  // $('.fancybox').fancybox();
 			   }
 			   
+			   if(result.meetingDocs!=null && result.meetingDocs.length>0){
+					//$("#atrDocsCount").html(result.meetingDocs.length);
+				   var str='';
+				    str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading text-bold">UPLOAD MEETING DOCUMENTS</div>';
+					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
+				   for(var i in result.meetingDocs){
+					    str+='<li class="col-md-12 list-group-item" id="atrDocFileId'+result.meetingDocs[i].id+'">';
+					    str+='<a target="_tab" class="col-md-10" href="'+result.meetingDocs[i].url+'">'+result.meetingDocs[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" attr_type="atr" id="'+result.meetingDocs[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</li>';
+						
+				   }
+				   str+='</ul>';
+				   str+='</div>';
+				   str+='</div>';
+				   str+='</div>';
+				   $("#meetingDocumentDivId").html(str);
+				  // $('.fancybox').fancybox();
+			   }
+			   
 			   
 			   if(result.minutesDetails!=null && result.minutesDetails.length>0){
 				   $("#minitePointsCount").html(result.minutesDetails.length);
@@ -980,6 +1029,35 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		YAHOO.util.Connect.asyncRequest('POST','uploadMinutesDocAction.action',uploadHandler);
 	});
 	
+	$("#uploadMeetingDocsId").click(function(){
+		$("#partyMeetingMeetId").val(partyMeetingId);
+		var files = [];
+		$("#uploadMeetingDocs input[type=file]").each(function() {
+			if($(this).val().trim().length>0){
+				files.push($(this).val());
+			}
+		});
+	
+		if(files.length==0){
+			var reslt;
+			reslt = "Please Select Documents"
+			$("#mintupdatealertmag").html(reslt);
+			$('#alertmintsave').modal('show');
+			//alert("Please Select Documents");
+			return;
+		}
+		
+		var uploadHandler = {
+				upload: function(o) {
+				    uploadResult = o.responseText;
+					showingStatus(uploadResult,"MEETING");
+				}
+			};
+
+		YAHOO.util.Connect.setForm('uploadMeetingDocs',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadMeetingDocAction.action',uploadHandler);
+	});
+	
 	$("#uploadATRDocsId").click(function(){
 		$("#partyMeetingATRId").val(partyMeetingId);
 		var files = [];
@@ -1014,9 +1092,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var reslt;
 		var result = myResult;
 		if (result.indexOf("success") >= 0){
+			$("#mintupdatealertmag").html("Uploaded Successfully");
 			$('#alertmintsave').modal('show')
 			//alert("File Uploaded Successfully");
-			rebuildTheDocumentsDiv(docSourceType,reslt);
+			//rebuildTheDocumentsDiv(docSourceType,reslt);
 		}
 		else{
 			reslt = "Failed to Upload.. Please Try Again"
@@ -1024,8 +1103,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$('#alertmintsave').modal('show');
 			//alert("Failed to Upload.. Please Try Again");
 		}
-		
 		partyMeetingDocs(docSourceType);
+		
 	}
 	
 	function rebuildTheDocumentsDiv(fromType,result){
@@ -1083,6 +1162,29 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#atrDocumentDivId").html(str);
 			   }
 			   $("#ExtraFilesATR").html("");
+			}
+			else if(fromType=="MEETING"){
+				if(result.meetingDocs!=null && result.meetingDocs.length>0){
+					//$("#atrDocsCount").text(result.atrDocuments.length);
+				   var str='';
+				   str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
+					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
+				   for(var i in result.meetingDocs){
+					    str+='<li class="col-md-12  list-group-item" id="docDiv'+result.meetingDocs[i].id+'">';
+					    str+='<a target="_tab" href="'+result.meetingDocs[i].url+'">'+result.meetingDocs[i].name+'</a>';
+						str+='<div class="pull-right deleteDoc" id="'+result.meetingDocs[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</li>';
+						
+				   }
+				   str+='</ul>';
+				   str+='</div>';
+				   str+='</div>';
+				   str+='</div>';
+				   $("#meetingDocumentDivId").html(str);
+			   $("#ExtraMeetFiles").html("");
+			   }
 			}
 			reslt = "File Uploaded Successfully"
 			$("#mintupdatealertmag").html(reslt);
@@ -1330,8 +1432,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#uploadATRDocs input[type=file]").each(function() {
 				$(this).val("");
 			});
-		}else{
+		}else if(docSourceType=="MINUTE"){
 			$("#uploadMinutesDocs input[type=file]").each(function() {
+				$(this).val("");
+			});
+		}else if(docSourceType=="MEETING"){
+			divId = "#meetingDocumentDivId"
+			$("#uploadMeetingDocs input[type=file]").each(function() {
 				$(this).val("");
 			});
 		}
@@ -1347,7 +1454,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			 if(result!=null && result.length>0){
+			 /* if(result!=null && result.length>0){
 				   var str='';
 				    for(var i in result){
 					    str+='<div class="col-md-12 row" id="minuteDocFileId'+result[i].id+'" style="padding:6px;">';
@@ -1356,7 +1463,28 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						str+='</div>';
 				   }
 				   $(""+divId+"").html(str);
-			   }	
+			   }	 */
+			   var str='';
+				   str+='<div class="panel panel-default">';
+					if(docSourceType=="MEETING"){
+						str+='<div class="panel-heading text-bold"> UPLOAD MEETING DOCUMENTS</div>';
+					}else{
+						str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';   
+					}
+					str+=' <div class="panel-body">';
+					str+='<ul class="list-group row">';
+			   if(result!=null && result.length>0){
+				   
+				    for(var i in result){
+					    str+='<li class="list-group-item col-md-12" id="minuteDocFileId'+result[i].id+'" style="padding:6px;">';
+					    str+='<a class="col-md-10" href="'+result[i].url+'">'+result[i].name+'</a>';
+						str+='<div class="deleteDoc pull-right" attr_type="minute" id="'+result[i].id+'" style="cursor:pointer;"><i class=" glyphicon glyphicon-remove"></i></div>';
+						str+='</li>';
+				   }
+				   
+			   }
+			   str+='</ul>';
+				   $(""+divId+"").html(str);
 		});	
 	}
 	 $(document).on('click', '.deleteAtr', function(){
