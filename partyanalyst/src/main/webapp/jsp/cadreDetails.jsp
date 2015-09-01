@@ -2023,6 +2023,7 @@ function getCadreFamilyDetailsByCadreId()
 	 var constId = $('#cadreConstituencyId').val();
 	 var partNo = $('#cadrePartNo').val();
 	 var str = '';
+	 
 	 str += '<ul>';
 	 for(var i in result)
 	 {
@@ -2039,19 +2040,33 @@ function getCadreFamilyDetailsByCadreId()
 	 
 		 str += '<li>';
          str += '<div class="media">';
-		 if(result[i].tdpCadreId != null ){
+		 var imgPath='';
+		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0)
+		 { 
+		 imgPath = result[i].imagePath;
+		 } 
+		 else
+		 {
+		 imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
+		 }
+		  str += '<div class="media-left ">';
+		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+		  str += '</div>';
+		 /*if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
 			 //str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			// str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }
 		 else
 		 {
 			 str += '<div class="media-left">';
 			// str += '<img src="dist/img/family-member.png" class="img-responsive media-object img-circle" alt="profile">';
-			 str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			// str += '<img src="http://www.mytdp.com/voter_images/'+constId+'/Part'+partNo+'/'+result[i].votercardNo+'.jpg" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+			str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
-		 }
+		 }*/
          str += '<div class="media-body">';
          str += '<div class="m_0">'+result[i].name+'';
 		if(result[i].tdpCadreId != null )
@@ -3739,6 +3754,10 @@ function buildTotalComplaints(result,complaintId)
 		else if(result[0].subList[i].status.toLowerCase() == ("Not possible").toLowerCase()){
 		 str += '<li><span class="notpossible"></span><span class="notpossible-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
 		} 
+		else 
+		{
+			str += '<li><span class="approved"></span><span class="approved-text">'+result[0].subList[i].status+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
 	}
 	str += '</ul>';
 	str += '</li>';
@@ -3779,6 +3798,8 @@ function buildTotalComplaints(result,complaintId)
 			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
 			  comp += '<li class="inbox-not-possible"';
 			}
+			else
+			  comp += '<li ';
 			
 			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+')">';
 			//comp += '<li class="inbox-not-opened">';
@@ -3808,6 +3829,8 @@ function buildTotalComplaints(result,complaintId)
 			else if(result[j].status.toLowerCase() == ("Not possible").toLowerCase()){
 			  comp += '<li class="inbox-not-possible"';
 			}
+			else
+			  comp += '<li ';
 			
 			comp += ' onclick="getConversationDetailsByComplaint('+result[j].complaintId+',null);getUserBasicDetailsByComplaintId('+result[j].complaintId+');">';
 			comp += '<p class="m_0">C ID - '+result[j].complaintId+'</p>';
@@ -4021,7 +4044,9 @@ function buildFamilyMemberComplaint(result)
 			       else if(result[j].subList[k].status.toLowerCase() == ("Not possible").toLowerCase()){
 				         comp+='<li class="inbox-not-possible">';
 			        }
-				
+				else
+					  comp += '<li ';
+			
 				comp+=' <p class="m_0">C ID - '+result[j].subList[k].complaintId+'</p><p class="m_0">'+result[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[j].subList[k].status+'</span></p><p class="m_0">'+result[j].subList[k].raisedDate+'</p></li>';
 				}
 				
