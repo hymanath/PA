@@ -321,4 +321,28 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getGroupingSummaryOfLocation(){
+		try {
+			LOG.info("Entered into getMeetingSummaryForLocation");
+			jObj = new JSONObject(getTask());
+			
+			Long meetinglevel=jObj.getLong("meetinglevel");
+			Long typeOfMeeting=jObj.getLong("typeOfMeeting");
+			Long locationLevel=jObj.getLong("locationLevel");
+			Long stateId=jObj.getLong("stateId");
+			Long distId=jObj.getLong("distId");
+			Long constId=jObj.getLong("constId");
+			Long manTowDivId=jObj.getLong("manTowDivId");
+			Long wardPanId=jObj.getLong("wardPanId");
+			String startDate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			String groupLocationType = jObj.getString("groupingLocationType");
+			
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForGrouping(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,groupLocationType);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
