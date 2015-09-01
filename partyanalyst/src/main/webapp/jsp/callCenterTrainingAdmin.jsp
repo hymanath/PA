@@ -998,7 +998,9 @@ $(document).ready(function() {
 	}
 	
 	function getCallerWiseCallsDetails(agentType){
-		
+	$("#participated").html('<center><img src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>');
+	$("#area").html('<center><img src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>');
+		$("#dataNotAvailableDiv").html('');
 		$("#memberAvailabilityDivCls").html("");
 		$("#statusWiseCountArraId").html("");
 		$("#totalCallsPerCallerId").html("");
@@ -2057,6 +2059,7 @@ var jObj={
 				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
 				 
 				getScheduleAvailableCallsCount();
+				window.location.reload();
 				
 			  }  
 			  else
@@ -2350,6 +2353,7 @@ var jObj={
 				 $("#batchSuccessMsgDiv").html("<div class='successDivCls'>Assign Members to Batch Successfully</div>");
 				 //getCallerOverView('batch');
 				 getCallerOverViewForAdmin();
+				 window.location.reload();
 			  }  
 			  else
 			  {
