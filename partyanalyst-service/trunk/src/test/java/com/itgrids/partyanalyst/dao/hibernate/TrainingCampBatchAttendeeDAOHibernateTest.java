@@ -25,21 +25,21 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 public class TrainingCampBatchAttendeeDAOHibernateTest extends BaseDaoTestCase{
 	
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
-	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;
+	/*private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;
     private ITrainingCampCadreAchievementDAO trainingCampCadreAchievementDAO;
     private ITrainingCampCadreGoalDAO trainingCampCadreGoalDAO;
     private ICadreLeadershipLevelDAO cadreLeadershipLevelDAO; 
     private ICadreComminicationSkillsStatusDAO cadreComminicationSkillsStatusDAO; 
     private ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO; 
     private ICadreHealthStatusDAO cadreHealthStatusDAO;
-    private TransactionTemplate transactionTemplate=new TransactionTemplate();
+    private TransactionTemplate transactionTemplate=new TransactionTemplate();*/
     
 	public void setTrainingCampBatchAttendeeDAO(
 			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
 		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
 	}
 	
-	public void setTrainingCampCadreFeedbackDetailsDAO(
+	/*public void setTrainingCampCadreFeedbackDetailsDAO(
 			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
 		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
 	}
@@ -65,10 +65,10 @@ public class TrainingCampBatchAttendeeDAOHibernateTest extends BaseDaoTestCase{
 	public void setCadreLeadershipSkillsStatusDAO(
 			ICadreLeadershipSkillsStatusDAO cadreLeadershipSkillsStatusDAO) {
 		this.cadreLeadershipSkillsStatusDAO = cadreLeadershipSkillsStatusDAO;
-	}
+	}*/
 
 	
-
+/*
 	//TEST CASES
 	public void test(){
 		
@@ -77,8 +77,8 @@ public class TrainingCampBatchAttendeeDAOHibernateTest extends BaseDaoTestCase{
 		achieveList.add("povadu");//5161994l
 		ResultStatus resultStatus=saveDetailsOfCadre(5161993l,1l,achieveList,2l,2l,1l,0l,"haghaghaghjhjshj",40l);
 			
-	}
-	public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
+	}*/
+	/*public ResultStatus saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
 	{
 		final ResultStatus resultStatus=new ResultStatus();
 		try{
@@ -145,5 +145,11 @@ public class TrainingCampBatchAttendeeDAOHibernateTest extends BaseDaoTestCase{
 			resultStatus.setResultCode(0);
 		}
 		return resultStatus;
+	}*/
+	
+	public void testGetAttendeesForATrainingCampBatch()
+	{
+		List<String> list = trainingCampBatchAttendeeDAO.getAttendeesForATrainingCampBatch(1l);
+		System.out.println(list.size());
 	}
 }

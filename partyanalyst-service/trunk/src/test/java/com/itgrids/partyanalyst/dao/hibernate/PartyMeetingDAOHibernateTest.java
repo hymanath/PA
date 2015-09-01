@@ -20,7 +20,7 @@ public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 		partyMeetingDAO.getAll();
 	}*/
 	
-	public void testGetPartyMeetingIdsByLevelAndLocation()
+	/*public void testGetPartyMeetingIdsByLevelAndLocation()
 	{
 		DateUtilService dateUtilService = new DateUtilService();
 		System.out.println(dateUtilService.getDateAndTime("2015-08-22 00:00:00"));
@@ -29,5 +29,5 @@ public class PartyMeetingDAOHibernateTest extends BaseDaoTestCase{
 		for(Long l : list)
 			System.out.println(l);
 		
-	}
+	}*/
 }
