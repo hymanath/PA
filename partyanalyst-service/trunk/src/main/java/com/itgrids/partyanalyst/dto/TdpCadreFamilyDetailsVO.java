@@ -35,7 +35,15 @@ public class TdpCadreFamilyDetailsVO {
 	private Long familySurveyCount=0L;
 	private Long partyRepresentativesCount=0L;
 	private Long partyPositionsCount=0L;
+	private String imagePath;
 	
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 	public Long getFamilySurveyCount() {
 		return familySurveyCount;
 	}
