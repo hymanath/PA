@@ -9,6 +9,15 @@ public class PartyMeetingInviteeVO implements Serializable{
 
 	private Long partyMeetingId;
 	private List<String> inviteeList;
+	private String result;
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
 
 	public Long getPartyMeetingId() {
 		return partyMeetingId;
