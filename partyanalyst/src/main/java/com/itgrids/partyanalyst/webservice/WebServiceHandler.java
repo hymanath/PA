@@ -1412,6 +1412,21 @@ public class WebServiceHandler {
 	}
 	
 	@POST
+	@Path("/getTrainingCampBatchInvittees")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PartyMeetingInviteeVO getTrainingCampBatchInvittees(PartyMeetingInviteeVO inputVO){
+		try{
+			return attendanceService.getTrainingCampBatchInvittees(inputVO.getPartyMeetingId());
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAttendance() Method - ",e);
+			return null;
+		}
+	}
+	
+	@POST
 	@Path("/getCadreOverviewDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
