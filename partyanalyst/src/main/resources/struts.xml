@@ -10766,5 +10766,11 @@
 	  	</result>
 	</action>
 	
+	<action name="getGroupingSummaryOfLocationAction" class="partyMeetingAction" method="getGroupingSummaryOfLocation">
+	   <result type="json" name="success">
+	       		<param name="root">partyMeetingsSummary</param>
+	  	</result>
+	</action>
+	
 </package>
 </struts>      
