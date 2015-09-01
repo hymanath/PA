@@ -17,7 +17,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		super(PartyMeeting.class);
 	}
 	
-	 public List<Object[]> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate){
+	 public List<Object[]> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel){
 	        StringBuilder sb = new StringBuilder();
 	        
 	        sb.append(" select model.partyMeetingType.partyMeetingTypeId," +//0 - MeetingTypeId
@@ -36,7 +36,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            sb.append(" and model.partyMeetingType.partyMeetingTypeId=:meetingType ");
 	        }
 	        
-	        if(locationLevel!=null){
+	        if(meetingLevel>0l){
+	        	sb.append(" and model.partyMeetingLevel.partyMeetingLevelId=:meetingLevel ");
+	        }else if(locationLevel!=null){
 	            sb.append(" and model.partyMeetingLevel.partyMeetingLevelId=:locationLevel ");
 	        }
 	        
@@ -190,7 +192,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            query.setParameter("meetingType", meetingType);
 	        }
 	        
-	        if(locationLevel!=null){
+	        if(meetingLevel>0l){
+	        	query.setParameter("meetingLevel", meetingLevel);
+	        }
+	        else if(locationLevel!=null){
 	            query.setParameter("locationLevel", locationLevel);
 	        }
 	        

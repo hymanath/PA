@@ -2939,7 +2939,7 @@ public class TrainingCampService implements ITrainingCampService{
 			}
 			
 			
-			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate);
+			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
 			
 			List<Long> level1List = new ArrayList<Long>();
 			List<Long> level2List = new ArrayList<Long>();
