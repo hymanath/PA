@@ -2913,7 +2913,7 @@ function getCadreIdByMemberShipId()
 		if(result != null)
 		{
 			globalCadreId = result;
-			if((participatedConstituencyId == null || participatedConstituencyId.trim().length == 0) && (globalCadreId != null && globalCadreId > 0))
+			if((participatedConstituencyId == null || participatedConstituencyId.length == 0) && (globalCadreId != null && globalCadreId > 0))
 			{
 				getParticipatedConstituencyId(globalCadreId);
 				/* getCategoryWiseStatusCount();
