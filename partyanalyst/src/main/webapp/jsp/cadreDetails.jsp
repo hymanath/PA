@@ -144,6 +144,54 @@ canvas {
 .notpossible-text{color:rgb(255,153,51);}
 .approved-text{color:rgb(105,167,143);}
 .completed-text{color:rgb(0,117,125);}
+
+.enrolled-mem
+{
+	padding:0px;
+}
+.enrolled-mem li
+{
+	border:1px solid #666;
+	border-radius:3px;
+	padding:3px;
+	display:inline-block
+}
+.enrolled-mem li.yes
+{
+	background-color:#D7F0DB;
+}
+.enrolled-mem li.yes span:after
+{
+	content:'\e013';
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	color:#666;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale
+}
+.enrolled-mem li.no
+{
+	background-color:#E3C5C7;
+}
+.enrolled-mem li.no span:after
+{
+	content:'\e014';
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	color:#666;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale
+}
 </style>
 	
 	<!--<style type="text/css">
@@ -215,18 +263,28 @@ var globalCadreId = '${cadreId}';
                             </span>
                         </td>
                     </tr>
-                    <tr style="display:none;" class="enrollmentCls">
+                   <!-- <tr style="display:none;" class="enrollmentCls">
 						<td class="text-bold"><i class="glyphicon glyphicon-bookmark"></i> PREVIOUS ENROLEMENTS</td>
 					</tr>
 					<tr style="display:none;" class="enrollmentCls">
 					  <td>
 						<ul class="list-inline" id="cadreYearsUlId">
-						  <!--<li class="badge">2010</li> 
-						  <li class="badge">2012</li>  -->
+						  <li class="badge">2010</li> 
+						  <li class="badge">2012</li>  
+						 </ul>
+					  </td>
+					</tr>-->
+					<tr class="enrollmentCls">
+						<td class="text-bold"><i class="glyphicon glyphicon-bookmark"></i> PREVIOUS ENROLEMENTS</td>
+					</tr>
+					<tr class="enrollmentCls">
+					  <td>
+						<ul class="enrolled-mem" id="enrollementDiv">
+						  
 						 </ul>
 					  </td>
 					</tr>
-                    <tr>
+					<tr>
                     	<td class="text-bold"><i class="icon-articles"></i> IDENTITY</td>
                     </tr>
                     <tr>
@@ -803,6 +861,7 @@ var globalCadreId = '${cadreId}';
 			$("#dataLoadingsImgForownBoothDetailsId").show();
 			$("#dataLoadingsImgForImagePath").show();
 			
+			$('#enrollementDiv').html('');
 			
 			//hiding divs of Election && and Grievance details
 			$("#electionProfileMainDivId").hide();
@@ -859,7 +918,7 @@ var globalCadreId = '${cadreId}';
 					 
 					 
 					 //previous enrollmetYears building
-					 var preEnrollemets=[];
+					/* var preEnrollemets=[];
 					 var preEnrolleArray=new Array();
 					 if(result.enrollmentYears !=null && result.enrollmentYears !=""){
 						preEnrollemets = result.enrollmentYears.split(",");
@@ -872,7 +931,27 @@ var globalCadreId = '${cadreId}';
 						 }
 						 $("#cadreYearsUlId").html(strEnrollment);
 					 }
-					 
+					 */
+					 var str2 ='';
+					if(result.enrollmentYears != null && result.enrollmentYears.trim().length > 0)
+					{
+					var years = result.enrollmentYears.split(",");
+					if(years.indexOf("2012") > -1)
+					str2+='<li class="yes">2012<span></span></li>&nbsp;';
+					else
+					str2+='<li class="no">2012<span></span></li>&nbsp;';
+					if(years.indexOf("2010") > -1)
+					str2+='<li class="yes">2010<span></span></li>&nbsp;';
+					else
+					str2+='<li class="no">2010<span></span></li>&nbsp;';
+					}
+					else
+					{
+					str2+='<li class="no">2012<span></span></li>&nbsp;';
+					str2+='<li class="no">2010<span></span></li>&nbsp;';
+					}
+
+					$("#enrollementDiv").html(str2);
 					 
 					 if(result.candidate !=null && result.candidate !=0){
 						 globalCandidateId=result.candidate;
@@ -1887,24 +1966,24 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType)
 		if(result.cadreLocation =="Mandal")
 		{
 			str += '<td>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName+')"></div>';
 			str += '</td>';
 		 }
 		
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Mandal/Muncipality ('+globalTehsName+')"></div>';
 		str += '</td>';
 		
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName+')"></div>';
 		str += '</td>';
 		
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName+')"></div>';
 		str += '</td>';
 		
 		str += '<td>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName+')"></div>';
 		str += '</td>';
 		
 	}
