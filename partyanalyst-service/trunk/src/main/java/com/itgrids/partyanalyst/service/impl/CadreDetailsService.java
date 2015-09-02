@@ -917,7 +917,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					cadreDetailsVO.setOccupation(cadreFormalDetails[7] !=null ? cadreFormalDetails[7].toString() : "");
 					
-					cadreDetailsVO.setVoterId(cadreFormalDetails[8] !=null ? cadreFormalDetails[8].toString() :"" );
+					cadreDetailsVO.setVoterId(cadreFormalDetails[8] !=null ? cadreFormalDetails[8].toString() :"0" );
 					
 					cadreDetailsVO.setPanchayatName(cadreFormalDetails[9] !=null ? cadreFormalDetails[9].toString() : "-" );
 					
@@ -992,6 +992,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setBoothId(cadreFormalDetails[31] !=null ? Long.parseLong(cadreFormalDetails[31].toString()):0l);
 					cadreDetailsVO.setPartNo(cadreFormalDetails[32] !=null ? cadreFormalDetails[32].toString():"0");
 					
+					if(cadreDetailsVO.getVoterId() == null || cadreDetailsVO.getVoterId().trim().isEmpty())
+					{
+						cadreDetailsVO.setVoterIdCardNo(cadreFormalDetails[37] !=null ? cadreFormalDetails[37].toString() : "");
+						cadreDetailsVO.setVoterId(cadreFormalDetails[36] !=null ? cadreFormalDetails[36].toString() :"0" );
+					}
 					if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L)
 						cadreDetailsVO.setPanchayatId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
 					
@@ -3633,7 +3638,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setStateName(cadreVO.getStateName());
 					returnVO.setTehsilId(cadreVO.getTehsilId());
 					returnVO.setTehsilName(cadreVO.getTehsilName());
-					returnVO.setVoterId(Long.valueOf(cadreVO.getVoterId()));
+					returnVO.setVoterId(cadreVO.getVoterId() != null && !cadreVO.getVoterId().trim().isEmpty()?Long.valueOf(cadreVO.getVoterId()):0L);
 					returnVO.setVoterCardNo(cadreVO.getVoterIdCardNo());
 					returnVO.setQualification(cadreVO.getQualification());
 					List<TdpCadreFamilyDetailsVO> familyVOList = getCadreFamilyDetails(tdpCadreId);
