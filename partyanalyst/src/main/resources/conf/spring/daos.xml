@@ -2280,6 +2280,47 @@
 	 <bean id="tdpCadreContestedLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreContestedLocationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	  <bean id="institutionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InstitutionDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="courseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CourseDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="institutionCourseDAO" class="com.itgrids.partyanalyst.dao.hibernate.InstitutionCourseDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentParentDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentParentDetailsDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentContactDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentContactDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentCourseDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCourseDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="addressForStudentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AddressForStudentDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="academicYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.AcademicYearDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentAddressDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="referalDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReferalDesignationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentRecomendationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentRecomendationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="studentCadreRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCadreRelationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
 
 	<!--  end -->
 </beans>		

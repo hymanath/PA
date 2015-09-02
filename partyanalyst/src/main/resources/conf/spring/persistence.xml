@@ -670,6 +670,21 @@
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpCadreContestedLocation</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.Institution</value>
+				 <value>com.itgrids.partyanalyst.model.Course</value>
+				 <value>com.itgrids.partyanalyst.model.InstitutionCourse</value>
+				 <value>com.itgrids.partyanalyst.model.Student</value>
+				 <value>com.itgrids.partyanalyst.model.StudentParentDetails</value>
+				 <value>com.itgrids.partyanalyst.model.StudentContact</value>
+				 <value>com.itgrids.partyanalyst.model.StudentCourse</value>
+				 <value>com.itgrids.partyanalyst.model.AddressForStudent</value>
+				 <value>com.itgrids.partyanalyst.model.AcademicYear</value>
+				 <value>com.itgrids.partyanalyst.model.StudentAddress</value>
+				 <value>com.itgrids.partyanalyst.model.ReferalDesignation</value>
+				 <value>com.itgrids.partyanalyst.model.StudentRecomendation</value>
+				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
+				 
+				 
 				</list>
 			
 		</property>
