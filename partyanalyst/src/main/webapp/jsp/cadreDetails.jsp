@@ -1232,7 +1232,8 @@ var globalCadreId = '${cadreId}';
 		{	
 			$("#familySurveyDataLoadoing").show();
 			$(".arrow_box3").hide();
-		
+			if(participatedConstituencyType == '')
+			participatedConstituencyType = null;
 			$('.familySurveyDetailsCls').html("");
 			if(participatedConstituencyId == null )
 				participatedConstituencyId=0;
@@ -1302,6 +1303,8 @@ var globalCadreId = '${cadreId}';
 			return;
 		}
 		
+		if(participatedConstituencyType == '')
+		participatedConstituencyType = null; 
 		var temp="familyAjax"+surveyId+"";
 			$("#"+temp).show();
 		var localCadreId=globalCadreId;
@@ -1413,6 +1416,8 @@ var globalCadreId = '${cadreId}';
 			return;
 			}
 		}
+		if(participatedConstituencyType == '')
+		participatedConstituencyType = null;
 	var temp="ajax"+surveyId+"";
 			$("#"+temp).show();
 			var localCadreId=globalCadreId;
