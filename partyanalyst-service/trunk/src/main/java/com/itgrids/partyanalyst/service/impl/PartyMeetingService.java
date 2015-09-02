@@ -1846,12 +1846,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					tmp.setStateId(obj[10]!=null?Long.valueOf(obj[10].toString()):0l);
 					tmp.setStateName(obj[11]!=null?obj[11].toString():"");
 					if(locationLevel>=2){
-						tmp.setDistrictId(obj[12]!=null?Long.valueOf(obj[10].toString()):0l);
+						tmp.setDistrictId(obj[12]!=null?Long.valueOf(obj[12].toString()):0l);
 						tmp.setDistrictName(obj[13]!=null?obj[13].toString():"");
 					}
 					
 					if(locationLevel>=3){
-						tmp.setConstituencyId(obj[14]!=null?Long.valueOf(obj[10].toString()):0l);
+						tmp.setConstituencyId(obj[14]!=null?Long.valueOf(obj[14].toString()):0l);
 						tmp.setConstituencyName(obj[15]!=null?obj[15].toString():"");
 					}
 					fnlLst.add(tmp);
@@ -1918,7 +1918,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 							if(stteVO==null){
 								stteVO = new PartyMeetingSummaryVO();
 								stteVO.setDistrictId(temp.getDistrictId());
-								stteVO.setDistrictName(temp.getStateName());
+								stteVO.setDistrictName(temp.getDistrictName());
 								isNew = true;
 							}
 							List<PartyMeetingSummaryVO> mtngsLst = stteVO.getPartyMeetingsList();
