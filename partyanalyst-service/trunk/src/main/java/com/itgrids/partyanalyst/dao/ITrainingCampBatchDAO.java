@@ -2,7 +2,11 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
 
-public interface ITrainingCampBatchDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.TrainingCampBatch;
+
+public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long>{
 	
 	public List<Object[]> getBatchesForSchedule(Long scheduleId);
 	
