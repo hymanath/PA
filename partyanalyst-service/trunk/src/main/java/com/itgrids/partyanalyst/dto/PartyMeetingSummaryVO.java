@@ -71,7 +71,23 @@ public class PartyMeetingSummaryVO implements Serializable{
 	private String districtName;
 	private String constituencyName;
 	
+	private Long momUpdatedMeetings;
+	private Long atrUpdatedMeetings;
 	
+	
+	
+	public Long getMomUpdatedMeetings() {
+		return momUpdatedMeetings;
+	}
+	public void setMomUpdatedMeetings(Long momUpdatedMeetings) {
+		this.momUpdatedMeetings = momUpdatedMeetings;
+	}
+	public Long getAtrUpdatedMeetings() {
+		return atrUpdatedMeetings;
+	}
+	public void setAtrUpdatedMeetings(Long atrUpdatedMeetings) {
+		this.atrUpdatedMeetings = atrUpdatedMeetings;
+	}
 	public Long getStateId() {
 		return stateId;
 	}
