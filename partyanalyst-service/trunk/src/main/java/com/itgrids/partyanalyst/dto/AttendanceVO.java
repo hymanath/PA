@@ -10,6 +10,7 @@ public class AttendanceVO implements Serializable{
 	private Long trainingCampScheduleId;
 	private Long trainingCampBatchId;
 	private Long trainingCampTopicId;
+	private Long trainingProgramId;
 	private String membershipId;
 	private String attendedTime;
 	private String rfid;
@@ -146,5 +147,11 @@ public class AttendanceVO implements Serializable{
 	}
 	public void setCurrentTabUserId(Long currentTabUserId) {
 		this.currentTabUserId = currentTabUserId;
+	}
+	public Long getTrainingProgramId() {
+		return trainingProgramId;
+	}
+	public void setTrainingProgramId(Long trainingProgramId) {
+		this.trainingProgramId = trainingProgramId;
 	}
 }
