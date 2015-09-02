@@ -13,6 +13,7 @@
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Dropzone/basic.css" rel="stylesheet" type="text/css">
 <link href="dist/Dropzone/dropzone.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <style type="text/css">
 .custom-select
 {
@@ -192,8 +193,10 @@ header.eventsheader {
                                             </div>
                                         </div>
                                         <div class="panel-body pad_0">
+										<div id="updatedCounts"></div>
 											<div class="table-responsive" id="individualMeetingResultId">
-												<table class="table table-bordered m_0">
+											<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
+												<!--<table class="table table-bordered m_0" id="individualTableId">
 													<thead>
 														<tr>
 															<th rowspan="2">Meeting Name</th>
@@ -217,10 +220,11 @@ header.eventsheader {
 													</thead>
 													<img src='./images/icons/search.gif' class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
 													<tbody id="individualResultBody"></tbody>
-												</table>
+												</table>-->
                                             </div>
                                             <div class="table-responsive" id="cumulativeMeetingResultId" style="display:none;">
-												<table class="table table-bordered m_0">
+											<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>
+												<!--<table class="table table-bordered m_0">
 													<thead>
 														<tr>
 															<th rowspan="2">No Of Meetings</th>
@@ -245,7 +249,7 @@ header.eventsheader {
 													</thead>
 													<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>
 													<tbody id="cumulativeMeetingTableBodyId"></tbody>
-												</table>
+												</table>-->
                                             </div>
                                             <!-- <div class="checkbox-select">
                                                 <div class="panel-group" id="accordion10" role="tablist" aria-multiselectable="true">
@@ -1125,6 +1129,7 @@ header.eventsheader {
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 $("#mainheading").html(" PARTY MEETINGS DASHBOARD ");
 $(document).ready(function(e) {
@@ -1375,8 +1380,35 @@ $(document).ready(function(e) {
 				$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" % )");
 				$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttendedPercent +" % ");
 				
+				$("#updatedCounts").html("<div><table width='100%' class='table table-bordered'><tr align='center'><td><h4>MOM UPDATED MEETINGS : <span>"+pmList[0].momUpdatedMeetings+"</span></h4></td><td><h4>ATR UPDATED MEETINGS : <span>"+pmList[0].atrUpdatedMeetings+"</span></h4></td></tr></table></div>");
+
 				var str = "";
 				if(pmList!=null && pmList.length>0){
+					
+					str+='<table class="table table-bordered m_0" id="individualTableId">';
+					str+='<thead>';
+					str+='<tr>';
+					str+='<th rowspan="2">Meeting Name</th>';
+					str+='<th rowspan="2">Location</th>';
+					str+='<th rowspan="2">Schedule<br/> On</th>';
+					str+='<th rowspan="2">Total <br/>Invitees</th>';
+					str+='<th colspan="3" class="text-center">Attendance</th>';
+					str+='<th rowspan="2">Total<br/> Absent</th>';
+					str+='<th colspan="2"  class="text-center">MOM</th>';
+					str+='<th colspan="2" class="text-center">ATR</th>';
+					str+='</tr>';
+					str+='<tr>';
+					str+='<th>Total Attended</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Inivtees</th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='</tr>';
+					str+='</thead>';
+					//str+='<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>';
+					str+='<tbody id="individualResultBody">';
 					for(var i in pmList){
 						str+="<tr>";
 						str+="<td>"+pmList[i].meetingName+"</td>";
@@ -1429,12 +1461,19 @@ $(document).ready(function(e) {
 						
 						str+="</tr>";
 					}
+					str+='</tbody>';
+					str+='</table>';
+												
+					
 					
 				}
-				$("#individualResultBody").html(str); 
+				$("#individualMeetingResultId").html(str); 
+				
+				$('#individualTableId').dataTable();
+				
 			}else{
 				$('.individual').show();
-				$("#individualResultBody").html("No Records Found"); 
+				$("#individualMeetingResultId").html("No Records Found"); 
 			}
 			$("#indiAjax").hide();
 		});
@@ -1831,6 +1870,34 @@ $(document).ready(function(e) {
 				var pmList = result.partyMeetingsList;
 				var str = "";
 				if(pmList!=null && pmList.length>0){
+					
+					$("#updatedCounts").html("<div><table width='100%' class='table table-bordered'><tr align='center'><td><h4>MOM UPDATED LOCATIONS : <span>"+pmList[0].momUpdatedMeetings+"</span></h4></td><td><h4>ATR UPDATED LOCATIONS : <span>"+pmList[0].atrUpdatedMeetings+"</span></h4></td></tr></table></div>");
+					
+					str+='<table class="table table-bordered m_0" id="cummulativeTableId">';
+					str+='<thead>';
+					str+='<tr>';
+					str+='<th rowspan="2">No Of Meetings</th>';
+					str+='<th rowspan="2">Location</th>';
+					str+='<th rowspan="2">Total <br/>Invitees</th>';
+					str+='<th colspan="3" class="text-center">Attendance</th>';
+					str+='<th rowspan="2">Total<br/> Absent</th>';
+					str+='<th colspan="3"  class="text-center">MOM</th>';
+					str+='<th colspan="3" class="text-center">ATR</th>';
+					str+='</tr>';
+					str+='<tr>';
+					str+='<th>Total Attended</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Inivtees</th>';
+					str+='<th></th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='<th></th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='</tr>';
+					str+='</thead>';
+					//str+='<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>';
+					str+='<tbody id="cumulativeMeetingTableBodyId">';
 					for(var i in pmList){
 						str+="<tr>";
 						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
@@ -1887,11 +1954,15 @@ $(document).ready(function(e) {
 						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 						str+="</tr>";
 					}
+					str+='</tbody>';
+					str+='</table>';
+					
+					
 					
 				}
-				$("#cumulativeMeetingTableBodyId").html(str); 
+				$("#cumulativeMeetingResultId").html(str); 
 			}else{
-				$("#cumulativeMeetingTableBodyId").html("No Records Found"); 
+				$("#cumulativeMeetingResultId").html("No Records Found"); 
 			}
 			$("#cummAjax").hide();
 		});
