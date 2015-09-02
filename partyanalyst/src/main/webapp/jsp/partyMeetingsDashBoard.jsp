@@ -184,7 +184,8 @@ header.eventsheader {
                                                     <option value="individual" selected>Individual</option>
 													<option value="cumulative">Cumulative</option>
                                                 </select>
-                                            <div class="pull-right">
+											<div class="pull-right">
+												<span class="btn-sm btn-success" onclick="exportToExcel()">Export to excel</span>
                                             	<label>GROUP BY : </label>
                                             	<label class="checkbox-inline" id="grpLctnStId"><input type="checkbox" class="grpLctn"  value="state">State</label>
                                             	<label class="checkbox-inline" id="grpLctnDistId" style="display:none;"><input type="checkbox" class="grpLctn"  value="district" >District</label>
@@ -250,7 +251,7 @@ header.eventsheader {
 													<tbody id="cumulativeMeetingTableBodyId"></tbody>
 												</table>-->
                                             </div>
-											
+											<div id="dummyForExcel" style="display:none;"></div>
                                             <!-- <div class="checkbox-select">
                                                 <div class="panel-group" id="accordion10" role="tablist" aria-multiselectable="true">
                                                   <div class="panel panel-default border_custom">
@@ -1154,7 +1155,7 @@ $(document).ready(function(e) {
 	$(".tbtn").click(function(){
 		$(".themeControll").toggleClass("active");
 	});
-	
+	$('#meetingLevel').val('2').trigger('change');
 	$('#locationLevelSelId').val('2').trigger('change');
 	$('#stateId').val('1').trigger('change');
 	setTimeout(function(){
@@ -1476,6 +1477,7 @@ $(document).ready(function(e) {
 					
 					
 				}
+				
 				$("#individualMeetingResultId").html(str); 
 				
 				$('#individualTableId').dataTable();
@@ -1485,6 +1487,93 @@ $(document).ready(function(e) {
 				$("#individualMeetingResultId").html("No Records Found"); 
 			}
 			$("#indiAjax").hide();
+			
+			//for excel startDate
+				if(pmList!=null && pmList.length>0){
+					var str1='';
+					str1+='<table class="table table-bordered m_0" id="individualTableIdForExcel">';
+					str1+='<thead>';
+					str1+='<tr>';
+					str1+='<th rowspan="2">Meeting Name</th>';
+					str1+='<th rowspan="2">Location</th>';
+					str1+='<th rowspan="2">Schedule<br/> On</th>';
+					str1+='<th rowspan="2">Total <br/>Invitees</th>';
+					str1+='<th colspan="3" class="text-center">Attendance</th>';
+					str1+='<th rowspan="2">Total<br/> Absent</th>';
+					str1+='<th colspan="2"  class="text-center">MOM</th>';
+					str1+='<th colspan="2" class="text-center">ATR</th>';
+					str1+='</tr>';
+					str1+='<tr>';
+					str1+='<th>Total Attended</th>';
+					str1+='<th>Invitees</th>';
+					str1+='<th>Non Inivtees</th>';
+					str1+='<th>File</th>';
+					str1+='<th>Text</th>';
+					str1+='<th>File</th>';
+					str1+='<th>Text</th>';
+					str1+='</tr>';
+					str1+='</thead>';
+					//str+='<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>';
+					str1+='<tbody>';
+					for(var i in pmList){
+						str1+="<tr>";
+						str1+="<td>"+pmList[i].meetingName+"</td>";
+						str1+="<td>"+pmList[i].location+"</td>";
+						str1+="<td>"+pmList[i].scheduledOn+"</td>";
+						if(pmList[i].attendanceInfo!=null){
+							str1+="<td>"+pmList[i].attendanceInfo.totalInvitees+"</td>";
+							str1+="<td>"+pmList[i].attendanceInfo.totalAttended+"</td>";
+							str1+="<td>"+pmList[i].attendanceInfo.inviteesAttended+"</td>";
+							str1+="<td>"+pmList[i].attendanceInfo.nonInviteesAttended+"</td>";
+							str1+="<td>"+pmList[i].attendanceInfo.totalAbsent+"</td>";
+						}else{
+							str1+="<td> - </td>";
+							str1+="<td> - </td>";
+							str1+="<td> - </td>";
+							str1+="<td> - </td>";
+							str1+="<td> - </td>";
+						}
+						
+						if(pmList[i].docTxtInfo!=null){
+							if(pmList[i].docTxtInfo.momFilesExist){
+								str1+="<td>"+pmList[i].docTxtInfo.momFilesCount+"</td>";
+							}else{
+								str1+="<td>-</td>";
+							}
+							
+							if(pmList[i].docTxtInfo.momTextExist){
+								str1+="<td>"+pmList[i].docTxtInfo.momPointsCount+"</td>";
+							}else{
+								str1+="<td>-</td>";
+							}
+							
+							if(pmList[i].docTxtInfo.atrFilesExist){
+								str1+="<td>"+pmList[i].docTxtInfo.atrFilesCount+"</td>";
+							}else{
+								str1+="<td>-</td>";
+							}
+							
+							if(pmList[i].docTxtInfo.atrTextExist){
+								str1+="<td>"+pmList[i].docTxtInfo.atrTextCount+"</td>";
+							}else{
+								str1+="<td>-</td>";
+							}
+						}else{
+							str1+="<td>-</td>";
+							str1+="<td>-</td>";
+							str1+="<td>-</td>";
+							str1+="<td>-</td>";
+						}
+						
+						str1+="</tr>";
+					}
+					str1+='</tbody>';
+					str1+='</table>';
+												
+					$("#dummyForExcel").html(str1);
+					
+				}
+				//fro excel end
 		});
 	}
 	
@@ -1978,7 +2067,84 @@ $(document).ready(function(e) {
 			}else{
 				$("#cumulativeMeetingResultId").html("No Records Found"); 
 			}
+				
 			$("#cummAjax").hide();
+			
+			if(pmList!=null && pmList.length>0){
+				var str1='';
+				str1+='<table class="table table-bordered m_0" id="cummulativeTableIdForExcel">';
+				str1+='<thead>';
+				str1+='<tr>';
+				str1+='<th rowspan="2">No Of Meetings</th>';
+				str1+='<th rowspan="2">Location</th>';
+				str1+='<th rowspan="2">Total <br/>Invitees</th>';
+				str1+='<th colspan="3" class="text-center">Attendance</th>';
+				str1+='<th rowspan="2">Total<br/> Absent</th>';
+				str1+='<th class="text-center">MOM</th>';
+				str1+='<th class="text-center">ATR</th>';
+				str1+='</tr>';
+				str1+='<tr>';
+				str1+='<th>Total Attended</th>';
+				str1+='<th>Invitees</th>';
+				str1+='<th>Non Inivtees</th>';
+				str1+='<th></th>';
+				str1+='<th></th>';
+				str1+='<th>Type</th>';
+				str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				for(var i in pmList){
+					str1+="<tr>";
+					str1+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
+					str1+="<td rowspan=4>"+pmList[i].location+"</td>";
+					if(pmList[i].totalInvitees!=null){
+						str1+="<td rowspan=4>"+pmList[i].totalInvitees+"</td>";
+						str1+="<td rowspan=4>"+pmList[i].totalAttended+"</td>";
+						str1+="<td rowspan=4>"+pmList[i].inviteesAttended+"</td>";
+						str1+="<td rowspan=4>"+pmList[i].nonInviteesAttended+"</td>";
+						str1+="<td rowspan=4>"+pmList[i].totalAbsent+"</td>";
+					}else{
+						str1+="<td rowspan=4> - </td>";
+						str1+="<td rowspan=4> - </td>";
+						str1+="<td rowspan=4> - </td>";
+						str1+="<td rowspan=4> - </td>";
+						str1+="<td rowspan=4> - </td>";
+					}
+					
+						var atrDocs = pmList[i].atrDocTxtInfo;
+						var momDocs = pmList[i].momDocTxtInfo;
+						
+						str1+="<td>"+momDocs.bothCount+"</td>";
+						str1+="<td>"+atrDocs.bothCount+"</td>";
+						str1+="<td>Both</td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.onlyFileCount+"</td>";
+						str1+="<td>"+atrDocs.onlyFileCount+"</td>";
+						str1+="<td>Only File</td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.onlyTxtCount+"</td>";
+						str1+="<td>"+atrDocs.onlyTxtCount+"</td>";
+						str1+="<td>Only Text</td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.nothingCount+"</td>";
+						str1+="<td>"+atrDocs.nothingCount+"</td>";
+						str1+="<td>Nothing</td>";
+						str1+="</tr>";
+						
+						
+				}
+				str1+='</tbody>';
+				str1+='</table>';
+				
+					$("#dummyForExcel").html(str1);
+					
+			}
 		});
 	}
 	
@@ -2152,6 +2318,10 @@ $(document).ready(function(e) {
 		
 	$("#meetingLevel").change(function(){
 		var level = $("#meetingLevel").val();
+		if(level==1){
+			$("#grpLctnDistId").hide();
+			$("#grpLctnConstId").hide();
+		}
 		if(level>=2){
 			$("#grpLctnDistId").show();
 			$("#grpLctnConstId").hide();
@@ -2160,7 +2330,27 @@ $(document).ready(function(e) {
 			$("#grpLctnConstId").show();
 		}
 	});
-					
+	
+	function exportToExcel()
+	{	if($("#resultTypeSelId").val()=="individual"){
+			tableToExcel('individualTableIdForExcel','Individual Meetings Report');
+		}else if($("#resultTypeSelId").val()=="cumulative"){
+			tableToExcel('cummulativeTableIdForExcel','Cumulative Meetings Report');
+		}
+		
+	}	
+
+	var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+  })()
 </script>
 </body>
 </html>
