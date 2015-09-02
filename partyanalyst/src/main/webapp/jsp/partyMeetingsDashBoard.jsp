@@ -186,10 +186,9 @@ header.eventsheader {
                                                 </select>
                                             <div class="pull-right">
                                             	<label>GROUP BY : </label>
-                                            	<label class="checkbox-inline"><input type="checkbox">State</label>
-                                            	<label class="checkbox-inline"><input type="checkbox">District</label>
-                                            	<label class="checkbox-inline"><input type="checkbox">Constituency</label>
-                                            	<label class="checkbox-inline"><input type="checkbox">Mandal</label>
+                                            	<label class="checkbox-inline" id="grpLctnStId"><input type="checkbox" class="grpLctn"  value="state">State</label>
+                                            	<label class="checkbox-inline" id="grpLctnDistId" style="display:none;"><input type="checkbox" class="grpLctn"  value="district" >District</label>
+                                            	<label class="checkbox-inline" id="grpLctnConstId" style="display:none;"><input type="checkbox" class="grpLctn"  value="constituency" >Constituency</label>
                                             </div>
                                         </div>
                                         <div class="panel-body pad_0">
@@ -251,6 +250,7 @@ header.eventsheader {
 													<tbody id="cumulativeMeetingTableBodyId"></tbody>
 												</table>-->
                                             </div>
+											
                                             <!-- <div class="checkbox-select">
                                                 <div class="panel-group" id="accordion10" role="tablist" aria-multiselectable="true">
                                                   <div class="panel panel-default border_custom">
@@ -1132,6 +1132,9 @@ header.eventsheader {
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 $("#mainheading").html(" PARTY MEETINGS DASHBOARD ");
+
+$('input:checkbox').removeAttr('checked');
+
 $(document).ready(function(e) {
 
 	$('.cumulative,.individual').hide();
@@ -1378,7 +1381,13 @@ $(document).ready(function(e) {
 				$("#ttlDistMtngsSpanId").html(pmList[0].meetingsCount);
 				$("#ttlPlnndMtngsSpanId").html(pmList[0].plannedMeetings);
 				$("#ttlCndctdMtngsSpanId").html(pmList[0].conductedMeetings+" ("+pmList[0].conductedMeetingsPercent+" % )");
-				$("#avgAttndInvtsSpanId").html(pmList[0].averageInviteesAttendedPercent +" % ");
+				var attndncPercent = pmList[0].averageInviteesAttendedPercent;
+				if(attndncPercent!=null){
+					$("#avgAttndInvtsSpanId").html(attndncPercent +" % ");	
+				}else{
+					$("#avgAttndInvtsSpanId").html("0.0 % ");
+				}
+				
 				
 				$("#updatedCounts").html("<div><table width='100%' class='table table-bordered'><tr align='center'><td><h4>MOM UPDATED MEETINGS : <span>"+pmList[0].momUpdatedMeetings+"</span></h4></td><td><h4>ATR UPDATED MEETINGS : <span>"+pmList[0].atrUpdatedMeetings+"</span></h4></td></tr></table></div>");
 
@@ -1604,15 +1613,20 @@ $(document).ready(function(e) {
 		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
 		$(".tbtn").trigger( "click" );
 		
+		var value = $("input:checkbox[class=grpLctn]:checked").val();
+		
 		getMeetingSummary($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);
 		
-		if($("#resultTypeSelId").val()=="individual"){
-			getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
-		}else{
-			getPartyMeetingDetailsCumulative($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
+		 if(typeof value === 'undefined'){
+		   if($("#resultTypeSelId").val()=="individual"){
+				getPartyMeetingDetails($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
+			}else{
+				getPartyMeetingDetailsCumulative($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId);	
+			}	
+		 }else{
+			 getPartyMeetingDetailsGroupLctn($("#meetingLevel").val(),$("#typeOfMeeting").val(),$("#meetingDuration").val(),$("#locationLevelSelId").val(),stateId,distId,constId,manTowDivId,wardPanId,value);	
+		 }
 		}
-		
-	}
 	
 	function getMeetingSummary(meetingLevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId)
 	{	
@@ -1967,6 +1981,185 @@ $(document).ready(function(e) {
 			$("#cummAjax").hide();
 		});
 	}
+	
+	function getPartyMeetingDetailsGroupLctn(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId,groupingLocationType){
+		$("#cummAjax").show();
+		$("#cumulativeMeetingTableBodyId").html("");
+		var dateType=meetingduration;
+		var fromDate,temp1=new Date(),toDate;
+		var month;
+		if((temp1.getMonth()+1)<10){
+			month=0+""+(temp1.getMonth()+1);
+		}else{
+			month=(temp1.getMonth()+1);
+		}
+		toDate = temp1.getFullYear()+"/"+month+"/"+temp1.getDate();
+		var temp = new Date();
+		if(dateType==1){
+			temp.setDate(temp.getDate() - 30);
+		}
+		else if(dateType==2){
+			temp.setDate(temp.getDate() - 90);
+		}
+		else if(dateType==3){
+			temp.setDate(temp.getDate() - 180);
+		}
+		else if(dateType==4){
+			temp.setDate(temp.getDate() - 270);
+		}
+		
+		var finalmonth;
+		if((temp.getMonth()+1)<10){
+			finalmonth=0+""+(temp.getMonth()+1);
+		}else{
+			finalmonth=temp.getMonth()+1;
+		}
+		
+		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+		
+		var jsObj =	{
+			meetinglevel:meetinglevel,
+			typeOfMeeting:typeOfMeeting,
+			locationLevel:locationscope,
+			stateId:stateId,
+			distId:distId,
+			constId:constId,
+			manTowDivId:manTowDivId,
+			wardPanId:wardPanId,
+			startDate:fromDate,
+			endDate:toDate,
+			groupingLocationType:groupingLocationType
+		}
+			
+		$.ajax({
+			type: "POST",
+			url:"getGroupingSummaryOfLocationAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result!=null && result.partyMeetingsList!=null && result.partyMeetingsList.length>0){
+				 $('.individual').show();
+				var pmList = result.partyMeetingsList;
+				var str = "";
+				if(pmList!=null && pmList.length>0){
+					for(var i in pmList){
+						str+="<tr>";
+						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
+						
+						if(groupingLocationType=="state"){
+							str+="<td rowspan=4>"+pmList[i].stateName+"</td>";
+						}
+						if(groupingLocationType=="district"){
+							str+="<td rowspan=4>"+pmList[i].districtName+"</td>";
+						}
+						if(groupingLocationType=="constituency"){
+							str+="<td rowspan=4>"+pmList[i].constituencyName+"</td>";
+						}
+						
+						if(pmList[i].totalInvitees!=null){
+							str+="<td rowspan=4>"+pmList[i].totalInvitees+"</td>";
+							str+="<td rowspan=4>"+pmList[i].totalAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].inviteesAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].nonInviteesAttended+"</td>";
+							str+="<td rowspan=4>"+pmList[i].totalAbsent+"</td>";
+						}else{
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+							str+="<td rowspan=4> - </td>";
+						}
+						
+						var atrDocs = pmList[i].atrDocTxtInfo;
+						var momDocs = pmList[i].momDocTxtInfo;
+						
+						str+="<td>"+momDocs.bothCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td>"+atrDocs.bothCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.onlyFileCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td>"+atrDocs.onlyFileCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.onlyTxtCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="<td>"+atrDocs.onlyTxtCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-ok text-success'></i></td>";
+						str+="</tr>";
+						
+						str+="<tr>";
+						str+="<td>"+momDocs.nothingCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td>"+atrDocs.nothingCount+"</td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
+						str+="</tr>";
+					}
+					
+				}
+				$("#cumulativeMeetingTableBodyId").html(str); 
+			}else{
+				$("#cumulativeMeetingTableBodyId").html("No Records Found"); 
+			}
+			$("#cummAjax").hide();
+		});
+	}
+	
+	$(document).on('click','.grpLctn', function() {
+		$('.grpLctn').not(this).prop('checked', false);
+		
+		var value = $("input:checkbox[class=grpLctn]:checked").val();
+		
+		if(typeof value === 'undefined'){
+			var resSelId = $("#resultTypeSelId").val();
+			if(resSelId=="cumulative"){
+				$("#cumulativeMeetingResultId").show();
+				$("#individualMeetingResultId").hide();
+			}else{
+				$("#cumulativeMeetingResultId").hide();
+				$("#individualMeetingResultId").show();
+			}
+
+		}else{
+			$("#cumulativeMeetingResultId").show();
+			$("#individualMeetingResultId").hide();
+			updateFunctions();
+		}
+				
+		
+	});
+	
+		var meetingLvl = $("#meetingLevel").val();
+		if(meetingLvl>=2){
+			$("#grpLctnDistId").show();
+			$("#grpLctnConstId").hide();
+		}
+		if(meetingLvl>=3){
+			$("#grpLctnConstId").show();
+		}
+		
+	$("#meetingLevel").change(function(){
+		var level = $("#meetingLevel").val();
+		if(level>=2){
+			$("#grpLctnDistId").show();
+			$("#grpLctnConstId").hide();
+		}
+		if(level>=3){
+			$("#grpLctnConstId").show();
+		}
+	});
 					
 </script>
 </body>
