@@ -338,7 +338,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			String endDate=jObj.getString("endDate");
 			String groupLocationType = jObj.getString("groupingLocationType");
 			
-			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForGrouping(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,groupLocationType);
+			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForGrouping(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,groupLocationType,meetinglevel);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
 		}
