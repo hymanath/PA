@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -6318,7 +6319,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
-	public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo){
+/*	public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo){
 		Query query=getSession().createQuery("select model.booth.constituency.constituencyId,model.booth.boothId,model.booth.publicationDate.publicationDateId," +
 				" model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.booth.constituency.district.districtId,model.voter.relativeName,model.voter.houseNo," +
 				" model.voter.relationshipType,model.booth.constituency.name,model.booth.constituency.district.districtName,model.booth.partNo,0," +
@@ -6328,8 +6329,45 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		query.setParameter("voterCardNo", voterCardNo);
 		return query.list();
+	}*/
+	public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo){
+		Query query=getSession().createSQLQuery("select distinct C.constituency_id as cid,B.booth_id as boothId,B.publication_date_id as pid,V.voter_id as voterId,V.name as voterName ,V.age as age,V.gender as gender,C.district_id as distId" +
+				",V.relative_name as relativeName,V.house_no as hno,V.relationship_type as relationType,C.name as constName,D.district_name as distName,B.part_no as partNo,0 as zero," +
+				" B.panchayat_id as panchayatId,P.panchayat_name as panchayatName,T.tehsil_id as tehsilId,T.tehsil_name as tehsilName,C.state_id as stateId,S.state_name as stateName " +
+				" from booth_publication_voter BPV ,voter V,district D,state S,booth B left outer join tehsil T on B.tehsil_id = T.tehsil_id " +
+				" left outer join panchayat P on B.panchayat_id=P.panchayat_id " +
+				" left outer join constituency C on B.constituency_id=C.constituency_id " +
+				" left outer join local_election_body L on B.local_election_body_id=L.local_election_body_id " +
+				" where B.booth_id=BPV.booth_id and BPV.voter_id=V.voter_id " +
+				" and V.voter_id_card_no=:voterCardNo and B.publication_date_id=11 and C.district_id=D.district_id and" +
+				" C.state_id=S.state_id and S.state_id=1")
+			.addScalar("cid", Hibernate.LONG)
+			.addScalar("boothId", Hibernate.LONG)
+			.addScalar("pid", Hibernate.LONG)
+			.addScalar("voterId", Hibernate.LONG)
+			.addScalar("voterName", Hibernate.STRING)
+			.addScalar("age", Hibernate.LONG)
+			.addScalar("gender", Hibernate.STRING)
+			.addScalar("distId", Hibernate.LONG)
+			.addScalar("relativeName", Hibernate.STRING)
+			.addScalar("hno", Hibernate.STRING)
+			.addScalar("relationType", Hibernate.STRING)
+			.addScalar("constName", Hibernate.STRING)
+			.addScalar("distName", Hibernate.STRING)
+			.addScalar("partNo", Hibernate.STRING)
+			.addScalar("zero", Hibernate.LONG)
+			.addScalar("panchayatId", Hibernate.LONG)
+			.addScalar("panchayatName", Hibernate.STRING)
+			.addScalar("tehsilId", Hibernate.LONG)
+			.addScalar("tehsilName", Hibernate.STRING)
+			.addScalar("stateId", Hibernate.LONG)
+			.addScalar("stateName", Hibernate.STRING);
+		query.setParameter("voterCardNo", voterCardNo);
+		
+		return query.list();
 	}
-	
+	 
+
 	public BoothPublicationVoter getVoterBySerialNo(Long constituencyId,
 			String partNo, Long serialNo) {
 		// TODO Auto-generated method stub

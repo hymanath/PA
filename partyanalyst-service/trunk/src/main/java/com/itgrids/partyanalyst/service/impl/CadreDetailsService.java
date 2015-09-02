@@ -1900,7 +1900,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		List<RegisteredMembershipCountVO> resultList = new ArrayList<RegisteredMembershipCountVO>();
 		try{
-			
+			if(tdpCadreId != null && tdpCadreId > 0)
+			{
 			UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
 			if(userAddress != null)
 			{
@@ -1919,6 +1920,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					if(countVO != null)
 						resultList.add(countVO);
 				}
+			}
 		}
 			
 		}catch (Exception e) {
