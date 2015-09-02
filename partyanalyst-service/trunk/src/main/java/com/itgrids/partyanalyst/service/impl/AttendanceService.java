@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.model.AttendanceError;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAttendance;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
+import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAttendanceService;
@@ -183,8 +184,18 @@ public class AttendanceService implements IAttendanceService{
 			{
 				TrainingCampAttendance trainingCampAttendance = new TrainingCampAttendance();
 				trainingCampAttendance.setAttendance(attendance);
-				trainingCampAttendance.setTrainingCampScheduleId(attendanceVO.getTrainingCampScheduleId());
 				trainingCampAttendance.setTrainingCampBatchId(attendanceVO.getTrainingCampBatchId());
+				
+				TrainingCampBatch trainingCampBatch = trainingCampBatchDAO.get(attendanceVO.getTrainingCampBatchId());
+				
+				if(trainingCampBatch != null)
+				{
+					trainingCampAttendance.setTrainingCampScheduleId(trainingCampBatch.getTrainingCampSchedule() != null ?
+							trainingCampBatch.getTrainingCampSchedule().getTrainingCampScheduleId() : null);
+					trainingCampAttendance.setTrainingCampProgramId((trainingCampBatch.getTrainingCampSchedule() != null &&  trainingCampBatch.getTrainingCampSchedule().getTrainingCampProgram() != null) ?
+							trainingCampBatch.getTrainingCampSchedule().getTrainingCampProgram().getTrainingCampProgramId() : null);
+				}
+				
 				trainingCampAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				trainingCampAttendance = trainingCampAttendanceDAO.save(trainingCampAttendance);
 			}
@@ -214,6 +225,7 @@ public class AttendanceService implements IAttendanceService{
 			attendanceError.setTrainingCampScheduleId(attendanceVO.getTrainingCampScheduleId());
 			attendanceError.setTrainingCampBatchId(attendanceVO.getTrainingCampBatchId());
 			attendanceError.setTrainingCampTopicId(attendanceVO.getTrainingCampTopicId());
+			attendanceError.setTrainingCampProgramId(attendanceVO.getTrainingProgramId());
 			attendanceError.setTdpCadreId(attendanceVO.getTdpCadreId());
 			attendanceError.setMembershopId(attendanceVO.getMembershipId());
 			attendanceError.setAttendedTime(dateUtilService.getDateByStringAndFormat(attendanceVO.getAttendedTime(),"yyyy-MM-dd HH:mm:ss"));
@@ -246,7 +258,7 @@ public class AttendanceService implements IAttendanceService{
 					"\tTrainingCampBatchId - "+attendanceVO.getTrainingCampBatchId()+"\tTrainingCampTopicId - "+attendanceVO.getTrainingCampTopicId()+"\tTdpCadreId - "+attendanceVO.getTdpCadreId()+
 					"\tMembershopId - "+attendanceVO.getMembershipId()+"\tAttendedTime - "+attendanceVO.getAttendedTime()+"\tRfid - "+attendanceVO.getRfid()+"\tImei - "+attendanceVO.getImei()+"\tUniqueKey - "+attendanceVO.getUniqueKey()+
 					"\tInsertedTime - "+dateUtilService.getCurrentDateAndTimeInStringFormat()+"\tLatitude - "+attendanceVO.getLatitude()+"\tLongitude - "+attendanceVO.getLongitude()+"\tTabUserId - "+attendanceVO.getTabUserId()+"\tCurrentTabUserId - "+attendanceVO.getCurrentTabUserId()+
-					"\tSyncSource - "+attendanceVO.getSyncSource()+"\tTab Primary Kay - "+attendanceVO.getTabPrimaryKey());
+					"\tSyncSource - "+attendanceVO.getSyncSource()+"\tTab Primary Kay - "+attendanceVO.getTabPrimaryKey()+"\tTraining Camp Program Id - "+attendanceVO.getTrainingProgramId());
 			LOG.fatal("----------------------------------------------------");
 		}catch(Exception e)
 		{

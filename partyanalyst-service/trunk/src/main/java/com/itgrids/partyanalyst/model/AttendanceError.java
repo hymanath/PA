@@ -25,6 +25,7 @@ public class AttendanceError extends BaseModel implements Serializable{
 	private Long trainingCampScheduleId;
 	private Long trainingCampBatchId;
 	private Long trainingCampTopicId;
+	private Long trainingCampProgramId;
 	private Date attendedTime;
 	private String rfid;
 	private String imei;
@@ -213,6 +214,15 @@ public class AttendanceError extends BaseModel implements Serializable{
 
 	public void setTabPrimaryKey(Long tabPrimaryKey) {
 		this.tabPrimaryKey = tabPrimaryKey;
+	}
+
+	@Column(name="training_camp_program_id")
+	public Long getTrainingCampProgramId() {
+		return trainingCampProgramId;
+	}
+
+	public void setTrainingCampProgramId(Long trainingCampProgramId) {
+		this.trainingCampProgramId = trainingCampProgramId;
 	}
 	
 }

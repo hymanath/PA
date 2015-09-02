@@ -31,6 +31,7 @@ public class TrainingCampAttendanceTabUser extends BaseModel implements Serializ
 	private TrainingCampSchedule trainingCampSchedule;
 	private AttendanceTabUser attendanceTabUser;
 	private TrainingCampBatch trainingCampBatch;
+	private TrainingCampProgram trainingCampProgram;
 	private User insertedBy;
 	private Date insertedTime;
 	
@@ -38,6 +39,7 @@ public class TrainingCampAttendanceTabUser extends BaseModel implements Serializ
 	private Long attendanceTabUserId;
 	private Long insertedById;
 	private Long trainingCampBatchId;
+	private Long trainingCampProgramId;
 	
 	public TrainingCampAttendanceTabUser(){}
 
@@ -144,5 +146,26 @@ public class TrainingCampAttendanceTabUser extends BaseModel implements Serializ
 
 	public void setTrainingCampBatchId(Long trainingCampBatchId) {
 		this.trainingCampBatchId = trainingCampBatchId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="training_camp_program_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TrainingCampProgram getTrainingCampProgram() {
+		return trainingCampProgram;
+	}
+
+	public void setTrainingCampProgram(TrainingCampProgram trainingCampProgram) {
+		this.trainingCampProgram = trainingCampProgram;
+	}
+
+	@Column(name="training_camp_program_id")
+	public Long getTrainingCampProgramId() {
+		return trainingCampProgramId;
+	}
+
+	public void setTrainingCampProgramId(Long trainingCampProgramId) {
+		this.trainingCampProgramId = trainingCampProgramId;
 	}
 }
