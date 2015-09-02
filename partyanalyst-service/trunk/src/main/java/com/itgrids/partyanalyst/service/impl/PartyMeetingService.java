@@ -968,6 +968,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 		LOG.debug(" Entered Into getMeetingSummaryForLocation");
 		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
 		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
+		Long atrUpdatedMeetings=0l;
+		Long momUpdatedMeetings=0l;
 		try{
 			
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -1109,12 +1111,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 						}
 					}
 				}
+				
+				if(momAndAtrRsltLst!=null && momAndAtrRsltLst.size()>0){
+					for (PartyMeetingSummaryVO partyMeetingSummaryVO : momAndAtrRsltLst) {
+						if((partyMeetingSummaryVO.getMomFilesCount()!=null && partyMeetingSummaryVO.getMomFilesCount()>0l) || (partyMeetingSummaryVO.getMomPointsCount()!=null && partyMeetingSummaryVO.getMomPointsCount()>0l)){
+							momUpdatedMeetings++;
+						}
+						if((partyMeetingSummaryVO.getAtrFilesCount()!=null && partyMeetingSummaryVO.getAtrFilesCount()>0l) || (partyMeetingSummaryVO.getAtrTextCount()!=null && partyMeetingSummaryVO.getAtrTextCount()>0l)){
+							atrUpdatedMeetings++;
+						}
+					}
+				}
 			}
 			
 			if(fnlLst.size()>0){
 				fnlLst.get(0).setMeetingsCount(mtngLctnsLst.size());													// For Overall Summary -- Meetings Count( Unique Locations for overall Meetings)
 				fnlLst.get(0).setPlannedMeetings(fnlLst.size());
 				fnlLst.get(0).setConductedMeetingsPercent((new BigDecimal(fnlLst.get(0).getConductedMeetings()*(100.0)/fnlLst.get(0).getPlannedMeetings())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());// For Overall Summary -- All Meetings
+				fnlLst.get(0).setMomUpdatedMeetings(momUpdatedMeetings);
+				fnlLst.get(0).setAtrUpdatedMeetings(atrUpdatedMeetings);
 			}
 			
 		}catch (Exception e) {
@@ -1413,6 +1428,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 		LOG.debug(" Entered Into getMeetingSummaryForLocation");
 		PartyMeetingSummaryVO finalVO = new PartyMeetingSummaryVO();
 		List<PartyMeetingSummaryVO> fnlLst = new ArrayList<PartyMeetingSummaryVO>();
+		Long atrUpdatedMeetings=0l;
+		Long momUpdatedMeetings=0l;
 		try{
 			
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -1585,10 +1602,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 							}
 						}
 					}
+					
+					for(PartyMeetingSummaryVO temp:momAndAtrRsltLst){
+						if((temp.getMomFilesCount()!=null && temp.getMomFilesCount()>0l) || (temp.getMomPointsCount()!=null && temp.getMomPointsCount()>0l)){
+							momUpdatedMeetings++;
+						}
+						if((temp.getAtrFilesCount()!=null && temp.getAtrFilesCount()>0l) || (temp.getAtrTextCount()!=null && temp.getAtrTextCount()>0l)){
+							atrUpdatedMeetings++;
+						}
+					}
+					
 				}
 			}
 			
 			cumilateTheResult(fnlLst);
+			
+			if(fnlLst!=null && fnlLst.size()>0){
+				fnlLst.get(0).setAtrUpdatedMeetings(atrUpdatedMeetings);
+				fnlLst.get(0).setMomUpdatedMeetings(momUpdatedMeetings);
+			}
 			
 		}catch (Exception e) {
 			LOG.error(" Error in getMeetingSummaryForLocation",e);
