@@ -23,6 +23,7 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px; 
 }
+table thead th , table tbody tr td{text-align:center !important}
 </style>
 
 </head>
@@ -59,25 +60,25 @@ header.eventsheader {
 	
 	
 </header>
-<main>
+<main style="margin-top:40px">
 	<div class="container">
     	<div class="row">
         	<section>
             	<div class="col-md-12">
                 	<div class="panel panel-default">
                     	<div class="panel-heading">
-                        	<h4 class="panel-title">Meetings List
-						    	<span class="pull-right">
-									<span id="meetingLocationErrorMessage" style="color: red;"></span>
-                                	<select id="meetingLocationLevel"></select>
-                                </span>
-								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
-                            </h4>
+                        	<h4 class="panel-title">Meetings List</h4>
                         </div>
                         <div class="panel-body">
                         	<div class="row">
+								<div class="col-md-3">
+									<label>Meeting Level</label>
+									<span id="meetingLocationErrorMessage" style="color: red;"></span>
+										<select class="form-control" id="meetingLocationLevel"></select>
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
+								</div>	
                             	<div class="col-md-3">
-                                	<label>Type Of Meeting</label>
+									<label>Type Of Meeting</label>
 									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
                                     <select class="form-control" id="typeOfMeeting">
 										<option> Select Meeting Type </option>
@@ -700,20 +701,62 @@ $(document).ready(function() {
 		).done(function(result){
 			var str='';
 			if(result!=null && result.length>0){
+				str+='<h4>'+result[0].meetingType+'</h4>';
 				str+='<table class="m_top20 table table-bordered">';
-				str+='<thead class="bg_d">';
-				str+='<th>Meeting Type</th>';
+				/* str+='<thead class="bg_d">';
+				//str+='<th>Meeting Type</th>';
 				str+='<th>Meeting Location</th>';
 				str+='<th>Meeting Name</th>';
 				str+='<th>Schedule Date</th>';
 				str+='<th></th>';
+				str+='</thead>'; */
+				str+='<thead class="bg_d">';
+				str+='<tr>';
+				str+='<th rowspan="2">Meeting Location</th>';
+				str+='<th rowspan="2">Meeting Name</th>';
+				str+='<th colspan="2">MOM</th>';
+				str+='<th colspan="2">ATR</th>';
+				str+='<th rowspan="2">Schedule Date</th>';
+				str+='<th rowspan="2"></th>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<th>Files</th>';
+				str+='<th>Text</th>';
+				str+='<th>Files</th>';
+				str+='<th>Text</th>';
+				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody id="">';
 				for(var i in result){
 					str+='<tr>';
-					str+='<td>'+result[i].meetingType+'</td>';
+					//str+='<td>'+result[i].meetingType+'</td>';
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].meetingName+'</td>';
+					
+					if(result[i].docTxtInfo.momFilesCount!=null){
+						str+='<td>'+result[i].docTxtInfo.momFilesCount+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					
+					if(result[i].docTxtInfo.momPointsCount!=null){
+						str+='<td>'+result[i].docTxtInfo.momPointsCount+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					
+					if(result[i].docTxtInfo.atrFilesCount!=null){
+						str+='<td>'+result[i].docTxtInfo.atrFilesCount+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					
+					if(result[i].docTxtInfo.atrTextCount!=null){
+						str+='<td>'+result[i].docTxtInfo.atrTextCount+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
 					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
 				}
