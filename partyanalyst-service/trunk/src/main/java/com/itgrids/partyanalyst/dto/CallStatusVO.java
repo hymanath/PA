@@ -14,9 +14,16 @@ private String startTime;
 private String endTime;
 private String meetingName;
 private Long partyMeetingId;
+private PartyMeetingSummaryVO docTxtInfo;
 
 
 
+public PartyMeetingSummaryVO getDocTxtInfo() {
+	return docTxtInfo;
+}
+public void setDocTxtInfo(PartyMeetingSummaryVO docTxtInfo) {
+	this.docTxtInfo = docTxtInfo;
+}
 public Long getPartyMeetingId() {
 	return partyMeetingId;
 }

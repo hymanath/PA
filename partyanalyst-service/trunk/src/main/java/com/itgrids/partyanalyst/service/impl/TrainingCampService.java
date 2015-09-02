@@ -77,6 +77,7 @@ import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -100,6 +101,7 @@ import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -163,7 +165,18 @@ public class TrainingCampService implements ITrainingCampService{
     private ITrainingCampCadreAchievementHistoryDAO trainingCampCadreAchievementHistoryDAO;
     private ITrainingCampCadreGoalHistoryDAO trainingCampCadreGoalHistoryDAO;
     private ITrainingCampUserProgramDAO trainingCampUserProgramDAO;
+    private IPartyMeetingService partyMeetingService;
+    
+    
 	
+	public IPartyMeetingService getPartyMeetingService() {
+		return partyMeetingService;
+	}
+
+	public void setPartyMeetingService(IPartyMeetingService partyMeetingService) {
+		this.partyMeetingService = partyMeetingService;
+	}
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -3064,6 +3077,19 @@ public class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
+			List<Long> partyMeetingIdsList = new ArrayList<Long>();
+			if(meetings!=null && meetings.size()>0){
+				for (Object[] objects : meetings) {
+					partyMeetingIdsList.add((Long)objects[9]);
+				}
+			}
+			
+			List<PartyMeetingSummaryVO> momAndAtrRsltLst = new ArrayList<PartyMeetingSummaryVO>();
+			if(partyMeetingIdsList!=null && partyMeetingIdsList.size()>0){
+				momAndAtrRsltLst = partyMeetingService.getAtrAndMOMOfMeetings(partyMeetingIdsList);
+			}
+			
+			
 			//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName,partymeetingid
 			if(meetings!=null && meetings.size()>0){
 				for (Object[] objects : meetings) {
@@ -3107,11 +3133,30 @@ public class TrainingCampService implements ITrainingCampService{
 					
 				}
 			}
+			
+			if(momAndAtrRsltLst!=null && momAndAtrRsltLst.size()>0 && allMeetings!=null && allMeetings.size()>0){
+				for (CallStatusVO callStatusVO : allMeetings) {
+					PartyMeetingSummaryVO vo = getMatchedMeeting(callStatusVO.getPartyMeetingId(),momAndAtrRsltLst);
+					callStatusVO.setDocTxtInfo(vo);
+				}
+				
+			}
 						
 		} catch (Exception e) {
 			LOG.error("Exception raised in getAllMeetings",e);
 		}
 		return allMeetings;
+	}
+	
+	public PartyMeetingSummaryVO getMatchedMeeting(Long meetingId,List<PartyMeetingSummaryVO> meetings){
+		if(meetingId !=null && meetings!=null && meetings.size()>0){
+			for(PartyMeetingSummaryVO temp:meetings){
+				if(temp.getMeetingId().equals(meetingId)){
+					return temp;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public CallBackCountVO getCallBackDayWiseDetails(Long campCallerId)
