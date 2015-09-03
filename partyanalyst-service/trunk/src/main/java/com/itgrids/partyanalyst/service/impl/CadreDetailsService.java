@@ -2034,15 +2034,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 							UserAddress userAddress = new UserAddress();
-							
+							if(returnVO.getBoothId() != null && returnVO.getBoothId() > 0)
 							userAddress.setBooth(boothDAO.get(returnVO.getBoothId()));
+							if(returnVO.getPanchayatId() != null && returnVO.getPanchayatId() > 0)
 							userAddress.setPanchayat(panchayatDAO.get(returnVO.getPanchayatId()));
+							if(returnVO.getTehsilId() != null && returnVO.getTehsilId() > 0)
 							userAddress.setTehsil(tehsilDAO.get(returnVO.getTehsilId()));
 							
 							if(returnVO.getLocalElectionBodyId() != null && Long.valueOf(returnVO.getLocalElectionBodyId())>0L)
 								userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(returnVO.getLocalElectionBodyId())));
-							
+							if(returnVO.getConstituencyId() != null && returnVO.getConstituencyId() > 0)
 							userAddress.setConstituency(constituencyDAO.get(returnVO.getConstituencyId()));
+							if(returnVO.getDistrictId() != null && returnVO.getDistrictId() > 0)
 							userAddress.setDistrict(districtDAO.get(returnVO.getDistrictId()));
 							userAddress.setState(stateDAO.get(1L));
 							
@@ -4071,9 +4074,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 							returnVO.getFamilyMembersList().addAll(familyVOList);
 							List<RegisteredMembershipCountVO> resultList = new ArrayList<RegisteredMembershipCountVO>();
 							UserAddress userAddress = new UserAddress();
-							
+							if(returnVO.getBoothId() != null && returnVO.getBoothId() > 0)
 							userAddress.setBooth(boothDAO.get(returnVO.getBoothId()));
+							if(returnVO.getPanchayatId() != null && returnVO.getPanchayatId() > 0)
 							userAddress.setPanchayat(panchayatDAO.get(returnVO.getPanchayatId()));
+							if(returnVO.getTehsilId() != null && returnVO.getTehsilId() > 0)
 							userAddress.setTehsil(tehsilDAO.get(returnVO.getTehsilId()));
 							
 							if(returnVO.getLocalElectionBodyId() != null && Long.valueOf(returnVO.getLocalElectionBodyId())>0L)
