@@ -324,8 +324,9 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				",tehsil.tehsil_name as tehsilName,UA.local_election_body as localElectionBodyId " +
 				" from training_camp_schedule_invitee TCSI" +
 				",tdp_cadre TC ,user_address UA,training_camp_schedule TCS" +
-				",district Dist,constituency const,tehsil tehsil, training_camp_district TCD " +
-				" where TCS.training_camp_id = TCD.training_camp_id and  TCD.district_id = UA.district_id and  TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
+				",district Dist,constituency const,tehsil tehsil, training_camp_district TCD , local_election_body LEB " +
+				" where UA.local_election_body = LEB.local_election_body_id and  " +
+				" TCS.training_camp_id = TCD.training_camp_id and  TCD.district_id = UA.district_id and  TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
 				" UA.user_address_id = TC.address_id and " +
 				" UA.district_id = Dist.district_id and " +
 				" UA.constituency_id = const.constituency_id and " +
