@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class IdNameVO implements Serializable{
 	private Long id;
 	private String name;
-	private Long districtid; 
+	private Long districtid;
 	
 	public IdNameVO(){}
 	

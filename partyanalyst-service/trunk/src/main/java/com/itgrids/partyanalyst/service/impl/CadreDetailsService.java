@@ -42,6 +42,11 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStudentAddressDAO;
+import com.itgrids.partyanalyst.dao.IStudentCadreRelationDAO;
+import com.itgrids.partyanalyst.dao.IStudentContactDAO;
+import com.itgrids.partyanalyst.dao.IStudentCourseDAO;
+import com.itgrids.partyanalyst.dao.IStudentParentDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -59,6 +64,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -68,6 +74,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -126,7 +133,46 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IDistrictDAO districtDAO;
 	private IStateDAO stateDAO;
 	private ICandidateDAO candidateDAO;
+	private IStudentCadreRelationDAO studentCadreRelationDAO;
+	private IStudentParentDetailsDAO studentParentDetailsDAO;
+	private IStudentContactDAO studentContactDAO;
+	private IStudentCourseDAO studentCourseDAO;
+	private IStudentAddressDAO studentAddressDAO;
 	
+	
+	public IStudentParentDetailsDAO getStudentParentDetailsDAO() {
+		return studentParentDetailsDAO;
+	}
+
+	public void setStudentParentDetailsDAO(
+			IStudentParentDetailsDAO studentParentDetailsDAO) {
+		this.studentParentDetailsDAO = studentParentDetailsDAO;
+	}
+
+	public IStudentContactDAO getStudentContactDAO() {
+		return studentContactDAO;
+	}
+
+	public void setStudentContactDAO(IStudentContactDAO studentContactDAO) {
+		this.studentContactDAO = studentContactDAO;
+	}
+
+	public IStudentCourseDAO getStudentCourseDAO() {
+		return studentCourseDAO;
+	}
+
+	public void setStudentCourseDAO(IStudentCourseDAO studentCourseDAO) {
+		this.studentCourseDAO = studentCourseDAO;
+	}
+
+	public IStudentAddressDAO getStudentAddressDAO() {
+		return studentAddressDAO;
+	}
+
+	public void setStudentAddressDAO(IStudentAddressDAO studentAddressDAO) {
+		this.studentAddressDAO = studentAddressDAO;
+	}
+
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -472,6 +518,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
+	}
+	
+
+	public IStudentCadreRelationDAO getStudentCadreRelationDAO() {
+		return studentCadreRelationDAO;
+	}
+
+	public void setStudentCadreRelationDAO(
+			IStudentCadreRelationDAO studentCadreRelationDAO) {
+		this.studentCadreRelationDAO = studentCadreRelationDAO;
 	}
 
 	public void setCadreCommitteeService(
@@ -4239,7 +4295,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 			return returnVo;
 	 }
   
-     
   public List<QuestionAnswerVO> getCandidateAndConstituencySurveyResult(Long candidateId,Long constituencyId,Long surveyId)
 	{	
 		 List<QuestionAnswerVO> finalList=new ArrayList<QuestionAnswerVO>();
@@ -4359,6 +4414,199 @@ public class CadreDetailsService implements ICadreDetailsService{
 		  return finalList;
 	  }
   
+  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(Long tdpCadreId){
+	  
+	  List<NtrTrustStudentVO> finalList = new ArrayList<NtrTrustStudentVO>();
+	  try{
+		  List<Object[]> studentCountList = studentCadreRelationDAO.getNtrTrustStudentDetailsInstitutionWise(tdpCadreId);
+			if(studentCountList !=null && studentCountList.size()>0){
+				for(Object[] studentCount:studentCountList){
+					NtrTrustStudentVO vo = new NtrTrustStudentVO();
+					vo.setId((Long)studentCount[0]);
+					vo.setName(studentCount[1].toString());
+					vo.setCount(studentCount[2] !=null ? (Long)studentCount[2]:0l);
+					finalList.add(vo);
+				}
+			}
+			
+		return finalList;
+		  
+	  }catch (Exception e) {
+		  LOG.error("Exception Occured in getNtrTrustStudentDetailsInstitutionWise() method, Exception - ",e);
+	}
+	  return finalList;
+  }
+  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(Long cadreId,Long institutionId){
+		
+		List<NtrTrustStudentVO> studentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
+		
+		try{
+			//0.institutionId,1.studentid,2.studentName,3.dateOfbirth,4.year of joining,5.courseId,6.course code,7.casteId,
+			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status
+			DateFormat dateFormat=null;
+			Date convertedDate = null;
+			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreId,institutionId);
+			
+			if(students !=null){
+				for(Object[] student:students){
+					NtrTrustStudentVO vo = new NtrTrustStudentVO();
+					vo.setInstitutionId(student[0] !=null ? (Long)student[0]:0l);
+					vo.setId(student[1] !=null ? (Long)student[1]:0l);
+					vo.setName(student[2] !=null ? student[2].toString():"");
+					
+					if(student[3] !=null){
+						dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						convertedDate = (Date) dateFormat.parse(student[3].toString());
+						 String lines[] = convertedDate.toString().split(" ");
+						 vo.setDateStr(lines[1]+ " "+lines[2] +" " + lines[5]);//dateOfBirth
+					}else{
+						 vo.setDateStr("");
+					}
+					
+					vo.setYearOfJoining(student[4] !=null ? student[4].toString():"");
+					vo.setCourseId(student[5] !=null ? (Long)student[5]:0l);
+					vo.setCourse(student[6] !=null ? student[6].toString():"");//course Code
+					vo.setCasteStr(student[7] !=null ? student[7].toString():"");
+					vo.setTdpCadreId(student[8] !=null ? (Long)student[8]:0l);
+					vo.setMembershipNo(student[9] !=null ? (Long)student[9]:0l);
+					vo.setGuardian(student[10] !=null ? student[10].toString():"");
+					vo.setStatus(student[11] !=null ? student[11].toString():"");//parent Alive Status
+					
+					if(vo.getId() !=null && vo.getId() >0l){
+						//0.Parent Name,1.relation
+						List<Object[]> parentDetails = studentParentDetailsDAO.getParentDetails(vo.getId());
+						if(parentDetails !=null && parentDetails.size()>0){
+							for(Object[] parent:parentDetails){
+								if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("father"))
+								{
+									vo.setFatherName(parent[0] !=null ? parent[0].toString():"");
+								}
+								else if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("mother")){
+									vo.setMotherName(parent[0] !=null ? parent[0].toString():"");
+								}
+								else{
+									vo.setParentName(parent[0] !=null ? parent[0].toString():"");
+								}
+							}
+						}
+						
+						//Contact Details
+						List<NtrTrustStudentVO> contactDetails =getContactDetailsOfStudent(vo.getId());
+						
+						if(contactDetails !=null && contactDetails.size()>0){
+							vo.setNtrTrustStudentVoList(contactDetails);
+						}
+						
+						//academic year details of Student
+						List<NtrTrustStudentVO> academicyearDetails=getAcademicYearDetailsOfStudent(vo.getId());
+						
+						if(academicyearDetails !=null && academicyearDetails.size()>0){
+							vo.setAcademicDetailsList(academicyearDetails);
+						}
+						
+						//student address Details
+						List<NtrTrustStudentVO> addressDetails = getStudentSpecificAddressDetails(vo.getId());
+						
+						if(addressDetails !=null && addressDetails.size()>0){
+							vo.setAddressDetailsList(addressDetails);
+						}
+						
+					}
+					
+					studentsFormalDetails.add(vo);
+				}
+				return studentsFormalDetails;
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
+		}
+		return studentsFormalDetails;
+	}
+	public List<NtrTrustStudentVO> getContactDetailsOfStudent(Long studentId){
+		
+		List<NtrTrustStudentVO> listOfContacts = new ArrayList<NtrTrustStudentVO>();
+		try{
+			//0.phone No,1.type
+			List<Object[]> studentContacts =  studentContactDAO.getContactDetailsOfStudent(studentId);
+			if(studentContacts !=null && studentContacts.size()>0){
+				for(Object[] studentContact:studentContacts){
+					NtrTrustStudentVO vo=new NtrTrustStudentVO();
+					vo.setPhoneNo(studentContact[0] !=null ? studentContact[0].toString():"");
+					vo.setPhoneType(studentContact[1] !=null ? studentContact[1].toString():"");
+					
+					listOfContacts.add(vo);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getContactDetailsOfStudent() method, Exception - ",e);
+		}
+		
+		return listOfContacts;
+	}
+	public List<NtrTrustStudentVO> getAcademicYearDetailsOfStudent(Long studentId){
+		
+		List<NtrTrustStudentVO> listOfAcademicdetails = new ArrayList<NtrTrustStudentVO>();
+		try{
+			//0.academicYearid,1.startYear,2.startMonth,3.endYear,4.endMonth,5.status(Like ongoing)
+			List<Object[]>	acdemicDetails = studentCourseDAO.getAcademicYearDetailsOfStudent(studentId);
+			
+			if(acdemicDetails !=null && acdemicDetails.size()>0){
+				for(Object[] details:acdemicDetails){
+					NtrTrustStudentVO vo=new NtrTrustStudentVO();
+					vo.setId((Long)details[0]);
+					vo.setStartYear(details[1] !=null ? details[1].toString() :"");
+					vo.setStartMonth(details[2] !=null ? details[2].toString() :"");
+					vo.setEndYear(details[3] !=null ? details[3].toString() :"");
+					vo.setEndMonth(details[4] !=null ? details[4].toString() :"");
+					vo.setStatus(details[5] !=null ? details[5].toString() :"");//status Of Academic
+					
+					listOfAcademicdetails.add(vo);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAcademicYearDetailsOfStudent() method, Exception - ",e);
+		}
+		
+		return listOfAcademicdetails;
+		
+	}
+	
+	public List<NtrTrustStudentVO> getStudentSpecificAddressDetails(Long studentId){
+		
+		List<NtrTrustStudentVO> addressList = new ArrayList<NtrTrustStudentVO>();
+		try{
+			
+			List<StudentAddress> studentAddressDetails =  studentAddressDAO.getStudentSpecificAddressDetails(studentId);
+			
+			if(studentAddressDetails !=null && studentAddressDetails.size()>0){
+				for(StudentAddress studentAddress:studentAddressDetails){
+					NtrTrustStudentVO vo = new NtrTrustStudentVO();
+					vo.setAddressId((Long)studentAddress.getAddressForStudent().getAddressId());
+					vo.setStateStr(studentAddress.getAddressForStudent().getState() !=null ? studentAddress.getAddressForStudent().getState().toString() : "");
+					vo.setDistrictStr(studentAddress.getAddressForStudent().getDistrict() !=null ? studentAddress.getAddressForStudent().getDistrict().toString() :"");
+					vo.setConstituencyStr(studentAddress.getAddressForStudent().getConstituency() !=null ? studentAddress.getAddressForStudent().getConstituency().toString() : "");
+					vo.setTehsilStr(studentAddress.getAddressForStudent().getTehsil()!=null ? studentAddress.getAddressForStudent().getTehsil().toString():"");
+					vo.setLocalElectionBodyStr(studentAddress.getAddressForStudent().getLocalElectionBody() !=null ? studentAddress.getAddressForStudent().getLocalElectionBody().toString():"");
+					vo.setPanchayatStr(studentAddress.getAddressForStudent().getPanchayat() !=null ? studentAddress.getAddressForStudent().getPanchayat().toString() :"");
+					vo.setWardStr(studentAddress.getAddressForStudent().getWard() !=null ? studentAddress.getAddressForStudent().getWard().toString():"");
+					vo.setLocationStr(studentAddress.getAddressForStudent().getLocation() !=null ? studentAddress.getAddressForStudent().getLocation().toString():"");
+					vo.setHouseNoStr(studentAddress.getAddressForStudent().getHouseNo() !=null ? studentAddress.getAddressForStudent().getHouseNo().toString() : "");
+					vo.setStreetStr(studentAddress.getAddressForStudent().getStreet() !=null ? studentAddress.getAddressForStudent().getStreet().toString() : "");
+					vo.setPincodeLng(studentAddress.getAddressForStudent().getPinCode() !=null ? (Long)studentAddress.getAddressForStudent().getPinCode() : 0l);
+					
+					addressList.add(vo);
+				}
+				
+				return addressList;
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getStudentSpecificAddressDetails() method, Exception - ",e);
+		}
+		return addressList;
+	}
 	
   
 }
