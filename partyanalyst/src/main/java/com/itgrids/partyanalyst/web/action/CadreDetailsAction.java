@@ -369,7 +369,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	{
 		try{
 			
-			membershipCountVOList = cadreDetailsService.getElectionPerformanceInCadreLocation(new Long(request.getParameter("tdpCadreId")));
+			membershipCountVOList = cadreDetailsService.getElectionPerformanceInCadreLocation(new Long(request.getParameter("tdpCadreId")),"");
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getElectionPerformanceInCadreLocation() method, Exception - ",e);
