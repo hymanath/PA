@@ -30,7 +30,7 @@ public interface ICadreDetailsService {
 	
 	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId,Long pcId,String pcType);
 	
-	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId);
+	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
 	
 	public List<GrievanceAmountVO> getApprovedFinancialSupprotForCadre(Long tdpCadreId);
 	
@@ -51,4 +51,5 @@ public interface ICadreDetailsService {
 	public CadreCommitteeMemberVO getCadresDetailsOfDeathsAndHospitalization(Long locationId,String locationType,Long insuranceTypeId);
 	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId,String houseNo, String voterCardNo);
 	public BasicVO getParticipatedConstituency(Long tdpCadreId);
+	
 }

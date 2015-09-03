@@ -1896,33 +1896,178 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 	}
 	
-	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId)
+	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo)
 	{
 		List<RegisteredMembershipCountVO> resultList = new ArrayList<RegisteredMembershipCountVO>();
 		try{
-			if(tdpCadreId != null && tdpCadreId > 0)
+			List<Object[]> voterDetails = null;
+			if(voterCardNo != null && !voterCardNo.isEmpty())
 			{
-			UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
-			if(userAddress != null)
-			{
-				List<Long> partyIds = new ArrayList<Long>();
-				partyIds.add(872l);//TDP partyId
-				partyIds.add(163l);//BJP partyId
-				
-				if(userAddress != null)
+				voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterId(voterCardNo);
+				if(voterDetails != null && voterDetails.size()>0)
 				{
-					RegisteredMembershipCountVO countVO = null;
-					 countVO = setElectionPerformanceDetailsInCadreLocation(2014l, userAddress, partyIds);
-					if(countVO != null)
-						resultList.add(countVO);
-					
-					countVO = setElectionPerformanceDetailsInCadreLocation(2009l, userAddress, partyIds);
-					if(countVO != null)
-						resultList.add(countVO);
+					for (Object[] voter : voterDetails) {
+						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
+						if(publicationDateId != null && publicationDateId.longValue() == IConstants.VOTER_DATA_PUBLICATION_ID)
+						{
+							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
+							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+							if(tdpCadreList != null && tdpCadreList.size()>0)
+							{
+								TdpCadre tdpCadre =  (TdpCadre) tdpCadreList.get(0);
+								
+								if(tdpCadre != null)
+								{
+									tdpCadreId = tdpCadre.getTdpCadreId();
+								}
+							}
+							break;
+						}
+					}
 				}
 			}
-		}
 			
+			
+			if(tdpCadreId != null && tdpCadreId > 0L)
+			{
+				UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+				if(userAddress != null)
+				{
+					List<Long> partyIds = new ArrayList<Long>();
+					partyIds.add(872l);//TDP partyId
+					partyIds.add(163l);//BJP partyId
+					
+					if(userAddress != null)
+					{
+						RegisteredMembershipCountVO countVO = null;
+						 countVO = setElectionPerformanceDetailsInCadreLocation(2014l, userAddress, partyIds);
+						if(countVO != null)
+							resultList.add(countVO);
+						
+						countVO = setElectionPerformanceDetailsInCadreLocation(2009l, userAddress, partyIds);
+						if(countVO != null)
+							resultList.add(countVO);
+					}
+				}
+			}
+			else if(voterCardNo != null && !voterCardNo.isEmpty())
+			{
+				CadreOverviewVO returnVO = new CadreOverviewVO();
+				
+					for (Object[] voter : voterDetails) {
+						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
+						if(publicationDateId != null && publicationDateId.longValue() == IConstants.VOTER_DATA_PUBLICATION_ID)
+						{
+							Long constituencyId = voter[0] != null ? Long.valueOf(voter[0].toString()):0L;
+							Long boothId = voter[1] != null ? Long.valueOf(voter[1].toString()):0L;
+							Long districtId = voter[7] != null ? Long.valueOf(voter[7].toString()):0L;
+							String districtName= voter[12] != null ? voter[12].toString():"";
+							String constituencyName= voter[11] != null ? voter[11].toString():"";
+							
+							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
+							List<Long> voterIdsList = new ArrayList<Long>(0);
+							voterIdsList.add(voterId);
+							
+							String voterName =  voter[4] != null ? voter[4].toString():"";
+							String age =  voter[5] != null ? voter[5].toString():"";
+							String gender =  voter[6] != null ? voter[6].toString():"";
+							String relativeName =  voter[8] != null ? voter[8].toString():"";
+							String relativeType =  voter[10] != null ? voter[10].toString():"";
+							String hNo = voter[9] != null ? voter[9].toString():"";;
+							String partNo= voter[13] != null ? voter[13].toString():"";
+							LocalElectionBody localElectionBody = null;//voter[14] != null ? (LocalElectionBody) voter[14]:null;
+							Long panchayatId = voter[15] != null ? Long.valueOf(voter[15].toString()):0L;
+							String panchayatName= voter[16] != null ? voter[16].toString():"";
+							Long tehsilId = voter[17] != null ? Long.valueOf(voter[17].toString()):0L;
+							String tehsilName= voter[18] != null ? voter[18].toString():"";
+							Long stateId = voter[19] != null ? Long.valueOf(voter[19].toString()):0L;
+							String stateName= voter[20] != null ? voter[20].toString():"";
+							
+							List<Object[]> parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
+							if(parliamentList != null && parliamentList.size()>0)
+							{
+								Object[] parliament = parliamentList.get(0);
+								if(parliament == null)
+								{
+									if(parliamentList.size()>1)
+										parliament = parliamentList.get(1);
+								}
+								else
+								{
+									Long parliamentId = parliament[0] != null ? Long.valueOf(parliament[0].toString()):0L;
+									String parliamentName= parliament[1] != null ? parliament[1].toString():"";
+									
+									returnVO.setParliamentId(parliamentId);
+									returnVO.setParlimentName(parliamentName);
+								}
+							}
+						
+							returnVO.setConstituencyId(constituencyId);									
+							returnVO.setConstituencyName(constituencyName);
+							returnVO.setBoothId(boothId);	
+							returnVO.setPartNo(Long.valueOf(partNo));
+							
+							List<Object[]> voterCasteInfo = userVoterDetailsDAO.getCasteByVoterId(1L,voterIdsList);
+							if(voterCasteInfo != null && voterCasteInfo.size()>0)
+							{
+								Object[] casteInfo = voterCasteInfo.get(0);
+								String casteName = casteInfo[1] != null ? casteInfo[1].toString().trim():"";
+								returnVO.setCasteName(casteName);
+							}
+															
+							returnVO.setDistrictId(districtId);
+							returnVO.setDistrictName(districtName);
+							returnVO.setHouseNo(hNo);									
+							//returnVO.setImagePath(filePath);
+							returnVO.setPanchayatId(panchayatId);
+							returnVO.setPanchayatName(panchayatName);
+							returnVO.setTehsilId(tehsilId);
+							returnVO.setTehsilName(tehsilName);
+							returnVO.setStateId(stateId);
+							returnVO.setStateName(stateName);
+							if(localElectionBody != null)
+								returnVO.setLocalElectionBodyId(localElectionBody.getLocalElectionBodyId().toString());
+													
+							returnVO.setVoterId(voterId);
+							returnVO.setVoterCardNo(voterCardNo);
+							
+							}
+							
+							UserAddress userAddress = new UserAddress();
+							
+							userAddress.setBooth(boothDAO.get(returnVO.getBoothId()));
+							userAddress.setPanchayat(panchayatDAO.get(returnVO.getPanchayatId()));
+							userAddress.setTehsil(tehsilDAO.get(returnVO.getTehsilId()));
+							
+							if(returnVO.getLocalElectionBodyId() != null && Long.valueOf(returnVO.getLocalElectionBodyId())>0L)
+								userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(returnVO.getLocalElectionBodyId())));
+							
+							userAddress.setConstituency(constituencyDAO.get(returnVO.getConstituencyId()));
+							userAddress.setDistrict(districtDAO.get(returnVO.getDistrictId()));
+							userAddress.setState(stateDAO.get(1L));
+							
+							if(userAddress != null)
+							{
+								List<Long> partyIds = new ArrayList<Long>();
+								partyIds.add(872l);//TDP partyId
+								partyIds.add(163l);//BJP partyId
+								
+								if(userAddress != null)
+								{
+									RegisteredMembershipCountVO countVO = null;
+									 countVO = setElectionPerformanceDetailsInCadreLocation(2014l, userAddress, partyIds);
+									if(countVO != null)
+										resultList.add(countVO);
+									
+								}
+						  }
+							
+							if(resultList != null && resultList.size()>0)
+								returnVO.setElectionResultsPerfList(resultList);
+							
+							break; // iteration only once 
+						}
+					}
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getElectionPerformanceInCadreLocation() method, Exception - ",e);
 		}

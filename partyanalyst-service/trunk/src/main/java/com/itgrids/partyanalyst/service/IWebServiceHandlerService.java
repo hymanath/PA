@@ -110,5 +110,5 @@ public interface IWebServiceHandlerService {
 	 public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId);
 	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
 	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
-	 public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId);
+	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
 }
