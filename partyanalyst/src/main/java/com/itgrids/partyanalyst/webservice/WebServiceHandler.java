@@ -1522,12 +1522,12 @@ public class WebServiceHandler {
 	}
 	
 	@GET
-	@Path("/getElectionPerformanceInCadreLocation/{tdpCadreId}")
+	@Path("/getElectionPerformanceInCadreLocation/{tdpCadreId}/{voterCardNo}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RegisteredMembershipCountVO> getElectionPerformanceForCadre(@PathParam("tdpCadreId") String tdpCadreId){
+	public List<RegisteredMembershipCountVO> getElectionPerformanceForCadre(@PathParam("tdpCadreId") String tdpCadreId,@PathParam("voterCardNo") String voterCardNo){
 		
 		try{
-			return webServiceHandlerService.getElectionPerformanceInCadreLocation(Long.valueOf(tdpCadreId));
+			return webServiceHandlerService.getElectionPerformanceInCadreLocation(Long.valueOf(tdpCadreId),voterCardNo);
 		}
 		catch(Exception e)
 		{
