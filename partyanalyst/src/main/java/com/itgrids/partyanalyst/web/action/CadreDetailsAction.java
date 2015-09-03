@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
@@ -52,7 +53,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private Long						    constituencyId;
 	private List<BasicVO>					basicVoList;
 	private BasicVO							basicVo;
-	
+	private List<NtrTrustStudentVO>        ntrTrustStudentVOList; 
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -255,6 +256,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 
 	public void setBasicVo(BasicVO basicVo) {
 		this.basicVo = basicVo;
+	}
+	
+	public List<NtrTrustStudentVO> getNtrTrustStudentVOList() {
+		return ntrTrustStudentVOList;
+	}
+
+	public void setNtrTrustStudentVOList(
+			List<NtrTrustStudentVO> ntrTrustStudentVOList) {
+		this.ntrTrustStudentVOList = ntrTrustStudentVOList;
 	}
 
 
@@ -497,5 +507,30 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 		
 	}
+	public String getNtrTrustStudentDetailsInstitutionWise(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("tdpCadreId");
+			
+			ntrTrustStudentVOList=cadreDetailsService.getNtrTrustStudentDetailsInstitutionWise(tdpCadreId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadresDetailsOfDeathsAndHospitalization() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getStudentFormalDetailsByCadre(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("tdpCadreId");
+			Long institutionId=jObj.getLong("institutionId");
+			
+			ntrTrustStudentVOList=cadreDetailsService.getStudentFormalDetailsByCadre(tdpCadreId,institutionId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }

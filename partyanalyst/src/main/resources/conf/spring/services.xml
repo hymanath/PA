@@ -2595,6 +2595,13 @@
 		 <property name="districtDAO" ref="districtDAO" />
 		 <property name="stateDAO" ref="stateDAO" />
 		 <property name="candidateDAO" ref="candidateDAO" />
+		 <property name="studentCadreRelationDAO" ref="studentCadreRelationDAO" />
+		 <property name="studentParentDetailsDAO" ref="studentParentDetailsDAO" />
+		 <property name="studentContactDAO" ref="studentContactDAO" />
+		 <property name="studentCourseDAO" ref="studentCourseDAO" />
+		 <property name="studentAddressDAO" ref="studentAddressDAO" />
+		
+		 
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
