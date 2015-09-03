@@ -2594,6 +2594,7 @@
 		 <property name="panchayatDAO" ref="panchayatDAO" />
 		 <property name="districtDAO" ref="districtDAO" />
 		 <property name="stateDAO" ref="stateDAO" />
+		 <property name="candidateDAO" ref="candidateDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
