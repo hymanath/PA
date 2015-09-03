@@ -22,7 +22,16 @@ public class QuestionAnswerVO implements Serializable {
 	public List<QuestionAnswerVO> options;
 	public QuestionAnswerVO option;
 	public String question;
-
+	
+	private Long surveyId;
+	private String surveyName;
+	private Long optionValue;
+	private  String percentage;
+	private Long userId;
+	private Long count = 0l;
+	private List<QuestionAnswerVO> questions;
+	
+	
 	public Long getQuestionId() {
 		return questionId;
 	}
@@ -120,6 +129,62 @@ public class QuestionAnswerVO implements Serializable {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+
+	public Long getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(Long surveyId) {
+		this.surveyId = surveyId;
+	}
+
+	public String getSurveyName() {
+		return surveyName;
+	}
+
+	public void setSurveyName(String surveyName) {
+		this.surveyName = surveyName;
+	}
+
+	public Long getOptionValue() {
+		return optionValue;
+	}
+
+	public void setOptionValue(Long optionValue) {
+		this.optionValue = optionValue;
+	}
+
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public List<QuestionAnswerVO> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<QuestionAnswerVO> questions) {
+		this.questions = questions;
+	}
 	
-	
+   	
 }
