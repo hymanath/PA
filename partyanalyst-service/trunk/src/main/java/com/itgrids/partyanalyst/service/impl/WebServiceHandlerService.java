@@ -2898,9 +2898,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 	  }
 	  
-	 public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId){
+	 public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo){
 		 try {
-			  return  cadreDetailsService.getElectionPerformanceInCadreLocation(tdpCadreId);
+			  return  cadreDetailsService.getElectionPerformanceInCadreLocation(tdpCadreId,voterCardNo);
 		} catch (Exception e) {
 			log.debug("Entered into the getElectionPerformanceInCadreLocation  method in WebServiceHandlerService");
 		}
