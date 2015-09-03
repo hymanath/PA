@@ -311,4 +311,11 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	return query.list();
 	}
 	
+	public List<Object[]> getCandidateNameByCandidateIds(List<Long> candidateIds)
+	{
+		Query query = getSession().createQuery("select model.candidateId,model.lastname from Candidate model where model.candidateId in (:candidateIds)");
+		query.setParameterList("candidateIds", candidateIds);
+		return query.list();
+	}
+	
 }
