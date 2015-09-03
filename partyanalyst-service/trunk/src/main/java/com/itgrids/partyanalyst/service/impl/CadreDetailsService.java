@@ -17,12 +17,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateContestedLocationDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -57,6 +60,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -75,6 +79,9 @@ import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 
 public class CadreDetailsService implements ICadreDetailsService{
@@ -118,7 +125,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IPanchayatDAO panchayatDAO;
 	private IDistrictDAO districtDAO;
 	private IStateDAO stateDAO;
-	
+	private ICandidateDAO candidateDAO;
 	
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
@@ -461,6 +468,23 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setTdpCadreContestedLocationDAO(
 			ITdpCadreContestedLocationDAO tdpCadreContestedLocationDAO) {
 		this.tdpCadreContestedLocationDAO = tdpCadreContestedLocationDAO;
+	}	
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
 	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
@@ -4214,6 +4238,127 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			return returnVo;
 	 }
+  
+     
+  public List<QuestionAnswerVO> getCandidateAndConstituencySurveyResult(Long candidateId,Long constituencyId,Long surveyId)
+	{	
+		 List<QuestionAnswerVO> finalList=new ArrayList<QuestionAnswerVO>();
+		  try{
+			  
+			  //Calling Request.
+			  Client client = Client.create();
+			  //client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
+			  WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
+			  
+			  //Response
+			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+	 	      if(response.getStatus() != 200){
+	 		    
+	 		     throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }
+	 	      else{
+	 	       
+	 	    	 String output = response.getEntity(String.class);
+	 		     List<Long> userIds = new ArrayList<Long>();
+	 	    	 //iterating data.
+	 		     
+	 	    	if(output != null && !output.isEmpty()){
+	   	 	   
+	 	    	  JSONArray finalArray=new JSONArray(output);
+	 	    	  if(finalArray!=null && finalArray.length()>0){
+	 	    		
+	 	    		 for(int i=0;i<finalArray.length();i++)
+	   	 			 {
+	 	    			QuestionAnswerVO vo=new QuestionAnswerVO();
+	 	    		    JSONObject srvyTmp = (JSONObject) finalArray.get(i);
+	 	    		    vo.setSurveyId(srvyTmp.getLong("surveyId"));
+	 	    		    vo.setSurveyName(srvyTmp.getString("surveyName"));
+	 	    		    
+	 	    		    List<QuestionAnswerVO> qstnsLst = new ArrayList<QuestionAnswerVO>();
+	 	    		    org.codehaus.jettison.json.JSONArray questsArr = srvyTmp.getJSONArray("questions");
+	 	    		    if(questsArr!=null && questsArr.length()>0){
+	 	    		    	for(int j=0;j<questsArr.length();j++){
+	 	    		    		QuestionAnswerVO qstn=new QuestionAnswerVO();
+	 	    		    		JSONObject qstnTemp = (JSONObject) questsArr.get(j);
+	 	    		    		qstn.setQuestionId(qstnTemp.getLong("questionId"));
+	 	    		    		qstn.setQuestion(qstnTemp.getString("question"));
+	 	    		    		
+	 	    		    		List<QuestionAnswerVO> optnsLst = new ArrayList<QuestionAnswerVO>();
+	 	    		    		org.codehaus.jettison.json.JSONArray optnsArr = qstnTemp.getJSONArray("options");
+		  	 	    		    if(optnsArr!=null && optnsArr.length()>0){
+		  	 	    		    	for(int k=0;k<optnsArr.length();k++){
+		  	 	    		    		QuestionAnswerVO optn=new QuestionAnswerVO();
+		  	 	    		    		JSONObject optnTemp = (JSONObject) optnsArr.get(k);
+		  	 	    		    		optn.setOptionValue(optnTemp.getLong("optionValue"));
+		  	 	    		    		optn.setOptionVal(optnTemp.getString("optionVal"));
+		  	 	    		    		optn.setCount(optnTemp.getLong("count"));
+		  	 	    		    		optn.setPercentage(optnTemp.getString("percentage"));
+		  	 	    		    		optn.setUserId(optnTemp.getLong("userId"));
+		  	 	    		    		optnsLst.add(optn);
+		  	 	    		    		
+		  	 	    		    		userIds.add(optnTemp.getLong("userId"));
+		  	 	    		    	}
+		  	 	    		   	}
+		  	 	    		    
+		  	 	    		    qstn.setOptions(optnsLst);
+		  	 	    		    qstnsLst.add(qstn);
+	 	    		    	}
+	 	    		    }
+	 	    		    vo.setQuestions(qstnsLst);
+	 	    		    finalList.add(vo);
+	 	    		 }
+	 	    		 //getCandidate Names.
+	 	    		 if(userIds!=null && userIds.size()>0){
+	 	    			 
+	 	    			Map<Long,String> candidatesmap=new HashMap<Long,String>();
+	 	    			
+	 	    			List<Object[]> candidatesList = candidateDAO.getCandidateNameByCandidateIds(userIds);
+	 	    			if(candidatesList!=null && candidatesList.size()>0){
+	 	    				for(Object[] obj:candidatesList){
+	 	    					if(obj!=null){
+	 	    						candidatesmap.put((Long)obj[0],obj[1]!=null?obj[1].toString():"");
+	 	    					}
+	 	    				}
+	 	    			}
+	 	    			
+	 	    			if(finalList!=null && finalList.size()>0){
+	 	    				
+	 	    				for(QuestionAnswerVO survey:finalList){
+	 	    					
+	 	    					if(survey.getQuestions()!=null && survey.getQuestions().size()>0){
+	 	    						
+	 	    						for(QuestionAnswerVO question:survey.getQuestions()){
+	 	    							  
+	 	    							if(question.getOptions()!=null && question.getOptions().size()>0){
+	 	    								
+	 	    								for(QuestionAnswerVO option: question.getOptions()){
+	 	    									
+	 	    									if(option.getUserId()!=null){
+	 	    										
+	 	    										String name=candidatesmap.get(option.getUserId());
+	 	    										option.setRemarks(name!=null?name:"");
+	 	    									}
+	 	    								} 
+	 	    							}
+	 	    						} 
+	 	    					}
+	 	    				}
+	 	    			}
+	 	    			
+	 	    		 }//if
+	 	    		 
+	 	    		 
+	 	    	  }
+	 	    		 
+	 	    	}
+	 	     }
+	 	 
+		  }catch(Exception e){
+			LOG.error("Exception occured in saveGrievenceIVRResponseDetails() in WebServiceHandlerService Class",e);
+		  }
+		  return finalList;
+	  }
+  
 	
   
 }
