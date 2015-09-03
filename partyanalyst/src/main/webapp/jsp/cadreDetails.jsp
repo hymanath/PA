@@ -30,6 +30,11 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	
 <style>
+.Student-List
+{
+	padding:0px;
+}
+.Student-List li{list-style:none;}
 table
 {
     border-collapse: separate !important;
@@ -375,6 +380,16 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>
+				<div id="ntrTrustDivId">
+					<!--<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								NTR TRUST SCHOOL BENEFIT<span class="pull-right ntrBenefitCountCls" ><a style="cursor:pointer;">02</a></span>
+							</h4>
+						</div>
+						
+					</div>-->
+				</div>
             </div>
             <div class="col-md-8">
             	<div class="panel panel-default">
@@ -738,6 +753,28 @@ var globalCadreId = '${cadreId}';
 			</div>
 		</div>
 	</div>
+	    <!-- model For Ntr Trust -->
+<div class="modal fade modalForNtrTrust">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="ntrTrustTitleId"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12">
+				<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				<div id="ntrTrustDetails" class="table-scroll-1"></div>	
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -4086,6 +4123,167 @@ function buildFamilyMemberComplaint(result)
 getPartyMeetingsOverViewForCadre();
 getEventsOverviewFortdpCadre();
 
+getNtrTrustStudentDetailsInstitutionWise();
+	function getNtrTrustStudentDetailsInstitutionWise(){
+		cadreId = globalCadreId;
+		var jsObj={
+			tdpCadreId:cadreId
+		}	
+		$.ajax({
+				type:'POST',
+				 url: 'getNtrTrustStudentDetailsInstitutionWiseAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					var str='';
+					if(result !=null && result.length>0){
+						for(var i in result){
+							str+='<div class="panel panel-default">';
+								str+='<div class="panel-heading">';
+									str+='<h4 class="panel-title">'+result[i].name+'';
+											str+='<span class="pull-right ntrBenefitCountCls" attr_title="'+result[i].name+'" attr_id="'+result[i].id+'"><a style="cursor:pointer;" data-toggle="modal" data-target=".modalForNtrTrust">'+result[i].count+'</a></span>';
+									str+='</h4>';
+								str+='</div>';
+								
+							str+='</div>';
+						}
+						$("#ntrTrustDivId").html(str);
+					}
+					
+			});
+	}
+	$(document).on("click",".ntrBenefitCountCls",function(){
+		var title=$(this).attr("attr_title");
+		var instituId=$(this).attr("attr_id");
+		$("#ntrTrustTitleId").html(title+" Details");
+		getStudentFormalDetailsByCadre(instituId);
+	});
+	function getStudentFormalDetailsByCadre(institutionId){
+		$("#dataLoadingsImgForNtrTrust").show();
+		cadreId = globalCadreId;
+		var jsObj={
+			tdpCadreId:cadreId,
+			institutionId : institutionId
+		}
+		$.ajax({
+				type:'POST',
+				 url: 'getStudentFormalDetailsByCadreAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					$("#dataLoadingsImgForNtrTrust").hide();
+					var str='';
+					if(result !=null && result.length>0){
+						str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">';
+						for(var i in result){
+						  str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion323" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+									str+='<h4 class="panel-title" id="'+result[i].id+'">'+result[i].name+'</h4>';
+								str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+							  str+='<div class="panel-body">';
+								str+='<ul class="list-inline">';
+									str+='<li><b>Father Name </b> : '+result[i].fatherName+'</li>';
+									str+='<li><b>Mother Name </b> :'+result[i].motherName+'</li>';
+									if(result[i].guardian !=null && result[i].guardian !=""){
+										str+='<li><b>Guardian </b> :'+result[i].guardian+'</li>';
+									}
+									str+='<li><b>Caste </b>:'+result[i].casteStr+'</li>';
+									str+='<li><b>Date Of Birth </b> :'+result[i].dateStr+'</li>';
+									if(result[i].yearOfJoining !=null && result[i].yearOfJoining !=""){
+										str+='<li><b>Year Of Joining </b> :'+result[i].yearOfJoining+'</li>';
+									}
+									if(result[i].tdpCadreId !=null && result[i].tdpCadreId >0){
+										str+='<li><b>Cadre Id </b> :'+result[i].tdpCadreId+'</li>';
+									}
+									if(result[i].membershipNo !=null && result[i].membershipNo>0){
+										str+='<li><b>MemberShip No </b> :'+result[i].membershipNo+'</li>';
+									}
+								str+='</ul>'
+								
+								str+='<h4 class="m_0">Communication Address</h4><hr class="m_0"/>'
+								
+								for(var j in result[i].addressDetailsList){
+									str+='<ul class="Student-List">';
+									if(result[i].addressDetailsList[j].houseNoStr !=null && result[i].addressDetailsList[j].houseNoStr !=""){
+										str+='<li><b>H NO</b> : '+result[i].addressDetailsList[j].houseNoStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].stateStr !=null && result[i].addressDetailsList[j].stateStr !=""){
+										str+='<li><b>State</b> : '+result[i].addressDetailsList[j].stateStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].districtStr !=null && result[i].addressDetailsList[j].districtStr !=""){
+										str+='<li><b>District</b> : '+result[i].addressDetailsList[j].districtStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].constituencyStr !=null && result[i].addressDetailsList[j].constituencyStr !=""){
+										str+='<li><b>Constituency</b> : '+result[i].addressDetailsList[j].constituencyStr+' Constituency</li>';
+									}
+									if(result[i].addressDetailsList[j].tehsilStr !=null && result[i].addressDetailsList[j].tehsilStr !=""){
+										str+='<li><b>Mandal</b> : '+result[i].addressDetailsList[j].tehsilStr+' Mandal</li>';
+									}
+									if(result[i].addressDetailsList[j].localElectionBodyStr !=null && result[i].addressDetailsList[j].localElectionBodyStr !=""){
+										str+='<li><b>Muncipality</b> : '+result[i].addressDetailsList[j].localElectionBodyStr+' Muncipality</li>';
+									}
+									if(result[i].addressDetailsList[j].panchayatStr !=null && result[i].addressDetailsList[j].panchayatStr !=""){
+										str+='<li><b>Panchayat</b> : '+result[i].addressDetailsList[j].panchayatStr+' Panchayat</li>';
+									}
+									if(result[i].addressDetailsList[j].wardStr !=null && result[i].addressDetailsList[j].wardStr !=""){
+										str+='<li><b>Ward</b> : '+result[i].addressDetailsList[j].wardStr+' Ward</li>';
+									}
+									if(result[i].addressDetailsList[j].locationStr !=null && result[i].addressDetailsList[j].locationStr !=""){
+										str+='<li><b>Location</b> : '+result[i].addressDetailsList[j].locationStr+' Location</li>';
+									}
+									if(result[i].addressDetailsList[j].streetStr !=null && result[i].addressDetailsList[j].streetStr !=""){
+										str+='<li><b>Street</b> : '+result[i].addressDetailsList[j].streetStr+' Street</li>';
+									}
+									if(result[i].addressDetailsList[j].pincodeLng !=null && result[i].addressDetailsList[j].pincodeLng>0){
+										str+='<li><b>Pincode</b> : '+result[i].addressDetailsList[j].pincodeLng+'</li>';
+									}
+									
+									for(var l in result[i].ntrTrustStudentVoList){
+											str+='<li><b>Contact:</b>'+result[i].ntrTrustStudentVoList[l].phoneNo+'('+result[i].ntrTrustStudentVoList[l].phoneType+')';
+											str+='</li>';
+										}
+									str+='</ul>';
+								}
+								str+='<table class="table table-bordered">';
+									str+='<thead>';
+										str+='<th>Course</th>';
+										str+='<th>Start Date</th>';
+										str+='<th>End Date</th>';
+									str+='</thead>';
+									for(var k in result[i].academicDetailsList){
+										str+='<tr>';
+											str+='<td>'+result[i].course+'</td>';
+											str+='<td>'+result[i].academicDetailsList[k].startMonth+' '+result[i].academicDetailsList[k].startYear+'</td>';
+											str+='<td>'+result[i].academicDetailsList[k].endMonth+' '+result[i].academicDetailsList[k].endYear+'</td>';
+										str+='</tr>';
+									}
+																		
+								str+='</table>';
+								/*str+='<h4 class="m_0"><i class="glyphicon glyphicon-phone"></i> Contact</h4><hr class="m_0"/>'
+									str+='<table class="table">';
+										str+='<thead>';
+											str+='<th>Contact Type</th>';
+											str+='<th>Contact No</th>';
+										str+='</thead>';
+										
+										for(var l in result[i].ntrTrustStudentVoList){
+											str+='<tr>';
+												str+='<td>'+result[i].ntrTrustStudentVoList[l].phoneType+'</td>';
+												str+='<td>'+result[i].ntrTrustStudentVoList[l].phoneNo+'</td>';
+											str+='</tr>';
+										}
+									str+='</table>';*/
+							  str+='</div>';
+							str+='</div>';
+						  str+='</div>';
+						}
+						str+='</div>';
+					}
+					$("#ntrTrustDetails").html(str);
+				});
+	}
+	
 
 </script>
 </body>
