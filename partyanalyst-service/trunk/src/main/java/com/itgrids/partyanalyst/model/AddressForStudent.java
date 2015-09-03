@@ -20,13 +20,13 @@ public class AddressForStudent extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long addressId;
-	private String stateId;
-	private String districtId;
-	private String constituencyId;
-	private String tehsilId;
-	private String localElectionBodyId;
-	private String panchayatId;
-	private String wardId;
+	private String state;
+	private String district;
+	private String constituency;
+	private String tehsil;
+	private String localElectionBody;
+	private String panchayat;
+	private String ward;
 	private String location;
 	private String houseNo;
 	private String street;
@@ -42,60 +42,60 @@ public class AddressForStudent extends BaseModel implements Serializable{
 		this.addressId = addressId;
 	}
 	
-	@Column(name = "state_id")
-	public String getStateId() {
-		return stateId;
+	@Column(name = "state")
+	public String getState() {
+		return state;
 	}
-	public void setStateId(String stateId) {
-		this.stateId = stateId;
-	}
-	
-	@Column(name = "district_id")
-	public String getDistrictId() {
-		return districtId;
-	}
-	public void setDistrictId(String districtId) {
-		this.districtId = districtId;
+	public void setState(String state) {
+		this.state = state;
 	}
 	
-	@Column(name = "constituency_id")
-	public String getConstituencyId() {
-		return constituencyId;
+	@Column(name = "district")
+	public String getDistrict() {
+		return district;
 	}
-	public void setConstituencyId(String constituencyId) {
-		this.constituencyId = constituencyId;
-	}
-	
-	@Column(name = "tehsil_id")
-	public String getTehsilId() {
-		return tehsilId;
-	}
-	public void setTehsilId(String tehsilId) {
-		this.tehsilId = tehsilId;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 	
-	@Column(name = "local_election_body_id")
-	public String getLocalElectionBodyId() {
-		return localElectionBodyId;
+	@Column(name = "constituency")
+	public String getConstituency() {
+		return constituency;
 	}
-	public void setLocalElectionBodyId(String localElectionBodyId) {
-		this.localElectionBodyId = localElectionBodyId;
-	}
-	
-	@Column(name = "panchayat_id")
-	public String getPanchayatId() {
-		return panchayatId;
-	}
-	public void setPanchayatId(String panchayatId) {
-		this.panchayatId = panchayatId;
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
 	}
 	
-	@Column(name = "ward_id")
-	public String getWardId() {
-		return wardId;
+	@Column(name = "tehsil")
+	public String getTehsil() {
+		return tehsil;
 	}
-	public void setWardId(String wardId) {
-		this.wardId = wardId;
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+	
+	@Column(name = "local_election_body")
+	public String getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(String localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	
+	@Column(name = "panchayat")
+	public String getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
+	
+	@Column(name = "ward")
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
 	}
 	
 	@Column(name = "location")
