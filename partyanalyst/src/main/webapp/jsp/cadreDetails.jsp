@@ -4228,16 +4228,18 @@ getNtrTrustStudentDetailsInstitutionWise();
 				}).done(function(result){
 					var str='';
 					if(result !=null && result.length>0){
-						for(var i in result){
-							str+='<div class="panel panel-default">';
+						str+='<div class="panel panel-default">';
 								str+='<div class="panel-heading">';
-									str+='<h4 class="panel-title">'+result[i].name+'';
-											str+='<span class="pull-right ntrBenefitCountCls" attr_title="'+result[i].name+'" attr_id="'+result[i].id+'"><a style="cursor:pointer;" data-toggle="modal" data-target=".modalForNtrTrust">'+result[i].count+'</a></span>';
-									str+='</h4>';
+									str+='<h4 class="panel-title">NTR TRUST EDUCATION BENEFITS</h4>';
 								str+='</div>';
-								
-							str+='</div>';
+						for(var i in result){
+								str+='<div class="panel-body">';
+									str+='<div >'+result[i].name+'';
+											str+='<span class="pull-right ntrBenefitCountCls" attr_title="'+result[i].name+'" attr_id="'+result[i].id+'"><a style="cursor:pointer;" data-toggle="modal" data-target=".modalForNtrTrust">'+result[i].count+'</a></span>';
+									str+='</div>';
+								str+='</div>';
 						}
+						str+='</div>';
 						$("#ntrTrustDivId").html(str);
 					}
 					
@@ -4295,7 +4297,7 @@ getNtrTrustStudentDetailsInstitutionWise();
 									str+='<li><b>Relation With Cadre</b> :'+result[i].relation+'</li>';
 								str+='</ul>'
 								
-								str+='<h4 class="m_0"><i class="glyphicon glyphicon-map-marker"></i>Communication Address</h4><hr class="m_0"/>'
+								str+='<h4 class="m_0"><i class="glyphicon glyphicon-map-marker" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
 								
 								for(var j in result[i].addressDetailsList){
 									str+='<ul class="Student-List">';
@@ -4339,6 +4341,7 @@ getNtrTrustStudentDetailsInstitutionWise();
 										}
 									str+='</ul>';
 								}
+								str+='<h4 class="m_0"><i class="glyphicon glyphicon-book" style="font-size:14px"></i> Acedamic Details</h4><hr class="m_0"/>';
 								str+='<table class="table table-bordered">';
 									str+='<thead>';
 										str+='<th>Course</th>';
@@ -4355,7 +4358,7 @@ getNtrTrustStudentDetailsInstitutionWise();
 																		
 								str+='</table>';
 								
-								str+='<h4 class="m_0"><i class="glyphicon glyphicon-share"></i> Recommendation Details</h4><hr class="m_0"/>';
+								str+='<h4 class="m_0"><i class="glyphicon glyphicon-share" style="font-size:14px"></i> Recommendation Details</h4><hr class="m_0"/>';
 								str+='<table class="table table-bordered">';
 								  str+='<thead>';
 									str+='<th>Person Name</th>';
