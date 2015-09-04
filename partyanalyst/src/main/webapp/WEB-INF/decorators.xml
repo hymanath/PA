@@ -160,7 +160,7 @@
 		<pattern>/trainingCampMainDashboard*</pattern>
 		<pattern>/partyMeetingsDashBoard*</pattern>
 		<pattern>/trainingProgramDashboard*</pattern>
-		
+		<pattern>/trainingCenterDashBoardAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
