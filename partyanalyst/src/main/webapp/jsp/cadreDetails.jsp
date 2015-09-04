@@ -4250,6 +4250,7 @@ getNtrTrustStudentDetailsInstitutionWise();
 		getStudentFormalDetailsByCadre(instituId);
 	});
 	function getStudentFormalDetailsByCadre(institutionId){
+		$("#ntrTrustDetails").html("");
 		$("#dataLoadingsImgForNtrTrust").show();
 		cadreId = globalCadreId;
 		var jsObj={
@@ -4291,9 +4292,10 @@ getNtrTrustStudentDetailsInstitutionWise();
 									if(result[i].membershipNo !=null && result[i].membershipNo>0){
 										str+='<li><b>MemberShip No </b> :'+result[i].membershipNo+'</li>';
 									}
+									str+='<li><b>Relation With Cadre</b> :'+result[i].relation+'</li>';
 								str+='</ul>'
 								
-								str+='<h4 class="m_0">Communication Address</h4><hr class="m_0"/>'
+								str+='<h4 class="m_0"><i class="glyphicon glyphicon-map-marker"></i>Communication Address</h4><hr class="m_0"/>'
 								
 								for(var j in result[i].addressDetailsList){
 									str+='<ul class="Student-List">';
@@ -4352,20 +4354,30 @@ getNtrTrustStudentDetailsInstitutionWise();
 									}
 																		
 								str+='</table>';
-								/*str+='<h4 class="m_0"><i class="glyphicon glyphicon-phone"></i> Contact</h4><hr class="m_0"/>'
-									str+='<table class="table">';
-										str+='<thead>';
-											str+='<th>Contact Type</th>';
-											str+='<th>Contact No</th>';
-										str+='</thead>';
-										
-										for(var l in result[i].ntrTrustStudentVoList){
-											str+='<tr>';
-												str+='<td>'+result[i].ntrTrustStudentVoList[l].phoneType+'</td>';
-												str+='<td>'+result[i].ntrTrustStudentVoList[l].phoneNo+'</td>';
-											str+='</tr>';
+								
+								str+='<h4 class="m_0"><i class="glyphicon glyphicon-share"></i> Recommendation Details</h4><hr class="m_0"/>';
+								str+='<table class="table table-bordered">';
+								  str+='<thead>';
+									str+='<th>Person Name</th>';
+									str+='<th>Designation</th>';
+									str+='<th>Contact</th>';
+									str+='<th>MemberShip No</th>';
+								  str+='</thead>';
+								  for(var b in result[i].recomendationDetailsList){
+									str+='<tr>';
+										str+='<td>'+result[i].recomendationDetailsList[b].name+'</td>';
+										str+='<td>'+result[i].recomendationDetailsList[b].designation+'</td>';
+										str+='<td>'+result[i].recomendationDetailsList[b].phoneNo+'</td>';
+										if(result[i].recomendationDetailsList[b].membershipNo !=null && result[i].recomendationDetailsList[b].membershipNo >0){
+											str+='<td>'+result[i].recomendationDetailsList[b].membershipNo+'</td>';
+										}else{
+											str+='<td>-</td>';
 										}
-									str+='</table>';*/
+										
+									str+='</tr>';
+								  }
+								 
+								str+='</table>';
 							  str+='</div>';
 							str+='</div>';
 						  str+='</div>';
