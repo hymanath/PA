@@ -4215,25 +4215,25 @@ getNtrTrustStudentDetailsInstitutionWise();
 										str+='<li><b>District</b> : '+result[i].addressDetailsList[j].districtStr+'</li>';
 									}
 									if(result[i].addressDetailsList[j].constituencyStr !=null && result[i].addressDetailsList[j].constituencyStr !=""){
-										str+='<li><b>Constituency</b> : '+result[i].addressDetailsList[j].constituencyStr+' Constituency</li>';
+										str+='<li><b>Constituency</b> : '+result[i].addressDetailsList[j].constituencyStr+' </li>';
 									}
 									if(result[i].addressDetailsList[j].tehsilStr !=null && result[i].addressDetailsList[j].tehsilStr !=""){
-										str+='<li><b>Mandal</b> : '+result[i].addressDetailsList[j].tehsilStr+' Mandal</li>';
+										str+='<li><b>Mandal</b> : '+result[i].addressDetailsList[j].tehsilStr+'</li>';
 									}
 									if(result[i].addressDetailsList[j].localElectionBodyStr !=null && result[i].addressDetailsList[j].localElectionBodyStr !=""){
-										str+='<li><b>Muncipality</b> : '+result[i].addressDetailsList[j].localElectionBodyStr+' Muncipality</li>';
+										str+='<li><b>Muncipality</b> : '+result[i].addressDetailsList[j].localElectionBodyStr+' </li>';
 									}
 									if(result[i].addressDetailsList[j].panchayatStr !=null && result[i].addressDetailsList[j].panchayatStr !=""){
-										str+='<li><b>Panchayat</b> : '+result[i].addressDetailsList[j].panchayatStr+' Panchayat</li>';
+										str+='<li><b>Panchayat</b> : '+result[i].addressDetailsList[j].panchayatStr+'  </li>';
 									}
 									if(result[i].addressDetailsList[j].wardStr !=null && result[i].addressDetailsList[j].wardStr !=""){
 										str+='<li><b>Ward</b> : '+result[i].addressDetailsList[j].wardStr+' Ward</li>';
 									}
 									if(result[i].addressDetailsList[j].locationStr !=null && result[i].addressDetailsList[j].locationStr !=""){
-										str+='<li><b>Location</b> : '+result[i].addressDetailsList[j].locationStr+' Location</li>';
+										str+='<li><b>Location</b> : '+result[i].addressDetailsList[j].locationStr+' </li>';
 									}
 									if(result[i].addressDetailsList[j].streetStr !=null && result[i].addressDetailsList[j].streetStr !=""){
-										str+='<li><b>Street</b> : '+result[i].addressDetailsList[j].streetStr+' Street</li>';
+										str+='<li><b>Street</b> : '+result[i].addressDetailsList[j].streetStr+' </li>';
 									}
 									if(result[i].addressDetailsList[j].pincodeLng !=null && result[i].addressDetailsList[j].pincodeLng>0){
 										str+='<li><b>Pincode</b> : '+result[i].addressDetailsList[j].pincodeLng+'</li>';
