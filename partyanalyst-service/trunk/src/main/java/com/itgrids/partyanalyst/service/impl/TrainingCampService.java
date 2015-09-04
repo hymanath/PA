@@ -2163,6 +2163,26 @@ public class TrainingCampService implements ITrainingCampService{
 				List<TrainingMemberVO> resultList = setMemberDetails(list);
 				inputVO.setSubList(resultList);
 			}
+			List<Object[]> remarks = trainingCampScheduleInviteeTrackDAO.getMemberRemarks(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			if(remarks != null && remarks.size() > 0)
+			{
+				DateUtilService date = new DateUtilService();
+				for(Object[] params : remarks)
+				{
+					TrainingMemberVO vo = getMatchedVo1(inputVO.getSubList(), (Long)params[0]);
+					if(vo != null)
+					{
+						TrainingMemberVO remarkVo = new TrainingMemberVO();
+						remarkVo.setName(params[1] != null ? params[1].toString() : "");
+						if(params[2] != null && !params[2].toString().isEmpty())
+						remarkVo.setImage(date.convert12HoursDateFormat(params[2].toString().substring(0, 19)));
+						else
+						remarkVo.setImage("");	
+						vo.getSubList().add(remarkVo);
+					}
+					
+				}
+			}
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallMemberDetails() method", e);

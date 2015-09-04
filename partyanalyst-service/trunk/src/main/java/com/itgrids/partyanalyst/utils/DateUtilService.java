@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,6 +10,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 /**
  * This Class Provides Utility Services On Date,Time and Calander.
@@ -233,5 +235,21 @@ public class DateUtilService {
 		}
 		return "";
 	}
+	//June 30 2015 1:15pm (yyyy-MM-dd hh:mm:ss)
+		public String convert12HoursDateFormat(String dateStr)
+		{
+			try{
+				
+				SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				SimpleDateFormat outputformat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+				Date date = inputFormat.parse(dateStr);
+				return outputformat.format(date);
+				
+				
+			}catch (Exception e) {
+				Log.error("Exception Occured in convert12HoursDateFormat() method, Exception - ",e);
+				return null;
+			}
+		}
 	
 }
