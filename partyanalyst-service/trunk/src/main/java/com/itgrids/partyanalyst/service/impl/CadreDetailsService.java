@@ -4303,7 +4303,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			  //Calling Request.
 			  Client client = Client.create();
 			  //client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
+			  WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
 			  
 			  //Response
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
