@@ -286,6 +286,20 @@ footer
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="myModalRemarks" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Remarks</h4>
+      </div>
+      <div class="modal-body" id="remarkContentDiv">
+        Body
+      </div>
+    </div>
+  </div>
+</div>
 <footer>
 	<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>
@@ -429,9 +443,10 @@ var jObj={
 			buildScheduleCallMemberDetailsCount(result,jObj);
 		   });	
 }
-
+var membersList;
 function buildScheduleCallMemberDetailsCount(result,jObj)
 {
+membersList;
 var purpose ;
 var callFor ;
 if(jObj.purposeId == 1)
@@ -448,6 +463,7 @@ var str='';
 
 if(result.subList != null && result.subList .length > 0)
 {
+membersList = result.subList;
 str+='<table class="table table-bordered m_top20">';
 str+='<thead class="bg_d">';
 str+='<th>Image</th>';
@@ -500,7 +516,14 @@ else{
 str+='<td>'+callFor+' '+purpose+'</td>';
 str+='<td>'+result.subList[i].location+'</td>';
 str+='<td>'+result.subList[i].constituency+'</td>';
-str+='<td>'+result.subList[i].remarks+'</td>';
+if(result.subList[i].subList != null && result.subList[i].subList.length > 0)
+{
+str+='<td><i title="View Remarks" class="glyphicon glyphicon-list-alt" style="cursor:pointer"  type="button" data-toggle="modal" data-target="#myModalRemarks" onclick="showRemarks(\''+result.subList[i].id+'\');"></i></td>';
+}
+else
+{
+str+='<td></td>';
+}
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'
 str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');">Update Status</button>';
@@ -515,6 +538,44 @@ str+='No Data Available...';
 }
 $("#memberInfoDiv").html(str);
 
+}
+function showRemarks(cadreId)
+{
+
+
+$("#remarkContentDiv").html('<img src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
+var str ='';
+var flag = false;
+if(membersList != null && membersList.length > 0)
+{
+	for(var i in membersList)
+	{
+      if(cadreId == membersList[i].id)
+	  {
+	
+		str+='<table class="table table-bordered">';
+		str+='<tr>';
+		str+='<th>Remark</th>';
+		str+='<th>Date</th>';
+		str+='</tr>';
+	    for(var j=0;j<membersList[i].subList.length;j++)
+		{
+		console.log(membersList.subList)
+			flag = true;
+			str+='<tr>';
+			str+='<td>'+ membersList[i].subList[j].name+'</td>';
+			str+='<td>'+ membersList[i].subList[j].image+'</td>';
+			str+='</tr>';
+		}
+		str+='</table>';
+	  }
+	}
+}
+
+if(!flag)
+$("#remarkContentDiv").html('No Remarks');
+else
+$("#remarkContentDiv").html(str);
 }
 var tdpCadreId;
 var inviteeId;
@@ -531,13 +592,14 @@ $(".scheduleStatuscehckbox").prop( "checked", false );
    $('.callback-div').hide();
 	$('.switchoff-div').hide();
 	$("#messageDiv").html("");
+	$("#ajaxImage").hide();
 	
 	if(trainingCampBatchId != null && trainingCampBatchId > 0)
 		$("#batchId").val(trainingCampBatchId);
 
 }
 function setDefaultImage(img){
-	  img.src = "dist/img/profileimage.png";
+	  img.src = "dist/img/profile.png";
    }
    function getPrograms()
    {
@@ -1078,6 +1140,7 @@ function setDefaultImage(img){
    $("#callstatusSelect").val(0);
    
    }
+  
    
 </script>
 <script>
