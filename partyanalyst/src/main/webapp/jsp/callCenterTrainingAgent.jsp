@@ -526,7 +526,7 @@ str+='<td></td>';
 }
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'
-str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');">Update Status</button>';
+str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');populateFields(\''+result.subList[i].status+'\');">Update Status</button>';
 str+='</td>';
 str+='</tr>';
 }
@@ -582,6 +582,9 @@ var inviteeId;
 var inviteeCallerId;
 function setCadreInfo(cadreId,inviteId,inviteCallerId,trainingCampBatchId)
 {
+tdpCadreId;
+inviteeId;
+inviteeCallerId;
 tdpCadreId = cadreId;
 inviteeId = inviteId;
 inviteeCallerId = inviteCallerId;
@@ -597,6 +600,14 @@ $(".scheduleStatuscehckbox").prop( "checked", false );
 	if(trainingCampBatchId != null && trainingCampBatchId > 0)
 		$("#batchId").val(trainingCampBatchId);
 
+}
+function populateFields(status)
+{
+   $(".scheduleStatuscehckbox").each(function()
+   {
+		if($(this).attr("attr-text") == status)
+		$(this).prop( "checked", true);
+   });
 }
 function setDefaultImage(img){
 	  img.src = "dist/img/profile.png";
@@ -798,7 +809,7 @@ function setDefaultImage(img){
 			if(i>0 && i<9 && result[i].name.indexOf("Call Back") ==-1)
 			{
 			 str+='<label class="checkbox-inline">';
-			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'">'+result[i].name+'';
 			 str+='</label>';
 			}
 		}
@@ -807,7 +818,7 @@ function setDefaultImage(img){
 			if(i>0 && i<10 && i != 3 && result[i].name.indexOf("Call Back") ==-1)
 			{
 			 str+='<label class="checkbox-inline">';
-			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'">'+result[i].name+'';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'">'+result[i].name+'';
 			 str+='</label>';
 			}
 		}
