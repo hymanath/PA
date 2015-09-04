@@ -15,6 +15,8 @@ public class NtrTrustStudentVO implements Serializable{
 	private Long tdpCadreId;
 	private Long membershipNo;
 	private Long addressId;
+	private Long pincodeLng;
+	private Long designationId;
 	
 	private String institution;
 	private String course;
@@ -45,16 +47,39 @@ public class NtrTrustStudentVO implements Serializable{
 	private String locationStr;
 	private String houseNoStr;
 	private String streetStr;
-	private Long pincodeLng;
+	
+	private String designation;
 	
 	
 	
 	private List<NtrTrustStudentVO> ntrTrustStudentVoList;
 	private List<NtrTrustStudentVO> academicDetailsList;
 	private List<NtrTrustStudentVO> addressDetailsList;
+	private List<NtrTrustStudentVO> recomendationDetailsList;
 	
 	
 	
+	
+	
+	public List<NtrTrustStudentVO> getRecomendationDetailsList() {
+		return recomendationDetailsList;
+	}
+	public void setRecomendationDetailsList(
+			List<NtrTrustStudentVO> recomendationDetailsList) {
+		this.recomendationDetailsList = recomendationDetailsList;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 	public Long getAddressId() {
 		return addressId;
 	}

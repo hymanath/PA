@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IStudentCadreRelationDAO;
 import com.itgrids.partyanalyst.dao.IStudentContactDAO;
 import com.itgrids.partyanalyst.dao.IStudentCourseDAO;
 import com.itgrids.partyanalyst.dao.IStudentParentDetailsDAO;
+import com.itgrids.partyanalyst.dao.IStudentRecomendationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -138,8 +139,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IStudentContactDAO studentContactDAO;
 	private IStudentCourseDAO studentCourseDAO;
 	private IStudentAddressDAO studentAddressDAO;
+	private IStudentRecomendationDAO studentRecomendationDAO;
 	
 	
+	
+	public IStudentRecomendationDAO getStudentRecomendationDAO() {
+		return studentRecomendationDAO;
+	}
+
+	public void setStudentRecomendationDAO(
+			IStudentRecomendationDAO studentRecomendationDAO) {
+		this.studentRecomendationDAO = studentRecomendationDAO;
+	}
+
 	public IStudentParentDetailsDAO getStudentParentDetailsDAO() {
 		return studentParentDetailsDAO;
 	}
@@ -4442,7 +4454,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		try{
 			//0.institutionId,1.studentid,2.studentName,3.dateOfbirth,4.year of joining,5.courseId,6.course code,7.casteId,
-			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status
+			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation
 			DateFormat dateFormat=null;
 			Date convertedDate = null;
 			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreId,institutionId);
@@ -4471,6 +4483,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					vo.setMembershipNo(student[9] !=null ? (Long)student[9]:0l);
 					vo.setGuardian(student[10] !=null ? student[10].toString():"");
 					vo.setStatus(student[11] !=null ? student[11].toString():"");//parent Alive Status
+					vo.setRelation(student[12] !=null ? student[12].toString():"");//relationWithCadre
 					
 					if(vo.getId() !=null && vo.getId() >0l){
 						//0.Parent Name,1.relation
@@ -4509,6 +4522,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 						
 						if(addressDetails !=null && addressDetails.size()>0){
 							vo.setAddressDetailsList(addressDetails);
+						}
+						
+						//getReferalDetailsOfStudent
+						
+						List<NtrTrustStudentVO> recomendationDetails=getRecomendationDetailsOfStudent(vo.getId());
+						if(recomendationDetails !=null && recomendationDetails.size()>0){
+							vo.setRecomendationDetailsList(recomendationDetails);
 						}
 						
 					}
@@ -4606,6 +4626,32 @@ public class CadreDetailsService implements ICadreDetailsService{
 			LOG.error("Exception Occured in getStudentSpecificAddressDetails() method, Exception - ",e);
 		}
 		return addressList;
+	}
+	public List<NtrTrustStudentVO> getRecomendationDetailsOfStudent(Long studentId){
+		List<NtrTrustStudentVO> referalList = new ArrayList<NtrTrustStudentVO>();
+		try{
+			//0.studentRecomendationId,1.personName,2.referalDesignationId,3.designation,4.contactNo,5.tdpCadreId,6.membershipNo 
+			List<Object[]> referalDetails = studentRecomendationDAO.getRecomendationDetailsOfStudent(studentId);
+			
+			if(referalDetails !=null && referalDetails.size()>0){
+				for(Object[] refer:referalDetails){
+					NtrTrustStudentVO vo  = new NtrTrustStudentVO();
+					
+					vo.setId((Long)refer[0]);//recomendationId
+					vo.setName(refer[1] !=null ? refer[1].toString() :"");//personName
+					vo.setDesignationId(refer[2] !=null ? (Long)refer[2]:0l);//referalDesignationId
+					vo.setDesignation(refer[3] !=null ? refer[3].toString() :"");
+					vo.setPhoneNo(refer[4] !=null ? refer[4].toString() : "" );//contactNo
+					vo.setTdpCadreId(refer[5] !=null ? (Long)refer[5] :0l);
+					vo.setMembershipNo(refer[6] !=null ? (Long)refer[6]:0l);
+					
+					referalList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return referalList;
 	}
 	
   
