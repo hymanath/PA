@@ -218,6 +218,30 @@ canvas {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale
 }
+table.gridtable {
+	font-family: arial,sans-serif;
+	font-weight:bold;
+	font-size:13px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+	text-align:center;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
 </style>
 	
 	<!--<style type="text/css">
@@ -387,6 +411,19 @@ var globalCadreId = '${cadreId}';
 					</div>
 					
                 </div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-heading ivrDivId" onclick="getIVRDetails();">
+								<div title="Click here for Ivr Details" id="ivrId"> 
+								<h4 class="panel-title text-bold" type="button" data-toggle="modal" data-target=".modalForIVR" style="cursor:pointer">
+									<i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS
+								</h4>
+								</div>
+								</div>
+						</div>
+					</div>
+				</div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold">
@@ -749,19 +786,7 @@ var globalCadreId = '${cadreId}';
 			</div>
 		</div>-->
 		
-		<!--<div class="row">
-        	<div class="col-md-12 col-xs-12">
-            	<div class="panel panel-default">
-                	<div class="panel-heading candConstSurvDivId" onclick="getCandidateAndConstituencySurveyResult();">
-						<div title="Click here to Show Committee Details" id="candiConsTSurveyId"> 
-                    	<h4 class="panel-title text-bold" type="button" data-toggle="modal" data-target=".modalForCandiConstSurvey" style="cursor:pointer">
-							<i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;CONSTITUENCY CANDIDATE SURVEY DETAILS
-						</h4>
-						</div>
-						</div>
-                </div>
-            </div>
-        </div>-->
+		
       
     </div>
     <!-- model -->
@@ -828,15 +853,15 @@ var globalCadreId = '${cadreId}';
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 	
-	<!--<div class="modal fade modalForCandiConstSurvey">
+	<div class="modal fade modalForIVR">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="background-color:#CCCCCC">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" style="text-align:center;"><b>Survey Details</b></h4>
+					<h4 class="modal-title" style="text-align:center;"><b>IVR Details</b></h4>
 				</div>
-				<center><img id="candiConstSurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
-				<div class="modal-body candiConstSurveyDetailsCls">
+				<center><img id="ivrDataLoadoing" src="images/icons/loading.gif" style="width:100px;height:100px;display:none;"/></center>
+				<div class="modal-body ivrDetailsCls">
 				
 				</div>
 				<div class="modal-footer">
@@ -844,7 +869,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 			</div>
 		</div>
-	</div>-->
+	</div>
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -4398,15 +4423,15 @@ function getCandidateAndConstituencySurveyResult()
 	$('.surveyDetailsCls').html("");
 	$('#surveyDataLoadoing').show();
 	
-	var candidateId = globalCandidateId;//292503
-	var constituencyId = 0;//307
+	var candidateId = globalCandidateId;
+	var constituencyId = 0;
 	
 	if(participatedConstituencyId != null && participatedConstituencyId > 0){
 		constituencyId = participatedConstituencyId;
 	}else if(globalConstituencyId > 0){
 		constituencyId = globalConstituencyId;
 	}
-	var surveyId = 0;//162
+	var surveyId = 0;
 	
 	var jsObj={
 			candidateId:candidateId,
@@ -4429,16 +4454,16 @@ function getCandidateAndConstituencySurveyResult()
 }
 
 function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
-	var candidateId = globalCandidateId;//292503
-	var constituencyId = 0;//307
+	var candidateId = globalCandidateId;
+	var constituencyId = 0;
 	
 	if(participatedConstituencyId != null && participatedConstituencyId > 0){
 		constituencyId = participatedConstituencyId;
 	}else if(participatedConstituencyId = 0 && globalConstituencyId > 0){
 		constituencyId = globalConstituencyId;
 	}
-	var surveyId = surveyId;//162
-	$("#"+divId+"").html("");
+	var surveyId = surveyId;
+	//$("#"+divId+"").html("");
 	
 	var jsObj={
 			candidateId:candidateId,
@@ -4516,6 +4541,209 @@ function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
 	}
 }
 
+function getIVRDetails()
+{
+	$("#ivrDataLoadoing").show();
+	var candidateId = globalCandidateId;//290951
+	$.ajax({
+		url: "http://mytdp.com/Survey/WebService/getCandidateIVRResult/"+candidateId+""
+	}).then(function(result) {
+		if(result != null && result.length > 0){
+			buildPublicScoreTable(result);
+		}else{
+			$("#ivrDataLoadoing").hide();
+			$(".ivrDetailsCls").html("NO DATA AVAILABLE");
+		}
+	});
+}
+
+function buildPublicScoreTable(myResult)
+{
+	$(".ivrDetailsCls").html("");
+	var str ="";
+	if(myResult!=null){
+		if(myResult.length>0){
+		str+="<h4 class='uppercase'>IVR PUBLIC</h4>";
+			for(var i in myResult){
+					result = myResult[i];
+					if(result.type=="PUBLIC"){
+						str+="<h5 style='font-weight:bold'> ROUND - "+result.round+"</h5>";
+						str+='<table style="margin:5px;" class="gridtable"  border="1"  width="95%">';
+						str+='<thead>';
+						str+='<tr>';
+								str+='<th>Total Dialed</th>';
+								str+='<th>Answered</th>';
+								str+='<th>Feedback</th>';
+								if(result.option1!=null){
+									if(result.topPrior == "Option1"){
+										if(result.option1Name!=null){
+											str+='<th style="background:green">'+result.option1Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option1</th>';
+										}
+									}else{
+										if(result.option1Name!=null){
+											str+='<th>'+result.option1Name+'</th>';
+										}else{
+											str+='<th>Option1</th>';
+										}
+									}
+								}
+								if(result.option2!=null){
+									if(result.topPrior == "Option2"){
+										if(result.option2Name!=null){
+											str+='<th style="background:green">'+result.option2Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option2</th>';
+										}
+									}else{
+										if(result.option2Name!=null){
+											str+='<th>'+result.option2Name+'</th>';
+										}else{
+											str+='<th>Option2</th>';
+										}
+									}
+								}
+								if(result.option3!=null){
+									if(result.topPrior == "Option3"){
+										if(result.option3Name!=null){
+											str+='<th style="background:green">'+result.option3Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option3</th>';
+										}
+									}else{
+										if(result.option3Name!=null){
+											str+='<th>'+result.option3Name+'</th>';
+										}else{
+											str+='<th>Option3</th>';
+										}
+									}
+								}
+								if(result.option4!=null){
+									if(result.topPrior == "Option4"){
+										if(result.option4Name!=null){
+											str+='<th style="background:green">'+result.option4Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option4</th>';
+										}
+									}else{
+										if(result.option4Name!=null){
+											str+='<th>'+result.option4Name+'</th>';
+										}else{
+											str+='<th>Option4</th>';
+										}
+									}
+								}
+								
+								if(result.option5!=null){
+									if(result.topPrior == "Option5"){
+										if(result.option5Name!=null){
+											str+='<th style="background:green">'+result.option5Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option5</th>';
+										}
+									}else{
+										if(result.option5Name!=null){
+											str+='<th>'+result.option5Name+'</th>';
+										}else{
+											str+='<th>Option5</th>';
+										}
+									}
+								}
+								if(result.option6!=null){
+									if(result.topPrior == "Option6"){
+										if(result.option6Name!=null){
+											str+='<th style="background:green">'+result.option6Name+'</th>';
+										}else{
+											str+='<th style="background:green">Option6</th>';
+										}
+									}else{
+										if(result.option6Name!=null){
+											str+='<th>'+result.option6Name+'</th>';
+										}else{
+											str+='<th>Option6</th>';
+										}
+									}
+								}
+								
+								if(result.others!=null){
+									if(result.topPrior == "Others"){
+										str+='<th style="background:green"> Others </th>';
+									}else{
+										str+='<th> Others </th>';
+									}
+								}
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+					
+						if(result!=null){
+							str+="<tr>";
+									str+="<td>"+result.totalDialed+"</td>";
+									str+="<td>"+result.answered+"( "+result.answeredPer+" %)</td>";
+									str+="<td>"+result.feedback+" ( "+result.feedbackPer+" %)</td>";
+									if(result.option1!=null){
+										if(result.topPrior == "Option1"){
+											str+='<td style="background:lightGreen">'+result.option1+'('+result.option1Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option1+'('+result.option1Per+' %)</td>';
+										}
+									}
+									if(result.option2!=null){
+										if(result.topPrior == "Option2"){
+											str+='<td style="background:lightGreen">'+result.option2+'('+result.option2Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option2+'('+result.option2Per+' %)</td>';
+										}
+									}
+									if(result.option3!=null){
+										if(result.topPrior == "Option3"){
+											str+='<td style="background:lightGreen">'+result.option3+'('+result.option3Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option3+'('+result.option3Per+' %)</td>';
+										}
+											
+									}
+									if(result.option4!=null){
+										if(result.topPrior == "Option4"){
+											str+='<td style="background:lightGreen">'+result.option4+'('+result.option4Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option4+'('+result.option4Per+' %)</td>';
+										}
+									}
+									if(result.option5!=null){
+										if(result.topPrior == "Option5"){
+											str+='<td style="background:lightGreen">'+result.option5+'('+result.option5Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option5+'('+result.option5Per+' %)</td>';
+										}
+									}
+									if(result.option6!=null){
+										if(result.topPrior == "Option6"){
+											str+='<td style="background:lightGreen">'+result.option6+'('+result.option6Per+' %)</td>';
+										}else{
+											str+='<td>'+result.option6+'('+result.option6Per+' %)</td>';
+										}
+									}
+									
+									if(result.others!=null){
+										if(result.topPrior == "Others"){
+											str+="<td style='background:lightGreen'>"+result.others+" ( "+result.othersPer+" %)</td>";
+										}else{
+											str+="<td>"+result.others+" ( "+result.othersPer+" %)</td>";
+										}
+									}
+								str+="</tr>";
+							}
+					}
+				str+"</tbody>";
+				str+="</table>";
+			}
+		}
+	}
+	$("#ivrDataLoadoing").hide();
+	$(".ivrDetailsCls").html(str);
+}
 </script>
 </body>
 </html>
