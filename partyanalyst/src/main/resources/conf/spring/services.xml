@@ -2600,6 +2600,7 @@
 		 <property name="studentContactDAO" ref="studentContactDAO" />
 		 <property name="studentCourseDAO" ref="studentCourseDAO" />
 		 <property name="studentAddressDAO" ref="studentAddressDAO" />
+		 <property name="studentRecomendationDAO" ref="studentRecomendationDAO" />
 		
 		 
 	</bean>
