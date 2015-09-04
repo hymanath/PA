@@ -400,7 +400,7 @@ if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
 interested = interested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
 notInterested = notInterested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Now")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Later")
 later = later+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 
@@ -566,7 +566,7 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not
 notInterested = notInterested+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Confirmed")
 accepted = accepted+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Not Now")
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Later")
 later = later+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 if(allocated > 0)
