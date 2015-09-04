@@ -1743,4 +1743,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	         //copy image to folder.
 	         
 	}
+    
+    public String checkLoginForTrainingCenterDashBoard(){
+    	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null && regVO.getRegistrationID() >0l){
+			return "success";
+		}else{
+			return "input";
+		}
+    }
+    
 }
