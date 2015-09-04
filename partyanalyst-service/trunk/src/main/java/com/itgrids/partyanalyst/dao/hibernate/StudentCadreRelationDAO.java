@@ -41,7 +41,8 @@ public class StudentCadreRelationDAO extends GenericDaoHibernate<StudentCadreRel
 					" model.student.institutionCourse.course.courseId,model.student.institutionCourse.course.courseCode," +
 					" model.student.casteId,model.student.tdpCadreId,model.student.membershipNo,   " +
 					" model.student.guardianDetails," +
-					" model.student.parentAliveStatus " +
+					" model.student.parentAliveStatus," +
+					" model.relation " +
 					" from StudentCadreRelation model " +
 					" where model.tdpCadreId =:tdpCadreId  ");
 			
