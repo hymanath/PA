@@ -10787,5 +10787,11 @@
 	       		<param name="root">ntrTrustStudentVOList</param>
 	  	</result>
 	</action>
+	<action name="getCandidateAndConstituencySurveyResultAction" class="cadreDetailsAction" method="getCandidateAndConstituencySurveyResult">
+	   <result type="json" name="success">
+	       		<param name="root">finalList</param>
+	  	</result>
+	</action>
+	
 </package>
 </struts>      

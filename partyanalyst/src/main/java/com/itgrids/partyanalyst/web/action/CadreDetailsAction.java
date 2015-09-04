@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -54,6 +55,18 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<BasicVO>					basicVoList;
 	private BasicVO							basicVo;
 	private List<NtrTrustStudentVO>        ntrTrustStudentVOList; 
+	private List<QuestionAnswerVO>         finalList;
+	
+
+	public List<QuestionAnswerVO> getFinalList() {
+		return finalList;
+	}
+
+
+	public void setFinalList(List<QuestionAnswerVO> finalList) {
+		this.finalList = finalList;
+	}
+
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -532,5 +545,21 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	
+public String getCandidateAndConstituencySurveyResult(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long candidateId = jObj.getLong("candidateId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long surveyId = jObj.getLong("surveyId");
+			
+			finalList=cadreDetailsService.getCandidateAndConstituencySurveyResult(candidateId,constituencyId,surveyId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCadresDetailsOfDeathsAndHospitalization() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	
 }

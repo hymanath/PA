@@ -30,6 +30,27 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	
 <style>
+
+.accordion-toggle , .accordion-toggle:active ,.accordion-toggle:hover
+{
+	color:#666 !important
+}
+.accordion-toggle:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\e113";
+    float: right;
+    color: inherit;
+	font-size:13px;
+	margin-top:3px;
+	margin-right:3px;
+	font-weight:400 !important
+}
+.accordion-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\e114";
+}
+
 .Student-List
 {
 	padding:0px;
@@ -710,6 +731,37 @@ var globalCadreId = '${cadreId}';
                 </div>
             </div>
         </div>
+		
+		<!--<div class="panel-group" id="accordion111" role="tablist" aria-multiselectable="true">
+		<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingOne111" onclick="getCandidateAndConstituencySurveyResult();">
+					<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion111" href="#collapseOne111" aria-expanded="true" aria-controls="collapseOne111">
+					<h4 class="panel-title text-bold" type="button"style="cursor:pointer"><i class="glyphicon glyphicon-stats"></i>
+						&nbsp;&nbsp;&nbsp;CONSTITUENCY CANDIDATE SURVEY DETAILS
+					</h4>
+					</a>
+				</div>
+			<div id="collapseOne111" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne111">
+				<div class="panel-body candiConstSurveyDetailsCls">
+					
+				  </div>
+				</div>
+			</div>
+		</div>-->
+		
+		<!--<div class="row">
+        	<div class="col-md-12 col-xs-12">
+            	<div class="panel panel-default">
+                	<div class="panel-heading candConstSurvDivId" onclick="getCandidateAndConstituencySurveyResult();">
+						<div title="Click here to Show Committee Details" id="candiConsTSurveyId"> 
+                    	<h4 class="panel-title text-bold" type="button" data-toggle="modal" data-target=".modalForCandiConstSurvey" style="cursor:pointer">
+							<i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;CONSTITUENCY CANDIDATE SURVEY DETAILS
+						</h4>
+						</div>
+						</div>
+                </div>
+            </div>
+        </div>-->
       
     </div>
     <!-- model -->
@@ -775,6 +827,24 @@ var globalCadreId = '${cadreId}';
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+	
+	<!--<div class="modal fade modalForCandiConstSurvey">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color:#CCCCCC">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" style="text-align:center;"><b>Survey Details</b></h4>
+				</div>
+				<center><img id="candiConstSurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+				<div class="modal-body candiConstSurveyDetailsCls">
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>-->
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -869,6 +939,7 @@ var globalCadreId = '${cadreId}';
 						getLocationwiseCommitteesCount();
 						getPartyMeetingsOverViewForCadre();
 						getEventsOverviewFortdpCadre();
+						//getCandidateAndConstituencySurveyResult();
 						
 					}
 						
@@ -1089,12 +1160,14 @@ var globalCadreId = '${cadreId}';
 					 globalParlName = result.pConstituencyName;
 					 globalDistName = result.districtName;
 					 
+					 getCandidateAndConstituencySurveyResult();
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
 					 getDeathsAndHospitalizationDetails();
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
+					
 				}
 			});
 		}
@@ -1490,6 +1563,8 @@ var globalCadreId = '${cadreId}';
 				$('#list2').removeClass('active');
 				$('#list1').addClass('active');
 				$('#list1').addClass('li_arr');
+				$('#list3').removeClass('active');
+				$('#list3').removeClass('li_arr');
 				isparticipatedSelected = '';
 			});
 			$('#list2').click(function(){
@@ -1497,7 +1572,18 @@ var globalCadreId = '${cadreId}';
 				$('#list1').removeClass('active');
 				$('#list2').addClass('active');
 				$('#list2').addClass('li_arr');
+				$('#list3').removeClass('active');
+				$('#list3').removeClass('li_arr');
 				isparticipatedSelected = 'false';
+			});
+			$('#list3').click(function(){
+				$('#list2').removeClass('li_arr');
+				$('#list2').removeClass('active');
+				$('#list1').removeClass('active');
+				$('#list1').removeClass('li_arr');
+				$('#list3').addClass('active');
+				$('#list3').addClass('li_arr');
+				isparticipatedSelected = '';
 			});
 			var voterCardNo = 'false';
 			console.log("isparticipatedSelected "+isparticipatedSelected)
@@ -1556,11 +1642,15 @@ var globalCadreId = '${cadreId}';
 							str+='<li class="active li_arr" style="margin-top: 0px;padding:0px;" id="list1"><a href="#participated" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'NotAll\',\'\',\'true\');" class="text-bold" data-toggle="tab" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</a></li>';
 							
 							str+='<li  style="margin-top: 0px;padding:0px; left: 10px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+							
+							str+='<li id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">CONSTITUENCY CANDIDATE SURVEY DETAILS&nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
 						}
 						else{
 							str+='<li style="padding:10px 15px;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</li>';
 							
 							str+='<li  class="active li_arr"  style="margin-top: 0px;padding:0px; left: 10px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+							
+							str+='<li  id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">CONSTITUENCY CANDIDATE SURVEY DETAILS&nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';;
 						}
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
@@ -4122,6 +4212,8 @@ function buildFamilyMemberComplaint(result)
 }
 getPartyMeetingsOverViewForCadre();
 getEventsOverviewFortdpCadre();
+</script>		
+<script type="text/javascript">
 
 getNtrTrustStudentDetailsInstitutionWise();
 	function getNtrTrustStudentDetailsInstitutionWise(){
@@ -4284,6 +4376,130 @@ getNtrTrustStudentDetailsInstitutionWise();
 				});
 	}
 	
+//getCandidateAndConstituencySurveyResult();
+var candiConstiSurveyCount = 0;
+function getCandidateAndConstituencySurveyResult()
+{
+	$('.surveyDetailsCls').html("");
+	$('#surveyDataLoadoing').show();
+	
+	var candidateId = globalCandidateId;//292503
+	var constituencyId = 0;//307
+	
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+	}else if(globalConstituencyId > 0){
+		constituencyId = globalConstituencyId;
+	}
+	var surveyId = 0;//162
+	
+	var jsObj={
+			candidateId:candidateId,
+			constituencyId:constituencyId,
+			surveyId:surveyId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getCandidateAndConstituencySurveyResultAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null){
+			if(result.length != null && result.length > 0){
+				candiConstiSurveyCount = result.length;
+			}
+			buildCandidateAndConstituencySurveyResult(result,surveyId,null);
+			
+		}
+	});
+}
+
+function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
+	var candidateId = globalCandidateId;//292503
+	var constituencyId = 0;//307
+	
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+	}else if(participatedConstituencyId = 0 && globalConstituencyId > 0){
+		constituencyId = globalConstituencyId;
+	}
+	var surveyId = surveyId;//162
+	$("#"+divId+"").html("");
+	
+	var jsObj={
+			candidateId:candidateId,
+			constituencyId:constituencyId,
+			surveyId:surveyId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getCandidateAndConstituencySurveyResultAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null){
+			buildCandidateAndConstituencySurveyResult(result,surveyId,divId);
+			
+		}
+	});
+}
+
+function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
+	if(result != null && result.length > 0){
+		if(surveyId == 0){
+			var str='';
+			str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+			for(var i in result){
+			 str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'" attr_survy_divId="candiConstSurveyId'+i+'" onclick="getCandidateAndConstituencySurveyResultBySurvey('+result[i].surveyId+',\'candiConstSurveyId'+i+'\')">';
+						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+							str+='<h4 class="panel-title">';
+								str+=''+result[i].surveyName+'';
+							str+='</h4>';
+						str+='</a>';
+					str+='</div>';
+					
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+						str+='<center><img id="candiConstSurveyAjaxId'+result[i].surveyId+'" src="images/icons/survey-details.gif" style="width:250px;height:200px;"/></center>';
+						str+='<div class="panel-body">';
+						str+='<div  id="candiConstSurveyId'+i+'"></div>';
+					 str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+			}
+			str+='</div>';
+			
+			$('.surveyDetailsCls').html(str);
+			$('#surveyDataLoadoing').hide();
+		}else if(surveyId > 0){
+		var temp="candiConstSurveyAjaxId"+surveyId+"";
+		var str='';
+		for(var i in result){
+				  if(result[i].questions != null){
+					for(var j in result[i].questions)
+					{
+						str+='<table class="table table-bordered">';
+						str+='<tr><td colspan="3" style="text-weight:bold">'+result[i].questions[j].question+'</td></tr>';
+						str+='<b><tr><td>Option</td><td>Count</td><td>Percentage</td></tr></b>';
+						for(var k in result[i].questions[j].options){
+							str+='<tr>';
+								str+='<td>'+result[i].questions[j].options[k].optionVal+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].count+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].percentage+'</td>';
+							str+='</tr>';
+						}
+						str+='</table>';
+					}
+					}
+					}
+				  $("#"+temp+"").hide();
+				  $("#"+divId+"").html(str);
+				 
+		}
+		
+	}else{
+		$('#surveyDataLoadoing').hide();
+		$('.surveyDetailsCls').html("NO DATA AVAILABLE");
+	}
+}
 
 </script>
 </body>
