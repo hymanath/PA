@@ -37,7 +37,7 @@ public class StudentRecomendation extends BaseModel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "student_decomendation_id", unique = true, nullable = false)
+	@Column(name = "student_recomendation_id", unique = true, nullable = false)
 	public Long getStudentRecomendationId() {
 		return studentRecomendationId;
 	}
@@ -73,7 +73,7 @@ public class StudentRecomendation extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "refferal_designation_id",updatable = false, insertable = false)
+	@JoinColumn(name = "referal_designation_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ReferalDesignation getReferalDesignation() {
