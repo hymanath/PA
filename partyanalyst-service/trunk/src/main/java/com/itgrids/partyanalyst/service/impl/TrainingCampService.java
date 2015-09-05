@@ -2559,7 +2559,7 @@ public class TrainingCampService implements ITrainingCampService{
 			else if(inputVO.getCallStatusId() == 2l)// switch-off
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-				trainingCampScheduleInvitee.setAttendingBatchId(null);
+				//trainingCampScheduleInvitee.setAttendingBatchId(null);
 				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
@@ -2568,7 +2568,7 @@ public class TrainingCampService implements ITrainingCampService{
 			else if(inputVO.getCallStatusId() == 3l)// User-busy
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-				trainingCampScheduleInvitee.setAttendingBatchId(null);
+				//trainingCampScheduleInvitee.setAttendingBatchId(null);
 				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
