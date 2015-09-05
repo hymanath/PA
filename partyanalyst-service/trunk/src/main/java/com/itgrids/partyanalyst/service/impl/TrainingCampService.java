@@ -3850,8 +3850,8 @@ public class TrainingCampService implements ITrainingCampService{
 							 }
 							 municipalityVo.setCount(municipalityVo.getCount() + (Long)params[0]);
 							 
-							 districtVo.setCount(districtVo.getCount() + municipalityVo.getCount());
-							 constituencyVo.setCount(constituencyVo.getCount() + municipalityVo.getCount());
+							// districtVo.setCount(districtVo.getCount() + municipalityVo.getCount());
+							// constituencyVo.setCount(constituencyVo.getCount() + municipalityVo.getCount());
 						 }
 						 else if(params[5] != null)
 							{
