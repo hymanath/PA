@@ -85,5 +85,8 @@ public interface ITrainingCampService {
 	public SimpleVO getProgramsByUser(Long userId);
 	public SimpleVO getAllProgramsAndCamps();
 	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
+	
+	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId);
+	public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId);
 	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
 }
