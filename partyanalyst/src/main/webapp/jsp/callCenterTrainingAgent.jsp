@@ -1,4 +1,9 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -485,7 +490,19 @@ for(var i in result.subList)
 {
 str+='<tr>';
 str+='<td><img style="height:50px;width:50px;" class="media-object img-border profile-image img-circle" src="images/cadre_images/'+result.subList[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image"></td>';
-str+='<td>'+result.subList[i].name+'';
+if(result.subList[i].id !=null && result.subList[i].id>0){
+	<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+		str+='<td><a style="cursor:pointer;" attr_cadreId = "'+result.subList[i].id+'" class="cadreDetailsCls">'+result.subList[i].name+'</a>';
+	</c:if>
+	<c:if test="${sessionScope.USER.isAdmin != 'true'}">
+		str+='<td>'+result.subList[i].name+'';
+	</c:if>
+	
+}
+else{
+	str+='<td>'+result.subList[i].name+'';
+}
+
 if(result.subList[i].mobileNumber != null)
  str += ' <br/>'+result.subList[i].mobileNumber+'';
  str +='</td>';
@@ -1160,6 +1177,11 @@ function setDefaultImage(img){
    $("#callstatusSelect").val(0);
    
    }
+   
+   $(document).on("click",".cadreDetailsCls",function(){
+		var cadreId=$(this).attr("attr_cadreId");
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
+	});
   
    
 </script>
