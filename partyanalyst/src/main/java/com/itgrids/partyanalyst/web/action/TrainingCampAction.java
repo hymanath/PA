@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,7 +98,16 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private CadreDetailsVO cadreDetailsVO;
 	private List<CallTrackingVO> docsResultList;
 	private SimpleVO simpleVO;
+	private Map<String,TrainingCampVO> returnResult;
 	
+	
+	public Map<String, TrainingCampVO> getReturnResult() {
+		return returnResult;
+	}
+
+	public void setReturnResult(Map<String, TrainingCampVO> returnResult) {
+		this.returnResult = returnResult;
+	}
 
 	public List<CallTrackingVO> getDocsResultList() {
 		return docsResultList;
@@ -1753,4 +1763,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     }
     
+    public String getTrainingCenterDetailsBasedOnDates(){
+    	try {
+			LOG.info("Entered into getTrainingCenterDetailsBasedOnDates");
+			
+			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds("2015-08-20","2015-09-04",1l,"All");
+		} catch (Exception e) {
+			LOG.error("Exception raised at TODO: handle exception", e);
+		}
+    	return Action.SUCCESS;
+    }
 }
