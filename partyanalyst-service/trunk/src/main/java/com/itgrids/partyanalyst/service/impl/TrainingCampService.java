@@ -4944,12 +4944,13 @@ class TrainingCampService implements ITrainingCampService{
     	Map<Long,Long> finalMap = new HashMap<Long, Long>();
     	List<Object[]> countsList = new ArrayList<Object[]>();
     	
-    	if(type.equalsIgnoreCase("attendee")){
-    		countsList = trainingCampBatchAttendeeDAO.getRunningUpcomingCounts(batchIds);
-    	}else if(type.equalsIgnoreCase("attendence")){
-    		countsList = trainingCampAttendanceDAO.getCompletedCounts(batchIds);
+    	if(batchIds.size()>0){
+	    	if(type.equalsIgnoreCase("attendee")){
+	    		countsList = trainingCampBatchAttendeeDAO.getRunningUpcomingCounts(batchIds);
+	    	}else if(type.equalsIgnoreCase("attendence")){
+	    		countsList = trainingCampAttendanceDAO.getCompletedCounts(batchIds);
+	    	}
     	}
-    	
     	if(countsList!=null && countsList.size()>0){
     		for (Object[] objects : countsList) {
     			finalMap.put((Long)objects[0], (Long)objects[1]);
