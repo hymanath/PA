@@ -401,6 +401,9 @@ var globalCadreId = '${cadreId}';
 					
                     </div>
                 </div>
+				<div id="ntrTrustDivId">
+					
+				</div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
@@ -438,16 +441,6 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>
-				<div id="ntrTrustDivId">
-					<!--<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								NTR TRUST SCHOOL BENEFIT<span class="pull-right ntrBenefitCountCls" ><a style="cursor:pointer;">02</a></span>
-							</h4>
-						</div>
-						
-					</div>-->
-				</div>
             </div>
             <div class="col-md-8">
             	<div class="panel panel-default">
