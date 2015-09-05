@@ -11,6 +11,9 @@ public class SimpleVO implements java.io.Serializable{
    private String dateString;
    private Date date;
    
+   private Long count;
+   private Long total;
+   
    private List<SimpleVO> simpleVOList1;
    private List<SimpleVO> simpleVOList2;
    
@@ -50,5 +53,17 @@ public class SimpleVO implements java.io.Serializable{
 	public void setSimpleVOList2(List<SimpleVO> simpleVOList2) {
 		this.simpleVOList2 = simpleVOList2;
 	}
-   
-}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+    
+ }
