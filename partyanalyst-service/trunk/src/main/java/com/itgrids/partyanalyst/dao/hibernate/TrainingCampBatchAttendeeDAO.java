@@ -138,4 +138,12 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }
 	
+   public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds){
+	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadreId) " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatchId in (:batchIds) " +
+	   		" group by model.trainingCampBatchId ");
+	   query.setParameterList("batchIds", batchIds);
+	   return query.list();
+   }
 }

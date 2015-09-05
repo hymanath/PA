@@ -57,4 +57,50 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("trainingCampScheduleId",trainingCampScheduleId);
 		return query.list();
 	}
+	
+	public List<Object[]> getCompletedBatchIds(Date startDate,Date endDate,String type,Long stateId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select distinct model.trainingCampBatchId,model.trainingCampBatchName, " +// 0 - batchId, 1 - batchName
+				" model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName, " +// 2 - campId,3 - campName
+				" model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampSchedule.trainingCampProgram.programName, " +// 4 - progId,5 - progName
+				" model.trainingCampSchedule.trainingCampScheduleId,model.trainingCampSchedule.trainingCampScheduleCode," +//6-scheduleId,7-scheduleCode
+				" date(model.fromDate),date(model.toDate), " +//8-trainingBatchfromdate,9-todate
+				" date(model.trainingCampSchedule.fromDate),date(model.trainingCampSchedule.toDate) ");//10-schedulefromdate,11-todate
+		sb.append(" from TrainingCampBatch model,TrainingCampDistrict model1 ");
+		sb.append(" where model.trainingCampSchedule.trainingCampId=model1.trainingCampId ");
+		
+		if(stateId==1l){
+			sb.append(" and model1.districtId between 11 and 23 ");
+		}else if(stateId==2l){
+			sb.append(" and model1.districtId  between 1 and 10  ");
+		}
+		
+		if(type.equalsIgnoreCase("completed")){
+			sb.append(" and date(model.toDate) between (:startDate) and (:endDate) ");
+		}
+		else if(type.equalsIgnoreCase("running")){
+			sb.append(" and date(model.fromDate) between (:startDate) and (:endDate) and  date(model.toDate) > (:endDate) ");
+		}
+		else if(type.equalsIgnoreCase("upcoming")){
+			sb.append(" and date(model.fromDate)>:endDate ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(type.equalsIgnoreCase("completed")){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		else if(type.equalsIgnoreCase("running")){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		else if(type.equalsIgnoreCase("upcoming")){
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	} 
 }
