@@ -186,8 +186,8 @@ header.eventsheader {
                                     	<div class="panel-heading bg_d">
                                         	<h4 class="panel-title text-bold">UPCOMING TRAINING PROGRAM DETAILS</h4>
                                         </div>
-                                        <div class="panel-body pad_0">
-                                        	<table class="table table-bordered m_0">
+                                        <div class="panel-body pad_0" id="upComingTrainingPrograms">
+                                        	<!--<table class="table table-bordered m_0">
                                             	<thead class="bg_d">
                                                 	<th>TRAINING PROGRAM NAME</th>
                                                     <th>TRAINING CENTER</th>
@@ -233,7 +233,7 @@ header.eventsheader {
                                                     </tr>
 
                                                 </tbody>
-                                            </table>
+                                            </table>-->
                                         </div>
                                     </div>
                                 </div>
@@ -246,8 +246,8 @@ header.eventsheader {
                                     	<div class="panel-heading bg_d">
                                         	<h4 class="panel-title text-bold">CURRENTLY RUNNING TRAINING PROGRAMS</h4>
                                         </div>
-                                        <div class="panel-body pad_0">
-                                        	<table class="table table-bordered m_0">
+                                        <div class="panel-body pad_0" id="runningTrainingPrograms">
+                                        	<!--<table class="table table-bordered m_0">
                                             	<thead class="bg_d">
                                                 	<th>TRAINING PROGRAM NAME</th>
                                                     <th>TRAINING CENTER</th>
@@ -293,7 +293,7 @@ header.eventsheader {
                                                     </tr>
 
                                                 </tbody>
-                                            </table>
+                                            </table>-->
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +307,7 @@ header.eventsheader {
                                         	<h4 class="panel-title text-bold">COMPLETED TRAINING PROGRAMS</h4>
                                         </div>
                                         <div class="panel-body pad_0" id="completedTrainingPrograms">
-                                        	<table class="table table-bordered m_0">
+                                        	<!--<table class="table table-bordered m_0">
                                             	<thead class="bg_d">
                                                 	<th>TRAINING PROGRAM NAME</th>
                                                     <th>TRAINING CENTER</th>
@@ -353,7 +353,7 @@ header.eventsheader {
                                                     </tr>
 
                                                 </tbody>
-                                            </table>
+                                            </table>-->
                                         </div>
                                     </div>
                                 </div>
@@ -487,9 +487,10 @@ function getTrainingCenterDetailsBasedOnDates(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-		if(result.completed.programDetails!=null && result.completed.programDetails.length>0){
+	   
+	   if(result.completed.programDetails!=null && result.completed.programDetails.length>0){
+						
 			var str='';
-			
 			str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
 			str+='<th>TRAINING PROGRAM NAME</th>';
@@ -501,47 +502,134 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='</thead>';
 			str+='<tbody>';		
 			for(var i in result.completed.programDetails){
-				str+='<tr>';
-				var progspan=result.completed.programDetails[i].campDetails.length;
-				str+='<td rowspan="'+progspan+'" class="text-underline">'+result.completed.programDetails[i].programName+'</td>';
-				
-				if(result.completed.programDetails[i].campDetails!=null && result.completed.programDetails[i].campDetails.length>0){
-					for(var j in result.completed.programDetails[i].campDetails){
-						if(j>0){
-							str+='<tr>';
-						}
-						var campspan=result.completed.programDetails[i].campDetails[j].scheduleDetails.length;
-						str+='<td rowspan="'+campspan+'" class="text-underline">'+result.completed.programDetails[i].campDetails[j].campName+'</td>';
-						
-						if(result.completed.programDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programDetails[i].campDetails[j].scheduleDetails.length>0){
-							for(var k in result.completed.programDetails[i].campDetails[j].scheduleDetails){
-								if(k>0){
-									str+='<tr>';
-								}
-								var schedulespan=result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails.length;
-								str+='<td rowspan="'+schedulespan+'">'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].scheduleDates+'</td>';
-								
-								if(result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails!=null && result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails.length>0){
-									for(var l in result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails){
-										str+='<td class="text-underline">'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].batchName+'</td>';
-										str+='<td>'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].batchDates+'</td>';
-										str+='<td>'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].completedMemberCount+'</td>';
+				var myResult = result.completed.programDetails;
+				str+="<tr>";
+					str+="<td rowspan="+result.completed.completedBatchIds.length+">"+myResult[i].programName+"</td>";
+					for(var j in myResult[i].campDetails){
+						var campspan=myResult[i].campDetails[j].cmpBatchCount;
+						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+							for(var k in myResult[i].campDetails[j].scheduleDetails){
+								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
+									for(var m in schedule.batchDetails){
+										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
+										if(schedule.batchDetails[m].completedMemberCount!=null){
+											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
+										}else{
+											str+='<td>0</td>';
+										}
+										
+										str+="</tr>";
 									}
-								}
-								str+='</tr>';
+								str+="</tr>";
 							}
-						}
-						str+='</tr>';
+						str+="</tr>";
 					}
-				}
-				str+='</tr>';
+				
 			}
 			str+='</tbody>';
 			str+='</table>';
 			
-			//$("#completedTrainingPrograms").html(str);
+			$("#completedTrainingPrograms").html(str);
 		}else{
-			//$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
+			$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
+		}
+		
+		if(result.running.programDetails!=null && result.running.programDetails.length>0){
+						
+			var str='';
+			str+='<table class="table table-bordered m_0">';
+			str+='<thead class="bg_d">';
+			str+='<th>TRAINING PROGRAM NAME</th>';
+			str+='<th>TRAINING CENTER</th>';
+			str+='<th>TRAINING SCHEDULE</th>';
+			str+='<th>BATCH NAME</th>';
+			str+='<th>TRAINING ON</th>';
+			str+='<th>MEMBERS ACCEPTED</th>';
+			str+='</thead>';
+			str+='<tbody>';		
+			for(var i in result.running.programDetails){
+				var myResult = result.running.programDetails;
+				str+="<tr>";
+					str+="<td rowspan="+result.completed.runningBatchIds.length+">"+myResult[i].programName+"</td>";
+					for(var j in myResult[i].campDetails){
+						var campspan=myResult[i].campDetails[j].cmpBatchCount;
+						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+							for(var k in myResult[i].campDetails[j].scheduleDetails){
+								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
+									for(var m in schedule.batchDetails){
+										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
+										if(schedule.batchDetails[m].completedMemberCount!=null){
+											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
+										}else{
+											str+='<td>0</td>';
+										}
+										
+										str+="</tr>";
+									}
+								str+="</tr>";
+							}
+						str+="</tr>";
+					}
+				
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$("#runningTrainingPrograms").html(str);
+		}else{
+			$("#runningTrainingPrograms").html("No Runnig Training Programs Are Available");
+		}
+		
+		if(result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
+						
+			var str='';
+			str+='<table class="table table-bordered m_0">';
+			str+='<thead class="bg_d">';
+			str+='<th>TRAINING PROGRAM NAME</th>';
+			str+='<th>TRAINING CENTER</th>';
+			str+='<th>TRAINING SCHEDULE</th>';
+			str+='<th>BATCH NAME</th>';
+			str+='<th>TRAINING ON</th>';
+			str+='<th>MEMBERS ACCEPTED</th>';
+			str+='</thead>';
+			str+='<tbody>';		
+			for(var i in result.upcoming.programDetails){
+				var myResult = result.upcoming.programDetails;
+				str+="<tr>";
+					str+="<td rowspan="+result.completed.upComingBatchIds.length+">"+myResult[i].programName+"</td>";
+					for(var j in myResult[i].campDetails){
+						var campspan=myResult[i].campDetails[j].cmpBatchCount;
+						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+							for(var k in myResult[i].campDetails[j].scheduleDetails){
+								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
+									for(var m in schedule.batchDetails){
+										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
+										if(schedule.batchDetails[m].completedMemberCount!=null){
+											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
+										}else{
+											str+='<td>0</td>';
+										}
+										
+										str+="</tr>";
+									}
+								str+="</tr>";
+							}
+						str+="</tr>";
+					}
+				
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$("#upComingTrainingPrograms").html(str);
+		}else{
+			$("#upComingTrainingPrograms").html("No Upcomming Training Programs Are Available");
 		}
    });
 }
