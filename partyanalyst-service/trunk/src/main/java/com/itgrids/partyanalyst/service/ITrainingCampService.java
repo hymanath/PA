@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
@@ -84,4 +85,5 @@ public interface ITrainingCampService {
 	public SimpleVO getProgramsByUser(Long userId);
 	public SimpleVO getAllProgramsAndCamps();
 	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
+	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
 }
