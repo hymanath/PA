@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -13,4 +14,5 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public List<Object[]> getAllBatchesForSchedules(List<Long> scheduleIds);
 	
 	public List<Object[]> getTrainingCampBatchesOfSchedule(Long trainingCampScheduleId);
+	public List<Object[]> getCompletedBatchIds(Date startDate,Date endDate,String type,Long stateId);
 }
