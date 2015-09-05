@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
+import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -2905,6 +2906,24 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.debug("Entered into the getElectionPerformanceInCadreLocation  method in WebServiceHandlerService");
 		}
 		  return null;
+	 }
+	 public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(Long tdpCadreId){
+		 try {
+			  return  cadreDetailsService.getNtrTrustStudentDetailsInstitutionWise(tdpCadreId);
+		} catch (Exception e) {
+			log.debug("Entered into the getNtrTrustStudentDetailsInstitutionWise  method in WebServiceHandlerService");
+		}
+		  return null;
+		 
+	 }
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(Long tdpCadreid,Long institutionId){
+		 try {
+			  return  cadreDetailsService.getStudentFormalDetailsByCadre(tdpCadreid,institutionId);
+		} catch (Exception e) {
+			log.debug("Entered into the getStudentFormalDetailsByCadre  method in WebServiceHandlerService");
+		}
+		  return null;
+		 
 	 }
 }
 
