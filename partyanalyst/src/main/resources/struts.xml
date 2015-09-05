@@ -10799,6 +10799,23 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="getAttendedCountForBatchesByLocationAction" class="trainingCampAction" method="getAttendedCountForBatchesByLocation">
+	   <result type="json" name="success">
+	       		<param name="root">idNameList</param>
+	  	</result>
+	</action>
+	<action name="getInvitedAttendedCadreCountByBatchIdsAction" class="trainingCampAction" method="getInvitedAttendedCadreCountByBatchIds">
+	   <result type="json" name="success">
+	       		<param name="root">simpleVO</param>
+	  	</result>
+	</action>
+	
+	<action name="trainingProgramMainDashBoardAction" class="trainingCampAction" method="trainingProgramDashBoard">
+		<result name="success">/jsp/trainingProgramMainDashBoard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
 	<action name="getTrainingCenterDetailsBasedOnDatesAction" class="trainingCampAction" method="getTrainingCenterDetailsBasedOnDates">
 	    <result type="json" name="success">		   
 		    <param name="root">returnResult</param>

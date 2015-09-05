@@ -359,6 +359,7 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						
                         <section>
                         	<div class="row">
                             	<div class="col-md-12">
@@ -368,30 +369,17 @@ header.eventsheader {
                                             	PARTY DESIGNATION WISE MEMBERS PARTICIPATED - COMPLETED TRAINING PROGRAMS
                                             </h4>
                                         </div>
+										
                                         <div class="panel-body pad_0">
-                                        	<table class="table table-bordered m_0">
-                                            	<tr>
-                                                	<td>VILLAGE LEVEL COMMITTEE MEMBERS</td>
-                                                    <td>30 ATTENDED</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>MANDAL LEVEL COMMITTEE MEMBERS</td>
-                                                    <td>30 ATTENDED</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>CONSTITUENCY LEVEL COMMITTEE MEMBERS</td>
-                                                    <td>30 ATTENDED</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>DISTRICT LEVEL COMMITTEE MEMBERS</td>
-                                                    <td>30 ATTENDED</td>
-                                                </tr>
-                                            </table>
+										  <img id="partyDesgWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+										  <div id="partyDesgWisedivId"></div>
+											
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
+						
                         <section>
                         	<div class="row">
                             	<div class="col-md-6">
@@ -400,68 +388,8 @@ header.eventsheader {
                                         	<h4 class="panel-title">DISTRICTS WISE TOTAL MEMBERS ACCEPTED</h4>
                                         </div>
                                         <div class="panel-body pad_0">
-                                    		<table class="table table-bordered">
-                                                <thead>
-                                                    <th>DISTRICTS NAME</th>
-                                                    <th>INVITED</th>
-                                                    <th>ATTENDED</th>
-                                                </thead>
-                                                <tr>
-                                                    <td>Ananthapur</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                            </table>    	
+										  <img id="distWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+										  <div id="distWiseDivId"></div>
                                         </div>
                                     </div>
                                 	
@@ -471,74 +399,18 @@ header.eventsheader {
                                     	<div class="panel-heading">
                                         	<h4 class="panel-title">CONSTITUENCY WISE TOTAL MEMBERS ACCEPTED</h4>
                                         </div>
+										
                                         <div class="panel-body pad_0">
-                                    		<table class="table table-bordered">
-                                                <thead>
-                                                    <th>CONSTITUENCY NAME</th>
-                                                    <th>INVITED</th>
-                                                    <th>ATTENDED</th>
-                                                </thead>
-                                                <tr>
-                                                    <td>Ananthapur</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Chittoor</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                </tr>
-                                            </table>    	
+										  <img id="constWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+										  <div id="constWiseDivId"></div>
                                         </div>
+										
+										
                                     </div>
                                 </div>
                             </div>
                         </section>
+						
                     </div>
                 </div>
             </div>
@@ -554,6 +426,7 @@ header.eventsheader {
 <script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 $(function () {
 	Highcharts.setOptions({
         colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
@@ -672,6 +545,112 @@ function getTrainingCenterDetailsBasedOnDates(){
 		}
    });
 }
+getAttendedCountForBatchesByLocation();
+getInvitedAttendedCadreCountByBatchIds();
+
+	function getAttendedCountForBatchesByLocation(){
+		
+		$('#partyDesgWisedivId').html('');
+		var jObj={
+			startDateString:'2015-08-20',
+			endDateString:'2015-09-04',
+			stateId:'1'
+	     }
+		$.ajax({
+		   type:'POST',
+		   url :'getAttendedCountForBatchesByLocationAction.action',
+		   data: {task:JSON.stringify(jObj)},
+		}).done(function(result){
+			  $('#partyDesgWiseImg').hide();
+			  if(result!=null && result.length>0){
+				  var str='';
+				  str+='<table class="table table-bordered m_0">';
+				  for(var i in result){
+				    str+='<tr>';
+                      str+='<td>'+result[i].name.toUpperCase()+'  LEVEL COMMITTEE MEMBERS</td>';
+                      str+='<td>'+result[i].districtid+' ATTENDED</td>';
+                      str+='</tr>';
+				  }
+				 str+='</table>';
+				 $('#partyDesgWisedivId').html(str);
+			  }else{
+				   $('#partyDesgWisedivId').html('NO DATA AVAILABLE');
+			  }
+	    });
+	}
+	
+	function getInvitedAttendedCadreCountByBatchIds(){
+		
+		$('#distWiseDivId').html('');
+		$('#constWiseDivId').html('');
+		var jObj={
+		  startDateString:'2015-08-20',
+		  endDateString:'2015-09-04',
+		  stateId:'1'
+	     }
+		$.ajax({
+		   type:'POST',
+		   url :'getInvitedAttendedCadreCountByBatchIdsAction.action',
+		    data: {task:JSON.stringify(jObj)},
+		}).done(function(result){
+		       $('#distWiseImg').hide(); 
+			   $('#constWiseImg').hide(); 
+			   
+		 	   if(result!=null && result.simpleVOList1!=null && result.simpleVOList1.length>0){
+				   buildDistData(result.simpleVOList1);
+			   }else{
+				   $('#distWiseDivId').html('<p style="text-align:center;">NO DATA AVAILABLE</p>');
+			   }
+			   
+			   if(result!=null && result.simpleVOList2!=null && result.simpleVOList2.length>0){
+				  buildConstData(result.simpleVOList2);
+			   }else{
+				  $('#constWiseDivId').html('<p style="text-align:center;">NO DATA AVAILABLE</p>');
+			   }
+	    });
+	}
+	function buildDistData(results){
+		
+		var str='';
+		str+='<table class="table table-bordered m_0">';
+			str+='<thead>';
+			str+='<th>DISTRICTS NAME</th>';
+			str+='<th>INVITED</th>';
+			str+='<th>ATTENDED</th>';
+			str+='</thead>';
+			str+='<tbody>';
+		for(var i in results){
+			str+='<tr>';
+				str+='<td>'+results[i].name+'</td>';
+				str+='<td>'+results[i].total+'</td>';
+				str+='<td>'+results[i].count+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+		$('#distWiseDivId').html(str);
+	}
+	function buildConstData(results){
+		
+		var str='';
+		str+='<table class="table table-bordered m_0">';
+			str+='<thead>';
+			str+='<th>CONSTITUENCY NAME</th>';
+			str+='<th>INVITED</th>';
+			str+='<th>ATTENDED</th>';
+			str+='</thead>';
+			str+='<tbody>';
+		for(var i in results){
+			str+='<tr>';
+				str+='<td>'+results[i].name+'</td>';
+				str+='<td>'+results[i].total+'</td>';
+				str+='<td>'+results[i].count+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+		$('#constWiseDivId').html(str);
+	}
 </script>
 </body>
 </html>	

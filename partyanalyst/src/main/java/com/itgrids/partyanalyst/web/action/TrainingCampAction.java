@@ -1753,8 +1753,47 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	         //copy image to folder.
 	         
 	}
-    
     public String checkLoginForTrainingCenterDashBoard(){
+    	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null && regVO.getRegistrationID() >0l){
+			return "success";
+		}else{
+			return "input";
+		}
+    }
+    public String getAttendedCountForBatchesByLocation()
+    {
+    	try{
+    		jObj = new JSONObject(getTask());
+    		
+    		String startDateString = jObj.getString("startDateString");
+    		String endDateString = jObj.getString("endDateString");
+    		Long stateId = jObj.getLong("stateId");
+    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(startDateString,endDateString,stateId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    public String getInvitedAttendedCadreCountByBatchIds()
+    {
+    	try{
+    		jObj = new JSONObject(getTask());
+    		String startDateString = jObj.getString("startDateString");
+    		String endDateString = jObj.getString("endDateString");
+    		Long stateId = jObj.getLong("stateId");
+    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(startDateString,endDateString,stateId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String trainingProgramDashBoard(){
     	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null && regVO.getRegistrationID() >0l){
 			return "success";
