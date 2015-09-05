@@ -68,8 +68,17 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<Long> completedBatchIds;
 	private List<Long> runningBatchIds;
 	private List<Long> upComingBatchIds;
+	private Long cmpBatchCount=1l;
 	
 	
+	
+	
+	public Long getCmpBatchCount() {
+		return cmpBatchCount;
+	}
+	public void setCmpBatchCount(Long cmpBatchCount) {
+		this.cmpBatchCount = cmpBatchCount;
+	}
 	public List<Long> getCompletedBatchIds() {
 		return completedBatchIds;
 	}
