@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -1537,5 +1538,34 @@ public class WebServiceHandler {
 		return null;
 	}
 	
+	@GET
+	@Path("/getNtrTrustStudentDetailsInstitutionWise/{cadreId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreId") Long cadreId){
+		try{
+			return webServiceHandlerService.getNtrTrustStudentDetailsInstitutionWise(Long.valueOf(cadreId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getNtrTrustStudentDetailsInstitutionWise() Method, Exception is ",e);
+			
+		}
+		return null;
+	}
+	@GET
+	@Path("/getStudentFormalDetailsByCadre/{cadreId}/{institutionId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(@PathParam("cadreId") Long cadreId,@PathParam("institutionId") Long institutionId){
+		try{
+			return webServiceHandlerService.getStudentFormalDetailsByCadre(Long.valueOf(cadreId),Long.valueOf(institutionId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() Method, Exception is ",e);
+			
+		}
+		return null;
+		
+	 }
 	
 }
