@@ -478,6 +478,7 @@ str+='<th>District</th>';
 str+='<th>Constituency</th>';
 str+='<th>Remarks</th>';
 str+='<th>Status</th>';
+
 str+='<th>Update</th>';
 str+='</thead>';
 for(var i in result.subList)
@@ -524,10 +525,18 @@ else
 {
 str+='<td></td>';
 }
+
 str+='<td>'+result.subList[i].status+'</td>';
+if(result.subList[i].status !='Confirmed')
+{
 str+='<td>'
 str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');populateFields(\''+result.subList[i].status+'\');">Update Status</button>';
 str+='</td>';
+}
+else
+{
+str+='<td></td>';
+}
 str+='</tr>';
 }
 
