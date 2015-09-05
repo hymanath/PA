@@ -4866,6 +4866,9 @@ class TrainingCampService implements ITrainingCampService{
             			btch.setBatchDates(obj[8].toString()+" - "+obj[9].toString());
                 		btchDtlsLst.add(btch);
                 		batchIdsList.add(Long.valueOf(obj[0].toString()));
+                		if(!isNewCamp){
+                			cmp.setCmpBatchCount(cmp.getCmpBatchCount()+1);
+                		}
             		}
             		
             		scdle.setBatchDetails(btchDtlsLst);
@@ -4910,6 +4913,14 @@ class TrainingCampService implements ITrainingCampService{
     		if(type.equalsIgnoreCase("camp")){
     			for(TrainingCampVO temp:result){
     				if(temp.getCampId().equals(id)){
+    					return temp;
+    				}
+    			}
+    		}
+    		
+    		if(type.equalsIgnoreCase("schedule")){
+    			for(TrainingCampVO temp:result){
+    				if(temp.getScheduleId().equals(id)){
     					return temp;
     				}
     			}
