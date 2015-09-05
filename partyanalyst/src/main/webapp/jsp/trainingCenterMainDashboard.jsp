@@ -17,12 +17,47 @@
 {
 	border-width:1px !important
 }
-
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
+header.eventsheader { 
+ background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
+ background-origin: border-box;
+ background-repeat: no-repeat;
+ height: 71px; 
+}
 </style>
 </head>
 <body>
-<header>
-	<img src="dist/img/header.jpg" width="100%">
+<header  class="eventsheader">
+<!-- <img src="css/Training/img/header.jpg" width="100%"> -->
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:38px;"></p>               
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
+                    Menu <img src="images/menu_icon.png" />
+                    </a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
+					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+					
+                    </ul>   
+            </div>			
+        </div>       
+    </div>
+	
+	
 </header>
 <main>
 	<div class="container">
@@ -271,7 +306,7 @@
                                     	<div class="panel-heading bg_d">
                                         	<h4 class="panel-title text-bold">COMPLETED TRAINING PROGRAMS</h4>
                                         </div>
-                                        <div class="panel-body pad_0">
+                                        <div class="panel-body pad_0" id="completedTrainingPrograms">
                                         	<table class="table table-bordered m_0">
                                             	<thead class="bg_d">
                                                 	<th>TRAINING PROGRAM NAME</th>
@@ -511,7 +546,7 @@
     </div>
 </main>
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -562,8 +597,81 @@ $(function () {
             ]
         }]
     });
+	
+	getTrainingCenterDetailsBasedOnDates();
 });
 
+ $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
+ 
+function getTrainingCenterDetailsBasedOnDates(){
+  
+	var jsObj=
+	{				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getTrainingCenterDetailsBasedOnDatesAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		if(result.completed.programDetails!=null && result.completed.programDetails.length>0){
+			var str='';
+			
+			str+='<table class="table table-bordered m_0">';
+			str+='<thead class="bg_d">';
+			str+='<th>TRAINING PROGRAM NAME</th>';
+			str+='<th>TRAINING CENTER</th>';
+			str+='<th>TRAINING SCHEDULE</th>';
+			str+='<th>BATCH NAME</th>';
+			str+='<th>TRAINING ON</th>';
+			str+='<th>MEMBERS ACCEPTED</th>';
+			str+='</thead>';
+			str+='<tbody>';		
+			for(var i in result.completed.programDetails){
+				str+='<tr>';
+				var progspan=result.completed.programDetails[i].campDetails.length;
+				str+='<td rowspan="'+progspan+'" class="text-underline">'+result.completed.programDetails[i].programName+'</td>';
+				
+				if(result.completed.programDetails[i].campDetails!=null && result.completed.programDetails[i].campDetails.length>0){
+					for(var j in result.completed.programDetails[i].campDetails){
+						if(j>0){
+							str+='<tr>';
+						}
+						var campspan=result.completed.programDetails[i].campDetails[j].scheduleDetails.length;
+						str+='<td rowspan="'+campspan+'" class="text-underline">'+result.completed.programDetails[i].campDetails[j].campName+'</td>';
+						
+						if(result.completed.programDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programDetails[i].campDetails[j].scheduleDetails.length>0){
+							for(var k in result.completed.programDetails[i].campDetails[j].scheduleDetails){
+								if(k>0){
+									str+='<tr>';
+								}
+								var schedulespan=result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails.length;
+								str+='<td rowspan="'+schedulespan+'">'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].scheduleDates+'</td>';
+								
+								if(result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails!=null && result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails.length>0){
+									for(var l in result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails){
+										str+='<td class="text-underline">'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].batchName+'</td>';
+										str+='<td>'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].batchDates+'</td>';
+										str+='<td>'+result.completed.programDetails[i].campDetails[j].scheduleDetails[k].batchDetails[l].completedMemberCount+'</td>';
+									}
+								}
+								str+='</tr>';
+							}
+						}
+						str+='</tr>';
+					}
+				}
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			//$("#completedTrainingPrograms").html(str);
+		}else{
+			//$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
+		}
+   });
+}
 </script>
 </body>
 </html>	
