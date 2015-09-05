@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import javax.ws.rs.PathParam;
+
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -11,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -111,4 +114,6 @@ public interface IWebServiceHandlerService {
 	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
 	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
 	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
+	  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(Long cadreId);
+	  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(Long tdpCadreid,Long institutionId);
 }
