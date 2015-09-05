@@ -585,7 +585,9 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 				inputVo.setCommitteeLevelId(jObj.getLong("committeeLevelId"));
 				inputVo.setSearchType("filter");
 			}
-			memberList = trainingCampService.getScheduleCallMemberDetails(inputVo);
+			Integer startIndex = jObj.getInt("startIndex");
+			Integer maxIndex = jObj.getInt("maxIndex");
+			memberList = trainingCampService.getScheduleCallMemberDetails(inputVo,startIndex,maxIndex);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
