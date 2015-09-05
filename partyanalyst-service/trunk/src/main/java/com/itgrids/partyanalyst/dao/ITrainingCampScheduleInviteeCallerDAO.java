@@ -14,7 +14,7 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getBatchWiseWiseCallStatusCount(Long callerId,Long callPurposeId);
 	public List<Object[]> getCallerWiseAssignedCalls(List<Long> userIds,Date startDate,Date endDate,String type,String agetType);
 	public List<Object[]> getCallStatusContsOfInvitees(List<Long> userIds,Date startDate,Date endDate,String agentType);
-	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
+	public List<Object[]> getScheduleWisememberDetailsCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate,Integer startIndex,Integer maxIndex);
 	public Long getAllCallersCount(Date startDate,Date endDate,String type);
 	public List<Object[]> getScheduleAndConfirmationCallsOfCallerToAgent(List<Long> userIds,Date startDate,Date endDate,String type);
 	public List<Object[]> getStatusWiseCount(List<Long> userIds,Date startDate,Date endDate,String searchType);
@@ -38,7 +38,7 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getCallerConstituenciesByDistrict(Long userId,Long districtId);
 	public List<Object[]> getCallerAgentMandalsByConstituency(Long userId,Long constituencyId);
 	public List<Object[]> getCallerAgentVillagesByMandal(Long userId,Long mandalId);
-	public List<Object[]> getScheduleWisememberDetailsCountForSearch(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
+	public List<Object[]> getScheduleWisememberDetailsCountForSearch(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate,Integer startIndex,Integer maxIndex);
 	
 	public List<Object[]> getAgentCallDetailsByCampCallerId(Long campCallerId,Long callPurposeId,Date toDayDate,List<Long> batchStatusIdsList);
 	
@@ -58,4 +58,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String type,Date todayDate);
 	public List<Long> getAssignedInviteesIdsList();
 	public List<Object[]> getScheduleConfirmationDetails(Long purposeId,Long userId);
+	public List getScheduleWisememberDetailsTotalCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
+	public List<Object[]> getScheduleWisememberDetailsCountForSearchCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
 }

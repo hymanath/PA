@@ -30,7 +30,7 @@ public interface ITrainingCampService {
 	//public TrainingCampVO getCampusWiseDateWiseInterestedMembersDetails(List<Long> campusIdsList,String searchTypeId,String startDate,String endDate);
 	public List<TraingCampCallerVO> getBatchCallStatusCount(Long userId,Long callPurposeId);
 	public List<Long> getTrainingCampUserTypeIds(Long adminId,boolean isAdmin);
-	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo);
+	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo,Integer startIndex,Integer maxIndex);
 	public List<BasicVO> getAllPrograms();
 	public List<BasicVO> getCampsByProgramId(Long programId);
 	public List<BasicVO> getSchedulesByCampId(Long campId);

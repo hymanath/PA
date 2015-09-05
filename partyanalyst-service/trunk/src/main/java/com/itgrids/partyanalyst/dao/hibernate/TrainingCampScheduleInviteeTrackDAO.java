@@ -43,7 +43,7 @@ public class TrainingCampScheduleInviteeTrackDAO extends GenericDaoHibernate<Tra
 	}
 	
 	
-	public List<Object[]> getMemberRemarks(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate)
+	public List<Object[]> getMemberRemarks(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate,List<Long> cadreIds)
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -67,7 +67,8 @@ public class TrainingCampScheduleInviteeTrackDAO extends GenericDaoHibernate<Tra
 		
 		if(toDayDate != null)
 		 str.append(" and date(model.trainingCampScheduleInvitee.callBackTime) =:toDayDate ");
-		
+		if(cadreIds != null && cadreIds.size() > 0)
+		str.append(" and model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId in(:cadreIds)")	;
 		str.append(" order by model.trainingCampScheduleInviteeTrackId desc");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", inputVo.getUserId());
@@ -82,7 +83,8 @@ public class TrainingCampScheduleInviteeTrackDAO extends GenericDaoHibernate<Tra
 		
 		if(toDayDate != null)
 		 query.setDate("toDayDate", toDayDate);
-		
+		if(cadreIds != null && cadreIds.size() > 0)
+			query.setParameterList("cadreIds", cadreIds);
 		return query.list();
 	}
 

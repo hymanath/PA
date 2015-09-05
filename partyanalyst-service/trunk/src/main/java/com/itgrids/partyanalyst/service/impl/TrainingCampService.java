@@ -2072,11 +2072,12 @@ class TrainingCampService implements ITrainingCampService{
 	}
 	
 	
-	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo)
+	public TrainingMemberVO getScheduleCallMemberDetails(TraingCampDataVO inputVo,Integer startIndex,Integer maxIndex)
 	{
 
 		List<Long> statusIds = new ArrayList<Long>();
-		TrainingMemberVO inputVO = new TrainingMemberVO();
+		 TrainingMemberVO returnVo = new TrainingMemberVO();
+		 List count =  null;
 		List<Object[]> list = null;
 		try{
 			statusIds = getCallStatusIds(inputVo.getStatus());
@@ -2087,8 +2088,9 @@ class TrainingCampService implements ITrainingCampService{
 			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			   toDayDate = sdf.parse(inputVo.getDateStr());
 			}
+			List<Long> cadreIds = new ArrayList<Long>();
 			if(inputVo.getSearchType() == null){
-			 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate,startIndex,maxIndex);
 				/*if(inputVo.getPurposeId()==1l){
 					List<Object[]> sdlCnfmDtls1 = trainingCampScheduleInviteeCallerDAO.getScheduleConfirmationDetails(inputVo.getPurposeId(),inputVo.getUserId());
 					list = sdlCnfmDtls1;
@@ -2163,24 +2165,32 @@ class TrainingCampService implements ITrainingCampService{
 					list = sdlCnfmDtls1;
 					
 				}*/
+			 count = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsTotalCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
 			}
 			else
 			{
-				 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCountForSearch(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
-				
+				 list = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCountForSearch(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate,startIndex,maxIndex);
+				 count = trainingCampScheduleInviteeCallerDAO.getScheduleWisememberDetailsCountForSearchCount(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
 			}
+			
 			if(list != null && list.size() > 0)
 			{
-				List<TrainingMemberVO> resultList = setMemberDetails(list);
-				inputVO.setSubList(resultList);
+				
+				List<TrainingMemberVO> resultList = setMemberDetails(list,cadreIds);
+			
+				if(count != null && count.size() > 0)
+				returnVo.setTotalCount(new Long(count.get(0).toString()));
+				else
+					returnVo.setTotalCount(0l);
+				returnVo.setSubList(resultList);
 			}
-			List<Object[]> remarks = trainingCampScheduleInviteeTrackDAO.getMemberRemarks(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate);
+			List<Object[]> remarks = trainingCampScheduleInviteeTrackDAO.getMemberRemarks(inputVo,statusIds,inputVo.getStatusType(),inputVo.getStatus(),toDayDate,cadreIds);
 			if(remarks != null && remarks.size() > 0)
 			{
 				DateUtilService date = new DateUtilService();
 				for(Object[] params : remarks)
 				{
-					TrainingMemberVO vo = getMatchedVo1(inputVO.getSubList(), (Long)params[0]);
+					TrainingMemberVO vo = getMatchedVo1(returnVo.getSubList(), (Long)params[0]);
 					if(vo != null)
 					{
 						TrainingMemberVO remarkVo = new TrainingMemberVO();
@@ -2198,7 +2208,7 @@ class TrainingCampService implements ITrainingCampService{
 		catch (Exception e) {
 			LOG.error("Exception Occured in TrainingCampService getScheduleCallMemberDetails() method", e);
 		}
-		return inputVO;
+		return returnVo;
 	
 	}
 	
@@ -2236,9 +2246,9 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return statusIds;	
 	}
-	public List<TrainingMemberVO> setMemberDetails(List<Object[]> list)
+	public List<TrainingMemberVO> setMemberDetails(List<Object[]> list,List<Long> cadreIds)
 	{
-		List<Long> cadreIds = new ArrayList<Long>();
+		//List<Long> cadreIds = new ArrayList<Long>();
 		List<TrainingMemberVO>  returnList = new ArrayList<TrainingMemberVO>();
 		try{
 			if(list != null && list.size() > 0)

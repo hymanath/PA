@@ -10,5 +10,5 @@ import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
 
 public interface ITrainingCampScheduleInviteeTrackDAO extends GenericDao<TrainingCampScheduleInviteeTrack, Long>{
 	public List<Object[]> getScheduleConfirmationDetails(Long purposeId,Long userId);
-	public List<Object[]> getMemberRemarks(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
+	public List<Object[]> getMemberRemarks(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate,List<Long> cadreIds);
 }
