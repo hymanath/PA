@@ -9,6 +9,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CALLS List</title>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+
 <link href="training/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="training/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
@@ -16,6 +18,7 @@
 <!--<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">-->
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 <link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+
 <style type="text/css">
 .filters-div
 {
@@ -176,13 +179,14 @@ footer
 								</div>
 								<div class="row m_top20">
 									<div class="col-md-12">
-										<button class="btn btn-success" onclick="getFilterWiseDetails();">GET FILTER DETAILS</button>
+										<button class="btn btn-success" onclick="getFilterWiseDetails(0);">GET FILTER DETAILS</button>
 									</div>
 								</div>
 							</div>
                         	<div id="memberInfoDiv">
                             	
                             </div>
+							<div id="paginationDivId"></div>
                         </div>
                     </div>
                 </div>
@@ -316,6 +320,7 @@ footer
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 	
 <script src="training/dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 var purposeId = '${purposeId}';
 var programId = '${programId}';
@@ -419,7 +424,7 @@ $('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,lo
 $('#timepicker4').datetimepicker({format: 'LT'});
 $("#titleId").html(" ${status} CALLS LIST <span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
 
-function getMemberDetails()
+function getMemberDetails(startIndex)
 {
 $("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
 if(batchId == "")
@@ -437,6 +442,8 @@ var jObj={
 		statusType:statusType,
 		toDayDate : today,
 		campCallerId:campCallerId,
+		startIndex:startIndex,
+		maxIndex:20,
 		task:"scheduleWiseCount"
 		};
 		$.ajax({
@@ -563,7 +570,21 @@ else{
 str+='No Data Available...';
 }
 $("#memberInfoDiv").html(str);
-
+  var itemsCount=result.totalCount;
+	    var maxResults=jObj.maxIndex;
+	   
+	     if(jObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getMemberDetails(num);
+				
+			}
+		});
+	}
 }
 function showRemarks(cadreId)
 {
@@ -782,7 +803,7 @@ function setDefaultImage(img){
    
    function showHideCallStatus(id)
    {
-	//ClearDiv();
+	ClearDiv();
 	 if(id == 0)
 	 {
 	
@@ -916,8 +937,10 @@ function setDefaultImage(img){
   }
   else
    {
+   
 	$("#ajaxImage2").show();
   }
+  
   
   
    $("#messageDiv").html("");
@@ -945,7 +968,7 @@ function setDefaultImage(img){
 			  }).done(function(result){ 			  
 					$("#messageDiv").html("Status Updated Successfully").css("color","green");
 					$("#myModal").modal('hide');
-					getMemberDetails();
+					getMemberDetails(0);
 					 if(callstatusId == 1)
 					   {
 						$("#ajaxImage").hide();
@@ -1115,7 +1138,7 @@ function setDefaultImage(img){
 		   })
    }
    
-   function getFilterWiseDetails()
+   function getFilterWiseDetails(startIndex)
    {
    var typeOfStatus = "";
    $("#memberInfoDiv").html('<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
@@ -1156,6 +1179,8 @@ function setDefaultImage(img){
 		villageId:villageId,
 		committeeLevelId:committeLevelId,
 		campCallerId:campCallerId,
+		startIndex:startIndex,
+		maxIndex:20,
 		task:"filterWiseCount"
 		};
 		$.ajax({
@@ -1186,7 +1211,7 @@ function setDefaultImage(img){
    
 </script>
 <script>
-getMemberDetails();
+getMemberDetails(0);
 getPrograms();
 getCampsForProgram();
 getSchedulesForCamp();

@@ -1352,13 +1352,13 @@ function buildingMembersFilledInCalenderBatch(result){
 							buildingProgramMembersBatchCount(result);
 						}
 						else{
-							$("#batchCountOfProgramId").html("Program Data  Not Available.")
+							$("#batchCountOfProgramId").html("Programs Data  Not Available.")
 						}
 						if(result.trainingCampScheduleVOList !=null){
 							buildingCampMembersBatchCount(result.trainingCampScheduleVOList);
 						}
 						else{
-							$("#batchCountOfCampId").html("Camp Data Not Available");	
+							$("#batchCountOfCampId").html("Centers Data Not Available");	
 						}
 						
 					}
