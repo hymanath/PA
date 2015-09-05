@@ -107,8 +107,7 @@ import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-
-public class TrainingCampService implements ITrainingCampService{
+class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
 	private ITrainingCampScheduleInviteeCallerDAO 	trainingCampScheduleInviteeCallerDAO;
@@ -168,7 +167,6 @@ public class TrainingCampService implements ITrainingCampService{
     private ITrainingCampUserProgramDAO trainingCampUserProgramDAO;
     private IPartyMeetingService partyMeetingService;
     private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
-    
     
 	
 	
@@ -544,7 +542,7 @@ public class TrainingCampService implements ITrainingCampService{
 			ITrainingCampUserProgramDAO trainingCampUserProgramDAO) {
 		this.trainingCampUserProgramDAO = trainingCampUserProgramDAO;
 	}
-
+	
 	public List<BasicVO> getAllPrograms()
 	{
 		try{
@@ -4949,4 +4947,146 @@ public class TrainingCampService implements ITrainingCampService{
     	
     	return finalMap;
     }
+    
+   public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId){
+		
+		List<IdNameVO> finalList=new ArrayList<IdNameVO>();
+		try{
+	   		
+			Map<Long,IdNameVO> finalMap=new LinkedHashMap<Long,IdNameVO>();
+			IdNameVO villageVO=new IdNameVO();
+			villageVO.setId(6l);
+			villageVO.setName("village");
+			villageVO.setDistrictid(0l);
+			finalMap.put(6l,villageVO);
+			
+			IdNameVO mandalVO=new IdNameVO();
+			mandalVO.setId(5l);
+			mandalVO.setName("mandal");
+			mandalVO.setDistrictid(0l);
+			finalMap.put(5l,mandalVO);
+			
+			IdNameVO districtVO=new IdNameVO();
+			districtVO.setId(11l);
+			districtVO.setName("district");
+			districtVO.setDistrictid(0l);
+			finalMap.put(11l,districtVO);
+			
+			
+			Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(startDateString,endDateString,stateId,"completed");
+			if(compBatchMap!=null && compBatchMap.size()>0){
+				TrainingCampVO trainingCampVO=compBatchMap.get("completed");
+				if(trainingCampVO!=null){
+					
+					List<Long> batchIds=trainingCampVO.getCompletedBatchIds();
+					if(batchIds!=null && batchIds.size()>0){
+						List<Object[]> list=trainingCampAttendanceDAO.getAttendedCountForBatchesByLocation(batchIds);
+						if(list!=null && list.size()>0){
+							for(Object[] obj:list){
+								IdNameVO vo=finalMap.get((Long)obj[0]);
+								vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+							}
+						}
+					}
+				}
+			}
+			finalList.addAll(finalMap.values());
+			
+		}catch(Exception e){
+			LOG.error(" Error Occured in getAttendedCountForBatchesByLocation" ,e);
+		}
+		return finalList;
+	}
+   public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId){
+   	
+	    SimpleVO finalVO=new SimpleVO();
+   	try{
+   		
+   		Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(startDateString,endDateString,stateId,"completed");
+		if(compBatchMap!=null && compBatchMap.size()>0){
+			TrainingCampVO trainingCampVO=compBatchMap.get("completed");
+			if(trainingCampVO!=null){
+				
+		        List<Long> batchIds=trainingCampVO.getCompletedBatchIds();
+   		
+   		
+		   		if(batchIds!=null && batchIds.size()>0){
+		   		
+		   		
+			   		Map<Long,SimpleVO> districtMap=new LinkedHashMap<Long,SimpleVO>();
+			   		Map<Long,SimpleVO> constituencyMap=new LinkedHashMap<Long,SimpleVO>();
+			   		
+			   		
+			   		List<Object[]> invitedListDist=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"district");
+			   		List<Object[]> attendedListDist=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"district");
+			   		
+			   		List<Object[]> invitedListCon=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"constituency");
+			   		List<Object[]> attendedListCon=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"constituency");
+			   		
+			   		
+			   		
+			   		if(invitedListDist!=null && invitedListDist.size()>0){
+			   			settingData(districtMap,invitedListDist,"invited");
+			   		}
+			   		if(attendedListDist!=null && attendedListDist.size()>0){
+			   			settingData(districtMap,attendedListDist,"attended");
+			   		}
+			   		
+			   		if(invitedListCon!=null && invitedListCon.size()>0){
+			   			settingData(constituencyMap,invitedListCon,"invited");
+			   		}
+			   		if(attendedListCon!=null && attendedListCon.size()>0){
+			   			settingData(constituencyMap,attendedListCon,"attended");
+			   		}
+			   	
+			   		
+			   		if(districtMap!=null && districtMap.size()>0){
+			   			finalVO.setSimpleVOList1(new ArrayList<SimpleVO>(districtMap.values()));
+			   		}
+			   		if(constituencyMap!=null && constituencyMap.size()>0){
+			   			finalVO.setSimpleVOList2(new ArrayList<SimpleVO>(constituencyMap.values()));
+			   		}
+		   		
+		   		}
+			}
+		}
+		}catch (Exception e){
+			LOG.error(" Error Occured in getInvitedAttendedCadreCountByBatchIds" ,e);
+		}
+   	return finalVO;
+   }
+   public void  settingData(Map<Long,SimpleVO> constituencyMap,List<Object[]> invitedList,String type){
+   	
+   	try{
+   		
+			for(Object[] obj:invitedList){
+				
+				boolean locExist=true;
+				SimpleVO vo=constituencyMap.get((Long)obj[0]);
+				
+				if(vo==null){
+					locExist=false;
+					vo=new SimpleVO();
+					vo.setId((Long)obj[0]);
+					vo.setName(obj[1]!=null?obj[1].toString():"");
+					vo.setTotal(0l);//invited
+					vo.setCount(0l);//attended
+					
+				}
+				if(type.equalsIgnoreCase("invited")){
+					vo.setTotal(obj[2]!=null?(Long)obj[2]:0l);
+				}else{
+					vo.setCount(obj[2]!=null?(Long)obj[2]:0l);
+				}
+				if(!locExist){
+					constituencyMap.put((Long)obj[0],vo);
+				}
+			}
+   		
+		}catch(Exception e){
+			LOG.error(" Error Occured in settingData" ,e);
+		}
+   }
+   
+   
 }
