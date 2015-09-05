@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TrainingCampVO implements java.io.Serializable{
 
@@ -43,8 +44,153 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long dialedCount;
 	private Long unDialedCount;
 	private String status;
+	private List<TrainingCampVO> batchDetails;
+	private List<TrainingCampVO> campDetails;
+	private List<TrainingCampVO> programDetails;
+	private List<TrainingCampVO> scheduleDetails;
+	
+	private String batchName;
+	private Long campId;
+	private Long programId;
+	private String programName;
+	private String campName;
+	private Long scheduleId;
+	private String scheduleCode;
+	
+	private Long completedMemberCount;
+	private Long runningMemberCount;
+	private Long upCommingMemberCount;
+	
+	private int totalTrainingCenters;
+	private String batchDates;
+	private String scheduleDates;
+	
+	private List<Long> completedBatchIds;
+	private List<Long> runningBatchIds;
+	private List<Long> upComingBatchIds;
 	
 	
+	public List<Long> getCompletedBatchIds() {
+		return completedBatchIds;
+	}
+	public void setCompletedBatchIds(List<Long> completedBatchIds) {
+		this.completedBatchIds = completedBatchIds;
+	}
+	public List<Long> getRunningBatchIds() {
+		return runningBatchIds;
+	}
+	public void setRunningBatchIds(List<Long> runningBatchIds) {
+		this.runningBatchIds = runningBatchIds;
+	}
+	public List<Long> getUpComingBatchIds() {
+		return upComingBatchIds;
+	}
+	public void setUpComingBatchIds(List<Long> upComingBatchIds) {
+		this.upComingBatchIds = upComingBatchIds;
+	}
+	public String getBatchDates() {
+		return batchDates;
+	}
+	public void setBatchDates(String batchDates) {
+		this.batchDates = batchDates;
+	}
+	public String getScheduleDates() {
+		return scheduleDates;
+	}
+	public void setScheduleDates(String scheduleDates) {
+		this.scheduleDates = scheduleDates;
+	}
+	public Long getScheduleId() {
+		return scheduleId;
+	}
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+	public String getScheduleCode() {
+		return scheduleCode;
+	}
+	public void setScheduleCode(String scheduleCode) {
+		this.scheduleCode = scheduleCode;
+	}
+	public List<TrainingCampVO> getScheduleDetails() {
+		return scheduleDetails;
+	}
+	public void setScheduleDetails(List<TrainingCampVO> scheduleDetails) {
+		this.scheduleDetails = scheduleDetails;
+	}
+	public int getTotalTrainingCenters() {
+		return totalTrainingCenters;
+	}
+	public void setTotalTrainingCenters(int totalTrainingCenters) {
+		this.totalTrainingCenters = totalTrainingCenters;
+	}
+	public Long getCompletedMemberCount() {
+		return completedMemberCount;
+	}
+	public void setCompletedMemberCount(Long completedMemberCount) {
+		this.completedMemberCount = completedMemberCount;
+	}
+	public Long getRunningMemberCount() {
+		return runningMemberCount;
+	}
+	public void setRunningMemberCount(Long runningMemberCount) {
+		this.runningMemberCount = runningMemberCount;
+	}
+	public Long getUpCommingMemberCount() {
+		return upCommingMemberCount;
+	}
+	public void setUpCommingMemberCount(Long upCommingMemberCount) {
+		this.upCommingMemberCount = upCommingMemberCount;
+	}
+	public String getProgramName() {
+		return programName;
+	}
+	public void setProgramName(String programName) {
+		this.programName = programName;
+	}
+	public String getCampName() {
+		return campName;
+	}
+	public void setCampName(String campName) {
+		this.campName = campName;
+	}
+	public String getBatchName() {
+		return batchName;
+	}
+	public void setBatchName(String batchName) {
+		this.batchName = batchName;
+	}
+	public Long getCampId() {
+		return campId;
+	}
+	public void setCampId(Long campId) {
+		this.campId = campId;
+	}
+	public Long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+	public List<TrainingCampVO> getCampDetails() {
+		return campDetails;
+	}
+	public void setCampDetails(List<TrainingCampVO> campDetails) {
+		this.campDetails = campDetails;
+	}
+	
+	public List<TrainingCampVO> getProgramDetails() {
+		return programDetails;
+	}
+	public void setProgramDetails(List<TrainingCampVO> programDetails) {
+		this.programDetails = programDetails;
+	}
+	public List<TrainingCampVO> getBatchDetails() {
+		return batchDetails;
+	}
+	public void setBatchDetails(List<TrainingCampVO> batchDetails) {
+		this.batchDetails = batchDetails;
+	}
 	public Long getBusyCount() {
 		return busyCount;
 	}
