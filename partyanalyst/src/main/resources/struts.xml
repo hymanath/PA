@@ -10799,5 +10799,11 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="getTrainingCenterDetailsBasedOnDatesAction" class="trainingCampAction" method="getTrainingCenterDetailsBasedOnDates">
+	    <result type="json" name="success">		   
+		    <param name="root">returnResult</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      

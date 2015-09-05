@@ -2771,6 +2771,7 @@
 		<property name="trainingCampCadreGoalHistoryDAO" ref="trainingCampCadreGoalHistoryDAO"/>
 		<property name="trainingCampUserProgramDAO" ref="trainingCampUserProgramDAO"/>
 		<property name="partyMeetingService" ref="partyMeetingService"/>
+		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
