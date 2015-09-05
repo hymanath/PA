@@ -2560,7 +2560,7 @@ public class TrainingCampService implements ITrainingCampService{
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 				trainingCampScheduleInvitee.setAttendingBatchId(null);
-				trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
+				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
@@ -2569,7 +2569,7 @@ public class TrainingCampService implements ITrainingCampService{
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 				trainingCampScheduleInvitee.setAttendingBatchId(null);
-				trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
+				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
