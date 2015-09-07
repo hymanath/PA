@@ -588,8 +588,6 @@ $("#memberInfoDiv").html(str);
 }
 function showRemarks(cadreId)
 {
-
-
 $("#remarkContentDiv").html('<img src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;"/>');
 var str ='';
 var flag = false;
@@ -965,7 +963,20 @@ function setDefaultImage(img){
 			  url: 'updateCadreStatusForTrainingAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
-			  }).done(function(result){ 			  
+			  }).done(function(result){ 	
+				if(result.resultCode == 1)			  
+				{
+				$("#messageDiv").html("Batch full..").css("color","red");
+					 if(callstatusId == 1)
+					   {
+						$("#ajaxImage").hide();
+					  }
+					  else
+					   {
+						$("#ajaxImage2").hide();
+					  }
+				}
+				else{			  
 					$("#messageDiv").html("Status Updated Successfully").css("color","green");
 					$("#myModal").modal('hide');
 					getMemberDetails(0);
@@ -977,6 +988,7 @@ function setDefaultImage(img){
 					   {
 						$("#ajaxImage2").hide();
 					  }
+				}
 		   })
     
    }
@@ -1040,10 +1052,12 @@ function setDefaultImage(img){
 			  url: 'updateCallBackCadreStatusForTrainingAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
-			  }).done(function(result){ 			  
+			  }).done(function(result){ 
+				
 				$("#messageDiv").html("Status Updated Successfully").css("color","green");
 				$("#myModal").modal('hide');
 				$("#ajaxImage1").hide();
+				
 		   })
     
    }
