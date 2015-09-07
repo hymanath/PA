@@ -81,7 +81,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 			sb.append(" and date(model.toDate) between (:startDate) and (:endDate) ");
 		}
 		else if(type.equalsIgnoreCase("running")){
-			sb.append(" and date(model.fromDate) between (:startDate) and (:endDate) and  date(model.toDate) > (:endDate) ");
+			sb.append(" and date(model.fromDate) <= (:endDate) and  date(model.toDate) >= (:endDate) ");
 		}
 		else if(type.equalsIgnoreCase("upcoming")){
 			sb.append(" and date(model.fromDate)>:endDate ");
