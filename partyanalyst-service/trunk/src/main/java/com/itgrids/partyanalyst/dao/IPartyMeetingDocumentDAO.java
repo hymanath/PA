@@ -12,4 +12,6 @@ public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocumen
 	public Integer deletePartyMeetingDocument(Long docId);
 	public List<Object[]> getPartyMeetingDocsOf(Long partyMeetingId, String documentSourceType);
 	public List<Object[]> getPartyMeetingDocsOfMeetingIds(List<Long> partyMeetingIds);
+	public List<Object[]> getMinuteAtrDocumentSummaryForAMeeting(Long meetingId,String type);
+	public List<Long> getDocDetails(List<Long> meetingIds,String type);
 }
