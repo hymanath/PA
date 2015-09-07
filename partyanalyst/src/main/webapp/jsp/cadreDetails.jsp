@@ -751,18 +751,23 @@ var globalCadreId = '${cadreId}';
 						</a>
                     </div>
                     <div class="panel-body" id="surveyDetailsId" style="display:none;">
-					<div class="surveyDetailssCls">	</div>
-					<div class="surveyDetailsCls">	</div>
-					
-					<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
-                    	<div id="surveyDetailsMainDivId" class="">						
-                    	</div>
+						<h4 style="font-weight:bold;margin:5px;">TAB SURVEY'S</h4>
+						<div class="surveyDetailssCls">	</div>
+						<div class="surveyDetailsCls">	</div>
+						
+						<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+                    	<div id="surveyDetailsMainDivId" class=""></div>
+						
+						<h4 style="font-weight:bold;margin-top:20px;">IVR SURVEY'S</h4>
+						<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
+						<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+						
                     </div>
                 </div>
             </div>
         </div>
 		
-		 <div class="row">
+		<!-- <div class="row">
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
@@ -777,13 +782,13 @@ var globalCadreId = '${cadreId}';
 						</h4>
 						</a>
                     </div>
-                    <div class="panel-body ivrDetailsCls" id="ivrsurveyDetailsId" style="display:none;">
+                    <div class="panel-body ivrDetailsCls2" id="ivrsurveyDetailsId" style="display:none;">
 						<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
                     	<div id="ivrDetailsMainDivId" class=""></div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 		
 		<!--<div class="panel-group" id="accordion111" role="tablist" aria-multiselectable="true">
 		<div class="panel panel-default">
@@ -3505,6 +3510,7 @@ function hideAndShowSurvey(typeId)
 {	
 	if(typeId == 1)
 	{
+		getIVRDetails();
 		$('#surveyDetailsId').show();
 		$('#surveyshowId').hide();
 		$('#surveyhideId').show();
@@ -4597,10 +4603,9 @@ function buildPublicScoreTable(myResult)
 	var str ="";
 	if(myResult!=null){
 		if(myResult.length>0){
-		str+="<h4 class='uppercase'>IVR PUBLIC</h4>";
 			for(var i in myResult){
 					result = myResult[i];
-					if(result.type=="PUBLIC"){
+					
 						str+="<h5 style='font-weight:bold'> ROUND - "+result.round+"</h5>";
 						str+='<table style="margin:5px;" class="gridtable"  border="1"  width="95%">';
 						str+='<thead>';
@@ -4707,6 +4712,7 @@ function buildPublicScoreTable(myResult)
 										str+='<th> Others </th>';
 									}
 								}
+								str+='<th> TYPE </th>';
 						str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -4767,9 +4773,9 @@ function buildPublicScoreTable(myResult)
 											str+="<td>"+result.others+" ( "+result.othersPer+" %)</td>";
 										}
 									}
+									str+="<td>"+result.type+"</td>";
 								str+="</tr>";
 							}
-					}
 				str+"</tbody>";
 				str+="</table>";
 			}
