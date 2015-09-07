@@ -32,7 +32,7 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
 				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
-				"model.updatedTime " +
+				"model.updatedTime,model.partyMeeting.meetingName " +
 				" from PartyMeetingMinute model where " +
 				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -86,6 +86,14 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		
+		return query.list();
+	}
+	
+	public List<Long> getMOMHavingMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId from PartyMeetingMinute model " +
+				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.isDeleted = 'N' ");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		return query.list();
 	}
 }
