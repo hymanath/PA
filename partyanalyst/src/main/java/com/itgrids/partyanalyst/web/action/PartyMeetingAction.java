@@ -300,7 +300,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	
 	public String getMeetingCumulativeSummaryForLocation(){
 		try {
-			LOG.info("Entered into getMeetingSummaryForLocation");
+			LOG.info("Entered into getMeetingCumulativeSummaryForLocation");
 			jObj = new JSONObject(getTask());
 			
 			Long meetinglevel=jObj.getLong("meetinglevel");
@@ -316,7 +316,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			
 			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForLocationCumulative(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,meetinglevel);
 		} catch (Exception e) {
-			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
+			LOG.error("Exception raised at getMeetingCumulativeSummaryForLocation",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -341,6 +341,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			partyMeetingsSummary = partyMeetingService.getMeetingSummaryForGrouping(typeOfMeeting,locationLevel,stateId,distId,constId,manTowDivId,wardPanId,startDate,endDate,groupLocationType,meetinglevel);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMeetingSummaryForLocation",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSummaryForAMeeting(){
+		try {
+			LOG.info("Entered into getSummaryForAMeeting Action");
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingVO = partyMeetingService.getSummaryForAMeeting(jObj.getLong("meetingId"),jObj.getString("type"));
+		} catch (Exception e) {
+			LOG.error("Entered into getSummaryForAMeeting Action",e);
 		}
 		return Action.SUCCESS;
 	}
