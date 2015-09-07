@@ -1700,7 +1700,7 @@ $(document).ready(function(e) {
 			return;
 		}
 		//alert("ls"+$("#locationLevelSelId").val()+",SI"+stateId+",DI"+distId+",CI"+constId+",MTDI"+manTowDivId+",VWI"+wardPanId);
-		$(".tbtn").trigger( "click" );
+		//$(".tbtn").trigger( "click" );
 		
 		var value = $("input:checkbox[class=grpLctn]:checked").val();
 		
@@ -2207,6 +2207,31 @@ $(document).ready(function(e) {
 				var pmList = result.partyMeetingsList;
 				var str = "";
 				if(pmList!=null && pmList.length>0){
+					str+='<table class="table table-bordered m_0" id="cummulativeTableId">';
+					str+='<thead>';
+					str+='<tr>';
+					str+='<th rowspan="2">No Of Meetings</th>';
+					str+='<th rowspan="2">Location</th>';
+					str+='<th rowspan="2">Total <br/>Invitees</th>';
+					str+='<th colspan="3" class="text-center">Attendance</th>';
+					str+='<th rowspan="2">Total<br/> Absent</th>';
+					str+='<th colspan="3"  class="text-center">MOM</th>';
+					str+='<th colspan="3" class="text-center">ATR</th>';
+					str+='</tr>';
+					str+='<tr>';
+					str+='<th>Total Attended</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Inivtees</th>';
+					str+='<th></th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='<th></th>';
+					str+='<th>File</th>';
+					str+='<th>Text</th>';
+					str+='</tr>';
+					str+='</thead>';
+					//str+='<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>';
+					str+='<tbody id="cumulativeMeetingTableBodyId">';
 					for(var i in pmList){
 						str+="<tr>";
 						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
@@ -2273,19 +2298,21 @@ $(document).ready(function(e) {
 						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 						str+="</tr>";
 					}
-					
+					str+='</tbody>';
+					str+='</table>';
 				}
-				$("#cumulativeMeetingTableBodyId").html(str); 
+				$("#cumulativeMeetingResultId").html(str); 
 			}else{
-				$("#cumulativeMeetingTableBodyId").html("No Records Found"); 
+				$("#cumulativeMeetingResultId").html("No Records Found"); 
 			}
+			
 			$("#cummAjax").hide();
 		});
 	}
 	
 	$(document).on('click','.grpLctn', function() {
 		$('.grpLctn').not(this).prop('checked', false);
-		
+		//$("#resultTypeSelId").val("cumulative");
 		var value = $("input:checkbox[class=grpLctn]:checked").val();
 		
 		if(typeof value === 'undefined'){
