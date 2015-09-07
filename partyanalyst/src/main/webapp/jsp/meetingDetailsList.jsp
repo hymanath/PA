@@ -204,15 +204,19 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											<br/><br/>
 											
 												  
-													<div class="" id="mintueDocumentDivId"></div>
+													
 												 
 											
-											
+											<!-- CLONABLE DIV FOR FILE -->
 											<div style="display:none;" id="fileDiv" class="row col-md-12">
 												<input type="file" class="m_top10 fileCls col-md-6" name="imageForDisplay" style="width: 225px;"/>
 												<div class="col-md-6"><span class="btn btn-primary btn-xs m_top10 removeBtnCls "  title="Remove File"><i class="glyphicon glyphicon-minus"></i></span></div>
 											</div>
+											
+											
                                             <div class="row">
+												<h4 style="font-weight:bold;"> UPLOAD MOM DOCUMENTS</h4>
+												<div class="" id="mintueDocumentDivId"></div>
                                                 <div class="col-md-12">
                                                     <form id="uploadMinutesDocs" name="uploadMinutesDocs" class="uploadBox">
 														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
@@ -226,14 +230,16 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                                 </div>
                                             </div>
 											<!-- meeting docs -->
-											<div class="" id="meetingDocumentDivId"></div>
+											
 												 
 											<div class="row">
+												<h4 style="font-weight:bold;"> UPLOAD MEETING RELATED PHOTOS AND DOCUMENTS</h4>
+												<div class="" id="meetingDocumentDivId"></div>
                                                 <div class="col-md-12">
                                                     <form id="uploadMeetingDocs" name="uploadMeetingDocs" class="uploadBox">
 														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="meetFileDivId0" style="width: 225px;margin-left:15px;"/>
 														<div id="ExtraMeetFiles"></div>
-														<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-primary btn-sm" id="uploadMeetingDocsId"></input>
+														<input type= "button" value="Upload Meeting Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-primary btn-sm" id="uploadMeetingDocsId"></input>
 														<input type="hidden" name="partyMeeting" id="partyMeetingMeetId"/>
 														<input type="hidden" name="partyMeetingType" value="MEETING"/>
 													</form>
@@ -273,9 +279,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											</div>
 											<br/><br/>
 											
-												<div  class="" id="atrDocumentDivId"></div>
+												
 										
 											<div class="row">
+												<h4 style="font-weight:bold;"> UPLOAD ATR DOCUMENTS</h4>	
+												<div  class="" id="atrDocumentDivId"></div>
 												 <div class="col-md-12">
                                                     <form id="uploadATRDocs" name="uploadATRDocs" class="uploadBox	">
 														<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="atrFileId0" style="width: 225px;margin-left:15px;"/>
@@ -770,7 +778,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				   $("#miniteDocsCount").html(result.minutesDocuments.length);
 				   var str='';
 				    str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				    for(var i in result.minutesDocuments){
@@ -791,7 +799,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					$("#atrDocsCount").html(result.atrDocuments.length);
 				   var str='';
 				    str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				   for(var i in result.atrDocuments){
@@ -813,7 +821,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					//$("#atrDocsCount").html(result.meetingDocs.length);
 				   var str='';
 				    str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold">UPLOAD MEETING DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold">UPLOAD MEETING DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				   for(var i in result.meetingDocs){
@@ -1122,7 +1130,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					$("#miniteDocsCount").text(result.minutesDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				    for(var i in result.minutesDocuments){
@@ -1145,7 +1153,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					$("#atrDocsCount").text(result.atrDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				   for(var i in result.atrDocuments){
@@ -1168,7 +1176,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					//$("#atrDocsCount").text(result.atrDocuments.length);
 				   var str='';
 				   str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
+					//str+='<div class="panel-heading text-bold">UPLOAD DOCUMENTS</div>';
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 				   for(var i in result.meetingDocs){
@@ -1466,11 +1474,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   }	 */
 			   var str='';
 				   str+='<div class="panel panel-default">';
-					if(docSourceType=="MEETING"){
+					/* if(docSourceType=="MEETING"){
 						str+='<div class="panel-heading text-bold"> UPLOAD MEETING DOCUMENTS</div>';
 					}else{
 						str+='<div class="panel-heading text-bold"> UPLOAD DOCUMENTS</div>';   
-					}
+					} */
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 			   if(result!=null && result.length>0){
