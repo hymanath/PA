@@ -1498,20 +1498,26 @@ class TrainingCampService implements ITrainingCampService{
 			{
 				for (Object[] objects : dialedCallsCountList) {
 					Long dialedCount = commonMethodsUtilService.getLongValueForObject(objects[7]);
-					Long batchId = commonMethodsUtilService.getLongValueForObject(objects[2]);
-					
+					Long batchId = commonMethodsUtilService.getLongValueForObject(objects[4]);
+					Long cnt = dialedCountMap.get(batchId);
+					if(cnt == null)
 					dialedCountMap.put(batchId, dialedCount);
+					else
+						dialedCountMap.put(batchId, dialedCount + cnt);	
 				}
 			}
 			
 			Map<String,Map<String,Map<Long,List<TrainingCampVO>>>> programWiseInterestedMembersMap = new LinkedHashMap<String,Map<String, Map<Long,List<TrainingCampVO>>>>(0);
+			Map<String,Map<String,Map<Long,TrainingCampVO>>> programWiseAllocatedMembersMap = new LinkedHashMap<String,Map<String, Map<Long,TrainingCampVO>>>(0);
 			if(allocatedCallsCountList != null && allocatedCallsCountList.size()>0)
 			{
 				for (Object[] member : allocatedCallsCountList) {
 					String programName = commonMethodsUtilService.getStringValueForObject(member[1]);
 					String campName = commonMethodsUtilService.getStringValueForObject(member[3]);
 					Map<String,Map<Long,List<TrainingCampVO>>> campsWiseInterestedMembersMap = new LinkedHashMap<String,Map<Long,List<TrainingCampVO>>>(0);
+					Map<String,Map<Long,TrainingCampVO>> campsWiseAllocatedMembersMap = new LinkedHashMap<String,Map<Long,TrainingCampVO>>(0);
 					Map<Long,List<TrainingCampVO>> batchwiseInterestedMembersMap = new LinkedHashMap<Long, List<TrainingCampVO>>(0);
+					Map<Long,TrainingCampVO> batchwiseAllocatedMembersMap = new LinkedHashMap<Long, TrainingCampVO>(0);
 					
 					List<TrainingCampVO>  batchVOList = new ArrayList<TrainingCampVO>(0);
 					
@@ -1528,6 +1534,15 @@ class TrainingCampService implements ITrainingCampService{
 						batchVOList = batchwiseInterestedMembersMap.get(commonMethodsUtilService.getLongValueForObject(member[4]));
 					}
 
+					if(programWiseAllocatedMembersMap.get(programName) != null)
+					{
+						campsWiseAllocatedMembersMap = programWiseAllocatedMembersMap.get(programName);
+					}
+					if(campsWiseAllocatedMembersMap.get(campName) != null)
+					{
+						batchwiseAllocatedMembersMap = campsWiseAllocatedMembersMap.get(campName);
+					}
+					
 						TrainingCampVO vo = new TrainingCampVO();
 						vo.setName(programName);
 						vo.setTrainingCampName(campName);
@@ -1540,16 +1555,44 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setMemberStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
 						
 						//vo.setDialedCallsCount(dialedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
-						vo.setAllocatedCallsCount(commonMethodsUtilService.getLongValueForObject(member[7]));
-						
+						if(vo.getAllocatedCallsCount() == null)
+							vo.setAllocatedCallsCount(0l);
+						vo.setAllocatedCallsCount(vo.getAllocatedCallsCount() + commonMethodsUtilService.getLongValueForObject(member[7]));
 						batchVOList.add(vo);
+						
+						if(batchVOList != null && batchVOList.size()>0)
+						{
+							Long allocatedCount = 0L;
+							for (TrainingCampVO batchVO2 : batchVOList) {
+								allocatedCount = allocatedCount+batchVO2.getAllocatedCallsCount();
+							}
+							
+							TrainingCampVO batchVO1 = new TrainingCampVO();
+							batchVO1.setName(programName);
+							batchVO1.setTrainingCampName(campName);
+							batchVO1.setBatchId(commonMethodsUtilService.getLongValueForObject(member[4]));
+							batchVO1.setStartDateStr(commonMethodsUtilService.getStringValueForObject(member[5]));
+							batchVO1.setEndDateStr(commonMethodsUtilService.getStringValueForObject(member[6]));
+							//vo.setBatchConfirmationCount(commonMethodsUtilService.getLongValueForObject(member[7]));
+							batchVO1.setSchdlStatusId(commonMethodsUtilService.getLongValueForObject(member[8]));
+							batchVO1.setSchdlStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
+							batchVO1.setMemberStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
+							batchVO1.setAllocatedCallsCount(allocatedCount);
+							
+							batchwiseAllocatedMembersMap.put(commonMethodsUtilService.getLongValueForObject(member[4]), batchVO1);
+						}
 					
 					batchwiseInterestedMembersMap.put(commonMethodsUtilService.getLongValueForObject(member[4]), batchVOList);
+					
+					campsWiseAllocatedMembersMap.put(campName, batchwiseAllocatedMembersMap);
+					programWiseAllocatedMembersMap.put(programName, campsWiseAllocatedMembersMap);
+					
 					campsWiseInterestedMembersMap.put(campName, batchwiseInterestedMembersMap);
 					programWiseInterestedMembersMap.put(programName, campsWiseInterestedMembersMap);
 					
 				}
 				
+				programWiseInterestedMembersMap.clear();
 				if(interestedMembersList != null && interestedMembersList.size()>0)
 				{
 					for (Object[] member : interestedMembersList) {
@@ -1574,9 +1617,7 @@ class TrainingCampService implements ITrainingCampService{
 							batchVOList = batchwiseInterestedMembersMap.get(commonMethodsUtilService.getLongValueForObject(member[4]));
 						}
 						
-							TrainingCampVO vo = getMatchedVOforMemberStatus(batchVOList,commonMethodsUtilService.getStringValueForObject(member[9]));
-							if(vo == null)
-								vo = new TrainingCampVO();
+							TrainingCampVO vo = new TrainingCampVO();
 						
 							vo.setName(programName);
 							vo.setTrainingCampName(campName);
@@ -1587,9 +1628,12 @@ class TrainingCampService implements ITrainingCampService{
 							vo.setSchdlStatusId(commonMethodsUtilService.getLongValueForObject(member[8]));
 							vo.setSchdlStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
 							vo.setMemberStatus(commonMethodsUtilService.getStringValueForObject(member[9]));
+							if(vo.getDialedCallsCount() == null)
+								vo.setDialedCallsCount(0l);
+							if(dialedCountMap != null && dialedCountMap.size()> 0 && dialedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4]))!= null)
+								vo.setDialedCallsCount(vo.getDialedCallsCount() + dialedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
 							
-							vo.setDialedCallsCount(dialedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
-							//vo.setAllocatedCallsCount(allocatedCountMap.get(commonMethodsUtilService.getLongValueForObject(member[4])));
+							vo.setInterestedCount(commonMethodsUtilService.getLongValueForObject(member[7]));
 							
 							batchVOList.add(vo);
 						
@@ -1635,29 +1679,41 @@ class TrainingCampService implements ITrainingCampService{
 												batchVO.setDialedCallsCount(trainingCampVO2.getDialedCallsCount());
 												String countBelongsTo = trainingCampVO2.getSchdlStatus();
 												
+												Map<String,Map<Long,TrainingCampVO>> campsWiseAllocatdMembersMap = programWiseAllocatedMembersMap.get(programNameStr);
+												if(campsWiseAllocatdMembersMap != null && campsWiseAllocatdMembersMap.size()>0){
+													Map<Long,TrainingCampVO> batchwiseAllocatdMembersMap = campsWiseAllocatdMembersMap.get(campusName);
+													if(batchwiseAllocatdMembersMap != null && batchwiseAllocatdMembersMap.size()>0)
+													{
+														TrainingCampVO batchVO3 = batchwiseAllocatdMembersMap.get(batchId);
+														if(batchVO3 != null)
+															batchVO.setAllocatedCalls(batchVO3.getAllocatedCallsCount());
+													}
+												}
+												
 												if(countBelongsTo.equalsIgnoreCase("Interested")){
-													batchVO.setInterestedCount(trainingCampVO2.getAllocatedCallsCount());
+													batchVO.setInterestedCount(trainingCampVO2.getInterestedCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Confirmed")){
-													batchVO.setAcceptedCount(trainingCampVO2.getAllocatedCallsCount());
+													batchVO.setAcceptedCount(trainingCampVO2.getInterestedCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Not Interested")){
-													batchVO.setNotInterestedCount(trainingCampVO2.getAllocatedCallsCount());
+													batchVO.setNotInterestedCount(trainingCampVO2.getInterestedCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Call Back - Busy")){
-													batchVO.setBusyCount(trainingCampVO2.getAllocatedCallsCount());
+													batchVO.setBusyCount(trainingCampVO2.getInterestedCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Call Back - Confirm Later")){
-													batchVO.setConformLaterCount(trainingCampVO2.getAllocatedCallsCount());
+													batchVO.setConformLaterCount(trainingCampVO2.getInterestedCount());
 												}
 												else{
 													if(trainingCampVO2.getAllocatedCallsCount() != null)
-														othrsCount = othrsCount+trainingCampVO2.getAllocatedCallsCount();
+														othrsCount = othrsCount+trainingCampVO2.getInterestedCount();
 													
 													batchVO.setOthersCount(othrsCount);
 												}
+												batchVOList.add(batchVO);
 											}
-											batchVOList.add(batchVO);
+											
 									}
 									if(batchVOList != null && batchVOList.size()>0)
 									{
