@@ -4452,7 +4452,7 @@ function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 	
 	if(participatedConstituencyId != null && participatedConstituencyId > 0){
 		constituencyId = participatedConstituencyId;
-	}else if(participatedConstituencyId = 0 && globalConstituencyId > 0){
+	}else if(globalConstituencyId > 0){
 		constituencyId = globalConstituencyId;
 	}
 	var surveyId = surveyId;
