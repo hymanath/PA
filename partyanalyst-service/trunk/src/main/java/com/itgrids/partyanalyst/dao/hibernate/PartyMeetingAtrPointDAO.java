@@ -33,7 +33,7 @@ public class PartyMeetingAtrPointDAO extends GenericDaoHibernate<PartyMeetingAtr
 		queryStr.append(" select model.partyMeetingAtrPointId,model.partyMeetingId,model.request,model.actionTaken,model.requestFrom, " +
 				" model.locationScopeId,model.locationValue, " +
 				" model.raisedBy,model.insertedBy.userId,model.insertedBy.firstName,model.updatedBy.userId,model.updatedBy.firstName," +
-				"model.insertedTime,model.updatedTime  " +
+				"model.insertedTime,model.updatedTime,model.partyMeeting.meetingName  " +
 				" from PartyMeetingAtrPoint model where " +
 				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -86,6 +86,14 @@ public class PartyMeetingAtrPointDAO extends GenericDaoHibernate<PartyMeetingAtr
 				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
 				" and model.isDeleted = 'N'" +
 				" group by model.partyMeeting.partyMeetingId ");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
+	
+	public List<Long> getAtrHavingMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId from PartyMeetingAtrPoint model " +
+				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.isDeleted = 'N' ");
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		return query.list();
 	}
