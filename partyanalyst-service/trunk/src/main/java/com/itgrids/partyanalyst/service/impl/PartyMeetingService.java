@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -1962,6 +1963,42 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 				}
 				
+				List<Long> meetingIds = new ArrayList<Long>();
+				for (PartyMeetingSummaryVO pmsvo : lctnSplittedRslt) {
+					if(pmsvo.getPartyMeetingsList().size()>0){
+						for(PartyMeetingSummaryVO vo : pmsvo.getPartyMeetingsList()){
+							meetingIds.add(vo.getMeetingId());
+						}
+					}
+				}
+				
+				if(meetingIds.size()>0){
+					List<Long> atrDocDtls = partyMeetingDocumentDAO.getDocDetails(meetingIds,"ATR");
+					List<Long> minuteDocDtls = partyMeetingDocumentDAO.getDocDetails(meetingIds,"MINUTE");
+					List<Long> atrCounts = partyMeetingAtrPointDAO.getAtrHavingMeetings(meetingIds);
+					List<Long> momCounts = partyMeetingMinuteDAO.getMOMHavingMeetings(meetingIds);
+					
+					for (PartyMeetingSummaryVO pmsvo : lctnSplittedRslt) {
+						if(pmsvo.getPartyMeetingsList().size()>0){
+							for(PartyMeetingSummaryVO vo : pmsvo.getPartyMeetingsList()){
+								if(minuteDocDtls.contains(vo.getMeetingId())){
+									vo.setMomFilesExist(true);
+								}
+								if(momCounts.contains(vo.getMeetingId())){
+									vo.setMomTextExist(true);
+								}
+								if(atrDocDtls.contains(vo.getMeetingId())){
+									vo.setAtrFilesExist(true);
+								}
+								if(atrCounts.contains(vo.getMeetingId())){
+									vo.setAtrTextExist(true);
+								}
+							}
+						}
+					}
+					
+				}
+				
 				cumilateTheResult(lctnSplittedRslt);
 			
 		}catch (Exception e) {
@@ -1970,5 +2007,59 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		finalVO.setPartyMeetingsList(lctnSplittedRslt);
 		return finalVO;
+	}
+	
+	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type){
+		PartyMeetingVO vo = new PartyMeetingVO();
+		try {
+			LOG.info("Entered into getSummaryForAMeeting service");
+			List<String> temp = new ArrayList<String>();
+			
+			List<Object[]> qryrslt=null;
+			if(type.equalsIgnoreCase("momText")){
+				qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId);
+				
+				if(qryrslt != null && qryrslt.size()>0){
+					for (Object[] objects : qryrslt) {
+						if(objects[2]!=null){
+							temp.add(objects[2].toString());
+							vo.setSubName(objects[9].toString());
+						}
+					}
+				}
+				
+				vo.setMinutes(temp);
+			}else if(type.equalsIgnoreCase("atrText")){
+				qryrslt = partyMeetingAtrPointDAO.getAtrDetailsForAMeeting(meetingId);
+				
+				if(qryrslt != null && qryrslt.size()>0){
+					for (Object[] objects : qryrslt) {
+						if(objects[2]!=null){
+							temp.add(objects[2].toString());
+							vo.setSubName(objects[14].toString());
+						}
+					}
+				}
+				vo.setAtrPoints(temp);
+			}else{
+				qryrslt = partyMeetingDocumentDAO.getMinuteAtrDocumentSummaryForAMeeting(meetingId,type);
+				List<PartyMeetingVO> voList = new ArrayList<PartyMeetingVO>();
+				if(qryrslt != null && qryrslt.size()>0){
+					for (Object[] objects : qryrslt) {
+						PartyMeetingVO pmVO = new PartyMeetingVO();
+						pmVO.setPath(objects[0].toString());
+						pmVO.setName(objects[1].toString());
+						pmVO.setSubName(objects[2].toString());
+						voList.add(pmVO);
+					}
+				}
+				vo.setDocsList(voList);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Entered into getSummaryForAMeeting service",e);
+		}
+		
+		return vo;
 	}
 }
