@@ -107,6 +107,7 @@ import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.MatchedTypeVo;
 class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
@@ -4768,6 +4769,17 @@ class TrainingCampService implements ITrainingCampService{
 				finalMap.get("completed").setUpComingBatchIds(upComingBatchIds);
 			}
 			
+			if(completedBatches.size()>0){
+				setProgramInformation(finalMap,completedBatches,"completed");
+			}
+			if(runningBatches.size()>0){
+				setProgramInformation(finalMap,runningBatches,"running");
+			}
+			if(upComingBatches.size()>0){
+				setProgramInformation(finalMap,upComingBatches,"upComing");
+			}
+			
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCompletedRunningUpcomingBatchIds", e);
 		}
@@ -4805,6 +4817,149 @@ class TrainingCampService implements ITrainingCampService{
     	}
     }
     
+    public void setProgramInformation(Map<String,TrainingCampVO> finalMap,List<Object[]> result,String type){
+    	LOG.info("Entered into setProgramInformation");
+    	try {
+    		if(result!=null && result.size()>0){
+				TrainingCampVO tmp = finalMap.get("completed");
+				if(tmp.getProgramWiseDetails()==null){
+					tmp.setProgramWiseDetails(new ArrayList<TrainingCampVO>());
+				}
+				List<TrainingCampVO> tempList = tmp.getProgramWiseDetails();
+				for(Object[] obj:result){	
+					
+					TrainingCampVO matechedProgVO = getMatchedOne(tempList,(Long)obj[4],"prog");
+					boolean isNewProg = false;
+					if(matechedProgVO==null){
+						isNewProg = true;
+						matechedProgVO = new TrainingCampVO();
+						matechedProgVO.setProgramId((Long)obj[4]);
+						matechedProgVO.setProgramName(obj[5].toString());
+					}
+					
+					List<TrainingCampVO> campList = matechedProgVO.getCampDetails();
+					if(campList==null){
+						campList = new ArrayList<TrainingCampVO>();
+					}
+					
+					TrainingCampVO matechedCampVO = getMatchedOne(campList,(Long)obj[2],"camp");
+					boolean isNewCamp = false;
+					if(matechedCampVO==null){
+						isNewCamp = true;
+						matechedCampVO = new TrainingCampVO();
+						matechedCampVO.setCampId((Long)obj[2]);
+						matechedCampVO.setCampName(obj[3].toString());
+					}
+					
+					List<TrainingCampVO> scheduleList = matechedCampVO.getScheduleDetails();
+					if(scheduleList==null){
+						scheduleList = new ArrayList<TrainingCampVO>();
+					}
+					
+					TrainingCampVO matchesScheduleVO = getMatchedOne(scheduleList,(Long)obj[6],"schedule");
+					boolean isNewSchedule = false;
+					if(matchesScheduleVO==null){
+						isNewSchedule = true;
+						matchesScheduleVO = new TrainingCampVO();
+						matchesScheduleVO.setScheduleId((Long)obj[6]);
+						matchesScheduleVO.setScheduleName(obj[7].toString());
+					}
+					
+					List<TrainingCampVO> batchList = matchesScheduleVO.getBatchDetails();
+					if(batchList==null){
+						batchList = new ArrayList<TrainingCampVO>();
+					}
+					
+					TrainingCampVO matchedBatchVo = getMatchedOne(batchList, (Long)obj[0], "batch");
+					if(matchedBatchVo==null){
+						matchedBatchVo = new TrainingCampVO();
+						matchedBatchVo.setBatchId((Long)obj[0]);
+						matchedBatchVo.setBatchName(obj[1].toString());
+						batchList.add(matchedBatchVo);
+						
+						if(type.equalsIgnoreCase("completed")){
+							matechedCampVO.setCompletedBatches(matechedCampVO.getCompletedBatches()+1);
+							List temp = new ArrayList<Long>();
+							temp.add((Long)obj[0]);
+							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendence");
+							matechedCampVO.setCompletedMemberCount(matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0]));
+						}else if(type.equalsIgnoreCase("running")){
+							matechedCampVO.setRunningBatches(matechedCampVO.getUpComingBatches()+1);
+							List temp = new ArrayList<Long>();
+							temp.add((Long)obj[0]);
+							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
+							matechedCampVO.setRunningMemberCount((matechedCampVO.getRunningMemberCount()+count.get((Long)obj[0])));
+						}else if(type.equalsIgnoreCase("upComing")){
+							matechedCampVO.setUpComingBatches(matechedCampVO.getUpComingBatches()+1);
+							List temp = new ArrayList<Long>();
+							temp.add((Long)obj[0]);
+							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
+							matechedCampVO.setCompletedMemberCount((matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0])));
+						}
+					}
+					matchesScheduleVO.setBatchDetails(batchList);
+					
+							
+					if(isNewSchedule){
+						scheduleList.add(matchesScheduleVO);
+					}
+					matechedCampVO.setScheduleDetails(scheduleList);
+							
+					if(isNewCamp){
+						campList.add(matechedCampVO);
+					}
+					matechedProgVO.setCampDetails(campList);
+					
+					if(isNewProg){
+						tempList.add(matechedProgVO);
+					}
+					
+					
+    			}
+    		}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setProgramInformation", e);
+		}
+    }
+    
+    public TrainingCampVO getMatchedOne(List<TrainingCampVO> tempList,Long matchedId,String type){
+    	if(type.equalsIgnoreCase("prog")){
+    		for (TrainingCampVO trainingCampVO : tempList) {
+    			if(trainingCampVO.getProgramId()!=null && trainingCampVO.getProgramId().longValue()==matchedId){
+    				return trainingCampVO;
+    			}
+    		}
+    	}
+    	
+    	if(type.equalsIgnoreCase("camp")){
+    		for (TrainingCampVO trainingCampVO : tempList) {
+    			if(trainingCampVO.getCampId()!=null && trainingCampVO.getCampId().longValue()==matchedId){
+    				return trainingCampVO;
+    			}
+    				
+   			}
+   		}
+    	
+    	if(type.equalsIgnoreCase("schedule")){
+    		for (TrainingCampVO trainingCampVO : tempList) {
+    			if(trainingCampVO.getScheduleId()!=null && trainingCampVO.getScheduleId().longValue()==matchedId){
+    				return trainingCampVO;
+    			}
+    				
+   			}
+   		}
+    	
+    	if(type.equalsIgnoreCase("batch")){
+    		for (TrainingCampVO trainingCampVO : tempList) {
+    			if(trainingCampVO.getBatchId()!=null && trainingCampVO.getBatchId().longValue()==matchedId){
+    				return trainingCampVO;
+    			}
+    				
+   			}
+   		}
+    	return null;
+    }
+ 
     public void setBatchesInformation(Map<String,TrainingCampVO> finalMap, List<Object[]> result, String type,List<Long> batchIdsList,List<Long> totalTrainingCenters){
     	LOG.debug("Entered Into SetBatchesInformation");
     	try{

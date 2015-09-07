@@ -57,9 +57,9 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long scheduleId;
 	private String scheduleCode;
 	
-	private Long completedMemberCount;
-	private Long runningMemberCount;
-	private Long upCommingMemberCount;
+	private Long completedMemberCount=0l;
+	private Long runningMemberCount=0l;
+	private Long upCommingMemberCount=0l;
 	
 	private int totalTrainingCenters;
 	private String batchDates;
@@ -69,10 +69,37 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<Long> runningBatchIds;
 	private List<Long> upComingBatchIds;
 	private Long cmpBatchCount=1l;
+	private List<TrainingCampVO> programWiseDetails;	
+	
+	private Long completedBatches=0l;
+	private Long runningBatches=0l;
+	private Long upComingBatches;
 	
 	
-	
-	
+	public Long getCompletedBatches() {
+		return completedBatches;
+	}
+	public void setCompletedBatches(Long completedBatches) {
+		this.completedBatches = completedBatches;
+	}
+	public Long getRunningBatches() {
+		return runningBatches;
+	}
+	public void setRunningBatches(Long runningBatches) {
+		this.runningBatches = runningBatches;
+	}
+	public Long getUpComingBatches() {
+		return upComingBatches;
+	}
+	public void setUpComingBatches(Long upComingBatches) {
+		this.upComingBatches = upComingBatches;
+	}
+	public List<TrainingCampVO> getProgramWiseDetails() {
+		return programWiseDetails;
+	}
+	public void setProgramWiseDetails(List<TrainingCampVO> programWiseDetails) {
+		this.programWiseDetails = programWiseDetails;
+	}
 	public Long getCmpBatchCount() {
 		return cmpBatchCount;
 	}
