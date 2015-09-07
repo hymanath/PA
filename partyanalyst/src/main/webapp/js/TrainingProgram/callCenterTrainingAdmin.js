@@ -211,12 +211,12 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 							else
 								str+='<td style="text-align:center;" > 0 </td>';
 								
-							if(result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount != null)
-								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount+'</td>';
+							if(result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls != null)
+								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls+'</td>';
 							else
 								str+='<td style="text-align:center;" > 0 </td>';
 								
-							var unDialedCount=result.trainingCampVOList[i].trainingCampVOList[k].allocatedCallsCount-result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount;
+							var unDialedCount=result.trainingCampVOList[i].trainingCampVOList[k].allocatedCalls-result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount;
 								
 							if(result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount != null)
 								str+='<td style="text-align:center;" class="text-yellow">'+result.trainingCampVOList[i].trainingCampVOList[k].dialedCallsCount+'/'+unDialedCount+'</td>';
