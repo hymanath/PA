@@ -1599,6 +1599,9 @@ $(document).ready(function(e) {
 	}
 	
 	function updateFunctions(){
+		if($(".themeControll").hasClass("active")){
+			$(".themeControll").removeClass("active");
+		}
 		var stateId=0,distId=0,constId=0,manTowDivId=0,wardPanId=0;
 		
 		if($("#locationLevelSelId").val()==0){
