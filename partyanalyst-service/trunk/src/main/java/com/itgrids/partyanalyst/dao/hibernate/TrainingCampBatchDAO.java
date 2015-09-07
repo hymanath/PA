@@ -102,5 +102,12 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		}
 		
 		return query.list();
-	} 
+	}
+	
+	public Long getMaxNumbersForBacth(Long batchId)
+	{
+		Query query = getSession().createQuery("select model.maxMembers from TrainingCampBatch model where model.trainingCampBatchId = :batchId");
+		query.setParameter("batchId", batchId);
+		return (Long) query.uniqueResult();
+	}
 }

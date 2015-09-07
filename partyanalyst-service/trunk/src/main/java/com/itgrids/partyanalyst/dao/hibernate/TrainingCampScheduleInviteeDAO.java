@@ -420,5 +420,18 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	}
 	
 	
+	public Long getBatchMembersCountByStatus(Long batchId,Long statusId)
+	{
+		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as cnt" +
+				" from training_camp_schedule_invitee_caller TCSIC ,training_camp_schedule_invitee TCSI where " +
+				" TCSIC.training_camp_schedule_invitee_id = TCSI.training_camp_schedule_invitee_id and TCSI.schedule_invitee_status_id = :statusId" +
+				" and TCSI.attending_batch_id =:batchId and TCSIC.call_purpose_id = 2")
+				.addScalar("cnt",Hibernate.LONG);
+		query.setParameter("batchId", batchId);
+		query.setParameter("statusId", statusId);
+		
+		return (Long) query.uniqueResult();
+	}
+	
 	
 }
