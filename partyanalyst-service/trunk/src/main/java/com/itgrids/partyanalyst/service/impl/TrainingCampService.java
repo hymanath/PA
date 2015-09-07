@@ -2552,18 +2552,40 @@ class TrainingCampService implements ITrainingCampService{
 				.execute(new TransactionCallback() {
 					public Object doInTransaction(TransactionStatus status) {
 						try{
+			boolean flag = false;
 			if(inputVO.getCallStatusId() == 1l && inputVO.getStatus().equalsIgnoreCase("callstatus"))//Answered
 			{
-			TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+				if(inputVO.getScheduleStatusId().longValue() > 0L && inputVO.getScheduleStatusId() == 10l)
+				{
+					Long maxNo = trainingCampBatchDAO.getMaxNumbersForBacth(inputVO.getBatchId());
+					Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(inputVO.getBatchId(),10l); // Confirm Batch
+					if(totalInBatch != null && totalInBatch >= maxNo)
+					{
+						resultStatus.setResultPartial(true);
+						resultStatus.setResultCode(1);
+						flag = true;
+					}
+						
+				}
+				if(flag)
+				return resultStatus;
+				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 					if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId().longValue() == 4L  && inputVO.getBatchId().longValue() > 0L)
 						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
+					
 					if(inputVO.getScheduleStatusId().longValue() > 0L)
+					{
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+						
+					}
+					if(!flag)
+					{
 						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+					}
 			}
 			else if(inputVO.getCallStatusId() == 2l)// switch-off
 			{
@@ -2583,21 +2605,23 @@ class TrainingCampService implements ITrainingCampService{
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 			}
-			
-			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
-			if(trainingCampScheduleInviteeCaller != null)
+			if(flag == false)
 			{
-				inputVO.setTrainingCampCallerId(trainingCampScheduleInviteeCaller.getTrainingCampCallerId());
+				TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+				if(trainingCampScheduleInviteeCaller != null)
+				{
+					inputVO.setTrainingCampCallerId(trainingCampScheduleInviteeCaller.getTrainingCampCallerId());
+					
+					trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
+					trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
+					trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
+					trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+					voterDAO.flushAndclearSession();
+					
+				}
 				
-				trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
-				trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
-				trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
-				trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
-				voterDAO.flushAndclearSession();
-				
+				saveTrackingInfo(inputVO);	
 			}
-			
-			saveTrackingInfo(inputVO);	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					}
 					
