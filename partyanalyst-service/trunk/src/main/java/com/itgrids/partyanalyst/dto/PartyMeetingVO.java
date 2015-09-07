@@ -53,8 +53,36 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private List<CallTrackingVO> minutesDocuments;
 	private String locationName;
 	private List<CallTrackingVO> meetingDocs;
+	private List<String> minutes;
+	private List<String> atrPoints;
+	private String path;
+	private List<PartyMeetingVO> docsList;
 	
 	
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public List<PartyMeetingVO> getDocsList() {
+		return docsList;
+	}
+	public void setDocsList(List<PartyMeetingVO> docsList) {
+		this.docsList = docsList;
+	}
+	public List<String> getMinutes() {
+		return minutes;
+	}
+	public void setMinutes(List<String> minutes) {
+		this.minutes = minutes;
+	}
+	public List<String> getAtrPoints() {
+		return atrPoints;
+	}
+	public void setAtrPoints(List<String> atrPoints) {
+		this.atrPoints = atrPoints;
+	}
 	
 	public List<CallTrackingVO> getMeetingDocs() {
 		return meetingDocs;
