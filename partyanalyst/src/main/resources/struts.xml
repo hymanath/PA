@@ -10821,6 +10821,12 @@
 		    <param name="root">returnResult</param>
 		</result>
 	</action>
-	
+
+	<action name="getSummaryForAMeetingAction" class="partyMeetingAction" method="getSummaryForAMeeting">
+	    <result type="json" name="success">		   
+		    <param name="root">partyMeetingVO</param>
+		</result>
+	</action>
+			
 </package>
 </struts>      
