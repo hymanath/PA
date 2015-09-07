@@ -1205,19 +1205,20 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		if(fromDate != null && toDate != null)
 		{
-			str.append(" (date(TCSIC.updatedTime) >=:fromDate and date(TCSIC.updatedTime) <=:toDate) ");
+			//str.append(" (date(TCSIC.updatedTime) >=:fromDate and date(TCSIC.updatedTime) <=:toDate) ");
 			
 			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
-				str.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:toDate ");
+				str.append(" date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:toDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
-				str.append(" or :toDate between date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
+				/*str.append(" or :toDate between date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");*/
+				str.append(" date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)<=:toDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate)>=:toDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
-				str.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :fromDate  ");
+				str.append(" date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :fromDate  ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
-				str.append(" or TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+				str.append(" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
 			}
 		}
 		else
@@ -1227,7 +1228,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				str.append("  date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:todayDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
-				str.append(" :todayDate between date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
+				str.append(" date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)<=:todayDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate)>=:todayDate ");
 			}
 			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
 				str.append(" date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :todayDate  ");
@@ -1273,10 +1274,11 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			query.setParameterList("callerIdsList",callerIdsList);
 		}
 		
-		if(fromDate !=null && toDate !=null){
+		/*if(fromDate !=null && toDate !=null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-		}
+		}*/
+		
 		return query.list();
 	}
 	
