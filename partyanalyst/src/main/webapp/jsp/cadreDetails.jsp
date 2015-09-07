@@ -414,7 +414,7 @@ var globalCadreId = '${cadreId}';
 					</div>
 					
                 </div>
-				<div class="row">
+				<!--<div class="row">
 					<div class="col-md-12 col-xs-12">
 						<div class="panel panel-default">
 							<div class="panel-heading ivrDivId" onclick="getIVRDetails();">
@@ -426,7 +426,7 @@ var globalCadreId = '${cadreId}';
 								</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold">
@@ -762,6 +762,29 @@ var globalCadreId = '${cadreId}';
             </div>
         </div>
 		
+		 <div class="row">
+        	<div class="col-md-12 col-xs-12">
+            	<div class="panel panel-default">
+                	<div class="panel-heading">
+					<a href="javascript:{hideAndShowIVRSurvey(1);}" title="Click here to Show IVR Details" id="ivrsurveyshowId"> 
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS
+							<i class="pull-right glyphicon glyphicon-triangle-top "></i>
+						</h4>
+						</a>
+							<a href="javascript:{hideAndShowIVRSurvey(2);}" title="Click here to Hide IVR Details" style="display:none;" id="ivrsurveyhideId">
+						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS
+							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
+						</h4>
+						</a>
+                    </div>
+                    <div class="panel-body ivrDetailsCls" id="ivrsurveyDetailsId" style="display:none;">
+						<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+                    	<div id="ivrDetailsMainDivId" class=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
 		<!--<div class="panel-group" id="accordion111" role="tablist" aria-multiselectable="true">
 		<div class="panel panel-default">
 				<div class="panel-heading" role="tab" id="headingOne111" onclick="getCandidateAndConstituencySurveyResult();">
@@ -846,7 +869,7 @@ var globalCadreId = '${cadreId}';
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 	
-	<div class="modal fade modalForIVR">
+	<!--<div class="modal fade modalForIVR">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="background-color:#CCCCCC">
@@ -854,7 +877,7 @@ var globalCadreId = '${cadreId}';
 					<h4 class="modal-title" style="text-align:center;"><b>IVR Details</b></h4>
 				</div>
 				<center><img id="ivrDataLoadoing" src="images/icons/loading.gif" style="width:100px;height:100px;display:none;"/></center>
-				<div class="modal-body ivrDetailsCls">
+				<div class="modal-body ivrDetailsCls1">
 				
 				</div>
 				<div class="modal-footer">
@@ -862,7 +885,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -1661,14 +1684,15 @@ var globalCadreId = '${cadreId}';
 							
 							str+='<li  style="margin-top: 0px;padding:0px; left: 10px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 							
-							str+='<li id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">CONSTITUENCY CANDIDATE SURVEY DETAILS&nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
+							str+='<li  style="margin-top: 0px;padding:0px; left: 10px;" id="list3" ><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
+							
 						}
 						else{
 							str+='<li style="padding:10px 15px;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</li>';
 							
 							str+='<li  class="active li_arr"  style="margin-top: 0px;padding:0px; left: 10px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 							
-							str+='<li  id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">CONSTITUENCY CANDIDATE SURVEY DETAILS&nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';;
+							str+='<li style="margin-top: 0px;padding:0px; left: 20px;" id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';;
 						}
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
@@ -3493,6 +3517,23 @@ function hideAndShowSurvey(typeId)
 	}
 }
 
+function hideAndShowIVRSurvey(typeId)
+{	
+	if(typeId == 1)
+	{
+		getIVRDetails();
+		$('#ivrsurveyDetailsId').show();
+		$('#ivrsurveyshowId').hide();
+		$('#ivrsurveyhideId').show();
+	}
+	else if(typeId == 2)
+	{
+		$('#ivrsurveyDetailsId').hide();
+		$('#ivrsurveyshowId').show();
+		$('#ivrsurveyhideId').hide();
+	}
+}
+
 function tableshidesandShow(divId,index)
 {
 
@@ -4536,7 +4577,7 @@ function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
 
 function getIVRDetails()
 {
-	$("#ivrDataLoadoing").show();
+	$("#ivrsurveyDataLoadoing").show();
 	var candidateId = globalCandidateId;//290951
 	$.ajax({
 		url: "http://mytdp.com/Survey/WebService/getCandidateIVRResult/"+candidateId+""
@@ -4544,7 +4585,7 @@ function getIVRDetails()
 		if(result != null && result.length > 0){
 			buildPublicScoreTable(result);
 		}else{
-			$("#ivrDataLoadoing").hide();
+			$("#ivrsurveyDataLoadoing").hide();
 			$(".ivrDetailsCls").html("NO DATA AVAILABLE");
 		}
 	});
@@ -4734,7 +4775,7 @@ function buildPublicScoreTable(myResult)
 			}
 		}
 	}
-	$("#ivrDataLoadoing").hide();
+	$("#ivrsurveyDataLoadoing").hide();
 	$(".ivrDetailsCls").html(str);
 }
 </script>
