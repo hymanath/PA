@@ -15,6 +15,7 @@
 <link href="dist/Dropzone/dropzone.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <style type="text/css">
+.linkinner label{color:#fff}
 .custom-select
 {
 	padding:3px;
@@ -41,6 +42,7 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px; 
 }
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
 </style>
 
 </head>
@@ -68,6 +70,7 @@ header.eventsheader {
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
 					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a tabindex="-1" href="meetingList.action">Meetings List</a></li>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
                     </ul>   
@@ -1125,8 +1128,26 @@ header.eventsheader {
 
   <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
 </div> 
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modelTitle"></h4>
+      </div>
+      <div class="modal-body" id="modelBody">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -1440,25 +1461,25 @@ $(document).ready(function(e) {
 						
 						if(pmList[i].docTxtInfo!=null){
 							if(pmList[i].docTxtInfo.momFilesExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momFilesCount+")</i></td>";
+								str+="<td style='cursor:pointer' class='getSummary' attr_meetingId='"+pmList[i].meetingId+"' attr_type='MINUTE'><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momFilesCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.momTextExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momPointsCount+")</i></td>";
+								str+="<td style='cursor:pointer' class='getSummary'  data-toggle='modal' attr_meetingId='"+pmList[i].meetingId+"' attr_type='momText'><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.momPointsCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.atrFilesExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrFilesCount+")</i></td>";
+								str+="<td style='cursor:pointer' class='getSummary' attr_meetingId='"+pmList[i].meetingId+"' attr_type='ATR'><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrFilesCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
 							
 							if(pmList[i].docTxtInfo.atrTextExist){
-								str+="<td><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrTextCount+")</i></td>";
+								str+="<td style='cursor:pointer' class='getSummary' attr_meetingId='"+pmList[i].meetingId+"' attr_type='atrText'><i class='glyphicon glyphicon-ok text-success'>("+pmList[i].docTxtInfo.atrTextCount+")</i></td>";
 							}else{
 								str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 							}
@@ -2202,6 +2223,8 @@ $(document).ready(function(e) {
 			url:"getGroupingSummaryOfLocationAction.action",
 			data:{task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			var momCount=0;
+			var atrCount=0;
 			if(result!=null && result.partyMeetingsList!=null && result.partyMeetingsList.length>0){
 				 $('.individual').show();
 				var pmList = result.partyMeetingsList;
@@ -2233,6 +2256,19 @@ $(document).ready(function(e) {
 					//str+='<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>';
 					str+='<tbody id="cumulativeMeetingTableBodyId">';
 					for(var i in pmList){
+						
+						if(pmList[i].partyMeetingsList!=null && pmList[i].partyMeetingsList.length>0){
+							for(var j in pmList[i].partyMeetingsList){
+								if(pmList[i].partyMeetingsList[j].atrTextExist || pmList[i].partyMeetingsList[j].atrFilesExist){
+									atrCount++;
+								}
+								if(pmList[i].partyMeetingsList[j].momFilesExist || pmList[i].partyMeetingsList[j].momTextExist){
+									momCount++;
+								}
+							}
+						}
+						
+						
 						str+="<tr>";
 						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
 						
@@ -2298,6 +2334,8 @@ $(document).ready(function(e) {
 						str+="<td><i class='glyphicon glyphicon-remove text-danger'></i></td>";
 						str+="</tr>";
 					}
+					$("#updatedCounts").html("<div><table width='100%' class='table table-bordered'><tr align='center'><td><h4>MOM UPDATED MEETINGS : <span>"+momCount+"</span></h4></td><td><h4>ATR UPDATED MEETINGS : <span>"+atrCount+"</span></h4></td></tr></table></div>");
+					//console.log(atrCount+"--"+momCount);
 					str+='</tbody>';
 					str+='</table>';
 				}
@@ -2378,6 +2416,59 @@ $(document).ready(function(e) {
     window.location.href = uri + base64(format(template, ctx))
   }
   })()
+  
+  $(document).on('click','.getSummary', function() {
+	  var fromType = $(this).attr("attr_type");
+	  var jsObj =	{
+			meetingId : $(this).attr("attr_meetingId"),
+			type:$(this).attr("attr_type")
+			}
+			
+		$.ajax({
+			type: "POST",
+			url:"getSummaryForAMeetingAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			if(fromType=="momText"){
+				if(result!=null && result.minutes!=null && result.minutes.length>0){
+					var str='';
+					for(var i in result.minutes){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result.minutes[i]+"</div>";
+					}
+					$("#modelBody").html(str);
+				}
+				
+				$("#modelTitle").html(result.subName);
+				$("#myModal").modal('toggle');
+			}else if(fromType=="atrText"){
+				if(result!=null && result.atrPoints!=null && result.atrPoints.length>0){
+					var str='';
+					for(var i in result.atrPoints){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result.atrPoints[i]+"</div>";
+					}
+					$("#modelBody").html(str);
+				}
+				
+				$("#modelTitle").html(result.subName);
+				$("#myModal").modal('toggle');
+			}else{
+				if(result!=null && result.docsList!=null && result.docsList.length>0){
+					var str='';
+					for(var i in result.docsList){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">';
+						str+='<a target="_tab" href="http://mytdp.com/DocFiles/'+result.docsList[i].path+'">'+result.docsList[i].name+'</a>';
+						str+='</div>';
+					}
+					$("#modelBody").html(str);
+				}
+				$("#modelTitle").html(result.docsList[0].subName);
+				$("#myModal").modal('toggle');
+			}
+			
+		});
+	 
+  });
 </script>
 </body>
 </html>
