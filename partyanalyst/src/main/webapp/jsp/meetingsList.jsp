@@ -229,6 +229,22 @@ table thead th , table tbody tr td{text-align:center !important}
         </div>
     </div>
 </main>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modelTitle"></h4>
+      </div>
+      <div class="modal-body" id="modelBody">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
@@ -734,25 +750,25 @@ $(document).ready(function() {
 					str+='<td>'+result[i].meetingName+'</td>';
 					
 					if(result[i].docTxtInfo.momFilesCount!=null){
-						str+='<td>'+result[i].docTxtInfo.momFilesCount+'</td>';
+						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE">'+result[i].docTxtInfo.momFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
 					if(result[i].docTxtInfo.momPointsCount!=null){
-						str+='<td>'+result[i].docTxtInfo.momPointsCount+'</td>';
+						str+='<td style="cursor:pointer" class="getSummary"  data-toggle="modal" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="momText">'+result[i].docTxtInfo.momPointsCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
 					if(result[i].docTxtInfo.atrFilesCount!=null){
-						str+='<td>'+result[i].docTxtInfo.atrFilesCount+'</td>';
+						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="ATR">'+result[i].docTxtInfo.atrFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
 					if(result[i].docTxtInfo.atrTextCount!=null){
-						str+='<td>'+result[i].docTxtInfo.atrTextCount+'</td>';
+						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="atrText">'+result[i].docTxtInfo.atrTextCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
@@ -1036,6 +1052,59 @@ $(document).ready(function() {
 		window.open('meetingDetailsList.action?partyMeetingId='+partyMeetingId+'', '_blank');
 		//alert(meetingType+"--"+meetingLocationLevel);
 	}
+	
+	$(document).on('click','.getSummary', function() {
+	  var fromType = $(this).attr("attr_type");
+	  var jsObj =	{
+			meetingId : $(this).attr("attr_meetingId"),
+			type:$(this).attr("attr_type")
+			}
+			
+		$.ajax({
+			type: "POST",
+			url:"getSummaryForAMeetingAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			if(fromType=="momText"){
+				if(result!=null && result.minutes!=null && result.minutes.length>0){
+					var str='';
+					for(var i in result.minutes){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result.minutes[i]+"</div>";
+					}
+					$("#modelBody").html(str);
+				}
+				
+				$("#modelTitle").html(result.subName);
+				$("#myModal").modal('toggle');
+			}else if(fromType=="atrText"){
+				if(result!=null && result.atrPoints!=null && result.atrPoints.length>0){
+					var str='';
+					for(var i in result.atrPoints){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result.atrPoints[i]+"</div>";
+					}
+					$("#modelBody").html(str);
+				}
+				
+				$("#modelTitle").html(result.subName);
+				$("#myModal").modal('toggle');
+			}else{
+				if(result!=null && result.docsList!=null && result.docsList.length>0){
+					var str='';
+					for(var i in result.docsList){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">';
+						str+='<a target="_tab" href="http://mytdp.com/DocFiles/'+result.docsList[i].path+'">'+result.docsList[i].name+'</a>';
+						str+='</div>';
+					}
+					$("#modelBody").html(str);
+				}
+				$("#modelTitle").html(result.docsList[0].subName);
+				$("#myModal").modal('toggle');
+			}
+			
+		});
+	 
+  });
 </script>
 </body>
 </html>
