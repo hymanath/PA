@@ -139,7 +139,7 @@ footer
 			<div class="panel panel-default panel-custom">
 				<div class="panel-heading">
 					<h4 class="panel-title"><b>CALL CENTER ADMIN DASHBOARD</b>
-						<span class="pull-right col-md-3" style="margin-top:-8px">
+						<%-- <span class="pull-right col-md-3" style="margin-top:-8px">
 							<div class="input-group">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -147,7 +147,7 @@ footer
 								</span>
 								<input type="text" class="form-control" id="reportrange">
 							</div>
-						</span>
+						</span> --%>
                     <!--	<span class="pull-right">
                         	<label class="checkbox-inline">
                             	<input type="checkbox"> Planned
