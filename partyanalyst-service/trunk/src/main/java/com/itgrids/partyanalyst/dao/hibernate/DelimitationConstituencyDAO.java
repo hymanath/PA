@@ -429,4 +429,11 @@ IDelimitationConstituencyDAO {
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyNumbersForConstituenctIds(List<Long> constIds){
+		Query query = getSession().createQuery(" select model.constituency.constituencyId,model.constituencyNO from DelimitationConstituency model " +
+				" where model.year = '2009' and model.constituency.constituencyId in (:constIds) ");
+		query.setParameterList("constIds", constIds);
+		return query.list();
+	}
 }
