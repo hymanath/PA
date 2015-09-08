@@ -925,7 +925,7 @@ class TrainingCampService implements ITrainingCampService{
 			 //
 			
 			//statusWiseCount For upper Block in call center admin page
-			List<Object[]> statusWiseCountList = trainingCampScheduleInviteeCallerDAO.getStatusWiseCount(userIds,startDate,endDate,null);
+			List<Object[]> statusWiseCountList = trainingCampScheduleInviteeCallerDAO.getStatusWiseCount(null,startDate,endDate,null);
 			
 			List<TrainingCampScheduleVO> statusWiseCountLi = new ArrayList<TrainingCampScheduleVO>();
 			if(statusWiseCountList !=null && statusWiseCountList.size()>0){
