@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -4847,7 +4848,7 @@ class TrainingCampService implements ITrainingCampService{
 				finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
 				finalMap.get("completed").setRunningBatchIds(runningBatchIds);
 				finalMap.get("completed").setUpComingBatchIds(upComingBatchIds);
-			}
+             } 
 			
 			if(completedBatches.size()>0){
 				setProgramInformation(finalMap,completedBatches,"completed");
@@ -5345,5 +5346,208 @@ class TrainingCampService implements ITrainingCampService{
 		}
    }
    
+   
+  /**
+   *   @author    : Sreedhar
+   *   Description:This Service is used to get the CadreCount feedbacks By Program Or By Camp Or By Batch
+   *   inputs: programId,campId,batchId
+   *   output: CadreFeedbackVO
+   *   
+  */
+	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId){
+		
+		CadreFeedbackVO finalVO=new CadreFeedbackVO();
+		try{
+			//setStaticData
+			List<Object[]> llData=cadreLeadershipLevelDAO.getAllLeaderShipLevels();
+			List<Object[]> csData=cadreComminicationSkillsStatusDAO.getAllCadreComminicationSkills();
+			List<Object[]> lsData=cadreLeadershipSkillsStatusDAO.getAllCadreLeadershipSkills();
+			List<Object[]> hsData=cadreHealthStatusDAO.getAllCadreHealthStatus();
+			
+			finalVO.setMap(new LinkedHashMap<String, CadreFeedbackVO>());
+			putMainMapDetails(finalVO);
+			
+			if(llData!=null && llData.size()>0){
+				putSubMapDetails(finalVO.getMap(),llData,"leaderShiplevels");
+			}
+			if(csData!=null && csData.size()>0){
+				putSubMapDetails(finalVO.getMap(),csData,"communuicationSkills");
+			}
+			if(lsData!=null && lsData.size()>0){
+				putSubMapDetails(finalVO.getMap(),lsData,"leadershipSkills");
+			}
+			if(hsData!=null && hsData.size()>0){
+				putSubMapDetails(finalVO.getMap(),hsData,"healthStatus");
+			}
+			
+			String queryString=getQueryforFeedbacks(programId,campId,batchId);
+			String achieveQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"achieve");
+			String goalQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"goal");
+			
+			Long achievementCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(achieveQuery,programId,campId,batchId);
+			Long goalsCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(goalQuery,programId,campId,batchId);
+			finalVO.setAchievementCount(achievementCount!=null?achievementCount:0l); 
+			finalVO.setGaoalCount(goalsCount!=null?goalsCount:0l);
+			
+			
+           List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId);
+           if(feedBacks!=null && feedBacks.size()>0){
+				for(Object[] obj:feedBacks){
+					
+					if(obj[1]!=null){
+						CadreFeedbackVO llVO =finalVO.getMap().get("leaderShiplevels");
+						llVO.setCount(llVO.getCount()+1);
+						llVO.getSubMap().get((Long)obj[1]).setCount(llVO.getSubMap().get((Long)obj[1]).getCount()+1);
+					}
+					if(obj[3]!=null){
+						CadreFeedbackVO csVO =finalVO.getMap().get("communuicationSkills");
+						csVO.setCount(csVO.getCount()+1);
+						csVO.getSubMap().get((Long)obj[3]).setCount(csVO.getSubMap().get((Long)obj[3]).getCount()+1);
+					}
+					if(obj[5]!=null){
+						CadreFeedbackVO lsVO =finalVO.getMap().get("leadershipSkills");
+						lsVO.setCount(lsVO.getCount()+1);
+						lsVO.getSubMap().get((Long)obj[5]).setCount(lsVO.getSubMap().get((Long)obj[5]).getCount()+1);
+					}
+					if(obj[7]!=null){
+						CadreFeedbackVO hsVO =finalVO.getMap().get("healthStatus");
+						hsVO.setCount(hsVO.getCount()+1);
+						hsVO.getSubMap().get((Long)obj[7]).setCount(hsVO.getSubMap().get((Long)obj[7]).getCount()+1);
+					}
+				}
+			}
+         //converting
+			if(finalVO.getMap()!=null && finalVO.getMap().size()>0){
+				for (Map.Entry<String, CadreFeedbackVO> entry : finalVO.getMap().entrySet())
+		        {
+					CadreFeedbackVO typeVO= entry.getValue();
+		           if(typeVO.getSubMap()!=null && typeVO.getSubMap().size()>0){
+		        	   typeVO.setSubList( new ArrayList<CadreFeedbackVO>(typeVO.getSubMap().values()));
+		        	   typeVO.getSubMap().clear();
+		            }
+		         }
+				finalVO.setList(new ArrayList<CadreFeedbackVO>(finalVO.getMap().values()));
+				finalVO.getMap().clear();
+			}
+			
+		}catch(Exception e){
+			LOG.error(" Error Occured in getattendedcountByFeedBacks" ,e);
+		}
+		return finalVO;
+	}
+	  public void  putMainMapDetails(CadreFeedbackVO finalVO){
+			
+			CadreFeedbackVO vo=new CadreFeedbackVO();
+			vo.setName("leaderShiplevels");
+			
+			CadreFeedbackVO vo1=new CadreFeedbackVO();
+			vo1.setName("communuicationSkills");
+			
+			CadreFeedbackVO vo2=new CadreFeedbackVO();
+			vo2.setName("leadershipSkills");
+			
+			CadreFeedbackVO vo3=new CadreFeedbackVO();
+			vo3.setName("healthStatus");
+			
+			finalVO.getMap().put("leaderShiplevels",vo);
+			finalVO.getMap().put("communuicationSkills",vo1);
+			finalVO.getMap().put("leadershipSkills",vo2);
+			finalVO.getMap().put("healthStatus",vo3);
+		}
+	
+	  public void putSubMapDetails(Map<String,CadreFeedbackVO> mainMap,List<Object[]> feedbacks,String type){
+			
+			for(Object[] obj:feedbacks){
+				CadreFeedbackVO vo=new CadreFeedbackVO();
+				vo.setId((Long)obj[0]);
+				vo.setName(obj[1].toString());
+				if( mainMap.get(type).getSubMap() ==null){
+					mainMap.get(type).setSubMap(new LinkedHashMap<Long, CadreFeedbackVO>());
+				}
+				mainMap.get(type).getSubMap().put((Long)obj[0],vo);
+			}
+	 }
+	  public String getQueryforFeedbacks(Long programId,Long campId,Long batchId){
+			String queryString=null;
+			StringBuilder sbM=new StringBuilder();
+			try{
+				//Query.
+				
+				sbM.append(" select distinct tccfd.trainingCampCadreFeedbackDetailsId," +
+						   " ll.cadreLeadershipLevelId,ll.leadershipLevel," +
+						   " cs.cadreComminicationSkillsStatusId,cs.status," +
+						   " ls.cadreLeadershipSkillsStatusId,ls.status," +
+						   " hs.cadreHealthStatusId,hs.status");
+				
+				sbM.append(" from TrainingCampAttendance tca,TrainingCampCadreFeedbackDetails tccfd " +
+						   " left join tccfd.cadreLeadershipLevel ll " +
+						   " left join tccfd.cadreComminicationSkillsStatus cs " +
+						   " left join tccfd.cadreLeadershipSkillsStatus ls " +
+						   " left join tccfd.cadreHealthStatus hs " +
+						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId ");
+				           
+	           if(batchId==null && campId==null && programId!=null){
+					
+					sbM.append(" and tca.trainingCampProgramId=:programId");
+					
+				}else if(batchId==null && campId!=null){
+					
+					sbM.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					if(programId!=null)
+						sbM.append(" and tca.trainingCampProgramId=:programId");
+					
+				}else if(batchId!=null){
+					
+					if(programId!=null)
+						sbM.append(" and tca.trainingCampProgramId=:programId");
+					if(campId!=null)
+					   sbM.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					
+					sbM.append(" and tca.trainingCampBatchId=:batchId");
+					
+				}
+			}catch(Exception e){
+				LOG.error(" Error Occured in getQueryforFeedbacks" ,e);
+			}
+			queryString=sbM.toString();
+			return queryString;
+		}
+		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type){
+			String queryString=null;
+			StringBuilder sbM=new StringBuilder();
+			try{
+				//Query.
+				
+				sbM.append(" select count(distinct model.tdpCadreId)" );
+			    sbM.append(" from TrainingCampAttendance tca ");
+			    if(type.equalsIgnoreCase("achieve")){
+			    	sbM.append(",TrainingCampCadreAchievement model ");
+			    }else if(type.equalsIgnoreCase("goal")){
+			    	sbM.append(",TrainingCampCadreGoal model ");
+			    }
+				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId ");
+				           
+	           if(batchId==null && campId==null && programId!=null){
+					sbM.append(" and tca.trainingCampProgramId=:programId");
+				}else if(batchId==null && campId!=null){
+					sbM.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					if(programId!=null)
+						sbM.append(" and tca.trainingCampProgramId=:programId");
+				}else if(batchId!=null){
+					
+					if(programId!=null)
+						sbM.append(" and tca.trainingCampProgramId=:programId");
+					if(campId!=null)
+					   sbM.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					
+					sbM.append(" and tca.trainingCampBatchId=:batchId");
+					
+				}
+			}catch(Exception e){
+				LOG.error(" Error Occured in getQueryforAchieveOrGoal" ,e);
+			}
+			queryString=sbM.toString();
+			return queryString;
+		}
    
 }
