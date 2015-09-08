@@ -11,4 +11,10 @@ public interface ITrainingCampCadreFeedbackDetailsDAO extends GenericDao<Trainin
 	public Object[] getFeedBackDetailsforCadre(Long tdpCadreId,Long batchId);
 	
 	public Long  checkFeedBackForCadreBycadreAndBatch(Long tdpCadreId,Long batchId);
+	
+	public List<Object[]> getFeedBackDetailsForBatches(List<Long> trainingCampBatchIds);
+	  
+	public List<Object[]> getattendedcount(String queryString,Long programId,Long campId,Long batchId);
+	public Long getattendedcount1(String queryString,Long programId,Long campId,Long batchId);
+	
 }
