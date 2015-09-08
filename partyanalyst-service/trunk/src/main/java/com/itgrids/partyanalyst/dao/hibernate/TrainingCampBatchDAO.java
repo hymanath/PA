@@ -110,4 +110,14 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("batchId", batchId);
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> getCampDistrictsByBatchId(Long batchId){
+		
+		Query query=getSession().createQuery(" select model1.district.districtId,model1.district.districtName" +
+		" from TrainingCampBatch model,TrainingCampDistrict model1" +
+		" where model.trainingCampSchedule.trainingCamp.trainingCampId =model1.trainingCampId and model.trainingCampBatchId=:trainingCampBatchId " +
+		" order by model1.district.districtId asc");
+		query.setParameter("trainingCampBatchId",batchId);
+		return query.list();
+	}
 }
