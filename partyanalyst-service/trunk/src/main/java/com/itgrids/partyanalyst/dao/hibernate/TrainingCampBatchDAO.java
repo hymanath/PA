@@ -94,7 +94,6 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 			query.setParameter("endDate", endDate);
 		}
 		else if(type.equalsIgnoreCase("running")){
-			//query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
 		else if(type.equalsIgnoreCase("upcoming")){

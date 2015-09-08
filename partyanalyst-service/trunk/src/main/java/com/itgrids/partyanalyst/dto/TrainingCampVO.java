@@ -73,7 +73,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	
 	private Long completedBatches=0l;
 	private Long runningBatches=0l;
-	private Long upComingBatches;
+	private Long upComingBatches =0l;
 	
 	
 	public Long getCompletedBatches() {
