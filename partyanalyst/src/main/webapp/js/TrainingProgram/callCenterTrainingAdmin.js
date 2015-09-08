@@ -176,7 +176,7 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 				str+='<th>TRAINING <br/>END DATE</th>';
 				str+='<th>ALLOCATED <br/>CALLS</th>';
 				str+='<th class="text-yellow">DIALED/<br/> UN DIALED</th>';
-				str+='<th class="interested-text"> ACCEPTED <br/>MEMBERS</th>';
+				str+='<th class="interested-text"> CONFIRMED <br/>MEMBERS</th>';
 				str+='<th>NOT <br/>INTERESTED</th>';
 				str+='<th>LATER</th>';
 				str+='<th class="font-12">CALL BACK/<br/>USER BUSY/<br/>OTHERS</th>';
