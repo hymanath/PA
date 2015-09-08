@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICampCallPurposeDAO;
 import com.itgrids.partyanalyst.dao.ICampCallStatusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -108,7 +109,6 @@ import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.MatchedTypeVo;
 class TrainingCampService implements ITrainingCampService{
 
 	public static Logger LOG = Logger.getLogger(TrainingCampService.class);
@@ -169,9 +169,19 @@ class TrainingCampService implements ITrainingCampService{
     private ITrainingCampUserProgramDAO trainingCampUserProgramDAO;
     private IPartyMeetingService partyMeetingService;
     private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
+    private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
     
 	
 	
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 
 	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
 		return trainingCampAttendanceDAO;
@@ -3264,7 +3274,30 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				
 			}
+			
+			//appending const num to const (based on constID)
+			if(allMeetings!=null && allMeetings.size()>0 && locationLevel==3l){
+				List<Long> constIds = new ArrayList<Long>();
+				for (CallStatusVO callStatusVO : allMeetings) {
+					constIds.add(callStatusVO.getLocationId());
+				}
+				
+				Map<Long,Long> temp = new HashMap<Long, Long>();
+				if(constIds!=null && constIds.size()>0){
+					List<Object[]> constNums = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(constIds);
+
+					if(constNums!=null && constNums.size()>0){
+						for (Object[] objects2 : constNums) {
+							temp.put((Long)objects2[0],(Long)objects2[1]);
+						}
 						
+						for (CallStatusVO callStatusVO : allMeetings) {
+							callStatusVO.setConstLocationNum(temp.get(callStatusVO.getLocationId()));
+						}
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getAllMeetings",e);
 		}
