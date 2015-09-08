@@ -728,6 +728,9 @@ $(document).ready(function() {
 				str+='</thead>'; */
 				str+='<thead class="bg_d">';
 				str+='<tr>';
+				if(locationLevel==3){
+					str+='<th rowspan="2">Constituency Number</th>';
+				}
 				str+='<th rowspan="2">Meeting Location</th>';
 				str+='<th rowspan="2">Meeting Name</th>';
 				str+='<th colspan="2">MOM</th>';
@@ -746,28 +749,31 @@ $(document).ready(function() {
 				for(var i in result){
 					str+='<tr>';
 					//str+='<td>'+result[i].meetingType+'</td>';
+					if(locationLevel==3){
+						str+='<td>'+result[i].constLocationNum+'</td>';
+					}
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].meetingName+'</td>';
 					
-					if(result[i].docTxtInfo.momFilesCount!=null){
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momFilesCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE">'+result[i].docTxtInfo.momFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo.momPointsCount!=null){
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momPointsCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary"  data-toggle="modal" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="momText">'+result[i].docTxtInfo.momPointsCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo.atrFilesCount!=null){
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrFilesCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="ATR">'+result[i].docTxtInfo.atrFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo.atrTextCount!=null){
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrTextCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="atrText">'+result[i].docTxtInfo.atrTextCount+'</td>';
 					}else{
 						str+='<td>0</td>';
