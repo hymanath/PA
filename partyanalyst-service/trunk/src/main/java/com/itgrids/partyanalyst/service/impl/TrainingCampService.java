@@ -4862,26 +4862,29 @@ class TrainingCampService implements ITrainingCampService{
 				setBatchesInformation(finalMap,completedBatches,"completed",completedBatchIds,totalTrainingCenters);
 				Map<Long,Long> completedMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendence");
 				setBatchCount(finalMap,"completed",completedMembersCounts);
+				finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
 			}
 			else if(type.equalsIgnoreCase("running")){
 				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(startDate,endDate,"running",stateId);
 				setBatchesInformation(finalMap,runningBatches,"running",runningBatchIds,totalTrainingCenters);
 				Map<Long,Long> runningMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendee");
 				setBatchCount(finalMap,"running",runningMembersCounts);
+				finalMap.get("completed").setRunningBatchIds(runningBatchIds);
 			}
-			else if(type.equalsIgnoreCase("upComing")){
+			else if(type.equalsIgnoreCase("upcoming")){
 				upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(startDate,endDate,"upcoming",stateId);
 				setBatchesInformation(finalMap,upComingBatches,"upcoming",upComingBatchIds,totalTrainingCenters);
 				Map<Long,Long> upCommingMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(upComingBatchIds,"attendee");
 				setBatchCount(finalMap,"upcoming",upCommingMembersCounts);
+				finalMap.get("completed").setUpComingBatchIds(upComingBatchIds);
 			}
 			
-			if(finalMap.get("completed")!=null){
+			/*if(finalMap.get("completed")!=null){
 				finalMap.get("completed").setTotalTrainingCenters(totalTrainingCenters.size());
 				finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
 				finalMap.get("completed").setRunningBatchIds(runningBatchIds);
 				finalMap.get("completed").setUpComingBatchIds(upComingBatchIds);
-             } 
+			}*/
 			
 			if(completedBatches.size()>0){
 				setProgramInformation(finalMap,completedBatches,"completed");
@@ -4890,7 +4893,7 @@ class TrainingCampService implements ITrainingCampService{
 				setProgramInformation(finalMap,runningBatches,"running");
 			}
 			if(upComingBatches.size()>0){
-				setProgramInformation(finalMap,upComingBatches,"upComing");
+				setProgramInformation(finalMap,upComingBatches,"upcoming");
 			}
 			
 			
@@ -4935,101 +4938,118 @@ class TrainingCampService implements ITrainingCampService{
     	LOG.info("Entered into setProgramInformation");
     	try {
     		if(result!=null && result.size()>0){
-				TrainingCampVO tmp = finalMap.get("completed");
-				if(tmp.getProgramWiseDetails()==null){
-					tmp.setProgramWiseDetails(new ArrayList<TrainingCampVO>());
-				}
-				List<TrainingCampVO> tempList = tmp.getProgramWiseDetails();
-				for(Object[] obj:result){	
-					
-					TrainingCampVO matechedProgVO = getMatchedOne(tempList,(Long)obj[4],"prog");
-					boolean isNewProg = false;
-					if(matechedProgVO==null){
-						isNewProg = true;
-						matechedProgVO = new TrainingCampVO();
-						matechedProgVO.setProgramId((Long)obj[4]);
-						matechedProgVO.setProgramName(obj[5].toString());
+				TrainingCampVO tmp = finalMap.get(type);
+				if(tmp!=null){
+					if(tmp.getProgramWiseDetails()==null){
+						tmp.setProgramWiseDetails(new ArrayList<TrainingCampVO>());
 					}
-					
-					List<TrainingCampVO> campList = matechedProgVO.getCampDetails();
-					if(campList==null){
-						campList = new ArrayList<TrainingCampVO>();
-					}
-					
-					TrainingCampVO matechedCampVO = getMatchedOne(campList,(Long)obj[2],"camp");
-					boolean isNewCamp = false;
-					if(matechedCampVO==null){
-						isNewCamp = true;
-						matechedCampVO = new TrainingCampVO();
-						matechedCampVO.setCampId((Long)obj[2]);
-						matechedCampVO.setCampName(obj[3].toString());
-					}
-					
-					List<TrainingCampVO> scheduleList = matechedCampVO.getScheduleDetails();
-					if(scheduleList==null){
-						scheduleList = new ArrayList<TrainingCampVO>();
-					}
-					
-					TrainingCampVO matchesScheduleVO = getMatchedOne(scheduleList,(Long)obj[6],"schedule");
-					boolean isNewSchedule = false;
-					if(matchesScheduleVO==null){
-						isNewSchedule = true;
-						matchesScheduleVO = new TrainingCampVO();
-						matchesScheduleVO.setScheduleId((Long)obj[6]);
-						matchesScheduleVO.setScheduleName(obj[7].toString());
-					}
-					
-					List<TrainingCampVO> batchList = matchesScheduleVO.getBatchDetails();
-					if(batchList==null){
-						batchList = new ArrayList<TrainingCampVO>();
-					}
-					
-					TrainingCampVO matchedBatchVo = getMatchedOne(batchList, (Long)obj[0], "batch");
-					if(matchedBatchVo==null){
-						matchedBatchVo = new TrainingCampVO();
-						matchedBatchVo.setBatchId((Long)obj[0]);
-						matchedBatchVo.setBatchName(obj[1].toString());
-						batchList.add(matchedBatchVo);
+					List<TrainingCampVO> tempList = tmp.getProgramWiseDetails();
+					for(Object[] obj:result){	
 						
-						if(type.equalsIgnoreCase("completed")){
-							matechedCampVO.setCompletedBatches(matechedCampVO.getCompletedBatches()+1);
-							List temp = new ArrayList<Long>();
-							temp.add((Long)obj[0]);
-							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendence");
-							matechedCampVO.setCompletedMemberCount(matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0]));
-						}else if(type.equalsIgnoreCase("running")){
-							matechedCampVO.setRunningBatches(matechedCampVO.getUpComingBatches()+1);
-							List temp = new ArrayList<Long>();
-							temp.add((Long)obj[0]);
-							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
-							matechedCampVO.setRunningMemberCount((matechedCampVO.getRunningMemberCount()+count.get((Long)obj[0])));
-						}else if(type.equalsIgnoreCase("upComing")){
-							matechedCampVO.setUpComingBatches(matechedCampVO.getUpComingBatches()+1);
-							List temp = new ArrayList<Long>();
-							temp.add((Long)obj[0]);
-							Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
-							matechedCampVO.setCompletedMemberCount((matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0])));
+						TrainingCampVO matechedProgVO = getMatchedOne(tempList,(Long)obj[4],"prog");
+						boolean isNewProg = false;
+						if(matechedProgVO==null){
+							isNewProg = true;
+							matechedProgVO = new TrainingCampVO();
+							matechedProgVO.setProgramId((Long)obj[4]);
+							matechedProgVO.setProgramName(obj[5].toString());
 						}
-					}
-					matchesScheduleVO.setBatchDetails(batchList);
-					
+						
+						List<TrainingCampVO> campList = matechedProgVO.getCampDetails();
+						if(campList==null){
+							campList = new ArrayList<TrainingCampVO>();
+						}
+						
+						TrainingCampVO matechedCampVO = getMatchedOne(campList,(Long)obj[2],"camp");
+						boolean isNewCamp = false;
+						if(matechedCampVO==null){
+							isNewCamp = true;
+							matechedCampVO = new TrainingCampVO();
+							matechedCampVO.setCampId((Long)obj[2]);
+							matechedCampVO.setCampName(obj[3].toString());
+						}
+						
+						List<TrainingCampVO> scheduleList = matechedCampVO.getScheduleDetails();
+						if(scheduleList==null){
+							scheduleList = new ArrayList<TrainingCampVO>();
+						}
+						
+						TrainingCampVO matchesScheduleVO = getMatchedOne(scheduleList,(Long)obj[6],"schedule");
+						boolean isNewSchedule = false;
+						if(matchesScheduleVO==null){
+							isNewSchedule = true;
+							matchesScheduleVO = new TrainingCampVO();
+							matchesScheduleVO.setScheduleId((Long)obj[6]);
+							matchesScheduleVO.setScheduleName(obj[7].toString());
+						}
+						
+						List<TrainingCampVO> batchList = matchesScheduleVO.getBatchDetails();
+						if(batchList==null){
+							batchList = new ArrayList<TrainingCampVO>();
+						}
+						
+						TrainingCampVO matchedBatchVo = getMatchedOne(batchList, (Long)obj[0], "batch");
+						if(matchedBatchVo==null){
+							matchedBatchVo = new TrainingCampVO();
+							matchedBatchVo.setBatchId((Long)obj[0]);
+							matchedBatchVo.setBatchName(obj[1].toString());
+							batchList.add(matchedBatchVo);
 							
-					if(isNewSchedule){
-						scheduleList.add(matchesScheduleVO);
-					}
-					matechedCampVO.setScheduleDetails(scheduleList);
-							
-					if(isNewCamp){
-						campList.add(matechedCampVO);
-					}
-					matechedProgVO.setCampDetails(campList);
-					
-					if(isNewProg){
-						tempList.add(matechedProgVO);
-					}
-					
-					
-    			}
+							if(type.equalsIgnoreCase("completed")){
+								matechedCampVO.setCompletedBatches(matechedCampVO.getCompletedBatches()+1);
+								List temp = new ArrayList<Long>();
+								temp.add((Long)obj[0]);
+								Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendence");
+								if(count!=null && count.size()>0){
+									if(count.get((Long)obj[0])!=null){
+										matechedCampVO.setCompletedMemberCount(matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0]));
+									}
+								}
+								
+							}else if(type.equalsIgnoreCase("running")){
+								matechedCampVO.setRunningBatches(matechedCampVO.getUpComingBatches()+1);
+								List temp = new ArrayList<Long>();
+								temp.add((Long)obj[0]);
+								Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
+								if(count!=null && count.size()>0){
+									if(count.get((Long)obj[0])!=null){
+										matechedCampVO.setRunningMemberCount((matechedCampVO.getRunningMemberCount()+count.get((Long)obj[0])));
+									}
+								}
+								
+							}else if(type.equalsIgnoreCase("upcoming")){
+								matechedCampVO.setUpComingBatches(matechedCampVO.getUpComingBatches()+1);
+								List temp = new ArrayList<Long>();
+								temp.add((Long)obj[0]);
+								Map<Long,Long> count = getCompletedRunningUpcomingCountsForBatchIds(temp,"attendee");
+								if(count!=null && count.size()>0){
+									if(count.get((Long)obj[0])!=null){
+										matechedCampVO.setCompletedMemberCount((matechedCampVO.getCompletedMemberCount()+count.get((Long)obj[0])));
+									}
+								}
+								
+							}
+						}
+						matchesScheduleVO.setBatchDetails(batchList);
+						
+								
+						if(isNewSchedule){
+							scheduleList.add(matchesScheduleVO);
+						}
+						matechedCampVO.setScheduleDetails(scheduleList);
+								
+						if(isNewCamp){
+							campList.add(matechedCampVO);
+						}
+						matechedProgVO.setCampDetails(campList);
+						
+						if(isNewProg){
+							tempList.add(matechedProgVO);
+						}
+						
+						
+	    			}
+				}
     		}
 		} catch (Exception e) {
 			LOG.error("Exception raised at setProgramInformation", e);
