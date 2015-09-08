@@ -478,19 +478,20 @@ $(function () {
  
 function getTrainingCenterDetailsBasedOnDates(){
   
-	var jsObj=
-	{				
-	}
+	var jObj={
+		  startDateString:'2015-08-20',
+		  endDateString:'2015-09-04',
+		  stateId:'1',
+		  type:"All"
+	     }
     $.ajax({
           type:'GET',
           url: 'getTrainingCenterDetailsBasedOnDatesAction.action',
           dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
+		  data: {task:JSON.stringify(jObj)}
    }).done(function(result){
-	   
-	   if(result.completed.programDetails!=null && result.completed.programDetails.length>0){
-						
-			var str='';
+	   if(result.completed!=null && result.completed.programDetails!=null && result.completed.programDetails.length>0){
+		  var str='';
 			str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
 			str+='<th>TRAINING PROGRAM NAME</th>';
@@ -503,7 +504,8 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<tbody>';		
 			for(var i in result.completed.programDetails){
 				var myResult = result.completed.programDetails;
-				str+="<tr>";
+				if(result.completed.completedBatchIds!=null){
+					str+="<tr>";
 					str+="<td rowspan="+result.completed.completedBatchIds.length+">"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
@@ -526,7 +528,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 							}
 						str+="</tr>";
 					}
-				
+				}
 			}
 			str+='</tbody>';
 			str+='</table>';
@@ -536,7 +538,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
 		}
 		
-		if(result.running.programDetails!=null && result.running.programDetails.length>0){
+		if(result.running!=null && result.running.programDetails!=null && result.running.programDetails.length>0){
 						
 			var str='';
 			str+='<table class="table table-bordered m_0">';
@@ -584,8 +586,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			$("#runningTrainingPrograms").html("No Runnig Training Programs Are Available");
 		}
 		
-		if(result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
-						
+		if(result.upcoming!=null && result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
 			var str='';
 			str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
@@ -599,8 +600,9 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<tbody>';		
 			for(var i in result.upcoming.programDetails){
 				var myResult = result.upcoming.programDetails;
-				str+="<tr>";
-					str+="<td rowspan="+result.completed.upComingBatchIds.length+">"+myResult[i].programName+"</td>";
+				if(result.upcoming.upComingBatchIds!=null){
+					str+="<tr>";
+					str+="<td rowspan="+result.upcoming.upComingBatchIds.length+">"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
 						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
@@ -622,6 +624,8 @@ function getTrainingCenterDetailsBasedOnDates(){
 							}
 						str+="</tr>";
 					}
+				}
+				
 				
 			}
 			str+='</tbody>';

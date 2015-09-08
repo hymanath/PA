@@ -1808,7 +1808,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try {
 			LOG.info("Entered into getTrainingCenterDetailsBasedOnDates");
 			
-			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds("2015-08-20","2015-09-04",1l,"All");
+			jObj = new JSONObject(getTask());
+    		String strtDt = jObj.getString("startDateString");
+    		String endDt = jObj.getString("endDateString");
+    		Long stteId = jObj.getLong("stateId");
+    		String type = jObj.getString("type");
+			
+			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(strtDt, endDt, stteId, type);
 		} catch (Exception e) {
 			LOG.error("Exception raised at TODO: handle exception", e);
 		}
