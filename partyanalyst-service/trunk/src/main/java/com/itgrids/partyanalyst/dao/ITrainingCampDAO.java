@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.TrainingCamp;
 public interface ITrainingCampDAO extends GenericDao<TrainingCamp, Long>{
 	
 	public List<Object[]> getAllCamps();
+	public List<Object[]> getCampDistrictsByCampId(Long campId);
 	
 }
