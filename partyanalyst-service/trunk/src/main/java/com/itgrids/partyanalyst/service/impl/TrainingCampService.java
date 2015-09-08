@@ -1722,9 +1722,9 @@ class TrainingCampService implements ITrainingCampService{
 													
 													batchVO.setOthersCount(othrsCount);
 												}
-												batchVOList.add(batchVO);
+												
 											}
-											
+											batchVOList.add(batchVO);
 									}
 									if(batchVOList != null && batchVOList.size()>0)
 									{
@@ -2629,7 +2629,7 @@ class TrainingCampService implements ITrainingCampService{
 					if(totalInBatch != null && totalInBatch >= maxNo)
 					{
 						resultStatus.setResultPartial(true);
-						resultStatus.setResultCode(1);
+						resultStatus.setResultCode(2);
 						flag = true;
 					}
 						
