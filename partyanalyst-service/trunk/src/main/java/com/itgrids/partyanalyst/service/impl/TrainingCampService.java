@@ -5582,5 +5582,229 @@ class TrainingCampService implements ITrainingCampService{
 			queryString=sbM.toString();
 			return queryString;
 		}
-   
+		
+	 /**
+	   *   @author    : Sreedhar
+	   *   Description:This Service is used to get the CadreCount committee level wise By Program Or By Camp Or By Batch
+	   *   inputs: programId,campId,batchId
+	   *   Return: List<SimpleVO> 
+	   *   
+	  */
+		public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId){
+			List<SimpleVO> finalList=null;
+			try{
+				 Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
+				 
+				//preinstantiate
+				preInstantiate(finalMap,programId,campId,batchId);
+				
+				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId);
+				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId);
+				
+				if(totalCounts!=null && totalCounts.size()>0){
+					
+					for(Object[] obj:totalCounts){//did,dname,count
+						
+						Long districtId=(Long)obj[0];
+						SimpleVO districtVO=finalMap.get(districtId);
+						if(districtVO==null){
+							districtVO=finalMap.get(0l);
+							districtVO.setCount(districtVO.getCount()+ (obj[2]!=null?(Long)obj[2]:0l));
+						}else{
+							districtVO.setCount(obj[2]!=null?(Long)obj[2]:0l);
+						}
+					}
+				}
+				
+				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId);
+			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId);
+				if(levelCounts!=null && levelCounts.size()>0){//did,dname,lid,lname,count
+					
+					for(Object[] obj:levelCounts){
+						Long districtId=(Long)obj[0];
+						SimpleVO districtVO=finalMap.get(districtId);
+						if(districtVO==null){
+							
+							districtVO=finalMap.get(0l);
+							SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
+							levelVO.setCount(levelVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l));
+						}else{
+							
+						  SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
+						  levelVO.setCount(obj[4]!=null?(Long)obj[4]:0l);
+							
+						}
+					}
+				}
+				
+			  	
+				 //converting
+				if(finalMap!=null && finalMap.size()>0){
+					for (Map.Entry<Long, SimpleVO> entry : finalMap.entrySet())
+			        {
+						SimpleVO districtVO= entry.getValue();
+			           if(districtVO.getMap()!=null && districtVO.getMap().size()>0){
+			        	   districtVO.setSimpleVOList1( new ArrayList<SimpleVO>(districtVO.getMap().values()));
+			        	   districtVO.getMap().clear();
+			            }
+			         }
+					finalList=new ArrayList<SimpleVO>(finalMap.values());
+					finalMap.clear();
+				}
+				
+			}catch(Exception e){
+				LOG.error(" Error Occured in getAttendedCountsByProgramOrCampOrBatch method in TraininingCampService class" ,e);
+			}
+			return finalList;
+	  }
+		public void preInstantiate(Map<Long,SimpleVO> finalMap,Long programId,Long campId,Long batchId){
+			
+			try{
+			    
+	             List<Object[]>	districts=null;
+				
+				if(programId!=null && batchId==null && campId==null){
+					
+					districts=trainingCampProgramDAO.getDistrictsByProgramId(programId);
+					
+				}else if(batchId==null && campId!=null){
+					
+				   districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+				}
+				else if(batchId!=null){
+					
+				  if(campId!=null){
+				    districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+				  }else{
+				    districts=trainingCampBatchDAO.getCampDistrictsByBatchId(batchId);
+				  }
+					
+				}
+				
+	            if(districts!=null && districts.size()>0){
+				    for(Object[] obj:districts){
+				    	
+				    	SimpleVO districtVO=new SimpleVO();
+				    	districtVO.setId((Long)obj[0]);
+				    	districtVO.setName(obj[1]!=null?obj[1].toString():"");
+				    	districtVO.setCount(0l);
+				    	Map<Long,SimpleVO> levelMap=setlevelData();
+				    	districtVO.setMap(levelMap);
+				    	finalMap.put((Long)obj[0],districtVO);
+				    }
+				    SimpleVO districtVO=new SimpleVO();
+			    	districtVO.setId(0l);
+			    	districtVO.setName("Others");
+			    	districtVO.setCount(0l);
+			    	Map<Long,SimpleVO> levelMap=setlevelData();
+			    	districtVO.setMap(levelMap);
+			    	finalMap.put(0l,districtVO);
+				}
+				
+			}catch(Exception e){
+				LOG.error(" Error Occured in preInstantiate method in TraininingCampService class" ,e);
+			}
+		}
+		
+		public Map<Long,SimpleVO> setlevelData(){
+			
+			Map<Long,SimpleVO> map=new LinkedHashMap<Long,SimpleVO>();
+			
+			SimpleVO distVO=new SimpleVO();
+			distVO.setName("district");
+			distVO.setId(11l);
+			distVO.setCount(0l);
+			
+			SimpleVO mandalVO=new SimpleVO();
+			mandalVO.setName("mandal");
+			mandalVO.setId(5l);
+			mandalVO.setCount(0l);
+			
+			SimpleVO villageVO=new SimpleVO();
+			villageVO.setName("village");
+			villageVO.setId(6l);
+			villageVO.setCount(0l);
+			
+			map.put(11l, distVO);
+			map.put(5l, mandalVO);
+			map.put(6l, villageVO);
+			
+			return map;
+		}
+		
+		public String getAttendedlocWiseCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId){
+			
+			String queryString=null;
+			 try{
+				
+				 StringBuilder sb= new StringBuilder(); 
+				 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
+				 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
+				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId");
+				 
+				 if(batchId==null && campId==null && programId!=null ){
+					 sb.append(" and tca.trainingCampProgramId=:programId");
+				 }
+				 else if(batchId==null && campId!=null){
+					 sb.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					 if(programId!=null)
+					   sb.append(" and tca.trainingCampProgramId=:programId");
+				 }else if(batchId!=null){
+						
+					if(programId!=null)
+					  sb.append(" and tca.trainingCampProgramId=:programId");
+					if(campId!=null)
+					  sb.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					
+				    sb.append(" and tca.trainingCampBatchId=:batchId");
+				 }
+				 sb.append(" group by d.districtId order by d.districtName ");
+				
+				 queryString=sb.toString();
+				 
+			 }catch(Exception e){
+				 LOG.error(" Error Occured in getAttendedlocWiseCountsByProgramOrCampOrBatch method in TraininingCampService class" ,e);
+			 }
+			 return queryString;
+		}
+		
+		
+		public String getCommiteesCadreCountByLoc(Long programId,Long campId,Long batchId){
+			String queryString=null;
+			try{
+				
+				StringBuilder sb=new StringBuilder();
+				
+				sb.append(" select " +
+						   " model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.district.districtName," +
+						   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+						   " count(distinct tca.attendance.tdpCadreId)");
+				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
+						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and " +
+						   "       model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,6,11) ");
+				
+				if(batchId==null && campId==null && programId!=null){
+					sb.append(" and tca.trainingCampProgramId=:programId");
+				}else if(batchId==null && campId!=null){
+					sb.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					if(programId!=null)
+						sb.append(" and tca.trainingCampProgramId=:programId");
+				}else if(batchId!=null){
+					
+					if(programId!=null)
+						sb.append(" and tca.trainingCampProgramId=:programId");
+					if(campId!=null)
+					   sb.append(" and tca.trainingCampSchedule.trainingCampId=:campId");
+					
+					sb.append(" and tca.trainingCampBatchId=:batchId");
+					
+				}
+			   sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId " +
+			 		    " order by FIELD(model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId , 6,5,11)");
+			   queryString=sb.toString();
+			}catch(Exception e){
+				 LOG.error(" Error Occured in getCommiteesCadreCountByLoc method in TraininingCampService class" ,e);
+			}
+			return queryString;
+		}
 }
