@@ -18,8 +18,20 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 	
 	public List<Object[]> getPrograms()
 	{
-	Query query = getSession().createQuery("select distinct model.trainingCampProgramId,model.programName from TrainingCampProgram model order by model.programName asc");
-	return query.list();
+	 Query query = getSession().createQuery("select distinct model.trainingCampProgramId,model.programName from TrainingCampProgram model order by model.programName asc");
+	 return query.list();
 	}
+	
+	public List<Object[]> getDistrictsByProgramId(Long programId){
+		
+		Query query=getSession().createQuery(" select model1.district.districtId,model1.district.districtName,model1.trainingCampId " +
+	    " from TrainingCampSchedule model,TrainingCampDistrict model1" +
+	    " where model.trainingCampId=model1.trainingCampId and model.trainingCampProgramId=:programId" +
+	    " order by model1.trainingCampId,model1.district.districtId");
+		query.setParameter("programId",programId);
+		return query.list();
+		
+	}
+	
 
 }
