@@ -15,7 +15,7 @@ public class CadreLeadershipSkillsStatusDAO extends GenericDaoHibernate<CadreLea
 	}
     
     public List<Object[]> getAllCadreLeadershipSkills(){
-		
+	
 		Query query=getSession().createQuery(" select model.cadreLeadershipSkillsStatusId,model.status " +
 				"from  CadreLeadershipSkillsStatus model ");
 	    return query.list();

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -31,4 +33,73 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	query.setParameter("trainingCampBatchId", batchId);
     	return (Long)query.uniqueResult();
     }
+   
+    public List<Object[]> getFeedBackDetailsForBatches(List<Long> trainingCampBatchIds){
+    	
+    	Query query=getSession().createQuery("" +
+    	" select  model.trainingCampCadreFeedbackDetailsId," +
+    	"         ll.cadreLeadershipLevelId,ll.leadershipLevel," +
+    	"         cs.cadreComminicationSkillsStatusId,cs.status," +
+    	"         ls.cadreLeadershipSkillsStatusId,ls.status," +
+    	"         hs.cadreHealthStatusId,hs.status " +
+    	" from TrainingCampCadreFeedbackDetails model left join model.cadreLeadershipLevel ll " +
+    	"      left join model.cadreComminicationSkillsStatus cs" +
+    	"      left join model.cadreLeadershipSkillsStatus ls" +
+    	"      left join model.cadreHealthStatus hs" +
+    	" where model.trainingCampBatchId in (:batches) " +
+    	" order by  model.trainingCampCadreFeedbackDetailsId");
+    	
+    	query.setParameterList("batches",trainingCampBatchIds);
+    	return query.list();
+    }
+    public List<Object[]> getattendedcount(String queryString,Long programId,Long campId,Long batchId){
+    	
+    	Query query=getSession().createQuery(queryString);
+    	
+    	if(batchId==null && campId==null && programId!=null){
+    		query.setParameter("programId",programId);
+    		
+		}else if(batchId==null && campId!=null){
+			query.setParameter("campId",campId);
+			if(programId!=null)
+				query.setParameter("programId",programId);
+			
+		}else if(batchId!=null){
+			
+			if(programId!=null)
+				query.setParameter("programId",programId);
+			if(campId!=null)
+				query.setParameter("campId",campId);
+			
+			query.setParameter("batchId",batchId);
+			
+		}
+    	return query.list();
+    }
+ public Long getattendedcount1(String queryString,Long programId,Long campId,Long batchId){
+    	
+    	Query query=getSession().createQuery(queryString);
+    	
+    	if(batchId==null && campId==null && programId!=null){
+    		query.setParameter("programId",programId);
+    		
+		}else if(batchId==null && campId!=null){
+			query.setParameter("campId",campId);
+			if(programId!=null)
+				query.setParameter("programId",programId);
+			
+		}else if(batchId!=null){
+			
+			if(programId!=null)
+				query.setParameter("programId",programId);
+			if(campId!=null)
+				query.setParameter("campId",campId);
+			
+			query.setParameter("batchId",batchId);
+			
+		}
+    	return (Long)query.uniqueResult();
+    }
+    
+    
 }

@@ -43,4 +43,5 @@ public class TrainingCampCadreGoalDAO extends GenericDaoHibernate<TrainingCampCa
 		int count = query.executeUpdate();	
 		return count;
 	}
+	
 }
