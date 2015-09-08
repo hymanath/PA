@@ -176,10 +176,10 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 				str+='<th>TRAINING <br/>END DATE</th>';
 				str+='<th>ALLOCATED <br/>CALLS</th>';
 				str+='<th class="text-yellow">DIALED/<br/> UN DIALED</th>';
-				str+='<th class="interested-text"> CONFIRMED <br/>MEMBERS</th>';
+				str+='<th class="interested-text"> ACCEPTED <br/>MEMBERS</th>';
 				str+='<th>NOT <br/>INTERESTED</th>';
 				str+='<th>LATER</th>';
-				str+='<th class="font-12">CALL BACK/<br/>USER BUSY/<br/>OTHERS</th>';
+				str+='<th class="font-12">CALL BACK-BUSY/<br/>OTHERS</th>';
 			str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -242,11 +242,14 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].conformLaterCount+'</td>';
 							else
 								str+='<td style="text-align:center;" > 0 </td>';
-								
+							var callback_userbusycount = 0;
+							if(result.trainingCampVOList[i].trainingCampVOList[k].busyCount != null)
+								callback_userbusycount = result.trainingCampVOList[i].trainingCampVOList[k].busyCount;
+							
 							if(result.trainingCampVOList[i].trainingCampVOList[k].othersCount != null)
-								str+='<td style="text-align:center;">'+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
+								str+='<td style="text-align:center;">'+callback_userbusycount+' / '+result.trainingCampVOList[i].trainingCampVOList[k].othersCount+'</td>';
 							else
-								str+='<td style="text-align:center;" > 0 </td>';
+								str+='<td style="text-align:center;" > '+callback_userbusycount+' / 0 </td>';
 						}
 					}
 				}
