@@ -2294,8 +2294,13 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		else if(status.equalsIgnoreCase("busy"))
 		{
-			statusIds.add(2l);statusIds.add(3l); // userbusy and switchOff
+			statusIds.add(3l); // userbusy
 		}
+		else if(status.equalsIgnoreCase("Switchoff"))
+		{
+			statusIds.add(2l); // switchOff
+		}
+		
 		else if(status.equalsIgnoreCase("callback"))
 		{
 			statusIds.add(6l);statusIds.add(7l);
@@ -2311,6 +2316,10 @@ class TrainingCampService implements ITrainingCampService{
 		else if(status.equalsIgnoreCase("later"))
 		{
 		statusIds.add(3l);
+		}
+		else if(status.equalsIgnoreCase("Pending"))
+		{
+		statusIds.add(2l);
 		}
 		return statusIds;	
 	}
@@ -2338,6 +2347,7 @@ class TrainingCampService implements ITrainingCampService{
 					vo.setRemarks(params[11] != null ? params[11].toString() : "");
 					vo.setConstituency(params[12] != null ? params[12].toString() : "");
 					vo.setTrainingCampBatch(params[13]!= null?(Long)params[13]:null);
+					vo.setCallStatus(params[14] != null ? params[14].toString() : "");
 					returnList.add(vo);
 					if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(params[0])))
 						cadreIds.add(commonMethodsUtilService.getLongValueForObject(params[0]));

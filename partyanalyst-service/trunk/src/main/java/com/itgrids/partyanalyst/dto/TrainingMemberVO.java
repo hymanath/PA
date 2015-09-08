@@ -27,8 +27,15 @@ public class TrainingMemberVO implements Serializable{
 	private Long trainingCampBatch;
 	private String roleCategory;
 	private String committeeLocation;
+	private String callStatus;
 	
 	
+	public String getCallStatus() {
+		return callStatus;
+	}
+	public void setCallStatus(String callStatus) {
+		this.callStatus = callStatus;
+	}
 	public String getRoleCategory() {
 		return roleCategory;
 	}

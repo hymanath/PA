@@ -244,7 +244,8 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName," +
 				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
 				" model.trainingCampScheduleInvitee.remarks," +
-				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId " +
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
+				" campCallStatus.status " +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
 				" where model.trainingCampCallerId = :callerId " +
 				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId" +
@@ -935,8 +936,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 				"  model.trainingCampScheduleInvitee.tdpCadre.age,model.trainingCampScheduleInvitee.tdpCadre.userAddress.district.districtName," +
 				" model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId,model.trainingCampScheduleInviteeCallerId," +
 				" model.trainingCampScheduleInvitee.remarks," +
-				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId " +
-				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
+				" model.trainingCampScheduleInvitee.tdpCadre.userAddress.constituency.name,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId, " +
+				" campCallStatus.status from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
 				if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
 				str.append(" ,TdpCommitteeMember model1 ");
 				str.append(" where model.trainingCampCallerId = :callerId " +
@@ -1009,11 +1010,11 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		}
 		return query.list();
 	}
-	public List<Object[]> getScheduleWisememberDetailsCountForSearchCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate)
+	public List getScheduleWisememberDetailsCountForSearchCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate)
 	{
 		StringBuilder str = new StringBuilder();
 		
-		str.append("select model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId" +
+		str.append("select count(model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId)" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus ");
 				if(inputVo.getCommitteeLevelId() != null && inputVo.getCommitteeLevelId() > 0)
 				str.append(" ,TdpCommitteeMember model1 ");
