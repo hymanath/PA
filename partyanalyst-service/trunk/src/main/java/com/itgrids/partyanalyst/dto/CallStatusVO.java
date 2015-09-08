@@ -15,9 +15,16 @@ private String endTime;
 private String meetingName;
 private Long partyMeetingId;
 private PartyMeetingSummaryVO docTxtInfo;
+private Long constLocationNum=0l;
 
 
 
+public Long getConstLocationNum() {
+	return constLocationNum;
+}
+public void setConstLocationNum(Long constLocationNum) {
+	this.constLocationNum = constLocationNum;
+}
 public PartyMeetingSummaryVO getDocTxtInfo() {
 	return docTxtInfo;
 }
