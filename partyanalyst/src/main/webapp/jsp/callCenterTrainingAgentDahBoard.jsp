@@ -346,9 +346,9 @@ str+='<td>Not-Dialled</td>';
 str+='<td class="pad_5 font-12">Interested</td>';
 str+='<td class="pad_5 font-12">Not Interested</td>';
 //str+='<td>Answered</td>';
-str+='<td class="pad_5 font-12">Switch off /<br/>User Busy / Not Ans</td>';
+str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
-str+='<td class="pad_5 font-12">Later</td>';
+str+='<td class="pad_5 font-12">Later/Pending</td>';
 
 str+='</tr>';
 for(var i in result) // program
@@ -376,21 +376,27 @@ var interested  = 0;
 var later = 0;
 var notInterested = 0;
 var todaycallBack =0;
+var pending = 0;
+var switchOff  = 0;
+var other =0;
 str+=' <td>'+result[i].subList[j].subList[k].name+'</td>';
 for(var l=0;l<result[i].subList[j].subList[k].subList.length;l++) //callStatus
 {
 if(result[i].subList[j].subList[k].subList[l].name == "Call Answered")
  answered = answered+result[i].subList[j].subList[k].subList[l].count;
- else
+ else if(result[i].subList[j].subList[k].subList[l].name == "Switchoff")
+switchOff = userbusy + result[i].subList[j].subList[k].subList[l].count;
+ else if(result[i].subList[j].subList[k].subList[l].name == "User Busy")
 userbusy = userbusy + result[i].subList[j].subList[k].subList[l].count;
+else
+other = other + result[i].subList[j].subList[k].subList[l].count;
 }
-dialed = answered + userbusy;
+dialed = answered + userbusy + switchOff +other;
 allocated = result[i].subList[j].subList[k].total;
 undialed = allocated - dialed;
 
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
-
 if(result[i].subList[j].subList[k].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].scheduleStatusList[m].id == 7)
 {
 callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].count;
@@ -402,8 +408,9 @@ if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested
 notInterested = notInterested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Later")
 later = later+result[i].subList[j].subList[k].scheduleStatusList[m].count;
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Pending")
+pending = pending + result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
-
 if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
@@ -422,7 +429,6 @@ if(interested > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
 str+=' <td>'+interested+'</td>';
-
 if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
@@ -432,8 +438,26 @@ str+='<td>'+notInterested+'</td>';
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';*/
+if(switchOff > 0 || userbusy > 0)
+{
+str+='<td>';
+if(switchOff > 0)
+{
+str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\'callStatus\',\'\');">'+switchOff+'</a>';
+}
+else
+{
+str+='0';
+}
 if(userbusy > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\',\'\');">'+userbusy+'</a></td>';
+{
+str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\',\'\');">'+userbusy+'</a>';
+}
+else{
+str+='/0';
+}
+str+='</td>';
+}
 else
 str+='<td>'+userbusy+'</td>';
 
@@ -451,12 +475,29 @@ if(callBack > 0)
 }
 else
 str+=' <td>'+callBack+'</td>';
-
-
+if(later > 0 || pending > 0)
+{
+str+='<td>';
 if(later > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\',\'\');">'+later+'</a></td>';
+{
+str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
+}
 else
-str+='<td>'+later+'</td>';
+{
+str+='0';
+}
+if(pending > 0)
+{
+str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
+}
+else
+{
+str+='/0';
+}
+str+='</td>';
+}
+else
+str+='<td>'+later+'/'+pending+'</td>';
 
 
 str+='</tr>';
@@ -492,7 +533,7 @@ function getBatchWiseCallStatusCount(campCallerId)
 
 var batchCampCallerId = 0;
 function buildBatchWiseCount(result,jObj) {
- batchCampCallerId = result[0].campCallerId;
+batchCampCallerId = result[0].campCallerId;
 var str='';
 str+='<table class="table table-bordered m_0">';
 str+='<tr>';
@@ -509,9 +550,9 @@ str+='<td class="pad_5 font-12">Not Interested</td>';
 //str+='<td class="pad_5 font-12">Interested</td>';
 //str+='<td>Allocated</td>';
 //str+='<td>Answered</td>';
-str+='<td class="pad_5 font-12">Switch off /<br/>User Busy / Not Ans</td>';
+str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
-str+='<td class="pad_5 font-12">Later</td>';
+str+='<td class="pad_5 font-12">Later/Pending</td>';
 str+='</tr>';
 for(var i in result) // program
 {
@@ -520,7 +561,6 @@ var rowSpanCnt = result[i].subList.length;
 str+='<td rowspan="'+result[i].spanCnt+'">'+result[i].name+'</td>';
 for(var j=0;j< result[i].subList.length;j++) //camp
 {
-
 str+=' <td rowspan="'+result[i].subList[j].spanCnt+'">'+result[i].subList[j].name+'</td>';
 for(var k=0;k<result[i].subList[j].subList.length;k++)//Schedule
 {
@@ -538,16 +578,22 @@ var later = 0;
 var notInterested = 0;
 var accepted = 0;
 var todaycallBack  = 0;
-
+var pending = 0;
+var switchOff  = 0;
+var other =0;
 str+=' <td>'+result[i].subList[j].subList[k].subList[p].name+'</td>';
 for(var l=0;l<result[i].subList[j].subList[k].subList[p].subList.length;l++) //callStatus
 {
 	if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Call Answered")
 		answered = answered+result[i].subList[j].subList[k].subList[p].subList[l].count;
-	else
+	else if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Switchoff")
+		switchOff = switchOff + result[i].subList[j].subList[k].subList[p].subList[l].count;
+		else if(result[i].subList[j].subList[k].subList[p].subList[l].name == "User Busy")
 		userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].count;
+		else
+		other = other + result[i].subList[j].subList[k].subList[p].subList[l].count;
 }
-dialed = answered + userbusy;
+dialed = answered + switchOff +other; ;
 allocated = result[i].subList[j].subList[k].subList[p].total;
 undialed = allocated - dialed;
 
@@ -568,6 +614,8 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Con
 accepted = accepted+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Later")
 later = later+result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
+if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Pending")
+pending = pending + result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
@@ -604,9 +652,28 @@ if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
 str+='<td>'+notInterested+'</td>';
-
+if(userbusy > 0 || switchOff > 0)
+{
+str+='<td>';
+if(switchOff > 0)
+{
+str+='<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+switchOff+'</a>';
+}
+else
+{
+str+='0';
+}
 if(userbusy > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+userbusy+'</a></td>';
+{
+str+='/<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+userbusy+'</a>';
+}
+else
+{
+str+='/0';
+}
+
+str+='</td>';
+}
 else
 str+='<td>'+userbusy+'</td>';
 
@@ -621,18 +688,29 @@ if(callBack > 0)
 }
 else
 str+=' <td>'+callBack+'</td>';
-
-
-
-
+if(later > 0 || pending > 0)
+{
+str+='<td>';
 if(later > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+later+'</a></td>';
+{
+str+='<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
+}
 else
-str+='<td>'+later+'</td>';
-
-
-
-
+{
+str+='0';
+}
+if(pending > 0)
+{
+str+='/<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
+}
+else
+{
+str+='/0';
+}
+str+='</td>';
+}
+else
+str+='<td>'+later+'/'+pending+'</td>';
 str+='</tr>';
 
 }

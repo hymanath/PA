@@ -163,9 +163,10 @@ footer
 											<div class="col-md-6 m_top10">
 												<label>Status Type</label>
 												<select class="form-control" id="callstatusSelect">
-													<option value="0">Select</option>
+													<option value="0">All</option>
 													<option value="dialed">Dialled</option>
-													<option value="busy">Switch off /User Busy / Not Ans</option>
+													<option value="busy">User Busy</option>
+													<option value="Switchoff">Switch off</option>
 													<option value="undialed">UN Dialled</option>
 													<option value="callback">Call Back</option>
 													<option value="interested">Interested</option>
@@ -183,7 +184,7 @@ footer
 									</div>
 								</div>
 							</div>
-                        	<div id="memberInfoDiv">
+                        	<div id="memberInfoDiv" class="table-responsive">
                             	
                             </div>
 							<div id="paginationDivId"></div>
@@ -229,7 +230,7 @@ footer
                                   <option value="0">Select</option>
                             </select>
                         </div>
-                        <div class="col-md-4 m_top20 clearDiv">
+                        <div class="col-md-4 m_top20 clearDiv" id="batchDiv">
                             <label>Select Batch</label>
                             <select class="form-control" id="batchId">
                                  <option value="0">Select</option> 
@@ -415,14 +416,17 @@ $(".remove-filters").click(function(){
   $('#CallbackTime').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 });
 */
-$('#CallbackTime').daterangepicker({ singleDatePicker: true,timePicker: false,locale: {
+$('#CallbackTime').daterangepicker({singleDatePicker: true,timePicker: false,minDate: new Date(),locale: {
             format: 'MM/DD/YYYY'
+			
         } }, function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
   });
+ 
 });
+
 $('#timepicker4').datetimepicker({format: 'LT'});
-$("#titleId").html(" ${status} CALLS LIST <span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
+$("#titleId").html(" <span id='titleText'>${status} CALLS LIST </span><span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
 
 function getMemberDetails(startIndex)
 {
@@ -458,7 +462,16 @@ var jObj={
 var membersList;
 function buildScheduleCallMemberDetailsCount(result,jObj)
 {
+
 membersList;
+if(jObj.task == 'scheduleWiseCount')
+{
+$("#titleText").html(" ${status} CALLS LIST");
+}
+else
+{
+$("#titleText").html("CALLS LIST");
+}
 var purpose ;
 var callFor ;
 if(jObj.purposeId == 1)
@@ -476,7 +489,7 @@ var str='';
 if(result.subList != null && result.subList .length > 0)
 {
 membersList = result.subList;
-str+='<table class="table table-bordered m_top20">';
+str+='<table class="table table-bordered m_top20 table-condensed">';
 str+='<thead class="bg_d">';
 str+='<th>Image</th>';
 str+='<th>Name</th>';
@@ -490,7 +503,7 @@ str+='<th>District</th>';
 str+='<th>Constituency</th>';
 str+='<th>Remarks</th>';
 str+='<th>Status</th>';
-
+str+='<th>CallStatus</th>';
 str+='<th>Update</th>';
 str+='</thead>';
 for(var i in result.subList)
@@ -551,6 +564,7 @@ str+='<td></td>';
 }
 
 str+='<td>'+result.subList[i].status+'</td>';
+str+='<td>'+result.subList[i].callStatus+'</td>';
 if(result.subList[i].status !='Confirmed')
 {
 str+='<td>'
@@ -561,6 +575,7 @@ else
 {
 str+='<td></td>';
 }
+
 str+='</tr>';
 }
 
@@ -579,8 +594,11 @@ $("#memberInfoDiv").html(str);
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
+				var num=(pageNumber-1)*20;
+				if(jObj.task == 'scheduleWiseCount')
 				getMemberDetails(num);
+				else
+				getFilterWiseDetails(num);
 				
 			}
 		});
@@ -854,14 +872,16 @@ function setDefaultImage(img){
 			if(i>0 && i<9 && result[i].name.indexOf("Call Back") ==-1)
 			{
 			 str+='<label class="checkbox-inline">';
-			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'">'+result[i].name+'';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'" onclick="showHideBatch();">'+result[i].name+'';
 			 str+='</label>';
 			}
 		}
 		else
 		{
-			if(i>0 && i<10 && i != 3 && result[i].name.indexOf("Call Back") ==-1)
+		
+			if(i>0 && i<10 && i != 3 && result[i].name.indexOf("Call Back") ==-1 && result[i].id !=8  && result[i].id !=9)
 			{
+			
 			 str+='<label class="checkbox-inline">';
 			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'">'+result[i].name+'';
 			 str+='</label>';
@@ -889,6 +909,7 @@ function setDefaultImage(img){
    var dataArray = new Array();
    var ramarks = $("#remarks").val();
    var batchId = $("#batchId").val();
+    var callPurposeId = '${purposeId}';
    $(".scheduleStatuscehckbox").each(function()
    {
 	if($(this).is(":checked"))
@@ -912,7 +933,14 @@ function setDefaultImage(img){
 		str+='<font color="red">Remarks  Required</font><br/>';
 		flag = true;
 	   }
-		if(batchId == 0)
+	  
+		if(batchId == 0 && scheduleStatusId == 4 && callPurposeId ==1)
+	   {
+		str+='<font color="red" class="batcherr">Select  Batch</font><br/>';;
+		flag = true;
+	   }
+	   
+	   	if(batchId == 0 && callPurposeId == 2)
 	   {
 		str+='<font color="red">Select  Batch</font><br/>';;
 		flag = true;
@@ -938,9 +966,6 @@ function setDefaultImage(img){
    
 	$("#ajaxImage2").show();
   }
-  
-  
-  
    $("#messageDiv").html("");
    var obj = {
    batchId : batchId,
@@ -951,8 +976,7 @@ function setDefaultImage(img){
    inviteeCallerId:inviteeCallerId,
    tdpCadreId:tdpCadreId,
    status:"callstatus"
-
-   }
+	}
    dataArray.push(obj);
    var jObj={
 		dataArray : dataArray,
@@ -964,7 +988,7 @@ function setDefaultImage(img){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 	
-				if(result.resultCode == 1)			  
+				if(result.resultCode == 2)			  
 				{
 				$("#messageDiv").html("Batch full..").css("color","red");
 					 if(callstatusId == 1)
@@ -1163,7 +1187,7 @@ function setDefaultImage(img){
    var status1 = $("#callstatusSelect").val();
    var committeLevelId = $("#committeLevelId").val();
 
-	if(status1 == 'busy' || status1 == 'dialed' || status1 == 'undialed')
+	if(status1 == 'busy' || status1 == 'dialed' || status1 == 'undialed' || status1 == 'Switchoff')
 	{
 		typeOfStatus = "callStatus"	;
 		
@@ -1221,8 +1245,24 @@ function setDefaultImage(img){
 		var cadreId=$(this).attr("attr_cadreId");
 		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
 	});
-  
-   
+  function showHideBatch()
+  {
+	  var scheduleStatusId;
+	   $(".scheduleStatuscehckbox").each(function()
+	   {
+		if($(this).is(":checked"))
+		 scheduleStatusId = $(this).val();
+	   });
+	   
+	   if(scheduleStatusId == 4)
+	   $("#batchDiv").show();
+	   else
+	   {
+	    $("#batchId").val(0);
+	    $("#batchDiv").hide();
+		$(".batcherr").html('');
+	   }
+  }
 </script>
 <script>
 getMemberDetails(0);
