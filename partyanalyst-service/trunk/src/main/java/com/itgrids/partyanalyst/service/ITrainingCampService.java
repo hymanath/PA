@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -89,4 +90,5 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId);
 	public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId);
 	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
+	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId);
 }
