@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleVO implements java.io.Serializable{
 	
@@ -16,6 +17,8 @@ public class SimpleVO implements java.io.Serializable{
    
    private List<SimpleVO> simpleVOList1;
    private List<SimpleVO> simpleVOList2;
+   
+   private Map<Long,SimpleVO> map;
    
 	public Long getId() {
 		return id;
@@ -65,5 +68,11 @@ public class SimpleVO implements java.io.Serializable{
 	public void setTotal(Long total) {
 		this.total = total;
 	}
-    
- }
+	public Map<Long, SimpleVO> getMap() {
+		return map;
+	}
+	public void setMap(Map<Long, SimpleVO> map) {
+		this.map = map;
+	}
+      
+   }
