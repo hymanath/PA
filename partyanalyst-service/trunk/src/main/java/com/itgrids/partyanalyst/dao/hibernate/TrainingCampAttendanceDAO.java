@@ -93,5 +93,26 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) ");
 		query.setParameterList("batchIds", batchIds);
 		return query.list();
-	}
+ }
+ 
+  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId){
+	 
+	  Query query=getSession().createQuery(queryString);
+	  if(batchId==null && campId==null && programId!=null ){
+		 query.setParameter("programId",programId);
+	  }
+	  else if(batchId==null && campId!=null){
+		 query.setParameter("campId",campId);
+		 if(programId!=null)
+			 query.setParameter("programId",programId);
+	  }else if(batchId!=null){
+		 query.setParameter("batchId",batchId);
+		 if(programId!=null)
+			 query.setParameter("programId",programId);
+		 if(campId!=null)
+			 query.setParameter("campId",campId);
+	  }
+	  return query.list();
+ }
+ 
 }
