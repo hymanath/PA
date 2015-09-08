@@ -90,5 +90,7 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId);
 	public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId);
 	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
+	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId);
+	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId);
 }
