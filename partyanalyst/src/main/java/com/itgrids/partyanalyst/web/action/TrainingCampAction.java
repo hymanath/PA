@@ -827,6 +827,22 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 					}
 					areasVOList.add(vo);
 				}
+				
+				
+				JSONArray parliamentArr = jObj.getJSONArray("parliamentIds");
+				if(parliamentArr != null && parliamentArr.length() > 0)
+				{
+					TrainingCampVO parlVo = new TrainingCampVO();
+					//vo.setLocationTypeId(IConstants.PArli);
+					for(int i=0; i<parliamentArr.length();i++)
+					{
+						TrainingCampVO parlmentVo = new TrainingCampVO();
+						
+						parlmentVo.setId(Long.parseLong(parliamentArr.get(i).toString()));
+						parlVo.getTrainingCampVOList().add(parlmentVo);
+					}
+					areasVOList.add(parlVo);
+				}
 					
 					JSONArray constarr = jObj.getJSONArray("constiIds");
 					if(constarr != null && constarr.length() > 0)
@@ -1357,7 +1373,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		try{
 
 			jObj = new JSONObject(getTask());
-			statusCountList = trainingCampService.getScheduleAvailableCallsCountLocationWiseInfo(jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"));
+			statusCountList = trainingCampService.getScheduleAvailableCallsCountLocationWiseInfo(jObj.getLong("campId"),jObj.getLong("programId"),jObj.getLong("scheduleId"),jObj.getString("type"));
 				
 		}
 		catch (Exception e) {

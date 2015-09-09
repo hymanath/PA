@@ -705,6 +705,7 @@ footer
       <div class="modal-body">
       		<div class="row">
 			<div id="errorMsgDivId"></div>
+			<div class="col-md-12 m_top20"><input type="radio" value="District" name="locationTypeRadio" checked onclick="getScheduleAvailableCallsCount();">&nbsp;District &nbsp;<input type="radio" value="Parliament" name="locationTypeRadio" onclick="getScheduleAvailableCallsCount();">&nbsp;Parliament</div>
 			<div class="col-md-12 m_top10">
 					<label>Select Program Name</label>
 					<select class="form-control border-radius-0" id="programId" onchange="getCampsForProgram('schedule');">
@@ -766,6 +767,7 @@ footer
 				</div>-->
 				<div class="col-md-12 m_top20">
 				   <div id="agentSuccessMsgDiv"></div>
+				   
 					<button id="assignSchedulebtn" class="btn btn-success btn-block border-radius-0" onclick="assignSchedule();">Assign to Agent</button><img src="images/icons/search.gif" id="processingImg" style="display:none;"/>
 				</div>  
 			</div>
@@ -1761,11 +1763,13 @@ function getScheduleAvailableCallsCount()
 var campId =$("#campId").val();
 var programId =$("#programId").val();
 var scheduleId = $("#scheduleId").val();
+var locationTypeRadio = $("input[type='radio'][name='locationTypeRadio']:checked").val();
 $("#scheduleProcessImg").show();
 	var jsObj={
 		campId:campId,
 		programId:programId,
 		scheduleId:scheduleId,
+		type:locationTypeRadio,
 		task : ""
 	}
 	
@@ -1971,14 +1975,25 @@ $("#callCenterErrorDiv").html("");
 $("#errorMsgDivId").html("");
 $("#agentSuccessMsgDiv").html("");
 var districtIds = new Array();
+var parliamentIds = new Array();
 var constiIds = new Array();
 var mandalIds = new Array();
 var municipalitys  = new Array();
+var locationTypeRadio = $("input[type='radio'][name='locationTypeRadio']:checked").val();
+if(locationTypeRadio == "District")
+{
 $(".districtCheck").each(function(){
 if($(this).is(':checked'))
 districtIds.push($(this).val());
-
 });
+}
+if(locationTypeRadio == "Parliament")
+{
+$(".districtCheck").each(function(){
+if($(this).is(':checked'))
+parliamentIds.push($(this).val());
+});
+}
 $(".constituencyCheck").each(function()
 {
 if($(this).is(':checked'))
@@ -2022,7 +2037,7 @@ if(callerId == null || callerId == 0)
   $("#callCenterErrorDiv").html("Please Select Agent.").css("color:red");
   return;
 }
-if(districtIds.length == 0 && constiIds.length == 0)
+if(locationTypeRadio == "District" && districtIds.length == 0 && constiIds.length == 0)
 {
 	if(mandalIds.length == 0 && municipalitys.length == 0)
 	{
@@ -2030,15 +2045,28 @@ if(districtIds.length == 0 && constiIds.length == 0)
       return;
 	}
 }
+
+if(locationTypeRadio == "Parliament" && parliamentIds.length == 0 && constiIds.length == 0)
+{
+	if(mandalIds.length == 0 && municipalitys.length == 0)
+	{
+	  $("#callCenterErrorDiv").html("Please Select At Least One Location.").css("color:red");;
+      return;
+	}
+}
+
 $("#processingImg").show();
 
 var callPurposeId = 1;
 $("#assignSchedulebtn").prop('disabled', true);
+
+return;
 var jObj={
 		districtIds:districtIds,
 		constiIds:constiIds,
 		mandalIds:mandalIds,
 		municipalitys : municipalitys,
+		parliamentIds:parliamentIds,
 		membersCount:0,
 		scheduleId:scheduleId,
 		callerId : callerId,
