@@ -384,6 +384,7 @@ margin-top:10px;
 							<div>
 								<ul>
 								<li><a href="cadreSearchPageAction.action"><span>Cadre Search</span></a></li>
+								<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
 									<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 										<div>
 											<ul>
@@ -482,7 +483,7 @@ margin-top:10px;
 					
 					
 					
-					<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
+					<!--<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>-->
 					
 					<li><a onmousedown="return false;" class="parent"><span>Events</span></a>
 						<div>

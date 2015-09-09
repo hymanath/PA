@@ -17,6 +17,7 @@
 	<link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 	<!-- <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -157,6 +158,7 @@ color: red !important;
 	<script src="css/Training/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 	<script src="js/highcharts/js/highcharts.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js/blockui.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<!-- <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 	<script src="dist/js/bootstrap.js" type="text/javascript"></script>
 	<script src="dist/DateRange/moment.js" type="text/javascript"></script>	
@@ -215,11 +217,11 @@ color: red !important;
                 str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">'
                   str+='<div class="panel-body">';
 					str+='<div class="table-responsive">';
-                      str+='<table class="table table-bordered m_0" style="font-size:12px">'
+                      str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">'
                       str+='<thead>';
-					  str+='<th></th>';
-                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Achievements</th><th>Goals</th>'
-					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th> <th></th>';
+					  str+='<th>Image</th>';
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Designation</th><th>Achievements</th><th>Goals</th>'
+					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th> <th>Update</th>';
                       str+='</thead>';                 
                       for(var j in results[i].subList){
 					   str+='<tr>';
@@ -232,6 +234,7 @@ color: red !important;
 					   str+='<td>'+results[i].subList[j].name+'</td>'
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
+					   str+='<td>'+results[i].subList[j].committeeLevel+' level '+results[i].subList[j].committeeRole+'</td>'
 					   if(results[i].subList[j].achievements){
 					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i></td>'
 					   }else{
@@ -276,6 +279,8 @@ color: red !important;
 		   }
 		   $("#ajaxImage").hide();
 		   $("#accordion").html(str);
+		   
+		   $(".temptable").dataTable();
 		}
 		
 	

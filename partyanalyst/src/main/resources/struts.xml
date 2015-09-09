@@ -10827,6 +10827,30 @@
 		    <param name="root">partyMeetingVO</param>
 		</result>
 	</action>
+	
+	<action name="getattendedcountByFeedBacksAction" class="trainingCampAction" method="getattendedcountByFeedBacks">
+	    <result type="json" name="success">		   
+		    <param name="root">finalVO</param>
+		</result>
+	</action>
+	
+	<action name="getAttendedCountsByProgramOrCampOrBatchAction" class="trainingCampAction" method="getAttendedCountsByProgramOrCampOrBatch">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVOList</param>
+		</result>
+	</action>
+	
+	<action name="getAttendedCountSummaryByBatchAction" class="trainingCampAction" method="getAttendedCountSummaryByBatch">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
+	
+	<action name="getProgramSummaryAction" class="trainingCampAction" method="getProgramSummary">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
 			
 </package>
 </struts>      
