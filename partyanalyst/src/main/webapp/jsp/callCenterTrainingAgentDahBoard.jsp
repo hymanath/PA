@@ -341,11 +341,10 @@ str+='<td>Program</td>';
 str+=' <td>Training Camp </td>';
 str+=' <td>Schedule</td>';
 str+='<td>Allocated</td>';
-str+='<td>Dialled</td>';
-str+='<td>Not-Dialled</td>';
+str+='<td>Answered</td>';
+str+='<td>Dialed/Not-Dialled</td>';
 str+='<td class="pad_5 font-12">Interested</td>';
 str+='<td class="pad_5 font-12">Not Interested</td>';
-//str+='<td>Answered</td>';
 str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
 str+='<td class="pad_5 font-12">Later/Pending</td>';
@@ -415,16 +414,31 @@ if(allocated > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
 str+=' <td>'+allocated+'</td>';
-
-if(dialed > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\',\'\');">'+dialed+'</a></td>';
+if(answered > 0)
+str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
-str+=' <td>'+dialed+'</td>';
-
+str+='<td>'+answered+'</td>';
+if(dialed > 0 || undialed > 0)
+{
+str+=' <td>';
+if(dialed > 0) 
+{
+str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\',\'\');">'+dialed+'</a>';
+}
+else
+str+=''+dialed+'';
 if(undialed > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\',\'\');">'+undialed+'</a></td>';
+{
+str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\',\'\');">'+undialed+'</a>';
+}
 else
-str+='<td>'+undialed+'</td>';
+str+='/'+undialed+'';
+str+='</td>';
+}
+else
+{
+str+='<td>'+dialed+'/'+undialed+'</td>';
+}
 if(interested > 0)
 str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
@@ -434,10 +448,7 @@ str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurpo
 else
 str+='<td>'+notInterested+'</td>';
 
-/*if(answered > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
-else
-str+='<td>'+answered+'</td>';*/
+
 if(switchOff > 0 || userbusy > 0)
 {
 str+='<td>';
@@ -1018,8 +1029,9 @@ function buildAgentCallDetailsByCampCallerId(result)
 	str +='<tr>';
 	str +='<td></td>';
 	str +='<td> Assigned Calls </td>';
-		str +='<td class="text-dialled">Dialed</td>';
-	str +='<td class="text-dialled">Not-Dialled</td>';
+	str +='<td class="text-dialled">Answered</td>';
+	str +='<td class="text-dialled">Dialed/Not-Dialled</td>';
+	str +='<td class="text-dialled">Switch off /User Busy</td>';
 	str +='<td colspan="2" style="padding: 0px; text-align: center;">Call Back';
 	str +='<table class="table table-bordered table-condenced" style="margin-bottom: 0px;">';
 str +='<tbody>';
@@ -1029,8 +1041,8 @@ str +='<tbody>';
  str +=' </tr>';
   str +='</tbody><tbody>';
 str +='</tbody></table></td>';
-	str +='<td class="text-custom">Interested / Accepted </td>';
-	str +='<td class="text-not-interested"> Later</td>';
+	str +='<td class="text-custom">Interested / Confirmed </td>';
+	str +='<td class="text-not-interested"> Later / Pending</td>';
 	str +='<td class="text-totally-not">Not Interested</td>';
 	str +='</tr>';
 	for(var i in result)
@@ -1038,23 +1050,36 @@ str +='</tbody></table></td>';
 		str +='<tr>';
 		str +='<td>'+result[i].name+'</td>';
 		str += '<td>'+result[i].total+'</td>';
+	
+		
 		var dialled = 0;
+		var answered = 0;
 		var notdialled = 0;
+		var switchOff = 0;
+		var userBusy = 0;
 		var callBackBusy = 0;
 		var callBackConfirm = 0;
 		var todayCallBackBusy = 0;
 		var todayCallBackConfirm = 0;
 		var interested = 0;
 		var later = 0;
+		var pending = 0;
 		var notInterested = 0;
+		var confirmCnt = 0;
 		for(var j in result[i].subList)
 		{
 			dialled += result[i].subList[j].count;
+			if(result[i].subList[j].id == 1)
+			answered+=result[i].subList[j].count;
+			if(result[i].subList[j].id == 2)
+			switchOff+=result[i].subList[j].count;
+			if(result[i].subList[j].id == 3)
+			userBusy+=result[i].subList[j].count;
 		}
 		notdialled = result[i].total-dialled;
-		str += '<td>'+dialled+'</td>';
-		str += '<td>'+notdialled+'</td>';
-		
+		str += '<td>'+answered+'</td>';
+		str += '<td>'+dialled+'/'+notdialled+'</td>';
+		str += '<td>'+switchOff+'/'+userBusy+'</td>';
 		for(var k in result[i].scheduleStatusList)
 		{
 			if(result[i].scheduleStatusList[k].id == 6)
@@ -1077,14 +1102,17 @@ str +='</tbody></table></td>';
 			}
 		   if(result[i].scheduleStatusList[k].id == 3)
 			 later += result[i].scheduleStatusList[k].count;
+			 if(result[i].scheduleStatusList[k].id == 2)
+			 pending += result[i].scheduleStatusList[k].count;
 		   if(result[i].scheduleStatusList[k].id == 5)
 			 notInterested += result[i].scheduleStatusList[k].count;
-		 
+		  if(result[i].scheduleStatusList[k].id == 10)
+			 confirmCnt += result[i].scheduleStatusList[k].count;
 		}
 		str +='<td>'+callBackBusy+'/'+todayCallBackBusy+'</td>';
 		str +='<td>'+callBackConfirm+'/'+todayCallBackConfirm+'</td>';
-		str +='<td class="text-custom">'+interested+'</td>';
-		str +='<td class="text-not-interested">'+later+'</td>';
+		str +='<td class="text-custom">'+interested+'/'+confirmCnt+'</td>';
+		str +='<td class="text-not-interested">'+later+'/'+pending+'</td>';
 		str +='<td class="text-totally-not">'+notInterested+'</td>';
 		str +='</tr>';
 	}
