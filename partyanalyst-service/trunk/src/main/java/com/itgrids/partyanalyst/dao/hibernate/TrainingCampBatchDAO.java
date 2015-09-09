@@ -125,4 +125,15 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return (Object[])query.uniqueResult();
 	}
 	
+	public List<Object[]> getCentersAndBatchCountByProgram(Long programId){
+		
+		Query query=getSession().createQuery("" +
+		" select   model.trainingCampSchedule.trainingCampId,model.trainingCampSchedule.trainingCamp.campName,count(distinct model.trainingCampBatchId) " +
+		" from     TrainingCampBatch model " +
+		" where    model.trainingCampSchedule.trainingCampProgramId=:trainingCampProgramId " +
+		" group by model.trainingCampSchedule.trainingCampId " +
+		" order by model.trainingCampSchedule.trainingCamp.campName");
+		query.setParameter("trainingCampProgramId",programId);
+		return query.list();
+	}
 }

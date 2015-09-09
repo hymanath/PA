@@ -5932,4 +5932,59 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return dates;
 		}
+		 /**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to get the Program Summary By Program
+		   *   inputs: programId
+		   *   Return:SimpleVO 
+		   *   
+		  */
+		
+		public SimpleVO getProgramSummary(Long programId){
+			SimpleVO simpleVO=new SimpleVO();
+			try{
+				Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
+				
+				Long centersCount=0l;
+				Long totalBatchesCount=0l;
+				Long totalAttendedCount=0l;
+						
+				List<Object[]> batchesCount=trainingCampBatchDAO.getCentersAndBatchCountByProgram(programId);
+				if(batchesCount!=null && batchesCount.size()>0){
+					centersCount=Long.valueOf(new Integer(batchesCount.size()).longValue());
+					for(Object[] obj:batchesCount){
+						SimpleVO vo=new SimpleVO();
+						vo.setId((Long)obj[0]);
+						vo.setName(obj[1]!=null?obj[1].toString():"");
+						vo.setCount(obj[2]!=null?(Long)obj[2]:0l);//batchCount
+						totalBatchesCount=totalBatchesCount+vo.getCount();
+						vo.setTotal(0l);//attended count
+						finalMap.put((Long)obj[0],vo);
+					}
+				}
+				
+				List<Object[]> cadrelist=trainingCampAttendanceDAO.getCampWiseAttendedCountByProgram(programId);
+				if(cadrelist!=null && cadrelist.size()>0){
+					for(Object[] obj:cadrelist){
+						SimpleVO vo=finalMap.get((Long)obj[0]);
+						if(vo!=null){
+							vo.setTotal(obj[1]!=null?(Long)obj[1]:0l);
+							totalAttendedCount=totalAttendedCount+vo.getTotal();
+						}
+					}
+				}
+			 simpleVO.setId(centersCount);//total centers count
+			 simpleVO.setCount(totalBatchesCount);//total batches count
+			 
+			 simpleVO.setTotal(totalAttendedCount);//total ayttended count
+				
+			//converting
+			if(finalMap!=null && finalMap.size()>0){
+				simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
+			}
+			}catch(Exception e){
+			    e.printStackTrace();
+			}
+			return simpleVO;
+		}
 }
