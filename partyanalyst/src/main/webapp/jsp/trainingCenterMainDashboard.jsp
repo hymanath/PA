@@ -448,6 +448,8 @@ $(function () {
   $('#selectDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 	
 	getTrainingCenterDetailsBasedOnDates();
+	getAttendedCountForBatchesByLocation();
+	getInvitedAttendedCadreCountByBatchIds();
 });
 
  $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
@@ -807,8 +809,6 @@ function getTrainingCenterDetailsBasedOnDates(){
 		}
    });
 }
-getAttendedCountForBatchesByLocation();
-getInvitedAttendedCadreCountByBatchIds();
 
 	function getAttendedCountForBatchesByLocation(){
 		
