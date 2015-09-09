@@ -176,9 +176,9 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId" +
 				
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId  " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId = :callPurposeId and model.trainingCampScheduleInvitee.attendingBatchId is null " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
-				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
+				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId,campCallStatus.campCallStatusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("callerId", callerId);
 		query.setParameter("callPurposeId", callPurposeId);
@@ -202,7 +202,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId," +
 				" model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchName" +
 				" from TrainingCampScheduleInviteeCaller model left join model.campCallStatus campCallStatus " +
-				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId " +
+				" where model.trainingCampCallerId = :callerId and model.callPurposeId= :callPurposeId and model.trainingCampScheduleInvitee.attendingBatchId is not null " +
 				" group by model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 				" model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,model.trainingCampScheduleInvitee.trainingCampBatch.trainingCampBatchId,model.campCallStatus.campCallStatusId,model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId");
 		Query query = getSession().createQuery(str.toString());
