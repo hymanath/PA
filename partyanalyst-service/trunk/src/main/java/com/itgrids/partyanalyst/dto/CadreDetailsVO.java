@@ -49,6 +49,29 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private int resultCode;
 	private String isFeedbackUpdatable;
 	
+	private String committeeLevel;
+	private String committeeRole;
+	private String committeeType;
+	
+	
+	public String getCommitteeLevel() {
+		return committeeLevel;
+	}
+	public void setCommitteeLevel(String committeeLevel) {
+		this.committeeLevel = committeeLevel;
+	}
+	public String getCommitteeRole() {
+		return committeeRole;
+	}
+	public void setCommitteeRole(String committeeRole) {
+		this.committeeRole = committeeRole;
+	}
+	public String getCommitteeType() {
+		return committeeType;
+	}
+	public void setCommitteeType(String committeeType) {
+		this.committeeType = committeeType;
+	}
 	public int getResultCode() {
 		return resultCode;
 	}

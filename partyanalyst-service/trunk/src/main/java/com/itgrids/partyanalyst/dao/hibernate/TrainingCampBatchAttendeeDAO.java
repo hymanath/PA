@@ -72,7 +72,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
     public List<Object[]> getTdpCadreDetailsforASchedule(List<Long> schedulesList){
 		
 		String query="" +
-		" select tcs.training_camp_schedule_id,tcb.training_camp_batch_id,tcb.training_camp_batch_code," +
+		/*" select tcs.training_camp_schedule_id,tcb.training_camp_batch_id,tcb.training_camp_batch_code," +
 		"        tc.tdp_cadre_id,tc.first_name,tc.mobile_no,tc.image,ua.constituency_id,c.name, "+
 	    "        tccf.cadre_leadership_level_id,tccf.cadre_comminication_skills_status_id,tccf.cadre_leadership_skills_status_id,tccf.cadre_health_status_id," +
 	    "        tcb.is_feedback_updatable  "+
@@ -85,8 +85,30 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	    "      left join training_camp_cadre_feedback_details tccf on tccf.tdp_cadre_id=tc.tdp_cadre_id and tccf.training_camp_batch_id=tcba.training_camp_batch_id " +
 	   
 		" where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014 " +
-		" order by tcb.training_camp_batch_id asc,tc.first_name asc";
-		
+		" order by tcb.training_camp_batch_id asc,tc.first_name asc";*/
+    	
+   " select tcs.training_camp_schedule_id,tcb.training_camp_batch_id,tcb.training_camp_batch_code, " +
+	    " tc.tdp_cadre_id,tc.first_name,tc.mobile_no,tc.image,ua.constituency_id,c.name as name, " +
+	    " tccf.cadre_leadership_level_id,tccf.cadre_comminication_skills_status_id,tccf.cadre_leadership_skills_status_id,tccf.cadre_health_status_id, " +
+	    " tcb.is_feedback_updatable,tcl.tdp_committee_level,tr.role,tbc.name " +
+    				       
+   " from training_camp_batch_attendee tcba  join training_camp_batch tcb on tcba.training_camp_batch_id=tcb.training_camp_batch_id " +
+        " join training_camp_schedule tcs on tcs.training_camp_schedule_id=tcb.training_camp_schedule_id " +
+        " join tdp_cadre tc on tcba.tdp_cadre_id=tc.tdp_cadre_id " +
+        " join user_address ua on  tc.address_id=ua.user_address_id " +
+        " join constituency c on ua.constituency_id=c.constituency_id " +
+        " left join training_camp_cadre_feedback_details tccf on tccf.tdp_cadre_id=tc.tdp_cadre_id and tccf.training_camp_batch_id=tcba.training_camp_batch_id " +
+        " left join  tdp_committee_member tcm on tcba.tdp_cadre_id=tcm.tdp_cadre_id " +
+        " left join tdp_committee_role tcr on tcm.tdp_committee_role_id=tcr.tdp_committee_role_id " +
+        " left join tdp_committee tce on tcr.tdp_committee_id=tce.tdp_committee_id " +
+        " left join tdp_committee_level tcl on tce.tdp_committee_level_id=tcl.tdp_committee_level_id " +
+        " left join tdp_roles tr on tcr.tdp_roles_id=tr.tdp_roles_id " +
+        " left join tdp_basic_committee tbc on tce.tdp_basic_committee_id=tbc.tdp_basic_committee_id " +
+
+   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014 and tcm.is_active='Y' " +
+   " order by tcb.training_camp_batch_id asc,tc.first_name asc";
+   
+  		
 		Query sqlQuery=getSession().createSQLQuery(query);
 		sqlQuery.setParameterList("schedulesList", schedulesList);
 		//sqlQuery.setParameter("scheduleId",scheduleId);
