@@ -536,6 +536,91 @@ color: red !important;
 			 str+='</div>'
         str+='</div>'
 		
+		<!-- Adding -->
+		
+		 str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Do You Have Smart phone(Android or IPhone or Windows)?</label>'
+				str+='<select class="form-control" id="smartPhoneId" onChange="disHideShow()">'
+                str+='<option value="select">Select</option>'
+				if(results.smartphone=='Y')
+				  str+='<option value="Y" selected>Yes</option>'
+			    else
+				  str+='<option value="Y">Yes</option>'
+			    if(results.smartphone=='N')
+				 str+='<option value="N" selected>No</option>'
+			    else
+				 str+='<option value="N">No</option>'
+               str+='</select>'
+			 str+='</div>'
+        str+='</div>'
+		
+		if(results.smartphone=='Y'){
+			str+='<div id="whatsappDivId">';
+		}else
+		 str+='<div id="whatsappDivId" style="display:none">';
+		
+		 str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Do you know about Whatsapp?</label>'
+				str+='<select class="form-control" id="whatsappId">'
+                str+='<option value="select">Select</option>'
+				
+                if(results.whatsapp=='Y')
+				  str+='<option value="Y" selected>Yes</option>'
+			    else
+				  str+='<option value="Y">Yes</option>'
+			    if(results.whatsapp=='N')
+				 str+='<option value="N" selected>No</option>'
+			    else
+				 str+='<option value="N">No</option>'
+				
+               str+='</select>'
+			 str+='</div>'
+        str+='</div>'
+		
+		
+		 str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Do you share the party information to cadre,people in your region?</label>'
+				str+='<select class="form-control" id="whatsappShareId">'
+                str+='<option value="select">Select</option>'
+				 if(results.whatsappShare=='Y')
+				  str+='<option value="Y" selected>Yes</option>'
+			    else
+				  str+='<option value="Y">Yes</option>'
+			    if(results.whatsappShare=='N')
+				 str+='<option value="N" selected>No</option>'
+			    else
+				 str+='<option value="N">No</option>'
+			 
+               str+='</select>'
+			 str+='</div>'
+        str+='</div>'
+	  str+='</div>';
+		
+		 str+='<div class="row">'
+        	str+='<div class="col-md-12">'
+            	str+='<label>Do you know about Facebook?</label>'
+				str+='<select class="form-control" id="facebookId">'
+                str+='<option value="select">Select</option>'
+                 if(results.facebook=='Y')
+				  str+='<option value="Y" selected>Yes</option>'
+			    else
+				  str+='<option value="Y">Yes</option>'
+			    if(results.facebook=='N')
+				 str+='<option value="N" selected>No</option>'
+			    else
+				 str+='<option value="N">No</option>'
+               str+='</select>'
+			 str+='</div>'
+        str+='</div>'
+		
+	
+		<!-- Adding -->
+		
+		
+		
 		str+='<div class="row">'
 			str+='<div class="col-md-12">'
 				str+='<label>Comments</label>'
@@ -571,6 +656,18 @@ color: red !important;
 	$.unblockUI();
 	$("#myModal").modal("show");
    }
+   
+   function disHideShow(){
+	   
+	   var smartPhoneId=$("#smartPhoneId").val();
+	   if(smartPhoneId=='Y'){
+		   $('#whatsappDivId').show();
+	   }else{
+		  $('#whatsappDivId').hide(); 
+	   }
+   }
+   
+   
    var existDeleteAchieveArray=[];
 	$(document).on('click', '.trash', function(){
 	   if($(this).attr('attr-id')){
@@ -605,6 +702,11 @@ color: red !important;
 	   var leaderShipSkills = $("#leaderShipSkillsId").val();
 	   var health = $("#healthId").val();
 	   var comments = $("#commentsId").val();
+	   
+	   var smartPhoneId=$("#smartPhoneId").val();
+       var whatsappId=$("#whatsappId").val();
+	   var whatsappShareId=$("#whatsappShareId").val();
+       var facebookId=$("#facebookId").val();
 	   
 	   //Achievements.
 	   var achieveArray=[];
@@ -694,7 +796,11 @@ color: red !important;
 			health:health,
 			comments:comments,
 			tdpCadreId:tdpCadreId,
-			batchId:batchId
+			batchId:batchId,
+			smartPhoneId:smartPhoneId,
+			whatsappId:whatsappId,
+            whatsappShareId:whatsappShareId,
+            facebookId:whatsappShareId
 		}
 		
 		$.ajax({
