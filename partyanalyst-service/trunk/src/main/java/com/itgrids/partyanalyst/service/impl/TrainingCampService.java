@@ -95,6 +95,8 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.TrainingCampAttendance;
+import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
@@ -171,7 +173,7 @@ class TrainingCampService implements ITrainingCampService{
     private IPartyMeetingService partyMeetingService;
     private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
     private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
-    
+  
 	
 	
 
@@ -2648,7 +2650,7 @@ class TrainingCampService implements ITrainingCampService{
 				if(flag)
 				return resultStatus;
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-					if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId().longValue() == 4L  && inputVO.getBatchId().longValue() > 0L)
+					if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
 						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
@@ -2657,6 +2659,19 @@ class TrainingCampService implements ITrainingCampService{
 					{
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
 						
+						if(inputVO.getScheduleStatusId().longValue() == 10L)
+						{
+							TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+							trainingCampBatchAttendee.setTdpCadreId(trainingCampScheduleInvitee.getTdpCadreId());
+							trainingCampBatchAttendee.setTrainingCampBatchId(inputVO.getBatchId());
+							trainingCampBatchAttendee.setTrainingCampScheduleInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId());
+							trainingCampBatchAttendee.setInsertedBy(inputVO.getUserId());
+							trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
+							trainingCampBatchAttendee.setAttendedTime(date.getCurrentDateAndTime());
+							trainingCampBatchAttendee.setInsertedTime(date.getCurrentDateAndTime());
+							trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
+							trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+						}
 					}
 					if(!flag)
 					{
@@ -2665,20 +2680,11 @@ class TrainingCampService implements ITrainingCampService{
 						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 					}
 			}
-			else if(inputVO.getCallStatusId() == 2l)// switch-off
+			else if(inputVO.getCallStatusId() == 2l || inputVO.getCallStatusId() == 3l)// User-busy // switch-off
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 				//trainingCampScheduleInvitee.setAttendingBatchId(null);
 				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(11L); 
-				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
-				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
-				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
-			}
-			else if(inputVO.getCallStatusId() == 3l)// User-busy
-			{
-				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-				//trainingCampScheduleInvitee.setAttendingBatchId(null);
-				//trainingCampScheduleInvitee.setScheduleInviteeStatusId(2L); 
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
@@ -2689,13 +2695,11 @@ class TrainingCampService implements ITrainingCampService{
 				if(trainingCampScheduleInviteeCaller != null)
 				{
 					inputVO.setTrainingCampCallerId(trainingCampScheduleInviteeCaller.getTrainingCampCallerId());
-					
 					trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
 					trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
 					trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 					trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
 					voterDAO.flushAndclearSession();
-					
 				}
 				
 				saveTrackingInfo(inputVO);	
