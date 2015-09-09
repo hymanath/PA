@@ -32,6 +32,12 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		return query.list();
 		
 	}
+	public List<Object[]> getAllTrainingPrograms(){
+		
+		Query query=getSession().createQuery(" select model.trainingCampProgramId,model.programName from TrainingCampProgram model ");
+		
+		return query.list();
+	}
 	
 
 }

@@ -2585,6 +2585,10 @@ class TrainingCampService implements ITrainingCampService{
 				startDate= sdf.parse(startDateString);
 			if(!endDateString.isEmpty())
 			 endDate= sdf.parse(endDateString);
+			
+			List<Object[]> allPrograms = trainingCampProgramDAO.getAllTrainingPrograms();
+			
+			List<Object[]> allCamps = trainingCampDAO.getAllTrainingCamps();
 
 		
 			//0.id,1.program/camp name 3.membersCount 4.batchCount 
@@ -2602,17 +2606,46 @@ class TrainingCampService implements ITrainingCampService{
 				setListObjectsForTrainingProgramMembersBatchCount(campDetails,listForCampVo,"camp");
 			}
 			
-			if(listForProgramVo !=null && listForProgramVo.size()>0){
-				Long programCount=commonMethodsUtilService.getIntegerToLong(listForProgramVo.size());
-				finalTrainingVo.setProgramCount(programCount);
-				finalTrainingVo.setTrainingCampVOList(listForProgramVo);//ProgramWise List
+			Map<Long,TrainingCampScheduleVO> allProgramsmap = new LinkedHashMap<Long, TrainingCampScheduleVO>();
+			Map<Long,TrainingCampScheduleVO> allCampsmap = new LinkedHashMap<Long, TrainingCampScheduleVO>();
+			
+			//setting All Programs To List with Some default Vaues
+			setAllProgramsList(allPrograms,allProgramsmap);
+			
+			//setting All Camps To List with Some default Vaues
+			setAllProgramsList(allCamps,allCampsmap);
+			
+			if(listForProgramVo != null && listForProgramVo.size()>0){
+				setDetailsToMap(listForProgramVo,allProgramsmap);
 			}
-			if(listForCampVo !=null && listForCampVo.size()>0){
-				Long campCount=commonMethodsUtilService.getIntegerToLong(listForCampVo.size());
-				finalTrainingVo.setCampCount(campCount);
-				finalTrainingVo.setTrainingCampScheduleVOList(listForCampVo);//CampWise List
+			List<TrainingCampScheduleVO> allProgramsList=null;
+			if(allProgramsmap !=null && allProgramsmap.size()>0){
+				 allProgramsList = new ArrayList<TrainingCampScheduleVO>(allProgramsmap.values());
 			}
 			
+			
+			if(listForCampVo != null && listForCampVo.size()>0){
+				setDetailsToMap(listForCampVo,allCampsmap); 
+			}
+			
+			List<TrainingCampScheduleVO> allCampsList =null;
+			if(allCampsmap !=null && allCampsmap.size()>0){
+				allCampsList = new ArrayList<TrainingCampScheduleVO>(allCampsmap.values());
+			}
+			
+
+			if(allProgramsList !=null && allProgramsList.size()>0){
+				Long programCount=commonMethodsUtilService.getIntegerToLong(allProgramsList.size());
+				//Long programCount=(long) allProgramsList.size();
+				finalTrainingVo.setProgramCount(programCount);
+				finalTrainingVo.setTrainingCampVOList(allProgramsList);//ProgramWise List
+			}
+			if(allCampsList !=null && allCampsList.size()>0){
+				Long campCount=commonMethodsUtilService.getIntegerToLong(allCampsList.size());
+				//Long campCount=(long) allCampsList.size();
+				finalTrainingVo.setCampCount(campCount);
+				finalTrainingVo.setTrainingCampScheduleVOList(allCampsList);//CampWise List
+			}
 			return finalTrainingVo;
 	
 		}catch (Exception e) {
@@ -2634,6 +2667,40 @@ class TrainingCampService implements ITrainingCampService{
 			
 			listVo.add(progamVo);
 		}
+	}
+	
+	public void setAllProgramsList(List<Object[]> list,Map<Long,TrainingCampScheduleVO> defaultMap){
+		
+		if(list !=null && list.size()>0){
+			
+			for(Object[] program:list){
+				
+				TrainingCampScheduleVO vo = new TrainingCampScheduleVO();
+				vo.setId((Long)program[0]);
+				vo.setName(program[1] !=null ? program[1].toString():"");
+				vo.setTotalCount(0l);//members Count
+				vo.setCount(0l);//batchCount
+				
+				defaultMap.put((Long)program[0], vo);
+				//defaultList.add(vo);
+			}
+		}
+		
+	}
+	public void setDetailsToMap(List<TrainingCampScheduleVO> list,Map<Long,TrainingCampScheduleVO> allMap){
+		
+		for (TrainingCampScheduleVO Vo : list) {
+			
+			TrainingCampScheduleVO voMap= allMap.get(Vo.getId());
+			
+			if(voMap !=null){  
+				voMap.setId(Vo.getId());
+				voMap.setName(Vo.getName());
+				voMap.setTotalCount(Vo.getTotalCount());//membersCount
+				voMap.setCount(Vo.getCount());//batchCount
+			}
+		}
+		
 	}
 	
 	public ResultStatus updateCadreStatusForTraining(final TrainingCadreVO inputVO)
