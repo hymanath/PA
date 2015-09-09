@@ -302,6 +302,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		{
 			if(locationTypeId != null && locationTypeId.longValue() == IConstants.DISTRICT_SCOPE_ID)
 				queryStr.append(" and model.tdpCadre.userAddress.district.districtId  in (:locationIdsList)  ");
+			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID)
+				queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId  in  (:locationIdsList)  ");
 			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.CONSTITUENCY_SCOPE_ID)
 				queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in  (:locationIdsList)  ");
 			else if(locationTypeId != null && locationTypeId.longValue() == IConstants.TEHSIL_SCOPE_ID)
