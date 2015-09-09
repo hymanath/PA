@@ -3930,15 +3930,17 @@ class TrainingCampService implements ITrainingCampService{
 		return null;
 	}
 	
-	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId)
+	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,String type)
 	{
 		List<TraingCampCallerVO> returnList = new ArrayList<TraingCampCallerVO>();
 		
 		try{
-			
+			 List<Object[]> list = null;
 		 List<Long> inviteeIdsList = null;//trainingCampScheduleInviteeCallerDAO.getAssignedInviteesIdsList();
-		 List<Object[]> list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountLocationWiseInfo(campId,programId,scheduleId,1l,inviteeIdsList);
-		 
+		 if(type.equalsIgnoreCase("District"))
+		 list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountLocationWiseInfo(campId,programId,scheduleId,1l,inviteeIdsList);
+		 else
+			 list = trainingCampScheduleInviteeDAO.getScheduleAvailableCallsCountParliamentWiseInfo(campId,programId,scheduleId,1l,inviteeIdsList);	 
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
