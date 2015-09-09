@@ -93,4 +93,5 @@ public interface ITrainingCampService {
 	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId);
 	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId);
+	public SimpleVO getAttendedCountSummaryByBatch(Long batchId);
 }
