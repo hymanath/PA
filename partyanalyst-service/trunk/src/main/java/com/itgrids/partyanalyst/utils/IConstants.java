@@ -774,6 +774,7 @@ public interface IConstants {
     public static final Long OTHER_STATE_PUBLICATION_ID = 13L;
     public static final Long DISTRICT_SCOPE_ID = 3L;
     public static final Long CONSTITUENCY_SCOPE_ID = 4L;
+    public static final Long PARLIAMENT_CONSTITUENCY_SCOPE_ID = 10L;
     public static final Long TEHSIL_SCOPE_ID = 5L;
     public static final Long BOOTH_SCOPE_ID = 9L;
     public static final Long MUNICIPAL_CORP_GMC_SCOPE_ID = 7L;
