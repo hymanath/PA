@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CALLS List</title>
+<title>Calls List</title>
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 
 <link href="training/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -895,6 +895,8 @@ function setDefaultImage(img){
  function ClearDiv()
  {
  $(".clearEl").val('');
+ var callPurposeId = '${purposeId}';
+ if(callPurposeId == 1)
  $("#batchId").val(0);
  $("#callBackTypeId").val(0);
  
