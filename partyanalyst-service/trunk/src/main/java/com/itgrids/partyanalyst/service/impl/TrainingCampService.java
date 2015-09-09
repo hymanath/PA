@@ -4726,6 +4726,8 @@ class TrainingCampService implements ITrainingCampService{
 					Long trainingCampCadreFeedBackDetailsId=trainingCampCadreFeedbackDetailsDAO.checkFeedBackForCadreBycadreAndBatch(tdpCadreId,batchId);
 					if(trainingCampCadreFeedBackDetailsId!=null){//update
 						feedBackDetails=trainingCampCadreFeedbackDetailsDAO.get(trainingCampCadreFeedBackDetailsId);
+						feedBackDetails.setWatsappUsing(null);
+						feedBackDetails.setWatsappShare(null);
 						
 					}else{//save
 						feedBackDetails=new TrainingCampCadreFeedbackDetails();
@@ -4743,27 +4745,26 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
 					
 					if(smartPhoneId.equalsIgnoreCase("select"))
-					 feedBackDetails.setSmartphone(null);
+					 feedBackDetails.setSmartPhoneExist(null);
 					else
-					  feedBackDetails.setSmartphone(smartPhoneId);
+					  feedBackDetails.setSmartPhoneExist(smartPhoneId);
 					
 					if(smartPhoneId.equalsIgnoreCase("Y")){
-						
 						if(whatsappId.equalsIgnoreCase("select"))
-							  feedBackDetails.setWhatsapp(null);
+							  feedBackDetails.setWatsappUsing(null);
 						else
-						feedBackDetails.setWhatsapp(whatsappId);
+						feedBackDetails.setWatsappUsing(whatsappId);
 							
 						if(whatsappShareId.equalsIgnoreCase("select"))
-							feedBackDetails.setWhatsappShare(null);
+							feedBackDetails.setWatsappShare(null);
 						 else
-					     feedBackDetails.setWhatsappShare(whatsappShareId);
+					     feedBackDetails.setWatsappShare(whatsappShareId);
 					}
 					
 					if(facebookId.equalsIgnoreCase("select"))
-						feedBackDetails.setFacebook(null);
+						feedBackDetails.setFacebookUsing(null);
 					 else
-				     feedBackDetails.setFacebook(facebookId);
+				     feedBackDetails.setFacebookUsing(facebookId);
 					
 					
 					feedBackDetails.setRemarks(comments.trim().length()>0?comments:null);
@@ -4786,6 +4787,10 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetailshistory.setInsertedTime(feedBackDetails.getInsertedTime());
 					feedBackDetailshistory.setUpdatedTime(feedBackDetails.getUpdatedTime());
 					feedBackDetailshistory.setTrainingCampBatchId(feedBackDetails.getTrainingCampBatchId());
+					feedBackDetailshistory.setSmartPhoneExist(feedBackDetails.getSmartPhoneExist());
+					feedBackDetailshistory.setWatsappUsing(feedBackDetails.getWatsappUsing());
+					feedBackDetailshistory.setWatsappShare(feedBackDetails.getWatsappShare());
+					feedBackDetailshistory.setFacebookUsing(feedBackDetails.getFacebookUsing());
 					trainingCampCadreFeedbackDetailsHistoryDAO.save(feedBackDetailshistory);
 					
 					//Achievement details saving or updating.
