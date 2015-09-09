@@ -28,6 +28,13 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private Long healthStatusId;
 	private String remarks;
 	
+	private String smartphone;
+	private String whatsapp;
+	private String whatsappShare;
+	private String facebook;
+	
+	
+	
 	private Map<Long,CadreDetailsVO> subMap;
 	private List<CadreDetailsVO> subList;
 	
@@ -224,5 +231,29 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setIsFeedbackUpdatable(String isFeedbackUpdatable) {
 		this.isFeedbackUpdatable = isFeedbackUpdatable;
 	}
-             	
+	public String getSmartphone() {
+		return smartphone;
+	}
+	public void setSmartphone(String smartphone) {
+		this.smartphone = smartphone;
+	}
+	public String getWhatsapp() {
+		return whatsapp;
+	}
+	public void setWhatsapp(String whatsapp) {
+		this.whatsapp = whatsapp;
+	}
+	public String getWhatsappShare() {
+		return whatsappShare;
+	}
+	public void setWhatsappShare(String whatsappShare) {
+		this.whatsappShare = whatsappShare;
+	}
+	public String getFacebook() {
+		return facebook;
+	}
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+               	
 }
