@@ -18,7 +18,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		
 		Query query=getSession().createQuery("" +
 		" select model.cadreLeadershipLevelId,model.cadreComminicationSkillsStatusId,model.cadreLeadershipSkillsStatusId,model.cadreHealthStatusId,model.remarks," +
-		"        model.smartphone,model.whatsapp,model.whatsappShare,model.facebook " +
+		"        model.smartPhoneExist,model.watsappUsing,model.watsappShare,model.facebookUsing " +
 		" from TrainingCampCadreFeedbackDetails model " +
 		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId");
 		query.setParameter("tdpCadreId", tdpCadreId);
