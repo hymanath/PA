@@ -833,7 +833,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				if(parliamentArr != null && parliamentArr.length() > 0)
 				{
 					TrainingCampVO parlVo = new TrainingCampVO();
-					//vo.setLocationTypeId(IConstants.PArli);
+					parlVo.setLocationTypeId(IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID);
 					for(int i=0; i<parliamentArr.length();i++)
 					{
 						TrainingCampVO parlmentVo = new TrainingCampVO();
