@@ -14,10 +14,10 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public List<Object[]> getAllBatchesForSchedules(List<Long> scheduleIds);
 	
 	public List<Object[]> getTrainingCampBatchesOfSchedule(Long trainingCampScheduleId);
-	public List<Object[]> getCompletedBatchIds(Date startDate,Date endDate,String type,Long stateId);
+	public List<Object[]> getCompletedBatchIds(Date currDate,String type,List<Long> batchIds);
 	public Long getMaxNumbersForBacth(Long batchId);
 	public List<Object[]> getCampDistrictsByBatchId(Long batchId);
 	public Object[] getBatchDates(Long batchId);
 	public List<Object[]> getCentersAndBatchCountByProgram(Long programId);
-	
+	public List<Long> getBatchIds(Date startDate,Date endDate,Long stateId);
 }
