@@ -139,5 +139,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 query.setParameter("programId",programId);
 	 return query.list();
  }
-
+ public Long getAttendedCountByCamp(Long programId,Long campId){
+	 Query query=getSession().createQuery("" +
+	 " select  count(distinct tca.attendance.tdpCadreId)" +
+	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
+	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and" +
+	 "       tca.trainingCampProgramId=:programId and tcs.trainingCampId=:campId");
+	 
+	 query.setParameter("programId",programId);
+	 query.setParameter("campId",campId);
+	 return (Long)query.uniqueResult();
+ }
+ 
 }
