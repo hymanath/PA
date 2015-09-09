@@ -114,5 +114,20 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  return query.list();
  }
+  public Long getAttendedCountByBatch(Long batchId){
+		Query query = getSession().createQuery(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+				" from TrainingCampAttendance model " +
+				" where model.trainingCampBatch.trainingCampBatchId =:batchId");
+		query.setParameter("batchId", batchId);
+		return (Long)query.uniqueResult();
+  }
+  public List<Object[]> getDateWiseCountsByBatch(Long batchId){
+	  Query query=getSession().createQuery(" select date(model.attendance.attendedTime),count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+	  " from TrainingCampAttendance model " +
+	  " where model.trainingCampBatch.trainingCampBatchId =:batchId " +
+	  " group by date(model.attendance.attendedTime)");
+	  query.setParameter("batchId",batchId);
+	  return query.list();
+  }
  
 }
