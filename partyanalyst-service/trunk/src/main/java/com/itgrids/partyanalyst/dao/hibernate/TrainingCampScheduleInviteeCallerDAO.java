@@ -406,7 +406,7 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId," +
-				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
+				" model.trainingCampScheduleInvitee.scheduleInviteeStatus.status,count(distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId) " +
 				" from  TrainingCampScheduleInviteeCaller model " +
 				" where model.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null ");
 		if(startDate !=null && endDate !=null){
