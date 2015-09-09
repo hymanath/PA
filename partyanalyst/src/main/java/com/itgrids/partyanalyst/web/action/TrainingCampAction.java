@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -99,8 +100,18 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<CallTrackingVO> docsResultList;
 	private SimpleVO simpleVO;
 	private Map<String,TrainingCampVO> returnResult;
+	private CadreFeedbackVO finalVO;
+	private List<SimpleVO> simpleVOList;
 	
 	
+	public CadreFeedbackVO getFinalVO() {
+		return finalVO;
+	}
+
+	public void setFinalVO(CadreFeedbackVO finalVO) {
+		this.finalVO = finalVO;
+	}
+
 	public Map<String, TrainingCampVO> getReturnResult() {
 		return returnResult;
 	}
@@ -481,6 +492,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setSimpleVO(SimpleVO simpleVO) {
 		this.simpleVO = simpleVO;
+	}
+	
+	 
+	public List<SimpleVO> getSimpleVOList() {
+		return simpleVOList;
+	}
+
+	public void setSimpleVOList(List<SimpleVO> simpleVOList) {
+		this.simpleVOList = simpleVOList;
 	}
 
 	public String callCenterTrainingAdmin()
@@ -1832,6 +1852,70 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		} catch (Exception e) {
 			LOG.error("Exception raised at TODO: handle exception", e);
 		}
+    	return Action.SUCCESS;
+    }
+    
+    public String getattendedcountByFeedBacks()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
+    		Long batchId = jObj.getLong("batchId");
+    		finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getattendedcountByFeedBacks() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getAttendedCountsByProgramOrCampOrBatch()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
+    		Long batchId = jObj.getLong("batchId");
+    		simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getAttendedCountsByProgramOrCampOrBatch() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getAttendedCountSummaryByBatch()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long batchId = jObj.getLong("batchId");
+    		simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getAttendedCountSummaryByBatch() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getProgramSummary()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		simpleVO = trainingCampService.getProgramSummary(programId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getProgramSummary() method, Exception - ",e);
+    	}
+    	
     	return Action.SUCCESS;
     }
 }
