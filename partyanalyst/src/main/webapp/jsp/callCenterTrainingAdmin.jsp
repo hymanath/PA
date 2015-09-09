@@ -2060,7 +2060,6 @@ $("#processingImg").show();
 var callPurposeId = 1;
 $("#assignSchedulebtn").prop('disabled', true);
 
-return;
 var jObj={
 		districtIds:districtIds,
 		constiIds:constiIds,
