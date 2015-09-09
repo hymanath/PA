@@ -6,6 +6,7 @@
 <title>Training Center</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -67,6 +68,12 @@ header.eventsheader {
                 	<div class="panel-heading bg_c">
                     	<h4 class="panel-title">
                         	TRAINING CENTER MAIN DASHBOARD
+							<span class="pull-right" style="margin-top: -8px;">
+								<div class="input-group" >
+									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+									<input class="form-control" id="selectDate">
+								</div>
+							</span>
                         </h4>
                     </div>
                     <div class="panel-body">
@@ -78,36 +85,37 @@ header.eventsheader {
                                         	<td>
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
-                                                    <li><h1 class="m_0">01</h1></li>
+                                                    <li><h1 class="m_0" id="totalTariningPrograms"></h1></li>
                                                 </ul>
                                                 <p class="m_0">Training Programs</p>
                                             </td>
                                             <td>
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
-                                                    <li><h1 class="m_0">01</h1></li>
+                                                    <li><h1 class="m_0" id="totalTrainingCenters"></h1></li>
                                                 </ul>
                                                 <p class="m_0">Training Center</p>
                                             </td>
                                             <td>
                                             	<div class="display-style">
-                                            	<h1 class="m_0">4000</h1>                                                <p class="m_0">Total Members</p>
+                                            	<h1 class="m_0" id="totalMembers"></h1> 
+												<p class="m_0">Total Members</p>
                                                 </div>
                                                 <ul class="display-style ul-top-block m_0">
-                                                	<li class="text-danger">UPCOMING -<span class="pull-right"> 200</span></li>
-                                                    <li class="text-yellow">RUNNING - <span class="pull-right">300</span></li>
-                                                    <li class="text-success">COMPLETED - <span class="pull-right">200</span></li>
+                                                	<li class="text-danger">UPCOMING -<span class="pull-right" id="upcomingMembers"> </span></li>
+                                                    <li class="text-yellow">RUNNING - <span class="pull-right" id="runningMembers"></span></li>
+                                                    <li class="text-success">COMPLETED - <span class="pull-right" id="completedMembers"></span></li>
                                                 </ul>
                                             </td>
                                             <td>
                                             	<ul class="list-inline m_0">
                                                 	<li><div id="donutchart" style="height: 66px;width:100px;"></div></li>
                                                     <li>
-                                                    	<h4 class="m_0">TOTAL TRAINING BATCHES - 40</h4>
+                                                    	<h4 class="m_0">TOTAL TRAINING BATCHES - <span id="totalTrainingBatches"></span></h4>
                                                         <ul class="list-inline">
-                                                            <li class="text-danger">UPCOMING BATCHES // </li>
-                                                            <li class="text-yellow">RUNNING - 300 // </li>
-                                                            <li class="text-success">COMPLETED - 200</li>
+                                                            <li class="text-danger">UPCOMING BATCHES - <span id="upcomingBatches"></span> // </li>
+                                                            <li class="text-yellow">RUNNING - <span id="runningBatches"></span> // </li>
+                                                            <li class="text-success">COMPLETED - <span id="completedBatches"></span></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -126,54 +134,7 @@ header.eventsheader {
                                         	<h4 class="panel-title text-bold">ALL TRAINING PROGRAM WISE DETAILS</h4>
                                         </div>
                                         <div class="panel-body pad_0">
-                                        	<div class="table-responsive table-scroll">
-                                        		<table class="table table-bordered m_0">
-                                            	<thead class="bg_d">
-                                                	<th>Training Program Name</th>
-                                                    <th>Training Center Name</th>
-                                                    <th>Total<br/> Batches</th>
-                                                    <th class="text-danger">Upcoming<br/> Batches</th>
-                                                    <th class="text-warning">Training<br/>Running</th>
-                                                    <th class="text-success">Completed <br/>Batches</th>
-                                                    <th class="text-muted">Total <br/>Members</th>
-                                                </thead>
-                                                <tbody>
-                                                	<tr>
-                                                    	<td rowspan="4">Leadership Skills</td>
-                                                        <td>SVV Batch Center</td>
-                                                        <td>12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-danger">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-warning">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-success">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-muted">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>SVV Batch Center</td>
-                                                        <td>12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-danger">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-warning">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-success">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-muted">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>SVV Batch Center</td>
-                                                        <td>12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-danger">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-warning">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-success">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-muted">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>SVV Batch Center</td>
-                                                        <td>12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-danger">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-warning">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-success">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                        <td class="text-muted">12<p class="font-10 m_0">(1200 Members)</p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                           	</div>
+                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -424,52 +385,67 @@ header.eventsheader {
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(function () {
-	Highcharts.setOptions({
-        colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
-    });
-    $('#donutchart').highcharts({
-        chart: {
-            type: 'pie',
-			backgroundColor: 'transparent',
-            options3d: {
-                enabled: false,
-                alpha: 30
-            }
-        },
-		legend: {
-                enabled: true,
-                align: 'right',
-                verticalAlign: 'right',
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 50,
-                depth: 10,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Interested', 157],
-                ['Not Interested', 100],
-                ['Not Eligible', 100],
-                ['Not Possible', 100],
-				['Not Completed', 100],
-            ]
-        }]
-    });
+	var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+	$('#selectDate span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+  }
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   //'Today': [moment(), moment()],
+	   //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   '30 Days': [moment().subtract(29, 'days'), moment()],
+	   '60 Days': [moment().subtract(60, 'days'), moment()],
+	   '180 Days': [moment().subtract(180, 'days'), moment()],
+	   '365 Days': [moment().subtract(365, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#selectDate span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#selectDate').daterangepicker(optionSet1, cb);
+
+  $('#selectDate').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#selectDate').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#selectDate').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#selectDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 	
 	getTrainingCenterDetailsBasedOnDates();
 });
@@ -478,19 +454,17 @@ $(function () {
  
 function getTrainingCenterDetailsBasedOnDates(){
   
-	var jObj={
-		  startDateString:'2015-08-20',
-		  endDateString:'2015-09-04',
-		  stateId:'1',
-		  type:"All"
-	     }
+	var jsObj=
+	{	
+		selectedDate : $("#selectDate").val()
+	}
     $.ajax({
           type:'GET',
           url: 'getTrainingCenterDetailsBasedOnDatesAction.action',
           dataType: 'json',
-		  data: {task:JSON.stringify(jObj)}
+		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result.completed!=null && result.completed.programDetails!=null && result.completed.programDetails.length>0){
+	   if(result!=null && result.completed!=null && result.completed.programDetails!=null && result.completed.programDetails.length>0){
 		  var str='';
 			str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
@@ -501,12 +475,32 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>TRAINING ON</th>';
 			str+='<th>MEMBERS ACCEPTED</th>';
 			str+='</thead>';
-			str+='<tbody>';		
+			str+='<tbody>';	
+			
+			var obj={};
+			
+			//for programwise batch count
+			for(var i in result.completed.programDetails){
+				var temp=0;;
+				var myResult = result.completed.programDetails;
+				if(result.completed.completedBatchIds!=null){
+					for(var j in myResult[i].campDetails){
+						for(var k in myResult[i].campDetails[j].scheduleDetails){
+							var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+							for(var m in schedule.batchDetails){
+								temp=temp+1;
+							}
+						}
+					}
+				}
+				obj[""+myResult[i].programId+""]=temp;
+			}
+			
 			for(var i in result.completed.programDetails){
 				var myResult = result.completed.programDetails;
 				if(result.completed.completedBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+result.completed.completedBatchIds.length+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
 						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
@@ -538,7 +532,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
 		}
 		
-		if(result.running!=null && result.running.programDetails!=null && result.running.programDetails.length>0){
+		if(result!=null && result.running!=null && result.running.programDetails!=null && result.running.programDetails.length>0){
 						
 			var str='';
 			str+='<table class="table table-bordered m_0">';
@@ -550,11 +544,30 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>TRAINING ON</th>';
 			str+='<th>MEMBERS ACCEPTED</th>';
 			str+='</thead>';
-			str+='<tbody>';		
+			str+='<tbody>';	
+			
+			var obj={};
+			//for programwise batch count
+			for(var i in result.running.programDetails){
+				var temp=0;;
+				var myResult = result.running.programDetails;
+				if(result.running.runningBatchIds!=null){
+					for(var j in myResult[i].campDetails){
+						for(var k in myResult[i].campDetails[j].scheduleDetails){
+							var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+							for(var m in schedule.batchDetails){
+								temp=temp+1;
+							}
+						}
+					}
+				}
+				obj[""+myResult[i].programId+""]=temp;
+			}
+			
 			for(var i in result.running.programDetails){
 				var myResult = result.running.programDetails;
 				str+="<tr>";
-					str+="<td rowspan="+result.completed.runningBatchIds.length+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
 						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
@@ -564,8 +577,8 @@ function getTrainingCenterDetailsBasedOnDates(){
 									for(var m in schedule.batchDetails){
 										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
-										if(schedule.batchDetails[m].completedMemberCount!=null){
-											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
+										if(schedule.batchDetails[m].runningMemberCount!=null){
+											str+='<td>'+schedule.batchDetails[m].runningMemberCount+'</td>';
 										}else{
 											str+='<td>0</td>';
 										}
@@ -586,7 +599,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			$("#runningTrainingPrograms").html("No Runnig Training Programs Are Available");
 		}
 		
-		if(result.upcoming!=null && result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
+		if(result!=null && result.upcoming!=null && result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
 			var str='';
 			str+='<table class="table table-bordered m_0">';
 			str+='<thead class="bg_d">';
@@ -597,12 +610,31 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>TRAINING ON</th>';
 			str+='<th>MEMBERS ACCEPTED</th>';
 			str+='</thead>';
-			str+='<tbody>';		
+			str+='<tbody>';	
+
+			var obj={};
+			//for programwise batch count
+			for(var i in result.upcoming.programDetails){
+				var temp=0;;
+				var myResult = result.upcoming.programDetails;
+				if(result.upcoming.upComingBatchIds!=null){
+					for(var j in myResult[i].campDetails){
+						for(var k in myResult[i].campDetails[j].scheduleDetails){
+							var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+							for(var m in schedule.batchDetails){
+								temp=temp+1;
+							}
+						}
+					}
+				}
+				obj[""+myResult[i].programId+""]=temp;
+			}
+			
 			for(var i in result.upcoming.programDetails){
 				var myResult = result.upcoming.programDetails;
 				if(result.upcoming.upComingBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+result.upcoming.upComingBatchIds.length+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
 						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
@@ -612,8 +644,8 @@ function getTrainingCenterDetailsBasedOnDates(){
 									for(var m in schedule.batchDetails){
 										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
-										if(schedule.batchDetails[m].completedMemberCount!=null){
-											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
+										if(schedule.batchDetails[m].upCommingMemberCount!=null){
+											str+='<td>'+schedule.batchDetails[m].upCommingMemberCount+'</td>';
 										}else{
 											str+='<td>0</td>';
 										}
@@ -635,6 +667,144 @@ function getTrainingCenterDetailsBasedOnDates(){
 		}else{
 			$("#upComingTrainingPrograms").html("No Upcomming Training Programs Are Available");
 		}
+		
+		
+		if(result!=null && result.completed!=null && result.completed.programWiseDetails!=null && result.completed.programWiseDetails.length>0){
+			var totalMembersGlob=0,upcomingBatchesGlob=0,compltedBatchesGlob=0,runningBatchesGlob=0,upcomingMemGlob=0,runningMemGlob=0,compltedMemGlob=0,totalTrainingBatchesGlob=0;
+			var str='';
+			
+			str+='<table class="table table-bordered m_0">';
+			str+='<thead class="bg_d">';
+			str+='<th>Training Program Name</th>';
+			str+='<th>Training Center Name</th>';
+			str+='<th>Total<br/> Batches</th>';
+			str+='<th class="text-danger">Upcoming<br/> Batches</th>';
+			str+='<th class="text-warning">Training<br/>Running</th>';
+			str+='<th class="text-success">Completed <br/>Batches</th>';
+			str+='<th class="text-muted">Total <br/>Members</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			$("#totalTariningPrograms").html(result.completed.programWiseDetails.length);
+			$("#totalTrainingCenters").html(result.completed.totalTrainingCenters);
+			for(var i in result.completed.programWiseDetails){
+				str+='<tr>';
+				str+='<td rowspan='+result.completed.programWiseDetails[i].campDetails.length+'>'+result.completed.programWiseDetails[i].programName+'</td>';
+				if(result.completed.programWiseDetails[i].campDetails!=null && result.completed.programWiseDetails[i].campDetails.length>0){
+					for(var j in result.completed.programWiseDetails[i].campDetails){
+						str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
+						if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails.length>0){
+							for(var k in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails){
+								
+								var TotalBatches=0,TotalMembers=0;
+								
+								TotalBatches=TotalBatches+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length;
+								totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
+								str+='<td>'+TotalBatches+'</td>';
+								
+								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length>0){
+									var temp=0;
+									for(var l in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails){
+										temp=temp+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails[l].memberCount;
+									}
+									TotalMembers=TotalMembers+temp;
+									upcomingMemGlob=upcomingMemGlob+temp;
+									upcomingBatchesGlob=upcomingBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length;
+									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+'('+temp+')</td>';
+									
+								}else{
+									str+='<td>-</td>';
+								}
+								
+								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length>0){
+									var temp=0;
+									for(var l in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails){
+										temp=temp+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails[l].memberCount;
+									}
+									TotalMembers=TotalMembers+temp;
+									runningMemGlob=runningMemGlob+temp;
+									runningBatchesGlob=runningBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length;
+									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+'('+temp+')</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								
+								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length>0){
+									var temp=0;
+									for(var l in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails){
+										temp=temp+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails[l].memberCount;
+									}
+									TotalMembers=TotalMembers+temp;
+									compltedMemGlob=compltedMemGlob+temp;
+									compltedBatchesGlob=compltedBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
+									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length+'('+temp+')</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								totalMembersGlob=totalMembersGlob+TotalMembers;
+								str+='<td>'+TotalMembers+'</td>';
+								
+							}
+						}	
+						str+='</tr>';
+					}
+				}
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+			$("#totalMembers").html(totalMembersGlob);
+			$("#upcomingMembers").html(upcomingMemGlob);
+			$("#runningMembers").html(runningMemGlob);
+			$("#completedMembers").html(compltedMemGlob);
+			$("#totalTrainingBatches").html(totalTrainingBatchesGlob);
+			$("#upcomingBatches").html(upcomingBatchesGlob);
+			$("#runningBatches").html(runningBatchesGlob);
+			$("#completedBatches").html(compltedBatchesGlob);
+			$("#allProgramWiseDetailsDIv").html(str);
+			
+			Highcharts.setOptions({
+				colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
+			});
+			$('#donutchart').highcharts({
+				chart: {
+					type: 'pie',
+					backgroundColor: 'transparent',
+					options3d: {
+						enabled: false,
+						alpha: 30
+					}
+				},
+				legend: {
+						enabled: true,
+						align: 'right',
+						verticalAlign: 'right',
+						floating: false,
+						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+						borderColor: '#CCC',
+						borderWidth: 1,
+						shadow: false
+					},
+				plotOptions: {
+					pie: {
+						innerSize: 50,
+						depth: 10,
+						dataLabels: {
+							enabled: false,
+						}
+					}, 
+				},
+				
+				series: [{
+					data: [
+						['Upcoming', upcomingBatchesGlob],
+						['Running', runningBatchesGlob],
+						['Completed', compltedBatchesGlob],
+					]
+				}]
+			});
+		}else{
+			$("#allProgramWiseDetailsDIv").html("No Data Found");
+		}
    });
 }
 getAttendedCountForBatchesByLocation();
@@ -644,9 +814,7 @@ getInvitedAttendedCadreCountByBatchIds();
 		
 		$('#partyDesgWisedivId').html('');
 		var jObj={
-			startDateString:'2015-08-20',
-			endDateString:'2015-09-04',
-			stateId:'1'
+			selectedDate : $("#selectDate").val()
 	     }
 		$.ajax({
 		   type:'POST',
@@ -676,9 +844,7 @@ getInvitedAttendedCadreCountByBatchIds();
 		$('#distWiseDivId').html('');
 		$('#constWiseDivId').html('');
 		var jObj={
-		  startDateString:'2015-08-20',
-		  endDateString:'2015-09-04',
-		  stateId:'1'
+		  selectedDate : $("#selectDate").val()
 	     }
 		$.ajax({
 		   type:'POST',

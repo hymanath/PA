@@ -1784,11 +1784,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     {
     	try{
     		jObj = new JSONObject(getTask());
-    		
-    		String startDateString = jObj.getString("startDateString");
-    		String endDateString = jObj.getString("endDateString");
-    		Long stateId = jObj.getLong("stateId");
-    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(startDateString,endDateString,stateId);
+			String selDate = jObj.getString("selectedDate");
+			
+			String temp[] = selDate.split("-");
+    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[1].trim(),temp[0].trim(),0l);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -1800,10 +1799,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     {
     	try{
     		jObj = new JSONObject(getTask());
-    		String startDateString = jObj.getString("startDateString");
-    		String endDateString = jObj.getString("endDateString");
-    		Long stateId = jObj.getLong("stateId");
-    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(startDateString,endDateString,stateId);
+			String selDate = jObj.getString("selectedDate");
+			
+			String temp[] = selDate.split("-");
+    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[1].trim(),temp[0].trim(),0l);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -1826,12 +1825,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.info("Entered into getTrainingCenterDetailsBasedOnDates");
 			
 			jObj = new JSONObject(getTask());
-    		String strtDt = jObj.getString("startDateString");
-    		String endDt = jObj.getString("endDateString");
-    		Long stteId = jObj.getLong("stateId");
-    		String type = jObj.getString("type");
+			String selDate = jObj.getString("selectedDate");
 			
-			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(strtDt, endDt, stteId, type);
+			String temp[] = selDate.split("-");
+			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[0].trim(),temp[1].trim(),0l,"All");
 		} catch (Exception e) {
 			LOG.error("Exception raised at TODO: handle exception", e);
 		}
