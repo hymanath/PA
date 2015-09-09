@@ -4599,6 +4599,10 @@ class TrainingCampService implements ITrainingCampService{
 				vo.setLeaderShipSkillsStatusId(feedBackInfo[2]!=null?(Long)feedBackInfo[2]:0l);
 				vo.setHealthStatusId(feedBackInfo[3]!=null?(Long)feedBackInfo[3]:0l);
 				vo.setRemarks(feedBackInfo[4]!=null?feedBackInfo[4].toString():"");
+				vo.setSmartphone(feedBackInfo[5]!=null?feedBackInfo[5].toString():"");
+				vo.setWhatsapp(feedBackInfo[6]!=null?feedBackInfo[6].toString():"");
+				vo.setWhatsappShare(feedBackInfo[7]!=null?feedBackInfo[7].toString():"");
+				vo.setFacebook(feedBackInfo[8]!=null?feedBackInfo[8].toString():"");
 			}
 			List<Object[]> achievments=trainingCampCadreAchievementDAO.getAchievmentDetailsforCadre(tdpCadreId,batchId);
 			if(achievments!=null && achievments.size()>0){
@@ -4704,7 +4708,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -4726,7 +4730,7 @@ class TrainingCampService implements ITrainingCampService{
 						feedBackDetails.setTrainingCampBatchId(batchId);
 					    feedBackDetails.setInsertedBy(userId);
 					    feedBackDetails.setUpdatedBy(userId);
-					    Date date=new DateUtilService().getCurrentDateAndTime();
+					    Date date=new DateUtilService().getCurrentDateAndTime();// smartPhoneId whatsappId  whatsappShareId facebookId 
 					    feedBackDetails.setInsertedTime(date);
 					    feedBackDetails.setUpdatedTime(date);
 					}
@@ -4734,6 +4738,31 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreComminicationSkillsStatusId(communicationSkillsId!=0l?communicationSkillsId:null);
 					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
+					
+					if(smartPhoneId.equalsIgnoreCase("select"))
+					 feedBackDetails.setSmartphone(null);
+					else
+					  feedBackDetails.setSmartphone(smartPhoneId);
+					
+					if(smartPhoneId.equalsIgnoreCase("Y")){
+						
+						if(whatsappId.equalsIgnoreCase("select"))
+							  feedBackDetails.setWhatsapp(null);
+						else
+						feedBackDetails.setWhatsapp(whatsappId);
+							
+						if(whatsappShareId.equalsIgnoreCase("select"))
+							feedBackDetails.setWhatsappShare(null);
+						 else
+					     feedBackDetails.setWhatsappShare(whatsappShareId);
+					}
+					
+					if(facebookId.equalsIgnoreCase("select"))
+						feedBackDetails.setFacebook(null);
+					 else
+				     feedBackDetails.setFacebook(facebookId);
+					
+					
 					feedBackDetails.setRemarks(comments.trim().length()>0?comments:null);
 					feedBackDetails.setUpdatedBy(userId);
 					Date date1=new DateUtilService().getCurrentDateAndTime();
@@ -6108,7 +6137,36 @@ class TrainingCampService implements ITrainingCampService{
 				simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
 			}
 			}catch(Exception e){
-			    e.printStackTrace();
+				LOG.error(" Error Occured in getProgramSummary method in TraininingCampService class" ,e);
+			}
+			return simpleVO;
+		}
+
+		 /**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to get the Camp Summary By Camp
+		   *   inputs: campId
+		   *   Return:SimpleVO 
+		   *   
+		  */
+		public SimpleVO getCampSummary(Long programId,Long campId){
+			
+			SimpleVO simpleVO=new SimpleVO();
+			try{
+				Object[] obj=trainingCampBatchDAO.getBatchCountByCamp(programId,campId);
+				if(obj!=null){
+					simpleVO.setId(obj[0]!=null?(Long)obj[0]:0l);
+					simpleVO.setName(obj[1]!=null?obj[1].toString():"");
+					simpleVO.setCount(obj[2]!=null?(Long)obj[2]:0l);//batchCount
+					simpleVO.setTotal(0l);//attendedCount
+				}
+				Long attendedCount=trainingCampAttendanceDAO.getAttendedCountByCamp(programId,campId);
+				if(attendedCount!=null){
+					simpleVO.setTotal(attendedCount);
+				}
+			
+			}catch(Exception e){
+				LOG.error(" Error Occured in getCampSummary method in TraininingCampService class" ,e);
 			}
 			return simpleVO;
 		}
