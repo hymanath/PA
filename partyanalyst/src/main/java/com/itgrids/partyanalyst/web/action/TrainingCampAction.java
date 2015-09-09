@@ -1551,18 +1551,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		{
 			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO!=null){
-				Long userId = regVO.getRegistrationID();
-				if(!regVO.getIsAdmin().equalsIgnoreCase("true")){
-					if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
+				//Long userId = regVO.getRegistrationID();
+				//if(!regVO.getIsAdmin().equalsIgnoreCase("true")){
+					if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT") &&
+							!entitlementsHelper.checkForEntitlementToViewReport(regVO,"ADMIN_PAGE")){
 						return Action.ERROR;
 					}
-				}
+				//}
 			}else{
 				return Action.INPUT;
 			}
 			
 		}catch (Exception e) {
-			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
+			LOG.error(" Exception occured in trainingCampMainDashboard method in TrainingCampAction class.",e);
 		}
 		return Action.SUCCESS;
 	}
