@@ -361,6 +361,52 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 	}
 	
+	
+	public List<Object[]> getScheduleAvailableCallsCountParliamentWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,List<Long> inviteeIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct TCSI.tdp_cadre_id) as count,UA.parliament_constituency_id as parlId,parlConst.name as parlName,UA.constituency_id as constId" +
+				",const.name as constName,UA.tehsil_id as tehsilId" +
+				",tehsil.tehsil_name as tehsilName,UA.local_election_body as localElectionBodyId " +
+				" from training_camp_schedule_invitee TCSI" +
+				",tdp_cadre TC ,training_camp_schedule TCS" +
+				",district Dist,constituency const,training_camp_district TCD ,constituency parlConst,user_address UA " +
+				" left outer join tehsil tehsil on UA.tehsil_id = tehsil.tehsil_id" +
+				" left outer join local_election_body LEB on UA.local_election_body = LEB.local_election_body_id " +
+				" where " +
+				" TCS.training_camp_id = TCD.training_camp_id and  TCD.district_id = UA.district_id and  TC.tdp_cadre_id = TCSI.tdp_cadre_id and " +
+				" UA.user_address_id = TC.address_id and " +
+				" UA.district_id = Dist.district_id and " +
+				" UA.constituency_id = const.constituency_id and " +
+				" UA.parliament_constituency_id = parlConst.constituency_id and " +
+				" TCS.training_camp_schedule_id = TCSI.training_camp_schedule_id and " +
+				" TCSI.schedule_invitee_status_id =:scheduleStatusId " +
+				" and TCS.training_camp_id = :campId  " );
+		queryStr.append(" and TCSI.training_camp_schedule_invitee_id not in ( select distinct training_camp_schedule_invitee_id from training_camp_schedule_invitee_caller TCSIC ) ");
+		queryStr.append(" and TCSI.training_camp_schedule_id =:scheduleId and TCSI.attending_batch_id is null group by UA.parliament_constituency_id,UA.constituency_id,UA.tehsil_id,UA.local_election_body");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString()).addScalar("count", Hibernate.LONG)
+				.addScalar("parlId",Hibernate.LONG)
+				.addScalar("parlName",Hibernate.STRING)
+				.addScalar("constId",Hibernate.LONG)
+				.addScalar("constName",Hibernate.STRING)
+				.addScalar("tehsilId",Hibernate.LONG)
+				.addScalar("tehsilName",Hibernate.STRING)
+				.addScalar("localElectionBodyId",Hibernate.LONG);;
+		
+		query.setParameter("scheduleStatusId", scheduleStatusId);
+		
+		query.setParameter("campId", campId);
+		
+		//query.setParameter("programId", programId);
+		
+		query.setParameter("scheduleId", scheduleId);
+		
+		
+		return query.list();
+		
+	} 
+	
 	public List<Object[]> getAvailableCallCountsForBatch(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,Long batchId)
 	{
 		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as count,TCSIC.training_camp_caller_id as callerId from training_camp_schedule_invitee TCSI," +

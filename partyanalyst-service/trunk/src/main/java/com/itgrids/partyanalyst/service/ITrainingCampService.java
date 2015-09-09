@@ -71,7 +71,7 @@ public interface ITrainingCampService {
 	public List<TrainingCampScheduleVO> getCallsDetailsOfCallCenterAdmin(List<Long> userIds,String startDateString,String endDateString);
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
 	public MeetingVO getUserAccessLevelAndLocations(Long userId);
-	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId);
+	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,String type);
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList);
