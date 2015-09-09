@@ -805,7 +805,7 @@ color: red !important;
 			smartPhoneId:smartPhoneId,
 			whatsappId:whatsappId,
             whatsappShareId:whatsappShareId,
-            facebookId:whatsappShareId
+            facebookId:facebookId
 		}
 		
 		$.ajax({
