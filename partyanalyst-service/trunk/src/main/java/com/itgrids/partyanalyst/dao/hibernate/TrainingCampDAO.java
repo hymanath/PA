@@ -29,5 +29,11 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
 		query.setParameter("trainingCampId",campId);
 		return query.list();
 	}
+    public List<Object[]> getAllTrainingCamps(){
+    	
+    	Query query=getSession().createQuery(" select model.trainingCampId,model.campName from TrainingCamp model");
+    	
+    	return query.list();
+    }
 	
 }

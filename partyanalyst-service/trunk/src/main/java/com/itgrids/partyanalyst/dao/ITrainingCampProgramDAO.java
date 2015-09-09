@@ -10,4 +10,5 @@ public interface ITrainingCampProgramDAO extends GenericDao<TrainingCampProgram,
 	
 	public List<Object[]> getPrograms();
 	public List<Object[]> getDistrictsByProgramId(Long programId);
+	public List<Object[]> getAllTrainingPrograms();
 }
