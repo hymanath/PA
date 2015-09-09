@@ -1719,7 +1719,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long healthId = jObj.getLong("health");
     		String comments = jObj.getString("comments");
     		
-    		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId);
+    		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,"","","","");
     		
     	}catch(Exception e) {
     		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
