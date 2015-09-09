@@ -689,18 +689,31 @@ class TrainingCampService implements ITrainingCampService{
 						for (TrainingCampVO trainingCampVO : locationTypeList) {
 							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.DISTRICT_SCOPE_ID)
 							{
-								List<TrainingCampVO> districtsIdsVoList = trainingCampVO.getTrainingCampVOList();
-								List<Long> districtIdsList = new ArrayList<Long>(0);
-								if(districtsIdsVoList != null && districtsIdsVoList.size()>0)
+								List<TrainingCampVO> parliamentIdsVoList = trainingCampVO.getTrainingCampVOList();
+								List<Long> parliamentIdsList = new ArrayList<Long>(0);
+								if(parliamentIdsVoList != null && parliamentIdsVoList.size()>0)
 								{
-									for (TrainingCampVO districtVO : districtsIdsVoList) {
-										districtIdsList.add(districtVO.getId());
+									for (TrainingCampVO districtVO : parliamentIdsVoList) {
+										parliamentIdsList.add(districtVO.getId());
 									}
 								}
-								List<Long> distirctInviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), districtIdsList);
+								List<Long> distirctInviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), parliamentIdsList);
 								inviteeIdsList.addAll(distirctInviteeIdsList);
-							}					
-							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.CONSTITUENCY_SCOPE_ID)
+							}	
+							else if(trainingCampVO.getLocationTypeId().longValue() == IConstants.PARLIAMENT_CONSTITUENCY_SCOPE_ID)
+							{
+								List<TrainingCampVO> constituencysIdsVoList = trainingCampVO.getTrainingCampVOList();
+								List<Long> constituencyIdsList = new ArrayList<Long>(0);
+								if(constituencysIdsVoList != null && constituencysIdsVoList.size()>0)
+								{
+									for (TrainingCampVO parliamentVO : constituencysIdsVoList) {
+										constituencyIdsList.add(parliamentVO.getId());
+									}
+								}
+								List<Long>  constiinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), constituencyIdsList);
+								inviteeIdsList.addAll(constiinviteeIdsList);
+							}
+							else if(trainingCampVO.getLocationTypeId().longValue() == IConstants.CONSTITUENCY_SCOPE_ID)
 							{
 								List<TrainingCampVO> constituencysIdsVoList = trainingCampVO.getTrainingCampVOList();
 								List<Long> constituencyIdsList = new ArrayList<Long>(0);
@@ -713,7 +726,7 @@ class TrainingCampService implements ITrainingCampService{
 								List<Long>  constiinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), constituencyIdsList);
 								inviteeIdsList.addAll(constiinviteeIdsList);
 							}
-							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.TEHSIL_SCOPE_ID)
+							else if(trainingCampVO.getLocationTypeId().longValue() == IConstants.TEHSIL_SCOPE_ID)
 							{
 								List<TrainingCampVO> tehsilsIdsVoList = trainingCampVO.getTrainingCampVOList();
 								List<Long> tehsilIdsList = new ArrayList<Long>(0);
@@ -726,7 +739,7 @@ class TrainingCampService implements ITrainingCampService{
 								List<Long>  tehsilinviteeIdsList = trainingCampScheduleInviteeDAO.getScheduleWiseInviteesListByLocationIdLocationType(scheduleId, trainingCampVO.getLocationTypeId().longValue(), tehsilIdsList);
 								inviteeIdsList.addAll(tehsilinviteeIdsList);
 							}
-							if(trainingCampVO.getLocationTypeId().longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID)
+							else if(trainingCampVO.getLocationTypeId().longValue() == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID)
 							{
 								List<TrainingCampVO> municipalityList = trainingCampVO.getTrainingCampVOList();
 								List<Long> municipalityIdsList = new ArrayList<Long>(0);
