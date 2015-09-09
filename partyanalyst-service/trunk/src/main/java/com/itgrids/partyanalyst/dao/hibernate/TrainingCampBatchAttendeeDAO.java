@@ -146,4 +146,9 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
    }
+   public Long getConfirmedCountsByBatch(Long batchId){
+	   Query query=getSession().createQuery(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatchId=:trainingCampBatchId");
+	   query.setParameter("trainingCampBatchId",batchId);
+	   return (Long)query.uniqueResult();
+   }
 }
