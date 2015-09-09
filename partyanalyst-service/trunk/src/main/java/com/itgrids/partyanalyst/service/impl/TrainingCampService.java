@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -5836,5 +5837,97 @@ class TrainingCampService implements ITrainingCampService{
 				 LOG.error(" Error Occured in getCommiteesCadreCountByLoc method in TraininingCampService class" ,e);
 			}
 			return queryString;
+		}
+		
+	 /**
+	   *   @author    : Sreedhar
+	   *   Description:This Service is used to get the CadreCount for Batch By Date Wise.
+	   *   inputs: batchId
+	   *   Return:SimpleVO 
+	   *   
+	  */
+		public SimpleVO getAttendedCountSummaryByBatch(Long batchId){
+			SimpleVO simpleVO=new SimpleVO();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			try{ 
+				
+				//Confirmed Count.
+				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId);
+				 //total count attended.
+				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId);
+				 String perc=null;
+				 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
+					 float percentage = (totalBatchCount * 100/(float)confirmedCount);
+					 perc=String.format("%.2f", percentage);
+				 }
+				 
+				 //preinstantiate.
+				  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId);
+				  Date fromDate=null;
+				  Date toDate=null;
+				  if(batchDates!=null){
+					  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+					  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+				  }
+				  List<Date> dates=getBetweenDates(fromDate,toDate);
+				  Map<Date,SimpleVO> finalMap=new LinkedHashMap<Date,SimpleVO>();
+				  if(dates!=null && dates.size()>0){
+					  int count=1;
+					  for(Date date:dates){
+						  SimpleVO vo=new SimpleVO();
+						  vo.setDate(date);
+						  vo.setDateString(sdf.format(date));
+						  vo.setName("Day "+count);
+						  vo.setTotal(0l);//attended
+						  vo.setCount(confirmedCount);//absent
+						  finalMap.put(date,vo);
+						  count=count+1;
+					  }
+				  }
+				 
+				 //date wise counts.
+				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId);
+				 
+				 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
+					 
+					 for(Object[] obj: dateWiseCounts){
+						 if(obj[0]!=null){
+							SimpleVO vo= finalMap.get((Date)obj[0]);
+							if(vo!=null){
+								vo.setTotal(obj[1]!=null?(Long)obj[1]:0l);//attended.
+								vo.setCount(confirmedCount-vo.getTotal());//absent.
+							}
+						 }
+					 }
+				 }
+				 
+			 simpleVO.setTotal(confirmedCount);//confirmed people	
+			 simpleVO.setCount(totalBatchCount);//total attended.
+			 simpleVO.setDateString(perc);
+			//converting.
+			 if(finalMap!=null && finalMap.size()>0){
+				 simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
+			 } 
+			 
+			}catch(Exception e){
+				 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
+			}
+			return simpleVO;
+		}
+		
+		
+		public List<Date> getBetweenDates(Date fromDate,Date toDate){
+			
+			List<Date> dates = new ArrayList<Date>(0);
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(fromDate);
+			cal.add(Calendar.DATE, -1);
+			
+			while (cal.getTime().before(toDate)) {
+			    cal.add(Calendar.DATE, 1);
+			    dates.add(cal.getTime());
+			}
+			return dates;
 		}
 }
