@@ -58,7 +58,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return query.list();
 	}
 	
-	public List<Object[]> getCompletedBatchIds(Date startDate,Date endDate,String type,Long stateId){
+	public List<Object[]> getCompletedBatchIds(Date currDate,String type,List<Long> batchIds){
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -68,37 +68,24 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 				" model.trainingCampSchedule.trainingCampScheduleId,model.trainingCampSchedule.trainingCampScheduleCode," +//6-scheduleId,7-scheduleCode
 				" date(model.fromDate),date(model.toDate), " +//8-trainingBatchfromdate,9-todate
 				" date(model.trainingCampSchedule.fromDate),date(model.trainingCampSchedule.toDate) ");//10-schedulefromdate,11-todate
-		sb.append(" from TrainingCampBatch model,TrainingCampDistrict model1 ");
-		sb.append(" where model.trainingCampSchedule.trainingCampId=model1.trainingCampId ");
-		
-		if(stateId==1l){
-			sb.append(" and model1.districtId between 11 and 23 ");
-		}else if(stateId==2l){
-			sb.append(" and model1.districtId  between 1 and 10  ");
-		}
+		sb.append(" from TrainingCampBatch model ");
+		sb.append(" where model.trainingCampBatchId in (:batchIds) ");
 		
 		if(type.equalsIgnoreCase("completed")){
-			sb.append(" and date(model.toDate) between (:startDate) and (:endDate) ");
+			sb.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
 		}
 		else if(type.equalsIgnoreCase("running")){
-			sb.append(" and date(model.fromDate) <= (:endDate) and  date(model.toDate) >= (:endDate) ");
+			sb.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
 		}
 		else if(type.equalsIgnoreCase("upcoming")){
-			sb.append(" and date(model.fromDate)>:endDate ");
+			sb.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		
-		if(type.equalsIgnoreCase("completed")){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
-		}
-		else if(type.equalsIgnoreCase("running")){
-			query.setParameter("endDate", endDate);
-		}
-		else if(type.equalsIgnoreCase("upcoming")){
-			query.setParameter("endDate", endDate);
-		}
+		
+		query.setParameter("currDate", currDate);
+		query.setParameterList("batchIds", batchIds);
 		
 		return query.list();
 	}
@@ -134,6 +121,25 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		" group by model.trainingCampSchedule.trainingCampId " +
 		" order by model.trainingCampSchedule.trainingCamp.campName");
 		query.setParameter("trainingCampProgramId",programId);
+		return query.list();
+	}
+
+	public List<Long> getBatchIds(Date startDate,Date endDate,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select distinct model.trainingCampBatchId from TrainingCampBatch model,TrainingCampDistrict model1 " +
+				" where date(model.fromDate)>=:startDate and date(model.toDate)<=:endDate and model.trainingCampSchedule.trainingCampId=model1.trainingCampId ");
+		
+		if(stateId==1l){
+			sb.append(" and model1.districtId between 11 and 23 ");
+		}else if(stateId==2l){
+			sb.append(" and model1.districtId  between 1 and 10  ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		
 		return query.list();
 	}
 }
