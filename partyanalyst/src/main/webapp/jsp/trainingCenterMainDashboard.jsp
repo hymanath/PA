@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Training Center</title>
-<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="training/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <style type="text/css">
 .panel-group .panel
@@ -381,13 +381,13 @@ header.eventsheader {
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
-<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
-<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
+<script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="training/dist/scroll/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="training/dist/scroll/jquery.mousewheel.js"></script>
+<script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="training/dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="training/dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(function () {
