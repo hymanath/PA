@@ -47,7 +47,10 @@ public class TrainingCampCadreFeedbackDetailsHistory extends BaseModel implement
 	private TrainingCampBatch trainingCampBatch;
 	private Long trainingCampBatchId;
 	
-	
+	private String smartPhoneExist;
+	private String watsappUsing;
+	private String watsappShare;
+	private String facebookUsing;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -234,4 +237,36 @@ public class TrainingCampCadreFeedbackDetailsHistory extends BaseModel implement
 	public void setTrainingCampBatchId(Long trainingCampBatchId) {
 		this.trainingCampBatchId = trainingCampBatchId;
 	}
+	@Column(name = "smart_phone_exist")
+	public String getSmartPhoneExist() {
+		return smartPhoneExist;
+	}
+	public void setSmartPhoneExist(String smartPhoneExist) {
+		this.smartPhoneExist = smartPhoneExist;
+	}
+	
+	@Column(name = "watsapp_using")
+	public String getWatsappUsing() {
+		return watsappUsing;
+	}
+	public void setWatsappUsing(String watsappUsing) {
+		this.watsappUsing = watsappUsing;
+	}
+	
+	@Column(name="watsapp_share")
+	public String getWatsappShare() {
+		return watsappShare;
+	}
+	public void setWatsappShare(String watsappShare) {
+		this.watsappShare = watsappShare;
+	}
+	
+	@Column(name="facebook_using")
+	public String getFacebookUsing() {
+		return facebookUsing;
+	}
+	public void setFacebookUsing(String facebookUsing) {
+		this.facebookUsing = facebookUsing;
+	}
+	
 }
