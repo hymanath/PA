@@ -883,7 +883,7 @@ function setDefaultImage(img){
 			{
 			
 			 str+='<label class="checkbox-inline">';
-			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'">'+result[i].name+'';
+			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'" onclick="showHideBatch();">'+result[i].name+'';
 			 str+='</label>';
 			}
 		}
@@ -1256,7 +1256,7 @@ function setDefaultImage(img){
 		 scheduleStatusId = $(this).val();
 	   });
 	   
-	   if(scheduleStatusId == 4)
+	   if(scheduleStatusId == 4 || scheduleStatusId == 10)
 	   $("#batchDiv").show();
 	   else
 	   {
