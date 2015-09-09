@@ -43,6 +43,12 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 	private Date updatedTime;
 	private TrainingCampBatch trainingCampBatch;
 	private Long trainingCampBatchId;
+	private String smartphone;
+	private String whatsapp;
+	private String whatsappShare;
+	private String facebook;
+	
+	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -209,4 +215,36 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 	public void setTrainingCampBatchId(Long trainingCampBatchId) {
 		this.trainingCampBatchId = trainingCampBatchId;
 	}
+	
+	@Column(name = "smartphone")
+	public String getSmartphone() {
+		return smartphone;
+	}
+	public void setSmartphone(String smartphone) {
+		this.smartphone = smartphone;
+	}
+	
+	@Column(name = "whatsapp")
+	public String getWhatsapp() {
+		return whatsapp;
+	}
+	public void setWhatsapp(String whatsapp) {
+		this.whatsapp = whatsapp;
+	}
+	@Column(name = "whatsapp_share")
+	public String getWhatsappShare() {
+		return whatsappShare;
+	}
+	
+	public void setWhatsappShare(String whatsappShare) {
+		this.whatsappShare = whatsappShare;
+	}
+	@Column(name = "facebook")
+	public String getFacebook() {
+		return facebook;
+	}
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+	
 }
