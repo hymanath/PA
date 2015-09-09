@@ -43,12 +43,11 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 	private Date updatedTime;
 	private TrainingCampBatch trainingCampBatch;
 	private Long trainingCampBatchId;
-	private String smartphone;
-	private String whatsapp;
-	private String whatsappShare;
-	private String facebook;
 	
-	
+	private String smartPhoneExist;
+	private String watsappUsing;
+	private String watsappShare;
+	private String facebookUsing;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -216,35 +215,37 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 		this.trainingCampBatchId = trainingCampBatchId;
 	}
 	
-	@Column(name = "smartphone")
-	public String getSmartphone() {
-		return smartphone;
+	
+	@Column(name = "smart_phone_exist")
+	public String getSmartPhoneExist() {
+		return smartPhoneExist;
 	}
-	public void setSmartphone(String smartphone) {
-		this.smartphone = smartphone;
+	public void setSmartPhoneExist(String smartPhoneExist) {
+		this.smartPhoneExist = smartPhoneExist;
 	}
 	
-	@Column(name = "whatsapp")
-	public String getWhatsapp() {
-		return whatsapp;
+	@Column(name = "watsapp_using")
+	public String getWatsappUsing() {
+		return watsappUsing;
 	}
-	public void setWhatsapp(String whatsapp) {
-		this.whatsapp = whatsapp;
-	}
-	@Column(name = "whatsapp_share")
-	public String getWhatsappShare() {
-		return whatsappShare;
+	public void setWatsappUsing(String watsappUsing) {
+		this.watsappUsing = watsappUsing;
 	}
 	
-	public void setWhatsappShare(String whatsappShare) {
-		this.whatsappShare = whatsappShare;
+	@Column(name="watsapp_share")
+	public String getWatsappShare() {
+		return watsappShare;
 	}
-	@Column(name = "facebook")
-	public String getFacebook() {
-		return facebook;
+	public void setWatsappShare(String watsappShare) {
+		this.watsappShare = watsappShare;
 	}
-	public void setFacebook(String facebook) {
-		this.facebook = facebook;
+	
+	@Column(name="facebook_using")
+	public String getFacebookUsing() {
+		return facebookUsing;
+	}
+	public void setFacebookUsing(String facebookUsing) {
+		this.facebookUsing = facebookUsing;
 	}
 	
 }
