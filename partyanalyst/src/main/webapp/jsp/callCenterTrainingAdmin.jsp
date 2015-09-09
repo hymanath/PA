@@ -22,6 +22,13 @@
 
 
 <style type="text/css">
+.count-hover
+{
+	margin-top:0px;
+	width:330px;
+	height:200px;
+	overflow:auto;
+}
 footer
 {
 	padding:30px;
@@ -281,7 +288,7 @@ footer
 												</span></h1></div>
 												<ul class="count-hover up-arrow">
 													<li>
-													<div class="count-hover-scroll" id="batchCountOfCampId"> 
+													<div class="count-hover-scroll1" id="batchCountOfCampId"> 
 														
 													</div>
 													</li>
@@ -1405,7 +1412,7 @@ function buildingMembersFilledInCalenderBatch(result){
 	function buildingCampMembersBatchCount(result){
 		var str='';
 		if(result !=null){
-				str+='<table class="table table-hover table-bordered">';
+				str+='<table class="table table-hover table-bordered m_0">';
 					str+='<thead>';
 						str+='<th>PROGRAM NAME</th>';
 						str+='<th>MEMBERS</th>';
@@ -1425,8 +1432,8 @@ function buildingMembersFilledInCalenderBatch(result){
 				$("#batchCountOfCampId").html(str);
 				
 				//scroll
-				$(".count-hover-scroll").mCustomScrollbar({
-				setHeight:140,
+				$(".count-hover-scroll1").mCustomScrollbar({
+				setHeight:190,
 					theme:"minimal-dark"
 				});
 		}
