@@ -145,6 +145,11 @@ header.trainingHeader {
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+var programId = '${param.pd}';
+var campId = '${param.cd}';
+var batchId = '${param.bd}';
+var dates = '${param.dts}';
+console.log(programId+"--"+campId+"--"+batchId+"--"+dates);
 $('.close-icon').click(function(){
 		$('#collapseInnerOne').removeClass('in');
 		$('#headingInnerOne h4 a').addClass('collapsed');
@@ -159,14 +164,11 @@ getProgramSummary();
 
 function getAttendedCountsByProgramOrCampOrBatch()
 {
-	var programId = 1;
-	var campId = 4;
-	var batchId = 17;
-	
 	var jsObj={
 		programId:programId,
 		campId:campId,
-		batchId:batchId
+		batchId:batchId,
+		dates:dates
 	}
 	$.ajax({
 		type:'POST',
@@ -212,15 +214,12 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 }
 	
 function getattendedcountByFeedBacks()
-{
-	var programId = 1;
-	var campId = 4;
-	var batchId = 17;
-	
+{	
 	var jsObj={
 		programId:programId,
 		campId:campId,
-		batchId:batchId
+		batchId:batchId,
+		dates:dates
 	}
 	$.ajax({
 		type:'POST',
@@ -321,10 +320,9 @@ function buildAttendedCountByFeedBacks(result)
 
 function getAttendedCountSummaryByBatch()
 {
-	var batchId = 13;
-	
 	var jsObj = {
-		batchId:batchId
+		batchId:batchId,
+		dates:dates
 	}
 	
 	$.ajax({
@@ -369,10 +367,9 @@ function buildAttendedCountSummaryByBatch(result)
 
 function getProgramSummary()
 {
-	var programId = 1;
-	
 	var jsObj = {
-		programId:programId
+		programId:programId,
+		dates:dates
 	}
 	
 	$.ajax({
