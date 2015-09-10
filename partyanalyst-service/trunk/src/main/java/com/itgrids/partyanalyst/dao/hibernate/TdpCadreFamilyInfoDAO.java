@@ -45,4 +45,10 @@ public class TdpCadreFamilyInfoDAO extends GenericDaoHibernate<TdpCadreFamilyInf
 		
 		return query.list();
 	}
+	public List<Long> getFamilyUpdatedOrNot(List<Long> tdpCadreIds){
+		
+		Query query=getSession().createQuery("select distinct model.tdpCadreId from TdpCadreFamilyInfo model  where model.isDeleted = 'N' and model.tdpCadreId in (:tdpCadreIds)");
+		query.setParameterList("tdpCadreIds",tdpCadreIds);
+		return query.list();
+	}
 }

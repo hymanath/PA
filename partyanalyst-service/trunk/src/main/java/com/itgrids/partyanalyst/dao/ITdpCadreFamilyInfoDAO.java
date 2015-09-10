@@ -12,4 +12,5 @@ public interface ITdpCadreFamilyInfoDAO extends GenericDao<TdpCadreFamilyInfo, L
 	public Integer deleteFamilyInfoByCadre(Long tdpCadreId);
 	public List<TdpCadreFamilyInfo> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId);
 	public List<TdpCadreFamilyInfo> getCadresFamilyDetailsBytdpCadreIdList(Set<Long> tdpCadreIdsSet);
+	public List<Long> getFamilyUpdatedOrNot(List<Long> tdpCadreIds);
 }
