@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
@@ -173,8 +174,7 @@ class TrainingCampService implements ITrainingCampService{
     private IPartyMeetingService partyMeetingService;
     private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
     private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
-  
-	
+    private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
 	
 
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
@@ -558,6 +558,11 @@ class TrainingCampService implements ITrainingCampService{
 		this.trainingCampUserProgramDAO = trainingCampUserProgramDAO;
 	}
 	
+	public void setTdpCadreFamilyInfoDAO(
+			ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO) {
+		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
+	}
+
 	public List<BasicVO> getAllPrograms()
 	{
 		try{
@@ -4458,6 +4463,16 @@ class TrainingCampService implements ITrainingCampService{
 				 }
 			}
 			
+			//getFamilyDetailsUpdationForCadres
+			 Map<Long,String> familyUpdatedMap=new HashMap<Long, String>();
+			 List<Long> tdpCadreIds=tdpCadreFamilyInfoDAO.getFamilyUpdatedOrNot(cadreIds);
+			 if(tdpCadreIds!=null && tdpCadreIds.size()>0){
+				 for(Long cadreId:tdpCadreIds){
+					 familyUpdatedMap.put(cadreId,"Yes");
+				 }
+			 }
+			
+			
 			List<Long>  mandalIds=new ArrayList<Long>();//5l
 			List<Long>  villageIds=new ArrayList<Long>();//6l
 			List<Long>  townIds=new ArrayList<Long>();//7l,9l
@@ -4622,6 +4637,14 @@ class TrainingCampService implements ITrainingCampService{
 					 cadreVO.setWhatsappSharing(obj[19] != null ?true:false);
 					 cadreVO.setFacebookUsing(obj[20] != null ?true:false);
 					 
+					 //family members updated.
+					 String updatedOrNot=familyUpdatedMap.get(cadreId);
+					 if(updatedOrNot!=null && updatedOrNot.trim().length()>0){
+						 cadreVO.setFamilyUpdted(updatedOrNot);
+					 }else{
+						 cadreVO.setFamilyUpdted("No");
+					 }
+					 
 					 cadreVO.setAchievements(false);
 					 cadreVO.setGoals(false);
 					 batchVO.getSubMap().put(cadreId, cadreVO);
@@ -4671,9 +4694,7 @@ class TrainingCampService implements ITrainingCampService{
 				batchMap.clear();
 			}
 		}catch(Exception e){
-			
-			e.printStackTrace();
-			//LOG.error(" Exception occured in getTdpCadreDetailsforASchedule method in TrainingCampService class.",e);
+			LOG.error(" Exception occured in getTdpCadreDetailsforASchedule method in TrainingCampService class.",e);
 		} 
 		return finalList;
 	}

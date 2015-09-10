@@ -58,7 +58,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String committeeLevel;
 	private String committeeRole;
 	private String committeeType;
-	
+	private String familyUpdted;
 	
 	public String getCommitteeLevel() {
 		return committeeLevel;
@@ -320,6 +320,12 @@ public class CadreDetailsVO implements java.io.Serializable{
 	}
 	public void setPosition(String position) {
 		this.position = position;
+	}
+	public String getFamilyUpdted() {
+		return familyUpdted;
+	}
+	public void setFamilyUpdted(String familyUpdted) {
+		this.familyUpdted = familyUpdted;
 	}
                  	
 }
