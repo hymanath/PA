@@ -78,5 +78,6 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForWards(Long levelId,Long localElectionBody,Long constituencyId);
 	public List<Object[]> getRoleWiseAllocatedMembersCount(List<Long> cadreIds);
 	public List<Object[]> getMembersInfoByTdpCadreIdsList(List<Long> tdpCadreIdsList);
+	public List<Object[]> getMembersInfoByTdpCadreIdsList1(List<Long> tdpCadreIdsList);
 	
 }

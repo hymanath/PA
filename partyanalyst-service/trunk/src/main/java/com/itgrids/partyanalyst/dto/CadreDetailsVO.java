@@ -38,7 +38,8 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String whatsappShare;
 	private String facebook;
 	
-	
+	private String partyPosition;
+	private String position;
 	
 	private Map<Long,CadreDetailsVO> subMap;
 	private List<CadreDetailsVO> subList;
@@ -308,5 +309,17 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setFacebookUsing(boolean facebookUsing) {
 		this.facebookUsing = facebookUsing;
 	}
-                  	
+	public String getPartyPosition() {
+		return partyPosition;
+	}
+	public void setPartyPosition(String partyPosition) {
+		this.partyPosition = partyPosition;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+                 	
 }

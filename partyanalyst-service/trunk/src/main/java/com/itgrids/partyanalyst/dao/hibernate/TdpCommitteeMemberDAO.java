@@ -1791,5 +1791,18 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		return query.list();
 	}
-	
+	public List<Object[]> getMembersInfoByTdpCadreIdsList1(List<Long> tdpCadreIdsList){
+
+		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, " +
+				" model.tdpCommitteeRole.tdpCommitteeRoleId," +
+				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel    " +
+				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList)  and model.isActive ='Y' ");
+		
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		return query.list();
+	}
 }
