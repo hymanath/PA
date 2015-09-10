@@ -102,9 +102,9 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Map<String,TrainingCampVO> returnResult;
 	private CadreFeedbackVO finalVO;
 	private List<SimpleVO> simpleVOList;
-	private Long pd;//programId
-	private Long bd;//batchId
-	private Long cd;//campId;
+	private Long pd=0l;//programId
+	private Long bd=0l;//batchId
+	private Long cd=0l;//campId;
 	private String dts;//fromDate&todate
 	
 	
@@ -1960,6 +1960,23 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getProgramSummary() method, Exception - ",e);
+    	}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getCampSummary()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
+    		String date[] = jObj.getString("dates").split("-");
+    		simpleVO = trainingCampService.getCampSummary(programId,campId,date[0].trim(),date[1].trim());
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getCampSummary() method, Exception - ",e);
     	}
     	
     	return Action.SUCCESS;

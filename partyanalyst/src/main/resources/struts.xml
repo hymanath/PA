@@ -10851,6 +10851,12 @@
 		    <param name="root">simpleVO</param>
 		</result>
 	</action>
+	
+	<action name="getCampSummaryAction" class="trainingCampAction" method="getCampSummary">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
 			
 </package>
 </struts>      

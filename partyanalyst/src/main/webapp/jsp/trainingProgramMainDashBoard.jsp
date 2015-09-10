@@ -85,12 +85,7 @@ header.trainingHeader {
                         	<div class="row">
                             	<div class="col-md-6">
                                 	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-center">
-                                            	PROGRAM SUMMARY
-                                            </h4>
-                                        </div>
-										<div id="programSummaryDivId"></div>
+                                		<div id="programSummaryDivId"></div>
                                     </div>	
                                 </div>
                                 <div class="col-md-6">
@@ -161,6 +156,7 @@ getattendedcountByFeedBacks();
 getAttendedCountsByProgramOrCampOrBatch();
 getAttendedCountSummaryByBatch();
 getProgramSummary();
+getCampSummary();
 
 function getAttendedCountsByProgramOrCampOrBatch()
 {
@@ -389,6 +385,9 @@ function buildProgramSummaryDetails(result)
 {
 	$("#programSummaryDivId").html('');
 	var str='';
+		str+='<div class="panel-heading bg_d">';
+		str+='<h4 class="panel-title text-center">PROGRAM SUMMARY</h4>';
+		str+='</div>';
 		str+='<div class="panel-body pad_0">';
 			str+='<table class="table m_0">';
 				str+='<tr class="bg_yellow">';
@@ -407,6 +406,53 @@ function buildProgramSummaryDetails(result)
 		str+='</div>';
 	$("#programSummaryDivId").html(str);
 }
+
+function getCampSummary()
+{
+	var jsObj = {
+		programId:programId,
+		campId:campId,
+		dates:dates
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getCampSummaryAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null){
+			buildCampSummaryDetails(result);
+		}else{
+			$("#programSummaryDivId").html("NO DATA AVAILABLE...");
+		}
+	});
+}
+
+
+function buildCampSummaryDetails(result)
+{
+	$("#programSummaryDivId").html('');
+	var str='';
+		str+='<div class="panel-heading bg_d">';
+		str+='<h4 class="panel-title text-center">CAMP SUMMARY</h4>';
+		str+='</div>';
+		str+='<div class="panel-body pad_0">';
+			str+='<table class="table m_0">';
+				str+='<tr class="bg_yellow">';
+					str+='<td>CENTER Name</td>';
+					str+='<td>BATCHES COUNT</td>';
+					str+='<td>ATTENDED COUNT</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td>'+result.name+'</td>';
+					str+='<td>'+result.count+'</td>';
+					str+='<td>'+result.total+'</td>';
+				str+='</tr>';
+			str+='</table>';
+		str+='</div>';
+	$("#programSummaryDivId").html(str);
+}
+
 </script>
 </body>
 </html>	
