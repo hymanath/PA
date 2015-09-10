@@ -74,52 +74,53 @@ header.trainingHeader {
             <div class="col-md-12">
                 <div class="panel panel-default" style="box-shadow:0px 0px 5px rgba(0,0,0,0.2)">
                     <div class="panel-heading bg_c">
-                        <h4 class="panel-title">TRAINING PROGRAM DASHBOARD<span class="font-10">(Leadership Skills)</span>
-                        <select class="pull-right">
+                        <h3>TRAINING PROGRAM DASHBOARD<span class="font-10">(Leadership Skills)</span>
+                        <!--<select class="pull-right">
                         	<option>Select Program / View Other Program</option>
-                        </select>
-                        </h4>                            
+                        </select>-->
+                        </h3>                            
                     </div>
                     <div class="panel-body" style="background-color:#EFF3F4">
 						<section>
                         	<div class="row">
                             	<div class="col-md-6">
-                                	<div class="panel panel-default">
-                                		<div id="programSummaryDivId"></div>
+                                	<div class="panel panel-default"  id="summaryDivLeftPanel">
+                                    	<div class="panel-heading bg_d">
+                                        	<h4 class="text-center" style="font-weight:bold;" id="titleSummary">PROGRAM SUMMARY</h4>
+                                        </div>
+										<div id="programSummaryDivId"></div>
                                     </div>	
                                 </div>
-                                <div class="col-md-6">
+								<div class="col-md-6">
+									<div id="districtWiseDetailsId"></div>
+								</div>
+								<div class="col-md-6 pull-right">
                                 	<table class="table table-bordered m_0 bg_ff">
                                     	<tr>
                                         	<td>
-                                            	<h4>TOTAL TRAINED MEMBERS <span class="pull-right">1800</span></h4>
+                                            	<span>TOTAL TRAINED MEMBERS <span class="pull-right">1800</span></span>
                                             </td>
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<h4>MANDAL LEVEL MEMBERS<span class="pull-right">200</span></h4>
+                                            	<span>MANDAL LEVEL MEMBERS<span class="pull-right">200</span></span>
                                             </td>
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<h4>VILLAGE LEVEL MEMBERS<span class="pull-right">800</span></h4>
+                                            	<span>VILLAGE LEVEL MEMBERS<span class="pull-right">800</span></span>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                         </section> 
-                        <section>
-                        	<div class="row">
-                            	<div id="attendedSummaryDetailsDivId"></div>
-								<div id="districtWiseDetailsId"></div>
-                            </div>
-                        </section>
+                       
 						<div class="row">
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading  bg_e9">
-										<h4 class="panel-title">TRAINER FEEDBACK ON TRAINEES</h4>
+										<h5 style="font-weight:bold;">TRAINER FEEDBACK ON TRAINEES</h5>
 									</div>
 									<div class="panel-body" id="feedbackDetailsId"></div>
 								</div>
@@ -144,7 +145,8 @@ var programId = '${param.pd}';
 var campId = '${param.cd}';
 var batchId = '${param.bd}';
 var dates = '${param.dts}';
-console.log(programId+"--"+campId+"--"+batchId+"--"+dates);
+
+
 $('.close-icon').click(function(){
 		$('#collapseInnerOne').removeClass('in');
 		$('#headingInnerOne h4 a').addClass('collapsed');
@@ -154,9 +156,28 @@ $("#mainheading").html("TRAINING PROGRAM DASHBOARD");
 
 getattendedcountByFeedBacks();
 getAttendedCountsByProgramOrCampOrBatch();
-getAttendedCountSummaryByBatch();
-getProgramSummary();
 getCampSummary();
+if(batchId!=null && batchId>0){
+	getAttendedCountSummaryByBatch();
+}
+
+if(batchId==null||batchId==0 && programId!=null && programId >0){
+	getProgramSummary();
+}
+
+if(batchId==null && batchId == 0 && campId!=null && campId>0){
+	getCampSummary();
+}
+
+/* if(batchId==null || batchid==0){
+	$("#summaryDivLeftPanel").hide();
+}
+
+if(programId!=null && programId>0 || campId!=null && campId>0){
+	$("#summaryDivLeftPanel").show();
+} */
+
+
 
 function getAttendedCountsByProgramOrCampOrBatch()
 {
@@ -183,13 +204,13 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 {
 	$("#districtWiseDetailsId").html('');
 	var str='';
-	str+='<div class="col-md-6">';
+	
 			str+='<table class="table table-bordered bg_ff">';
-				str+='<thead class="bg_e9">';
-					str+='<th><h4>LOCATION</h4></th>';
-					str+='<th><h4>DISTRICT LEVEL</h4></th>';
-					str+='<th><h4>MANDAL LEVEL</h4></th>';
-					str+='<th><h4>VILLAGE LEVEL</h4></th>';
+				str+='<thead class="bg_e9" >';
+					str+='<th><h5 style="font-weight:bold;">LOCATION</h5></th>';
+					str+='<th><h5 style="font-weight:bold;">DISTRICT LEVEL</h5></th>';
+					str+='<th><h5 style="font-weight:bold;">MANDAL LEVEL</h5></th>';
+					str+='<th><h5 style="font-weight:bold;">VILLAGE LEVEL</h5></th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
@@ -204,7 +225,6 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 					}
 				str+='</tbody>';
 			str+='</table>';
-		str+='</div>';
 		
 	$("#districtWiseDetailsId").html(str);
 }
@@ -235,18 +255,7 @@ function buildAttendedCountByFeedBacks(result)
 	$("#feedbackDetailsId").html('');
 	var str='';
 	str+='<div class="row">';
-	str+='<div class="col-md-4">';
-	str+='<table class="table table-bordered bg_ff">';
-		str+='<thead class=" bg_ff">';
-			str+='<tr>';
-			str+='<th style="width:50%">Achievements - '+result.achievementCount+'</th>';
-			str+='</tr>';
-			str+='<tr>';
-			str+='<th>Goals - '+result.gaoalCount+'</th>';
-			str+='</tr>';
-		str+='</thead>';
-	str+='</table>';
-	str+='</div>';
+	
 	str+='<div class="col-md-8">';
 		str+='<table class="table m_0 m_top10 table-bordered">';
 			str+='<thead class="bg_e9">';
@@ -263,6 +272,18 @@ function buildAttendedCountByFeedBacks(result)
 					str+='<td>'+result.list[0].subList[j].count+'</td>';
 				}
 			str+='</tr>';
+		str+='</table>';
+		str+='</div>';
+		str+='<div class="col-md-4">';
+		str+='<table class="table table-bordered bg_ff">';
+			str+='<thead class=" bg_ff">';
+				str+='<tr>';
+				str+='<th style="width:50%">Achievements - '+result.achievementCount+'</th>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<th>Goals - '+result.gaoalCount+'</th>';
+				str+='</tr>';
+			str+='</thead>';
 		str+='</table>';
 		str+='</div>';
 		str+='</div>';
@@ -314,8 +335,10 @@ function buildAttendedCountByFeedBacks(result)
 	$("#feedbackDetailsId").html(str);
 }
 
-function getAttendedCountSummaryByBatch()
-{
+function getAttendedCountSummaryByBatch(){
+	$("#titleSummary").html('BATCH ATTENDANCE SUMMARY');
+	$("#programSummaryDivId").html('');
+	
 	var jsObj = {
 		batchId:batchId,
 		dates:dates
@@ -329,26 +352,24 @@ function getAttendedCountSummaryByBatch()
 		if(result != null){
 			buildAttendedCountSummaryByBatch(result);
 		}else{
-			$("#attendedSummaryDetailsDivId").html("NO DATA AVAILABLE...");
+			$("#programSummaryDivId").html("NO DATA AVAILABLE...");
 		}
 	});
 }
 
-function buildAttendedCountSummaryByBatch(result)
-{
-	$("#attendedSummaryDetailsDivId").html('');
+function buildAttendedCountSummaryByBatch(result){
+	
 	var str='';
-	str+='<div class="col-md-6">';
 		str+='<table class="table table-bordered text-center">';
 			str+='<tr>';
-				str+='<td colspan="2" class="bg_ff"><h3 class="m_0 text-center">TOTAL CONFIRMED PEOPLE - '+result.total+'</h3></td>';
+				str+='<td colspan="2" class="bg_ff"><h4 class="m_0 text-center">TOTAL CONFIRMED PEOPLE - '+result.total+'</h4></td>';
 			str+='</tr>';
 			str+='<tr>';
-				str+='<td colspan="2" class="bg_ff"><h3 class="m_0 text-center">TOTAL ATTENDED PEOPLE - '+result.count+'('+result.dateString+'%)</h3></td>';
+				str+='<td colspan="2" class="bg_ff"><h4 class="m_0 text-center">TOTAL ATTENDED PEOPLE - '+result.count+'('+result.dateString+'%)</h4></td>';
 			str+='</tr>';
 			for(var i in result.simpleVOList1){
 				str+='<tr class="bg_e9">';
-					str+='<td colspan="2"><h4 class="m_0 text-center">'+result.simpleVOList1[i].name+' ('+result.simpleVOList1[i].dateString+')</h4></td>';
+					str+='<td colspan="2"><h5 class="m_0 text-center" style="font-weight:bold;">'+result.simpleVOList1[i].name+' ('+result.simpleVOList1[i].dateString+')</h5></td>';
 				str+='</tr>';
 				str+='<tr  class="bg_ff">';
 					str+='<td>Attend - '+result.simpleVOList1[i].total+'</td>';
@@ -356,9 +377,8 @@ function buildAttendedCountSummaryByBatch(result)
 				str+='</tr>';
 			}
 		str+='</table>';
-	str+='</div>';
 	
-	$("#attendedSummaryDetailsDivId").html(str);
+	$("#programSummaryDivId").html(str);
 }
 
 function getProgramSummary()
@@ -368,6 +388,7 @@ function getProgramSummary()
 		dates:dates
 	}
 	
+	$("#titleSummary").html("PROGRAM SUMMARY");
 	$.ajax({
 		type:'POST',
 		url :'getProgramSummaryAction.action',

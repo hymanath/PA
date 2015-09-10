@@ -66,7 +66,7 @@ header.eventsheader {
         	<div class="col-md-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading bg_c">
-                    	<h4 class="panel-title">
+                    	<h4 class="panel-title" style="font-weight:bold;">
                         	TRAINING CENTER MAIN DASHBOARD
 							<span class="pull-right" style="margin-top: -8px;">
 								<div class="input-group" >
@@ -326,7 +326,7 @@ header.eventsheader {
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title">
+                                        	<h4 class="panel-title" style="font-weight:bold;">
                                             	PARTY DESIGNATION WISE MEMBERS PARTICIPATED - COMPLETED TRAINING PROGRAMS
                                             </h4>
                                         </div>
@@ -346,7 +346,7 @@ header.eventsheader {
                             	<div class="col-md-6">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading">
-                                        	<h4 class="panel-title">DISTRICTS WISE TOTAL MEMBERS ACCEPTED</h4>
+                                        	<h4 class="panel-title" style="font-weight:bold;">DISTRICTS WISE TOTAL MEMBERS PARTICIPATED</h4>
                                         </div>
                                         <div class="panel-body pad_0">
 										  <img id="distWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
@@ -358,7 +358,7 @@ header.eventsheader {
                                 <div class="col-md-6">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading">
-                                        	<h4 class="panel-title">CONSTITUENCY WISE TOTAL MEMBERS ACCEPTED</h4>
+                                        	<h4 class="panel-title" style="font-weight:bold;">CONSTITUENCY WISE TOTAL MEMBERS PARTICIPATED</h4>
                                         </div>
 										
                                         <div class="panel-body pad_0">
@@ -544,7 +544,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			
 			$("#completedTrainingPrograms").html(str);
 		}else{
-			$("#completedTrainingPrograms").html("No Completed Training Programs Are Available");
+			$("#completedTrainingPrograms").html("<h4 style='font-weight:bold;margin-left:10px;'>No Completed Training Programs Are Available</h4>");
 		}
 		
 		if(result!=null && result.running!=null && result.running.programDetails!=null && result.running.programDetails.length>0){
@@ -611,7 +611,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			
 			$("#runningTrainingPrograms").html(str);
 		}else{
-			$("#runningTrainingPrograms").html("No Runnig Training Programs Are Available");
+			$("#runningTrainingPrograms").html("<h4 style='font-weight:bold;margin-left:10px;'>No Running Training Programs Are Available</h4>");
 		}
 		
 		if(result!=null && result.upcoming!=null && result.upcoming.programDetails!=null && result.upcoming.programDetails.length>0){
@@ -680,7 +680,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			
 			$("#upComingTrainingPrograms").html(str);
 		}else{
-			$("#upComingTrainingPrograms").html("No Upcomming Training Programs Are Available");
+			$("#upComingTrainingPrograms").html("<h4 style='font-weight:bold;margin-left:10px;'>No Upcomming Training Programs Are Available</h4>");
 		}
 		
 		
@@ -724,7 +724,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 									TotalMembers=TotalMembers+temp;
 									upcomingMemGlob=upcomingMemGlob+temp;
 									upcomingBatchesGlob=upcomingBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length;
-									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+'('+temp+')</td>';
+									str+='<td class="text-danger">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+'<br>('+temp+' members)</td>';
 									
 								}else{
 									str+='<td>-</td>';
@@ -738,7 +738,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 									TotalMembers=TotalMembers+temp;
 									runningMemGlob=runningMemGlob+temp;
 									runningBatchesGlob=runningBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length;
-									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+'('+temp+')</td>';
+									str+='<td class="text-warning">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+'<br>('+temp+' members)</td>';
 								}else{
 									str+='<td>-</td>';
 								}
@@ -751,12 +751,12 @@ function getTrainingCenterDetailsBasedOnDates(){
 									TotalMembers=TotalMembers+temp;
 									compltedMemGlob=compltedMemGlob+temp;
 									compltedBatchesGlob=compltedBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
-									str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length+'('+temp+')</td>';
+									str+='<td class="text-success">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length+'<br>('+temp+' members)</td>';
 								}else{
 									str+='<td>-</td>';
 								}
 								totalMembersGlob=totalMembersGlob+TotalMembers;
-								str+='<td>'+TotalMembers+'</td>';
+								str+='<td class="text-muted">'+TotalMembers+'</td>';
 								
 							}
 						}	
@@ -870,13 +870,13 @@ function getTrainingCenterDetailsBasedOnDates(){
 		 	   if(result!=null && result.simpleVOList1!=null && result.simpleVOList1.length>0){
 				   buildDistData(result.simpleVOList1);
 			   }else{
-				   $('#distWiseDivId').html('<p style="text-align:center;">NO DATA AVAILABLE</p>');
+				   $('#distWiseDivId').html('<p style="text-align:center;font-weight:bold;">NO DATA AVAILABLE</p>');
 			   }
 			   
 			   if(result!=null && result.simpleVOList2!=null && result.simpleVOList2.length>0){
 				  buildConstData(result.simpleVOList2);
 			   }else{
-				  $('#constWiseDivId').html('<p style="text-align:center;">NO DATA AVAILABLE</p>');
+				  $('#constWiseDivId').html('<p style="text-align:center;font-weight:bold;">NO DATA AVAILABLE</p>');
 			   }
 	    });
 	}
