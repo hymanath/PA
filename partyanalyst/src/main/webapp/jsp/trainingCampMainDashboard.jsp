@@ -101,6 +101,12 @@ color: red !important;
                     	<h4 class="panel-title"></h4>
                     </div>
                     <div class="panel-body">
+						  <div class="row">
+                            	<div class="col-md-6">
+                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio" checked="checked">Feedback</label>
+                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio">Attendance</label>
+                                </div>
+                          </div>
 						<div class="row m_top10">
 							<div class="col-md-3">
 								<label>Program</label>
@@ -1011,6 +1017,43 @@ color: red !important;
 			  
 		  });
 	  }
+	  </script>
+	  <script>
+	  
+	  function getBatchesForCentre(){
+		  var jsObj={
+			  programId :programId,
+			  campId :campId
+		  }
+		  $.ajax({
+		    type:'POST',
+		    url :'getBatchesForCentreAction.action',
+		    data:{task:JSON.stringify(jsObj)},
+	      }).done(function(results){
+			  if(results !=null){
+				
+			  }
+		  });
+	  }
+	  
+	  getCadreAttendneceByBatch(13);
+	  function getCadreAttendneceByBatch(batchId){
+		  
+		  var jsObj={
+			  batchId : batchId
+		  }
+		  $.ajax({
+		    type:'POST',
+		    url :'getDateWiseAttendedAndAbsentCandidatesAction.action',
+		    data:{task:JSON.stringify(jsObj)},
+	      }).done(function(results){
+			  if(results !=null){
+				
+			  }
+		  });
+	  }
+	  
+	  
 	</script>
 </body>
 </html>
