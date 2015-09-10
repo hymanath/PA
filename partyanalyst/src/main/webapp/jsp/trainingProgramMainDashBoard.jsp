@@ -48,7 +48,7 @@ header.trainingHeader {
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:35px;"></p>               
+                 <p class="header-text display-style" id="mainheading" style="font-size:30px;"></p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -74,7 +74,7 @@ header.trainingHeader {
             <div class="col-md-12">
                 <div class="panel panel-default" style="box-shadow:0px 0px 5px rgba(0,0,0,0.2)">
                     <div class="panel-heading bg_c">
-                        <h3>TRAINING PROGRAM DASHBOARD<span class="font-10">(Leadership Skills)</span>
+                        <h3>TRAINING PROGRAMME DASHBOARD<span class="font-10">(Leadership Skills)</span>
                         <!--<select class="pull-right">
                         	<option>Select Program / View Other Program</option>
                         </select>-->
@@ -86,7 +86,7 @@ header.trainingHeader {
                             	<div class="col-md-6">
                                 	<div class="panel panel-default"  id="summaryDivLeftPanel">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="text-center" style="font-weight:bold;" id="titleSummary">PROGRAM SUMMARY</h4>
+                                        	<h4 class="text-center" style="font-weight:bold;" id="titleSummary">PROGRAMME SUMMARY</h4>
                                         </div>
 										<div id="programSummaryDivId"></div>
                                     </div>	
@@ -152,22 +152,23 @@ $('.close-icon').click(function(){
 		$('#headingInnerOne h4 a').addClass('collapsed');
 	});
 	
-$("#mainheading").html("TRAINING PROGRAM DASHBOARD");
+$("#mainheading").html("TRAINING PROGRAMME DASHBOARD");
 
 getattendedcountByFeedBacks();
 getAttendedCountsByProgramOrCampOrBatch();
-getCampSummary();
+
 if(batchId!=null && batchId>0){
 	getAttendedCountSummaryByBatch();
 }
 
-if(batchId==null||batchId==0 && programId!=null && programId >0){
+if((batchId==null || batchId==0) && (campId==null || campId==0) && (programId!=null && programId >0)){
 	getProgramSummary();
 }
 
-if(batchId==null && batchId == 0 && campId!=null && campId>0){
+if(batchId==null || batchId == 0 && campId!=null && campId>0){
 	getCampSummary();
 }
+
 
 /* if(batchId==null || batchid==0){
 	$("#summaryDivLeftPanel").hide();
@@ -381,14 +382,14 @@ function buildAttendedCountSummaryByBatch(result){
 	$("#programSummaryDivId").html(str);
 }
 
-function getProgramSummary()
-{
+function getProgramSummary(){
+	$("#titleSummary").html('PROGRAMME SUMMARY');
+	$("#programSummaryDivId").html('');
 	var jsObj = {
 		programId:programId,
 		dates:dates
 	}
 	
-	$("#titleSummary").html("PROGRAM SUMMARY");
 	$.ajax({
 		type:'POST',
 		url :'getProgramSummaryAction.action',
@@ -407,7 +408,6 @@ function buildProgramSummaryDetails(result)
 	$("#programSummaryDivId").html('');
 	var str='';
 		str+='<div class="panel-heading bg_d">';
-		str+='<h4 class="panel-title text-center">PROGRAM SUMMARY</h4>';
 		str+='</div>';
 		str+='<div class="panel-body pad_0">';
 			str+='<table class="table m_0">';
@@ -428,8 +428,9 @@ function buildProgramSummaryDetails(result)
 	$("#programSummaryDivId").html(str);
 }
 
-function getCampSummary()
-{
+function getCampSummary(){
+	$("#titleSummary").html('CAMP SUMMARY');
+	$("#programSummaryDivId").html('');
 	var jsObj = {
 		programId:programId,
 		campId:campId,
@@ -455,7 +456,6 @@ function buildCampSummaryDetails(result)
 	$("#programSummaryDivId").html('');
 	var str='';
 		str+='<div class="panel-heading bg_d">';
-		str+='<h4 class="panel-title text-center">CAMP SUMMARY</h4>';
 		str+='</div>';
 		str+='<div class="panel-body pad_0">';
 			str+='<table class="table m_0">';
