@@ -6310,18 +6310,20 @@ class TrainingCampService implements ITrainingCampService{
 		   *   Return:SimpleVO 
 		   *   
 		  */
-		public SimpleVO getCampSummary(Long programId,Long campId){
+		public SimpleVO getCampSummary(Long programId,Long campId,String fromDateString,String toDateString){
 			
 			SimpleVO simpleVO=new SimpleVO();
 			try{
-				Object[] obj=trainingCampBatchDAO.getBatchCountByCamp(programId,campId);
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				
+				Object[] obj=trainingCampBatchDAO.getBatchCountByCamp(programId,campId,sdf.parse(fromDateString),sdf.parse(toDateString));
 				if(obj!=null){
 					simpleVO.setId(obj[0]!=null?(Long)obj[0]:0l);
 					simpleVO.setName(obj[1]!=null?obj[1].toString():"");
 					simpleVO.setCount(obj[2]!=null?(Long)obj[2]:0l);//batchCount
 					simpleVO.setTotal(0l);//attendedCount
 				}
-				Long attendedCount=trainingCampAttendanceDAO.getAttendedCountByCamp(programId,campId);
+				Long attendedCount=trainingCampAttendanceDAO.getAttendedCountByCamp(programId,campId,sdf.parse(fromDateString),sdf.parse(toDateString));
 				if(attendedCount!=null){
 					simpleVO.setTotal(attendedCount);
 				}

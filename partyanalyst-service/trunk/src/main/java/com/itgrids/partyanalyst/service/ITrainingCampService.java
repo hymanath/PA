@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -95,4 +96,5 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromdate,String todate);
 	public SimpleVO getAttendedCountSummaryByBatch(Long batchId,String fromdate,String todate);
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
+	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
 }
