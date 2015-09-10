@@ -1981,4 +1981,15 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	
     	return Action.SUCCESS;
     }
+    
+    public String getProgCampBatchNames(){
+    	try {
+			LOG.info("Entered into getProgCampBatchNames");
+			jObj = new JSONObject(getTask());
+			simpleVO = trainingCampService.getProgCampBatchNames(jObj.getLong("programId"),jObj.getLong("campId"),jObj.getLong("batchId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getProgCampBatchNames",e);
+		}
+    	return Action.SUCCESS;
+    }
 }
