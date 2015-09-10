@@ -220,7 +220,7 @@ color: red !important;
                       str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">'
                       str+='<thead>';
 					  str+='<th>Image</th>';
-                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Designation</th><th>Achievements</th><th>Goals</th>'
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th><th>Achievements</th><th>Goals</th>'
 					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th><th>SmartPhone Using</th><th>Whatsapp Using</th><th>Whatsapp Sharing</th><th>Facebook Known</th> <th>Update</th>';
                       str+='</thead>';                 
                       for(var j in results[i].subList){
@@ -234,7 +234,10 @@ color: red !important;
 					   str+='<td>'+results[i].subList[j].name+'</td>'
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
-					   str+='<td>'+results[i].subList[j].committeeLevel+' level '+results[i].subList[j].committeeRole+'</td>'
+					   
+					   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>'
+					   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>'
+					   
 					   if(results[i].subList[j].achievements){
 					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i></td>'
 					   }else{
