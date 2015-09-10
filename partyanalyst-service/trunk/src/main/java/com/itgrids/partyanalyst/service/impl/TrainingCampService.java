@@ -5966,6 +5966,12 @@ class TrainingCampService implements ITrainingCampService{
 				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				 Date fromDate = sdf.parse(fromDateString);
 				 Date toDate = sdf.parse(toDateString);
+				 
+				 Long totalTrainedNumbers=0l;
+				 Long totalDistLevelNumbers=0l; 
+				 Long totalMandalLevelNumbers=0l;
+				 Long totalVillageLevelNumbers=0l;
+				 
 				//preinstantiate
 				preInstantiate(finalMap,programId,campId,batchId);
 				
@@ -5981,8 +5987,12 @@ class TrainingCampService implements ITrainingCampService{
 						if(districtVO==null){
 							districtVO=finalMap.get(0l);
 							districtVO.setCount(districtVO.getCount()+ (obj[2]!=null?(Long)obj[2]:0l));
+							//total trained numbers count.
+							totalTrainedNumbers=totalTrainedNumbers+(obj[2]!=null?(Long)obj[2]:0l);
 						}else{
 							districtVO.setCount(obj[2]!=null?(Long)obj[2]:0l);
+							//total trained numbers count.
+							totalTrainedNumbers=totalTrainedNumbers+districtVO.getCount();
 						}
 					}
 				}
@@ -5999,11 +6009,29 @@ class TrainingCampService implements ITrainingCampService{
 							districtVO=finalMap.get(0l);
 							SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
 							levelVO.setCount(levelVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l));
+							//level wise totalCount
+							Long levelId=(Long)obj[2];
+							if(levelId==11l){
+								totalDistLevelNumbers= totalDistLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}else if(levelId==5l){
+								totalMandalLevelNumbers=totalMandalLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}else if(levelId==6l){
+								totalVillageLevelNumbers=totalVillageLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}
 						}else{
 							
 						  SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
 						  levelVO.setCount(obj[4]!=null?(Long)obj[4]:0l);
-							
+						  //level wise totalCount
+						  Long levelId=(Long)obj[2];
+						  if(levelId==11l){
+								totalDistLevelNumbers= totalDistLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}else if(levelId==5l){
+								totalMandalLevelNumbers=totalMandalLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}else if(levelId==6l){
+								totalVillageLevelNumbers=totalVillageLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
+							}
+						  
 						}
 					}
 				}
@@ -6021,6 +6049,12 @@ class TrainingCampService implements ITrainingCampService{
 			         }
 					finalList=new ArrayList<SimpleVO>(finalMap.values());
 					finalMap.clear();
+					if(finalList!=null && finalList.size()>0){
+						finalList.get(0).setTotalCount(totalTrainedNumbers);
+						finalList.get(0).setId(totalDistLevelNumbers);
+						finalList.get(0).setCount(totalMandalLevelNumbers);
+						finalList.get(0).setTotal(totalVillageLevelNumbers);
+					}
 				}
 				
 			}catch(Exception e){

@@ -14,7 +14,7 @@ public class SimpleVO implements java.io.Serializable{
    
    private Long count;
    private Long total;
-   
+   private Long totalCount;
    private List<SimpleVO> simpleVOList1;
    private List<SimpleVO> simpleVOList2;
    
@@ -97,5 +97,11 @@ public void setBatchName(String batchName) {
 	public void setMap(Map<Long, SimpleVO> map) {
 		this.map = map;
 	}
-      
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+    
    }
