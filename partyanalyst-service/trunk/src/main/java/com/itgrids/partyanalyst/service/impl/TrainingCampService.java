@@ -2338,9 +2338,13 @@ class TrainingCampService implements ITrainingCampService{
 		{
 		statusIds.add(3l);
 		}
-		else if(status.equalsIgnoreCase("Pending"))
+		else if(status.equalsIgnoreCase("Wrong Mobile No"))
 		{
-		statusIds.add(2l);
+		statusIds.add(8l);
+		}
+		else if(status.equalsIgnoreCase("Invalid Mobile No"))
+		{
+		statusIds.add(9l);
 		}
 		return statusIds;	
 	}
@@ -2863,8 +2867,8 @@ class TrainingCampService implements ITrainingCampService{
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
 					if(inputVO.getScheduleStatusId().longValue() > 0L)
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
-					if(inputVO.getScheduleStatusId().longValue() != 4L)
-						trainingCampScheduleInvitee.setAttendingBatchId(null);
+					//if(inputVO.getScheduleStatusId().longValue() != 4L)
+						//trainingCampScheduleInvitee.setAttendingBatchId(null);
 						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 						//String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
 
