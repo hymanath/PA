@@ -96,7 +96,9 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.TrainingCamp;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
+import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
@@ -104,6 +106,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
+import com.itgrids.partyanalyst.model.TrainingCampProgram;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
@@ -6357,5 +6360,27 @@ class TrainingCampService implements ITrainingCampService{
 				LOG.error(" Error Occured in getCampSummary method in TraininingCampService class" ,e);
 			}
 			return simpleVO;
+		}
+		
+		public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId){
+			SimpleVO vo = new SimpleVO();
+			try {
+				LOG.info("Entered into getProgCampBatchNames");
+				if(programId>0l){
+					TrainingCampProgram tcp = trainingCampProgramDAO.get(programId);
+					vo.setProgName(tcp.getProgramName()!=null?tcp.getProgramName():"");
+				}
+				if(campId>0l){
+					TrainingCamp tc = trainingCampDAO.get(campId);
+					vo.setCampName(tc.getCampName()!=null?tc.getCampName():"");
+				}
+				if(batchId>0l){
+					TrainingCampBatch tcb = trainingCampBatchDAO.get(batchId);
+					vo.setBatchName(tcb.getTrainingCampBatchName()!=null?tcb.getTrainingCampBatchName():"");
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised at getProgCampBatchNames",e);
+			}
+			return vo;
 		}
 }
