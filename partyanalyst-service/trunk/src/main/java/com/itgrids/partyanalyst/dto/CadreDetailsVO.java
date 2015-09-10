@@ -28,6 +28,11 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private Long healthStatusId;
 	private String remarks;
 	
+	private boolean smartphoneExist;
+	private boolean whatsappUsing;
+	private boolean whatsappSharing;
+	private boolean facebookUsing;
+	
 	private String smartphone;
 	private String whatsapp;
 	private String whatsappShare;
@@ -278,5 +283,30 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setFacebook(String facebook) {
 		this.facebook = facebook;
 	}
-               	
+	
+	public boolean isSmartphoneExist() {
+		return smartphoneExist;
+	}
+	public void setSmartphoneExist(boolean smartphoneExist) {
+		this.smartphoneExist = smartphoneExist;
+	}
+	public boolean isWhatsappUsing() {
+		return whatsappUsing;
+	}
+	public void setWhatsappUsing(boolean whatsappUsing) {
+		this.whatsappUsing = whatsappUsing;
+	}
+	public boolean isWhatsappSharing() {
+		return whatsappSharing;
+	}
+	public void setWhatsappSharing(boolean whatsappSharing) {
+		this.whatsappSharing = whatsappSharing;
+	}
+	public boolean isFacebookUsing() {
+		return facebookUsing;
+	}
+	public void setFacebookUsing(boolean facebookUsing) {
+		this.facebookUsing = facebookUsing;
+	}
+                  	
 }
