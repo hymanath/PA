@@ -20,6 +20,7 @@
 <link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
+body{font-size:13px !important;}
 .filters-div
 {
 	background-color:#CCC;
@@ -31,6 +32,7 @@
     background-repeat: no-repeat;
     height: 71px;   
 }
+
 footer
 {
 	background-color:#5c2d25;
@@ -239,7 +241,7 @@ footer
 						 <div class="col-md-12 m_top20 clearDiv">
                              <label>Remarks <span style="color:red;"> * </span></label>
                             <ul class="callback-remarks">
-                            	<textarea class="form-control clearEl" id="remarks"></textarea>
+                            	<textarea class="form-control remarkEle" id="remarks"></textarea>
                             </ul>
                         </div>
                         <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
@@ -503,7 +505,7 @@ str+='<th>District</th>';
 str+='<th>Constituency</th>';
 str+='<th>Remarks</th>';
 str+='<th>Status</th>';
-str+='<th>CallStatus</th>';
+str+='<th>Call<br/>Status</th>';
 str+='<th>Update</th>';
 str+='</thead>';
 for(var i in result.subList)
@@ -643,11 +645,13 @@ $("#remarkContentDiv").html(str);
 var tdpCadreId;
 var inviteeId;
 var inviteeCallerId;
+var GbatchId;
 function setCadreInfo(cadreId,inviteId,inviteCallerId,trainingCampBatchId)
 {
 tdpCadreId;
 inviteeId;
 inviteeCallerId;
+GbatchId:
 tdpCadreId = cadreId;
 inviteeId = inviteId;
 inviteeCallerId = inviteCallerId;
@@ -661,7 +665,10 @@ $(".scheduleStatuscehckbox").prop( "checked", false );
 	$("#ajaxImage").hide();
 	
 	if(trainingCampBatchId != null && trainingCampBatchId > 0)
+	{
 		$("#batchId").val(trainingCampBatchId);
+		GbatchId = trainingCampBatchId;
+	}
 
 }
 function populateFields(status)
@@ -819,7 +826,8 @@ function setDefaultImage(img){
    
    function showHideCallStatus(id)
    {
-	ClearDiv();
+ 
+	 ClearDiv();
 	 if(id == 0)
 	 {
 	
@@ -869,7 +877,7 @@ function setDefaultImage(img){
 	{
 		if(callPurposeId == 1)
 		{
-			if(i>0 && i<9 && result[i].name.indexOf("Call Back") ==-1)
+			if(i>0 && i<9 && result[i].name.indexOf("Call Back") ==-1 && result[i].id !=9)
 			{
 			 str+='<label class="checkbox-inline">';
 			 str+='<input type="radio" name="scheduleStatus" class="scheduleStatuscehckbox" value="'+result[i].id+'" attr-text="'+result[i].name+'" onclick="showHideBatch();">'+result[i].name+'';
@@ -899,7 +907,7 @@ function setDefaultImage(img){
  if(callPurposeId == 1)
  $("#batchId").val(0);
  $("#callBackTypeId").val(0);
- 
+ $(".remarkEle").val('');
  }
   function updateCadreStatus()
    {
@@ -942,7 +950,7 @@ function setDefaultImage(img){
 		flag = true;
 	   }
 	   
-	   	if(batchId == 0 && callPurposeId == 2)
+	   	if(batchId == 0 && callPurposeId == 2 && scheduleStatusId == 10)
 	   {
 		str+='<font color="red">Select  Batch</font><br/>';;
 		flag = true;
@@ -1257,7 +1265,11 @@ function setDefaultImage(img){
 	   });
 	   
 	   if(scheduleStatusId == 4 || scheduleStatusId == 10)
+	   {
 	   $("#batchDiv").show();
+	   if(GbatchId > 0)
+	   	$("#batchId").val(GbatchId);
+	   }
 	   else
 	   {
 	    $("#batchId").val(0);
@@ -1276,6 +1288,7 @@ getCallStatusList();
 getScheduleStatusList();
 ClearDiv();
 getCallerAgentDistricts();
+showHideBatch();
 </script>
 </body>
 </html>
