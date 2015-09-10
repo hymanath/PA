@@ -4448,6 +4448,124 @@ class TrainingCampService implements ITrainingCampService{
 			
 			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(schedulesList);
 			
+			List<Long> cadreIds=new ArrayList<Long>();
+			if(cadreDetails!=null && cadreDetails.size()>0){
+				 for(Object[] obj :cadreDetails){
+					 if(obj[3]!=null){
+						 Long cadreId=Long.valueOf(((BigInteger)obj[3]).longValue());
+						 cadreIds.add(cadreId);
+					 }
+				 }
+			}
+			
+			List<Long>  mandalIds=new ArrayList<Long>();//5l
+			List<Long>  villageIds=new ArrayList<Long>();//6l
+			List<Long>  townIds=new ArrayList<Long>();//7l,9l
+			List<Long>  wardIds=new ArrayList<Long>();//8l
+			List<Long>  stateIds=new ArrayList<Long>();//10l
+			List<Long>  districtIds=new ArrayList<Long>();//11l
+			
+			
+			List<Object[]> cadreCommitteeDetails=tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList1(cadreIds);
+			Map<Long,String> basicCommitteeNameMap=new HashMap<Long,String>();//basic comm name for cadre.
+			
+			if(cadreCommitteeDetails!=null && cadreCommitteeDetails.size()>0){
+				for(Object[] obj:cadreCommitteeDetails){
+					basicCommitteeNameMap.put((Long)obj[0],obj[4]!=null?obj[4].toString():"");
+					if(obj[1]!=null && obj[2]!=null){
+						Long levelId=(Long)obj[1];
+						Long levelValue=(Long)obj[2];
+						if(levelId==5l){
+							mandalIds.add(levelValue);
+						}else if(levelId==6l){
+							villageIds.add(levelValue);
+						}else if(levelId==7l || levelId==9l){
+							townIds.add(levelValue);
+						}else if(levelId==8l){
+							wardIds.add(levelValue);
+						}else if(levelId==10l){
+							stateIds.add(levelValue);
+						}else if(levelId==11l){
+							districtIds.add(levelValue);
+						}
+					}
+				}
+			}
+			
+			Map<Long,Map<Long,String>> locationMap=new HashMap<Long,Map<Long,String>>();
+			locationMap.put(5l,new HashMap<Long,String>());
+			locationMap.put(6l,new HashMap<Long,String>());
+			locationMap.put(7l,new HashMap<Long,String>());
+			locationMap.put(8l,new HashMap<Long,String>());
+			locationMap.put(10l,new HashMap<Long,String>());
+			locationMap.put(11l,new HashMap<Long,String>());
+			
+			//String committeeLocation ="";
+			if(mandalIds.size()>0){
+				List<Object[]> tehsilList=tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds);
+				if(tehsilList!=null && tehsilList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(5l);
+					for(Object[] obj:tehsilList){
+						String committeeLocation=obj[1]!=null?obj[1].toString()+"  Mandal" :"";
+						locMap.put((Long)obj[0], committeeLocation);	
+					}
+				}
+			}
+			if(villageIds.size()>0){
+				List<Object[]> panchayatList=panchayatDAO.getPanchayatNamesByIds(villageIds);
+				if(panchayatList!=null && panchayatList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(6l);
+					for(Object[] obj:panchayatList){
+						String committeeLocation=obj[1]!=null?obj[1].toString()+"  Panchayat" :"";
+						locMap.put((Long)obj[0], committeeLocation);	
+					}
+				}
+			}
+			if(townIds.size()>0){
+				List<Object[]> lebList=localElectionBodyDAO.findByLocalElecBodyIds(townIds);
+				if(lebList!=null && lebList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(7l);
+					for(Object[] obj:lebList){
+						if(obj[3]!=null && (Long)obj[3]!=7l){
+							String committeeLocation=obj[1].toString()+" "+obj[2].toString();
+							locMap.put((Long)obj[0], committeeLocation);	
+						}
+						
+					}
+				}
+			}
+			if(wardIds.size()>0){
+				List<Object[]> wardsList=constituencyDAO.getWardDetailsById(wardIds);
+				if(wardsList!=null && wardsList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(8l);
+					for(Object[] obj:wardsList){
+						String committeeLocation =obj[1].toString()+" ( "+obj[2].toString()+" "+obj[3].toString()+" )";
+						locMap.put((Long)obj[0], committeeLocation);	
+					}
+				}
+			}
+			if(stateIds.size()>0){
+				List<Object[]> statesList=stateDAO.getStatesForList(stateIds);
+				if(statesList!=null && statesList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(10l);
+					for(Object[] obj:statesList){
+						String committeeLocation=obj[1]!=null?obj[1].toString()+"  State" :"";
+						locMap.put((Long)obj[0], committeeLocation);	
+					}
+				}
+			}
+			if(districtIds.size()>0){
+				List<Object[]> districtsList=districtDAO.getDistrictDetailsByDistrictIds(districtIds);
+				if(districtsList!=null && districtsList.size()>0){
+					Map<Long,String>  locMap=locationMap.get(10l);
+					for(Object[] obj:districtsList){
+						String committeeLocation=obj[1]!=null?obj[1].toString()+"  District" :"";
+						locMap.put((Long)obj[0], committeeLocation);	
+					}
+				}
+			}
+			
+			
 			if(cadreDetails!=null && cadreDetails.size()>0){
 				
 				 for(Object[] obj :cadreDetails){//scid,bid,bcode,,cadreid,firstname,mobileno,image,cid,cname,llid,csid,lsid,hid,isUpdatable
@@ -4478,10 +4596,27 @@ class TrainingCampService implements ITrainingCampService{
 					 cadreVO.setCommunicationSkills(obj[10]!=null?true:false);
 					 cadreVO.setLeaderShipSkills(obj[11]!=null?true:false);
 					 cadreVO.setHealth(obj[12]!=null?true:false);
-					 cadreVO.setCommitteeLevel(obj[14] != null ? obj[14].toString():"");
-					 cadreVO.setCommitteeRole(obj[15] != null ? obj[15].toString():"");
-					 cadreVO.setCommitteeType(obj[16] != null ? obj[16].toString():"");
 					 
+					 //TDP COMMITTEE ROLE AND POSITION.
+					 cadreVO.setCommitteeLevel(obj[14] != null ? obj[14].toString():"");//ex:village committee,district committee.
+					 cadreVO.setCommitteeRole(obj[15] != null ? obj[15].toString():"");//ex:vice-president.
+					 
+					 Long tdpCommitteeLevelId =obj[21]!=null?Long.valueOf(((Integer)obj[21]).longValue()):null;
+					 Long tdpCommitteeLevelValue =obj[22]!=null?Long.valueOf(((Integer)obj[22]).longValue()):null;
+					 
+					 String committeeType=basicCommitteeNameMap.get(cadreId);//Ex:Main 
+					 cadreVO.setCommitteeType(committeeType != null ? committeeType.toString():"");
+					 String position="";
+					 if(tdpCommitteeLevelId!=null && tdpCommitteeLevelValue!=null){
+						 Map<Long,String> locMap=locationMap.get(tdpCommitteeLevelId);
+						 if(locMap!=null){
+							 position=locMap.get(tdpCommitteeLevelValue);
+						 }
+					 }
+					 cadreVO.setPosition(position!=null?position:"");//Ex:Allur panchayat
+					 cadreVO.setPartyPosition(committeeType+" - "+cadreVO.getCommitteeRole()+" ( "+position+" )");
+					 
+					 //Watsapp and fb.
 					 cadreVO.setSmartphoneExist(obj[17] != null?true:false);
 					 cadreVO.setWhatsappUsing(obj[18] != null ?true:false);
 					 cadreVO.setWhatsappSharing(obj[19] != null ?true:false);
@@ -4537,7 +4672,8 @@ class TrainingCampService implements ITrainingCampService{
 			}
 		}catch(Exception e){
 			
-			LOG.error(" Exception occured in getTdpCadreDetailsforASchedule method in TrainingCampService class.",e);
+			e.printStackTrace();
+			//LOG.error(" Exception occured in getTdpCadreDetailsforASchedule method in TrainingCampService class.",e);
 		} 
 		return finalList;
 	}
