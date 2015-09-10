@@ -10863,6 +10863,16 @@
 	    <result type="json" name="success">		   
 		    <param name="root">simpleVO</param>
 		</result>
+	</action>
+	<action name="getDateWiseAttendedAndAbsentCandidatesAction" class="trainingCampAction" method="getDateWiseAttendedAndAbsentCandidates">
+	    <result type="json" name="success">		   
+		    <param name="root">cadreVoList</param>
+		</result>
 	</action>		
+	<action name="getBatchesForCentreAction" class="trainingCampAction" method="getBatchesForCentre">
+	    <result type="json" name="success">		   
+		    <param name="root">idNameList</param>
+		</result>
+	</action>
 </package>
 </struts>      

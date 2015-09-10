@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -106,6 +107,8 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long bd=0l;//batchId
 	private Long cd=0l;//campId;
 	private String dts;//fromDate&todate
+	private List<CadreVo> cadreVoList;
+	
 	
 	
 	public Long getPd() {
@@ -138,6 +141,13 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 
 	public void setDts(String dts) {
 		this.dts = dts;
+	}
+	public List<CadreVo> getCadreVoList() {
+		return cadreVoList;
+	}
+
+	public void setCadreVoList(List<CadreVo> cadreVoList) {
+		this.cadreVoList = cadreVoList;
 	}
 
 	public CadreFeedbackVO getFinalVO() {
@@ -1984,7 +1994,6 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	
     	return Action.SUCCESS;
     }
-    
     public String getCampSummary()
     {
     	try{
@@ -2014,4 +2023,30 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS;
     }
+    public String getDateWiseAttendedAndAbsentCandidates(){
+    	try{
+    		jObj = new JSONObject(getTask());
+    		Long batchId = jObj.getLong("batchId");
+    		cadreVoList = trainingCampService.getDateWiseAttendedAndAbsentCandidates(batchId);
+    	}
+    	catch(Exception e){
+    		LOG.error("Exception Occured in getDateWiseAttendedAndAbsentCandidates() method, Exception - ",e);
+    	}
+    	return Action.SUCCESS;
+    }
+    
+    public String getBatchesForCentre(){
+    	try{
+    		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
+    		idNameList = trainingCampService.getBatchesForCentre(programId,campId);
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getBatchesForCentre() method, Exception - ",e);
+    	}
+    	return Action.SUCCESS;
+    }
+    
+    
 }
