@@ -161,5 +161,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 query.setParameter("campId",campId);
 	 return (Long)query.uniqueResult();
  }
+ public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId){
+	 
+	 Query query=getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime) " +
+	 		" from TrainingCampAttendance model " +
+	 		" where" +
+	 		" model.trainingCampBatch.trainingCampBatchId = :batchId" +
+	 		" and date(model.attendance.attendedTime) between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) ");
+	 
+	 query.setParameter("batchId", batchId);
+	 return query.list();
+ }
  
 }

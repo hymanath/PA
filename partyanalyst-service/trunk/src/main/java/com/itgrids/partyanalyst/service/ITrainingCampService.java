@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -98,4 +99,6 @@ public interface ITrainingCampService {
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);
+	public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId);
+	public List<IdNameVO> getBatchesForCentre(Long programId,Long campId);
 }

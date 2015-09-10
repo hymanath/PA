@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CadreVo implements Serializable{
@@ -68,7 +69,38 @@ public class CadreVo implements Serializable{
 	private Long roleId;
 	private String role;
 	private String occupation;
+	private String membershipNoStr;
 	
+	private List<SimpleVO> simpleVoList;
+	private List<CadreVo> cadreVoList;
+	
+	
+	
+
+	public List<CadreVo> getCadreVoList() {
+		return cadreVoList;
+	}
+
+	public void setCadreVoList(List<CadreVo> cadreVoList) {
+		this.cadreVoList = cadreVoList;
+	}
+
+	public List<SimpleVO> getSimpleVoList() {
+		return simpleVoList;
+	}
+
+	public void setSimpleVoList(List<SimpleVO> simpleVoList) {
+		this.simpleVoList = simpleVoList;
+	}
+
+	public String getMembershipNoStr() {
+		return membershipNoStr;
+	}
+
+	public void setMembershipNoStr(String membershipNoStr) {
+		this.membershipNoStr = membershipNoStr;
+	}
+
 	public String getOccupation() {
 		return occupation;
 	}

@@ -77,6 +77,7 @@ import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -6417,4 +6418,192 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return vo;
 		}
+		
+		public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId){
+			
+			 List<CadreVo> cadreList = new ArrayList<CadreVo>();
+			
+			try{
+				//0.cadreId,1.membership No,2.firstName,3.mobileNo
+				List<Object[]> confirmedList = trainingCampBatchAttendeeDAO.getConfirmedCadreByBatch(batchId);
+				
+				//batch startDate and and endDate 
+				  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
+				  Date fromDate=null;
+				  Date toDate=null;
+				  if(batchDates!=null){
+					  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+					  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+				  }
+				  //list of totalDates of Batch
+				  List<String> datesStr=getBetweenDatesInString(fromDate,toDate);
+				  
+				  
+				  Map<Long,CadreVo> cadreMap = new LinkedHashMap<Long, CadreVo>();//cadreId,cadreVo
+				 
+				  if(confirmedList !=null && confirmedList.size()>0){
+					  
+					  for (Object[] cadre : confirmedList) {
+						
+						  CadreVo vo = new CadreVo();
+						  
+						  vo.setCadreId(cadre[0] !=null ? (Long)cadre[0]:0l);
+						  vo.setMembershipNoStr(cadre[1] !=null ? cadre[1].toString():"");
+						  vo.setFirstName(cadre[2] !=null ? cadre[2].toString():"");
+						  vo.setMobileNo(cadre[3] !=null ? cadre[3].toString():"");
+						  vo.setImage(cadre[4] !=null ? cadre[4].toString() : "" );
+						  vo.setConstituencyId(cadre[5] !=null ? (Long)cadre[5] : 0l );
+						  vo.setConstituencyName(cadre[6] !=null ? cadre[6].toString():"");
+						 
+						  List<SimpleVO> isdAttendedDatesList = new ArrayList<SimpleVO>(); 
+						  setMatchedVoForDates(datesStr,isdAttendedDatesList);
+						  vo.setSimpleVoList(isdAttendedDatesList);//List of string Dates
+						  
+						  cadreList.add(vo);
+						  cadreMap.put((Long)cadre[0], vo);
+					  }
+				  }
+				  
+				  //0.cadreId,1.attendedTime
+				 List<Object[]> attendedCadreList = trainingCampAttendanceDAO.getDateWiseAttendedAndAbsentCandidates(batchId);
+				 
+				 Map<String,List<Long>> cadreIdsWithDateMap = new LinkedHashMap<String, List<Long>>(); //DateString,List<CadreIds>
+				 
+				 if(attendedCadreList !=null && attendedCadreList.size()>0){ 
+					 for (Object[] objects : attendedCadreList) {
+						 List<Long> cadreIdsForDate = cadreIdsWithDateMap.get(objects[1].toString());
+						 if(cadreIdsForDate==null){
+							 cadreIdsForDate = new ArrayList<Long>();
+						 }
+						 cadreIdsForDate.add(Long.valueOf(objects[0].toString()));
+						 cadreIdsWithDateMap.put(objects[1].toString(), cadreIdsForDate);
+					} 
+				 }
+				 
+				 
+				 if(cadreList!=null && cadreList.size()>0){
+					 for(CadreVo temp:cadreList){
+						 List<SimpleVO> dates = temp.getSimpleVoList();
+						 if(dates!=null && dates.size()>0){
+							 for(SimpleVO dt:dates){
+								 String dtString = dt.getDateString();
+								 List<Long> cdrs = cadreIdsWithDateMap.get(dtString);
+								 if(cdrs!=null){
+									 if(cdrs.contains(temp.getCadreId())){
+										 dt.setIsAttended("Attended");
+									 }else{
+										 dt.setIsAttended("Not Attended");
+									 }
+								 }
+							 }
+						 }
+					 }
+				 }
+				 
+				/* if(cadreList !=null && cadreList.size()>0){
+					for(CadreVo cadre:cadreList){
+						System.out.println(cadre.getCadreId());
+						
+					}
+				 }*/
+				 
+				 
+				 
+				/*for (Map.Entry<String, List<Long>> entry : cadreIdsWithDateMap.entrySet())
+				{ 
+					String dateString = entry.getKey();
+					if(dateString !=null){
+						if(datesStr.contains(dateString)){
+							
+							List<Long> cadreIds = cadreIdsWithDateMap.get(dateString);
+							
+							if(cadreIds !=null && cadreIds.size()>0){
+								
+								for(Long cadre : cadreIds){
+									
+									CadreVo mapVo = cadreMap.get(cadre);
+									
+									if(mapVo != null){
+										List<SimpleVO> datesList=mapVo.getSimpleVoList();
+										
+										if(datesList !=null && datesList.size()>0){
+											for(SimpleVO date:datesList){
+												
+												if(date.getDateString().equalsIgnoreCase(dateString)){
+													date.setIsAttended("attended");
+												}
+											}
+										}
+										
+									}
+									
+								}
+									
+							}
+							
+						}
+					}
+				}*/
+
+			return cadreList;
+				  
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return cadreList;
+		}
+		public List<String> getBetweenDatesInString(Date fromDate,Date toDate){
+			
+			List<String> dateStr = new ArrayList<String>(0);
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(fromDate);
+			cal.add(Calendar.DATE, -1);
+			
+			while (cal.getTime().before(toDate)) {
+			    cal.add(Calendar.DATE, 1);
+			    dateStr.add(sdf.format(cal.getTime()));
+			    
+			}
+			return dateStr;
+		}
+		public void setMatchedVoForDates(List<String> datesList,List<SimpleVO> isdAttendedDates){
+			
+			if(datesList !=null && datesList.size()>0){
+				
+				for (String string : datesList) {
+					
+					SimpleVO vo = new SimpleVO();
+					vo.setDateString(string);
+					vo.setIsAttended("-");
+					isdAttendedDates.add(vo);
+				}
+				
+			}
+			
+		}
+		public List<IdNameVO> getBatchesForCentre(Long programId,Long campId){
+			
+			List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
+			try{
+				List<Object[]> details= trainingCampBatchDAO.getBatchesInfoByProgramAndCamp(1l, 5l);
+				if(details !=null && details.size()>0){
+					for(Object[] object :details){
+						IdNameVO vo = new IdNameVO();
+						vo.setId((Long)object[0]);
+						vo.setName(object[1]!=null ? object[1].toString():"");
+						
+						idNameList.add(vo);
+					}
+				}
+				
+				return idNameList;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return idNameList;
+			
+		}
+		
+		
 }

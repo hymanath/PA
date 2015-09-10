@@ -21,4 +21,5 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds);
     
 	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate);
+	public List<Object[]> getConfirmedCadreByBatch(Long batchId);
 }

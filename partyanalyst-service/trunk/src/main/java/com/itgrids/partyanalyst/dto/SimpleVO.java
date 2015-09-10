@@ -15,6 +15,8 @@ public class SimpleVO implements java.io.Serializable{
    private Long count;
    private Long total;
    private Long totalCount;
+   private String isAttended = "-";
+   
    private List<SimpleVO> simpleVOList1;
    private List<SimpleVO> simpleVOList2;
    
@@ -23,26 +25,33 @@ public class SimpleVO implements java.io.Serializable{
    private String progName="";
    private String campName="";
    private String batchName="";
+
    
-   
+	public String getIsAttended() {
+	return isAttended;
+	}
+	public void setIsAttended(String isAttended) {
+	this.isAttended = isAttended;
+}
+
 	public String getProgName() {
 	return progName;
-}
-public void setProgName(String progName) {
-	this.progName = progName;
-}
-public String getCampName() {
-	return campName;
-}
-public void setCampName(String campName) {
-	this.campName = campName;
-}
-public String getBatchName() {
-	return batchName;
-}
-public void setBatchName(String batchName) {
-	this.batchName = batchName;
-}
+	}
+	public void setProgName(String progName) {
+		this.progName = progName;
+	}
+	public String getCampName() {
+		return campName;
+	}
+	public void setCampName(String campName) {
+		this.campName = campName;
+	}
+	public String getBatchName() {
+		return batchName;
+	}
+	public void setBatchName(String batchName) {
+		this.batchName = batchName;
+	}
 	public Long getId() {
 		return id;
 	}
