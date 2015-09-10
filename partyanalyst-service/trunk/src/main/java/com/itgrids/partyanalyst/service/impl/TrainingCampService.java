@@ -4481,6 +4481,12 @@ class TrainingCampService implements ITrainingCampService{
 					 cadreVO.setCommitteeLevel(obj[14] != null ? obj[14].toString():"");
 					 cadreVO.setCommitteeRole(obj[15] != null ? obj[15].toString():"");
 					 cadreVO.setCommitteeType(obj[16] != null ? obj[16].toString():"");
+					 
+					 cadreVO.setSmartphoneExist(obj[17] != null?true:false);
+					 cadreVO.setWhatsappUsing(obj[18] != null ?true:false);
+					 cadreVO.setWhatsappSharing(obj[19] != null ?true:false);
+					 cadreVO.setFacebookUsing(obj[20] != null ?true:false);
+					 
 					 cadreVO.setAchievements(false);
 					 cadreVO.setGoals(false);
 					 batchVO.getSubMap().put(cadreId, cadreVO);
