@@ -22,6 +22,16 @@
 
 
 <style type="text/css">
+.extra-ul
+{
+	padding:0px;
+	border:1px solid #ddd;
+}
+.extra-ul li
+{
+	display:inline-block;
+	list-style:none;
+}
 .count-hover
 {
 	margin-top:0px;
@@ -168,6 +178,41 @@ footer
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-8">
+							<ul class="extra-ul">
+                            	<li style="width:150px;">
+									<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
+									<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:175px; margin-top:20px;margin-left:-10px"></div>
+                                </li>
+                                <li style="width:550px">
+                                	<table class="table table-bordered m_0">
+                                    	<tr>
+                                        	<td colspan="2" class="pad_15">
+                                                <h4 class="m_0">TOTAL CADRE ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
+													<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
+													</span>
+												</h4>
+                                            </td>
+                                        </tr>
+										<tr>
+											<td >
+											<span class="pull-right font-12" style="margin-right:55px;">TODAY CADRE ALLOCATED TO ADMIN- <span id="todayCallsPerCallerId">
+														<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
+														</span></span>
+											</td>
+											<td>
+														<span class="pull-right font-12" style="margin-right:55px;">ASSIGNED TO AGENTS - <span id="assignedToAgentsId">
+														<img id="dataLoadingsImgForAssigning" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
+												</span></span>
+											</td>
+										</tr>
+                                    </table>
+                                	<div id="adminAssignedTdId" class="table-responsive">
+										
+									</div>                             
+                                </li>
+                            </ul>
+						</div>
+						<!--<div class="col-md-8">
 							<table class="table table-bordered "  style="margin-bottom:10px;height: 246px;margin-left:-10px; ">
 								<tr>
 									<td style="text-align:center;" >
@@ -250,13 +295,13 @@ footer
 												<!--<td style="text-align:center;"  class="pad_0" id="statusWiseCountArraId">
 												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
 													
-												</td>-->
+												</td>
 											</tr>
 										</table>
 									</td>
 								</tr>
 							</table>
-						</div>
+						</div>-->
 						<div class="col-md-4">
 							<table class="table table-bordered table-condensed" style="margin-bottom:12px">
 								<tr>
@@ -526,7 +571,7 @@ footer
 												</tbody>
 											</table>-->
 										</div>
-										<div role="tabpanel" class="tab-pane confirmationMemberAvailabilityDivCls" id="participated">
+										<div role="tabpanel" class="tab-pane confirmationMemberAvailabilityDivCls table-responsive" id="participated">
 											<center><img id="dataLoadingsImgForProgressOfConfirmationId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
 										</div>
 									  </div>
@@ -1622,11 +1667,19 @@ function buildingMembersFilledInCalenderBatch(result){
 								str+='<td>Assigned</td>';
 								str+='<td class="text-yellow">Dialled</td>';
 								str+='<td class="text-yellow">Not Dialled</td>';
-								str+='<td class="interested-text">Interested</td>';
+								/* str+='<td class="interested-text">Interested</td>';
 								str+='<td >Not Interested</td>';
 								str+='<td class="text-info">Busy</td>';
 								str+='<td class="text-danger">Confirm Later</td>';
-								str+='<td class="">Accepted</td>';
+								str+='<td class="">Accepted</td>'; */
+									
+									 if(result[0].trainingCampVOList != null && result[0].trainingCampVOList.length>0){
+										
+										for(var j in result[0].trainingCampVOList){	
+											str+='<td class="" id="'+result[0].trainingCampVOList[j].statusId+'">'+result[0].trainingCampVOList[j].status+'</td>';
+										}
+									}
+						
 							str+='</tr>';
 							for(var i in result){
 
@@ -1673,16 +1726,17 @@ function buildingMembersFilledInCalenderBatch(result){
 										
 										for(var j in result[i].trainingCampVOList){
 											
-											if(result[i].trainingCampVOList[j].statusId ==4){	
+											 if(result[i].trainingCampVOList[j].statusId ==4){	
 												str+='<td>'+interestedCount+'</td>';
-											}
-											else if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 ){	
-												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
 											}
 											else if(result[i].trainingCampVOList[j].statusId == 10)
 											{
 												str+='<td> - </td>';
 											}
+											else{	
+												str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+											}
+											
 										}
 										
 									}
@@ -1698,7 +1752,7 @@ function buildingMembersFilledInCalenderBatch(result){
 										
 										for(var j in result[i].trainingCampVOList){
 											
-											if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId == 10){
+											/* if(result[i].trainingCampVOList[j].statusId ==6 || result[i].trainingCampVOList[j].statusId ==4 || result[i].trainingCampVOList[j].statusId ==7 || result[i].trainingCampVOList[j].statusId ==5 || result[i].trainingCampVOList[j].statusId == 10){
 												if(result[i].trainingCampVOList[j].statusId ==4){
 													str+='<td>-</td>';
 												}
@@ -1706,7 +1760,15 @@ function buildingMembersFilledInCalenderBatch(result){
 													str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
 												}
 												
+											} */
+											
+											if(result[i].trainingCampVOList[j].statusId ==4){
+												str+='<td>-</td>';
 											}
+											else{
+													str+='<td>'+result[i].trainingCampVOList[j].count+'</td>';
+												}
+											
 										}
 										
 									}
