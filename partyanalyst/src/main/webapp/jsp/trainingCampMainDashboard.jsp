@@ -221,7 +221,7 @@ color: red !important;
                       str+='<thead>';
 					  str+='<th>Image</th>';
                       str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Designation</th><th>Achievements</th><th>Goals</th>'
-					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th> <th>Update</th>';
+					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th><th>SmartPhone Using</th><th>Whatsapp Using</th><th>Whatsapp Sharing</th><th>Facebook Known</th> <th>Update</th>';
                       str+='</thead>';                 
                       for(var j in results[i].subList){
 					   str+='<tr>';
@@ -264,6 +264,27 @@ color: red !important;
 					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center healthCls"></i></td>'
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
+					   }
+					   
+					   if(results[i].subList[j].smartphoneExist){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center smartphoneCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center smartphoneCls"></i></td>'
+					   }
+					   if(results[i].subList[j].whatsappUsing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappUsingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappUsingCls"></i></td>'
+					   }
+					   if(results[i].subList[j].whatsappSharing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappSharingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappSharingCls"></i></td>'
+					   }
+					   if(results[i].subList[j].facebookUsing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center facebookUsingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
 					   }
 					   if(results[i].isFeedbackUpdatable=='Y')
 					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
@@ -668,6 +689,8 @@ color: red !important;
 	   if(smartPhoneId=='Y'){
 		   $('#whatsappDivId').show();
 	   }else{
+		  $('#whatsappId').val('select');
+		  $('#whatsappShareId').val('select');
 		  $('#whatsappDivId').hide(); 
 	   }
    }
@@ -837,6 +860,34 @@ color: red !important;
 			    $("#updateId"+tdpCadreId+batchId).parent().parent().find(".communicationSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i>');
 				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".leadershipSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i>');
 				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".healthCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center healthCls"></i>');
+				
+				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".leadershipLvlsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i>');				 
+			    $("#updateId"+tdpCadreId+batchId).parent().parent().find(".communicationSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i>');
+				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".leadershipSklsCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i>');
+				$("#updateId"+tdpCadreId+batchId).parent().parent().find(".healthCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center healthCls"></i>');
+				
+				if(smartPhoneId=='select'){
+					$("#updateId"+tdpCadreId+batchId).parent().parent().find(".smartphoneCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center smartphoneCls"></i>');
+                    $("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappUsingCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center whatsappUsingCls"></i>');
+                    $("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappSharingCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center whatsappSharingCls"></i>');					
+				}else{
+					$("#updateId"+tdpCadreId+batchId).parent().parent().find(".smartphoneCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center smartphoneCls"></i></i>');
+					if(whatsappId=='select'){
+						 $("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappUsingCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center whatsappUsingCls"></i>');
+					}else{
+						$("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappUsingCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center whatsappUsingCls"></i>');
+					}
+					if(whatsappShareId=='select'){
+						 $("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappSharingCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center whatsappSharingCls"></i>');
+					}else{
+						$("#updateId"+tdpCadreId+batchId).parent().parent().find(".whatsappSharingCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center whatsappSharingCls"></i>');
+					}
+				}
+				if(facebookId=='select'){
+					$("#updateId"+tdpCadreId+batchId).parent().parent().find(".facebookUsingCls").parent().html('<i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i>');
+				}else{
+						$("#updateId"+tdpCadreId+batchId).parent().parent().find(".facebookUsingCls").parent().html('<i class="glyphicon glyphicon-ok text-success text-center facebookUsingCls"></i>');
+				}
 				
 			}else{
 				$("#processingId").hide();
