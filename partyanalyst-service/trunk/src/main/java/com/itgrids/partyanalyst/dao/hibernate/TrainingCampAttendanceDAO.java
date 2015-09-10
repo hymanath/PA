@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -95,9 +96,11 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return query.list();
  }
  
-  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId){
+  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
 	 
 	  Query query=getSession().createQuery(queryString);
+	  query.setParameter("fromDate", fromDate);
+	  query.setParameter("toDate", toDate);
 	  if(batchId==null && campId==null && programId!=null ){
 		 query.setParameter("programId",programId);
 	  }
@@ -114,28 +117,34 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  return query.list();
  }
-  public Long getAttendedCountByBatch(Long batchId){
+  public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate){
 		Query query = getSession().createQuery(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId =:batchId");
+				" where model.trainingCampBatch.trainingCampBatchId =:batchId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
 		query.setParameter("batchId", batchId);
 		return (Long)query.uniqueResult();
   }
-  public List<Object[]> getDateWiseCountsByBatch(Long batchId){
+  public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate){
 	  Query query=getSession().createQuery(" select date(model.attendance.attendedTime),count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 	  " from TrainingCampAttendance model " +
-	  " where model.trainingCampBatch.trainingCampBatchId =:batchId " +
+	  " where model.trainingCampBatch.trainingCampBatchId =:batchId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate " +
 	  " group by date(model.attendance.attendedTime)");
+	  query.setParameter("fromDate",fromDate);
+	  query.setParameter("toDate",toDate);
 	  query.setParameter("batchId",batchId);
 	  return query.list();
   }
- public List<Object[]> getCampWiseAttendedCountByProgram(Long programId){
+ public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate){
 	 Query query=getSession().createQuery("" +
 	 " select  tcs.trainingCampId,count(distinct tca.attendance.tdpCadreId)" +
 	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
 	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and" +
-	 "       tca.trainingCampProgramId=:programId" +
+	 "       tca.trainingCampProgramId=:programId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate " +
 	 " group by tcs.trainingCampId");
+	 query.setParameter("fromDate",fromDate);
+	 query.setParameter("toDate",toDate);
 	 query.setParameter("programId",programId);
 	 return query.list();
  }

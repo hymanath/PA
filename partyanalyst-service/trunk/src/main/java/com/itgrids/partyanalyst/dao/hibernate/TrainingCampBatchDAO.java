@@ -106,20 +106,24 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
 	}
-	public Object[] getBatchDates(Long batchId){
-		Query query=getSession().createQuery("select date(model.fromDate),date(model.toDate) from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId");
+	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate){
+		Query query=getSession().createQuery("select date(model.fromDate),date(model.toDate) from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate");
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
 		query.setParameter("trainingCampBatchId",batchId);
 		return (Object[])query.uniqueResult();
 	}
 	
-	public List<Object[]> getCentersAndBatchCountByProgram(Long programId){
+	public List<Object[]> getCentersAndBatchCountByProgram(Long programId,Date fromDate,Date toDate){
 		
 		Query query=getSession().createQuery("" +
 		" select   model.trainingCampSchedule.trainingCampId,model.trainingCampSchedule.trainingCamp.campName,count(distinct model.trainingCampBatchId) " +
 		" from     TrainingCampBatch model " +
-		" where    model.trainingCampSchedule.trainingCampProgramId=:trainingCampProgramId " +
+		" where    model.trainingCampSchedule.trainingCampProgramId=:trainingCampProgramId and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate" +
 		" group by model.trainingCampSchedule.trainingCampId " +
 		" order by model.trainingCampSchedule.trainingCamp.campName");
+		query.setParameter("fromDate",fromDate);
+		query.setParameter("toDate",toDate);
 		query.setParameter("trainingCampProgramId",programId);
 		return query.list();
 	}
