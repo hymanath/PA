@@ -5104,7 +5104,7 @@ class TrainingCampService implements ITrainingCampService{
     	try {
 			LOG.info("Entered into getCompletedRunningUpcomingBatchIds");
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Date startDate = sdf.parse(startDateString);
 			Date endDate = sdf.parse(endDateString);
 			
@@ -5724,10 +5724,14 @@ class TrainingCampService implements ITrainingCampService{
    *   output: CadreFeedbackVO
    *   
   */
-	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId){
+	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromDateString,String toDateStrng){
 		
 		CadreFeedbackVO finalVO=new CadreFeedbackVO();
 		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = sdf.parse(fromDateString);
+			Date toDate = sdf.parse(toDateStrng);
 			//setStaticData
 			List<Object[]> llData=cadreLeadershipLevelDAO.getAllLeaderShipLevels();
 			List<Object[]> csData=cadreComminicationSkillsStatusDAO.getAllCadreComminicationSkills();
@@ -5750,17 +5754,17 @@ class TrainingCampService implements ITrainingCampService{
 				putSubMapDetails(finalVO.getMap(),hsData,"healthStatus");
 			}
 			
-			String queryString=getQueryforFeedbacks(programId,campId,batchId);
-			String achieveQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"achieve");
-			String goalQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"goal");
+			String queryString=getQueryforFeedbacks(programId,campId,batchId,fromDate,toDate);
+			String achieveQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"achieve",fromDate,toDate);
+			String goalQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"goal",fromDate,toDate);
 			
-			Long achievementCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(achieveQuery,programId,campId,batchId);
-			Long goalsCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(goalQuery,programId,campId,batchId);
+			Long achievementCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(achieveQuery,programId,campId,batchId,fromDate,toDate);
+			Long goalsCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(goalQuery,programId,campId,batchId,fromDate,toDate);
 			finalVO.setAchievementCount(achievementCount!=null?achievementCount:0l); 
 			finalVO.setGaoalCount(goalsCount!=null?goalsCount:0l);
 			
 			
-           List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId);
+           List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId,fromDate,toDate);
            if(feedBacks!=null && feedBacks.size()>0){
 				for(Object[] obj:feedBacks){
 					
@@ -5837,7 +5841,7 @@ class TrainingCampService implements ITrainingCampService{
 				mainMap.get(type).getSubMap().put((Long)obj[0],vo);
 			}
 	 }
-	  public String getQueryforFeedbacks(Long programId,Long campId,Long batchId){
+	  public String getQueryforFeedbacks(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
 			String queryString=null;
 			StringBuilder sbM=new StringBuilder();
 			try{
@@ -5854,7 +5858,7 @@ class TrainingCampService implements ITrainingCampService{
 						   " left join tccfd.cadreComminicationSkillsStatus cs " +
 						   " left join tccfd.cadreLeadershipSkillsStatus ls " +
 						   " left join tccfd.cadreHealthStatus hs " +
-						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId ");
+						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId and date(tccfd.trainingCampBatch.fromDate) >= :fromDate and date(tccfd.trainingCampBatch.toDate) <= :toDate ");
 				           
 	           if(batchId==null && campId==null && programId!=null){
 					
@@ -5882,7 +5886,7 @@ class TrainingCampService implements ITrainingCampService{
 			queryString=sbM.toString();
 			return queryString;
 		}
-		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type){
+		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type,Date fromDate,Date toDate){
 			String queryString=null;
 			StringBuilder sbM=new StringBuilder();
 			try{
@@ -5895,7 +5899,7 @@ class TrainingCampService implements ITrainingCampService{
 			    }else if(type.equalsIgnoreCase("goal")){
 			    	sbM.append(",TrainingCampCadreGoal model ");
 			    }
-				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId ");
+				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
 				           
 	           if(batchId==null && campId==null && programId!=null){
 					sbM.append(" and tca.trainingCampProgramId=:programId");
@@ -5927,16 +5931,18 @@ class TrainingCampService implements ITrainingCampService{
 	   *   Return: List<SimpleVO> 
 	   *   
 	  */
-		public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId){
+		public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromDateString,String toDateString){
 			List<SimpleVO> finalList=null;
 			try{
 				 Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
-				 
+				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				 Date fromDate = sdf.parse(fromDateString);
+				 Date toDate = sdf.parse(toDateString);
 				//preinstantiate
 				preInstantiate(finalMap,programId,campId,batchId);
 				
-				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId);
-				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId);
+				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId,fromDate,toDate);
+				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId,fromDate,toDate);
 				
 				if(totalCounts!=null && totalCounts.size()>0){
 					
@@ -5953,8 +5959,8 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 				
-				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId);
-			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId);
+				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId,fromDate,toDate);
+			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId,fromDate,toDate);
 				if(levelCounts!=null && levelCounts.size()>0){//did,dname,lid,lname,count
 					
 					for(Object[] obj:levelCounts){
@@ -6069,7 +6075,7 @@ class TrainingCampService implements ITrainingCampService{
 			return map;
 		}
 		
-		public String getAttendedlocWiseCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId){
+		public String getAttendedlocWiseCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
 			
 			String queryString=null;
 			 try{
@@ -6077,7 +6083,7 @@ class TrainingCampService implements ITrainingCampService{
 				 StringBuilder sb= new StringBuilder(); 
 				 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
 				 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
-				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId");
+				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
 				 
 				 if(batchId==null && campId==null && programId!=null ){
 					 sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6106,7 +6112,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		
 		
-		public String getCommiteesCadreCountByLoc(Long programId,Long campId,Long batchId){
+		public String getCommiteesCadreCountByLoc(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
 			String queryString=null;
 			try{
 				
@@ -6118,7 +6124,7 @@ class TrainingCampService implements ITrainingCampService{
 						   " count(distinct tca.attendance.tdpCadreId)");
 				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
 						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and " +
-						   "       model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,6,11) ");
+						   "       model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,6,11) and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
 				
 				if(batchId==null && campId==null && programId!=null){
 					sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6152,15 +6158,17 @@ class TrainingCampService implements ITrainingCampService{
 	   *   Return:SimpleVO 
 	   *   
 	  */
-		public SimpleVO getAttendedCountSummaryByBatch(Long batchId){
+		public SimpleVO getAttendedCountSummaryByBatch(Long batchId,String fromDateString,String toDateString){
 			SimpleVO simpleVO=new SimpleVO();
+			SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			try{ 
-				
+				Date fromDate1 = sdf1.parse(fromDateString);
+				Date toDate1 = sdf1.parse(toDateString);
 				//Confirmed Count.
-				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId);
+				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,fromDate1,toDate1);
 				 //total count attended.
-				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId);
+				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,fromDate1,toDate1);
 				 String perc=null;
 				 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
 					 float percentage = (totalBatchCount * 100/(float)confirmedCount);
@@ -6168,7 +6176,7 @@ class TrainingCampService implements ITrainingCampService{
 				 }
 				 
 				 //preinstantiate.
-				  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId);
+				  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,fromDate1,toDate1);
 				  Date fromDate=null;
 				  Date toDate=null;
 				  if(batchDates!=null){
@@ -6192,7 +6200,7 @@ class TrainingCampService implements ITrainingCampService{
 				  }
 				 
 				 //date wise counts.
-				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId);
+				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,fromDate1,toDate1);
 				 
 				 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 					 
@@ -6244,16 +6252,19 @@ class TrainingCampService implements ITrainingCampService{
 		   *   
 		  */
 		
-		public SimpleVO getProgramSummary(Long programId){
+		public SimpleVO getProgramSummary(Long programId,String fromDateString,String toDateString){
 			SimpleVO simpleVO=new SimpleVO();
 			try{
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				Date fromDate = sdf.parse(fromDateString);
+				Date toDate = sdf.parse(toDateString);
 				Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
 				
 				Long centersCount=0l;
 				Long totalBatchesCount=0l;
 				Long totalAttendedCount=0l;
 						
-				List<Object[]> batchesCount=trainingCampBatchDAO.getCentersAndBatchCountByProgram(programId);
+				List<Object[]> batchesCount=trainingCampBatchDAO.getCentersAndBatchCountByProgram(programId,fromDate,toDate);
 				if(batchesCount!=null && batchesCount.size()>0){
 					centersCount=Long.valueOf(new Integer(batchesCount.size()).longValue());
 					for(Object[] obj:batchesCount){
@@ -6267,7 +6278,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 				
-				List<Object[]> cadrelist=trainingCampAttendanceDAO.getCampWiseAttendedCountByProgram(programId);
+				List<Object[]> cadrelist=trainingCampAttendanceDAO.getCampWiseAttendedCountByProgram(programId,fromDate,toDate);
 				if(cadrelist!=null && cadrelist.size()>0){
 					for(Object[] obj:cadrelist){
 						SimpleVO vo=finalMap.get((Long)obj[0]);
