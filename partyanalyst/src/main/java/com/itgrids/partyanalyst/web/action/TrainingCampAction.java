@@ -1901,9 +1901,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		
     		jObj = new JSONObject(getTask());
+    		
     		Long programId = jObj.getLong("programId");
+    		if(programId==0l){
+    			programId=null;
+    		}
     		Long campId = jObj.getLong("campId");
+    		if(campId==0l){
+    			campId=null;
+    		}
     		Long batchId = jObj.getLong("batchId");
+    		if(batchId==0l){
+    			batchId=null;
+    		}
     		String dates[] = jObj.getString("dates").split("-");
     		
     		finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim());
@@ -1921,8 +1931,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		
     		jObj = new JSONObject(getTask());
     		Long programId = jObj.getLong("programId");
+    		if(programId==0l){
+    			programId=null;
+    		}
     		Long campId = jObj.getLong("campId");
+    		if(campId==0l){
+    			campId=null;
+    		}
     		Long batchId = jObj.getLong("batchId");
+    		if(batchId==0l){
+    			batchId=null;
+    		}
+    		
     		String dates[] = jObj.getString("dates").split("-");
     		simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim());
     		
@@ -1970,8 +1990,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		
     		jObj = new JSONObject(getTask());
+    		
     		Long programId = jObj.getLong("programId");
     		Long campId = jObj.getLong("campId");
+    		
     		String date[] = jObj.getString("dates").split("-");
     		simpleVO = trainingCampService.getCampSummary(programId,campId,date[0].trim(),date[1].trim());
     		
