@@ -85,37 +85,37 @@ header.eventsheader {
                                         	<td>
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
-                                                    <li><h1 class="m_0" id="totalTariningPrograms"></h1></li>
+                                                    <li><h1 class="m_0" id="totalTariningPrograms">0</h1></li>
                                                 </ul>
                                                 <p class="m_0">Training Programs</p>
                                             </td>
                                             <td>
                                             	<ul class="list-inline m_0">
                                                 	<li>Total</li>
-                                                    <li><h1 class="m_0" id="totalTrainingCenters"></h1></li>
+                                                    <li><h1 class="m_0" id="totalTrainingCenters">0</h1></li>
                                                 </ul>
                                                 <p class="m_0">Training Center</p>
                                             </td>
                                             <td>
                                             	<div class="display-style">
-                                            	<h1 class="m_0" id="totalMembers"></h1> 
+                                            	<h1 class="m_0" id="totalMembers">0</h1> 
 												<p class="m_0">Total Members</p>
                                                 </div>
                                                 <ul class="display-style ul-top-block m_0">
-                                                	<li class="text-danger">UPCOMING -<span class="pull-right" id="upcomingMembers"> </span></li>
-                                                    <li class="text-yellow">RUNNING - <span class="pull-right" id="runningMembers"></span></li>
-                                                    <li class="text-success">COMPLETED - <span class="pull-right" id="completedMembers"></span></li>
+                                                	<li class="text-danger">UPCOMING -<span class="pull-right" id="upcomingMembers">0</span></li>
+                                                    <li class="text-yellow">RUNNING - <span class="pull-right" id="runningMembers">0</span></li>
+                                                    <li class="text-success">COMPLETED - <span class="pull-right" id="completedMembers">0</span></li>
                                                 </ul>
                                             </td>
                                             <td>
                                             	<ul class="list-inline m_0">
                                                 	<li><div id="donutchart" style="height: 66px;width:100px;"></div></li>
                                                     <li>
-                                                    	<h4 class="m_0">TOTAL TRAINING BATCHES - <span id="totalTrainingBatches"></span></h4>
+                                                    	<h4 class="m_0">TOTAL TRAINING BATCHES - <span id="totalTrainingBatches">0</span></h4>
                                                         <ul class="list-inline">
-                                                            <li class="text-danger">UPCOMING BATCHES - <span id="upcomingBatches"></span> // </li>
-                                                            <li class="text-yellow">RUNNING - <span id="runningBatches"></span> // </li>
-                                                            <li class="text-success">COMPLETED - <span id="completedBatches"></span></li>
+                                                            <li class="text-danger">UPCOMING BATCHES - <span id="upcomingBatches">0</span> // </li>
+                                                            <li class="text-yellow">RUNNING - <span id="runningBatches">0</span> // </li>
+                                                            <li class="text-success">COMPLETED - <span id="completedBatches">0</span></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -134,7 +134,7 @@ header.eventsheader {
                                         	<h4 class="panel-title text-bold">ALL TRAINING PROGRAM WISE DETAILS</h4>
                                         </div>
                                         <div class="panel-body pad_0">
-                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv"></div>
+                                        	<div class="table-responsive table-scroll" id="allProgramWiseDetailsDIv">0</div>
                                         </div>
                                     </div>
                                 </div>
@@ -392,13 +392,13 @@ header.eventsheader {
 
 $(function () {
 	var cb = function(start, end, label) {
-	console.log(start.toISOString(), end.toISOString(), label);
-	$('#selectDate span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	//console.log(start.toISOString(), end.toISOString(), label);
+	$('#selectDate span').html(start.format('D MMMM, YYYY')- + ' - ' + end.format('D MMMM, YYYY'));
 	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
   }
   var optionSet1 = {
-	startDate: moment().subtract(29, 'days'),
-	endDate: moment(),
+	startDate: moment().startOf('month'),
+	endDate: moment().endOf('month'),
 	showDropdowns: true,
 	showWeekNumbers: true,
 	timePicker: false,
@@ -408,18 +408,18 @@ $(function () {
 	   //'Today': [moment(), moment()],
 	   //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	   //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   '30 Days': [moment().subtract(29, 'days'), moment()],
-	   '60 Days': [moment().subtract(60, 'days'), moment()],
-	   '180 Days': [moment().subtract(180, 'days'), moment()],
-	   '365 Days': [moment().subtract(365, 'days'), moment()],
+	   '30 Days': [ moment().subtract(30, 'days'),moment()],
+	   '60 Days': [moment().subtract(60, 'days'),moment()],
+	   '180 Days': [moment().subtract(6, 'months'),moment()],
+	   '365 Days': [moment().subtract(1, 'year'),moment()],
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	   //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	},
 	opens: 'left',
 	buttonClasses: ['btn btn-default'],
 	applyClass: 'btn-small btn-primary',
 	cancelClass: 'btn-small',
-	format: 'MM/DD/YYYY',
+	format: 'DD/MM/YYYY',
 	separator: ' to ',
 	locale: {
 		applyLabel: 'Submit',
@@ -432,24 +432,27 @@ $(function () {
 		firstDay: 1
 	}
   };
-  $('#selectDate span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+  $('#selectDate span').html(moment().subtract(29, 'days').format('D MMMM, YYYY') + ' - ' + moment().format('D MMMM, YYYY'));
 
   $('#selectDate').daterangepicker(optionSet1, cb);
 
   $('#selectDate').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('#selectDate').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-  $('#selectDate').on('apply.daterangepicker', function(ev, picker) { 
-	console.log("apply event fired, start/end dates are " 
-	  + picker.startDate.format('MMMM D, YYYY') 
+  /*$('#selectDate').on('apply.daterangepicker', function(ev, picker) { 
+	 console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('D MMMM, YYYY') 
 	  + " to " 
-	  + picker.endDate.format('MMMM D, YYYY')
-	); 
-  });
+	  + picker.endDate.format('D MMMM , YYYY')
+	);  
+  });*/
   $('#selectDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 	
-	getTrainingCenterDetailsBasedOnDates();
-	getAttendedCountForBatchesByLocation();
-	getInvitedAttendedCadreCountByBatchIds();
+	//getTrainingCenterDetailsBasedOnDates();
+	//getAttendedCountForBatchesByLocation();
+	//getInvitedAttendedCadreCountByBatchIds();
+	
+	$(".ranges ul li:nth-child(5)").trigger("click");
+	
 });
 
  $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
@@ -466,6 +469,16 @@ function getTrainingCenterDetailsBasedOnDates(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+		$("#totalTariningPrograms").html("0");
+		$("#totalTrainingCenters").html("0");
+		$("#totalMembers").html("0");
+		$("#upcomingMembers").html("0");
+		$("#runningMembers").html("0");
+		$("#completedMembers").html("0");
+		$("#totalTrainingBatches").html("0");
+		$("#upcomingBatches").html("0");
+		$("#runningBatches").html("0");
+		$("#completedBatches").html("0");
 	   if(result!=null && result.completed!=null && result.completed.programDetails!=null && result.completed.programDetails.length>0){
 		  var str='';
 			str+='<table class="table table-bordered m_0">';
@@ -510,7 +523,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].completedMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
@@ -577,7 +590,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].runningMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].runningMemberCount+'</td>';
@@ -644,7 +657,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].upCommingMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].upCommingMemberCount+'</td>';
@@ -909,6 +922,26 @@ function getTrainingCenterDetailsBasedOnDates(){
 		str+='</table>';
 		$('#constWiseDivId').html(str);
 	}
+	
+	$(document).on('click', '.applyBtn', function(){
+		getTrainingCenterDetailsBasedOnDates();
+		getAttendedCountForBatchesByLocation();
+		getInvitedAttendedCadreCountByBatchIds();
+	});
+	
+	$(document).on("click",".ranges li",function(){
+		getTrainingCenterDetailsBasedOnDates();
+		getAttendedCountForBatchesByLocation();
+		getInvitedAttendedCadreCountByBatchIds();
+	});
+	
+	$(document).on("click",".batchId",function(){
+		var progId = $(this).attr("attr_prog_id");
+		var campId = $(this).attr("attr_camp_id");
+		var batchId = $(this).attr("attr_batch_id");
+		var dates = $("#selectDate").val();
+		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'', '_blank');
+	});
 </script>
 </body>
 </html>	

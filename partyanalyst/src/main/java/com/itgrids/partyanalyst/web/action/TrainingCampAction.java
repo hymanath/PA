@@ -102,8 +102,44 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Map<String,TrainingCampVO> returnResult;
 	private CadreFeedbackVO finalVO;
 	private List<SimpleVO> simpleVOList;
+	private Long pd;//programId
+	private Long bd;//batchId
+	private Long cd;//campId;
+	private String dts;//fromDate&todate
 	
 	
+	public Long getPd() {
+		return pd;
+	}
+
+	public void setPd(Long pd) {
+		this.pd = pd;
+	}
+
+	public Long getBd() {
+		return bd;
+	}
+
+	public void setBd(Long bd) {
+		this.bd = bd;
+	}
+
+	public Long getCd() {
+		return cd;
+	}
+
+	public void setCd(Long cd) {
+		this.cd = cd;
+	}
+
+	public String getDts() {
+		return dts;
+	}
+
+	public void setDts(String dts) {
+		this.dts = dts;
+	}
+
 	public CadreFeedbackVO getFinalVO() {
 		return finalVO;
 	}
@@ -1812,7 +1848,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[1].trim(),temp[0].trim(),0l);
+    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[0].trim(),temp[1].trim(),0l);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -1827,7 +1863,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[1].trim(),temp[0].trim(),0l);
+    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[0].trim(),temp[1].trim(),0l);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -1853,7 +1889,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[0].trim(),temp[1].trim(),0l,"All");
+			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),0l,"All");
 		} catch (Exception e) {
 			LOG.error("Exception raised at TODO: handle exception", e);
 		}
@@ -1868,7 +1904,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long programId = jObj.getLong("programId");
     		Long campId = jObj.getLong("campId");
     		Long batchId = jObj.getLong("batchId");
-    		finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId);
+    		String dates[] = jObj.getString("dates").split("-");
+    		
+    		finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim());
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getattendedcountByFeedBacks() method, Exception - ",e);
@@ -1885,7 +1923,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long programId = jObj.getLong("programId");
     		Long campId = jObj.getLong("campId");
     		Long batchId = jObj.getLong("batchId");
-    		simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId);
+    		String dates[] = jObj.getString("dates").split("-");
+    		simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim());
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountsByProgramOrCampOrBatch() method, Exception - ",e);
@@ -1900,7 +1939,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		
     		jObj = new JSONObject(getTask());
     		Long batchId = jObj.getLong("batchId");
-    		simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId);
+    		String dates[] = jObj.getString("dates").split("-");
+    		simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,dates[0].trim(),dates[1].trim());
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountSummaryByBatch() method, Exception - ",e);
@@ -1915,7 +1955,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		
     		jObj = new JSONObject(getTask());
     		Long programId = jObj.getLong("programId");
-    		simpleVO = trainingCampService.getProgramSummary(programId);
+    		String date[] = jObj.getString("dates").split("-");
+    		simpleVO = trainingCampService.getProgramSummary(programId,date[0].trim(),date[1].trim());
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getProgramSummary() method, Exception - ",e);
