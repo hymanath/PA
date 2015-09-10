@@ -10858,5 +10858,10 @@
 		</result>
 	</action>
 			
+	<action name="getProgCampBatchNamesAction" class="trainingCampAction" method="getProgCampBatchNames">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>		
 </package>
 </struts>      

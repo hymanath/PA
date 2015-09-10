@@ -74,7 +74,7 @@ header.trainingHeader {
             <div class="col-md-12">
                 <div class="panel panel-default" style="box-shadow:0px 0px 5px rgba(0,0,0,0.2)">
                     <div class="panel-heading bg_c">
-                        <h3>TRAINING PROGRAMME DASHBOARD<span class="font-10">(Leadership Skills)</span>
+                        <h3>TRAINING PROGRAMME DASHBOARD<span class="font-10">(<span class="font-10" id="titleName"></span>)</span>
                         <!--<select class="pull-right">
                         	<option>Select Program / View Other Program</option>
                         </select>-->
@@ -472,6 +472,36 @@ function buildCampSummaryDetails(result)
 			str+='</table>';
 		str+='</div>';
 	$("#programSummaryDivId").html(str);
+}
+
+getProgCampBatchNames();
+function getProgCampBatchNames(){
+	
+	var jsObj = {
+		programId:programId,
+		campId:campId,
+		batchId:batchId
+	}
+	
+	$.ajax({
+		type:'POST',
+		url :'getProgCampBatchNamesAction.action',
+		data:{task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result!=null){
+			var temp="";
+			if(result.progName!=""){
+				temp=temp+""+result.progName;
+			}
+			if(result.campName!=""){
+				temp=temp+" - "+result.campName;
+			}
+			if(result.batchName!=""){
+				temp=temp+" - "+result.batchName;
+			}
+			$("#titleName").html(temp);
+		}
+	});
 }
 
 </script>
