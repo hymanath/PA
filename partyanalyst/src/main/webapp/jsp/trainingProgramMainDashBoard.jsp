@@ -98,17 +98,22 @@ header.trainingHeader {
                                 	<table class="table table-bordered m_0 bg_ff">
                                     	<tr>
                                         	<td>
-                                            	<span>TOTAL TRAINED MEMBERS <span class="pull-right">1800</span></span>
+                                            	<span>TOTAL TRAINED MEMBERS <span class="pull-right" id="totalTrainedId">0</span></span>
+                                            </td>
+                                        </tr>
+										<tr>
+                                        	<td>
+                                            	<span>DISTRICT LEVEL MEMBERS <span class="pull-right" id="districtLevelTotalId">0</span></span>
                                             </td>
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<span>MANDAL LEVEL MEMBERS<span class="pull-right">200</span></span>
+                                            	<span>MANDAL LEVEL MEMBERS<span class="pull-right" id="mandalLevelTotalId">0</span></span>
                                             </td>
                                         </tr>
                                         <tr>
                                         	<td>
-                                            	<span>VILLAGE LEVEL MEMBERS<span class="pull-right">800</span></span>
+                                            	<span>VILLAGE LEVEL MEMBERS<span class="pull-right" id="villageLevelTotalId">0</span></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -228,6 +233,13 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 			str+='</table>';
 		
 	$("#districtWiseDetailsId").html(str);
+	
+	//total values setting block.
+	$('#totalTrainedId').html(result[0].totalCount);
+	$('#districtLevelTotalId').html(result[0].id);
+	$('#mandalLevelTotalId').html(result[0].count);
+	$('#villageLevelTotalId').html(result[0].total);
+	
 }
 	
 function getattendedcountByFeedBacks()
