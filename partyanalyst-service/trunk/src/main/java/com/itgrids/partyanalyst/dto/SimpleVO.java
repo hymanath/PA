@@ -20,6 +20,29 @@ public class SimpleVO implements java.io.Serializable{
    
    private Map<Long,SimpleVO> map;
    
+   private String progName="";
+   private String campName="";
+   private String batchName="";
+   
+   
+	public String getProgName() {
+	return progName;
+}
+public void setProgName(String progName) {
+	this.progName = progName;
+}
+public String getCampName() {
+	return campName;
+}
+public void setCampName(String campName) {
+	this.campName = campName;
+}
+public String getBatchName() {
+	return batchName;
+}
+public void setBatchName(String batchName) {
+	this.batchName = batchName;
+}
 	public Long getId() {
 		return id;
 	}
