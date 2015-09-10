@@ -515,15 +515,15 @@ function getTrainingCenterDetailsBasedOnDates(){
 				var myResult = result.completed.programDetails;
 				if(result.completed.completedBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].completedMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].completedMemberCount+'</td>';
@@ -582,15 +582,15 @@ function getTrainingCenterDetailsBasedOnDates(){
 			for(var i in result.running.programDetails){
 				var myResult = result.running.programDetails;
 				str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].runningMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].runningMemberCount+'</td>';
@@ -649,15 +649,15 @@ function getTrainingCenterDetailsBasedOnDates(){
 				var myResult = result.upcoming.programDetails;
 				if(result.upcoming.upComingBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+">"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+">"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='batchId' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].upCommingMemberCount!=null){
 											str+='<td>'+schedule.batchDetails[m].upCommingMemberCount+'</td>';
@@ -703,10 +703,10 @@ function getTrainingCenterDetailsBasedOnDates(){
 			$("#totalTrainingCenters").html(result.completed.totalTrainingCenters);
 			for(var i in result.completed.programWiseDetails){
 				str+='<tr>';
-				str+='<td rowspan='+result.completed.programWiseDetails[i].campDetails.length+'>'+result.completed.programWiseDetails[i].programName+'</td>';
+				str+='<td class="summaryCls" title="Click Here To View Program Summary" style="Cursor:Pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_batch_id="0" attr_camp_id="0" rowspan='+result.completed.programWiseDetails[i].campDetails.length+'>'+result.completed.programWiseDetails[i].programName+'</td>';
 				if(result.completed.programWiseDetails[i].campDetails!=null && result.completed.programWiseDetails[i].campDetails.length>0){
 					for(var j in result.completed.programWiseDetails[i].campDetails){
-						str+='<td>'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
+						str+='<td class="summaryCls" title="Click Here TO View Camp Summary" style="cursor:pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_batch_id="0" attr_camp_id="'+result.completed.programWiseDetails[i].campDetails[j].campId+'">'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
 						if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails.length>0){
 							for(var k in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails){
 								
@@ -935,7 +935,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 		getInvitedAttendedCadreCountByBatchIds();
 	});
 	
-	$(document).on("click",".batchId",function(){
+	$(document).on("click",".summaryCls",function(){
 		var progId = $(this).attr("attr_prog_id");
 		var campId = $(this).attr("attr_camp_id");
 		var batchId = $(this).attr("attr_batch_id");
