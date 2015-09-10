@@ -19,4 +19,5 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate);
 	public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate);
 	public Long getAttendedCountByCamp(Long programId,Long campId,Date fromDate,Date toDate);
+	public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId);
 }
