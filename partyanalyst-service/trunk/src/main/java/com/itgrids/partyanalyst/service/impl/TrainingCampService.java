@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
@@ -179,7 +180,7 @@ class TrainingCampService implements ITrainingCampService{
     private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
     private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
     private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
-	
+    private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
 
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
@@ -565,6 +566,10 @@ class TrainingCampService implements ITrainingCampService{
 	public void setTdpCadreFamilyInfoDAO(
 			ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO) {
 		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
+	}
+    
+	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
+		this.tdpCommitteeLevelDAO = tdpCommitteeLevelDAO;
 	}
 
 	public List<BasicVO> getAllPrograms()
@@ -5993,13 +5998,23 @@ class TrainingCampService implements ITrainingCampService{
 				 Date fromDate = sdf.parse(fromDateString);
 				 Date toDate = sdf.parse(toDateString);
 				 
-				 Long totalTrainedNumbers=0l;
-				 Long totalDistLevelNumbers=0l; 
-				 Long totalMandalLevelNumbers=0l;
-				 Long totalVillageLevelNumbers=0l;
+				 Long totalTrainedNumbers=0l; 
+				//get commitee levels.
+				 Map<Long,SimpleVO> totalCountsMap=new LinkedHashMap<Long, SimpleVO>();
+				 List<Object[]> committeelevels=tdpCommitteeLevelDAO.getAllLevels();
+				 if(committeelevels!=null && committeelevels.size()>0){
+					 for(Object[] obj:committeelevels){
+						 SimpleVO vo=new SimpleVO();
+						 vo.setId((Long)obj[0]);
+						 vo.setName(obj[1]!=null?obj[1].toString():"");
+						 vo.setCount(0l);
+						 totalCountsMap.put((Long)obj[0],vo);
+					 }
+				 }
 				 
+					
 				//preinstantiate
-				preInstantiate(finalMap,programId,campId,batchId);
+				preInstantiate(finalMap,programId,campId,batchId,committeelevels);
 				
 				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId,fromDate,toDate);
 				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId,fromDate,toDate);
@@ -6037,27 +6052,17 @@ class TrainingCampService implements ITrainingCampService{
 							levelVO.setCount(levelVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l));
 							//level wise totalCount
 							Long levelId=(Long)obj[2];
-							if(levelId==11l){
-								totalDistLevelNumbers= totalDistLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}else if(levelId==5l){
-								totalMandalLevelNumbers=totalMandalLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}else if(levelId==6l){
-								totalVillageLevelNumbers=totalVillageLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}
+							SimpleVO totalVO=totalCountsMap.get(levelId);
+							totalVO.setCount(totalVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l));
+							
 						}else{
 							
 						  SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
 						  levelVO.setCount(obj[4]!=null?(Long)obj[4]:0l);
 						  //level wise totalCount
 						  Long levelId=(Long)obj[2];
-						  if(levelId==11l){
-								totalDistLevelNumbers= totalDistLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}else if(levelId==5l){
-								totalMandalLevelNumbers=totalMandalLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}else if(levelId==6l){
-								totalVillageLevelNumbers=totalVillageLevelNumbers+(obj[4]!=null?(Long)obj[4]:0l);
-							}
-						  
+						  SimpleVO totalVO=totalCountsMap.get(levelId);
+						  totalVO.setCount(totalVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l)); 
 						}
 					}
 				}
@@ -6077,9 +6082,7 @@ class TrainingCampService implements ITrainingCampService{
 					finalMap.clear();
 					if(finalList!=null && finalList.size()>0){
 						finalList.get(0).setTotalCount(totalTrainedNumbers);
-						finalList.get(0).setId(totalDistLevelNumbers);
-						finalList.get(0).setLocValue(totalMandalLevelNumbers);
-						finalList.get(0).setTotal(totalVillageLevelNumbers);
+						finalList.get(0).setSimpleVOList2(new ArrayList<SimpleVO>(totalCountsMap.values()));
 					}
 				}
 				
@@ -6088,7 +6091,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return finalList;
 	  }
-		public void preInstantiate(Map<Long,SimpleVO> finalMap,Long programId,Long campId,Long batchId){
+		public void preInstantiate(Map<Long,SimpleVO> finalMap,Long programId,Long campId,Long batchId,List<Object[]> committeelevels){
 			
 			try{
 			    
@@ -6112,6 +6115,7 @@ class TrainingCampService implements ITrainingCampService{
 					
 				}
 				
+				
 	            if(districts!=null && districts.size()>0){
 				    for(Object[] obj:districts){
 				    	
@@ -6119,7 +6123,7 @@ class TrainingCampService implements ITrainingCampService{
 				    	districtVO.setId((Long)obj[0]);
 				    	districtVO.setName(obj[1]!=null?obj[1].toString():"");
 				    	districtVO.setCount(0l);
-				    	Map<Long,SimpleVO> levelMap=setlevelData();
+				    	Map<Long,SimpleVO> levelMap=setlevelData(committeelevels);
 				    	districtVO.setMap(levelMap);
 				    	finalMap.put((Long)obj[0],districtVO);
 				    }
@@ -6127,7 +6131,7 @@ class TrainingCampService implements ITrainingCampService{
 			    	districtVO.setId(0l);
 			    	districtVO.setName("Others");
 			    	districtVO.setCount(0l);
-			    	Map<Long,SimpleVO> levelMap=setlevelData();
+			    	Map<Long,SimpleVO> levelMap=setlevelData(committeelevels);
 			    	districtVO.setMap(levelMap);
 			    	finalMap.put(0l,districtVO);
 				}
@@ -6137,28 +6141,19 @@ class TrainingCampService implements ITrainingCampService{
 			}
 		}
 		
-		public Map<Long,SimpleVO> setlevelData(){
+		public Map<Long,SimpleVO> setlevelData(List<Object[]> committeelevels){
 			
 			Map<Long,SimpleVO> map=new LinkedHashMap<Long,SimpleVO>();
-			
-			SimpleVO distVO=new SimpleVO();
-			distVO.setName("district");
-			distVO.setId(11l);
-			distVO.setCount(0l);
-			
-			SimpleVO mandalVO=new SimpleVO();
-			mandalVO.setName("mandal");
-			mandalVO.setId(5l);
-			mandalVO.setCount(0l);
-			
-			SimpleVO villageVO=new SimpleVO();
-			villageVO.setName("village");
-			villageVO.setId(6l);
-			villageVO.setCount(0l);
-			
-			map.put(11l, distVO);
-			map.put(5l, mandalVO);
-			map.put(6l, villageVO);
+			if(committeelevels!=null && committeelevels.size()>0){
+			   for(Object[] obj:committeelevels){
+				   
+				   SimpleVO vo=new SimpleVO();
+				   vo.setId((Long)obj[0]);
+				   vo.setName(obj[1]!=null?obj[1].toString():"");
+				   vo.setCount(0l);
+				   map.put((Long)obj[0],vo);
+			   }
+			}
 			
 			return map;
 		}
@@ -6212,7 +6207,7 @@ class TrainingCampService implements ITrainingCampService{
 						   " count(distinct tca.attendance.tdpCadreId)");
 				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
 						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and " +
-						   "       model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,6,11) and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
+						   "       date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
 				
 				if(batchId==null && campId==null && programId!=null){
 					sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6230,14 +6225,15 @@ class TrainingCampService implements ITrainingCampService{
 					sb.append(" and tca.trainingCampBatchId=:batchId");
 					
 				}
-			   sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId " +
-			 		    " order by FIELD(model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId , 6,5,11)");
+			   sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+			 		    
 			   queryString=sb.toString();
 			}catch(Exception e){
 				 LOG.error(" Error Occured in getCommiteesCadreCountByLoc method in TraininingCampService class" ,e);
 			}
 			return queryString;
 		}
+		
 		
 	 /**
 	   *   @author    : Sreedhar
