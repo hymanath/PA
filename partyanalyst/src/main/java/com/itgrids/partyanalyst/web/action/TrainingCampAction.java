@@ -2051,5 +2051,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
     
+    public String getMaxNumberForBatch()
+    {
+    	try{
+    	jObj = new JSONObject(getTask());
+    	Long batchId = jObj.getLong("batchId");
+    	memberList = trainingCampService.getMaxNumberForBatch(batchId);
+    			
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getMaxNumberForBatch() method, Exception - ",e);
+    	}
+    	return Action.SUCCESS;
+    }
+    
     
 }
