@@ -20,5 +20,13 @@ public class TdpCommitteeLevelDAO extends GenericDaoHibernate<TdpCommitteeLevel,
 		
 		return query.list();
 	}
+	public List<Object[]> getLevels(){
+		Query query = getSession().createQuery(" select model.tdpCommitteeLevelId," +
+				" model.tdpCommitteeLevel " +
+				" from TdpCommitteeLevel model " +
+				" order by model.tdpCommitteeLevel");
+		
+		return query.list();
+	}
 	
 }

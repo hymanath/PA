@@ -22,10 +22,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  " select    model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel,count(distinct model.attendance.tdpCadreId) " +
 	  " from      TrainingCampAttendance model,TdpCommitteeMember model2 " +
 	  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
-	  "           model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,6,11) and " +
-	  "           model.trainingCampBatchId in (:trainingCampBatchIds) " +
-	  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId " +
-	  " order by  FIELD(model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId , 6,5,11)");
+	  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' " +
+	  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
 	  query.setParameterList("trainingCampBatchIds",batchIds);
 	  return query.list();
   }

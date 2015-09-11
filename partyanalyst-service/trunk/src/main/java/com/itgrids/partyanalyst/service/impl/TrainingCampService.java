@@ -5752,21 +5752,22 @@ class TrainingCampService implements ITrainingCampService{
 		try{
 	   		
 			Map<Long,IdNameVO> finalMap=new LinkedHashMap<Long,IdNameVO>();
+			
 			IdNameVO villageVO=new IdNameVO();
 			villageVO.setId(6l);
-			villageVO.setName("village");
+			villageVO.setName("VILLAGE/WARD LEVEL COMMITTEE MEMBERS");
 			villageVO.setDistrictid(0l);
 			finalMap.put(6l,villageVO);
 			
 			IdNameVO mandalVO=new IdNameVO();
 			mandalVO.setId(5l);
-			mandalVO.setName("mandal");
+			mandalVO.setName("MANDAL/WARD/DIVISION LEVEL COMMITTEE MEMBERS");
 			mandalVO.setDistrictid(0l);
 			finalMap.put(5l,mandalVO);
 			
 			IdNameVO districtVO=new IdNameVO();
 			districtVO.setId(11l);
-			districtVO.setName("district");
+			districtVO.setName("DISTRICT LEVEL COMMITTEE MEMBERS");
 			districtVO.setDistrictid(0l);
 			finalMap.put(11l,districtVO);
 			
@@ -5779,12 +5780,25 @@ class TrainingCampService implements ITrainingCampService{
 					List<Long> batchIds=trainingCampVO.getCompletedBatchIds();
 					if(batchIds!=null && batchIds.size()>0){
 						List<Object[]> list=trainingCampAttendanceDAO.getAttendedCountForBatchesByLocation(batchIds);
+						
 						if(list!=null && list.size()>0){
 							for(Object[] obj:list){
-								IdNameVO vo=finalMap.get((Long)obj[0]);
-								vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+								Long levelId=(Long)obj[0];
+								
+								if(levelId==6l || levelId==8l){
+									IdNameVO vo=finalMap.get(6l);
+									vo.setDistrictid(vo.getDistrictid()+(obj[2]!=null?(Long)obj[2]:0l));
+								}else if(levelId==5l ||levelId==7l || levelId==9l){
+									IdNameVO vo=finalMap.get(5l);
+									vo.setDistrictid(vo.getDistrictid()+(obj[2]!=null?(Long)obj[2]:0l));
+								}else if(levelId==11l){
+									IdNameVO vo=finalMap.get(11l);
+									vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+								}
+								
 							}
 						}
+						
 					}
 				}
 			}
@@ -6112,13 +6126,15 @@ class TrainingCampService implements ITrainingCampService{
 				 Long totalTrainedNumbers=0l; 
 				//get commitee levels.
 				 Map<Long,SimpleVO> totalCountsMap=new LinkedHashMap<Long, SimpleVO>();
-				 List<Object[]> committeelevels=tdpCommitteeLevelDAO.getAllLevels();
+				 List<Object[]> committeelevels=tdpCommitteeLevelDAO.getLevels();
 				 if(committeelevels!=null && committeelevels.size()>0){
 					 for(Object[] obj:committeelevels){
 						 SimpleVO vo=new SimpleVO();
 						 vo.setId((Long)obj[0]);
 						 vo.setName(obj[1]!=null?obj[1].toString():"");
 						 vo.setCount(0l);
+						 vo.setTotalCount(0l);
+						 vo.setTotal(0l);
 						 totalCountsMap.put((Long)obj[0],vo);
 					 }
 				 }
@@ -6179,6 +6195,34 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				
 			  	
+				//add village=village=ward  amd mandal=mandal+town+division.
+				if(finalMap!=null && finalMap.size()>0){
+					for (Map.Entry<Long, SimpleVO> entry : finalMap.entrySet())
+			        {
+						SimpleVO districtVO= entry.getValue();
+						Map<Long,SimpleVO> levelMap=districtVO.getMap();
+						if(levelMap!=null && levelMap.size()>0){
+							levelMap.get(5l).setTotalCount(levelMap.get(5l).getCount()+levelMap.get(7l).getCount()+levelMap.get(9l).getCount());
+							levelMap.get(6l).setTotalCount(levelMap.get(6l).getCount()+levelMap.get(8l).getCount());
+							levelMap.get(11l).setTotalCount(levelMap.get(11l).getCount());
+							
+							//others(total members - committee members)
+							districtVO.setTotal(districtVO.getCount()-(levelMap.get(5l).getTotalCount()+levelMap.get(6l).getTotalCount()+levelMap.get(11l).getTotalCount()));//others count
+						}
+			        }
+				}
+				
+				
+				//total counts (village=village=ward  amd mandal=mandal+town+division.)
+				Long totalOthers=0l;
+				if(totalCountsMap!=null && totalCountsMap.size()>0){
+					totalCountsMap.get(5l).setTotalCount(totalCountsMap.get(5l).getCount()+totalCountsMap.get(7l).getCount()+totalCountsMap.get(9l).getCount());
+					totalCountsMap.get(6l).setTotalCount(totalCountsMap.get(6l).getCount()+totalCountsMap.get(8l).getCount());
+					totalCountsMap.get(11l).setTotalCount(totalCountsMap.get(11l).getCount());
+					//others(total members - committee members)
+					totalOthers=totalTrainedNumbers-(totalCountsMap.get(5l).getTotalCount()+totalCountsMap.get(6l).getTotalCount()+totalCountsMap.get(11l).getTotalCount());
+				}
+				
 				 //converting
 				if(finalMap!=null && finalMap.size()>0){
 					for (Map.Entry<Long, SimpleVO> entry : finalMap.entrySet())
@@ -6194,11 +6238,13 @@ class TrainingCampService implements ITrainingCampService{
 					if(finalList!=null && finalList.size()>0){
 						finalList.get(0).setTotalCount(totalTrainedNumbers);
 						finalList.get(0).setSimpleVOList2(new ArrayList<SimpleVO>(totalCountsMap.values()));
+						finalList.get(0).getSimpleVOList2().get(0).setTotal(totalOthers);
 					}
 				}
 				
 			}catch(Exception e){
 				LOG.error(" Error Occured in getAttendedCountsByProgramOrCampOrBatch method in TraininingCampService class" ,e);
+				e.printStackTrace();
 			}
 			return finalList;
 	  }
@@ -6317,7 +6363,7 @@ class TrainingCampService implements ITrainingCampService{
 						   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
 						   " count(distinct tca.attendance.tdpCadreId)");
 				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
-						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and " +
+						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' and " +
 						   "       date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
 				
 				if(batchId==null && campId==null && programId!=null){
@@ -6337,6 +6383,7 @@ class TrainingCampService implements ITrainingCampService{
 					
 				}
 			   sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+			   
 			 		    
 			   queryString=sb.toString();
 			}catch(Exception e){
