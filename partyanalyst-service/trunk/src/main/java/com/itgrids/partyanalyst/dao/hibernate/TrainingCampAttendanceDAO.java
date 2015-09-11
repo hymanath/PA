@@ -89,7 +89,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
  public List<Object[]> getCompletedCounts(List<Long> batchIds){
 		Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampBatchId, count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) ");
+				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds)" +
+				" group by model.trainingCampBatch.trainingCampBatchId ");
 		query.setParameterList("batchIds", batchIds);
 		return query.list();
  }
@@ -138,7 +139,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 Query query=getSession().createQuery("" +
 	 " select  tcs.trainingCampId,count(distinct tca.attendance.tdpCadreId)" +
 	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
-	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and" +
+	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and " +
+	 "       tca.trainingCampSchedule.trainingCampScheduleId = tcs.trainingCampScheduleId and " +
 	 "       tca.trainingCampProgramId=:programId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate " +
 	 " group by tcs.trainingCampId");
 	 query.setParameter("fromDate",fromDate);
