@@ -593,7 +593,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].runningMemberCount!=null){
-											str+='<td>'+schedule.batchDetails[m].runningMemberCount+'</td>';
+											str+='<td>'+schedule.batchDetails[m].runningMemberCount+' ('+schedule.batchDetails[m].runningAttendenceMemberCount+' - Attended)</td>';
 										}else{
 											str+='<td>0</td>';
 										}
@@ -712,7 +712,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 								
 								var TotalBatches=0,TotalMembers=0;
 								
-								TotalBatches=TotalBatches+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length;
+								TotalBatches=result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
 								totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
 								str+='<td>'+TotalBatches+'</td>';
 								
