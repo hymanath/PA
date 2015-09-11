@@ -101,11 +101,6 @@ header.trainingHeader {
                                             	<span>TOTAL TRAINED MEMBERS <span class="pull-right" id="totalTrainedId">0</span></span>
                                             </td>
                                         </tr>
-										<tr>
-                                        	<td>
-                                            	<span>DISTRICT LEVEL MEMBERS <span class="pull-right" id="districtLevelTotalId">0</span></span>
-                                            </td>
-                                        </tr>
                                         <tr>
                                         	<td>
                                             	<span>MANDAL LEVEL MEMBERS<span class="pull-right" id="mandalLevelTotalId">0</span></span>
@@ -114,6 +109,11 @@ header.trainingHeader {
                                         <tr>
                                         	<td>
                                             	<span>VILLAGE LEVEL MEMBERS<span class="pull-right" id="villageLevelTotalId">0</span></span>
+                                            </td>
+                                        </tr>
+										<tr>
+                                        	<td>
+                                            	<span>DISTRICT LEVEL MEMBERS <span class="pull-right" id="districtLevelTotalId">0</span></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -214,20 +214,28 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 			str+='<table class="table table-bordered bg_ff">';
 				str+='<thead class="bg_e9" >';
 					str+='<th><h5 style="font-weight:bold;">LOCATION</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">DISTRICT LEVEL</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">MANDAL LEVEL</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">VILLAGE LEVEL</h5></th>';
+					for(var i in result[0].simpleVOList1){
+						if(result[0].simpleVOList1[i].id==5 || result[0].simpleVOList1[i].id==6 || result[0].simpleVOList1[i].id==11){
+							str+='<th><h5 style="font-weight:bold;">'+result[0].simpleVOList1[i].name.toUpperCase()+'LEVEL</h5></th>';
+						}
+					}
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
+					
 					if(result[i].name != "Others"){
-						str+='<tr>';
-							str+='<td>'+result[i].name+' <span class="pull-right">'+result[i].count+'</span></td>';
-							for(var j in result[i].simpleVOList1){
-								str+='<td>'+result[i].simpleVOList1[j].count+'</td>';
-							}
-						str+='</tr>';
-						}
+						
+							str+='<tr>';
+								str+='<td>'+result[i].name+' <span class="pull-right">'+result[i].count+'</span></td>';
+								for(var j in result[i].simpleVOList1){
+									if(result[i].simpleVOList1[j].id==5 || result[i].simpleVOList1[j].id==6 || result[i].simpleVOList1[j].id==11){
+									  str+='<td>'+result[i].simpleVOList1[j].count+'</td>';
+									}
+								}
+							str+='</tr>';
+						
+					}
+						
 					}
 				str+='</tbody>';
 			str+='</table>';
@@ -236,10 +244,21 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 	
 	//total values setting block.
 	$('#totalTrainedId').html(result[0].totalCount);
-	$('#districtLevelTotalId').html(result[0].id);
-	$('#mandalLevelTotalId').html(result[0].locValue);
-	$('#villageLevelTotalId').html(result[0].total);
-	
+	if(result!=null){
+	  if(result[0].simpleVOList2!=null && result[0].simpleVOList2.length>0){
+	 	 for(var i in result[0].simpleVOList2){
+			 if(result[0].simpleVOList2[i].id==5){
+				 $('#mandalLevelTotalId').html(result[0].simpleVOList2[i].count);
+			 }
+			 if(result[0].simpleVOList2[i].id==6){
+				 $('#villageLevelTotalId').html(result[0].simpleVOList2[i].count);
+			 }
+			 if(result[0].simpleVOList2[i].id==11){
+				 $('#districtLevelTotalId').html(result[0].simpleVOList2[i].count);
+			 }
+		 }
+	  }
+	}
 }
 	
 function getattendedcountByFeedBacks()
