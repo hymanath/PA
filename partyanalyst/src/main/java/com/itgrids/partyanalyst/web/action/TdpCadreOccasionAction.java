@@ -133,7 +133,8 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 			boolean noaccess = false;
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_FAMILY_DETAILS_UPDATION")){
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_FAMILY_DETAILS_UPDATION")
+					&& !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_FAMILY_DETAILS_UPDATION_GROUP")){
 				noaccess = true ;
 			}
 			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
