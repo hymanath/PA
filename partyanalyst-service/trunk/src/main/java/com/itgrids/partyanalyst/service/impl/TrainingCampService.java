@@ -6078,7 +6078,7 @@ class TrainingCampService implements ITrainingCampService{
 					if(finalList!=null && finalList.size()>0){
 						finalList.get(0).setTotalCount(totalTrainedNumbers);
 						finalList.get(0).setId(totalDistLevelNumbers);
-						finalList.get(0).setCount(totalMandalLevelNumbers);
+						finalList.get(0).setLocValue(totalMandalLevelNumbers);
 						finalList.get(0).setTotal(totalVillageLevelNumbers);
 					}
 				}

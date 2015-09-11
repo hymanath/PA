@@ -25,7 +25,7 @@ public class SimpleVO implements java.io.Serializable{
    private String progName="";
    private String campName="";
    private String batchName="";
-
+   private Long locValue;
    
 	public String getIsAttended() {
 	return isAttended;
@@ -111,6 +111,12 @@ public class SimpleVO implements java.io.Serializable{
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public Long getLocValue() {
+		return locValue;
+	}
+	public void setLocValue(Long locValue) {
+		this.locValue = locValue;
 	}
     
    }
