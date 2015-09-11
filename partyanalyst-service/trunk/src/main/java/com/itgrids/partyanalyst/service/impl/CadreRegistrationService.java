@@ -9692,85 +9692,92 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					DateUtilService date= new DateUtilService();
-					
+					Long userPrimaryKey=null;
 					if(inputList != null && inputList.size() > 0)
 					{
+						int i=0;
 						tdpCadreFamilyInfoDAO.deleteFamilyInfoByCadre(inputList.get(0).getTdpCadreId());
 						for(TdpCadreFamilyDetailsVO vo : inputList)
 						{
 							
 							//saving UserAdressDetails
-							
-							AddressVO addressVO=vo.getAddressVo();
-							
-							UserAddress userAddress=null;
-							UserAddress returnUserAddress=null;
-							Long userPrimaryKey=null;
-							if(addressVO !=null){
-								userAddress=new UserAddress();
+							if(i==0)
+							{
+								i=i+1;
+								AddressVO addressVO=vo.getAddressVo();
 								
-								String hsNo=addressVO.getHouseNo();
-								String street=addressVO.getStreet();
-								String pinCode=addressVO.getPinCodeStr();
-								Long stateId=addressVO.getStateId();
-								Long districtId=addressVO.getDistrictId();
-								Long constituencyId=addressVO.getConstituencyId();
-								Long tehsilId=addressVO.getTehsilId();
-								Long panchayatId=addressVO.getPanchaytId();
-								Long boothId=addressVO.getBoothId();
-								String landMark=addressVO.getLandMarkStr();
-								Long localElectionBodyId=addressVO.getLocalElectionBodyId();
-								Long wardId=addressVO.getWardId();
-								if(hsNo !=null && !hsNo.equalsIgnoreCase("")){
-									userAddress.setHouseNo(hsNo);
-								}else{
-									userAddress.setHouseNo(null);
+								UserAddress userAddress=null;
+								UserAddress returnUserAddress=null;
+								
+								if(addressVO !=null){
+									userAddress=new UserAddress();
+									
+									String hsNo=addressVO.getHouseNo();
+									String street=addressVO.getStreet();
+									String pinCode=addressVO.getPinCodeStr();
+									Long stateId=addressVO.getStateId();
+									Long districtId=addressVO.getDistrictId();
+									Long constituencyId=addressVO.getConstituencyId();
+									Long tehsilId=addressVO.getTehsilId();
+									Long panchayatId=addressVO.getPanchaytId();
+									Long boothId=addressVO.getBoothId();
+									String landMark=addressVO.getLandMarkStr();
+									Long localElectionBodyId=addressVO.getLocalElectionBodyId();
+									Long wardId=addressVO.getWardId();
+									if(hsNo !=null && !hsNo.equalsIgnoreCase("")){
+										userAddress.setHouseNo(hsNo);
+									}else{
+										userAddress.setHouseNo(null);
+									}
+									if(street !=null && !street.equalsIgnoreCase("") ){
+										userAddress.setStreet(street);
+									}else{
+										userAddress.setStreet(null);
+									}
+									if(pinCode !=null && !pinCode.equalsIgnoreCase("") ){
+										userAddress.setPinCode(pinCode);
+									}
+									else{
+										userAddress.setPinCode(null);
+									}
+									if(stateId !=null && stateId !=0l){
+										userAddress.setState(stateDAO.get(stateId));
+									}
+									if(districtId !=null && districtId !=0l){
+										userAddress.setDistrict(districtDAO.get(districtId));
+									}
+									if(constituencyId !=null && constituencyId !=0l){
+										userAddress.setConstituency(constituencyDAO.get(constituencyId));
+									}
+									if(tehsilId !=null && tehsilId !=0l){
+										userAddress.setTehsil(tehsilDAO.get(tehsilId));
+									}
+									if(panchayatId !=null && panchayatId !=0l){
+										userAddress.setPanchayatId(panchayatId);
+									}
+									if(boothId !=null && boothId !=0l){
+										userAddress.setBooth(boothDAO.get(boothId));
+									}
+									if(landMark !=null && !landMark.equalsIgnoreCase(""))
+									{
+										userAddress.setLocalArea(landMark);
+									}
+									else{
+										userAddress.setLocalArea(null);
+									}
+									if(localElectionBodyId !=null && localElectionBodyId !=0l){
+										userAddress.setLocalElectionBody(localElectionBodyDAO.get(localElectionBodyId));
+									}
+									if(wardId !=null && wardId !=0l){
+										userAddress.setWard(constituencyDAO.get(wardId));
+									}								
+									if(userAddress !=null){
+										returnUserAddress=userAddressDAO.save(userAddress);
+									}
+									userPrimaryKey=returnUserAddress.getUserAddressId();
 								}
-								if(street !=null && !street.equalsIgnoreCase("") ){
-									userAddress.setStreet(street);
-								}else{
-									userAddress.setStreet(null);
-								}
-								if(pinCode !=null && !pinCode.equalsIgnoreCase("") ){
-									userAddress.setPinCode(pinCode);
-								}
-								else{
-									userAddress.setPinCode(null);
-								}
-								if(stateId !=null && stateId !=0l){
-									userAddress.setState(stateDAO.get(stateId));
-								}
-								if(districtId !=null && districtId !=0l){
-									userAddress.setDistrict(districtDAO.get(districtId));
-								}
-								if(constituencyId !=null && constituencyId !=0l){
-									userAddress.setConstituency(constituencyDAO.get(constituencyId));
-								}
-								if(tehsilId !=null && tehsilId !=0l){
-									userAddress.setTehsil(tehsilDAO.get(tehsilId));
-								}
-								if(panchayatId !=null && panchayatId !=0l){
-									userAddress.setPanchayatId(panchayatId);
-								}
-								if(landMark !=null && !landMark.equalsIgnoreCase("") )
-								{
-									userAddress.setLocalArea(landMark);
-								}
-								else{
-									userAddress.setLocalArea(null);
-								}
-								if(localElectionBodyId !=null && localElectionBodyId !=0l){
-									userAddress.setLocalElectionBody(localElectionBodyDAO.get(localElectionBodyId));
-								}
-								if(wardId !=null && wardId !=0l){
-									userAddress.setWard(constituencyDAO.get(wardId));
-								}
-							
-								if(userAddress !=null){
-									returnUserAddress=userAddressDAO.save(userAddress);
-								}
-								userPrimaryKey=returnUserAddress.getUserAddressId();
 							}
+							
 							
 						TdpCadreFamilyInfo tdpCadreFamilyInfo = new TdpCadreFamilyInfo();
 						
@@ -10071,6 +10078,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					
 			}
+			if(tehsilIst.getSelectOptionsList() != null && tehsilIst.getSelectOptionsList().size()>0)
 			for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
 				if(regions.getId() !=null && regions.getId() !=0l){
 					
