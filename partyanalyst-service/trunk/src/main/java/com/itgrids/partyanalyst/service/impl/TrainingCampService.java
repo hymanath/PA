@@ -1822,11 +1822,23 @@ class TrainingCampService implements ITrainingCampService{
 							campVo.getSubList().add(scheduleVo);
 							programVo.setSpanCnt(programVo.getSpanCnt()+1);
 						}
+						
 						scheduleVo.setTotal(scheduleVo.getTotal() + commonMethodsUtilService.getLongValueForObject(params[0]));
 						TraingCampCallerVO schedulestatusVo  = getMatchedVo(scheduleVo.getScheduleStatusList(),commonMethodsUtilService.getLongValueForObject(params[9])); // Status
 						if(schedulestatusVo != null)
 						{
+							if(params[10] != null )
+							{
+								if((Long)params[9] == 4L || (Long)params[9] == 10L) 
+								{//Interested
+								if(schedulestatusVo.getId().longValue() == 10L || schedulestatusVo.getId().longValue() == 4L)
+									schedulestatusVo.setCount(schedulestatusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
+								}
+							}
+							else
+							{
 							schedulestatusVo.setCount(schedulestatusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
+							}
 						}
 						if(params[7] != null)
 						{
