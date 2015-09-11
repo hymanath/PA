@@ -2800,6 +2800,7 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				if(flag)
 				return resultStatus;
+				
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 					if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
 						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
@@ -2812,16 +2813,67 @@ class TrainingCampService implements ITrainingCampService{
 						
 						if(inputVO.getScheduleStatusId().longValue() == 10L)
 						{
-							TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
-							trainingCampBatchAttendee.setTdpCadreId(trainingCampScheduleInvitee.getTdpCadreId());
-							trainingCampBatchAttendee.setTrainingCampBatchId(inputVO.getBatchId());
-							trainingCampBatchAttendee.setTrainingCampScheduleInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId());
-							trainingCampBatchAttendee.setInsertedBy(inputVO.getUserId());
-							trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
-							trainingCampBatchAttendee.setAttendedTime(date.getCurrentDateAndTime());
-							trainingCampBatchAttendee.setInsertedTime(date.getCurrentDateAndTime());
-							trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
-							trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+							flag = true;
+							TrainingCampBatchAttendee trainingCampBatchAttendee = null;
+							boolean isAlreadyAvailable = false;
+							
+							List<TrainingCampBatchAttendee> trainingCampBatchAttendeeDtls = trainingCampBatchAttendeeDAO.getAttendeeDetailsByInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId(),inputVO.getBatchId(),null);
+							if(trainingCampBatchAttendeeDtls != null && trainingCampBatchAttendeeDtls.size()>0)
+							{
+								isAlreadyAvailable = true;
+								trainingCampBatchAttendee = trainingCampBatchAttendeeDtls.get(0);
+								trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
+								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
+								trainingCampBatchAttendee.setIsDeleted("false");
+								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+							}
+							else
+							{
+								TrainingCampBatch trainingCampBatch = trainingCampBatchDAO.get(inputVO.getBatchId());
+								if(trainingCampBatch != null)
+								{
+									Long scheduleId = trainingCampBatch.getTrainingCampScheduleId();
+									trainingCampBatchAttendeeDtls = trainingCampBatchAttendeeDAO.getAttendeeDetailsByInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId(),null,scheduleId);
+									if(trainingCampBatchAttendeeDtls != null && trainingCampBatchAttendeeDtls.size()>0)
+									{
+										isAlreadyAvailable = true;
+										trainingCampBatchAttendee = trainingCampBatchAttendeeDtls.get(0);
+										trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+										trainingCampBatchAttendee.setTrainingCampBatchId(inputVO.getBatchId());
+										trainingCampBatchAttendee.setTrainingCampScheduleInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId());
+										trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
+										trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
+										trainingCampBatchAttendee.setIsDeleted("false");
+										trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+									}
+								}
+							}
+							if(!isAlreadyAvailable)
+							{
+								trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+								trainingCampBatchAttendee.setTdpCadreId(trainingCampScheduleInvitee.getTdpCadreId());
+								trainingCampBatchAttendee.setTrainingCampBatchId(inputVO.getBatchId());
+								trainingCampBatchAttendee.setTrainingCampScheduleInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId());
+								trainingCampBatchAttendee.setInsertedBy(inputVO.getUserId());
+								trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
+								trainingCampBatchAttendee.setAttendedTime(date.getCurrentDateAndTime());
+								trainingCampBatchAttendee.setInsertedTime(date.getCurrentDateAndTime());
+								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
+								trainingCampBatchAttendee.setIsDeleted("false");
+								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+							}
+						}
+						else
+						{
+							List<TrainingCampBatchAttendee> trainingCampBatchAttendeeDtls = trainingCampBatchAttendeeDAO.getAttendeeDetailsByInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId(),inputVO.getBatchId(),null);
+							if(trainingCampBatchAttendeeDtls != null && trainingCampBatchAttendeeDtls.size()>0)
+							{
+								TrainingCampBatchAttendee trainingCampBatchAttendee = trainingCampBatchAttendeeDtls.get(0);
+								trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
+								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
+								trainingCampBatchAttendee.setIsDeleted("true");
+								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+							}
 						}
 					}
 					if(!flag)
