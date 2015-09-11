@@ -6782,5 +6782,21 @@ class TrainingCampService implements ITrainingCampService{
 			
 		}
 		
+		public TrainingMemberVO getMaxNumberForBatch(Long batchId)
+		{
+			TrainingMemberVO returnVo = new TrainingMemberVO();
+			try{
+				Long maxNo = trainingCampBatchDAO.getMaxNumbersForBacth(batchId);
+				Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(batchId,10l); // Confirm Batch
+				returnVo.setTotalCount(maxNo != null ? maxNo : 0l);
+				returnVo.setAvailableCount(totalInBatch != null ? totalInBatch : 0l);
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			return returnVo;
+			
+		}
+		
 		
 }
