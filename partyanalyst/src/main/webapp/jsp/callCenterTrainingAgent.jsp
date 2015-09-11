@@ -428,7 +428,12 @@ $('#CallbackTime').daterangepicker({singleDatePicker: true,timePicker: false,min
 });
 
 $('#timepicker4').datetimepicker({format: 'LT'});
-$("#titleId").html(" <span id='titleText'>${status} CALLS LIST </span><span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
+var type ;
+if(purposeId == 1)
+type = "Schedule";
+else
+type = "Batch";
+$("#titleId").html(" <span id='titleText'>"+type+" ${status} CALLS LIST </span><span class='pull-right'><button class='btn btn-success btn-xs filters-button'  >FILTERS</button></span>");
 
 function getMemberDetails(startIndex)
 {
@@ -466,13 +471,18 @@ function buildScheduleCallMemberDetailsCount(result,jObj)
 {
 
 membersList;
+var type ;
+if(purposeId == 1)
+type = "Schedule";
+else
+type = "Batch";
 if(jObj.task == 'scheduleWiseCount')
 {
-$("#titleText").html(" ${status} CALLS LIST");
+$("#titleText").html(" "+type+" ${status} CALLS LIST");
 }
 else
 {
-$("#titleText").html("CALLS LIST");
+$("#titleText").html(" "+type+" CALLS LIST");
 }
 var purpose ;
 var callFor ;
