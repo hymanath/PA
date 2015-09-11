@@ -40,6 +40,7 @@ public class TrainingCampBatchAttendee extends BaseModel implements Serializable
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String isDeleted;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -159,5 +160,14 @@ public class TrainingCampBatchAttendee extends BaseModel implements Serializable
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }
