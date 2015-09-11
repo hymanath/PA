@@ -101,4 +101,5 @@ public interface ITrainingCampService {
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);
 	public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId);
 	public List<IdNameVO> getBatchesForCentre(Long programId,Long campId);
+	public TrainingMemberVO getMaxNumberForBatch(Long batchId);
 }
