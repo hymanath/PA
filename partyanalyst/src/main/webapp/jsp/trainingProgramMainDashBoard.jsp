@@ -559,7 +559,7 @@ function getSurveyDetails()
 	$("#surveyDataLoadoing").show();
 	
 	$.ajax({
-		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/1/0/0"
+		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
 		url: "http://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
 	}).then(function(result) {
 		if(result != null && result.length > 0){
@@ -583,7 +583,7 @@ function buildSurveyDetails(result)
 					str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 						str+='<h4 class="panel-title">';
 							str+=''+result[i].name+'';
-						str+='</h4>';
+						str+='<i class="pull-right glyphicon glyphicon-triangle-bottom "></i></h4>';
 					str+='</a>';
 				str+='</div>';
 				
@@ -598,7 +598,9 @@ function buildSurveyDetails(result)
 							str+='<tr>';
 								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].option+'</td>';
 								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].count+'</td>';
-								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].percentage+'</td>';
+								var percentage = Number(result[i].verifierVOList[j].verifierVOList[k].percentage);
+								percentage = percentage.toFixed(2);
+								str+='<td>'+percentage+'</td>';
 							str+='</tr>';
 						}
 						str+='</table>';
