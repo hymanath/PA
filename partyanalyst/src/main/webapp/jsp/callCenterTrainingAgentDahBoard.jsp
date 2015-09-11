@@ -343,7 +343,7 @@ str+=' <td>Schedule</td>';
 str+='<td>Allocated</td>';
 str+='<td>Answered</td>';
 str+='<td>Dialed/Not-Dialled</td>';
-str+='<td class="pad_5 font-12">Interested</td>';
+str+='<td class="pad_5 font-12">Interested/Batch Confirm</td>';
 str+='<td class="pad_5 font-12">Not Interested</td>';
 str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
@@ -372,6 +372,7 @@ var allocated = 0;
 var undialed = 0;
 var callBack  = 0;
 var interested  = 0;
+var confirm  = 0;
 var later = 0;
 var notInterested = 0;
 var todaycallBack =0;
@@ -404,7 +405,9 @@ callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].coun
 todaycallBack = todaycallBack + result[i].subList[j].subList[k].scheduleStatusList[m].todayCnt;
 }
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
-interested = interested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
+interested = interested+result[i].subList[j].subList[k].scheduleStatusList[m].count ;
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Confirmed")
+confirm = confirm + result[i].subList[j].subList[k].scheduleStatusList[m].count ;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
 notInterested = notInterested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Later")
@@ -446,9 +449,9 @@ else
 str+='<td>'+dialed+'/'+undialed+'</td>';
 }
 if(interested > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a>/'+confirm+'</td>';
 else
-str+=' <td>'+interested+'</td>';
+str+=' <td>'+interested+'/'+confirm+'</td>';
 if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
