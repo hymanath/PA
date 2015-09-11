@@ -177,12 +177,12 @@ background-color: #E5E5E5 !important;
 </div>-->
 
 <div class="container">
-	
-	<div class="row m_top20" id="searchcadrenewDiv">	
-		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-			<h4 id="headingDiv" class="text-uppercase"><b> Search Cadre </b></h4>
+	<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center" style="background-color: lightyellow; border-radius: 4px;height: 35px;width: 800px;margin-left: 180px;">
+			<h4 id="headingDiv" class="text-uppercase"><b> CADRE PROFILE UPDATION DETAILS </b></h4>
 				
 		</div>
+	<div class="row m_top20" id="searchcadrenewDiv">	
+		
 		
 		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 			<c:if test="${sessionScope.USER.accessType == 'STATE'}">
@@ -266,6 +266,7 @@ background-color: #E5E5E5 !important;
 		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
 			<div id="topPaginationDivId" class="paginationDivId"></div>
 			<div id="errorDiv"></div>
+			
 			<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
 			<center><div><img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-top: 20px;width:70px;height:60px;display:none;"/></div></center>
 			<div id="paginationDivId"  class="paginationDivId"></div>
@@ -285,6 +286,8 @@ background-color: #E5E5E5 !important;
 
 		
 <script>
+
+	var tdpCadreId = '${task}';
 
 	var relationsArr = new Array();
 	var casteArr = new Array();
@@ -322,6 +325,8 @@ background-color: #E5E5E5 !important;
 	<script>
 	
 	$(document).ready(function(){
+		checkIsTdpCadreIdAvailableOrNot();
+		getAllRelationDetails();
 			$(document).keypress(function(e) {
 				if(e.keyCode==13){
 					 getCadreDetails();
@@ -373,7 +378,76 @@ background-color: #E5E5E5 !important;
 				 
 	});
 	
-	
+	function checkIsTdpCadreIdAvailableOrNot()
+	{
+		if(tdpCadreId != null && tdpCadreId.trim().length > 0 && parseInt(tdpCadreId)>0)
+		{
+			$('#searchcadrenewDiv').hide();
+			
+			var jsobj={
+				cadreId:tdpCadreId
+			};
+			$('#searchDataImg').show();
+			$.ajax({
+				type:'GET',
+				 url: 'cadreFormalDetailedInformationAction.action',
+				 data : {task:JSON.stringify(jsobj)} ,
+			}).done(function(result){
+				//console.log(result);
+				$('#searchDataImg').hide();
+				if(result != null)
+				{
+					$('#cadreDetailsDiv').show();
+					var str =" ";		
+						str+='<div class="span12">';
+							
+						str+=' <table class="table table-bordered" style="margin-top: 20px;"  id="tableId">';
+						str+=' <thead>';
+						str+=' <tr>';
+						
+						str+=' <th class="alert-info"> Image  </th>';
+						str+=' <th class="alert-info"> Cadre Name  </th>';
+						str+=' <th class="alert-info" > Membership Number  </th>';
+						str+=' <th class="alert-info" > Mobile Number </th>';
+						//str+=' <th class="alert-info" > Constituency </th>';
+						str+=' </tr>';
+						str+=' </thead>';
+						str+=' <tbody>';
+							str+=' <tr>';
+							str+='<td><a href="javascript:{};" style="cursor:pointer;" onclick="getCadreWithFamilyDetailsOfEachCadre(\''+result.cadreId+'\');"><img src="'+result.imagePath+'"  style="height:50px;width:50px;"/></a></td>';
+							str+=' <td><a href="javascript:{};" style="cursor:pointer;" onclick="getCadreWithFamilyDetailsOfEachCadre(\''+result.cadreId+'\');">'+result.name+'</a></td>';
+							str+=' <td>'+result.membershipNo+'</td>';
+							str+=' <td>'+result.mobileNo+'</td>';
+							//str+=' <td>'+result[i].constituencyId+'</td>';
+							
+							str+=' </tr>';
+
+						str+='</tbody></table></div>';
+						$("#cadreDetailsDiv").html(str);
+						//$("#tableId").dataTable();
+					
+				}
+			});
+			//getCadreWithFamilyDetailsOfEachCadre(tdpCadreId);
+		}
+		else
+		{
+			if(accessType == "DISTRICT")
+			{
+				getAssemblyParlConstituencies(accessValue,"Assembly");
+			}
+			if(accessType == "STATE")
+			{
+				getConstituenciesForStateAjax();
+			}
+
+			if(accessType == "MP")
+			{
+				getAssemblyConstituencies(accessValue);
+			}
+		}
+		
+	}
 /*	function getCadreDetails()
 	{
 				
@@ -1299,7 +1373,10 @@ function updateFamilyInfo()
 		{
 			dataArr:dataArr,
 			task:"updateFamilyInfo"
-		}
+		};
+		
+		console.log(jsObj);
+		
 		$.ajax({
 			  type:'GET',
 			  url: 'updateFamilyInfoAction.action',
@@ -1323,12 +1400,13 @@ function updateFamilyInfo()
 						alert("Error occured while updating details.try again...").css("color","red");
 					}
 		   });
+		   
 	}
 	
 }
 
 function checkResult(string)
- {
+ {  
           var cssObj = {    
 				'font-weight' : 'bold',
 				'color' : 'green'
@@ -1336,8 +1414,15 @@ function checkResult(string)
            $("#errorDiv").css("visibility","visible");
 		   $('#errorDiv').text(string+"...").css(cssObj);
           
-		   setTimeout('$("#errorDiv").css("visibility","hidden")',2500);
-
+		  
+		if(tdpCadreId != null && tdpCadreId.trim().length > 0 && parseInt(tdpCadreId)>0)
+		{
+			setTimeout('$("#errorDiv").css("visibility","hidden");window.close();',2500);
+		}
+		else
+		{
+			 setTimeout('$("#errorDiv").css("visibility","hidden");',2500);
+		}
  }
 
 function getAllRelationDetails(){
@@ -1376,7 +1461,13 @@ function addNewMemberInFamily(size)
 			
 			str+='<div class="panel-body">';
             str+='<div class="row">';
-			
+			str+='<div class="col-md-2 col-xs-6">';
+			/*
+			str+='<input type="hidden" value="'+result[i].voterId+'"  class="voterIdCls form-control"/> ';
+					str+='<input type="hidden" value="'+result[i].votercardNo+'"  class="votercardNocls form-control"/> ';*/
+			str+='<label class="control-label">Voter Card No</label>';
+			str+='<input type="text"  class="votercardNocls form-control" key="ErrorDiv'+size+'"/> ';
+			str+='</div>';
 			str+='<div class="col-md-2 col-xs-6">';
 			str+='<label class="control-label">Mobile No</label>';
 			str+='<input type="text"  class="mobile form-control" maxlength="10" key="ErrorDiv'+size+'"/> ';
@@ -1666,8 +1757,6 @@ function getConstituenciesForDistrict(district){
 	  });
 	  
   }
-getAllRelationDetails();
-
 </script>
 
 
@@ -1677,19 +1766,6 @@ var accessType = "${sessionScope.USER.accessType}";
 var accessValue = "${sessionScope.USER.accessValue}";
 var accessState = "${sessionScope.USER.stateName}";
 
-if(accessType == "DISTRICT")
-{
-	getAssemblyParlConstituencies(accessValue,"Assembly");
-}
-if(accessType == "STATE")
-{
-	getConstituenciesForStateAjax();
-}
-
-if(accessType == "MP")
-{
-	getAssemblyConstituencies(accessValue);
-}
 
 function getAssemblyParlConstituencies(districtId,type)
 	{
@@ -2151,7 +2227,7 @@ $("#familyDetalsDiv").hide();
 		}
 		str+='</tbody></table></div>';
 		$("#cadreDetailsDiv").html(str);
-		$("#tableId").dataTable();
+		//$("#tableId").dataTable();
 	}
 
 </script>
