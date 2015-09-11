@@ -237,7 +237,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 	//total values setting block.
 	$('#totalTrainedId').html(result[0].totalCount);
 	$('#districtLevelTotalId').html(result[0].id);
-	$('#mandalLevelTotalId').html(result[0].count);
+	$('#mandalLevelTotalId').html(result[0].locValue);
 	$('#villageLevelTotalId').html(result[0].total);
 	
 }
