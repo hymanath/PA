@@ -1704,6 +1704,19 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return (Object[]) query.uniqueResult();
 	}
 	
+	public Object[] getTdpCommitteeMemberPosition(Long cadreId){
+		
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, " +
+				" model.tdpCommitteeRole.tdpCommitteeRoleId, model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel    " +
+				" from TdpCommitteeMember model where model.tdpCadreId =:cadreId  and model.isActive ='Y' ");
+		
+		query.setParameter("cadreId", cadreId);
+		
+		return (Object[]) query.uniqueResult();
+	}
 	
 	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(List<Long> locationLevelIdsList,List<Long> locationLevelValuesList)

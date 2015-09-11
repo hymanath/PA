@@ -74,8 +74,27 @@ public class CadreVo implements Serializable{
 	private List<SimpleVO> simpleVoList;
 	private List<CadreVo> cadreVoList;
 	
+	private String designation;
+	private String designationLocation;
 	
+		
 	
+
+	public String getDesignationLocation() {
+		return designationLocation;
+	}
+
+	public void setDesignationLocation(String designationLocation) {
+		this.designationLocation = designationLocation;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 
 	public List<CadreVo> getCadreVoList() {
 		return cadreVoList;

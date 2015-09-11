@@ -96,10 +96,11 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 import com.itgrids.partyanalyst.model.TrainingCamp;
-import com.itgrids.partyanalyst.model.TrainingCampAttendance;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
@@ -2757,6 +2758,46 @@ class TrainingCampService implements ITrainingCampService{
 					}
 						
 				}
+				if(inputVO.getScheduleStatusId().longValue() > 0L && inputVO.getScheduleStatusId() == 3l)
+				{
+					SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+				    SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+				    Date date1 = parseFormat.parse(inputVO.getLaterCallBackTime());
+				    System.out.println(parseFormat.format(date1) + " = " + displayFormat.format(date1));
+				    inputVO.setLaterCallBackTime(displayFormat.format(date1));
+					TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
+							
+					if(inputVO.getLaterRemarks() != null && inputVO.getLaterRemarks().length() > 0)
+						trainingCampScheduleInvitee.setRemarks(inputVO.getLaterRemarks());
+					if(inputVO.getScheduleStatusId().longValue() > 0L)
+						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+					if(inputVO.getScheduleStatusId().longValue() != 4L)
+						trainingCampScheduleInvitee.setAttendingBatchId(null);
+						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
+						//String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
+
+						 String oldScheduledDate = inputVO.getLaterCallBackDate() +" "+inputVO.getLaterCallBackTime();
+					     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+					    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+					     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+						trainingCampScheduleInvitee.setLaterCallBackTime(oldDate);
+						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+						
+						TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+						trainingCampScheduleInviteeCaller.setCallStatusId(1l);
+						trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
+						//trainingCampScheduleInviteeCaller.setInsertedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
+						trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+						
+						saveTrackingInfo(inputVO);	
+						
+						resultStatus.setResultPartial(true);
+						resultStatus.setResultCode(2);
+						flag = true;
+									
+				}
 				if(flag)
 				return resultStatus;
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
@@ -2830,39 +2871,57 @@ class TrainingCampService implements ITrainingCampService{
 	{
 		try{
 			DateUtilService date= new DateUtilService();
-			TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
-			TrainingCampScheduleInviteeTrack trainingCampScheduleInviteeTrack = new TrainingCampScheduleInviteeTrack();
-		
-			if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
-				trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
-			if(trainingCampScheduleInviteeCaller.getCallPurposeId() != null)
-			trainingCampScheduleInviteeTrack.setCampCallPurposeId(trainingCampScheduleInviteeCaller.getCallPurposeId());
-			trainingCampScheduleInviteeTrack.setCampCallStatusId(inputVO.getCallStatusId());
-			if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId() > 0)
-			trainingCampScheduleInviteeTrack.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
-			//trainingCampScheduleInviteeTrack.setTdpCadreId(inputVO.getTdpCadreId());
-			trainingCampScheduleInviteeTrack.setTrainingCampCallerId(inputVO.getTrainingCampCallerId());
-			trainingCampScheduleInviteeTrack.setCalledTime(date.getCurrentDateAndTime());
-			trainingCampScheduleInviteeTrack.setInsertedBy(inputVO.getUserId());
-			trainingCampScheduleInviteeTrack.setUpdatedBy(inputVO.getUserId());
-			trainingCampScheduleInviteeTrack.setInsertedTime(date.getCurrentDateAndTime());
-			trainingCampScheduleInviteeTrack.setUpdatedTime(date.getCurrentDateAndTime());
-			trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeId(inputVO.getInvitteId());
-			trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeCallerId(inputVO.getInviteeCallerId());
-			if(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId() != null)
-			trainingCampScheduleInviteeTrack.setTrainingCampCallerAdminId(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId());
 			
-			if(inputVO.getCallBackDate() != null)
-			{
-				String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
-				 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
-				 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
-			     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-			    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-			     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
-			trainingCampScheduleInviteeTrack.setCallBackTime(oldDate);
-			}
-			trainingCampScheduleInviteeTrackDAO.save(trainingCampScheduleInviteeTrack);
+				TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+				TrainingCampScheduleInviteeTrack trainingCampScheduleInviteeTrack = new TrainingCampScheduleInviteeTrack();
+			
+				if(inputVO.getScheduleStatusId().longValue() > 0L && inputVO.getScheduleStatusId() == 3l){
+					if(inputVO.getLaterRemarks() != null && inputVO.getLaterRemarks().length() > 0)
+						trainingCampScheduleInviteeTrack.setRemarks(inputVO.getLaterRemarks());
+				}else{
+					if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
+						trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
+				}
+				//if(inputVO.getRamarks() != null && !inputVO.getRamarks().isEmpty())
+					//trainingCampScheduleInviteeTrack.setRemarks(inputVO.getRamarks());
+				if(trainingCampScheduleInviteeCaller.getCallPurposeId() != null)
+				trainingCampScheduleInviteeTrack.setCampCallPurposeId(trainingCampScheduleInviteeCaller.getCallPurposeId());
+				trainingCampScheduleInviteeTrack.setCampCallStatusId(inputVO.getCallStatusId());
+				if(inputVO.getScheduleStatusId() != null && inputVO.getScheduleStatusId() > 0)
+				trainingCampScheduleInviteeTrack.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
+				//trainingCampScheduleInviteeTrack.setTdpCadreId(inputVO.getTdpCadreId());
+				trainingCampScheduleInviteeTrack.setTrainingCampCallerId(inputVO.getTrainingCampCallerId());
+				trainingCampScheduleInviteeTrack.setCalledTime(date.getCurrentDateAndTime());
+				trainingCampScheduleInviteeTrack.setInsertedBy(inputVO.getUserId());
+				trainingCampScheduleInviteeTrack.setUpdatedBy(inputVO.getUserId());
+				trainingCampScheduleInviteeTrack.setInsertedTime(date.getCurrentDateAndTime());
+				trainingCampScheduleInviteeTrack.setUpdatedTime(date.getCurrentDateAndTime());
+				trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeId(inputVO.getInvitteId());
+				trainingCampScheduleInviteeTrack.setTrainingCampScheduleInviteeCallerId(inputVO.getInviteeCallerId());
+				if(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId() != null)
+				trainingCampScheduleInviteeTrack.setTrainingCampCallerAdminId(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId());
+				
+				if(inputVO.getLaterCallBackDate() != null){
+					String dateSample = inputVO.getLaterCallBackDate()+ " "+inputVO.getLaterCallBackTime();
+					trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
+					String oldScheduledDate = inputVO.getLaterCallBackDate() + " " +inputVO.getLaterCallBackTime();
+					DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+					Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+					trainingCampScheduleInviteeTrack.setLaterCallBackTime(oldDate);
+				}
+				if(inputVO.getCallBackDate() != null)
+				{
+					String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
+					 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
+					 String oldScheduledDate = inputVO.getCallBackDate() +" "+inputVO.getCallBackTime();
+				     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+				    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+				     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+				trainingCampScheduleInviteeTrack.setCallBackTime(oldDate);
+				}
+				trainingCampScheduleInviteeTrackDAO.save(trainingCampScheduleInviteeTrack);
+			
+			
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -6467,8 +6526,53 @@ class TrainingCampService implements ITrainingCampService{
 					  for (Object[] cadre : confirmedList) {
 						
 						  CadreVo vo = new CadreVo();
-						  
+						  Long tdpCadreId = cadre[0] != null ? (Long)cadre[0]:0l;
 						  vo.setCadreId(cadre[0] !=null ? (Long)cadre[0]:0l);
+						  
+						  Object[] designationDetails = tdpCommitteeMemberDAO.getTdpCommitteeMemberPosition(tdpCadreId);//tdpCommitteeLevel,role
+							String designation = "";
+							String committee = "";
+							String committeeLocation = "";
+							
+							if(designationDetails != null && designationDetails .length > 0){
+								designation = designationDetails[3]+" - "+designationDetails[5];
+								committee = designationDetails[6]+" Committee";
+								
+								Long committeeLevelId = 0l;
+								Long committeeLevelValue = 0l;
+								committeeLevelId = (Long) designationDetails[0];
+								committeeLevelValue = (Long) designationDetails[1];
+								if(committeeLevelId == 5L)
+								{
+									committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
+								}
+								else if(committeeLevelId == 6L)
+								{
+									committeeLocation = panchayatDAO.get(committeeLevelValue).getPanchayatName()+" Panchayat ";
+								}
+								else if(committeeLevelId == 7L || committeeLevelId == 9L) // town/division
+								{
+									LocalElectionBody localbody = localElectionBodyDAO.get(committeeLevelValue);
+									if(localbody.getElectionType().getElectionTypeId() != 7L)
+										committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+								}
+								else if(committeeLevelId == 8L)
+								{
+									Constituency constituency = constituencyDAO.get(committeeLevelValue);
+									committeeLocation = constituency.getName()+" ( "+constituency.getLocalElectionBody().getName()+" "+constituency.getLocalElectionBody().getElectionType().getElectionType()+" )";
+								}
+								else if(committeeLevelId == 10L)
+								{
+									committeeLocation = stateDAO.get(committeeLevelValue).getStateName();
+								}
+								else if(committeeLevelId == 11L)
+								{
+									committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
+								}
+							}
+							vo.setDesignation(designation);
+							vo.setDesignationLocation(committee+" ("+committeeLocation+")");
+						  
 						  vo.setMembershipNoStr(cadre[1] !=null ? cadre[1].toString():"");
 						  vo.setFirstName(cadre[2] !=null ? cadre[2].toString():"");
 						  vo.setMobileNo(cadre[3] !=null ? cadre[3].toString():"");
@@ -6607,7 +6711,7 @@ class TrainingCampService implements ITrainingCampService{
 			
 			List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
 			try{
-				List<Object[]> details= trainingCampBatchDAO.getBatchesInfoByProgramAndCamp(1l, 5l);
+				List<Object[]> details= trainingCampBatchDAO.getBatchesInfoByProgramAndCamp(programId, campId);
 				if(details !=null && details.size()>0){
 					for(Object[] object :details){
 						IdNameVO vo = new IdNameVO();

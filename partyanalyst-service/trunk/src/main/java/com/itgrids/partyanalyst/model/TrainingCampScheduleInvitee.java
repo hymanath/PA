@@ -41,6 +41,7 @@ public class TrainingCampScheduleInvitee {
 	private Date updatedTime;
 	
 	private Date callBackTime;
+	private Date laterCallBackTime;
 	
 	
 	@Id
@@ -169,6 +170,13 @@ public class TrainingCampScheduleInvitee {
 	}
 	public void setCallBackTime(Date callBackTime) {
 		this.callBackTime = callBackTime;
+	}
+	@Column(name = "later_call_back_time")
+	public Date getLaterCallBackTime() {
+		return laterCallBackTime;
+	}
+	public void setLaterCallBackTime(Date laterCallBackTime) {
+		this.laterCallBackTime = laterCallBackTime;
 	}
 
 }
