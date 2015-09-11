@@ -23,11 +23,11 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		queryStr.append("select model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName, model.trainingCampBatchId, date(model.trainingCampBatch.fromDate), date(model.trainingCampBatch.toDate), ");
 		queryStr.append(" model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, count(distinct model.trainingCampBatchAttendeeId) ");
 		
-		queryStr.append(" from TrainingCampBatchAttendee model where ");
+		queryStr.append(" from TrainingCampBatchAttendee model where model.isDeleted = 'false' ");
 		
 		if(startDate != null && endDate != null)
 		{
-			queryStr.append(" (date(model.attendedTime) >=:startDate and date(model.attendedTime) <=:endDate) ");
+			queryStr.append(" and (date(model.attendedTime) >=:startDate and date(model.attendedTime) <=:endDate) ");
 		}
 		if(searchType != null && searchType.equalsIgnoreCase("notStarted"))
 		{
@@ -107,7 +107,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
         " left join tdp_roles tr on tcr.tdp_roles_id=tr.tdp_roles_id " +
         " left join tdp_basic_committee tbc on tce.tdp_basic_committee_id=tbc.tdp_basic_committee_id " +
 
-   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014 and tcm.is_active='Y' " +
+   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014 and tcm.is_active='Y' and tcba.is_deleted = 'false' " +
    " order by tcb.training_camp_batch_id asc,tc.first_name asc";
    
   		
@@ -124,7 +124,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		" model1.achievement " +
 		" from TrainingCampBatchAttendee model,TrainingCampCadreAchievement model1" +
 		" where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId=model1.trainingCampBatchId and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 " +
-		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) ");
+		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false' ");
 		query.setParameterList("schedulesList", schedulesList);
 		return query.list();
 	}
@@ -135,7 +135,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		" model1.goal " +
 		" from TrainingCampBatchAttendee model,TrainingCampCadreGoal model1" +
 		" where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId=model1.trainingCampBatchId and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 " +
-		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) ");
+		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false' ");
 		query.setParameterList("schedulesList", schedulesList);
 		return query.list();
 	}
@@ -148,7 +148,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   " from TrainingCampBatchAttendee model,TdpCadre model1 " +
 	   " where model.tdpCadreId=model1.tdpCadreId and " +
 	   " model.tdpCadreId=:tdpCadreId and model.trainingCampBatch.trainingCampBatchId=:batchId " +
-	   " and model1.isDeleted='N' and model1.enrollmentYear=2014");
+	   " and model1.isDeleted='N' and model1.enrollmentYear=2014 and model.isDeleted = 'false' ");
 	   query.setParameter("tdpCadreId",tdpCadreId);
 	   query.setParameter("batchId",batchId);
 	   return (Object[])query.uniqueResult();
@@ -157,7 +157,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    @SuppressWarnings("unchecked")
    public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId)
    {
-	   Query query = getSession().createQuery("SELECT model.tdpCadre.memberShipNo FROM TrainingCampBatchAttendee model where model.trainingCampBatch.trainingCampBatchId = :trainingCampBatchId");
+	   Query query = getSession().createQuery("SELECT model.tdpCadre.memberShipNo FROM TrainingCampBatchAttendee model where model.trainingCampBatch.trainingCampBatchId = :trainingCampBatchId and model.isDeleted = 'false' ");
 	   query.setParameter("trainingCampBatchId",trainingCampBatchId);
 	   return query.list();
    }
@@ -165,14 +165,14 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds){
 	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadreId) " +
 	   		" from TrainingCampBatchAttendee model " +
-	   		" where model.trainingCampBatchId in (:batchIds) " +
+	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' " +
 	   		" group by model.trainingCampBatchId ");
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
    }
    public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate){
 	   Query query=getSession().createQuery(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatchId=:trainingCampBatchId " +
-	   		" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
+	   		" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate and model.isDeleted = 'false' ");
 	   query.setParameter("fromDate", fromDate);
 	   query.setParameter("toDate", toDate);
 	   query.setParameter("trainingCampBatchId",batchId);
@@ -184,7 +184,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   		" model.tdpCadre.userAddress.constituency.name  " +
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where" +
-	   		" model.trainingCampBatch.trainingCampBatchId=:batchId");
+	   		" model.trainingCampBatch.trainingCampBatchId=:batchId and model.isDeleted = 'false'");
 	   query.setParameter("batchId",batchId);
 	   
 	   return query.list();
@@ -192,8 +192,8 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    
    public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId){
 	   StringBuilder queryStr = new StringBuilder();
-	   queryStr.append(" select distinct model  from TrainingCampBatchAttendee model where ");
-	   queryStr.append(" model.trainingCampScheduleInviteeId=:inviteeId and model.isDeleted = 'false' ");
+	   queryStr.append(" select distinct model  from TrainingCampBatchAttendee model where and model.isDeleted = 'false' ");
+	   queryStr.append(" and model.trainingCampScheduleInviteeId=:inviteeId and model.isDeleted = 'false' ");
 	   if(batchId != null && batchId.longValue()>0L)
 		   queryStr.append(" and model.trainingCampBatchId=:batchId ");
 	   if(scheduleId != null && scheduleId.longValue()>0L)
