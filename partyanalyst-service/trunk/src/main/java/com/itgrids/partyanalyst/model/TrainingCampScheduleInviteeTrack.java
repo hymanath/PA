@@ -53,6 +53,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private Date updatedTime;
 	private Long trainingCampCallerId;
 	private CampCallStatus campCallStatus;
+	private Date laterCallBackTime;
 	
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -298,6 +299,17 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 		this.trainingCampCallerId = trainingCampCallerId;
 	}
 
+	@Column(name = "later_call_back_time")
+	public Date getLaterCallBackTime() {
+		return laterCallBackTime;
+	}
+
+
+	public void setLaterCallBackTime(Date laterCallBackTime) {
+		this.laterCallBackTime = laterCallBackTime;
+	}
+
+	
 
 
 	

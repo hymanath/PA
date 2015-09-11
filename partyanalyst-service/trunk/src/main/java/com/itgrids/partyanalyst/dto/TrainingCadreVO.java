@@ -16,7 +16,29 @@ public class TrainingCadreVO {
 	private String callBackTime;
 	private String callBackDate;
 	private Long trainingCampCallerId;
+	private String laterCallBackDate;
+	private String laterCallBackTime;
+	private String laterRemarks;
 	
+		
+	public String getLaterCallBackDate() {
+		return laterCallBackDate;
+	}
+	public void setLaterCallBackDate(String laterCallBackDate) {
+		this.laterCallBackDate = laterCallBackDate;
+	}
+	public String getLaterCallBackTime() {
+		return laterCallBackTime;
+	}
+	public void setLaterCallBackTime(String laterCallBackTime) {
+		this.laterCallBackTime = laterCallBackTime;
+	}
+	public String getLaterRemarks() {
+		return laterRemarks;
+	}
+	public void setLaterRemarks(String laterRemarks) {
+		this.laterRemarks = laterRemarks;
+	}
 	public Long getTrainingCampCallerId() {
 		return trainingCampCallerId;
 	}
