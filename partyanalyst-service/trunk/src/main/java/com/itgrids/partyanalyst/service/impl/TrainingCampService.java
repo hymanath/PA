@@ -2826,6 +2826,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("false");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+								saveTrackingInfo(inputVO);	
 							}
 							else
 							{
@@ -2838,13 +2839,13 @@ class TrainingCampService implements ITrainingCampService{
 									{
 										isAlreadyAvailable = true;
 										trainingCampBatchAttendee = trainingCampBatchAttendeeDtls.get(0);
-										trainingCampBatchAttendee = new TrainingCampBatchAttendee();
 										trainingCampBatchAttendee.setTrainingCampBatchId(inputVO.getBatchId());
 										trainingCampBatchAttendee.setTrainingCampScheduleInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId());
 										trainingCampBatchAttendee.setUpdatedBy(inputVO.getUserId());
 										trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 										trainingCampBatchAttendee.setIsDeleted("false");
 										trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+										saveTrackingInfo(inputVO);	
 									}
 								}
 							}
@@ -2861,6 +2862,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("false");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+								saveTrackingInfo(inputVO);	
 							}
 						}
 						else
@@ -2873,6 +2875,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("true");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+								saveTrackingInfo(inputVO);	
 							}
 						}
 					}
@@ -2976,7 +2979,7 @@ class TrainingCampService implements ITrainingCampService{
 			
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception Occured in saveTrackingInfo()", e);
 		}
 		
 	}
