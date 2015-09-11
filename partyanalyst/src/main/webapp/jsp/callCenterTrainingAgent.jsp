@@ -232,12 +232,23 @@ footer
                                   <option value="0">Select</option>
                             </select>
                         </div>
-                        <div class="col-md-4 m_top20 clearDiv" id="batchDiv">
+                        <div class="col-md-4 m_top20 clearDiv batchDiv" >
                             <label>Select Batch</label>
-                            <select class="form-control" id="batchId">
+                            <select class="form-control" id="batchId" onchange="getMaxNumberForBatch();">
                                  <option value="0">Select</option> 
                             </select>
                         </div>
+						
+						<div class="col-md-2 m_top20 batchDiv">
+					  <label>Max Members</label>
+						  <input type="text" disabled="" class="form-control" id="batchMaxNo">
+						</div>
+
+
+					<div class="col-md-2 m_top20 batchDiv">
+					  <label>Need Members</label>
+					  <input type="text" disabled="" class="form-control" id="batchavailCnt">
+					</div>
 						 <div class="col-md-12 m_top20 clearDiv">
                              <label>Remarks <span style="color:red;"> * </span></label>
                             <ul class="callback-remarks">
@@ -714,11 +725,23 @@ $(".scheduleStatuscehckbox").prop( "checked", false );
 }
 function populateFields(status)
 {
-   $(".scheduleStatuscehckbox").each(function()
+	 $(".scheduleStatuscehckbox").each(function()
    {
 		if($(this).attr("attr-text") == status)
 		$(this).prop( "checked", true);
    });
+   if(status == "Interested" && ${purposeId} == 2)
+	{
+ if(GbatchId > 0)
+	   {
+	    $(".batchDiv").show();
+	   	$("#batchId").val(GbatchId);
+		getMaxNumberForBatch();
+		}
+	}
+	else
+  showHideBatch();
+ 
 }
 function setDefaultImage(img){
 	  img.src = "dist/img/profile.png";
@@ -1314,6 +1337,7 @@ function setDefaultImage(img){
 	   {
 		if($(this).is(":checked"))
 		 scheduleStatusId = $(this).val();
+		  
 	   });
 	   
 	   if(scheduleStatusId == 3){
@@ -1323,16 +1347,47 @@ function setDefaultImage(img){
 	   
 	   if(scheduleStatusId == 4 || scheduleStatusId == 10)
 	   {
-	   $("#batchDiv").show();
+	   $(".batchDiv").show();
 	   if(GbatchId > 0)
+	   {
+	   
 	   	$("#batchId").val(GbatchId);
+		getMaxNumberForBatch();
+		}
 	   }
 	   else
 	   {
 	    $("#batchId").val(0);
-	    $("#batchDiv").hide();
+	    $(".batchDiv").hide();
 		$(".batcherr").html('');
 	   }
+  }
+  
+  function getMaxNumberForBatch()
+  {
+   $("#batchMaxNo").val('');
+    $("#batchavailCnt").val('');
+  var batchId = $("#batchId").val();
+  if(batchId == 0)
+  return;
+  var jObj = {
+  batchId : batchId,
+  task:""
+  }
+  $.ajax({
+			  type:'POST',
+			  url: 'getMaxNumberForBatchAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			buildMaxNumberForBatch(result);
+		   });	
+  }
+  function buildMaxNumberForBatch(result)
+  {
+  $("#batchMaxNo").val(result.totalCount);
+  var cnt = result.totalCount - result.availableCount;
+  $("#batchavailCnt").val(cnt);
   }
 </script>
 <script>
@@ -1345,7 +1400,7 @@ getCallStatusList();
 getScheduleStatusList();
 ClearDiv();
 getCallerAgentDistricts();
-showHideBatch();
+
 </script>
 </body>
 </html>

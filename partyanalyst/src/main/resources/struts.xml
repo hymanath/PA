@@ -10874,5 +10874,11 @@
 		    <param name="root">idNameList</param>
 		</result>
 	</action>
+	<action name="getMaxNumberForBatchAction" class="trainingCampAction" method="getMaxNumberForBatch">
+	    <result type="json" name="success">		   
+		    <param name="root">memberList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
