@@ -79,8 +79,16 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<TrainingCampVO> completedDetails=new ArrayList<TrainingCampVO>(0);
 	private List<TrainingCampVO> runningDetails=new ArrayList<TrainingCampVO>(0);
 	private List<TrainingCampVO> upcomingDetails=new ArrayList<TrainingCampVO>(0);
+	private Long runningAttendenceMemberCount=0l;
 	
 	
+	
+	public Long getRunningAttendenceMemberCount() {
+		return runningAttendenceMemberCount;
+	}
+	public void setRunningAttendenceMemberCount(Long runningAttendenceMemberCount) {
+		this.runningAttendenceMemberCount = runningAttendenceMemberCount;
+	}
 	public List<TrainingCampVO> getCompletedDetails() {
 		return completedDetails;
 	}
