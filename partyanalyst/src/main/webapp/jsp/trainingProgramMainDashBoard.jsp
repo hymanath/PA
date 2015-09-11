@@ -131,6 +131,17 @@ header.trainingHeader {
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading  bg_e9">
+										<h5 style="font-weight:bold;">SURVEY DETAILS</h5>
+									</div>
+									<div class="panel-body" id="surveyDetailsId"></div>
+									<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
             </div>
@@ -533,6 +544,67 @@ function getProgCampBatchNames(){
 			$("#titleName").html(temp);
 		}
 	});
+}
+getSurveyDetails();
+function getSurveyDetails()
+{
+	$("#surveyDataLoadoing").show();
+	
+	$.ajax({
+		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/1/0/0"
+		url: "http://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
+	}).then(function(result) {
+		if(result != null && result.length > 0){
+			buildSurveyDetails(result);
+		}else{
+			$("#surveyDataLoadoing").hide();
+			$("#surveyDetailsId").html("NO DATA AVAILABLE...");
+		}
+	});
+}
+
+function buildSurveyDetails(result)
+{
+	$("#surveyDetailsId").html('');
+	if(result != null && result.length > 0){
+		var str='';
+		str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+		for(var i in result){
+		 str+='<div class="panel panel-default">';
+				str+='<div class="panel-heading" role="tab" id="headingOne'+i+'" attr_survy_divId="candiConstSurveyId'+i+'">';
+					str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						str+='<h4 class="panel-title">';
+							str+=''+result[i].name+'';
+						str+='</h4>';
+					str+='</a>';
+				str+='</div>';
+				
+				str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					str+='<div class="panel-body">';
+					for(var j in result[i].verifierVOList)
+					{
+						str+='<table class="table table-bordered">';
+						str+='<tr><td colspan="3" style="text-weight:bold">'+result[i].verifierVOList[j].name+'</td></tr>';
+						str+='<b><tr><td>Option</td><td>Count</td><td>Percentage</td></tr></b>';
+						for(var k in result[i].verifierVOList[j].verifierVOList){
+							str+='<tr>';
+								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].option+'</td>';
+								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].count+'</td>';
+								str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].percentage+'</td>';
+							str+='</tr>';
+						}
+						str+='</table>';
+					}
+					str+='</div>';
+				str+='</div>';
+			  str+='</div>';
+			  
+		}
+		str+='</div>';
+	}
+	
+	$("#surveyDataLoadoing").hide();
+	$("#surveyDetailsId").html(str);
 }
 
 </script>
