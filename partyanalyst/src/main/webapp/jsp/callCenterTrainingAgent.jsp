@@ -577,8 +577,7 @@ str+='<td></td>';
 
 str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'+result.subList[i].callStatus+'</td>';
-if(result.subList[i].status !='Confirmed')
-{
+
 if((result.subList[i].trainingCampBatch != null && result.subList[i].trainingCampBatch > 0)  && jObj.purposeId == 1)
 {
 str+='<td>Interested</td>';
@@ -588,11 +587,7 @@ str+='<td>'
 str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');populateFields(\''+result.subList[i].status+'\');">Update Status</button>';
 str+='</td>';
 }
-}
-else
-{
-str+='<td></td>';
-}
+
 
 str+='</tr>';
 }
