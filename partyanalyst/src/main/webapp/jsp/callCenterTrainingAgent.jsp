@@ -579,9 +579,9 @@ str+='<td>'+result.subList[i].status+'</td>';
 str+='<td>'+result.subList[i].callStatus+'</td>';
 if(result.subList[i].status !='Confirmed')
 {
-if(result.subList[i].status =='Interested' && jObj.purposeId == 1)
+if((result.subList[i].trainingCampBatch != null && result.subList[i].trainingCampBatch > 0)  && jObj.purposeId == 1)
 {
-str+='<td></td>';
+str+='<td>Interested</td>';
 }
 else{
 str+='<td>'
