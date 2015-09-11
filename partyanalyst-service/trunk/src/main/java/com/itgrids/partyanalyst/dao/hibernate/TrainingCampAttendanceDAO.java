@@ -41,7 +41,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 sb.append(",count(distinct model.tdpCadreId)");
 		 
 		 sb.append(" from TrainingCampBatchAttendee model,TdpCadre model1 " +
-		 		   " where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId in (:trainingCampBatchIds) ");
+		 		   " where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId in (:trainingCampBatchIds) and model.isDeleted = 'false' ");
 		 
 		 if(type.equalsIgnoreCase("constituency")){
 			 sb.append(" group by model1.userAddress.constituency.constituencyId " +
