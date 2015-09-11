@@ -103,8 +103,8 @@ color: red !important;
                     <div class="panel-body">
 						  <div class="row">
                             	<div class="col-md-6">
-                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio" checked="checked">Feedback</label>
-                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio">Attendance</label>
+                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio" value="feedback" checked="checked" onclick="refreshDetails();">Feedback</label>
+                                	<label class="radio-inline"><input type="radio" class="radio-inline" name="radio" value="attendance" onclick="refreshDetails();">Attendance</label>
                                 </div>
                           </div>
 						<div class="row m_top10">
@@ -116,17 +116,26 @@ color: red !important;
 							<div class="col-md-3">
 								<label>Center</label>
 								<div id="campSelDivId"></div>
-								<select class="form-control" id="centerId">
+								<select class="form-control" id="centerId" onchange="getBatchesForCentre(this.value)">
 									<option value="0">Select Center</option>
 								</select>
 								<div class="mandatory" id="centerSelErrDivId"></div>
 							</div>
+							<div class="col-md-3" id="batchDisplayDiv" style="display:none">
+								<label>Batch</label>
+								<div id="batchSelDivId"></div>
+								<select class="form-control" id="batchId">
+									<option value="0">Select Batch</option>
+								</select>
+								<div class="mandatory" id="batchSelErrDivId"></div>
+							</div>
 							<div class="col-md-2 m_top30">
-								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getBatchesByProgramAndCenter();">Submit</button>
+								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getFeedBackOrAttendanceDetails();">Submit</button>
 							</div>
 						</div>
 						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
-                    	<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
+                    	<div id="attendanceDiv" style="display:none"></div>
+						<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
 					</div>	
                </div>          
 			</div>			  
@@ -1020,7 +1029,14 @@ color: red !important;
 	  </script>
 	  <script>
 	  
-	  function getBatchesForCentre(){
+	  function getBatchesForCentre(campId){
+	  
+			$('#batchId').find('option').remove();
+			$('#batchId').append('<option value="0">Select Batch</option>');
+			
+			var programId = $("#programId").val();
+			var campId = $("#centerId").val();
+				  
 		  var jsObj={
 			  programId :programId,
 			  campId :campId
@@ -1031,14 +1047,27 @@ color: red !important;
 		    data:{task:JSON.stringify(jsObj)},
 	      }).done(function(results){
 			  if(results !=null){
-				
+					for(var i in results){
+				   if(results[i].id == 0){
+					  $("#batchId").append('<option value='+results[i].id+'>ALL</option>');
+				   }else{
+					  $("#batchId").append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+				   }
+				 }
 			  }
 		  });
 	  }
 	  
-	  getCadreAttendneceByBatch(13);
 	  function getCadreAttendneceByBatch(batchId){
-		  
+	  
+			$("#batchSelErrDivId").html('');
+			if(batchId == 0){
+				$("#batchSelErrDivId").html("Please Select Any Batch");
+				return;
+			  }
+		  $("#ajaxImage").show();
+		  $("#attendanceDiv").html('');
+		  $("#attendanceDiv").show();
 		  var jsObj={
 			  batchId : batchId
 		  }
@@ -1048,11 +1077,104 @@ color: red !important;
 		    data:{task:JSON.stringify(jsObj)},
 	      }).done(function(results){
 			  if(results !=null){
-				
+				  buildDateWiseAttendedAndAbsentCandidatesDetails(results);
 			  }
 		  });
 	  }
 	  
+function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
+{
+	var str='';
+	str+='<div class="table-responsive m_top10">';
+		str+='<table class="table table-bordered attendanceTable">';
+			str+='<thead class="bg_d">';
+				str+='<th>Image</th>';
+				str+='<th>Name</th>';
+				str+='<th>Mobile</th>';
+				str+='<th>Committee</th>';
+				str+='<th>Designation</th>';
+				str+='<th>Constituency</th>';
+				var dates = results[0].simpleVoList;
+				if(dates != null && dates.length > 0){
+					var day = 1;
+					for(var i in results[0].simpleVoList){
+						var k = Number(day) + Number(i);
+						str+='<th>Day '+k+' ('+results[0].simpleVoList[i].dateString+')</th>';
+					}
+				}else{
+					str+='<th>Day 1</th>';
+					str+='<th>Day 2</th>';
+					str+='<th>Day 3</th>';
+				}
+			str+='</thead>';
+			for(var i in results){
+				str+='<tr>';
+					if(results[i].image != null){
+						str+='<td><img src="images/cadre_images/'+results[i].image+'" style="height:40px" class="img-reponsive"></td>';
+					}else{
+						str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>';
+					}
+					str+='<td>'+results[i].firstName+'</td>';
+					str+='<td>'+results[i].mobileNo+'</td>';
+					str+='<td>'+results[i].designationLocation+'</td>';
+					str+='<td>'+results[i].designation+'</td>';
+					str+='<td>'+results[i].constituencyName+'</td>';
+					for(var j in results[i].simpleVoList){
+						str+='<td style="text-align:center">'+results[i].simpleVoList[j].isAttended+'</td>';
+						/*if(results[i].simpleVoList[j].isAttended == "Attended"){
+							str+='<td><input type="checkbox" checked="true"></td>';
+						}else{
+							str+='<td><input type="checkbox"></td>';
+						}*/
+					}
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+	str+='</div>';
+	$("#ajaxImage").hide();
+	$("#attendanceDiv").html(str);
+	
+	$(".attendanceTable").dataTable();
+}
+
+function getFeedBackOrAttendanceDetails()
+{
+	var val = $('input:radio[name=radio]:checked').val();
+	
+	if(val == "feedback"){
+		getBatchesByProgramAndCenter();
+	}
+	if(val == "attendance"){
+		var batchId = $("#batchId").val();
+		getCadreAttendneceByBatch(batchId);
+	}
+	
+	
+}
+
+function refreshDetails()
+{
+	$("#attendanceDiv").html('');
+	$("#accordion").html('');
+	$("#programSelErrDivId").html('');
+	$("#centerSelErrDivId").html('');
+	$("#batchSelErrDivId").html('');
+	
+	$('#batchId').find('option').remove();
+	$('#batchId').append('<option value="0">Select Batch</option>');
+	
+	$('#centerId').val('0');
+	
+	var val = $('input:radio[name=radio]:checked').val();
+	if(val == "feedback"){
+		$("#batchDisplayDiv").hide();
+	}
+	if(val == "attendance"){
+		$("#batchDisplayDiv").show();
+	}
+	
+}
 	  
 	</script>
 </body>
