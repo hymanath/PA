@@ -840,7 +840,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 				  str+='<table class="table table-bordered m_0">';
 				  for(var i in result){
 				    str+='<tr>';
-                      str+='<td>'+result[i].name.toUpperCase()+'  LEVEL COMMITTEE MEMBERS</td>';
+                      str+='<td>'+result[i].name.toUpperCase()+'</td>';
                       str+='<td>'+result[i].districtid+' ATTENDED</td>';
                       str+='</tr>';
 				  }
