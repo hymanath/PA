@@ -153,6 +153,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 " select  count(distinct tca.attendance.tdpCadreId)" +
 	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
 	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and" +
+	 "       tcs.trainingCampScheduleId=tca.trainingCampScheduleId and " +
 	 "       tca.trainingCampProgramId=:programId and tcs.trainingCampId=:campId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate");
 	 
 	 query.setParameter("programId",programId);
