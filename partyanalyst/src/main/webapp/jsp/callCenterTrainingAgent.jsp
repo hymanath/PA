@@ -247,6 +247,28 @@ footer
                         <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
                            
                         </div>
+						
+						<div id="laterSelDiv" style="display:none">
+						<div class="col-md-4 m_top20">
+                        	<label>Call Back Date</label>
+                            <div class="input-group">
+                            	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input class="form-control clearEl" id="laterCallbackTime">
+                            </div>
+                        </div>
+                    	<div class="col-md-4 m_top20">
+                        	<label>Call Back Time</label>
+                            <div class="input-group">
+                            	<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <input class="form-control clearEl" id="laterTimepicker4">
+                            </div>
+                        </div>
+                        <div class="col-md-12 m_top20">
+                            <label> Call Back Remarks</label>
+                            <textarea class="form-control clearEl" id="laterCallbackremarks"></textarea>
+                        </div>
+						</div>
+						
                         <div class="col-md-12 m_top20 clearDiv">
                             <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
 							<img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:30px;display:none;"/>
@@ -424,10 +446,18 @@ $('#CallbackTime').daterangepicker({singleDatePicker: true,timePicker: false,min
         } }, function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
   });
+  
+$('#laterCallbackTime').daterangepicker({singleDatePicker: true,timePicker: false,minDate: new Date(),locale: {
+            format: 'MM/DD/YYYY'
+			
+        } }, function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  });
  
 });
 
 $('#timepicker4').datetimepicker({format: 'LT'});
+$('#laterTimepicker4').datetimepicker({format: 'LT'});
 var type ;
 if(purposeId == 1)
 type = "Schedule";
@@ -931,6 +961,9 @@ function setDefaultImage(img){
    var ramarks = $("#remarks").val();
    var batchId = $("#batchId").val();
     var callPurposeId = '${purposeId}';
+	var laterCallBackDate = $("#laterCallbackTime").val();
+	var laterCallBackTime = $("#laterTimepicker4").val();
+	var laterRemarks = $("#laterCallbackremarks").val().trim();
    $(".scheduleStatuscehckbox").each(function()
    {
 	if($(this).is(":checked"))
@@ -948,30 +981,32 @@ function setDefaultImage(img){
 	   }
    if(callstatusId == 1)
    {
-   
-		if(ramarks.length == 0)
-	   {
-		str+='<font color="red">Remarks  Required</font><br/>';
-		flag = true;
-	   }
-	  
-		if(batchId == 0 && scheduleStatusId == 4 && callPurposeId ==1)
-	   {
-		str+='<font color="red" class="batcherr">Select  Batch</font><br/>';;
-		flag = true;
-	   }
-	   
-	   	if(batchId == 0 && callPurposeId == 2 && scheduleStatusId == 10)
-	   {
-		str+='<font color="red">Select  Batch</font><br/>';;
-		flag = true;
+	   if(scheduleStatusId != 3){
+		   if(ramarks.length == 0)
+		   {
+			str+='<font color="red">Remarks  Required</font><br/>';
+			flag = true;
+		   }
+		  
+		   if(batchId == 0 && scheduleStatusId == 4 && callPurposeId ==1)
+		   {
+			str+='<font color="red" class="batcherr">Select  Batch</font><br/>';;
+			flag = true;
+		   }
+		   
+		   if(batchId == 0 && callPurposeId == 2 && scheduleStatusId == 10)
+		   {
+			str+='<font color="red">Select  Batch</font><br/>';;
+			flag = true;
+		   }
+			
+		   if(scheduleStatusId == 0)
+		   {
+			str+='<font color="red">Select Schedule Status</font><br/>';;
+			flag = true;
+		   }
 	   }
 		
-		if(scheduleStatusId == 0)
-	   {
-		str+='<font color="red">Select Schedule Status</font><br/>';;
-		flag = true;
-	   }
    }
    if(flag == true)
    {
@@ -987,6 +1022,8 @@ function setDefaultImage(img){
    
 	$("#ajaxImage2").show();
   }
+  
+  
    $("#messageDiv").html("");
    var obj = {
    batchId : batchId,
@@ -996,7 +1033,10 @@ function setDefaultImage(img){
    inviteeId:inviteeId,
    inviteeCallerId:inviteeCallerId,
    tdpCadreId:tdpCadreId,
-   status:"callstatus"
+   status:"callstatus",
+   laterCallBackDate:laterCallBackDate,
+   laterCallBackTime:laterCallBackTime,
+   laterRemarks:laterRemarks
 	}
    dataArray.push(obj);
    var jObj={
@@ -1268,12 +1308,18 @@ function setDefaultImage(img){
 	});
   function showHideBatch()
   {
+	$("#laterSelDiv").hide();
 	  var scheduleStatusId;
 	   $(".scheduleStatuscehckbox").each(function()
 	   {
 		if($(this).is(":checked"))
 		 scheduleStatusId = $(this).val();
 	   });
+	   
+	   if(scheduleStatusId == 3){
+			$("#laterSelDiv").show();
+	   }
+	   
 	   
 	   if(scheduleStatusId == 4 || scheduleStatusId == 10)
 	   {
