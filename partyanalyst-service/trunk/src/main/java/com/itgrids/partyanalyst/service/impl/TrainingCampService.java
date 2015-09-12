@@ -2733,7 +2733,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		
 	}
-	
+	// nagamani
 	public ResultStatus updateCadreStatusForTraining(final TrainingCadreVO inputVO)
 	{
 		
@@ -2802,20 +2802,24 @@ class TrainingCampService implements ITrainingCampService{
 				return resultStatus;
 				
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-					if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
-						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());	
+				trainingCampScheduleInvitee.setAttendingBatchId(null);
+					/*if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
+						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());*/
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
 					
 					if(inputVO.getScheduleStatusId().longValue() > 0L)
 					{
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
-						
+						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 						if(inputVO.getScheduleStatusId().longValue() == 10L)
 						{
 							flag = true;
 							TrainingCampBatchAttendee trainingCampBatchAttendee = null;
 							boolean isAlreadyAvailable = false;
+							
+							if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
+								trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());
 							
 							List<TrainingCampBatchAttendee> trainingCampBatchAttendeeDtls = trainingCampBatchAttendeeDAO.getAttendeeDetailsByInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId(),inputVO.getBatchId(),null);
 							if(trainingCampBatchAttendeeDtls != null && trainingCampBatchAttendeeDtls.size()>0)
@@ -2864,6 +2868,17 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
 								saveTrackingInfo(inputVO);	
 							}
+							
+							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
+							if(trainingCampScheduleInviteeCaller != null)
+							{
+								inputVO.setTrainingCampCallerId(trainingCampScheduleInviteeCaller.getTrainingCampCallerId());
+								trainingCampScheduleInviteeCaller.setCallStatusId(inputVO.getCallStatusId());
+								trainingCampScheduleInviteeCaller.setUpdatedBy(inputVO.getUserId());
+								trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
+								trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
+								voterDAO.flushAndclearSession();
+							}
 						}
 						else
 						{
@@ -2878,6 +2893,9 @@ class TrainingCampService implements ITrainingCampService{
 								saveTrackingInfo(inputVO);	
 							}
 						}
+						
+						/*if(trainingCampScheduleInvitee != null)
+							trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);*/
 					}
 					if(!flag)
 					{
