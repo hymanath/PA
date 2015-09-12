@@ -192,8 +192,8 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    
    public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId){
 	   StringBuilder queryStr = new StringBuilder();
-	   queryStr.append(" select distinct model  from TrainingCampBatchAttendee model where and model.isDeleted = 'false' ");
-	   queryStr.append(" and model.trainingCampScheduleInviteeId=:inviteeId and model.isDeleted = 'false' ");
+	   queryStr.append(" select distinct model  from TrainingCampBatchAttendee model where ");
+	   queryStr.append(" model.trainingCampScheduleInviteeId=:inviteeId and model.isDeleted = 'false' ");
 	   if(batchId != null && batchId.longValue()>0L)
 		   queryStr.append(" and model.trainingCampBatchId=:batchId ");
 	   if(scheduleId != null && scheduleId.longValue()>0L)
