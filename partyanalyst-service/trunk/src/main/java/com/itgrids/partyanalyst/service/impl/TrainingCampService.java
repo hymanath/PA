@@ -2803,8 +2803,9 @@ class TrainingCampService implements ITrainingCampService{
 				
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 				trainingCampScheduleInvitee.setAttendingBatchId(null);
-					/*if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
-						trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());*/
+					if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
+						if(inputVO.getScheduleStatusId().longValue() == 4L || inputVO.getScheduleStatusId().longValue() == 10L)// interested or confirmed
+							trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());
 					if(inputVO.getRamarks() != null && inputVO.getRamarks().length() > 0)
 						trainingCampScheduleInvitee.setRemarks(inputVO.getRamarks());
 					
@@ -2817,9 +2818,6 @@ class TrainingCampService implements ITrainingCampService{
 							flag = true;
 							TrainingCampBatchAttendee trainingCampBatchAttendee = null;
 							boolean isAlreadyAvailable = false;
-							
-							if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
-								trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());
 							
 							List<TrainingCampBatchAttendee> trainingCampBatchAttendeeDtls = trainingCampBatchAttendeeDAO.getAttendeeDetailsByInviteeId(trainingCampScheduleInvitee.getTrainingCampScheduleInviteeId(),inputVO.getBatchId(),null);
 							if(trainingCampBatchAttendeeDtls != null && trainingCampBatchAttendeeDtls.size()>0)
