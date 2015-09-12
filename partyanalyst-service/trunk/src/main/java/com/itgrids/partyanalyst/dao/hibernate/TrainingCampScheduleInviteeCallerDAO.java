@@ -1133,9 +1133,9 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
 			//queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
 		}
-		else
-			queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate ");
-		
+		/*else
+			queryStr.append(" and (date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) <=:todayDate)");
+		*/
 		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, "+
 				" TCSIC.trainingCampScheduleInvitee.attendingBatchId  ");
@@ -1145,8 +1145,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
 		}
-		else
-			query.setDate("todayDate", todayDate);
+		/*else
+			query.setDate("todayDate", todayDate);*/
 		
 		return query.list();
 	}
@@ -1165,8 +1165,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
 			//queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
 		}
-		else
-			queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate ");
+		//else
+		//	queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate ");
 		
 		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCSIC.trainingCampScheduleInvitee.attendingBatchId  ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -1175,8 +1175,8 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
 		}
-		else
-			query.setDate("todayDate", todayDate);
+		//else
+		//	query.setDate("todayDate", todayDate);
 		
 		return query.list();
 	}

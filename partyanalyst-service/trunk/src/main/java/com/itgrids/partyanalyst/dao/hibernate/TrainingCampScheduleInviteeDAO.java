@@ -277,8 +277,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
 			//queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
 		}
-		else
-			queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate ");
+		//else
+		//	queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:todayDate ");
 		
 		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,TCSIC.trainingCampScheduleInvitee.attendingBatchId , TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -287,8 +287,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
 		}
-		else
-			query.setDate("todayDate", todayDate);
+		//else
+			//query.setDate("todayDate", todayDate);
 		
 		return query.list();
 	}
