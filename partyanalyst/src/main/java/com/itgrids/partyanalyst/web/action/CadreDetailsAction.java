@@ -19,11 +19,13 @@ import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -36,6 +38,8 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private String 								task;
 	private JSONObject							jObj;
 	private ICadreDetailsService  				cadreDetailsService;
+	private ITrainingCampService				trainingCampService;
+	
 	private CadreCommitteeMemberVO              cadreCommitteeMemberVO;   
 	private List<CadreCommitteeMemberVO>      	cadreCommitteeMemberVOList;
 	private Long 								cadreId;
@@ -56,7 +60,30 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private BasicVO							basicVo;
 	private List<NtrTrustStudentVO>        ntrTrustStudentVOList; 
 	private List<QuestionAnswerVO>         finalList;
+	private List<SimpleVO> 				   simpleVoList;
 	
+
+	
+	
+	public ITrainingCampService getTrainingCampService() {
+		return trainingCampService;
+	}
+
+
+	public void setTrainingCampService(ITrainingCampService trainingCampService) {
+		this.trainingCampService = trainingCampService;
+	}
+
+
+	public List<SimpleVO> getSimpleVoList() {
+		return simpleVoList;
+	}
+
+
+	public void setSimpleVoList(List<SimpleVO> simpleVoList) {
+		this.simpleVoList = simpleVoList;
+	}
+
 
 	public List<QuestionAnswerVO> getFinalList() {
 		return finalList;
@@ -560,6 +587,20 @@ public String getCandidateAndConstituencySurveyResult(){
 		}
 		return Action.SUCCESS;
 		
+	}
+	public String getStatusCountOfCadreForInvitationAndAttendance(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			
+			simpleVoList=trainingCampService.getStatusCountOfCadreForInvitationAndAttendance(cadreId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getStatusCountOfCadreForInvitationAndAttendance() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 }

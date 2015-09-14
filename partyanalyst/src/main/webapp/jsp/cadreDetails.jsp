@@ -479,15 +479,62 @@ var globalCadreId = '${cadreId}';
                                     	<th class="text-center" colspan="3">TRAINING'S</th>
                                     </thead>
                                     <tr class="text-center">
-                                    	<td>0<br/>Suggested</td>
-                                        <td>0<br/>Attended</td>
-                                        <td>0<br/>Absent</td>
+                                    	<td id="totalInvitedCountId">0<br/>Invited</td>
+                                        <td id="totalAttendedCountId">0<br/>Attended</td>
+                                        <td id="totalAbsentedCountId">0<br/>Absent</td>
                                     </tr>
                                 </table>
                             </div>
 							 <div class="col-md-4 col-xs-12" id="partyMeetingDescDiv">
                             	
                             </div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="panel-group m_top10" id="accordion2323" role="tablist" aria-multiselectable="true">
+								  <div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingOne">
+									  <a role="button" class="collapsed accordion-toggle" data-toggle="collapse" data-parent="#accordion2323" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										<h4 class="panel-title">
+										  <span id="eventHeadingId"></span>
+										</h4>
+									   </a>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+									  <div class="panel-body">
+										<div id="participationTableDivId" class="table-responsive"></div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default" id="trainingDetailsMainDivId" style="display:none">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion2323" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										<h4 class="panel-title">
+										 TRAINING CAMP PARTICPATION DETAILS
+										 </h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<table class="table table-bordered">
+											<thead>
+												<th>Program Name</th>
+												<th>INVITED</th>
+												<th>ATTENDED</th>
+												<th>ABSENT</th>
+											</thead>
+											<tbody id="trainingDetailsBodyId">
+												<!--<tr>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr> -->
+											</tbody>
+										</table>
+									  </div>
+									</div>
+								  </div>
+								</div>
+							</div>
                             <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
 								<!--<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>-->
 								<div id="participationTableDivId" class="table-responsive">
@@ -1316,7 +1363,9 @@ var globalCadreId = '${cadreId}';
 					str+='<table class="table m_0 table-bordered table-responsive" style="margin-top: 10px">';
 					str+='<thead>';
 					str+='<tr>';
-					str+='<th colspan="5" style="background-color:#CCCCCC;text-align:center;"> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </th>';						
+					/* str+='<th colspan="5" style="background-color:#CCCCCC;text-align:center;"> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </th>';		 */	
+
+					$("#eventHeadingId").html('<span> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </span>');
 					str+='</tr>';
 						str+='<tr>';
 						
@@ -4784,6 +4833,55 @@ function buildPublicScoreTable(myResult)
 	$("#ivrsurveyDataLoadoing").hide();
 	$(".ivrDetailsCls").html(str);
 }
+
+getStatusCountOfCadreForInvitationAndAttendance();
+function getStatusCountOfCadreForInvitationAndAttendance(){
+	
+	$("#trainingDetailsBodyId").html('');
+	var jsObj ={
+		tdpCadreId:globalCadreId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getStatusCountOfCadreForInvitationAndAttendanceAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null && result.length>0 && result !=""){
+			buiildingTrainigStatusDetailsOfCadre(result);
+		}
+		else{
+			$("#trainingDetailsMainDivId").hide();
+			$("#trainingDetailsBodyId").html("No Data Available");
+		}
+	});
+	
+}
+function buiildingTrainigStatusDetailsOfCadre(result){
+	
+	$("#trainingDetailsMainDivId").show();
+	var str='';
+	
+	$("#totalInvitedCountId").html(result[0].totalInviteeCount +'</br>Invited');
+	$("#totalAttendedCountId").html(result[0].totalAttendedCount+'</br>Attended');
+	$("#totalAbsentedCountId").html(result[0].totalAbsentCount+'</br>Absent');
+	
+	for(var i in result){
+		str+='<tr>';
+			 str+='<td>'+result[i].progName+'</td>';
+			 str+='<td>'+result[i].count+'</td>';
+			 str+='<td>'+result[i].total+'</td>';
+			 if(result[i].dateString =="Absent"){
+				 str+='<td>1</td>';
+			 }
+			 else{
+				  str+='<td>0</td>';
+			 }
+		str+='</tr>';
+	}
+	$("#trainingDetailsBodyId").html(str);
+	
+}
+
 </script>
 </body>
 </html>

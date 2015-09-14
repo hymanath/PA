@@ -25,7 +25,7 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px; 
 }
-.summaryCls{color:#252D47;}
+.summaryCls{color:#252D47;text-decoration: underline;}
 .summaryCls:hover{text-decoration: underline;}
 </style>
 </head>
