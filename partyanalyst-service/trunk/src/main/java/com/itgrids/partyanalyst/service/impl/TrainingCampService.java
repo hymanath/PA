@@ -7016,5 +7016,36 @@ class TrainingCampService implements ITrainingCampService{
 			
 		}
 		
+		public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr)
+		{
+			List<TrainingCampVO> finalList = new ArrayList<TrainingCampVO>();
+			
+			try{
+				SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+				Date startDate = format.parse(startDateStr);
+				Date endDate = format.parse(endDateStr);
+				
+				//campId,campName,date,count
+				List<Object[]> callBackLaterMembersList = trainingCampScheduleInviteeDAO.getCallBackLaterMembersCount(campId, startDate, endDate);
+				
+				if(callBackLaterMembersList != null && callBackLaterMembersList.size() > 0)
+				{
+					for (Object[] objects : callBackLaterMembersList) {
+						TrainingCampVO vo = new TrainingCampVO();
+						
+						vo.setCampId((Long) objects[0]);
+						vo.setCampName(objects[1].toString().trim());
+						vo.setStartDateStr(objects[2].toString().trim());
+						vo.setMemberCount((Long) objects[3]);
+						
+						finalList.add(vo);
+					}
+				}
+				
+			}catch(Exception e){
+				LOG.error("Exception raised at getCallBackLaterMembersCount",e);
+			}
+			return finalList;
+		}
 		
 }

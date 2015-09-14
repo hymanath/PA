@@ -481,5 +481,20 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> getCallBackLaterMembersCount(Long campId, Date startDate, Date endDate)
+	{
+		Query query = getSession().createQuery(" select model.trainingCampSchedule.trainingCamp.trainingCampId, model.trainingCampSchedule.trainingCamp.campName, " +
+						" date(model.laterCallBackTime), count(model.trainingCampScheduleInviteeId) from TrainingCampScheduleInvitee model " +
+						" where model.trainingCampSchedule.trainingCamp.trainingCampId = :campId " + 
+						" and (date(model.laterCallBackTime)>=:startDate and date(model.laterCallBackTime)<=:endDate) " +
+						" and model.laterCallBackTime is not null group by model.laterCallBackTime, model.trainingCampSchedule.trainingCamp.trainingCampId ");
+		
+		query.setParameter("campId", campId);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		
+		return query.list();
+	}
+	
 	
 }
