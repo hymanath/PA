@@ -892,13 +892,35 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>DISTRICTS NAME</th>';
 			str+='<th>INVITED</th>';
 			str+='<th>ATTENDED</th>';
+		    str+='<th>INVITEES ATTENDED</th>';
+			str+='<th>NON INVITEES ATTENDED</th>';
 			str+='</thead>';
 			str+='<tbody>';
 		for(var i in results){
 			str+='<tr>';
 				str+='<td>'+results[i].name+'</td>';
-				str+='<td>'+results[i].total+'</td>';
-				str+='<td>'+results[i].count+'</td>';
+				
+				if(results[i].total==0){
+					str+='<td> - </td>';
+				}else{
+					str+='<td>'+results[i].total+'</td>';
+				}
+				
+				if(results[i].count==0){
+					str+='<td> - </td>';
+				}else{
+                   str+='<td>'+results[i].count+'</td>';
+				}
+				if(results[i].locValue==0){
+					str+='<td> - </td>';
+				}else{
+                   str+='<td>'+results[i].locValue+'</td>';
+				}
+				if(results[i].totalCount==0){
+					str+='<td> - </td>';
+				}else{
+                   str+='<td>'+results[i].totalCount+'</td>';
+				}
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -916,13 +938,36 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>CONSTITUENCY NAME</th>';
 			str+='<th>INVITED</th>';
 			str+='<th>ATTENDED</th>';
+			str+='<th>INVITEES ATTENDED</th>';
+			str+='<th>NON INVITEES ATTENDED</th>';
 			str+='</thead>';
 			str+='<tbody>';
 		for(var i in results){
 			str+='<tr>';
 				str+='<td>'+results[i].name+'</td>';
-				str+='<td>'+results[i].total+'</td>';
-				str+='<td>'+results[i].count+'</td>';
+				
+				if(results[i].total==0){
+					str+='<td> - </td>';
+				}else{
+					str+='<td>'+results[i].total+'</td>';
+				}
+				
+				if(results[i].count==0){
+					str+='<td> - </td>';
+				}else{
+					str+='<td>'+results[i].count+'</td>';
+				}
+				if(results[i].locValue==0){
+					str+='<td> - </td>';
+				}else{
+					str+='<td>'+results[i].locValue+'</td>';
+				}
+				if(results[i].totalCount==0){
+					str+='<td> - </td>';
+				}else{
+					str+='<td>'+results[i].totalCount+'</td>';
+				}
+				
 			str+='</tr>';
 		}
 		str+='</tbody>';
