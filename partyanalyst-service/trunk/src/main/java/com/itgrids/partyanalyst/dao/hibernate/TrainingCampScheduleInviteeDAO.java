@@ -487,7 +487,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 						" date(model.laterCallBackTime), count(model.trainingCampScheduleInviteeId) from TrainingCampScheduleInvitee model " +
 						" where model.trainingCampSchedule.trainingCamp.trainingCampId = :campId " + 
 						" and (date(model.laterCallBackTime)>=:startDate and date(model.laterCallBackTime)<=:endDate) " +
-						" and model.laterCallBackTime is not null group by model.laterCallBackTime, model.trainingCampSchedule.trainingCamp.trainingCampId ");
+						" and model.laterCallBackTime is not null group by date(model.laterCallBackTime), model.trainingCampSchedule.trainingCamp.trainingCampId ");
 		
 		query.setParameter("campId", campId);
 		query.setDate("startDate", startDate);

@@ -2794,7 +2794,7 @@ class TrainingCampService implements ITrainingCampService{
 						saveTrackingInfo(inputVO);	
 						
 						resultStatus.setResultPartial(true);
-						resultStatus.setResultCode(2);
+						//resultStatus.setResultCode(2);
 						flag = true;
 									
 				}
