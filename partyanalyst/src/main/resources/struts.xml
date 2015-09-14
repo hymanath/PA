@@ -10879,6 +10879,11 @@
 		    <param name="root">memberList</param>
 		</result>
 	</action>
+	<action name="getCallBackLaterMembersCountAction" class="trainingCampAction" method="getCallBackLaterMembersCount">
+	    <result type="json" name="success">		   
+		    <param name="root">campVoList</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      
