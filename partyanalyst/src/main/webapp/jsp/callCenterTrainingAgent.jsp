@@ -249,17 +249,7 @@ footer
 					  <label>Need Members</label>
 					  <input type="text" disabled="" class="form-control" id="batchavailCnt">
 					</div>
-						 <div class="col-md-12 m_top20 clearDiv">
-                             <label>Remarks <span style="color:red;"> * </span></label>
-                            <ul class="callback-remarks">
-                            	<textarea class="form-control remarkEle" id="remarks"></textarea>
-                            </ul>
-                        </div>
-                        <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
-                           
-                        </div>
-						
-						<div id="laterSelDiv" style="display:none">
+					<div id="laterSelDiv" style="display:none">
 						<div class="col-md-4 m_top20">
                         	<label>Call Back Date</label>
                             <div class="input-group">
@@ -279,6 +269,36 @@ footer
                             <textarea class="form-control clearEl" id="laterCallbackremarks"></textarea>
                         </div>
 						</div>
+						<div class="col-md-12 m_top20 clearDiv" id="remarksDiv">
+                             <label>Remarks <span style="color:red;"> * </span></label>
+                            <ul class="callback-remarks">
+                            	<textarea class="form-control remarkEle" id="remarks"></textarea>
+                            </ul>
+                        </div>
+						<div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
+                           
+                        </div>
+						
+						<!--<div id="laterSelDiv" style="display:none">
+						<div class="col-md-4 m_top20">
+                        	<label>Call Back Date</label>
+                            <div class="input-group">
+                            	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input class="form-control clearEl" id="laterCallbackTime">
+                            </div>
+                        </div>
+                    	<div class="col-md-4 m_top20">
+                        	<label>Call Back Time</label>
+                            <div class="input-group">
+                            	<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <input class="form-control clearEl" id="laterTimepicker4">
+                            </div>
+                        </div>
+                        <div class="col-md-12 m_top20">
+                            <label> Call Back Remarks</label>
+                            <textarea class="form-control clearEl" id="laterCallbackremarks"></textarea>
+                        </div>
+						</div>-->
 						
                         <div class="col-md-12 m_top20 clearDiv">
                             <button class="btn btn-success" onclick="updateCadreStatus();">Update Status</button>
@@ -1332,6 +1352,7 @@ function setDefaultImage(img){
   function showHideBatch()
   {
 	$("#laterSelDiv").hide();
+	$("#remarksDiv").show();
 	  var scheduleStatusId;
 	   $(".scheduleStatuscehckbox").each(function()
 	   {
@@ -1342,6 +1363,7 @@ function setDefaultImage(img){
 	   
 	   if(scheduleStatusId == 3){
 			$("#laterSelDiv").show();
+			$("#remarksDiv").hide();
 	   }
 	   
 	   
