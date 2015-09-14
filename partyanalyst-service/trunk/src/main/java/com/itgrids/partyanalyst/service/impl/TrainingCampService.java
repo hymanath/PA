@@ -5927,7 +5927,7 @@ class TrainingCampService implements ITrainingCampService{
    *   output: CadreFeedbackVO
    *   
   */
-	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromDateString,String toDateStrng){
+   public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromDateString,String toDateStrng){
 		
 		CadreFeedbackVO finalVO=new CadreFeedbackVO();
 		try{
@@ -5967,8 +5967,8 @@ class TrainingCampService implements ITrainingCampService{
 			finalVO.setGaoalCount(goalsCount!=null?goalsCount:0l);
 			
 			
-           List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId,fromDate,toDate);
-           if(feedBacks!=null && feedBacks.size()>0){
+         List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId,fromDate,toDate);
+         if(feedBacks!=null && feedBacks.size()>0){
 				for(Object[] obj:feedBacks){
 					
 					if(obj[1]!=null){
@@ -5991,9 +5991,70 @@ class TrainingCampService implements ITrainingCampService{
 						hsVO.setCount(hsVO.getCount()+1);
 						hsVO.getSubMap().get((Long)obj[7]).setCount(hsVO.getSubMap().get((Long)obj[7]).getCount()+1);
 					}
+					if(obj[9]==null || obj[9]!=null){
+						
+						CadreFeedbackVO svo =finalVO.getMap().get("smartPhone");
+						svo.setCount(svo.getCount()+1);
+						if(obj[9]!=null){
+							if(obj[9].toString().equalsIgnoreCase("Y")){
+								svo.getSubMap().get(1l).setCount(svo.getSubMap().get(1l).getCount()+1);
+							}else if(obj[9].toString().equalsIgnoreCase("N")){
+								svo.getSubMap().get(2l).setCount(svo.getSubMap().get(2l).getCount()+1);
+							}
+						}else{
+							svo.getSubMap().get(3l).setCount(svo.getSubMap().get(3l).getCount()+1);
+						}
+					}
+					if(obj[10]==null || obj[10]!=null){
+						
+					   CadreFeedbackVO wu =finalVO.getMap().get("watsappusing");
+						wu.setCount(wu.getCount()+1);
+						
+						if(obj[10]!=null){
+							if(obj[10].toString().equalsIgnoreCase("Y")){
+								wu.getSubMap().get(1l).setCount(wu.getSubMap().get(1l).getCount()+1);
+							}else if(obj[10].toString().equalsIgnoreCase("N")){
+								wu.getSubMap().get(2l).setCount(wu.getSubMap().get(2l).getCount()+1);
+							}
+						}else{
+							if(obj[9]!=null && obj[9].toString().equalsIgnoreCase("Y"))
+							   wu.getSubMap().get(3l).setCount(wu.getSubMap().get(3l).getCount()+1);
+						}
+						
+					}
+					if(obj[11]==null || obj[11]!=null){
+						CadreFeedbackVO ws =finalVO.getMap().get("watsappsharing");
+						ws.setCount(ws.getCount()+1);
+						if(obj[11]!=null){
+							
+							if(obj[11].toString().equalsIgnoreCase("Y")){
+								ws.getSubMap().get(1l).setCount(ws.getSubMap().get(1l).getCount()+1);
+							}else if(obj[11].toString().equalsIgnoreCase("N")){
+								ws.getSubMap().get(2l).setCount(ws.getSubMap().get(2l).getCount()+1);
+							}
+						}else{
+							if(obj[9]!=null && obj[9].toString().equalsIgnoreCase("Y"))
+								ws.getSubMap().get(3l).setCount(ws.getSubMap().get(3l).getCount()+1);
+						}
+					}
+					if(obj[12]!=null || obj[12]==null){
+						
+						CadreFeedbackVO fu =finalVO.getMap().get("facebookusing");
+						fu.setCount(fu.getCount()+1);
+						if(obj[12]!=null){
+							if(obj[12].toString().equalsIgnoreCase("Y")){
+								fu.getSubMap().get(1l).setCount(fu.getSubMap().get(1l).getCount()+1);
+							}else if(obj[12].toString().equalsIgnoreCase("N")){
+								fu.getSubMap().get(2l).setCount(fu.getSubMap().get(2l).getCount()+1);
+							}
+						}else{
+							fu.getSubMap().get(3l).setCount(fu.getSubMap().get(3l).getCount()+1);
+						}
+					}
+					
 				}
 			}
-         //converting
+       //converting
 			if(finalVO.getMap()!=null && finalVO.getMap().size()>0){
 				for (Map.Entry<String, CadreFeedbackVO> entry : finalVO.getMap().entrySet())
 		        {
@@ -6026,12 +6087,64 @@ class TrainingCampService implements ITrainingCampService{
 			CadreFeedbackVO vo3=new CadreFeedbackVO();
 			vo3.setName("healthStatus");
 			
+			CadreFeedbackVO vo4=new CadreFeedbackVO();
+			vo4.setName("smartPhone");
+			if(vo4.getSubMap()==null){
+				vo4.setSubMap(new LinkedHashMap<Long, CadreFeedbackVO>());
+			}
+			staticSubMapdetails(vo4.getSubMap());
+			
+			
+			CadreFeedbackVO vo5=new CadreFeedbackVO();
+			vo5.setName("watsappusing");
+			if(vo5.getSubMap()==null){
+				vo5.setSubMap(new LinkedHashMap<Long, CadreFeedbackVO>());
+			}
+			staticSubMapdetails(vo5.getSubMap());
+			
+			CadreFeedbackVO vo6=new CadreFeedbackVO();
+			vo6.setName("watsappsharing");
+			if(vo6.getSubMap()==null){
+				vo6.setSubMap(new LinkedHashMap<Long, CadreFeedbackVO>());
+			}
+			staticSubMapdetails(vo6.getSubMap());
+			
+			CadreFeedbackVO vo7=new CadreFeedbackVO();
+			vo7.setName("facebookusing");
+			if(vo7.getSubMap()==null){
+				vo7.setSubMap(new LinkedHashMap<Long, CadreFeedbackVO>());
+			}
+			staticSubMapdetails(vo7.getSubMap());
+			
 			finalVO.getMap().put("leaderShiplevels",vo);
 			finalVO.getMap().put("communuicationSkills",vo1);
 			finalVO.getMap().put("leadershipSkills",vo2);
 			finalVO.getMap().put("healthStatus",vo3);
+			finalVO.getMap().put("smartPhone",vo4);
+			finalVO.getMap().put("watsappusing",vo5);
+			finalVO.getMap().put("watsappsharing",vo6);
+			finalVO.getMap().put("facebookusing",vo7);
+			
 		}
-	
+	  public void staticSubMapdetails(Map<Long,CadreFeedbackVO> subMap){
+		  
+		  CadreFeedbackVO vo=new CadreFeedbackVO();
+		  vo.setId(1l);
+		  vo.setName("Yes");
+		  
+		  CadreFeedbackVO vo1=new CadreFeedbackVO();
+		  vo1.setId(2l);
+		  vo1.setName("No");
+		  
+		  CadreFeedbackVO vo2=new CadreFeedbackVO();
+		  vo2.setId(3l);
+		  vo2.setName("Not Answered");
+		  
+		  subMap.put(1l, vo);
+		  subMap.put(2l, vo1);
+		  subMap.put(3l, vo2);
+		  
+	  }
 	  public void putSubMapDetails(Map<String,CadreFeedbackVO> mainMap,List<Object[]> feedbacks,String type){
 			
 			for(Object[] obj:feedbacks){
@@ -6054,7 +6167,8 @@ class TrainingCampService implements ITrainingCampService{
 						   " ll.cadreLeadershipLevelId,ll.leadershipLevel," +
 						   " cs.cadreComminicationSkillsStatusId,cs.status," +
 						   " ls.cadreLeadershipSkillsStatusId,ls.status," +
-						   " hs.cadreHealthStatusId,hs.status");
+						   " hs.cadreHealthStatusId,hs.status," +
+						   " tccfd.smartPhoneExist,tccfd.watsappUsing,tccfd.watsappShare,tccfd.facebookUsing");
 				
 				sbM.append(" from TrainingCampAttendance tca,TrainingCampCadreFeedbackDetails tccfd " +
 						   " left join tccfd.cadreLeadershipLevel ll " +
@@ -6089,6 +6203,7 @@ class TrainingCampService implements ITrainingCampService{
 			queryString=sbM.toString();
 			return queryString;
 		}
+	  
 		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type,Date fromDate,Date toDate){
 			String queryString=null;
 			StringBuilder sbM=new StringBuilder();
