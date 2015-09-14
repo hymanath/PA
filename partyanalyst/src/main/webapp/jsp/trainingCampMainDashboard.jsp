@@ -1114,7 +1114,13 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 					}else{
 						str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>';
 					}
-					str+='<td>'+results[i].firstName+'</td>';
+					
+					if(results[i].cadreId !=null && results[i].cadreId > 0){
+						str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].cadreId+'">'+results[i].firstName+'</a></td>'
+					}
+					else{
+						str+='<td>'+results[i].firstName+'</td>';
+					}
 					str+='<td>'+results[i].mobileNo+'</td>';
 					str+='<td>'+results[i].designationLocation+'</td>';
 					str+='<td>'+results[i].designation+'</td>';
