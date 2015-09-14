@@ -5791,7 +5791,7 @@ class TrainingCampService implements ITrainingCampService{
 			finalMap.put(11l,districtVO);
 			
 			
-			Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(startDateString,endDateString,stateId,"completed");
+			Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(endDateString,startDateString,stateId,"completed");
 			if(compBatchMap!=null && compBatchMap.size()>0){
 				TrainingCampVO trainingCampVO=compBatchMap.get("completed");
 				if(trainingCampVO!=null){
@@ -5833,7 +5833,7 @@ class TrainingCampService implements ITrainingCampService{
 	    SimpleVO finalVO=new SimpleVO();
    	try{
    		
-   		Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(startDateString,endDateString,stateId,"completed");
+   		Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(endDateString, startDateString, stateId, "completed");
 		if(compBatchMap!=null && compBatchMap.size()>0){
 			TrainingCampVO trainingCampVO=compBatchMap.get("completed");
 			if(trainingCampVO!=null){
