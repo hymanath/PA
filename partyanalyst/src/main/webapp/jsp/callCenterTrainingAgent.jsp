@@ -232,13 +232,16 @@ footer
                                   <option value="0">Select</option>
                             </select>
                         </div>
+						<div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
+                           
+                        </div>
                         <div class="col-md-4 m_top20 clearDiv batchDiv" >
                             <label>Select Batch</label>
                             <select class="form-control" id="batchId" onchange="getMaxNumberForBatch();">
                                  <option value="0">Select</option> 
                             </select>
                         </div>
-						
+                        						
 						<div class="col-md-2 m_top20 batchDiv">
 					  <label>Max Members</label>
 						  <input type="text" disabled="" class="form-control" id="batchMaxNo">
@@ -275,9 +278,9 @@ footer
                             	<textarea class="form-control remarkEle" id="remarks"></textarea>
                             </ul>
                         </div>
-						<div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
+						<!-- <div class="col-md-12 m_top20 clearDiv" id="scheduleStatusDiv">
                            
-                        </div>
+                        </div> -->
 						
 						<!--<div id="laterSelDiv" style="display:none">
 						<div class="col-md-4 m_top20">
