@@ -25,6 +25,8 @@ header.eventsheader {
  background-repeat: no-repeat;
  height: 71px; 
 }
+.summaryCls{color:#252D47;}
+.summaryCls:hover{text-decoration: underline;}
 </style>
 </head>
 <body>
@@ -388,6 +390,8 @@ header.eventsheader {
 <script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="training/dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="training/dist/HighCharts/highcharts.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript">
 
 $(function () {
@@ -883,7 +887,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 	function buildDistData(results){
 		
 		var str='';
-		str+='<table class="table table-bordered m_0">';
+		str+='<table class="table table-bordered m_0" id="distTable">';
 			str+='<thead>';
 			str+='<th>DISTRICTS NAME</th>';
 			str+='<th>INVITED</th>';
@@ -900,11 +904,14 @@ function getTrainingCenterDetailsBasedOnDates(){
 		str+='</tbody>';
 		str+='</table>';
 		$('#distWiseDivId').html(str);
+		
+		$("#distTable").dataTable({"aaSorting": [[ 1, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
 	}
 	function buildConstData(results){
 		
 		var str='';
-		str+='<table class="table table-bordered m_0">';
+		str+='<table class="table table-bordered m_0" id="constTable">';
 			str+='<thead>';
 			str+='<th>CONSTITUENCY NAME</th>';
 			str+='<th>INVITED</th>';
@@ -921,6 +928,8 @@ function getTrainingCenterDetailsBasedOnDates(){
 		str+='</tbody>';
 		str+='</table>';
 		$('#constWiseDivId').html(str);
+		$("#constTable").dataTable({"aaSorting": [[ 1, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
 	}
 	
 	$(document).on('click', '.applyBtn', function(){
