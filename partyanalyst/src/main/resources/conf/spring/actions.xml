@@ -1590,6 +1590,7 @@
 	<bean id="cadreDetailsAction" class="com.itgrids.partyanalyst.web.action.CadreDetailsAction" singleton="false"> 
 			<property name="cadreDetailsService" ref="cadreDetailsService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
+			<property name="trainingCampService" ref="trainingCampService" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
