@@ -5850,10 +5850,11 @@ class TrainingCampService implements ITrainingCampService{
 			   		
 			   		List<Object[]> invitedListDist=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"district");
 			   		List<Object[]> attendedListDist=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"district");
+			   		List<Object[]> inviteesInAtendedListDist=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"district"); //getting invitees count in attended count dist wise.
 			   		
 			   		List<Object[]> invitedListCon=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"constituency");
 			   		List<Object[]> attendedListCon=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"constituency");
-			   		
+			   		List<Object[]> inviteesInAtendedListCon=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"constituency");//getting invitees count in attended count con wise.
 			   		
 			   		
 			   		if(invitedListDist!=null && invitedListDist.size()>0){
@@ -5862,6 +5863,10 @@ class TrainingCampService implements ITrainingCampService{
 			   		if(attendedListDist!=null && attendedListDist.size()>0){
 			   			settingData(districtMap,attendedListDist,"attended");
 			   		}
+			   		if(inviteesInAtendedListDist!=null && inviteesInAtendedListDist.size()>0){
+			   			setNonInviteescount(districtMap,inviteesInAtendedListDist);
+			   		}
+			   		
 			   		
 			   		if(invitedListCon!=null && invitedListCon.size()>0){
 			   			settingData(constituencyMap,invitedListCon,"invited");
@@ -5869,7 +5874,10 @@ class TrainingCampService implements ITrainingCampService{
 			   		if(attendedListCon!=null && attendedListCon.size()>0){
 			   			settingData(constituencyMap,attendedListCon,"attended");
 			   		}
-			   	
+			   		if(inviteesInAtendedListCon!=null && inviteesInAtendedListCon.size()>0){
+			   			setNonInviteescount(constituencyMap,inviteesInAtendedListCon);
+			   		}
+			   		
 			   		
 			   		if(districtMap!=null && districtMap.size()>0){
 			   			finalVO.setSimpleVOList1(new ArrayList<SimpleVO>(districtMap.values()));
@@ -5877,7 +5885,19 @@ class TrainingCampService implements ITrainingCampService{
 			   		if(constituencyMap!=null && constituencyMap.size()>0){
 			   			finalVO.setSimpleVOList2(new ArrayList<SimpleVO>(constituencyMap.values()));
 			   		}
-		   		
+		   		    
+			      	//setting non invitees count
+			   		if(finalVO.getSimpleVOList1()!=null && finalVO.getSimpleVOList1().size()>0){
+			   			for(SimpleVO vo:finalVO.getSimpleVOList1()){
+			   			  vo.setTotalCount(vo.getCount()-(vo.getLocValue()));
+			   			}
+			   		}
+			   		if(finalVO.getSimpleVOList2()!=null && finalVO.getSimpleVOList2().size()>0){
+			   			for(SimpleVO vo:finalVO.getSimpleVOList2()){
+			   			  vo.setTotalCount(vo.getCount()-(vo.getLocValue()));
+			   			}
+			   		}
+			   		
 		   		}
 			}
 		}
@@ -5887,38 +5907,55 @@ class TrainingCampService implements ITrainingCampService{
    	return finalVO;
    }
    public void  settingData(Map<Long,SimpleVO> constituencyMap,List<Object[]> invitedList,String type){
-   	
-   	try{
-   		
-			for(Object[] obj:invitedList){
-				
-				boolean locExist=true;
-				SimpleVO vo=constituencyMap.get((Long)obj[0]);
-				
-				if(vo==null){
-					locExist=false;
-					vo=new SimpleVO();
-					vo.setId((Long)obj[0]);
-					vo.setName(obj[1]!=null?obj[1].toString():"");
-					vo.setTotal(0l);//invited
-					vo.setCount(0l);//attended
+	   	
+	   	try{
+	   		
+				for(Object[] obj:invitedList){
 					
+					boolean locExist=true;
+					SimpleVO vo=constituencyMap.get((Long)obj[0]);
+					
+					if(vo==null){
+						locExist=false;
+						vo=new SimpleVO();
+						vo.setId((Long)obj[0]);
+						vo.setName(obj[1]!=null?obj[1].toString():"");
+						vo.setTotal(0l);//invited
+						vo.setCount(0l);//attended
+						vo.setLocValue(0l);//invitedComm
+						vo.setTotalCount(0l);//non invited comm
+						
+					}
+					if(type.equalsIgnoreCase("invited")){
+						vo.setTotal(obj[2]!=null?(Long)obj[2]:0l);//invited.
+					}else{
+						vo.setCount(obj[2]!=null?(Long)obj[2]:0l);//attended.
+					}
+					if(!locExist){
+						constituencyMap.put((Long)obj[0],vo);
+					}
 				}
-				if(type.equalsIgnoreCase("invited")){
-					vo.setTotal(obj[2]!=null?(Long)obj[2]:0l);
-				}else{
-					vo.setCount(obj[2]!=null?(Long)obj[2]:0l);
-				}
-				if(!locExist){
-					constituencyMap.put((Long)obj[0],vo);
+	   		
+			}catch(Exception e){
+				LOG.error(" Error Occured in settingData" ,e);
+			}
+	   }
+   public void setNonInviteescount(Map<Long,SimpleVO> map,List<Object[]> list){
+		try{
+			
+			for(Object[] obj:list){
+				
+				if(obj[0]!=null){
+					SimpleVO vo=map.get((Long)obj[0]);
+					vo.setLocValue(obj[2]!=null?(Long)obj[2]:0l);
 				}
 			}
-   		
-		}catch(Exception e){
-			LOG.error(" Error Occured in settingData" ,e);
+			
+		}catch(Exception e) {
+			LOG.error(" Error Occured in setNonInviteescount" ,e);
 		}
-   }
-   
+	}
+	
    
   /**
    *   @author    : Sreedhar
