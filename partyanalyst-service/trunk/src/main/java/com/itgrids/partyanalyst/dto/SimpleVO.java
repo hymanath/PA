@@ -27,6 +27,37 @@ public class SimpleVO implements java.io.Serializable{
    private String batchName="";
    private Long locValue;
    
+   private boolean nonInvitee=false;
+   
+   private Long totalInviteeCount=0l;
+   private Long totalAttendedCount = 0l;
+   private Long totalAbsentCount =0l;
+   
+  
+	public Long getTotalInviteeCount() {
+	return totalInviteeCount;
+}
+public void setTotalInviteeCount(Long totalInviteeCount) {
+	this.totalInviteeCount = totalInviteeCount;
+}
+public Long getTotalAttendedCount() {
+	return totalAttendedCount;
+}
+public void setTotalAttendedCount(Long totalAttendedCount) {
+	this.totalAttendedCount = totalAttendedCount;
+}
+public Long getTotalAbsentCount() {
+	return totalAbsentCount;
+}
+public void setTotalAbsentCount(Long totalAbsentCount) {
+	this.totalAbsentCount = totalAbsentCount;
+}
+	public boolean isNonInvitee() {
+	return nonInvitee;
+}
+public void setNonInvitee(boolean nonInvitee) {
+	this.nonInvitee = nonInvitee;
+}
 	public String getIsAttended() {
 	return isAttended;
 	}

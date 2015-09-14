@@ -204,5 +204,15 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 query.setParameter("batchId", batchId);
 	 return query.list();
  }
+ public List<Object[]> getAttendedCountOfCadreProgramWise(Long cadreId){
+	 
+	 Query query = getSession().createQuery("select model.trainingCampProgram.trainingCampProgramId,count(distinct model.attendance.tdpCadreId),model.trainingCampProgram.programName " +
+	 		" from  TrainingCampAttendance model" +
+	 		" where model.attendance.tdpCadre.tdpCadreId =:cadreId " +
+	 		" group by model.trainingCampProgram.trainingCampProgramId ");
+	 
+	 query.setParameter("cadreId", cadreId);
+	 return query.list();
+ }
  
 }
