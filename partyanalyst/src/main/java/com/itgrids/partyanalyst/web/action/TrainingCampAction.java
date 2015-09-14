@@ -108,9 +108,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long cd=0l;//campId;
 	private String dts;//fromDate&todate
 	private List<CadreVo> cadreVoList;
+	private List<TrainingCampVO> campVoList;	
 	
 	
-	
+	public List<TrainingCampVO> getCampVoList() {
+		return campVoList;
+	}
+
+	public void setCampVoList(List<TrainingCampVO> campVoList) {
+		this.campVoList = campVoList;
+	}
+
 	public Long getPd() {
 		return pd;
 	}
@@ -2064,5 +2072,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
     
+    public String getCallBackLaterMembersCount()
+    {
+    	try{
+    		
+	    	jObj = new JSONObject(getTask());
+	    	Long campId = jObj.getLong("campId");
+	    	String startDateStr = jObj.getString("startDate");
+	    	String endDateStr = jObj.getString("endDate");
+	    	
+	    	campVoList = trainingCampService.getCallBackLaterMembersCount(campId,startDateStr,endDateStr);
+    			
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in getCallBackLaterMembersCount() method, Exception - ",e);
+    	}
+    	return Action.SUCCESS;
+    }    
     
 }
