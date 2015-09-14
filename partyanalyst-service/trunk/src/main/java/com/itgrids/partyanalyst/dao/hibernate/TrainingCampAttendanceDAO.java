@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
 
 public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampAttendance,Long> implements ITrainingCampAttendanceDAO{
@@ -86,6 +87,36 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	return query.list();
 	 
  }
+ public List<Object[]> getInviteeCountsinAttendedCounts(List<Long> batchIds,String type){
+		
+	 StringBuilder sb=new StringBuilder();
+	 sb.append(" select ");
+	 
+	 if(type.equalsIgnoreCase("constituency")){
+		 sb.append(" model1.userAddress.constituency.constituencyId,model1.userAddress.constituency.name");
+	 }else{
+		 sb.append(" model1.userAddress.district.districtId,model1.userAddress.district.districtName"); 
+	 }
+	 sb.append(",count(distinct model1.tdpCadreId)");
+	 
+	 sb.append(" from TrainingCampAttendance model,TdpCadre model1,TrainingCampBatchAttendee model2 " +
+	 		   " where model.attendance.tdpCadreId=model1.tdpCadreId and model.attendance.tdpCadreId=model2.tdpCadreId and  model.trainingCampBatchId in (:trainingCampBatchIds) ");
+	 
+	 if(type.equalsIgnoreCase("constituency")){
+		 sb.append(" group by model1.userAddress.constituency.constituencyId " +
+		 		   " order by model1.userAddress.constituency.name");
+		 
+	 }else{
+		 sb.append(" group by model1.userAddress.district.districtId " +
+		 		   " order by model1.userAddress.district.districtName");
+	 }
+	 
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameterList("trainingCampBatchIds",batchIds);
+	return query.list();
+	 
+ }
+ 
  public List<Object[]> getCompletedCounts(List<Long> batchIds){
 		Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampBatchId, count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
