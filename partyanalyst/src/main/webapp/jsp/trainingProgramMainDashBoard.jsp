@@ -338,6 +338,7 @@ function buildAttendedCountByFeedBacks(result)
 		str+='</table>';
 		str+='</div>';
 		str+='</div>';
+		
 		str+='<div class="row">';
 		str+='<div class="col-md-8">';
 		str+='<table class="table table-bordered m_top10">';
@@ -383,6 +384,71 @@ function buildAttendedCountByFeedBacks(result)
 		str+='</table>';	
 		str+='</div>';
 		str+='</div>';
+		
+		str+='<div class="row">';
+		 str+='<div>';
+		   str+='<table class="table table-bordered m_0 m_top10">';
+			str+='<thead class="bg_e9">';
+			  str+='<th></th>';
+			  str+='<th class="text-center">Yes</th>';
+			  str+='<th class="text-center">No</th>';
+			  str+='<th class="text-center">Not Answered</th>';
+			  str+='<th class="text-center">Total</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			
+			str+='<tr>';
+			str+='<td>Smart Phone Exist</td>'
+			
+			for(var j in result.list[4].subList){
+				if(result.list[4].subList[j].name=='Yes'){
+					str+='<td class="text-center">'+result.list[4].subList[j].count+'<br>';
+						str+='<table class="table table-bordered m_0">';
+						str+='<tr>';
+						str+='<th colspan="3" class="text-center">Having Whatsapp</td>';
+						str+='<th colspan="3" class="text-center">Sharing In Whatsapp</td>';
+						str+='</tr>';
+						str+='<tr>';
+						str+='<td>Yes</td>';
+						str+='<td>No</td>';
+						str+='<td>Not Answered</td>';
+						str+='<td>Yes</td>';
+						str+='<td>No</td>';
+						str+='<td>Not Answered</td>';
+						str+='</tr>';
+						str+='<tr>';
+						
+						for(var i in result.list[5].subList){
+							str+='<td>'+result.list[5].subList[i].count+'</td>';
+						}
+						for(var i in result.list[6].subList){
+							str+='<td>'+result.list[6].subList[i].count+'</td>';
+						}
+						str+='</tr>';
+						str+='</table>';
+						
+					str+='</td>';
+					
+				}else{
+					str+='<td class="text-center">'+result.list[4].subList[j].count+'</td>';
+				}
+			}
+			str+='<td>'+result.list[4].count+'</td>'
+			str+='</tr>';
+			
+			str+='<tr>';
+			str+='<td>Facebook Known</td>'
+			for(var j in result.list[7].subList){
+				str+='<td class="text-center">'+result.list[7].subList[j].count+'</td>'
+			}
+			str+='<td class="text-center">'+result.list[7].count+'</td>'
+			str+='</tr>';
+			
+		    str+='</tbody>';
+		   str+='</table>';
+		 str+='</div>';
+		str+='</div>';
+		
 	$("#feedbackDetailsId").html(str);
 }
 
