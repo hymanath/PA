@@ -22,6 +22,8 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
+
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreComminicationSkillsStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreHealthStatusDAO;
@@ -7015,7 +7017,6 @@ class TrainingCampService implements ITrainingCampService{
 			return returnVo;
 			
 		}
-		
 		public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr)
 		{
 			List<TrainingCampVO> campVoList = new ArrayList<TrainingCampVO>();
@@ -7047,5 +7048,99 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return campVoList;
 		}
-		
+		public List<SimpleVO> getStatusCountOfCadreForInvitationAndAttendance(Long cadreId){
+			
+			List<SimpleVO> inviteeList = new LinkedList<SimpleVO>();
+			try{
+				Map<Long,SimpleVO> inviteeMap = new LinkedHashMap<Long, SimpleVO>();
+				List<Object[]> inviteeCount = trainingCampScheduleInviteeDAO.getInviteeCountOfCadreProgramWise(cadreId);
+				
+				Long invitedcount=0l;
+				if(inviteeCount !=null && inviteeCount.size()>0){
+					for(Object[] invitee:inviteeCount){
+						SimpleVO vo = new SimpleVO();
+						
+						vo.setId((Long)invitee[0]);//programId
+						vo.setCount(invitee[1] !=null ? (Long)invitee[1]:0l);//invited Count
+						vo.setProgName(invitee[2] !=null ? invitee[2].toString():"");
+						vo.setTotal(0l);
+						//inviteeList.add(vo);
+						
+						invitedcount = invitedcount +1;
+						inviteeMap.put((Long)invitee[0], vo);
+					}
+				}
+				
+				Map<Long,SimpleVO> attendedMap = new LinkedHashMap<Long, SimpleVO>();
+				List<SimpleVO> attendList = new LinkedList<SimpleVO>();
+				List<Object[]> attendedCount = trainingCampAttendanceDAO.getAttendedCountOfCadreProgramWise(cadreId);
+				
+				Long attendedcount=0l;
+				if(attendedCount !=null && attendedCount.size()>0){
+					for (Object[] objects : attendedCount) {
+						SimpleVO vo = new SimpleVO();
+						vo.setId((Long)objects[0]);//programId
+						vo.setCount(objects[1] !=null ? (Long)objects[1]:0l);//attendedCount
+						vo.setProgName(objects[2] !=null ? objects[2].toString():"");
+						
+						attendedcount = attendedcount+1;
+						
+						attendList.add(vo);
+						attendedMap.put((Long)objects[0], vo);
+						
+					}
+				}
+				
+				//considering non-invitee scenario also
+				if(attendList !=null && attendList.size()>0){
+					for(SimpleVO simpleVo:attendList){
+						
+						SimpleVO inviteeVo=inviteeMap.get(simpleVo.getId());
+						if(inviteeVo ==null){
+							inviteeVo = new SimpleVO();
+							inviteeVo.setNonInvitee(true);
+							inviteeVo.setProgName(simpleVo.getProgName());
+							inviteeVo.setId(simpleVo.getId());
+							inviteeVo.setCount(0l);
+						}
+						inviteeVo.setTotal(simpleVo.getCount());//attendedCount
+					}
+				}
+				
+				if(inviteeMap !=null && inviteeMap.size()>0){
+					inviteeList.addAll(inviteeMap.values());
+				}
+				
+				Long absentCount=0l;
+				if(inviteeList !=null && inviteeList.size()>0){
+					
+					for(SimpleVO ListVo:inviteeList){
+						if(ListVo.getCount() !=null && ListVo.getCount()>0){
+							if(ListVo.getTotal() ==null || ListVo.getTotal()<=0){
+								ListVo.setDateString("Absent");//status Of Cadre For Training
+								absentCount = absentCount+1;
+							}
+							else{
+								ListVo.setDateString("Present");//status Of Cadre For Training
+							}
+						}
+					}
+				}
+				
+				if(inviteeList !=null && inviteeList.size()>0){
+					SimpleVO vo=inviteeList.get(0);
+					
+					vo.setTotalInviteeCount(invitedcount);
+					vo.setTotalAttendedCount(attendedcount);
+					vo.setTotalAbsentCount(absentCount);
+				}
+				
+				return inviteeList;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return inviteeList;
+			
+		}
 }

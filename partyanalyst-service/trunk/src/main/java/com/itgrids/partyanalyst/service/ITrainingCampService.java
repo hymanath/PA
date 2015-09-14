@@ -103,4 +103,5 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getBatchesForCentre(Long programId,Long campId);
 	public TrainingMemberVO getMaxNumberForBatch(Long batchId);
 	public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr);
+	public List<SimpleVO> getStatusCountOfCadreForInvitationAndAttendance(Long cadreId);
 }
