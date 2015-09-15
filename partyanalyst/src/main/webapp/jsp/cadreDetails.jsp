@@ -520,6 +520,7 @@ var globalCadreId = '${cadreId}';
 												<th>INVITED</th>
 												<th>ATTENDED</th>
 												<th>ABSENT</th>
+												<th></th>
 											</thead>
 											<tbody id="trainingDetailsBodyId">
 												<!--<tr>
@@ -938,6 +939,33 @@ var globalCadreId = '${cadreId}';
 			</div>
 		</div>
 	</div>-->
+	
+	<!-- model For Training -->
+<div class="modal fade modelForTrainingDetails">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">TRAINING DETAILS</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12">
+			<div id="trainingDetailsTableId"></div>
+			<center><img id="dataLoadingsImgForTrainingDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			</div>
+			<div class="col-md-12">
+			<div id="remarkDetailsId"></div>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+	
 </section>
 		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -4838,6 +4866,7 @@ getStatusCountOfCadreForInvitationAndAttendance();
 function getStatusCountOfCadreForInvitationAndAttendance(){
 	
 	$("#trainingDetailsBodyId").html('');
+	$("#modelForTrainingDetails").hide();
 	var jsObj ={
 		tdpCadreId:globalCadreId
 	}
@@ -4867,7 +4896,7 @@ function buiildingTrainigStatusDetailsOfCadre(result){
 	
 	for(var i in result){
 		str+='<tr>';
-			 str+='<td>'+result[i].progName+'</td>';
+			 str+='<td id="'+result[i].id+'">'+result[i].progName+'</td>';
 			 str+='<td>'+result[i].count+'</td>';
 			 str+='<td>'+result[i].total+'</td>';
 			 if(result[i].dateString =="Absent"){
@@ -4876,11 +4905,110 @@ function buiildingTrainigStatusDetailsOfCadre(result){
 			 else{
 				  str+='<td>0</td>';
 			 }
+			 str+='<td><input class="btn btn-sm btn-primary detailsCls" attr_programId="'+result[i].id+'" type="button" value="Details" type="button" data-toggle="modal" data-target=".modelForTrainingDetails"/></td>';
 		str+='</tr>';
 	}
 	$("#trainingDetailsBodyId").html(str);
+}
+
+$(document).on("click",".detailsCls",function(){
+	
+	var programId = $(this).attr("attr_programId");
+	var cadreId = globalCadreId;
+	
+	$("#modelForTrainingDetails").show();
+	$("#dataLoadingsImgForTrainingDetails").show();
+	getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
+	getRemarkSOfCadreByCallPurpose(programId,cadreId);
+	
+});
+
+function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
+	
+	var jsObj ={
+		programId:programId,
+		tdpCadreId:cadreId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getAttendedTrainingCampBatchDetailsOfCadreAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null)
+		{
+			var str='';
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<th>Program Name</th>';
+					str+='<th>Center Name</th>';
+					str+='<th>Batch Name</th>';
+					for(var i in result.simpleVOList1){
+						var day = parseInt(i) + parseInt(1);
+						str+='<th>Day '+day+' ('+result.simpleVOList1[i].dateString+')</th>';
+					}
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>'+result.progName+'</td>';
+						str+='<td>'+result.campName+'</td>';
+						str+='<td>'+result.batchName+'</td>';
+						for(var i in result.simpleVOList1){
+							str+='<td>'+result.simpleVOList1[i].isAttended+'</td>';
+						}
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+			
+			$("#trainingDetailsTableId").html(str);
+		}else{
+			$("#trainingDetailsTableId").html("NO DATA AVAILABLE...");
+		}
+						
+	});
 	
 }
+function getRemarkSOfCadreByCallPurpose(programId,cadreId){
+	var jsObj ={
+		programId:programId,
+		tdpCadreId:cadreId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getRemarkSOfCadreByCallPurposeAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<h4 class="m_0">REMARKS</h4>';
+			str+='<table class="table table-bordered m_top10" >';
+				str+='<thead>';
+					str+='<th>Purpose</th>';
+					str+='<th>Remarks</th>';
+					str+='<th>Date & Time</th>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					if(result[i].remarks != null && result[i].remarks.length > 0){
+						str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].remarks+'</td>';
+							str+='<td>'+result[i].dateString+'</td>';
+						str+='</tr>';
+					}
+				}
+				str+='</tbody>';
+			str+='</table>';
+			
+			$("#dataLoadingsImgForTrainingDetails").hide();
+			$("#remarkDetailsId").html(str);
+		}
+		else{
+			$("#dataLoadingsImgForTrainingDetails").hide();
+			$("#remarkDetailsId").html("NO DATA AVAILABLE...");
+		}
+	});
+}
+
 
 </script>
 </body>
