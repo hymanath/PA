@@ -31,6 +31,7 @@ footer
 	padding:30px;
 	color:#fff
 }
+
 </style>
 </head>
 <body>
@@ -343,7 +344,7 @@ str+=' <td>Schedule</td>';
 str+='<td>Allocated</td>';
 str+='<td>Answered</td>';
 str+='<td>Dialed/Not-Dialled</td>';
-str+='<td class="pad_5 font-12">Interested/Batch Confirm</td>';
+str+='<td class="pad_5 font-12">Interested/Batch Assigned</td>';
 str+='<td class="pad_5 font-12">Not Interested</td>';
 str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
@@ -399,24 +400,24 @@ undialed = allocated - dialed;
 
 for(var m=0;m<result[i].subList[j].subList[k].scheduleStatusList.length;m++) // invitee Status
 {
-if(result[i].subList[j].subList[k].scheduleStatusList[m].id == 6 || result[i].subList[j].subList[k].scheduleStatusList[m].id == 7)
+if((result[i].subList[j].subList[k].scheduleStatusList[m].id == 6 && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0 )|| (result[i].subList[j].subList[k].scheduleStatusList[m].id == 7 && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0))
 {
 callBack = callBack + result[i].subList[j].subList[k].scheduleStatusList[m].count;
 todaycallBack = todaycallBack + result[i].subList[j].subList[k].scheduleStatusList[m].todayCnt;
 }
 if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Interested")
 interested = interested+result[i].subList[j].subList[k].scheduleStatusList[m].count ;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Confirmed")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].batchId > 0 && result[i].subList[j].subList[k].scheduleStatusList[m].name != "Interested")
 confirm = confirm + result[i].subList[j].subList[k].scheduleStatusList[m].count ;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Not Interested" && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0)
 notInterested = notInterested+result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Later")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Later" && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0)
 later = later+result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Pending")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Pending" && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0)
 pending = pending + result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Wrong Mobile No")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Wrong Mobile No" && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0)
 wrong = wrong + result[i].subList[j].subList[k].scheduleStatusList[m].count;
-if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Invalid Mobile No")
+if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Invalid Mobile No" && result[i].subList[j].subList[k].scheduleStatusList[m].batchId == 0)
 invalid = invalid + result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 if(allocated > 0)
@@ -1080,6 +1081,8 @@ str +='</tbody></table></td>';
 	str +='</tr>';
 	for(var i in result)
 	{
+	if(result[i].name.trim() !="Total")
+	{
 		str +='<tr>';
 		str +='<td>'+result[i].name+'</td>';
 		str += '<td>'+result[i].total+'</td>';
@@ -1148,6 +1151,7 @@ str +='</tbody></table></td>';
 		str +='<td class="text-not-interested">'+later+'/'+pending+'</td>';
 		str +='<td class="text-totally-not">'+notInterested+'</td>';
 		str +='</tr>';
+		}
 	}
 	
 	str += '</table>';

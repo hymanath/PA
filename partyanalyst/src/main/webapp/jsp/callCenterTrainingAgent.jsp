@@ -39,6 +39,9 @@ footer
 	padding:30px;
 	color:#fff
 }
+.light-theme a, .light-theme span{
+  float: none !important;
+}
 </style>
 </head>
 <body>
@@ -644,7 +647,7 @@ str+='<td>'+result.subList[i].callStatus+'</td>';
 
 if((result.subList[i].trainingCampBatch != null && result.subList[i].trainingCampBatch > 0)  && jObj.purposeId == 1)
 {
-str+='<td>Interested</td>';
+str+='<td></td>';
 }
 else{
 str+='<td>'
@@ -1082,7 +1085,8 @@ function setDefaultImage(img){
    status:"callstatus",
    laterCallBackDate:laterCallBackDate,
    laterCallBackTime:laterCallBackTime,
-   laterRemarks:laterRemarks
+   laterRemarks:laterRemarks,
+   callPurposeId:callPurposeId
 	}
    dataArray.push(obj);
    var jObj={

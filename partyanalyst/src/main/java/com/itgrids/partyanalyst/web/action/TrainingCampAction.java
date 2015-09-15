@@ -1061,6 +1061,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			inputVo.setLaterCallBackTime(jObj.getString("laterCallBackTime"));
 			inputVo.setLaterRemarks(jObj.getString("laterRemarks"));
 			inputVo.setUserId(regVo.getRegistrationID());
+			inputVo.setPurposeId(jObj.getLong("callPurposeId"));
 			resultStatus = trainingCampService.updateCadreStatusForTraining(inputVo);
 				}
 			}
