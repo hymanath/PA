@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
+import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
@@ -104,4 +105,5 @@ public interface ITrainingCampService {
 	public TrainingMemberVO getMaxNumberForBatch(Long batchId);
 	public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr);
 	public List<SimpleVO> getStatusCountOfCadreForInvitationAndAttendance(Long cadreId);
+	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
 }

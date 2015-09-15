@@ -91,6 +91,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
+import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TraingCampCallerVO;
 import com.itgrids.partyanalyst.dto.TraingCampDataVO;
 import com.itgrids.partyanalyst.dto.TrainingCadreVO;
@@ -112,6 +113,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
 import com.itgrids.partyanalyst.model.TrainingCampProgram;
+import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
@@ -7143,4 +7145,96 @@ class TrainingCampService implements ITrainingCampService{
 			return inviteeList;
 			
 		}
+		
+		public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId)
+		{
+			SurveyTrainingsVO finalvo = new SurveyTrainingsVO();
+			try{
+				
+				List<TrainingCamp> campList = trainingCampDAO.getAllRecordsByCampId(campId);
+				List<TrainingCampProgram> programList = trainingCampProgramDAO.getAllRecordsByProgramId(programId);
+				List<TrainingCampSchedule> schedulesList = trainingCampScheduleDAO.getAllRecordsByScheduleId(scheduleId);
+				List<TrainingCampBatch> batchList = trainingCampBatchDAO.getAllRecordsByBatchId(batchId);
+				
+				if(campList != null && campList.size() > 0)
+				{
+					for (TrainingCamp trainingCamp : campList) {
+						SurveyTrainingsVO surveyCampvo = new SurveyTrainingsVO();
+						
+						surveyCampvo.setCampId(trainingCamp.getTrainingCampId());
+						surveyCampvo.setCampName(trainingCamp.getCampName().toString().trim());
+						surveyCampvo.setDescription(trainingCamp.getDescription().toString().trim());
+						surveyCampvo.setLocation(trainingCamp.getLocation().toString().trim());
+						if(trainingCamp.getAddress() != null && trainingCamp.getAddress().length() > 0){
+							surveyCampvo.setAddress(trainingCamp.getAddress().toString().trim());
+						}
+						
+						finalvo.getTrainingCampVOList().add(surveyCampvo);
+					}
+					System.out.println(finalvo.getTrainingCampVOList().size());
+				}
+				if(programList != null && programList.size() > 0)
+				{
+					for (TrainingCampProgram trainingCampProgram : programList) {
+						SurveyTrainingsVO surveyProgvo = new SurveyTrainingsVO();
+						
+						surveyProgvo.setProgramId(trainingCampProgram.getTrainingCampProgramId());
+						surveyProgvo.setProgramName(trainingCampProgram.getProgramName().toString().trim());
+						surveyProgvo.setDescription(trainingCampProgram.getDescription().toString().trim());
+						surveyProgvo.setDurationInDays(trainingCampProgram.getDurationInDays());
+						
+						finalvo.getTrainingProgramVOList().add(surveyProgvo);
+					}
+					System.out.println(finalvo.getTrainingProgramVOList().size());
+				}
+				if(schedulesList != null && schedulesList.size() > 0)
+				{
+					for (TrainingCampSchedule trainingCampSchedule : schedulesList) {
+						SurveyTrainingsVO surveySchevo = new SurveyTrainingsVO();
+						
+						surveySchevo.setScheduleId(trainingCampSchedule.getTrainingCampScheduleId());
+						surveySchevo.setCampId(trainingCampSchedule.getTrainingCampId());
+						surveySchevo.setProgramId(trainingCampSchedule.getTrainingCampProgramId());
+						surveySchevo.setTrainingCampScheduleCode(trainingCampSchedule.getTrainingCampScheduleCode().toString().trim());
+						if(trainingCampSchedule.getDescription() != null && trainingCampSchedule.getDescription().length() > 0){
+							surveySchevo.setDescription(trainingCampSchedule.getDescription().toString().trim());
+						}
+						surveySchevo.setFromDate(trainingCampSchedule.getFromDate());
+						surveySchevo.setToDate(trainingCampSchedule.getToDate());
+						surveySchevo.setCreatedBy(trainingCampSchedule.getCreatedBy());
+						surveySchevo.setUpdatedBy(trainingCampSchedule.getUpdatedBy());
+						surveySchevo.setInsertedTime(trainingCampSchedule.getInsertedTime());
+						surveySchevo.setUpdatedTime(trainingCampSchedule.getUpdatedTime());
+						surveySchevo.setStatus(trainingCampSchedule.getStatus().toString().trim());
+						
+						finalvo.getTrainingScheduleVOList().add(surveySchevo);
+					}
+					System.out.println(finalvo.getTrainingScheduleVOList().size());
+				}
+				if(batchList != null && batchList.size() > 0)
+				{
+					for (TrainingCampBatch trainingCampBatch : batchList) {
+						SurveyTrainingsVO surveyBatchvo = new SurveyTrainingsVO();
+						
+						surveyBatchvo.setBatchId(trainingCampBatch.getTrainingCampBatchId());
+						surveyBatchvo.setScheduleId(trainingCampBatch.getTrainingCampScheduleId());
+						surveyBatchvo.setBatchName(trainingCampBatch.getTrainingCampBatchName().toString().trim());
+						surveyBatchvo.setTrainingCampBatchCode(trainingCampBatch.getTrainingCampBatchCode().toString().trim());
+						surveyBatchvo.setFromDate(trainingCampBatch.getFromDate());
+						surveyBatchvo.setToDate(trainingCampBatch.getToDate());
+						surveyBatchvo.setBatchStatusId(trainingCampBatch.getBatchStatusId());
+						surveyBatchvo.setMaxMembers(trainingCampBatch.getMaxMembers());
+						surveyBatchvo.setIsFeedbackUpdatable(trainingCampBatch.getIsFeedbackUpdatable().toString().trim());
+						
+						finalvo.getTrainingBatchVOList().add(surveyBatchvo);
+					}
+					System.out.println(finalvo.getTrainingBatchVOList().size());
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		return finalvo;
+		}
+		
 }

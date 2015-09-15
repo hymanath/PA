@@ -39,5 +39,14 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		return query.list();
 	}
 	
+	public List<TrainingCampProgram> getAllRecordsByProgramId(Long programId)
+	{
+		Query query = getSession().createQuery(" select model from TrainingCampProgram model where model.trainingCampProgramId > :programId order by model.trainingCampProgramId ");
+		
+		query.setParameter("programId", programId);
+		
+		return query.list();
+	}
+	
 
 }
