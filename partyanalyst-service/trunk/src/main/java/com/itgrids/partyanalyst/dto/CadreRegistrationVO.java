@@ -106,10 +106,16 @@ public class CadreRegistrationVO implements Serializable{
 	private String 		registrationType;
 	private String 		marriageDateStr;
 	private String 		whatsAppStatus;
-	
+	private String faceboohUrl;	
 	private AddressVO addressVO;
 	
 	
+	public String getFaceboohUrl() {
+		return faceboohUrl;
+	}
+	public void setFaceboohUrl(String faceboohUrl) {
+		this.faceboohUrl = faceboohUrl;
+	}
 	public String getWhatsAppStatus() {
 		return whatsAppStatus;
 	}
