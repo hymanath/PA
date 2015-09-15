@@ -9799,6 +9799,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							if(vo.getEmail() != null && !vo.getEmail().isEmpty())
 								tdpCadreFamilyInfo.setEmail(vo.getEmail());
 							
+							if(vo.getFacebookUrl() != null && !vo.getFacebookUrl().isEmpty())
+								tdpCadreFamilyInfo.setFacebookUrl(vo.getFacebookUrl());
 								
 							if(vo.getMobileNo() != null && !vo.getMobileNo().isEmpty())
 								tdpCadreFamilyInfo.setMobileNo(vo.getMobileNo());	
@@ -9965,6 +9967,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setMarriageDateStr(getFinalStringValue(familyVO.getMarriageDay()));
 						vo.setDobStr(getFinalStringValue(familyVO.getDob()));
 						vo.setEmail(getFinalStringValue(familyVO.getEmail()));
+						vo.setFaceboohUrl(familyVO.getFacebookUrl());
 						vo.setCasteId(familyVO.getCasteStateId() != null ? Long.valueOf(familyVO.getCasteStateId()):0L);
 						vo.setEducationId(familyVO.getEducationId() != null ? Long.valueOf(familyVO.getEducationId()):0L);
 						vo.setOccupationId(familyVO.getOccupationId() != null ? Long.valueOf(familyVO.getOccupationId()):0L);
@@ -10182,6 +10185,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					vo.setRelationId(tdpCadreFamilyInfo.getRelationId());				
 					vo.setDob(tdpCadreFamilyInfo.getDob() != null ? tdpCadreFamilyInfo.getDob().toString() : null);
 					vo.setEmail(tdpCadreFamilyInfo.getEmail());
+					vo.setFacebookUrl(tdpCadreFamilyInfo.getFacebookUrl());
 					vo.setMarriageDay(tdpCadreFamilyInfo.getMarriageDay() != null ? tdpCadreFamilyInfo.getMarriageDay().toString() : null);
 					vo.setWhatsappStatus(tdpCadreFamilyInfo.getWhatsappStatus());
 					vo.setPartyMemberSince(tdpCadreFamilyInfo.getPartyMemberSince() != null ? tdpCadreFamilyInfo.getPartyMemberSince().toString() : "");
@@ -10394,6 +10398,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setMarriageDateStr(getFinalStringValue(familyVO.getMarriageDay()));
 						vo.setDobStr(getFinalStringValue(familyVO.getDob()));
 						vo.setEmail(getFinalStringValue(familyVO.getEmail()));
+						vo.setFaceboohUrl(familyVO.getFacebookUrl());
 						vo.setCasteId(familyVO.getCasteStateId() != null ? Long.valueOf(familyVO.getCasteStateId()):0L);
 						vo.setEducationId(familyVO.getEducationId() != null ? Long.valueOf(familyVO.getEducationId()):0L);
 						vo.setOccupationId(familyVO.getOccupationId() != null ? Long.valueOf(familyVO.getOccupationId()):0L);
