@@ -51,7 +51,7 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	private User insertedUser;
 	private User updatedUser;
 	
-	
+	private String facebookUrl;
 	private String email;
 	private Long casteStateId;
 	private CasteState casteState;
@@ -359,6 +359,14 @@ public class TdpCadreFamilyInfo  extends BaseModel implements java.io.Serializab
 	}
 	public void setVoterRelation(VoterRelation voterRelation) {
 		this.voterRelation = voterRelation;
+	}
+	
+	@Column(name="facebook_url")
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
 	}
 	
 	
