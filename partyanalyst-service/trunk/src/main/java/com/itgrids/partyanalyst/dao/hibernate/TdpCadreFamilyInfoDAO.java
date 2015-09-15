@@ -16,10 +16,11 @@ public class TdpCadreFamilyInfoDAO extends GenericDaoHibernate<TdpCadreFamilyInf
 		super(TdpCadreFamilyInfo.class);
 	}
 	
-	public Integer deleteFamilyInfoByCadre(Long tdpCadreId)
+	public Integer moveFamilyInfoToHistoryByCadre(Long tdpCadreId)
 	{
 		
-		Query query = getSession().createQuery("delete from TdpCadreFamilyInfo model where model.tdpCadre.tdpCadreId =:tdpCadreId ");
+		//Query query = getSession().createQuery("delete from TdpCadreFamilyInfo model where model.tdpCadre.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' ");
+		Query query = getSession().createQuery(" update TdpCadreFamilyInfo model set model.isDeleted = 'H' where model.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.executeUpdate();
 	}
