@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.model.TdpCadreFamilyInfo;
 
 
 public interface ITdpCadreFamilyInfoDAO extends GenericDao<TdpCadreFamilyInfo, Long>{
-	public Integer deleteFamilyInfoByCadre(Long tdpCadreId);
+	public Integer moveFamilyInfoToHistoryByCadre(Long tdpCadreId);
 	public List<TdpCadreFamilyInfo> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId);
 	public List<TdpCadreFamilyInfo> getCadresFamilyDetailsBytdpCadreIdList(Set<Long> tdpCadreIdsSet);
 	public List<Long> getFamilyUpdatedOrNot(List<Long> tdpCadreIds);
