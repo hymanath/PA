@@ -7254,7 +7254,7 @@ class TrainingCampService implements ITrainingCampService{
 			try{
 				
 				//0.cadreId,1.attendedTime,2.batchid,3.batchName,4.campId,5.campName,6.programId,7.programName
-				List<Object[]> trainingDetails = trainingCampAttendanceDAO.getAttendedTrainingCampBatchDetailsOfCadre(1l,5162444l);
+				List<Object[]> trainingDetails = trainingCampAttendanceDAO.getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
 				
 				Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
 				if(trainingDetails !=null && trainingDetails.size()>0){
@@ -7330,7 +7330,7 @@ class TrainingCampService implements ITrainingCampService{
 			List<SimpleVO> finalVoList = new ArrayList<SimpleVO>();
 			try{
 				//0.trackId,1.callPuroseId,2.purpose,3.reamrks,4.insertedTime
-				List<Object[]> reamarksList =  trainingCampScheduleInviteeTrackDAO.getTrackDetailsOfCandidateByCallPurposeWise(1l,5162444l);
+				List<Object[]> reamarksList =  trainingCampScheduleInviteeTrackDAO.getTrackDetailsOfCandidateByCallPurposeWise(programId,cadreId);
 				
 				DateUtilService date = new DateUtilService();
 				for (Object[] objects : reamarksList) {
