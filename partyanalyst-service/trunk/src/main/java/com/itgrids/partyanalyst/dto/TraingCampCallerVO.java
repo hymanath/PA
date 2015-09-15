@@ -11,8 +11,16 @@ public class TraingCampCallerVO {
 	private Long spanCnt = 0l;
 	private Long todayCnt = 0l;
 	private Long campCallerId;
+	private Long batchId;
 	
 	
+	
+	public Long getBatchId() {
+		return batchId;
+	}
+	public void setBatchId(Long batchId) {
+		this.batchId = batchId;
+	}
 	public Long getTodayCnt() {
 		return todayCnt;
 	}

@@ -1838,6 +1838,10 @@ class TrainingCampService implements ITrainingCampService{
 						if(schedulestatusVo != null)
 						{
 							if(params[10] != null )
+								schedulestatusVo.setBatchId((Long)params[10]);
+							else
+								schedulestatusVo.setBatchId(0l);
+							/*if(params[10] != null )
 							{
 								if((Long)params[9] == 4L || (Long)params[9] == 10L) 
 								{//Interested
@@ -1846,9 +1850,9 @@ class TrainingCampService implements ITrainingCampService{
 								}
 							}
 							else
-							{
+							{*/
 							schedulestatusVo.setCount(schedulestatusVo.getCount() + commonMethodsUtilService.getLongValueForObject(params[0]));
-							}
+						//	}
 						}
 						if(params[7] != null)
 						{
@@ -2766,9 +2770,12 @@ class TrainingCampService implements ITrainingCampService{
 				{
 					SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
 				    SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+				    if(inputVO.getLaterCallBackTime() != null && !inputVO.getLaterCallBackTime().isEmpty())
+				    {
 				    Date date1 = parseFormat.parse(inputVO.getLaterCallBackTime());
 				    System.out.println(parseFormat.format(date1) + " = " + displayFormat.format(date1));
 				    inputVO.setLaterCallBackTime(displayFormat.format(date1));
+				    }
 					TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 							
 					if(inputVO.getLaterRemarks() != null && inputVO.getLaterRemarks().length() > 0)
@@ -2776,15 +2783,17 @@ class TrainingCampService implements ITrainingCampService{
 					if(inputVO.getScheduleStatusId().longValue() > 0L)
 						trainingCampScheduleInvitee.setScheduleInviteeStatusId(inputVO.getScheduleStatusId());
 					if(inputVO.getScheduleStatusId().longValue() != 4L)
-						trainingCampScheduleInvitee.setAttendingBatchId(null);
+						//trainingCampScheduleInvitee.setAttendingBatchId(null);
 						trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 						//String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
-
+						if(inputVO.getLaterCallBackTime() != null && !inputVO.getLaterCallBackTime().isEmpty()){
 						 String oldScheduledDate = inputVO.getLaterCallBackDate() +" "+inputVO.getLaterCallBackTime();
 					     DateFormat oldFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 					    // DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 					     Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
+						
 						trainingCampScheduleInvitee.setLaterCallBackTime(oldDate);
+						}
 						trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 						
@@ -2795,7 +2804,7 @@ class TrainingCampService implements ITrainingCampService{
 						trainingCampScheduleInviteeCaller.setUpdatedTime(date.getCurrentDateAndTime());
 						trainingCampScheduleInviteeCallerDAO.save(trainingCampScheduleInviteeCaller);
 						
-						saveTrackingInfo(inputVO);	
+						//saveTrackingInfo(inputVO);	
 						
 						resultStatus.setResultPartial(true);
 						//resultStatus.setResultCode(2);
@@ -2806,7 +2815,7 @@ class TrainingCampService implements ITrainingCampService{
 				return resultStatus;
 				
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
-				trainingCampScheduleInvitee.setAttendingBatchId(null);
+				//trainingCampScheduleInvitee.setAttendingBatchId(null);
 					if(inputVO.getScheduleStatusId() != null && inputVO.getBatchId().longValue() > 0L)
 						if(inputVO.getScheduleStatusId().longValue() == 4L || inputVO.getScheduleStatusId().longValue() == 10L)// interested or confirmed
 							trainingCampScheduleInvitee.setAttendingBatchId(inputVO.getBatchId());
@@ -2832,7 +2841,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("false");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
-								saveTrackingInfo(inputVO);	
+							//	saveTrackingInfo(inputVO);	
 							}
 							else
 							{
@@ -2851,7 +2860,7 @@ class TrainingCampService implements ITrainingCampService{
 										trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 										trainingCampBatchAttendee.setIsDeleted("false");
 										trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
-										saveTrackingInfo(inputVO);	
+									//	saveTrackingInfo(inputVO);	
 									}
 								}
 							}
@@ -2868,7 +2877,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("false");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
-								saveTrackingInfo(inputVO);	
+							//	saveTrackingInfo(inputVO);	
 							}
 							
 							TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
@@ -2892,7 +2901,7 @@ class TrainingCampService implements ITrainingCampService{
 								trainingCampBatchAttendee.setUpdatedTime(date.getCurrentDateAndTime());
 								trainingCampBatchAttendee.setIsDeleted("true");
 								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
-								saveTrackingInfo(inputVO);	
+								//saveTrackingInfo(inputVO);	
 							}
 						}
 						
@@ -2914,6 +2923,7 @@ class TrainingCampService implements ITrainingCampService{
 				trainingCampScheduleInvitee.setUpdatedBy(inputVO.getUserId());
 				trainingCampScheduleInvitee.setUpdatedTime(date.getCurrentDateAndTime());
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
+				//saveTrackingInfo(inputVO);	
 			}
 			if(flag == false)
 			{
@@ -2928,8 +2938,9 @@ class TrainingCampService implements ITrainingCampService{
 					voterDAO.flushAndclearSession();
 				}
 				
-				saveTrackingInfo(inputVO);	
+				
 			}
+			saveTrackingInfo(inputVO);	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					}
 					
@@ -2976,7 +2987,7 @@ class TrainingCampService implements ITrainingCampService{
 				if(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId() != null)
 				trainingCampScheduleInviteeTrack.setTrainingCampCallerAdminId(trainingCampScheduleInviteeCaller.getTrainingCampCallerAdminId());
 				
-				if(inputVO.getLaterCallBackDate() != null){
+				if(inputVO.getLaterCallBackDate() != null && !inputVO.getLaterCallBackDate().isEmpty()){
 					String dateSample = inputVO.getLaterCallBackDate()+ " "+inputVO.getLaterCallBackTime();
 					trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
 					String oldScheduledDate = inputVO.getLaterCallBackDate() + " " +inputVO.getLaterCallBackTime();
@@ -2984,7 +2995,7 @@ class TrainingCampService implements ITrainingCampService{
 					Date oldDate = (Date)oldFormatter .parse(oldScheduledDate);
 					trainingCampScheduleInviteeTrack.setLaterCallBackTime(oldDate);
 				}
-				if(inputVO.getCallBackDate() != null)
+				if(inputVO.getCallBackDate() != null  && !inputVO.getCallBackDate().isEmpty())
 				{
 					String dateSample =inputVO.getCallBackDate()+ " "+inputVO.getCallBackTime();
 					 trainingCampScheduleInviteeTrack.setCampCallStatusId(1l);
