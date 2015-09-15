@@ -97,4 +97,13 @@ public class TrainingCampScheduleDAO extends GenericDaoHibernate<TrainingCampSch
 		return query.list();
 	}
 	
+	public List<TrainingCampSchedule> getAllRecordsByScheduleId(Long scheduleId)
+	{
+		Query query = getSession().createQuery(" select model from TrainingCampSchedule model where model.trainingCampScheduleId > :scheduleId order by model.trainingCampScheduleId ");
+		
+		query.setParameter("scheduleId", scheduleId);
+		
+		return query.list();
+	}
+	
 }

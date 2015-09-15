@@ -176,4 +176,13 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("campId",campId);
 		return query.list();
 	}
+	
+	public List<TrainingCampBatch> getAllRecordsByBatchId(Long batchId)
+	{
+		Query query = getSession().createQuery(" select model from TrainingCampBatch model where model.trainingCampBatchId > :batchId order by model.trainingCampBatchId ");
+		
+		query.setParameter("batchId", batchId);
+		
+		return query.list();
+	}
 }
