@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.List;
 
 public class TdpCadreFamilyDetailsVO {
 	
@@ -36,8 +35,14 @@ public class TdpCadreFamilyDetailsVO {
 	private Long partyRepresentativesCount=0L;
 	private Long partyPositionsCount=0L;
 	private String imagePath;
+	private String facebookUrl;
 	
-	
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
+	}
 	public String getImagePath() {
 		return imagePath;
 	}
