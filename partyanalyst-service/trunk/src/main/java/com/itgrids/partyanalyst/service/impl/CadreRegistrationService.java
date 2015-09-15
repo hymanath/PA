@@ -10078,7 +10078,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					
 			}
-			if(tehsilIst.getSelectOptionsList() != null && tehsilIst.getSelectOptionsList().size()>0)
+			if(tehsilIst != null && tehsilIst.getSelectOptionsList() != null && tehsilIst.getSelectOptionsList().size()>0)
 			for(SelectOptionVO regions:tehsilIst.getSelectOptionsList()){
 				if(regions.getId() !=null && regions.getId() !=0l){
 					
