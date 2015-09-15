@@ -192,7 +192,7 @@ public class TdpCadreOccasionAction extends ActionSupport implements ServletRequ
 				 vo.setRelationId(obj.getLong("relationId"));
 				 vo.setTdpCadreId(obj.getLong("tdpCadreId"));
 				 vo.setOccupationId(obj.getLong("occupationId"));
-				 
+				 vo.setFacebookUrl(obj.getString("facebookUrl"));
 				
 				 addressDetails.setHouseNo(obj.getString("hNo") !=null ? obj.getString("hNo").toString() : null);
 				 addressDetails.setStreet(obj.getString("street") !=null ? obj.getString("street").toString() : null);
