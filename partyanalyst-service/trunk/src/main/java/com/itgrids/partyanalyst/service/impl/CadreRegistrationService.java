@@ -9696,7 +9696,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					if(inputList != null && inputList.size() > 0)
 					{
 						int i=0;
-						tdpCadreFamilyInfoDAO.deleteFamilyInfoByCadre(inputList.get(0).getTdpCadreId());
+						tdpCadreFamilyInfoDAO.moveFamilyInfoToHistoryByCadre(inputList.get(0).getTdpCadreId());
 						for(TdpCadreFamilyDetailsVO vo : inputList)
 						{
 							
