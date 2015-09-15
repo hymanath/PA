@@ -61,10 +61,21 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<NtrTrustStudentVO>        ntrTrustStudentVOList; 
 	private List<QuestionAnswerVO>         finalList;
 	private List<SimpleVO> 				   simpleVoList;
+	private SimpleVO 					   simpleVO;
 	
 
 	
 	
+	public SimpleVO getSimpleVO() {
+		return simpleVO;
+	}
+
+
+	public void setSimpleVO(SimpleVO simpleVO) {
+		this.simpleVO = simpleVO;
+	}
+
+
 	public ITrainingCampService getTrainingCampService() {
 		return trainingCampService;
 	}
@@ -600,6 +611,34 @@ public String getCandidateAndConstituencySurveyResult(){
 			LOG.error("Exception Occured in getStatusCountOfCadreForInvitationAndAttendance() method, Exception - ",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	public String getAttendedTrainingCampBatchDetailsOfCadre(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			Long programId = jObj.getLong("programId");
+			
+			simpleVO = trainingCampService.getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAttendedTrainingCampBatchDetailsOfCadre() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getRemarkSOfCadreByCallPurpose(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			Long programId = jObj.getLong("programId");
+			
+			simpleVoList = trainingCampService.getRemarkSOfCadreByCallPurpose(programId,cadreId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getRemarkSOfCadreByCallPurpose() method, Exception - ",e);
+		}
 		return Action.SUCCESS;
 	}
 	

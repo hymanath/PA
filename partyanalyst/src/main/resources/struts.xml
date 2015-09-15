@@ -10890,5 +10890,16 @@
 		</result>
 	</action>
 	
+	<action name="getAttendedTrainingCampBatchDetailsOfCadreAction" class="cadreDetailsAction" method="getAttendedTrainingCampBatchDetailsOfCadre">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
+	<action name="getRemarkSOfCadreByCallPurposeAction" class="cadreDetailsAction" method="getRemarkSOfCadreByCallPurpose">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVoList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
