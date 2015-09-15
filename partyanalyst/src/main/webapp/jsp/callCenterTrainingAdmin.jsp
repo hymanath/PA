@@ -1933,12 +1933,18 @@ index ++;
 	str+='</div>';	
 	str+='</div>';
 	str+='</div>';
-	
+	$(".scheduleMembersDiv").html(str);
 }
 $("#avaliableCallsCount").html("<i>Available Calls - "+total+"</i>");
-}			
+}	
+else
+{
+$("#avaliableCallsCount").html("<i>Available Calls - "+total+"</i>");
 
-$(".scheduleMembersDiv").html(str);
+$(".scheduleMembersDiv").html("<font color='red'>No data Available</font>");
+}	
+
+
 $(".constituencyCheck").click(function() {
 
 	   if($(this).is(':checked'))
