@@ -106,4 +106,6 @@ public interface ITrainingCampService {
 	public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr);
 	public List<SimpleVO> getStatusCountOfCadreForInvitationAndAttendance(Long cadreId);
 	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
+	public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId);
+	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
 }

@@ -87,5 +87,24 @@ public class TrainingCampScheduleInviteeTrackDAO extends GenericDaoHibernate<Tra
 			query.setParameterList("cadreIds", cadreIds);
 		return query.list();
 	}
-
+	
+	public List<Object[]> getTrackDetailsOfCandidateByCallPurposeWise(Long programId,Long tdpCadreId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.trainingCampScheduleInviteeTrackId,model.campCallPurpose.campCallPurpose,model.campCallPurpose.purpose," +
+				" model.remarks,model.insertedTime " +
+				" from TrainingCampScheduleInviteeTrack model " +
+				" where " +
+				" model.trainingCampScheduleInvitee.tdpCadre.tdpCadreId =:tdpCadreId " +
+				" and model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("programId", programId);
+		
+		return query.list();
+		
+	}
 }
