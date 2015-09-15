@@ -19,8 +19,16 @@ public class TrainingCadreVO {
 	private String laterCallBackDate;
 	private String laterCallBackTime;
 	private String laterRemarks;
+	private Long purposeId;
+	
 	
 		
+	public Long getPurposeId() {
+		return purposeId;
+	}
+	public void setPurposeId(Long purposeId) {
+		this.purposeId = purposeId;
+	}
 	public String getLaterCallBackDate() {
 		return laterCallBackDate;
 	}
