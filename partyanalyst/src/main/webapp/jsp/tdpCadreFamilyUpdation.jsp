@@ -181,7 +181,7 @@ background-color: #E5E5E5 !important;
 			<h4 id="headingDiv" class="text-uppercase"><b> CADRE PROFILE UPDATION DETAILS </b></h4>
 				
 		</div>
-	<div class="row m_top20" id="searchcadrenewDiv">	
+	<div class="row m_top20" id="searchcadrenewDiv" style="display:none;">	
 		
 		
 		<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
@@ -432,6 +432,7 @@ background-color: #E5E5E5 !important;
 		}
 		else
 		{
+			$('#searchcadrenewDiv').show();
 			if(accessType == "DISTRICT")
 			{
 				getAssemblyParlConstituencies(accessValue,"Assembly");
@@ -712,7 +713,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='<label class="control-label">Caste</label>';
 							str+='<select id="cadreCaste" class="casteState form-control"  style="">';
 							str+='<option value="0" selected="selected">Select Caste</option>';
-							console.log("details : " + searchArr[l].relationId);
+							//console.log("details : " + searchArr[l].relationId);
 							for(var k in casteArr)
 							{
 								if(searchArr[l].casteStateId != null && (casteArr[k].id ==searchArr[l].casteStateId ))
@@ -813,7 +814,7 @@ function getFamilyDetails(tdpCadreId)
 							str+='<label class="control-label">Interested For WhatsApp Group? </label>';
 							
 							str+='<select id="" class="whatsappStatus form-control">';
-							console.log(searchArr[l].whatsappStatus);
+						//	console.log(searchArr[l].whatsappStatus);
 							if(searchArr[l].whatsappStatus != null)
 							{
 								if( searchArr[l].whatsappStatus == 'YES')
@@ -834,6 +835,21 @@ function getFamilyDetails(tdpCadreId)
 							}
 
 						str+='</select></div>';
+						if(searchArr[l].faceboohUrl != null)
+						{
+						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Facebook URL : </label>';
+							str+=' <input type="text"  value="'+searchArr[l].faceboohUrl+'" id="facebookUrl" class="facebookUrl form-control" style="cursor:text;width:300px;"/>';
+							str+='</div>';	
+						}
+						else
+						{						
+							str+='<div class="col-md-3 col-xs-6">';
+							str+='<label class="control-label">Facebook URL : </label>';
+							str+=' <input type="text"  id="facebookUrl"  class="facebookUrl form-control" style="cursor:text;width:300px;"/> ';
+							str+='</div>';	
+						}
 						str+='<div class="col-md-2 col-xs-6">';
 							str+=' <div id="ErrorDivcadre'+l+'" class="mandatory"></div> ';
 							str+='</div>';	
@@ -1211,10 +1227,15 @@ function updateFamilyInfo()
 	var count = 0;
 	var strErr = '';
 	$('.mandatory').html('');
+	var facebookUrl = "";
+	var mycount  = 0;
+	
 	$(".familyInfo").each(function(){
+		
 	strErr ="";
 		var name = $(this).find(".name").val();
 		var email = $(this).find(".email").val();
+
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		var mobileNo = $(this).find(".mobile").val();
 		var relation = $(this).find(".relation").val();
@@ -1261,6 +1282,13 @@ function updateFamilyInfo()
 	if(strErr != null && strErr.length == 0)
 	{
 		$(".familyInfo").each(function(){
+			
+		facebookUrl = "";
+		if(mycount == 0){
+			facebookUrl=$("#facebookUrl").val();;
+		}
+		mycount=parseInt(mycount)+1;	
+	
 		count = count+1;
 		$this = $(this);
 		if($(this).find(".age").val())
@@ -1335,6 +1363,7 @@ function updateFamilyInfo()
 					name:name,
 					education:education,
 					email:email,
+					facebookUrl:facebookUrl,
 					gender:"",
 					marriageDay:marriageDay,
 					whatsappStatus:whatsAPP,
@@ -1362,6 +1391,7 @@ function updateFamilyInfo()
 			
 		});
 	}
+	//console.log(dataArr);
 	
 	if(dataArr != null && dataArr.length>0)
 	{
@@ -1399,10 +1429,8 @@ function updateFamilyInfo()
 					{
 						alert("Error occured while updating details.try again...").css("color","red");
 					}
-		   });
-		   
-	}
-	
+		   });		   
+	}	
 }
 
 function checkResult(string)
@@ -1735,6 +1763,7 @@ function getConstituenciesForDistrict(district){
 						age:result[i].age,
 						votercardNo :result[i].voterCardNo,
 						relationId:null,
+						faceboohUrl:result[i].faceboohUrl,
 						dob: result[i].dobStr != null ? (result[i].dobStr).substring(0,11):"",
 						marriageDay:result[i].marriageDateStr != null ? (result[i].marriageDateStr).substring(0,11):"",
 						email:result[i].email,
