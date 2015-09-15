@@ -54,6 +54,7 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 	private Long trainingCampCallerId;
 	private CampCallStatus campCallStatus;
 	private Date laterCallBackTime;
+	private CampCallPurpose campCallPurpose;
 	
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -307,6 +308,16 @@ public class TrainingCampScheduleInviteeTrack implements Serializable{
 
 	public void setLaterCallBackTime(Date laterCallBackTime) {
 		this.laterCallBackTime = laterCallBackTime;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "camp_call_purpose_id",insertable =false,updatable = false)
+	public CampCallPurpose getCampCallPurpose() {
+		return campCallPurpose;
+	}
+
+	public void setCampCallPurpose(CampCallPurpose campCallPurpose) {
+		this.campCallPurpose = campCallPurpose;
 	}
 
 	

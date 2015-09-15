@@ -26,6 +26,7 @@ public class SimpleVO implements java.io.Serializable{
    private String campName="";
    private String batchName="";
    private Long locValue;
+   private String remarks;
    
    private boolean nonInvitee=false;
    
@@ -34,6 +35,13 @@ public class SimpleVO implements java.io.Serializable{
    private Long totalAbsentCount =0l;
    
   
+   
+	public String getRemarks() {
+	return remarks;
+}
+public void setRemarks(String remarks) {
+	this.remarks = remarks;
+}
 	public Long getTotalInviteeCount() {
 	return totalInviteeCount;
 }

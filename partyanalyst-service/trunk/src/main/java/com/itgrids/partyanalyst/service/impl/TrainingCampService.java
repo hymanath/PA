@@ -7237,4 +7237,107 @@ class TrainingCampService implements ITrainingCampService{
 		return finalvo;
 		}
 		
+		public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId){
+			
+			SimpleVO cadreVo = new SimpleVO();
+			try{
+				
+				//0.cadreId,1.attendedTime,2.batchid,3.batchName,4.campId,5.campName,6.programId,7.programName
+				List<Object[]> trainingDetails = trainingCampAttendanceDAO.getAttendedTrainingCampBatchDetailsOfCadre(1l,5162444l);
+				
+				Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
+				if(trainingDetails !=null && trainingDetails.size()>0){
+					
+					Object[] batchIdInfo= trainingDetails.get(0);
+					
+					Long batchId = 0l;
+					if(batchIdInfo[2] !=null){
+						batchId = (Long)batchIdInfo[2];
+					}
+					
+					 cadreVo.setProgName(batchIdInfo[7] !=null ? batchIdInfo[7].toString():"");
+					 cadreVo.setCampName(batchIdInfo[5] !=null ? batchIdInfo[5].toString():"");
+					 cadreVo.setBatchName(batchIdInfo[3] !=null ? batchIdInfo[3].toString():"");
+					
+					 List<String> datesStr =null;
+					if(batchId !=null && batchId !=0l){
+						
+						//batch startDate and and endDate 
+						  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
+						  Date fromDate=null;
+						  Date toDate=null;
+						  if(batchDates!=null){
+							  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+							  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+						  }
+						  //list of totalDates of Batch
+						 datesStr=getBetweenDatesInString(fromDate,toDate);
+					}
+					
+					List<SimpleVO> isdAttendedDatesList =null;
+					if(datesStr !=null){
+						isdAttendedDatesList = new ArrayList<SimpleVO>(); 
+						setMatchedVoForDates(datesStr,isdAttendedDatesList);
+						
+						/*if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+								cadreVo.setSimpleVOList1(isdAttendedDatesList);
+						}*/
+					}
+					
+					List<String> attendedDates = new ArrayList<String>();
+					for(Object[] object:trainingDetails){
+						attendedDates.add(object[1] !=null ? object[1].toString():"");
+					}
+					
+				if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+						
+						for (SimpleVO string : isdAttendedDatesList) {
+							if(attendedDates !=null && attendedDates.size()>0){
+								
+								if(attendedDates.contains(string.getDateString())){
+									string.setIsAttended("Attended");
+								}else{
+									string.setIsAttended("Absent");
+								}
+							}
+						}
+						
+					}
+				
+					if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+							cadreVo.setSimpleVOList1(isdAttendedDatesList);
+					}
+				}
+				return cadreVo;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return cadreVo;
+		}
+		public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId){
+			
+			List<SimpleVO> finalVoList = new ArrayList<SimpleVO>();
+			try{
+				//0.trackId,1.callPuroseId,2.purpose,3.reamrks,4.insertedTime
+				List<Object[]> reamarksList =  trainingCampScheduleInviteeTrackDAO.getTrackDetailsOfCandidateByCallPurposeWise(1l,5162444l);
+				
+				DateUtilService date = new DateUtilService();
+				for (Object[] objects : reamarksList) {
+					
+					SimpleVO vo = new SimpleVO();
+					
+					vo.setId(objects[1] !=null ? (Long)objects[1]:0l);
+					vo.setName(objects[2] !=null ? objects[2].toString():"");
+					vo.setRemarks(objects[3] !=null ? objects[3].toString():"");
+					vo.setDateString(date.convert12HoursDateFormat(objects[4].toString().substring(0, 19)));
+					
+					finalVoList.add(vo);
+				}
+			return finalVoList;
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return finalVoList;
+		}
+		
 }
