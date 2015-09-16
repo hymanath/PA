@@ -30,7 +30,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
 		
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where  " +
-				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId not in (1) " ); // except invitee status
+				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null "); //not in (1) " ); // except invitee status
 		
 		if(startDate != null && endDate != null)
 		{
@@ -67,7 +67,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 			}
 		}
 		
-		queryStr.append(" group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
+		queryStr.append("  group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId,TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
 				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId order by " +
 				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -271,8 +271,8 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		queryStr.append(" date(TCB.toDate), count(distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId), TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ");
 		
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCSIC.trainingCampScheduleInvitee.attendingBatchId = TCB.trainingCampBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' " +
-				" and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId not in (1) " );
-		
+				" and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null "); //not in (1) " );
+		  
 		if(startDate != null && endDate != null){
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
 			//queryStr.append(" or date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");

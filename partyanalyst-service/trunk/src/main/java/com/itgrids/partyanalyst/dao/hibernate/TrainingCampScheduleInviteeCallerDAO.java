@@ -616,7 +616,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		StringBuilder str = new StringBuilder();
 		String queryStr="";
 		
-		str.append(" select count(model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
+		str.append(" select count(distinct model.trainingCampScheduleInviteeCallerId) from  TrainingCampScheduleInviteeCaller model " +
 				" where ");
 		
 		boolean flag=false;
@@ -1436,4 +1436,92 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getScheduleWiseCallStatulsDetails(String searchType, Date startDate, Date endDate,Date todayDate,Long callPurposeId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		boolean isDatesNull = false;
+
+		queryStr.append(" select TCSIC.campCallStatus.campCallStatusId,TCSIC.campCallStatus.status," +
+				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId,count(distinct TCSIC.trainingCampScheduleInvitee.tdpCadreId) ");
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC where TCSIC.callPurposeId = :callPurposeId ");
+		
+		if(startDate != null && endDate != null)
+		{
+			//queryStr.append(" and (date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >=:startDate and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) <=:endDate) ");
+			
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:endDate ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				queryStr.append(" and  (:startDate BETWEEN date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)  AND date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) OR " +
+						" :endDate  BETWEEN  date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)  AND date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate)) ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :startDate  ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+				queryStr.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+			}
+		}
+		else
+		{
+			isDatesNull = true;
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) >:todayDate ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				queryStr.append(" and :todayDate BETWEEN date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.fromDate) AND  date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				queryStr.append(" and date(TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.toDate) < :todayDate  ");
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("cancelled")){
+				queryStr.append(" and TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.status ='Cancelled' ");
+			}
+		}
+		
+		queryStr.append("  group by TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId," +
+				" TCSIC.campCallStatus.campCallStatusId order by " +
+				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("callPurposeId", callPurposeId);
+		if(isDatesNull){
+			if(!searchType.equalsIgnoreCase("cancelled"))
+				query.setDate("todayDate", todayDate);
+		}
+		else
+		{
+			if(searchType !=null && searchType.equalsIgnoreCase("notStarted")){
+				query.setDate("endDate", endDate);
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("running")){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(searchType !=null && searchType.equalsIgnoreCase("completed")){
+				query.setDate("startDate", startDate);
+			}
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBatchWiseCallStatulsDetails(Long callPurposeId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		boolean isDatesNull = false;
+
+		queryStr.append(" select TCSIC.campCallStatus.campCallStatusId,TCSIC.campCallStatus.status," +
+				" TCSIC.trainingCampScheduleInvitee.attendingBatchId,count(distinct TCSIC.trainingCampScheduleInvitee.tdpCadreId) ");
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC where TCSIC.callPurposeId = :callPurposeId ");
+		queryStr.append("  group by TCSIC.trainingCampScheduleInvitee.attendingBatchId," +
+				" TCSIC.campCallStatus.campCallStatusId order by " +
+				" TCSIC.trainingCampScheduleInvitee.attendingBatchId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("callPurposeId", callPurposeId);
+		
+		return query.list();
+	}
+	
 }
