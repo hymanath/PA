@@ -29,7 +29,36 @@ public class TrainingMemberVO implements Serializable{
 	private String committeeLocation;
 	private String callStatus;
 	
+	private Long locationId;
+	private Long locationType;
+	private Long basicCommitteeTypeId;
+	private String type;
 	
+	
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public Long getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(Long locationType) {
+		this.locationType = locationType;
+	}
+	public Long getBasicCommitteeTypeId() {
+		return basicCommitteeTypeId;
+	}
+	public void setBasicCommitteeTypeId(Long basicCommitteeTypeId) {
+		this.basicCommitteeTypeId = basicCommitteeTypeId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getCallStatus() {
 		return callStatus;
 	}
