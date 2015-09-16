@@ -2877,7 +2877,7 @@ class TrainingCampService implements ITrainingCampService{
 				if(inputVO.getScheduleStatusId().longValue() > 0L && inputVO.getScheduleStatusId() == 10l)
 				{
 					Long maxNo = trainingCampBatchDAO.getMaxNumbersForBacth(inputVO.getBatchId());
-					Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(inputVO.getBatchId(),10l); // Confirm Batch
+					Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(inputVO.getBatchId(),inputVO.getScheduleStatusId(),"confirmation"); // Confirm Batch
 					if(totalInBatch != null && totalInBatch >= maxNo)
 					{
 						resultStatus.setResultPartial(true);
@@ -7136,12 +7136,12 @@ class TrainingCampService implements ITrainingCampService{
 			
 		}
 		
-		public TrainingMemberVO getMaxNumberForBatch(Long batchId)
+		public TrainingMemberVO getMaxNumberForBatch(Long batchId,Long statusId,String callPurpose)
 		{
 			TrainingMemberVO returnVo = new TrainingMemberVO();
 			try{
 				Long maxNo = trainingCampBatchDAO.getMaxNumbersForBacth(batchId);
-				Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(batchId,10l); // Confirm Batch
+				Long totalInBatch = trainingCampScheduleInviteeDAO.getBatchMembersCountByStatus(batchId,statusId,callPurpose); // Confirm Batch
 				returnVo.setTotalCount(maxNo != null ? maxNo : 0l);
 				returnVo.setAvailableCount(totalInBatch != null ? totalInBatch : 0l);
 			}
