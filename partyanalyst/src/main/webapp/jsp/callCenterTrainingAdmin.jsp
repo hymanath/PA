@@ -212,96 +212,8 @@ footer
                                 </li>
                             </ul>
 						</div>
-						<!--<div class="col-md-8">
-							<table class="table table-bordered "  style="margin-bottom:10px;height: 246px;margin-left:-10px; ">
-								<tr>
-									<td style="text-align:center;" >
-										<center><img id="dataLoadingsImgForDonutchartStatus" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
-										<div id="donutchartForStatus" class="display-style" style="height: 160px;float:left;width:190px; margin-top:40px;"></div>
-									</td>
-									<td style="text-align:center;"  class="pad_0">
-										<table class="table table-bordered m_0 text-left">
-											<tr>
-												<td style="text-align:center;"  class="pad_5">
-													<h4 class="m_0">TOTAL CADRE ALLOCATED TO ADMIN - <span id="totalCallsPerCallerId">
-														<img id="dataLoadingsImgForTotalCallerCount" src="images/icons/loading.gif" style="width: 15px; height: 15px;"/>
-													</span></h4>
-													
-												</td>
+						
 												
-											</tr>
-											<tr>
-											  <td>
-												<span class="pull-right font-12" style="margin-right:55px;">TODAY CADRE ALLOCATED TO ADMIN- <span id="todayCallsPerCallerId">
-														<img id="dataLoadingsImgForTodayCount" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
-														</span></span>
-														<span class="pull-right font-12" style="margin-right:55px;">ASSIGNED TO AGENTS - <span id="assignedToAgentsId">
-														<img id="dataLoadingsImgForAssigning" src="images/icons/loading.gif" style="width: 10px; height: 10px;"/>
-												</span></span>
-												</td>
-											</tr>
-											<tr style="font-size: 12px;">
-												<td class="pad_0"  id="adminAssignedTdId">
-													
-													<center><img id="dataLoadingImgForAdminAssignedTdId" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
-													
-													<!--<table class="table table-bordered m_0">
-														<tr class="font-10">
-															<td></td>
-															<td>Calls</td>
-															<td class="text-yellow">Not Dialled</td>
-															<td class="text-yellow">Dialled</td>
-															<td>Call Back/<br/>User Busy / Others</td>
-															<td class="interested-text">Interested</td>
-															<td class="text-info">Later</td>
-															<td class="text-danger">Not Interested</td>
-														</tr>
-														<tr>
-															<td>Assigned to Agents</td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-														<tr>
-															<td>Calendar Schedule</td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-														<tr>
-															<td>Batch Confirmation</td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-													</table>  -->
-												</td>
-												<!--<td style="text-align:center;"  colspan="2" class="pad_0" id="callPurposeCountDivId">
-												<center><img id="dataLoadingsImgForPurposeCountId" src="images/icons/loading.gif" style="width: 10px; height: 10px;margin-top:30px;"/></center>
-													
-												</td>-->
-												<!--<td style="text-align:center;"  class="pad_0" id="statusWiseCountArraId">
-												<center><img id="dataLoadingsImgForStatus" src="images/icons/loading.gif" style="width: 25px; height: 25px;margin_top:30px;"/></center>
-													
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-						</div>-->
 						<div class="col-md-4">
 							<table class="table table-bordered table-condensed" style="margin-bottom:12px">
 								<tr>
@@ -342,14 +254,7 @@ footer
 										</ul>
 									</td>
 								</tr>
-								<!--<tr>
-									<td style="text-align:center;"  colspan="2">
-									<center><img id="dataLoadingsImgForCircleForConfirmed" src="images/icons/loading.gif" style="width: 40px; height: 40px;margin-top:50px;"/></center>
-										<div id="circleForConfirmed"></div>
-										<div id="myStathalf"  class="text-center" data-info="600" data-dimension="150px" data-percent="35" data-fgcolor="#40b6c0" data-bgcolor="#cccccc" data-type="half" ></div>
-										<p style="margin-top:-70px;margin-bottom:0px;color:#40b6c0;text-align:center;">MEMBERS FILLED IN CALENDAR BATCHES</p>
-									</td>
-								</tr>-->
+								
 							</table>
 							<table class="table table-bordered table-condensed" style="margin-bottom:12px">
 								<tr>
@@ -378,15 +283,7 @@ footer
 									<h4 class="panel-title"><b>CALENDAR SCHEDULED CONFIRMATION DETAILS</b>
 										<button class="btn btn-success btn-xs pull-right" style="margin-top:-7px"
 										data-toggle="modal" data-target="#myModal" onclick="clearAssignAgent();getPrograms('schedule');">Assign to Agents</button>
-										<!--<span class="pull-right col-md-3" style="margin-top:-8px">
-											<div class="input-group">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-													<span class="caret"></span>
-												</span>
-												<input type="text" class="form-control" id="reportrange">
-											</div>
-										</span> -->
+										
 									</h4>
 								</div>
 								<div class="panel-body pad_0">
@@ -407,10 +304,10 @@ footer
 													  <!-- Tab panes -->
 													  <div class="tab-content">
 													 <center><img id="dataLoadingsImgForCalenderScheduleId" src="images/icons/loading.gif" style="width: 30px; height: 30px;margin-top:30px;"/></center>
-														<div role="tabpanel" class="tab-pane active" id="scheduled"></div>									
-														<div role="tabpanel" class="tab-pane" id="running"> </div>
-														<div role="tabpanel" class="tab-pane" id="completed">   </div>
-														<div role="tabpanel" class="tab-pane" id="cancelled"></div>
+														<div role="tabpanel" class="tab-pane active table-responsive" id="scheduled" ></div>									
+														<div role="tabpanel" class="tab-pane table-responsive" id="running" style="height:450px;"> </div>
+														<div role="tabpanel" class="tab-pane table-responsive" id="completed" style="height:450px;">   </div>
+														<div role="tabpanel" class="tab-pane table-responsive" id="cancelled" style="height:450px;"></div>
 													  </div>
 													</div>
 												</div>
@@ -432,7 +329,7 @@ footer
 										data-toggle="modal" data-target="#myModal1" onclick="clearBatchPopupFields();getPrograms('batch');";">Assign to Agents</button>
 									</h4>
 								</div>
-								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive">
+								<div role="tabpanel" class="panel-body pad_0 batchConforCls table-responsive" style="height:500px;">
 								<!--	<table class="table table-bordered m_0">
 										<tr>
 											<td>TRAINING <br/>PROGRAM NAME</td>
@@ -2173,8 +2070,7 @@ var jObj={
 				 $("#agentSuccessMsgDiv").html("<div class='successDivCls'>Assign to Agent Successfully</div>");
 				 
 				getScheduleAvailableCallsCount();
-				window.location.reload();
-				
+				//window.location.reload();				
 			  }  
 			  else
 			  {
@@ -2316,7 +2212,10 @@ var programId =$("#batchProgramId").val();
 var scheduleId = $("#batchScheduleId").val();
 var batchId =$("#batchId").val();
 $("#AdminCallersOverview").html('');
-$("#trainingBatchProcessImg").show();
+
+if(batchId > 0)
+{
+	$("#trainingBatchProcessImg").show();
   var jObj={
   campId:campId,
   programId:programId,
@@ -2331,63 +2230,85 @@ $("#trainingBatchProcessImg").show();
 			  data: {task:JSON.stringify(jObj)},
 			  }).done(function(result){ 
 			  $("#trainingBatchProcessImg").hide();
-			   buildAdminCallerOverView(result);
-			$("#assignBatchId").prop('disabled', false);
+			  if(result != null){
+				buildAdminCallerOverView(result);
+				$("#assignBatchId").prop('disabled', false);
+			  }
+			  else
+			  {
+				$("#AdminCallersOverview").html('No data available');
+			  }
 		   });
+}
+  
 }
 function buildAdminCallerOverView(resultList)
 {
-var str='';
+var str=' ';
 var result = resultList.trainingCampVOList;
+var intrestdcount = 0;
+for(var k in result)
+{
+	if(result[k].interestedCount > 0)
+	{
+		intrestdcount = intrestdcount+result[k].interestedCount;
+	}
+
+}
+str=' <div style="text-align:center;font-weight:bold;margin-top:5px;margin-bottom:5px;"> Total interested count : '+intrestdcount+' </div> ';
 for(var i in result)
 {
-var result1 = result[i].trainingCampVOList;
-if(result[i].interestedCount == null)
-result[i].interestedCount =0;
-str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
-str+='<tr class="custom-info">';
-str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Confirmed Members - '+result[i].interestedCount+'&nbsp;';
-if(result[i].interestedCount > 0)
-str+='<input type="checkbox" class="callerscheck" value="'+result[i].id+'"/> </small></td>';
-str+='</tr>';
-str+='<tr class="custom-info">';
-str+='<td>&nbsp;</td>';
-str+='<td>ASSIGNED</td>';
-str+='<td >COMPLETED</td>';
-str+='<td>PENDING</td>';
-str+='</tr>';
-str+='<tr class="custom-info">';
-str+='<td><small>Scheduled Confirmation </small></td>';
-if(result1[0].allocatedCalls !=null)
-str+='<td>'+result1[0].allocatedCalls+'</td>';
-else
-str+='<td>0</td>';
-if(result1[0].completedCalls !=null)
-str+='<td>'+result1[0].completedCalls+'</td>';
-else
-str+='<td>0</td>';
-if(result1[0].pendingCalls !=null)
-str+='<td>'+result1[0].pendingCalls+'</td>';
-else
-str+='<td>0</td>';
-str+='</tr>';
-str+='<tr class="custom-info">';
-str+='<td><small>Batch Confirmation</small></td>';
-if(result1[1].allocatedCalls !=null)
-str+='<td>'+result1[1].allocatedCalls+'</td>';
-else
-str+='<td>0</td>';
-if(result1[1].completedCalls !=null)
-str+='<td>'+result1[1].completedCalls+'</td>';
-else
-str+='<td>0</td>';
-if(result1[1].pendingCalls !=null)
-str+='<td>'+result1[1].pendingCalls+'</td>';
-else
-str+='<td>0</td>';
-str+='</tr>	';
+	if(result[i].interestedCount > 0)
+	{
+			var result1 = result[i].trainingCampVOList;
+			if(result[i].interestedCount == null)
+			result[i].interestedCount =0;
+			str+='<table class="table table-condensed"  style="font-size:11px;  margin-bottom: 5px;">';
+			str+='<tr class="custom-info">';
+			str+='<td colspan="4" style="background:#99cccc;">'+result[i].name+' <small class="pull-right" >Selected Batch Interested Members - '+result[i].interestedCount+'&nbsp;';
 
-str+='</table>	';
+				str+='<input type="checkbox" class="callerscheck" value="'+result[i].id+'"/> </small></td>';
+			str+='</tr>';
+			str+='<tr class="custom-info">';
+			str+='<td>&nbsp;</td>';
+			str+='<td>ASSIGNED</td>';
+			str+='<td >COMPLETED</td>';
+			str+='<td>PENDING</td>';
+			str+='</tr>';
+			str+='<tr class="custom-info">';
+			str+='<td><small>Scheduled Confirmation </small></td>';
+			if(result1[0].allocatedCalls !=null)
+			str+='<td>'+result1[0].allocatedCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			if(result1[0].completedCalls !=null)
+			str+='<td>'+result1[0].completedCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			if(result1[0].pendingCalls !=null)
+			str+='<td>'+result1[0].pendingCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			str+='</tr>';
+			str+='<tr class="custom-info">';
+			str+='<td><small>Batch Confirmation</small></td>';
+			if(result1[1].allocatedCalls !=null)
+			str+='<td>'+result1[1].allocatedCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			if(result1[1].completedCalls !=null)
+			str+='<td>'+result1[1].completedCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			if(result1[1].pendingCalls !=null)
+			str+='<td>'+result1[1].pendingCalls+'</td>';
+			else
+			str+='<td>0</td>';
+			str+='</tr>	';
+
+			str+='</table>	';
+	}
+
 }
 $("#AdminCallersOverview").html(str);
 					
