@@ -715,7 +715,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 						if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails.length>0){
 							var TotalBatches=0,upcomingDetails=0,upcomingMem=0,completedDetails=0,completedMem=0,runningDetails=0,runningMem=0,TotalMembers=0;
 							for(var k in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails){
-								alert(TotalBatches);
+								
 								TotalBatches=TotalBatches+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
 								totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
 								
