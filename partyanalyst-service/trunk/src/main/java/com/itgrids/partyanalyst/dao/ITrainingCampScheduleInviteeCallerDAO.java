@@ -60,4 +60,6 @@ public interface ITrainingCampScheduleInviteeCallerDAO extends GenericDao<Traini
 	public List<Object[]> getScheduleConfirmationDetails(Long purposeId,Long userId);
 	public List getScheduleWisememberDetailsTotalCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
 	public List getScheduleWisememberDetailsCountForSearchCount(TraingCampDataVO inputVo,List<Long> statusIds,String statusType,String status,Date toDayDate);
+	public List<Object[]> getScheduleWiseCallStatulsDetails(String searchType, Date startDate, Date endDate,Date todayDate,Long callPurposeId);
+	public List<Object[]> getBatchWiseCallStatulsDetails(Long callPurposeId);
 }
