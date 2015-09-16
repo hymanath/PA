@@ -1432,11 +1432,28 @@ function setDefaultImage(img){
   {
    $("#batchMaxNo").val('');
     $("#batchavailCnt").val('');
+	
+	var scheduleStatusId  = 0;
+	var callPurpose ="";
+  $(".scheduleStatuscehckbox").each(function()
+   {
+	if($(this).is(":checked"))
+     scheduleStatusId = $(this).val();
+   });
+	
+  if(scheduleStatusId == 10){
+	  callPurpose="confirmation";
+  }
+  else if(scheduleStatusId == 4){
+	  callPurpose="invitation";
+  }
   var batchId = $("#batchId").val();
   if(batchId == 0)
   return;
   var jObj = {
   batchId : batchId,
+  scheduleStatusId : scheduleStatusId,
+  callPurpose : callPurpose,
   task:""
   }
   $.ajax({
