@@ -11,6 +11,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String trainingCampName;
 	private String trainerName;
 	private String scheduledDate;
+	private Long userBusyCount;
 	private Long busyCount;
 	private Long acceptedCount;
 	private Long interestedCount;
@@ -44,6 +45,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long dialedCount;
 	private Long unDialedCount;
 	private String status;
+	private Long laterCount;
 	private List<TrainingCampVO> batchDetails;
 	private List<TrainingCampVO> campDetails;
 	private List<TrainingCampVO> programDetails;
@@ -80,9 +82,41 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<TrainingCampVO> runningDetails=new ArrayList<TrainingCampVO>(0);
 	private List<TrainingCampVO> upcomingDetails=new ArrayList<TrainingCampVO>(0);
 	private Long runningAttendenceMemberCount=0l;
+	private Long wrongMobileNo;
+	private Long invalidMobileNo;
+	private Long switchOffCount;
 	
 	
-	
+	public Long getUserBusyCount() {
+		return userBusyCount;
+	}
+	public void setUserBusyCount(Long userBusyCount) {
+		this.userBusyCount = userBusyCount;
+	}
+	public Long getSwitchOffCount() {
+		return switchOffCount;
+	}
+	public void setSwitchOffCount(Long switchOffCount) {
+		this.switchOffCount = switchOffCount;
+	}
+	public Long getInvalidMobileNo() {
+		return invalidMobileNo;
+	}
+	public void setInvalidMobileNo(Long invalidMobileNo) {
+		this.invalidMobileNo = invalidMobileNo;
+	}
+	public Long getWrongMobileNo() {
+		return wrongMobileNo;
+	}
+	public void setWrongMobileNo(Long wrongMobileNo) {
+		this.wrongMobileNo = wrongMobileNo;
+	}
+	public Long getLaterCount() {
+		return laterCount;
+	}
+	public void setLaterCount(Long laterCount) {
+		this.laterCount = laterCount;
+	}
 	public Long getRunningAttendenceMemberCount() {
 		return runningAttendenceMemberCount;
 	}
