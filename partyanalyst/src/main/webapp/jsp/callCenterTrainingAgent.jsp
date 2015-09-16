@@ -371,6 +371,41 @@ footer
     </div>
   </div>
 </div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel1"></h4>
+		<div class="row">
+			<h5 style="margin-left: 10px;"><span>Designation : <span id="designationId"></span></span><span class="pull-right" style="margin-right: 10px;">Location : <span id="locationId"></span></span></h5>
+			
+		</div>
+	</div>
+      <div class="modal-body">
+        <div class="row">
+		<div id="errMobileNumberDiv" class="text-danger" style="margin-left: 10px;"></div>
+		<div id="successMobileNumberDiv" class="text-success" style="margin-left: 10px;"></div>
+			<div class="col-md-4">
+				<label>Mobile Number</label>
+				<input class="form-control" type="text" id="updatedMobileId">
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-md-4">
+				<button class="btn btn-success" type="button" onclick="updateMobileNumberForCadre();">UPDATE MOBILE NUMBER</button>
+			</div>
+		</div>
+		<div id="mobileUpdationDiv"></div>
+		<center><img id="ajaxImageForMobileUpdation" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;height:60px;display:none;"/></center>
+	</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
 <footer>
 	<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>
@@ -604,6 +639,7 @@ else{
 
 if(result.subList[i].mobileNumber != null)
  str += ' <br/>'+result.subList[i].mobileNumber+'';
+ str+='&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-edit" title="Click Here To Update Mobile Number"style="cursor:pointer" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal1" onclick="getCommitteeMembersDetailsForMobileUpdation(\''+result.subList[i].locationId+'\',\''+result.subList[i].locationType+'\',\''+result.subList[i].basicCommitteeTypeId+'\',\''+result.subList[i].name+'\',\''+result.subList[i].role+'\',\''+result.subList[i].roleCategory+'\',\''+result.subList[i].committeeLocation+'\',\''+result.subList[i].id+'\');"></i>';
  str +='</td>';
 if(result.subList[i].age == null)
 result.subList[i].age ='';
@@ -1418,6 +1454,117 @@ function setDefaultImage(img){
   var cnt = result.totalCount - result.availableCount;
   $("#batchavailCnt").val(cnt);
   }
+  
+</script>
+<script type="text/javascript">
+var globalCadreId;
+function getCommitteeMembersDetailsForMobileUpdation(locationId,locationType,basicCommitteeTypeId,name,role,roleCategory,locationLevel,tdpCadreId)
+{
+	globalCadreId = tdpCadreId;
+	
+	$("#errMobileNumberDiv").html('');
+	$("#successMobileNumberDiv").html('');
+	$("#updatedMobileId").val('');
+	$("#myModalLabel1").html(name);
+	var designation = roleCategory+" Committee "+role;
+	$("#designationId").html(designation);
+	$("#locationId").html(locationLevel);
+	
+	$("#mobileUpdationDiv").html('');
+	$("#ajaxImageForMobileUpdation").show();
+	var jObj={
+		locationId:locationId,
+		locationType:locationType,
+		basicCommitteeTypeId:basicCommitteeTypeId,
+		type:"committeembrs"
+		};
+		$.ajax({
+		  type:'POST',
+		  url: 'gettingCadreDetailsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				if(result != null && result.length > 0){
+					buildMobileUpdationDetails(result);
+				}else{
+					$("#ajaxImageForMobileUpdation").hide();
+					$("#mobileUpdationDiv").html("NO DATA AVAILABLE...");
+				}
+		  });
+	
+}
+
+function buildMobileUpdationDetails(result)
+{
+	var str='';
+	str+='<div class="row">';
+			str+='<div class="col-md-12 m_top10">';
+				str+='<table class="table table-bordered">';
+					str+='<thead>';
+						//str+='<th></th>';
+						str+='<th>Image</th>';
+						str+='<th>Name</th>';
+						str+='<th>Designation</th>';
+						str+='<th>Mobile Number</th>';
+					str+='</thead>';
+					for(var i in result)
+					{
+						str+='<tr>';
+							//str+='<td><input type="checkbox"</td>';
+							str+='<td><img style="height:50px;width:50px;" class="media-object img-border profile-image img-circle" src="images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" alt="Profile Image"></td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].role+'</td>';
+							str+='<td>'+result[i].mobileNo+'</td>';
+						str+='</tr>';
+					}
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		
+		$("#ajaxImageForMobileUpdation").hide();
+		$("#mobileUpdationDiv").html(str);
+}
+
+function updateMobileNumberForCadre()
+{
+	$("#errMobileNumberDiv").html('');
+	$("#successMobileNumberDiv").html('');
+	var updatedMobileNo = $("#updatedMobileId").val();
+	
+	if(isNaN(updatedMobileNo) || updatedMobileNo.indexOf(" ") != -1){
+		$("#errMobileNumberDiv").html("Please Enter Numbers Only...");
+		return;
+	}
+   if(updatedMobileNo.trim().length < 10){
+		$("#errMobileNumberDiv").html("Please Enter Valid Mobile Number...");
+		return;
+   }
+	
+	var jObj={
+		tdpCadreId:globalCadreId,
+		mobileNo:updatedMobileNo
+		};
+		$.ajax({
+		  type:'POST',
+		  url: 'updateMobileNumberForCadreAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				if(result != null){
+					if(result.resultCode == 0){
+						if(result.message == "SUCCESS"){
+							$("#successMobileNumberDiv").html("Mobile Number Is Successfully Updated...");
+							// $("#myModal1").modal("close");
+						}else{
+							$("#errMobileNumberDiv").html("Invalid Mobile Number...");
+						}
+					}else{
+						$("#errMobileNumberDiv").html("Sorry,Mobile Number Is Not Updated...");
+					}
+				}
+		  });
+}
+
 </script>
 <script>
 getMemberDetails(0);

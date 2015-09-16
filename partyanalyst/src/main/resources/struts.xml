@@ -10900,6 +10900,11 @@
 		    <param name="root">simpleVoList</param>
 		</result>
 	</action>
+	<action name="updateMobileNumberForCadreAction" class="trainingCampAction" method="updateMobileNumberForCadre">
+	    <result type="json" name="success">		   
+		    <param name="root">resultStatus</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      

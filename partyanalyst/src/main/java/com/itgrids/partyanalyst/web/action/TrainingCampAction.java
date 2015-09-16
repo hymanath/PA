@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -109,8 +110,19 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String dts;//fromDate&todate
 	private List<CadreVo> cadreVoList;
 	private List<TrainingCampVO> campVoList;	
+	private ICadreRegistrationService cadreRegistrationService;
 	
 	
+	
+	public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+
 	public List<TrainingCampVO> getCampVoList() {
 		return campVoList;
 	}
@@ -2089,5 +2101,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	}
     	return Action.SUCCESS;
     }    
+    
+    public String updateMobileNumberForCadre()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long tdpCadreId = jObj.getLong("tdpCadreId");
+    		String mobileNo = jObj.getString("mobileNo");
+    		
+    		resultStatus = cadreRegistrationService.updateMobileNumberForCadre(tdpCadreId,mobileNo);
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception Occured in updateMobileNumber() method, Exception - ",e);
+		}
+    	return Action.SUCCESS;
+    }
     
 }
