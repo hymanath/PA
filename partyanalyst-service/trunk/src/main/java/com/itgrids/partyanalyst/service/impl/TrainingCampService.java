@@ -7250,7 +7250,7 @@ class TrainingCampService implements ITrainingCampService{
 		
 		public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId){
 			
-			SimpleVO cadreVo = new SimpleVO();
+			SimpleVO cadreVo =null;
 			try{
 				
 				//0.cadreId,1.attendedTime,2.batchid,3.batchName,4.campId,5.campName,6.programId,7.programName
@@ -7258,6 +7258,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
 				if(trainingDetails !=null && trainingDetails.size()>0){
+					cadreVo=new SimpleVO();
 					
 					Object[] batchIdInfo= trainingDetails.get(0);
 					
