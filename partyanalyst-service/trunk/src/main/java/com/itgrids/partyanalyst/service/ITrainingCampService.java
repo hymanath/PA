@@ -102,7 +102,7 @@ public interface ITrainingCampService {
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);
 	public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId);
 	public List<IdNameVO> getBatchesForCentre(Long programId,Long campId);
-	public TrainingMemberVO getMaxNumberForBatch(Long batchId);
+	public TrainingMemberVO getMaxNumberForBatch(Long batchId,Long sttatusId,String callPurpose);
 	public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr);
 	public List<SimpleVO> getStatusCountOfCadreForInvitationAndAttendance(Long cadreId);
 	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);

@@ -468,13 +468,32 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	}
 	
 	
-	public Long getBatchMembersCountByStatus(Long batchId,Long statusId)
+	public Long getBatchMembersCountByStatus(Long batchId,Long statusId,String callpurpose)
 	{
-		Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as cnt" +
+		/*Query query = getSession().createSQLQuery("select count(distinct TCSI.tdp_cadre_id) as cnt" +
 				" from training_camp_schedule_invitee_caller TCSIC ,training_camp_schedule_invitee TCSI where " +
 				" TCSIC.training_camp_schedule_invitee_id = TCSI.training_camp_schedule_invitee_id and TCSI.schedule_invitee_status_id = :statusId" +
-				" and TCSI.attending_batch_id =:batchId and TCSIC.call_purpose_id = 2")
-				.addScalar("cnt",Hibernate.LONG);
+				" and TCSI.attending_batch_id =:batchId and TCSIC.call_purpose_id = 2")*/
+		StringBuilder str =new StringBuilder(); 
+		
+		str.append("select count(distinct TCSI.tdp_cadre_id) as cnt" +
+				" from training_camp_schedule_invitee_caller TCSIC ,training_camp_schedule_invitee TCSI where" +
+				" TCSI.attending_batch_id =:batchId ");
+		
+		if(statusId !=null && statusId !=0l)
+		{
+			str.append(" and TCSI.schedule_invitee_status_id = :statusId ");
+		}
+		if(callpurpose.equalsIgnoreCase("confirmation")){
+			str.append(" and TCSIC.call_purpose_id = 2 ");
+		}
+		else if(callpurpose.equalsIgnoreCase("invitation")){
+			str.append(" and TCSIC.call_purpose_id = 1 ");
+		}
+		
+		Query query = getSession().createSQLQuery(str.toString())
+		
+		.addScalar("cnt",Hibernate.LONG);
 		query.setParameter("batchId", batchId);
 		query.setParameter("statusId", statusId);
 		
