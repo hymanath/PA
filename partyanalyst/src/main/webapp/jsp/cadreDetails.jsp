@@ -490,7 +490,7 @@ var globalCadreId = '${cadreId}';
                             </div>
 							<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:10px;">
 								<div class="panel-group m_top10" id="accordion2323" role="tablist" aria-multiselectable="true">
-								  <div class="panel panel-default">
+								  <div class="panel panel-default" id="eventParticipationCollapseDivId" style="display:none;">
 									<div class="panel-heading" role="tab" id="headingOne">
 									  <a role="button" class="collapsed accordion-toggle" data-toggle="collapse" data-parent="#accordion2323" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 										<h4 class="panel-title">
@@ -548,10 +548,10 @@ var globalCadreId = '${cadreId}';
 								  </div>
 								</div>
 							</div>
-                            <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
-								<!--<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>-->
+                         <!--   <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
+								<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>
 								<div id="participationTableDivId" class="table-responsive">
-								</div>
+								</div>-->
                             </div>
 						
 							<!--
@@ -1396,7 +1396,8 @@ var globalCadreId = '${cadreId}';
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(myresult){
 			if(myresult !=null && myresult.length>0 && myresult !=""){
-				$("#participationTableMainDivId").show();
+				//$("#participationTableMainDivId").show();
+				$("#eventParticipationCollapseDivId").show();
 				
 				var str='';
 				for(var k in myresult)
@@ -1469,7 +1470,8 @@ var globalCadreId = '${cadreId}';
 				 $("#participationTableDivId").html(str);	
 				   
 				}else{
-					$("#participationTableMainDivId").hide();
+					$("#eventParticipationCollapseDivId").hide();
+					//$("#participationTableMainDivId").hide();
 				}
 				
 			});
@@ -5020,7 +5022,6 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 		}
 		else{
 			$("#dataLoadingsImgForTrainingDetails").hide();
-			$("#remarkDetailsId").html("NO DATA AVAILABLE...");
 		}
 	});
 }
