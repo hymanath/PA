@@ -22,8 +22,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import sun.java2d.pipe.SpanShapeRenderer.Simple;
-
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreComminicationSkillsStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreHealthStatusDAO;
@@ -1217,6 +1215,27 @@ class TrainingCampService implements ITrainingCampService{
 						campWiseMap.put(campName,scheduleWiseMap);
 						programWiseNotDialdCallsSceduleWiseMap.put(programName, campWiseMap);
 				}
+				//switch-off, user-busy, answered
+				List<Object[]> scheduleWiseCallStatusDtals = trainingCampScheduleInviteeCallerDAO.getScheduleWiseCallStatulsDetails(searchType, startDate, endDate,today,1L);
+				Map<Long,Map<String,Long>> scheduleWiseCallstatusMap = new LinkedHashMap<Long, Map<String,Long>>(0); 
+				if(scheduleWiseCallStatusDtals != null && scheduleWiseCallStatusDtals.size()>0)
+				{
+					for (Object[] campCallStatus : scheduleWiseCallStatusDtals) {
+					
+						//Long callstatusId = commonMethodsUtilService.getLongValueForObject(campCallStatus[0]);
+						String callStatusStr = commonMethodsUtilService.getStringValueForObject(campCallStatus[1]);
+						Long scheduleId = commonMethodsUtilService.getLongValueForObject(campCallStatus[2]);
+						Long count = commonMethodsUtilService.getLongValueForObject(campCallStatus[3]);
+						Map<String,Long> callStatusMap = new LinkedHashMap<String, Long>(0);
+						if(scheduleWiseCallstatusMap.get(scheduleId) != null)
+						{
+							callStatusMap = scheduleWiseCallstatusMap.get(scheduleId);
+						}
+						
+						callStatusMap.put(callStatusStr.trim(), count);
+						scheduleWiseCallstatusMap.put(scheduleId, callStatusMap);
+					}
+				}
 				
 				List<Object[]>  allStatusList=scheduleInviteeStatusDAO.getAllStatusList();
 				List<Object[]> campAndSchedulewiseResultsList = trainingCampScheduleInviteeDAO.getCampusWiseScheduleWiseMembersDetails(searchType, startDate, endDate,today);
@@ -1264,8 +1283,8 @@ class TrainingCampService implements ITrainingCampService{
 						TrainingCampVO trainingCampVO = getMatchedVOforMemberStatus(trainingCampVOList,memberStatus);
 						if(trainingCampVO != null)
 						{
-							if(memberStatus != null && memberStatus.equalsIgnoreCase(IConstants.NOTNOW))
-								trainingCampVO.setMemberStatus("LATER");
+							//if(memberStatus != null && memberStatus.equalsIgnoreCase(IConstants.NOTNOW))
+							//	trainingCampVO.setMemberStatus("LATER");
 							
 							trainingCampVO.setTrainingCampName(campName);
 							trainingCampVO.setScheduleName(scheduleName);
@@ -1283,7 +1302,7 @@ class TrainingCampService implements ITrainingCampService{
 							 }
 							
 							//trainingCampVOList.add(trainingCampVO);
-							if(trainingCampVO.getMemberStatus() != null && !trainingCampVO.getMemberStatus().isEmpty() && 
+							/*if(trainingCampVO.getMemberStatus() != null && !trainingCampVO.getMemberStatus().isEmpty() && 
 									trainingCampVO.getMemberStatus().trim().equalsIgnoreCase("Interested"))
 								interestedMembersForSchedulMap.put(scheduleId, trainingCampVO.getNextBatchInterestedCount());
 							
@@ -1301,7 +1320,7 @@ class TrainingCampService implements ITrainingCampService{
 								}
 								
 								trainingCampVOList.remove(trainingCampVO);
-							}
+							}*/
 							
 							scheduleWiseMap.put(scheduleId, trainingCampVOList);
 							campWiseMap.put(campName,scheduleWiseMap);
@@ -1361,7 +1380,7 @@ class TrainingCampService implements ITrainingCampService{
 										
 										for (Long scheduleId : scheduleWiseCountMap.keySet()) {
 											List<TrainingCampVO> scheduleVOList = scheduleWiseCountMap.get(scheduleId);
-											
+											Map<String,Long> callStatusMap = scheduleWiseCallstatusMap.get(scheduleId);
 											Long allocatedCallsCount=0l;
 											Long dialdCallsCount=0l;
 											Long unDialdCallsCount=0l;
@@ -1412,24 +1431,56 @@ class TrainingCampService implements ITrainingCampService{
 														finalVO.setScheduleName(trainingCampVO2.getScheduleName());
 													String countBelongsTo = trainingCampVO2.getMemberStatus();
 													
-													if(countBelongsTo.equalsIgnoreCase(IConstants.INTERESTED)){
+													if(countBelongsTo.equalsIgnoreCase(IConstants.INVITED)){
+														finalVO.setAllocatedCallsCount(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.PENDING)){
+														finalVO.setPendingCalls(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.LATER)){
+														finalVO.setLaterCount(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.INTERESTED)){
 														finalVO.setInterestedCount(trainingCampVO2.getInterestedCount());
 													}
 													else if(countBelongsTo.equalsIgnoreCase(IConstants.NOTINTERESTED)){
 														finalVO.setNotInterestedCount(trainingCampVO2.getInterestedCount());
-													} 
-													else if(countBelongsTo.equalsIgnoreCase("Call Back - Busy")){
-														finalVO.setBusyCount(trainingCampVO2.getInterestedCount());
 													}
 													else if(countBelongsTo.equalsIgnoreCase(IConstants.CALLBACK_CONFIRM_LATER)){
 														finalVO.setConformLaterCount(trainingCampVO2.getInterestedCount());
 													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.CALLBACK_BUSY)){
+														finalVO.setBusyCount(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.WRONG_MOBILE_NO)){
+														finalVO.setWrongMobileNo(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.INVALID_MOBILE_NO)){
+														finalVO.setInvalidMobileNo(trainingCampVO2.getInterestedCount());
+													}
+													else if(countBelongsTo.equalsIgnoreCase(IConstants.CONFIRMED)){
+														finalVO.setAcceptedCount(trainingCampVO2.getInterestedCount());
+													}
+													/*else if(countBelongsTo.equalsIgnoreCase(IConstants.SWITCHOFF)){
+														finalVO.setSwitchOffCount(trainingCampVO2.getInterestedCount());
+													}*/
+													/*
 													else{
 														othrsCount = othrsCount+trainingCampVO2.getInterestedCount();
 														finalVO.setOthersCount(othrsCount);
+													}*/
+												}
+												if(callStatusMap != null && callStatusMap.size()>0)
+												{
+													for (String callStatsStr : callStatusMap.keySet()) {
+														if(callStatsStr.equalsIgnoreCase(IConstants.SWITCHOFF)){
+															finalVO.setSwitchOffCount(callStatusMap.get(callStatsStr));
+														}
+														else if(callStatsStr.equalsIgnoreCase(IConstants.TRAINING_USER_BUSY)){
+															finalVO.setUserBusyCount(callStatusMap.get(callStatsStr));
+														}
 													}
 												}
-
 											finalList.add(finalVO);
 											programVO.getTrainingCampVOList().addAll(finalList);
 										}
@@ -1526,7 +1577,27 @@ class TrainingCampService implements ITrainingCampService{
 			
 			List<Object[]> allocatedCallsCountList = trainingCampScheduleInviteeCallerDAO.getAllocatedCallsForBatchConfirmationDetails(searchType,  startDate,  endDate,today);
 			List<Object[]> dialedCallsCountList = trainingCampScheduleInviteeCallerDAO.getdialedCallsForBatchConfirmationDetails(searchType,  startDate,  endDate,today);
-			
+			//switch-off, user-busy, answered
+			List<Object[]> scheduleWiseCallStatusDtals = trainingCampScheduleInviteeCallerDAO.getBatchWiseCallStatulsDetails(2L);
+			Map<Long,Map<String,Long>> batchWiseCallstatusMap = new LinkedHashMap<Long, Map<String,Long>>(0); 
+			if(scheduleWiseCallStatusDtals != null && scheduleWiseCallStatusDtals.size()>0)
+			{
+				for (Object[] campCallStatus : scheduleWiseCallStatusDtals) {
+				
+					//Long callstatusId = commonMethodsUtilService.getLongValueForObject(campCallStatus[0]);
+					String callStatusStr = commonMethodsUtilService.getStringValueForObject(campCallStatus[1]);
+					Long batchId = commonMethodsUtilService.getLongValueForObject(campCallStatus[2]);
+					Long count = commonMethodsUtilService.getLongValueForObject(campCallStatus[3]);
+					Map<String,Long> callStatusMap = new LinkedHashMap<String, Long>(0);
+					if(batchWiseCallstatusMap.get(batchId) != null)
+					{
+						callStatusMap = batchWiseCallstatusMap.get(batchId);
+					}
+					
+					callStatusMap.put(callStatusStr.trim(), count);
+					batchWiseCallstatusMap.put(batchId, callStatusMap);
+				}
+			}
 			//Map<Long,Long> allocatedCountMap = new HashMap<Long, Long>(0);
 			Map<Long,Long> dialedCountMap = new HashMap<Long, Long>(0);
 			
@@ -1712,7 +1783,7 @@ class TrainingCampService implements ITrainingCampService{
 										TrainingCampVO campVO = new TrainingCampVO();
 										
 										campVO.setTrainingCampVOList(batchwiseMap.get(batchId));
-										
+										Map<String,Long> callStatusMap = batchWiseCallstatusMap.get(batchId);
 										TrainingCampVO batchVO = new TrainingCampVO();
 										Long othrsCount = 0l;
 											List<TrainingCampVO> vo = campVO.getTrainingCampVOList();
@@ -1736,7 +1807,41 @@ class TrainingCampService implements ITrainingCampService{
 													}
 												}
 												
-												if(countBelongsTo.equalsIgnoreCase("Interested")){
+												if(countBelongsTo.equalsIgnoreCase(IConstants.INVITED)){
+													batchVO.setAllocatedCallsCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.PENDING)){
+													batchVO.setPendingCalls(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.LATER)){
+													batchVO.setLaterCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.INTERESTED)){
+													batchVO.setInterestedCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.NOTINTERESTED)){
+													batchVO.setNotInterestedCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.CALLBACK_CONFIRM_LATER)){
+													batchVO.setConformLaterCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.CALLBACK_BUSY)){
+													batchVO.setBusyCount(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.WRONG_MOBILE_NO)){
+													batchVO.setWrongMobileNo(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.INVALID_MOBILE_NO)){
+													batchVO.setInvalidMobileNo(trainingCampVO2.getInterestedCount());
+												}
+												else if(countBelongsTo.equalsIgnoreCase(IConstants.CONFIRMED)){
+													batchVO.setAcceptedCount(trainingCampVO2.getInterestedCount());
+												}
+												/*else if(countBelongsTo.equalsIgnoreCase(IConstants.SWITCHOFF)){
+													batchVO.setSwitchOffCount(trainingCampVO2.getInterestedCount());
+												}
+												*/
+												/*if(countBelongsTo.equalsIgnoreCase("Interested")){
 													batchVO.setInterestedCount(trainingCampVO2.getInterestedCount());
 												}
 												else if(countBelongsTo.equalsIgnoreCase("Confirmed")){
@@ -1756,8 +1861,20 @@ class TrainingCampService implements ITrainingCampService{
 														othrsCount = othrsCount+trainingCampVO2.getInterestedCount();
 													
 													batchVO.setOthersCount(othrsCount);
-												}
+												}*/
 												
+											}
+											
+											if(callStatusMap != null && callStatusMap.size()>0)
+											{
+												for (String callStatsStr : callStatusMap.keySet()) {
+													if(callStatsStr.equalsIgnoreCase(IConstants.SWITCHOFF)){
+														batchVO.setSwitchOffCount(callStatusMap.get(callStatsStr));
+													}
+													else if(callStatsStr.equalsIgnoreCase(IConstants.TRAINING_USER_BUSY)){
+														batchVO.setUserBusyCount(callStatusMap.get(callStatsStr));
+													}
+												}
 											}
 											batchVOList.add(batchVO);
 									}
@@ -2918,7 +3035,7 @@ class TrainingCampService implements ITrainingCampService{
 						trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 					}
 			}
-			else if(inputVO.getCallStatusId() == 2l || inputVO.getCallStatusId() == 3l)// User-busy // switch-off
+			else if(inputVO.getCallStatusId() == 2l || inputVO.getCallStatusId() == 3l) // switch-off || User busy
 			{
 				TrainingCampScheduleInvitee trainingCampScheduleInvitee = trainingCampScheduleInviteeDAO.get(inputVO.getInvitteId());
 				//trainingCampScheduleInvitee.setAttendingBatchId(null);
@@ -2928,6 +3045,7 @@ class TrainingCampService implements ITrainingCampService{
 				trainingCampScheduleInviteeDAO.save(trainingCampScheduleInvitee);
 				//saveTrackingInfo(inputVO);	
 			}
+			
 			if(flag == false)
 			{
 				TrainingCampScheduleInviteeCaller trainingCampScheduleInviteeCaller = trainingCampScheduleInviteeCallerDAO.get(inputVO.getInviteeCallerId());
