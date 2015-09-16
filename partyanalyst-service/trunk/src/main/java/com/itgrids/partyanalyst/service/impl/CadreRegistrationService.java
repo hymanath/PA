@@ -10431,5 +10431,34 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return returnList;
 	}
 	
+	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			
+			if(tdpCadreId != null && tdpCadreId.longValue() > 0L)
+			{
+				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+				saveDataToHistoryTable(tdpCadre);
+				tdpCadre.setMobileNo(mobileNo);
+				tdpCadreDAO.save(tdpCadre);
+				
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("SUCCESS");
+			}
+			else
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("INVALID MOBILE NUMBER");
+			}
+			
+		} catch (Exception e) {
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("ERROR");
+			LOG.error("Exception raised in updateMobileNumberForCadre  method in WebServiceHandlerService",e);
+		}
+		
+		return resultStatus;
+	}
 	
 }

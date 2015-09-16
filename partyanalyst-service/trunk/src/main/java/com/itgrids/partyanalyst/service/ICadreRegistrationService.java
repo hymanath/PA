@@ -173,4 +173,5 @@ public interface ICadreRegistrationService {
 	public List<TdpCadreFamilyDetailsVO> getFamilyDetailsByCadreId(Long tdpCadreId);
 	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate);
 	public  List<CadreRegistrationVO> getCadreWithFamilyDetailsOfEachCadre(Long cadreId);
+	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo);
 }

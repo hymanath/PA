@@ -2419,6 +2419,9 @@ class TrainingCampService implements ITrainingCampService{
 							 vo.setRoleCategory(commonMethodsUtilService.getStringValueForObject(params[3]));
 							 String committeeLocation = cadreCommitteeService.getLocationName((Long)params[4], (Long)params[5]); 
 							 vo.setCommitteeLocation(committeeLocation != null?committeeLocation:"");
+							 vo.setLocationId(commonMethodsUtilService.getLongValueForObject(params[5]));
+							 vo.setLocationType(commonMethodsUtilService.getLongValueForObject(params[4]));
+							 vo.setBasicCommitteeTypeId(commonMethodsUtilService.getLongValueForObject(params[6]));
 						 }
 					 }
 				 }
