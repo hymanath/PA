@@ -1129,9 +1129,26 @@ $(document).ready(function() {
 								str+='<th>Un Dialed</th>';//pending calls
 								
 									if(result.trainingCampVOList[0].trainingCampVOList !=null){
-									for(var i in result.trainingCampVOList[0].trainingCampVOList){
-										str+='<th id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';	 
+										
+									if(agentType == "Confirmation"){
+										for(var i in result.trainingCampVOList[0].trainingCampVOList){
+										
+										if(result.trainingCampVOList[0].trainingCampVOList[i].status != "Interested" && 
+													 result.trainingCampVOList[0].trainingCampVOList[i].status != "Switch-Off"){
+												str+='<th id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';		 
+										}	 
+									 }
 									}
+									else{//Invitation
+										for(var i in result.trainingCampVOList[0].trainingCampVOList){
+										
+										if(result.trainingCampVOList[0].trainingCampVOList[i].status != "Confirmed" && 
+													 result.trainingCampVOList[0].trainingCampVOList[i].status != "Switch-Off"){
+											str+='<th id='+result.trainingCampVOList[0].trainingCampVOList[i].statusId+'>'+result.trainingCampVOList[0].trainingCampVOList[i].status+'</th>';			 
+										}	 
+									 }
+									}
+									
 								 }
 								
 							str+='</thead>';
@@ -1165,12 +1182,10 @@ $(document).ready(function() {
 										if(result.trainingCampVOList[i].trainingCampVOList !=null && result.trainingCampVOList[i].trainingCampVOList.length>0)
 										{
 											for(var j in result.trainingCampVOList[i].trainingCampVOList){
-													if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Interested"){
-														str+='<td style="text-align:center;" >-</td>';
-													}else{
+													if(result.trainingCampVOList[i].trainingCampVOList[j].status != "Interested" && 
+													 result.trainingCampVOList[i].trainingCampVOList[j].status != "Switch-Off"){
 														str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
-													}
-													
+													}	
 											}
 										}
 									}
@@ -1192,13 +1207,10 @@ $(document).ready(function() {
 												if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Interested"){
 													str+='<td style="text-align:center;" >'+interestecCount+'</td>';
 												}
-												else if(result.trainingCampVOList[i].trainingCampVOList[j].status == "Confirmed"){
-													str+='<td style="text-align:center;" >-</td>';
-												}
-												else{
+												else if(result.trainingCampVOList[i].trainingCampVOList[j].status != "Confirmed" && 
+													 result.trainingCampVOList[i].trainingCampVOList[j].status != "Switch-Off"){
 													str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[j].count+'</td>';
 												}
-												
 											}
 										}
 									}
