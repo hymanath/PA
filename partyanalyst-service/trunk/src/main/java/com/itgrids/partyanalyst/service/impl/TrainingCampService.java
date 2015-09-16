@@ -7109,14 +7109,22 @@ class TrainingCampService implements ITrainingCampService{
 					for(SimpleVO simpleVo:attendList){
 						
 						SimpleVO inviteeVo=inviteeMap.get(simpleVo.getId());
+						
+						boolean isNonInvitee =false;
 						if(inviteeVo ==null){
 							inviteeVo = new SimpleVO();
+							isNonInvitee = true;
+							
 							inviteeVo.setNonInvitee(true);
 							inviteeVo.setProgName(simpleVo.getProgName());
 							inviteeVo.setId(simpleVo.getId());
 							inviteeVo.setCount(0l);
 						}
 						inviteeVo.setTotal(simpleVo.getCount());//attendedCount
+						
+						if(isNonInvitee){
+							inviteeMap.put(simpleVo.getId(), inviteeVo);
+						}
 					}
 				}
 				
