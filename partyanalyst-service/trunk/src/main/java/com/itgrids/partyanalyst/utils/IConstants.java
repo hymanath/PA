@@ -902,7 +902,7 @@ public interface IConstants {
     public static final String MAHANADU_USER_IDS = "MAHANADU,7287,7288,7289,7290,7291,7292";
     
     public static final String INVITED ="Invited";
-    public static final String NOTNOW="Not Now";
+    public static final String LATER="Later";
     public static final String INTERESTED="Interested";
     public static final String NOTINTERESTED="Not Interested";
     public static final String CALLBACK_BUSY="Call Back - Busy";
@@ -911,7 +911,7 @@ public interface IConstants {
     public static final String INVALID_MOBILE_NO="Invalid Mobile No";
     public static final String CONFIRMED="Confirmed";
     public static final String CALL_ANSWERED="Call Answered";
-    public static final String SWITCHOFF="Switchoff";
+    public static final String SWITCHOFF="SwitchOff";
     public static final String TRAINING_USER_BUSY="User Busy";
     public static final String INVITATION="Invitation";
     public static final String CONFIRMATION="Confirmation";
