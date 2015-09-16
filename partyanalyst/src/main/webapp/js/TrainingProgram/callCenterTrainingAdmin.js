@@ -240,13 +240,13 @@ function buildCampusWiseDateWiseInterestedMembersDetails(result)
 									str+='<td style="text-align:center;" class="interested-text" >'+result.trainingCampVOList[i].trainingCampVOList[k].acceptedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls != null)
-									str+='<td style="text-align:center;"  >'+result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls+'</td>';
-								else
-									str+='<td style="text-align:center;" > 0 </td>';
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								if(result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls != null)
+									str+='<td style="text-align:center;"  >'+result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
 								
@@ -412,15 +412,17 @@ function buildCampusWiseBatchWiseMembersDetails(result,divId)
 									str+='<td style="text-align:center;" class="interested-text" >'+result.trainingCampVOList[i].trainingCampVOList[k].acceptedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
-								if(result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls != null)
-									str+='<td style="text-align:center;"  >'+result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls+'</td>';
-								else
-									str+='<td style="text-align:center;" > 0 </td>';
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].notInterestedCount+'</td>';
 								else
 									str+='<td style="text-align:center;" > 0 </td>';
+								
+								if(result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls != null)
+									str+='<td style="text-align:center;"  >'+result.trainingCampVOList[i].trainingCampVOList[k].pendingCalls+'</td>';
+								else
+									str+='<td style="text-align:center;" > 0 </td>';
+								
 								
 								if(result.trainingCampVOList[i].trainingCampVOList[k].laterCount != null)
 									str+='<td style="text-align:center;" >'+result.trainingCampVOList[i].trainingCampVOList[k].laterCount+'</td>';
