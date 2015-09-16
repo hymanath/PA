@@ -2077,7 +2077,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     	jObj = new JSONObject(getTask());
     	Long batchId = jObj.getLong("batchId");
-    	memberList = trainingCampService.getMaxNumberForBatch(batchId);
+    	Long statusId = jObj.getLong("scheduleStatusId");
+    	String callPurpose =jObj.getString("callPurpose");
+    	
+    	memberList = trainingCampService.getMaxNumberForBatch(batchId,statusId,callPurpose);
     			
     	}catch(Exception e){
     		LOG.error("Exception Occured in getMaxNumberForBatch() method, Exception - ",e);
