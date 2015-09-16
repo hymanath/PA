@@ -488,13 +488,13 @@ var globalCadreId = '${cadreId}';
 							 <div class="col-md-4 col-xs-12" id="partyMeetingDescDiv">
                             	
                             </div>
-							<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:10px;">
 								<div class="panel-group m_top10" id="accordion2323" role="tablist" aria-multiselectable="true">
 								  <div class="panel panel-default">
 									<div class="panel-heading" role="tab" id="headingOne">
 									  <a role="button" class="collapsed accordion-toggle" data-toggle="collapse" data-parent="#accordion2323" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 										<h4 class="panel-title">
-										  <span id="eventHeadingId"></span>
+										  <span>EVENT PARTICIPATION DETAILS</span>
 										</h4>
 									   </a>
 									</div>
@@ -523,14 +523,26 @@ var globalCadreId = '${cadreId}';
 												<th></th>
 											</thead>
 											<tbody id="trainingDetailsBodyId">
-												<!--<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr> -->
+												
 											</tbody>
 										</table>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default" id="partyMeetingDetailsShowHideDiv" style="display:none">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion2323" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										<h4 class="panel-title">
+										 <span id="partymeetingTitledivId"> PARTY MEETING PARTICIPATION DETAILS</span>
+										 </h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div id="partymettingParlDivId" style="display:none;" >
+									
+											<div id="partyMetindetlsDivId"></div>
+										</div>
 									  </div>
 									</div>
 								  </div>
@@ -541,10 +553,11 @@ var globalCadreId = '${cadreId}';
 								<div id="participationTableDivId" class="table-responsive">
 								</div>
                             </div>
-							
+						
+							<!--
 							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" style="display:none;" >
 								<!--<h4 style="border-bottom:1px solid #999">Party Meetings Participation Details</h4> -->
-								<div id="partyMetindetlsDivId"></div>
+								<!--<div id="partyMetindetlsDivId"></div>
 								<!--<table class="table m_0 table-bordered">
                                 	<thead>
                                     	<th class="text-center">MEETING TYPE </th>
@@ -569,8 +582,8 @@ var globalCadreId = '${cadreId}';
                                         <td> 0 </td>
                                     </tr>
                                 </table>
-								-->
-								</div>
+								
+								</div> -->
                             </div>
 							
                         </div>
@@ -946,7 +959,7 @@ var globalCadreId = '${cadreId}';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">TRAINING DETAILS</h4>
+        <h4 class="modal-title" style="text-align:center;">TRAINING DETAILS</h4>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -1388,12 +1401,13 @@ var globalCadreId = '${cadreId}';
 				var str='';
 				for(var k in myresult)
 				{
+					str+='<h4 class="m_top10">'+myresult[k].eventTypeStr.toUpperCase()+'</h4>';
 					str+='<table class="table m_0 table-bordered table-responsive" style="margin-top: 10px">';
 					str+='<thead>';
 					str+='<tr>';
 					/* str+='<th colspan="5" style="background-color:#CCCCCC;text-align:center;"> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </th>';		 */	
 
-					$("#eventHeadingId").html('<span> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </span>');
+					//$("#eventHeadingId").html('<span> EVENT PARTICIPATION DETAILS </span>');
 					str+='</tr>';
 						str+='<tr>';
 						
@@ -3721,12 +3735,13 @@ function getPartyMeetingDetaildReprt()
 				if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
 				{
 					$('#partymettingParlDivId').show();
+					$('#partyMeetingDetailsShowHideDiv').show();
 					var str='';
 					str+='<table class="table m_0 table-bordered" style="margin-top:10px;">';
 					str+='<thead>';
-					str+='<tr>';
-					str+='<th colspan="4" style="background-color:#CCCCCC;text-align:center;"> PARTY MEETINGS PARTICIPATION DETAILS </th>';						
-					str+='</tr>';
+					//str+='<tr>';
+					//str+='<th colspan="4" style="background-color:#CCCCCC;text-align:center;"> PARTY MEETINGS PARTICIPATION DETAILS </th>';						
+					//str+='</tr>'; 
 					str+='<tr>';						
 					str+='<th class="text-center"> MEETING NAME </th>';
 					str+='<th class="text-center"> INVITED </th>';
@@ -4961,7 +4976,8 @@ function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
 			
 			$("#trainingDetailsTableId").html(str);
 		}else{
-			$("#trainingDetailsTableId").html("NO DATA AVAILABLE...");
+			//$("#trainingDetailsTableId").html("NO ATTENDNACE DATA AVAILABLE...");
+			$("#trainingDetailsTableId").html("");
 		}
 						
 	});
