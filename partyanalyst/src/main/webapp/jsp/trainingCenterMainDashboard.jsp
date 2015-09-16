@@ -711,14 +711,14 @@ function getTrainingCenterDetailsBasedOnDates(){
 				if(result.completed.programWiseDetails[i].campDetails!=null && result.completed.programWiseDetails[i].campDetails.length>0){
 					for(var j in result.completed.programWiseDetails[i].campDetails){
 						str+='<td class="summaryCls" title="Click Here TO View Camp Summary" style="cursor:pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_batch_id="0" attr_camp_id="'+result.completed.programWiseDetails[i].campDetails[j].campId+'">'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
+						
 						if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails.length>0){
+							var TotalBatches=0,upcomingDetails=0,upcomingMem=0,completedDetails=0,completedMem=0,runningDetails=0,runningMem=0,TotalMembers=0;
 							for(var k in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails){
-								
-								var TotalBatches=0,TotalMembers=0;
-								
-								TotalBatches=result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
+								alert(TotalBatches);
+								TotalBatches=TotalBatches+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
 								totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
-								str+='<td>'+TotalBatches+'</td>';
+								
 								
 								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length>0){
 									var temp=0;
@@ -727,11 +727,11 @@ function getTrainingCenterDetailsBasedOnDates(){
 									}
 									TotalMembers=TotalMembers+temp;
 									upcomingMemGlob=upcomingMemGlob+temp;
+									upcomingMem=upcomingMem+temp;
 									upcomingBatchesGlob=upcomingBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length;
-									str+='<td class="text-danger">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+'<br>('+temp+' members)</td>';
 									
-								}else{
-									str+='<td>-</td>';
+									upcomingDetails=upcomingDetails+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length;
+									
 								}
 								
 								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length>0){
@@ -741,10 +741,10 @@ function getTrainingCenterDetailsBasedOnDates(){
 									}
 									TotalMembers=TotalMembers+temp;
 									runningMemGlob=runningMemGlob+temp;
+									runningMem=runningMem+temp;
 									runningBatchesGlob=runningBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length;
-									str+='<td class="text-warning">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+'<br>('+temp+' members)</td>';
-								}else{
-									str+='<td>-</td>';
+									runningDetails=runningDetails+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length
+									
 								}
 								
 								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length>0){
@@ -754,15 +754,20 @@ function getTrainingCenterDetailsBasedOnDates(){
 									}
 									TotalMembers=TotalMembers+temp;
 									compltedMemGlob=compltedMemGlob+temp;
+									completedMem=completedMem+temp;
 									compltedBatchesGlob=compltedBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
-									str+='<td class="text-success">'+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length+'<br>('+temp+' members)</td>';
-								}else{
-									str+='<td>-</td>';
+									completedDetails=completedDetails+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
+									
 								}
 								totalMembersGlob=totalMembersGlob+TotalMembers;
-								str+='<td class="text-muted">'+TotalMembers+'</td>';
 								
 							}
+							
+							str+='<td>'+TotalBatches+'</td>';
+							str+='<td class="text-danger">'+upcomingDetails+'<br>('+upcomingMem+' members)</td>';
+							str+='<td class="text-warning">'+runningDetails+'<br>('+runningMem+' members)</td>';
+							str+='<td class="text-success">'+completedDetails+'<br>('+completedMem+' members)</td>';
+							str+='<td class="text-muted">'+TotalMembers+'</td>';
 						}	
 						str+='</tr>';
 					}
