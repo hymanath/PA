@@ -4011,7 +4011,8 @@ console.log(arr)
 			 username: "grievance",
              password: "grievance@!tG"	
 			 }).done(function(myresult){
-			 buildTotalComplaints(myresult,0);
+				 if(myresult !=null)
+			  buildTotalComplaints(myresult,0);
 			});
 }
 
