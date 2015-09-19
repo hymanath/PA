@@ -717,8 +717,9 @@ function getTrainingCenterDetailsBasedOnDates(){
 							for(var k in result.completed.programWiseDetails[i].campDetails[j].scheduleDetails){
 								
 								TotalBatches=TotalBatches+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
-								totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
 								
+								//totalTrainingBatchesGlob=totalTrainingBatchesGlob+TotalBatches;
+								totalTrainingBatchesGlob=totalTrainingBatchesGlob+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].runningDetails.length+result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].completedDetails.length;
 								
 								if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails[k].upcomingDetails.length>0){
 									var temp=0;
