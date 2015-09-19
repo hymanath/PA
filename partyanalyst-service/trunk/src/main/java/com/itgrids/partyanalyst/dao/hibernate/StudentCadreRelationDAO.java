@@ -15,24 +15,24 @@ public class StudentCadreRelationDAO extends GenericDaoHibernate<StudentCadreRel
 		
 	}
 	
-		public List<Object[]> getNtrTrustStudentDetailsInstitutionWise(Long tdpCadreId){
+		public List<Object[]> getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds){
 			
 			StringBuilder str = new StringBuilder();
 			
 			str.append("select model.student.institutionCourse.institution.institutionId,model.student.institutionCourse.institution.institutionName,count(model.student.studentId) from StudentCadreRelation model " +
-					" where model.tdpCadreId = :tdpCadreId " +
+					" where model.tdpCadreId in (:tdpCadreIds) " +
 					" group by model.student.institutionCourse.institution.institutionId ");
 			
 			Query query =getSession().createQuery(str.toString());
 			
-			if(tdpCadreId !=null && tdpCadreId >0){
-				query.setParameter("tdpCadreId", tdpCadreId);
+			if(tdpCadreIds !=null && tdpCadreIds.size() >0){
+				query.setParameterList("tdpCadreIds", tdpCadreIds);
 			}
 			
 			return query.list();
 		}
 		
-		public List<Object[]> getStudentFormalDetailsByCadre(Long tdpCadreId,Long institutionId){
+		public List<Object[]> getStudentFormalDetailsByCadre(List<Long> tdpCadreIds,Long institutionId){
 			
 			StringBuilder str= new StringBuilder();
 			
@@ -44,7 +44,7 @@ public class StudentCadreRelationDAO extends GenericDaoHibernate<StudentCadreRel
 					" model.student.parentAliveStatus," +
 					" model.relation " +
 					" from StudentCadreRelation model " +
-					" where model.tdpCadreId =:tdpCadreId  ");
+					" where model.tdpCadreId in (:tdpCadreIds)  ");
 			
 			if(institutionId !=null && institutionId>0){
 				str.append(" and model.student.institutionCourse.institution.institutionId =:institutionId ");
@@ -53,7 +53,7 @@ public class StudentCadreRelationDAO extends GenericDaoHibernate<StudentCadreRel
 			
 			Query query=getSession().createQuery(str.toString());
 			
-			query.setParameter("tdpCadreId", tdpCadreId);
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
 			
 			if(institutionId !=null && institutionId>0){
 				query.setParameter("institutionId",institutionId);

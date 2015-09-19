@@ -4426,11 +4426,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 		  return finalList;
 	  }
   
-  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(Long tdpCadreId){
+  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds){
 	  
 	  List<NtrTrustStudentVO> finalList = new ArrayList<NtrTrustStudentVO>();
 	  try{
-		  List<Object[]> studentCountList = studentCadreRelationDAO.getNtrTrustStudentDetailsInstitutionWise(tdpCadreId);
+		  List<Object[]> studentCountList = studentCadreRelationDAO.getNtrTrustStudentDetailsInstitutionWise(cadreIds);
 			if(studentCountList !=null && studentCountList.size()>0){
 				for(Object[] studentCount:studentCountList){
 					NtrTrustStudentVO vo = new NtrTrustStudentVO();
@@ -4448,7 +4448,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	  return finalList;
   }
-  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(Long cadreId,Long institutionId){
+  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> cadreIds,Long institutionId){
 		
 		List<NtrTrustStudentVO> studentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
 		
@@ -4457,7 +4457,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation
 			DateFormat dateFormat=null;
 			Date convertedDate = null;
-			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreId,institutionId);
+			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreIds,institutionId);
 			
 			if(students !=null){
 				for(Object[] student:students){
