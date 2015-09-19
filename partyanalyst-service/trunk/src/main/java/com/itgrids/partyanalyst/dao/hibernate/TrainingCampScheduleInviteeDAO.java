@@ -527,5 +527,20 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		
 		return query.list();
 	}
+	public List<Object[]> getLatestRemarkOfCandidateOfProgram(Long programId,Long cadreId){
+		
+		Query query = getSession().createQuery(" select model.trainingCampScheduleInviteeId," +
+				" model.remarks,model.updatedTime " +
+				" from TrainingCampScheduleInvitee model " +
+				" where " +
+				" model.tdpCadre.tdpCadreId =:tdpCadreId " +
+				" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId " +
+				" and model.remarks is not null ");
+		
+		query.setParameter("programId",programId);
+		query.setParameter("tdpCadreId",cadreId);
+		
+		return query.list();
+	}
 	
 }

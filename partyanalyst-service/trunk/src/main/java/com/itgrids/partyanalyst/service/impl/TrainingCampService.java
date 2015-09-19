@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.CampCallStatus;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -874,6 +875,13 @@ class TrainingCampService implements ITrainingCampService{
 			
 			//1)getting All status and set to list.
 			  List<Object[]>  allStatus=scheduleInviteeStatusDAO.getAllStatusList();
+			/*  
+			  Object[] switchOff = {15,"SwitchOff"};
+			  Object[] userBusy = {16,"User Busy"};
+			  
+			  allStatus.add(switchOff);
+			  allStatus.add(userBusy);*/
+			  
 			//DAO calls.
 			  List<Object[]> totalAssignedList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, null,agentType);//callerId,count
 			  List<Object[]> completedCallsList = trainingCampScheduleInviteeCallerDAO.getCallerWiseAssignedCalls(userIds, startDate, endDate, "completedCount",agentType);
@@ -908,11 +916,71 @@ class TrainingCampService implements ITrainingCampService{
 			if(pendingMap !=null && pendingMap.size()>0){
 				setResultToAssignedMap(pendingMap,finalmap,"pending",allStatus,null);
 			}
-			
+
 			if(callStatusOfinviteesList !=null && callStatusOfinviteesList.size()>0){
 				setResultToAssignedMap(null,finalmap,"status",allStatus,callStatusOfinviteesList);
 			}
 			
+			/*//0.userId,1.statusId,2.status,3.lastName
+			List<Object[]> resultByCallStatus = trainingCampScheduleInviteeCallerDAO.getCallStatusCountByCallStatus(userIds,startDate,endDate,agentType);
+			Map<Long,Map<String,Long>> userWiseCallsStatusMap = new LinkedHashMap<Long, Map<String,Long>>(0); 
+			
+			if(resultByCallStatus !=null && resultByCallStatus.size()>0){
+				
+				for(Object[] callStatus:resultByCallStatus){
+					Long userId = commonMethodsUtilService.getLongValueForObject(callStatus[0]);
+					String statusStr = commonMethodsUtilService.getStringValueForObject(callStatus[2]);
+					Long count = commonMethodsUtilService.getLongValueForObject(callStatus[3]);
+					Map<String , Long> callsStatusDtlsMap = new LinkedHashMap<String, Long>(0);
+					if(userWiseCallsStatusMap.get(userId) != null)
+					{
+						callsStatusDtlsMap = userWiseCallsStatusMap.get(userId);
+					}
+					
+					callsStatusDtlsMap.put(statusStr, count);
+					userWiseCallsStatusMap.put(userId, callsStatusDtlsMap);
+				}
+			}*/
+			
+			/*if(finalmap != null && finalmap.size()>0)
+			{
+				for (Long callerId: finalmap.keySet()) {
+					TrainingCampScheduleVO callerVO = finalmap.get(callerId);
+					if(callerVO != null)
+					{
+						List<TrainingCampScheduleVO> statusVOlist = callerVO.getTrainingCampVOList();
+						if(statusVOlist != null && statusVOlist.size()>0)
+						{
+							List<Object[]> statusVOList= campCallStatusDAO.getCallStatusList();
+							Map<String,TrainingCampScheduleVO> statusVOsMap = new LinkedHashMap<String, TrainingCampScheduleVO>(0);
+							int i=0;
+							for (Object[] campCallStatus : statusVOList) {
+								if(i>0)
+								{
+									TrainingCampScheduleVO vo = new TrainingCampScheduleVO();
+									vo.setStatus(commonMethodsUtilService.getStringValueForObject(campCallStatus[1]));
+									vo.setStatusId(0L);
+									vo.setCount(0L);
+									statusVOsMap.put(vo.getStatus(), vo);
+								}
+								i=i+1;
+							}
+							
+							Map<String , Long> callsStatusDtlsMap = userWiseCallsStatusMap.get(callerId);
+							if(statusVOsMap != null && statusVOsMap.size()>0)
+							{
+								for (String statusStr : statusVOsMap.keySet()) {
+									Long count = callsStatusDtlsMap.get(statusStr);
+									TrainingCampScheduleVO vo = statusVOsMap.get(statusStr);
+									if(count != null && count.longValue()>0L)
+										vo.setCount(count);
+									statusVOlist.add(statusVOsMap.get(statusStr));
+								}
+							}
+						}
+					}
+				}
+			}*/
 			
 			if(finalmap!=null && finalmap.size()>0){
 				finalList=new ArrayList<TrainingCampScheduleVO>(finalmap.values());
@@ -990,6 +1058,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return finalCallersVODetails;
 	}
+	
 	public void setResultToMap(List<Object[]> listObj,Map<Long,TrainingCampScheduleVO> corespondentmap)
 	{
 		try{
@@ -7463,16 +7532,42 @@ class TrainingCampService implements ITrainingCampService{
 				List<Object[]> reamarksList =  trainingCampScheduleInviteeTrackDAO.getTrackDetailsOfCandidateByCallPurposeWise(programId,cadreId);
 				
 				DateUtilService date = new DateUtilService();
-				for (Object[] objects : reamarksList) {
+				
+				if(reamarksList !=null && reamarksList.size()>0){
+					for (Object[] objects : reamarksList) {
+						
+						SimpleVO vo = new SimpleVO();
+						
+						vo.setId(objects[1] !=null ? (Long)objects[1]:0l);
+						vo.setName(objects[2] !=null ? objects[2].toString():"");
+						vo.setRemarks(objects[3] !=null ? objects[3].toString():"");
+						vo.setDateString(date.convert12HoursDateFormat(objects[4].toString().substring(0, 19)));
+						
+						finalVoList.add(vo);
+					}
+				}
+				
+				//0.inviteeId,1.remarks,2.updatedTime
+				List<Object[]> latestRemark = trainingCampScheduleInviteeDAO.getLatestRemarkOfCandidateOfProgram(programId,cadreId);
+				
+				if(latestRemark !=null && latestRemark.size()>0){
 					
-					SimpleVO vo = new SimpleVO();
-					
-					vo.setId(objects[1] !=null ? (Long)objects[1]:0l);
-					vo.setName(objects[2] !=null ? objects[2].toString():"");
-					vo.setRemarks(objects[3] !=null ? objects[3].toString():"");
-					vo.setDateString(date.convert12HoursDateFormat(objects[4].toString().substring(0, 19)));
-					
-					finalVoList.add(vo);
+					for (Object[] objects : latestRemark) {
+						
+						SimpleVO vo = new SimpleVO();
+						
+						vo.setRemarks(objects[1] !=null ? objects[1].toString():"");
+						vo.setDateString(date.convert12HoursDateFormat(objects[2].toString().substring(0, 19)));
+						if(finalVoList !=null && finalVoList.size()>0){
+							vo.setId(2l);
+							vo.setName("Confirmation");
+						}else{
+							vo.setId(1l);
+							vo.setName("Invitation");
+						}
+						
+						finalVoList.add(vo);
+					}	
 				}
 			return finalVoList;
 			}catch(Exception e){
