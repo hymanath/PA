@@ -393,7 +393,7 @@ footer
 		</div>
 		<div class="row m_top10">
 			<div class="col-md-4">
-				<button class="btn btn-success" type="button" onclick="updateMobileNumberForCadre();">UPDATE MOBILE NUMBER</button>
+				<button class="btn btn-success" id="updateMblNoId" style="display:none;" type="button" onclick="updateMobileNumberForCadre();">UPDATE MOBILE NUMBER</button>
 			</div>
 		</div>
 		<div id="mobileUpdationDiv"></div>
@@ -1488,6 +1488,7 @@ function getCommitteeMembersDetailsForMobileUpdation(locationId,locationType,bas
 	$("#locationId").html(locationLevel);
 	
 	$("#mobileUpdationDiv").html('');
+	$("#updateMblNoId").hide();
 	$("#ajaxImageForMobileUpdation").show();
 	var jObj={
 		locationId:locationId,
@@ -1502,7 +1503,7 @@ function getCommitteeMembersDetailsForMobileUpdation(locationId,locationType,bas
 		  data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
 				if(result != null && result.length > 0){
-					buildMobileUpdationDetails(result);
+					buildMobileUpdationDetails(result,roleCategory,locationLevel);
 				}else{
 					$("#ajaxImageForMobileUpdation").hide();
 					$("#mobileUpdationDiv").html("NO DATA AVAILABLE...");
@@ -1511,9 +1512,11 @@ function getCommitteeMembersDetailsForMobileUpdation(locationId,locationType,bas
 	
 }
 
-function buildMobileUpdationDetails(result)
+function buildMobileUpdationDetails(result,roleCategory,locationLevel)
 {
+	var heading = locationLevel+" "+roleCategory+" Committee Members";
 	var str='';
+	str+='<h4>'+heading+'</h4>';
 	str+='<div class="row">';
 			str+='<div class="col-md-12 m_top10">';
 				str+='<table class="table table-bordered">';
@@ -1540,6 +1543,7 @@ function buildMobileUpdationDetails(result)
 		
 		$("#ajaxImageForMobileUpdation").hide();
 		$("#mobileUpdationDiv").html(str);
+		$("#updateMblNoId").show();
 }
 
 function updateMobileNumberForCadre()
