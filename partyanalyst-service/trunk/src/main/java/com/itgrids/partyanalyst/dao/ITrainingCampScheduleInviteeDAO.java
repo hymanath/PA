@@ -26,5 +26,6 @@ public interface ITrainingCampScheduleInviteeDAO extends GenericDao<TrainingCamp
 	public List<Object[]> getScheduleAvailableCallsCountParliamentWiseInfo(Long campId,Long programId,Long scheduleId,Long scheduleStatusId,List<Long> inviteeIdsList);
 	public List<Object[]> getCallBackLaterMembersCount(Long campId, Date startDate, Date endDate);
 	public List<Object[]> getInviteeCountOfCadreProgramWise(Long cadreId);
+	public List<Object[]> getLatestRemarkOfCandidateOfProgram(Long programId,Long cadreId);
 	
 }

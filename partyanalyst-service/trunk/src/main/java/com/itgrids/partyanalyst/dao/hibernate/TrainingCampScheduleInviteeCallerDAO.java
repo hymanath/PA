@@ -161,6 +161,43 @@ public class TrainingCampScheduleInviteeCallerDAO extends GenericDaoHibernate<Tr
 		}
 		return query.list();
 	}
+
+	public List<Object[]> getCallStatusCountByCallStatus(List<Long> userIds,Date startDate,Date endDate,String agentType){
+		
+		StringBuilder str=new StringBuilder();
+		
+		str.append(" select model.trainingCampUser.userId,model.campCallStatus.campCallStatusId,model.campCallStatus.status,count(model.trainingCampScheduleInviteeCallerId),model.trainingCampUser.lastName " +
+				" from  TrainingCampScheduleInviteeCaller model " +
+				" where model.campCallStatus.campCallStatusId is not null ");
+		
+		if(agentType.equalsIgnoreCase("Invitation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =1 ");
+		}
+		else if(agentType.equalsIgnoreCase("Confirmation")){
+			str.append(" and model.campCallPurpose.campCallPurpose =2 ");
+		}
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and (date(model.updatedTime)>=:startDate and date(model.updatedTime)<=:endDate) ");
+		}
+		if(userIds !=null && userIds.size()>0){
+			str.append(" and model.trainingCampUser.userId in (:userIds) ");
+		}
+		
+		str.append(" group by model.trainingCampUser.userId,model.campCallStatus.campCallStatusId ");
+		
+		Query query=getSession().createQuery(str.toString());
+		
+		if(startDate !=null && endDate !=null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(userIds !=null && userIds.size()>0){
+			query.setParameterList("userIds",userIds);
+		}
+		return query.list();
+		
+	}
 	
 	public List<Object[]> getScheduleWiseCallStatusCount(Long callerId,Long callPurposeId)
 	{

@@ -17,6 +17,6 @@ public class CampCallStatusDAO extends GenericDaoHibernate<CampCallStatus, Long>
 	
 	public List<Object[]> getCallStatusList()
 	{
-		return getHibernateTemplate().find("select model.campCallStatusId,model.status from CampCallStatus model");
+		return getHibernateTemplate().find("select model.campCallStatusId,model.status from CampCallStatus model order by model.campCallStatusId ");
 	}
 }
