@@ -1,14 +1,18 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -564,7 +568,20 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			jObj=new JSONObject(getTask());
 			Long tdpCadreId=jObj.getLong("tdpCadreId");
 			
-			ntrTrustStudentVOList=cadreDetailsService.getNtrTrustStudentDetailsInstitutionWise(tdpCadreId);
+		org.json.JSONArray cadreArr = 	jObj.getJSONArray("familyCadreIds");
+		
+		List<Long> familyCadreIds = new ArrayList<Long>();
+		if(cadreArr !=null && cadreArr.length()>0){
+			
+			for (int i = 0; i < cadreArr.length(); i++) {
+				familyCadreIds.add(Long.parseLong(cadreArr.get(i).toString()));
+			}
+			
+		}
+		
+		familyCadreIds.add(tdpCadreId);
+		
+			ntrTrustStudentVOList=cadreDetailsService.getNtrTrustStudentDetailsInstitutionWise(familyCadreIds);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCadresDetailsOfDeathsAndHospitalization() method, Exception - ",e);
 		}
@@ -576,7 +593,20 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			Long tdpCadreId=jObj.getLong("tdpCadreId");
 			Long institutionId=jObj.getLong("institutionId");
 			
-			ntrTrustStudentVOList=cadreDetailsService.getStudentFormalDetailsByCadre(tdpCadreId,institutionId);
+			org.json.JSONArray cadreArr = 	jObj.getJSONArray("familyCadreIds");
+			
+			List<Long> familyCadreIds = new ArrayList<Long>();
+			if(cadreArr !=null && cadreArr.length()>0){
+				
+				for (int i = 0; i < cadreArr.length(); i++) {
+					familyCadreIds.add(Long.parseLong(cadreArr.get(i).toString()));
+				}
+			}
+			
+			familyCadreIds.add(tdpCadreId);
+			
+			
+			ntrTrustStudentVOList=cadreDetailsService.getStudentFormalDetailsByCadre(familyCadreIds,institutionId);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
 		}

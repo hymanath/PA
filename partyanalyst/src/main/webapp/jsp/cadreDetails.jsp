@@ -2286,9 +2286,12 @@ function getCadreFamilyDetailsByCadreId()
 		}else{
 			$("#familyMembersDiv").html("No Data Available");
 			}
+			
+			getNtrTrustStudentDetailsInstitutionWise();
 	  });
  } 
  
+ var familycadreIdsArrayGlobal=[];
  function buildCadreFamilyDetails(result)
  {
 	  familyInfoArr=[];
@@ -2299,7 +2302,10 @@ function getCadreFamilyDetailsByCadreId()
 	 str += '<ul>';
 	 for(var i in result)
 	 {
-	 
+		 if(result[i].tdpCadreId !=null){
+			 familycadreIdsArrayGlobal.push(result[i].tdpCadreId);
+		 }
+		 
 	 var familyObj = {
 	 voterId:result[i].votercardNo,
 	 membershipId:result[i].membershipNo,
@@ -4375,11 +4381,13 @@ getEventsOverviewFortdpCadre();
 </script>		
 <script type="text/javascript">
 
-getNtrTrustStudentDetailsInstitutionWise();
+//getNtrTrustStudentDetailsInstitutionWise();
 	function getNtrTrustStudentDetailsInstitutionWise(){
 		cadreId = globalCadreId;
+		
 		var jsObj={
-			tdpCadreId:cadreId
+			tdpCadreId:cadreId,
+			familyCadreIds:familycadreIdsArrayGlobal
 		}	
 		$.ajax({
 				type:'POST',
@@ -4417,7 +4425,8 @@ getNtrTrustStudentDetailsInstitutionWise();
 		cadreId = globalCadreId;
 		var jsObj={
 			tdpCadreId:cadreId,
-			institutionId : institutionId
+			institutionId : institutionId,
+			familyCadreIds:familycadreIdsArrayGlobal
 		}
 		$.ajax({
 				type:'POST',

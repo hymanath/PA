@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1538,12 +1539,26 @@ public class WebServiceHandler {
 		return null;
 	}
 	
-	@GET
-	@Path("/getNtrTrustStudentDetailsInstitutionWise/{cadreId}")
+	@Path("/getNtrTrustStudentDetailsInstitutionWise/{cadreIdsStr}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreId") Long cadreId){
+	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreIdsStr") String cadreIdsStr){
 		try{
-			return webServiceHandlerService.getNtrTrustStudentDetailsInstitutionWise(Long.valueOf(cadreId));
+			
+			List<Long> cadreIds = new ArrayList<Long>();
+			
+			String[] stringArr =null;
+			if(cadreIdsStr !=null){
+				stringArr =cadreIdsStr.split(",");
+			}
+			
+			List<String> cadreIdsSTrrr = Arrays.asList(stringArr);
+			
+			for(String singleCadre:cadreIdsSTrrr ){
+				Long cadreId = Long.parseLong(singleCadre);
+				cadreIds.add(cadreId);
+			}
+			
+			return webServiceHandlerService.getNtrTrustStudentDetailsInstitutionWise(cadreIds);
 		}
 		catch(Exception e)
 		{
@@ -1553,11 +1568,27 @@ public class WebServiceHandler {
 		return null;
 	}
 	@GET
-	@Path("/getStudentFormalDetailsByCadre/{cadreId}/{institutionId}")
+	@Path("/getStudentFormalDetailsByCadre/{cadreIdsStr}/{institutionId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(@PathParam("cadreId") Long cadreId,@PathParam("institutionId") Long institutionId){
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(@PathParam("cadreIdsStr") String cadreIdsStr,@PathParam("institutionId") Long institutionId){
 		try{
-			return webServiceHandlerService.getStudentFormalDetailsByCadre(Long.valueOf(cadreId),Long.valueOf(institutionId));
+			
+            List<Long> cadreIds = new ArrayList<Long>();
+			
+			String[] stringArr =null;
+			if(cadreIdsStr !=null){
+				stringArr =cadreIdsStr.split(",");
+			}
+			
+			List<String> cadreIdsSTrrr = Arrays.asList(stringArr);
+			
+			for(String singleCadre:cadreIdsSTrrr ){
+				Long cadreId = Long.parseLong(singleCadre);
+				cadreIds.add(cadreId);
+			}
+			
+			
+			return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId));
 		}
 		catch(Exception e)
 		{
