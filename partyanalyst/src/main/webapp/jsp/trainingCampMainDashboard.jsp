@@ -132,9 +132,13 @@ color: red !important;
 							<div class="col-md-2 m_top30">
 								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getFeedBackOrAttendanceDetails();">Submit</button>
 							</div>
+							<div class="col-md-2 m_top30" id="exportExcelDivId" style="display:none;">
+								<span class="btn btn-info 	excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
+							</div>
 						</div>
 						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
                     	<div id="attendanceDiv" style="display:none"></div>
+						<div id="exportExcelAttendanceDiv" style="display:none"></div>
 						<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
 					</div>	
                </div>          
@@ -185,6 +189,21 @@ color: red !important;
 	
 	<script type="text/javascript">
 	
+var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+function exportToExcel()
+{
+	 tableToExcel('exportExcelAttendanceTableId', 'Batch Attendence Details');
+}
    
 	$(document).ready(function(){
     });
@@ -1031,6 +1050,7 @@ color: red !important;
 	  
 	  function getBatchesForCentre(campId){
 	  
+			$("#exportExcelDivId").hide();
 			$('#batchId').find('option').remove();
 			$('#batchId').append('<option value="0">Select Batch</option>');
 			
@@ -1068,6 +1088,7 @@ color: red !important;
 		  $("#ajaxImage").show();
 		  $("#attendanceDiv").html('');
 		  $("#attendanceDiv").show();
+		  $("#exportExcelAttendanceDiv").html('');
 		  var jsObj={
 			  batchId : batchId
 		  }
@@ -1086,7 +1107,7 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 {
 	var str='';
 	str+='<div class="table-responsive m_top10">';
-		str+='<table class="table table-bordered attendanceTable">';
+		str+='<table id="attendanceTableId" class="table table-bordered attendanceTable">';
 			str+='<thead class="bg_d">';
 				str+='<th>Image</th>';
 				str+='<th>Name</th>';
@@ -1140,12 +1161,70 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 	str+='</div>';
 	$("#ajaxImage").hide();
 	$("#attendanceDiv").html(str);
+	$("#exportExcelDivId").show();
 	
 	$(".attendanceTable").dataTable();
+	
+	var str1='';
+	str1+='<div class="table-responsive m_top10">';
+		str1+='<table id="exportExcelAttendanceTableId" class="table table-bordered exportExcelAttendanceTable">';
+			str1+='<thead class="bg_d">';
+				//str1+='<th>Image</th>';
+				str1+='<th>Name</th>';
+				str1+='<th>Mobile</th>';
+				str1+='<th>Committee</th>';
+				str1+='<th>Designation</th>';
+				str1+='<th>Constituency</th>';
+				var dates = results[0].simpleVoList;
+				if(dates != null && dates.length > 0){
+					var day = 1;
+					for(var i in results[0].simpleVoList){
+						var k = Number(day) + Number(i);
+						str1+='<th>Day '+k+' ('+results[0].simpleVoList[i].dateString+')</th>';
+					}
+				}else{
+					str1+='<th>Day 1</th>';
+					str1+='<th>Day 2</th>';
+					str1+='<th>Day 3</th>';
+				}
+			str1+='</thead>';
+			for(var i in results){
+				str1+='<tr>';
+					/*if(results[i].image != null){
+						str1+='<td><img src="images/cadre_images/'+results[i].image+'" style="height:40px" class="img-reponsive"></td>';
+					}else{
+						str1+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive"></td>';
+					}*/
+					
+					if(results[i].cadreId !=null && results[i].cadreId > 0){
+						str1+='<td>'+results[i].firstName+'</td>'
+					}
+					else{
+						str1+='<td>'+results[i].firstName+'</td>';
+					}
+					str1+='<td>'+results[i].mobileNo+'</td>';
+					str1+='<td>'+results[i].designationLocation+'</td>';
+					str1+='<td>'+results[i].designation+'</td>';
+					str1+='<td>'+results[i].constituencyName+'</td>';
+					for(var j in results[i].simpleVoList){
+						str1+='<td style="text-align:center">'+results[i].simpleVoList[j].isAttended+'</td>';
+						/*if(results[i].simpleVoList[j].isAttended == "Attended"){
+							str+='<td><input type="checkbox" checked="true"></td>';
+						}else{
+							str+='<td><input type="checkbox"></td>';
+						}*/
+					}
+				str1+='</tr>';
+			}
+			
+		str1+='</table>';
+	str1+='</div>';
+	$("#exportExcelAttendanceDiv").html(str1);
 }
 
 function getFeedBackOrAttendanceDetails()
 {
+	$("#exportExcelDivId").hide();
 	var val = $('input:radio[name=radio]:checked').val();
 	
 	if(val == "feedback"){
@@ -1161,6 +1240,7 @@ function getFeedBackOrAttendanceDetails()
 
 function refreshDetails()
 {
+	$("#exportExcelDivId").hide();
 	$("#attendanceDiv").html('');
 	$("#accordion").html('');
 	$("#programSelErrDivId").html('');

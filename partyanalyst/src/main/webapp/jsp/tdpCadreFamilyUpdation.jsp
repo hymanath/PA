@@ -669,6 +669,24 @@ function getFamilyDetails(tdpCadreId)
 							str+=' <input type="text"  class="mobile form-control"  maxlength="10"  key="ErrorDivcadre'+l+'"/>';
 							str+='</div>';
 						}
+						if(searchArr[l].age != null)
+						{
+							str+='<div class="col-md-2 col-xs-6">';
+							str+='<label class="control-label">Age</label>';
+							str+=' <input type="text" value="'+searchArr[l].age+'"  class="age form-control" style="cursor:text;"/>';
+							str+='</div>';						
+						
+							//str+='<td><input type="text" value="'+searchArr[l].dob+'"  class="dob" readonly="true" style="cursor:text;width: 100px"/> </td>';
+						}
+						else
+						{
+							str+='<div class="col-md-2 col-xs-6">';
+							str+='<label class="control-label">Age</label>';
+							str+=' <input type="text"  class="age form-control" style="cursor:text;"  style=""/>';
+							str+='</div>';
+						
+							//str+='<td><input type="text"  class="dob" readonly="true" style="cursor:text;"  style="width: 100px"/> </td>';
+						}
 						if(searchArr[l].dob != null)
 						{
 							str+='<div class="col-md-2 col-xs-6">';
@@ -840,14 +858,14 @@ function getFamilyDetails(tdpCadreId)
 						
 							str+='<div class="col-md-3 col-xs-6">';
 							str+='<label class="control-label">Facebook URL : </label>';
-							str+=' <input type="text"  value="'+searchArr[l].faceboohUrl+'" id="facebookUrl" class="facebookUrl form-control" style="cursor:text;width:300px;"/>';
+							str+=' <input type="text"  value="'+searchArr[l].faceboohUrl+'" id="facebookUrl" class="facebookUrl form-control" style="cursor:text;"/>';
 							str+='</div>';	
 						}
 						else
 						{						
 							str+='<div class="col-md-3 col-xs-6">';
 							str+='<label class="control-label">Facebook URL : </label>';
-							str+=' <input type="text"  id="facebookUrl"  class="facebookUrl form-control" style="cursor:text;width:300px;"/> ';
+							str+=' <input type="text"  id="facebookUrl"  class="facebookUrl form-control" style="cursor:text;"/> ';
 							str+='</div>';	
 						}
 						str+='<div class="col-md-2 col-xs-6">';
@@ -1066,6 +1084,22 @@ function getFamilyDetails(tdpCadreId)
 						str+='</div>';
 					
 					}
+					if(result[i].age != null)
+					{
+						
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Age</label>';
+						str+='<input type="text" value="'+result[i].age+'"  class="age form-control"  maxlength="10" key="ErrorDiv'+i+'"/> ';
+						str+='</div>';
+					}
+					else
+					{
+						str+='<div class="col-md-2 col-xs-6">';
+						str+='<label class="control-label">Age</label>';
+						str+='<input type="text"  class="age form-control"    maxlength="10"  key="ErrorDiv'+i+'"/> ';
+						str+='</div>';
+					
+					}
 						
 					if(result[i].dob != null)
 					{
@@ -1235,7 +1269,8 @@ function updateFamilyInfo()
 	strErr ="";
 		var name = $(this).find(".name").val();
 		var email = $(this).find(".email").val();
-
+		var age = $(this).find(".age").val();
+		//alert(age);
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		var mobileNo = $(this).find(".mobile").val();
 		var relation = $(this).find(".relation").val();
@@ -1339,7 +1374,7 @@ function updateFamilyInfo()
 		
 			if(count == 1)
 			{
-				age = 0;
+				age = $(this).find(".age").val();
 				finalCasteId = casteStateId;
 				casteStateId = $(this).find(".casteState").val();
 				gender = $(this).find(".gender").val();
@@ -1357,7 +1392,7 @@ function updateFamilyInfo()
 			}
 			
 				var obj = {
-					age:0,
+					age:age,
 					casteStateId:casteStateId,
 					dob:dob,
 					name:name,
@@ -1495,6 +1530,10 @@ function addNewMemberInFamily(size)
 					str+='<input type="hidden" value="'+result[i].votercardNo+'"  class="votercardNocls form-control"/> ';*/
 			str+='<label class="control-label">Voter Card No</label>';
 			str+='<input type="text"  class="votercardNocls form-control" key="ErrorDiv'+size+'"/> ';
+			str+='</div>';
+			str+='<div class="col-md-2 col-xs-6">';
+			str+='<label class="control-label">Age:</label>';
+			str+='<input type="text"  class="age form-control" maxlength="10" key="ErrorDiv'+size+'"/> ';
 			str+='</div>';
 			str+='<div class="col-md-2 col-xs-6">';
 			str+='<label class="control-label">Mobile No</label>';
