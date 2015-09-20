@@ -1538,7 +1538,7 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
-	
+	@GET
 	@Path("/getNtrTrustStudentDetailsInstitutionWise/{cadreIdsStr}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreIdsStr") String cadreIdsStr){
