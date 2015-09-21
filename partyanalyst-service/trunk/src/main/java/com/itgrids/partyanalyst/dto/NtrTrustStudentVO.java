@@ -49,8 +49,12 @@ public class NtrTrustStudentVO implements Serializable{
 	private String streetStr;
 	
 	private String designation;
+	private String cadreName;
+	private Long cadreId;
 	
 	
+	private List<NtrTrustStudentVO> cadreNtrTrustStudentVoList;
+	private List<NtrTrustStudentVO> familyNtrTrustStudentVoList;
 	
 	private List<NtrTrustStudentVO> ntrTrustStudentVoList;
 	private List<NtrTrustStudentVO> academicDetailsList;
@@ -60,7 +64,32 @@ public class NtrTrustStudentVO implements Serializable{
 	
 	
 	
-	
+	public List<NtrTrustStudentVO> getCadreNtrTrustStudentVoList() {
+		return cadreNtrTrustStudentVoList;
+	}
+	public void setCadreNtrTrustStudentVoList(
+			List<NtrTrustStudentVO> cadreNtrTrustStudentVoList) {
+		this.cadreNtrTrustStudentVoList = cadreNtrTrustStudentVoList;
+	}
+	public List<NtrTrustStudentVO> getFamilyNtrTrustStudentVoList() {
+		return familyNtrTrustStudentVoList;
+	}
+	public void setFamilyNtrTrustStudentVoList(
+			List<NtrTrustStudentVO> familyNtrTrustStudentVoList) {
+		this.familyNtrTrustStudentVoList = familyNtrTrustStudentVoList;
+	}
+	public Long getCadreId() {
+		return cadreId;
+	}
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+	public String getCadreName() {
+		return cadreName;
+	}
+	public void setCadreName(String cadreName) {
+		this.cadreName = cadreName;
+	}
 	public List<NtrTrustStudentVO> getRecomendationDetailsList() {
 		return recomendationDetailsList;
 	}
