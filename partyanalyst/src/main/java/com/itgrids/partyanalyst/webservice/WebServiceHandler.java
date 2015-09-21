@@ -1568,15 +1568,16 @@ public class WebServiceHandler {
 		return null;
 	}
 	@GET
-	@Path("/getStudentFormalDetailsByCadre/{cadreIdsStr}/{institutionId}")
+	@Path("/getStudentFormalDetailsByCadre/{cadreIdsStr}/{institutionId}/{tdpcadreId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(@PathParam("cadreIdsStr") String cadreIdsStr,@PathParam("institutionId") Long institutionId){
+	 public NtrTrustStudentVO getStudentFormalDetailsByCadre(@PathParam("cadreIdsStr") String cadreIdsStr,@PathParam("institutionId") Long institutionId,@PathParam("tdpcadreId") Long tdpcadreId){
 		try{
 			
             List<Long> cadreIds = new ArrayList<Long>();
 			
 			String[] stringArr =null;
 			if(cadreIdsStr !=null){
+				cadreIdsStr = cadreIdsStr.substring(0, cadreIdsStr.length() - 1);
 				stringArr =cadreIdsStr.split(",");
 			}
 			
@@ -1588,7 +1589,7 @@ public class WebServiceHandler {
 			}
 			
 			
-			/*return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId));*/
+			return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId),Long.valueOf(tdpcadreId));
 		}
 		catch(Exception e)
 		{
