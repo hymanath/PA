@@ -551,8 +551,8 @@ var globalCadreId = '${cadreId}';
                          <!--   <div class="col-md-12 col-xs-12" id="participationTableMainDivId" style="display:none;">
 								<h4 style="border-bottom:1px solid #999">Events Participation Details</h4>
 								<div id="participationTableDivId" class="table-responsive">
-								</div>-->
-                            </div>
+								</div>
+                            </div>-->
 						
 							<!--
 							 <div class="col-md-12 col-xs-12" id="partymettingParlDivId" style="display:none;" >
@@ -600,6 +600,7 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>
+				
                 <div class="panel panel-default">
                 	<div class="panel-heading">
 					<a id="" class="showbtnCls" title="Click here to Show Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
@@ -694,7 +695,7 @@ var globalCadreId = '${cadreId}';
                 </div>
             </div>
         </div>
-		<div class="row">
+		<div class="row m_top20">
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading">
@@ -3454,9 +3455,9 @@ function getDeathsAndHospitalizationDetails(){
 							str+='<table class="table m_0 table-bordered m_0">'
 								
 								str+='<thead>';
-									str+='<th>Location</th>';
-									str+='<th>Death</th>';
-									str+='<th>Hospitalization</th>';
+									str+='<th style="background-color:#f5f5f5">Location</th>';
+									str+='<th style="background-color:#f5f5f5">Death</th>';
+									str+='<th style="background-color:#f5f5f5">Hospitalization</th>';
 								str+='</thead>'
 								for(var i in result.verifierVOList){
 									str+='<tr>';
@@ -4398,7 +4399,7 @@ getEventsOverviewFortdpCadre();
 					if(result !=null && result.length>0){
 						str+='<div class="panel panel-default">';
 								str+='<div class="panel-heading">';
-									str+='<h4 class="panel-title">NTR TRUST EDUCATION BENEFITS</h4>';
+									str+='<h4 class="panel-title"><b>NTR TRUST EDUCATION BENEFITS</b></h4>';
 								str+='</div>';
 						for(var i in result){
 								str+='<div class="panel-body">';
@@ -4466,7 +4467,7 @@ getEventsOverviewFortdpCadre();
 									str+='<li><b>Relation With Cadre</b> :'+result[i].relation+'</li>';
 								str+='</ul>'
 								
-								str+='<h4 class="m_0"><i class="glyphicon glyphicon-map-marker" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
+								str+='<h4 class="m_0" style="color:#a94442 !important "><i class="glyphicon glyphicon-map-marker text-danger" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
 								
 								for(var j in result[i].addressDetailsList){
 									str+='<ul class="Student-List">';
@@ -4510,12 +4511,12 @@ getEventsOverviewFortdpCadre();
 										}
 									str+='</ul>';
 								}
-								str+='<h4 class="m_0"><i class="glyphicon glyphicon-book" style="font-size:14px"></i> Acedamic Details</h4><hr class="m_0"/>';
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-book text-danger" style="font-size:14px"></i> Acadamic Details</h4><hr class="m_0"/>';
 								str+='<table class="table table-bordered">';
 									str+='<thead>';
-										str+='<th>Course</th>';
-										str+='<th>Start Date</th>';
-										str+='<th>End Date</th>';
+										str+='<th style="background-color:#f5f5f5">Course</th>';
+										str+='<th style="background-color:#f5f5f5">Start Date</th>';
+										str+='<th style="background-color:#f5f5f5">End Date</th>';
 									str+='</thead>';
 									for(var k in result[i].academicDetailsList){
 										str+='<tr>';
@@ -4527,13 +4528,13 @@ getEventsOverviewFortdpCadre();
 																		
 								str+='</table>';
 								
-								str+='<h4 class="m_0"><i class="glyphicon glyphicon-share" style="font-size:14px"></i> Recommendation Details</h4><hr class="m_0"/>';
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-share text-danger" style="font-size:14px"></i> Recommendation Details</h4><hr class="m_0"/>';
 								str+='<table class="table table-bordered">';
 								  str+='<thead>';
-									str+='<th>Person Name</th>';
-									str+='<th>Designation</th>';
-									str+='<th>Contact</th>';
-									str+='<th>MemberShip No</th>';
+									str+='<th style="background-color:#f5f5f5">Person Name</th>';
+									str+='<th style="background-color:#f5f5f5">Designation</th>';
+									str+='<th style="background-color:#f5f5f5">Contact</th>';
+									str+='<th style="background-color:#f5f5f5">MemberShip No</th>';
 								  str+='</thead>';
 								  for(var b in result[i].recomendationDetailsList){
 									str+='<tr>';
