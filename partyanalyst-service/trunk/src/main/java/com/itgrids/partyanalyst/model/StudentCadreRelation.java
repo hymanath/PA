@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +33,7 @@ public class StudentCadreRelation extends BaseModel implements Serializable{
 	private Long membershipNo;
 	private String cadreName;
 	private String relation;
+	private TdpCadre tdpCadre;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -93,4 +95,15 @@ public class StudentCadreRelation extends BaseModel implements Serializable{
 	public void setRelation(String relation) {
 		this.relation = relation;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "tdp_cadre_id", insertable = false, updatable = false)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
+	
 }

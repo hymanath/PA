@@ -4448,20 +4448,28 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	  return finalList;
   }
-  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> cadreIds,Long institutionId){
+  public NtrTrustStudentVO getStudentFormalDetailsByCadre(List<Long> cadreIds,Long institutionId,Long tdpCadreId){
 		
-		List<NtrTrustStudentVO> studentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
+	  	NtrTrustStudentVO finalVo =new NtrTrustStudentVO();
 		
 		try{
+			
+			List<NtrTrustStudentVO> cadreStudentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
+			List<NtrTrustStudentVO> familyStudentFamilyStudents = new ArrayList<NtrTrustStudentVO>();
+			
+			cadreIds.add(tdpCadreId);//appending CadreId to familyMemberCadreIds
+			
 			//0.institutionId,1.studentid,2.studentName,3.dateOfbirth,4.year of joining,5.courseId,6.course code,7.casteId,
-			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation
+			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation,13.tdpCadreId Of Cadre,14.name of Cadre
 			DateFormat dateFormat=null;
 			Date convertedDate = null;
 			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreIds,institutionId);
 			
 			if(students !=null){
 				for(Object[] student:students){
+					
 					NtrTrustStudentVO vo = new NtrTrustStudentVO();
+					
 					vo.setInstitutionId(student[0] !=null ? (Long)student[0]:0l);
 					vo.setId(student[1] !=null ? (Long)student[1]:0l);
 					vo.setName(student[2] !=null ? student[2].toString():"");
@@ -4484,6 +4492,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					vo.setGuardian(student[10] !=null ? student[10].toString():"");
 					vo.setStatus(student[11] !=null ? student[11].toString():"");//parent Alive Status
 					vo.setRelation(student[12] !=null ? student[12].toString():"");//relationWithCadre
+					vo.setCadreId(student[13] !=null ? (Long)student[13]:0l);
+					vo.setCadreName(student[14] !=null ? student[14].toString():"");
 					
 					if(vo.getId() !=null && vo.getId() >0l){
 						//0.Parent Name,1.relation
@@ -4533,14 +4543,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 						
 					}
 					
-					studentsFormalDetails.add(vo);
+					if(vo.getCadreId().equals(tdpCadreId)){
+						cadreStudentsFormalDetails.add(vo);//students related to Cadre
+					}else{
+						familyStudentFamilyStudents.add(vo);//students related to Family
+					}
+					
 				}
-				return studentsFormalDetails;
+				finalVo.setCadreNtrTrustStudentVoList(cadreStudentsFormalDetails);
+				finalVo.setFamilyNtrTrustStudentVoList(familyStudentFamilyStudents);
+				return finalVo;
 			}
 		}catch(Exception e){
 			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
 		}
-		return studentsFormalDetails;
+		return finalVo;
 	}
 	public List<NtrTrustStudentVO> getContactDetailsOfStudent(Long studentId){
 		
