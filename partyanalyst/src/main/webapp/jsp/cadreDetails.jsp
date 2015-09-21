@@ -31,6 +31,10 @@
 	
 <style>
 
+.text-primary{
+	color:#337ab7 !important;
+}
+
 .accordion-toggle , .accordion-toggle:active ,.accordion-toggle:hover
 {
 	color:#666 !important
@@ -925,7 +929,10 @@ var globalCadreId = '${cadreId}';
         <div class="row">
 			<div class="col-md-12">
 				<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
-				<div id="ntrTrustDetails" class="table-scroll-1"></div>	
+				<div>
+					<div id="ntrTrustDetails" class="table-scroll-1"></div>	
+					<div id="ntrTrustCadreFamilyDetails" class="table-scroll-1"></div>	
+				</div>
 			</div>
 		</div>
       </div>
@@ -4422,6 +4429,7 @@ getEventsOverviewFortdpCadre();
 	});
 	function getStudentFormalDetailsByCadre(institutionId){
 		$("#ntrTrustDetails").html("");
+		$("#ntrTrustCadreFamilyDetails").html("");
 		$("#dataLoadingsImgForNtrTrust").show();
 		cadreId = globalCadreId;
 		var jsObj={
@@ -4435,9 +4443,149 @@ getEventsOverviewFortdpCadre();
 				 data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					$("#dataLoadingsImgForNtrTrust").hide();
-					var str='';
-					if(result !=null && result.length>0){
-						str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">';
+					if(result !=null){
+						
+							if(result.cadreNtrTrustStudentVoList !=null && result.cadreNtrTrustStudentVoList.length>0){
+								buildNtrStudentDetails(result.cadreNtrTrustStudentVoList,"cadre");
+							}
+							if(result.familyNtrTrustStudentVoList !=null && result.familyNtrTrustStudentVoList.length>0){
+								buildNtrStudentDetails(result.familyNtrTrustStudentVoList,"family");
+							}
+							/* str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">'; */
+						
+						/* for(var i in result){
+						  str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion323" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+									str+='<h4 class="panel-title" id="'+result[i].id+'">'+result[i].name+'</h4>';
+								str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+							  str+='<div class="panel-body">';
+								str+='<ul class="list-inline">';
+									str+='<li><b>Father Name </b> : '+result[i].fatherName+'</li>';
+									str+='<li><b>Mother Name </b> :'+result[i].motherName+'</li>';
+									if(result[i].guardian !=null && result[i].guardian !=""){
+										str+='<li><b>Guardian </b> :'+result[i].guardian+'</li>';
+									}
+									str+='<li><b>Caste </b>:'+result[i].casteStr+'</li>';
+									str+='<li><b>Date Of Birth </b> :'+result[i].dateStr+'</li>';
+									if(result[i].yearOfJoining !=null && result[i].yearOfJoining !=""){
+										str+='<li><b>Year Of Joining </b> :'+result[i].yearOfJoining+'</li>';
+									}
+									if(result[i].tdpCadreId !=null && result[i].tdpCadreId >0){
+										str+='<li><b>Cadre Id </b> :'+result[i].tdpCadreId+'</li>';
+									}
+									if(result[i].membershipNo !=null && result[i].membershipNo>0){
+										str+='<li><b>MemberShip No </b> :'+result[i].membershipNo+'</li>';
+									}
+									str+='<li><b>Relation With Cadre</b> :'+result[i].relation+'</li>';
+								str+='</ul>'
+								
+								str+='<h4 class="m_0" style="color:#a94442 !important "><i class="glyphicon glyphicon-map-marker text-danger" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
+								
+								for(var j in result[i].addressDetailsList){
+									str+='<ul class="Student-List">';
+									if(result[i].addressDetailsList[j].houseNoStr !=null && result[i].addressDetailsList[j].houseNoStr !=""){
+										str+='<li><b>H NO</b> : '+result[i].addressDetailsList[j].houseNoStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].stateStr !=null && result[i].addressDetailsList[j].stateStr !=""){
+										str+='<li><b>State</b> : '+result[i].addressDetailsList[j].stateStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].districtStr !=null && result[i].addressDetailsList[j].districtStr !=""){
+										str+='<li><b>District</b> : '+result[i].addressDetailsList[j].districtStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].constituencyStr !=null && result[i].addressDetailsList[j].constituencyStr !=""){
+										str+='<li><b>Constituency</b> : '+result[i].addressDetailsList[j].constituencyStr+' </li>';
+									}
+									if(result[i].addressDetailsList[j].tehsilStr !=null && result[i].addressDetailsList[j].tehsilStr !=""){
+										str+='<li><b>Mandal</b> : '+result[i].addressDetailsList[j].tehsilStr+'</li>';
+									}
+									if(result[i].addressDetailsList[j].localElectionBodyStr !=null && result[i].addressDetailsList[j].localElectionBodyStr !=""){
+										str+='<li><b>Muncipality</b> : '+result[i].addressDetailsList[j].localElectionBodyStr+' </li>';
+									}
+									if(result[i].addressDetailsList[j].panchayatStr !=null && result[i].addressDetailsList[j].panchayatStr !=""){
+										str+='<li><b>Panchayat</b> : '+result[i].addressDetailsList[j].panchayatStr+'  </li>';
+									}
+									if(result[i].addressDetailsList[j].wardStr !=null && result[i].addressDetailsList[j].wardStr !=""){
+										str+='<li><b>Ward</b> : '+result[i].addressDetailsList[j].wardStr+' Ward</li>';
+									}
+									if(result[i].addressDetailsList[j].locationStr !=null && result[i].addressDetailsList[j].locationStr !=""){
+										str+='<li><b>Location</b> : '+result[i].addressDetailsList[j].locationStr+' </li>';
+									}
+									if(result[i].addressDetailsList[j].streetStr !=null && result[i].addressDetailsList[j].streetStr !=""){
+										str+='<li><b>Street</b> : '+result[i].addressDetailsList[j].streetStr+' </li>';
+									}
+									if(result[i].addressDetailsList[j].pincodeLng !=null && result[i].addressDetailsList[j].pincodeLng>0){
+										str+='<li><b>Pincode</b> : '+result[i].addressDetailsList[j].pincodeLng+'</li>';
+									}
+									
+									for(var l in result[i].ntrTrustStudentVoList){
+											str+='<li><b>Contact:</b>'+result[i].ntrTrustStudentVoList[l].phoneNo+'('+result[i].ntrTrustStudentVoList[l].phoneType+')';
+											str+='</li>';
+										}
+									str+='</ul>';
+								}
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-book text-danger" style="font-size:14px"></i> Acadamic Details</h4><hr class="m_0"/>';
+								str+='<table class="table table-bordered">';
+									str+='<thead>';
+										str+='<th style="background-color:#f5f5f5">Course</th>';
+										str+='<th style="background-color:#f5f5f5">Start Date</th>';
+										str+='<th style="background-color:#f5f5f5">End Date</th>';
+									str+='</thead>';
+									for(var k in result[i].academicDetailsList){
+										str+='<tr>';
+											str+='<td>'+result[i].course+'</td>';
+											str+='<td>'+result[i].academicDetailsList[k].startMonth+' '+result[i].academicDetailsList[k].startYear+'</td>';
+											str+='<td>'+result[i].academicDetailsList[k].endMonth+' '+result[i].academicDetailsList[k].endYear+'</td>';
+										str+='</tr>';
+									}
+																		
+								str+='</table>';
+								
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-share text-danger" style="font-size:14px"></i> Recommendation Details</h4><hr class="m_0"/>';
+								str+='<table class="table table-bordered">';
+								  str+='<thead>';
+									str+='<th style="background-color:#f5f5f5">Person Name</th>';
+									str+='<th style="background-color:#f5f5f5">Designation</th>';
+									str+='<th style="background-color:#f5f5f5">Contact</th>';
+									str+='<th style="background-color:#f5f5f5">MemberShip No</th>';
+								  str+='</thead>';
+								  for(var b in result[i].recomendationDetailsList){
+									str+='<tr>';
+										str+='<td>'+result[i].recomendationDetailsList[b].name+'</td>';
+										str+='<td>'+result[i].recomendationDetailsList[b].designation+'</td>';
+										str+='<td>'+result[i].recomendationDetailsList[b].phoneNo+'</td>';
+										if(result[i].recomendationDetailsList[b].membershipNo !=null && result[i].recomendationDetailsList[b].membershipNo >0){
+											str+='<td>'+result[i].recomendationDetailsList[b].membershipNo+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+									str+='</tr>';
+								  }
+								 
+								str+='</table>';
+							  str+='</div>';
+							str+='</div>';
+						  str+='</div>';
+						}
+						str+='</div>'; */
+					}
+					/* $("#ntrTrustDetails").html(str); */
+				});
+	}
+	
+	function buildNtrStudentDetails(result,type){
+		var str='';
+			if(result !=null){
+				if(type=="cadre"){
+					 str+='<h4 class="m_0 text-primary">Cadre</h4>';
+				}
+				else if(type=="family"){
+					 str+='<h4 class="m_0 text-primary">Family</h4>';
+				}
+				str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">';
 						for(var i in result){
 						  str+='<div class="panel panel-default">';
 							str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
@@ -4557,9 +4705,14 @@ getEventsOverviewFortdpCadre();
 						}
 						str+='</div>';
 					}
-					$("#ntrTrustDetails").html(str);
-				});
+			if(type =="cadre"){
+				$("#ntrTrustDetails").html(str);
+			}else if(type == "family"){
+				$("#ntrTrustCadreFamilyDetails").html(str);
+			}
+		
 	}
+	
 	
 //getCandidateAndConstituencySurveyResult();
 var candiConstiSurveyCount = 0;

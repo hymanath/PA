@@ -66,10 +66,22 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<QuestionAnswerVO>         finalList;
 	private List<SimpleVO> 				   simpleVoList;
 	private SimpleVO 					   simpleVO;
-	
+	private NtrTrustStudentVO				ntrTrustStudentVo;
 
 	
 	
+	
+	
+	public NtrTrustStudentVO getNtrTrustStudentVo() {
+		return ntrTrustStudentVo;
+	}
+
+
+	public void setNtrTrustStudentVo(NtrTrustStudentVO ntrTrustStudentVo) {
+		this.ntrTrustStudentVo = ntrTrustStudentVo;
+	}
+
+
 	public SimpleVO getSimpleVO() {
 		return simpleVO;
 	}
@@ -603,10 +615,10 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 				}
 			}
 			
-			familyCadreIds.add(tdpCadreId);
+			//familyCadreIds.add(tdpCadreId);
 			
 			
-			ntrTrustStudentVOList=cadreDetailsService.getStudentFormalDetailsByCadre(familyCadreIds,institutionId);
+			ntrTrustStudentVo=cadreDetailsService.getStudentFormalDetailsByCadre(familyCadreIds,institutionId,tdpCadreId);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
 		}
