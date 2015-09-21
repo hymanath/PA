@@ -928,10 +928,28 @@ var globalCadreId = '${cadreId}';
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12">
-				<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
 				<div>
-					<div id="ntrTrustDetails" class="table-scroll-1"></div>	
-					<div id="ntrTrustCadreFamilyDetails" class="table-scroll-1"></div>	
+					<div>
+
+					  <!-- Nav tabs -->
+					  <ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active 11"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">CADRE</a></li>
+						<li role="presentation" class="22"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">FAMILY</a></li>
+					  </ul>
+
+					  <!-- Tab panes -->
+					  <div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="home">
+							<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+							<div id="ntrTrustDetails"></div>	
+						</div>
+						<div role="tabpanel" class="tab-pane" id="profile">
+							<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+							<div id="ntrTrustCadreFamilyDetails"></div>	
+						</div>
+					  </div>
+
+					</div>
 				</div>
 			</div>
 		</div>
@@ -4431,6 +4449,8 @@ getEventsOverviewFortdpCadre();
 		$("#ntrTrustDetails").html("");
 		$("#ntrTrustCadreFamilyDetails").html("");
 		$("#dataLoadingsImgForNtrTrust").show();
+		$(".11").hide();
+		$(".22").hide();
 		cadreId = globalCadreId;
 		var jsObj={
 			tdpCadreId:cadreId,
@@ -4445,11 +4465,15 @@ getEventsOverviewFortdpCadre();
 					$("#dataLoadingsImgForNtrTrust").hide();
 					if(result !=null){
 						
-							if(result.cadreNtrTrustStudentVoList !=null && result.cadreNtrTrustStudentVoList.length>0){
-								buildNtrStudentDetails(result.cadreNtrTrustStudentVoList,"cadre");
-							}
 							if(result.familyNtrTrustStudentVoList !=null && result.familyNtrTrustStudentVoList.length>0){
 								buildNtrStudentDetails(result.familyNtrTrustStudentVoList,"family");
+								$(".22").show();
+								$(".22 a").trigger("click");
+							}
+							if(result.cadreNtrTrustStudentVoList !=null && result.cadreNtrTrustStudentVoList.length>0){
+								buildNtrStudentDetails(result.cadreNtrTrustStudentVoList,"cadre");
+								$(".11").show();
+								$(".11 a").trigger("click");
 							}
 							/* str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">'; */
 						
@@ -4579,21 +4603,35 @@ getEventsOverviewFortdpCadre();
 	function buildNtrStudentDetails(result,type){
 		var str='';
 			if(result !=null){
+				
+				if(type=="family"){
+					 //str+='<h4 class="m_0 text-primary">Family</h4>';
+					 str+='<div class="panel-group" style="margin-top:10px" id="accordion324" role="tablist" aria-multiselectable="true">';
+				}
 				if(type=="cadre"){
-					 str+='<h4 class="m_0 text-primary">Cadre</h4>';
+					// str+='<h4 class="m_0 text-primary">Cadre</h4>';
+					str+='<div class="panel-group" style="margin-top:10px" id="accordion323" role="tablist" aria-multiselectable="true">';
 				}
-				else if(type=="family"){
-					 str+='<h4 class="m_0 text-primary">Family</h4>';
-				}
-				str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">';
+				
 						for(var i in result){
 						  str+='<div class="panel panel-default">';
+						  
+						  if(type == "family"){
+							  str+='<div class="panel-heading" role="tab" id="headingTwo'+i+'">';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion324" href="#collapseTwo'+i+'" aria-expanded="true" aria-controls="collapseTwo'+i+'">';
+									str+='<h4 class="panel-title" id="'+result[i].id+'">'+result[i].name+'</h4>';
+								str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseTwo'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo'+i+'">';
+						  }
+						  if(type=="cadre"){
 							str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion323" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 									str+='<h4 class="panel-title" id="'+result[i].id+'">'+result[i].name+'</h4>';
 								str+='</a>';
 							str+='</div>';
 							str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+						  }
 							  str+='<div class="panel-body">';
 								str+='<ul class="list-inline">';
 									str+='<li><b>Father Name </b> : '+result[i].fatherName+'</li>';
