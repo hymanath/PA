@@ -1588,7 +1588,7 @@ public class WebServiceHandler {
 			}
 			
 			
-			return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId));
+			/*return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId));*/
 		}
 		catch(Exception e)
 		{
