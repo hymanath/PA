@@ -73,9 +73,15 @@ public class PartyMeetingSummaryVO implements Serializable{
 	
 	private Long momUpdatedMeetings;
 	private Long atrUpdatedMeetings;
+	private Long assemblyNo;
 	
 	
-	
+	public Long getAssemblyNo() {
+		return assemblyNo;
+	}
+	public void setAssemblyNo(Long assemblyNo) {
+		this.assemblyNo = assemblyNo;
+	}
 	public Long getMomUpdatedMeetings() {
 		return momUpdatedMeetings;
 	}
