@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
@@ -62,9 +64,16 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private TransactionTemplate transactionTemplate;
 	private IPartyMeetingAtrPointHistoryDAO partyMeetingAtrPointHistoryDAO;
 	private ICadreCommitteeService cadreCommitteeService;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	
-	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -1069,6 +1078,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
+			Map<Long, Long> constNOMap = new HashMap<Long, Long>();
+			if(meetingLevel.equals(3l)){
+				if(locationIds!=null && locationIds.size()>0){
+					List<Object[]> constNums = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locationIds);
+					if(constNums!=null && constNums.size()>0){
+						for (Object[] obj : constNums) {
+							constNOMap.put((Long)obj[0],(Long)obj[1]);
+						}
+					}
+				}
+			}
+			
 			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
 			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
 				for(Object[] obj:partyMeetingsRslt){
@@ -1079,6 +1100,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 					tmp.setMeetingId(Long.valueOf(obj[9].toString()));
 					tmp.setMeetingName(obj[8].toString());
 					tmp.setScheduledOn(obj[5].toString());
+					if(meetingLevel.equals(3l)){
+						tmp.setAssemblyNo(constNOMap.get(Long.valueOf(obj[14].toString())));
+					}
 					tmp.setLocation(lctnNmsMap.get(Long.valueOf(obj[4].toString())));
 					fnlLst.add(tmp);
 					prtyMtngIdsLst.add(tmp.getMeetingId());
@@ -1528,6 +1552,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			
+			Map<Long, Long> constNOMap = new HashMap<Long, Long>();
+			if(meetingLevel.equals(3l)){
+				if(locationIds!=null && locationIds.size()>0){
+					List<Object[]> constNums = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locationIds);
+						if(constNums!=null && constNums.size()>0){
+							for (Object[] obj : constNums) {
+								constNOMap.put((Long)obj[0],(Long)obj[1]);
+							}
+						}
+				}
+			}
+			
 			List<Long> prtyMtngIdsLst = new ArrayList<Long>();
 			if(partyMeetingsRslt!=null && partyMeetingsRslt.size()>0){
 				for(Object[] obj:partyMeetingsRslt){
@@ -1539,6 +1575,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 					tmp.setLocationId(Long.valueOf(obj[4].toString()));
 					tmp.setLocation(lctnNmsMap.get(Long.valueOf(obj[4].toString())));
+					if(meetingLevel.equals(3l)){
+						tmp.setAssemblyNo(constNOMap.get(Long.valueOf(obj[14].toString())));
+					}
 					List<PartyMeetingSummaryVO> meetings = tmp.getPartyMeetingsList();
 					if(meetings==null){
 						meetings = new ArrayList<PartyMeetingSummaryVO>();
@@ -1551,15 +1590,16 @@ public class PartyMeetingService implements IPartyMeetingService{
 						attndncVO.setScheduledOn(obj[5].toString());
 						
 						attndncVO.setStateId(obj[10]!=null?Long.valueOf(obj[10].toString()):0l);
-						attndncVO.setStateName(obj[11]!=null?obj[10].toString():"");
-						if(locationLevel>=2){
-							attndncVO.setDistrictId(obj[12]!=null?Long.valueOf(obj[10].toString()):0l);
-							attndncVO.setDistrictName(obj[13]!=null?obj[10].toString():"");
+						attndncVO.setStateName(obj[11]!=null?obj[11].toString():"");
+						if(meetingLevel>=2){
+							attndncVO.setDistrictId(obj[12]!=null?Long.valueOf(obj[12].toString()):0l);
+							attndncVO.setDistrictName(obj[13]!=null?obj[13].toString():"");
 						}
 						
-						if(locationLevel>=3){
-							attndncVO.setConstituencyId(obj[14]!=null?Long.valueOf(obj[10].toString()):0l);
-							attndncVO.setConstituencyName(obj[15]!=null?obj[10].toString():"");
+						if(meetingLevel>=3){
+							attndncVO.setConstituencyId(obj[14]!=null?Long.valueOf(obj[14].toString()):0l);
+							attndncVO.setConstituencyName(obj[15]!=null?obj[15].toString():"");
+							
 						}
 						
 						meetings.add(attndncVO);
@@ -1695,6 +1735,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 							}else{
 								++nothingCount_mom;
 							}
+						}else{
+							++nothingCount_atr;
+							++nothingCount_mom;
 						}
 					}
 				}
@@ -1846,12 +1889,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 					tmp.setStateId(obj[10]!=null?Long.valueOf(obj[10].toString()):0l);
 					tmp.setStateName(obj[11]!=null?obj[11].toString():"");
-					if(locationLevel>=2){
+					if(meetingLevel>=2){
 						tmp.setDistrictId(obj[12]!=null?Long.valueOf(obj[12].toString()):0l);
 						tmp.setDistrictName(obj[13]!=null?obj[13].toString():"");
 					}
 					
-					if(locationLevel>=3){
+					if(meetingLevel>=3){
 						tmp.setConstituencyId(obj[14]!=null?Long.valueOf(obj[14].toString()):0l);
 						tmp.setConstituencyName(obj[15]!=null?obj[15].toString():"");
 					}
@@ -1937,13 +1980,30 @@ public class PartyMeetingService implements IPartyMeetingService{
 						}
 					}
 				}else if(groupingLocationType.equalsIgnoreCase("constituency")){
-					if(fnlLst!=null && fnlLst.size()>0){
+					Map<Long,Long> constNOMap = new HashMap<Long, Long>();
+					
+						if(fnlLst!=null && fnlLst.size()>0){
+							List<Long> constIds = new ArrayList<Long>();
+							for(PartyMeetingSummaryVO temp:fnlLst){
+								constIds.add(temp.getConstituencyId());
+							}
+							
+							if(constIds!=null && constIds.size()>0){
+								List<Object[]> constNums = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(constIds);
+								if(constNums!=null && constNums.size()>0){
+									for (Object[] obj : constNums) {
+										constNOMap.put((Long)obj[0],(Long)obj[1]);
+									}
+								}
+							}
+						}
 						for(PartyMeetingSummaryVO temp:fnlLst){
 							PartyMeetingSummaryVO stteVO = getMatchedLocationByLocationType(temp.getConstituencyId(), lctnSplittedRslt, groupingLocationType);
 							boolean isNew = false;
 							if(stteVO==null){
 								stteVO = new PartyMeetingSummaryVO();
 								stteVO.setConstituencyId(temp.getConstituencyId());
+								stteVO.setAssemblyNo(constNOMap.get(temp.getConstituencyId()));
 								stteVO.setConstituencyName(temp.getConstituencyName());
 								isNew = true;
 							}
@@ -1959,7 +2019,6 @@ public class PartyMeetingService implements IPartyMeetingService{
 								lctnSplittedRslt.add(stteVO);
 							}
 							
-						}
 					}
 				}
 				
