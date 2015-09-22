@@ -415,7 +415,7 @@ var globalCadreId = '${cadreId}';
 				  <!-- Tab panes -->
 				  <div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title">BENEFITS</h4>
+						<h4 class="panel-title"><b>BENEFITS</b></h4>
 					</div>
 					<div class="panel-body pad_0">
 						<ul class="nav nav-tabs" role="tablist">
@@ -1048,7 +1048,7 @@ var globalCadreId = '${cadreId}';
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" style="text-align:center;">EDUCATION BENEFITS</h4>
+				<h4 class="modal-title" style="text-align:center;"><span class="modelTitleCls"><span></h4>
 			  </div>
 			  <div class="modal-body">
 				<div class="row">
@@ -4533,9 +4533,9 @@ getEventsOverviewFortdpCadre();
 		str='';
 		if(result !=null){
 			if(type =="cadre"){
-			$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+			$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
 			}else{
-				$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+				$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
 			}
 			
 			if(result.ntrTrustStudentVoList !=null && result.ntrTrustStudentVoList.length>0){
@@ -4569,6 +4569,8 @@ getEventsOverviewFortdpCadre();
 	}
 	
 	$(document).on("click",".showStudentBenefitModalcls",function(){
+		var title=$(this).attr("attr_title");
+		$(".modelTitleCls").html(title);
 		$("#modelForBenefitsId").modal("show");
 	});
 	
