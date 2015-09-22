@@ -4426,10 +4426,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 		  return finalList;
 	  }
   
-  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds){
+  public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds){
 	  
+	  NtrTrustStudentVO finalVo = new NtrTrustStudentVO();
 	  List<NtrTrustStudentVO> finalList = new ArrayList<NtrTrustStudentVO>();
 	  try{
+		  Long educationBefitCount=0l;
 		  List<Object[]> studentCountList = studentCadreRelationDAO.getNtrTrustStudentDetailsInstitutionWise(cadreIds);
 			if(studentCountList !=null && studentCountList.size()>0){
 				for(Object[] studentCount:studentCountList){
@@ -4437,128 +4439,118 @@ public class CadreDetailsService implements ICadreDetailsService{
 					vo.setId((Long)studentCount[0]);
 					vo.setName(studentCount[1].toString());
 					vo.setCount(studentCount[2] !=null ? (Long)studentCount[2]:0l);
+					
+					if(studentCount[2] !=null && (Long)studentCount[2]>0){
+						educationBefitCount +=(Long)studentCount[2];
+					}
+					
 					finalList.add(vo);
 				}
+				finalVo.setNtrTrustStudentVoList(finalList);
+				finalVo.setCount(educationBefitCount);
 			}
 			
-		return finalList;
+		return finalVo;
 		  
 	  }catch (Exception e) {
 		  LOG.error("Exception Occured in getNtrTrustStudentDetailsInstitutionWise() method, Exception - ",e);
 	}
-	  return finalList;
+	  return finalVo;
   }
-  public NtrTrustStudentVO getStudentFormalDetailsByCadre(List<Long> cadreIds,Long institutionId,Long tdpCadreId){
-		
-	  	NtrTrustStudentVO finalVo =new NtrTrustStudentVO();
-		
-		try{
-			
-			List<NtrTrustStudentVO> cadreStudentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
-			List<NtrTrustStudentVO> familyStudentFamilyStudents = new ArrayList<NtrTrustStudentVO>();
-			
-			cadreIds.add(tdpCadreId);//appending CadreId to familyMemberCadreIds
-			
-			//0.institutionId,1.studentid,2.studentName,3.dateOfbirth,4.year of joining,5.courseId,6.course code,7.casteId,
-			//8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation,13.tdpCadreId Of Cadre,14.name of Cadre
-			DateFormat dateFormat=null;
-			Date convertedDate = null;
-			List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreIds,institutionId);
-			
-			if(students !=null){
-				for(Object[] student:students){
-					
-					NtrTrustStudentVO vo = new NtrTrustStudentVO();
-					
-					vo.setInstitutionId(student[0] !=null ? (Long)student[0]:0l);
-					vo.setId(student[1] !=null ? (Long)student[1]:0l);
-					vo.setName(student[2] !=null ? student[2].toString():"");
-					
-					if(student[3] !=null){
-						dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-						convertedDate = (Date) dateFormat.parse(student[3].toString());
-						 String lines[] = convertedDate.toString().split(" ");
-						 vo.setDateStr(lines[1]+ " "+lines[2] +" " + lines[5]);//dateOfBirth
-					}else{
-						 vo.setDateStr("");
-					}
-					
-					vo.setYearOfJoining(student[4] !=null ? student[4].toString():"");
-					vo.setCourseId(student[5] !=null ? (Long)student[5]:0l);
-					vo.setCourse(student[6] !=null ? student[6].toString():"");//course Code
-					vo.setCasteStr(student[7] !=null ? student[7].toString():"");
-					vo.setTdpCadreId(student[8] !=null ? (Long)student[8]:0l);
-					vo.setMembershipNo(student[9] !=null ? (Long)student[9]:0l);
-					vo.setGuardian(student[10] !=null ? student[10].toString():"");
-					vo.setStatus(student[11] !=null ? student[11].toString():"");//parent Alive Status
-					vo.setRelation(student[12] !=null ? student[12].toString():"");//relationWithCadre
-					vo.setCadreId(student[13] !=null ? (Long)student[13]:0l);
-					vo.setCadreName(student[14] !=null ? student[14].toString():"");
-					
-					if(vo.getId() !=null && vo.getId() >0l){
-						//0.Parent Name,1.relation
-						List<Object[]> parentDetails = studentParentDetailsDAO.getParentDetails(vo.getId());
-						if(parentDetails !=null && parentDetails.size()>0){
-							for(Object[] parent:parentDetails){
-								if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("father"))
-								{
-									vo.setFatherName(parent[0] !=null ? parent[0].toString():"");
-								}
-								else if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("mother")){
-									vo.setMotherName(parent[0] !=null ? parent[0].toString():"");
-								}
-								else{
-									vo.setParentName(parent[0] !=null ? parent[0].toString():"");
-								}
-							}
-						}
-						
-						//Contact Details
-						List<NtrTrustStudentVO> contactDetails =getContactDetailsOfStudent(vo.getId());
-						
-						if(contactDetails !=null && contactDetails.size()>0){
-							vo.setNtrTrustStudentVoList(contactDetails);
-						}
-						
-						//academic year details of Student
-						List<NtrTrustStudentVO> academicyearDetails=getAcademicYearDetailsOfStudent(vo.getId());
-						
-						if(academicyearDetails !=null && academicyearDetails.size()>0){
-							vo.setAcademicDetailsList(academicyearDetails);
-						}
-						
-						//student address Details
-						List<NtrTrustStudentVO> addressDetails = getStudentSpecificAddressDetails(vo.getId());
-						
-						if(addressDetails !=null && addressDetails.size()>0){
-							vo.setAddressDetailsList(addressDetails);
-						}
-						
-						//getReferalDetailsOfStudent
-						
-						List<NtrTrustStudentVO> recomendationDetails=getRecomendationDetailsOfStudent(vo.getId());
-						if(recomendationDetails !=null && recomendationDetails.size()>0){
-							vo.setRecomendationDetailsList(recomendationDetails);
-						}
-						
-					}
-					
-					if(vo.getCadreId().equals(tdpCadreId)){
-						cadreStudentsFormalDetails.add(vo);//students related to Cadre
-					}else{
-						familyStudentFamilyStudents.add(vo);//students related to Family
-					}
-					
-				}
-				finalVo.setCadreNtrTrustStudentVoList(cadreStudentsFormalDetails);
-				finalVo.setFamilyNtrTrustStudentVoList(familyStudentFamilyStudents);
-				return finalVo;
-			}
-		}catch(Exception e){
-			LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
-		}
-		return finalVo;
-	}
+  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> cadreIds,Long institutionId){
+      
+      List<NtrTrustStudentVO> studentsFormalDetails = new ArrayList<NtrTrustStudentVO>();
+     
+      try{
+          //0.institutionId,1.studentid,2.studentName,3.dateOfbirth,4.year of joining,5.courseId,6.course code,7.casteId,
+          //8.cadreId,9.membershipNo,10.guardian,11.parent alive Status,12.relation
+          DateFormat dateFormat=null;
+          Date convertedDate = null;
+          List<Object[]> students = studentCadreRelationDAO.getStudentFormalDetailsByCadre(cadreIds,institutionId);
+         
+          if(students !=null){
+              for(Object[] student:students){
+                  NtrTrustStudentVO vo = new NtrTrustStudentVO();
+                  vo.setInstitutionId(student[0] !=null ? (Long)student[0]:0l);
+                  vo.setId(student[1] !=null ? (Long)student[1]:0l);
+                  vo.setName(student[2] !=null ? student[2].toString():"");
+                 
+                  if(student[3] !=null){
+                      dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                      convertedDate = (Date) dateFormat.parse(student[3].toString());
+                       String lines[] = convertedDate.toString().split(" ");
+                       vo.setDateStr(lines[1]+ " "+lines[2] +" " + lines[5]);//dateOfBirth
+                  }else{
+                       vo.setDateStr("");
+                  }
+                 
+                  vo.setYearOfJoining(student[4] !=null ? student[4].toString():"");
+                  vo.setCourseId(student[5] !=null ? (Long)student[5]:0l);
+                  vo.setCourse(student[6] !=null ? student[6].toString():"");//course Code
+                  vo.setCasteStr(student[7] !=null ? student[7].toString():"");
+                  vo.setTdpCadreId(student[8] !=null ? (Long)student[8]:0l);
+                  vo.setMembershipNo(student[9] !=null ? (Long)student[9]:0l);
+                  vo.setGuardian(student[10] !=null ? student[10].toString():"");
+                  vo.setStatus(student[11] !=null ? student[11].toString():"");//parent Alive Status
+                  vo.setRelation(student[12] !=null ? student[12].toString():"");//relationWithCadre
+                 
+                  if(vo.getId() !=null && vo.getId() >0l){
+                      //0.Parent Name,1.relation
+                      List<Object[]> parentDetails = studentParentDetailsDAO.getParentDetails(vo.getId());
+                      if(parentDetails !=null && parentDetails.size()>0){
+                          for(Object[] parent:parentDetails){
+                              if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("father"))
+                              {
+                                  vo.setFatherName(parent[0] !=null ? parent[0].toString():"");
+                              }
+                              else if(parent[1] !=null && parent[1].toString().equalsIgnoreCase("mother")){
+                                  vo.setMotherName(parent[0] !=null ? parent[0].toString():"");
+                              }
+                              else{
+                                  vo.setParentName(parent[0] !=null ? parent[0].toString():"");
+                              }
+                          }
+                      }
+                     
+                      //Contact Details
+                      List<NtrTrustStudentVO> contactDetails =getContactDetailsOfStudent(vo.getId());
+                     
+                      if(contactDetails !=null && contactDetails.size()>0){
+                          vo.setNtrTrustStudentVoList(contactDetails);
+                      }
+                     
+                      //academic year details of Student
+                      List<NtrTrustStudentVO> academicyearDetails=getAcademicYearDetailsOfStudent(vo.getId());
+                     
+                      if(academicyearDetails !=null && academicyearDetails.size()>0){
+                          vo.setAcademicDetailsList(academicyearDetails);
+                      }
+                     
+                      //student address Details
+                      List<NtrTrustStudentVO> addressDetails = getStudentSpecificAddressDetails(vo.getId());
+                     
+                      if(addressDetails !=null && addressDetails.size()>0){
+                          vo.setAddressDetailsList(addressDetails);
+                      }
+                     
+                      //getReferalDetailsOfStudent
+                     
+                      List<NtrTrustStudentVO> recomendationDetails=getRecomendationDetailsOfStudent(vo.getId());
+                      if(recomendationDetails !=null && recomendationDetails.size()>0){
+                          vo.setRecomendationDetailsList(recomendationDetails);
+                      }
+                     
+                  }
+                 
+                  studentsFormalDetails.add(vo);
+              }
+              return studentsFormalDetails;
+          }
+      }catch(Exception e){
+          LOG.error("Exception Occured in getStudentFormalDetailsByCadre() method, Exception - ",e);
+      }
+      return studentsFormalDetails;
+  }
 	public List<NtrTrustStudentVO> getContactDetailsOfStudent(Long studentId){
 		
 		List<NtrTrustStudentVO> listOfContacts = new ArrayList<NtrTrustStudentVO>();
