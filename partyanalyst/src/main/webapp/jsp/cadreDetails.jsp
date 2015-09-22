@@ -408,6 +408,42 @@ var globalCadreId = '${cadreId}';
 				<div id="ntrTrustDivId">
 					
 				</div>
+				<div>
+				  <!-- Nav tabs -->
+				
+				  
+				  <!-- Tab panes -->
+				  <div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">BENEFITS</h4>
+					</div>
+					<div class="panel-body pad_0">
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active" style="width:50%;text-align:center"><a href="#cadretab" aria-controls="cadretab" role="tab" data-toggle="tab" onclick="getNtrTrustStudentDetailsInstitutionWise('cadre');">Cadre</a></li>
+							<li role="presentation"  style="width:50%;text-align:center"><a href="#familytab" aria-controls="familytab" role="tab" data-toggle="tab" onclick="getNtrTrustStudentDetailsInstitutionWise('family');">Family</a></li>
+						  </ul>
+						<div class="pad_10">
+							<div class="tab-content">
+							
+								<center><img id="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+								<div role="tabpanel" class="tab-pane active" id="cadretab">
+									<!--<h4>FINANCE SUPPORT<span class="pull-right"><a href="">21</a></span></h4>
+									<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right"><a href="">21</a></span></h4>-->
+									<span id="cadreIdSpanForEducationBenefit"></span>
+									
+								</div>
+								<div role="tabpanel" class="tab-pane" id="familytab">
+									<!--<h4>FINANCE SUPPORT<span class="pull-right"><a href="">2112</a></span></h4>
+									<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right"><a href="">2421</a></span></h4> -->
+									<span id="familyIdSpanForEducationBenefit"></span>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				  </div>
+				  
+				</div>
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
@@ -1006,7 +1042,27 @@ var globalCadreId = '${cadreId}';
 </div><!-- /.modal -->
 	
 </section>
-		
+			<!-- model For benefits -->
+		<div class="modal fade" id="modelForBenefitsId">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" style="text-align:center;">EDUCATION BENEFITS</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div id="benefitsEducationCountsId"></div>
+					</div>
+				</div>
+			  <div class="modal-footer">
+			   <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
@@ -2313,7 +2369,7 @@ function getCadreFamilyDetailsByCadreId()
 			$("#familyMembersDiv").html("No Data Available");
 			}
 			
-			getNtrTrustStudentDetailsInstitutionWise();
+			getNtrTrustStudentDetailsInstitutionWise("cadre");
 	  });
  } 
  
@@ -4407,79 +4463,155 @@ getEventsOverviewFortdpCadre();
 </script>		
 <script type="text/javascript">
 
-//getNtrTrustStudentDetailsInstitutionWise();
-	function getNtrTrustStudentDetailsInstitutionWise(){
+	function getNtrTrustStudentDetailsInstitutionWise(type){
+		
+		$("#dataLoadingsImgForTabSection").show();
+		$("#cadreIdSpanForEducationBenefit").html("");
+		$("#familyIdSpanForEducationBenefit").html("");
+		
 		cadreId = globalCadreId;
 		
-		var jsObj={
+		var cadreIdsArr=[];
+		if(type == "cadre"){
+			cadreIdsArr.push(cadreId);
+			var jsObj={	
+				cadreIdsArr:cadreIdsArr
+			}	
+		}
+		else{
+			var jsObj={	
+				cadreIdsArr:familycadreIdsArrayGlobal
+			}
+		}
+		
+		$("#benefitsEducationCountsId").html("");
+		
+		
+		/* var jsObj={
 			tdpCadreId:cadreId,
 			familyCadreIds:familycadreIdsArrayGlobal
-		}	
+		}	 */
 		$.ajax({
 				type:'POST',
 				 url: 'getNtrTrustStudentDetailsInstitutionWiseAction.action',
 				 data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+					
+					$("#dataLoadingsImgForTabSection").hide();
+					
 					var str='';
-					if(result !=null && result.length>0){
-						str+='<div class="panel panel-default">';
-								str+='<div class="panel-heading">';
-									str+='<h4 class="panel-title"><b>NTR TRUST EDUCATION BENEFITS</b></h4>';
-								str+='</div>';
-						for(var i in result){
-								str+='<div class="panel-body">';
-									str+='<div >'+result[i].name+'';
-											str+='<span class="pull-right ntrBenefitCountCls" attr_title="'+result[i].name+'" attr_id="'+result[i].id+'"><a style="cursor:pointer;" data-toggle="modal" data-target=".modalForNtrTrust">'+result[i].count+'</a></span>';
-									str+='</div>';
-								str+='</div>';
+					if(result !=null){
+						if(type == "cadre"){
+							if(result.count !=null && result.count>0){
+								//var rsltLst =  result.ntrTrustStudentVoList;
+									buildingStudentDetailsInstitutionWise(result,type);
+							}
+							else{
+								if(result.count ==null){
+									result.count =0;
+								}
+								$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span></h4>');
+							}
 						}
-						str+='</div>';
-						$("#ntrTrustDivId").html(str);
+						if(type == "family"){
+							if(result.count !=null && result.count>0){
+									buildingStudentDetailsInstitutionWise(result,type);
+							}else{
+								if(result.count ==null){
+									result.count =0;
+								}
+								$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span></h4>');
+							}
+						}
 					}
 					
 			});
 	}
-	$(document).on("click",".ntrBenefitCountCls",function(){
-		var title=$(this).attr("attr_title");
-		var instituId=$(this).attr("attr_id");
-		$("#ntrTrustTitleId").html(title+" Details");
-		getStudentFormalDetailsByCadre(instituId);
+	
+	function buildingStudentDetailsInstitutionWise(result,type){
+		
+		str='';
+		if(result !=null){
+			if(type =="cadre"){
+			$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+			}else{
+				$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+			}
+			
+			if(result.ntrTrustStudentVoList !=null && result.ntrTrustStudentVoList.length>0){
+				str+='<div class="panel-group" id="accordionNtrTrust" role="tablist" aria-multiselectable="true">';
+				
+						for(var i in result.ntrTrustStudentVoList){
+							str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading">';
+							
+							str+='<a role="button" data-toggle="collapse" data-parent="#accordionNtrTrust" href="#collapseNtrOne'+i+'" aria-expanded="true" aria-controls="collapseNtrOne'+i+'" class="ntrBenefitCountCls" attr_id="'+result.ntrTrustStudentVoList[i].id+'" attr_type="'+type+'" style="cursor:pointer" >';
+							str+='<h4 class="panel-title" id="headingNtrOne'+i+'">'+result.ntrTrustStudentVoList[i].name+'';
+							str+='<span class=" pull-right">'+result.ntrTrustStudentVoList[i].count+'</span>';
+							str+='</h4>';
+							str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseNtrOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNtrOne'+i+'">';
+							str+='<div class="panel-body">';
+							str+='<center><img id="dataLoadingImageForModelSchool" src="images/icons/loading.gif" style="width:50px;height:50px;margin-top:50px;display:none"/></center>';
+							str+='<div class="NtrTrustStudentDivClass">';
+								
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+						}
+				str+='</div>';
+				$("#benefitsEducationCountsId").html(str);
+			}		
+			
+		}
+	}
+	
+	$(document).on("click",".showStudentBenefitModalcls",function(){
+		$("#modelForBenefitsId").modal("show");
 	});
-	function getStudentFormalDetailsByCadre(institutionId){
-		$("#ntrTrustDetails").html("");
-		$("#ntrTrustCadreFamilyDetails").html("");
-		$("#dataLoadingsImgForNtrTrust").show();
-		$(".11").hide();
-		$(".22").hide();
+	
+	$(document).on("click",".ntrBenefitCountCls",function(){
+		var instituId=$(this).attr("attr_id");
+		var type=$(this).attr("attr_type");
+		getStudentFormalDetailsByCadre(instituId,type);
+	});
+	function getStudentFormalDetailsByCadre(institutionId,type){
+		
+		$(".NtrTrustStudentDivClass").html("");
+		$("#dataLoadingImageForModelSchool").show();
+		
 		cadreId = globalCadreId;
-		var jsObj={
-			tdpCadreId:cadreId,
-			institutionId : institutionId,
-			familyCadreIds:familycadreIdsArrayGlobal
+		
+		var cadreIds=[];
+		if(type == "cadre"){
+			cadreIds.push(cadreId);
+			var jsObj={	
+				cadreIds:cadreIds,
+				institutionId:institutionId
+			}	
+		}
+		else{
+			var jsObj={	
+				cadreIds:familycadreIdsArrayGlobal,
+				institutionId:institutionId
+			}
 		}
 		$.ajax({
 				type:'POST',
 				 url: 'getStudentFormalDetailsByCadreAction.action',
 				 data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					$("#dataLoadingsImgForNtrTrust").hide();
-					if(result !=null){
-						
-							if(result.familyNtrTrustStudentVoList !=null && result.familyNtrTrustStudentVoList.length>0){
-								buildNtrStudentDetails(result.familyNtrTrustStudentVoList,"family");
-								$(".22").show();
-								$(".22 a").trigger("click");
-							}
-							if(result.cadreNtrTrustStudentVoList !=null && result.cadreNtrTrustStudentVoList.length>0){
-								buildNtrStudentDetails(result.cadreNtrTrustStudentVoList,"cadre");
-								$(".11").show();
-								$(".11 a").trigger("click");
-							}
-							/* str+='<div class="panel-group" id="accordion323" role="tablist" aria-multiselectable="true">'; */
-						
-						/* for(var i in result){
-						  str+='<div class="panel panel-default">';
-							str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+					
+					//$("#dataLoadingsImgForNtrTrust").hide();
+					$("#dataLoadingImageForModelSchool").hide();
+					var str='';
+					if(result !=null && result.length>0){
+						str+='<div class="panel-group" style="margin:0" id="accordion323" role="tablist" aria-multiselectable="true">';
+						for(var i in result){
+						  str+='<div class="panel panel-default" style="margin-top:0px">';
+							str+='<div class="panel-heading" style="background-color:#f4f4f4" role="tab" id="headingOne'+i+'">';
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion323" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 									str+='<h4 class="panel-title" id="'+result[i].id+'">'+result[i].name+'</h4>';
 								str+='</a>';
@@ -4506,7 +4638,7 @@ getEventsOverviewFortdpCadre();
 									str+='<li><b>Relation With Cadre</b> :'+result[i].relation+'</li>';
 								str+='</ul>'
 								
-								str+='<h4 class="m_0" style="color:#a94442 !important "><i class="glyphicon glyphicon-map-marker text-danger" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-map-marker text-danger" style="font-size:14px"></i>Communication Address</h4><hr class="m_0"/>'
 								
 								for(var j in result[i].addressDetailsList){
 									str+='<ul class="Student-List">';
@@ -4550,7 +4682,7 @@ getEventsOverviewFortdpCadre();
 										}
 									str+='</ul>';
 								}
-								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-book text-danger" style="font-size:14px"></i> Acadamic Details</h4><hr class="m_0"/>';
+								str+='<h4 class="m_0" style="color:#a94442 !important"><i class="glyphicon glyphicon-book text-danger" style="font-size:14px"></i> Acedamic Details</h4><hr class="m_0"/>';
 								str+='<table class="table table-bordered">';
 									str+='<thead>';
 										str+='<th style="background-color:#f5f5f5">Course</th>';
@@ -4594,13 +4726,13 @@ getEventsOverviewFortdpCadre();
 							str+='</div>';
 						  str+='</div>';
 						}
-						str+='</div>'; */
+						str+='</div>';
 					}
-					/* $("#ntrTrustDetails").html(str); */
+					$(".NtrTrustStudentDivClass").html(str);
 				});
 	}
 	
-	function buildNtrStudentDetails(result,type){
+	function buildNtrStudentDetails(result){
 		var str='';
 			if(result !=null){
 				
@@ -4614,7 +4746,7 @@ getEventsOverviewFortdpCadre();
 				}
 				
 						for(var i in result){
-						  str+='<div class="panel panel-default">';
+						  str+='<div class="panel panel-default" style="margin:0px">';
 						  
 						  if(type == "family"){
 							  str+='<div class="panel-heading" role="tab" id="headingTwo'+i+'">';
