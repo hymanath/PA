@@ -10780,12 +10780,12 @@
 	</action>
 	<action name="getNtrTrustStudentDetailsInstitutionWiseAction" class="cadreDetailsAction" method="getNtrTrustStudentDetailsInstitutionWise">
 	   <result type="json" name="success">
-	       		<param name="root">ntrTrustStudentVOList</param>
+	       		<param name="root">ntrTrustStudentVo</param>
 	  	</result>
 	</action>
 	<action name="getStudentFormalDetailsByCadreAction" class="cadreDetailsAction" method="getStudentFormalDetailsByCadre">
 	   <result type="json" name="success">
-	       		<param name="root">ntrTrustStudentVo</param>
+	       		<param name="root">ntrTrustStudentVOList</param>
 	  	</result>
 	</action>
 	<action name="getCandidateAndConstituencySurveyResultAction" class="cadreDetailsAction" method="getCandidateAndConstituencySurveyResult">

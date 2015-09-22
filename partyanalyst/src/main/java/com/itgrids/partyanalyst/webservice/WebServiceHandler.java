@@ -1541,7 +1541,7 @@ public class WebServiceHandler {
 	@GET
 	@Path("/getNtrTrustStudentDetailsInstitutionWise/{cadreIdsStr}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreIdsStr") String cadreIdsStr){
+	public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(@PathParam("cadreIdsStr") String cadreIdsStr){
 		try{
 			
 			List<Long> cadreIds = new ArrayList<Long>();
@@ -1568,9 +1568,9 @@ public class WebServiceHandler {
 		return null;
 	}
 	@GET
-	@Path("/getStudentFormalDetailsByCadre/{cadreIdsStr}/{institutionId}/{tdpcadreId}")
+	@Path("/getStudentFormalDetailsByCadre/{cadreIdsStr}/{institutionId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	 public NtrTrustStudentVO getStudentFormalDetailsByCadre(@PathParam("cadreIdsStr") String cadreIdsStr,@PathParam("institutionId") Long institutionId,@PathParam("tdpcadreId") Long tdpcadreId){
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(@PathParam("cadreIdsStr") String cadreIdsStr,@PathParam("institutionId") Long institutionId){
 		try{
 			
             List<Long> cadreIds = new ArrayList<Long>();
@@ -1589,7 +1589,7 @@ public class WebServiceHandler {
 			}
 			
 			
-			return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId),Long.valueOf(tdpcadreId));
+			return webServiceHandlerService.getStudentFormalDetailsByCadre(cadreIds,Long.valueOf(institutionId));
 		}
 		catch(Exception e)
 		{
