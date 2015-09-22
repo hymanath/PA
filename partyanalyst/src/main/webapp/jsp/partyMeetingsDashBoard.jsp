@@ -115,39 +115,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 															</td>
 														</tr>
 													</thead>
-													<tbody id="meetingSummaryBodyId" align="center">
-														<!--<tr class="font-12">
-															<td  width="100px"></td>
-															<td  width="100px">Total Invitees</td>
-															<td>Total Non Invitees</td>
-															<td>Total Invitees Absent</td>
-														</tr>
-														<tr>
-															<td>PARTY ROLE</td>
-															<td>50</td>
-															<td>50</td>
-															<td>50</td>
-														</tr>
-														<tr>
-															<td>PUBLIC REPRESENTATIVE</td>
-															<td>50</td>
-															<td>50</td>
-															<td>50</td>
-														</tr>
-														<tr>
-															<td>ATTENDED</td>
-															<td>50</td>
-															<td>50</td>
-															<td>50</td>
-														</tr>
-														<tr>
-															<td>NO ROLE</td>
-															<td>50</td>
-															<td>50</td>
-															<td>50</td>
-														</tr>-->
-													</tbody>
-                                                </table>
+													<tbody id="meetingSummaryBodyId" align="center"></table>
                                             </div>
                                         </div>
                                     </div>
@@ -157,7 +125,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                                         <table class="table m_0 table-bordered">
                                             <tr class="font-12">
                                                 <td><h4 class="m_top20">
-                                                	TOTAL DISTRICT COMMITTEES<span class="pull-right" id="ttlDistMtngsSpanId">0</span>
+                                                	TOTAL COMMITTEES<span class="pull-right" id="ttlDistMtngsSpanId">0</span>
                                                 </h4></td>
                                             </tr>
                                             <tr>
@@ -188,7 +156,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 													<option value="cumulative">Cumulative</option>
                                                 </select>
 											<div class="pull-right">
-												<span class="btn-sm btn-success" onclick="exportToExcel()">Export to excel</span>
+												<span class="btn-sm btn-success" style="cursor:pointer;" onclick="exportToExcel()">Export to excel</span>
                                             	<label>GROUP BY : </label>
                                             	<label class="checkbox-inline" id="grpLctnStId"><input type="checkbox" class="grpLctn"  value="state">State</label>
                                             	<label class="checkbox-inline" id="grpLctnDistId" style="display:none;"><input type="checkbox" class="grpLctn"  value="district" >District</label>
@@ -198,33 +166,8 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                                         <div class="panel-body pad_0">
 										<div id="updatedCounts"></div>
 											<div class="table-responsive" id="individualMeetingResultId">
-											<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
-												<!--<table class="table table-bordered m_0" id="individualTableId">
-													<thead>
-														<tr>
-															<th rowspan="2">Meeting Name</th>
-															<th rowspan="2">Location</th>
-															<th rowspan="2">Schedule<br/> On</th>
-															<th rowspan="2">Total <br/>Invitees</th>
-															<th colspan="3" class="text-center">Attendance</th>
-															<th rowspan="2">Total<br/> Absent</th>
-															<th colspan="2"  class="text-center">MOM</th>
-															<th colspan="2" class="text-center">ATR</th>
-														</tr>
-														<tr>
-															<th>Total Attended</th>
-															<th>Invitees</th>
-															<th>Non Inivtees</th>
-															<th>File</th>
-															<th>Text</th>
-															<th>File</th>
-															<th>Text</th>
-														</tr>
-													</thead>
-													<img src='./images/icons/search.gif' class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
-													<tbody id="individualResultBody"></tbody>
-												</table>-->
-                                            </div>
+												<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>
+											</div>
                                             <div class="table-responsive" id="cumulativeMeetingResultId" style="display:none;">
 											<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>
 												<!--<table class="table table-bordered m_0">
@@ -1051,12 +994,9 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                      <option value="1">STATE</option> 
 					<option value="2">DISTRICT</option> 
 					<option value="3">CONSTITUENCY</option> 
-					<option value="4">MANDAL</option> 
-					<option value="5">TOWN</option> 
-					<option value="6">DIVISION</option> 
-					<option value="7">VILLAGE</option> 
-					<option value="8">WARD</option> 
-                </select>
+					<option value="4">MANDAL/TOWN/DIVISION</option> 
+					<option value="5">VILLAGE/WARD</option> 
+			    </select>
             </div>
             <div class="col-md-10 col-md-offset-1">
                 <label>Type Of Meeting</label>
@@ -1344,8 +1284,9 @@ $(document).ready(function(e) {
   
  
 	function getPartyMeetingDetails(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
-		$("#indiAjax").show();
-		$("#individualResultBody").html("");
+		$("#individualMeetingResultId").html('<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:40px;height:40px;margin-left:500px;"/>');
+		$("#dummyForExcel").html("");
+		
 		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
 		var month;
@@ -1419,6 +1360,9 @@ $(document).ready(function(e) {
 					str+='<table class="table table-bordered m_0" id="individualTableId">';
 					str+='<thead>';
 					str+='<tr>';
+					if(meetinglevel==3){
+						str+='<th rowspan="2">Assembly No</th>';
+					}
 					str+='<th rowspan="2">Meeting Name</th>';
 					str+='<th rowspan="2">Location</th>';
 					str+='<th rowspan="2">Schedule<br/> On</th>';
@@ -1438,10 +1382,12 @@ $(document).ready(function(e) {
 					str+='<th>Text</th>';
 					str+='</tr>';
 					str+='</thead>';
-					//str+='<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:20px;height:20px;display:none;"/>';
 					str+='<tbody id="individualResultBody">';
 					for(var i in pmList){
 						str+="<tr>";
+						if(meetinglevel==3){
+							str+="<th>"+pmList[i].assemblyNo+"</th>";
+						}
 						str+="<td>"+pmList[i].meetingName+"</td>";
 						str+="<td>"+pmList[i].location+"</td>";
 						str+="<td>"+pmList[i].scheduledOn+"</td>";
@@ -1498,16 +1444,13 @@ $(document).ready(function(e) {
 					
 					
 				}
-				
 				$("#individualMeetingResultId").html(str); 
-				
 				$('#individualTableId').dataTable();
 				
 			}else{
 				$('.individual').show();
 				$("#individualMeetingResultId").html("No Records Found"); 
 			}
-			$("#indiAjax").hide();
 			
 			//for excel startDate
 				if(pmList!=null && pmList.length>0){
@@ -1515,6 +1458,9 @@ $(document).ready(function(e) {
 					str1+='<table class="table table-bordered m_0" id="individualTableIdForExcel">';
 					str1+='<thead>';
 					str1+='<tr>';
+					if(meetinglevel==3){
+						str1+='<th rowspan="2">Meeting Name</th>';
+					}
 					str1+='<th rowspan="2">Meeting Name</th>';
 					str1+='<th rowspan="2">Location</th>';
 					str1+='<th rowspan="2">Schedule<br/> On</th>';
@@ -1538,6 +1484,9 @@ $(document).ready(function(e) {
 					str1+='<tbody>';
 					for(var i in pmList){
 						str1+="<tr>";
+						if(meetinglevel==3){
+							str1+="<th>"+pmList[i].assemblyNo+"</th>";
+						}
 						str1+="<td>"+pmList[i].meetingName+"</td>";
 						str1+="<td>"+pmList[i].location+"</td>";
 						str1+="<td>"+pmList[i].scheduledOn+"</td>";
@@ -1592,9 +1541,7 @@ $(document).ready(function(e) {
 					str1+='</table>';
 												
 					$("#dummyForExcel").html(str1);
-					
 				}
-				//fro excel end
 		});
 	}
 	
@@ -1940,7 +1887,10 @@ $(document).ready(function(e) {
 	});
 	
 	function getPartyMeetingDetailsCumulative(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId){
-		$("#cummAjax").show();
+		
+		$("#cumulativeMeetingResultId").html('<img src="./images/icons/search.gif" class="offset7"  id="cummAjax" style="width:40px;height:40px;margin-left:500px;"/>');
+		$("#dummyForExcel").html("");
+		
 		$("#cumulativeMeetingTableBodyId").html("");
 		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
@@ -2003,6 +1953,9 @@ $(document).ready(function(e) {
 					str+='<table class="table table-bordered m_0" id="cummulativeTableId">';
 					str+='<thead>';
 					str+='<tr>';
+					if(meetinglevel==3){
+						str+='<th rowspan="2">Assembly No</th>';
+					}
 					str+='<th rowspan="2">No Of Meetings</th>';
 					str+='<th rowspan="2">Location</th>';
 					str+='<th rowspan="2">Total <br/>Invitees</th>';
@@ -2027,6 +1980,9 @@ $(document).ready(function(e) {
 					str+='<tbody id="cumulativeMeetingTableBodyId">';
 					for(var i in pmList){
 						str+="<tr>";
+						if(meetinglevel==3){
+							str+="<td rowspan=4>"+pmList[i].assemblyNo+"</td>";
+						}
 						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
 						str+="<td rowspan=4>"+pmList[i].location+"</td>";
 						if(pmList[i].totalInvitees!=null){
@@ -2092,13 +2048,14 @@ $(document).ready(function(e) {
 				$("#cumulativeMeetingResultId").html("No Records Found"); 
 			}
 				
-			$("#cummAjax").hide();
-			
 			if(pmList!=null && pmList.length>0){
 				var str1='';
 				str1+='<table class="table table-bordered m_0" id="cummulativeTableIdForExcel">';
 				str1+='<thead>';
 				str1+='<tr>';
+				if(meetinglevel==3){
+					str1+='<th rowspan="2">Assembly No</th>';
+				}
 				str1+='<th rowspan="2">No Of Meetings</th>';
 				str1+='<th rowspan="2">Location</th>';
 				str1+='<th rowspan="2">Total <br/>Invitees</th>';
@@ -2119,6 +2076,9 @@ $(document).ready(function(e) {
 				str1+='<tbody>';
 				for(var i in pmList){
 					str1+="<tr>";
+					if(meetinglevel==3){
+						str1+="<td rowspan=4>"+pmList[i].assemblyNo+"</td>";
+					}
 					str1+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
 					str1+="<td rowspan=4>"+pmList[i].location+"</td>";
 					if(pmList[i].totalInvitees!=null){
@@ -2166,14 +2126,15 @@ $(document).ready(function(e) {
 				str1+='</tbody>';
 				str1+='</table>';
 				
-					$("#dummyForExcel").html(str1);
-					
+				$("#dummyForExcel").html(str1);
 			}
 		});
 	}
 	
 	function getPartyMeetingDetailsGroupLctn(meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,manTowDivId,wardPanId,groupingLocationType){
-		$("#cummAjax").show();
+		$("#cumulativeMeetingResultId").html('<img src="./images/icons/search.gif" class="offset7"  id="cummAjax" style="width:40px;height:40px;margin-left:500px;"/>');
+		$("#dummyForExcel").html("");
+		
 		$("#cumulativeMeetingTableBodyId").html("");
 		var dateType=meetingduration;
 		var fromDate,temp1=new Date(),toDate;
@@ -2236,6 +2197,9 @@ $(document).ready(function(e) {
 					str+='<table class="table table-bordered m_0" id="cummulativeTableId">';
 					str+='<thead>';
 					str+='<tr>';
+					if(groupingLocationType=="constituency" && meetinglevel==3){
+						str+='<th rowspan="2">Assembly No</th>';
+					}
 					str+='<th rowspan="2">No Of Meetings</th>';
 					str+='<th rowspan="2">Location</th>';
 					str+='<th rowspan="2">Total <br/>Invitees</th>';
@@ -2273,6 +2237,9 @@ $(document).ready(function(e) {
 						
 						
 						str+="<tr>";
+						if(groupingLocationType=="constituency" && meetinglevel==3){
+							str+="<td rowspan=4>"+pmList[i].assemblyNo+"</td>";
+						}
 						str+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
 						
 						if(groupingLocationType=="state"){
@@ -2343,11 +2310,114 @@ $(document).ready(function(e) {
 					str+='</table>';
 				}
 				$("#cumulativeMeetingResultId").html(str); 
+				
+				var str1 = "";
+				if(pmList!=null && pmList.length>0){
+					str1+='<table class="table table-bordered m_0" id="cummulativeTableIdForExcel">';
+					str1+='<thead>';
+					str1+='<tr>';
+					if(groupingLocationType=="constituency" && meetinglevel==3){
+						str1+='<th rowspan="2">Assembly No</th>';
+					}
+					str1+='<th rowspan="2">No Of Meetings</th>';
+					str1+='<th rowspan="2">Location</th>';
+					str1+='<th rowspan="2">Total <br/>Invitees</th>';
+					str1+='<th colspan="3" class="text-center">Attendance</th>';
+					str1+='<th rowspan="2">Total<br/> Absent</th>';
+					str1+='<th class="text-center">MOM</th>';
+					str1+='<th class="text-center">ATR</th>';
+					str1+='</tr>';
+					str1+='<tr>';
+					str1+='<th>Total Attended</th>';
+					str1+='<th>Invitees</th>';
+					str1+='<th>Non Inivtees</th>';
+					str1+='<th></th>';
+					str1+='<th></th>';
+					str1+='</tr>';
+					str1+='</thead>';
+					//str1+='<img src='./images/icons/search.gif' class="offset7"  id="cummAjax" style="width:20px;height:20px;display:none;"/>';
+					str1+='<tbody id="cumulativeMeetingTableBodyId">';
+					for(var i in pmList){
+						
+						if(pmList[i].partyMeetingsList!=null && pmList[i].partyMeetingsList.length>0){
+							for(var j in pmList[i].partyMeetingsList){
+								if(pmList[i].partyMeetingsList[j].atrTextExist || pmList[i].partyMeetingsList[j].atrFilesExist){
+									atrCount++;
+								}
+								if(pmList[i].partyMeetingsList[j].momFilesExist || pmList[i].partyMeetingsList[j].momTextExist){
+									momCount++;
+								}
+							}
+						}
+						
+						
+						str1+="<tr>";
+						if(groupingLocationType=="constituency" && meetinglevel==3){
+							str1+="<td rowspan=4>"+pmList[i].assemblyNo+"</td>";
+						}
+						str1+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
+						
+						if(groupingLocationType=="state"){
+							str1+="<td rowspan=4>"+pmList[i].stateName+"</td>";
+						}
+						if(groupingLocationType=="district"){
+							str1+="<td rowspan=4>"+pmList[i].districtName+"</td>";
+						}
+						if(groupingLocationType=="constituency"){
+							str1+="<td rowspan=4>"+pmList[i].constituencyName+"</td>";
+						}
+						
+						if(pmList[i].totalInvitees!=null){
+							str1+="<td rowspan=4>"+pmList[i].totalInvitees+"</td>";
+							str1+="<td rowspan=4>"+pmList[i].totalAttended+"</td>";
+							str1+="<td rowspan=4>"+pmList[i].inviteesAttended+"</td>";
+							str1+="<td rowspan=4>"+pmList[i].nonInviteesAttended+"</td>";
+							str1+="<td rowspan=4>"+pmList[i].totalAbsent+"</td>";
+						}else{
+							str1+="<td rowspan=4> - </td>";
+							str1+="<td rowspan=4> - </td>";
+							str1+="<td rowspan=4> - </td>";
+							str1+="<td rowspan=4> - </td>";
+							str1+="<td rowspan=4> - </td>";
+						}
+						
+						var atrDocs = pmList[i].atrDocTxtInfo;
+						var momDocs = pmList[i].momDocTxtInfo;
+						
+						str1+="<td>"+momDocs.bothCount+"</td>";
+						str1+="<td>"+atrDocs.bothCount+"</td>";
+						str1+="<td> Both Exist</td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.onlyFileCount+"</td>";
+						str1+="<td>"+atrDocs.onlyFileCount+"</td>";
+						str1+="<td> Only File Exist</i></td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.onlyTxtCount+"</td>";
+						str1+="<td>"+atrDocs.onlyTxtCount+"</td>";
+						str1+="<td>Only Text Exist</i></td>";
+						str1+="</tr>";
+						
+						str1+="<tr>";
+						str1+="<td>"+momDocs.nothingCount+"</td>";
+						str1+="<td>"+atrDocs.nothingCount+"</td>";
+						str1+="<td> Nothing Exist</td>";
+						str1+="</tr>";
+					}
+					$("#updatedCounts").html("<div><table width='100%' class='table table-bordered'><tr align='center'><td><h4>MOM UPDATED MEETINGS : <span>"+momCount+"</span></h4></td><td><h4>ATR UPDATED MEETINGS : <span>"+atrCount+"</span></h4></td></tr></table></div>");
+					//console.log(atrCount+"--"+momCount);
+					str1+='</tbody>';
+					str1+='</table>';
+				}
+				$("#dummyForExcel").html(str1);
+				
 			}else{
 				$("#cumulativeMeetingResultId").html("No Records Found"); 
+				$("#dummyForExcel").html(" No Records Found");
 			}
-			
-			$("#cummAjax").hide();
 		});
 	}
 	
@@ -2399,13 +2469,22 @@ $(document).ready(function(e) {
 		}
 	});
 	
-	function exportToExcel()
-	{	if($("#resultTypeSelId").val()=="individual"){
-			tableToExcel('individualTableIdForExcel','Individual Meetings Report');
+	function exportToExcel(){
+		var isGrpd = false;
+		var value = $("input:checkbox[class=grpLctn]:checked").val();
+		if(typeof value !== 'undefined'){
+			isGrpd = true;
+		}
+			 
+		if($("#resultTypeSelId").val()=="individual"){
+			if(isGrpd){
+				tableToExcel('cummulativeTableIdForExcel','Grouped Meetings Report');
+			}else{
+				tableToExcel('individualTableIdForExcel','Individual Meetings Report');
+			}
 		}else if($("#resultTypeSelId").val()=="cumulative"){
 			tableToExcel('cummulativeTableIdForExcel','Cumulative Meetings Report');
 		}
-		
 	}	
 
 	var tableToExcel = (function() {
