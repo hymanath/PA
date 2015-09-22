@@ -54,6 +54,6 @@ public interface ICadreDetailsService {
 	public CadreOverviewVO getTdpcadreDetailsByTdpCadreId(Long tdpCadreId,String houseNo, String voterCardNo);
 	public BasicVO getParticipatedConstituency(Long tdpCadreId);
 	public List<QuestionAnswerVO> getCandidateAndConstituencySurveyResult(Long candidateId,Long constituencyId,Long surveyId);
-	public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds);
-	 public NtrTrustStudentVO getStudentFormalDetailsByCadre(List<Long> familyCadreIds,Long institutionId,Long tdpCadreId);
+	public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds);
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> familyCadreIds,Long institutionId);
 }

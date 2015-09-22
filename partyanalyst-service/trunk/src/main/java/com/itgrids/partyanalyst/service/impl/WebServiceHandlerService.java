@@ -2907,7 +2907,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return null;
 	 }
-	 public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds){
+	 public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds){
 		 try {
 			  return  cadreDetailsService.getNtrTrustStudentDetailsInstitutionWise(tdpCadreIds);
 		} catch (Exception e) {
@@ -2916,9 +2916,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 		 
 	 }
-	 public NtrTrustStudentVO getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId,Long tdpCadreId){
+	 public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId){
 		 try {
-			  return  cadreDetailsService.getStudentFormalDetailsByCadre(tdpCadreids,institutionId,tdpCadreId);
+			  return  cadreDetailsService.getStudentFormalDetailsByCadre(tdpCadreids,institutionId);
 		} catch (Exception e) {
 			log.debug("Entered into the getStudentFormalDetailsByCadre  method in WebServiceHandlerService");
 		}

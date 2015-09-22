@@ -114,6 +114,6 @@ public interface IWebServiceHandlerService {
 	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
 	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
 	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
-	  public List<NtrTrustStudentVO> getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
-	  public NtrTrustStudentVO getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId,Long tdpCadreId);
+	  public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
+	  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId);
 }
