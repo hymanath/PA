@@ -1363,11 +1363,12 @@ function updateFamilyInfo()
 		var panchayatStr=panchayat.toString();
 		var panchayatId=0;
 		var wardId=0;
-		if(panchayatStr.substring(0,1)==1){
-			panchayatId=panchayatStr.substring(1,panchayatStr.length);
-		}else{
-			wardId=panchayatStr.substring(1,panchayatStr.length);
-		}
+		if(panchayat != 0)
+			if(panchayatStr.substring(0,1)==1)
+				panchayatId=panchayatStr.substring(1,panchayatStr.length);
+			else
+				wardId=panchayatStr.substring(1,panchayatStr.length);
+			
 		
 		//var panchayatId=$('.cadreVillage option:selected').val();
 		var pincode=$('.pincode').val();
