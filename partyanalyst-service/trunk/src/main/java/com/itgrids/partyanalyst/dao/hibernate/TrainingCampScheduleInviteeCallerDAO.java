@@ -1164,7 +1164,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		queryStr.append(" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId, TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.campName, TCB.trainingCampBatchId, date(TCB.fromDate), ");
 		queryStr.append(" date(TCB.toDate), count(distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId), TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ");
 		
-		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCB.trainingCampBatchId = TCSIC.trainingCampScheduleInvitee.attendingBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' " );
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCB.trainingCampBatchId = TCSIC.trainingCampScheduleInvitee.attendingBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' and TCB.isCancelled = 'false' " );
 		
 		if(startDate != null && endDate != null){
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
@@ -1196,7 +1196,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		queryStr.append(" date(TCB.toDate), count(distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId), TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ");
 		
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCB.trainingCampBatchId = TCSIC.trainingCampScheduleInvitee.attendingBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' " +
-				" and TCSIC.callStatusId is not null " );
+				" and TCSIC.callStatusId is not null and TCB.isCancelled = 'false' " );
 		
 		if(startDate != null && endDate != null){
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");
@@ -1387,7 +1387,7 @@ public List<Object[]> getBatchConfirmedMemberDetails(List<Long> userIds,Date sta
 		str.append(" ,count(distinct model.trainingCampScheduleInvitee.trainingCampScheduleInviteeId),count(distinct model1.trainingCampBatchId) " +
 				"  from TrainingCampScheduleInviteeCaller model,TrainingCampBatch model1" +
 				" where model.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId = model1.trainingCampSchedule.trainingCampScheduleId " +
-				" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status like '%"+status+"%' ");	
+				" and model.trainingCampScheduleInvitee.scheduleInviteeStatus.status like '%"+status+"%' and model1.isCancelled = 'false' ");	
 		
 		if(startDate !=null && endDate !=null){
 			str.append(" and (date(model.trainingCampScheduleInvitee.trainingCampSchedule.fromDate)>=:startDate and date(model.trainingCampScheduleInvitee.trainingCampSchedule.toDate)<=:endDate)  ");
