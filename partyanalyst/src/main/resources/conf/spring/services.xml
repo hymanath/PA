@@ -2807,7 +2807,9 @@
 		<property name="partyMeetingMinuteHistoryDAO" ref="partyMeetingMinuteHistoryDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />
-		<property name="cadreCommitteeService" ref="cadreCommitteeService" />		
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />	
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+			
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
