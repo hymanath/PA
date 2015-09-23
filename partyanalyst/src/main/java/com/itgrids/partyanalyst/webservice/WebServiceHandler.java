@@ -1577,6 +1577,7 @@ public class WebServiceHandler {
 			
 			String[] stringArr =null;
 			if(cadreIdsStr !=null){
+				if (cadreIdsStr.endsWith(","))
 				cadreIdsStr = cadreIdsStr.substring(0, cadreIdsStr.length() - 1);
 				stringArr =cadreIdsStr.split(",");
 			}
