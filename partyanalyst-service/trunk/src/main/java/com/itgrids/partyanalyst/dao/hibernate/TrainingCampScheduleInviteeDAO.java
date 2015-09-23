@@ -30,7 +30,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
 		
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where  " +
-				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null "); //not in (1) " ); // except invitee status
+				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null and TCB.isCancelled = 'false' "); //not in (1) " ); // except invitee status
 		
 		if(startDate != null && endDate != null)
 		{
@@ -102,7 +102,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				" count(TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId)," +
 				" TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId = TCB.trainingCampSchedule.trainingCamp.trainingCampId  ");
-		queryStr.append(" and TCSIC.campCallPurpose.purpose='Confirmation' and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ='Interested' ");
+		queryStr.append(" and TCSIC.campCallPurpose.purpose='Confirmation' and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ='Interested' and TCB.isCancelled = 'false' ");
 		if(startDate != null && endDate != null)
 		{
 			queryStr.append(" and (date(TCB.fromDate) >=:startDate and date(TCB.fromDate) <=:endDate) ");
@@ -173,7 +173,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		str.append(" ,count(distinct model.trainingCampScheduleInviteeId),count(distinct model1.trainingCampBatchId) " +
 				"  from TrainingCampScheduleInvitee model,TrainingCampBatch model1" +
 				" where model.trainingCampSchedule.trainingCampScheduleId = model1.trainingCampSchedule.trainingCampScheduleId " +
-				" and model.scheduleInviteeStatus.status like '%"+status+"%' ");	
+				" and model.scheduleInviteeStatus.status like '%"+status+"%' and model1.isCancelled = 'false' ");	
 		
 		if(startDate !=null && endDate !=null){
 			str.append(" and (date(model.trainingCampSchedule.fromDate)>=:startDate and date(model.trainingCampSchedule.toDate)<=:endDate)  ");
@@ -271,7 +271,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		queryStr.append(" date(TCB.toDate), count(distinct TCSIC.trainingCampScheduleInvitee.trainingCampScheduleInviteeId), TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId, TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.status ");
 		
 		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC, TrainingCampBatch TCB  where TCSIC.trainingCampScheduleInvitee.attendingBatchId = TCB.trainingCampBatchId and TCSIC.campCallPurpose.purpose = 'Confirmation' " +
-				" and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null "); //not in (1) " );
+				" and TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null and TCB.isCancelled = 'false' "); //not in (1) " );
 		  
 		if(startDate != null && endDate != null){
 			queryStr.append(" and (date(TCSIC.updatedTime) >=:startDate and date(TCSIC.updatedTime) <=:endDate) ");

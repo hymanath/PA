@@ -32,6 +32,7 @@ private Long batchStatusId;
 private Long maxMembers;
 private BatchStatus batchStatus;
 private String isFeedbackUpdatable;
+private String isCancelled;
 
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -117,5 +118,13 @@ public String getIsFeedbackUpdatable() {
 public void setIsFeedbackUpdatable(String isFeedbackUpdatable) {
 	this.isFeedbackUpdatable = isFeedbackUpdatable;
 }
+@Column(name="is_cancelled")
+public String getIsCancelled() {
+	return isCancelled;
+}
+public void setIsCancelled(String isCancelled) {
+	this.isCancelled = isCancelled;
+}
+
 
 }
