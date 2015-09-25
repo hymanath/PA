@@ -344,7 +344,7 @@ var globalCadreId = '${cadreId}';
                     <tr>
                     	<td>
                         	<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
-                            <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span></p>
+                            <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
                             <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
                             <p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
 							<!-- <div id="participatedDivId" style="display:none"><p class="m_0"> PARTICIPATED CONSTITUENCY : <span id="participatedConstId"></span></p></div> -->
@@ -1229,6 +1229,13 @@ var globalCadreId = '${cadreId}';
 					 $("#qualificationId").html(result.qualification);
 					 $("#occupationId").html(result.occupation);
 					 $("#voterIdSpan").html(result.voterIdCardNo);
+					 
+					 if(result.isFamilyVoterId =="false"){
+						 $("#isFamilyId").html('<b>Own</b>');
+					 }else if(result.isFamilyVoterId == "true"){
+						 $("#isFamilyId").html('<b>Family</b>');
+					 }
+					 
 					 $("#panchayatId").html(result.panchayatName);
 					 $("#mandalId").html(result.tehsilName);
 					 $("#constituencyId").html(result.constituencyName);
