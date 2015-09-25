@@ -111,8 +111,14 @@ public class CadreCommitteeMemberVO {
 	private Long invitationCount=0l;
 	
 	private String enrollmentYears;
+	private String isFamilyVoterId;
 	
-	
+	public String getIsFamilyVoterId() {
+		return isFamilyVoterId;
+	}
+	public void setIsFamilyVoterId(String isFamilyVoterId) {
+		this.isFamilyVoterId = isFamilyVoterId;
+	}
 	public Long getInvitationCount() {
 		return invitationCount;
 	}
