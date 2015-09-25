@@ -1020,8 +1020,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						 <img id="comitteeMemberAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
 						<div class="col-md-8 col-md-offset-1" id="committeeMemberDiv" >
 
-						 </div>   
+						 </div>
+						 <div class="col-md-8 col-md-offset-1"  >
+								<div id="presGenSecrErrDivId" style="color:red;"></div>
+						 </div>
 						<div class="col-md-2" id="conformedBtn" style="padding-top:10px;"></div>
+						
 					</div>  
 					
 					<!--Second Block END-->
@@ -3934,6 +3938,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#dialogSummary" ).modal("show");
 		$("#CommitteeDetails").html(""); 
 		$("#committeeMemberDiv").html("");
+		$("#presGenSecrErrDivId").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
 		getCommitteeSummaryInfo(id);
 		$('.loader5').ClassyLoader({
@@ -4071,7 +4076,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#districtContent").hide();
 		$("#constituencyContent").show();
 		$( "#dialogSummary" ).modal("show");
-		
+		$("#presGenSecrErrDivId").html("");
 		$("#CommitteeDetails").html(""); 
 		$("#committeeMemberDiv").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
@@ -4345,6 +4350,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#CommitteeDetails").html('');
 		$("#committeeMemberDiv").html('');
 		$("#conformedBtn").html('');
+		$("#presGenSecrErrDivId").html("");
 		var jsObj = 
 	{
 		basicCommitteetypeId:basicCommitteetypeId,
@@ -4442,6 +4448,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 			$("#committeeMemberDiv").html('');
 			$("#conformedBtn").html('');
+			$("#presGenSecrErrDivId").html("");
 			$("#"+ajaxImgId+"").show();
 			var jsObj = 
 			{
@@ -4479,7 +4486,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	{
 		$('#'+divId+'').hide();
 	}
-	
+
+	var isPresidentAvail = false;
+	var isGenSecAvail = false;
 	
 	function buildCommitteeMemberDetails(result,jsObj,constituencyId,locationId)
 	{
@@ -4499,6 +4508,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].membershipNo+'</td>';
 		str+='<td>'+result[i].role+'';
+		
+		var roleStr = result[i].role;
+		
+		if(roleStr == "President"){
+			isPresidentAvail = true;
+		}
+		if(roleStr == "General Secretary"){
+			isGenSecAvail = true;
+		}
+		
 		if(result[i].status != "Y"){
 			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
 				str+='<div class="pull-right  btn btn-default btn-sm" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
@@ -4528,6 +4547,21 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function committeeComplete(basicCommitteetypeId,levelId,locationId,constituencyId)
 	{
+	$("#presGenSecrErrDivId").html("");
+		if(levelId == 6 || levelId == 8){
+			if(isPresidentAvail == false && isGenSecAvail == false){
+				$("#presGenSecrErrDivId").html("Please add President and General Secretary details to confirm the Committee...");
+				return;
+			}
+			else if(isPresidentAvail == false){
+				$("#presGenSecrErrDivId").html("Please add President details to confirm the Committee...");
+				return;
+			}
+			else if(isGenSecAvail == false){
+				$("#presGenSecrErrDivId").html("Please add General Secretary details to confirm the Committee...");
+				return;
+			}
+		}
 	var r=confirm("Are You Sure To Conform ?");
 		if(r)
 		{
@@ -4553,6 +4587,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				  {
 				alert("Committee Confirmed")
 				$("#conformedBtn").html('');
+				$("#presGenSecrErrDivId").html("");
 				getSummary(constituencyId);
 				getMandalMuncipalDivisonStartedCommittees(constituencyId);
 				  }
