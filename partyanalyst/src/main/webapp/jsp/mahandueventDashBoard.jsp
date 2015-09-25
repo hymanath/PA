@@ -50,7 +50,7 @@
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:44px;"></p>               
+                 <p class="header-text display-style" id="mainheading" style="font-size:32px;"></p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -94,7 +94,7 @@
 	<div class="row" style="padding:5px;">
 		
 		<div class="col-md-3 col-md-offset-8">
-        	   <div id="reportrange" class="pull-right calendar-style">
+        	   <div id="reportrange" class="pull-right calendar-style"  style="width: 300px;">
                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                   <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
                </div>
