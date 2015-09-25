@@ -1231,9 +1231,9 @@ var globalCadreId = '${cadreId}';
 					 $("#voterIdSpan").html(result.voterIdCardNo);
 					 
 					 if(result.isFamilyVoterId =="false"){
-						 $("#isFamilyId").html('<b>Own</b>');
+						 $("#isFamilyId").html('<b>Own VoterCard</b>');
 					 }else if(result.isFamilyVoterId == "true"){
-						 $("#isFamilyId").html('<b>Family</b>');
+						 $("#isFamilyId").html('<b>Family VoterCard</b>');
 					 }
 					 
 					 $("#panchayatId").html(result.panchayatName);
