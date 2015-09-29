@@ -113,6 +113,9 @@
                     </c:if>
 					<c:if test="${sessionScope.USER.accessType == 'MP'}">
 						<li><a tabindex="-1" href="meetingList.action"> Party Meeting ATR & MOM</a></li>
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER') ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_GROUP_REDIRECT')}">
+							<li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
+						</c:if>
 					</c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>                 
