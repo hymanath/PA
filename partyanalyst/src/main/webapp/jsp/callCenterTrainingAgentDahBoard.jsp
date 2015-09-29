@@ -59,6 +59,10 @@ footer
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
 					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
 					   <li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
+					    <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS')}">
+							<li><a href="committeeDashBoardAction.action"><span>COMMITTEES DASHBOARD</span></a> </li>
+							<li><a href="meetingList.action"><span>Party Meeting ATR & MOM</span></a> </li>
+					   </c:if>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
                     </ul>   

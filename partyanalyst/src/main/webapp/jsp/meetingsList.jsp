@@ -1,4 +1,6 @@
 <!doctype html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="utf-8">
@@ -48,12 +50,15 @@ table thead th , table tbody tr td{text-align:center !important}
                     <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
                     Menu <img src="images/menu_icon.png" />
                     </a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
+					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
 					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   
+					   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER') ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_GROUP_REDIRECT')}">
+						<li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
+					   </c:if>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-					
-                    </ul>   
+					</ul>   
             </div>			
         </div>       
     </div>
