@@ -30,9 +30,56 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 <style>
+.benefits-block
+{
+	padding:0px;
+}
+.benefits-block li
+{
+	border-bottom:1px solid #ccc;
+	list-style:none;
+	padding:8px;
+}
+.benefits-block li:last-child
+{
+	border-bottom:0px;
+}
+.panel-default .panel-heading
+{
+	border-radius:0px;
+}.countStyleSpan
+{
+	background-color:#ccc;
+	border-radius:50%;
+	font-size:20px;
+	position:relative;
+	top:-25px;
+
+	height:30px;
+	width:30px;
+	line-height:30px;
+	text-align:center;
+}
+.count-style
+{
+	background-color:#f4f4f4;
+	border-radius:50%;
+	font-size:12px;
+	height:20px;
+	line-height:20px;
+	width:20px;
+	display:block;
+	text-align:center;
+	margin-right:5px;
+}
+.pad_10
+{
+	padding:10px;
+}
 .hoverclassli
 {
 	padding:0px;
+	cursor:pointer;
 }
 .hoverclassli li{list-style:none}
 .hoverclassli:hover .hoverclassul
@@ -52,7 +99,6 @@
 	height:200px;
 	overflow-y:scroll;
 	padding:0px;
-	bottom:63px;
 }
 .hoverclassul li
 {
@@ -405,9 +451,15 @@ var globalCadreId = '${cadreId}';
                      </div> 
                 </div>
             	<div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> GRIEVANCE DETAILS</h4>
-                    </div>
+                	<div class="panel-heading" role="tab" id="headingTwo12">
+								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#collapseTwo12" aria-expanded="false" aria-controls="collapseTwo12">	
+								<h4 class="panel-title" style="font-weight:400">
+									<i class="glyphicon glyphicon-user"></i>
+										CANDIDATE GRIEVANCE DETAILS
+									<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">01</span></span>
+								</h4>
+								</a>
+							</div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body">
 					  <div id="complaintCountDiv">
@@ -425,7 +477,11 @@ var globalCadreId = '${cadreId}';
                 </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-usd"></i> FAMILY GRIEVANCE</h4>
+					  
+                    	<h4 class="panel-title text-bold"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS
+						 <span class="pull-right"><span class="count-style" id="totalFamilyComplaints">0</span></span>
+						</h4>
+						 
                     </div>
 					 <div class="panel-body pad_0">
 					 <img id="familyMemberImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
@@ -445,21 +501,23 @@ var globalCadreId = '${cadreId}';
 				  <div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
+							<img src="images/User_icon_BLACK-01.png"> 
 							CADRE BENEFITS
 						</h4>
 					</div>
-					<div class="panel-body">
+						<div class="panel-body pad_0">
+						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
-						<h4>Approved Financial Support <span class="pull-right" id="candidateApprovedAmount">0</span></h4>
-						<h4>Death Insurance Requests <span class="pull-right" >
+						<li>APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
+						<li>DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="candidateDeathInsurance">0
 									
 								</li>
 							</ul>
 							
-							</span></h4>
-						<h4>Hospitalization Insurance Requests <span class="pull-right" >
+							</span></li>
+						<li>HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="candidateHospitalizationInsurance">0
 									
@@ -467,39 +525,43 @@ var globalCadreId = '${cadreId}';
 							</ul>
 							
 							</span>
-							</h4>
-						<h4>
+							</li>
+						<li>
 							<span id="cadreIdSpanForEducationBenefit"></span>	
-						</h4>
+						</li>
+						</ul>
 					</div>
 				  </div>
 				  <div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
+						<img src="images/family_icon.png">
 							FAMILY BENEFITS
 						</h4>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body pad_0">
+						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none"></center>
-						<h4>Approved Financial Support <span class="pull-right" id="familyApprovedAmount">0</span></h4>
-						<h4>Death Insurance Requests <span class="pull-right" >
+						<li>APPROVED FINANCIAL SUPPORT <span class="pull-right" id="familyApprovedAmount">0</span></li>
+						<li>DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="familyDeathInsurance">0
 								</li>
 							</ul>
-							</span></h4>
-						<h4>Hospitalization Insurance Requests<span class="pull-right" >
+							</span></li>
+						<li>HOSPITALIZATION INSURANCE REQUESTS<span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="familyHospitalizationInsurance">0
 									
 								</li>
 							</ul>
 							
-							</span></h4>
-						<h4>
+							</span></li>
+						<li>
 							<span id="familyIdSpanForEducationBenefit"></span>	
 							
-						</h4>
+						</li>
+						</ul>
 					</div>
 				  </div>
 				</div>
@@ -2608,7 +2670,7 @@ console.log(arr)
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2635,11 +2697,8 @@ function buildTotalComplaints(result,complaintId)
 
 	var str = '';
 	str += '<ul class="list-inline">';
-	str += '<li>';
-	str += '<h1 class="m_0 text-center" style="font-size:50px;color:#666">'+result[0].count+'</h1>';
-	str += '<h6 class="m_0">TOTAL COMPLAINTS</h6>';
-	str += '</li>';
 	
+	$("#candidateTotalComplaintsDiv").html(''+result[0].count+'');
 	str += '<li style="margin-top:5px">';
 	str += '<ul class="display-style pull-right graph-list count-list">';
 	for(var i in result[0].subList){
@@ -2654,32 +2713,26 @@ function buildTotalComplaints(result,complaintId)
 	str += '</li>';
 	str += '</ul>';
 	$("#complaintCountDiv").html(str);
+	
 	var comp1='';
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	//comp1+='<div>';
-	//comp1+='<h5 class="m_0">Total Financial Requested '+result[0].amountVO.requested+'/-</h5>';
-	//comp1+='<p class="m_0"><span class="party_sup-box"></span><span class="party_sup">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</span></p>';
-	//comp1+='<p class="m_0"><span class="govt_sup-box"></span><span class=" govt_sup">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</span></p>';
-    $("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
+	$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 	}
 	else
 	{
 	 $("#candidateApprovedAmount").html('0/-');
 	}
-	//comp1+='</div>';
-	//$('#financialDiv').html(comp1);
-
 	
 	var comp = '';
 	comp += '<ul class="inbox-messages custom-scroll-ins" style="margin-bottom:0px;">';
 	for(var j in result[0].voList){
 		var color = getColorCodeByStatus(result[0].voList[j].status);
 		if(result[0].voList[j].complaintId == complaintId){
-		comp += '<li style="background:'+color+';border-left:4px solid '+color+'">';
+		comp += '<li style="cursor:pointer;background:'+color+';border-left:4px solid '+color+'"';
 		comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
@@ -2692,7 +2745,9 @@ function buildTotalComplaints(result,complaintId)
    
    for(var j in result[0].voList){
 		if(result[0].voList[j].complaintId != complaintId){
-			comp += '<li style="background:'+color+';border-left:4px solid '+color+'">';
+		
+			comp += '<li style="background:'+color+';border-left:4px solid '+color+'" ';
+			
 			comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			
@@ -2708,7 +2763,6 @@ function buildTotalComplaints(result,complaintId)
     $("#complaintsDiv").html(comp);
 	$(".custom-scroll-ins").mCustomScrollbar();
 }
-
 
 function buildInsuranceTotalComplaints(result,complaintId)
 {
@@ -2734,6 +2788,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	 for(var j in result[1].voList){
 	 if(result[1].voList[j].issueType == 'Death'){
 	str+='<li>';
+	str+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
 	str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 	str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 	str+='<p class="m_0">Requested On '+result[1].voList[j].raisedDate+'</p>';
@@ -2742,6 +2797,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	}
 	str+='</ul>';
 	}
+	
 	$("#candidateDeathInsurance").html(str);
 	
 	var str1 ='';
@@ -2752,6 +2808,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	 for(var j in result[1].voList){
 	 if(result[1].voList[j].issueType == 'Hospitalization'){
 	str1+='<li>';
+	str1+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
 	str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 	str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 	str1+='<p class="m_0">Requested On '+result[1].voList[j].raisedDate+'</p>';
@@ -2763,7 +2820,6 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	
 	$("#candidateHospitalizationInsurance").html(str1);
 }
-
 
 <!--end-->
  //Grievance Family 
@@ -2777,7 +2833,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			//url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			//url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2800,11 +2856,10 @@ function getMemberComplaints()
 
 }
 
-function buildFamilyMemberComplaint(result)
+function buildFamilyMemberComplaint(result,jobj)
 {
-$(".dataLoadingsImgForTabSection").css("display","none");
 
-var flag = false;
+	 var flag = false;
  try{
 	 var cnt = 0;
 
@@ -2817,71 +2872,76 @@ var flag = false;
 				cnt  = cnt + 1;
 		  }
 	 }
-	}			  
+	}		  
 	var comp = '';
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	comp+='<div class="panel panel-default">';
-	comp+='<div class="panel-heading">';
-	comp+='<h4 class="panel-title">TOTAL COMPLAINTS-'+cnt+'</h4>';
-	comp+='</div>';
+	//comp+='<div class="panel panel-default">';
+	//comp+='<div class="panel-heading">'; 
+	//comp+='<h4 class="panel-title">TOTAL COMPLAINTS-'+cnt+'</h4>';
+	//comp+='</div>';
 	//comp+='<div class="panel-body">';
 	//comp+='<h5 class="m_0">TOTAL FINANCIAL REQUESTED :'+result[0].amountVO.requested+'/-</h5>';
 	//comp+='<h5 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h5>';
 	//comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
-	//comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
+  //comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
+	
 	$("#familyApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 	}
+	$("#totalFamilyComplaints").html(''+cnt+'');
 	//comp+='</div>';
-	comp+='</div>';
-	comp += '<div class="panel-group m_0" id="accordion155" role="tablist" aria-multiselectable="true">';
+	//comp+='</div>';
+	//comp += '<div class="panel-group m_0" id="accordion155" role="tablist" aria-multiselectable="true">';
 	
 	 for(var j in result[0].subList){
 	  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
 			{ 
 			flag = true;
-			comp += '<div class="panel panel-default">';
-			comp += '<div class="panel-heading" style="background-color:#FFF" role="tab" id="headingOne155'+j+'">';
-			comp += '<div role="button" style="color:#666" data-toggle="collapse" data-parent="#accordion155" href="#collapseOne155'+j+'" aria-expanded="true" aria-controls="collapseOne155'+j+'">';
-			comp += '<div class="media">';
+			//comp += '<div class="panel panel-default">';
+			//comp += '<div class="panel-heading" style="background-color:#FFF" role="tab" id="headingOne155'+j+'">';
+			//comp += '<div role="button" style="color:#666" data-toggle="collapse" data-parent="#accordion155" href="#collapseOne155'+j+'" aria-expanded="true" aria-controls="collapseOne155'+j+'">';
+			comp += '<div class="media" style="padding:10px">';
 			comp += '<div class="media-left">';
 			comp += '<img src="'+result[0].subList[j].image+'" style="height:35px;width:35px;"  class="media-object img-border img-circle">';
 			comp += '</div>';
 			comp += '<div class="media-body">';
+			comp += '<ul class="list-inline">';
+			comp += '<li>';
 			comp += '<p class="m_0">Name- '+result[0].subList[j].name+'</p>';
 			comp += '<p class="m_0">Relation- '+result[0].subList[j].relation+' - '+result[0].subList[j].status+' </p>';
+			comp += '<p class="m_0">MemberShipID- '+result[0].subList[j].membershipId+'</p>';
 			
-			 if(result[0].subList[j].membershipId !=null && result[0].subList[j].membershipId.trim().length>0){
-				
-				comp += '<p class="m_0">MemberShipID-'+result[0].subList[j].membershipId+'</p>';
-			}else{
-				comp += '<p class="m_0">MemberShipID- </p>';
-			}
-			
+			comp += '</li>';
+			comp += '<li>';
+			comp += '<p class="countStyleSpan">'+result[0].subList[j].subList.length+'</p>';
+			comp += '</li>';
+			comp += '</ul>';
 			comp += '</div>';
 			comp += '</div>';
-			comp += '</div>';
-			comp += '</div>';
-			comp += '<div id="collapseOne155'+j+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne155'+j+'">';
+			//comp += '</div>';
+			//comp += '</div>';
+			//comp += '<div id="collapseOne155'+j+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne155'+j+'">';
 				comp += '<div class="panel-body pad_0">';
+				
 				comp+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages custom-scroll-ins">';
 				for(var k in result[0].subList[j].subList)
 				{
 		     	var color = getColorCodeByStatus(result[0].subList[j].subList[k].status);
-				comp += '<li style="background:'+color+'">';
+				comp += '<li style="background:'+color+'"';
+				
 				comp+=' <p class="m_0">C ID - '+result[0].subList[j].subList[k].complaintId+'</p><p class="m_0">'+result[0].subList[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[0].subList[j].subList[k].status+'</span></p><p class="m_0">'+result[0].subList[j].subList[k].raisedDate+'</p></li>';
 				}
 				comp+='</ul>';
 			 } 
 				comp += '</div>';
-			comp += '</div>';
+			//comp += '</div>';
 			comp += '</div>';
 		}
-	  comp += '</div>';
-	  
+	  //comp += '</div>';
+	 
       $("#familyMemberDiv").html(comp);
 	  if(result[0].count>=7){
 	    $("#familyMemberDiv").css("height","760px");
@@ -2896,16 +2956,14 @@ var flag = false;
 	  $("#familyApprovedAmount").html('0/-');
 	}
 	
- }catch(err){
- alert(err)
- }
+ }catch(e){}
  $(".custom-scroll-ins").mCustomScrollbar();
 }
 
 
 function buildInsuranceFamilyMemberComplaint(result)
 {
-	 var hosReq = 0;
+	  var hosReq = 0;
 	 var deathReq=0;
 	for(var j in result[1].subList){
 	  if(result[1].subList[j].subList != null && result[1].subList[j].subList.length > 0)
@@ -2936,6 +2994,8 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Death')
 				{
 					str+='<li>';
+					str+='<p class="m_0">C ID -'+result[1].subList[j].subList[k].complaintId+'</p>';
+					
 					str+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
 					str+='<p class="m_0">Requested On '+result[1].subList[j].subList[k].raisedDate+'</p>';
@@ -2962,6 +3022,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Hospitalization')
 				{
 					str1+='<li>';
+					str1+='<p class="m_0">C ID -'+result[1].subList[j].subList[k].complaintId+'</p>';
 					str1+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str1+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
 					str1+='<p class="m_0">Requested On '+result[1].subList[j].subList[k].raisedDate+'</p>';
@@ -4619,7 +4680,7 @@ getEventsOverviewFortdpCadre();
 								if(result.count ==null){
 									result.count =0;
 								}
-								$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span></h4>');
+								$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span>');
 							}
 						}
 						if(type == "family"){
@@ -4629,7 +4690,7 @@ getEventsOverviewFortdpCadre();
 								if(result.count ==null){
 									result.count =0;
 								}
-								$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span></h4>');
+								$("#familyIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span>');
 							}
 						}
 					}
@@ -4640,7 +4701,7 @@ getEventsOverviewFortdpCadre();
 		str='';
 		if(result !=null){
 			if(type =="cadre"){
-			$("#cadreIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+			$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><a style="cursor:pointer;">'+result.count+'</a></span>');
 			}
 			
 			if(result.ntrTrustStudentVoList !=null && result.ntrTrustStudentVoList.length>0){
@@ -4676,7 +4737,7 @@ getEventsOverviewFortdpCadre();
 	function buildingStudentDetailsInstitutionWiseOfFamily(result,type){
 		str='';
 		if(result !=null){
-			$("#familyIdSpanForEducationBenefit").html('<h4>NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalclsFamily" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><a style="cursor:pointer;">'+result.count+'</a></span></h4>');
+			$("#familyIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalclsFamily" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><a style="cursor:pointer;">'+result.count+'</a></span>');
 
 			
 			if(result.ntrTrustStudentVoList !=null && result.ntrTrustStudentVoList.length>0){
