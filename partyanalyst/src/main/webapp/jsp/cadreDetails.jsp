@@ -30,6 +30,10 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 <style>
+.inbox-messages
+{
+	color:#fff !important
+}
 .benefits-block
 {
 	padding:0px;
@@ -47,17 +51,18 @@
 .panel-default .panel-heading
 {
 	border-radius:0px;
-}.countStyleSpan
+}
+.countStyleSpan
 {
 	background-color:#ccc;
 	border-radius:50%;
-	font-size:20px;
+	font-size:14px;
 	position:relative;
 	top:-25px;
-
-	height:30px;
-	width:30px;
-	line-height:30px;
+	height:25px;
+	width:25px;
+	line-height:25px;
+	display:block;
 	text-align:center;
 }
 .count-style
@@ -2670,7 +2675,7 @@ console.log(arr)
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2791,7 +2796,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	str+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
 	str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 	str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
-	str+='<p class="m_0">Requested On '+result[1].voList[j].raisedDate+'</p>';
+	str+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
 	str+='</li>';
 	}
 	}
@@ -2811,7 +2816,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	str1+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
 	str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 	str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
-	str1+='<p class="m_0">Requested On '+result[1].voList[j].raisedDate+'</p>';
+	str1+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
 	str1+='</li>';
 	}
 	}
@@ -2833,7 +2838,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			//url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			//url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2909,14 +2914,17 @@ function buildFamilyMemberComplaint(result,jobj)
 			comp += '</div>';
 			comp += '<div class="media-body">';
 			comp += '<ul class="list-inline">';
-			comp += '<li>';
+			comp += '<li style="width:85%">';
 			comp += '<p class="m_0">Name- '+result[0].subList[j].name+'</p>';
 			comp += '<p class="m_0">Relation- '+result[0].subList[j].relation+' - '+result[0].subList[j].status+' </p>';
-			comp += '<p class="m_0">MemberShipID- '+result[0].subList[j].membershipId+'</p>';
+			if(result[0].subList[j].membershipId == null)
+			comp += '<p class="m_0">MemberShipID- N/A</p>';
+			else
+			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'">'+result[0].subList[j].membershipId+'</p></a>';
 			
 			comp += '</li>';
 			comp += '<li>';
-			comp += '<p class="countStyleSpan">'+result[0].subList[j].subList.length+'</p>';
+			comp += '<span class="countStyleSpan">'+result[0].subList[j].subList.length+'</span>';
 			comp += '</li>';
 			comp += '</ul>';
 			comp += '</div>';
@@ -2998,7 +3006,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 					
 					str+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
-					str+='<p class="m_0">Requested On '+result[1].subList[j].subList[k].raisedDate+'</p>';
+					str+='<p class="m_0"> '+result[1].subList[j].subList[k].raisedDate+'</p>';
 					str+='</li>';
 			 }
 		}
@@ -3025,7 +3033,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 					str1+='<p class="m_0">C ID -'+result[1].subList[j].subList[k].complaintId+'</p>';
 					str1+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str1+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
-					str1+='<p class="m_0">Requested On '+result[1].subList[j].subList[k].raisedDate+'</p>';
+					str1+='<p class="m_0"> '+result[1].subList[j].subList[k].raisedDate+'</p>';
 					str1+='</li>';
 			 }
 		}
@@ -4680,7 +4688,7 @@ getEventsOverviewFortdpCadre();
 								if(result.count ==null){
 									result.count =0;
 								}
-								$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span>');
+								$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<ul class="pull-right"><li>'+result.count+'</li></ul>');
 							}
 						}
 						if(type == "family"){
@@ -4690,7 +4698,7 @@ getEventsOverviewFortdpCadre();
 								if(result.count ==null){
 									result.count =0;
 								}
-								$("#familyIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right">'+result.count+'</span>');
+								$("#familyIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<ul class="list-inline pull-right"><li>'+result.count+'</li></ul>');
 							}
 						}
 					}
@@ -4701,7 +4709,7 @@ getEventsOverviewFortdpCadre();
 		str='';
 		if(result !=null){
 			if(type =="cadre"){
-			$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<span class="pull-right showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><a style="cursor:pointer;">'+result.count+'</a></span>');
+			$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<ul class="pull-right list-inline showStudentBenefitModalcls" attr_title="NTR TRUST EDUCATION BENEFITS" attr_type="'+type+'"><li><a style="cursor:pointer;">'+result.count+'</a></li></ul>');
 			}
 			
 			if(result.ntrTrustStudentVoList !=null && result.ntrTrustStudentVoList.length>0){
