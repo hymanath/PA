@@ -100,14 +100,14 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
         " join user_address ua on  tc.address_id=ua.user_address_id " +
         " join constituency c on ua.constituency_id=c.constituency_id " +
         " left join training_camp_cadre_feedback_details tccf on tccf.tdp_cadre_id=tc.tdp_cadre_id and tccf.training_camp_batch_id=tcba.training_camp_batch_id " +
-        " left join  tdp_committee_member tcm on tcba.tdp_cadre_id=tcm.tdp_cadre_id " +
+        " left join  tdp_committee_member tcm on tcba.tdp_cadre_id=tcm.tdp_cadre_id and tcm.is_active='Y' " +
         " left join tdp_committee_role tcr on tcm.tdp_committee_role_id=tcr.tdp_committee_role_id " +
         " left join tdp_committee tce on tcr.tdp_committee_id=tce.tdp_committee_id " +
         " left join tdp_committee_level tcl on tce.tdp_committee_level_id=tcl.tdp_committee_level_id " +
         " left join tdp_roles tr on tcr.tdp_roles_id=tr.tdp_roles_id " +
         " left join tdp_basic_committee tbc on tce.tdp_basic_committee_id=tbc.tdp_basic_committee_id " +
 
-   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014 and tcm.is_active='Y' and tcba.is_deleted = 'false' " +
+   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014  and tcba.is_deleted = 'false' " +
    " order by tcb.training_camp_batch_id asc,tc.first_name asc";
    
   		
