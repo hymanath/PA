@@ -5,7 +5,7 @@ var statusarr = ['Not Verified','In Progress','Completed','Not Eligible','Not Po
 function setcolorsForStatus()
 	{
 		statusColorArr = new Array();
-		var colorStatic = new Array('#c0392b','#f39c12','#e74c3c','#2c3e50','#34495e',
+		var colorStatic = new Array('#31708f','#f39c12','#449d44','#c0392b','#e74c3c',
 		'#2ecc71','#1abc9c','#d35400','#3498db','#2980b9','#9b59b6','#8e44ad','#7f8c8d','#16a085');
 		
 		var colorCount = 0;

@@ -513,8 +513,8 @@ var globalCadreId = '${cadreId}';
 						<div class="panel-body pad_0">
 						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
-						<li>APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
-						<li>DEATH INSURANCE REQUESTS <span class="pull-right" >
+						<li id="candidateapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
+						<li id="candidatedeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="candidateDeathInsurance">0
 									
@@ -522,7 +522,7 @@ var globalCadreId = '${cadreId}';
 							</ul>
 							
 							</span></li>
-						<li>HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
+						<li id="candidatehospitalDiv">HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="candidateHospitalizationInsurance">0
 									
@@ -531,7 +531,7 @@ var globalCadreId = '${cadreId}';
 							
 							</span>
 							</li>
-						<li>
+						<li id="candidateEducationBenefitDiv">
 							<span id="cadreIdSpanForEducationBenefit"></span>	
 						</li>
 						</ul>
@@ -547,14 +547,14 @@ var globalCadreId = '${cadreId}';
 					<div class="panel-body pad_0">
 						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none"></center>
-						<li>APPROVED FINANCIAL SUPPORT <span class="pull-right" id="familyApprovedAmount">0</span></li>
-						<li>DEATH INSURANCE REQUESTS <span class="pull-right" >
+						<li id="familyapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="familyApprovedAmount">0</span></li>
+						<li id="familydeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="familyDeathInsurance">0
 								</li>
 							</ul>
 							</span></li>
-						<li>HOSPITALIZATION INSURANCE REQUESTS<span class="pull-right" >
+						<li id="familyhospitalDiv">HOSPITALIZATION INSURANCE REQUESTS<span class="pull-right" >
 							<ul  class="hoverclassli">
 								<li id="familyHospitalizationInsurance">0
 									
@@ -562,7 +562,7 @@ var globalCadreId = '${cadreId}';
 							</ul>
 							
 							</span></li>
-						<li>
+						<li id="familyEducationBenefitDiv">
 							<span id="familyIdSpanForEducationBenefit"></span>	
 							
 						</li>
@@ -2671,17 +2671,20 @@ var obj = {
 }
 
 arr.push(obj);
-console.log(arr)
+
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			url: //"http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
 			 username: "grievance",
              password: "grievance@!tG"	
 			 }).done(function(myresult){
+			 $("#candidateapprovedDiv").hide();
+			$("#candidatedeathDiv").hide();
+			$("#candidatehospitalDiv").hide();
 				 if(myresult != null){
 				buildTotalComplaints(myresult,0);
 				buildInsuranceTotalComplaints(myresult,0);
@@ -2689,9 +2692,7 @@ console.log(arr)
 		else{
 			$("#complaintCountDiv").html('No Data Available.');
 			$("#complaintsDiv").html('No Data Available.');
-				$("#candidateApprovedAmount").html('0');
-				$("#candidateDeathInsurance").html('0');
-				$("#candidateHospitalizationInsurance").html('0');
+			
 		}
 			});
 }
@@ -2711,6 +2712,7 @@ function buildTotalComplaints(result,complaintId)
 	if(result[0].subList[i].count  > 0)
 	{
 	var color=getColorCodeByStatus(result[0].subList[i].status);
+	
 	str += '<li><span style="background-color:'+color+';height:11px;width:11px;display:inline-block;margin-right:4px"></span><span class="approved-text">'+result[0].subList[i].status.toUpperCase()+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
 	}
 	}
@@ -2725,17 +2727,21 @@ function buildTotalComplaints(result,complaintId)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
+		if(result[0].amountVO.approved  >0)
+		{
+		$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
+		$("#candidateapprovedDiv").show();
+		}
+		else
+		{
+		$("#candidateapprovedDiv").hide();
+		}
 	}
-	else
-	{
-	 $("#candidateApprovedAmount").html('0/-');
-	}
-	
 	var comp = '';
 	comp += '<ul class="inbox-messages custom-scroll-ins" style="margin-bottom:0px;">';
 	for(var j in result[0].voList){
 		var color = getColorCodeByStatus(result[0].voList[j].status);
+	
 		if(result[0].voList[j].complaintId == complaintId){
 		comp += '<li style="cursor:pointer;background:'+color+';border-left:4px solid '+color+'"';
 		comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
@@ -2750,7 +2756,7 @@ function buildTotalComplaints(result,complaintId)
    
    for(var j in result[0].voList){
 		if(result[0].voList[j].complaintId != complaintId){
-		
+		var color = getColorCodeByStatus(result[0].voList[j].status);
 			comp += '<li style="background:'+color+';border-left:4px solid '+color+'" ';
 			
 			comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
@@ -2764,7 +2770,9 @@ function buildTotalComplaints(result,complaintId)
    }
    
 	comp += '</ul>';
-	 
+	 if(result[0].count == 0)
+	$("#complaintCountDiv").html('No Data Available.');
+	
     $("#complaintsDiv").html(comp);
 	$(".custom-scroll-ins").mCustomScrollbar();
 }
@@ -2801,10 +2809,12 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	}
 	}
 	str+='</ul>';
-	}
-	
 	$("#candidateDeathInsurance").html(str);
-	
+	$("#candidatedeathDiv").show();
+	}
+	else{
+	$("#candidatedeathDiv").hide();
+	}
 	var str1 ='';
 	str1+=''+hosReq+'';
 	if(hosReq > 0)
@@ -2821,9 +2831,13 @@ function buildInsuranceTotalComplaints(result,complaintId)
 	}
 	}
 	str1+='</ul>';
+	$("#candidateHospitalizationInsurance").html(str1);
+	$("#candidatehospitalDiv").show();
+	}
+	else{
+	$("#candidatehospitalDiv").hide();
 	}
 	
-	$("#candidateHospitalizationInsurance").html(str1);
 }
 
 <!--end-->
@@ -2838,7 +2852,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			//url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2853,14 +2867,13 @@ function getMemberComplaints()
 				}
 					else{
 			   $("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
-			   $("#familyDeathInsurance").html('0');
-			   $("#familyApprovedAmount").html('0');
-			   $("#familyHospitalizationInsurance").html('0');
-					}
+			$("#familydeathDiv").hide();
+			   $("#familyhospitalDiv").hide();
+			   $("#familyapprovedDiv").hide();
+			}
 			});
 
 }
-
 function buildFamilyMemberComplaint(result,jobj)
 {
 
@@ -2893,8 +2906,12 @@ function buildFamilyMemberComplaint(result,jobj)
 	//comp+='<h5 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h5>';
 	//comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
   //comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
-	
+	$("#familyapprovedDiv").show();
 	$("#familyApprovedAmount").html(''+result[0].amountVO.approved+'/-');
+	}
+	else
+	{
+	$("#familyapprovedDiv").hide();
 	}
 	$("#totalFamilyComplaints").html(''+cnt+'');
 	//comp+='</div>';
@@ -3013,9 +3030,15 @@ function buildInsuranceFamilyMemberComplaint(result)
 	}
 	}
 	str+='</ul>';
+	$("#familydeathDiv").show();
+	$("#familyDeathInsurance").html(str);
+	}
+	else
+	{
+	$("#familydeathDiv").hide();
 	}
 	
-	$("#familyDeathInsurance").html(str);
+	
 	
 	var str1 = '';
 	str1+=''+hosReq+'';
@@ -3040,10 +3063,16 @@ function buildInsuranceFamilyMemberComplaint(result)
 	}
 	}
 	str1+='</ul>';
+	$("#familyhospitalDiv").show();
+	$("#familyHospitalizationInsurance").html(str1);
+	}
+	else
+	{
+	$("#familyhospitalDiv").hide();
 	}
 	
-	$("#familyDeathInsurance").html(str);
-	$("#familyHospitalizationInsurance").html(str1);
+	
+	
 	
 }
  // end
@@ -4682,22 +4711,26 @@ getEventsOverviewFortdpCadre();
 						if(type == "cadre"){
 							if(result.count !=null && result.count>0){
 								//var rsltLst =  result.ntrTrustStudentVoList;
+								$("#candidateEducationBenefitDiv").show();
 									buildingStudentDetailsInstitutionWiseOfCadre(result,type);
 							}
 							else{
 								if(result.count ==null){
 									result.count =0;
 								}
+								$("#candidateEducationBenefitDiv").hide();
 								$("#cadreIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<ul class="pull-right"><li>'+result.count+'</li></ul>');
 							}
 						}
 						if(type == "family"){
 							if(result.count !=null && result.count>0){
+								    $("#familyEducationBenefitDiv").show();
 									buildingStudentDetailsInstitutionWiseOfFamily(result,type);
 							}else{
 								if(result.count ==null){
 									result.count =0;
 								}
+								$("#familyEducationBenefitDiv").hide();
 								$("#familyIdSpanForEducationBenefit").html('NTR TRUST EDUCATION BENEFITS<ul class="list-inline pull-right"><li>'+result.count+'</li></ul>');
 							}
 						}
