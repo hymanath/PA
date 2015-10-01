@@ -5102,12 +5102,31 @@ class TrainingCampService implements ITrainingCampService{
 			Object[] cadreInfo= trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId);
 			List<Object[]> designationDetailsList = tdpCommitteeMemberDAO.getPartyPositionBycadre(tdpCadreId);//tdpCommitteeLevel,role
 			String designation = "";
-			if(designationDetailsList != null && designationDetailsList.size() > 0){
+			/*if(designationDetailsList != null && designationDetailsList.size() > 0){
 				
 				Object[] designationDetails = designationDetailsList.get(0);
 				
 				designation = designationDetails[0]+" level "+designationDetails[1];
-			}
+			}*/
+			
+			if(designationDetailsList !=null && designationDetailsList.size()>0)
+			 {
+				 String partyPositionStr="";
+				 int rounds = 0;
+				 for (Object[] partyPosition : designationDetailsList) {
+					 if(rounds>0)
+						 partyPositionStr = partyPositionStr+",";
+					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+					 
+					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+					 partyPositionStr = partyPositionStr + level +" " +role+" ( "+commiteestr+" )";
+					 rounds = rounds+1;
+				 }	
+				 designation = partyPositionStr;
+				 
+			 }
+			
 			if(cadreInfo!=null && cadreInfo.length>0){//cid,fname,mobile,cname,dname,pname,image
 				vo.setId(tdpCadreId);
 				vo.setName(cadreInfo[1]!=null?cadreInfo[1].toString():"");
@@ -7362,7 +7381,7 @@ class TrainingCampService implements ITrainingCampService{
 		{
 			SurveyTrainingsVO finalvo = new SurveyTrainingsVO();
 			try{
-				
+				SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 				List<TrainingCamp> campList = trainingCampDAO.getAllRecordsByCampId(campId);
 				List<TrainingCampProgram> programList = trainingCampProgramDAO.getAllRecordsByProgramId(programId);
 				List<TrainingCampSchedule> schedulesList = trainingCampScheduleDAO.getAllRecordsByScheduleId(scheduleId);
@@ -7411,13 +7430,13 @@ class TrainingCampService implements ITrainingCampService{
 						if(trainingCampSchedule.getDescription() != null && trainingCampSchedule.getDescription().length() > 0){
 							surveySchevo.setDescription(trainingCampSchedule.getDescription().toString().trim());
 						}
-						surveySchevo.setFromDate(trainingCampSchedule.getFromDate());
-						surveySchevo.setToDate(trainingCampSchedule.getToDate());
+						surveySchevo.setFromDate(format.format(trainingCampSchedule.getFromDate()));
+						surveySchevo.setToDate(format.format(trainingCampSchedule.getToDate()));
 						surveySchevo.setCreatedBy(trainingCampSchedule.getCreatedBy());
 						surveySchevo.setUpdatedBy(trainingCampSchedule.getUpdatedBy());
-						surveySchevo.setInsertedTime(trainingCampSchedule.getInsertedTime());
-						surveySchevo.setUpdatedTime(trainingCampSchedule.getUpdatedTime());
-						surveySchevo.setStatus(trainingCampSchedule.getStatus().toString().trim());
+						surveySchevo.setInsertedTime(format.format(trainingCampSchedule.getInsertedTime()));
+						surveySchevo.setUpdatedTime(format.format(trainingCampSchedule.getUpdatedTime()));
+						surveySchevo.setStatus(trainingCampSchedule.getStatus() != null ? trainingCampSchedule.getStatus().toString().trim():"");
 						
 						finalvo.getTrainingScheduleVOList().add(surveySchevo);
 					}
@@ -7432,8 +7451,8 @@ class TrainingCampService implements ITrainingCampService{
 						surveyBatchvo.setScheduleId(trainingCampBatch.getTrainingCampScheduleId());
 						surveyBatchvo.setBatchName(trainingCampBatch.getTrainingCampBatchName().toString().trim());
 						surveyBatchvo.setTrainingCampBatchCode(trainingCampBatch.getTrainingCampBatchCode().toString().trim());
-						surveyBatchvo.setFromDate(trainingCampBatch.getFromDate());
-						surveyBatchvo.setToDate(trainingCampBatch.getToDate());
+						surveyBatchvo.setFromDate(format.format(trainingCampBatch.getFromDate()));
+						surveyBatchvo.setToDate(format.format(trainingCampBatch.getToDate()));
 						surveyBatchvo.setBatchStatusId(trainingCampBatch.getBatchStatusId());
 						surveyBatchvo.setMaxMembers(trainingCampBatch.getMaxMembers());
 						surveyBatchvo.setIsFeedbackUpdatable(trainingCampBatch.getIsFeedbackUpdatable().toString().trim());
