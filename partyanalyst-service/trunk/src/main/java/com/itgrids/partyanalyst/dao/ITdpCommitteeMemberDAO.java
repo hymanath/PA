@@ -69,7 +69,7 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	
 	public List<Object[]> cadreMemberDetailsForPerformance(Long locationLevelId, Long locationLevelValue);
 	public List<Object[]> cadreMemberBoothDetailsForPerformance(Long locationLevelId, Long locationLevelValue);
-	public Object[] getPartyPositionBycadre(Long cadreId);
+	public  List<Object[]> getPartyPositionBycadre(Long cadreId);
 	
 	//public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(List<Long> locationLevelIdsList,List<Long> locationLevelValuesList);
 	
