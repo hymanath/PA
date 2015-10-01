@@ -461,7 +461,7 @@ var globalCadreId = '${cadreId}';
 								<h4 class="panel-title" style="font-weight:400">
 									<i class="glyphicon glyphicon-user"></i>
 										CANDIDATE GRIEVANCE DETAILS
-									<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">01</span></span>
+									<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">0</span></span>
 								</h4>
 								</a>
 							</div>
@@ -2675,7 +2675,7 @@ arr.push(obj);
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			url: //"http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2852,7 +2852,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			 //url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
