@@ -1691,7 +1691,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		return query.list();
 	}
-	public Object[] getPartyPositionBycadre(Long cadreId){
+	public List<Object[]> getPartyPositionBycadre(Long cadreId){
 		
 		Query query = getSession().createQuery(" select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
 				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +
@@ -1701,7 +1701,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		
 		query.setParameter("tdpCadreId", cadreId);
 		
-		return (Object[]) query.uniqueResult();
+		return  query.list();
 	}
 	
 	public Object[] getTdpCommitteeMemberPosition(Long cadreId){
