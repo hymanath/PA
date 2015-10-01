@@ -5100,9 +5100,12 @@ class TrainingCampService implements ITrainingCampService{
 		try{
 			
 			Object[] cadreInfo= trainingCampBatchAttendeeDAO.getCadreDetailsByCadreIdAndBatchId(tdpCadreId,batchId);
-			Object[] designationDetails = tdpCommitteeMemberDAO.getPartyPositionBycadre(tdpCadreId);//tdpCommitteeLevel,role
+			List<Object[]> designationDetailsList = tdpCommitteeMemberDAO.getPartyPositionBycadre(tdpCadreId);//tdpCommitteeLevel,role
 			String designation = "";
-			if(designationDetails != null && designationDetails.length > 0){
+			if(designationDetailsList != null && designationDetailsList.size() > 0){
+				
+				Object[] designationDetails = designationDetailsList.get(0);
+				
 				designation = designationDetails[0]+" level "+designationDetails[1];
 			}
 			if(cadreInfo!=null && cadreInfo.length>0){//cid,fname,mobile,cname,dname,pname,image
