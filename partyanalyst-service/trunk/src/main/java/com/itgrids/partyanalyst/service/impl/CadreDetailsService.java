@@ -979,7 +979,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
-				Object[] partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);
+				List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);  
 				//0.publicRepresentativeTypeId,1.type
 				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
@@ -1101,14 +1101,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}
 				}
 				
-				if(partyPositionDetails !=null)
-				{
-					String level=partyPositionDetails[0] != null ? partyPositionDetails[0].toString() : "" ;
-					String role=partyPositionDetails[1] != null ? partyPositionDetails[1].toString() : "";
-					String commiteestr=partyPositionDetails[2] != null ? partyPositionDetails[2].toString() : "";
-					
-					cadreDetailsVO.setPartyPosition(level +" " +role+" ( "+commiteestr+" )");
-				}
+				if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+				 {
+					 String partyPositionStr="";
+					 int rounds = 0;
+					 for (Object[] partyPosition : partyPositionDetails) {
+						 if(rounds>0)
+							 partyPositionStr = partyPositionStr+",";
+						 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+						 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+						 
+						 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+						 partyPositionStr = partyPositionStr + level +" " +role+" ( "+commiteestr+" )";
+						 rounds = rounds+1;
+					 }				 
+					 cadreDetailsVO.setPartyPosition(partyPositionStr);
+				 }
 				else{
 					cadreDetailsVO.setPartyPosition("N/A");
 				}
