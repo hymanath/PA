@@ -19,12 +19,12 @@ public class SurveyTrainingsVO implements Serializable{
 	private String programName;
 	private String scheduleName;
 	private String batchName;
-	private Date fromDate;
-	private Date toDate;
+	private String fromDate;
+	private String toDate;
 	private Long createdBy;
 	private Long updatedBy;
-	private Date insertedTime;
-	private Date updatedTime;
+	private String insertedTime;
+	private String updatedTime;
 	private String status;
 	private String description;
 	private String location;
@@ -102,18 +102,7 @@ public class SurveyTrainingsVO implements Serializable{
 	public void setBatchName(String batchName) {
 		this.batchName = batchName;
 	}
-	public Date getFromDate() {
-		return fromDate;
-	}
-	public void setFromDate(Date fromDate) {
-		this.fromDate = fromDate;
-	}
-	public Date getToDate() {
-		return toDate;
-	}
-	public void setToDate(Date toDate) {
-		this.toDate = toDate;
-	}
+	
 	public Long getCreatedBy() {
 		return createdBy;
 	}
@@ -126,18 +115,7 @@ public class SurveyTrainingsVO implements Serializable{
 	public void setUpdatedBy(Long updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	public Date getInsertedTime() {
-		return insertedTime;
-	}
-	public void setInsertedTime(Date insertedTime) {
-		this.insertedTime = insertedTime;
-	}
-	public Date getUpdatedTime() {
-		return updatedTime;
-	}
-	public void setUpdatedTime(Date updatedTime) {
-		this.updatedTime = updatedTime;
-	}
+	
 	public String getStatus() {
 		return status;
 	}
@@ -223,6 +201,30 @@ public class SurveyTrainingsVO implements Serializable{
 	}
 	public void setTrainingBatchVOList(List<SurveyTrainingsVO> trainingBatchVOList) {
 		this.trainingBatchVOList = trainingBatchVOList;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public String getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(String insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	public String getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(String updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 	
 }
