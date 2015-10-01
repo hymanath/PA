@@ -268,9 +268,16 @@ function exportToExcel()
 					   str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].subList[j].id+'">'+results[i].subList[j].name+'</a></td>'
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
-					   
-					   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>'
-					   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>'
+					   if(results[i].subList[j].committeeLevel.trim().length==0){
+						   str+='<td> - </td>'
+					   }else{
+						   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>'
+					   }
+					   if(results[i].subList[j].committeeType.trim().length==0){
+						   str+='<td> - </td>'
+					   }else{
+						   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>'
+					   }
 					   if(results[i].subList[j].familyUpdted=='Yes'){
 						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
 					   }else if(results[i].subList[j].familyUpdted=='No'){
