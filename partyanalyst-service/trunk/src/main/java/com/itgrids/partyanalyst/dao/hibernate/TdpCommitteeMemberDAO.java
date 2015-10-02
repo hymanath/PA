@@ -1694,7 +1694,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 	public List<Object[]> getPartyPositionBycadre(Long cadreId){
 		
 		Query query = getSession().createQuery(" select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
-				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +
+				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue " +
 				" from  TdpCommitteeMember model " +
 				" where model.tdpCadre.tdpCadreId =:tdpCadreId " +
 				" and model.isActive ='Y'");
@@ -1704,6 +1704,20 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return  query.list();
 	}
 	
+public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
+		
+		Query query = getSession().createQuery(" select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
+				"  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue, model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommittee.state" +
+				" from  TdpCommitteeMember model " +
+				" where model.tdpCadre.tdpCadreId in (:cadreIdsList) " +
+				" and model.isActive ='Y'");
+		
+		query.setParameterList("cadreIdsList", cadreIdsList);
+		
+		return  query.list();
+	}
+
 	public Object[] getTdpCommitteeMemberPosition(Long cadreId){
 		
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
