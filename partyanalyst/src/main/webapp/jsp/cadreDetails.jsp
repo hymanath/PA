@@ -513,6 +513,9 @@ var globalCadreId = '${cadreId}';
 						<div class="panel-body pad_0">
 						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
+						<li id="candidaterequestedDiv" style="display:none;">
+									 FINANCIAL REQUESTED <span class="pull-right" id="candidateRequestAmount">0</span>
+								</li>
 						<li id="candidateapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
 						<li id="candidatedeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
@@ -547,6 +550,9 @@ var globalCadreId = '${cadreId}';
 					<div class="panel-body pad_0">
 						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none"></center>
+						<li id="familyrequestedDiv" style="display:none;">
+									 FINANCIAL REQUESTED <span class="pull-right" id="familyRequestAmount">0</span>
+						</li>
 						<li id="familyapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="familyApprovedAmount">0</span></li>
 						<li id="familydeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
 							<ul  class="hoverclassli">
@@ -2657,6 +2663,7 @@ function getTotalComplaintsForCandidate()
     $("#complaintCountDiv").html('');
 	$("#financialDiv").html('');
 	$("#complaintsDiv").html('');
+	 $("#candidateRequestAmount").html('');
 	$("#candidateApprovedAmount").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
@@ -2674,7 +2681,7 @@ arr.push(obj);
 
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			 url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
@@ -2685,6 +2692,7 @@ arr.push(obj);
 			 $("#candidateapprovedDiv").hide();
 			$("#candidatedeathDiv").hide();
 			$("#candidatehospitalDiv").hide();
+			$("#candidaterequestedDiv").hide();
 				 if(myresult != null){
 				buildTotalComplaints(myresult,0);
 				buildInsuranceTotalComplaints(myresult,0);
@@ -2727,6 +2735,11 @@ function buildTotalComplaints(result,complaintId)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
+	if(result[0].amountVO.requested > 0)
+	{
+		$("#candidaterequestedDiv").show();
+		$("#candidateRequestAmount").html(''+result[0].amountVO.requested+'/-');
+   }
 		if(result[0].amountVO.approved  >0)
 		{
 		$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
@@ -2848,11 +2861,12 @@ function getMemberComplaints()
   $("#familyDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
   $("#familyApprovedAmount").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
   $("#familyHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
+  $("#familyRequestAmount").html('');
   $("#familyMemberDiv").html('');
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			 //url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2860,6 +2874,10 @@ function getMemberComplaints()
              password: "grievance@!tG"
 			 }).done(function(myresult){
 				$("#familyMemberImg").hide();
+				 $("#familydeathDiv").hide();
+				 $("#familyhospitalDiv").hide();
+				 $("#familyapprovedDiv").hide();
+				 $("#familyrequestedDiv").hide();
 				if(myresult != null && myresult.length > 0)
 				{
 					buildFamilyMemberComplaint(myresult);
@@ -2867,9 +2885,7 @@ function getMemberComplaints()
 				}
 					else{
 			   $("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
-			$("#familydeathDiv").hide();
-			   $("#familyhospitalDiv").hide();
-			   $("#familyapprovedDiv").hide();
+			
 			}
 			});
 
@@ -2906,6 +2922,11 @@ function buildFamilyMemberComplaint(result,jobj)
 	//comp+='<h5 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h5>';
 	//comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
   //comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
+   if(result[0].amountVO.requested > 0 )
+   {
+	$("#familyrequestedDiv").show();
+	$("#familyRequestAmount").html(''+result[0].amountVO.requested+'/-');
+   }
 	$("#familyapprovedDiv").show();
 	$("#familyApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 	}
@@ -3867,8 +3888,11 @@ function getCadreIdByMemberShipId()
 		if(result != null)
 		{
 			globalCadreId = result;
-		    if((participatedConstituencyId == null || participatedConstituencyId == 0) && (globalCadreId != null && globalCadreId > 0))
+			
+
+			if((participatedConstituencyId == null || participatedConstituencyId == 0) && (globalCadreId != null && globalCadreId > 0))
 			{
+			
 				getParticipatedConstituencyId(globalCadreId);
 				/* getCategoryWiseStatusCount();
 				getTotalMemberShipRegistrationsInCadreLocation();		
