@@ -3856,6 +3856,7 @@ else
 }
 function getCadreIdByMemberShipId()
 {
+
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
@@ -3866,7 +3867,7 @@ function getCadreIdByMemberShipId()
 		if(result != null)
 		{
 			globalCadreId = result;
-			if((participatedConstituencyId == null || participatedConstituencyId.length == 0) && (globalCadreId != null && globalCadreId > 0))
+		    if((participatedConstituencyId == null || participatedConstituencyId == 0) && (globalCadreId != null && globalCadreId > 0))
 			{
 				getParticipatedConstituencyId(globalCadreId);
 				/* getCategoryWiseStatusCount();
