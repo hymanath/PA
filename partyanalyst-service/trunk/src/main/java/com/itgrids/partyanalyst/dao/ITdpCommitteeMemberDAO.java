@@ -80,5 +80,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getMembersInfoByTdpCadreIdsList(List<Long> tdpCadreIdsList);
 	public List<Object[]> getMembersInfoByTdpCadreIdsList1(List<Long> tdpCadreIdsList);
 	public Object[] getTdpCommitteeMemberPosition(Long cadreId);
-	
+	public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList);
 }
