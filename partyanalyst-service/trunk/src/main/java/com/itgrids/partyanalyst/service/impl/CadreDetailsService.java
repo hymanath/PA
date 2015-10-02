@@ -979,7 +979,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
 				
 				//0.tdpCommitteeLevel,1.role
-				List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);  
+				//List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);  
 				//0.publicRepresentativeTypeId,1.type
 				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
@@ -1101,7 +1101,26 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}
 				}
 				
-				if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+				Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
+				List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
+				tdpCadreIDsList.add(cadreId);
+				getPartyPositionForCadre(tdpCadreIDsList,cadrePartyPositionMap);
+				
+				if(cadrePartyPositionMap != null && cadrePartyPositionMap.size()>0)
+				{
+					for (Long tdpcadreId : cadrePartyPositionMap.keySet()) {
+						String committeeLocation = cadrePartyPositionMap.get(tdpcadreId);
+							if(!committeeLocation.isEmpty())
+							{
+								 cadreDetailsVO.setPartyPosition(committeeLocation);
+							 }
+							else{
+								cadreDetailsVO.setPartyPosition("N/A");
+							}
+					}
+				}
+				
+				/*if(partyPositionDetails !=null && partyPositionDetails.size()>0)
 				 {
 					 String partyPositionStr="";
 					 int rounds = 0;
@@ -1119,7 +1138,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				 }
 				else{
 					cadreDetailsVO.setPartyPosition("N/A");
-				}
+				}*/
 				
 				String publicRepresentTypeStr="N/A";
 				if(publicRepDertails !=null && publicRepDertails.size()>0){
@@ -2411,6 +2430,44 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 	}
 	
+	public void getPartyPositionForCadre(List<Long> cadreIdsList, Map<Long,String> cadrePartyPositionMap)
+	 {
+		
+		 try {
+			 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(cadreIdsList);
+			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+			 {
+				 for (Object[] partyPosition : partyPositionDetails) {
+
+					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+					 
+					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+					 
+					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					 {
+						 level = state+" "+level;
+					 }
+					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+
+					 Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(partyPosition[5]);
+					
+					 if(cadrePartyPositionMap.get(tdpCadreId) != null)
+					 {
+						String existingPartyPositionStr = cadrePartyPositionMap.get(tdpCadreId);
+						 partyPositionStr = partyPositionStr+","+existingPartyPositionStr;
+					 }
+					 cadrePartyPositionMap.put(tdpCadreId, partyPositionStr);
+				 }
+			 }
+
+		 } catch (Exception e) {
+		 LOG.error("Exception raised in getPartyPositionForCadre method in CadreDetailsService.",e);
+		 }
+
+	 }
+	
 	public List<TdpCadreFamilyDetailsVO> getCadreFamilyDetails(Long tdpCadreId)
 	{
 		List<TdpCadreFamilyDetailsVO> resultList = null;
@@ -2482,7 +2539,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 						
-						List<Object[]> cadrePartyPositionDetals =  tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList(tdpCadreIDsList);
+						Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
+						getPartyPositionForCadre(tdpCadreIDsList,cadrePartyPositionMap);
+						
+						if(cadrePartyPositionMap != null && cadrePartyPositionMap.size()>0)
+						{
+							for (Long cadreId : cadrePartyPositionMap.keySet()) {
+								String committeeLocation = cadrePartyPositionMap.get(cadreId);
+								TdpCadreFamilyDetailsVO vo =getMatchedTdpCadrFamilyDetailsVO(resultList, cadreId);
+								if(vo != null){
+									if(!committeeLocation.isEmpty())
+							    		vo.setPartyPositionStr(committeeLocation);							    	
+								}
+							}
+						}
+						
+						/*List<Object[]> cadrePartyPositionDetals =  tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList(tdpCadreIDsList);
 						if(cadrePartyPositionDetals != null && cadrePartyPositionDetals.size()>0)
 						{
 							for (Object[] partyPosition : cadrePartyPositionDetals) {
@@ -2499,36 +2571,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 									    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
 									    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
 									    	String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
-									    	String committeeLocation ="";
-									    	/*if(committeeLevelId == 5L)
-									    	{
-									    		committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
-									    	}
-									    	else if(committeeLevelId == 6L)
-									    	{
-									    		committeeLocation = panchayatDAO.get(committeeLevelValue).getPanchayatName()+" Panchayat ";
-									    	}
-									    	else if(committeeLevelId == 7L || committeeLevelId == 9L) // town/division
-									    	{
-									    		LocalElectionBody localbody = localElectionBodyDAO.get(committeeLevelValue);
-									    		if(localbody.getElectionType().getElectionTypeId() != 7L)
-									    			committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
-									    	}
-									    	else if(committeeLevelId == 8L)
-									    	{
-									    		Constituency constituency = constituencyDAO.get(committeeLevelValue);
-									    		committeeLocation = constituency.getName()+" ( "+constituency.getLocalElectionBody().getName()+" "+constituency.getLocalElectionBody().getElectionType().getElectionType()+" )";
-									    	}
-									    	else if(committeeLevelId == 10L)
-									    	{
-									    		committeeLocation = stateDAO.get(committeeLevelValue).getStateName();
-									    	}
-									    	else if(committeeLevelId == 11L)
-									    	{
-									    		committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
-									    	}
-									    	vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");*/
-									    	
+									    	String committeeLocation="";
 									    	if(!committeeLocation.isEmpty())
 									    		vo.setPartyPositionStr(committeeStr+" - "+roleStr+" ( "+committeeLocation+" )");
 									    	else
@@ -2538,13 +2581,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 								}
 							}
 						}
-						
+						*/
 						if(resultList != null && resultList.size()>0)
 						{
 							TdpCadreFamilyDetailsVO vo = resultList.get(0);
 							vo.setFamilySurveyCount(Long.valueOf(String.valueOf(list.size())));
 							vo.setPartyPositionsCount(Long.valueOf(String.valueOf(cadrePublicRepresentativList.size())));
-							vo.setPartyPositionsCount(Long.valueOf(String.valueOf(cadrePartyPositionDetals.size())));
+							vo.setPartyPositionsCount(Long.valueOf(String.valueOf(cadrePartyPositionMap.size())));
 						}
 					}
 				}
@@ -2556,6 +2599,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return resultList;
 	}
 	
+	public TdpCadreFamilyDetailsVO getMatchedTdpCadrFamilyDetailsVO(List<TdpCadreFamilyDetailsVO> resultList,Long tdpCadreId)
+	{
+		try{
+			for(TdpCadreFamilyDetailsVO detailsVO:resultList)
+				if(detailsVO.getTdpCadreId() != null && detailsVO.getTdpCadreId().longValue()>0L && detailsVO.getTdpCadreId().longValue() == tdpCadreId.longValue() )
+					return detailsVO;
+			return null;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getMatchedTdpCadreFamilyDetailsVO() method, Exception - ",e);
+			return null;
+		}
+	}
 	
 	public TdpCadreFamilyDetailsVO getMatchedTdpCadreFamilyDetailsVO(List<TdpCadreFamilyDetailsVO> resultList,String voterIdCardNO)
 	{
