@@ -2320,7 +2320,9 @@
 	  <bean id="studentCadreRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCadreRelationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	 
+	  <bean id="partyMeetingIvrStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingIvrStatusDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		
