@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -116,4 +117,6 @@ public interface IWebServiceHandlerService {
 	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
 	  public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
 	  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId);
+	  public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
+	  public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId);
 }
