@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,29 +10,36 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingIvrStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dto.CallStatusVO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -45,6 +53,10 @@ import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+/**
+ * @author Administrator
+ *
+ */
 public class PartyMeetingService implements IPartyMeetingService{
 	private static final Logger LOG = Logger.getLogger(PartyMeetingService.class);
 	
@@ -65,8 +77,65 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPartyMeetingAtrPointHistoryDAO partyMeetingAtrPointHistoryDAO;
 	private ICadreCommitteeService cadreCommitteeService;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IPartyMeetingIvrStatusDAO partyMeetingIvrStatusDAO;
+	private IBoothDAO boothDAO;
+	private IPanchayatDAO panchayatDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IDistrictDAO districtDAO;
+	private IStateDAO stateDAO;
 	
 	
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IPartyMeetingIvrStatusDAO getPartyMeetingIvrStatusDAO() {
+		return partyMeetingIvrStatusDAO;
+	}
+	public void setPartyMeetingIvrStatusDAO(
+			IPartyMeetingIvrStatusDAO partyMeetingIvrStatusDAO) {
+		this.partyMeetingIvrStatusDAO = partyMeetingIvrStatusDAO;
+	}
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -2120,5 +2189,413 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		
 		return vo;
+	}
+	
+	
+	public MeetingTrackingVO getPartyMeetingsDetailsForCadreByCommitteeLevel(Long tdpCadreId,String searchTypeStr , 
+			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult)
+	{
+		MeetingTrackingVO returnVO = new MeetingTrackingVO();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
+			if(formDateStr != null && !formDateStr.isEmpty())
+				fromDate = format.parse(formDateStr);
+			if(toDateStr != null && !toDateStr.isEmpty())
+				toDate = format.parse(toDateStr);
+				
+				Map<String,MeetingTrackingVO> monthlyWiseMeetingsMap = new LinkedHashMap<String, MeetingTrackingVO>(0);
+				Long availableMeetingsCount = 0L;
+				Long conductedMeetingsCount = 0L;
+				
+				if(committeeLevelId != null && committeeLevelId.longValue()>0L && committeeLevelValue != null && committeeLevelValue.longValue()>0L)
+				{
+					List<Long> committeeLevelValueList = new ArrayList<Long>(0);
+					List<Long> locationIdsList = new ArrayList<Long>();
+					if(searchTypeStr != null && !searchTypeStr.isEmpty())
+					{
+						if(searchTypeStr.equalsIgnoreCase("VillageORWard"))							
+						{
+							 villageORWardWiseAccessPartyMeetingsDetails(committeeLevelId,committeeLevelValue,fromDate, toDate, isFirst,
+									 availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,  firstRecord, maxResult);
+						}
+						if(searchTypeStr.equalsIgnoreCase("MandalORTownORDivision"))							
+						{
+							mandalORTownORDidvisionWiseAccessPartyMeetingsDetails(committeeLevelId,committeeLevelValue,fromDate, toDate, isFirst,
+									 availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,  firstRecord, maxResult);
+						}
+						if(searchTypeStr.equalsIgnoreCase("constituency"))							
+						{
+							if(committeeLevelId.longValue() == IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID ) 
+							{	
+								committeeLevelValueList.add(committeeLevelValue);
+								getPartyMeetingsConductedDetails(IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							}
+							else if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID ) 
+							{						
+								locationIdsList.add(committeeLevelValue);
+								committeeLevelValueList.addAll(constituencyDAO.getConstituncyIdsByDistrictId(locationIdsList, 2L));
+								getPartyMeetingsConductedDetails(IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							} 
+							else if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
+							{						
+								locationIdsList.addAll(districtDAO.getAllDistrictByStateIds(locationIdsList));
+								committeeLevelValueList.addAll(constituencyDAO.getConstituncyIdsByDistrictId(locationIdsList, 2L));
+								getPartyMeetingsConductedDetails(IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							} 
+						}
+						if(searchTypeStr.equalsIgnoreCase("district"))							
+						{
+							if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID ) 
+							{	
+								committeeLevelValueList.add(committeeLevelValue);
+								getPartyMeetingsConductedDetails(IConstants.DISTRICT_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							}
+							else if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
+							{						
+								locationIdsList.add(committeeLevelValue);
+								committeeLevelValueList.addAll(districtDAO.getAllDistrictByStateIds(locationIdsList));
+								getPartyMeetingsConductedDetails(IConstants.DISTRICT_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							} 
+						}
+						if(searchTypeStr.equalsIgnoreCase("state"))							
+						{
+							if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
+							{	
+								committeeLevelValueList.add(committeeLevelValue);
+								getPartyMeetingsConductedDetails(IConstants.STATE_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+							}
+						}		
+					}
+					
+					Map<String,MeetingTrackingVO> returnListMap = new LinkedHashMap<String, MeetingTrackingVO>(0);
+					if(monthlyWiseMeetingsMap != null && monthlyWiseMeetingsMap.size()>0)
+					{
+						for (String dateStr : monthlyWiseMeetingsMap.keySet()) {
+							MeetingTrackingVO meetingVO = monthlyWiseMeetingsMap.get(dateStr);
+							if(meetingVO != null)
+							{			
+								String[] dateArr = dateStr.split("-");
+								if(dateArr != null && dateArr.length>0)
+								{
+									meetingVO.setMonthName(IConstants.MONTH_NAMES[Integer.valueOf(dateArr[1])]+" - "+dateArr[0]);
+								}
+								
+								if(returnListMap.get(meetingVO.getMonthName()) != null)
+								{
+									MeetingTrackingVO existingMeetingVO = returnListMap.get(meetingVO.getMonthName());
+									if(existingMeetingVO.getTotalCount() != null && existingMeetingVO.getTotalCount().longValue()>0L)
+									{
+										Long totalMeetings = existingMeetingVO.getTotalCount().longValue()+meetingVO.getTotalCount().longValue();
+										meetingVO.setTotalCount(totalMeetings);
+									}
+										
+									if(existingMeetingVO.getActualCount() != null && existingMeetingVO.getActualCount().longValue()>0L)
+									{
+										Long actualMeetingsCount = existingMeetingVO.getActualCount().longValue()+meetingVO.getActualCount().longValue();
+										meetingVO.setActualCount(actualMeetingsCount);
+									}
+								}
+								returnListMap.put(meetingVO.getMonthName(), meetingVO);
+							}
+						}
+					}
+					
+					if(returnListMap != null && returnListMap.size()>0)
+					{
+						for (String monthYear : returnListMap.keySet()) {
+							returnVO.getMeetingTrackingVOList().add(returnListMap.get(monthYear));
+						}
+					}
+					returnVO.setTotalCount(availableMeetingsCount);
+					returnVO.setActualCount(conductedMeetingsCount);
+				}	
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPartyMeetingsDetailsForCadreByCommitteeLevel() method, Exception - ",e);
+		}
+		
+		return returnVO;
+	}
+	
+	public void villageORWardWiseAccessPartyMeetingsDetails(Long committeeLevelId,Long committeeLevelValue,Date fromDate,Date toDate,String isFirst,
+			Long availableMeetingsCount,Long conductedMeetingsCount,Map<String,MeetingTrackingVO> monthlyWiseMeetingsMap, int firstRecord,int maxResult)
+	{
+		try {
+			List<Long> committeeLevelValueList = new ArrayList<Long>(0);
+			List<Long> locationIdsList = new ArrayList<Long>(0);
+			if(committeeLevelId.longValue() == IConstants.VILLAGE_COMMITTEE_LEVEL_ID )
+			{
+				committeeLevelValueList.add(committeeLevelValue);
+				getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID  )
+			{
+				committeeLevelValueList.add(committeeLevelValue);								
+				getPartyMeetingsConductedDetails(IConstants.WARD_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID )
+			{
+				committeeLevelId = IConstants.VILLAGE_COMMITTEE_LEVEL_ID;
+				locationIdsList.add(committeeLevelValue);
+				List<Long> panchayatIdsList = boothDAO.getPanchayatsIdsListByTehsilId(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(panchayatIdsList != null && panchayatIdsList.size()>0)
+					committeeLevelValueList.addAll(panchayatIdsList);
+				
+				getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID || committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID ) // cadre Committee Type 
+			{
+				committeeLevelId = IConstants.WARD_COMMITTEE_LEVEL_ID;
+				locationIdsList.add(committeeLevelValue);
+				List<Long> wardsIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIdsList);
+				
+				if(wardsIdsList != null && wardsIdsList.size()>0)
+					committeeLevelValueList.addAll(wardsIdsList);
+				
+				getPartyMeetingsConductedDetails(IConstants.WARD_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				//getPartyMeetingsConductedDetails(IConstants.DIVISION_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			//constituency level member
+			else if(committeeLevelId.longValue() == IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID ) 
+			{						
+				List<Object[]> panchayatsAndLocalBodysList = boothDAO.getPanchayatAndLebIds(committeeLevelValue,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> panchayatIds = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(panchayatsAndLocalBodysList != null && panchayatsAndLocalBodysList.size()>0)
+				{
+					for (Object[] location : panchayatsAndLocalBodysList) {
+						Long panchayatId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(panchayatId != null && panchayatId.longValue()>0L)
+							panchayatIds.add(panchayatId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				
+				if(panchayatIds != null && panchayatIds.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, panchayatIds, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				
+				List<Long> wardsIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(localbodyIdsList);
+				if(wardsIdsList != null && wardsIdsList.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.WARD_COMMITTEE_LEVEL_ID, wardsIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID ) 
+			{						
+				List<Object[]> panchayatsAndLocalBodysList = boothDAO.getDistrictsPanchayatAndLebIds(committeeLevelValue,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> panchayatIds = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(panchayatsAndLocalBodysList != null && panchayatsAndLocalBodysList.size()>0)
+				{
+					for (Object[] location : panchayatsAndLocalBodysList) {
+						Long panchayatId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(panchayatId != null && panchayatId.longValue()>0L)
+							panchayatIds.add(panchayatId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				
+				if(panchayatIds != null && panchayatIds.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, panchayatIds, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				
+				List<Long> wardsIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(localbodyIdsList);
+				if(wardsIdsList != null && wardsIdsList.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.WARD_COMMITTEE_LEVEL_ID, wardsIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
+			{						
+				locationIdsList.addAll(districtDAO.getAllDistrictByStateIds(locationIdsList));
+				committeeLevelValueList.addAll(constituencyDAO.getConstituncyIdsByDistrictId(locationIdsList, 2L));
+				locationIdsList.clear();
+				locationIdsList.addAll(committeeLevelValueList);
+				List<Object[]> tehsilIdsAndLocalBodyIdsList = boothDAO.getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> tehsilList = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(tehsilIdsAndLocalBodyIdsList != null && tehsilIdsAndLocalBodyIdsList.size()>0)
+				{
+					for (Object[] location : tehsilIdsAndLocalBodyIdsList) {
+						Long tehsilId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(tehsilId != null && tehsilId.longValue()>0L)
+							tehsilList.add(tehsilId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				
+				List<Long> panchayatIdsList = boothDAO.getPanchayatsIdsListByTehsilId(tehsilList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				if(panchayatIdsList != null && panchayatIdsList.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, panchayatIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+		
+				List<Long> wardsIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(localbodyIdsList);
+				if(wardsIdsList != null && wardsIdsList.size()>0)
+					getPartyMeetingsConductedDetails(IConstants.VILLAGE_COMMITTEE_LEVEL_ID, wardsIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			} 
+		
+		} catch (Exception e) {
+			LOG.error("Entered into villageORWardWiseAccessPartyMeetingsDetails service",e);
+		}
+	}
+	
+	public void mandalORTownORDidvisionWiseAccessPartyMeetingsDetails(Long committeeLevelId,Long committeeLevelValue,Date fromDate,Date toDate,String isFirst,
+			Long availableMeetingsCount,Long conductedMeetingsCount,Map<String,MeetingTrackingVO> monthlyWiseMeetingsMap, int firstRecord,int maxResult)
+	{
+		try {
+			List<Long> committeeLevelValueList = new ArrayList<Long>(0);
+			List<Long> locationIdsList = new ArrayList<Long>(0);
+			if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID  ) // cadre Committee Type 
+			{
+				committeeLevelValueList.add(committeeLevelValue);
+				getPartyMeetingsConductedDetails(IConstants.MANDAL_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID ) // cadre Committee Type 
+			{
+				committeeLevelValueList.add(committeeLevelValue);
+				getPartyMeetingsConductedDetails(IConstants.TOWN_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID ) // cadre Committee Type 
+			{
+				committeeLevelValueList.add(committeeLevelValue);
+				getPartyMeetingsConductedDetails(IConstants.DIVISION_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			//constituency level member
+			else if(committeeLevelId.longValue() == IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID ) 
+			{					
+				locationIdsList.add(committeeLevelValue);
+				List<Object[]> tehsilIdsAndLocalBodyIdsList = boothDAO.getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> tehsilList = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(tehsilIdsAndLocalBodyIdsList != null && tehsilIdsAndLocalBodyIdsList.size()>0)
+				{
+					for (Object[] location : tehsilIdsAndLocalBodyIdsList) {
+						Long tehsilId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(tehsilId != null && tehsilId.longValue()>0L)
+							tehsilList.add(tehsilId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				getPartyMeetingsConductedDetails(IConstants.MANDAL_COMMITTEE_LEVEL_ID, tehsilList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				getPartyMeetingsConductedDetails(IConstants.TOWN_COMMITTEE_LEVEL_ID, localbodyIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				//getPartyMeetingsConductedDetails(IConstants.DIVISION_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			}
+			else if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID ) 
+			{						
+				locationIdsList.add(committeeLevelValue);
+				List<Object[]> tehsilIdsAndLocalBodyIdsList = boothDAO.getTehsilsIdsAndLocalBodyIdsListByDistricts(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> tehsilList = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(tehsilIdsAndLocalBodyIdsList != null && tehsilIdsAndLocalBodyIdsList.size()>0)
+				{
+					for (Object[] location : tehsilIdsAndLocalBodyIdsList) {
+						Long tehsilId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(tehsilId != null && tehsilId.longValue()>0L)
+							tehsilList.add(tehsilId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				getPartyMeetingsConductedDetails(IConstants.MANDAL_COMMITTEE_LEVEL_ID, tehsilList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				getPartyMeetingsConductedDetails(IConstants.TOWN_COMMITTEE_LEVEL_ID, localbodyIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				//getPartyMeetingsConductedDetails(IConstants.DIVISION_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);								
+			}
+			else if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
+			{						
+				locationIdsList.addAll(districtDAO.getAllDistrictByStateIds(locationIdsList));
+				committeeLevelValueList.addAll(constituencyDAO.getConstituncyIdsByDistrictId(locationIdsList, 2L));// assembly ids
+				locationIdsList.clear();
+				locationIdsList.addAll(committeeLevelValueList);
+				List<Object[]> tehsilIdsAndLocalBodyIdsList = boothDAO.getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Long> tehsilList = new ArrayList<Long>();
+				List<Long> localbodyIdsList = new ArrayList<Long>();
+				if(tehsilIdsAndLocalBodyIdsList != null && tehsilIdsAndLocalBodyIdsList.size()>0)
+				{
+					for (Object[] location : tehsilIdsAndLocalBodyIdsList) {
+						Long tehsilId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						Long localbodyId = commonMethodsUtilService.getLongValueForObject(location[0]);
+						if(tehsilId != null && tehsilId.longValue()>0L)
+							tehsilList.add(tehsilId);
+						if(localbodyId != null && localbodyId.longValue()>0L)
+							localbodyIdsList.add(localbodyId);
+					}
+				}
+				getPartyMeetingsConductedDetails(IConstants.MANDAL_COMMITTEE_LEVEL_ID, tehsilList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+				getPartyMeetingsConductedDetails(IConstants.TOWN_COMMITTEE_LEVEL_ID, localbodyIdsList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
+			} 
+		
+		} catch (Exception e) {
+			LOG.error("Entered into mandalORTownORDidvisionWiseAccessPartyMeetingsDetails  service",e);
+		}
+	}
+	
+	
+	public void getPartyMeetingsConductedDetails(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate,String isFirst,
+			 Long availableMeetingsCount,Long conductedMeetingsCount,Map<String,MeetingTrackingVO> monthlyWiseMeetingsMap,int firstRecord,int maxResult )
+	{
+		try {
+			List<Object[]> locationWisePartyMeetingsList =  null;
+
+				if(isFirst != null && !isFirst.isEmpty() && isFirst.equalsIgnoreCase("true"))
+				{
+					BigInteger meetingsCount = partyMeetingDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+					if(meetingsCount != null)
+						availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
+					
+					BigInteger conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+					if(conductedMeetngCount != null)
+						conductedMeetingsCount = conductedMeetingsCount+Long.valueOf(String.valueOf(conductedMeetngCount));					
+				}
+				
+				locationWisePartyMeetingsList = partyMeetingDAO.getMontlyWiseMeetingsDetails(committeeLevelId,committeeLevelValueList,fromDate,toDate,null,firstRecord,maxResult);
+				if(locationWisePartyMeetingsList != null && locationWisePartyMeetingsList.size()>0)
+				{
+					for (Object[] partyMeeting : locationWisePartyMeetingsList) {
+						
+						String dateStr = commonMethodsUtilService.getStringValueForObject(partyMeeting[0]); 
+						Long totalMeetings = commonMethodsUtilService.getLongValueForObject(partyMeeting[1]);
+						
+						MeetingTrackingVO meetingsVO = new MeetingTrackingVO();
+						meetingsVO.setTotalCount(0L);
+						meetingsVO.setActualCount(0L);
+						if(monthlyWiseMeetingsMap.get(dateStr) != null)
+						{
+							meetingsVO = monthlyWiseMeetingsMap.get(dateStr);
+							if(meetingsVO.getTotalCount() != null && meetingsVO.getTotalCount().longValue()>0L)
+								totalMeetings = totalMeetings+meetingsVO.getTotalCount().longValue();
+						}
+						meetingsVO.setTotalCount(totalMeetings);
+						monthlyWiseMeetingsMap.put(dateStr, meetingsVO);
+					}
+				}
+				
+				locationWisePartyMeetingsList = partyMeetingIvrStatusDAO.getMontlyWiseMeetingsDetails(committeeLevelId,committeeLevelValueList,null,null,new ArrayList<String>(monthlyWiseMeetingsMap.keySet()));
+				if(locationWisePartyMeetingsList != null && locationWisePartyMeetingsList.size()>0)
+				{
+					for (Object[] partyMeeting : locationWisePartyMeetingsList) {
+						
+						String dateStr = commonMethodsUtilService.getStringValueForObject(partyMeeting[0]);  
+						Long totalMeetings = commonMethodsUtilService.getLongValueForObject(partyMeeting[1]);
+						
+						MeetingTrackingVO meetingsVO = null;
+						if(monthlyWiseMeetingsMap.get(dateStr) != null)
+						{
+							meetingsVO = monthlyWiseMeetingsMap.get(dateStr);
+							if(meetingsVO.getActualCount() != null && meetingsVO.getActualCount().longValue()>0L)
+								totalMeetings = totalMeetings+meetingsVO.getActualCount().longValue();
+							meetingsVO.setActualCount(totalMeetings);
+							monthlyWiseMeetingsMap.put(dateStr, meetingsVO);
+						}
+					}
+				}
+				
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPartyMeetingsConductedDetails() method, Exception - ",e);
+		}
 	}
 }

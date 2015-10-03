@@ -140,5 +140,5 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getLocationNameByLocationIds(List<Long> locationIds, Long locationLevel);
 	 
 	 public String getLocationName(Long LocationTypeId,Long locationValue);
-	 
+	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
 }

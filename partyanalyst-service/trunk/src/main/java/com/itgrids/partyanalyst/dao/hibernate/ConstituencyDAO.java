@@ -833,6 +833,16 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituncyIdsByDistrictId(List<Long> districtsIds,Long electionTypeId)
+	{
+		Query query = getSession().createQuery("select model.constituencyId from Constituency model where model.district.districtId in (:districtId) and " +
+				" model.electionScope.electionType.electionTypeId = :electionTypeId");
+		query.setParameter("districtsIds",districtsIds);
+		query.setParameter("electionTypeId",electionTypeId);
+		return query.list();
+	}
+	
 	public List<Object[]> getAllAssemblyConstituenciesByStateId(Long stateId)
 	{
 		Query query = getSession().createQuery("select  C.constituencyId , C.name , C.district.districtId from Constituency C where C.state.stateId = ? and " +
