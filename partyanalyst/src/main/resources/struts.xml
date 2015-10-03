@@ -10528,6 +10528,13 @@
 	       <param name="root">partyMeetingVO</param>
 	  </result>
 	</action>
+	
+	<action name="getAreaWiseConductedPartyMeetingDetailsForCadre" class="partyMeetingAction" method="getAreaWiseConductedPartyMeetingDetailsForCadre">
+	    <result type="json" name="success">
+	       <param name="root">meetingTrackingVO</param>
+	  </result>
+	</action>
+	
 	<action name="getCallerAgentDistrictsAction" class="trainingCampAction" method="getCallerAgentDistricts">
 	    <result type="json" name="success">
 	       <param name="root">idNameList</param>
