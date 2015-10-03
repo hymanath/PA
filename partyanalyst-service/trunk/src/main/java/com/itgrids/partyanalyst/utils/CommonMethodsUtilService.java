@@ -163,4 +163,26 @@ public class CommonMethodsUtilService {
 		  }
 		  return isNumber;
 	  }
+	  
+	  public String checkStringForNull(String value)
+		{
+			try
+			{
+				return value != null && !value.isEmpty()?value.trim():null;
+				
+			}catch(Exception e){
+				return null;
+			}
+		}
+		public Long checkLongForNull(Long value)
+		{
+			try
+			{
+				return value != null && value.longValue()>0L?value:null;
+			}catch(Exception e)
+			{
+				return null;
+			}
+		}
+		
 }
