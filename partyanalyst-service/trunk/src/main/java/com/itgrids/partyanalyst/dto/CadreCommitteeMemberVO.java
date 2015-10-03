@@ -113,6 +113,22 @@ public class CadreCommitteeMemberVO {
 	private String enrollmentYears;
 	private String isFamilyVoterId;
 	
+	private Long levelId;
+	private Long levelValue;
+	
+	
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
 	public String getIsFamilyVoterId() {
 		return isFamilyVoterId;
 	}
