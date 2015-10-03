@@ -11,6 +11,8 @@ public class AddressVO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long id;
+	private String name;
 	private Long countryId;
 	private String countryName;
 	private Long stateId;
@@ -61,8 +63,34 @@ public class AddressVO implements Serializable {
 	private Long wardId;
 	private String addressLane1;
 	private String addressLane2;
+	private Long typeId;
+	private String dateStr;
 	
 	
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public Long getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getVoterCategoryValuesId() {
 		return voterCategoryValuesId;
 	}

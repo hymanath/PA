@@ -6,6 +6,8 @@ public class IdNameVO implements Serializable{
 	private Long id;
 	private String name;
 	private Long districtid;
+	private Long availableCount;
+	private Long actualCount;
 	
 	public IdNameVO(){}
 	
@@ -14,6 +16,22 @@ public class IdNameVO implements Serializable{
 		this.name=name;
 	}
 	
+	public Long getAvailableCount() {
+		return availableCount;
+	}
+
+	public void setAvailableCount(Long availableCount) {
+		this.availableCount = availableCount;
+	}
+
+	public Long getActualCount() {
+		return actualCount;
+	}
+
+	public void setActualCount(Long actualCount) {
+		this.actualCount = actualCount;
+	}
+
 	public Long getId() {
 		return id;
 	}

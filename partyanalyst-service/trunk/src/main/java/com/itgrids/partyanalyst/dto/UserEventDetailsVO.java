@@ -48,8 +48,15 @@ public class UserEventDetailsVO implements Serializable{
 	private String syncSource;
 	private String errorDesc;
 	private String uniqueKey;
+	private String isInviteeExist;
 	
 	
+	public String getIsInviteeExist() {
+		return isInviteeExist;
+	}
+	public void setIsInviteeExist(String isInviteeExist) {
+		this.isInviteeExist = isInviteeExist;
+	}
 	public String getUniqueKey() {
 		return uniqueKey;
 	}
