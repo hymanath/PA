@@ -1340,6 +1340,18 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		@SuppressWarnings("unchecked")
+		public List<Long> getPanchayatsIdsListByTehsilId(List<Long> tehsilIdsList,Long publicationId)
+		{
+			Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from Booth model " +
+					" where model.tehsil.tehsilId in (:tehsilIdsList) and model.publicationDate.publicationDateId =:publicationDateId and model.panchayat is not null ");
+			
+			query.setParameterList("tehsilIdsList", tehsilIdsList);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
 		public List<Object[]> getBoothsByPanchayat(Long panchayatId,Long publicationId)
 		{
 			Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model " +
@@ -1823,6 +1835,21 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId", publicationDateId);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatsAndLebIds(List<Long> constituencyIdsList,Long publicationDateId){
+		Query query = getSession().createQuery("Select model.panchayat.panchayatId,model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId in (:constituencyIdsList) and model.publicationDate.publicationDateId = :publicationDateId  ");
+		query.setParameter("constituencyIdsList",constituencyIdsList);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getDistrictsPanchayatAndLebIds(Long distictId,Long publicationDateId){
+		Query query = getSession().createQuery("Select model.panchayat.panchayatId,model.localBody.localElectionBodyId from Booth model where model.constituency.district.distictId = :distictId and model.publicationDate.publicationDateId = :publicationDateId  ");
+		query.setParameter("distictId",distictId);
+		query.setParameter("publicationDateId", publicationDateId);
 		return query.list();
 	}
 	
@@ -2474,6 +2501,34 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(List<Long> constituencyIdsList, Long publicationDateId) {
+		
+		String queryString = "select distinct model.tehsil.tehsilId , model.localBody.localElectionBodyId from Booth model where " +
+				"model.publicationDate.publicationDateId = :publicationDateId and model.constituency.constituencyId in (:constituencyIdsList) " +
+				"and model.localBody.localElectionBodyId is null order by model.tehsil.tehsilName";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyIdsList", constituencyIdsList);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByDistricts(List<Long> districtIdsList, Long publicationDateId) {
+			
+			String queryString = "select distinct model.tehsil.tehsilId , model.localBody.localElectionBodyId from Booth model where " +
+					"model.publicationDate.publicationDateId = :publicationDateId and model.constituency.district.districtId in (:districtIdsList) " +
+					"and model.localBody.localElectionBodyId is null order by model.tehsil.tehsilName";
+			
+			Query query = getSession().createQuery(queryString);
+			
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("districtIdsList", districtIdsList);
+			
+			return query.list();
+		}
+
 	public List<Object[]> getAllLocalBodiesByDistrictIdAndPublicationDateId(Long districtId,Long publicationId){
 		Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId,concat(model.localBody.name,' ',model.localBody.electionType.electionType) " +
 				" from Booth model where model.publicationDate.publicationDateId =:publicationId and model.constituency.district.districtId =:districtId order by model.localBody.name");

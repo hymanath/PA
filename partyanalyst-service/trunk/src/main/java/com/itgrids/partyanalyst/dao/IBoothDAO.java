@@ -34,6 +34,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List findByPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo);
 	
+	public List<Object[]> getDistrictsPanchayatAndLebIds(Long distictId,Long publicationDateId);
+	
 	@SuppressWarnings("unchecked")
 	public List findBoothIdPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo);
 
@@ -469,4 +471,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> getConstituencyDetailsByTehsilId(Long tehsilId);
 	 public List<Long> getLocalElectionBody(Long tehsilId);
 	 public Long getLocalElectionBodyDetails(Long localElectionBody,Long constituencyId,Long publicationDateId);
+	 
+	 public List<Long> getPanchayatsIdsListByTehsilId(List<Long> tehsilIdsList,Long publicationId);
+	 public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByDistricts(List<Long> districtIdsList, Long publicationDateId);
+	 public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(List<Long> constituencyIdsList, Long publicationDateId);
 }

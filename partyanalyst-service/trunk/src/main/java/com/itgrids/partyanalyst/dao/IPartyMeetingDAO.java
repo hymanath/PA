@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
+
 import com.itgrids.partyanalyst.model.PartyMeeting;
 
 public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
@@ -13,4 +15,7 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	
 	//public List<Long> getPartyMeetingIdsByLevelAndLocation(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,Long locationValue);
 	public List<Long> getPartyMeetingIdsByLevelAndLocation(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList);
+	
+	public BigInteger getLocationWiseTotalMeetingsCount(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate);
+	public List<Object[]> getMontlyWiseMeetingsDetails(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate,List<String> searchDatesList,int firstRecord,int maxResult);
 }

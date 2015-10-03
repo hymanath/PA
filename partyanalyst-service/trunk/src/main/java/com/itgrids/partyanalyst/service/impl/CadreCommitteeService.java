@@ -80,6 +80,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -231,9 +232,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private INewDistrictConstituencyDAO newDistrictConstituencyDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+	private IStateDAO stateDAO;
 	
 	
-	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
 	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
 		return districtConstituenciesDAO;
 	}
@@ -15584,7 +15593,44 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return finalList;
 	}
 	
-	
+	public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location)
+	{
+		try {
+			if(locationValue != null && locationValue.longValue()>0L)
+			{
+
+				if(committeeLevelId.longValue() == IConstants.VILLAGE_COMMITTEE_LEVEL_ID)
+				{
+					location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat ";
+				}
+				else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
+				{
+					Constituency constituency = constituencyDAO.get(locationValue);
+		    		location = constituency.getName()+" ( "+constituency.getLocalElectionBody().getName()+" "+constituency.getLocalElectionBody().getElectionType().getElectionType()+" )";
+				}
+				else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
+				{
+					location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal ";
+				}
+				else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID || committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID)
+				{
+					LocalElectionBody localbody = localElectionBodyDAO.get(locationValue);
+		    		if(localbody.getElectionType().getElectionTypeId() != 7L)
+		    			location = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+				}				
+				else if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID)
+				{
+					location = districtDAO.get(locationValue).getDistrictName();
+				}
+				else if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID)
+				{
+					location = stateDAO.get(locationValue).getStateName();
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getLocationNameByLocationTypeAndId() method, Exception - ",e);
+		}
+	}
 	
 	
 }
