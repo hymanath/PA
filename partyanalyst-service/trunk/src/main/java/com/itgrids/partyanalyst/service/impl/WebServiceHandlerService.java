@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventRfidDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserLoginDetailsDAO;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -65,6 +67,7 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
@@ -90,6 +93,7 @@ import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
+import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -156,8 +160,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IEventDAO eventDAO;
     private IPartyMeetingService partyMeetingService;
     private IMahaNaduService mahaNaduService;
+    private ITrainingCampService trainingCampService;
+    private IEventInviteeDAO eventInviteeDAO;
     
     
+	public IEventInviteeDAO getEventInviteeDAO() {
+		return eventInviteeDAO;
+	}
+
+	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
+		this.eventInviteeDAO = eventInviteeDAO;
+	}
+
+	public ITrainingCampService getTrainingCampService() {
+		return trainingCampService;
+	}
+
+	public void setTrainingCampService(ITrainingCampService trainingCampService) {
+		this.trainingCampService = trainingCampService;
+	}
+
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -1918,6 +1940,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						eventVo.setId((Long)params[0]);
 						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
 						eventVo.setEventSyncType(params[6] != null ? params[6].toString() : "");
+						eventVo.setIsInviteeExist(params[7] != null ? params[7].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
 						eventsIdsList.add((Long)params[0]);
 					}
@@ -1937,7 +1960,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setStartTime(TimeForm(params[4].toString()));
 								if(params[5]!= null)
 								childEventVo.setEndTime(TimeForm(params[5]!= null?params[5].toString():""));
-
+								childEventVo.setIsInviteeExist(params[6] != null ? params[6].toString() : "");
 								childEventVo.setEntryLimit(params[7] != null ? Long.valueOf(params[7].toString()) : 0L);
 								childEventVo.setServerWorkMode(params[8] != null ? params[8].toString() : "");
 								childEventVo.setTabWorkMode(params[9] != null ? params[9].toString() : "");
@@ -2925,5 +2948,34 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 		 
 	 }
+	 
+	 
+	 public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId){
+		 try {
+			  return  trainingCampService.getAllRecordsOfCampProgramScheduleAndBatch( campId,  programId,  scheduleId,  batchId);
+		} catch (Exception e) {
+			log.debug("Entered into the getAllRecordsOfCampProgramScheduleAndBatch  method in WebServiceHandlerService");
+		}
+		  return null;		 
+	 }
+	 
+	 public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId){
+		 List<Long> membershipIdsList = new ArrayList<Long>(0);
+		 try{
+			 if(eventId != null && eventId.longValue()>0L)
+			 {
+				 Event event = eventDAO.get(eventId);
+				 if(event != null && event.getParentEventId() != null && event.getParentEventId().longValue()>0L){
+					 List<String> membershipNoList = eventInviteeDAO.getTdpCadreMemberShipsIdsByEvent(event.getParentEventId());
+					 for (String membershipNo : membershipNoList) {
+						 membershipIdsList.add(Long.valueOf(membershipNo));
+					}
+				 }
+			 }
+		 }catch (Exception e) {
+		 log.debug("Entered into the getTdpCadreMemberShipsIdsByEvent method in WebServiceHandlerService");
+		 }
+		 return membershipIdsList;
+		 }
 }
 
