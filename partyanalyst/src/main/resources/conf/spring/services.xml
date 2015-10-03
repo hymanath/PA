@@ -2127,6 +2127,7 @@
 	  <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO"/>
 	  <property name="partyMeetingService" ref="partyMeetingService"/>
 	  <property name="mahaNaduService" ref="mahaNaduService"/>
+	  <property name="trainingCampService" ref="trainingCampService"/>
 	   <property name="eventInviteeDAO" ref="eventInviteeDAO"/>
 	  <property name="eventDAO" ref="eventDAO"/>
 	    
@@ -2666,6 +2667,7 @@
            <property name="newDistrictConstituencyDAO" ref="newDistrictConstituencyDAO" />
            <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
 		   <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
+		   <property name="stateDAO" ref="stateDAO" />
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
@@ -2809,7 +2811,14 @@
 		<property name="partyMeetingAtrPointHistoryDAO" ref="partyMeetingAtrPointHistoryDAO" />
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" />	
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
-			
+		<property name="partyMeetingIvrStatusDAO" ref="partyMeetingIvrStatusDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />	
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
