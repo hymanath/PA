@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -1599,6 +1600,37 @@ public class WebServiceHandler {
 		}
 		return null;
 		
+	 }
+	
+	
+	@GET
+	@Path("/getAllRecordsOfCampProgramScheduleAndBatch/{campId}/{programId}/{scheduleId}/{batchId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	 public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(@PathParam("campId") Long campId,@PathParam("programId") Long programId,
+			 @PathParam("scheduleId") Long scheduleId,@PathParam("batchId") Long batchId ){
+		try{
+			return webServiceHandlerService.getAllRecordsOfCampProgramScheduleAndBatch(Long.valueOf(campId),Long.valueOf(programId),Long.valueOf(scheduleId),Long.valueOf(batchId));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllRecordsOfCampProgramScheduleAndBatch() Method, Exception is ",e);
+			
+		}
+		return null;
+		
+	 }
+	
+	 @POST
+	 @Path("/getTdpMemberShipIdsByEvent")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public List<Long> getTdpMemberShipIdsByEvent(UserEventDetailsVO inputVo){
+	 try {
+	 return webServiceHandlerService.getTdpCadreMemberShipsIdsByEvent(inputVo.getEventId());
+	 } catch (Exception e) {
+	 LOG.error("Exception Occured in getTdpMemberShipIdsByEvent() Method, Exception is ",e);
+	 }
+	 return null;
 	 }
 	
 }
