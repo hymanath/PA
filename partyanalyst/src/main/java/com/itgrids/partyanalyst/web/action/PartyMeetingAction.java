@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -30,7 +31,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private PartyMeetingVO partyMeetingVO;
 	private String status;
 	private PartyMeetingSummaryVO partyMeetingsSummary; 
+	private MeetingTrackingVO meetingTrackingVO;
 	
+	
+	public MeetingTrackingVO getMeetingTrackingVO() {
+		return meetingTrackingVO;
+	}
+
+	public void setMeetingTrackingVO(MeetingTrackingVO meetingTrackingVO) {
+		this.meetingTrackingVO = meetingTrackingVO;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -351,6 +362,27 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			jObj = new JSONObject(getTask());
 			
 			partyMeetingVO = partyMeetingService.getSummaryForAMeeting(jObj.getLong("meetingId"),jObj.getString("type"));
+		} catch (Exception e) {
+			LOG.error("Entered into getSummaryForAMeeting Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAreaWiseConductedPartyMeetingDetailsForCadre(){
+		try {
+			LOG.info("Entered into getSummaryForAMeeting Action");
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			String searchTypeStr=jObj.getString("searchTypeStr");
+			 Long committeeLevelId=jObj.getLong("committeeLevelId");
+			 Long committeeLevelValue = jObj.getLong("committeeLevelValue");
+			 String formDateStr=jObj.getString("formDateStr");
+			 String toDateStr =jObj.getString("toDateStr");
+			 String isFirst=jObj.getString("isFirst");
+			 int firstRecord =jObj.getInt("firstRecord");
+			 int maxResult =jObj.getInt("maxResult");
+			 
+			meetingTrackingVO = partyMeetingService.getPartyMeetingsDetailsForCadreByCommitteeLevel(tdpCadreId,searchTypeStr , committeeLevelId, committeeLevelValue, formDateStr, toDateStr, isFirst, firstRecord, maxResult);
 		} catch (Exception e) {
 			LOG.error("Entered into getSummaryForAMeeting Action",e);
 		}
