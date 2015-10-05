@@ -348,7 +348,7 @@ str+=' <td>Schedule</td>';
 str+='<td>Allocated</td>';
 str+='<td>Answered</td>';
 str+='<td>Dialed/Not-Dialled</td>';
-str+='<td class="pad_5 font-12">Interested/Batch Assigned</td>';
+str+='<td class="pad_5 font-12">Interested</td>';
 str+='<td class="pad_5 font-12">Not Interested</td>';
 str+='<td class="pad_5 font-12">Switch off /<br/>User Busy</td>';
 str+='<td>Call Back/TCB</td>';
@@ -391,8 +391,8 @@ for(var l=0;l<result[i].subList[j].subList[k].subList.length;l++) //callStatus
 {
 if(result[i].subList[j].subList[k].subList[l].name == "Call Answered")
  answered = answered+result[i].subList[j].subList[k].subList[l].count;
- else if(result[i].subList[j].subList[k].subList[l].name == "Switchoff")
-switchOff = userbusy + result[i].subList[j].subList[k].subList[l].count;
+ else if(result[i].subList[j].subList[k].subList[l].name == "SwitchOff")
+switchOff = switchOff + result[i].subList[j].subList[k].subList[l].count;
  else if(result[i].subList[j].subList[k].subList[l].name == "User Busy")
 userbusy = userbusy + result[i].subList[j].subList[k].subList[l].count;
 else
@@ -454,9 +454,9 @@ else
 str+='<td>'+dialed+'/'+undialed+'</td>';
 }
 if(interested > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a>/'+confirm+'</td>';
+str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
-str+=' <td>'+interested+'/'+confirm+'</td>';
+str+=' <td>'+interested+'</td>';
 if(notInterested > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
@@ -620,7 +620,7 @@ for(var l=0;l<result[i].subList[j].subList[k].subList[p].subList.length;l++) //c
 {
 	if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Call Answered")
 		answered = answered+result[i].subList[j].subList[k].subList[p].subList[l].count;
-	else if(result[i].subList[j].subList[k].subList[p].subList[l].name == "Switchoff")
+	else if(result[i].subList[j].subList[k].subList[p].subList[l].name == "SwitchOff")
 		switchOff = switchOff + result[i].subList[j].subList[k].subList[p].subList[l].count;
 		else if(result[i].subList[j].subList[k].subList[p].subList[l].name == "User Busy")
 		userbusy = userbusy + result[i].subList[j].subList[k].subList[p].subList[l].count;
