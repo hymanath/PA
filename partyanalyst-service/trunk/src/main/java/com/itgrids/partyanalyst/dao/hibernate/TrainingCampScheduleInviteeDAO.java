@@ -29,7 +29,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 				"count(distinct TCSIC.trainingCampScheduleInvitee.tdpCadreId)," +
 				"TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCampScheduleId ");
 		
-		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where  " +
+		queryStr.append(" from TrainingCampScheduleInviteeCaller TCSIC,TrainingCampBatch TCB where  TCSIC.trainingCampScheduleInvitee.trainingCampSchedule.trainingCamp.trainingCampId = TCB.trainingCampSchedule.trainingCamp.trainingCampId and " +
 				" TCSIC.trainingCampScheduleInvitee.scheduleInviteeStatus.scheduleInviteeStatusId is not null and TCB.isCancelled = 'false' "); //not in (1) " ); // except invitee status
 		
 		if(startDate != null && endDate != null)
