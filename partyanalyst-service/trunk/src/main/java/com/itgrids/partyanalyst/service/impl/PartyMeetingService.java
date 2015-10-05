@@ -2199,7 +2199,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		try {
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
 			if(formDateStr != null && !formDateStr.isEmpty())
 				fromDate = format.parse(formDateStr);
 			if(toDateStr != null && !toDateStr.isEmpty())
@@ -2220,13 +2220,27 @@ public class PartyMeetingService implements IPartyMeetingService{
 							 villageORWardWiseAccessPartyMeetingsDetails(committeeLevelId,committeeLevelValue,fromDate, toDate, isFirst,
 									 availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,  firstRecord, maxResult);
 						}
-						if(searchTypeStr.equalsIgnoreCase("MandalORTownORDivision"))							
+						else if(searchTypeStr.equalsIgnoreCase("MandalORTownORDivision"))							
 						{
 							mandalORTownORDidvisionWiseAccessPartyMeetingsDetails(committeeLevelId,committeeLevelValue,fromDate, toDate, isFirst,
 									 availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,  firstRecord, maxResult);
 						}
-						if(searchTypeStr.equalsIgnoreCase("constituency"))							
+						else if(searchTypeStr.equalsIgnoreCase("constituency"))							
 						{
+							committeeLevelValueList.add(committeeLevelValue);
+							BigInteger meetingsCount = partyMeetingDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							if(meetingsCount != null)
+								availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
+							
+							BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
+							if(conductedMeetngCount == null || conductedMeetngCount==BigInteger.valueOf(Long.valueOf(String.valueOf(conductedMeetngCount))))
+							{
+								conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							}
+								
+							if(conductedMeetngCount != null)
+								conductedMeetingsCount = conductedMeetingsCount+Long.valueOf(String.valueOf(conductedMeetngCount));		
+							
 							if(committeeLevelId.longValue() == IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID ) 
 							{	
 								committeeLevelValueList.add(committeeLevelValue);
@@ -2245,8 +2259,22 @@ public class PartyMeetingService implements IPartyMeetingService{
 								getPartyMeetingsConductedDetails(IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
 							} 
 						}
-						if(searchTypeStr.equalsIgnoreCase("district"))							
+						else if(searchTypeStr.equalsIgnoreCase("district"))							
 						{
+							committeeLevelValueList.add(committeeLevelValue);
+							BigInteger meetingsCount = partyMeetingDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							if(meetingsCount != null)
+								availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
+							
+							BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
+							if(conductedMeetngCount == null || conductedMeetngCount.longValue() == 0L)
+							{
+								conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							}
+								
+							if(conductedMeetngCount != null)
+								conductedMeetingsCount = conductedMeetingsCount+Long.valueOf(String.valueOf(conductedMeetngCount));		
+							
 							if(committeeLevelId.longValue() == IConstants.DISTRICT_COMMITTEE_LEVEL_ID ) 
 							{	
 								committeeLevelValueList.add(committeeLevelValue);
@@ -2259,8 +2287,22 @@ public class PartyMeetingService implements IPartyMeetingService{
 								getPartyMeetingsConductedDetails(IConstants.DISTRICT_COMMITTEE_LEVEL_ID, committeeLevelValueList, fromDate, toDate, isFirst, availableMeetingsCount, conductedMeetingsCount,monthlyWiseMeetingsMap,firstRecord,maxResult);
 							} 
 						}
-						if(searchTypeStr.equalsIgnoreCase("state"))							
+						else if(searchTypeStr.equalsIgnoreCase("state"))							
 						{
+							committeeLevelValueList.add(committeeLevelValue);
+							BigInteger meetingsCount = partyMeetingDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							if(meetingsCount != null)
+								availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
+							
+							BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
+							if(conductedMeetngCount == null || conductedMeetngCount.longValue() == 0L)
+							{
+								conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+							}
+								
+							if(conductedMeetngCount != null)
+								conductedMeetingsCount = conductedMeetingsCount+Long.valueOf(String.valueOf(conductedMeetngCount));		
+							
 							if(committeeLevelId.longValue() == IConstants.STATE_COMMITTEE_LEVEL_ID ) 
 							{	
 								committeeLevelValueList.add(committeeLevelValue);
@@ -2547,7 +2589,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					if(meetingsCount != null)
 						availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
 					
-					BigInteger conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+					BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
+					if(conductedMeetngCount == null || conductedMeetngCount==BigInteger.valueOf(Long.valueOf(String.valueOf(conductedMeetngCount))))
+					{
+						conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
+					}
+						
 					if(conductedMeetngCount != null)
 						conductedMeetingsCount = conductedMeetingsCount+Long.valueOf(String.valueOf(conductedMeetngCount));					
 				}
@@ -2574,7 +2621,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 				}
 				
-				locationWisePartyMeetingsList = partyMeetingIvrStatusDAO.getMontlyWiseMeetingsDetails(committeeLevelId,committeeLevelValueList,null,null,new ArrayList<String>(monthlyWiseMeetingsMap.keySet()));
+				locationWisePartyMeetingsList = partyMeetingAttendanceDAO.getMontlyWiseMeetingsDetails(committeeLevelId, committeeLevelValueList, fromDate, toDate, new ArrayList<String>(monthlyWiseMeetingsMap.keySet()));
+				if(locationWisePartyMeetingsList == null || locationWisePartyMeetingsList.size()==0)					
+					locationWisePartyMeetingsList = partyMeetingIvrStatusDAO.getMontlyWiseMeetingsDetails(committeeLevelId,committeeLevelValueList,null,null,new ArrayList<String>(monthlyWiseMeetingsMap.keySet()));
 				if(locationWisePartyMeetingsList != null && locationWisePartyMeetingsList.size()>0)
 				{
 					for (Object[] partyMeeting : locationWisePartyMeetingsList) {
