@@ -694,6 +694,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			String trNumber = jObj.getString("trNumber");
 			String voterCardNo = jObj.getString("voterCardNo");
 			String gender = jObj.getString("gender");
+			boolean isRemoved = jObj.getBoolean("removedStatus");
 			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
 			{
 				
@@ -705,7 +706,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
-							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex);
+							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
@@ -1965,5 +1966,41 @@ public String getSummaryDetails(){
 		
 		return Action.SUCCESS;	
 	}
+	
+	public String getAllCadreDeleteReasons(){
+		try{
+			idNameVOList = cadreCommitteeService.getAllCadreDeleteReasons();
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getAllCadreDeleteReasons() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveRemovingCadreDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long cadreId = jObj.getLong("cadreId");
+			Long reasonId = jObj.getLong("reasonId");
+			String remark = jObj.getString("remarkTxt");
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			if(regVO==null){
+				return "error";
+			}
+			if(regVO != null && (regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT_GROUP") || regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT")))
+			{
+				status = cadreCommitteeService.saveRemovingCadreDetailsAction(cadreId,reasonId,remark);
+			}
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getAllCadreDeleteReasons() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
 	
 }

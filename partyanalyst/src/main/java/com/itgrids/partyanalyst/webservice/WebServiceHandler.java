@@ -1601,7 +1601,21 @@ public class WebServiceHandler {
 		return null;
 		
 	 }
-	
+	@GET
+	@Path("/getAllRemovedCadre")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<Long> getAllRemovedCadre(){
+		try{
+			return webServiceHandlerService.getAllRemovedCadre();
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllRemovedCadre() Method, Exception is ",e);
+			
+		}
+		return null;
+	}
 	
 	@GET
 	@Path("/getAllRecordsOfCampProgramScheduleAndBatch/{campId}/{programId}/{scheduleId}/{batchId}")
@@ -1632,5 +1646,6 @@ public class WebServiceHandler {
 	 }
 	 return null;
 	 }
+	
 	
 }

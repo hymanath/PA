@@ -153,8 +153,16 @@
 					</div>
 			</div>
 			
+			<div class="col-md-6 col-md-offset-3  text-center" id="removeCadreCheckBoxId" style="margin-top:10px;">
+  
+			  <span class=" btn btn-primary btn-xs form-inline ">
+					<label class="radio"><input type="checkbox" style="vertical-align: text-bottom;" id="onlyCandidatesId"/> Click here to search only removed cadre details. </label>
+					
+			  </span>
+			</div>
+			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
-				<div class="form-inline ">
+				<div class="form-inline btn btn-default">
 					<span class="allcls" style="display:none">
 							   <label style="font-weight: 100;"> <input type="radio" name="searchBasedOn" value="0" id="allId" title="click here to get all cadres in panchayat" style="cursor:pointer;" class="searchTypeCls" onclick="getPanchayayCadreDetailsBySearchCriteria(0)"/>All &nbsp;&nbsp;
 							   </label>
@@ -163,14 +171,14 @@
 					<div class="radio">
 						<!--<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="allId" value="0"> All &nbsp;&nbsp;</label>-->
 					
-						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1">  MEMBERSHIP ID    &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" > Voter ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" >  VOTER ID    &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> Mobile No &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> MOBILE NO &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> Name &nbsp;&nbsp;</label>
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5"> TR No &nbsp;&nbsp;</label><br>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> NAME &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5">  TR NO &nbsp;&nbsp;</label><br>
 						
 						<!--<label style="margin-left: -250px;"><input type="radio" name="searchBasedOn" class="searchTypeCls" id="membershipIdAndMobileNo"  onclick="rfrshEstngDtlsForMembrShipNoAndMblNo();"  value="6"> MembershipID, MobileNo &nbsp;&nbsp;</label>-->
 						<!--<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  onclick="refreshExistingDetails();"  value="5"> Advanced Search &nbsp;&nbsp;</label>-->
@@ -179,6 +187,15 @@
 					</div>				  
 				</div>
 			</div>
+			
+			<!--<div class="col-md-6 col-md-offset-3  text-center" id="removeCadreCheckBoxId">
+  
+			  <span class=" btn btn-primary btn-xs form-inline ">
+					<label class="radio"><input type="checkbox" style="vertical-align: text-bottom;" id="onlyCandidatesId"/> Click here to search only removed cadre details. </label>
+					
+			  </span>
+			</div>-->
+			
 			<!--<div class="row m_top20" id="committeLocationsDiv" >
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6  m_top20">
 					<div class="form-group col-xs-12 pull-right">
@@ -199,7 +216,7 @@
 					 </div>
 				</div>			
 			</div>-->
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv" style="margin-top:10px;">	
 				<div class="row-fluid">      
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
@@ -281,6 +298,49 @@
 			</div>
 		</div>	
 			</div>
+			<!-- hidden variable -->
+			<input type="hidden" value="" id="hiddenCadreId"/>
+			
+			<!-- Modal for Remove cadre -->
+			<div class="modal fade" id="removeModalDivId">
+			  <div class="modal-dialog modal-sm">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="removeModalTitleId" style="color:red;">Removing Cadre</h4>
+				  </div>
+				  <div class="modal-body" id="ramoveModalBodyDivId">
+					<div id="errorDivId" style="color:red"></div>
+					<div id="successDivId"></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div><b>Cadre Name :</b> <span id="cadreName"></span></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Reason <span style="color:red">*</span>:</b>
+								<select id="reasonSelectId" class="form-control">
+									<option value="0">Select Reason</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
+						</div>
+					</div>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-sm" id="saveRemovingCadreDetailsId">Remove</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
 			<script>
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
@@ -527,6 +587,11 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			
 		}
 		
+		var removedStatus =false;
+		if($('#onlyCandidatesId').is(':checked')){
+			 removedStatus = true;
+		 }
+		
 		$("#searchDataImg").show();
 		var jsObj =
 		{
@@ -545,6 +610,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			houseNo:houseNo,
 			startIndex:startIndex,
 			maxIndex : 50,
+			removedStatus:removedStatus,
 			task:"tdpCadreSearch"
 		}
 		$.ajax({
@@ -662,7 +728,12 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			for(var i in result)
 			{
 				
-				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				if(result[i].deletedStatus == "MD"){
+					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}else{
+					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}
+				
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
@@ -670,27 +741,40 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
 				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</i>';
-				str+='<li>Gender: '+result[i].gender+'</i>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
-				str+='<li>Caste: '+result[i].casteName+'</i>';
-				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
-				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
-				str+='<li>Registered Through: '+result[i].dataSourceType+'</i>';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Gender: '+result[i].gender+'</li>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+				str+='<li>Caste: '+result[i].casteName+'</li>';
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
+				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				if(result[i].deletedStatus == "MD"){
+					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
+				}
+				else{
+					str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
+				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
-				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+				str+='<div>';
+				if(result[i].deletedStatus != "MD"){
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
+						str+='<div id="rc'+result[i].tdpCadreId+'" class="pull-right cadreRemoveCls" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_cadre_name ="'+result[i].cadreName+'"><input type="button" value="Remove Cadre" class="btn btn-sm btn-primary"/></div>';
+					</c:if> 
+				}
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
+				str+='</div>';
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
-					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					str+='<li style="font-weight:bold;display: block;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</li>';	
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</li>';
 						}
 					}
 					
@@ -702,7 +786,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 					    str+='<ul>';
 						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</li>';
 						}
 					    str+='</ul>';
 					}
@@ -1015,6 +1099,10 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						}								
 						locationValue = panchayatId.substr(1);
 						
+							var removedStatus =false;
+							if($('#onlyCandidatesId').is(':checked')){
+								 removedStatus = true;
+							 }
 						
 					$("#searchDataImg").show();
 					
@@ -1035,6 +1123,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						houseNo:houseNo,
 						startIndex:startIndex,
 						maxIndex : 50,
+						removedStatus:removedStatus,
 						task:"tdpCadreSearch"
 					}
 					$.ajax({
@@ -1093,7 +1182,11 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			for(var i in result)
 			{
 				
-				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				if(result[i].deletedStatus == "MD"){
+					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}else{
+					 str+='<div class="media" id="main'+result[i].tdpCadreId+'"  style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
@@ -1101,27 +1194,40 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
 				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</i>';
-				str+='<li>Gender: '+result[i].gender+'</i>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
-				str+='<li>Caste: '+result[i].casteName+'</i>';
-				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
-				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
-				str+='<li>Registered Through: '+result[i].dataSourceType+'</i>';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Gender: '+result[i].gender+'</li>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+				str+='<li>Caste: '+result[i].casteName+'</li>';
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
+				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				if(result[i].deletedStatus == "MD"){
+					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
+				}
+				else{
+					str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
+				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
+				str+='<div>';
+				if(result[i].deletedStatus != "MD"){
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
+						str+='<div id="rc'+result[i].tdpCadreId+'" class="pull-right cadreRemoveCls" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_cadre_name ="'+result[i].cadreName+'"><input type="button" value="Remove Cadre" class="btn btn-sm btn-primary"/></div>';
+					</c:if> 
+				}
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
-				</c:if>
+				</c:if> 
+				str+='</div>';
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
-					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</li>';	
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</li>';
 						}
 					}
 					
@@ -1260,9 +1366,117 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
   }
   
   
+  $(document).on("click",".cadreRemoveCls",function(){
+	  
+	  var tdpCadreId = $(this).attr("attr_cadre_id");
+	  var cadreName= $(this).attr("attr_cadre_name");
+	  
+	  $("#hiddenCadreId").val(tdpCadreId);
+	  $("#cadreName").html(cadreName);
+	  
+	  $("#errorDivId").html("");
+	  $("#successDivId").html("");
+	   $("#remarkTextAreaId").val("");
+	  
+	   getAllCadreDeleteReasons();
+	  
+	$("#removeModalDivId").modal("show");
+  });
+  
+  function getAllCadreDeleteReasons(){
+	  $("#reasonSelectId option").remove();
+	  
+	  $("#reasonSelectId").append('<option value="0">Select Reason</option>');
+	  
+	  $.ajax({
+          type:'GET',
+          url: 'getAllCadreDeleteReasonsAction.action',
+          dataType: 'json',
+		  data: {}
+	   }).done(function(result){
+		   
+		   if(result !=null && result.length>0){
+			   for(var i in result){
+				   $("#reasonSelectId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+		   }
+		  
+	   });
+  }
+  
+  $(document).on("click","#saveRemovingCadreDetailsId",function(){
+	  saveRemovingCadreDetails();
+  });
+  
+  function saveRemovingCadreDetails(){
+	  
+	  var errorExist = false;
+	  
+	  var cadreId = $("#hiddenCadreId").val();
+	  var reasonId = $("#reasonSelectId option:selected").val();
+	  var reason = $("#reasonSelectId option:selected").text();
+	  var remarkTxt = $("#remarkTextAreaId").val();
+	  
+	  if(reasonId != null && (reasonId == 0 || reasonId == undefined)){
+		  $("#errorDivId").html("Please Select Reason");
+		  errorExist=true;
+	  }
+	 else if(remarkTxt !=null && remarkTxt.trim().length ==0){
+		  $("#errorDivId").html("Please Enter Remark");
+		errorExist=true;
+	 }
+	 if(errorExist){
+		 return;
+	 }
+	 
+	 if(!confirmDelete()){
+		 return;
+	 }
+	
+	  var jsObj = {
+		  cadreId : cadreId,
+		  reasonId : reasonId,
+		  remarkTxt : remarkTxt
+	  }
+	   $.ajax({
+          type:'GET',
+          url: 'saveRemovingCadreDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result.resultCode == 0){
+				$("#successDivId").html("<span style='color:green;'>Cadre Removed Successfully.</span>");
+				setTimeout(function(){
+				  $("#removeModalDivId").modal("hide");
+				}, 1000);
+				$('#rc'+cadreId).remove();
+				
+				$("#main"+cadreId).css({"background":"rgba(255, 0, 0, 0.1)","padding":"5px","border-bottom":"1px solid rgb(51, 51, 51)"});
+				
+				$("#delete"+cadreId).append('<b style="color:red;">Deleted Reason</b> : '+reason);
+				
+			}
+			else{
+				$("#errorDivId").html("Cadre Not Removed Successfully.");
+				setTimeout(function(){
+				  $("#removeModalDivId").modal("hide");
+				}, 1000);
+			}
+		});
+	  
+	  
+  }
+  
+  function confirmDelete(){
+	var deleteCadre = confirm("Are you sure you want to delete cadre ?");
+	  if (deleteCadre)
+		  return true;
+	  else
+		return false;
+  }
   
 </script>
 			
-			</body>
-			</html>
+</body>
+</html>
 			

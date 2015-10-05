@@ -684,6 +684,7 @@
 				 <value>com.itgrids.partyanalyst.model.StudentRecomendation</value>
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingIvrStatus</value>
+				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
 				 
 				</list>
 			
@@ -698,7 +699,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 				<prop key="hibernate.connection.autoReconnect">true</prop>

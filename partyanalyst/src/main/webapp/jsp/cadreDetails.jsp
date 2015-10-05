@@ -363,6 +363,9 @@ var globalCadreId = '${cadreId}';
                 	<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>
                     </tr>
+					<tr style="background:red" id="deletedReasonId">
+                      
+                    </tr>
                     <tr>
                     	<td>
                         	<div class="media">
@@ -397,9 +400,14 @@ var globalCadreId = '${cadreId}';
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
                         	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
-                            </span>
+                            </span><br>
+							<div style="margin-top:10px;margin-left:10px;">
+								<span id="fbUrlImageId"></span>
+								<span id="wAppImageId"></span>
+							</div>
                         </td>
                     </tr>
+					
                    <!-- <tr style="display:none;" class="enrollmentCls">
 						<td class="text-bold"><i class="glyphicon glyphicon-bookmark"></i> PREVIOUS ENROLEMENTS</td>
 					</tr>
@@ -1378,6 +1386,20 @@ var globalCadreId = '${cadreId}';
 					$('#cadreVoterCardNo').val(result.voterIdCardNo);
 					$('#cadreMemberShipId').val(result.membershipNo);
 					/* end Survey Fields */
+					
+					/*  fb Details */
+					
+					if(result.fbUrl !=null && result.fbUrl !="" && result.fbUrl !="-"){
+						$("#fbUrlImageId").html('<a href="'+result.fbUrl+'"><img src="images/fbIcon.png" width="100px" height="50px;"></a>');
+					}
+					if(result.wAppStatus !=null && result.wAppStatus !="" && result.wAppStatus =="YES"){
+						$("#wAppImageId").html('<img src="images/watsApp.png" width="100px" height="50px;">');
+					}
+					
+					/* candidate Delete Reason*/
+					if(result.deletedStatus !=null && result.deletedStatus =="MD"){
+						$("#deletedReasonId").html("<td class='text-bold' style='color:yellow;'>DELETED REASON :&nbsp "+result.deletedreason+"</td>");
+					}
 					
 					 $("#nameId").html(result.name);
 					 $("#dobId").html(result.dateOfBirth); 
@@ -2600,8 +2622,22 @@ function getCadreFamilyDetailsByCadreId()
 			str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
 			 str += '</div>';
 		 }*/
-         str += '<div class="media-body">';
-         str += '<div class="m_0">'+result[i].name+'';
+		 
+/* 		  if(result[i].deletedStatus == "MD"){
+			  str += '<div class="media-body" style="background:red;padding:5px;">';
+		  }
+		  else{
+			  str += '<div class="media-body">';
+		  } */
+         
+		 str += '<div class="media-body">';
+		  if(result[i].deletedStatus == "MD"){
+			  str += '<div class="m_0"><span style="color:red">'+result[i].name+'</span>';
+		  }else{
+			  str += '<div class="m_0">'+result[i].name+'';
+		  }
+		  
+         
 		if(result[i].tdpCadreId != null )
 		str+=' [ <b><a href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" data-toggle="tooltip" data-placement="right" title="Membership No" class="membershipno-cls">'+result[i].membershipNo+'</a></b> ] ';
 		/*if(result[i].publicRepresentativeStr != null){
@@ -2642,8 +2678,14 @@ function getCadreFamilyDetailsByCadreId()
 		{
 			str += '<p class="m_0" style="font-weight:bold">Party Position: <span class="textTransFormCls" style="color:#2772C0">'+result[i].partyPositionStr+'</span>';
 		}
-         str += '</p></div>';
+         str += '</p>';
+		 
+		 if(result[i].deletedStatus == "MD"){
+			 str += '<p class="m_0" style="font-weight:bold">Deleted Reason : <span class="textTransFormCls" style="color:#2772C0">'+result[i].deletedReason+'</span>';
+		 }
+		 str += '</div>';
          str += '</div>';
+		 str +='</div>';
          str += '</li>';
 	 }
 	 str += '</ul>';

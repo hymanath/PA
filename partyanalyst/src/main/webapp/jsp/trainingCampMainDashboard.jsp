@@ -1150,8 +1150,17 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 						str+='<td>'+results[i].firstName+'</td>';
 					}
 					str+='<td>'+results[i].mobileNo+'</td>';
-					str+='<td>'+results[i].designationLocation+'</td>';
-					str+='<td>'+results[i].designation+'</td>';
+					if(results[i].designationLocation !=null && results[i].designationLocation !=""){
+						str+='<td>'+results[i].designationLocation+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(results[i].designation !=null && results[i].designation != ""){
+						str+='<td>'+results[i].designation+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					
 					str+='<td>'+results[i].constituencyName+'</td>';
 					for(var j in results[i].simpleVoList){
 						str+='<td style="text-align:center">'+results[i].simpleVoList[j].isAttended+'</td>';
