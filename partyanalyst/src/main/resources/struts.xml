@@ -10912,6 +10912,17 @@
 		    <param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="getAllCadreDeleteReasonsAction" class="cadreCommitteeAction" method="getAllCadreDeleteReasons">
+	    <result type="json" name="success">		   
+		    <param name="root">idNameVOList</param>
+		</result>
+	</action>
+	<action name="saveRemovingCadreDetailsAction" class="cadreCommitteeAction" method="saveRemovingCadreDetails">
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	    <result type="json" name="success">
+		    <param name="root">status</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      

@@ -2323,6 +2323,9 @@
 	  <bean id="partyMeetingIvrStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingIvrStatusDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 <bean id="cadreDeleteReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDeleteReasonDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		

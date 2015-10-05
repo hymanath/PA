@@ -2127,8 +2127,9 @@
 	  <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO"/>
 	  <property name="partyMeetingService" ref="partyMeetingService"/>
 	  <property name="mahaNaduService" ref="mahaNaduService"/>
+	  <property name="cadreCommitteeService" ref="cadreCommitteeService"/>
 	  <property name="trainingCampService" ref="trainingCampService"/>
-	   <property name="eventInviteeDAO" ref="eventInviteeDAO"/>
+	  <property name="eventInviteeDAO" ref="eventInviteeDAO"/>
 	  <property name="eventDAO" ref="eventDAO"/>
 	    
  </bean>
@@ -2602,8 +2603,8 @@
 		 <property name="studentCourseDAO" ref="studentCourseDAO" />
 		 <property name="studentAddressDAO" ref="studentAddressDAO" />
 		 <property name="studentRecomendationDAO" ref="studentRecomendationDAO" />
-		
-		 
+		  <property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
+		  
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
@@ -2668,6 +2669,8 @@
            <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
 		   <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
 		   <property name="stateDAO" ref="stateDAO" />
+		   <property name="cadreDeleteReasonDAO" ref="cadreDeleteReasonDAO" />
+		   <property name="cadreRegistrationService" ref="cadreRegistrationService" />
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
