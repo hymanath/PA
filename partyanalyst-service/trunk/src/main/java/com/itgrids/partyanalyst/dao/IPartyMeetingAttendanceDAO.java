@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList);
 	
 	public List<Long> getConductedMeetings(List<Long> partyMeetingsList);
+	
+	public List<Object[]> getMontlyWiseMeetingsDetails(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate,List<String> searchDatesList);
+	public BigInteger getLocationWiseTotalMeetingsCount(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate);
 }
