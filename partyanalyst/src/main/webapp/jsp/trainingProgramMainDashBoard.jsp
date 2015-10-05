@@ -29,6 +29,7 @@
 }
 .bg_ff
 {background:#fff;}
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.trainingHeader {  
     background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
     background-origin: border-box;
@@ -74,11 +75,11 @@ header.trainingHeader {
             <div class="col-md-12">
                 <div class="panel panel-default" style="box-shadow:0px 0px 5px rgba(0,0,0,0.2)">
                     <div class="panel-heading bg_c">
-                        <h3>TRAINING PROGRAMME DASHBOARD<span class="font-10">(<span class="font-10" id="titleName"></span>)</span>
+                        <h4 class="panel-title"><b>TRAINING PROGRAMME DASHBOARD</b> <span class="font-12"> (<span class="text-danger" id="titleName"></span>)</span>
                         <!--<select class="pull-right">
                         	<option>Select Program / View Other Program</option>
                         </select>-->
-                        </h3>                            
+                        </h4>                            
                     </div>
                     <div class="panel-body" style="background-color:#EFF3F4">
 						<section>
@@ -86,14 +87,11 @@ header.trainingHeader {
                             	<div class="col-md-6">
                                 	<div class="panel panel-default"  id="summaryDivLeftPanel">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="text-center" style="font-weight:bold;" id="titleSummary">PROGRAMME SUMMARY</h4>
+                                        	<h4 class="text-center panel-title" style="font-weight:bold;" id="titleSummary">PROGRAMME SUMMARY</h4>
                                         </div>
 										<div id="programSummaryDivId"></div>
                                     </div>	
                                 </div>
-								<div class="col-md-6">
-									<div id="districtWiseDetailsId"></div>
-								</div>
 								<div class="col-md-6 pull-right">
                                 	<table class="table table-bordered m_0 bg_ff">
                                     	<tr>
@@ -121,9 +119,16 @@ header.trainingHeader {
                                             	<span>OTHERS<span class="pull-right" id="otherCommitteeId">0</span></span>
                                             </td>
                                         </tr>
+										<tr>
+											<td>&nbsp;</td>
+										</tr>
 										
                                     </table>
                                 </div>
+								<div class="col-md-12">
+									<div id="districtWiseDetailsId"></div>
+								</div>
+								
                             </div>
                         </section> 
                        
@@ -131,7 +136,7 @@ header.trainingHeader {
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading  bg_e9">
-										<h5 style="font-weight:bold;">TRAINER FEEDBACK ON TRAINEES</h5>
+										<h4 class="panel-title"><b>TRAINER FEEDBACK ON TRAINEES</b></h4>
 									</div>
 									<div class="panel-body" id="feedbackDetailsId"></div>
 								</div>
@@ -141,7 +146,7 @@ header.trainingHeader {
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading  bg_e9">
-										<h5 style="font-weight:bold;">SURVEY DETAILS</h5>
+										<h4 class="panel-title"><b>SURVEY DETAILS</b></h4>
 									</div>
 									<div class="panel-body" id="surveyDetailsId"></div>
 									<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
@@ -155,7 +160,7 @@ header.trainingHeader {
 	</div>
 </main>
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -230,11 +235,11 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 	
 			str+='<table class="table table-bordered bg_ff">';
 				str+='<thead class="bg_e9" >';
-					str+='<th><h5 style="font-weight:bold;">LOCATION (ATTENDED)</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">DISTRICT LEVEL</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">MANDAL/TOWN/DIVISION LEVEL</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">VILLAGE/WARD LEVEL</h5></th>';
-					str+='<th><h5 style="font-weight:bold;">OTHERS</h5></th>';
+					str+='<th>LOCATION (ATTENDED)</th>';
+					str+='<th>DISTRICT LEVEL</th>';
+					str+='<th>MANDAL/TOWN/DIVISION LEVEL</th>';
+					str+='<th>VILLAGE/WARD LEVEL</th>';
+					str+='<th>OTHERS</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				
@@ -368,6 +373,9 @@ function buildAttendedCountByFeedBacks(result)
 		str+='<div class="col-md-4" style="margin-top:10px;">';
 		str+='<table class="table table-bordered m_0 m_top10">';
 			str+='<thead class="bg_e9">';
+				str+='<tr>';
+				str+='<th colspan="5" class="text-center">HEALTH</th>';
+				str+='</tr>';
 				str+='<th></th>';
 				str+='<th>Total</th>';
 				for(var j in result.list[3].subList){
@@ -386,7 +394,7 @@ function buildAttendedCountByFeedBacks(result)
 		str+='</div>';
 		
 		str+='<div class="row">';
-		 str+='<div>';
+		 str+='<div class="col-md-12">';
 		   str+='<table class="table table-bordered m_0 m_top10">';
 			str+='<thead class="bg_e9">';
 			  str+='<th></th>';
@@ -523,10 +531,8 @@ function buildProgramSummaryDetails(result)
 {
 	$("#programSummaryDivId").html('');
 	var str='';
-		str+='<div class="panel-heading bg_d">';
-		str+='</div>';
 		str+='<div class="panel-body pad_0">';
-			str+='<table class="table m_0">';
+			str+='<table class="table table-condensed m_0">';
 				str+='<tr class="bg_yellow">';
 					str+='<td>TOTAL CENTERS - '+result.id+'</td>';
 					str+='<td>TOTAL BATCHES - '+result.count+'</td>';
@@ -571,10 +577,8 @@ function buildCampSummaryDetails(result)
 {
 	$("#programSummaryDivId").html('');
 	var str='';
-		str+='<div class="panel-heading bg_d">';
-		str+='</div>';
 		str+='<div class="panel-body pad_0">';
-			str+='<table class="table m_0">';
+			str+='<table class="table table-condensed m_0">';
 				str+='<tr class="bg_yellow">';
 					str+='<td>CENTER Name</td>';
 					str+='<td>BATCHES COUNT</td>';
@@ -626,7 +630,7 @@ function getSurveyDetails()
 	
 	$.ajax({
 		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
-		url: "http://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
+		  url: "http://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
 	}).then(function(result) {
 		if(result != null && result.length > 0){
 			buildSurveyDetails(result);
