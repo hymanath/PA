@@ -922,14 +922,15 @@ public interface IConstants {
     
     public static final String LOCAL_FILES_FOLDER =	"/app/apache-tomcat-6.0.37/webapps/DocFiles";
     public static final String LOCAL_FILES =	"http://mytdp.com/DocFiles";
-    
+   
+    public static final Long  CONSTITUENCY_COMMITTEE_LEVEL_ID =4l;
+    public static final Long  MANDAL_COMMITTEE_LEVEL_ID =5l;
+    public static final Long  VILLAGE_COMMITTEE_LEVEL_ID =6l;
+    public static final Long  TOWN_COMMITTEE_LEVEL_ID =7l;
+    public static final Long  WARD_COMMITTEE_LEVEL_ID =8l;
+    public static final Long  DIVISION_COMMITTEE_LEVEL_ID =9l;
     public static final Long  STATE_COMMITTEE_LEVEL_ID =10l;
     public static final Long  DISTRICT_COMMITTEE_LEVEL_ID =11l;
-    public static final Long  MANDAL_COMMITTEE_LEVEL_ID =5l;
-    public static final Long  TOWN_COMMITTEE_LEVEL_ID =7l;
-    public static final Long  DIVISION_COMMITTEE_LEVEL_ID =9l;
-    public static final Long  VILLAGE_COMMITTEE_LEVEL_ID =6l;
-    public static final Long  WARD_COMMITTEE_LEVEL_ID =8l;
     
     public static final Long  STATE_PARTY_MEETING_LEVEL_ID =1l;
     public static final Long  DISTRICT_PARTY_MEETING_LEVEL_ID =2l;
@@ -939,11 +940,11 @@ public interface IConstants {
     public static final Long  DIVISION_PARTY_MEETING_LEVEL_ID =6l;
     public static final Long  VILLAGE_PARTY_MEETING_LEVEL_ID =7l;
     public static final Long  WARD_PARTY_MEETING_LEVEL_ID =8l;
-    public static final Long  CONSTITUENCY_COMMITTEE_LEVEL_ID =9l;
+   
     public static final String[] MONTH_NAMES = {"Jan", "Feb", "March", "April", "May", "June", "July", "August", "Sep", "Oct", "Nov", "Dec"};  
     public static final Long MONTHLY_VILLAGEorWARD_MEETING_ID=14L;
     public static final Long MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID=15L;
-    public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=17L;
-    public static final Long MONTHLY_STATE_MEETING_ID=16L;
-    public static final Long MONTHLY_DISTRICT_MEETING_ID=17L;
+    public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=3L;
+    public static final Long MONTHLY_STATE_MEETING_ID=1L;
+    public static final Long MONTHLY_DISTRICT_MEETING_ID=2L;
 }
