@@ -356,6 +356,7 @@ var globalCadreId = '${cadreId}';
 			<input type="hidden" value="" id="cadreConstituencyId" />
 			<input type="hidden" value="" id="cadrePConstituencyId" />
 			<input type="hidden" value="" id="cadreDistrictId" />
+			<input type="hidden" value="" id="cadreStateId" />
 			<input type="hidden" value="" id="cadreVoterCardNo" />
 			<input type="hidden" value="" id="cadreMemberShipId" />
 			
@@ -780,6 +781,33 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>
+				
+				<!-- Meetings Start -->
+                <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title"><img src="dist/img/photo.png"> MEETINGS</h4>
+                    </div>
+                    <div class="panel-body pad_5">
+                    	<div>
+                          <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                            <li role="presentation" class="active" ><a href="#statetabs" aria-controls="statetabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('statetabs','state','true');">State</a></li>
+                            <li role="presentation"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('districttabs','district','true');">District</a></li>
+                            <li role="presentation"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('constabs','constituency','true');">Constituency</a></li>
+                            <li role="presentation"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('mandaltabs','MandalORTownORDivision','true');">Mandal/Town/Division</a></li>
+                            <li role="presentation"><a href="#villagetabs" aria-controls="settings" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('villagetabs','VillageORWard','true');">Village/Ward</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="statetabs">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="districttabs"></div>
+                            <div role="tabpanel" class="tab-pane" id="constabs"></div>
+                            <div role="tabpanel" class="tab-pane" id="mandaltabs"></div>
+                            <div role="tabpanel" class="tab-pane" id="villagetabs"></div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Meetings End -->
 				
                 <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -1477,10 +1505,14 @@ var globalCadreId = '${cadreId}';
 					
 					 $("#districtNoId").html(result.districtName);
 					 var cadreDistrictId  = parseInt(result.districtId);
-					if(cadreDistrictId >= 1 && cadreDistrictId <=10 )
+					if(cadreDistrictId >= 1 && cadreDistrictId <=10 ){						
+						$("#cadreStateId").val(36);
 						$("#stateNoId").html("Telangana");
-					else if(cadreDistrictId >= 11 && cadreDistrictId <=23 )
+					}
+					else if(cadreDistrictId >= 11 && cadreDistrictId <=23 ){
 						$("#stateNoId").html("Andhra Pradesh");
+						$("#cadreStateId").val(1);
+					}
 					else
 						$("#stateNoId").html(result.stateName);
 					
@@ -5721,6 +5753,147 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 	});
 }
 
+
+function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
+{
+	$('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>');
+	var committeeLevelId = 0;
+	var committeeLevelValue = 0;
+	var meetingLevel ="Village/Ward";
+	var isMandal = false;
+	if(searchTypeStr =='state')
+	{
+		committeeLevelId = 10;
+		committeeLevelValue = $('#cadreStateId').val();
+		meetingLevel ="State";
+	}
+	else if(searchTypeStr =='district')
+	{
+		committeeLevelId = 11;
+		committeeLevelValue = $('#cadreDistrictId').val();
+		 meetingLevel ="District";
+	}
+	else if(searchTypeStr =='constituency')
+	{
+		committeeLevelId = 4 ;
+		committeeLevelValue = $('#cadreConstituencyId').val();
+		 meetingLevel ="Constituency";
+	}
+	else if(searchTypeStr =='MandalORTownORDivision')
+	{
+		committeeLevelId = 9;
+		committeeLevelValue = $('#cadreRuralORUrbanId').val();
+		if(committeeLevelValue > 0 )
+		{
+			if(committeeLevelValue != 1110  && committeeLevelValue != 124)
+			{
+				committeeLevelId = 7;
+				committeeLevelValue = $('#cadremandalId').val();
+			}
+		}
+		else{
+			isMandal = true;
+			committeeLevelId = 5;
+			committeeLevelValue = $('#cadremandalId').val();
+		}
+		 meetingLevel ="Mandal/Town/Division";
+	}
+	else if(searchTypeStr =='VillageORWard')
+	{
+		committeeLevelId = 6;
+		committeeLevelValue = $('#cadrePanchaytId').val();
+		if(isMandal)
+		{
+			committeeLevelId = 8;
+		}
+		 meetingLevel ="Village/Ward";
+	}
+	
+	var jsObj={
+			tdpCadreId:globalCadreId,
+			searchTypeStr:searchTypeStr,
+			committeeLevelId:committeeLevelId,
+			committeeLevelValue:committeeLevelValue,
+			formDateStr:"10/11/2014",
+			toDateStr:"10/11/2015",
+			isFirst:"true",
+			firstRecord:"0",
+			maxResult:12
+		}	
+		$.ajax({
+				type:'GET',
+				 url: 'getAreaWiseConductedPartyMeetingDetailsForCadre.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result !=null){
+						buildConductedMeetingDetails(divId,result,meetingLevel);
+					}
+			});
+	
+	
+}
+
+function buildConductedMeetingDetails(divId,result,meetingLevel)
+{
+		var str='';
+		if(result != null){
+		str+='<table class="table table-condensed m_0" style="border:1px solid #ddd">';
+		str+='<tr>';
+		str+='<td class="pad_10" style="background-color:#CCCCCC;">';
+		str+='<h4 class="m_0">';
+		str+=''+meetingLevel+' Level<br/> Meeting Details';
+		str+='</h4>';
+		str+='</td>';
+		str+='<td  class="pad_10" style="border-left:1px solid #ddd;background-color:#CCCCCC;">';
+		str+='<ul class="list-inline">';
+		str+='<li>';
+		str+='<h2 class="m_0">';
+		str+=''+result.totalCount+'';
+		str+='</h2>';
+		str+='</li>';
+		str+='<li>';
+		str+='<h4 class="m_0">';
+		str+='Total Planned <br/> Meetings';
+		str+='</h4>';
+		str+='</li>';
+		str+='</ul>';
+		str+='</td>';
+			str+='<td  class="pad_10" style="border-left:1px solid #ddd;background-color:#CCCCCC;">';
+				str+='<ul class="list-inline">';
+					str+='<li>';
+						str+='<h2 class="m_0">';
+						str+=''+result.actualCount+'';
+						str+='</h2>';
+					str+='</li>';
+					str+='<li>';
+						str+='<h4 class="m_0">';
+						str+='Total Conducted <br/> Meetings';
+					str+='</h4>';
+					str+='</li>';
+				str+='</ul>';
+			str+='</td>';
+		str+='</tr>';
+		if(result.meetingTrackingVOList != null && result.meetingTrackingVOList.length>0)
+		{
+			for(var i in result.meetingTrackingVOList)
+			{
+				str+='<tr>';
+				str+='<td>'+result.meetingTrackingVOList[i].monthName+'</td>';
+				str+='<td>'+result.meetingTrackingVOList[i].totalCount+'</td>';
+				str+='<td>'+result.meetingTrackingVOList[i].actualCount+'</td>';
+				str+='</tr>';
+			}		
+		}
+		
+		str+='<td colspan="3" style="background-color:#ccc">';
+		if(result.totalCount >0)
+			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="#">click to load more meetings</a></p>';
+		str+='</td>';
+		str+='</tr>';
+		str+='</table>';
+	}
+	$('#'+divId+'').html(str);
+}
 
 </script>
 
