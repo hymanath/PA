@@ -15684,10 +15684,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		try{
 			TdpCadre cadreData= tdpCadreDAO.get(cadreId);
 			if(cadreData !=null){
+				DateUtilService dt = new DateUtilService();
 				cadreRegistrationService.saveDataToHistoryTable(cadreData);
 				cadreData.setCadreDeleteReasonId(reasonId);
 				cadreData.setIsDeleted("MD");
 				cadreData.setDeleteRemark(remark);
+				cadreData.setUpdatedTime(dt.getCurrentDateAndTime());
 				
 				tdpCadreDAO.save(cadreData);
 				
