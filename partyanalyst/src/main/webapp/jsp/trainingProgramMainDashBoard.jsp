@@ -8,6 +8,7 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
 <style type="text/css">
 .panel-group .panel
 {
@@ -166,6 +167,8 @@ header.trainingHeader {
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript">
 
 var programId = '${param.pd}';
@@ -233,7 +236,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 	$("#districtWiseDetailsId").html('');
 	var str='';
 	
-			str+='<table class="table table-bordered bg_ff">';
+			str+='<table class="table table-bordered bg_ff" id="attendedTable">';
 				str+='<thead class="bg_e9" >';
 					str+='<th>LOCATION (ATTENDED)</th>';
 					str+='<th>DISTRICT LEVEL</th>';
@@ -264,6 +267,11 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 			str+='</table>';
 		
 	$("#districtWiseDetailsId").html(str);
+	$("#attendedTable").dataTable({
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
+	
 	
 	//total values setting block.
 	$('#totalTrainedId').html(result[0].totalCount);
