@@ -3502,14 +3502,15 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 	  
 	  
-	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds)
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
 			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
 			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
 			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
-			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo, model.dataSourceType ");
+			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo, model.dataSourceType , model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason ");
 			queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 			queryStr.append(" left join model.userAddress.tehsil tehsil ");
 			queryStr.append(" left join model.userAddress.constituency constituency ");
@@ -3520,7 +3521,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.voter voter ");
 			queryStr.append(" left join model.casteState.caste caste ");
 			queryStr.append(" left join model.familyVoter familyVoter ");
-			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" left join model.cadreDeleteReason cadreDeleteReason ");
+			
+			if(isRemoved){
+				queryStr.append(" where  model.isDeleted = 'MD'  and model.enrollmentYear = 2014  ");
+			}
+			
+			else{
+				queryStr.append(" where (model.isDeleted = 'N' or model.isDeleted = 'MD')  and model.enrollmentYear = 2014  ");
+			}
+				
+			
 			queryStr.append(" "+queryString+" ");
 			queryStr.append(" order by model.firstname ");
 			
@@ -5268,7 +5279,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,model.houseNo " +
 					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
 					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name , " +
-					" booth.boothId,booth.partNo, ward.constituencyId, ward.name,constituency.areaType , familyVoter.voterId,familyVoter.voterIDCardNo" +
+					" booth.boothId,booth.partNo, ward.constituencyId, ward.name,constituency.areaType , familyVoter.voterId,familyVoter.voterIDCardNo, model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason " +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");
@@ -5284,9 +5296,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.userAddress.state state ");
 			queryStr.append(" left join model.casteState.caste caste");
 			queryStr.append(" left join model.userAddress.parliamentConstituency parliamentConstituency ");
+			queryStr.append(" left join model.cadreDeleteReason cadreDeleteReason ");
 			
 			if(cadreId !=null){
-				queryStr.append(" where model.tdpCadreId =:cadreId and model.isDeleted ='N'");
+				queryStr.append(" where model.tdpCadreId =:cadreId and (model.isDeleted ='N' or model.isDeleted = 'MD' )");
 			}
 			if(enrollmentYear !=null){
 				queryStr.append(" and model.enrollmentYear =:enrollmentYear  ");
@@ -5538,16 +5551,27 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList)
 		{
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select distinct voter.voterIDCardNo,model.tdpCadreId,model.memberShipNo,model.image ");
+			queryStr.append(" select distinct voter.voterIDCardNo,model.tdpCadreId,model.memberShipNo,model.image,model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason ");
 			queryStr.append(" from TdpCadre model ");
 			queryStr.append(" left join model.voter voter ");
-			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" left join model.cadreDeleteReason cadreDeleteReason ");
+			queryStr.append(" where (model.isDeleted = 'N' or model.isDeleted ='MD' ) and model.enrollmentYear = 2014 ");
 			queryStr.append(" and (voter.voterIDCardNo in (:voterCardNoList)) ");
 			Query query = getSession().createQuery(queryStr.toString());
 			
 			query.setParameterList("voterCardNoList", voterCardNoList);
 			return query.list();
 		
+		}
+		
+		public List<Long> getAllRemovedCadre(){
+			
+			Query query = getSession().createQuery(" select model.tdpCadreId from TdpCadre model " +
+					" where " +
+					" model.isDeleted = 'MD' and model.enrollmentYear = 2014 ");
+			
+			return query.list();
 		}
 		
 }

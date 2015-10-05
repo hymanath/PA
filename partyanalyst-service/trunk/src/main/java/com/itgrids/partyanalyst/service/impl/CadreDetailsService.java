@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -140,9 +141,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IStudentCourseDAO studentCourseDAO;
 	private IStudentAddressDAO studentAddressDAO;
 	private IStudentRecomendationDAO studentRecomendationDAO;
+	private ITdpCadreFamilyInfoDAO  tdpCadreFamilyInfoDAO;
 	
 	
 	
+	
+	public void setTdpCadreFamilyInfoDAO(
+			ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO) {
+		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
+	}
+
 	public IStudentRecomendationDAO getStudentRecomendationDAO() {
 		return studentRecomendationDAO;
 	}
@@ -556,7 +564,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
 		List<Long> ids = new ArrayList<Long>();
@@ -715,7 +723,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
-				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids);
+				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 				
@@ -793,6 +801,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreVO.setAadharNo(cadre[28] != null ? cadre[28].toString().trim():"");
 						cadreVO.setDataSourceType(cadre[29] != null ? cadre[29].toString().trim():"");
 						
+						if(cadre[30] !=null){
+							cadreVO.setDeletedStatus(cadre[30].toString());
+							
+							if(cadreVO.getDeletedStatus().equalsIgnoreCase("MD")){
+								cadreVO.setDeleteReason(cadre[32] !=null ? cadre[32].toString():"");
+							}
+							else{
+								cadreVO.setDeleteReason("");
+							}
+						}
+						
 						returnLsit.add(cadreVO);
 					}
 					
@@ -801,7 +820,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setTdpCadreDetailsList(returnLsit);
 					if(returnLsit != null && maxIndex != 0)
 					{
-					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids);
+					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved);
 					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
 					}
 				}
@@ -956,7 +975,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				returnVO.setResponseCode("Atleast one Attribute is Required...");
 			}    		
     	} catch (Exception e) {
-			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCommitte  method in CadreDetailsService.",e);
+			LOG.error("Exception raised in tdpCadreCastewiseCountDetailsBySearchCriteriaForCommitte  method in CadreDetailsService.",e);
 			returnVO.setResponseStatus("FAILURE");
 			returnVO.setResponseCode("SERVER ISSUE");			
 		}
@@ -1099,7 +1118,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreDetailsVO.setpConstituencyId(commonMethodsUtilService.getLongValueForObject(parliament[0]));
 						cadreDetailsVO.setpConstituencyName(commonMethodsUtilService.getStringValueForObject(parliament[1]));
 					}
+					
+					//Deleted candidate Details
+					
+					if(cadreFormalDetails[38] !=null){
+						cadreDetailsVO.setDeletedStatus(cadreFormalDetails[38].toString());
+						
+						if(cadreDetailsVO.getDeletedStatus().equalsIgnoreCase("MD")){
+							cadreDetailsVO.setDeletedreason(cadreFormalDetails[40] !=null ? cadreFormalDetails[40].toString():"");
+						}
+						else{
+							cadreDetailsVO.setDeletedreason("");
+						}
+					}
+					
 				}
+				
 				
 				Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
 				List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
@@ -1210,10 +1244,32 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			cadreDetailsVO.setEnrollmentYears(cadreEnrollmentYears);
 			
+			//adding whatsApp && fb Details 
+			
+					//0.id,1.wstatus,2.fbUrl
+			List<Object[]> fbDetails = tdpCadreFamilyInfoDAO.getWhatsAppAndFbDetailsOfCadre(cadreId);
+			
+			if(fbDetails !=null && fbDetails.size()>0){
+				Object[] details = fbDetails.get(0);
+				
+				if(details[1] !=null){
+					cadreDetailsVO.setwAppStatus(details[1].toString());
+				}
+				else{
+					cadreDetailsVO.setwAppStatus("-");
+				}
+				if(details[2] !=null){
+					cadreDetailsVO.setFbUrl(details[2].toString());
+				}else{
+					cadreDetailsVO.setFbUrl("-");
+				}
+			}
+			
+			
 			return cadreDetailsVO;
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCommitte  method in CadreDetailsService.",e);
+			LOG.error("Exception raised in cadreFormalDetailedInformation  method in CadreDetailsService.",e);
 		}
 		return cadreDetailsVO;
 	}
@@ -2496,6 +2552,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						}
 					}
 					
+					//0.voterCardNo,1.cadreId,2.memberShipNo,3.image,4.isDeleted,5.delete ReasonId,6.reason
 					List<Object[]> cadreMembersInFamilyList = tdpCadreDAO.checkVoterCardNosCadreNosOrNot(voterIdCardNoList);
 					List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
 					if(cadreMembersInFamilyList != null && cadreMembersInFamilyList.size() > 0)
@@ -2508,6 +2565,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 							    if(VO != null){
 							    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
 							    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
+							    
+							    	if(params[4] !=null){
+							    		VO.setDeletedStatus(params[4].toString());
+										
+										if(VO.getDeletedStatus().equalsIgnoreCase("MD")){
+											VO.setDeletedReason(params[6] !=null ? params[6].toString():"");
+										}
+										else{
+											VO.setDeletedReason("");
+										}
+									}
+							    	
 							    	if(params[3]!=null){
 										String image=params[3].toString();
 										String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
@@ -3948,6 +4017,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setVoterId(cadreVO.getVoterId() != null && !cadreVO.getVoterId().trim().isEmpty()?Long.valueOf(cadreVO.getVoterId()):0L);
 					returnVO.setVoterCardNo(cadreVO.getVoterIdCardNo());
 					returnVO.setQualification(cadreVO.getQualification());
+					returnVO.setDeletedStatus(cadreVO.getDeletedStatus());
+					returnVO.setDeletedReason(cadreVO.getDeletedreason());
+					
 					List<TdpCadreFamilyDetailsVO> familyVOList = getCadreFamilyDetails(tdpCadreId);
 					if(familyVOList != null && familyVOList.size()>0)
 					{
@@ -4132,6 +4204,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 										returnVO.setFamilyMembersSurveyCount(Long.valueOf(String.valueOf(list.size())));
 									}
 									
+									
 									List<Object[]> cadreMembersInFamilyList = tdpCadreDAO.checkVoterCardNosCadreNosOrNot(voterIdCardNoList);
 									List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
 									if(cadreMembersInFamilyList != null && cadreMembersInFamilyList.size() > 0)
@@ -4144,6 +4217,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 											    if(VO != null){
 											    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
 											    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
+											    	
+											    	if(params[4] !=null){
+											    		VO.setDeletedStatus(params[4].toString());
+														
+														if(VO.getDeletedStatus().equalsIgnoreCase("MD")){
+															VO.setDeletedReason(params[6] !=null ? params[6].toString():"");
+														}
+														else{
+															VO.setDeletedReason("");
+														}
+													}
+											    	
 											    	tdpCadreIDsList.add(VO.getTdpCadreId());
 											    }
 											}

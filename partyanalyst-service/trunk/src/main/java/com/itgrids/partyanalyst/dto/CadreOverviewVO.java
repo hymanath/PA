@@ -57,11 +57,27 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private Long familyMembersSurveyCount = 0L;
 	private Long publicRepresentativesCount = 0L;
 	private Long partyPositionsCount =0L;
+	private String deletedStatus;
+	private String deletedReason;
+	
 	private  List<TdpCadreFamilyDetailsVO> familyMembersList = new ArrayList<TdpCadreFamilyDetailsVO>(0);
 	private List<RegisteredMembershipCountVO> electionResultsPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 	private List<RegisteredMembershipCountVO> membershipRegistrationPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 
 	
+	
+	public String getDeletedStatus() {
+		return deletedStatus;
+	}
+	public void setDeletedStatus(String deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
+	public String getDeletedReason() {
+		return deletedReason;
+	}
+	public void setDeletedReason(String deletedReason) {
+		this.deletedReason = deletedReason;
+	}
 	public Long getFamilyMembersSurveyCount() {
 		return familyMembersSurveyCount;
 	}

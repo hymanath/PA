@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
 public interface ICadreRegistrationService {
@@ -174,4 +175,5 @@ public interface ICadreRegistrationService {
 	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate);
 	public  List<CadreRegistrationVO> getCadreWithFamilyDetailsOfEachCadre(Long cadreId);
 	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo);
+	
 }

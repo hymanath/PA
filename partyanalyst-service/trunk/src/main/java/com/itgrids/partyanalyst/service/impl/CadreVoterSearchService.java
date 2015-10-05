@@ -422,7 +422,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					else if(isFinal != null && isFinal.equalsIgnoreCase("cadreDetails"))
 					{
 						TdpCadreVO tdpCadreVO= cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, nameStr,null,null, null, 
-								null,casteStateId,null,null,null,null,null,0,0);
+								null,casteStateId,null,null,null,null,null,0,0,false);
 						if(tdpCadreVO != null)
 						{
 							List<TdpCadreVO> tdpCadreVOList = tdpCadreVO.getTdpCadreDetailsList();
@@ -776,7 +776,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				else if(isFinal != null && isFinal.equalsIgnoreCase("cadreDetails"))
 				{
 					TdpCadreVO tdpCadreVO= cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, nameStr,null,null, null, 
-							null,casteStateId,null,null,null,null,null,0,0);
+							null,casteStateId,null,null,null,null,null,0,0,false);
 					if(tdpCadreVO != null)
 					{
 						List<TdpCadreVO> tdpCadreVOList = tdpCadreVO.getTdpCadreDetailsList();

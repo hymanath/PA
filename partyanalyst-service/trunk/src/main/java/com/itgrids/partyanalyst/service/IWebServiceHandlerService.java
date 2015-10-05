@@ -117,6 +117,7 @@ public interface IWebServiceHandlerService {
 	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
 	  public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
 	  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId);
+	  public List<Long> getAllRemovedCadre();
 	  public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
 	  public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId);
 }

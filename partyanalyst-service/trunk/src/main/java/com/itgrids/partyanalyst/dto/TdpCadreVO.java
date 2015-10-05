@@ -35,12 +35,29 @@ public class TdpCadreVO implements java.io.Serializable
 	private String responseCode;
 	private String aadharNo;
 	private String dataSourceType;
+	private String deletedStatus;
+	private String deleteReason;
+	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
 	private List<CadreCommitteeVO> cadreComitteeVOList = new ArrayList<CadreCommitteeVO>();
 
 	
+	
+	
+	public String getDeleteReason() {
+		return deleteReason;
+	}
+	public void setDeleteReason(String deleteReason) {
+		this.deleteReason = deleteReason;
+	}
+	public String getDeletedStatus() {
+		return deletedStatus;
+	}
+	public void setDeletedStatus(String deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
 	public List<CadreCommitteeVO> getCadreComitteeVOList() {
 		return cadreComitteeVOList;
 	}

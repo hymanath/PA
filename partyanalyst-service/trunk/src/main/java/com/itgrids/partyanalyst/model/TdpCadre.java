@@ -115,6 +115,10 @@ public class TdpCadre {
 	private String 						mobileType;
 	private VoterAgeRange 				voterAgeRange;
 	private Long 						voterAgeRangeId;
+	private CadreDeleteReason			cadreDeleteReason;
+	private String 						deleteRemark;
+	
+	private Long 						cadreDeleteReasonId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -769,6 +773,33 @@ public class TdpCadre {
 	}
 	public void setVoterAgeRangeId(Long voterAgeRangeId) {
 		this.voterAgeRangeId = voterAgeRangeId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_delete_reason_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreDeleteReason getCadreDeleteReason() {
+		return cadreDeleteReason;
+	}
+	public void setCadreDeleteReason(CadreDeleteReason cadreDeleteReason) {
+		this.cadreDeleteReason = cadreDeleteReason;
+	}
+	
+	@Column(name="delete_remark")
+	public String getDeleteRemark() {
+		return deleteRemark;
+	}
+	public void setDeleteRemark(String deleteRemark) {
+		this.deleteRemark = deleteRemark;
+	}
+	
+	@Column(name="cadre_delete_reason_id")
+	public Long getCadreDeleteReasonId() {
+		return cadreDeleteReasonId;
+	}
+	public void setCadreDeleteReasonId(Long cadreDeleteReasonId) {
+		this.cadreDeleteReasonId = cadreDeleteReasonId;
 	}
 	
 	

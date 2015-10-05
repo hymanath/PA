@@ -13,4 +13,5 @@ public interface ITdpCadreFamilyInfoDAO extends GenericDao<TdpCadreFamilyInfo, L
 	public List<TdpCadreFamilyInfo> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId);
 	public List<TdpCadreFamilyInfo> getCadresFamilyDetailsBytdpCadreIdList(Set<Long> tdpCadreIdsSet);
 	public List<Long> getFamilyUpdatedOrNot(List<Long> tdpCadreIds);
+	public List<Object[]> getWhatsAppAndFbDetailsOfCadre(Long tdpCadreId);
 }

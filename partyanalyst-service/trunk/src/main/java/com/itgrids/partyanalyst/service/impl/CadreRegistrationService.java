@@ -7844,7 +7844,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
     	return returnVO;
 	}
 	
-	private void saveDataToHistoryTable(TdpCadre tdpCadre){
+	public void saveDataToHistoryTable(TdpCadre tdpCadre){
 		TdpCadreHistory history = new TdpCadreHistory();
 		history.setTdpCadreId(tdpCadre.getTdpCadreId()) ;
 		history.setVoterId(tdpCadre.getVoterId());

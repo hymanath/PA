@@ -37,6 +37,23 @@ public class TdpCadreFamilyDetailsVO {
 	private String imagePath;
 	private String facebookUrl;
 	
+	private String deletedStatus;
+	private String deletedReason;
+	
+	
+	
+	public String getDeletedStatus() {
+		return deletedStatus;
+	}
+	public void setDeletedStatus(String deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
+	public String getDeletedReason() {
+		return deletedReason;
+	}
+	public void setDeletedReason(String deletedReason) {
+		this.deletedReason = deletedReason;
+	}
 	public String getFacebookUrl() {
 		return facebookUrl;
 	}
