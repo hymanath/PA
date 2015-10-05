@@ -5,6 +5,7 @@ body
 	font-size:14px !important;
 	font-family: 'Roboto', sans-serif;
 }
+
 h1,h2,h3,h4,h5,h6{color:#666 !important;}
 a{color:#666 !important;}
 *
@@ -116,6 +117,11 @@ a{color:#666 !important;}
 {
 	background-color:#dddddd !important;
 }
+.bg_c
+{
+	background-color:#ccc !important;
+}
+
 .up-arrow {
 
 	background: #fff;
