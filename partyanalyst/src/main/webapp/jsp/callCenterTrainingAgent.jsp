@@ -1175,6 +1175,7 @@ function setDefaultImage(img){
    var callBackTypeId = $("#callBackTypeId").val();
    var Date = $("#CallbackTime").val();
    var time =$("#timepicker4").val();
+    var callPurposeId = '${purposeId}';
    if(ramarks.length == 0)
    {
     str+='<font color="red">Remarks  Required</font><br/>';
@@ -1210,6 +1211,7 @@ function setDefaultImage(img){
    scheduleStatusId:callBackTypeId,
    callbackDate:Date,
    time:time,
+   callPurposeId:callPurposeId,
    status:"callBackStatus"
 
    }
@@ -1228,6 +1230,7 @@ function setDefaultImage(img){
 				$("#messageDiv").html("Status Updated Successfully").css("color","green");
 				$("#myModal").modal('hide');
 				$("#ajaxImage1").hide();
+				getMemberDetails(0);
 				
 		   })
     
