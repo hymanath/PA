@@ -85,7 +85,7 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
-				queryStr.append(" select date(model.start_date) , count(model.party_meeting_id) from from party_meeting_ivr_status model2,party_meeting model where model2.party_meeting_id = model.party_meeting_id and  model.is_active='Y' ");
+				queryStr.append(" select date(model.start_date) , count(model.party_meeting_id) from party_meeting_ivr_status model2,party_meeting model where model2.party_meeting_id = model.party_meeting_id and  model.is_active='Y' ");
 				queryStr.append("");
 				if(committeeLevelId != null && committeeLevelId.longValue()>0L)
 				{
