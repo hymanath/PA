@@ -222,6 +222,16 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 	  query.setParameter("stateId", stateId);
 	return query.list();
 	}
+  
+  public LocalElectionBody getLocalElectionBodyDetailsByLevel(Long localElectionBodyId){
+	  
+	  Query query = getSession().createQuery(" select model from LocalElectionBody model " +
+	  		" where model.localElectionBodyId = :levelValue ");
+	  
+	  query.setParameter("levelValue", localElectionBodyId);
+	  
+	  return (LocalElectionBody) query.uniqueResult();
+  }
  
   
 }

@@ -67,11 +67,25 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String party;
 	private String type;
 	private String dataSourceType;
+	private String deletedStatus;
+	private String deletedReason;
 	
 	private Long tdpCadreCommitteeId;
 	
 	
 	
+	public String getDeletedReason() {
+		return deletedReason;
+	}
+	public void setDeletedReason(String deletedReason) {
+		this.deletedReason = deletedReason;
+	}
+	public String getDeletedStatus() {
+		return deletedStatus;
+	}
+	public void setDeletedStatus(String deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
 	public Long getTdpCadreCommitteeId() {
 		return tdpCadreCommitteeId;
 	}

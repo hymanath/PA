@@ -113,6 +113,12 @@ public class CadreCommitteeMemberVO {
 	private String enrollmentYears;
 	private String isFamilyVoterId;
 	
+	private String wAppStatus;
+	private String fbUrl;
+	
+	private String deletedStatus;
+	private String deletedreason;
+	
 	private Long levelId;
 	private Long levelValue;
 	
@@ -128,6 +134,31 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setLevelValue(Long levelValue) {
 		this.levelValue = levelValue;
+	}
+	
+	public String getDeletedStatus() {
+		return deletedStatus;
+	}
+	public void setDeletedStatus(String deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
+	public String getDeletedreason() {
+		return deletedreason;
+	}
+	public void setDeletedreason(String deletedreason) {
+		this.deletedreason = deletedreason;
+	}
+	public String getwAppStatus() {
+		return wAppStatus;
+	}
+	public void setwAppStatus(String wAppStatus) {
+		this.wAppStatus = wAppStatus;
+	}
+	public String getFbUrl() {
+		return fbUrl;
+	}
+	public void setFbUrl(String fbUrl) {
+		this.fbUrl = fbUrl;
 	}
 	public String getIsFamilyVoterId() {
 		return isFamilyVoterId;

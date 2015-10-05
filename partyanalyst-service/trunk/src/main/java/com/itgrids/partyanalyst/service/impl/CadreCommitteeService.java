@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.ICadreDeleteReasonDAO;
 import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
@@ -159,6 +160,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -232,7 +234,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private INewDistrictConstituencyDAO newDistrictConstituencyDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+	private ICadreDeleteReasonDAO cadreDeleteReasonDAO;
+	private CadreRegistrationService cadreRegistrationService;
 	private IStateDAO stateDAO;
+	
+	
 	
 	
 	public IStateDAO getStateDAO() {
@@ -242,7 +248,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
+	
+	public void setCadreRegistrationService(
+			CadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
 
+	public ICadreDeleteReasonDAO getCadreDeleteReasonDAO() {
+		return cadreDeleteReasonDAO;
+	}
+
+	public void setCadreDeleteReasonDAO(ICadreDeleteReasonDAO cadreDeleteReasonDAO) {
+		this.cadreDeleteReasonDAO = cadreDeleteReasonDAO;
+	}
+	
+	
 	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
 		return districtConstituenciesDAO;
 	}
@@ -1848,13 +1868,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
 		CadreCommitteeVO cadreCommitteeVO = new CadreCommitteeVO();
 		try {
 			
 			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, searchName,memberShipCardNo, 
-					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex);
+					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
 			List<CadreCommitteeVO> cadreCommitteeList = null;
 			if(tdpCadreVO != null)
 			{
@@ -1890,6 +1910,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setVoterCardNo(tdpCadre.getVoterCardNo());
 						committeeVO.setImageURL(tdpCadre.getImageURL());
 						committeeVO.setDataSourceType(tdpCadre.getDataSourceType());
+						committeeVO.setDeletedStatus(tdpCadre.getDeletedStatus());
+						committeeVO.setDeletedReason(tdpCadre.getDeleteReason());
+						
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)
@@ -15632,5 +15655,63 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 	}
 	
+	public List<IdNameVO> getAllCadreDeleteReasons(){
+		
+		List<IdNameVO> listVo = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> deleteResons = cadreDeleteReasonDAO.getAllCadreDeleteReasons();
+			
+			if(deleteResons !=null && deleteResons.size()>0){
+				for (Object[] objects : deleteResons) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(objects[0] !=null ? (Long)objects[0] : 0l );//resonId
+					vo.setName(objects[1] !=null ? objects[1].toString() :"");//reason
+					
+					listVo.add(vo);
+				}
+			}
+			
+			return listVo;
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAllCadreDeleteReasons() method, Exception - ",e);
+		}
+		return listVo;
+	}
+	public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark){
+		
+		ResultStatus finalRs = new ResultStatus();
+		try{
+			TdpCadre cadreData= tdpCadreDAO.get(cadreId);
+			if(cadreData !=null){
+				cadreRegistrationService.saveDataToHistoryTable(cadreData);
+				cadreData.setCadreDeleteReasonId(reasonId);
+				cadreData.setIsDeleted("MD");
+				cadreData.setDeleteRemark(remark);
+				
+				tdpCadreDAO.save(cadreData);
+				
+				finalRs.setResultCode(0);
+			}
+			return finalRs;
+		}catch (Exception e) {
+			finalRs.setResultCode(1);
+			LOG.error("Exception Occured in saveRemovingCadreDetailsAction() method, Exception - ",e);
+		}
+		return finalRs;
+	}
+	
+	public List<Long> getAllRemovedCadre(){
+		List<Long> cadreIds =null;
+		try{
+			 cadreIds = tdpCadreDAO.getAllRemovedCadre();
+			return cadreIds;
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAllRemovedCadre() method, Exception - ",e);
+		}
+		
+		return cadreIds;
+	}
 	
 }

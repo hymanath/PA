@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -83,6 +84,7 @@ import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -161,17 +163,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IPartyMeetingService partyMeetingService;
     private IMahaNaduService mahaNaduService;
     private ITrainingCampService trainingCampService;
+    private ICadreCommitteeService cadreCommitteeService;
     private IEventInviteeDAO eventInviteeDAO;
     
     
-	public IEventInviteeDAO getEventInviteeDAO() {
-		return eventInviteeDAO;
-	}
-
+    
 	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
 		this.eventInviteeDAO = eventInviteeDAO;
 	}
 
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	public ITrainingCampService getTrainingCampService() {
 		return trainingCampService;
 	}
@@ -179,7 +183,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public void setTrainingCampService(ITrainingCampService trainingCampService) {
 		this.trainingCampService = trainingCampService;
 	}
-
+	
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -2948,7 +2952,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;
 		 
 	 }
-	 
+
 	 
 	 public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId){
 		 try {
@@ -2959,6 +2963,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return null;		 
 	 }
 	 
+	 public List<Long> getAllRemovedCadre(){
+		 try {
+			  return  cadreCommitteeService.getAllRemovedCadre();
+		} catch (Exception e) {
+			log.debug("Entered into the getAllRemovedCadre  method in WebServiceHandlerService");
+		}
+		 return null;
+	 }
 	 public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId){
 		 List<Long> membershipIdsList = new ArrayList<Long>(0);
 		 try{

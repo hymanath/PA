@@ -7049,9 +7049,13 @@ class TrainingCampService implements ITrainingCampService{
 								}
 								else if(committeeLevelId == 7L || committeeLevelId == 9L) // town/division
 								{
-									LocalElectionBody localbody = localElectionBodyDAO.get(committeeLevelValue);
-									if(localbody.getElectionType().getElectionTypeId() != 7L)
-										committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+									LocalElectionBody localbody = localElectionBodyDAO.getLocalElectionBodyDetailsByLevel(committeeLevelValue);
+									
+									if(localbody !=null){
+										if(localbody.getElectionType().getElectionTypeId() != 7L)
+											committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+									}
+									
 								}
 								else if(committeeLevelId == 8L)
 								{
@@ -7068,7 +7072,14 @@ class TrainingCampService implements ITrainingCampService{
 								}
 							}
 							vo.setDesignation(designation);
-							vo.setDesignationLocation(committee+" ("+committeeLocation+")");
+							
+							if(committeeLocation !=null && !committeeLocation.isEmpty()){
+								vo.setDesignationLocation(committee+" ("+committeeLocation+")");
+							}
+								
+							else{
+								vo.setDesignationLocation(committee);
+							}
 						  
 						  vo.setMembershipNoStr(cadre[1] !=null ? cadre[1].toString():"");
 						  vo.setFirstName(cadre[2] !=null ? cadre[2].toString():"");

@@ -52,4 +52,17 @@ public class TdpCadreFamilyInfoDAO extends GenericDaoHibernate<TdpCadreFamilyInf
 		query.setParameterList("tdpCadreIds",tdpCadreIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getWhatsAppAndFbDetailsOfCadre(Long tdpCadreId){
+		
+		Query query=getSession().createQuery(" select model.tdpCadreFamilyInfoId,model.whatsappStatus,model.facebookUrl" +
+				" from TdpCadreFamilyInfo model where " +
+				" model.tdpCadreId = :tdpCadreId" +
+				" and model.isDeleted ='N' and  model.relationId = 13 ");
+		
+		query.setParameter("tdpCadreId",tdpCadreId);
+		return query.list();
+		
+	}
+	
 }

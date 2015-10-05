@@ -106,7 +106,7 @@ public interface ICadreCommitteeService {
 	public String getDistrictName(Long  districtId);
 	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType);
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex);
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved);
 	public List<BasicVO> getAllCommittees();
 	public List<BasicVO> getCommitteeRoles();
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForDistrict(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
@@ -140,5 +140,8 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getLocationNameByLocationIds(List<Long> locationIds, Long locationLevel);
 	 
 	 public String getLocationName(Long LocationTypeId,Long locationValue);
+	 public List<IdNameVO> getAllCadreDeleteReasons();
+	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark);
+	 public List<Long> getAllRemovedCadre();
 	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
 }
