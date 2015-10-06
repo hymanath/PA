@@ -2233,7 +2233,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 								availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
 							
 							BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
-							if(conductedMeetngCount == null || conductedMeetngCount==BigInteger.valueOf(Long.valueOf(String.valueOf(conductedMeetngCount))))
+							if(conductedMeetngCount == null || conductedMeetngCount.longValue() == 0L)
 							{
 								conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
 							}
@@ -2590,7 +2590,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						availableMeetingsCount = availableMeetingsCount+Long.valueOf(String.valueOf(meetingsCount));
 					
 					BigInteger conductedMeetngCount = partyMeetingAttendanceDAO.getLocationWiseTotalMeetingsCount(committeeLevelId, committeeLevelValueList, fromDate, toDate);
-					if(conductedMeetngCount == null || conductedMeetngCount==BigInteger.valueOf(Long.valueOf(String.valueOf(conductedMeetngCount))))
+					if(conductedMeetngCount == null || conductedMeetngCount.longValue() == 0L)
 					{
 						conductedMeetngCount = partyMeetingIvrStatusDAO.getLocationWiseTotalMeetingsCount(committeeLevelId,committeeLevelValueList,fromDate,toDate);
 					}
