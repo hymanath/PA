@@ -785,16 +785,23 @@ var globalCadreId = '${cadreId}';
 				<!-- Meetings Start -->
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title"><img src="dist/img/photo.png"> MEETINGS</h4>
+                    	<h4 class="panel-title"><img src="dist/img/photo.png"> MEETINGS
+							<span class="pull-right" style="margin-top:-8px">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
+									<input type="text" class="form-control" id="meetingDatePicker">
+								</div>
+							</span>
+						</h4>
                     </div>
                     <div class="panel-body pad_5">
                     	<div>
                           <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                            <li role="presentation" class="active" ><a href="#statetabs" aria-controls="statetabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('statetabs','state','true');">State</a></li>
-                            <li role="presentation"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('districttabs','district','true');">District</a></li>
-                            <li role="presentation"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('constabs','constituency','true');">Constituency</a></li>
-                            <li role="presentation"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('mandaltabs','MandalORTownORDivision','true');">Mandal/Town/Division</a></li>
-                            <li role="presentation"><a href="#villagetabs" aria-controls="settings" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('villagetabs','VillageORWard','true');">Village/Ward</a></li>
+                            <li role="presentation" class="active meetingCls" id="state" key="statetabs"><a href="#statetabs" aria-controls="statetabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('statetabs','state','true');">State</a></li>
+                            <li role="presentation"  class="meetingCls"  id="district" key="districttabs"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('districttabs','district','true');">District</a></li>
+                            <li role="presentation"   class="meetingCls" id="constituency" key="constabs"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('constabs','constituency','true');">Constituency</a></li>
+                            <li role="presentation"  class="meetingCls"  id="MandalORTownORDivision" key="mandaltabs"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('mandaltabs','MandalORTownORDivision','true');">Mandal/Town/Division</a></li>
+                            <li role="presentation"  class="meetingCls"  id="VillageORWard" key="villagetabs"><a href="#villagetabs" aria-controls="settings" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('villagetabs','VillageORWard','true');">Village/Ward</a></li>
                           </ul>
                           <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="statetabs">
@@ -2024,7 +2031,7 @@ var globalCadreId = '${cadreId}';
 				isparticipatedSelected = '';
 			});
 			var voterCardNo = 'false';
-			console.log("isparticipatedSelected "+isparticipatedSelected)
+			//console.log("isparticipatedSelected "+isparticipatedSelected)
 			if(participatedSurveysArr != null && participatedSurveysArr.length>0)
 			{
 				if(isparticipatedSelected == 'false')
@@ -2140,7 +2147,7 @@ var globalCadreId = '${cadreId}';
 					str+='</div>';
 					
 					$('.surveyDetailsCls').html(str);
-					console.log(participatedSurveysArr);
+					//console.log(participatedSurveysArr);
 				}
 				else if(surveyId !=0 && surveyId !=0 ){
 					buildingSurveyQuestionsDetails(result,surveyId,indexId,divId,isPriority);
@@ -2339,6 +2346,7 @@ $(document).ready(function() {
   var cb = function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
   }
+  getConductedPartyMeetingDetails("","","true");
 setcolorsForStatus();
   var optionSet1 = {
 	startDate: moment().subtract(29, 'days'),
@@ -2405,22 +2413,73 @@ setcolorsForStatus();
 	); 
   });
   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+   var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+  
+  /*Meeting DatePicker*/
+setcolorsForStatus();
+  var MeetingSet = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	/* minDate: '01/01/2012',
+	maxDate: '12/31/2015', */
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary meetingSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#meetingDatePicker span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
-  $('#options1').click(function() {
-	$('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+  $('#meetingDatePicker').daterangepicker(MeetingSet, cb);
+
+  $('#meetingDatePicker').on('show.daterangepicker', function() { /*console.log("show event fired"); */});
+  $('#meetingDatePicker').on('hide.daterangepicker', function() { /*console.log("hide event fired"); */});
+  $('#meetingDatePicker').on('apply.daterangepicker', function(ev, picker) { 
+	/*console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); */
   });
-
-  $('#options2').click(function() {
-	$('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-  });
-
-  $('#destroy').click(function() {
-	$('#reportrange').data('daterangepicker').remove();
-  });
-
+  $('#MeetingDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
 });
+
 $(document).on("click",".newsSubmitBtn",function(){
 	getCandidateAndLocationSummaryNews();
+});
+$(document).on("click",".meetingSubmitBtn",function(){
+	getConductedPartyMeetingDetails('','','true');
+});
+
+var globalDate = "global";
+$(document).on("click","#meetingDatePicker",function(){
+	globalDate ="meetingGlobal";
 });
 
 </script>
@@ -2593,7 +2652,7 @@ function getCadreFamilyDetailsByCadreId()
  var familycadreIdsArrayGlobal=[];
  function buildCadreFamilyDetails(result)
  {
- console.log(result.familyMembersList)
+ //console.log(result.familyMembersList)
 	  familyInfoArr=[];
 	 var constId = $('#cadreConstituencyId').val();
 	 var partNo = $('#cadrePartNo').val();
@@ -3427,7 +3486,6 @@ $(document).on("click",".newsRadioCls",function(){
 });
 
 function getCandidateAndLocationSummaryNews(){
-	
 	//rebuilding the blocks
 	$("#candidateCategoryWiseNewsId").html("");
 	$("#propertiesId").html("");
@@ -3487,6 +3545,9 @@ function getCandidateAndLocationSummaryNews(){
 		
 		startDate=startDate;
 		endDate=endDate;
+		
+		//alert(startDate);
+		//alert(endDate);
 		
 		var url = window.location.href;
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
@@ -3771,7 +3832,17 @@ function getCandidateAndLocationSummaryNews(){
 	}
 	
 	$(document).on("click",".ranges li",function(){
-		getCandidateAndLocationSummaryNews();
+		if($(this).text() == "Custom"){
+			return;
+		}
+		if(globalDate == "meetingGlobal"){
+			getConductedPartyMeetingDetails('','','true');
+			globalDate="global";
+		}else{
+			getCandidateAndLocationSummaryNews();
+		}
+		
+		
 	});
 	
 	//Dont Delete the Below Content Please..
@@ -3799,7 +3870,7 @@ function getCadreIdByMemberShipId()
 		data : {membershipId:"38324292"}
 		
 	}).done(function(result){
-		console.log(result);
+		//console.log(result);
 	});
 	
 }
@@ -3958,7 +4029,7 @@ function getCadreIdByMemberShipId()
 		data : {membershipId:membershipId,constituencyId:constituencyId}
 		
 	}).done(function(result){
-		console.log(result);
+		//console.log(result);
 		if(result != null)
 		{
 			globalCadreId = result;
@@ -4026,7 +4097,7 @@ function getLocationwiseCommitteesCount()
 		 buildLocationwiseCommitteesCount(result);
 	 else
 	  $("#committeesCountDiv").html("No Data Available.");
-		console.log(result);
+		//console.log(result);
 	});
 }
 
@@ -4438,7 +4509,7 @@ function newsHideAndShow(divId)
 	$('.showbtnCls').hide();
 	$('.dateCls').hide();
 		var styleStr = $('#'+divId+'').is(":visible")
-		console.log(styleStr);
+		//console.log(styleStr);
 		if(styleStr)
 		{
 			$('#'+divId+'').hide();
@@ -5757,6 +5828,22 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
 {
 	$('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>');
+	setTimeout(function(){
+	var startDate = $('.meetingSubmitBtn').parent().find('.dp_startDate').val();
+	var endDate = $('.meetingSubmitBtn').parent().find('.dp_endDate').val();
+	
+	var searchType ='';
+	$('.meetingCls').each(function(){
+		var tabDivId = $(this).attr('id');		
+		var isActive =  $('#'+tabDivId+'').hasClass('active');
+		console.log(isActive);
+		if(isActive)
+		{
+			searchTypeStr = tabDivId;
+			divId =  $('#'+tabDivId+'').attr('key');
+		}			
+	});
+
 	var committeeLevelId = 0;
 	var committeeLevelValue = 0;
 	var meetingLevel ="Village/Ward";
@@ -5814,8 +5901,10 @@ function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
 			searchTypeStr:searchTypeStr,
 			committeeLevelId:committeeLevelId,
 			committeeLevelValue:committeeLevelValue,
-			formDateStr:"10/11/2014",
-			toDateStr:"10/11/2015",
+			/* formDateStr:"10/11/2014",
+			toDateStr:"10/11/2015", */
+			formDateStr:startDate,
+			toDateStr :endDate,
 			isFirst:"true",
 			firstRecord:"0",
 			maxResult:12
@@ -5830,7 +5919,7 @@ function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
 					}
 			});
 	
-	
+	},500);
 }
 
 function buildConductedMeetingDetails(divId,result,meetingLevel)
@@ -5848,7 +5937,10 @@ function buildConductedMeetingDetails(divId,result,meetingLevel)
 		str+='<ul class="list-inline">';
 		str+='<li>';
 		str+='<h2 class="m_0">';
-		str+=''+result.totalCount+'';
+		if(result.totalCount != null)
+			str+=''+result.totalCount+'';
+		else 
+			str+='0';
 		str+='</h2>';
 		str+='</li>';
 		str+='<li>';
@@ -5862,7 +5954,10 @@ function buildConductedMeetingDetails(divId,result,meetingLevel)
 				str+='<ul class="list-inline">';
 					str+='<li>';
 						str+='<h2 class="m_0">';
-						str+=''+result.actualCount+'';
+						if(result.actualCount != null)
+							str+=''+result.actualCount+'';
+						else 
+							str+='0';
 						str+='</h2>';
 					str+='</li>';
 					str+='<li>';
@@ -5893,6 +5988,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel)
 		str+='</table>';
 	}
 	$('#'+divId+'').html(str);
+	
 }
 
 </script>
