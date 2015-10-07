@@ -1549,10 +1549,10 @@ class TrainingCampService implements ITrainingCampService{
 															finalVO.setUserBusyCount(callStatusMap.get(callStatsStr));
 														}
 													}
-												}
-											finalList.add(finalVO);
-											programVO.getTrainingCampVOList().addAll(finalList);
+												}											
 										}
+										finalList.add(finalVO);
+										programVO.getTrainingCampVOList().addAll(finalList);
 									}
 									else
 									{
