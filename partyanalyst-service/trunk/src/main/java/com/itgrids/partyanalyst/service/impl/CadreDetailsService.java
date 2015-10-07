@@ -1134,8 +1134,44 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 				}
 				
+				List<Long> cadreIdsList = new ArrayList<Long>(0);
+				cadreIdsList.add(cadreId);
+				 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(cadreIdsList);
+				 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+				 {
+					 for (Object[] partyPosition : partyPositionDetails) {
+
+						 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+						 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+						 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+						 
+						 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+						 
+						 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+						 {
+							 level = state+" "+level;
+						 }
+						 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+						 cadreDetailsVO.setCommiteeName(commiteestr);
+						 cadreDetailsVO.setRole(role);
+						 cadreDetailsVO.setStatus(level);
+						 
+						 if(!partyPositionStr.isEmpty())
+						 {
+							 cadreDetailsVO.setPartyPosition(partyPositionStr);
+						 }
+						 else{
+							cadreDetailsVO.setPartyPosition("N/A");
+						 }
+						 
+						 if(commiteestr != null && commiteestr.equalsIgnoreCase("main"))
+						 {
+							 cadreDetailsVO.setMeetingTypeId(1L);
+						 }
+					 }
+				 }
 				
-				Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
+				/*Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
 				List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
 				tdpCadreIDsList.add(cadreId);
 				getPartyPositionForCadre(tdpCadreIDsList,cadrePartyPositionMap);
@@ -1153,7 +1189,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 					}
 				}
-				
+				*/
 				/*if(partyPositionDetails !=null && partyPositionDetails.size()>0)
 				 {
 					 String partyPositionStr="";
