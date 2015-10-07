@@ -1874,7 +1874,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				String destPath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+storeFilePath;
 				copyFile(f.getAbsolutePath(),destPath);	
    			}
-   			
+   		}	
    		
    		
    		
@@ -1930,7 +1930,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		String facebookId = request.getParameter("facebookId");
    	
    		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,fileUrl);
-   		}
+   		
    	}
    	}
    		
