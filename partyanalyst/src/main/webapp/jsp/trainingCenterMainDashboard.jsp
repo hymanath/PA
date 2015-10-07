@@ -70,7 +70,7 @@ header.eventsheader {
                 	<div class="panel-heading bg_c">
                     	<h4 class="panel-title" style="font-weight:bold;">
                         	TRAINING CENTER MAIN DASHBOARD
-							<span class="pull-right" style="margin-top: -8px;">
+							<span class="pull-right col-md-3" style="margin-top: -8px;">
 								<div class="input-group" >
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 									<input class="form-control" id="selectDate">
@@ -115,7 +115,7 @@ header.eventsheader {
                                                     <li>
                                                     	<h4 class="m_0">TOTAL TRAINING BATCHES - <span id="totalTrainingBatches">0</span></h4>
                                                         <ul class="list-inline">
-                                                            <li class="text-danger">UPCOMING BATCHES - <span id="upcomingBatches">0</span> // </li>
+                                                            <li class="text-danger">UPCOMING - <span id="upcomingBatches">0</span> // </li>
                                                             <li class="text-yellow">RUNNING - <span id="runningBatches">0</span> // </li>
                                                             <li class="text-success">COMPLETED - <span id="completedBatches">0</span></li>
                                                         </ul>
@@ -412,10 +412,10 @@ $(function () {
 	   //'Today': [moment(), moment()],
 	   //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	   //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   '30 Days': [ moment().subtract(30, 'days'),moment()],
-	   '60 Days': [moment().subtract(60, 'days'),moment()],
-	   '180 Days': [moment().subtract(6, 'months'),moment()],
-	   '365 Days': [moment().subtract(1, 'year'),moment()],
+	   'Last 30 Days': [ moment().subtract(30, 'days'),moment()],
+	   'Lat 60 Days': [moment().subtract(60, 'days'),moment()],
+	   'Last 180 Days': [moment().subtract(6, 'months'),moment()],
+	   'Last 365 Days': [moment().subtract(1, 'year'),moment()],
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
 	   //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	},
@@ -698,7 +698,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			str+='<th>Training Center Name</th>';
 			str+='<th>Total<br/> Batches</th>';
 			str+='<th class="text-danger">Upcoming<br/> Batches</th>';
-			str+='<th class="text-warning">Training<br/>Running</th>';
+			str+='<th class="text-warning">Running<br/> Batches</th>';
 			str+='<th class="text-success">Completed <br/>Batches</th>';
 			str+='<th class="text-muted">Total <br/>Members</th>';
 			str+='</thead>';
@@ -777,7 +777,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 			}
 			str+='</tbody>';
 			str+='</table>';
-			$("#totalMembers").html(totalMembersGlob);
+			$("#totalMembers").html(upcomingMemGlob+runningMemGlob+compltedMemGlob);
 			$("#upcomingMembers").html(upcomingMemGlob);
 			$("#runningMembers").html(runningMemGlob);
 			$("#completedMembers").html(compltedMemGlob);
@@ -820,6 +820,7 @@ function getTrainingCenterDetailsBasedOnDates(){
 				},
 				
 				series: [{
+					name: 'Batch',
 					data: [
 						['Upcoming', upcomingBatchesGlob],
 						['Running', runningBatchesGlob],
