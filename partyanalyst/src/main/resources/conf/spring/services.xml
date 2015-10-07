@@ -1552,7 +1552,7 @@
         </list>
     	</property>
 	</bean>
-	
+	<!-- 
 	<bean name="tdpcadreInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="tdpcadreInfoupdation" />
     	<property name="cronExpression" value="0 30 1 * * ?" />
@@ -1561,7 +1561,7 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="updateTdpCadreInfoDetails" /> 
 	</bean>	
-	
+	 -->
 	<bean name="partyCandidateSpecialPageScheduleService" class="com.itgrids.partyanalyst.service.impl.PartyCandidateSpecialPageScheduleService">
 		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
 		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO" />
@@ -2292,7 +2292,7 @@
          <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
           <property name="voterInfoDAO" ref="voterInfoDAO" />	
           <property name="eventUserDAO" ref="eventUserDAO" />	
-		    <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />	
+		   <!--  <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" /> -->	
 		  <property name="eventDAO" ref="eventDAO" />	
          	<property name="surveyUserAuthDAO" ref="surveyUserAuthDAO" />	
          <property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
