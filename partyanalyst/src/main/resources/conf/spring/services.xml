@@ -1546,8 +1546,8 @@
 			<!--<ref bean="schedularForCardPrintDataFilling" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
-		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
-			<ref bean="tdpcadreInfo" />
+		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> 
+			<ref bean="tdpcadreInfo" />-->
 			
         </list>
     	</property>
@@ -2292,7 +2292,7 @@
          <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
           <property name="voterInfoDAO" ref="voterInfoDAO" />	
           <property name="eventUserDAO" ref="eventUserDAO" />	
-		   <!--  <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" /> -->	
+		  <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />	
 		  <property name="eventDAO" ref="eventDAO" />	
          	<property name="surveyUserAuthDAO" ref="surveyUserAuthDAO" />	
          <property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
