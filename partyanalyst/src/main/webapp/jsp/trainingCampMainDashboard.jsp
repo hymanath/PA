@@ -594,21 +594,27 @@ function exportToExcel()
 			str+='</div>'
         str+='</div>'
 		
-        str+='<div class="row">'
-        	str+='<div class="col-md-12">'
-            	str+='<label>Health</label><span class="mandatory">*</span>'
+        str+='<div class="row">';
+        	str+='<div class="col-md-12">';
+            	str+='<label>Health</label><span class="mandatory">*</span>';
 				str+='<div class="mandatory" id="healthErrDivId"></div>';
 				str+='<select class="form-control" id="healthId">'
-                str+='<option value="0">Select</option>'
+                str+='<option value="0">Select</option>';
                 for(var i in healthStatusArray){
 				  if(results.healthStatusId==healthStatusArray[i].id)
 				    str+='<option value="'+healthStatusArray[i].id+'" selected>'+healthStatusArray[i].name+'</option>'
 				  else
                   str+='<option value="'+healthStatusArray[i].id+'">'+healthStatusArray[i].name+'</option>'
 				}	   
-               str+='</select>'
+               str+='</select>';
+			   
 			 str+='</div>'
         str+='</div>'
+		
+		  str+='<div class="row">';
+		  str+='<div class="col-md-12">';
+		  str+='<label>Health Card </label><input type="file" id="healthCardattachment" />';
+		  str+='</div>';
 		
 		<!-- Adding -->
 		
@@ -783,7 +789,8 @@ function exportToExcel()
        var whatsappId=$("#whatsappId").val();
 	   var whatsappShareId=$("#whatsappShareId").val();
        var facebookId=$("#facebookId").val();
-	   
+	 
+	  
 	   //Achievements.
 	   var achieveArray=[];
 	   $(".achievmentCls").each(function(){
@@ -814,9 +821,10 @@ function exportToExcel()
 		  }
 		  
 		  if(goal.trim().length>0 && date.trim().length>0){
-			 var goalObject = new Object();
-			 goalObject.goal = goal; 
-			 goalObject.date = date;
+			 var goalObject;
+			// goalObject.goal = goal; 
+			// goalObject.date = date;
+			goalObject = goal+"-" +date;
 			 goalArray.push(goalObject);
 			 }
 		  
@@ -861,8 +869,25 @@ function exportToExcel()
 	   
 	   $("#processingId").show();
 	$("#ajaxImage1").show();
-	   
-	   var jsObj=
+	  var  healthCardId = $('#healthCardattachment[type=file]')[0].files[0];
+	 var formData = new FormData();  
+	 
+	 formData.append("image",$('#healthCardattachment[type=file]')[0].files[0]);
+	 formData.append('leaderShipLevel',leaderShipLevel);
+	 formData.append('achieveArray',achieveArray);
+	 formData.append('goalArray',goalArray);
+	 formData.append('communicationSkills',communicationSkills);
+	 formData.append('leaderShipSkills',leaderShipSkills);
+	 formData.append('health',health);
+	 formData.append('comments',comments);
+	 formData.append('tdpCadreId',tdpCadreId);
+	 formData.append('batchId',batchId);
+	 formData.append('smartPhoneId',smartPhoneId);
+	 formData.append('whatsappId',whatsappId);
+	 formData.append('whatsappShareId',whatsappShareId);
+	 formData.append('facebookId',facebookId);
+	
+	  /* var jsObj=
 	   {	
 			achieveArray:achieveArray,
 			goalArray:goalArray,
@@ -876,13 +901,16 @@ function exportToExcel()
 			smartPhoneId:smartPhoneId,
 			whatsappId:whatsappId,
             whatsappShareId:whatsappShareId,
-            facebookId:facebookId
-		}
+            facebookId:facebookId,
+		}*/
 		
 		$.ajax({
 		  type:'POST',
+		  processData: false,  // tell jQuery not to process the data
+          contentType: false,  // tell jQuery not to set contentType
+		  data: formData,
 		  url :'saveDetailsOfCadreAction.action',
-		  data:{task:JSON.stringify(jsObj)},
+		// data:{task:JSON.stringify(jsObj)},
 		}).done(function(result){
 			if(result.resultCode == 1){
 				setTimeout(function(){

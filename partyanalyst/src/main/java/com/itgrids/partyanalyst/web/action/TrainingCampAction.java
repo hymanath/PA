@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequest;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -1611,6 +1614,39 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		 
  }
 	
+	/*public static String CreateDateFolder(String totalDate){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+			String string = totalDate;
+			 String[] parts = string.split("-");
+			
+			 String yr = parts[0]; // YEAR YYYY
+			 String yrDir = IConstants.STATIC_CONTENT_HEALTH_CARD+"/"+yr;
+			 String yrFldrSts = createFolderForArticles(yrDir);
+			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 String mnth = parts[1];
+			 String mnthDir = IConstants.STATIC_CONTENT_HEALTH_CARD+"/"+yr+"/"+mnth;
+			 String mnthDirSts = createFolderForArticles(mnthDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			
+			 
+			 return yr+"/"+mnth;
+			 
+		} catch (Exception e) {
+			LOG.error(totalDate+" Failed to Create");
+			return "FAILED";
+		}
+		 
+		 
+		 
+}
+	*/
 	public static String createFolderForArticles(String dir){
 	 	try {
 			File theDir = new File(dir);
@@ -1749,17 +1785,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
     }
     
-    public String saveDetailsOfCadreAction()
+   public String saveDetailsOfCadreActionTest()
     {
     	
     	try{
     		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
     		Long userId = regVO.getRegistrationID();
-    		/*if(regVO!=null){
-    			Long userId = regVO.getRegistrationID();
-    		}else{
-    			return Action.INPUT;
-    		}*/
+    	
     		jObj = new JSONObject(getTask());
     		Long tdpCadreId = jObj.getLong("tdpCadreId");
     		Long batchId = jObj.getLong("batchId");
@@ -1794,8 +1826,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		String whatsappId = jObj.getString("whatsappId");
     		String whatsappShareId = jObj.getString("whatsappShareId");
     		String facebookId = jObj.getString("facebookId");
-    		
-    		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId);
+    		JSONObject obj = jObj.getJSONObject("file");
+    		//cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId);
     		
     	}catch(Exception e) {
     		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
@@ -1803,7 +1835,160 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	
     	return Action.SUCCESS;
     }
-    
+   public String saveDetailsOfCadreAction()
+   {
+   	
+   	try{
+   		DateUtilService dateService = new DateUtilService();
+   		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+   		Long userId = regVO.getRegistrationID();
+   		
+   		MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+   		/*File filePath=multiPartRequestWrapper.getFiles("Filedata")[0];
+	   	 String fileName=request.getParameter("Filename");
+	     String fileType=fileName.substring(fileName.lastIndexOf("."),fileName.length());*/
+   		Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+   		Long tdpCadreId = Long.parseLong(request.getParameter("tdpCadreId"));
+   		String storeFilePath ="" ;
+   		String fileUrl = "" ;
+   		if(fileParams.hasMoreElements()){
+   		{
+   			String inputValue = (String) fileParams.nextElement();
+   			System.out.println(inputValue);
+   			File[] files = multiPartRequestWrapper.getFiles(inputValue);
+   			for(File f : files)
+   			{
+   				
+   				System.out.println(f.getAbsolutePath());
+   				System.out.println(multiPartRequestWrapper.getFileNames(inputValue)[0]);
+   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue)[0].split("\\.");
+				String ext = "";
+				if(extension.length > 1){
+					ext = extension[extension.length-1];
+				}
+				String dateString = dateService.getCurrentDateAndTimeInStringFormat();
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				String[] dateStr = dateString.split("-");
+				storeFilePath = dateStr[0]+pathSeperator+dateStr[1]+pathSeperator+tdpCadreId+"."+ext;
+				fileUrl = dateStr[0]+"/"+dateStr[1]+"/"+tdpCadreId+"."+ext;
+				String destPath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+storeFilePath;
+				copyFile(f.getAbsolutePath(),destPath);	
+   			}
+   			
+   		
+   		
+   		
+   		//jObj = new JSONObject(getTask());
+   	    //Long surveyId = Long.parseLong(request.getParameter("surveyId"));
+   		
+   		Long batchId = Long.parseLong(request.getParameter("batchId"));
+   		
+   		List<String> achieveList=new ArrayList<String>();
+   		//JSONArray achieveArray = jObj.getJSONArray("achieveArray");
+   		String[] achieveArray = request.getParameterValues("achieveArray");
+   		
+   		for(int i = 0; i < achieveArray.length; i++){
+   			achieveList.add(achieveArray[i].toString());
+   		}
+   	   List<SimpleVO> goallist=new ArrayList<SimpleVO>();
+   	   String[] goalArray = request.getParameterValues("goalArray");
+		   	if(goalArray != null && goalArray.length > 0)
+			{
+			  for(int i=0;i<goalArray.length;i++)
+			 {
+				//JSONObject jObj=(JSONObject)goalArray.get(i);
+				 String goalObj= goalArray[i].toString();
+				 String[] obj = goalObj.split("-");
+				SimpleVO goal=new SimpleVO();
+				goal.setName(obj[0].toString());
+				goal.setDateString(obj[1].toString());
+				goallist.add(goal);
+			  }
+			}
+			
+			/*if(goalArray != null && goalArray.length > 0)
+			{
+			  for(int i=0;i<goalArray.length;i++)
+			 {
+				//JSONObject jObj=(JSONObject)goalArray.get(i);
+				SimpleVO goal=new SimpleVO();
+				goal.setName(jObj.getString("goal"));
+				goal.setDateString(jObj.getString("date"));
+				goallist.add(goal);
+			  }
+			}
+   		*/
+   		Long leaderShipLevelId = Long.parseLong(request.getParameter("leaderShipLevel"));
+   		Long communicationSkillsId = Long.parseLong(request.getParameter("communicationSkills"));
+   		Long leaderShipSkillsId = Long.parseLong(request.getParameter("leaderShipSkills"));
+   		Long healthId = Long.parseLong(request.getParameter("health"));
+   		String comments = request.getParameter("comments");
+   		
+   		String smartPhoneId = request.getParameter("smartPhoneId");
+   		String whatsappId = request.getParameter("whatsappId");
+   		String whatsappShareId = request.getParameter("whatsappShareId");
+   		String facebookId = request.getParameter("facebookId");
+   	
+   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,fileUrl);
+   		}
+   	}
+   	}
+   		
+   		catch(Exception e) {
+   		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
+   	}
+   	
+   	return Action.SUCCESS;
+   }
+   
+   
+  
+
+	public static String createFolderForDate(String dir){
+		 	try {
+				File theDir = new File(dir);
+				  // if the directory does not exist, create it
+				  if (!theDir.exists()) {
+				    boolean result = false;
+
+				    try{
+				        theDir.mkdir();
+				        result = true;
+				     } catch(SecurityException se){
+				        //handle it
+				     }        
+				     if(result) {    
+				    	 LOG.debug("DIR With Name "+dir+" created");  
+				     }
+				  }else{
+					  LOG.debug("DIR With Name "+dir+" EXISTS");
+				  }
+				  return "SUCCESS";
+			} catch (Exception e) {
+				LOG.error(dir+" Failed to Create");
+				return "FAILED";
+			}
+		}
+	public String copyFile(String sourcePath,String destinationPath){
+		 try{
+			File destFile = new File(destinationPath);
+			 if (!destFile.exists()) 
+				 destFile.createNewFile();
+			 File file = new File(sourcePath);
+			if(file.exists()){
+				FileUtils.copyFile(file,destFile);
+				LOG.error("Copy success");
+				return "success";
+			}
+		  }catch(Exception e){
+			  LOG.error("Exception raised in copyFile ", e);
+			  LOG.error("Copy error");
+			  return "error";
+		  }
+		 return "failure";
+		}
+	
+   
     public String getAllBatchesByProgramAndCenter()
     {
     	try{
