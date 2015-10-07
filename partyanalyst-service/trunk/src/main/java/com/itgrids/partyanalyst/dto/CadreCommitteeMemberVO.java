@@ -32,6 +32,7 @@ public class CadreCommitteeMemberVO {
 	private String panchayatName;
 	private String tehsilName;
 	private String partyPosition;
+	private Long meetingTypeId;
 	private String representativeType;
 	private Long eventTypeId;
 	private String eventTypeStr;
@@ -123,6 +124,12 @@ public class CadreCommitteeMemberVO {
 	private Long levelValue;
 	
 	
+	public Long getMeetingTypeId() {
+		return meetingTypeId;
+	}
+	public void setMeetingTypeId(Long meetingTypeId) {
+		this.meetingTypeId = meetingTypeId;
+	}
 	public Long getLevelId() {
 		return levelId;
 	}
