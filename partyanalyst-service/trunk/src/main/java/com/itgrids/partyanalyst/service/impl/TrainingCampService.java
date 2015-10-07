@@ -5256,7 +5256,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final String healthAttachment)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -5288,7 +5288,8 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreComminicationSkillsStatusId(communicationSkillsId!=0l?communicationSkillsId:null);
 					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
-					
+					if(healthAttachment != null && !healthAttachment.isEmpty())
+					feedBackDetails.setHealthCardAttachment(healthAttachment);
 					if(smartPhoneId.equalsIgnoreCase("select"))
 					 feedBackDetails.setSmartPhoneExist(null);
 					else
@@ -5336,7 +5337,9 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetailshistory.setWatsappUsing(feedBackDetails.getWatsappUsing());
 					feedBackDetailshistory.setWatsappShare(feedBackDetails.getWatsappShare());
 					feedBackDetailshistory.setFacebookUsing(feedBackDetails.getFacebookUsing());
+					feedBackDetailshistory.setHealthCardAttachment(feedBackDetails.getHealthCardAttachment());
 					trainingCampCadreFeedbackDetailsHistoryDAO.save(feedBackDetailshistory);
+					
 					
 					//Achievement details saving or updating.
 					Long achieveCount=trainingCampCadreAchievementDAO.checkAchievementsForCadreBycadreAndBatch(tdpCadreId,batchId);
