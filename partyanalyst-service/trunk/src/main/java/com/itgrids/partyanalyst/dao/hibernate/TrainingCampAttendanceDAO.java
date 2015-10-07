@@ -126,11 +126,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return query.list();
  }
  
-  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate){
 	 
 	  Query query=getSession().createQuery(queryString);
 	  query.setParameter("fromDate", fromDate);
 	  query.setParameter("toDate", toDate);
+	  query.setParameter("currDate", currDate);
 	  if(batchId==null && campId==null && programId!=null ){
 		 query.setParameter("programId",programId);
 	  }

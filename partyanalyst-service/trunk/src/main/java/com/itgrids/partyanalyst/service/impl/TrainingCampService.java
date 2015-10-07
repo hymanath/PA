@@ -6007,7 +6007,7 @@ class TrainingCampService implements ITrainingCampService{
 			
 			IdNameVO mandalVO=new IdNameVO();
 			mandalVO.setId(5l);
-			mandalVO.setName("MANDAL/WARD/DIVISION LEVEL COMMITTEE MEMBERS");
+			mandalVO.setName("MANDAL/TOWN/DIVISION LEVEL COMMITTEE MEMBERS");
 			mandalVO.setDistrictid(0l);
 			finalMap.put(5l,mandalVO);
 			
@@ -6542,7 +6542,7 @@ class TrainingCampService implements ITrainingCampService{
 				preInstantiate(finalMap,programId,campId,batchId,committeelevels);
 				
 				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId,fromDate,toDate);
-				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId,fromDate,toDate);
+				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId,fromDate,toDate,sdf.parse(sdf.format(new Date())));
 				
 				if(totalCounts!=null && totalCounts.size()>0){
 					
@@ -6564,7 +6564,7 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				
 				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId,fromDate,toDate);
-			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId,fromDate,toDate);
+			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId,fromDate,toDate,sdf.parse(sdf.format(new Date())));
 				if(levelCounts!=null && levelCounts.size()>0){//did,dname,lid,lname,count
 					
 					for(Object[] obj:levelCounts){
@@ -6721,7 +6721,9 @@ class TrainingCampService implements ITrainingCampService{
 				 StringBuilder sb= new StringBuilder(); 
 				 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
 				 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
-				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
+				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId and " +
+				 		    "date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate and " +
+				 		    "date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
 				 
 				 if(batchId==null && campId==null && programId!=null ){
 					 sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6762,7 +6764,8 @@ class TrainingCampService implements ITrainingCampService{
 						   " count(distinct tca.attendance.tdpCadreId)");
 				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
 						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' and " +
-						   "       date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
+						   "       date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate  " +
+						   " and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
 				
 				if(batchId==null && campId==null && programId!=null){
 					sb.append(" and tca.trainingCampProgramId=:programId");
