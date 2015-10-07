@@ -51,6 +51,7 @@ public class TrainingCampCadreFeedbackDetailsHistory extends BaseModel implement
 	private String watsappUsing;
 	private String watsappShare;
 	private String facebookUsing;
+	private String healthCardAttachment;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -268,5 +269,11 @@ public class TrainingCampCadreFeedbackDetailsHistory extends BaseModel implement
 	public void setFacebookUsing(String facebookUsing) {
 		this.facebookUsing = facebookUsing;
 	}
-	
+	@Column(name="health_card_attachment")
+	public String getHealthCardAttachment() {
+		return healthCardAttachment;
+	}
+	public void setHealthCardAttachment(String healthCardAttachment) {
+		this.healthCardAttachment = healthCardAttachment;
+	}
 }
