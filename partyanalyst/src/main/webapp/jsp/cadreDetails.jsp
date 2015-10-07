@@ -785,7 +785,7 @@ var globalCadreId = '${cadreId}';
 				<!-- Meetings Start -->
                 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title"><img src="dist/img/photo.png"> MEETINGS
+                    	<h4 class="panel-title"><img src="dist/img/photo.png"> COMMITTEE MEETINGS
 							<span class="pull-right" style="margin-top:-8px">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
@@ -797,7 +797,7 @@ var globalCadreId = '${cadreId}';
                     <div class="panel-body pad_5">
                     	<div>
                           <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                            <li role="presentation" class="active meetingCls" id="state" key="statetabs"><a href="#statetabs" aria-controls="statetabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('statetabs','state','true');">State</a></li>
+                           <!-- <li role="presentation" class="active meetingCls" id="state" key="statetabs"><a href="#statetabs" aria-controls="statetabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('statetabs','state','true');">State</a></li> -->
                             <li role="presentation"  class="meetingCls"  id="district" key="districttabs"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('districttabs','district','true');">District</a></li>
                             <li role="presentation"   class="meetingCls" id="constituency" key="constabs"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('constabs','constituency','true');">Constituency</a></li>
                             <li role="presentation"  class="meetingCls"  id="MandalORTownORDivision" key="mandaltabs"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails('mandaltabs','MandalORTownORDivision','true');">Mandal/Town/Division</a></li>
@@ -5836,7 +5836,7 @@ function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
 	$('.meetingCls').each(function(){
 		var tabDivId = $(this).attr('id');		
 		var isActive =  $('#'+tabDivId+'').hasClass('active');
-		console.log(isActive);
+		//console.log(isActive);
 		if(isActive)
 		{
 			searchTypeStr = tabDivId;
@@ -5982,7 +5982,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel)
 		
 		str+='<td colspan="3" style="background-color:#ccc">';
 		if(result.totalCount >0)
-			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="#">click to load more meetings</a></p>';
+			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="javascript:{getConductedPartyMeetingDetails(\'\',\'\',\'false\')}">click to load more meetings</a></p>';
 		str+='</td>';
 		str+='</tr>';
 		str+='</table>';
