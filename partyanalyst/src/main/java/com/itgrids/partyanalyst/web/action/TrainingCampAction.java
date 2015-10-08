@@ -1851,7 +1851,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		Long tdpCadreId = Long.parseLong(request.getParameter("tdpCadreId"));
    		String storeFilePath ="" ;
    		String fileUrl = "" ;
-   		if(fileParams.hasMoreElements()){
+   		if(fileParams.hasMoreElements())
    		{
    			String inputValue = (String) fileParams.nextElement();
    			System.out.println(inputValue);
@@ -1877,47 +1877,33 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		}	
    		
    		
-   		
-   		//jObj = new JSONObject(getTask());
-   	    //Long surveyId = Long.parseLong(request.getParameter("surveyId"));
-   		
    		Long batchId = Long.parseLong(request.getParameter("batchId"));
    		
    		List<String> achieveList=new ArrayList<String>();
-   		//JSONArray achieveArray = jObj.getJSONArray("achieveArray");
    		String[] achieveArray = request.getParameterValues("achieveArray");
-   		
    		for(int i = 0; i < achieveArray.length; i++){
-   			achieveList.add(achieveArray[i].toString());
+   			if(achieveArray[i].toString().trim().length()>0){
+   				achieveList.add(achieveArray[i].toString());
+   			}
    		}
+   		
    	   List<SimpleVO> goallist=new ArrayList<SimpleVO>();
    	   String[] goalArray = request.getParameterValues("goalArray");
-		   	if(goalArray != null && goalArray.length > 0)
-			{
-			  for(int i=0;i<goalArray.length;i++)
-			 {
-				//JSONObject jObj=(JSONObject)goalArray.get(i);
-				 String goalObj= goalArray[i].toString();
-				 String[] obj = goalObj.split("-");
+	   if(goalArray != null && goalArray.length > 0)
+	   {
+		  for(int i=0;i<goalArray.length;i++)
+		  {
+			String goalObj= goalArray[i].toString();
+			if(goalObj.trim().length()>0){
+				String[] obj = goalObj.split("-");
 				SimpleVO goal=new SimpleVO();
 				goal.setName(obj[0].toString());
 				goal.setDateString(obj[1].toString());
 				goallist.add(goal);
-			  }
 			}
+		  }
+	   }	
 			
-			/*if(goalArray != null && goalArray.length > 0)
-			{
-			  for(int i=0;i<goalArray.length;i++)
-			 {
-				//JSONObject jObj=(JSONObject)goalArray.get(i);
-				SimpleVO goal=new SimpleVO();
-				goal.setName(jObj.getString("goal"));
-				goal.setDateString(jObj.getString("date"));
-				goallist.add(goal);
-			  }
-			}
-   		*/
    		Long leaderShipLevelId = Long.parseLong(request.getParameter("leaderShipLevel"));
    		Long communicationSkillsId = Long.parseLong(request.getParameter("communicationSkills"));
    		Long leaderShipSkillsId = Long.parseLong(request.getParameter("leaderShipSkills"));
@@ -1931,9 +1917,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    	
    		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,fileUrl);
    		
-   	}
-   	}
-   		
+   	
+   	}	
    		catch(Exception e) {
    		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
    	}
