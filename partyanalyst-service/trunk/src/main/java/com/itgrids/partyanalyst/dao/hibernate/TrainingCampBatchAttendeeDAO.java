@@ -171,10 +171,22 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }
    public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate){
-	   Query query=getSession().createQuery(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatchId=:trainingCampBatchId " +
-	   		" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate and model.isDeleted = 'false' ");
-	   query.setParameter("fromDate", fromDate);
-	   query.setParameter("toDate", toDate);
+	   
+	   StringBuilder sb=new StringBuilder();
+	   
+	   sb.append(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatchId=:trainingCampBatchId " );
+	   
+	   if(fromDate!=null && toDate!=null){
+		   sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
+	   }
+	   	
+	   sb.append(" and model.isDeleted = 'false' ");
+	   
+	   Query query=getSession().createQuery(sb.toString());
+	   if(fromDate!=null && toDate!=null){
+		   query.setParameter("fromDate", fromDate);
+		   query.setParameter("toDate", toDate);
+	   }
 	   query.setParameter("trainingCampBatchId",batchId);
 	   return (Long)query.uniqueResult();
    }
