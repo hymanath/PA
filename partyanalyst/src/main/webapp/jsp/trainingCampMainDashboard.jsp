@@ -265,14 +265,14 @@ function exportToExcel()
 					   else{
 						   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>'
 					   }
-					   str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].subList[j].id+'">'+results[i].subList[j].name+'</a>';
+					   str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].subList[j].id+'" title="Click here to update Cadre Profile.">'+results[i].subList[j].name+'</a>';
 					   
 					   <c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">
-						str+='<br><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].subList[j].id+'">'+results[i].subList[j].memberShipId+'</a></td>';
+						str+='<br><br><span style="color:#83BCE1;font-weight:bold;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].subList[j].id+'" title="Click here to view Cadre Profile.">'+results[i].subList[j].memberShipId+'</a></span></td>';
 					   </c:if>
 					   
 					   <c:if test="${fn:contains(sessionScope.USER.isAdmin, 'false' )}">
-						str+='<br>'+results[i].subList[j].memberShipId+'</td>';
+						str+='<br><br>'+results[i].subList[j].memberShipId+'</td>';
 					   </c:if>
 					   
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
@@ -1181,10 +1181,11 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 					}
 					
 					if(results[i].cadreId !=null && results[i].cadreId > 0){
-						str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].cadreId+'">'+results[i].firstName+'</a>';
-						<c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">
-						str+='<br><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].cadreId+'">'+results[i].membershipNoStr+'</a></td>';
-						</c:if>
+						str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].cadreId+'"  title="Click here to update Cadre Profile.">'+results[i].firstName+'</a>';
+	<c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">  
+	str+='<br><br><span style="color:#83BCE1;font-weight:bold;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].cadreId+'" title="Click here to view Cadre Profile.">'+results[i].membershipNoStr+'</a></span></td>';
+						
+	</c:if>
 						<c:if test="${fn:contains(sessionScope.USER.isAdmin, 'false' )}">
 						str+='<br>'+results[i].membershipNoStr+'</td>';
 						</c:if>
