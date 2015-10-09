@@ -129,8 +129,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate){
 	 
 	  Query query=getSession().createQuery(queryString);
-	  query.setParameter("fromDate", fromDate);
-	  query.setParameter("toDate", toDate);
+	  if(fromDate!=null && toDate!=null){
+		  query.setParameter("fromDate", fromDate);
+		  query.setParameter("toDate", toDate);
+	  }
 	  query.setParameter("currDate", currDate);
 	  if(batchId==null && campId==null && programId!=null ){
 		 query.setParameter("programId",programId);
@@ -168,15 +170,26 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
  public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate){
-	 Query query=getSession().createQuery("" +
-	 " select  tcs.trainingCampId,count(distinct tca.attendance.tdpCadreId)" +
+	 
+	 StringBuilder sb = new StringBuilder();
+	 
+	 sb.append(" select  tcs.trainingCampId,count(distinct tca.attendance.tdpCadreId)" +
 	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
 	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and " +
 	 "       tca.trainingCampSchedule.trainingCampScheduleId = tcs.trainingCampScheduleId and " +
-	 "       tca.trainingCampProgramId=:programId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate " +
-	 " group by tcs.trainingCampId");
-	 query.setParameter("fromDate",fromDate);
-	 query.setParameter("toDate",toDate);
+	 "       tca.trainingCampProgramId=:programId ");
+	 
+	 if(fromDate!=null && toDate!=null){
+		sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate "); 
+	 }
+	 
+ 	sb.append(" group by tcs.trainingCampId");
+	 
+	 Query query=getSession().createQuery(sb.toString());
+	 if(fromDate!=null && toDate!=null){
+		 query.setParameter("fromDate",fromDate);
+		 query.setParameter("toDate",toDate);
+	 }
 	 query.setParameter("programId",programId);
 	 return query.list();
  }
