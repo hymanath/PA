@@ -21,7 +21,7 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 		{
 			StringBuilder queryStr = new StringBuilder();
 
-				queryStr.append(" select count(model.party_meeting_id) from party_meeting_ivr_status model2,party_meeting model where model2.party_meeting_id = model.party_meeting_id and  model.is_active='Y' ");
+				queryStr.append(" select count(model.party_meeting_id) from party_meeting_ivr_status model2,party_meeting model where model.party_meeting_id = model2.party_meeting_id and  model.is_active='Y' ");
 				
 				if(committeeLevelId != null && committeeLevelId.longValue()>0L)
 				{
@@ -64,9 +64,10 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 				
 				if(fromDate != null && toDate != null)
 				{
-					queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					//queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					queryStr.append(" and (model.start_date between :fromDate and :toDate) ");
 				}
-				queryStr.append(" and model2.is_conducted_by_ivr = 'Y' or model2.is_conducted_by_pc ='Y' ");
+				queryStr.append(" and ( model2.is_conducted_by_ivr = 'Y' or model2.is_conducted_by_pc ='Y') ");
 				
 			Query query = getSession().createSQLQuery(queryStr.toString());
 			if(committeeLevelValueList != null && committeeLevelValueList.size()>0)
@@ -85,7 +86,7 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
-				queryStr.append(" select date(model.start_date) , count(model.party_meeting_id) from party_meeting_ivr_status model2,party_meeting model where model2.party_meeting_id = model.party_meeting_id and  model.is_active='Y' ");
+				queryStr.append(" select date(model.start_date) , count(model.party_meeting_id) from party_meeting_ivr_status model2,party_meeting model where model.party_meeting_id = model2.party_meeting_id and  model.is_active='Y' ");
 				queryStr.append("");
 				if(committeeLevelId != null && committeeLevelId.longValue()>0L)
 				{
@@ -130,9 +131,10 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 					queryStr.append(" and  date(model.start_date) in (:searchDatesList) ");
 				else if(fromDate != null && toDate != null)
 				{
-					queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					//queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					queryStr.append(" and (model.start_date between :fromDate and :toDate) ");
 				}
-				queryStr.append(" and model2.is_conducted_by_ivr = 'Y' or model2.is_conducted_by_pc ='Y' ");
+				queryStr.append(" and (model2.is_conducted_by_ivr = 'Y' or model2.is_conducted_by_pc ='Y' ) ");
 				queryStr.append(" group by   date(model.start_date) ");
 							
 			Query query = getSession().createSQLQuery(queryStr.toString());

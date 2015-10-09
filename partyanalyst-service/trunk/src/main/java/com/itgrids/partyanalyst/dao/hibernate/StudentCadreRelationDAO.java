@@ -17,19 +17,24 @@ public class StudentCadreRelationDAO extends GenericDaoHibernate<StudentCadreRel
 	
 		public List<Object[]> getNtrTrustStudentDetailsInstitutionWise(List<Long> tdpCadreIds){
 			
-			StringBuilder str = new StringBuilder();
-			
-			str.append("select model.student.institutionCourse.institution.institutionId,model.student.institutionCourse.institution.institutionName,count(model.student.studentId) from StudentCadreRelation model " +
-					" where model.tdpCadreId in (:tdpCadreIds) " +
-					" group by model.student.institutionCourse.institution.institutionId ");
-			
-			Query query =getSession().createQuery(str.toString());
-			
-			if(tdpCadreIds !=null && tdpCadreIds.size() >0){
-				query.setParameterList("tdpCadreIds", tdpCadreIds);
+			try {
+				StringBuilder str = new StringBuilder();
+				
+				str.append("select model.student.institutionCourse.institution.institutionId,model.student.institutionCourse.institution.institutionName,count(model.student.studentId) from StudentCadreRelation model " +
+						" where model.tdpCadreId in (:tdpCadreIds) " +
+						" group by model.student.institutionCourse.institution.institutionId ");
+				
+				Query query =getSession().createQuery(str.toString());
+				
+				if(tdpCadreIds !=null && tdpCadreIds.size() >0){
+					query.setParameterList("tdpCadreIds", tdpCadreIds);
+				}
+				
+				return query.list();
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
-			
-			return query.list();
+			return null;
 		}
 		
 		public List<Object[]> getStudentFormalDetailsByCadre(List<Long> tdpCadreIds,Long institutionId){

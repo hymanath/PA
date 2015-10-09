@@ -760,7 +760,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 				
 				if(fromDate != null && toDate != null)
 				{
-					queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					//queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					queryStr.append(" and (model.start_date between :fromDate and :toDate) ");
 				}
 			
 			Query query = getSession().createSQLQuery(queryStr.toString());
@@ -824,7 +825,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					queryStr.append(" and  date(model.start_date) in (:searchDatesList) ");
 				else if(fromDate != null && toDate != null)
 				{
-					queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					//queryStr.append(" and (model.start_date >= :fromDate and model.end_date <= :toDate) ");
+					queryStr.append(" and (model.start_date between :fromDate and :toDate) ");
 				}
 				queryStr.append(" group by   date(model.start_date) ");
 							
