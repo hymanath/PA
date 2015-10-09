@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.dialect.FrontBaseDialect;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -4962,6 +4963,8 @@ class TrainingCampService implements ITrainingCampService{
 					 Long cadreId=Long.valueOf(((BigInteger)obj[3]).longValue());
 					 CadreDetailsVO cadreVO=new CadreDetailsVO();
 					 cadreVO.setId(cadreId);
+					 String mebershipId=((obj[23]).toString());
+					 cadreVO.setMemberShipId(mebershipId);
 					 cadreVO.setName(obj[4]!=null?obj[4].toString():"");
 					 cadreVO.setMobileno(obj[5]!=null?obj[5].toString():"");	 
 					 cadreVO.setImage(obj[6]!=null?obj[6].toString():"");
@@ -5511,8 +5514,11 @@ class TrainingCampService implements ITrainingCampService{
 			LOG.info("Entered into getCompletedRunningUpcomingBatchIds");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			Date startDate = sdf.parse(startDateString);
-			Date endDate = sdf.parse(endDateString);
+			Date startDate = null,endDate = null;
+			if(startDateString !=null && endDateString!=null){
+				startDate= sdf.parse(startDateString);
+				endDate  = sdf.parse(endDateString);
+			}
 			
 			List<Long> completedBatchIds = new ArrayList<Long>(0);
 			List<Long> runningBatchIds = new ArrayList<Long>(0);
@@ -5524,9 +5530,11 @@ class TrainingCampService implements ITrainingCampService{
 			List<Object[]> runningBatches = new ArrayList<Object[]>(0);
 			List<Object[]> upComingBatches = new ArrayList<Object[]>(0);
 			
-			Map<Long,Long> completedMembersCounts = new HashMap<Long, Long>();
-			Map<Long,Long> runningMembersCounts  = new HashMap<Long, Long>();
-			Map<Long,Long> upCommingMembersCounts = new HashMap<Long, Long>();
+			Map<Long,Long> completedMembersCounts = new HashMap<Long, Long>(0);
+			Map<Long,Long> runningMembersCounts  = new HashMap<Long, Long>(0);
+			Map<Long,Long> upCommingMembersCounts = new HashMap<Long, Long>(0);
+			Map<Long,Long> completedMembersCountsattendee = new HashMap<Long, Long>(0);
+			Map<Long,Long> runningMembersCountsattendence  = new HashMap<Long, Long>(0);
 			
 			
 			List<Long> batchIds = trainingCampBatchDAO.getBatchIds(startDate,endDate,stateId);
@@ -5535,6 +5543,10 @@ class TrainingCampService implements ITrainingCampService{
 				completedBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"completed",batchIds);
 				setBatchesInformation(finalMap,completedBatches,"completed",completedBatchIds,totalTrainingCenters);
 				completedMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendence");
+				
+				completedMembersCountsattendee = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendee");
+				setBatchCount(finalMap,"completedAttendee",completedMembersCountsattendee);
+				
 				setBatchCount(finalMap,"completed",completedMembersCounts);
 				if(completedBatchIds!=null && completedBatchIds.size()>0){
 					finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
@@ -5543,7 +5555,7 @@ class TrainingCampService implements ITrainingCampService{
 				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"running",batchIds);
 				setBatchesInformation(finalMap,runningBatches,"running",runningBatchIds,totalTrainingCenters);
 				runningMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendee");
-				Map<Long,Long> runningMembersCountsattendence = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendence");
+				runningMembersCountsattendence = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendence");
 				setBatchCount(finalMap,"running",runningMembersCounts);
 				setBatchCount(finalMap,"runningattendence",runningMembersCountsattendence);
 				if(runningBatchIds!=null && runningBatchIds.size()>0){
@@ -5562,6 +5574,10 @@ class TrainingCampService implements ITrainingCampService{
 				completedBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"completed",batchIds);
 				setBatchesInformation(finalMap,completedBatches,"completed",completedBatchIds,totalTrainingCenters);
 				completedMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendence");
+				
+				completedMembersCountsattendee = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendee");
+				setBatchCount(finalMap,"completedAttendee",completedMembersCountsattendee);
+				
 				setBatchCount(finalMap,"completed",completedMembersCounts);
 				if(completedBatchIds!=null && completedBatchIds.size()>0){
 					finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
@@ -5571,6 +5587,8 @@ class TrainingCampService implements ITrainingCampService{
 				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"running",batchIds);
 				setBatchesInformation(finalMap,runningBatches,"running",runningBatchIds,totalTrainingCenters);
 				runningMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendee");
+				runningMembersCountsattendence = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendence");
+				setBatchCount(finalMap,"runningattendence",runningMembersCountsattendence);
 				setBatchCount(finalMap,"running",runningMembersCounts);
 				if(runningBatchIds!=null && runningBatchIds.size()>0){
 					finalMap.get("running").setRunningBatchIds(runningBatchIds);
@@ -5592,15 +5610,15 @@ class TrainingCampService implements ITrainingCampService{
 			
 			if(completedBatches.size()>0){
 				setProgramInformation(finalMap,completedBatches,"completed","completed");
-				setBatchesCountForProgWise(finalMap,completedMembersCounts,"completed");
+				setBatchesCountForProgWise(finalMap,completedMembersCounts,completedMembersCountsattendee,"completed");
 			}
 			if(runningBatches.size()>0){
 				setProgramInformation(finalMap,runningBatches,"completed","running");
-				setBatchesCountForProgWise(finalMap,runningMembersCounts,"running");
+				setBatchesCountForProgWise(finalMap,runningMembersCounts,runningMembersCountsattendence,"running");
 			}
 			if(upComingBatches.size()>0){
 				setProgramInformation(finalMap,upComingBatches,"completed","upcoming");
-				setBatchesCountForProgWise(finalMap,upCommingMembersCounts,"upcoming");
+				setBatchesCountForProgWise(finalMap,upCommingMembersCounts,null,"upcoming");
 			}
 			
 						
@@ -5610,7 +5628,7 @@ class TrainingCampService implements ITrainingCampService{
     	return finalMap;
     }
     
-    public void setBatchesCountForProgWise(Map<String,TrainingCampVO> finalMap,Map<Long,Long> MembersCounts,String fromType){
+    public void setBatchesCountForProgWise(Map<String,TrainingCampVO> finalMap,Map<Long,Long> MembersCounts,Map<Long,Long> MembersCounts1,String fromType){
     	if(finalMap.get("completed").getProgramWiseDetails()!=null && finalMap.get("completed").getProgramWiseDetails().size()>0){
     		for(TrainingCampVO vo : finalMap.get("completed").getProgramWiseDetails()){
     			if(vo.getCampDetails()!=null && vo.getCampDetails().size()>0){
@@ -5620,18 +5638,22 @@ class TrainingCampService implements ITrainingCampService{
     							if(fromType.equalsIgnoreCase("completed")){
 	    							if(vo2.getCompletedDetails()!=null && vo2.getCompletedDetails().size()>0){
 	    								for(TrainingCampVO vo3:vo2.getCompletedDetails()){
+	    									vo3.setMemberCountAttendee(MembersCounts1.get(vo3.getBatchId()));
 	    									vo3.setMemberCount(MembersCounts.get(vo3.getBatchId()));
+	    									
 	    								}
 	    							}
     							}else if(fromType.equalsIgnoreCase("running")){
 	    							if(vo2.getRunningDetails()!=null && vo2.getRunningDetails().size()>0){
 	    								for(TrainingCampVO vo3:vo2.getRunningDetails()){
+	    									vo3.setMemberCountAttendee(MembersCounts1.get(vo3.getBatchId()));
 	    									vo3.setMemberCount(MembersCounts.get(vo3.getBatchId()));
 	    								}
 	    							}
     							}else if(fromType.equalsIgnoreCase("upcoming")){
 	    							if(vo2.getUpcomingDetails()!=null && vo2.getUpcomingDetails().size()>0){
 	    								for(TrainingCampVO vo3:vo2.getUpcomingDetails()){
+	    									vo3.setMemberCountAttendee(0l);
 	    									vo3.setMemberCount(MembersCounts.get(vo3.getBatchId()));
 	    								}
 	    							}
@@ -5650,7 +5672,11 @@ class TrainingCampService implements ITrainingCampService{
     		type="running";
     		temp="runningattendence";
     		
+    	}else if(type.equalsIgnoreCase("completedAttendee")){
+    		type="completed";
+    		temp="completedAttendee";
     	}
+    	
     	if(finalMap.get(type)!=null){
     		TrainingCampVO vo = finalMap.get(type);
     		
@@ -5663,7 +5689,11 @@ class TrainingCampService implements ITrainingCampService{
 									if(scheduleTrainingCampVO.getBatchDetails()!=null){
 										for(TrainingCampVO batchTrainingCampVO : scheduleTrainingCampVO.getBatchDetails()){
 											if(type.equalsIgnoreCase("completed"))
-												batchTrainingCampVO.setCompletedMemberCount(MembersCounts.get(batchTrainingCampVO.getBatchId())!=null?MembersCounts.get(batchTrainingCampVO.getBatchId()):0l);
+												if(temp.equalsIgnoreCase("completedAttendee")){
+													batchTrainingCampVO.setCompletedMemberAttendeeCount(MembersCounts.get(batchTrainingCampVO.getBatchId())!=null?MembersCounts.get(batchTrainingCampVO.getBatchId()):0l);
+												}else{
+													batchTrainingCampVO.setCompletedMemberCount(MembersCounts.get(batchTrainingCampVO.getBatchId())!=null?MembersCounts.get(batchTrainingCampVO.getBatchId()):0l);
+												}
 											else if(type.equalsIgnoreCase("running")){
 												if(temp.equalsIgnoreCase("runningattendence"))
 													batchTrainingCampVO.setRunningAttendenceMemberCount(MembersCounts.get(batchTrainingCampVO.getBatchId())!=null?MembersCounts.get(batchTrainingCampVO.getBatchId()):0l);
@@ -6200,8 +6230,11 @@ class TrainingCampService implements ITrainingCampService{
 		try{
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			Date fromDate = sdf.parse(fromDateString);
-			Date toDate = sdf.parse(toDateStrng);
+			Date fromDate=null,toDate=null;
+			if(fromDateString!=null && toDateStrng!=null){
+				fromDate = sdf.parse(fromDateString);
+				toDate = sdf.parse(toDateStrng);
+			}
 			//setStaticData
 			List<Object[]> llData=cadreLeadershipLevelDAO.getAllLeaderShipLevels();
 			List<Object[]> csData=cadreComminicationSkillsStatusDAO.getAllCadreComminicationSkills();
@@ -6442,7 +6475,11 @@ class TrainingCampService implements ITrainingCampService{
 						   " left join tccfd.cadreComminicationSkillsStatus cs " +
 						   " left join tccfd.cadreLeadershipSkillsStatus ls " +
 						   " left join tccfd.cadreHealthStatus hs " +
-						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId and date(tccfd.trainingCampBatch.fromDate) >= :fromDate and date(tccfd.trainingCampBatch.toDate) <= :toDate ");
+						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId ");
+				
+				if(fromDate!=null && toDate!=null){
+					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) >= :fromDate and date(tccfd.trainingCampBatch.toDate) <= :toDate ");
+				}
 				           
 	           if(batchId==null && campId==null && programId!=null){
 					
@@ -6484,7 +6521,10 @@ class TrainingCampService implements ITrainingCampService{
 			    }else if(type.equalsIgnoreCase("goal")){
 			    	sbM.append(",TrainingCampCadreGoal model ");
 			    }
-				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId ");
+				if(fromDate!=null && toDate!=null){
+					sbM.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
+				}
 				           
 	           if(batchId==null && campId==null && programId!=null){
 					sbM.append(" and tca.trainingCampProgramId=:programId");
@@ -6516,13 +6556,17 @@ class TrainingCampService implements ITrainingCampService{
 	   *   Return: List<SimpleVO> 
 	   *   
 	  */
-		public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromDateString,String toDateString){
+		public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromDateString,String toDateString,String fromType){
 			List<SimpleVO> finalList=null;
 			try{
 				 Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
 				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				 Date fromDate = sdf.parse(fromDateString);
-				 Date toDate = sdf.parse(toDateString);
+				 Date fromDate = null,toDate =null;
+				 if(fromDateString!=null && toDateString!=null){
+					 fromDate = sdf.parse(fromDateString);
+					 toDate = sdf.parse(toDateString);
+				 }
+				 
 				 
 				 Long totalTrainedNumbers=0l; 
 				//get commitee levels.
@@ -6542,9 +6586,9 @@ class TrainingCampService implements ITrainingCampService{
 				 
 					
 				//preinstantiate
-				preInstantiate(finalMap,programId,campId,batchId,committeelevels);
+				preInstantiate(finalMap,programId,campId,batchId,committeelevels,fromType);
 				
-				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId,fromDate,toDate);
+				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programId,campId,batchId,fromDate,toDate,fromType);
 				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programId,campId,batchId,fromDate,toDate,sdf.parse(sdf.format(new Date())));
 				
 				if(totalCounts!=null && totalCounts.size()>0){
@@ -6566,7 +6610,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 				
-				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId,fromDate,toDate);
+				String queryString1=getCommiteesCadreCountByLoc(programId,campId,batchId,fromDate,toDate,fromType);
 			    List<Object[]> levelCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString1,programId,campId,batchId,fromDate,toDate,sdf.parse(sdf.format(new Date())));
 				if(levelCounts!=null && levelCounts.size()>0){//did,dname,lid,lname,count
 					
@@ -6649,26 +6693,40 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return finalList;
 	  }
-		public void preInstantiate(Map<Long,SimpleVO> finalMap,Long programId,Long campId,Long batchId,List<Object[]> committeelevels){
+		public void preInstantiate(Map<Long,SimpleVO> finalMap,Long programId,Long campId,Long batchId,List<Object[]> committeelevels,String fromType){
 			
 			try{
 			    
 	             List<Object[]>	districts=null;
 				
 				if(programId!=null && batchId==null && campId==null){
-					
-					districts=trainingCampProgramDAO.getDistrictsByProgramId(programId);
+					if(fromType.equalsIgnoreCase("dist")){
+						districts=trainingCampProgramDAO.getDistrictsByProgramId(programId);
+					}else{
+						districts=trainingCampProgramDAO.getConstsByProgramId(programId);
+					}
 					
 				}else if(batchId==null && campId!=null){
-					
-				   districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+					if(fromType.equalsIgnoreCase("dist")){
+						districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+					}else{
+						districts=trainingCampDAO.getCampConstsByCampId(campId);
+					}
 				}
 				else if(batchId!=null){
 					
 				  if(campId!=null){
-				    districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+					  if(fromType.equalsIgnoreCase("dist")){
+						  districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+					  }else{
+						  districts=trainingCampDAO.getCampConstsByCampId(campId);
+					  }
 				  }else{
-				    districts=trainingCampBatchDAO.getCampDistrictsByBatchId(batchId);
+					  if(fromType.equalsIgnoreCase("dist")){
+						  districts=trainingCampBatchDAO.getCampDistrictsByBatchId(batchId);
+					  }else{
+						  districts=trainingCampBatchDAO.getCampConstsByBatchId(batchId);
+					  }
 				  }
 					
 				}
@@ -6716,17 +6774,32 @@ class TrainingCampService implements ITrainingCampService{
 			return map;
 		}
 		
-		public String getAttendedlocWiseCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+		public String getAttendedlocWiseCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String fromType){
 			
 			String queryString=null;
 			 try{
 				
 				 StringBuilder sb= new StringBuilder(); 
-				 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
-				 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
-				 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId and " +
-				 		    "date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate and " +
-				 		    "date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				 
+				 if(fromType.equalsIgnoreCase("dist")){
+					 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
+					 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
+					 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId ");
+					 if(fromDate!=null && toDate!=null){
+						 sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
+					 }
+					 sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				 }else if(fromType.equalsIgnoreCase("const")){
+					 sb.append(" select c.constituencyId,c.name,count(distinct tc.tdpCadreId) " +
+					 		    " from  TrainingCampAttendance tca,TdpCadre tc,Constituency c " +
+					 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.constituency.constituencyId=c.constituencyId ");
+					 if(fromDate!=null && toDate!=null){
+						sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate "); 
+					 }
+				 	
+				 	sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				 }
+				 
 				 
 				 if(batchId==null && campId==null && programId!=null ){
 					 sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6744,8 +6817,12 @@ class TrainingCampService implements ITrainingCampService{
 					
 				    sb.append(" and tca.trainingCampBatchId=:batchId");
 				 }
-				 sb.append(" group by d.districtId order by d.districtName ");
-				
+				 
+				 if(fromType.equalsIgnoreCase("dist")){
+					 sb.append(" group by d.districtId order by d.districtName ");
+				}else if(fromType.equalsIgnoreCase("const")){
+					sb.append(" group by c.constituencyId order by c.name ");
+				}
 				 queryString=sb.toString();
 				 
 			 }catch(Exception e){
@@ -6755,20 +6832,37 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		
 		
-		public String getCommiteesCadreCountByLoc(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+		public String getCommiteesCadreCountByLoc(Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String fromType){
 			String queryString=null;
 			try{
 				
 				StringBuilder sb=new StringBuilder();
 				
-				sb.append(" select " +
-						   " model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.district.districtName," +
-						   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
-						   " count(distinct tca.attendance.tdpCadreId)");
-				sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
-						   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' and " +
-						   "       date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate  " +
-						   " and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				if(fromType.equalsIgnoreCase("dist")){
+					sb.append(" select " +
+							   " model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.district.districtName," +
+							   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+							   " count(distinct tca.attendance.tdpCadreId)");
+					sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
+							   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' ");
+					if(fromDate!=null && toDate!=null){
+						sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
+					}
+					sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				}else if(fromType.equalsIgnoreCase("const")){
+					sb.append(" select " +
+							   " model2.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model2.tdpCommitteeRole.tdpCommittee.constituency.name," +
+							   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+							   " count(distinct tca.attendance.tdpCadreId)");
+					sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
+							   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' ");
+					if(fromDate!=null && toDate!=null){
+						   sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate  ");
+					}
+					sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
+				}
+				
+				
 				
 				if(batchId==null && campId==null && programId!=null){
 					sb.append(" and tca.trainingCampProgramId=:programId");
@@ -6786,7 +6880,11 @@ class TrainingCampService implements ITrainingCampService{
 					sb.append(" and tca.trainingCampBatchId=:batchId");
 					
 				}
-			   sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+				if(fromType.equalsIgnoreCase("dist")){
+					sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.district.districtId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+				}else if(fromType.equalsIgnoreCase("const")){
+					sb.append(" group by model2.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+				}
 			   
 			 		    
 			   queryString=sb.toString();
@@ -6902,8 +7000,12 @@ class TrainingCampService implements ITrainingCampService{
 			SimpleVO simpleVO=new SimpleVO();
 			try{
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				Date fromDate = sdf.parse(fromDateString);
-				Date toDate = sdf.parse(toDateString);
+				Date fromDate = null,toDate = null;
+				if(fromDateString!=null && toDateString!=null){
+					fromDate = sdf.parse(fromDateString);
+					toDate = sdf.parse(toDateString);
+				}
+				
 				Map<Long,SimpleVO> finalMap=new LinkedHashMap<Long,SimpleVO>();
 				
 				Long centersCount=0l;
