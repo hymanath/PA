@@ -2053,7 +2053,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-    		idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[0].trim(),temp[1].trim(),0l);
+			if(temp.length>1){
+				idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[0].trim(),temp[1].trim(),0l);
+			}else{
+				idNameList = trainingCampService.getAttendedCountForBatchesByLocation(null,null,0l);
+			}
+    		
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -2068,7 +2073,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-    		simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[0].trim(),temp[1].trim(),0l);
+			
+			if(temp.length>1){
+				simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[0].trim(),temp[1].trim(),0l);
+			}else{
+				simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(null,null,0l);
+			}
+    		
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountForBatchesByLocation() method, Exception - ",e);
@@ -2094,7 +2105,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String selDate = jObj.getString("selectedDate");
 			
 			String temp[] = selDate.split("-");
-			returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),0l,"All");
+			
+			if(temp.length>1){
+				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),0l,"All");
+			}else{
+				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(null,null,0l,"All");
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at TODO: handle exception", e);
 		}
@@ -2120,8 +2137,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     			batchId=null;
     		}
     		String dates[] = jObj.getString("dates").split("-");
+    		if(dates.length>1){
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim());
+    		}else{
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,null,null);
+    		}
     		
-    		finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim());
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getattendedcountByFeedBacks() method, Exception - ",e);
@@ -2147,9 +2168,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		if(batchId==0l){
     			batchId=null;
     		}
-    		
+    		String fromType = jObj.getString("fromType");
     		String dates[] = jObj.getString("dates").split("-");
-    		simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim());
+    		
+    		if(dates.length>1){
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),fromType);
+    		}else{
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,null,null,fromType);
+    		}
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountsByProgramOrCampOrBatch() method, Exception - ",e);
@@ -2181,7 +2207,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		jObj = new JSONObject(getTask());
     		Long programId = jObj.getLong("programId");
     		String date[] = jObj.getString("dates").split("-");
-    		simpleVO = trainingCampService.getProgramSummary(programId,date[0].trim(),date[1].trim());
+    		if(date.length>1){
+    			simpleVO = trainingCampService.getProgramSummary(programId,date[0].trim(),date[1].trim());
+    		}else{
+    			simpleVO = trainingCampService.getProgramSummary(programId,null,null);
+    		}
+    		
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getProgramSummary() method, Exception - ",e);
