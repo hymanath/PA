@@ -591,7 +591,7 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
+	 
 	public String callCenterTrainingAgent(){
 		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null){
@@ -599,12 +599,15 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}else{
 			return Action.INPUT;
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER") || 
-				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") || 
-				 entitlementsHelper.checkForEntitlementToViewReport(regVO,"ADMIN_PAGE")){
+		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") || 
+				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
 			return Action.SUCCESS;
 		}
-		return Action.INPUT;
+		else
+		{
+			return Action.ERROR;
+		}
+		
 	}
 	
 	public String checkLoginForPartyMeeting(){
@@ -1680,8 +1683,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			if(regVO!=null){
 				//Long userId = regVO.getRegistrationID();
 				//if(!regVO.getIsAdmin().equalsIgnoreCase("true")){
-					if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT") &&
-							!entitlementsHelper.checkForEntitlementToViewReport(regVO,"ADMIN_PAGE")){
+					if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT") ||
+							entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
+						return Action.SUCCESS;
+					}
+					else
+					{
 						return Action.ERROR;
 					}
 				//}
@@ -2038,14 +2045,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	         //copy image to folder.
 	         
 	}
-    public String checkLoginForTrainingCenterDashBoard(){
+    public String openTrainingCenterDashBoard(){  
     	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-		if(regVO!=null && regVO.getRegistrationID() >0l){
-			return "success";
+		if(regVO!=null){
+			Long userId = regVO.getRegistrationID();
 		}else{
-			return "input";
+			return Action.INPUT;
 		}
-    }
+		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
+				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
+			return Action.SUCCESS;
+		}else
+		return Action.INPUT;
+	}
     public String getAttendedCountForBatchesByLocation()
     {
     	try{
@@ -2090,12 +2102,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     
     public String trainingProgramDashBoard(){
     	RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-		if(regVO!=null && regVO.getRegistrationID() >0l){
-			return "success";
+		if(regVO!=null){
+			Long userId = regVO.getRegistrationID();
 		}else{
-			return "input";
+			return Action.INPUT;
 		}
-    }
+		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
+				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
+			return Action.SUCCESS;
+		}
+		return Action.INPUT;
+	}
     
     public String getTrainingCenterDetailsBasedOnDates(){
     	try {
