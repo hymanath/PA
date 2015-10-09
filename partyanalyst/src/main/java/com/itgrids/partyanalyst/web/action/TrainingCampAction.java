@@ -2191,7 +2191,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		jObj = new JSONObject(getTask());
     		Long batchId = jObj.getLong("batchId");
     		String dates[] = jObj.getString("dates").split("-");
-    		simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,dates[0].trim(),dates[1].trim());
+    		if(dates.length>1){
+    			simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,dates[0].trim(),dates[1].trim());
+    		}else{
+    			simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,null,null);
+    		}
+    		
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAttendedCountSummaryByBatch() method, Exception - ",e);
@@ -2230,7 +2235,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long campId = jObj.getLong("campId");
     		
     		String date[] = jObj.getString("dates").split("-");
-    		simpleVO = trainingCampService.getCampSummary(programId,campId,date[0].trim(),date[1].trim());
+    		if(date.length>1){
+    			simpleVO = trainingCampService.getCampSummary(programId,campId,date[0].trim(),date[1].trim());
+    		}else{
+    			simpleVO = trainingCampService.getCampSummary(programId,campId,null,null);
+    		}
+    		
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getCampSummary() method, Exception - ",e);
