@@ -151,21 +151,41 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
  }
   public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate){
-		Query query = getSession().createQuery(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+	  StringBuilder sb=new StringBuilder();
+	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId =:batchId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+				" where model.trainingCampBatch.trainingCampBatchId =:batchId ");
+	  if(fromDate!=null && toDate!=null){
+		  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+	  }
+	  
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		query.setParameter("batchId", batchId);
 		return (Long)query.uniqueResult();
   }
   public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate){
-	  Query query=getSession().createQuery(" select date(model.attendance.attendedTime),count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+	  StringBuilder sb=new StringBuilder();
+	  
+	  sb.append(" select date(model.attendance.attendedTime),count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 	  " from TrainingCampAttendance model " +
-	  " where model.trainingCampBatch.trainingCampBatchId =:batchId and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate " +
-	  " group by date(model.attendance.attendedTime)");
-	  query.setParameter("fromDate",fromDate);
-	  query.setParameter("toDate",toDate);
+	  " where model.trainingCampBatch.trainingCampBatchId =:batchId ");
+	  if(fromDate!=null && toDate!=null){
+		  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
+	  }
+	  
+	  sb.append(" group by date(model.attendance.attendedTime)");
+	  
+	  
+	  Query query=getSession().createQuery(sb.toString());
+	  if(fromDate!=null && toDate!=null){
+		  query.setParameter("fromDate",fromDate);
+		  query.setParameter("toDate",toDate);
+	  }
+	  
 	  query.setParameter("batchId",batchId);
 	  return query.list();
   }
@@ -194,16 +214,28 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 return query.list();
  }
  public Long getAttendedCountByCamp(Long programId,Long campId,Date fromDate,Date toDate){
-	 Query query=getSession().createQuery("" +
-	 " select  count(distinct tca.attendance.tdpCadreId)" +
+	 
+	 StringBuilder sb = new StringBuilder();
+	 
+	 sb.append(" select  count(distinct tca.attendance.tdpCadreId)" +
 	 " from  TrainingCampAttendance tca,TrainingCampSchedule tcs" +
 	 " where tca.trainingCampProgramId=tcs.trainingCampProgramId and" +
 	 "       tcs.trainingCampScheduleId=tca.trainingCampScheduleId and " +
-	 "       tca.trainingCampProgramId=:programId and tcs.trainingCampId=:campId and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate");
+	 "       tca.trainingCampProgramId=:programId and tcs.trainingCampId=:campId ");
+	 
+	 if(fromDate!=null && toDate!=null){
+		 sb.append("and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate");
+	 }
+	 
+	 
+	 Query query=getSession().createQuery(sb.toString());
 	 
 	 query.setParameter("programId",programId);
-	 query.setParameter("fromDate",fromDate);
-	 query.setParameter("toDate",toDate);
+	 if(fromDate!=null && toDate!=null){
+		 query.setParameter("fromDate",fromDate);
+		 query.setParameter("toDate",toDate);
+	 }
+	 
 	 query.setParameter("campId",campId);
 	 return (Long)query.uniqueResult();
  }
@@ -243,7 +275,5 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 
 	 return query.list();
  }
- 
- 
- 
+  
 }
