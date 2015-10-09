@@ -210,6 +210,7 @@
 			<result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
 			<result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
 			<result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>
+			<result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5643,7 +5644,8 @@
 		    <result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
 		    <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
-		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	       
+		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	
+		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -10801,9 +10803,9 @@
 	  	</result>
 	</action>
 	
-	<action name="trainingCenterDashBoardAction" class="trainingCampAction" method="checkLoginForTrainingCenterDashBoard">
+	<action name="trainingCenterDashBoardAction" class="trainingCampAction" method="openTrainingCenterDashBoard">
 		<result name="success">/jsp/trainingCenterMainDashboard.jsp</result>
-		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=trainingCenterDashBoardAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
@@ -10820,7 +10822,7 @@
 	
 	<action name="trainingProgramMainDashBoardAction" class="trainingCampAction" method="trainingProgramDashBoard">
 		<result name="success">/jsp/trainingProgramMainDashBoard.jsp</result>
-		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=trainingProgramMainDashBoardAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
