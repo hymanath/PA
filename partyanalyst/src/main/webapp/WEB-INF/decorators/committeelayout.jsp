@@ -72,7 +72,9 @@
 					   
 					   <li><a tabindex="-1" href="partyMeetingsDashBoard.action">Party Meetings Dashboard </a></li>	
 					   <li><a tabindex="-1" href="meetingList.action">Party Meetings - MOM & ATR </a></li>	
-					   
+					   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN')}">
+					 	 <li><a tabindex="-1" href="trainingCenterDashBoardAction.action"> TRAINING CAMP DASHBOARD </a></li>
+					   </c:if>
 					  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
 					</c:if>
 					 <c:if test="${sessionScope.USER.isAdmin != 'true'}">
