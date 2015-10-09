@@ -1,4 +1,10 @@
-<!doctype html>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -52,7 +58,12 @@ header.eventsheader {
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					      <c:if test="${sessionScope.USER.isAdmin == 'true'}">
+							<li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					      </c:if>
+						   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN')}">
+								<li><a tabindex="-1" href="trainingCenterDashBoardAction.action"> TRAINING CAMP DASHBOARD </a></li>
+						    </c:if>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
                     </ul>   
