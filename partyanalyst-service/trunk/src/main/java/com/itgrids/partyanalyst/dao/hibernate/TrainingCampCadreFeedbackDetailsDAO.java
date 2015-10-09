@@ -58,8 +58,10 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	
     	Query query=getSession().createQuery(queryString);
     	
-    	query.setParameter("fromDate", fromDate);
-    	query.setParameter("toDate", toDate);
+    	if(fromDate!=null && toDate!=null){
+	    	query.setParameter("fromDate", fromDate);
+	    	query.setParameter("toDate", toDate);
+    	}
     	if(batchId==null && campId==null && programId!=null){
     		query.setParameter("programId",programId);
     		
@@ -84,8 +86,10 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	
     	Query query=getSession().createQuery(queryString);
     	
-    	query.setParameter("fromDate", fromDate);
-    	query.setParameter("toDate", toDate);
+    	if(fromDate!=null && toDate!=null){
+	    	query.setParameter("fromDate", fromDate);
+	    	query.setParameter("toDate", toDate);
+    	}
     	if(batchId==null && campId==null && programId!=null){
     		query.setParameter("programId",programId);
     		
