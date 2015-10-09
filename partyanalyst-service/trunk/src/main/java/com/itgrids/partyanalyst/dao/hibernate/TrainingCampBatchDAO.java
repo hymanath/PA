@@ -108,9 +108,19 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return query.list();
 	}
 	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate){
-		Query query=getSession().createQuery("select date(model.fromDate),date(model.toDate) from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate and model.isCancelled = 'false' ");
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		StringBuilder sb = new StringBuilder();
+		sb.append("select date(model.fromDate),date(model.toDate) from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId ");
+		
+		if(fromDate!=null && toDate!=null){
+			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
+		}
+		sb.append(" and model.isCancelled = 'false' ");
+		Query query=getSession().createQuery(sb.toString());
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		query.setParameter("trainingCampBatchId",batchId);
 		return (Object[])query.uniqueResult();
 	}
@@ -140,14 +150,23 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 	}
     public Object[] getBatchCountByCamp(Long programId,Long campId,Date fromDate,Date toDate){
 		
-		Query query=getSession().createQuery("" +
-		" select model.trainingCampSchedule.trainingCampId,model.trainingCampSchedule.trainingCamp.campName,count(distinct model.trainingCampBatchId) " +
+    	StringBuilder sb=new StringBuilder();
+
+		sb.append(" select model.trainingCampSchedule.trainingCampId,model.trainingCampSchedule.trainingCamp.campName,count(distinct model.trainingCampBatchId) " +
 		" from   TrainingCampBatch model " +
 		" where  model.trainingCampSchedule.trainingCampProgramId=:trainingCampProgramId and " +
-		"        model.trainingCampSchedule.trainingCampId=:trainingCampId and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate and model.isCancelled = 'false' ");
+		"        model.trainingCampSchedule.trainingCampId=:trainingCampId ");
+		if(fromDate!=null && toDate!=null){
+			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
+		}
+		sb.append(" and model.isCancelled = 'false' ");
+		Query query=getSession().createQuery("");
 		query.setParameter("trainingCampProgramId",programId);
-		query.setParameter("fromDate",fromDate);
-		query.setParameter("toDate",toDate);
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+		}
+		
 		query.setParameter("trainingCampId",campId);
 		return (Object[])query.uniqueResult();
 	}
