@@ -5621,11 +5621,94 @@ class TrainingCampService implements ITrainingCampService{
 				setBatchesCountForProgWise(finalMap,upCommingMembersCounts,null,"upcoming");
 			}
 			
+			//running batches daywise counts
+			getDayWiseCountsForRunningBatches(runningBatches);
 						
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCompletedRunningUpcomingBatchIds", e);
 		}
     	return finalMap;
+    }
+    
+    public List<SimpleVO> getDayWiseCountsForRunningBatches(List<Object[]> runningBatches){
+    	
+    	List<SimpleVO> voList = new ArrayList<SimpleVO>();
+    	if(runningBatches!=null && runningBatches.size()>0){
+	    	for (Object[] objects : runningBatches) {
+	    		Long batchId = (Long)objects[0];
+	    		SimpleVO simpleVO=new SimpleVO();
+				SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				try{ 
+					//Confirmed Count.
+					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null);
+					 //total count attended.
+					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null);
+					 String perc=null;
+					 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
+						 float percentage = (totalBatchCount * 100/(float)confirmedCount);
+						 perc=String.format("%.2f", percentage);
+					 }
+					 
+					 //preinstantiate.
+					  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null);
+					  Date fromDate=null;
+					  Date toDate=null;
+					  if(batchDates!=null){
+						  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+						  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+					  }
+					  List<Date> dates=getBetweenDates(fromDate,toDate);
+					  Map<Date,SimpleVO> finalMap=new LinkedHashMap<Date,SimpleVO>();
+					  if(dates!=null && dates.size()>0){
+						  int count=1;
+						  for(Date date:dates){
+							  SimpleVO vo=new SimpleVO();
+							  vo.setDate(date);
+							  vo.setDateString(sdf.format(date));
+							  vo.setName("Day "+count);
+							  vo.setTotal(0l);//attended
+							  vo.setCount(confirmedCount);//absent
+							  finalMap.put(date,vo);
+							  count=count+1;
+						  }
+					  }
+					 
+					 //date wise counts.
+					 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);//san
+					 
+					 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
+						 
+						 for(Object[] obj: dateWiseCounts){
+							 if(obj[0]!=null){
+								SimpleVO vo= finalMap.get((Date)obj[0]);
+								if(vo!=null){
+									vo.setTotal(obj[1]!=null?(Long)obj[1]:0l);//attended.
+									vo.setCount(confirmedCount-vo.getTotal());//absent.
+								}
+							 }
+						 }
+					 }
+					 
+				 simpleVO.setTotal(confirmedCount);//confirmed people	
+				 simpleVO.setCount(totalBatchCount);//total attended.
+				 simpleVO.setDateString(perc);
+				//converting.
+				 if(finalMap!=null && finalMap.size()>0){
+					 simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
+				 } 
+				 
+				}catch(Exception e){
+					 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
+				}
+				
+				voList.add(simpleVO);
+			
+				
+			}
+    	}
+    	
+    	return voList;
     }
     
     public void setBatchesCountForProgWise(Map<String,TrainingCampVO> finalMap,Map<Long,Long> MembersCounts,Map<Long,Long> MembersCounts1,String fromType){
@@ -6907,8 +6990,12 @@ class TrainingCampService implements ITrainingCampService{
 			SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			try{ 
-				Date fromDate1 = sdf1.parse(fromDateString);
-				Date toDate1 = sdf1.parse(toDateString);
+				Date fromDate1 = null,toDate1=null;
+				if(fromDateString!=null && toDateString!=null){
+					fromDate1 = sdf1.parse(fromDateString);
+					toDate1 = sdf1.parse(toDateString);
+				}
+				
 				//Confirmed Count.
 				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,fromDate1,toDate1);
 				 //total count attended.
@@ -7064,14 +7151,20 @@ class TrainingCampService implements ITrainingCampService{
 			try{
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				
-				Object[] obj=trainingCampBatchDAO.getBatchCountByCamp(programId,campId,sdf.parse(fromDateString),sdf.parse(toDateString));
+				Date fromDate=null,toDate=null;
+				if(fromDateString!=null && toDateString!=null){
+					fromDate=sdf.parse(fromDateString);
+					toDate=sdf.parse(toDateString);
+				}
+				
+				Object[] obj=trainingCampBatchDAO.getBatchCountByCamp(programId,campId,fromDate,toDate);
 				if(obj!=null){
 					simpleVO.setId(obj[0]!=null?(Long)obj[0]:0l);
 					simpleVO.setName(obj[1]!=null?obj[1].toString():"");
 					simpleVO.setCount(obj[2]!=null?(Long)obj[2]:0l);//batchCount
 					simpleVO.setTotal(0l);//attendedCount
 				}
-				Long attendedCount=trainingCampAttendanceDAO.getAttendedCountByCamp(programId,campId,sdf.parse(fromDateString),sdf.parse(toDateString));
+				Long attendedCount=trainingCampAttendanceDAO.getAttendedCountByCamp(programId,campId,fromDate,toDate);
 				if(attendedCount!=null){
 					simpleVO.setTotal(attendedCount);
 				}
