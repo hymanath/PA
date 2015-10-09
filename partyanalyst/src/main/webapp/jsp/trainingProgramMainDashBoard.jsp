@@ -126,7 +126,11 @@ header.trainingHeader {
 										
                                     </table>
                                 </div>
-								<div class="col-md-12">
+								<div class="col-md-12" style="background:#ababab;text-color:#ccc;">
+									<center><div>
+										<input type="radio" value="dist" checked class="distrconstdtls" name="distconst"/><label> DISTRICT</label>
+										<input type="radio" value="const" class="distrconstdtls" name="distconst"/><label>  CONSTITUENCY</label>
+									</div></center>
 									<div id="districtWiseDetailsId"></div>
 								</div>
 								
@@ -185,7 +189,7 @@ $('.close-icon').click(function(){
 $("#mainheading").html("TRAINING PROGRAMME DASHBOARD");
 
 getattendedcountByFeedBacks();
-getAttendedCountsByProgramOrCampOrBatch();
+getAttendedCountsByProgramOrCampOrBatch("dist");
 
 if(batchId!=null && batchId>0){
 	getAttendedCountSummaryByBatch();
@@ -210,13 +214,14 @@ if(programId!=null && programId>0 || campId!=null && campId>0){
 
 
 
-function getAttendedCountsByProgramOrCampOrBatch()
+function getAttendedCountsByProgramOrCampOrBatch(fromType)
 {
 	var jsObj={
 		programId:programId,
 		campId:campId,
 		batchId:batchId,
-		dates:dates
+		dates:dates,
+		fromType:fromType
 	}
 	$.ajax({
 		type:'POST',
@@ -224,22 +229,28 @@ function getAttendedCountsByProgramOrCampOrBatch()
 		 data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
 		if(result != null){
-			buildAttendedCountByProgramOrCampOrBatch(result);
+			buildAttendedCountByProgramOrCampOrBatch(result,fromType);
 		}else{
 			$("#districtWiseDetailsId").html("NO DATA AVAILABLE...");
 		}
 	});
 }
 
-function buildAttendedCountByProgramOrCampOrBatch(result)
+function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 {
 	$("#districtWiseDetailsId").html('');
 	var str='';
 	
 			str+='<table class="table table-bordered bg_ff" id="attendedTable">';
 				str+='<thead class="bg_e9" >';
-					str+='<th>LOCATION (ATTENDED)</th>';
-					str+='<th>DISTRICT LEVEL</th>';
+					str+='<th>LOCATION</th>';
+					str+='<th>ATTENDED</th>';
+					if(fromType=="dist"){
+						str+='<th>DISTRICT LEVEL</th>';
+					}else if(fromType=="const"){
+						str+='<th>CONSTITUENCY LEVEL</th>';
+					}
+					
 					str+='<th>MANDAL/TOWN/DIVISION LEVEL</th>';
 					str+='<th>VILLAGE/WARD LEVEL</th>';
 					str+='<th>OTHERS</th>';
@@ -251,7 +262,8 @@ function buildAttendedCountByProgramOrCampOrBatch(result)
 					if(result[i].name != "Others"){
 						
 							str+='<tr>';
-								str+='<td>'+result[i].name+'('+result[i].count+')</td>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td>'+result[i].count+'</td>';
 								for(var j in result[i].simpleVOList1){
 									if(result[i].simpleVOList1[j].id==5 || result[i].simpleVOList1[j].id==6 || result[i].simpleVOList1[j].id==11){
 									  str+='<td>'+result[i].simpleVOList1[j].totalCount+'</td>';
@@ -694,7 +706,10 @@ function buildSurveyDetails(result)
 	$("#surveyDataLoadoing").hide();
 	$("#surveyDetailsId").html(str);
 }
-
+	
+	$(".distrconstdtls").click(function(){
+		getAttendedCountsByProgramOrCampOrBatch($(this).val());
+	});
 </script>
 </body>
 </html>	

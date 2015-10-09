@@ -265,7 +265,16 @@ function exportToExcel()
 					   else{
 						   str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>'
 					   }
-					   str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].subList[j].id+'">'+results[i].subList[j].name+'</a></td>'
+					   str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].subList[j].id+'">'+results[i].subList[j].name+'</a>';
+					   
+					   <c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">
+						str+='<br><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].subList[j].id+'">'+results[i].subList[j].memberShipId+'</a></td>';
+					   </c:if>
+					   
+					   <c:if test="${fn:contains(sessionScope.USER.isAdmin, 'false' )}">
+						str+='<br>'+results[i].subList[j].memberShipId+'</td>';
+					   </c:if>
+					   
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>'
 					   if(results[i].subList[j].committeeLevel.trim().length==0){
@@ -1172,7 +1181,13 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 					}
 					
 					if(results[i].cadreId !=null && results[i].cadreId > 0){
-						str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].cadreId+'">'+results[i].firstName+'</a></td>'
+						str+='<td><a target="_blank" href="tdpCadreFamilyUpdationAction.action?task='+results[i].cadreId+'">'+results[i].firstName+'</a>';
+						<c:if test="${fn:contains(sessionScope.USER.isAdmin, 'true' )}">
+						str+='<br><a target="_blank" href="cadreDetailsAction.action?cadreId='+results[i].cadreId+'">'+results[i].membershipNoStr+'</a></td>';
+						</c:if>
+						<c:if test="${fn:contains(sessionScope.USER.isAdmin, 'false' )}">
+						str+='<br>'+results[i].membershipNoStr+'</td>';
+						</c:if>
 					}
 					else{
 						str+='<td>'+results[i].firstName+'</td>';
