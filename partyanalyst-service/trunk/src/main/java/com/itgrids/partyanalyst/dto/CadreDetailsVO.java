@@ -59,7 +59,16 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String committeeRole;
 	private String committeeType;
 	private String familyUpdted;
+	private String memberShipId;
 	
+	
+	
+	public String getMemberShipId() {
+		return memberShipId;
+	}
+	public void setMemberShipId(String memberShipId) {
+		this.memberShipId = memberShipId;
+	}
 	public String getCommitteeLevel() {
 		return committeeLevel;
 	}

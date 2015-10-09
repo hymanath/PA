@@ -63,6 +63,8 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long runningMemberCount=0l;
 	private Long upCommingMemberCount=0l;
 	
+	private Long completedMemberAttendeeCount=0l;
+	
 	private int totalTrainingCenters=0;
 	private String batchDates;
 	private String scheduleDates;
@@ -78,6 +80,8 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long upComingBatches =0l;
 	private Long memberCount = 0l;
 	
+	private Long memberCountAttendee = 0l;
+	
 	private List<TrainingCampVO> completedDetails=new ArrayList<TrainingCampVO>(0);
 	private List<TrainingCampVO> runningDetails=new ArrayList<TrainingCampVO>(0);
 	private List<TrainingCampVO> upcomingDetails=new ArrayList<TrainingCampVO>(0);
@@ -87,6 +91,19 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long switchOffCount;
 	
 	
+	
+	public Long getMemberCountAttendee() {
+		return memberCountAttendee;
+	}
+	public void setMemberCountAttendee(Long memberCountAttendee) {
+		this.memberCountAttendee = memberCountAttendee;
+	}
+	public Long getCompletedMemberAttendeeCount() {
+		return completedMemberAttendeeCount;
+	}
+	public void setCompletedMemberAttendeeCount(Long completedMemberAttendeeCount) {
+		this.completedMemberAttendeeCount = completedMemberAttendeeCount;
+	}
 	public Long getUserBusyCount() {
 		return userBusyCount;
 	}
