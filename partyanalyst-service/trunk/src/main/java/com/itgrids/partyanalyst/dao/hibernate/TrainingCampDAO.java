@@ -45,4 +45,14 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
     	return query.list();
     }
 	
+    public List<Object[]> getCampConstsByCampId(Long campId){
+		
+		Query query=getSession().createQuery(" select c.constituencyId,c.name " +
+		" from TrainingCamp model,TrainingCampDistrict model1,Constituency c " +
+		" where model.trainingCampId =model1.trainingCampId and model.trainingCampId=:trainingCampId and model1.district.districtId=c.district.districtId " +
+		" and c.electionScope.electionScopeId=2 and c.deformDate is null " +
+		" order by c.constituencyId asc");
+		query.setParameter("trainingCampId",campId);
+		return query.list();
+	}
 }
