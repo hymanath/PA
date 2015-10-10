@@ -2513,7 +2513,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 								String[] dateArr = dateStr.split("-");
 								if(dateArr != null && dateArr.length>0)
 								{
-									meetingVO.setMonthName(IConstants.MONTH_NAMES[Integer.valueOf(dateArr[1])]+" - "+dateArr[0]);
+									int day = Integer.valueOf(dateArr[1]);
+									meetingVO.setMonthName(IConstants.MONTH_NAMES[day-1]+" - "+dateArr[0]);
 								}
 								
 								if(returnListMap.get(meetingVO.getMonthName()) != null)

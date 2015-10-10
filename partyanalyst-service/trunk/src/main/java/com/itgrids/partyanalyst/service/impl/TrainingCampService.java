@@ -5622,7 +5622,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			
 			//running batches daywise counts
-			getDayWiseCountsForRunningBatches(runningBatches);
+			//getDayWiseCountsForRunningBatches(runningBatches);
 						
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCompletedRunningUpcomingBatchIds", e);
