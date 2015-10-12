@@ -109,7 +109,8 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 	}
 	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select date(model.fromDate),date(model.toDate) from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId ");
+		sb.append("select date(model.fromDate),date(model.toDate),model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.campName " +
+				"	from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId ");
 		
 		if(fromDate!=null && toDate!=null){
 			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
@@ -160,7 +161,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
 		}
 		sb.append(" and model.isCancelled = 'false' ");
-		Query query=getSession().createQuery("");
+		Query query=getSession().createQuery(sb.toString());
 		query.setParameter("trainingCampProgramId",programId);
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate",fromDate);
