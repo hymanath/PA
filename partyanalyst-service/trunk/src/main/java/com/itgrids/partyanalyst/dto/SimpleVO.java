@@ -43,9 +43,16 @@ public class SimpleVO implements java.io.Serializable{
    private Long day3Count;
    
    private String centerName;
+   private String percentage;
 	
    
    
+	public String getPercentage() {
+	return percentage;
+}
+public void setPercentage(String percentage) {
+	this.percentage = percentage;
+}
 	public String getCenterName() {
 	return centerName;
 }
