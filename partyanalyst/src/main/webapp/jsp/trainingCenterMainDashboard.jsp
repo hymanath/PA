@@ -283,40 +283,50 @@ header.eventsheader {
 						
                         <section>
                         	<div class="row">
-								<div class="row col-md-12">
+								<div class="col-md-12">
 									<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-									<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
-									<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
-									</div>
+											<h4 class="panel-title">
+												<b><span id="headingDiv">DISTRICT </span>WISE TOTAL MEMBERS PARTICIPATED</b>
+												<div class="pull-right">
+													<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
+													<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
+												</div>
+											</h4>
+										</div>
+										<div class="panel-body pad_0">
+											<div class="row">
+												<div class="col-md-12" id="distDivId">
+													<div class="panel panel-default">
+														<!--<div class="panel-heading bg_d">
+															<h4 class="panel-title" style="font-weight:bold;">DISTRICTS WISE TOTAL MEMBERS PARTICIPATED</h4>
+														</div>-->
+														<div class="panel-body pad_0">
+														  <img id="distWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+														  <div id="distWiseDivId"></div>
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-md-12" id="constDivId" style="display:none;">
+													<div class="panel panel-default">
+														<!--<div class="panel-heading bg_d">
+															<h4 class="panel-title" style="font-weight:bold;">CONSTITUENCY WISE TOTAL MEMBERS PARTICIPATED</h4>
+														</div>-->
+														
+														<div class="panel-body pad_0">
+														  <img id="constWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
+														  <div id="constWiseDivId"></div>
+														</div>
+														
+														
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-                            	<div class="col-md-12" id="distDivId">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title" style="font-weight:bold;">DISTRICTS WISE TOTAL MEMBERS PARTICIPATED</h4>
-                                        </div>
-                                        <div class="panel-body pad_0">
-										  <img id="distWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
-										  <div id="distWiseDivId"></div>
-                                        </div>
-                                    </div>
-                                	
-                                </div>
-                                <div class="col-md-12" id="constDivId" style="display:none;">
-                                	<div class="panel panel-default">
-                                    	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title" style="font-weight:bold;">CONSTITUENCY WISE TOTAL MEMBERS PARTICIPATED</h4>
-                                        </div>
-										
-                                        <div class="panel-body pad_0">
-										  <img id="constWiseImg" src="images/ajaxImg2.gif" style="width:45px;height:45px;margin-left:45%">
-										  <div id="constWiseDivId"></div>
-                                        </div>
-										
-										
-                                    </div>
-                                </div>
+                            	
                             </div>
                         </section>
 						
@@ -337,7 +347,7 @@ header.eventsheader {
 <script src="training/dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="training/dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<!--<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> --> 
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
 <script type="text/javascript">
 var fromTypeGlob;
 $(function () {
@@ -922,7 +932,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			//day wise attendence for currently running batches
 			if(result!=null && result.length>0){
 				var str='';
-				str+='<table class="table table-bordered">';
+				str+='<table class="table table-bordered m_0">';
 				str+='<thead class="bg_d">';
 				str+='<tr>';
 				str+='<th>Center</th>';
@@ -1006,6 +1016,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			str+='<th>INVITED</th>';
 			str+='<th>ATTENDED</th>';
 		    str+='<th>INVITEES ATTENDED</th>';
+			str+='<th>INVITEES ATTENDED PERCENTAGE</th>';
 			str+='<th>NON INVITEES ATTENDED</th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -1029,6 +1040,11 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				}else{
                    str+='<td>'+results[i].locValue+'</td>';
 				}
+				if(results[i].percentage==null){
+					str+='<td>0.00</td>';
+				}else{
+					str+='<td>'+results[i].percentage+'</td>';
+				}
 				if(results[i].totalCount==0){
 					str+='<td> - </td>';
 				}else{
@@ -1039,9 +1055,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		str+='</tbody>';
 		str+='</table>';
 		$('#distWiseDivId').html(str);
-		
 		$("#distTable").dataTable({"aaSorting": [[ 1, "desc" ]],
 		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
+		$("#distTable").removeClass('dataTable');
 	}
 	function buildConstData(results){
 		
@@ -1052,6 +1068,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			str+='<th>INVITED</th>';
 			str+='<th>ATTENDED</th>';
 			str+='<th>INVITEES ATTENDED</th>';
+			str+='<th>INVITEES ATTENDED PERCENTAGE</th>';
 			str+='<th>NON INVITEES ATTENDED</th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -1075,6 +1092,12 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				}else{
 					str+='<td>'+results[i].locValue+'</td>';
 				}
+				if(results[i].percentage==null){
+					str+='<td>0.00</td>';
+				}else{
+					str+='<td>'+results[i].percentage+'</td>';
+				}
+				
 				if(results[i].totalCount==0){
 					str+='<td> - </td>';
 				}else{
@@ -1086,8 +1109,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		str+='</tbody>';
 		str+='</table>';
 		$('#constWiseDivId').html(str);
+		
 		$("#constTable").dataTable({"aaSorting": [[ 1, "desc" ]],
 		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
+		$("#constTable").removeClass("dataTable");
 	}
 	
 	$(document).on('click', '.applyBtn', function(){
@@ -1122,9 +1147,11 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	$(".constDistRadio").click(function(){
 		if($(this).val()=="const"){
 			$("#constDivId").show();
+			$("#headingDiv").html("CONSTITUENCY ");
 			$("#distDivId").hide();
 		}else if($(this).val()=="dist"){
 			$("#constDivId").hide();
+			$("#headingDiv").html("DISTRICT ");
 			$("#distDivId").show();
 		}
 	});
