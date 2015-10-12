@@ -4789,7 +4789,7 @@ class TrainingCampService implements ITrainingCampService{
 		return returnVO;
 	}
 	
-	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId)
+	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId,Long batchId)
 	{
 		List<CadreDetailsVO> finalList=null;
 		try{
@@ -4798,7 +4798,7 @@ class TrainingCampService implements ITrainingCampService{
 			schedulesList = trainingCampScheduleDAO.getSchedulesByProgramAndCenter(programId, centerId);
 			
 			if(schedulesList != null && schedulesList.size() > 0){
-				finalList = getTdpCadreDetailsforASchedule(schedulesList);
+				finalList = getTdpCadreDetailsforASchedule(schedulesList,batchId);
 			}
 			
 		}catch(Exception e){
@@ -4807,13 +4807,13 @@ class TrainingCampService implements ITrainingCampService{
 		return finalList;
 	}
 	
-	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList){
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batch){
 		 
 		List<CadreDetailsVO> finalList=null;
 		try{
 			Map<Long,CadreDetailsVO> batchMap=new LinkedHashMap<Long,CadreDetailsVO>();
 			
-			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(schedulesList);
+			List<Object[]> cadreDetails= trainingCampBatchAttendeeDAO.getTdpCadreDetailsforASchedule(schedulesList,batch);
 			
 			List<Long> cadreIds=new ArrayList<Long>();
 			if(cadreDetails!=null && cadreDetails.size()>0){
@@ -5017,7 +5017,7 @@ class TrainingCampService implements ITrainingCampService{
 					 }
 				 }
 			 }
-			List<Object[]> achievements=trainingCampBatchAttendeeDAO.getAchievementsForCadreBySchedule(schedulesList);
+			List<Object[]> achievements=trainingCampBatchAttendeeDAO.getAchievementsForCadreBySchedule(schedulesList,batch);
 			if(achievements!=null && achievements.size()>0){
 				for(Object[] param:achievements){//bid,bcode,cid,ach
 					
@@ -5030,7 +5030,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 			}
-			List<Object[]> goals=trainingCampBatchAttendeeDAO.getGoalsForCadreBySchedule(schedulesList);
+			List<Object[]> goals=trainingCampBatchAttendeeDAO.getGoalsForCadreBySchedule(schedulesList,batch);
 			if(goals!=null && goals.size()>0){
 				for(Object[] param:goals){//bid,bcode,cid,ach
 					
@@ -7561,7 +7561,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		public List<IdNameVO> getBatchesForCentre(Long programId,Long campId){
 			
-			List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
+			List<IdNameVO> idNameList = new LinkedList<IdNameVO>();
 			try{
 				List<Object[]> details= trainingCampBatchDAO.getBatchesInfoByProgramAndCamp(programId, campId);
 				if(details !=null && details.size()>0){
@@ -7973,5 +7973,78 @@ class TrainingCampService implements ITrainingCampService{
 				LOG.error("Exception raised at TODO: handle exception",e);
 			}
 			return voList;
+		}
+		
+		public SimpleVO getDayWiseAttendnenceForBatch(Long batchId){
+			
+    		SimpleVO simpleVO=new SimpleVO();
+			try{ 
+				SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				//Confirmed Count.
+				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null);
+				 //total count attended.
+				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null);
+				 String perc=null;
+				 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
+					 float percentage = (totalBatchCount * 100/(float)confirmedCount);
+					 perc=String.format("%.2f", percentage);
+				 }
+				 
+				 //preinstantiate.
+				  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null);
+				  Date fromDate=null;
+				  Date toDate=null;
+				  if(batchDates!=null){
+					  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+					  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+					  simpleVO.setBatchId(batchId);
+					  simpleVO.setBatchName(batchDates[2].toString());
+				  }
+				  List<Date> dates=getBetweenDates(fromDate,toDate);
+				  Map<Date,SimpleVO> finalMap=new LinkedHashMap<Date,SimpleVO>();
+				  if(dates!=null && dates.size()>0){
+					  int count=1;
+					  for(Date date:dates){
+						  SimpleVO vo=new SimpleVO();
+						  vo.setDate(date);
+						  vo.setDateString(sdf.format(date));
+						  vo.setName("Day "+count);
+						  vo.setTotal(0l);//attended
+						  vo.setCount(confirmedCount);//absent
+						  finalMap.put(date,vo);
+						  count=count+1;
+					  }
+				  }
+				 
+				 //date wise counts.
+				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);//san
+				 
+				 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
+					 
+					 for(Object[] obj: dateWiseCounts){
+						 if(obj[0]!=null){
+							SimpleVO vo= finalMap.get((Date)obj[0]);
+							if(vo!=null){
+								vo.setTotal(obj[1]!=null?(Long)obj[1]:0l);//attended.
+								vo.setCount(confirmedCount-vo.getTotal());//absent.
+							}
+						 }
+					 }
+				 }
+				 
+			 simpleVO.setTotal(confirmedCount);//confirmed people	
+			 simpleVO.setCount(totalBatchCount);//total attended.
+			 simpleVO.setDateString(perc);
+			//converting.
+			 if(finalMap!=null && finalMap.size()>0){
+				 simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
+			 } 
+			 
+			}catch(Exception e){
+				 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
+			}
+			
+			return simpleVO;
 		}
 }

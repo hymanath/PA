@@ -69,7 +69,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		return sqlQuery.list();
     }*/
 	
-    public List<Object[]> getTdpCadreDetailsforASchedule(List<Long> schedulesList){
+    public List<Object[]> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batchId){
 		
 		String query="" +
 		/*" select tcs.training_camp_schedule_id,tcb.training_camp_batch_id,tcb.training_camp_batch_code," +
@@ -107,36 +107,42 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
         " left join tdp_roles tr on tcr.tdp_roles_id=tr.tdp_roles_id " +
         " left join tdp_basic_committee tbc on tce.tdp_basic_committee_id=tbc.tdp_basic_committee_id " +
 
-   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014  and tcba.is_deleted = 'false' " +
+   " where  tcs.training_camp_schedule_id in (:schedulesList) and tc.is_deleted='N' and tc.enrollment_year=2014  and tcba.is_deleted = 'false'" +
+   " and tcba.training_camp_batch_id =:batchId " +
    " order by tcb.training_camp_batch_id asc,tc.first_name asc";
    
   		
 		Query sqlQuery=getSession().createSQLQuery(query);
 		sqlQuery.setParameterList("schedulesList", schedulesList);
+		sqlQuery.setParameter("batchId", batchId);
 		//sqlQuery.setParameter("scheduleId",scheduleId);
 		return sqlQuery.list();
     }
     
-	public List<Object[]> getAchievementsForCadreBySchedule(List<Long> schedulesList){
+	public List<Object[]> getAchievementsForCadreBySchedule(List<Long> schedulesList,Long batchId){
 		
 		Query query=getSession().createQuery("" +
 		" select model.trainingCampBatch.trainingCampBatchId,model.trainingCampBatch.trainingCampBatchCode,model.tdpCadreId," +
 		" model1.achievement " +
 		" from TrainingCampBatchAttendee model,TrainingCampCadreAchievement model1" +
 		" where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId=model1.trainingCampBatchId and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 " +
-		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false' ");
+		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false' " +
+		" and model.trainingCampBatchId = :batchId ");
 		query.setParameterList("schedulesList", schedulesList);
+		query.setParameter("batchId", batchId);
 		return query.list();
 	}
-   public List<Object[]> getGoalsForCadreBySchedule(List<Long> schedulesList){
+   public List<Object[]> getGoalsForCadreBySchedule(List<Long> schedulesList,Long batchId){
 		
 		Query query=getSession().createQuery("" +
 		" select model.trainingCampBatch.trainingCampBatchId,model.trainingCampBatch.trainingCampBatchCode,model.tdpCadreId," +
 		" model1.goal " +
 		" from TrainingCampBatchAttendee model,TrainingCampCadreGoal model1" +
 		" where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId=model1.trainingCampBatchId and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 " +
-		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false' ");
+		" and model.trainingCampBatch.trainingCampSchedule.trainingCampScheduleId in (:schedulesList) and model.isDeleted = 'false'" +
+		" and model.trainingCampBatchId = :batchId ");
 		query.setParameterList("schedulesList", schedulesList);
+		query.setParameter("batchId", batchId);
 		return query.list();
 	}
    

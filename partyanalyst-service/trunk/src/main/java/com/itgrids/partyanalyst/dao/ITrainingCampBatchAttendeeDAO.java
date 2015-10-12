@@ -11,9 +11,9 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	
 	public List<Object[]> getBatchWiseProgramWiseAcceptedMemeberDetails(String searchType, Date startDate, Date endDate);
     
-	public List<Object[]> getTdpCadreDetailsforASchedule(List<Long> schedulesList);
-	public List<Object[]> getAchievementsForCadreBySchedule(List<Long> schedulesList);
-	public List<Object[]> getGoalsForCadreBySchedule(List<Long> schedulesList);
+	public List<Object[]> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batchId);
+	public List<Object[]> getAchievementsForCadreBySchedule(List<Long> schedulesList,Long batchId);
+	public List<Object[]> getGoalsForCadreBySchedule(List<Long> schedulesList,Long batchId);
 	
 	public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId);
 	
