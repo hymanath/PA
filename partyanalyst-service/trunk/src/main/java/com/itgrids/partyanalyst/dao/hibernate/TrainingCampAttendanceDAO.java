@@ -119,12 +119,21 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
  
  public List<Object[]> getCompletedCounts(List<Long> batchIds){
 		Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampBatchId, count(distinct model.attendance.tdpCadre.tdpCadreId) " +
-				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds)" +
+				" from TrainingCampAttendance model,TrainingCampBatchAttendee model1 " +
+				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) and model.attendance.tdpCadre.tdpCadreId=model1.tdpCadre.tdpCadreId " +
+				" and model1.isDeleted='false' " +
 				" group by model.trainingCampBatch.trainingCampBatchId ");
 		query.setParameterList("batchIds", batchIds);
 		return query.list();
  }
+ 
+ public List<Object[]> getCompletedCountDetails(List<Long> batchIds){
+		Query query = getSession().createQuery(" select distinct model.trainingCampBatch.trainingCampBatchId, model.attendance.tdpCadre.tdpCadreId " +
+				" from TrainingCampAttendance model " +
+				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) ");
+		query.setParameterList("batchIds", batchIds);
+		return (List<Object[]>)query.list();
+}
  
   public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate){
 	 
@@ -133,7 +142,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  query.setParameter("fromDate", fromDate);
 		  query.setParameter("toDate", toDate);
 	  }
-	  query.setParameter("currDate", currDate);
+	  //query.setParameter("currDate", currDate);
 	  if(batchId==null && campId==null && programId!=null ){
 		 query.setParameter("programId",programId);
 	  }
@@ -275,5 +284,23 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 
 	 return query.list();
  }
+ 
+ public List<Long> getCompletedCountsForADay(Long batchId,Date dates){
+		Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId,model.insertedTime  " +
+				" from TrainingCampAttendance model " +
+				" where model.trainingCampBatch.trainingCampBatchId=:batchId and date(model.insertedTime)=:dates ");
+		query.setParameter("batchId", batchId);
+		query.setParameter("dates", dates);
+		return (List<Long>)query.list();
+}
+ 
+ public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates){
+		Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.insertedTime)  " +
+				" from TrainingCampAttendance model " +
+				" where model.trainingCampBatch.trainingCampBatchId=:batchId and date(model.insertedTime) in (:dates) ");
+		query.setParameter("batchId", batchId);
+		query.setParameterList("dates", dates);
+		return query.list();
+}
   
 }

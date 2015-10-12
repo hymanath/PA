@@ -170,6 +170,15 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
    }
+   
+   public List<Object[]> getRunningUpcomingCountDetails(List<Long> batchIds){
+	   Query query = getSession().createQuery(" select model.trainingCampBatchId, model.tdpCadreId " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' ");
+	   query.setParameterList("batchIds", batchIds);
+	   return (List<Object[]>)query.list();
+   }
+   
    public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate){
 	   
 	   StringBuilder sb=new StringBuilder();
@@ -220,6 +229,14 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		   query.setParameter("scheduleId",scheduleId);	   
 	 
 	   return query.list();
+   }
+   
+   public List<Long> getRunningUpcomingAttendeeCounts(Long batchId){
+	   Query query = getSession().createQuery(" select distinct model.tdpCadreId " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatchId=:batchId and model.isDeleted = 'false' ");
+	   query.setParameter("batchId", batchId);
+	   return (List<Long>)query.list();
    }
    
 }
