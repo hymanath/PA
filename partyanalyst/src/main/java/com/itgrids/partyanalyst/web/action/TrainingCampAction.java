@@ -2067,7 +2067,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 			String temp[] = selDate.split("-");
 			if(temp.length>1){
-				idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[0].trim(),temp[1].trim(),0l);
+				idNameList = trainingCampService.getAttendedCountForBatchesByLocation(temp[0].trim(),temp[1].trim(),1l);
 			}else{
 				idNameList = trainingCampService.getAttendedCountForBatchesByLocation(null,null,0l);
 			}
@@ -2088,7 +2088,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String temp[] = selDate.split("-");
 			
 			if(temp.length>1){
-				simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[0].trim(),temp[1].trim(),0l);
+				simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(temp[0].trim(),temp[1].trim(),1l);
 			}else{
 				simpleVO = trainingCampService.getInvitedAttendedCadreCountByBatchIds(null,null,0l);
 			}
@@ -2125,7 +2125,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String temp[] = selDate.split("-");
 			
 			if(temp.length>1){
-				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),0l,"All");
+				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),1l,"All");
 			}else{
 				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(null,null,0l,"All");
 			}
@@ -2351,4 +2351,24 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
     
+    public String getDayWiseCountsForRunningBatches(){
+    	try {
+			LOG.info("Entered into getDayWiseCountsForRunningBatches");
+			jObj=new JSONObject(getTask());
+			
+			String selDate = jObj.getString("selectedDate");
+			
+			String temp[] = selDate.split("-");
+			
+			if(temp.length>1){
+				trainingCampService.getDayWiseCountsForRunningBatches(null,null);
+			}else{
+				trainingCampService.getDayWiseCountsForRunningBatches(temp[0].trim(),temp[1].trim(),1l);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDayWiseCountsForRunningBatches", e);
+		}
+    	return Action.SUCCESS;
+    }
 }
