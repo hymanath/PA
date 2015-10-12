@@ -6429,6 +6429,10 @@ class TrainingCampService implements ITrainingCampService{
 				
 				if(obj[0]!=null){
 					SimpleVO vo=map.get((Long)obj[0]);
+					if(vo.getTotal()!=null && vo.getTotal()>0l && obj[2]!=null){
+						float percentage = ((Long)obj[2] * 100/(float)vo.getTotal());
+						vo.setPercentage(String.format("%.2f", percentage));
+					}
 					vo.setLocValue(obj[2]!=null?(Long)obj[2]:0l);
 				}
 			}
