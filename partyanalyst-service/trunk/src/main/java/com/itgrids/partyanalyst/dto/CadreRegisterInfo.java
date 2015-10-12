@@ -65,9 +65,18 @@ public class CadreRegisterInfo implements Serializable{
 	private Long overAllRegCount;
 	private Long ghmcTabCount;
 	private Long ghmcWebCount;
+	private Long vzwPartyCount;
 	
 	
 	
+	public Long getVzwPartyCount() {
+		return vzwPartyCount;
+	}
+
+	public void setVzwPartyCount(Long vzwPartyCount) {
+		this.vzwPartyCount = vzwPartyCount;
+	}
+
 	public Long getOverAllRegCount() {
 		return overAllRegCount;
 	}
