@@ -10926,5 +10926,11 @@
 		</result>
 	</action>
 	
+	<action name="getDayWiseCountsForRunningBatchesAction" class="trainingCampAction" method="getDayWiseCountsForRunningBatches">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
