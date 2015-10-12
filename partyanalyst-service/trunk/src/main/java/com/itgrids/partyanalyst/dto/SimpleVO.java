@@ -25,6 +25,7 @@ public class SimpleVO implements java.io.Serializable{
    private String progName="";
    private String campName="";
    private String batchName="";
+   private Long batchId=0l;
    private Long locValue;
    private String remarks;
    
@@ -33,9 +34,60 @@ public class SimpleVO implements java.io.Serializable{
    private Long totalInviteeCount=0l;
    private Long totalAttendedCount = 0l;
    private Long totalAbsentCount =0l;
+   private List<Long> cadreIds;
+   private SimpleVO simpleVO1;
    
   
+   private Long day1Count;
+   private Long day2Count;
+   private Long day3Count;
    
+   private String centerName;
+	
+   
+   
+	public String getCenterName() {
+	return centerName;
+}
+public void setCenterName(String centerName) {
+	this.centerName = centerName;
+}
+	public Long getDay1Count() {
+	return day1Count;
+}
+public void setDay1Count(Long day1Count) {
+	this.day1Count = day1Count;
+}
+public Long getDay2Count() {
+	return day2Count;
+}
+public void setDay2Count(Long day2Count) {
+	this.day2Count = day2Count;
+}
+public Long getDay3Count() {
+	return day3Count;
+}
+public void setDay3Count(Long day3Count) {
+	this.day3Count = day3Count;
+}
+	public SimpleVO getSimpleVO1() {
+	return simpleVO1;
+}
+public void setSimpleVO1(SimpleVO simpleVO1) {
+	this.simpleVO1 = simpleVO1;
+}
+	public List<Long> getCadreIds() {
+	return cadreIds;
+}
+public void setCadreIds(List<Long> cadreIds) {
+	this.cadreIds = cadreIds;
+}
+	public Long getBatchId() {
+	return batchId;
+}
+public void setBatchId(Long batchId) {
+	this.batchId = batchId;
+}
 	public String getRemarks() {
 	return remarks;
 }

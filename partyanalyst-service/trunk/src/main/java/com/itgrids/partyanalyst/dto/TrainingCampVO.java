@@ -35,6 +35,8 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String endDateStr;
 	private Long locationTypeId;
 	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
+	private List<SimpleVO> simpleVoList = new ArrayList<SimpleVO>();
+	
 	
 	private Long schdlStatusId;
 	private String schdlStatus;
@@ -90,8 +92,36 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long invalidMobileNo;
 	private Long switchOffCount;
 	
+	private Long completedAttendenceNonIn;
+	private Long runningAttendenceNonIn;
+	private Long memberCountNonIn;
 	
 	
+	
+	public Long getMemberCountNonIn() {
+		return memberCountNonIn;
+	}
+	public void setMemberCountNonIn(Long memberCountNonIn) {
+		this.memberCountNonIn = memberCountNonIn;
+	}
+	public Long getCompletedAttendenceNonIn() {
+		return completedAttendenceNonIn;
+	}
+	public void setCompletedAttendenceNonIn(Long completedAttendenceNonIn) {
+		this.completedAttendenceNonIn = completedAttendenceNonIn;
+	}
+	public Long getRunningAttendenceNonIn() {
+		return runningAttendenceNonIn;
+	}
+	public void setRunningAttendenceNonIn(Long runningAttendenceNonIn) {
+		this.runningAttendenceNonIn = runningAttendenceNonIn;
+	}
+	public List<SimpleVO> getSimpleVoList() {
+		return simpleVoList;
+	}
+	public void setSimpleVoList(List<SimpleVO> simpleVoList) {
+		this.simpleVoList = simpleVoList;
+	}
 	public Long getMemberCountAttendee() {
 		return memberCountAttendee;
 	}
