@@ -283,7 +283,14 @@ header.eventsheader {
 						
                         <section>
                         	<div class="row">
-								
+								<div class="row col-md-12">
+									<div class="panel panel-default">
+                                    	<div class="panel-heading bg_d">
+									<input type="radio" name="distConst" class="constDistRadio" checked value="dist"><label>District</label>
+									<input type="radio" name="distConst" class="constDistRadio" value="const"><label>Constituency</label>
+									</div>
+									</div>
+								</div>
                             	<div class="col-md-12" id="distDivId">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
@@ -296,7 +303,7 @@ header.eventsheader {
                                     </div>
                                 	
                                 </div>
-                                <div class="col-md-12" id="constDivId">
+                                <div class="col-md-12" id="constDivId" style="display:none;">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
                                         	<h4 class="panel-title" style="font-weight:bold;">CONSTITUENCY WISE TOTAL MEMBERS PARTICIPATED</h4>
@@ -903,6 +910,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			dates=$("#selectDate").val();
 		}
 		
+		var jObj={
+			selectedDate : dates
+	     }
+		
 		$.ajax({
 		   type:'POST',
 		   url :'getDayWiseCountsForRunningBatchesAction.action',
@@ -925,20 +936,20 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
-				for(var i in result.completed.simpleVoList){
+				for(var i in result){
 					str+='<tr>';
-					str+='<td>'+result.completed.simpleVoList[i].centerName+'</td>';
-					str+='<td>'+result.completed.simpleVoList[i].batchName+'</td>';
-					for(var j in result.completed.simpleVoList[i].simpleVOList1){
-						if(result.completed.simpleVoList[i].simpleVOList1[j].total!=null){
-							str+='<td>'+result.completed.simpleVoList[i].simpleVOList1[j].total+'</td>'
+					str+='<td>'+result[i].centerName+'</td>';
+					str+='<td>'+result[i].batchName+'</td>';
+					for(var j in result[i].simpleVOList1){
+						if(result[i].simpleVOList1[j].total!=null){
+							str+='<td>'+result[i].simpleVOList1[j].total+'</td>'
 						}else{
 							str+='<td>0</td>'
 						}
 					}
-					str+='<td>'+result.completed.simpleVoList[i].day1Count+'</td>';
-					str+='<td>'+result.completed.simpleVoList[i].day2Count+'</td>';
-					str+='<td>'+result.completed.simpleVoList[i].day3Count+'</td>';
+					str+='<td>'+result[i].day1Count+'</td>';
+					str+='<td>'+result[i].day2Count+'</td>';
+					str+='<td>'+result[i].day3Count+'</td>';
 					str+='</tr>';
 				}
 				str+='</tbody>';
@@ -1106,6 +1117,16 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			dates="";
 		}
 		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'', '_blank');
+	});
+	
+	$(".constDistRadio").click(function(){
+		if($(this).val()=="const"){
+			$("#constDivId").show();
+			$("#distDivId").hide();
+		}else if($(this).val()=="dist"){
+			$("#constDivId").hide();
+			$("#distDivId").show();
+		}
 	});
 </script>
 </body>
