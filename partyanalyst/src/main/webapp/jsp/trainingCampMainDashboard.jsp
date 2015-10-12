@@ -146,12 +146,117 @@ color: red !important;
 								<div class="mandatory" id="batchSelErrDivId"></div>
 							</div>
 							<div class="col-md-2 m_top30">
-								<button  type="button" id="submitId" class="btn btn-success btn-xs text-bold" onclick="getFeedBackOrAttendanceDetails();">Submit</button>
+								<button  type="button" id="submitId" class="btn btn-success btn-sm btn-block text-bold" onclick="getFeedBackOrAttendanceDetails();">Submit</button>
 							</div>
-							<div class="col-md-2 m_top30" id="exportExcelDivId" style="display:none;">
-								<span class="btn btn-info 	excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
+							<div class="col-md-2 m_top30" id="exportExcelDivId" style="display:none; margin-left: 800px;">
+								<span class="btn btn-info 	excelId form-inline" onclick="exportToExcel()" display:inline-block;> Export To Excel </span>
 							</div>
 						</div>
+						<div id="checkBoxDiv" class="m_top20"  style="display:none">
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1">
+									<div class="col-md-2">
+										<label class="checkbox"><input type="checkbox" value="selectAll" id="selecctall">Select All</label>
+									</div>
+								</div>
+							</div>
+							<div style="" class="row">
+								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;">
+									<div class="">
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="isFamilyUpdated" checked="true" id="isFamilyUpdatedId" class="checkbox">IsFamily Updated</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="achievements" id="acheivementsId" class="checkbox">Achievements</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="goals" id="goalsId" class="checkbox">Goals</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="leaderShipLevel" id="leadershipLevelCheckId" class="checkbox">LeaderShip Level</label>
+										</div>
+										<div class="col-md-3">
+											<label class="checkbox"><input type="checkbox" value="communicationSkills" id="communicationSkillsCheckId" class="checkbox">Communication Skills</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="leaderShipSkills" id="leadershipSkillsCheckId" class="checkbox">LeaderShip Skills</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="health" id="healthCheckId" class="checkbox">Health</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="smartPhoneUsing" id="smartPhoneUsingId" class="checkbox">SmartPhone Using</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="whatsUpUsing" id="whatsupUsingId" class="checkbox">WhatsUp Using</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="whatsUpSharing" id="whatsupSharingId" class="checkbox">WhatsUp Sharing</label>
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="facebookKnown" id="facebookKnownId" class="checkbox">Facebook Known</label>
+										</div>
+								  </div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1">
+									<div class="col-md-4 col-md-offset-4 m_top10">
+										<button onclick="getFeedBackOrAttendanceDetails();" class="btn btn-success btn-block  text-bold" id="checkButtonId" type="button"> Get details </button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--<div class="m_top20" id="checkBoxDiv" style="display:none">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<label class="checkbox"><input id="selecctall" type="checkbox" value="selectAll">Select All</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="isFamilyUpdatedId" type="checkbox" checked="true" value="isFamilyUpdated">IsFamily Updated</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="acheivementsId" type="checkbox" value="achievements">Achievements</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="goalsId" type="checkbox" value="goals">Goals</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="leadershipLevelCheckId" type="checkbox" value="leaderShipLevel">LeaderShip Level</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="communicationSkillsCheckId" type="checkbox" value="communicationSkills">Communication Skills</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="leadershipSkillsCheckId" type="checkbox" value="leaderShipSkills">LeaderShip Skills</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="healthCheckId" type="checkbox" value="health">Health</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="smartPhoneUsingId" type="checkbox" value="smartPhoneUsing">SmartPhone Using</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="whatsupUsingId" type="checkbox" value="whatsUpUsing">WhatsUp Using</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="whatsupSharingId" type="checkbox" value="whatsUpSharing">WhatsUp Sharing</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input class="checkbox" id="facebookKnownId" type="checkbox" value="facebookKnown">Facebook Known</label>
+									</div>
+									<div class="col-md-2">
+										<button type="button" id="checkButtonId" class="btn btn-success btn-block btn-sm  text-bold" onclick="getFeedBackOrAttendanceDetails();"> Get details </button>
+									</div>
+								</div>
+								
+							</div>
+						</div>-->
 						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
                     	<div id="attendanceDiv" style="display:none"></div>
 						<div id="exportExcelAttendanceDiv" style="display:none"></div>
@@ -221,6 +326,20 @@ function exportToExcel()
 	 tableToExcel('exportExcelAttendanceTableId', 'Batch Attendence Details');
 }
    
+   $(document).ready(function() {
+    $('#selecctall').click(function(event) { 	//on click 
+        if(this.checked) { // check select status
+            $('.checkbox').each(function() { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"               
+            });
+        }else{
+            $('.checkbox').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+            });         
+        }
+    });
+    
+});
 	$(document).ready(function(){
     });
 
@@ -255,7 +374,7 @@ function exportToExcel()
 		  }
 		}
 		
-		function buildCadreDetails(results){
+		function buildCadreDetails(results,checkBoxArray){
 		   var str='';
 		   for(var i in results){
 		     str+='<div class="panel panel-default">'
@@ -270,8 +389,52 @@ function exportToExcel()
                       str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">'
                       str+='<thead>';
 					  str+='<th>Image</th>';
-                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th><th>IsFamilyUpdated</th><th>Achievements</th><th>Goals</th>'
-					  str+='<th>Leadership <br/>Level</th><th>Communication<br/> Skills</th> <th>Leadership Skills</th> <th>Health</th><th>SmartPhone Using</th><th>Whatsapp Using</th><th>Whatsapp Sharing</th><th>Facebook Known</th> <th>Update</th>';
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th>'
+					  if(checkBoxArray[0]){
+						str+='<th>IsFamilyUpdated</th>'
+					  }
+					  if(checkBoxArray[1]){
+						str+='<th>Achievements</th>'
+					  }
+					  if(checkBoxArray[2]){
+						str+='<th>Goals</th>'
+					  }
+					  if(checkBoxArray[3]){
+						str+='<th>Leadership <br/>Level</th>'
+					  }
+					  if(checkBoxArray[4]){
+						str+='<th>Communication<br/> Skills</th>'
+					  }
+					  if(checkBoxArray[5]){
+						str+='<th>Leadership Skills</th>'
+					  }
+					  if(checkBoxArray[6]){
+						str+='<th>Health</th>'
+					  }
+					  if(checkBoxArray[7]){
+						str+='<th>SmartPhone Using</th>'
+					  }
+					  if(checkBoxArray[8]){
+						str+='<th>Whatsapp Using</th>'
+					  }
+					  if(checkBoxArray[9]){
+						str+='<th>Whatsapp Sharing</th>'
+					  }
+					  if(checkBoxArray[10]){
+						str+='<th>Facebook Known</th>'
+					  }
+					  /*str+='<th>IsFamilyUpdated</th>'
+					  str+='<th>Achievements</th>'
+					  str+='<th>Goals</th>'
+					  str+='<th>Leadership <br/>Level</th>'
+					  str+='<th>Communication<br/> Skills</th>'
+					  str+='<th>Leadership Skills</th>'
+					  str+='<th>Health</th>'
+					  str+='<th>SmartPhone Using</th>'
+					  str+='<th>Whatsapp Using</th>'
+					  str+='<th>Whatsapp Sharing</th>'
+					  str+='<th>Facebook Known</th>'*/
+					  str+='<th>Update</th>';
                       str+='</thead>';                 
                       for(var j in results[i].subList){
 					   str+='<tr>';
@@ -303,7 +466,84 @@ function exportToExcel()
 					   }else{
 						   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>'
 					   }
-					   if(results[i].subList[j].familyUpdted=='Yes'){
+					   if(checkBoxArray[0]){
+						if(results[i].subList[j].familyUpdted=='Yes'){
+						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
+					   }else if(results[i].subList[j].familyUpdted=='No'){
+						  str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>' 
+					   }
+					  }
+					  if(checkBoxArray[1]){
+						if(results[i].subList[j].achievements){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[2]){
+						if(results[i].subList[j].goals){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[3]){
+						if(results[i].subList[j].leaderShipLevels){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipLvlsCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[4]){
+						if(results[i].subList[j].communicationSkills){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center communicationSklsCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[5]){
+						if(results[i].subList[j].leaderShipSkills){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipSklsCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[6]){
+						if(results[i].subList[j].health){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center healthCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[7]){
+						if(results[i].subList[j].smartphoneExist){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center smartphoneCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center smartphoneCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[8]){
+						if(results[i].subList[j].whatsappUsing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappUsingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappUsingCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[9]){
+						if(results[i].subList[j].whatsappSharing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappSharingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappSharingCls"></i></td>'
+					   }
+					  }
+					  if(checkBoxArray[10]){
+						if(results[i].subList[j].facebookUsing){
+					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center facebookUsingCls"></i></td>'
+					   }else{
+					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
+					   }
+					  }
+					  /* if(results[i].subList[j].familyUpdted=='Yes'){
 						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
 					   }else if(results[i].subList[j].familyUpdted=='No'){
 						  str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>' 
@@ -358,7 +598,7 @@ function exportToExcel()
 					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center facebookUsingCls"></i></td>'
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
-					   }
+					   }*/
 					   if(results[i].isFeedbackUpdatable=='Y')
 					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
                        else
@@ -1015,6 +1255,23 @@ function exportToExcel()
 		return;
 	  }
 	  
+	  $("#checkBoxDiv").show();
+	  var checkBoxArray;
+	  
+	  var isFamilyUpdated = document.getElementById("isFamilyUpdatedId").checked;
+	  var achievements = document.getElementById("acheivementsId").checked;
+	  var goals = document.getElementById("goalsId").checked;
+	  var leadershipLevel = document.getElementById("leadershipLevelCheckId").checked;
+	  var communicationSkills = document.getElementById("communicationSkillsCheckId").checked;
+	  var leadershipSkills = document.getElementById("leadershipSkillsCheckId").checked;
+	  var health = document.getElementById("healthCheckId").checked;
+	  var smartPhoneUsing = document.getElementById("smartPhoneUsingId").checked;
+	  var whatsupUsing = document.getElementById("whatsupUsingId").checked;
+	  var whatsupSharing = document.getElementById("whatsupSharingId").checked;
+	  var facebookKnown = document.getElementById("facebookKnownId").checked;
+	  
+	  checkBoxArray = [isFamilyUpdated,achievements,goals,leadershipLevel,communicationSkills,leadershipSkills,health,smartPhoneUsing,whatsupUsing,whatsupSharing,facebookKnown];
+	  
 	  $("#ajaxImage").show();
 	  $("#accordion").html('');
 	  	  
@@ -1030,7 +1287,7 @@ function exportToExcel()
 		data:{task:JSON.stringify(jsObj)},
 	 }).done(function(results){
 		 if(results!=null && results.length>0){
-		     buildCadreDetails(results);
+		     buildCadreDetails(results,checkBoxArray);
 		}else{
 			$("#ajaxImage").hide();
 			 $("#accordion").html("No Data Available...");
@@ -1322,6 +1579,8 @@ function refreshDetails()
 	$("#programSelErrDivId").html('');
 	$("#centerSelErrDivId").html('');
 	$("#batchSelErrDivId").html('');
+	$("#checkBoxDiv").hide();
+	
 	
 	$('#batchId').find('option').remove();
 	$('#batchId').append('<option value="0">Select Batch</option>');
