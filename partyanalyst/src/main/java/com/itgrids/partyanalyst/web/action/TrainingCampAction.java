@@ -1989,8 +1989,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		jObj = new JSONObject(getTask());
     		Long programId = jObj.getLong("programId");
     		Long centerId = jObj.getLong("centerId");
+    		Long batchId = jObj.getLong("batchId");
     		
-    		finalList = trainingCampService.getSchedulesListByProgramAndCenter(programId,centerId);
+    		finalList = trainingCampService.getSchedulesListByProgramAndCenter(programId,centerId,batchId);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAllBatchesByProgramAndCenter() method, Exception - ",e);
@@ -2371,4 +2372,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS;
     }
+    
+    public String getDayWiseAttendnenceForBatch(){
+    	try {
+			LOG.info("Entered into getDayWiseAttendnenceForBatch");
+			jObj=new JSONObject(getTask());
+			
+			Long selDate = jObj.getLong("batchId");
+			
+			simpleVO=trainingCampService.getDayWiseAttendnenceForBatch(selDate);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDayWiseAttendnenceForBatch", e);
+		}
+    	return Action.SUCCESS;
+    }
+    
 }
