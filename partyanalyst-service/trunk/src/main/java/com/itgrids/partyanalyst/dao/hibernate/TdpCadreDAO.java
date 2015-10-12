@@ -1491,7 +1491,7 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		queryStr.append(" and  model.userAddress.constituency.constituencyId in(:constiIds)");
 		if(districtIds != null && districtIds.size() > 0)
 		queryStr.append(" and  model.userAddress.district.districtId in(:districtIds)");
-		queryStr.append(" and (model.insertedWebUser.userId !=3930 or model.insertedWebUser.userId is null) ");
+		queryStr.append(" and (model.insertedWebUser.userId not in (3930,7394) or model.insertedWebUser.userId is null) ");
 		queryStr.append(" group by model.userAddress.district.districtId,model.dataSourceType ");	
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null){
@@ -1508,7 +1508,7 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 	}
 	public List<Object[]> getRegisterCadreInfoForUserBetweenDates1(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.dataSourceType from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.dataSourceType,model.insertedWebUser.userId from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
 		
 		if(fromDate != null){
 			queryStr.append(" and date(model.surveyTime) >=:fromDate ");
@@ -1521,8 +1521,8 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		queryStr.append(" and  model.userAddress.constituency.constituencyId in(:constiIds)");
 		if(districtIds != null && districtIds.size() > 0)
 		queryStr.append(" and  model.userAddress.district.districtId in(:districtIds)");
-		queryStr.append(" and model.insertedWebUser.userId = 3930 ");
-		queryStr.append(" group by model.userAddress.district.districtId,model.dataSourceType ");	
+		queryStr.append(" and model.insertedWebUser.userId in (3930,7394) ");
+		queryStr.append(" group by model.userAddress.district.districtId,model.dataSourceType,model.insertedWebUser.userId ");	
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null){
 		   query.setDate("fromDate", fromDate);

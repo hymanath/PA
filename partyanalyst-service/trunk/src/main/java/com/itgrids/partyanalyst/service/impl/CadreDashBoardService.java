@@ -307,6 +307,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		info.setTotalCount(0l);
 		info.setApPartyWebCount(0l);
 		info.setTgPartyWebCount(0l);
+		info.setVzwPartyCount(0l);
 	     
 	     //CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
 	     
@@ -336,6 +337,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long tgTabCount = 0l;
 		Long apOnlineCount = 0l;
 		Long tgOnlineCount = 0l;
+		Long vzwPartyCount = 0l;
 		List<Object[]> districtWiseCount = null;
 		List<Object[]> districtWiseCount1 = null;
 		try{
@@ -366,8 +368,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			    for(Object[] districtCnt:districtWiseCount1){
 				if(((Long)districtCnt[1]).longValue() > 10l){
 					apCount = apCount+(Long)districtCnt[0];
-					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB"))
+					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB") && (Long)districtCnt[3] == 3930)
 						apPartyWebCount = apPartyWebCount +  (Long)districtCnt[0];
+					else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB") && (Long)districtCnt[3] == 7394)
+						vzwPartyCount = vzwPartyCount +  (Long)districtCnt[0];
 					/*else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("TAB"))
 					apTabCount = apTabCount + 	 (Long)districtCnt[0];
 					else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("ONLINE"))
@@ -375,8 +379,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					
 				}else{
 					tgCount = tgCount+(Long)districtCnt[0];	
-					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB"))
+					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB") && (Long)districtCnt[3] == 3930)
 						tgPartyWebCount = tgPartyWebCount +  (Long)districtCnt[0];
+					else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB") && (Long)districtCnt[3] == 7394)
+						vzwPartyCount = vzwPartyCount +  (Long)districtCnt[0];
 						/*else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("TAB"))
 						tgTabCount = tgTabCount + 	 (Long)districtCnt[0];
 						else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("ONLINE"))
@@ -397,6 +403,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		info.setTotalCount(apCount+tgCount);
 		info.setApPartyWebCount(apPartyWebCount);
 		info.setTgPartyWebCount(tgPartyWebCount);
+		info.setVzwPartyCount(vzwPartyCount);
 		return info;
 	}
 	 
