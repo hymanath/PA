@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.codehaus.jackson.map.ser.StdSerializers.UtilDateSerializer;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch, Long> implements ITrainingCampBatchDAO{
 
@@ -204,10 +206,15 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 	}
 	public List<Object[]> getBatchesInfoByProgramAndCamp(Long programId,Long campId){
 		
+		Date presentDate=new DateUtilService().getCurrentDateAndTime();
+		
+		
 		Query query = getSession().createQuery("select model.trainingCampBatchId,model.trainingCampBatchName " +
 				" from TrainingCampBatch model " +
 				" where model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId" +
-				" and  model.trainingCampSchedule.trainingCamp.trainingCampId =:campId and model.isCancelled = 'false' "); 
+				" and  model.trainingCampSchedule.trainingCamp.trainingCampId =:campId and model.isCancelled = 'false' " +
+				" and date(model.fromDate) <= '"+presentDate+"' " +
+				" order by date(model.fromDate) desc "); 
 		
 		query.setParameter("programId",programId);
 		query.setParameter("campId",campId);
