@@ -2361,7 +2361,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String temp[] = selDate.split("-");
 			
 			if(temp.length>1){
-				trainingCampService.getDayWiseCountsForRunningBatches(null,null);
+				trainingCampService.getDayWiseCountsForRunningBatches(null,null,1l);
 			}else{
 				trainingCampService.getDayWiseCountsForRunningBatches(temp[0].trim(),temp[1].trim(),1l);
 			}
