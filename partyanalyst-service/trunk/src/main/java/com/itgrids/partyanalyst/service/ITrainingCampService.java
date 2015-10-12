@@ -108,4 +108,5 @@ public interface ITrainingCampService {
 	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
 	public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId);
 	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
+	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
 }
