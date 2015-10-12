@@ -10932,5 +10932,11 @@
 		</result>
 	</action>
 	
+	<action name="getDayWiseAttendnenceForBatchAction" class="trainingCampAction" method="getDayWiseAttendnenceForBatch">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVO</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      

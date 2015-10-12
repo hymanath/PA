@@ -137,7 +137,7 @@ color: red !important;
 								</select>
 								<div class="mandatory" id="centerSelErrDivId"></div>
 							</div>
-							<div class="col-md-3" id="batchDisplayDiv" style="display:none">
+							<div class="col-md-3" id="batchDisplayDiv">
 								<label>Batch</label>
 								<div id="batchSelDivId"></div>
 								<select class="form-control" id="batchId">
@@ -258,6 +258,7 @@ color: red !important;
 							</div>
 						</div>-->
 						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
+						<div id="dayWiseAttendDivId" style="display:none;margin-top:10px;"></div>
                     	<div id="attendanceDiv" style="display:none"></div>
 						<div id="exportExcelAttendanceDiv" style="display:none"></div>
 						<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
@@ -1242,9 +1243,11 @@ function exportToExcel()
    {
 	  $("#programSelErrDivId").html('');
 	  $("#centerSelErrDivId").html('');
+	  $("#batchSelErrDivId").html('');
 	  
 	  var programId = $("#programId").val();
 	  var centerId = $("#centerId").val();
+	  var batchId  = $("#batchId").val();
 	  
 	  if(programId == 0){
 		$("#programSelErrDivId").html("Please Select Any Program");
@@ -1254,6 +1257,10 @@ function exportToExcel()
 		$("#centerSelErrDivId").html("Please Select Any Center");
 		return;
 	  }
+		if(batchId == 0){
+				$("#batchSelErrDivId").html("Please Select Any Batch");
+				return;
+		}
 	  
 	  $("#checkBoxDiv").show();
 	  var checkBoxArray;
@@ -1278,7 +1285,8 @@ function exportToExcel()
 	  var jsObj=
 	  {
 		 programId:programId,
-		 centerId:centerId
+		 centerId:centerId,
+		 batchId:batchId
 	  }
 	  
 	 $.ajax({
@@ -1560,6 +1568,7 @@ function getFeedBackOrAttendanceDetails()
 	$("#exportExcelDivId").hide();
 	var val = $('input:radio[name=radio]:checked').val();
 	
+	getDayWiseAttendnenceForBatch();
 	if(val == "feedback"){
 		getBatchesByProgramAndCenter();
 	}
@@ -1570,11 +1579,14 @@ function getFeedBackOrAttendanceDetails()
 	
 	
 }
+</script>
+<script>
 
 function refreshDetails()
 {
 	$("#exportExcelDivId").hide();
 	$("#attendanceDiv").html('');
+	$("#dayWiseAttendDivId").html("");
 	$("#accordion").html('');
 	$("#programSelErrDivId").html('');
 	$("#centerSelErrDivId").html('');
@@ -1582,19 +1594,94 @@ function refreshDetails()
 	$("#checkBoxDiv").hide();
 	
 	
-	$('#batchId').find('option').remove();
-	$('#batchId').append('<option value="0">Select Batch</option>');
+//	$('#batchId').find('option').remove();
+//	$('#batchId').append('<option value="0">Select Batch</option>');
 	
+	$('#batchId').val('0');
 	$('#centerId').val('0');
+	$('#programId').val('0');
 	
 	var val = $('input:radio[name=radio]:checked').val();
-	if(val == "feedback"){
+	/*if(val == "feedback"){
 		$("#batchDisplayDiv").hide();
 	}
 	if(val == "attendance"){
 		$("#batchDisplayDiv").show();
-	}
+	} */
 	
+	
+}
+
+function getDayWiseAttendnenceForBatch(){
+	 var batchId  = $("#batchId").val();
+	  var center  =	$("#centerId option:selected").text();
+	 
+	   $("#dayWiseAttendDivId").html('');
+	   $("#dayWiseAttendDivId").show();
+	 
+	 var jsObj={
+		 batchId : batchId
+	 }
+	  $.ajax({
+		    type:'POST',
+		    url :'getDayWiseAttendnenceForBatchAction.action',
+		    data:{task:JSON.stringify(jsObj)},
+	      }).done(function(result){
+			  if(result !=null){
+				  buildDayWiseAttendnenceForBatch(result,center);
+			  }
+		  });
+}
+function buildDayWiseAttendnenceForBatch(result,center){
+	if(result!=null){
+				var str='';
+				str+='<table class="table table-bordered">';
+				str+='<thead class="bg_d">';
+				str+='<tr>';
+				str+='<th>Center</th>';
+				str+='<th>Batch</th>';
+				str+='<th>Day 1 Count</th>';
+				str+='<th>Day 2 Count</th>';
+				str+='<th>Day 3 Count</th>';
+				str+='<th>1 Day Attended Cadres</th>';
+				str+='<th>2 Days Attended Cadres</th>';
+				str+='<th>3 Days Attended Cadres</th>';
+				str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+					str+='<td>'+center+'</td>';
+					str+='<td>'+result.batchName+'</td>';
+					for(var j in result.simpleVOList1){
+						if(result.simpleVOList1[j].total!=null){
+							str+='<td>'+result.simpleVOList1[j].total+'</td>'
+						}else{
+							str+='<td>0</td>'
+						}
+					}
+					if(result.day1Count !=null){
+						str+='<td>'+result.day1Count+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					if(result.day1Count !=null){
+						str+='<td>'+result.day2Count+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}if(result.day1Count !=null){
+						str+='<td>'+result.day3Count+'</td>';
+					}else{
+						str+='<td>0</td>';
+					}
+					
+					str+='</tr>';
+				
+				str+='</tbody>';
+				str+='</table>';
+				$("#dayWiseAttendDivId").html(str);
+			}else{
+				$("#dayWiseAttendDivId").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
+			}
 }
 	  
 	</script>
