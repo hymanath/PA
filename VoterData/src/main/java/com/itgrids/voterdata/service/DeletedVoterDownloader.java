@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -20,7 +21,7 @@ public class DeletedVoterDownloader {
     public static void main(String args[]) throws InterruptedException, Exception 
     {
     	
-    	downloadData("I","D:\\Kamal\\46-Expired.txt",46,5,6);
+    	downloadData("E","D:\\Kamal\\46-Expired.txt",46,5,70);
     	//constituency_no,district_no,page_index
     	
     	/*int i = 40;
@@ -81,10 +82,31 @@ public class DeletedVoterDownloader {
         WebElement submit = driver.findElement(By.id("Button1"));
         submit.click();
         
+        //((JavascriptExecutor)driver).executeScript("__doPostBack('GridView1','Page$30')",new Object[]{});
+        
         if(index == 1)
         	getTableData(driver,outwriter,index,true);
         else
-        	getTableData(driver,outwriter,index-1,false);
+        {
+        	int k = 10;
+        	for(;;k=k+10)
+        	{
+        		if(index <= k)
+        		{
+        			getTableData(driver,outwriter,index-1,false);
+        			break;
+        		}
+        		else
+        		{
+        			int l = k+1;
+        			((JavascriptExecutor)driver).executeScript("__doPostBack('GridView1','Page$"+l+"')",new Object[]{});
+        		}
+        	}
+        		
+        	
+        	
+        }
+        	
         
         outwriter.close();
         
