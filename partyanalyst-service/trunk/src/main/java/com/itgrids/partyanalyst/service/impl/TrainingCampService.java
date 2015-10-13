@@ -4975,6 +4975,7 @@ class TrainingCampService implements ITrainingCampService{
 					 cadreVO.setCommunicationSkills(obj[10]!=null?true:false);
 					 cadreVO.setLeaderShipSkills(obj[11]!=null?true:false);
 					 cadreVO.setHealth(obj[12]!=null?true:false);
+					 cadreVO.setHealthCardImage(obj[24] !=null ? obj[24].toString():"");
 					 
 					 //TDP COMMITTEE ROLE AND POSITION.
 					 cadreVO.setCommitteeLevel(obj[14] != null ? obj[14].toString():"");//ex:village committee,district committee.

@@ -213,11 +213,12 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 				" from TrainingCampBatch model " +
 				" where model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId" +
 				" and  model.trainingCampSchedule.trainingCamp.trainingCampId =:campId and model.isCancelled = 'false' " +
-				" and date(model.fromDate) <= '"+presentDate+"' " +
+				" and date(model.fromDate) <= :presentDate " +
 				" order by date(model.fromDate) desc "); 
 		
 		query.setParameter("programId",programId);
 		query.setParameter("campId",campId);
+		query.setParameter("presentDate",presentDate);
 		return query.list();
 	}
 	
