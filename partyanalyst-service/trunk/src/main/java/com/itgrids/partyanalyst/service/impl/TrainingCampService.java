@@ -5677,7 +5677,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			if(runningBatches.size()>0){
 				setProgramInformation(finalMap,runningBatches,"completed","running");
-				setBatchesCountForProgWise(finalMap,runningMembersCounts,runningMembersCountsattendence,nonInvitesCountCompleted,"running");
+				setBatchesCountForProgWise(finalMap,runningMembersCounts,runningMembersCountsattendence,nonInvitesCountRunning,"running");
 			}
 			if(upComingBatches.size()>0){
 				setProgramInformation(finalMap,upComingBatches,"completed","upcoming");
@@ -5794,7 +5794,7 @@ class TrainingCampService implements ITrainingCampService{
 					  }
 					 
 					 //date wise counts.
-					 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);//san
+					 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
 					 
 					 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 						 
@@ -6495,7 +6495,7 @@ class TrainingCampService implements ITrainingCampService{
    *   output: CadreFeedbackVO
    *   
   */
-   public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromDateString,String toDateStrng){
+   public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromDateString,String toDateStrng,String callFrom){
 		
 		CadreFeedbackVO finalVO=new CadreFeedbackVO();
 		try{
@@ -6528,17 +6528,17 @@ class TrainingCampService implements ITrainingCampService{
 				putSubMapDetails(finalVO.getMap(),hsData,"healthStatus");
 			}
 			
-			String queryString=getQueryforFeedbacks(programId,campId,batchId,fromDate,toDate);
-			String achieveQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"achieve",fromDate,toDate);
-			String goalQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"goal",fromDate,toDate);
+			String queryString=getQueryforFeedbacks(programId,campId,batchId,fromDate,toDate,callFrom);
+			String achieveQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"achieve",fromDate,toDate,callFrom);
+			String goalQuery=getQueryforAchieveOrGoal(programId,campId,batchId,"goal",fromDate,toDate,callFrom);
 			
-			Long achievementCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(achieveQuery,programId,campId,batchId,fromDate,toDate);
-			Long goalsCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(goalQuery,programId,campId,batchId,fromDate,toDate);
+			Long achievementCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(achieveQuery,programId,campId,batchId,fromDate,toDate,callFrom);
+			Long goalsCount=trainingCampCadreFeedbackDetailsDAO.getattendedcount1(goalQuery,programId,campId,batchId,fromDate,toDate,callFrom);
 			finalVO.setAchievementCount(achievementCount!=null?achievementCount:0l); 
 			finalVO.setGaoalCount(goalsCount!=null?goalsCount:0l);
 			
 			
-         List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId,fromDate,toDate);
+         List<Object[]> feedBacks=trainingCampCadreFeedbackDetailsDAO.getattendedcount(queryString,programId,campId,batchId,fromDate,toDate,callFrom);
          if(feedBacks!=null && feedBacks.size()>0){
 				for(Object[] obj:feedBacks){
 					
@@ -6728,7 +6728,7 @@ class TrainingCampService implements ITrainingCampService{
 				mainMap.get(type).getSubMap().put((Long)obj[0],vo);
 			}
 	 }
-	  public String getQueryforFeedbacks(Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+	  public String getQueryforFeedbacks(Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String type){
 			String queryString=null;
 			StringBuilder sbM=new StringBuilder();
 			try{
@@ -6751,7 +6751,17 @@ class TrainingCampService implements ITrainingCampService{
 				if(fromDate!=null && toDate!=null){
 					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) >= :fromDate and date(tccfd.trainingCampBatch.toDate) <= :toDate ");
 				}
-				           
+				
+				if(type.equalsIgnoreCase("c")){
+					sbM.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+				}
+				else if(type.equalsIgnoreCase("r")){
+					sbM.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+				}
+				else if(type.equalsIgnoreCase("u")){
+					sbM.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+				}
+				
 	           if(batchId==null && campId==null && programId!=null){
 					
 					sbM.append(" and tca.trainingCampProgramId=:programId");
@@ -6779,7 +6789,7 @@ class TrainingCampService implements ITrainingCampService{
 			return queryString;
 		}
 	  
-		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type,Date fromDate,Date toDate){
+		public String getQueryforAchieveOrGoal(Long programId,Long campId,Long batchId,String type,Date fromDate,Date toDate,String callFrom){
 			String queryString=null;
 			StringBuilder sbM=new StringBuilder();
 			try{
@@ -6797,6 +6807,16 @@ class TrainingCampService implements ITrainingCampService{
 					sbM.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
 				}
 				           
+				if(callFrom.equalsIgnoreCase("c")){
+					sbM.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+				}
+				else if(callFrom.equalsIgnoreCase("r")){
+					sbM.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+				}
+				else if(callFrom.equalsIgnoreCase("u")){
+					sbM.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+				}
+				
 	           if(batchId==null && campId==null && programId!=null){
 					sbM.append(" and tca.trainingCampProgramId=:programId");
 				}else if(batchId==null && campId!=null){
@@ -7172,9 +7192,43 @@ class TrainingCampService implements ITrainingCampService{
 	   *   inputs: batchId
 	   *   Return:SimpleVO 
 	   *   
+	   *   modified by: sandeep
+	   *   Description:this function will return the attendece for btach/camp/program and aompleted/running/upcoming
+	   *   inputs:batchid,campid,programid,dates
+	   *   return:List<SimpleVO>
+	   *   
 	  */
-		public SimpleVO getAttendedCountSummaryByBatch(Long batchId,String fromDateString,String toDateString){
-			SimpleVO simpleVO=new SimpleVO();
+		public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromDateString,String toDateString,String callFrom){
+			
+			List<SimpleVO> retVoList = new ArrayList<SimpleVO>();
+			List<Object[]> batchIdsList = new ArrayList<Object[]>(0);
+			SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
+			try{
+				Date fromDate1 = null,toDate1=null;
+				if(fromDateString!=null && toDateString!=null){
+					fromDate1 = sdf1.parse(fromDateString);
+					toDate1 = sdf1.parse(toDateString);
+				}
+				
+				if(batchId>0){
+					
+					List<Object[]> temp = trainingCampBatchDAO.getBatchAndCampNameForABatch(batchId);
+					Object[] objArr = {batchId,temp.get(0)[0],temp.get(0)[1],temp.get(0)[2]};
+					batchIdsList.add(objArr);
+				}else if(campId>0){
+					batchIdsList = trainingCampBatchDAO.getBatcheIdsForACampOrProgram(programId,campId,fromDate1,toDate1,callFrom);
+				}else if(programId>0){
+					batchIdsList = trainingCampBatchDAO.getBatcheIdsForACampOrProgram(programId,campId,fromDate1,toDate1,callFrom);
+				}
+				
+				if(batchIdsList!=null && batchIdsList.size()>0){
+					retVoList = getDayWiseCountsForRunningBatches(batchIdsList);
+				}
+			}catch (Exception e) {
+				LOG.error("Exception raised at getAttendedCountSummaryByBatch",e);
+			}
+			return retVoList;
+			/*SimpleVO simpleVO=new SimpleVO();
 			SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			try{ 
@@ -7246,6 +7300,7 @@ class TrainingCampService implements ITrainingCampService{
 				 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
 			}
 			return simpleVO;
+		*/
 		}
 		
 		
