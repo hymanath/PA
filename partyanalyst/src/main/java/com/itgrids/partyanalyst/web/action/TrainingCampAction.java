@@ -114,9 +114,19 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<CadreVo> cadreVoList;
 	private List<TrainingCampVO> campVoList;	
 	private ICadreRegistrationService cadreRegistrationService;
+	private String callFrom;
 	
 	
 	
+	
+	public String getCallFrom() {
+		return callFrom;
+	}
+
+	public void setCallFrom(String callFrom) {
+		this.callFrom = callFrom;
+	}
+
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
 	}
@@ -2109,11 +2119,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		if(batchId==0l){
     			batchId=null;
     		}
+    		
+    		String callFrom = jObj.getString("callFrom");
+    		
     		String dates[] = jObj.getString("dates").split("-");
     		if(dates.length>1){
-    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim());
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom);
     		}else{
-    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,null,null);
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,null,null,callFrom);
     		}
     		
     		
@@ -2162,12 +2175,16 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		
     		jObj = new JSONObject(getTask());
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
     		Long batchId = jObj.getLong("batchId");
     		String dates[] = jObj.getString("dates").split("-");
+    		String callFrom = jObj.getString("callFrom");
+    		
     		if(dates.length>1){
-    			simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,dates[0].trim(),dates[1].trim());
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom);
     		}else{
-    			simpleVO = trainingCampService.getAttendedCountSummaryByBatch(batchId,null,null);
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,null,null,callFrom);
     		}
     		
     		
