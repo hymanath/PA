@@ -886,6 +886,7 @@ function getFamilyDetails(tdpCadreId)
 		str+='<h4  class="offset5" style="margin-bottom:0px"> CADRE ADDRESS DETAILS </h4>';
 		str+='<div class="row" style="padding:10px">';
 		str+='<div class="col-md-12" style="padding:10px">';
+		str+='<div id="cadreAddressErrorDiv" class="mandatory" style="margin-left: 18px;"></div>';
 		str+='<div class="mandatory" style="margin-left: 18px;"></div>';
        
 		for(var m in searchArr)
@@ -1263,6 +1264,7 @@ function updateFamilyInfo()
 	$('.mandatory').html('');
 	var facebookUrl = "";
 	var mycount  = 0;
+	$("#cadreAddressErrorDiv").html("");
 	
 	$(".familyInfo").each(function(){
 		
@@ -1305,6 +1307,31 @@ function updateFamilyInfo()
 			$("#cadreErrorDiv").html(strErr);
 			return;
 		}
+		if($("#cadreState").val() <= 0){
+			strErr+='State Is Reqiured ';
+			$("#cadreAddressErrorDiv").html(strErr);
+			return;
+		}
+		if($("#cadreDistrict").val() <= 0){
+			strErr+='District Is Reqiured ';
+			$("#cadreAddressErrorDiv").html(strErr);
+			return;
+		}
+		if($("#cadreConstituency").val() <= 0){
+			strErr+='Constituency Is Reqiured ';
+			$("#cadreAddressErrorDiv").html(strErr);
+			return;
+		}
+		if($("#cadreMandal").val() <= 0){
+			strErr+='Mandal/Muncipality Is Reqiured ';
+			$("#cadreAddressErrorDiv").html(strErr);
+			return;
+		}
+		/*if($("#cadreVillage").val() <= 0){
+			strErr+='Village/Ward Is Reqiured ';
+			$("#cadreAddressErrorDiv").html(strErr);
+			return;
+		}*/
 		else if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
 		{
 			strErr+='Invalid Mobile No.';
@@ -1356,9 +1383,10 @@ function updateFamilyInfo()
 		var localElectionBody=0;
 		if(mandalStr.substring(0,1)==2){
 			mandalId=mandalStr.substring(1,mandalStr.length);
-		}else{
+		}else if(mandalStr.substring(0,1)==1){
 			localElectionBody=mandalStr.substring(1,mandalStr.length);
 		}
+		
 		var panchayat=$('.cadreVillage option:selected').val();
 		var panchayatStr=panchayat.toString();
 		var panchayatId=0;
