@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<TrainingCampCadreFeedbackDetails, Long> implements ITrainingCampCadreFeedbackDetailsDAO{
 
@@ -54,9 +55,14 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	query.setParameterList("batches",trainingCampBatchIds);
     	return query.list();
     }
-    public List<Object[]> getattendedcount(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+    public List<Object[]> getattendedcount(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String type){
     	
     	Query query=getSession().createQuery(queryString);
+    	Date currDate=new DateUtilService().getCurrentDateAndTime();
+    	
+    	if(!type.equalsIgnoreCase("all")){
+    		query.setParameter("currDate", currDate);
+    	}
     	
     	if(fromDate!=null && toDate!=null){
 	    	query.setParameter("fromDate", fromDate);
@@ -82,10 +88,15 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		}
     	return query.list();
     }
- public Long getattendedcount1(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate){
+ public Long getattendedcount1(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String type){
     	
     	Query query=getSession().createQuery(queryString);
     	
+    	Date currDate=new DateUtilService().getCurrentDateAndTime();
+    	
+    	if(!type.equalsIgnoreCase("all")){
+    		query.setParameter("currDate", currDate);
+    	}
     	if(fromDate!=null && toDate!=null){
 	    	query.setParameter("fromDate", fromDate);
 	    	query.setParameter("toDate", toDate);

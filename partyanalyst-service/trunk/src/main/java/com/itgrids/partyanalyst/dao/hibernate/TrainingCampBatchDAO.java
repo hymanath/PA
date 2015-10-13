@@ -242,4 +242,60 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
 	}
+	
+	public List<Object[]> getBatcheIdsForACampOrProgram(Long programId,Long campId,Date fromDate,Date toDate,String type){
+		StringBuilder sb = new StringBuilder();
+		Date currDate=new DateUtilService().getCurrentDateAndTime();
+		
+		sb.append(" select distinct model.trainingCampBatchId,model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName from TrainingCampBatch model,TrainingCampDistrict model1  " +
+				" where model.trainingCampSchedule.trainingCampId=model1.trainingCampId and model.isCancelled = 'false' and model1.districtId between 11 and 23 ");
+		
+		if(campId!=null && campId>0l){
+			sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId=:campId and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
+		}else if(programId!=null && programId > 0l){
+			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
+		}
+		
+		if(fromDate!=null && toDate!=null){
+			sb.append(" and date(model.fromDate)>=:fromDate and date(model.toDate)<=:toDate ");
+		}
+			
+		if(type.equalsIgnoreCase("c")){
+			sb.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+		}
+		else if(type.equalsIgnoreCase("r")){
+			sb.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+		}
+		else if(type.equalsIgnoreCase("u")){
+			sb.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(campId>0l){
+			query.setParameter("campId", campId);
+			query.setParameter("programId", programId);
+		}else if(programId > 0l){
+			query.setParameter("programId", programId);
+		}
+		
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
+		if(!type.equalsIgnoreCase("all")){
+			query.setParameter("currDate", currDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBatchAndCampNameForABatch(Long batchId){
+		Query query = getSession().createQuery(" select model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName " +
+				" from TrainingCampBatch model " +
+				" where model.trainingCampBatchId=:batchId ");
+		query.setParameter("batchId", batchId);
+		return query.list();
+	}
 }
