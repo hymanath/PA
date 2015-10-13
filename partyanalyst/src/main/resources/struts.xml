@@ -10852,7 +10852,7 @@
 	
 	<action name="getAttendedCountSummaryByBatchAction" class="trainingCampAction" method="getAttendedCountSummaryByBatch">
 	    <result type="json" name="success">		   
-		    <param name="root">simpleVO</param>
+		    <param name="root">simpleVOList</param>
 		</result>
 	</action>
 	
