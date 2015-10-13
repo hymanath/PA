@@ -257,8 +257,8 @@ color: red !important;
 								
 							</div>
 						</div>-->
-						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
 						<div id="dayWiseAttendDivId" style="display:none;margin-top:10px;"></div>
+						<center><img id="ajaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
                     	<div id="attendanceDiv" style="display:none"></div>
 						<div id="exportExcelAttendanceDiv" style="display:none"></div>
 						<div class="panel-group m_top20" id="accordion" role="tablist" aria-multiselectable="true"></div>
@@ -379,50 +379,47 @@ function exportToExcel()
 		   var str='';
 		   for(var i in results){
 		     str+='<div class="panel panel-default">'
-				str+='<div class="panel-heading" role="tab" id="heading'+i+'">'
-                   str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'
-                   str+='<h4 class="panel-title">'+results[i].name+'<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>'
-                   str+='</a>';               
+				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+                   str+='<h4 class="panel-title">'+results[i].name+'</h4>';
                 str+='</div>';                
-                str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">'
                   str+='<div class="panel-body">';
 					str+='<div class="table-responsive">';
-                      str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">'
+                      str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">';
                       str+='<thead>';
 					  str+='<th>Image</th>';
-                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th>'
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th>';
 					  if(checkBoxArray[0]){
-						str+='<th>IsFamilyUpdated</th>'
+						str+='<th>IsFamilyUpdated</th>';
 					  }
 					  if(checkBoxArray[1]){
-						str+='<th>Achievements</th>'
+						str+='<th>Achievements</th>';
 					  }
 					  if(checkBoxArray[2]){
-						str+='<th>Goals</th>'
+						str+='<th>Goals</th>';
 					  }
 					  if(checkBoxArray[3]){
-						str+='<th>Leadership <br/>Level</th>'
+						str+='<th>Leadership <br/>Level</th>';
 					  }
 					  if(checkBoxArray[4]){
-						str+='<th>Communication<br/> Skills</th>'
+						str+='<th>Communication<br/> Skills</th>';
 					  }
 					  if(checkBoxArray[5]){
-						str+='<th>Leadership Skills</th>'
+						str+='<th>Leadership Skills</th>';
 					  }
 					  if(checkBoxArray[6]){
-						str+='<th>Health</th>'
+						str+='<th>Health</th>';
 					  }
 					  if(checkBoxArray[7]){
-						str+='<th>SmartPhone Using</th>'
+						str+='<th>SmartPhone Using</th>';
 					  }
 					  if(checkBoxArray[8]){
-						str+='<th>Whatsapp Using</th>'
+						str+='<th>Whatsapp Using</th>';
 					  }
 					  if(checkBoxArray[9]){
-						str+='<th>Whatsapp Sharing</th>'
+						str+='<th>Whatsapp Sharing</th>';
 					  }
 					  if(checkBoxArray[10]){
-						str+='<th>Facebook Known</th>'
+						str+='<th>Facebook Known</th>';
 					  }
 					  /*str+='<th>IsFamilyUpdated</th>'
 					  str+='<th>Achievements</th>'
@@ -437,7 +434,7 @@ function exportToExcel()
 					  str+='<th>Facebook Known</th>'*/
 					  str+='<th>Update</th>';
                       str+='</thead>';                 
-                      for(var j in results[i].subList){
+                     for(var j in results[i].subList){
 					   str+='<tr>';
 					   if(results[i].subList[j].image != null){
 						   str+='<td><img src="images/cadre_images/'+results[i].subList[j].image+'" style="height:40px" class="img-reponsive"></td>'
@@ -456,92 +453,88 @@ function exportToExcel()
 					   </c:if>
 					   
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
-					   str+='<td>'+results[i].subList[j].constituency+'</td>'
+					   str+='<td>'+results[i].subList[j].constituency+'</td>';
 					   if(results[i].subList[j].committeeLevel.trim().length==0){
-						   str+='<td> - </td>'
+						   str+='<td> - </td>';
 					   }else{
-						   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>'
+						   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>';
 					   }
 					   if(results[i].subList[j].committeeType.trim().length==0){
-						   str+='<td> - </td>'
+						   str+='<td> - </td>';
 					   }else{
-						   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>'
+						   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>';
 					   }
 					   if(checkBoxArray[0]){
-						if(results[i].subList[j].familyUpdted=='Yes'){
-						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
-					   }else if(results[i].subList[j].familyUpdted=='No'){
-						  str+='<td><i class="glyphicon glyphicon-remove text-danger text-center"></i></td>' 
+						   str+='<td>'+results[i].subList[j].familyUpdted+'</td>';
 					   }
-					  }
 					  if(checkBoxArray[1]){
 						if(results[i].subList[j].achievements){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center achievmentsCls"></i></td>'
+					     str+='<td><span class="text-center achievmentsCls">Yes</span></td>';
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center achievmentsCls"></i></td>'
+					    str+='<td><span class="text-center achievmentsCls">No</span></td>';
 					   }
 					  }
 					  if(checkBoxArray[2]){
 						if(results[i].subList[j].goals){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center goalsCls"></i></td>'
+						  str+='<td><span class="text-center goalsCls">Yes</span></td>';
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center goalsCls"></i></td>'
+						str+='<td><span class="text-center goalsCls">No</span></td>';
 					   }
 					  }
 					  if(checkBoxArray[3]){
-						if(results[i].subList[j].leaderShipLevels){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipLvlsCls"></i></td>'
+						if(results[i].subList[j].leaderShipLevels){					
+						  str+='<td><span class="text-center leadershipLvlsCls">Yes</span></td>';
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipLvlsCls"></i></td>'
+						   str+='<td><span class="text-center leadershipLvlsCls">No</span></td>';					    
 					   }
 					  }
 					  if(checkBoxArray[4]){
 						if(results[i].subList[j].communicationSkills){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center communicationSklsCls"></i></td>'
+							str+='<td><span class="text-center communicationSklsCls">Yes</span></td>';					     
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center communicationSklsCls"></i></td>'
+						   str+='<td><span class="text-center communicationSklsCls">No</span></td>';					    
 					   }
 					  }
 					  if(checkBoxArray[5]){
 						if(results[i].subList[j].leaderShipSkills){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center leadershipSklsCls"></i></td>'
+							str+='<td><span class="text-center leadershipSklsCls">Yes</span></td>';						     
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center leadershipSklsCls"></i></td>'
+						   str+='<td><span class="text-center leadershipSklsCls">No</span></td>';						   
 					   }
 					  }
 					  if(checkBoxArray[6]){
 						if(results[i].subList[j].health){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center healthCls"></i></td>'
+							str+='<td><span class="text-center healthCls">Yes</span></td>';						     
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center healthCls"></i></td>'
+						   str+='<td><span class="text-center healthCls">No</span></td>';						    
 					   }
 					  }
 					  if(checkBoxArray[7]){
 						if(results[i].subList[j].smartphoneExist){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center smartphoneCls"></i></td>'
+							str+='<td><span class="text-center smartphoneCls">Yes</span></td>';						     
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center smartphoneCls"></i></td>'
+					    str+='<td><span class="text-center smartphoneCls">No</span></td>';	
 					   }
 					  }
 					  if(checkBoxArray[8]){
 						if(results[i].subList[j].whatsappUsing){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappUsingCls"></i></td>'
+							str+='<td><span class="text-center whatsappUsingCls">Yes</span></td>';						    
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappUsingCls"></i></td>'
+						   str+='<td><span class="text-center whatsappUsingCls">No</span></td>';						
 					   }
 					  }
 					  if(checkBoxArray[9]){
 						if(results[i].subList[j].whatsappSharing){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center whatsappSharingCls"></i></td>'
+							str+='<td><span class="text-center whatsappSharingCls">Yes</span></td>';					     
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center whatsappSharingCls"></i></td>'
+						   str+='<td><span class="text-center whatsappUsingCls">No</span></td>';					  
 					   }
 					  }
 					  if(checkBoxArray[10]){
 						if(results[i].subList[j].facebookUsing){
-					     str+='<td><i class="glyphicon glyphicon-ok text-success text-center facebookUsingCls"></i></td>'
+							str+='<td><span class="text-center facebookUsingCls">Yes</span></td>';							 
 					   }else{
-					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
+						   str+='<td><span class="text-center facebookUsingCls">No</span></td>';						   
 					   }
 					  }
 					  /* if(results[i].subList[j].familyUpdted=='Yes'){
@@ -601,16 +594,15 @@ function exportToExcel()
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
 					   }*/
 					   if(results[i].isFeedbackUpdatable=='Y')
-					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
                        else
-						   str+='<td><button  disabled type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>'
+						   str+='<td><button  disabled type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
 					   str+='</tr>';
                     }
-					str+='</table>'
-                  str+='</div>'
-				  str+='</div>'
-                str+='</div>'
-              str+='</div>'
+					str+='</table>';
+                  str+='</div>';
+				  str+='</div>';
+              str+='</div>';
 		   }
 		   $("#ajaxImage").hide();
 		   $("#accordion").html(str);
