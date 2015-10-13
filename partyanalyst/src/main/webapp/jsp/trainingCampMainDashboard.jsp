@@ -57,7 +57,7 @@ header.eventsheader {
 color: red !important;
 }
 </style>
-	</head>
+</head>
 <body>
 <header class="eventsheader">
 	<!--<img src="dist/img/header.jpg" width="100%" alt="">-->
@@ -280,6 +280,7 @@ color: red !important;
 <!--  accordian start-->
 
                   <!-- pop up modal start-->
+<!--				  
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -294,6 +295,8 @@ color: red !important;
     </div>
   </div>
 </div>
+-->
+
                   <!-- pop up modal end -->
 
 <footer>
@@ -625,10 +628,10 @@ function exportToExcel()
 					   }else{
 					    str+='<td><i class="glyphicon glyphicon-remove text-danger text-center facebookUsingCls"></i></td>'
 					   }*/
-					   if(results[i].isFeedbackUpdatable=='Y')
-					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
+					  if(results[i].isFeedbackUpdatable=='Y')
+					     str+='<td><button  type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass updateLeaderShipSkills"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
                        else
-						   str+='<td><button  disabled type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
+						   str+='<td><button  disabled type="button" id="updateId'+results[i].subList[j].id+''+results[i].id+'" class="btn btn-success btn-xs updateClass updateLeaderShipSkills"   attr-cadreId='+results[i].subList[j].id+' attr-batchId='+results[i].id+'>UPDATE</button></td>';
 					   str+='</tr>';
                     }
 					str+='</table>';
@@ -1707,7 +1710,13 @@ function buildDayWiseAttendnenceForBatch(result,center){
 				$("#dayWiseAttendDivId").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
 			}
 }
-	  
+	  $(document).on("click",".updateLeaderShipSkills",function(){
+		  alert("swadhin");
+		  var cadreId=$(this).attr("attr-cadreId");
+		var batchId=$(this).attr("attr-batchId");
+		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'','_blank');
+	});
+	
 	</script>
 </body>
 </html>
