@@ -1718,7 +1718,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		return  query.list();
 	}
 
-	public Object[] getTdpCommitteeMemberPosition(Long cadreId){
+	public List<Object[]> getTdpCommitteeMemberPosition(Long cadreId){
 		
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
@@ -1729,7 +1729,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		
 		query.setParameter("cadreId", cadreId);
 		
-		return (Object[]) query.uniqueResult();
+		return  query.list();
 	}
 	
 	/*@SuppressWarnings("unchecked")
