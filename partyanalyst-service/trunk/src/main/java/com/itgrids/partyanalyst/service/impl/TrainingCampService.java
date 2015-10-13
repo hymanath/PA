@@ -7371,50 +7371,62 @@ class TrainingCampService implements ITrainingCampService{
 						  Long tdpCadreId = cadre[0] != null ? (Long)cadre[0]:0l;
 						  vo.setCadreId(cadre[0] !=null ? (Long)cadre[0]:0l);
 						  
-						  Object[] designationDetails = tdpCommitteeMemberDAO.getTdpCommitteeMemberPosition(tdpCadreId);//tdpCommitteeLevel,role
+						  List<Object[]> designationDetailsList = tdpCommitteeMemberDAO.getTdpCommitteeMemberPosition(tdpCadreId);//tdpCommitteeLevel,role
 							String designation = "";
+							String committeType = "";
 							String committee = "";
 							String committeeLocation = "";
 							
-							if(designationDetails != null && designationDetails .length > 0){
-								designation = designationDetails[3]+" - "+designationDetails[5];
-								committee = designationDetails[6]+" Committee";
+							if(designationDetailsList != null && designationDetailsList .size() > 0){
 								
-								Long committeeLevelId = 0l;
-								Long committeeLevelValue = 0l;
-								committeeLevelId = (Long) designationDetails[0];
-								committeeLevelValue = (Long) designationDetails[1];
-								if(committeeLevelId == 5L)
-								{
-									committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
-								}
-								else if(committeeLevelId == 6L)
-								{
-									committeeLocation = panchayatDAO.get(committeeLevelValue).getPanchayatName()+" Panchayat ";
-								}
-								else if(committeeLevelId == 7L || committeeLevelId == 9L) // town/division
-								{
-									LocalElectionBody localbody = localElectionBodyDAO.getLocalElectionBodyDetailsByLevel(committeeLevelValue);
+								for(Object[] designationDetails:designationDetailsList){
 									
-									if(localbody !=null){
-										if(localbody.getElectionType().getElectionTypeId() != 7L)
-											committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+									if(designationDetails[3] !=null && designationDetails[3].toString().equalsIgnoreCase("Main")){
+										designation=designationDetails[5].toString();
+									}else{
+										designation = designationDetails[3]+" - "+designationDetails[5];
 									}
 									
+									
+									committee = designationDetails[6]+" Committee";
+									
+									Long committeeLevelId = 0l;
+									Long committeeLevelValue = 0l;
+									committeeLevelId = (Long) designationDetails[0];
+									committeeLevelValue = (Long) designationDetails[1];
+									if(committeeLevelId == 5L)
+									{
+										committeeLocation = tehsilDAO.get(committeeLevelValue).getTehsilName()+" Mandal ";
+									}
+									else if(committeeLevelId == 6L)
+									{
+										committeeLocation = panchayatDAO.get(committeeLevelValue).getPanchayatName()+" Panchayat ";
+									}
+									else if(committeeLevelId == 7L || committeeLevelId == 9L) // town/division
+									{
+										LocalElectionBody localbody = localElectionBodyDAO.getLocalElectionBodyDetailsByLevel(committeeLevelValue);
+										
+										if(localbody !=null){
+											if(localbody.getElectionType().getElectionTypeId() != 7L)
+												committeeLocation = localbody.getName()+" "+localbody.getElectionType().getElectionType();
+										}
+										
+									}
+									else if(committeeLevelId == 8L)
+									{
+										Constituency constituency = constituencyDAO.get(committeeLevelValue);
+										committeeLocation = constituency.getName()+" ( "+constituency.getLocalElectionBody().getName()+" "+constituency.getLocalElectionBody().getElectionType().getElectionType()+" )";
+									}
+									else if(committeeLevelId == 10L)
+									{
+										committeeLocation = stateDAO.get(committeeLevelValue).getStateName();
+									}
+									else if(committeeLevelId == 11L)
+									{
+										committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
+									}
 								}
-								else if(committeeLevelId == 8L)
-								{
-									Constituency constituency = constituencyDAO.get(committeeLevelValue);
-									committeeLocation = constituency.getName()+" ( "+constituency.getLocalElectionBody().getName()+" "+constituency.getLocalElectionBody().getElectionType().getElectionType()+" )";
-								}
-								else if(committeeLevelId == 10L)
-								{
-									committeeLocation = stateDAO.get(committeeLevelValue).getStateName();
-								}
-								else if(committeeLevelId == 11L)
-								{
-									committeeLocation = districtDAO.get(committeeLevelValue).getDistrictName();
-								}
+								
 							}
 							vo.setDesignation(designation);
 							
