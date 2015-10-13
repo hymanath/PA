@@ -20,7 +20,7 @@ public class DeletedVoterDownloader {
     public static void main(String args[]) throws InterruptedException, Exception 
     {
     	
-    	downloadData("E","I:\\Kamal\\46-Expired.txt",46,5,1);
+    	downloadData("I","D:\\Kamal\\46-Expired.txt",46,5,6);
     	//constituency_no,district_no,page_index
     	
     	/*int i = 40;
@@ -81,13 +81,17 @@ public class DeletedVoterDownloader {
         WebElement submit = driver.findElement(By.id("Button1"));
         submit.click();
         
-        getTableData(driver,outwriter,index);
+        if(index == 1)
+        	getTableData(driver,outwriter,index,true);
+        else
+        	getTableData(driver,outwriter,index-1,false);
+        
         outwriter.close();
         
         driver.quit();
     }
     
-    public static void getTableData(WebDriver driver,BufferedWriter outwriter,int linkNo)
+    public static void getTableData(WebDriver driver,BufferedWriter outwriter,int linkNo,boolean flag)
     {
     	try{
     		WebElement voterTable = driver.findElement(By.id("GridView1"));
@@ -104,10 +108,14 @@ public class DeletedVoterDownloader {
             			StringBuilder sb = new StringBuilder();
                 		for(WebElement cell : cells)
                 		{
-                			sb.append("\t"+cell.getText());
+                			if(flag)
+                				sb.append("\t"+cell.getText());
                 		}
-                		System.out.println(sb.toString());
-                		outwriter.write(sb.toString().trim()+"\n");
+                		if(flag)
+                		{	
+                			System.out.println(sb.toString());
+                			outwriter.write(sb.toString().trim()+"\n");
+                		}
             		}
             		else
             		{
@@ -131,7 +139,7 @@ public class DeletedVoterDownloader {
                 					{
                 						WebElement anchorLink = inTableCell.findElement(By.tagName("a"));
                 						anchorLink.click();
-                						getTableData(driver,outwriter,linkNo+1);
+                						getTableData(driver,outwriter,linkNo+1,true);
                 					}
                 					k++;
                 				}
