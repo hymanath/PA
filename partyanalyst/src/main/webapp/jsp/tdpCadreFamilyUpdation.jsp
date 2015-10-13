@@ -1302,6 +1302,12 @@ function updateFamilyInfo()
 			$("#cadreErrorDiv").html(strErr);
 			return;
 		}
+		else if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
+		{
+			strErr+='Invalid Mobile No.';
+			$('#'+errStrDiv+'').html(strErr);
+			return;			
+		}
 		if($("#cadreCaste").val() <= 0){
 			strErr+='Caste Is Reqiured ';
 			$("#cadreErrorDiv").html(strErr);
@@ -1332,12 +1338,7 @@ function updateFamilyInfo()
 			$("#cadreAddressErrorDiv").html(strErr);
 			return;
 		}*/
-		else if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
-		{
-			strErr+='Invalid Mobile No.';
-			$('#'+errStrDiv+'').html(strErr);
-			return;			
-		}
+		
 		
 	});
 	
