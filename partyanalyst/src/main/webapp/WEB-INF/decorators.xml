@@ -162,6 +162,7 @@
 		<pattern>/trainingProgramDashboard*</pattern>
 		<pattern>/trainingCenterDashBoardAction*</pattern>
 		<pattern>/trainingProgramMainDashBoardAction*</pattern>
+		<pattern>/updateLeaderShipAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

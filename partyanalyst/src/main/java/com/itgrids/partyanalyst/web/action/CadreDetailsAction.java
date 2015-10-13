@@ -682,5 +682,14 @@ public String getCandidateAndConstituencySurveyResult(){
 		}
 		return Action.SUCCESS;
 	}
-	
+public String updateLeaderShip(){
+		
+		try{
+			return "updateLeader";
+		}catch(Exception e){
+			LOG.error("Exception Occured in updateLeaderShip() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+
 }
