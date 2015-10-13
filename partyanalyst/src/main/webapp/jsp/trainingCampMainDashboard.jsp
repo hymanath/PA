@@ -25,6 +25,7 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"> -->
 <style type="text/css">
+.add-button{background:#ccc;padding:3px;border-radius:50%}
 .m_top30{margin-top:30px}
 .add-plus{cursor:pointer}
 .glyphicon-trash
@@ -905,9 +906,20 @@ function exportToExcel()
         str+='</div>'
 		
 		  str+='<div class="row">';
-		  str+='<div class="col-md-12">';
-		  str+='<label>Health Card </label><input type="file" id="healthCardattachment" />';
+		  str+='<div class="col-md-4">';
+		  str+='<label>Health Card </label>';
 		  str+='</div>';
+		  str+='</div>';
+		  str+='<div class="row" id="healthCardCntaddDiv">';
+		  str+='</div>';
+		  str+='<div class="col-md-4 m_top10 ">';
+		  str+='<input type="file" class="healthCardattachment" />';
+		  str+='</div>';
+		  str+='<div class="col-md-1 m_top10">';
+		  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus healthCardadd" onclick="addHealthCard();"></i>';
+		  str+='</div>';
+		  
+		
 		
 		<!-- Adding -->
 		
@@ -1051,8 +1063,16 @@ function exportToExcel()
 	   $(this).parent().parent().remove();
 		   
     });
+
+	
 	
 	$(document).on('click', '.datetrash', function(){
+	   
+	   $(this).parent().parent().remove();
+		   
+    });
+	
+	$(document).on('click', '.healthCardminus', function(){
 	   
 	   $(this).parent().parent().remove();
 		   
@@ -1162,10 +1182,14 @@ function exportToExcel()
 	   
 	   $("#processingId").show();
 	$("#ajaxImage1").show();
-	  var  healthCardId = $('#healthCardattachment[type=file]')[0].files[0];
 	 var formData = new FormData();  
-	 
-	 formData.append("image",$('#healthCardattachment[type=file]')[0].files[0]);
+	  var inputs = $(".healthCardattachment");
+	 $.each(inputs, function (obj, v) {
+        var file = v.files[0];
+  
+	 formData.append("image",file);
+	})
+	
 	 formData.append('leaderShipLevel',leaderShipLevel);
 	 formData.append('achieveArray',achieveArray);
 	 formData.append('goalArray',goalArray);
@@ -1398,6 +1422,22 @@ function exportToExcel()
 			  }
 			  
 		  });
+	  }
+	  healthCardCnt = 0;
+	  function addHealthCard()
+	  {
+		
+		  var str ='';
+		 
+		  str+='<div class="row" id="healthCardCnt"+healthCardCnt+"">';
+		  str+='<div class="col-md-4 m_top10 ">';
+		  str+='<input type="file" class="healthCardattachment" />';
+		  str+='</div>';
+		  str+='<div class="col-md-1 m_top10">';
+		  str+='<i class="glyphicon glyphicon-minus add-plus healthCardminus m_top10"></i>';
+		  str+='</div>';
+		  $("#healthCardCntaddDiv").append(str);
+		   healthCardCnt ++;
 	  }
 	  </script>
 	  <script>

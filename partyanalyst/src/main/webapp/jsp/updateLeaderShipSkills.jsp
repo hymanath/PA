@@ -62,6 +62,7 @@ footer
 	background-color:#5c2d25;
 	color:#fff;
 }
+
 </style>
 </head>
 <body>
@@ -161,6 +162,14 @@ var leaderShipLevelArray = [];
 		  }
 		}
 		
+		
+		
+	$(document).on('click', '.healthCardminus', function(){
+	   
+	   $(this).parent().parent().remove();
+		   
+    });
+	
 var cadreId= '${param.cadreId}';
 var batchId = '${param.batchId}';
 function myDateFunction(){
@@ -429,10 +438,39 @@ function getLeaderShipDetails()
                str+='</select>';
 			   
 			 str+='</div>'
-        
-		  str+='<div class="col-md-4 m_top10">';
-		  str+='<label>Health Card </label><input type="file" id="healthCardattachment" />';
+			str+='<div class="col-md-12 m_top10">';
+			str+='<div class="row">';
+		    str+='<div class="col-md-12">';
+		    str+='<label>Health Card </label>';
+		  
+		  
+		 
+			if(results.healthCardAttachments!=null && results.healthCardAttachments.length>0){
+				str +='<div class="row">';
+				for(var i in results.healthCardAttachments)
+				{
+					str +='<div class="col-md-3 m_top10">';
+						str +='<a target="_blank" href="/tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
+					str +='</div>';
+				}
+				str +='</div>';
+			}
+	
+		  str+='<div class="row">';
+		  str+='<div class="col-md-2 m_top10 ">';
+		  str+='<input type="file" class="healthCardattachment" />';
 		  str+='</div>';
+		  str+='<div class="col-md-1">';
+		  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus healthCardadd" onclick="addHealthCard();"></i>';
+		  str+='</div>';
+		  str+='</div>';
+			
+		  str+='</div>';
+		  str+='</div>';
+		  str+='</div>';
+		  str+='</div>';
+		  
+		   str+='<div class="row" id="healthCardCntaddDiv">';
 		  str+='</div>';
 		<!-- Adding -->
 		
@@ -681,10 +719,15 @@ function getLeaderShipDetails()
 	   
 	   $("#processingId").show();
 	$("#ajaxImage1").show();
-	  var  healthCardId = $('#healthCardattachment[type=file]')[0].files[0];
 	 var formData = new FormData();  
+	  var inputs = $(".healthCardattachment");
+	 $.each(inputs, function (obj, v) {
+        var file = v.files[0];
+  
+	 formData.append("image",file);
+	}) 
 	 
-	 formData.append("image",$('#healthCardattachment[type=file]')[0].files[0]);
+	
 	 formData.append('leaderShipLevel',leaderShipLevel);
 	 formData.append('achieveArray',achieveArray);
 	 formData.append('goalArray',goalArray);
@@ -798,7 +841,24 @@ function getLeaderShipDetails()
 	   $(this).parent().parent().remove();
 		   
     });
-
+  healthCardCnt = 0;
+	  function addHealthCard()
+	  {
+		
+		  var str ='';
+		 
+		  str+='<div class="col-md-2 m_top10 ">';
+		  str+='<div id="healthCardCnt"+healthCardCnt+"">';
+		  str+='<input type="file" class="healthCardattachment" />';
+		  str+='</div>';
+		  str+='</div>';
+		  str+='<div class="col-md-1">';
+		  str+='<i class="glyphicon glyphicon-minus add-plus healthCardminus m_top10"></i>';
+		  str+='</div>';
+		  
+		  $("#healthCardCntaddDiv").append(str);
+		   healthCardCnt ++;
+	  }
 
 </script>
 </body>

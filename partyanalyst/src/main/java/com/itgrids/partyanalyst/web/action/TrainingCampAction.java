@@ -1618,21 +1618,21 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		 
  }
 	
-	/*public static String CreateDateFolder(String totalDate){
+	public static String CreateDateFolder(String totalDate){
 	  	 try {
 	  		 LOG.debug(" in FolderForArticle ");
 			String string = totalDate;
 			 String[] parts = string.split("-");
 			
 			 String yr = parts[0]; // YEAR YYYY
-			 String yrDir = IConstants.STATIC_CONTENT_HEALTH_CARD+"/"+yr;
+			 String yrDir = IConstants.CADRE_HEALTH_CARD_FOLDER+"/"+yr;
 			 String yrFldrSts = createFolderForArticles(yrDir);
 			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
 			 String mnth = parts[1];
-			 String mnthDir = IConstants.STATIC_CONTENT_HEALTH_CARD+"/"+yr+"/"+mnth;
+			 String mnthDir = IConstants.CADRE_HEALTH_CARD_FOLDER+"/"+yr+"/"+mnth;
 			 String mnthDirSts = createFolderForArticles(mnthDir);
 			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
@@ -1647,10 +1647,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			return "FAILED";
 		}
 		 
-		 
-		 
 }
-	*/
+	
 	public static String createFolderForArticles(String dir){
 	 	try {
 			File theDir = new File(dir);
@@ -1793,56 +1791,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		return Action.SUCCESS;
     }
     
-   public String saveDetailsOfCadreActionTest()
-    {
-    	
-    	try{
-    		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-    		Long userId = regVO.getRegistrationID();
-    	
-    		jObj = new JSONObject(getTask());
-    		Long tdpCadreId = jObj.getLong("tdpCadreId");
-    		Long batchId = jObj.getLong("batchId");
-    		
-    		List<String> achieveList=new ArrayList<String>();
-    		JSONArray achieveArray = jObj.getJSONArray("achieveArray");
-    		for(int i = 0; i < achieveArray.length(); i++){
-    			achieveList.add(achieveArray.get(i).toString());
-    		}
-    	   List<SimpleVO> goallist=new ArrayList<SimpleVO>();
-           JSONArray goalArray = jObj.getJSONArray("goalArray");
-			
-			if(goalArray != null && goalArray.length() > 0)
-			{
-			  for(int i=0;i<goalArray.length();i++)
-			 {
-				JSONObject jObj=(JSONObject)goalArray.get(i);
-				SimpleVO goal=new SimpleVO();
-				goal.setName(jObj.getString("goal"));
-				goal.setDateString(jObj.getString("date"));
-				goallist.add(goal);
-			  }
-			}
-    		
-    		Long leaderShipLevelId = jObj.getLong("leaderShipLevel");
-    		Long communicationSkillsId = jObj.getLong("communicationSkills");
-    		Long leaderShipSkillsId = jObj.getLong("leaderShipSkills");
-    		Long healthId = jObj.getLong("health");
-    		String comments = jObj.getString("comments");
-    		
-    		String smartPhoneId = jObj.getString("smartPhoneId");
-    		String whatsappId = jObj.getString("whatsappId");
-    		String whatsappShareId = jObj.getString("whatsappShareId");
-    		String facebookId = jObj.getString("facebookId");
-    		JSONObject obj = jObj.getJSONObject("file");
-    		//cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId);
-    		
-    	}catch(Exception e) {
-    		LOG.error("Exception Occured in saveAllDetailsAction() method, Exception - ",e);
-    	}
-    	
-    	return Action.SUCCESS;
-    }
+  
    public String saveDetailsOfCadreAction()
    {
    	
@@ -1850,7 +1799,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		DateUtilService dateService = new DateUtilService();
    		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
    		Long userId = regVO.getRegistrationID();
-   		
+   		List<String> filePaths = null;
    		MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
    		/*File filePath=multiPartRequestWrapper.getFiles("Filedata")[0];
 	   	 String fileName=request.getParameter("Filename");
@@ -1864,6 +1813,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    			String inputValue = (String) fileParams.nextElement();
    			System.out.println(inputValue);
    			File[] files = multiPartRequestWrapper.getFiles(inputValue);
+   			filePaths = new ArrayList<String>();
    			for(File f : files)
    			{
    				
@@ -1875,12 +1825,16 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 					ext = extension[extension.length-1];
 				}
 				String dateString = dateService.getCurrentDateAndTimeInStringFormat();
-				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				/*String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 				String[] dateStr = dateString.split("-");
-				storeFilePath = dateStr[0]+pathSeperator+dateStr[1]+pathSeperator+tdpCadreId+"."+ext;
-				fileUrl = dateStr[0]+"/"+dateStr[1]+"/"+tdpCadreId+"."+ext;
-				String destPath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+storeFilePath;
-				copyFile(f.getAbsolutePath(),destPath);	
+				storeFilePath = dateStr[0]+pathSeperator+dateStr[1]+pathSeperator+tdpCadreId+"."+ext;*/
+				//fileUrl = dateStr[0]+"/"+dateStr[1]+"/"+tdpCadreId+"."+ext;
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				 fileUrl = CreateDateFolder(dateString);
+				 String RandomNumber = UUID.randomUUID().toString();
+				 String destPath =  "/"+fileUrl+"/"+RandomNumber+tdpCadreId+"."+ext;
+				filePaths.add(destPath);
+				copyFile(f.getAbsolutePath(),IConstants.CADRE_HEALTH_CARD_FOLDER+destPath);	
    			}
    		}	
    		
@@ -1923,7 +1877,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		String whatsappShareId = request.getParameter("whatsappShareId");
    		String facebookId = request.getParameter("facebookId");
    	
-   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,fileUrl);
+   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths);
    		
    	
    	}	
