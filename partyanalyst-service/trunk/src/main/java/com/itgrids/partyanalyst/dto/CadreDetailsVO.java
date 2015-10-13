@@ -52,7 +52,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private List<IdNameVO> communicationsSkillslist;
 	private List<IdNameVO> leadershipSkillslist;
 	private List<IdNameVO> healthStatuslist;
-	
+	private List<IdNameVO> healthCardAttachments;
 	private int resultCode;
 	private String isFeedbackUpdatable;
 	
@@ -64,6 +64,12 @@ public class CadreDetailsVO implements java.io.Serializable{
 	
 	
 	
+	public List<IdNameVO> getHealthCardAttachments() {
+		return healthCardAttachments;
+	}
+	public void setHealthCardAttachments(List<IdNameVO> healthCardAttachments) {
+		this.healthCardAttachments = healthCardAttachments;
+	}
 	public String getMemberShipId() {
 		return memberShipId;
 	}

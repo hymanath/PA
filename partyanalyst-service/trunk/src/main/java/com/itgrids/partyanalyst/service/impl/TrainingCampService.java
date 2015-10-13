@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsHistoryDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackHealthCardDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
@@ -77,6 +78,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackHealthCardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
@@ -111,6 +113,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory;
+import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
 import com.itgrids.partyanalyst.model.TrainingCampProgram;
@@ -187,6 +190,18 @@ class TrainingCampService implements ITrainingCampService{
     private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
     private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
     private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
+    private ITrainingCampCadreFeedbackHealthCardDAO trainingCampCadreFeedbackHealthCardDAO;
+    
+    
+    
+	public ITrainingCampCadreFeedbackHealthCardDAO getTrainingCampCadreFeedbackHealthCardDAO() {
+		return trainingCampCadreFeedbackHealthCardDAO;
+	}
+
+	public void setTrainingCampCadreFeedbackHealthCardDAO(
+			ITrainingCampCadreFeedbackHealthCardDAO trainingCampCadreFeedbackHealthCardDAO) {
+		this.trainingCampCadreFeedbackHealthCardDAO = trainingCampCadreFeedbackHealthCardDAO;
+	}
 
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
@@ -5156,6 +5171,8 @@ class TrainingCampService implements ITrainingCampService{
 				vo.setWhatsapp(feedBackInfo[6]!=null?feedBackInfo[6].toString():"");
 				vo.setWhatsappShare(feedBackInfo[7]!=null?feedBackInfo[7].toString():"");
 				vo.setFacebook(feedBackInfo[8]!=null?feedBackInfo[8].toString():"");
+			 
+				
 			}
 			List<Object[]> achievments=trainingCampCadreAchievementDAO.getAchievmentDetailsforCadre(tdpCadreId,batchId);
 			if(achievments!=null && achievments.size()>0){
@@ -5183,6 +5200,20 @@ class TrainingCampService implements ITrainingCampService{
 					 vo.getGoalsList().add(simplevo);
 				}
 			}
+			List<IdNameVO> healthCardAttachments = new ArrayList<IdNameVO>();
+			List<Object[]> healthCards = trainingCampCadreFeedbackHealthCardDAO.getHealthCardAttachments(tdpCadreId);
+			if(healthCards != null && healthCards.size() > 0)
+			{
+				for(Object[] param:healthCards){
+					IdNameVO idNameVO=new IdNameVO();
+					idNameVO.setId(param[1]!=null?(Long)param[1]:0l);
+					idNameVO.setName(param[0]!=null?param[0].toString():"");
+					healthCardAttachments.add(idNameVO);
+					
+				}
+				 vo.setHealthCardAttachments(healthCardAttachments);
+			}
+			
 			
 		}catch(Exception e){
 			LOG.error(" Error in getDetailsForACadre",e);
@@ -5261,7 +5292,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final String healthAttachment)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -5293,8 +5324,8 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setCadreComminicationSkillsStatusId(communicationSkillsId!=0l?communicationSkillsId:null);
 					feedBackDetails.setCadreLeadershipSkillsStatusId(leaderShipSkillsId!=0l?leaderShipSkillsId:null);
 					feedBackDetails.setCadreHealthStatusId(healthId!=0l?healthId:null);
-					if(healthAttachment != null && !healthAttachment.isEmpty())
-					feedBackDetails.setHealthCardAttachment(healthAttachment);
+					/*if(healthAttachment != null && !healthAttachment.isEmpty())
+					feedBackDetails.setHealthCardAttachment(healthAttachment);*/
 					if(smartPhoneId.equalsIgnoreCase("select"))
 					 feedBackDetails.setSmartPhoneExist(null);
 					else
@@ -5324,6 +5355,19 @@ class TrainingCampService implements ITrainingCampService{
 					feedBackDetails.setUpdatedTime(date1);
 					feedBackDetails=trainingCampCadreFeedbackDetailsDAO.save(feedBackDetails);
 					
+					
+					if(healthAttachments != null && healthAttachments.size() > 0)
+					{
+						for(String file : healthAttachments)
+						{
+					TrainingCampCadreFeedbackHealthCard trainingCampCadreFeedbackHealthCard = new TrainingCampCadreFeedbackHealthCard();
+					trainingCampCadreFeedbackHealthCard.setTrainingCampCadreFeedbackDetailsId(feedBackDetails.getTrainingCampCadreFeedbackDetailsId());
+					trainingCampCadreFeedbackHealthCard.setHealthCardAttachment(file);
+					trainingCampCadreFeedbackHealthCard.setInsertedTime(date1);
+					trainingCampCadreFeedbackHealthCard.setUpdatedTime(date1);
+					trainingCampCadreFeedbackHealthCardDAO.save(trainingCampCadreFeedbackHealthCard);
+						}
+					}
 					//feedback details history.
 					TrainingCampCadreFeedbackDetailsHistory feedBackDetailshistory=new TrainingCampCadreFeedbackDetailsHistory();
 					feedBackDetailshistory.setTrainingCampCadreFeedbackDetailsId(feedBackDetails.getTrainingCampCadreFeedbackDetailsId());
