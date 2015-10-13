@@ -1309,6 +1309,8 @@ function exportToExcel()
 	  $("#ajaxImage").show();
 	  $("#accordion").html('');
 	  	  
+		getDayWiseAttendnenceForBatch();
+		  
 	  var jsObj=
 	  {
 		 programId:programId,
@@ -1441,6 +1443,9 @@ function exportToExcel()
 		  $("#attendanceDiv").html('');
 		  $("#attendanceDiv").show();
 		  $("#exportExcelAttendanceDiv").html('');
+		  
+		  getDayWiseAttendnenceForBatch();
+		  
 		  var jsObj={
 			  batchId : batchId
 		  }
@@ -1465,7 +1470,6 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 				str+='<th>Name</th>';
 				str+='<th>Mobile</th>';
 				str+='<th>Committee</th>';
-				str+='<th>Designation</th>';
 				str+='<th>Constituency</th>';
 				var dates = results[0].simpleVoList;
 				if(dates != null && dates.length > 0){
@@ -1503,15 +1507,19 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 					}
 					str+='<td>'+results[i].mobileNo+'</td>';
 					if(results[i].designationLocation !=null && results[i].designationLocation !=""){
-						str+='<td>'+results[i].designationLocation+'</td>';
+						str+='<td>'+results[i].designationLocation+'';
+							if(results[i].designation !=null && results[i].designation != ""){
+							str+='<p>'+results[i].designation+'</p>';
+							}
+						str+='</td>';
 					}else{
-						str+='<td>-</td>';
+						str+='<td>-';
+						if(results[i].designation !=null && results[i].designation != ""){
+							str+='<p>'+results[i].designation+'</p>';
+							}
+						str+='</td>';
 					}
-					if(results[i].designation !=null && results[i].designation != ""){
-						str+='<td>'+results[i].designation+'</td>';
-					}else{
-						str+='<td>-</td>';
-					}
+					
 					
 					str+='<td>'+results[i].constituencyName+'</td>';
 					for(var j in results[i].simpleVoList){
@@ -1595,7 +1603,7 @@ function getFeedBackOrAttendanceDetails()
 	$("#exportExcelDivId").hide();
 	var val = $('input:radio[name=radio]:checked').val();
 	
-	getDayWiseAttendnenceForBatch();
+	
 	if(val == "feedback"){
 		getBatchesByProgramAndCenter();
 	}
