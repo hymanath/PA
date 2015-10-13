@@ -50,7 +50,7 @@ header.trainingHeader {
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:30px;"></p>               
+                 <p class="header-text display-style" id="mainheading" style="font-size:30px;"></p>
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
@@ -77,15 +77,16 @@ header.trainingHeader {
                 <div class="panel panel-default" style="box-shadow:0px 0px 5px rgba(0,0,0,0.2)">
                     <div class="panel-heading bg_c">
                         <h4 class="panel-title"><b>TRAINING PROGRAMME DASHBOARD</b> <span class="font-12"> (<span class="text-danger" id="titleName"></span>)</span>
-                        <!--<select class="pull-right">
-                        	<option>Select Program / View Other Program</option>
-                        </select>-->
+                        <!--<span class="pull-right">
+							<input type="radio" value="completed" name="comOrAll" class="comAllRadio" id="completedRadio"/><label>&nbsp; Completed</label>
+							<input type="radio" value="all" name="comOrAll" class="comAllRadio" id="allRadio"/><label> &nbsp;All</label>
+						</span>-->
                         </h4>                            
                     </div>
                     <div class="panel-body" style="background-color:#EFF3F4">
 						<section>
                         	<div class="row">
-                            	<div class="col-md-6">
+                            	<div class="col-md-8">
                                 	<div class="panel panel-default"  id="summaryDivLeftPanel">
                                     	<div class="panel-heading bg_d">
                                         	<h4 class="text-center panel-title" style="font-weight:bold;" id="titleSummary">PROGRAMME SUMMARY</h4>
@@ -93,7 +94,7 @@ header.trainingHeader {
 										<div id="programSummaryDivId"></div>
                                     </div>	
                                 </div>
-								<div class="col-md-6 pull-right">
+								<div class="col-md-4 pull-right">
                                 	<table class="table table-bordered m_0 bg_ff">
                                     	<tr>
                                         	<td>
@@ -179,7 +180,11 @@ var programId = '${param.pd}';
 var campId = '${param.cd}';
 var batchId = '${param.bd}';
 var dates = '${param.dts}';
+var callFrom = '${param.cf}';
 
+if(callFrom=="c"){
+	$("#completedRadio").prop("checked", true)
+}
 
 $('.close-icon').click(function(){
 		$('#collapseInnerOne').removeClass('in');
@@ -191,16 +196,16 @@ $("#mainheading").html("TRAINING PROGRAMME DASHBOARD");
 getattendedcountByFeedBacks();
 getAttendedCountsByProgramOrCampOrBatch("dist");
 
-if(batchId!=null && batchId>0){
-	getAttendedCountSummaryByBatch();
-}
+
+getAttendedCountSummaryByBatch();//function for getting batch wise attendence
+
 
 if((batchId==null || batchId==0) && (campId==null || campId==0) && (programId!=null && programId >0)){
-	getProgramSummary();
+	//getProgramSummary();
 }
 
 if(batchId==null || batchId == 0 && campId!=null && campId>0){
-	getCampSummary();
+	//getCampSummary();
 }
 
 
@@ -221,6 +226,7 @@ function getAttendedCountsByProgramOrCampOrBatch(fromType)
 		campId:campId,
 		batchId:batchId,
 		dates:dates,
+		callFrom:callFrom,
 		fromType:fromType
 	}
 	$.ajax({
@@ -311,6 +317,7 @@ function getattendedcountByFeedBacks()
 		programId:programId,
 		campId:campId,
 		batchId:batchId,
+		callFrom:callFrom,
 		dates:dates
 	}
 	$.ajax({
@@ -481,11 +488,14 @@ function buildAttendedCountByFeedBacks(result)
 }
 
 function getAttendedCountSummaryByBatch(){
-	$("#titleSummary").html('BATCH ATTENDANCE SUMMARY');
+	$("#titleSummary").html('BATCH WISE ATTENDANCE SUMMARY');
 	$("#programSummaryDivId").html('');
 	
 	var jsObj = {
+		programId:programId,
+		campId:campId,
 		batchId:batchId,
+		callFrom:callFrom,
 		dates:dates
 	}
 	
@@ -504,8 +514,48 @@ function getAttendedCountSummaryByBatch(){
 
 function buildAttendedCountSummaryByBatch(result){
 	
-	var str='';
-		str+='<table class="table table-bordered text-center">';
+	
+	if(result!=null && result.length>0){
+		var str='';
+			str+='<table class="table table-bordered m_0">';
+			str+='<thead class="bg_d">';
+			str+='<tr>';
+			str+='<th>Center</th>';
+			str+='<th>Batch</th>';
+			str+='<th>Day 1 Count</th>';
+			str+='<th>Day 2 Count</th>';
+			str+='<th>Day 3 Count</th>';
+			str+='<th>1 Day Attended Members</th>';
+			str+='<th>2 Days Attended Members</th>';
+			str+='<th>3 Days Attended Members</th>';
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+				str+='<td>'+result[i].centerName+'</td>';
+				str+='<td>'+result[i].batchName+'</td>';
+				for(var j in result[i].simpleVOList1){
+					if(result[i].simpleVOList1[j].total!=null){
+						str+='<td>'+result[i].simpleVOList1[j].total+'</td>'
+					}else{
+						str+='<td>0</td>'
+					}
+				}
+				str+='<td>'+result[i].day1Count+'</td>';
+				str+='<td>'+result[i].day2Count+'</td>';
+				str+='<td>'+result[i].day3Count+'</td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+				$("#programSummaryDivId").html(str);
+		}else{
+			$("#programSummaryDivId").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
+		}
+			
+	/*var str='';
+		 str+='<table class="table table-bordered text-center">';
 			str+='<tr>';
 				str+='<td colspan="2" class="bg_ff"><h4 class="m_0 text-center">TOTAL CONFIRMED PEOPLE - '+result.total+'</h4></td>';
 			str+='</tr>';
@@ -521,12 +571,12 @@ function buildAttendedCountSummaryByBatch(result){
 					str+='<td>Absent - '+result.simpleVOList1[i].count+'</td>';
 				str+='</tr>';
 			}
-		str+='</table>';
+		str+='</table>'; 
 	
-	$("#programSummaryDivId").html(str);
+	$("#programSummaryDivId").html(str);*/
 }
 
-function getProgramSummary(){
+/*function getProgramSummary(){
 	$("#titleSummary").html('PROGRAMME SUMMARY');
 	$("#programSummaryDivId").html('');
 	var jsObj = {
@@ -568,9 +618,9 @@ function buildProgramSummaryDetails(result)
 			str+='</table>';
 		str+='</div>';
 	$("#programSummaryDivId").html(str);
-}
+}*/
 
-function getCampSummary(){
+/*function getCampSummary(){
 	$("#titleSummary").html('CAMP SUMMARY');
 	$("#programSummaryDivId").html('');
 	var jsObj = {
@@ -612,7 +662,7 @@ function buildCampSummaryDetails(result)
 			str+='</table>';
 		str+='</div>';
 	$("#programSummaryDivId").html(str);
-}
+}*/
 
 getProgCampBatchNames();
 function getProgCampBatchNames(){
@@ -710,6 +760,20 @@ function buildSurveyDetails(result)
 	$(".distrconstdtls").click(function(){
 		getAttendedCountsByProgramOrCampOrBatch($(this).val());
 	});
+	
+	/* $(".comAllRadio").click(function(){
+		if($(this).val()=="all"){
+			callFrom="all";
+			getattendedcountByFeedBacks();
+			getAttendedCountsByProgramOrCampOrBatch($('input[name=distconst]:checked').val());
+			getAttendedCountSummaryByBatch();
+		}else if($(this).val()=="completed"){
+			callFrom="completed";
+			getattendedcountByFeedBacks();
+			getAttendedCountsByProgramOrCampOrBatch($('input[name=distconst]:checked').val());
+			getAttendedCountSummaryByBatch();
+		}
+	}); */
 </script>
 </body>
 </html>	
