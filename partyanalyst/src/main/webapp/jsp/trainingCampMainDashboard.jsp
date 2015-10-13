@@ -1718,9 +1718,9 @@ function buildDayWiseAttendnenceForBatch(result,center){
 				str+='<th>Day 1 Count</th>';
 				str+='<th>Day 2 Count</th>';
 				str+='<th>Day 3 Count</th>';
-				str+='<th>1 Day Attended Cadres</th>';
-				str+='<th>2 Days Attended Cadres</th>';
-				str+='<th>3 Days Attended Cadres</th>';
+				str+='<th>1 Day Attended Members</th>';
+				str+='<th>2 Days Attended Members</th>';
+				str+='<th>3 Days Attended Members</th>';
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';

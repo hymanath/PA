@@ -103,9 +103,7 @@ header.eventsheader {
                         </h4>
                     </div>
                     <div class="panel-body">
-						<div class="pull-right font-12"><span style="color:red">*</span>
-												<span>C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span></div>
-                    	<section>
+						<section>
                         	<div class="row">
                             	<div class="col-md-12">
                                 	<table class="table table-bordered">
@@ -128,22 +126,22 @@ header.eventsheader {
 												<table class="table-condensed m_0" align="center" style="padding:5px;">
 													<tr>
 														<td>
-															<h4>TOTAL MEMBERS</h4>
+															<!--<h4>TOTAL MEMBERS</h4>
 															<ul style="padding-left:10px;">
 																<li><span id="totalMembers">0</span> CONFIRMED</li>
 																<li><span id="totalMembersIn">0</span> INVITEE ATTENDED</li>
 																<li><span id="totalMembersNonIn">0</span> NON INVITEE ATTENDED</li>
-															</ul>
+															</ul>-->
 															<!--<h1 class="m_0" id="totalMembers">0</h1> 
 															<p class="m_0">Total Members</p>	-->
 														</td>
 														<td>
-															<table class="font-12 m_0 table-bordered table table-condensed text-center">
+															<table class="font-13 m_0 table-bordered table table-condensed text-center">
 																<tr>
 																	<td></td>
 																	<td>Confirmed</td>
-																	<td>Invitees<br>Attended</td>
-																	<td>Non-Invitees<br>Attended</td>
+																	<td>Invitees Attended</td>
+																	<td>Non-Invitees Attended</td>
 																</tr>
 																<tr class="text-danger">
 																	<td >UPCOMING - </td>
@@ -162,6 +160,12 @@ header.eventsheader {
 																	<td id="completedMembers" style="font-weight:bold;">0</td>
 																	<td id="completedMembersAte" style="font-weight:bold;">0</td>
 																	<td id="completedMembersNonAte" style="font-weight:bold;">0</td>
+																</tr>
+																<tr>
+																	<td >TOTAL  </td>
+																	<td id="totalMembers" style="font-weight:bold;">0</td>
+																	<td id="totalMembersIn" style="font-weight:bold;">0</td>
+																	<td id="totalMembersNonIn" style="font-weight:bold;">0</td>
 																</tr>
 															</table>
 															 <!--<ul class="ul-top-block m_0 font-12">
@@ -201,7 +205,7 @@ header.eventsheader {
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">DAY WISE BATCH COUNTS FOR CURRENTLY RUNNING TRAINING PROGRAMS</h4>
+                                        	<h4 class="panel-title text-bold">Currently Running Batches Attendence</h4>
                                         </div>
                                         <div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
 										</div>
@@ -209,6 +213,9 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						<div class="pull-right font-13"><span style="color:red">*</span>
+							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
+						</div>
                     	<section>
                             <div class="row">
                             	<div class="col-md-12">
@@ -223,6 +230,9 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						<div class="pull-right font-13"><span style="color:red">*</span>
+							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
+						</div>
                         <section>
                             <div class="row">
                             	<div class="col-md-12">
@@ -236,6 +246,9 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						<div class="pull-right font-13"><span style="color:red">*</span>
+							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
+						</div>
                         <section>
                             <div class="row">
                             	<div class="col-md-12">
@@ -249,7 +262,9 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
-						
+						<div class="pull-right font-13"><span style="color:red">*</span>
+							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
+						</div>
                         <section>
                             <div class="row">
                             	<div class="col-md-12">
@@ -485,15 +500,15 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				var myResult = result.completed.programDetails;
 				if(result.completed.completedBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_from='c' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_from='c' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='c' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										str+='<td><b>'+schedule.batchDetails[m].completedMemberAttendeeCount+'</b> C - <b>'+schedule.batchDetails[m].completedMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].completedAttendenceNonIn+'</b> NIA</td>';
 										
@@ -548,18 +563,18 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			for(var i in result.running.programDetails){
 				var myResult = result.running.programDetails;
 				str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_from='r' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_from='r' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='r' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].runningMemberCount!=null){
-											str+='<td><b>'+schedule.batchDetails[m].runningMemberCount+'</b> C - <b>'+schedule.batchDetails[m].runningAttendenceMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].runningAttendenceNonIn+'</b> NTA</td>';
+											str+='<td><b>'+schedule.batchDetails[m].runningMemberCount+'</b> C - <b>'+schedule.batchDetails[m].runningAttendenceMemberCount+'</b> IA - <b>'+schedule.batchDetails[m].runningAttendenceNonIn+'</b> NIA</td>';
 										}else{
 											str+='<td>0</td>';
 										}
@@ -655,15 +670,15 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				var myResult = result.upcoming.programDetails;
 				if(result.upcoming.upComingBatchIds!=null){
 					str+="<tr>";
-					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
+					str+="<td rowspan="+obj[myResult[i].programId]+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_batch_id='0' attr_from='u' attr_camp_id='0' style='cursor:pointer' title='Click Here TO View Program Summary'>"+myResult[i].programName+"</td>";
 					for(var j in myResult[i].campDetails){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
-						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
+						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_from='u' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
-										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
+										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='u' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
 										str+='<td>'+schedule.batchDetails[m].batchDates+'</td>';
 										if(schedule.batchDetails[m].upCommingMemberCount!=null){
 											str+='<td><b>'+schedule.batchDetails[m].upCommingMemberCount+'</b> C</td>';
@@ -935,7 +950,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			//day wise attendence for currently running batches
 			if(result!=null && result.length>0){
 				var str='';
-				str+='<table class="table table-bordered m_0">';
+				str+='<table class="table table-bordered m_0 text-center">';
 				str+='<thead class="bg_d">';
 				str+='<tr>';
 				str+='<th>Center</th>';
@@ -943,9 +958,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<th>Day 1 Count</th>';
 				str+='<th>Day 2 Count</th>';
 				str+='<th>Day 3 Count</th>';
-				str+='<th>1 Day Attended Cadres</th>';
-				str+='<th>2 Days Attended Cadres</th>';
-				str+='<th>3 Days Attended Cadres</th>';
+				str+='<th>1 Day Attended Members</th>';
+				str+='<th>2 Days Attended Members</th>';
+				str+='<th>3 Days Attended Members</th>';
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -1139,12 +1154,13 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		var campId = $(this).attr("attr_camp_id");
 		var batchId = $(this).attr("attr_batch_id");
 		var dates = $("#selectDate").val();
+		var callFrom = $(this).attr("attr_from");
 		if(fromTypeGlob=="onClick"){
 			dates = $("#selectDate").val();
 		}else{
 			dates="";
 		}
-		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'', '_blank');
+		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'&cf='+callFrom+'', '_blank');
 	});
 	
 	$(".constDistRadio").click(function(){
