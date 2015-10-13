@@ -152,41 +152,29 @@ color: red !important;
 								<span class="btn btn-info 	excelId form-inline" onclick="exportToExcel()" display:inline-block;> Export To Excel </span>
 							</div>
 						</div>
-						<div id="checkBoxDiv" class="m_top20"  style="display:none">
+						<div id="checkBoxDiv" class="m_top20"  style="display:none;margin-left: -88px;">
 							<div class="row">
-								<div class="col-md-10 col-md-offset-1">
+								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;width:1025px">
 									<div class="col-md-2">
 										<label class="checkbox"><input type="checkbox" value="selectAll" id="selecctall">Select All</label>
+									</div>
+									<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="isFamilyUpdated" checked="true" id="isFamilyUpdatedId" class="checkbox">IsFamily Updated</label>
+									</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input type="checkbox" value="achievements" id="acheivementsId" class="checkbox">Achievements</label>
+									</div>
+									<div class="col-md-3">
+											<label class="checkbox"><input type="checkbox" value="communicationSkills" id="communicationSkillsCheckId" class="checkbox">Communication Skills</label>
+										</div>
+									<div class="col-md-2">
+										<label class="checkbox"><input type="checkbox" value="leaderShipLevel" id="leadershipLevelCheckId" class="checkbox">LeaderShip Level</label>
 									</div>
 								</div>
 							</div>
 							<div style="" class="row">
-								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;">
-									<div class="">
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="isFamilyUpdated" checked="true" id="isFamilyUpdatedId" class="checkbox">IsFamily Updated</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="achievements" id="acheivementsId" class="checkbox">Achievements</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="goals" id="goalsId" class="checkbox">Goals</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="leaderShipLevel" id="leadershipLevelCheckId" class="checkbox">LeaderShip Level</label>
-										</div>
-										<div class="col-md-3">
-											<label class="checkbox"><input type="checkbox" value="communicationSkills" id="communicationSkillsCheckId" class="checkbox">Communication Skills</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="leaderShipSkills" id="leadershipSkillsCheckId" class="checkbox">LeaderShip Skills</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="health" id="healthCheckId" class="checkbox">Health</label>
-										</div>
-										<div class="col-md-2">
-											<label class="checkbox"><input type="checkbox" value="smartPhoneUsing" id="smartPhoneUsingId" class="checkbox">SmartPhone Using</label>
-										</div>
+								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;width:1025px">
+									<div class="">										
 										<div class="col-md-2">
 											<label class="checkbox"><input type="checkbox" value="whatsUpUsing" id="whatsupUsingId" class="checkbox">WhatsUp Using</label>
 										</div>
@@ -196,6 +184,27 @@ color: red !important;
 										<div class="col-md-2">
 											<label class="checkbox"><input type="checkbox" value="facebookKnown" id="facebookKnownId" class="checkbox">Facebook Known</label>
 										</div>
+									
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="leaderShipSkills" id="leadershipSkillsCheckId" class="checkbox">LeaderShip Skills</label>
+										</div>
+										
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="smartPhoneUsing" id="smartPhoneUsingId" class="checkbox">SmartPhone Using</label>
+										</div>										
+								  </div>
+								</div>
+							</div>
+							<div style="" class="row">
+								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;width:1025px">
+									<div class="">		
+<div class="col-md-2">
+										<label class="checkbox"><input type="checkbox" value="goals" id="goalsId" class="checkbox">Goals</label>
+									</div>	
+<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="health" id="healthCheckId" class="checkbox">Health</label>
+										</div>									
+										
 								  </div>
 								</div>
 							</div>
