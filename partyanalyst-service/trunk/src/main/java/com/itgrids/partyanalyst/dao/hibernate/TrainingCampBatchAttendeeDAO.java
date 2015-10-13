@@ -92,7 +92,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	    " tccf.cadre_leadership_level_id,tccf.cadre_comminication_skills_status_id,tccf.cadre_leadership_skills_status_id,tccf.cadre_health_status_id, " +
 	    " tcb.is_feedback_updatable,tcl.tdp_committee_level,tr.role,tbc.name," +
 	    " tccf.smart_phone_exist,tccf.watsapp_using,tccf.watsapp_share,tccf.facebook_using," +
-	    " tce.tdp_committee_level_id,tce.tdp_committee_level_value,tc.membership_id " +
+	    " tce.tdp_committee_level_id,tce.tdp_committee_level_value,tc.membership_id,tccf.healthCardAttachment " +
     				       
    " from training_camp_batch_attendee tcba  join training_camp_batch tcb on tcba.training_camp_batch_id=tcb.training_camp_batch_id " +
         " join training_camp_schedule tcs on tcs.training_camp_schedule_id=tcb.training_camp_schedule_id " +

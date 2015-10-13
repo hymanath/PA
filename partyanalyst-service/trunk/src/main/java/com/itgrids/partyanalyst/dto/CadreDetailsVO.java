@@ -40,6 +40,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	
 	private String partyPosition;
 	private String position;
+	private String healthCardImage;
 	
 	private Map<Long,CadreDetailsVO> subMap;
 	private List<CadreDetailsVO> subList;
@@ -336,5 +337,12 @@ public class CadreDetailsVO implements java.io.Serializable{
 	public void setFamilyUpdted(String familyUpdted) {
 		this.familyUpdted = familyUpdted;
 	}
+	public String getHealthCardImage() {
+		return healthCardImage;
+	}
+	public void setHealthCardImage(String healthCardImage) {
+		this.healthCardImage = healthCardImage;
+	}
+	
                  	
 }
