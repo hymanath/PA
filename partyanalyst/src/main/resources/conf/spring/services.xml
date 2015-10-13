@@ -2780,6 +2780,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO"/>
 		<property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"/>
+		<property name="trainingCampCadreFeedbackHealthCardDAO" ref="trainingCampCadreFeedbackHealthCardDAO"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">

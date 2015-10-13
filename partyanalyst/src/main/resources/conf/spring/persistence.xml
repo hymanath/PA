@@ -685,8 +685,8 @@
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingIvrStatus</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
-				 
-				</list>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard</value>
+			     </list>
 			
 		</property>
 	</bean>

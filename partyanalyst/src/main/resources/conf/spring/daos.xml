@@ -2326,6 +2326,10 @@
 	 <bean id="cadreDeleteReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDeleteReasonDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
+	 
+	  <bean id="trainingCampCadreFeedbackHealthCardDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackHealthCardDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 
 	<!--  end -->
 </beans>		
