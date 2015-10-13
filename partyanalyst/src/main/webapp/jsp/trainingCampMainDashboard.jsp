@@ -387,7 +387,7 @@ function exportToExcel()
                       str+='<table class="table table-bordered m_0 temptable" style="font-size:12px">';
                       str+='<thead>';
 					  str+='<th>Image</th>';
-                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th><th>Designation</th>';
+                      str+='<th>Name</th><th>Mobile</th><th>Constituency</th><th>Committee</th>';
 					  if(checkBoxArray[0]){
 						str+='<th>IsFamilyUpdated</th>';
 					  }
@@ -455,15 +455,38 @@ function exportToExcel()
 					   str+='<td>'+results[i].subList[j].mobileno+'</td>'
 					   str+='<td>'+results[i].subList[j].constituency+'</td>';
 					   if(results[i].subList[j].committeeLevel.trim().length==0){
-						   str+='<td> - </td>';
+						   str+='<td> - ';
+						   
+						   if(results[i].subList[j].committeeType.trim().length==0){
+						   }
+						   else if(results[i].subList[j].committeeType == "Main"){
+							    str+='<p><b>Designation</b> : '+results[i].subList[j].committeeRole+'</p>';
+						   }
+						   else{
+							   str+='<p><b>Designation</b> : '+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</p>';
+						   }
+						   
+						  str+='</td>';
+						   
 					   }else{
-						   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+')</td>';
+						   str+='<td>'+results[i].subList[j].committeeLevel+' Committee ('+results[i].subList[j].position+') ';
+						   
+						   if(results[i].subList[j].committeeType.trim().length==0){
+						   }
+						   else if(results[i].subList[j].committeeType == "Main"){
+							    str+='<p><b>Designation</b> : '+results[i].subList[j].committeeRole+'</p>';
+						   }
+						   else{
+							   str+='<p><b>Designation</b> : '+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</p>';
+						   }
+						   
+						   str+='</td>';
 					   }
-					   if(results[i].subList[j].committeeType.trim().length==0){
+					  /*  if(results[i].subList[j].committeeType.trim().length==0){
 						   str+='<td> - </td>';
 					   }else{
 						   str+='<td>'+results[i].subList[j].committeeType+'- '+results[i].subList[j].committeeRole+'</td>';
-					   }
+					   } */
 					   if(checkBoxArray[0]){
 						   str+='<td>'+results[i].subList[j].familyUpdted+'</td>';
 					   }
