@@ -917,7 +917,7 @@ public interface IConstants {
     public static final String CONFIRMATION="Confirmation";
     public static final String BATCH_CHANGE="Batch Change";
     
-    //public static final String LOCAL_FILES_FOLDER =	"D:/tomcat 6.0/webapps/DocFiles";
+   //public static final String LOCAL_FILES_FOLDER =	"D:/tomcat 6.0/webapps/DocFiles";
     //public static final String LOCAL_FILES =	"http://localhost:8080/DocFiles";
     
     public static final String LOCAL_FILES_FOLDER =	"/app/apache-tomcat-6.0.37/webapps/DocFiles";
@@ -947,6 +947,7 @@ public interface IConstants {
     public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=3L;
     public static final Long MONTHLY_STATE_MEETING_ID=1L;
     public static final Long MONTHLY_DISTRICT_MEETING_ID=2L;
-
-	 public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
+    
+    public static final String CADRE_HEALTH_CARD_FOLDER ="C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\tdp_cadre_health_cards";
+    public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
 }
