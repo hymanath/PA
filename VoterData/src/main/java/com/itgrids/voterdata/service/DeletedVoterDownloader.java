@@ -19,14 +19,18 @@ public class DeletedVoterDownloader {
 
     public static void main(String args[]) throws InterruptedException, Exception 
     {
-    	int i = 40;
+    	
+    	downloadData("E","I:\\Kamal\\46-Expired.txt",46,5,1);
+    	//constituency_no,district_no,page_index
+    	
+    	/*int i = 40;
     	int n = 40;
     	int d = 4;
     	
-    	for(;i<=n;i++)
+    	/*for(;i<=n;i++)
     	{
     		try{
-    			downloadData("M","D:\\Kamal\\"+i+"-Door_Locked.txt",i,d);
+    			downloadData("M","F:\\Kamal\\"+i+"-Door_Locked.txt",i,d);
     			//downloadData("E","D:\\Kamal\\"+i+"-Expired.txt",i,d);
     	    	downloadData("S","D:\\Kamal\\"+i+"-Shifted.txt",i,d);
     	    	//downloadData("R","D:\\Kamal\\"+i+"-Duplicate.txt",i,d);
@@ -36,11 +40,11 @@ public class DeletedVoterDownloader {
     		{
     			e.printStackTrace();
     		}
-    	}
+    	}*/
     }
     		
     		
-    public static void downloadData(String type,String filePath,int constituencyId,int districtId) throws InterruptedException, Exception 
+    public static void downloadData(String type,String filePath,int constituencyId,int districtId,int index) throws InterruptedException, Exception 
     {
         
     	FirefoxBinary binary = new FirefoxBinary(new File(IConstants.FIREFOX_PATH));
@@ -54,7 +58,7 @@ public class DeletedVoterDownloader {
         
         WebDriver driver = new FirefoxDriver(binary,profile);
 
-        driver.get(IConstants.VOTER_DATA_SITE_URL);
+        driver.get("http://ceoaperms.ap.gov.in/ts_eregistration/eregistrationnew/Search_F7.aspx");
         
         BufferedWriter outwriter = new BufferedWriter(new FileWriter(filePath));
         
@@ -77,7 +81,7 @@ public class DeletedVoterDownloader {
         WebElement submit = driver.findElement(By.id("Button1"));
         submit.click();
         
-        getTableData(driver,outwriter,1);
+        getTableData(driver,outwriter,index);
         outwriter.close();
         
         driver.quit();
