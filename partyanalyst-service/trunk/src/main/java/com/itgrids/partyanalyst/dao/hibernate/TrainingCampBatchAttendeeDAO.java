@@ -172,6 +172,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadreId) " +
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' " +
+	   		" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false'  " +
 	   		" group by model.trainingCampBatchId ");
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
@@ -180,7 +181,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    public List<Object[]> getRunningUpcomingCountDetails(List<Long> batchIds){
 	   Query query = getSession().createQuery(" select model.trainingCampBatchId, model.tdpCadreId " +
 	   		" from TrainingCampBatchAttendee model " +
-	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' ");
+	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' and model.trainingCampBatch.isCancelled='false' and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' ");
 	   query.setParameterList("batchIds", batchIds);
 	   return (List<Object[]>)query.list();
    }
@@ -242,6 +243,47 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where model.trainingCampBatchId=:batchId and model.isDeleted = 'false' ");
 	   query.setParameter("batchId", batchId);
+	   return (List<Long>)query.list();
+   }
+   
+   public List<Object[]> getInvitedCounts(List<Long> batchIds){
+	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadre.tdpCadreId) " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted='false' " +
+	   		" group by model.trainingCampBatchId ");
+	   query.setParameterList("batchIds", batchIds);
+	   return query.list();
+   }
+   
+   public List<Object[]> getInvitedDetails(List<Long> batchIds){
+	   Query query = getSession().createQuery(" select distinct model.trainingCampBatchId, model.tdpCadre.tdpCadreId " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted='false' ");
+	   query.setParameterList("batchIds", batchIds);
+	   return query.list();
+   }
+   
+   public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId){
+	   Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,count(distinct model.tdpCadre.tdpCadreId) " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
+	   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
+	   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' " +
+	   		"and model.isDeleted='false' ");
+	   query.setParameter("centerId", centerId);
+	   query.setParameter("programId", programId);
+	   return query.list();
+   }
+   
+   public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId){
+	   Query query = getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
+	   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
+	   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' " +
+	   		"and model.isDeleted='false' ");
+	   query.setParameter("centerId", centerId);
+	   query.setParameter("programId", programId);
 	   return (List<Long>)query.list();
    }
    
