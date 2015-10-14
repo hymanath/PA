@@ -690,7 +690,7 @@
 				 <value>com.itgrids.partyanalyst.model.StudentRecomendation</value>
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.AtendeeType</value>
 			</list>
 		</property>
 	</bean>
