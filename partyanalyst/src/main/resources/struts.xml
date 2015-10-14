@@ -10943,5 +10943,11 @@
 		</result>
 	</action>
 	
+	<action name="getAttendenceForTrainersAction" class="trainingCampAction" method="getAttendenceForTrainers">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVOList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
