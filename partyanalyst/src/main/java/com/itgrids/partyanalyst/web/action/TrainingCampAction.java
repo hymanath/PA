@@ -2360,4 +2360,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
     
+    public String getAttendenceForTrainers(){
+    	try {
+			LOG.info("ntered into getAttendenceForTrainers");
+			jObj=new JSONObject(getTask());
+			String type=jObj.getString("type");
+			
+			simpleVOList = trainingCampService.getAttendenceForTrainers(type);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAttendenceForTrainers", e);
+		}
+    	return Action.SUCCESS;
+    }
+    
 }
