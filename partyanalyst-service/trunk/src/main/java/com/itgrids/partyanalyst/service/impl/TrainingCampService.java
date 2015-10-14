@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.geom.NoninvertibleTransformException;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -8158,5 +8160,181 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			
 			return simpleVO;
+		}
+		
+		public List<SimpleVO> getAttendenceForTrainers(String type){
+			List<SimpleVO> finalvo = new ArrayList<SimpleVO>();
+			try {
+				LOG.info("Entered into getAttendenceForTrainers");
+				
+				Date fromDate=null,toDate=null;
+				if(type.equalsIgnoreCase("today")){
+					Calendar c=new GregorianCalendar();
+					fromDate=c.getTime();
+					toDate=c.getTime();
+				}else if(type.equalsIgnoreCase("fifteen")){
+					Calendar c=new GregorianCalendar();
+					toDate=c.getTime();
+					c.add(Calendar.DATE, -15);
+					fromDate=c.getTime();
+				}else if(type.equalsIgnoreCase("thirty")){
+					Calendar c=new GregorianCalendar();
+					toDate=c.getTime();
+					c.add(Calendar.DATE, -30);
+					fromDate=c.getTime();
+				}
+				
+				//test
+				List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
+				
+				if(res!=null && res.size()>0){
+					for(Object[] object:res){
+						SimpleVO vo = new SimpleVO();
+						vo.setCenterId((Long)object[0]);
+						vo.setCenterName(object[1].toString());
+						vo.setProgName(object[3].toString());
+						
+						List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2]);
+						if(invited!=null && invited.size()>0){
+							Object[] obj = invited.get(0);
+							vo.setInviteeCount((Long)obj[1]);
+						}
+						
+						List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+						if(inviteeAttended!=null && inviteeAttended.size()>0){
+							Object[] obj = inviteeAttended.get(0); 
+							vo.setInviteeAttendedCount((Long)obj[1]);
+						}
+						
+						List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2]);
+						List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+						
+						int temp=0;
+						if(attendedDetails!=null && attendedDetails.size()>0 && invitedDetails!=null && invitedDetails.size()>0){
+							for(Long long1:attendedDetails){
+								if(!invitedDetails.contains(long1)){
+									temp=temp+1;
+								}
+							}
+						}
+						
+						vo.setNonInviteeAttendedCount(temp);
+						
+						finalvo.add(vo);
+						
+					}
+					
+				}
+				
+				
+				//test
+				
+				/*List<Object[]> res = trainingCampBatchDAO.getAllBatchesForTrainers();
+				
+				Map<Long,List<Long>> centers = new HashMap<Long, List<Long>>();
+				for(Object[] obj:res){
+					if(centers.get((Long)obj[2])==null){
+						SimpleVO vo = new SimpleVO();
+						vo.setCenterId((Long)obj[2]);
+						vo.setCenterName(obj[3].toString());
+						finalvo.add(vo);
+						centers.put((Long)obj[2], new ArrayList<Long>());
+					}
+					centers.get((Long)obj[2]).add((Long)obj[0]);
+				}
+				
+								
+				for (Map.Entry<Long,List<Long>> entry : centers.entrySet()){
+					List<SimpleVO> voList = new ArrayList<SimpleVO>();
+					List<Long> batchIds = entry.getValue();
+					
+					Map<Long,Long> invitedCounts = new HashMap<Long, Long>(0);
+					Map<Long,Long> inviteeAttendedCounts = new HashMap<Long, Long>(0);
+					Map<Long,Long> NIACount = new HashMap<Long, Long>(0);
+					
+					if(batchIds!=null && batchIds.size()>0){
+						List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCounts(batchIds);
+						if(invited!=null && invited.size()>0){
+							for (Object[] objects : invited) {
+								invitedCounts.put((Long)objects[0], (Long)objects[1]);
+							}
+						}
+
+						List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCounts(batchIds,fromDate,toDate);
+						if(inviteeAttended!=null && inviteeAttended.size()>0){
+							for (Object[] objects : inviteeAttended) {
+								inviteeAttendedCounts.put((Long)objects[0], (Long)objects[1]);
+							}
+						}
+					
+						List<Object[]> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetails(batchIds);
+						List<Object[]> inviteeAttendedDetails = trainingCampAttendanceDAO.getInviteeAttendedDetails(batchIds,fromDate,toDate);
+						
+						List<SimpleVO> voList1 = new ArrayList<SimpleVO>();
+						if(invitedDetails!=null && invitedDetails.size()>0 && inviteeAttendedDetails!=null && inviteeAttendedDetails.size()>0){
+							
+							for(Long long2:batchIds){
+								SimpleVO tempVo = new SimpleVO();
+								tempVo.setBatchId(long2);
+								for(Object[] obj:invitedDetails){
+									Long t=(Long)obj[0];
+									if(long2.equals(t)){
+										tempVo.getInviteeList().add((Long)obj[1]);
+									}
+								}
+								for(Object[] obj1:inviteeAttendedDetails){
+									Long t=(Long)obj1[0];
+									if(long2.equals(t)){
+										tempVo.getInviteeAttendedList().add((Long)obj1[1]);
+									}
+								}
+								
+								voList1.add(tempVo);
+							}
+							
+						}
+						
+						if(voList1!=null && voList1.size()>0){
+							for (SimpleVO simpleVO : voList1) {
+								List<Long> batchinvitees = simpleVO.getInviteeList();
+								List<Long> batchInviteeAteendeed = simpleVO.getInviteeAttendedList();
+								Long temp=0l;
+								for(Long temp1:batchInviteeAteendeed){
+									if(!batchinvitees.contains(temp1)){
+										temp++;
+									}
+								}
+								NIACount.put(simpleVO.getBatchId(), temp);
+							}
+						}
+						
+						for(Long fLong:batchIds){
+							SimpleVO vo = new SimpleVO();
+							vo.setBatchId(fLong);
+							invitedCounts.get(fLong);
+							inviteeAttendedCounts.get(fLong);
+							NIACount.get(fLong);
+							voList.add(vo);
+						}
+					}
+					
+					for(SimpleVO vo:finalvo){
+						if(vo.getCenterId().equals(entry.getKey())){
+							vo.setSimpleVOList1(voList);
+						}
+					}
+				}
+				
+				
+				
+				*/
+				
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at getAttendenceForTrainers ", e);
+			}
+			
+			return finalvo;
+			
 		}
 }
