@@ -213,6 +213,24 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
+						<div class="col-md-12" style="background-color:#DDDDDD;">
+							<div class="pull-right" style="padding:5px;"><input type="radio" checked name="filterRadio" value="today" class="filterRadio"/><label>&nbsp;Today</label>
+							<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/><label>&nbsp;15 Days</label>
+							<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/><label>&nbsp;30 Days</label>
+							<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label></div>
+						</div>
+						<section>
+                            <div class="row">
+                            	<div class="col-md-12">
+                                	<div class="panel panel-default">
+                                    	<div class="panel-body pad_0">
+											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
+											<div id="speakersAttendence"></div>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 						<div class="pull-right font-13"><span style="color:red">*</span>
 							<span style="font-weight:bold;">C-Confirmed, IA-Invitee Attended, NIA-Non Invitee Attended</span>
 						</div>
@@ -429,6 +447,7 @@ $(function () {
 	getAttendedCountForBatchesByLocation("onLoad");
 	getInvitedAttendedCadreCountByBatchIds("onLoad");
 	getDayWiseCountsForRunningBatches("onLoad");
+	getAttendenceForTrainers("today");
 	//$(".ranges ul li:nth-child(5)").trigger("click");
 	
 });
@@ -989,6 +1008,48 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 	}
 	
+	function getAttendenceForTrainers(type){
+		var jObj={type:type}
+		$("#speakersAttendenceImg").show();
+		$.ajax({
+		   type:'POST',
+		   url :'getAttendenceForTrainersAction.action',
+		   data: {task:JSON.stringify(jObj)},
+		}).done(function(result){
+			if(result!=null && result.length>0){
+				var str='';
+				str+='<div class="panel-heading bg_d">';
+				str+='<h4 class="panel-title text-bold">Speakers Attendance</h4>';
+				str+='</div>';
+				str+='<table class="table table-bordered text-center">';
+				str+='<thead>';
+				str+='<th class="text-center">Program</th>';
+				str+='<th class="text-center">Camp</th>';
+				str+='<th class="text-center">Invitees Count</th>';
+				str+='<th class="text-center">Invitees Attended Count</th>';
+				str+='<th class="text-center">Non-Invitees Attended Count</th>';
+				str+='</thead>';				
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+					str+='<td>'+result[i].progName+'</td>';
+					str+='<td>'+result[i].centerName+'</td>';
+					str+='<td>'+result[i].inviteeCount+'</td>';
+					str+='<td>'+result[i].inviteeAttendedCount+'</td>';
+					str+='<td>'+result[i].nonInviteeAttendedCount+'</td>';
+					str+='</tr>';
+				}
+				str+='</tbody>';
+				str+='</table>';
+				$("#speakersAttendenceImg").hide();
+				$("#speakersAttendence").html(str);
+			}else{
+				$("#speakersAttendenceImg").hide();
+				$("#speakersAttendence").html("No Data Available...");
+			}
+		});
+	}
+	
 	function getInvitedAttendedCadreCountByBatchIds(fromType){
 		
 		$('#distWiseDivId').html('');
@@ -1173,6 +1234,11 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			$("#headingDiv").html("DISTRICT ");
 			$("#distDivId").show();
 		}
+	});
+	
+	$(".filterRadio").click(function(){
+		$("#speakersAttendence").html("");
+		getAttendenceForTrainers($(this).val());
 	});
 </script>
 </body>
