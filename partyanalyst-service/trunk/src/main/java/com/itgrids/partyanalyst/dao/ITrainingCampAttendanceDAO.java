@@ -26,4 +26,8 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Long> getCompletedCountsForADay(Long batchId,Date date);
 	public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates);
 	public List<Object[]> getCompletedCountDetails(List<Long> batchIds);
+	public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate);
+	public List<Object[]> getInviteeAttendedDetails(List<Long> batchIds,Date fromDate,Date toDate);
+	public List<Object[]> getInviteeAttendedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
+	public List<Long> getAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
 }
