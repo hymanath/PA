@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "training_camp_batch")
@@ -33,6 +36,9 @@ private Long maxMembers;
 private BatchStatus batchStatus;
 private String isFeedbackUpdatable;
 private String isCancelled;
+private AttendeeType attendeeType;
+private Long attendeeTypeId;
+
 
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -126,5 +132,22 @@ public void setIsCancelled(String isCancelled) {
 	this.isCancelled = isCancelled;
 }
 
+@ManyToOne(fetch = FetchType.LAZY )
+@JoinColumn(name = "attendee_type_id" , insertable = false, updatable = false)
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+public AttendeeType getAttendeeType() {
+	return attendeeType;
+}
+public void setAttendeeType(AttendeeType attendeeType) {
+	this.attendeeType = attendeeType;
+}
 
+@Column(name="attendee_type_id")
+public Long getAttendeeTypeId() {
+	return attendeeTypeId;
+}
+public void setAttendeeTypeId(Long attendeeTypeId) {
+	this.attendeeTypeId = attendeeTypeId;
+}
 }
