@@ -110,4 +110,5 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
 	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
 	public SimpleVO getDayWiseAttendnenceForBatch(Long batchId);
+	public List<SimpleVO> getAttendenceForTrainers(String type);
 }
