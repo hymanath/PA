@@ -686,6 +686,8 @@
 				 <value>com.itgrids.partyanalyst.model.PartyMeetingIvrStatus</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.AttendeeType</value>
 			     </list>
 			
 		</property>
