@@ -42,11 +42,52 @@ public class SimpleVO implements java.io.Serializable{
    private Long day2Count;
    private Long day3Count;
    
+   private Long centerId;
    private String centerName;
    private String percentage;
-	
+   private List<Long> inviteeList;
+   private List<Long> inviteeAttendedList;
+   
+   private Long inviteeCount;
+   private Long inviteeAttendedCount;
+   private int nonInviteeAttendedCount;
    
    
+   
+	public int getNonInviteeAttendedCount() {
+		return nonInviteeAttendedCount;
+	}
+	public void setNonInviteeAttendedCount(int nonInviteeAttendedCount) {
+		this.nonInviteeAttendedCount = nonInviteeAttendedCount;
+	}
+	public Long getCenterId() {
+		return centerId;
+	}
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+	public Long getInviteeCount() {
+		return inviteeCount;
+	}
+	public void setInviteeCount(Long inviteeCount) {
+		this.inviteeCount = inviteeCount;
+	}
+	public Long getInviteeAttendedCount() {
+		return inviteeAttendedCount;
+	}
+	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
+		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	public void setInviteeList(List<Long> inviteeList) {
+		this.inviteeList = inviteeList;
+	}
+	public List<Long> getInviteeAttendedList() {
+		return inviteeAttendedList;
+	}
+	public void setInviteeAttendedList(List<Long> inviteeAttendedList) {
+		this.inviteeAttendedList = inviteeAttendedList;
+	}
+
 	public String getPercentage() {
 	return percentage;
 }
