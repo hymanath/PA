@@ -450,7 +450,7 @@ function getLeaderShipDetails()
 				for(var i in results.healthCardAttachments)
 				{
 					str +='<div class="col-md-3 m_top10">';
-						str +='<a target="_blank" href="/tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
+						str +='<a target="_blank" href="tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
 					str +='</div>';
 				}
 				str +='</div>';
