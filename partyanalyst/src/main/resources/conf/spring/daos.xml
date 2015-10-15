@@ -2327,9 +2327,15 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 
-	  <bean id="trainingCampCadreFeedbackHealthCardDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackHealthCardDAO">
+	<bean id="trainingCampCadreFeedbackHealthCardDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackHealthCardDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-
+ 	  <bean id="feedbackCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackCategoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 
+	  <bean id="trainingCampFeedbackCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackCategoryDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
 	<!--  end -->
 </beans>		
