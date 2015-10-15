@@ -1759,7 +1759,7 @@ function buildDayWiseAttendnenceForBatch(result,center){
 			}
 }
 	  $(document).on("click",".updateLeaderShipSkills",function(){
-		  alert("swadhin");
+		 
 		  var cadreId=$(this).attr("attr-cadreId");
 		var batchId=$(this).attr("attr-batchId");
 		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'','_blank');
