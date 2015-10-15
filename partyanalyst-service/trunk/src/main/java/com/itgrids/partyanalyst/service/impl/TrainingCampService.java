@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampFeedbackCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleInviteeCallerDAO;
@@ -193,9 +194,13 @@ class TrainingCampService implements ITrainingCampService{
     private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
     private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
     private ITrainingCampCadreFeedbackHealthCardDAO trainingCampCadreFeedbackHealthCardDAO;
+    private ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO;
     
-    
-    
+	public void setTrainingCampFeedbackCategoryDAO(
+			ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO) {
+		this.trainingCampFeedbackCategoryDAO = trainingCampFeedbackCategoryDAO;
+	}
+
 	public ITrainingCampCadreFeedbackHealthCardDAO getTrainingCampCadreFeedbackHealthCardDAO() {
 		return trainingCampCadreFeedbackHealthCardDAO;
 	}
