@@ -2781,6 +2781,8 @@
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO"/>
 		<property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"/>
 		<property name="trainingCampCadreFeedbackHealthCardDAO" ref="trainingCampCadreFeedbackHealthCardDAO"/>
+		<property name="trainingCampFeedbackCategoryDAO" ref="trainingCampFeedbackCategoryDAO"/>
+		
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
