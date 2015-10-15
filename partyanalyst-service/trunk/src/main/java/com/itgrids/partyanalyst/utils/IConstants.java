@@ -947,7 +947,5 @@ public interface IConstants {
     public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=3L;
     public static final Long MONTHLY_STATE_MEETING_ID=1L;
     public static final Long MONTHLY_DISTRICT_MEETING_ID=2L;
-    
-    public static final String CADRE_HEALTH_CARD_FOLDER ="C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\tdp_cadre_health_cards";
     public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
 }
