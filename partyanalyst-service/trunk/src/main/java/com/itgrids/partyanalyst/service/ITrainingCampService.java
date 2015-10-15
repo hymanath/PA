@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
+import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -111,4 +112,5 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
 	public SimpleVO getDayWiseAttendnenceForBatch(Long batchId);
 	public List<SimpleVO> getAttendenceForTrainers(String type);
+	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 }
