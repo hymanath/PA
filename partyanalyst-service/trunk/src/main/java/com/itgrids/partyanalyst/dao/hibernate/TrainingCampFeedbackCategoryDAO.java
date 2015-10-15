@@ -69,7 +69,7 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 	 public List<Object[]> getOptionsForQuestions(Long programId,Long campId,Long batchId,List<Long> catgoryIds)
 	 {
 		 StringBuilder str = new StringBuilder();
-		str.append("select model.parentFeedbackCategory.feedbackCategoryId,model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryNamefrom TrainingCampFeedbackCategory model" +
+		str.append("select model.parentFeedbackCategory.feedbackCategoryId,model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName from TrainingCampFeedbackCategory model" +
 		 		" where model.isDeleted ='N' ");
 		if(programId > 0)
 			str.append(" and model.trainingCampProgramId = :programId");	
