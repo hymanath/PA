@@ -22,11 +22,11 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 		str.append("select model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName from TrainingCampFeedbackCategory model" +
 		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' ");
 		if(programId > 0)
-			str.append("model.trainingCampProgramId = :programId");	
+			str.append(" and model.trainingCampProgramId = :programId");	
 		if(campId > 0)
-			str.append("model.trainingCampId = :campId");	
+			str.append(" and model.trainingCampId = :campId");	
 		if(batchId > 0)
-			str.append("model.trainingCampBatchId = :batchId");	
+			str.append("and model.trainingCampBatchId = :batchId");	
 		 Query query = getSession().createQuery(str.toString());
 			if(programId > 0)
 				query.setParameter("programId", programId);
@@ -43,8 +43,8 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 	 public List<Object[]> getCategoriesByIds(Long programId,Long campId,Long batchId,List<Long> catgoryIds)
 	 {
 		 StringBuilder str = new StringBuilder();
-		str.append("select distinct model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName from TrainingCampFeedbackCategory model" +
-		 		" where model.isDeleted ='N' ");
+		str.append("select distinct model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName,model.isSubCategoryExist from TrainingCampFeedbackCategory model" +
+		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' ");
 		if(programId > 0)
 			str.append(" and model.trainingCampProgramId = :programId");	
 		if(campId > 0)
