@@ -16,6 +16,7 @@ import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
@@ -67,11 +68,22 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<SimpleVO> 				   simpleVoList;
 	private SimpleVO 					   simpleVO;
 	private NtrTrustStudentVO				ntrTrustStudentVo;
+	private List<CategoryFeedbackVO>		categoryFeedbackVoList;
+	
+	
+	
+	
+	public List<CategoryFeedbackVO> getCategoryFeedbackVoList() {
+		return categoryFeedbackVoList;
+	}
 
-	
-	
-	
-	
+
+	public void setCategoryFeedbackVoList(
+			List<CategoryFeedbackVO> categoryFeedbackVoList) {
+		this.categoryFeedbackVoList = categoryFeedbackVoList;
+	}
+
+
 	public NtrTrustStudentVO getNtrTrustStudentVo() {
 		return ntrTrustStudentVo;
 	}
@@ -689,6 +701,22 @@ public String updateLeaderShip(){
 		}catch(Exception e){
 			LOG.error("Exception Occured in updateLeaderShip() method, Exception - ",e);
 		}
+		return Action.SUCCESS;
+	}
+
+	public String getCategoryFeedBackAnswerForCadre(){
+		try {
+			LOG.info("Entered into getCategoryFeedBackAnswerForCadre");
+			
+			jObj=new JSONObject(getTask());
+			
+			Long cadreId = jObj.getLong("tdpCadreId");
+			
+			categoryFeedbackVoList =trainingCampService.getCategoryFeedBackAnswerForCadre(cadreId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCategoryFeedBackAnswerForCadre", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 
