@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFeedbackCategoryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDistrictDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampFeedbackAnswerDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampFeedbackCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampScheduleDAO;
@@ -89,6 +91,7 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
+import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
@@ -194,11 +197,37 @@ class TrainingCampService implements ITrainingCampService{
     private ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO;
     private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
     private ITrainingCampCadreFeedbackHealthCardDAO trainingCampCadreFeedbackHealthCardDAO;
+    private ITrainingCampFeedbackAnswerDAO trainingCampFeedbackAnswerDAO;
     private ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO;
+    private IFeedbackCategoryDAO feedbackCategoryDAO;
     
+    
+    
+    
+	public IFeedbackCategoryDAO getFeedbackCategoryDAO() {
+		return feedbackCategoryDAO;
+	}
+
+	public void setFeedbackCategoryDAO(IFeedbackCategoryDAO feedbackCategoryDAO) {
+		this.feedbackCategoryDAO = feedbackCategoryDAO;
+	}
+
+	public ITrainingCampFeedbackCategoryDAO getTrainingCampFeedbackCategoryDAO() {
+		return trainingCampFeedbackCategoryDAO;
+	}
+
 	public void setTrainingCampFeedbackCategoryDAO(
 			ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO) {
 		this.trainingCampFeedbackCategoryDAO = trainingCampFeedbackCategoryDAO;
+	}
+
+	public ITrainingCampFeedbackAnswerDAO getTrainingCampFeedbackAnswerDAO() {
+		return trainingCampFeedbackAnswerDAO;
+	}
+
+	public void setTrainingCampFeedbackAnswerDAO(
+			ITrainingCampFeedbackAnswerDAO trainingCampFeedbackAnswerDAO) {
+		this.trainingCampFeedbackAnswerDAO = trainingCampFeedbackAnswerDAO;
 	}
 
 	public ITrainingCampCadreFeedbackHealthCardDAO getTrainingCampCadreFeedbackHealthCardDAO() {
@@ -8365,5 +8394,100 @@ class TrainingCampService implements ITrainingCampService{
 			
 			return finalvo;
 			
+		}
+		
+		public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId){
+			List<CategoryFeedbackVO> voList = new ArrayList<CategoryFeedbackVO>();
+			if(cadreId!=null && cadreId>0l){
+				
+				List<Object[]> answersList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsForCadre(cadreId);
+				
+				Map<Long,List<String>> answersMap = new HashMap<Long, List<String>>(0);
+				List<Long> fbcatIds = new ArrayList<Long>(0);
+				
+				if(answersList!=null && answersList.size()>0){
+					for (Object[] objects : answersList) {
+						if(answersMap.get((Long)objects[0])==null){
+							fbcatIds.add((Long)objects[2]);
+							answersMap.put((Long)objects[0], new ArrayList<String>(0));
+						}
+						List<String> ans = answersMap.get((Long)objects[0]);
+						ans.add(objects[1].toString());
+					}
+				}
+				
+				List<Long> parentCatIds = new ArrayList<Long>();
+				Map<Long,List<Long>> childCateIds = new HashMap<Long, List<Long>>();
+				
+				List<Long> allIds = new ArrayList<Long>();
+				if(fbcatIds!=null && fbcatIds.size()>0){
+					List<Object[]> pcidsList = trainingCampFeedbackCategoryDAO.getParentAndChildCategoryIds(fbcatIds);
+					if(pcidsList!=null && pcidsList.size()>0){
+						for (Object[] objects : pcidsList) {
+							if((Long) objects[1]==null){
+								allIds.add((Long)objects[0]);
+								parentCatIds.add((Long)objects[0]);
+							}else{
+								allIds.add((Long)objects[0]);
+								allIds.add((Long)objects[1]);
+								if(childCateIds.get((Long)objects[1])==null){
+									childCateIds.put((Long)objects[1],new ArrayList<Long>());
+								}
+								childCateIds.get((Long)objects[1]).add((Long)objects[0]);
+							}
+						}
+					}
+				}
+				
+				Map<Long,String> namesMap = new HashMap<Long, String>(0);
+				//get Parent,child Id names
+				if(allIds!=null && allIds.size()>0){
+					List<Object[]> namesList = feedbackCategoryDAO.getAllNamesOfIds(allIds);
+					if(namesList!=null && namesList.size()>0){
+						for (Object[] objects : namesList) {
+							if(namesMap.get((Long)objects[0])==null){
+								namesMap.put((Long)objects[0], objects[1].toString());
+							}
+						}
+					}
+				}
+				
+				if(parentCatIds!=null && parentCatIds.size()>0){
+					for (Long long1 : parentCatIds) {
+						CategoryFeedbackVO vo = new CategoryFeedbackVO();
+						
+						vo.setMainCategoryId(long1);
+						vo.setMainCategoryName(namesMap.get(long1));
+						vo.setDescription(answersMap.get(long1));
+						
+						voList.add(vo);
+					}
+				}
+				
+				if(childCateIds!=null && childCateIds.size()>0){
+					for (Map.Entry<Long, List<Long>> entry : childCateIds.entrySet()){
+						CategoryFeedbackVO vo = new CategoryFeedbackVO();
+						vo.setMainCategoryId(entry.getKey());
+						vo.setMainCategoryName(namesMap.get(entry.getKey()));
+						
+						List<Long> ll = entry.getValue();
+						if(ll!=null && ll.size()>0){
+							for (Long long1 : ll) {
+								CategoryFeedbackVO vo1 = new CategoryFeedbackVO();
+								vo1.setSubCategoryId(long1);
+								vo1.setSubCategoryName(namesMap.get(long1));
+								vo1.setDescription(answersMap.get(long1));
+								vo.getCategoryFeedBackList().add(vo1);
+							}
+						}
+						voList.add(vo);
+					}
+				}
+				
+				
+				
+			}
+			
+			return voList;
 		}
 }
