@@ -1199,6 +1199,9 @@ var globalCadreId = '${cadreId}';
 			<div class="col-md-12">
 			<div id="remarkDetailsId"></div>
 			</div>
+			<div class="col-md-12">
+				<div id="feedbackDivId"></div>
+			</div>
 		</div>
       </div>
       <div class="modal-footer">
@@ -5741,6 +5744,38 @@ function buildPublicScoreTable(myResult)
 	$(".ivrDetailsCls").html(str);
 }
 
+function getCategoryFeedBackAnswerForCadre(){
+	var jsObj ={
+		tdpCadreId:globalCadreId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getCategoryFeedBackAnswerForCadreAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		var str='';
+		if(result!=null && result.size>0){
+			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+			str+='<div class="panel panel-default">';
+			for(var i in result){
+				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+				  str+='<h4 class="panel-title">';
+				  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">Collapsible Group Item #1</a>';
+				  str+='</h4>';
+				  str+='</div>';
+				  str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+				  str+='<div class="panel-body">';
+				  str+='Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably havent heard of them accusamus labore sustainable VHS.';
+				  str+='</div>';
+				  str+='</div>';
+			}
+			str+='</div>';
+			str+='</div>';
+		}
+		$("#feedbackDivId").html(str);
+	});
+}
+
 getStatusCountOfCadreForInvitationAndAttendance();
 function getStatusCountOfCadreForInvitationAndAttendance(){
 	
@@ -5799,7 +5834,7 @@ $(document).on("click",".detailsCls",function(){
 	$("#dataLoadingsImgForTrainingDetails").show();
 	getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
 	getRemarkSOfCadreByCallPurpose(programId,cadreId);
-	
+	//getCategoryFeedBackAnswerForCadre();//call for feedback answer
 });
 
 function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
