@@ -22,7 +22,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TrainingCampFeedbackCategory {
 	
-	private Long trainingCampFeedbackCategory;
+	private Long trainingCampFeedbackCategoryId;
 	private Long trainingCampProgramId;
 	private Long trainingCampBatchId;
 	private Long trainingCampId;
@@ -39,11 +39,11 @@ public class TrainingCampFeedbackCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "training_camp_feedback_category_id", unique = true, nullable = false)
-	public Long getTrainingCampFeedbackCategory() {
-		return trainingCampFeedbackCategory;
+	public Long getTrainingCampFeedbackCategoryId() {
+		return trainingCampFeedbackCategoryId;
 	}
-	public void setTrainingCampFeedbackCategory(Long trainingCampFeedbackCategory) {
-		this.trainingCampFeedbackCategory = trainingCampFeedbackCategory;
+	public void setTrainingCampFeedbackCategoryId(Long trainingCampFeedbackCategoryId) {
+		this.trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryId;
 	}
 	@Column(name = "training_camp_batch_id")
 	public Long getTrainingCampBatchId() {
