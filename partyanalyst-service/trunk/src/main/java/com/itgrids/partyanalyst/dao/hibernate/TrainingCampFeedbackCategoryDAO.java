@@ -92,6 +92,12 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 		return query.list();
 	 }
 	 
+	 public List<Object[]> getParentAndChildCategoryIds(List<Long> fbcatIds){
+		 Query query = getSession().createQuery(" select model.feedbackCategoryId,model.parentFeedbackCategoryId " +
+		 		" from TrainingCampFeedbackCategory model where model.trainingCampFeedbackCategoryId in (:fbcatIds)");
+		 query.setParameterList("fbcatIds", fbcatIds);
+		 return query.list();
+	 }
 	 
 	 
 }
