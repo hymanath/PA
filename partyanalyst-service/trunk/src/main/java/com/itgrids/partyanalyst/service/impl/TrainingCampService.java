@@ -6755,13 +6755,13 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				
 				if(type.equalsIgnoreCase("c")){
-					sbM.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) < :currDate and date(tccfd.trainingCampBatch.toDate) < :currDate ");
 				}
 				else if(type.equalsIgnoreCase("r")){
-					sbM.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) <= :currDate and  date(tccfd.trainingCampBatch.toDate) >= :currDate ");
 				}
 				else if(type.equalsIgnoreCase("u")){
-					sbM.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) > :currDate and date(tccfd.trainingCampBatch.toDate) > :currDate ");
 				}
 				
 	           if(batchId==null && campId==null && programId!=null){
@@ -8210,7 +8210,7 @@ class TrainingCampService implements ITrainingCampService{
 						List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
 						
 						int temp=0;
-						if(attendedDetails!=null && attendedDetails.size()>0 && invitedDetails!=null && invitedDetails.size()>0){
+						if(attendedDetails!=null && attendedDetails.size()>0){
 							for(Long long1:attendedDetails){
 								if(!invitedDetails.contains(long1)){
 									temp=temp+1;
