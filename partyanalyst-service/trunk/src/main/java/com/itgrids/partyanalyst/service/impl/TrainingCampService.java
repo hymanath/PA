@@ -6810,13 +6810,13 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				           
 				if(callFrom.equalsIgnoreCase("c")){
-					sbM.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+					sbM.append(" and date(model.trainingCampBatch.fromDate) < :currDate and date(model.trainingCampBatch.toDate) < :currDate ");
 				}
 				else if(callFrom.equalsIgnoreCase("r")){
-					sbM.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+					sbM.append(" and date(model.trainingCampBatch.fromDate) <= :currDate and  date(model.trainingCampBatch.toDate) >= :currDate ");
 				}
 				else if(callFrom.equalsIgnoreCase("u")){
-					sbM.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+					sbM.append(" and date(model.trainingCampBatch.fromDate) > :currDate and date(model.trainingCampBatch.toDate) > :currDate ");
 				}
 				
 	           if(batchId==null && campId==null && programId!=null){
@@ -8090,8 +8090,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		
 		public SimpleVO getDayWiseAttendnenceForBatch(Long batchId){
-			
-    		SimpleVO simpleVO=new SimpleVO();
+			SimpleVO simpleVO=new SimpleVO();
 			try{ 
 				SimpleDateFormat sdf1=new SimpleDateFormat("MM/dd/yyyy");
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -8147,18 +8146,43 @@ class TrainingCampService implements ITrainingCampService{
 					 }
 				 }
 				 
-			 simpleVO.setTotal(confirmedCount);//confirmed people	
-			 simpleVO.setCount(totalBatchCount);//total attended.
-			 simpleVO.setDateString(perc);
-			//converting.
-			 if(finalMap!=null && finalMap.size()>0){
-				 simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
-			 } 
-			 
+				 simpleVO.setTotal(confirmedCount);//confirmed people	
+				 simpleVO.setCount(totalBatchCount);//total attended.
+				 simpleVO.setDateString(perc);
+				//converting.
+				 if(finalMap!=null && finalMap.size()>0){
+					 simpleVO.setSimpleVOList1(new ArrayList<SimpleVO>(finalMap.values()));
+				 } 
+
+				 Long batchId1=simpleVO.getBatchId();
+				
+				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId1,dates);
+				
+				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId1);
+				Long oneDay=0l,twoDays=0l,ThreeDays=0l;
+				
+				for (Long long1 : attendeeList) {
+					int temp=0;
+					for (Object[] objects : batchAttendence) {
+						Long temp1=(Long)objects[0];
+						if(temp1.equals(long1)){
+							temp=temp+1;
+						}
+					}
+					if(temp==1){
+						oneDay=oneDay+1l;
+					}else if(temp==2){
+						twoDays=twoDays+1l;
+					}else if(temp==3){
+						ThreeDays=ThreeDays+1l;
+					}
+				}
+				simpleVO.setDay1Count(oneDay);
+				simpleVO.setDay2Count(twoDays);
+				simpleVO.setDay3Count(ThreeDays);
 			}catch(Exception e){
 				 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
 			}
-			
 			return simpleVO;
 		}
 		
