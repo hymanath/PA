@@ -1,21 +1,27 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.mapping.Array;
 
 public class CategoryFeedbackVO {
 	private Long mainCategoryId;
 	private String mainCategoryName;
 	private Long subCategoryId;
 	private String subCategoryName;
-	private List<CategoryFeedbackVO> categoryFeedBackList;
-	private String description;
+	private List<CategoryFeedbackVO> categoryFeedBackList = new ArrayList<CategoryFeedbackVO>(0);
+	private List<String> description = new ArrayList<String>(0);
 	
 	
 	
-	public String getDescription() {
+	
+	
+	
+	public List<String> getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(List<String> description) {
 		this.description = description;
 	}
 	public Long getMainCategoryId() {
