@@ -1843,7 +1843,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 				 fileUrl = CreateDateFolder(dateString);
 				 String RandomNumber = UUID.randomUUID().toString();
-				 String destPath =  "/"+fileUrl+"/"+RandomNumber+tdpCadreId+"."+ext;
+				 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
 				 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 				filePaths.add(destPath);
 				copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
