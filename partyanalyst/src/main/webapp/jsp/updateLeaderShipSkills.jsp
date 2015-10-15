@@ -587,8 +587,7 @@ function getLeaderShipDetails()
 	str+='<span id="processingId" style="display:none" class="text-danger pull-left"><span><img id="ajaxImage1" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:15px;display:none;"/></span>Please Wait While Updating...</span>';
     str+='<div class="row">';
 	str+='<div class="col-md-12 m_top20">';
-	str+='<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="closePopUp">Close</button>';
-    str+='<button style="margin-right:10px;" type="button" class="btn btn-primary pull-right" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
+	str+='<button style="margin-right:10px;" type="button" class="btn btn-primary pull-right" onclick="saveAllDetails('+tdpCadreId+','+batchId+');">Save</button>';
 	str+='</div>';
 	str+='</div>';
 	str+='</div>';
