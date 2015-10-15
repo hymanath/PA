@@ -166,7 +166,7 @@ var leaderShipLevelArray = [];
 		
 	$(document).on('click', '.healthCardminus', function(){
 	   
-	   $(this).parent().parent().remove();
+	   $(this).parent().remove();
 		   
     });
 	
