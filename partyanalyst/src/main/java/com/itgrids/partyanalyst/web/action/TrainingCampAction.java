@@ -1630,19 +1630,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	
 	public static String CreateDateFolder(String totalDate){
 	  	 try {
+	  		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 	  		 LOG.debug(" in FolderForArticle ");
 			String string = totalDate;
 			 String[] parts = string.split("-");
 			
 			 String yr = parts[0]; // YEAR YYYY
-			 String yrDir = IConstants.CADRE_HEALTH_CARD_FOLDER+"/"+yr;
+			 String yrDir = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+yr;
 			 String yrFldrSts = createFolderForArticles(yrDir);
 			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
 			 String mnth = parts[1];
-			 String mnthDir = IConstants.CADRE_HEALTH_CARD_FOLDER+"/"+yr+"/"+mnth;
+			 String mnthDir = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+yr+pathSeperator+mnth;
 			 String mnthDirSts = createFolderForArticles(mnthDir);
 			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
@@ -1843,8 +1844,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				 fileUrl = CreateDateFolder(dateString);
 				 String RandomNumber = UUID.randomUUID().toString();
 				 String destPath =  "/"+fileUrl+"/"+RandomNumber+tdpCadreId+"."+ext;
+				 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 				filePaths.add(destPath);
-				copyFile(f.getAbsolutePath(),IConstants.CADRE_HEALTH_CARD_FOLDER+destPath);	
+				copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
    			}
    		}	
    		
