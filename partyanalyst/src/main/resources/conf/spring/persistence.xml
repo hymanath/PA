@@ -691,6 +691,9 @@
 				 
 				 
 				 <value>com.itgrids.partyanalyst.model.AttendeeType</value>
+				 <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
 			     </list>
 			
 		</property>
