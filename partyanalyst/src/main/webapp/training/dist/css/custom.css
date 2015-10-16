@@ -279,3 +279,46 @@ caption
 {
 	border:1px solid #666
 }
+.options-form
+{
+	padding:0px;
+}
+.options-form li
+{
+	list-style:none;
+}
+.options-form .input-group .form-control
+{
+	border-radius:0px;
+	box-shadow:none
+}
+.options-form .input-group .input-group-addon
+{
+	border-radius:0px;
+	background:#fff;
+	padding:4px;
+}
+.options-form .input-group .input-group-addon i
+{
+	border:1px solid #ccc;
+	padding:3px;
+	border-radius:50%;
+	cursor:pointer
+}
+
+.select-category
+{
+	border:1px solid #ccc;
+	padding:10px;
+}
+
+.panel-default > .panel-heading
+{
+	background-color:#ccc;
+}
+.btn-custom
+{
+	background:#00B17D;
+	border:1px solid #00B17D;
+	border-radius:0px;
+}

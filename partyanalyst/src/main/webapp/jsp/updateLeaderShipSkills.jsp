@@ -165,6 +165,12 @@ var leaderShipLevelArray = [];
 		
 		
 	$(document).on('click', '.healthCardminus', function(){
+	  
+	  $(this).parent().parent().remove();
+		   
+    });
+	
+	$(document).on('click', '.feedbackDocminus', function(){
 	   
 	   $(this).parent().parent().remove();
 		   
@@ -444,13 +450,13 @@ function getLeaderShipDetails()
 		    str+='<label>Health Card </label>';
 		  
 		  
-		 
+		 /* healthCard */
 			if(results.healthCardAttachments!=null && results.healthCardAttachments.length>0){
 				str +='<div class="row">';
 				for(var i in results.healthCardAttachments)
 				{
 					str +='<div class="col-md-3 m_top10">';
-						str +='<a target="_blank" href="tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
+						str +='<a target="_blank" href="tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
 					str +='</div>';
 				}
 				str +='</div>';
@@ -472,6 +478,44 @@ function getLeaderShipDetails()
 		  
 		   str+='<div class="row" id="healthCardCntaddDiv">';
 		  str+='</div>';
+		  <!-- end -->
+		// Docs Start
+		str+='<div class="col-md-12 m_top10">';
+			str+='<div class="row">';
+		    str+='<div class="col-md-12">';
+		    str+='<label>FEEDBACK DOCUMENT </label>';
+		  
+		  
+		 /* healthCard */
+			if(results.feedbackDocuments!=null && results.feedbackDocuments.length>0){
+				str +='<div class="row">';
+				for(var i in results.feedbackDocuments)
+				{
+					str +='<div class="col-md-3 m_top10">';
+						str +='<a target="_blank" href="cadre_feedback_document/'+results.feedbackDocuments[i].name+'">'+results.feedbackDocuments[i].name+'</a>';
+					str +='</div>';
+				}
+				str +='</div>';
+			}
+	
+		  str+='<div class="row">';
+		  str+='<div class="col-md-2 m_top10 ">';
+		  str+='<input type="file" class="feedbackDocs" />';
+		  str+='</div>';
+		  str+='<div class="col-md-1">';
+		  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus feedbackaddDoc" onclick="addFeedbackDoc();"></i>';
+		  str+='</div>';
+		  str+='</div>';
+			
+		  str+='</div>';
+		  str+='</div>';
+		  str+='</div>';
+		  str+='</div>';
+		  
+		   str+='<div class="row" id="feedbackDocumentaddDiv">';
+		  str+='</div>';
+		  <!-- end -->
+		  //Docs End
 		<!-- Adding -->
 		
 		 str+='<div class="row">'
@@ -725,7 +769,12 @@ function getLeaderShipDetails()
   
 	 formData.append("image",file);
 	}) 
-	 
+	  var inputs = $(".feedbackDocs");
+	 $.each(inputs, function (obj, v) {
+        var file = v.files[0];
+  
+	 formData.append("feedbackDoc",file);
+	}) 
 	
 	 formData.append('leaderShipLevel',leaderShipLevel);
 	 formData.append('achieveArray',achieveArray);
@@ -845,19 +894,41 @@ function getLeaderShipDetails()
 	  {
 		
 		  var str ='';
-		 
-		  str+='<div class="col-md-2 m_top10 ">';
-		  str+='<div id="healthCardCnt"+healthCardCnt+"">';
+		
+		  str+='<div>';
+		  str+='<div id="healthCardCnt"+healthCardCnt+"" class="col-md-2 m_top10 healthCardDiv">';
 		  str+='<input type="file" class="healthCardattachment" />';
 		  str+='</div>';
-		  str+='</div>';
-		  str+='<div class="col-md-1">';
+		  
+		 
+			str+='<div class="col-md-1">';
 		  str+='<i class="glyphicon glyphicon-minus add-plus healthCardminus m_top10"></i>';
 		  str+='</div>';
-		  
+		  str+='</div>';
 		  $("#healthCardCntaddDiv").append(str);
 		   healthCardCnt ++;
 	  }
+	  
+	   var feedbackDocCnt = 0;
+	  function addFeedbackDoc()
+	  {
+		
+		  var str ='';
+		 
+		  str+='<div>';
+		  str+='<div id="feedbackDocCnt"+feedbackDocCnt+"" class="col-md-2 m_top10 ">';
+		  str+='<input type="file" class="feedbackDocs" />';
+		  str+='</div>';
+		
+		  str+='<div class="col-md-1">';
+		  str+='<i class="glyphicon glyphicon-minus add-plus feedbackDocminus m_top10"></i>';
+		  str+='</div>';
+		    str+='</div>';
+		  $("#feedbackDocumentaddDiv").append(str);
+		   feedbackDocCnt ++;
+	  }
+	  
+	  
 
 </script>
 </body>
