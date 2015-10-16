@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -20,72 +19,49 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
-@Table(name = "training_camp_cadre_feedback_health_card")
+@Table(name = "training_camp_cadre_feedback_document")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TrainingCampCadreFeedbackHealthCard {
-	
-	private Long trainingCampCadreFeedbackHealthCardId;
-	private Long trainingCampCadreFeedbackDetailsId;
-	private String healthCardAttachment;
-	private TrainingCampCadreFeedbackDetails trainingCampCadreFeedbackDetails ;
+public class TrainingCampCadreFeedbackDocument {
+	private Long trainingCampCadreFeedbackDocumentId;
+	private String filePath;
 	private Date insertedTime;
-	private Date updatedTime;
+	private String isDeleted;
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
 	private TrainingCampBatch trainingCampBatch;
 	private Long trainingCampBatchId;
-	
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "training_camp_cadre_feedback_health_card_id", unique = true, nullable = false)
-	public Long getTrainingCampCadreFeedbackHealthCardId() {
-		return trainingCampCadreFeedbackHealthCardId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="training_camp_cadre_feedback_document_id", unique=true, nullable=false)
+	public Long getTrainingCampCadreFeedbackDocumentId() {
+		return trainingCampCadreFeedbackDocumentId;
 	}
-	public void setTrainingCampCadreFeedbackHealthCardId(
-			Long trainingCampCadreFeedbackHealthCardId) {
-		this.trainingCampCadreFeedbackHealthCardId = trainingCampCadreFeedbackHealthCardId;
+	public void setTrainingCampCadreFeedbackDocumentId(
+			Long trainingCampCadreFeedbackDocumentId) {
+		this.trainingCampCadreFeedbackDocumentId = trainingCampCadreFeedbackDocumentId;
 	}
-	 @Column(name = "training_camp_cadre_feedback_details_id")
-	public Long getTrainingCampCadreFeedbackDetailsId() {
-		return trainingCampCadreFeedbackDetailsId;
+	@Column(name="file_path")
+	public String getFilePath() {
+		return filePath;
 	}
-	public void setTrainingCampCadreFeedbackDetailsId(
-			Long trainingCampCadreFeedbackDetailsId) {
-		this.trainingCampCadreFeedbackDetailsId = trainingCampCadreFeedbackDetailsId;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
-	 @Column(name = "health_card_attachment")
-	public String getHealthCardAttachment() {
-		return healthCardAttachment;
-	}
-	public void setHealthCardAttachment(String healthCardAttachment) {
-		this.healthCardAttachment = healthCardAttachment;
-	}
-	 @Column(name = "inserted_time")
+	@Column(name="inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	 @Column(name = "updated_time")
-	public Date getUpdatedTime() {
-		return updatedTime;
-	}
-	public void setUpdatedTime(Date updatedTime) {
-		this.updatedTime = updatedTime;
-	}
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "training_camp_cadre_feedback_details_id",insertable=false,updatable=false)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TrainingCampCadreFeedbackDetails getTrainingCampCadreFeedbackDetails() {
-		return trainingCampCadreFeedbackDetails;
-	}
-	public void setTrainingCampCadreFeedbackDetails(
-			TrainingCampCadreFeedbackDetails trainingCampCadreFeedbackDetails) {
-		this.trainingCampCadreFeedbackDetails = trainingCampCadreFeedbackDetails;
-	}
 	
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "tdp_cadre_id", insertable = false, updatable = false)
     @LazyToOne(LazyToOneOption.NO_PROXY)
@@ -120,5 +96,8 @@ public class TrainingCampCadreFeedbackHealthCard {
 	public void setTrainingCampBatchId(Long trainingCampBatchId) {
 		this.trainingCampBatchId = trainingCampBatchId;
 	}
+	
+	
+	
 
 }

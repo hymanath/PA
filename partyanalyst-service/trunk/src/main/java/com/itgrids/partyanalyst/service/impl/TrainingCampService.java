@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.geom.NoninvertibleTransformException;
+
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreAchievementHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsHistoryDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDocumentDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackHealthCardDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreGoalHistoryDAO;
@@ -92,6 +94,9 @@ import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
+import com.itgrids.partyanalyst.dto.FeedBackOptionVO;
+import com.itgrids.partyanalyst.dto.FeedbackInputVO;
+import com.itgrids.partyanalyst.dto.FeedbackQuestionVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
@@ -119,6 +124,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreAchievement;
 import com.itgrids.partyanalyst.model.TrainingCampCadreAchievementHistory;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetails;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDetailsHistory;
+import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDocument;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
@@ -198,20 +204,23 @@ class TrainingCampService implements ITrainingCampService{
     private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
     private ITrainingCampCadreFeedbackHealthCardDAO trainingCampCadreFeedbackHealthCardDAO;
     private ITrainingCampFeedbackAnswerDAO trainingCampFeedbackAnswerDAO;
-    private ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO;
     private IFeedbackCategoryDAO feedbackCategoryDAO;
+    private ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO;
+    private ITrainingCampCadreFeedbackDocumentDAO trainingCampCadreFeedbackDocumentDAO;
+	
+
+
     
-    
-    
-    
-	public IFeedbackCategoryDAO getFeedbackCategoryDAO() {
-		return feedbackCategoryDAO;
+    public ITrainingCampFeedbackAnswerDAO getTrainingCampFeedbackAnswerDAO() {
+		return trainingCampFeedbackAnswerDAO;
 	}
 
-	public void setFeedbackCategoryDAO(IFeedbackCategoryDAO feedbackCategoryDAO) {
-		this.feedbackCategoryDAO = feedbackCategoryDAO;
+	public void setTrainingCampFeedbackAnswerDAO(
+			ITrainingCampFeedbackAnswerDAO trainingCampFeedbackAnswerDAO) {
+		this.trainingCampFeedbackAnswerDAO = trainingCampFeedbackAnswerDAO;
 	}
 
+	
 	public ITrainingCampFeedbackCategoryDAO getTrainingCampFeedbackCategoryDAO() {
 		return trainingCampFeedbackCategoryDAO;
 	}
@@ -221,15 +230,31 @@ class TrainingCampService implements ITrainingCampService{
 		this.trainingCampFeedbackCategoryDAO = trainingCampFeedbackCategoryDAO;
 	}
 
-	public ITrainingCampFeedbackAnswerDAO getTrainingCampFeedbackAnswerDAO() {
-		return trainingCampFeedbackAnswerDAO;
+    
+    
+    public IFeedbackCategoryDAO getFeedbackCategoryDAO() {
+		return feedbackCategoryDAO;
 	}
 
-	public void setTrainingCampFeedbackAnswerDAO(
-			ITrainingCampFeedbackAnswerDAO trainingCampFeedbackAnswerDAO) {
-		this.trainingCampFeedbackAnswerDAO = trainingCampFeedbackAnswerDAO;
+	public void setFeedbackCategoryDAO(IFeedbackCategoryDAO feedbackCategoryDAO) {
+		this.feedbackCategoryDAO = feedbackCategoryDAO;
 	}
 
+	
+    
+    public ITrainingCampCadreFeedbackDocumentDAO getTrainingCampCadreFeedbackDocumentDAO() {
+		return trainingCampCadreFeedbackDocumentDAO;
+	}
+
+	public void setTrainingCampCadreFeedbackDocumentDAO(
+			ITrainingCampCadreFeedbackDocumentDAO trainingCampCadreFeedbackDocumentDAO) {
+		this.trainingCampCadreFeedbackDocumentDAO = trainingCampCadreFeedbackDocumentDAO;
+	}
+
+
+    
+    
+    
 	public ITrainingCampCadreFeedbackHealthCardDAO getTrainingCampCadreFeedbackHealthCardDAO() {
 		return trainingCampCadreFeedbackHealthCardDAO;
 	}
@@ -5250,6 +5275,19 @@ class TrainingCampService implements ITrainingCampService{
 				 vo.setHealthCardAttachments(healthCardAttachments);
 			}
 			
+			List<IdNameVO> feedbackDocuments = new ArrayList<IdNameVO>();
+			List<Object[]> feedbakDocs = trainingCampCadreFeedbackDocumentDAO.getFeedbackDocuments(tdpCadreId);
+			if(feedbakDocs != null && feedbakDocs.size() > 0)
+			{
+				for(Object[] param:feedbakDocs){
+					IdNameVO idNameVO=new IdNameVO();
+					idNameVO.setId(param[1]!=null?(Long)param[1]:0l);
+					idNameVO.setName(param[0]!=null?param[0].toString():"");
+					feedbackDocuments.add(idNameVO);
+				}
+				 vo.setFeedbackDocuments(feedbackDocuments);
+			}
+			
 			
 		}catch(Exception e){
 			LOG.error(" Error in getDetailsForACadre",e);
@@ -5328,7 +5366,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -5401,9 +5439,28 @@ class TrainingCampService implements ITrainingCampService{
 					trainingCampCadreFeedbackHealthCard.setHealthCardAttachment(file);
 					trainingCampCadreFeedbackHealthCard.setInsertedTime(date1);
 					trainingCampCadreFeedbackHealthCard.setUpdatedTime(date1);
+					trainingCampCadreFeedbackHealthCard.setTrainingCampBatchId(batchId);
+					trainingCampCadreFeedbackHealthCard.setTdpCadreId(tdpCadreId);
 					trainingCampCadreFeedbackHealthCardDAO.save(trainingCampCadreFeedbackHealthCard);
 						}
 					}
+					
+
+					if(docs != null && docs.size() > 0)
+					{
+						for(String doc : docs)
+						{
+					TrainingCampCadreFeedbackDocument trainingCampCadreFeedbackDocument = new TrainingCampCadreFeedbackDocument();
+					trainingCampCadreFeedbackDocument.setTdpCadreId(tdpCadreId);
+					trainingCampCadreFeedbackDocument.setFilePath(doc);
+					trainingCampCadreFeedbackDocument.setInsertedTime(date1);
+					trainingCampCadreFeedbackDocument.setIsDeleted("N");
+					trainingCampCadreFeedbackDocument.setTrainingCampBatchId(batchId);
+				
+					trainingCampCadreFeedbackDocumentDAO.save(trainingCampCadreFeedbackDocument);
+						}
+					}
+					
 					//feedback details history.
 					TrainingCampCadreFeedbackDetailsHistory feedBackDetailshistory=new TrainingCampCadreFeedbackDetailsHistory();
 					feedBackDetailshistory.setTrainingCampCadreFeedbackDetailsId(feedBackDetails.getTrainingCampCadreFeedbackDetailsId());
@@ -8219,7 +8276,6 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return simpleVO;
 		}
-		
 		public List<SimpleVO> getAttendenceForTrainers(String type){
 			List<SimpleVO> finalvo = new ArrayList<SimpleVO>();
 			try {
@@ -8489,5 +8545,87 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			
 			return voList;
+		}
+
+		public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId)
+		{
+			List<IdNameVO>  resultList = new ArrayList<IdNameVO>();
+			List<Object[]> list = trainingCampFeedbackCategoryDAO.getFeedBackCategories(programId,campId,batchId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1].toString());
+					resultList.add(vo);
+				}
+			}
+			return resultList;
+			
+		}
+		
+		public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds)
+		{
+			List<FeedbackQuestionVO>  returnList = new ArrayList<FeedbackQuestionVO>();
+			try{
+				List<Long> optionExistCategoryIds = new ArrayList<Long>();
+				List<Object[]> list = trainingCampFeedbackCategoryDAO.getCategoriesByIds(inputVo.getProgramId(),inputVo.getCampId(),inputVo.getBatchId(),categoryIds);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						FeedbackQuestionVO mainVo = new FeedbackQuestionVO();
+						mainVo.setId((Long)params[0]);
+						mainVo.setCategory(params[1].toString());
+						if(params[2] == null ||  params[2].toString().equalsIgnoreCase("N"))
+						mainVo.setOptionExists("N");
+						else
+						{
+						mainVo.setOptionExists("Y");
+						mainVo.setTrainingCampFeedbackCategoryId((Long)params[3]);
+						optionExistCategoryIds.add((Long)params[0]);
+						}
+						returnList.add(mainVo);
+					}
+				}
+				if(optionExistCategoryIds != null && optionExistCategoryIds.size() > 0){
+				List<Object[]> optionsList =trainingCampFeedbackCategoryDAO.getOptionsForQuestions(inputVo.getProgramId(),inputVo.getCampId(),inputVo.getBatchId(),optionExistCategoryIds);
+				if(optionsList != null && optionsList.size() > 0)
+				{
+					for(Object[] params : optionsList)
+					{
+						FeedbackQuestionVO categoryVo = getMatchedQuestion(returnList,(Long)params[0]);
+						if(categoryVo != null)
+						{
+							if(categoryVo.getOptionsList() == null)
+								categoryVo.setOptionsList(new ArrayList<FeedBackOptionVO>());
+							FeedBackOptionVO optionVo = new FeedBackOptionVO();
+							optionVo.setId((Long)params[1]);
+							optionVo.setOption(params[2] != null ? params[2].toString() : "");
+							optionVo.setTrainingCampFeedbackCategoryId((Long)params[3]);
+							categoryVo.getOptionsList().add(optionVo);
+						}
+					}
+					
+				}
+			}
+		 }
+			catch (Exception e) {
+				LOG.error(" Error Occured in trainingFeedBackQuestionsList method in TraininingCampService class" ,e);
+			}
+			return returnList;
+		}
+		
+		public FeedbackQuestionVO getMatchedQuestion(List<FeedbackQuestionVO> questionsList,Long id)
+		{
+			if(questionsList == null || questionsList.size() == 0)
+				return null;
+			for(FeedbackQuestionVO vo : questionsList)
+			{
+				if(vo.getId().longValue() == id.longValue())
+					return vo;
+			}
+			return null;
 		}
 }
