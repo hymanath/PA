@@ -10952,9 +10952,8 @@
 		    <param name="root">categoryFeedbackVoList</param>
 		</result>
 	</action>
-		
 	
-		<action name="trainingCampFeedback" class="trainingCampAction" method="trainingCampMainDashboard">
+	<action name="trainingCampFeedback" class="trainingCampAction" method="trainingCampMainDashboard">
 			<result name="success">/jsp/trainingCampFeedback.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
@@ -10975,5 +10974,12 @@
 		    <param name="root">quetsionsList</param>
 		</result>
 	</action>
+		
+	<action name="getBatchesAction" class="trainingCampAction" method="getBatches">
+	    <result type="json" name="success">		   
+		    <param name="root">idNameList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
