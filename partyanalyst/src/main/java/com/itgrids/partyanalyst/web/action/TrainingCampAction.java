@@ -1834,9 +1834,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		String fileUrl = "" ;
    		if(fileParams.hasMoreElements())
    		{
-   			/*String inputValue = (String) fileParams.nextElement();
-   			if(inputValue.equalsIgnoreCase("image"))
-   			{*/
+   		
    			String inputValue = "image";
 		   			File[] files = multiPartRequestWrapper.getFiles(inputValue);
 		   			filePaths = new ArrayList<String>();
@@ -1911,11 +1909,36 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		  {
 			String goalObj= goalArray[i].toString();
 			if(goalObj.trim().length()>0){
-				String[] obj = goalObj.split("-");
-				SimpleVO goal=new SimpleVO();
-				goal.setName(obj[0].toString());
-				goal.setDateString(obj[1].toString());
-				goallist.add(goal);
+				String[] obj = goalObj.split(",");
+				for(int j=0;j<obj.length;j++)
+				{
+					SimpleVO goal=new SimpleVO();
+					String[] obj1 = obj[j].toString().split("-");
+					goal.setName(obj1[0].toString());
+					goal.setDateString(obj1[1].toString());
+					goallist.add(goal);
+				}
+			}
+		  }
+	   }
+	   
+	   List<SimpleVO> feedbackCategories=new ArrayList<SimpleVO>();
+ 	   String[] feedback = request.getParameterValues("feedbackCategoriesArray");
+	   if(feedback != null && feedback.length > 0)
+	   {
+		  for(int i=0;i<feedback.length;i++)
+		  {
+			String feedbackObj= feedback[i].toString();
+			if(feedbackObj.trim().length()>0){
+				String[] obj = feedbackObj.split(",");
+				for(int j=0;j<obj.length;j++)
+				{
+					String[] obj1 = obj[j].toString().split("-");
+					SimpleVO feedbackVO=new SimpleVO();
+					feedbackVO.setId(new Long(obj1[0].toString()));
+					feedbackVO.setName(obj1[1].toString());
+					feedbackCategories.add(feedbackVO);
+				}
 			}
 		  }
 	   }	
@@ -1925,13 +1948,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		Long leaderShipSkillsId = Long.parseLong(request.getParameter("leaderShipSkills"));
    		Long healthId = Long.parseLong(request.getParameter("health"));
    		String comments = request.getParameter("comments");
-   		
    		String smartPhoneId = request.getParameter("smartPhoneId");
    		String whatsappId = request.getParameter("whatsappId");
    		String whatsappShareId = request.getParameter("whatsappShareId");
    		String facebookId = request.getParameter("facebookId");
    	
-   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths,feedbackDocuments);
+   		
+   	 
+   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths,feedbackDocuments,feedbackCategories);
    		
    	
    	}	
