@@ -128,6 +128,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDocument;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 import com.itgrids.partyanalyst.model.TrainingCampCadreGoalHistory;
+import com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer;
 import com.itgrids.partyanalyst.model.TrainingCampProgram;
 import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
@@ -5366,7 +5367,7 @@ class TrainingCampService implements ITrainingCampService{
 		return finalDocs;
 	}
 	
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs)
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories)
 	{
 		final CadreDetailsVO cadreDetailsVO = new CadreDetailsVO();
 		try{
@@ -5444,7 +5445,8 @@ class TrainingCampService implements ITrainingCampService{
 					trainingCampCadreFeedbackHealthCardDAO.save(trainingCampCadreFeedbackHealthCard);
 						}
 					}
-					
+					if(feedBackCategories != null && feedBackCategories.size() > 0)
+						saveCadreFeedBackAnswers(tdpCadreId,feedBackCategories);
 
 					if(docs != null && docs.size() > 0)
 					{
@@ -5574,6 +5576,27 @@ class TrainingCampService implements ITrainingCampService{
 		return cadreDetailsVO;
 	}
 	
+	
+	public void saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers)
+	{
+		DateUtilService date = new DateUtilService();
+		try{
+		for(SimpleVO vo : feedbackAnswers)
+		{
+		TrainingCampFeedbackAnswer trainingCampFeedbackAnswer = new TrainingCampFeedbackAnswer();
+		trainingCampFeedbackAnswer.setTdpCadreId(tdpCadreId);
+		trainingCampFeedbackAnswer.setAnswer(vo.getName());
+		trainingCampFeedbackAnswer.setTrainingCampFeedbackCategoryId(vo.getId());
+		trainingCampFeedbackAnswer.setInsertedTime(date.getCurrentDateAndTime());
+		trainingCampFeedbackAnswer.setUpdatedTime(date.getCurrentDateAndTime());
+		trainingCampFeedbackAnswerDAO.save(trainingCampFeedbackAnswer);
+		
+		}
+		}
+		catch (Exception e) {
+			LOG.error(" Error Occured in saveCadreFeedBackAnswers" ,e);
+		}
+	}
     public SimpleVO getProgramsByUser(Long userId){
 		
 		SimpleVO simplevo=new SimpleVO();

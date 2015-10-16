@@ -86,7 +86,7 @@ public interface ITrainingCampService {
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
 	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
 	public CadreDetailsVO getAllStatusForCadre();
-	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs);
+	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories);
 	
 	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId,Long batchId);
 	public SimpleVO getProgramsByUser(Long userId);
@@ -117,5 +117,6 @@ public interface ITrainingCampService {
 	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
 	public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds);
+	
 	
 }
