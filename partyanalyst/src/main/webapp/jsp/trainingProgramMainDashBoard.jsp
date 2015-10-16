@@ -165,6 +165,87 @@ header.trainingHeader {
         </div>
 	</div>
 </main>
+
+<div class="themeControll">
+
+  <div class="linkinner">
+  		<div class="row">
+        	<div class="col-md-10 col-md-offset-1 m_top10">
+                <label>Select Program Type</label>
+                <select class="form-control custom-select" id="programTypeSelectId">
+					<option value="all">All</option> 
+                    <option value="c">Completed</option> 
+					<option value="r">Running</option> 
+					<option value="u">UpComming</option> 
+			    </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <label>Select Program</label>
+                <select class="form-control custom-select" id="programSelectId">
+                   <option value="1">Leadership Skills</option> 
+                </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <label>Select Center</label>
+                <select class="form-control custom-select" onchange="getBatches();" id="centerSelectId">
+					<option value="0">Select Center</option>
+                	<option value="1">SVV Center</option>
+                    <option value="2">EWK Center</option>
+                    <option value="3">GPN Center</option>
+                    <option value="4">AKKC Center</option>
+                </select>
+            </div>
+			<div class="col-md-10 col-md-offset-1">
+                <label>Select Batch</label>
+                <select class="form-control custom-select" id="batchSelectId">
+                   	<option value="0">Select Batch</option>
+                </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="stateDiv" style="display:none;">
+                <label>Select State</label>
+                <select class="form-control custom-select locationCls" id="stateId" onchange="getDistrictsForStates();">
+					<option value="">Select State</option>
+                   	<option value="0">All</option>
+					<option value="1">AndhraPradesh</option>
+					<option value="36">Telangana</option>
+                </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="districtDiv" style="display:none;">
+                <label>Select District</label><img src='./images/icons/search.gif' class="offset7"  id="imgForDist" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="districtId" onchange="getConstituenciesForDistricts(this.value);">
+                   <option>Select District</option>
+                </select>
+            </div>
+            <div class="col-md-10 col-md-offset-1 locationDiv" id="constituencyDiv" style="display:none;">
+                <label>Select Constituency</label><img src='./images/icons/search.gif' class="offset7"  id="imgForConsti" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="constituencyId" onchange="getMandalCorporationsByConstituency();">
+                    <option>Select Constituency</option>
+                </select>
+            </div>
+			
+			<div class="col-md-10 col-md-offset-1 locationDiv" id="mandalDiv" style="display:none;">
+                <label>Mandal/Town/Divison</label><img src='./images/icons/search.gif' class="offset7"  id="imgForMandl" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="mandalId" onchange="getPanchayatWardByMandal();">
+                   <option>Select Mandal/Town/Divison</option>
+                </select>
+            </div>
+			<div class="col-md-10 col-md-offset-1 locationDiv" id="panchayatDiv" style="display:none;">
+                <label>Village/Ward</label><img src='./images/icons/search.gif' class="offset7"  id="imgForPanc" style="width:15px;height:15px;display:none;"/>
+                <select class="form-control custom-select locationCls" id="panchayatId">
+                   <option>Select Village/Ward</option>
+                </select>
+            </div>
+			
+           
+            <div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
+			  <button class="btn btn-block btn-success btn-sm btn-custom" onClick="updateFunctions();">OK</button>
+            </div>
+        </div>
+  </div>
+
+  <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
+</div>
+
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
@@ -217,7 +298,9 @@ if(programId!=null && programId>0 || campId!=null && campId>0){
 	$("#summaryDivLeftPanel").show();
 } */
 
-
+$(".tbtn").click(function(){
+		$(".themeControll").toggleClass("active");
+	});
 
 function getAttendedCountsByProgramOrCampOrBatch(fromType)
 {
@@ -756,8 +839,9 @@ function buildSurveyDetails(result)
 	$("#surveyDataLoadoing").hide();
 	$("#surveyDetailsId").html(str);
 }
-	
+	var selectedRadio='dist';
 	$(".distrconstdtls").click(function(){
+		selectedRadio=$(this).val();
 		getAttendedCountsByProgramOrCampOrBatch($(this).val());
 	});
 	
@@ -774,6 +858,44 @@ function buildSurveyDetails(result)
 			getAttendedCountSummaryByBatch();
 		}
 	}); */
+	
+	function getBatches(){
+		var jsObj = {
+			programType:$("#programTypeSelectId").val(),
+			programId:$("#programSelectId").val(),
+			campId:$("#centerSelectId").val()
+		}
+		
+		$.ajax({
+			type:'POST',
+			url :'getBatchesAction.action',
+			data:{task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result!=null && result.length>0){
+				var str='';
+				str+='<option value="0">Select Batch</option>';
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#batchSelectId").html(str);
+			}
+		});
+	}
+	
+	function updateFunctions(){
+		programId = $("#programSelectId").val();
+		campId = $("#centerSelectId").val();
+		batchId = $("#batchSelectId").val();
+		callFrom = $("#programTypeSelectId").val();
+		if($(".themeControll").hasClass("active")){
+			$(".themeControll").removeClass("active");
+		}
+		getattendedcountByFeedBacks();
+		getAttendedCountsByProgramOrCampOrBatch(selectedRadio);
+		getAttendedCountSummaryByBatch();
+		getProgCampBatchNames();
+		getSurveyDetails();
+	}
 </script>
 </body>
 </html>	
