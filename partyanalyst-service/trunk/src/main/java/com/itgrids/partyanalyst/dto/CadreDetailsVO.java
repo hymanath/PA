@@ -53,6 +53,7 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private List<IdNameVO> leadershipSkillslist;
 	private List<IdNameVO> healthStatuslist;
 	private List<IdNameVO> healthCardAttachments;
+	private List<IdNameVO> feedbackDocuments;
 	private int resultCode;
 	private String isFeedbackUpdatable;
 	
@@ -64,6 +65,12 @@ public class CadreDetailsVO implements java.io.Serializable{
 	
 	
 	
+	public List<IdNameVO> getFeedbackDocuments() {
+		return feedbackDocuments;
+	}
+	public void setFeedbackDocuments(List<IdNameVO> feedbackDocuments) {
+		this.feedbackDocuments = feedbackDocuments;
+	}
 	public List<IdNameVO> getHealthCardAttachments() {
 		return healthCardAttachments;
 	}
