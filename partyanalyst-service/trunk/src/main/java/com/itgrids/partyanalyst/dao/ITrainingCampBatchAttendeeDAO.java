@@ -25,8 +25,8 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId);
 	public List<Long> getRunningUpcomingAttendeeCounts(Long batchId);
 	public List<Object[]> getRunningUpcomingCountDetails(List<Long> batchIds);
-	public List<Object[]> getInvitedCounts(List<Long> batchIds);
-	public List<Object[]> getInvitedDetails(List<Long> batchIds);
+	//public List<Object[]> getInvitedCounts(List<Long> batchIds);
+	//public List<Object[]> getInvitedDetails(List<Long> batchIds);
 	public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId);
 	public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId);
 }
