@@ -98,7 +98,7 @@ public interface ITrainingCampService {
 	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
 	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom);
-	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String fromType);
+	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String fromType,String callFrom);
 	public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom);
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
@@ -117,6 +117,5 @@ public interface ITrainingCampService {
 	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
 	public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds);
-	
-	
+	public List<IdNameVO> getBatches(String type,Long programId,Long centerId);
 }
