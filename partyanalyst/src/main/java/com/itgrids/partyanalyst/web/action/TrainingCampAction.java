@@ -2224,11 +2224,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		}
     		String fromType = jObj.getString("fromType");
     		String dates[] = jObj.getString("dates").split("-");
+    		String callFrom = jObj.getString("callFrom");
     		
     		if(dates.length>1){
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),fromType);
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),fromType,callFrom);
     		}else{
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,null,null,fromType);
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,null,null,fromType,callFrom);
     		}
     		
     	}catch(Exception e){
@@ -2479,6 +2480,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	return Action.SUCCESS;
     }
     
-    
-    
+    public String getBatches(){
+    	try {
+			LOG.info(" Entered into getBatches ");
+			jObj=new JSONObject(getTask());
+			String programType = jObj.getString("programType");
+			Long programId = jObj.getLong("programId");
+			Long campId = jObj.getLong("campId");
+			
+			idNameList = trainingCampService.getBatches(programType,programId,campId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBatches", e);
+		}
+    	return Action.SUCCESS;
+    }
 }
