@@ -32,7 +32,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		
 	}
 	
-	public List<Object[]> getAllBatchesForTrainers(){
+	/*public List<Object[]> getAllBatchesForTrainers(){
 		Query query = getSession().createQuery(" select model.trainingCampBatchId,model.trainingCampBatchName," +
 				" model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName, " +
 				" model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampSchedule.trainingCampProgram.programName," +
@@ -40,7 +40,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 				" from TrainingCampBatch model " +
 				" where model.attendeeTypeId=2 and model.attendeeType.isDeleted='false' and model.isCancelled='false' ");
 		return query.list();
-	}
+	}*/
 	/*public List<Long> getUpcomingBatchConfirmation(Date fromDate,Date toDate,String status){
 		
 		StringBuilder str=new StringBuilder();
@@ -319,6 +319,38 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 				" model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampSchedule.trainingCampProgram.programName " +
 				" from TrainingCampBatch model " +
 				" where model.attendeeTypeId=2 and model.attendeeType.isDeleted='false' and model.isCancelled='false' ");
+		return query.list();
+	}
+	
+	public List<Object[]> getBatches(String type,Long programId,Long campId){
+		StringBuilder sb = new StringBuilder();
+		Date currDate=new DateUtilService().getCurrentDateAndTime();
+		
+		sb.append(" select model.trainingCampBatchId,model.trainingCampBatchName " +
+				" from TrainingCampBatch model " +
+				" where model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' and model.isCancelled='false' ");
+		
+		if(type.equalsIgnoreCase("c")){
+			sb.append(" and date(model.fromDate) < :currDate and date(model.toDate) < :currDate ");
+		}
+		else if(type.equalsIgnoreCase("r")){
+			sb.append(" and date(model.fromDate) <= :currDate and  date(model.toDate) >= :currDate ");
+		}
+		else if(type.equalsIgnoreCase("u")){
+			sb.append(" and date(model.fromDate) > :currDate and date(model.toDate) > :currDate ");
+		}
+		
+		sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId=:campId and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(type.equalsIgnoreCase("c") || type.equalsIgnoreCase("r") || type.equalsIgnoreCase("u")){
+			query.setParameter("currDate", currDate);
+		}
+		
+		query.setParameter("programId", programId);
+		query.setParameter("campId", campId);
+		
 		return query.list();
 	}
 }
