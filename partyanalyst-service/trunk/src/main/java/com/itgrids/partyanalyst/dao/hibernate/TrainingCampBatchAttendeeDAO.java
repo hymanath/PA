@@ -246,22 +246,22 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return (List<Long>)query.list();
    }
    
-   public List<Object[]> getInvitedCounts(List<Long> batchIds){
+  /* public List<Object[]> getInvitedCounts(List<Long> batchIds){
 	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadre.tdpCadreId) " +
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted='false' " +
 	   		" group by model.trainingCampBatchId ");
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
-   }
+   }*/
    
-   public List<Object[]> getInvitedDetails(List<Long> batchIds){
+   /*public List<Object[]> getInvitedDetails(List<Long> batchIds){
 	   Query query = getSession().createQuery(" select distinct model.trainingCampBatchId, model.tdpCadre.tdpCadreId " +
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted='false' ");
 	   query.setParameterList("batchIds", batchIds);
 	   return query.list();
-   }
+   }*/
    
    public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId){
 	   Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,count(distinct model.tdpCadre.tdpCadreId) " +
