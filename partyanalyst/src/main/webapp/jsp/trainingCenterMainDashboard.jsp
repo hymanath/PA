@@ -213,18 +213,20 @@ header.eventsheader {
                                 </div>
                             </div>
                         </section>
-						<div class="col-md-12" style="background-color:#DDDDDD;">
-							<div class="pull-right" style="padding:5px;"><input type="radio" checked name="filterRadio" value="today" class="filterRadio"/><label>&nbsp;Today</label>
-							<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/><label>&nbsp;15 Days</label>
-							<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/><label>&nbsp;30 Days</label>
-							<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label></div>
-						</div>
 						<section>
                             <div class="row">
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-body pad_0">
+											<div class="panel-heading bg_d">
+												<span class="panel-title text-bold">Speakers Attendance</span>
+												<div class="pull-right"><input type="radio" checked name="filterRadio" value="today" class="filterRadio"/><label>&nbsp;Today</label>
+												<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/><label>&nbsp;15 Days</label>
+												<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/><label>&nbsp;30 Days</label>
+												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label></div>
+											</div>
 											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
+											
 											<div id="speakersAttendence"></div>
 										</div>
                                     </div>
@@ -743,10 +745,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			$("#totalTrainingCenters").html(result.completed.totalTrainingCenters);
 			for(var i in result.completed.programWiseDetails){
 				str+='<tr>';
-				str+='<td class="summaryCls" title="Click Here To View Program Summary" style="Cursor:Pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_batch_id="0" attr_camp_id="0" rowspan='+result.completed.programWiseDetails[i].campDetails.length+'>'+result.completed.programWiseDetails[i].programName+'</td>';
+				str+='<td class="summaryCls" title="Click Here To View Program Summary" style="Cursor:Pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_from="all" attr_batch_id="0" attr_camp_id="0" rowspan='+result.completed.programWiseDetails[i].campDetails.length+'>'+result.completed.programWiseDetails[i].programName+'</td>';
 				if(result.completed.programWiseDetails[i].campDetails!=null && result.completed.programWiseDetails[i].campDetails.length>0){
 					for(var j in result.completed.programWiseDetails[i].campDetails){
-						str+='<td class="summaryCls" title="Click Here TO View Camp Summary" style="cursor:pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_batch_id="0" attr_camp_id="'+result.completed.programWiseDetails[i].campDetails[j].campId+'">'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
+						str+='<td class="summaryCls" title="Click Here TO View Camp Summary" style="cursor:pointer" attr_prog_id="'+result.completed.programWiseDetails[i].programId+'" attr_from="all" attr_batch_id="0" attr_camp_id="'+result.completed.programWiseDetails[i].campDetails[j].campId+'">'+result.completed.programWiseDetails[i].campDetails[j].campName+'</td>';
 						
 						if(result.completed.programWiseDetails[i].campDetails[j].scheduleDetails!=null && result.completed.programWiseDetails[i].campDetails[j].scheduleDetails.length>0){
 							var TotalBatches=0,upcomingDetails=0,upcomingMem=0,upcomingMem1=0,upcomingMem2=0,completedDetails=0,completedMem=0,completedMem1=0,completedMem2=0,runningDetails=0,runningMem=0,runningMem1=0,runningMem2=0,TotalMembers=0,TotalMembers1=0,TotalMembers2=0;
@@ -1018,9 +1020,6 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}).done(function(result){
 			if(result!=null && result.length>0){
 				var str='';
-				str+='<div class="panel-heading bg_d">';
-				str+='<h4 class="panel-title text-bold">Speakers Attendance</h4>';
-				str+='</div>';
 				str+='<table class="table table-bordered text-center">';
 				str+='<thead>';
 				str+='<th class="text-center">Program</th>';
