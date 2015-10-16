@@ -1844,7 +1844,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		   			for(File f : files)
 		   			{
 		   				
-		   			
+		   				//String testPath = "";
+		   				String destinationPath ="";
+		   				String destPath ="";
 		   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue)[0].split("\\.");
 						String ext = "";
 						if(extension.length > 1){
@@ -1855,10 +1857,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 						String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 						 fileUrl = CreateDateFolder(dateString,IConstants.HEALTH_CARD_FOLDER);
 						 String RandomNumber = UUID.randomUUID().toString();
-						 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
-						 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
+						  destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
+						  destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 						filePaths.add(destPath);
+						//testPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\tdp_cadre_health_cards";
 						copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+						//copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+testPath);
 		   			}
 		   			
    			//}
@@ -1868,10 +1872,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    				*/
 		   			String inputValue1 = "feedbackDoc";
    				File[] docs = multiPartRequestWrapper.getFiles(inputValue1);
-	   			
+   				
 	   			feedbackDocuments= new ArrayList<String>();
 	   			for(File f : docs)
 	   			{
+	   				//String testPath = "";
+	   			 String destinationPath ="";
+	   			String destPath ="";
 	   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue1)[0].split("\\.");
 					String ext = "";
 					if(extension.length > 1){
@@ -1882,10 +1889,13 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 					 fileUrl = CreateDateFolder(dateString,IConstants.CADRE_FEEDBACK_DOCUMENT);
 					 String RandomNumber = UUID.randomUUID().toString();
-					 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
-					 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
+					  destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
+					 destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 					 feedbackDocuments.add(destPath);
+					 
+				  //testPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\cadre_feedback_document";
 					copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+					//copyFile(f.getAbsolutePath(),testPath);
 	   			}
    				
    			//}
