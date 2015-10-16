@@ -14,7 +14,7 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type);
 	public List<Object[]> getCompletedCounts(List<Long> batchIds);
 	
-	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate);
+	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom);
 	public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date todate);
 	public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate);
 	public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate);
@@ -26,8 +26,8 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Long> getCompletedCountsForADay(Long batchId,Date date);
 	public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates);
 	public List<Object[]> getCompletedCountDetails(List<Long> batchIds);
-	public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate);
-	public List<Object[]> getInviteeAttendedDetails(List<Long> batchIds,Date fromDate,Date toDate);
+	//public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate);
+	//public List<Object[]> getInviteeAttendedDetails(List<Long> batchIds,Date fromDate,Date toDate);
 	public List<Object[]> getInviteeAttendedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
 	public List<Long> getAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
 }
