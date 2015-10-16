@@ -1844,7 +1844,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		   			for(File f : files)
 		   			{
 		   				
-		   				//String testPath = "";
+		   				
 		   				String destinationPath ="";
 		   				String destPath ="";
 		   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue)[0].split("\\.");
@@ -1860,23 +1860,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 						  destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
 						  destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 						filePaths.add(destPath);
-						//testPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\tdp_cadre_health_cards";
-						copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
-						//copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+testPath);
+						 copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
 		   			}
 		   			
-   			//}
    			
-   			/*else
-   			{
-   				*/
 		   			String inputValue1 = "feedbackDoc";
    				File[] docs = multiPartRequestWrapper.getFiles(inputValue1);
    				
 	   			feedbackDocuments= new ArrayList<String>();
 	   			for(File f : docs)
 	   			{
-	   				//String testPath = "";
+	   				
 	   			 String destinationPath ="";
 	   			String destPath ="";
 	   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue1)[0].split("\\.");
@@ -1892,13 +1886,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 					  destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
 					 destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 					 feedbackDocuments.add(destPath);
-					 
-				  //testPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\cadre_feedback_document";
-					copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
-					//copyFile(f.getAbsolutePath(),testPath);
+					 copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+					
 	   			}
-   				
-   			//}
+   			
    		}	
    		
    		
