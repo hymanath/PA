@@ -10942,18 +10942,38 @@
 		    <param name="root">simpleVO</param>
 		</result>
 	</action>
-	
 	<action name="getAttendenceForTrainersAction" class="trainingCampAction" method="getAttendenceForTrainers">
 	    <result type="json" name="success">		   
 		    <param name="root">simpleVOList</param>
 		</result>
 	</action>
-	
 	<action name="getCategoryFeedBackAnswerForCadreAction" class="cadreDetailsAction" method="getCategoryFeedBackAnswerForCadre">
 	    <result type="json" name="success">		   
 		    <param name="root">categoryFeedbackVoList</param>
 		</result>
 	</action>
 		
+	
+		<action name="trainingCampFeedback" class="trainingCampAction" method="trainingCampMainDashboard">
+			<result name="success">/jsp/trainingCampFeedback.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+	<action name="getFeedbackCategoriesAction" class="trainingCampAction" method="getFeedbackCategories">
+	    <result type="json" name="success">		   
+		    <param name="root">idnemIdNameVOs</param>
+		</result>
+	</action>
+	
+     <action name="getFeedbackCategoriesAction" class="trainingCampAction" method="getFeedbackCategories">
+	    <result type="json" name="success">		   
+		    <param name="root">idnemIdNameVOs</param>
+		</result>
+	</action>
+	<action name="getQuestionOptionsForCategoryAction" class="trainingCampAction" method="getTrainingFeedBackQuestionsList">
+	    <result type="json" name="success">		   
+		    <param name="root">quetsionsList</param>
+		</result>
+	</action>
 </package>
 </struts>      

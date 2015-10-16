@@ -19,6 +19,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
@@ -26,6 +27,8 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.CallBackCountVO;
 import com.itgrids.partyanalyst.dto.CallStatusVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
+import com.itgrids.partyanalyst.dto.FeedbackInputVO;
+import com.itgrids.partyanalyst.dto.FeedbackQuestionVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
@@ -115,10 +118,21 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<TrainingCampVO> campVoList;	
 	private ICadreRegistrationService cadreRegistrationService;
 	private String callFrom;
+	private List<FeedbackQuestionVO> quetsionsList;
 	
 	
 	
 	
+	
+
+	public List<FeedbackQuestionVO> getQuetsionsList() {
+		return quetsionsList;
+	}
+
+	public void setQuetsionsList(List<FeedbackQuestionVO> quetsionsList) {
+		this.quetsionsList = quetsionsList;
+	}
+
 	public String getCallFrom() {
 		return callFrom;
 	}
@@ -1628,7 +1642,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		 
  }
 	
-	public static String CreateDateFolder(String totalDate){
+	public static String CreateDateFolder(String totalDate,String folder){
 	  	 try {
 	  		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 	  		 LOG.debug(" in FolderForArticle ");
@@ -1636,14 +1650,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			 String[] parts = string.split("-");
 			
 			 String yr = parts[0]; // YEAR YYYY
-			 String yrDir = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+yr;
+			 String yrDir = IConstants.STATIC_CONTENT_FOLDER_URL+folder+pathSeperator+yr;
 			 String yrFldrSts = createFolderForArticles(yrDir);
 			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
 			 String mnth = parts[1];
-			 String mnthDir = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+pathSeperator+yr+pathSeperator+mnth;
+			 String mnthDir = IConstants.STATIC_CONTENT_FOLDER_URL+folder+pathSeperator+yr+pathSeperator+mnth;
 			 String mnthDirSts = createFolderForArticles(mnthDir);
 			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
@@ -1811,43 +1825,70 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
    		Long userId = regVO.getRegistrationID();
    		List<String> filePaths = null;
+   		List<String> feedbackDocuments= null;
    		MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
-   		/*File filePath=multiPartRequestWrapper.getFiles("Filedata")[0];
-	   	 String fileName=request.getParameter("Filename");
-	     String fileType=fileName.substring(fileName.lastIndexOf("."),fileName.length());*/
+   		
    		Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
    		Long tdpCadreId = Long.parseLong(request.getParameter("tdpCadreId"));
    		String storeFilePath ="" ;
    		String fileUrl = "" ;
    		if(fileParams.hasMoreElements())
    		{
-   			String inputValue = (String) fileParams.nextElement();
-   			System.out.println(inputValue);
-   			File[] files = multiPartRequestWrapper.getFiles(inputValue);
-   			filePaths = new ArrayList<String>();
-   			for(File f : files)
+   			/*String inputValue = (String) fileParams.nextElement();
+   			if(inputValue.equalsIgnoreCase("image"))
+   			{*/
+   			String inputValue = "image";
+		   			File[] files = multiPartRequestWrapper.getFiles(inputValue);
+		   			filePaths = new ArrayList<String>();
+		   			
+		   			for(File f : files)
+		   			{
+		   				
+		   			
+		   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+						}
+						String dateString = dateService.getCurrentDateAndTimeInStringFormat();
+						
+						String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+						 fileUrl = CreateDateFolder(dateString,IConstants.HEALTH_CARD_FOLDER);
+						 String RandomNumber = UUID.randomUUID().toString();
+						 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
+						 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
+						filePaths.add(destPath);
+						copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+		   			}
+		   			
+   			//}
+   			
+   			/*else
    			{
+   				*/
+		   			String inputValue1 = "feedbackDoc";
+   				File[] docs = multiPartRequestWrapper.getFiles(inputValue1);
+	   			
+	   			feedbackDocuments= new ArrayList<String>();
+	   			for(File f : docs)
+	   			{
+	   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue1)[0].split("\\.");
+					String ext = "";
+					if(extension.length > 1){
+						ext = extension[extension.length-1];
+					}
+					String dateString = dateService.getCurrentDateAndTimeInStringFormat();
+					
+					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+					 fileUrl = CreateDateFolder(dateString,IConstants.CADRE_FEEDBACK_DOCUMENT);
+					 String RandomNumber = UUID.randomUUID().toString();
+					 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
+					 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
+					 feedbackDocuments.add(destPath);
+					copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+	   			}
    				
-   				System.out.println(f.getAbsolutePath());
-   				System.out.println(multiPartRequestWrapper.getFileNames(inputValue)[0]);
-   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue)[0].split("\\.");
-				String ext = "";
-				if(extension.length > 1){
-					ext = extension[extension.length-1];
-				}
-				String dateString = dateService.getCurrentDateAndTimeInStringFormat();
-				/*String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				String[] dateStr = dateString.split("-");
-				storeFilePath = dateStr[0]+pathSeperator+dateStr[1]+pathSeperator+tdpCadreId+"."+ext;*/
-				//fileUrl = dateStr[0]+"/"+dateStr[1]+"/"+tdpCadreId+"."+ext;
-				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				 fileUrl = CreateDateFolder(dateString);
-				 String RandomNumber = UUID.randomUUID().toString();
-				 String destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
-				 String destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
-				filePaths.add(destPath);
-				copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
-   			}
+   			//}
    		}	
    		
    		
@@ -1889,7 +1930,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		String whatsappShareId = request.getParameter("whatsappShareId");
    		String facebookId = request.getParameter("facebookId");
    	
-   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths);
+   		cadreDetailsVO = trainingCampService.saveDetailsOfCadre(tdpCadreId,batchId,achieveList,goallist,leaderShipLevelId,communicationSkillsId,leaderShipSkillsId,healthId,comments,userId,smartPhoneId,whatsappId,whatsappShareId,facebookId,filePaths,feedbackDocuments);
    		
    	
    	}	
@@ -2361,7 +2402,6 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS;
     }
-    
     public String getAttendenceForTrainers(){
     	try {
 			LOG.info("ntered into getAttendenceForTrainers");
@@ -2374,5 +2414,46 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS;
     }
+    
+    public String getFeedbackCategories()
+    {
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		Long batchId = jObj.getLong("batchId");
+    		Long programId = jObj.getLong("programId");
+    		Long campId = jObj.getLong("campId");
+    		idnemIdNameVOs = trainingCampService.getFeedbackCategoriesForTraining(programId,campId,batchId);
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception Occured in getFeedbackCategories() method, Exception - ",e);
+		}
+    	return Action.SUCCESS;
+    }
+    
+    public String getTrainingFeedBackQuestionsList()
+    {
+    	try{
+    		FeedbackInputVO vo = new FeedbackInputVO();
+    		List<Long> categoryIds = new ArrayList<Long>();
+    		jObj = new JSONObject(getTask());
+    		vo.setBatchId(jObj.getLong("batchId"));
+    		vo.setProgramId(jObj.getLong("programId"));
+    		vo.setCampId(jObj.getLong("campId"));
+    		JSONArray arr = jObj.getJSONArray("categoryIds");
+    		if(arr != null && arr.length() > 0)
+    		{
+    			for(int i=0;i<arr.length();i++)
+    			categoryIds.add(new Long(arr.get(i).toString()));
+    		}
+    		quetsionsList = trainingCampService.getTrainingFeedBackQuestionsList(vo,categoryIds);
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception Occured in getFeedbackCategories() method, Exception - ",e);
+		}
+    	return Action.SUCCESS;
+    }
+    
+    
     
 }
