@@ -7,18 +7,28 @@ public class FeedbackQuestionVO {
 	private Long programId;
 	private Long campId;
 	private Long batchId;
-	private Long categoryId;
+	private Long id;
 	private String category;
 	private List<FeedBackOptionVO> optionsList;
-	private boolean optionExists;
+	private String optionExists;
+	private Long trainingCampFeedbackCategoryId;
 	
 	
 	
 	
-	public boolean isOptionExists() {
+	
+	
+	public Long getTrainingCampFeedbackCategoryId() {
+		return trainingCampFeedbackCategoryId;
+	}
+	public void setTrainingCampFeedbackCategoryId(
+			Long trainingCampFeedbackCategoryId) {
+		this.trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryId;
+	}
+	public String getOptionExists() {
 		return optionExists;
 	}
-	public void setOptionExists(boolean optionExists) {
+	public void setOptionExists(String optionExists) {
 		this.optionExists = optionExists;
 	}
 	public List<FeedBackOptionVO> getOptionsList() {
@@ -45,11 +55,14 @@ public class FeedbackQuestionVO {
 	public void setBatchId(Long batchId) {
 		this.batchId = batchId;
 	}
-	public Long getCategoryId() {
-		return categoryId;
+
+	
+	
+	public Long getId() {
+		return id;
 	}
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getCategory() {
 		return category;
