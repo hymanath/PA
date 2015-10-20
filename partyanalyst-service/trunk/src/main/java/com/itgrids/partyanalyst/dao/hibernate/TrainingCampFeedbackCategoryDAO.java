@@ -26,7 +26,7 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 		if(campId > 0)
 			str.append(" and model.trainingCampId = :campId");	
 		if(batchId > 0)
-			str.append("and model.trainingCampBatchId = :batchId");	
+			str.append(" and model.trainingCampBatchId = :batchId");	
 		 Query query = getSession().createQuery(str.toString());
 			if(programId > 0)
 				query.setParameter("programId", programId);
