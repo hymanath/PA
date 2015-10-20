@@ -10981,5 +10981,11 @@
 		</result>
 	</action>
 	
+	<action name="saveCategorysDetailsAction" class="trainingCampAction" method="saveCategorysDetails">
+	    <result type="json" name="success">		   
+		    <param name="root">status</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
