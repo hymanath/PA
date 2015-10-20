@@ -120,10 +120,19 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String callFrom;
 	private List<FeedbackQuestionVO> quetsionsList;
 	
+	private Long cadreId;
+	
+
 	
 	
-	
-	
+
+	public Long getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
 
 	public List<FeedbackQuestionVO> getQuetsionsList() {
 		return quetsionsList;
@@ -2492,6 +2501,34 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		} catch (Exception e) {
 			LOG.error("Exception raised at getBatches", e);
 		}
+    	return Action.SUCCESS;
+    }
+    
+    public String saveCategorysDetails()
+    {
+    	try {
+    		jObj = new JSONObject(getTask());
+    	
+    		List<SimpleVO> categoryAnsrList = new ArrayList<SimpleVO>(0);
+    		Long tdpCadreId =0L;
+    			JSONArray jarr = jObj.getJSONArray("arr");
+			
+			if(jarr != null && jarr.length() > 0)
+			{
+				for(int i=0;i<jarr.length();i++)
+				{
+				SimpleVO inputVo =  new SimpleVO();
+				JSONObject jObj=(JSONObject) jarr.get(i);
+				inputVo.setId(jObj.getLong("id"));
+				inputVo.setName(jObj.getString("answer"));
+				categoryAnsrList.add(inputVo);
+				}
+			}
+    		status = trainingCampService.saveCadreFeedBackAnswers(jObj.getLong("tdpCadreId"),categoryAnsrList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveCategorysDetailsAction", e);
+		}
+    	
     	return Action.SUCCESS;
     }
 }

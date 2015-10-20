@@ -14,6 +14,7 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
+
 <style type="text/css">
 header.eventsheader {  
     background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
@@ -37,6 +38,69 @@ header.eventsheader {
 </head>
 
 <body>
+	<!-- language convertion-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+// Load the Google Transliterate API
+   google.load("elements", "1", {
+         packages: "transliteration"
+       });
+
+</script> 
+  <script>
+
+ var control;
+	var lang;
+   function onLoad() {
+	
+       lang = $("input[name=language]:checked").val();
+     var options = {
+         sourceLanguage:
+             google.elements.transliteration.LanguageCode.ENGLISH,
+         destinationLanguage:
+             [''+lang+''],
+         shortcutKey: 'alt+t',
+         transliterationEnabled: true
+     };
+
+     // Create an instance on TransliterationControl with the required
+     // options.
+     control =
+         new google.elements.transliteration.TransliterationControl(options);
+
+     // Enable transliteration in the textbox with id
+     // 'descrptionId'.
+$(".answers").each(function()
+{
+	//alert('aa')
+	//if ($('#answerId').length){
+	//	alert($(this).attr("id"))
+		var id = $(this).attr("id");
+control.makeTransliteratable([''+id+'']);
+});
+	 	
+ 
+
+//}
+   }
+   function languageChangeHandler() {
+  
+        var lang1 = $("input[name=language]:checked").val();
+		if(lang1 =="en")
+	   {
+		control.disableTransliteration();
+		}
+		else
+	   {
+		   control.enableTransliteration();
+           control.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            lang1);
+			}
+      }
+ google.setOnLoadCallback(onLoad);
+</script>	
 <header class="eventsheader">
 	<div class="container">
         <div class="row">
@@ -85,17 +149,17 @@ header.eventsheader {
 </header>
 <section>
 	<div class="container">
-	
-	
+
 
     	<div class="row">
+		
         	<div class="col-md-12">
             	<div class="panel panel-default">
                 	<div class="panel-heading bg_cc">
                     	<h4 class="panel-title">FEEDBACK</h4>
                     </div>
                     <div class="panel-body">
-							<div class="row">
+							<!--<div class="row">
 								<div class="col-md-12">
 									<div class="col-md-3">
 										<label>Program</label>
@@ -123,9 +187,12 @@ header.eventsheader {
 								</div>
 								</div>
 								</div>
-                    	<div class="row m_top20">
+								-->
+                    	<div class="row">
+						<div class="col-xs-offset-1"><b>Select Language: </b> <input type="radio" onclick="languageChangeHandler();" checked="" id="telugu" class="lang" name="language" value="te"> Telugu <input type="radio" onclick="languageChangeHandler();" id="eng" class="lang" name="language" value="en"> English </div>
                         	<div class="col-md-12">
-                            	<div class="select-category bg_ee">
+							
+                            	<div class="select-category bg_ee m_top10">
                                     <label>Select Category</label>
                                     <select class="chosen-select" id="categoryId" multiple onchange="getQuestionOptionsForCategories();">
                                        <!-- <option>మీ నియోజకవర్గం పార్టీ, పార్టీ నాయకులు</option>-->
@@ -134,7 +201,7 @@ header.eventsheader {
                             </div>
                         </div>
 						
-                        <div class="row" id="categoryquestionOptionsDiv">
+                        <div class="row row col-md-12 m_top20" id="categoryquestionOptionsDiv">
 						</div>
 						<!--<div class="panel panel-default m_top20">
 							<div class="panel-heading">
@@ -162,7 +229,7 @@ header.eventsheader {
 					
                         <div class="row">
                         	<div class="col-md-2 col-md-offset-5 m_top10">
-                            	<button class="btn btn-success btn-block btn-custom">
+                            	<button class="btn btn-success btn-block btn-custom" onclick="saveFeedback();">
                                 	SUBMIT
                                 </button>
                             </div>
@@ -183,6 +250,7 @@ header.eventsheader {
 $(".chosen-select").chosen({no_results_text: "Oops, nothing found!"}); 
  //on load calls.
 getPrograms();
+getFeedbackQuestions();
 function getPrograms(){
 			 $.ajax({
 			  type:'POST',
@@ -284,10 +352,12 @@ function getPrograms(){
 	  function getFeedbackQuestions()
 	  {
 		   $("#categoryId").html('');
-		  var batchId = 0;
-		  	var programId = $("#programId").val();
-			var campId = $("#centerId").val();
-			var batchId = $("#batchId").val();
+		  var batchId= '${param.batchId}';
+		var campId= '${param.campId}';
+		var programId= '${param.programId}';
+		
+		
+		
 		  var jsObj={
 			  programId :0,
 			  campId :0,
@@ -300,47 +370,153 @@ function getPrograms(){
 		    data:{task:JSON.stringify(jsObj)},
 	      }).done(function(results){
 			  	  $("#categoryId").append('<option value="0">Select</option>');
-			    if(results !=null){
+				  var str='';
+					if(results !=null){
 					for(var i in results){
 						$("#categoryId").append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+						str+='<div div="categoriDivId'+results[i].id+'"></div>';
 					}
 					$("#categoryId").chosen(); 
 					$("#categoryId").trigger("chosen:updated");
 					}
+					
+					$('#categoryquestionOptionsDiv').html(str);
 		       }); 
 	  }
 	  
-	  
-	  	  function getQuestionOptionsForCategories()
+	  var GcategotyArr = new Array() ;
+	  function getQuestionOptionsForCategories()
 	  {
-		  $("#categoryquestionOptionsDiv").html('');
+		
 		   var categoryIds ;
-		  var batchId = 0;
+			var batchId = 0;
 		  	var programId = $("#programId").val();
 			var campId = $("#centerId").val();
 			var batchId = $("#batchId").val();
+			var finalCategoryIdsList = new Array();
 			categoryIds= $("#categoryId").val();
-			console.log(categoryIds)
+			console.log(GcategotyArr)
+			if(GcategotyArr != null && GcategotyArr.length>0)
+			{
+				if(categoryIds != null && categoryIds.length>0)
+				{
+					if(GcategotyArr.length > categoryIds.length )
+					{						
+						var isAvailable=true;
+						for(var k in GcategotyArr)
+						{
+							isAvailable = false;
+							var existingId = GcategotyArr[k];
+							for(var k in categoryIds)
+								{									
+									var newId = categoryIds[i];
+									if(newId == existingId)
+									{
+										isAvailable = true;
+									}
+								}	
+								if(!isAvailable)
+								{
+									GcategotyArr.splice(k,1);
+								}									
+						}
+						/*
+						for(var k in GcategotyArr)
+						{
+							finalCategoryIdsList.push(GcategotyArr[k]);
+						}
+							*/	
+					}
+					else 
+					{
+						for(var i in categoryIds)
+						{					
+							if(GcategotyArr != null && GcategotyArr.length>0)
+							{			
+								var isAvailable=false;
+								for(var k in GcategotyArr)
+								{
+									var existingId = GcategotyArr[k];
+									var newId = categoryIds[i];
+									if(existingId == newId)
+									{
+										isAvailable = true;
+									}
+								}								
+								if(!isAvailable)
+								{
+									GcategotyArr.push(categoryIds[i]);
+									finalCategoryIdsList.push(categoryIds[i]);
+								}						
+							}
+							else
+							{
+								GcategotyArr.push(categoryIds[i]);
+								finalCategoryIdsList.push(categoryIds[i]);
+							}					
+						}
+					}
+				}
+			}
+			else 
+			{
+		
+				for(var i in categoryIds)
+				{					
+					if(GcategotyArr != null && GcategotyArr.length>0)
+					{			
+						var isAvailable=false;
+						for(var k in GcategotyArr)
+						{
+							var existingId = GcategotyArr[k];
+							var newId = categoryIds[i];
+							if(existingId == newId)
+							{
+								isAvailable = true;
+							}
+						}
+						
+						if(!isAvailable)
+						{
+							GcategotyArr.push(categoryIds[i]);
+							finalCategoryIdsList.push(categoryIds[i]);
+						}						
+					}
+					else
+					{
+						
+						GcategotyArr.push(categoryIds[i]);
+						finalCategoryIdsList.push(categoryIds[i]);
+					}					
+				}
+			}
+		
+			$("#categoriDivId"+parseInt(finalCategoryIdsList[0])+"").html('');
+			 //console.log(categoryIds)
+			//  console.log(finalCategoryIdsList)
 		  var jsObj={
 			  programId :0,
 			  campId :0,
 			  batchId:0,
-			  categoryIds:categoryIds,
+			  categoryIds:finalCategoryIdsList,
 			  task:""
 		  }
-		 
-		  $.ajax({
-		    type:'POST',
-		    url :'getQuestionOptionsForCategoryAction.action',
-		    data:{task:JSON.stringify(jsObj)},
-	      }).done(function(result){
-			  	buildQuestionOptions(result)
-		       }); 
+		  removeCategroy();
+		 if(finalCategoryIdsList != null  && finalCategoryIdsList.length>0)
+			  $.ajax({
+				type:'POST',
+				url :'getQuestionOptionsForCategoryAction.action',
+				data:{task:JSON.stringify(jsObj)},
+			  }).done(function(result){
+					buildQuestionOptions(result,parseInt(finalCategoryIdsList[0]))
+				   }); 
+				  
 	  }
-	  
-	  function buildQuestionOptions(result)
+	  	var index =0;
+	  function buildQuestionOptions(result,divId)
 	  {
-		  
+		  var textFieldArr = [];
+		  $('#categoriDivId'+divId+'').html('');
 		  var str = '';
 		  if(result != null && result.length > 0)
 		  {
@@ -348,7 +524,7 @@ function getPrograms(){
 			  {
 				  if(result[i].optionsList != null && result[i].optionsList.length > 0)
 				  {
-				str+='<div class="panel panel-default">';
+				str+='<div class="panel panel-default categoryremove" id="categoryDiv'+result[i].id+'">';
 				str+='<div class="panel-heading">';
 				str+='<h4 class="panel-title"><b>'+result[i].category+'</b></h4>';
 				str+='</div>';
@@ -356,10 +532,10 @@ function getPrograms(){
 				str+='<div class="row QuestionOptionsDiv">';
 				str+='<div class="col-md-12">';
 				str+='<div >';
-				str+='<div class="row">';
+				/*str+='<div class="row">';
 				str+='<div class="col-md-12">';
 				str+='<label>Select Options</label>';
-				str+='<select class="chosen-select">';
+				str+='<select class="chosen-select optionSelect" id="optionsForParent'+i+'" onchange="buildSubCategoryAnswerField(\'optionsForParent'+i+'\')">';
 				for(var j in result[i].optionsList)
 				{
 					str+='<option value="'+result[i].optionsList[j].id+'">'+result[i].optionsList[j].option+'</option>';
@@ -367,21 +543,32 @@ function getPrograms(){
 			
 				str+='</select>';
 				str+='</div>';
-				str+='</div>';
+				str+='</div>';*/
 				str+='<div class="row m_top10">';
-				str+='<div class="col-md-12">';
-				str+='<label>'+result[i].optionsList[0].option+'</label>';
-				str+='<ul class="options-form">';
-				str+='<li>';
-				str+='<div class="input-group">';
-				str+='<input class="form-control" type="text">';
-				str+='<div class="input-group-addon">';
-				str+='<i class="glyphicon glyphicon-remove"></i>';
-				str+='</div>';
-				str+='</div>';
-				str+='</li>';
-				str+='</ul>';
-				str+='</div>';
+				for(var j in result[i].optionsList)
+				{
+					str+='<div class="col-md-12">';
+					str+='<label>'+result[i].optionsList[j].option+'</label>';
+					str+='<ul class="options-form">';
+					str+='<li>';
+					str+='<div class="input-group">';
+					str+='<input class="form-control answers" feedbackId = "'+result[i].optionsList[j].trainingCampFeedbackCategoryId+'"  type="textarea" id="cateforyTextId'+index+'">';
+					/*str+='<div class="input-group-addon removeicon">';
+					str+='<i class="glyphicon glyphicon-remove"></i>';
+					str+='</div>';*/
+					str+=' <div class="input-group-addon">';
+					str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+j+'\',\''+result[i].optionsList[j].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
+					str+=' </div>';
+					str+='</div>';
+					str+='</li>';
+					str+='<div id="addCateforyTextId'+result[i].id+i+''+j+'"></div>';
+					str+='</ul>';
+					str+='</div>';
+					
+					//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+""+j+"");
+					index++;
+				}
+				
 				str+='</div>';
 				str+='</div>';
 				str+='</div>';
@@ -390,7 +577,7 @@ function getPrograms(){
 				str+='</div>';
 			  }
 			 else{
-			str+=' <div class="panel panel-default m_top20">';
+			str+=' <div class="panel panel-default m_top20 categoryremove" id="categoryDiv'+result[i].id+'">';
 			str+=' <div class="panel-heading">';
 			str+=' <h4 class="panel-title">'+result[i].category+'</h4>';
 			str+=' </div>';
@@ -401,23 +588,117 @@ function getPrograms(){
 			str+=' <ul class="options-form">';
 			str+=' <li>';
 			str+=' <div class="input-group">';
-			str+=' <input class="form-control" type="text">';
-			str+=' <div class="input-group-addon">';
+				str+='<input class="form-control answers" type="textarea" feedbackId = "'+result[i].trainingCampFeedbackCategoryId+'" id="cateforyTextId'+index+'">';
+			/*str+=' <div class="input-group-addon removeicon">';
 			str+=' <i class="glyphicon glyphicon-remove"></i>';
+			str+=' </div>';*/
+			str+=' <div class="input-group-addon">';
+			str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+0+'\',\''+result[i].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
 			str+=' </div>';
 			str+=' </div>';
 			str+=' </li>';
+			str+='<div id="addCateforyTextId'+result[i].id+i+''+0+'"></div>';
 			str+=' </ul>';
 			str+=' </div>';
 			str+=' </div>';
 			str+=' </div>';
 			str+=' </div>';
+				index++;
+			//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+"0");
 			  }
 		}
 		
 	  }
-	  $("#categoryquestionOptionsDiv").html(str);
+
+	   $('#categoriDivId6').html(str);
+	  $("#categoryquestionOptionsDiv").append(str);
+	   $(".optionSelect").chosen(); 
+	   $(".optionSelect").trigger("chosen:updated");
+
+	  $(".answers").each(function()
+		{
+				var id = $(this).attr("id");
+				
+				control.makeTransliteratable([''+id+'']);
+		});
+	
 	} 
+	
+	function removeCategroy()
+	{
+		var categoryIds= $("#categoryId").val();
+		$(".categoryremove").each(function()
+		{
+		var divId = $(this).attr("id").replace(/[^0-9]/g,'');
+		if($.inArray(divId, categoryIds) == -1)
+		{
+			$(this).remove();
+			for(var j in GcategotyArr)
+			{
+				if(GcategotyArr[j] == divId)
+					GcategotyArr.splice(j,1);
+			}
+			
+		}
+			
+		})
+		
+	}
+
+	function addNewField(divId,feedbackID)
+	{
+		
+		var str='';
+		str+='<div class="input-group">';
+		str+='<input class="form-control answers" type="textarea" feedbackId = "'+feedbackID+'" id="cateforyTextId'+index+'">';
+		str+='<div class="input-group-addon removeicon">';
+		str+='<i class="glyphicon glyphicon-remove"></i>';
+		str+='</div>';
+		str+='</div>';	
+		 $("#"+divId).append(str);	
+		 index++;
+		   $(".answers").each(function()
+		{
+				var id = $(this).attr("id");
+				
+				control.makeTransliteratable([''+id+'']);
+		});
+	$(".removeicon").click(function(){
+		$(this).parent().remove();
+	})
+		
+	}
+	function saveFeedback()
+	{
+		var cadreId ='${cadreId}';
+		var arr = [];
+		$(".answers").each(function(){
+			var id = $(this).attr("feedbackId");
+			var answer = $(this).val().trim();
+			var obj = {
+				id : id,
+				answer:answer,
+			}
+			if(answer != null && answer.length > 0)
+			arr.push(obj)
+		})
+		var jsObj = {
+			tdpCadreId:cadreId,
+			arr:arr,
+			task:""
+		}
+	console.log(arr)
+		 $.ajax({
+				type:'POST',
+				url :'saveCategorysDetailsAction.action',
+				data:{task:JSON.stringify(jsObj)},
+			  }).done(function(result){
+					//buildQuestionOptions(result,parseInt(finalCategoryIdsList[0]))
+				   }); 
+		
+	}
+	
+
 </script>
 <script>
 
