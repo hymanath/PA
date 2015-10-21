@@ -574,9 +574,12 @@ function getPrograms(){
 														str+=' <div class="input-group ">';
 													}
 													else{
+													
 														str+=' <div class="input-group-addon removeicon">';
 															str+=' <i class="glyphicon glyphicon-remove"></i></a>';
-														str+=' </div>';														
+														str+=' </div>';		
+														str+='</div>';	
+														str+=' <div class="input-group ">';														
 													}													
 												}
 												str+='</div>';
@@ -667,7 +670,7 @@ function getPrograms(){
 			  }
 		}
 		
-	  }
+	  }  
 
 	   $('#categoriDivId6').html(str);
 	  $("#categoryquestionOptionsDiv").append(str);
