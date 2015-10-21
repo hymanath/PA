@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackQuestionVO {
@@ -12,12 +13,25 @@ public class FeedbackQuestionVO {
 	private List<FeedBackOptionVO> optionsList;
 	private String optionExists;
 	private Long trainingCampFeedbackCategoryId;
+	private List<CategoryFeedbackVO> childCategoryList = new ArrayList<CategoryFeedbackVO>();
+	private List<String> mainCategoryAnswers = new ArrayList<String>();
 	
 	
 	
 	
 	
-	
+	public List<CategoryFeedbackVO> getChildCategoryList() {
+		return childCategoryList;
+	}
+	public void setChildCategoryList(List<CategoryFeedbackVO> childCategoryList) {
+		this.childCategoryList = childCategoryList;
+	}
+	public List<String> getMainCategoryAnswers() {
+		return mainCategoryAnswers;
+	}
+	public void setMainCategoryAnswers(List<String> mainCategoryAnswers) {
+		this.mainCategoryAnswers = mainCategoryAnswers;
+	}
 	public Long getTrainingCampFeedbackCategoryId() {
 		return trainingCampFeedbackCategoryId;
 	}
