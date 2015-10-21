@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.awt.geom.NoninvertibleTransformException;
-
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,8 +18,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Count;
-import org.hibernate.dialect.FrontBaseDialect;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -85,7 +81,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreFeedbackHealthCardDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
@@ -112,7 +107,6 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
-import com.itgrids.partyanalyst.model.CampCallStatus;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -5445,9 +5439,9 @@ class TrainingCampService implements ITrainingCampService{
 					trainingCampCadreFeedbackHealthCardDAO.save(trainingCampCadreFeedbackHealthCard);
 						}
 					}
-					if(feedBackCategories != null && feedBackCategories.size() > 0)
+					/*if(feedBackCategories != null && feedBackCategories.size() > 0)
 						saveCadreFeedBackAnswers(tdpCadreId,feedBackCategories);
-
+*/
 					if(docs != null && docs.size() > 0)
 					{
 						for(String doc : docs)
@@ -5577,7 +5571,7 @@ class TrainingCampService implements ITrainingCampService{
 	}
 	
 	
-	public void saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers)
+	public String saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers)
 	{
 		DateUtilService date = new DateUtilService();
 		try{
@@ -5596,6 +5590,7 @@ class TrainingCampService implements ITrainingCampService{
 		catch (Exception e) {
 			LOG.error(" Error Occured in saveCadreFeedBackAnswers" ,e);
 		}
+		return "success";
 	}
     public SimpleVO getProgramsByUser(Long userId){
 		
@@ -8613,7 +8608,9 @@ class TrainingCampService implements ITrainingCampService{
 		public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds)
 		{
 			List<FeedbackQuestionVO>  returnList = new ArrayList<FeedbackQuestionVO>();
-			try{
+			try{ 
+				List<CategoryFeedbackVO> cadreFeedbackAnswerList =  getCategoryFeedBackAnswerForCadre(inputVo.getId());
+				
 				List<Long> optionExistCategoryIds = new ArrayList<Long>();
 				List<Object[]> list = trainingCampFeedbackCategoryDAO.getCategoriesByIds(inputVo.getProgramId(),inputVo.getCampId(),inputVo.getBatchId(),categoryIds);
 				if(list != null && list.size() > 0)
@@ -8653,6 +8650,18 @@ class TrainingCampService implements ITrainingCampService{
 						}
 					}
 					
+				}
+				
+				if(cadreFeedbackAnswerList != null && cadreFeedbackAnswerList.size()>0)
+				{
+					for (CategoryFeedbackVO categoryFeedbackVO : cadreFeedbackAnswerList) {
+						if(categoryFeedbackVO != null)
+						{
+							Long id = categoryFeedbackVO.getSubCategoryId();
+							
+							
+						}
+					}
 				}
 			}
 		 }
