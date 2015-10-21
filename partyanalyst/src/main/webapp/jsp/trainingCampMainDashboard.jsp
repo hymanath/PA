@@ -1761,8 +1761,11 @@ function buildDayWiseAttendnenceForBatch(result,center){
 	  $(document).on("click",".updateLeaderShipSkills",function(){
 		 
 		  var cadreId=$(this).attr("attr-cadreId");
-		var batchId=$(this).attr("attr-batchId");
-		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'','_blank');
+		  var batchId=$(this).attr("attr-batchId");
+		   var campId=$("#centerId").val();
+		    var programId=$("#programId").val();
+			
+		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'&campId='+campId+'&programId='+programId+'','_blank');
 	});
 	
 	</script>

@@ -390,9 +390,7 @@ function getPrograms(){
 		
 		   var categoryIds ;
 			var batchId = 0;
-		  	var programId = $("#programId").val();
-			var campId = $("#centerId").val();
-			var batchId = $("#batchId").val();
+
 			var finalCategoryIdsList = new Array();
 			categoryIds= $("#categoryId").val();
 			console.log(GcategotyArr)
@@ -494,12 +492,20 @@ function getPrograms(){
 			$("#categoriDivId"+parseInt(finalCategoryIdsList[0])+"").html('');
 			 //console.log(categoryIds)
 			//  console.log(finalCategoryIdsList)
+			
+			var programId = '${param.programId}';
+			var campId = '${param.campId}';
+			var batchId = '${param.batchId}';
+			var GcadreId = '${param.cadreId}';
+			
+			
 		  var jsObj={
 			  programId :0,
 			  campId :0,
 			  batchId:0,
 			  categoryIds:finalCategoryIdsList,
-			  task:""
+			  task:"",
+			  cadreId:GcadreId
 		  }
 		  removeCategroy();
 		 if(finalCategoryIdsList != null  && finalCategoryIdsList.length>0)
@@ -687,12 +693,15 @@ function getPrograms(){
 			arr:arr,
 			task:""
 		}
-	console.log(arr)
+//	console.log(arr)
 		 $.ajax({
 				type:'POST',
 				url :'saveCategorysDetailsAction.action',
 				data:{task:JSON.stringify(jsObj)},
 			  }).done(function(result){
+				  
+				  if(result != null && result == 'success')
+				  		alert("Feed back saved Successfully...");
 					//buildQuestionOptions(result,parseInt(finalCategoryIdsList[0]))
 				   }); 
 		

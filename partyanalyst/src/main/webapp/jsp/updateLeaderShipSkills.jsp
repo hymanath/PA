@@ -18,13 +18,40 @@
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+		
 	<!-- <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 	<link href="dist/css/jquery.circliful.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"> -->
+	
+	<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="pdfSupportedFiles/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="pdfSupportedFiles/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+<link rel="stylesheet" type="text/css" href="js/slick/slick.css">
+	
+
 <style type="text/css">
+
+.mouse-over
+    {
+        padding:0px;
+    }
+    
+    .mouse-over:hover:after
+    {
+        content:"click here to expand";
+        position:absolute;
+        left:35px;
+        z-index:9999;
+        color:#fff;
+        background:rgba(0,0,0,0.5);
+        padding:10px;
+        font-size:22px;
+		margin-top:20px;
+    }
+	
 .m_top30{margin-top:30px}
 .add-plus{cursor:pointer}
 .glyphicon-trash
@@ -63,6 +90,9 @@ footer
 	color:#fff;
 }
 
+.slick-track{
+	width:8850px !important;
+}
 </style>
 </head>
 <body>
@@ -115,7 +145,24 @@ footer
 </header>
 <div class="container">
 <div id="modalBodyId" style="margin-top:50px;"></div>
-</div>
+
+<div class="modal fade" id="modalForUpdate">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"> UPDATE FEEDBACK DETAILS </h4>
+      </div>
+      <div class="modal-body">
+        <p><a href="javascript:{openNewWindow();}" class="btn btn-success" > UPDATE FEEDBACK </a><div id="feedBackImagesDivId">  </div></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <footer>
 		<p class="text-center">All &copy; Telugu Desam Party </p>
 </footer>
@@ -129,7 +176,7 @@ footer
 	<script src="js/highcharts/js/highcharts.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js/blockui.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	
+	<script type="text/javascript" src="js/slick/slick.js"></script>
 	
 	
 <script type="text/javascript">
@@ -248,7 +295,7 @@ function getLeaderShipDetails()
    str+='<div id="popupdivId">';
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading">';	
-				str+='<h4 class="panel-title">TITLE</h4>';
+				str+='<h4 class="panel-title" style="text-transform:uppercase;">'+results.name+'</h4>';
 			str+='</div>';
 		str+='<div class="panel-body">';
 		str+='<div class="row">'
@@ -444,81 +491,222 @@ function getLeaderShipDetails()
                str+='</select>';
 			   
 			 str+='</div>'
-			str+='<div class="col-md-12 m_top10">';
-			str+='<div class="row">';
-		    str+='<div class="col-md-12">';
-		    str+='<label>Health Card </label>';
-		  
-		  
-		 /* healthCard */
-			if(results.healthCardAttachments!=null && results.healthCardAttachments.length>0){
-				str +='<div class="row">';
-				for(var i in results.healthCardAttachments)
-				{
-					str +='<div class="col-md-3 m_top10">';
-						str +='<a target="_blank" href="tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
-					str +='</div>';
+			 str+='<div class="col-md-12 m_top10">';
+			 str+='<div class="row">';
+				
+						  if(results.healthCardAttachments!=null && results.healthCardAttachments.length>0){
+							  str+='<div class="col-md-6">';
+							str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title"> HEALTH CARD </h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+							str +='<div class="row image-response" style="height:600px;overflow: scroll;text-align:center;">';
+							str+='<div class="pdf-scroll" >';
+							for(var i in results.healthCardAttachments)
+							{
+							/*
+								str +='<div class="col-md-3 m_top10">';
+								str +='<a target="_blank" href="tdp_cadre_health_cards/'+results.healthCardAttachments[i].name+'">'+results.healthCardAttachments[i].name+'</a>';
+								str +='</div>';
+								*/
+								var scanCopySpl = results.healthCardAttachments[i].name.split("."); 
+								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+									if(results.healthCardAttachments[i].name != null && results.healthCardAttachments[i].name.trim().lenght>0)
+									{
+										str+='<img src="http://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										
+									}
+									else
+									{
+									str+='<img src="http://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+									}
+									
+								
+								
+							}
+							str +='</div>';
+							str +='</div>';
+							str+='</div>';
+					str+='</div>';
+				str+='</div>';
+						}
+					
+				str+='<div class="col-md-6">';
+					str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading">';
+					str+='<h4 class="panel-title"> UPLOAD NEW HEALTH CARDS  </h4>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						  str+='<div class="row">';
+						  str+='<div class="col-md-12 m_top10 ">';
+						  str+='<input type="file" class="healthCardattachment" />';
+						  str+='</div>';
+						  str+='</div>';
+						  str+='<div class="row" id="healthCardCntaddDiv">';
+						  str+='</div>';
+						  str+='<div class="row">';
+						  str+='<div class="col-md-offset-8 col-md-1">';
+						  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus healthCardadd" onclick="addHealthCard();"></i>';
+						  str+='</div>';
+						  str+='</div>';
+					str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+			 str+='</div>';
+			 
+			  str+='<div class="col-md-12 m_top10">';
+			 str+='<div class="row">';				
+				// 9999
+						if(results.feedbackDocuments!=null && results.feedbackDocuments.length>0){
+							 str+='<div class="col-md-6">';
+					str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading">';
+					
+					str+='<h4 class="panel-title">FEEDBACK DOCUMENT <a href="javascript:{openDialogueBox()}" id="healthCrdupdatsBtn" class="btn btn-xs btn-success pull-right "> UPDATE </a></h4>';
+					
+					//str+='<h4 class="panel-title">FEEDBACK DOCUMENT <a href="trainingCampFeedback.action?cadreId='+cadreId+'&batchId='+GbatchId+'&campId='+GcampId+'&programId='+GprogramId+'" target="_blank" id="healthCrdupdatsBtn" class="btn btn-xs btn-success pull-right "> UPDATE </a></h4>';
+					
+					str+='</div>';
+					str+='<div class="panel-body">';
+							str +='<div class="row image-response" style="height:600px;overflow: scroll;text-align:center;">';
+							str+='<div class="pdf-scroll" >';
+							for(var i in results.feedbackDocuments)
+							{
+								/*
+								str +='<div class="col-md-3 m_top10">';
+								str +='<a target="_blank" href="cadre_feedback_document/'+results.feedbackDocuments[i].name+'">'+results.feedbackDocuments[i].name+'</a>';
+								str +='</div>';
+								*/
+								var scanCopySpl = results.feedbackDocuments[i].name.split("."); 
+								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+									if(results.feedbackDocuments[i].name != null && results.feedbackDocuments[i].name.trim().lenght>0)
+									{
+str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										
+									}
+									else
+									{
+str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+									}
+									
+									
+							}
+							str +='</div>';
+							str +='</div>';
+							str+='</div>';
+							
+							
+							
+							var buildStr='';
+							buildStr+='<div class="panel-body">';
+							buildStr +='<div class="row image-response" style="text-align:center;">';
+							buildStr+='<ul class="list-inline slick-training " style="width:830px; margin-left: 20px;">';
+							for(var i in results.feedbackDocuments)
+							{
+								
+								
+								buildStr+='<li class="slick-training-slide">';
+								buildStr+='<div class="" style="width: 800px;">';
+								buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'" class="img-responsive " alt="" >';
+								//buildStr+='<img src="http://www.mytdp.com/tdp_cadre_health_cards/2015/10/73ae4177-fea7-49f2-bfd7-4a077bf239e2_6677977.jpg" class="img-responsive " alt="" style="padding: 3px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(211, 211, 211); margin-left: 10px;" >';
+								buildStr+='<p class="">${subList.name}</p>';
+								buildStr+='</div>';
+								buildStr+='</li>';
+								
+								/* var scanCopySpl = results.feedbackDocuments[i].name.split("."); 
+								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+									if(results.feedbackDocuments[i].name != null && results.feedbackDocuments[i].name.trim().lenght>0)
+									{
+										buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										
+									}
+									else
+									{
+										buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+									}
+									 */
+									
+							}
+							buildStr+='</ul>';
+							buildStr +='</div>';
+							buildStr+='</div>';
+							
+							
+					str+='</div>';
+				str+='</div>';
+						}
+		 	
+					$('#feedBackImagesDivId').html(buildStr);
+				$('.slick-training').slick({
+			 dots: false,
+			 slide: 'li',
+			 infinite: false,
+			 speed: 300,
+			 slidesToShow: 1,
+			 slidesToScroll: 1,
+			 variableWidth: true,
+			 responsive: [
+			 {
+				 breakpoint: 1024,
+				 settings: {
+				 slidesToShow: 3,
+				 slidesToScroll: 3,
+				 infinite: true,
+				 dots: true
 				}
-				str +='</div>';
-			}
-	
-		  str+='<div class="row">';
-		  str+='<div class="col-md-2 m_top10 ">';
-		  str+='<input type="file" class="healthCardattachment" />';
-		  str+='</div>';
-		  str+='<div class="col-md-1">';
-		  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus healthCardadd" onclick="addHealthCard();"></i>';
-		  str+='</div>';
-		  str+='</div>';
+			 },
+			 {
+				 breakpoint: 600,
+				 settings: {
+				 slidesToShow: 2,
+				 slidesToScroll: 2
+				 }
+			},
+			 {
+				 breakpoint: 480,
+				 settings: {
+				 slidesToShow: 1,
+				 slidesToScroll: 1
+				 }
+			 }
+			 ]
+			 });
 			
-		  str+='</div>';
-		  str+='</div>';
-		  str+='</div>';
-		  str+='</div>';
-		  
-		   str+='<div class="row" id="healthCardCntaddDiv">';
-		  str+='</div>';
-		  <!-- end -->
-		// Docs Start
-		str+='<div class="col-md-12 m_top10">';
-			str+='<div class="row">';
-		    str+='<div class="col-md-12">';
-		    str+='<label>FEEDBACK DOCUMENT </label>';
-		  
-		  
-		 /* healthCard */
-			if(results.feedbackDocuments!=null && results.feedbackDocuments.length>0){
-				str +='<div class="row">';
-				for(var i in results.feedbackDocuments)
-				{
-					str +='<div class="col-md-3 m_top10">';
-						str +='<a target="_blank" href="cadre_feedback_document/'+results.feedbackDocuments[i].name+'">'+results.feedbackDocuments[i].name+'</a>';
-					str +='</div>';
-				}
-				str +='</div>';
-			}
-	
-		  str+='<div class="row">';
-		  str+='<div class="col-md-2 m_top10 ">';
-		  str+='<input type="file" class="feedbackDocs" />';
-		  str+='</div>';
-		  str+='<div class="col-md-1">';
-		  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus feedbackaddDoc" onclick="addFeedbackDoc();"></i>';
-		  str+='</div>';
-		  str+='</div>';
-			
-		  str+='</div>';
-		  str+='</div>';
-		  str+='</div>';
-		  str+='</div>';
-		  
-		   str+='<div class="row" id="feedbackDocumentaddDiv">';
-		  str+='</div>';
-		  <!-- end -->
-		  //Docs End
+				
+				
+				
+				str+='<div class="col-md-6">';
+					str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading">';
+					str+='<h4 class="panel-title"> UPLOAD NEW FEEDBACK DOCUMENT</h4>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+					str+='<div class="row">';
+						 str+='<div class="row ">';
+							  str+='<div class="col-md-2 m_top10 ">';
+							  str+='<input type="file" class="feedbackDocs" />';
+							  str+='</div>';
+							 str+='</div>';
+						  str+='<div class="row" id="feedbackDocumentaddDiv">';
+						  str+='</div>';
+						  str+='<div class="row pull-right">';
+							 str+='<div class="col-md-1">';
+							  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus feedbackaddDoc" onclick="addFeedbackDoc();"></i>';
+							  str+='</div>';
+							  str+='</div>';
+							  str+='</div>';							  
+					str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+			 str+='</div>';
+		
+		
 		<!-- Adding -->
 		
-		 str+='<div class="row">'
+		 str+='<div class="row col-md-10">'
         	str+='<div class="col-md-6 m_top10">'
             	str+='<label>Do You Have Smart phone(Android or IPhone or Windows)?</label>'
 				str+='<select class="form-control" id="smartPhoneId" onChange="disHideShow()">'
@@ -561,7 +749,7 @@ function getLeaderShipDetails()
         str+='</div>'
 		
 		
-		 str+='<div class="row">'
+		 str+='<div class="row col-md-12">'
         	str+='<div class="col-md-6 m_top10">'
             	str+='<label>Do you share the party information to cadre,people in your region?</label>'
 				str+='<select class="form-control" id="whatsappShareId">'
@@ -600,7 +788,7 @@ function getLeaderShipDetails()
 		
 		
 		
-		str+='<div class="row">'
+		str+='<div class="row col-md-12">'
 			str+='<div class="col-md-12 m_top10">'
 				str+='<label>Comments</label>'
 				if(results.remarks!=null)
@@ -639,6 +827,8 @@ function getLeaderShipDetails()
 	str+='</div>';
 	$("#modalBodyId").html(str);
 	$("#goalsDateId0").datetimepicker({format: "MM/DD/YYYY"});
+	
+	$('.fancybox').fancybox();
 	}
 	function getCampsByProgramAndUser(){
 		 
@@ -894,17 +1084,18 @@ function getLeaderShipDetails()
 	  {
 		
 		  var str ='';
-		
-		  str+='<div>';
-		  str+='<div id="healthCardCnt"+healthCardCnt+"" class="col-md-2 m_top10 healthCardDiv">';
+		str+='<div class="row">';
+		  str+='<div class="col-md-10">';
+		 
+		  str+='<div id="healthCardCnt"+healthCardCnt+"" class="col-md-3 m_top10 healthCardDiv">';
 		  str+='<input type="file" class="healthCardattachment" />';
 		  str+='</div>';
-		  
-		 
-			str+='<div class="col-md-1">';
+		  str+='</div>';
+		   str+='<div class="col-md-1">';
 		  str+='<i class="glyphicon glyphicon-minus add-plus healthCardminus m_top10"></i>';
 		  str+='</div>';
 		  str+='</div>';
+		  
 		  $("#healthCardCntaddDiv").append(str);
 		   healthCardCnt ++;
 	  }
@@ -915,20 +1106,42 @@ function getLeaderShipDetails()
 		
 		  var str ='';
 		 
-		  str+='<div>';
+		  	str+='<div class="row">';
+		  str+='<div class="col-md-10">';
 		  str+='<div id="feedbackDocCnt"+feedbackDocCnt+"" class="col-md-2 m_top10 ">';
 		  str+='<input type="file" class="feedbackDocs" />';
+		  str+='</div>';
 		  str+='</div>';
 		
 		  str+='<div class="col-md-1">';
 		  str+='<i class="glyphicon glyphicon-minus add-plus feedbackDocminus m_top10"></i>';
-		  str+='</div>';
 		    str+='</div>';
+		  str+='</div>';
 		  $("#feedbackDocumentaddDiv").append(str);
 		   feedbackDocCnt ++;
 	  }
 	  
+	  function openDialogueBox()
+	  {
+		  //alert(1111);
+		 // feedBackImagesDivId
+		 
+		 $("#modalForUpdate").modal("show");
+		 
+		 //$('#feedbackDialogueId').show();
+	  }
 	  
+	  function openNewWindow()
+	  {
+		  	
+		var GbatchId= '${param.batchId}';
+		var GcampId= '${param.campId}';
+		var GprogramId= '${param.programId}';
+		var GcadreId= '${param.cadreId}';
+		
+		
+		  window.open('trainingCampFeedback.action?cadreId='+GcadreId+'&batchId='+GbatchId+'&campId='+GcampId+'&programId='+GprogramId+'', 'Feedback Page', 'width=600,height=600,scrollbars=yes, menu=no')
+	  }
 
 </script>
 </body>
