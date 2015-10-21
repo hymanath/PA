@@ -2475,6 +2475,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		vo.setBatchId(jObj.getLong("batchId"));
     		vo.setProgramId(jObj.getLong("programId"));
     		vo.setCampId(jObj.getLong("campId"));
+    		vo.setId(jObj.getLong("cadreId"));
     		JSONArray arr = jObj.getJSONArray("categoryIds");
     		if(arr != null && arr.length() > 0)
     		{
