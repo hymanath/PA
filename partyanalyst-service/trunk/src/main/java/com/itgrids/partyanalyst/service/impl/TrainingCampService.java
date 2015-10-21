@@ -8516,6 +8516,7 @@ class TrainingCampService implements ITrainingCampService{
 				Map<Long,List<Long>> childCateIds = new HashMap<Long, List<Long>>();
 				
 				List<Long> allIds = new ArrayList<Long>();
+				Map<Long,Long> trainingCampFeedbackCategoryIdsMap = new HashMap<Long, Long>(0);
 				if(fbcatIds!=null && fbcatIds.size()>0){
 					List<Object[]> pcidsList = trainingCampFeedbackCategoryDAO.getParentAndChildCategoryIds(fbcatIds);
 					if(pcidsList!=null && pcidsList.size()>0){
@@ -8523,6 +8524,7 @@ class TrainingCampService implements ITrainingCampService{
 							if((Long) objects[1]==null){
 								allIds.add((Long)objects[0]);
 								parentCatIds.add((Long)objects[0]);
+								trainingCampFeedbackCategoryIdsMap.put((Long)objects[0], (Long)objects[2]);
 							}else{
 								allIds.add((Long)objects[0]);
 								allIds.add((Long)objects[1]);
@@ -8530,6 +8532,7 @@ class TrainingCampService implements ITrainingCampService{
 									childCateIds.put((Long)objects[1],new ArrayList<Long>());
 								}
 								childCateIds.get((Long)objects[1]).add((Long)objects[0]);
+								trainingCampFeedbackCategoryIdsMap.put((Long)objects[0], (Long)objects[2]);
 							}
 						}
 					}
@@ -8556,6 +8559,9 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setMainCategoryName(namesMap.get(long1));
 						vo.setDescription(answersMap.get(long1));
 						
+						Long trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryIdsMap.get(vo.getMainCategoryId());
+						
+						vo.setSubCategoryId(trainingCampFeedbackCategoryId);
 						voList.add(vo);
 					}
 				}
@@ -8651,15 +8657,21 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					
 				}
-				
-				if(cadreFeedbackAnswerList != null && cadreFeedbackAnswerList.size()>0)
-				{
-					for (CategoryFeedbackVO categoryFeedbackVO : cadreFeedbackAnswerList) {
-						if(categoryFeedbackVO != null)
-						{
-							Long id = categoryFeedbackVO.getSubCategoryId();
-							
-							
+			}
+			
+			if(cadreFeedbackAnswerList != null && cadreFeedbackAnswerList.size()>0)
+			{
+				for (CategoryFeedbackVO categoryFeedbackVO : cadreFeedbackAnswerList) {
+					if(categoryFeedbackVO != null)
+					{
+						Long id = categoryFeedbackVO.getMainCategoryId();
+						FeedbackQuestionVO matchedVO = getMatchesVO(id,returnList);
+						if(matchedVO!=null && matchedVO.getId() != null && matchedVO.getId() >0l){
+							if(categoryFeedbackVO.getCategoryFeedBackList()!=null && categoryFeedbackVO.getCategoryFeedBackList().size()>0){
+								matchedVO.setChildCategoryList(categoryFeedbackVO.getCategoryFeedBackList());
+							}else{
+								matchedVO.setMainCategoryAnswers(categoryFeedbackVO.getDescription());
+							}
 						}
 					}
 				}
@@ -8669,6 +8681,22 @@ class TrainingCampService implements ITrainingCampService{
 				LOG.error(" Error Occured in trainingFeedBackQuestionsList method in TraininingCampService class" ,e);
 			}
 			return returnList;
+		}
+		
+		public FeedbackQuestionVO getMatchesVO(Long id, List<FeedbackQuestionVO> voList){
+			FeedbackQuestionVO vo = new FeedbackQuestionVO();
+			try {
+				if(voList!=null && voList.size()>0){
+					for (FeedbackQuestionVO feedbackQuestionVO : voList) {
+						if(feedbackQuestionVO.getId().equals(id)){
+							vo = feedbackQuestionVO;
+						}
+					}
+				}
+			} catch (Exception e) {
+				
+			}
+			return vo;
 		}
 		
 		public FeedbackQuestionVO getMatchedQuestion(List<FeedbackQuestionVO> questionsList,Long id)
