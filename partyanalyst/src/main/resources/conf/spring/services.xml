@@ -2783,7 +2783,7 @@
 		<property name="trainingCampCadreFeedbackHealthCardDAO" ref="trainingCampCadreFeedbackHealthCardDAO"/>
 		<property name="trainingCampFeedbackCategoryDAO" ref="trainingCampFeedbackCategoryDAO"/>
 		<property name="trainingCampCadreFeedbackDocumentDAO" ref="trainingCampCadreFeedbackDocumentDAO"/>
-		
+		<property name="feedbackCategoryDAO" ref="feedbackCategoryDAO"/>
 		<property name="trainingCampFeedbackAnswerDAO" ref="trainingCampFeedbackAnswerDAO"/>
 	</bean>
 	
