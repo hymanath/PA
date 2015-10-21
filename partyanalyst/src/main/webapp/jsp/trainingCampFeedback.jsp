@@ -529,88 +529,141 @@ function getPrograms(){
 			  for(var i in result)
 			  {
 				  if(result[i].optionsList != null && result[i].optionsList.length > 0)
-				  {
-				str+='<div class="panel panel-default categoryremove" id="categoryDiv'+result[i].id+'">';
-				str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title"><b>'+result[i].category+'</b></h4>';
-				str+='</div>';
-				str+='<div class="panel-body">';
-				str+='<div class="row QuestionOptionsDiv">';
-				str+='<div class="col-md-12">';
-				str+='<div >';
-				/*str+='<div class="row">';
-				str+='<div class="col-md-12">';
-				str+='<label>Select Options</label>';
-				str+='<select class="chosen-select optionSelect" id="optionsForParent'+i+'" onchange="buildSubCategoryAnswerField(\'optionsForParent'+i+'\')">';
-				for(var j in result[i].optionsList)
+					{
+							str+='<div class="panel panel-default categoryremove" id="categoryDiv'+result[i].id+'">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title"><b>'+result[i].category+'</b></h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+							str+='<div class="row QuestionOptionsDiv">';
+							str+='<div class="col-md-12">';
+							str+='<div >';
+							
+							str+='<div class="row m_top10">';
+							for(var j in result[i].optionsList)
+							{
+								str+='<div class="col-md-12">';
+								str+='<label>'+result[i].optionsList[j].option+'</label>';
+								str+='<ul class="options-form">';
+								str+='<li>';
+								str+='<div class="input-group">';
+								
+								var existingAnswersList = result[i].childCategoryList;
+								if(existingAnswersList != null && existingAnswersList.length>0)
+								{
+									for(var k in existingAnswersList)
+									{
+										if(result[i].optionsList[j].id == existingAnswersList[k].subCategoryId)
+										{
+											var answersList = existingAnswersList[k].description;
+											if(answersList != null && answersList.length>0)
+											{
+													
+												for(var s in answersList)
+												{													
+													str+='<input class="form-control answers" feedbackId = "'+result[i].optionsList[j].trainingCampFeedbackCategoryId+'"  type="textarea" id="cateforyTextId'+index+'" value="'+answersList[s]+'"/>';
+													
+													if(s==0)
+													{
+														str+=' <div class="input-group-addon">';
+														str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+j+'\',\''+result[i].optionsList[j].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
+														str+=' </div>';
+														str+=' </div>';
+														str+='</li>';
+														str+='<div id="addCateforyTextId'+result[i].id+i+''+j+'">';
+														str+=' <div class="input-group ">';
+													}
+													else{
+														str+=' <div class="input-group-addon removeicon">';
+															str+=' <i class="glyphicon glyphicon-remove"></i></a>';
+														str+=' </div>';														
+													}													
+												}
+												str+='</div>';
+											}
+										}										
+									}
+								}
+								else
+								{
+									str+='<input class="form-control answers" feedbackId = "'+result[i].optionsList[j].trainingCampFeedbackCategoryId+'"  type="textarea" id="cateforyTextId'+index+'">';
+									str+=' <div class="input-group-addon">';
+									str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+j+'\',\''+result[i].optionsList[j].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
+									str+=' </div>';
+									str+='</div>';
+								}
+																
+								str+='</ul>';
+								str+='</div>';
+								
+								//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+""+j+"");
+								index++;
+							}
+							
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</div>';
+					}
+				else{
+				str+=' <div class="panel panel-default m_top20 categoryremove" id="categoryDiv'+result[i].id+'">';
+				str+=' <div class="panel-heading">';
+				str+=' <h4 class="panel-title">'+result[i].category+'</h4>';
+				str+=' </div>';
+				str+=' <div class="panel-body">';
+				str+=' <div class="row">';
+				str+=' <div class="col-md-12">';
+				str+=' <label>ANSWER</label>';
+				str+=' <ul class="options-form">';
+				str+=' <li>';
+				str+=' <div class="input-group">';
+				
+				var answersList = result[i].mainCategoryAnswers;
+				if(answersList != null && answersList.length>0)
 				{
-					str+='<option value="'+result[i].optionsList[j].id+'">'+result[i].optionsList[j].option+'</option>';
-				}
+					for(var s in answersList)
+					{
 			
-				str+='</select>';
-				str+='</div>';
-				str+='</div>';*/
-				str+='<div class="row m_top10">';
-				for(var j in result[i].optionsList)
+						str+='<input class="form-control answers" feedbackId = "'+result[i].id+'"  type="textarea" id="cateforyTextId'+index+'" value="'+answersList[s]+'"/>';
+						
+						if(s==0)
+						{
+							str+=' <div class="input-group-addon">';
+							str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+0+'\',\''+result[i].id+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
+							str+=' </div>';
+							str+=' </div>';
+							str+='</li>';
+							str+='<div id="addCateforyTextId'+result[i].id+i+''+s+'">';
+							str+=' <div class="input-group ">';
+						}
+						else{
+							str+=' <div class="input-group-addon removeicon">';
+								str+=' <i class="glyphicon glyphicon-remove"></i></a>';
+							str+=' </div>';														
+						}													
+					
+						str+='</div>';
+																						
+					}
+				}
+				else
 				{
-					str+='<div class="col-md-12">';
-					str+='<label>'+result[i].optionsList[j].option+'</label>';
-					str+='<ul class="options-form">';
-					str+='<li>';
-					str+='<div class="input-group">';
-					str+='<input class="form-control answers" feedbackId = "'+result[i].optionsList[j].trainingCampFeedbackCategoryId+'"  type="textarea" id="cateforyTextId'+index+'">';
-					/*str+='<div class="input-group-addon removeicon">';
-					str+='<i class="glyphicon glyphicon-remove"></i>';
-					str+='</div>';*/
+					str+='<input class="form-control answers" type="textarea" feedbackId = "'+result[i].id+'" id="cateforyTextId'+index+'">';
 					str+=' <div class="input-group-addon">';
-					str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+j+'\',\''+result[i].optionsList[j].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
+					str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+0+'\',\''+result[i].id+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
 					str+=' </div>';
 					str+='</div>';
-					str+='</li>';
-					str+='<div id="addCateforyTextId'+result[i].id+i+''+j+'"></div>';
-					str+='</ul>';
-					str+='</div>';
-					
-					//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+""+j+"");
-					index++;
 				}
-				
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-			  }
-			 else{
-			str+=' <div class="panel panel-default m_top20 categoryremove" id="categoryDiv'+result[i].id+'">';
-			str+=' <div class="panel-heading">';
-			str+=' <h4 class="panel-title">'+result[i].category+'</h4>';
-			str+=' </div>';
-			str+=' <div class="panel-body">';
-			str+=' <div class="row">';
-			str+=' <div class="col-md-12">';
-			str+=' <label>ANSWER</label>';
-			str+=' <ul class="options-form">';
-			str+=' <li>';
-			str+=' <div class="input-group">';
-				str+='<input class="form-control answers" type="textarea" feedbackId = "'+result[i].trainingCampFeedbackCategoryId+'" id="cateforyTextId'+index+'">';
-			/*str+=' <div class="input-group-addon removeicon">';
-			str+=' <i class="glyphicon glyphicon-remove"></i>';
-			str+=' </div>';*/
-			str+=' <div class="input-group-addon">';
-			str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+0+'\',\''+result[i].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
-			str+=' </div>';
-			str+=' </div>';
-			str+=' </li>';
-			str+='<div id="addCateforyTextId'+result[i].id+i+''+0+'"></div>';
-			str+=' </ul>';
-			str+=' </div>';
-			str+=' </div>';
-			str+=' </div>';
-			str+=' </div>';
-				index++;
-			//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+"0");
+
+				str+=' </ul>';
+				str+=' </div>';
+				str+=' </div>';
+				str+=' </div>';
+				str+=' </div>';
+					index++;
+				//textFieldArr.push("cateforyTextId"+result[i].id+"a"+i+"0");
 			  }
 		}
 		
