@@ -118,4 +118,5 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
 	public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds);
 	public List<IdNameVO> getBatches(String type,Long programId,Long centerId);
+	public String saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers);
 }
