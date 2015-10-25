@@ -8,12 +8,12 @@
 <meta charset="utf-8">
 <title>Event</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
-<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-<link href="dist/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="dist/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
-<link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/Icomoon/style.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
+<link href="dist/eventDashboard/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 
 
 <style>
@@ -44,15 +44,15 @@
 	<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
-                <img src="dist/img/logo.png" class="img-responsive">
+                <img src="dist/eventDashboard/img/logo.png" class="img-responsive">
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1">
-                <img src="dist/img/CBN1.png" class="img-responsive">
+                <img src="dist/eventDashboard/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
                  <p class="header-text display-style" id="mainheading" style="font-size:32px;"></p>               
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/eventDashboard/img/NTR1.png" class="img-responsive" />   
             </div>
 			<div class="col-md-2 col-xs-1 col-sm-1">
 				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
@@ -94,7 +94,7 @@
 	<div class="row" style="padding:5px;">
 		
 		<div class="col-md-3 col-md-offset-8">
-        	   <div id="reportrange" class="pull-right calendar-style"  style="width: 300px;">
+        	   <div id="reportrange" class="pull-right calendar-style">
                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                   <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
                </div>
@@ -266,12 +266,12 @@
     </div>
 </footer>
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
-<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="dist/js/highcharts.js" type="text/javascript"></script>
-<script src="dist/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="dist/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/highcharts.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="dist/eventDashboard/js/dataTables.responsive.js" type="text/javascript"></script>
  <!--Bootstrap Date Picker-->
    <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -1318,7 +1318,7 @@ Highcharts.setOptions({
 </body>
 ​<style>
     header.eventsheader {  
-    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background:url("dist/eventDashboard/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
     background-origin: border-box;
     background-repeat: no-repeat;
     height: 71px;   
@@ -1454,7 +1454,7 @@ function getSubEventMembers(eventId,startIndex,count,name){
 				str+="<tr>";
 				
 				str+="<td>"+result[i].name+"</td>";
-				 str+='<td><img src="images/cadre_images/'+result[i].locationName+'"  style="height:50px;width:50px;"/></td>';
+				 str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].locationName+'"  style="height:50px;width:50px;"/></td>';
 				str+="<td>"+result[i].mobileNo+"</td>";
 				str+="<td>"+result[i].desc+"</td>";
 				str+="<td>"+result[i].locationType+"</td>";
