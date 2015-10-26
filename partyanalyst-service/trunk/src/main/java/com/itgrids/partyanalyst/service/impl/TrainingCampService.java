@@ -8348,7 +8348,7 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setCenterName(object[1].toString());
 						vo.setProgName(object[3].toString());
 						
-						List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2]);
+						List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
 						if(invited!=null && invited.size()>0){
 							Object[] obj = invited.get(0);
 							vo.setInviteeCount((Long)obj[1]);
@@ -8360,7 +8360,7 @@ class TrainingCampService implements ITrainingCampService{
 							vo.setInviteeAttendedCount((Long)obj[1]);
 						}
 						
-						List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2]);
+						List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
 						List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
 						
 						int temp=0;

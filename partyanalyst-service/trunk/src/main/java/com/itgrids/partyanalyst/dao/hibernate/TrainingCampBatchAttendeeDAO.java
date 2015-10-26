@@ -263,25 +263,43 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }*/
    
-   public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId){
-	   Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,count(distinct model.tdpCadre.tdpCadreId) " +
-	   		" from TrainingCampBatchAttendee model " +
-	   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
-	   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
-	   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' " +
-	   		"and model.isDeleted='false' ");
+   public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+	   StringBuilder sb = new StringBuilder();
+	   sb.append(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,count(distinct model.tdpCadre.tdpCadreId) " +
+		   		" from TrainingCampBatchAttendee model " +
+		   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
+		   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
+		   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' " +
+		   		"and model.isDeleted='false' ");
+	   if(fromDate!=null && toDate!=null){
+		   sb.append(" and date(model.attendedTime) between :fromDate and :toDate ");
+	   }
+	   Query query = getSession().createQuery(sb.toString());
+	   if(fromDate!=null && toDate!=null){
+		   query.setParameter("fromDate", fromDate);
+		   query.setParameter("toDate", toDate);
+	   }
 	   query.setParameter("centerId", centerId);
 	   query.setParameter("programId", programId);
 	   return query.list();
    }
    
-   public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId){
-	   Query query = getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId " +
-	   		" from TrainingCampBatchAttendee model " +
-	   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
-	   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
-	   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' " +
-	   		"and model.isDeleted='false' ");
+   public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+	   StringBuilder sb = new StringBuilder();
+	   sb.append(" select distinct model.tdpCadre.tdpCadreId " +
+		   		" from TrainingCampBatchAttendee model " +
+		   		" where model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId=:centerId " +
+		   		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
+		   		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' " +
+		   		"and model.isDeleted='false' ");
+	   if(fromDate!=null && toDate!=null){
+		   sb.append(" and date(model.attendedTime) between :fromDate and :toDate ");
+	   }
+	   Query query = getSession().createQuery(sb.toString());
+	   if(fromDate!=null && toDate!=null){
+		   query.setParameter("fromDate", fromDate);
+		   query.setParameter("toDate", toDate);
+	   }
 	   query.setParameter("centerId", centerId);
 	   query.setParameter("programId", programId);
 	   return (List<Long>)query.list();
