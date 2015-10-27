@@ -1850,7 +1850,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		   			
 		   			for(File f : files)
 		   			{
-		   				
+		   				fileUrl = "" ;
+		   				storeFilePath ="" ;
 		   				
 		   				String destinationPath ="";
 		   				String destPath ="";
@@ -1877,7 +1878,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 	   			feedbackDocuments= new ArrayList<String>();
 	   			for(File f : docs)
 	   			{
-	   				
+	   			 fileUrl = "" ;
+	   			 storeFilePath ="" ;
 	   			 String destinationPath ="";
 	   			String destPath ="";
 	   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue1)[0].split("\\.");
@@ -1893,7 +1895,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 					  destPath =  "/"+fileUrl+"/"+RandomNumber+"_"+tdpCadreId+"."+ext;
 					 destinationPath =  pathSeperator+fileUrl+pathSeperator+RandomNumber+"_"+tdpCadreId+"."+ext;
 					 feedbackDocuments.add(destPath);
-					 copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.HEALTH_CARD_FOLDER+destinationPath);
+					 copyFile(f.getAbsolutePath(),IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_FEEDBACK_DOCUMENT+destinationPath);
 					
 	   			}
    			
