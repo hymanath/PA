@@ -240,6 +240,7 @@
 			voterCardNo:voterCardNo,
 			gender:"",
 			houseNo:"",
+			removedStatus:"false",
 			task:"search"
 		}
 

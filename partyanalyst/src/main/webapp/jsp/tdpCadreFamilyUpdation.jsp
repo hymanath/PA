@@ -2257,6 +2257,7 @@ $("#familyDetalsDiv").hide();
 			voterCardNo:voterCardNo,
 			gender:gender,
 			houseNo:houseNo,
+			removedStatus:"false",
 			startIndex:startIndex,
 			maxIndex : 50,
 			task:"tdpCadreSearch"

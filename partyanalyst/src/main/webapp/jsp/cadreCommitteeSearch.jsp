@@ -364,6 +364,7 @@
 			voterCardNo:voterCardNo,
 			gender:gender,
 			houseNo:houseNo,
+			removedStatus:"false",
 			task:"search"
 		}
 			$.ajax({
