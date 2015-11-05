@@ -1839,7 +1839,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    		
    		Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
    		Long tdpCadreId = Long.parseLong(request.getParameter("tdpCadreId"));
-   		String storeFilePath ="" ;
+   		//String storeFilePath ="" ;
    		String fileUrl = "" ;
    		if(fileParams.hasMoreElements())
    		{
@@ -1847,11 +1847,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    			String inputValue = "image";
 		   			File[] files = multiPartRequestWrapper.getFiles(inputValue);
 		   			filePaths = new ArrayList<String>();
-		   			
+		   			if(files != null && files.length > 0)
 		   			for(File f : files)
 		   			{
 		   				fileUrl = "" ;
-		   				storeFilePath ="" ;
+		   				//storeFilePath ="" ;
 		   				
 		   				String destinationPath ="";
 		   				String destPath ="";
@@ -1876,10 +1876,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
    				File[] docs = multiPartRequestWrapper.getFiles(inputValue1);
    				
 	   			feedbackDocuments= new ArrayList<String>();
+	   			if(docs != null && docs.length > 0)
 	   			for(File f : docs)
 	   			{
 	   			 fileUrl = "" ;
-	   			 storeFilePath ="" ;
+	   			// storeFilePath ="" ;
 	   			 String destinationPath ="";
 	   			String destPath ="";
 	   				String[] extension  =multiPartRequestWrapper.getFileNames(inputValue1)[0].split("\\.");
