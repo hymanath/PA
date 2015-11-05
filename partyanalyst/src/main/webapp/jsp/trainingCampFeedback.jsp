@@ -594,6 +594,8 @@ function getPrograms(){
 									str+=' <a href="javascript:{addNewField(\'addCateforyTextId'+result[i].id+i+''+j+'\',\''+result[i].optionsList[j].trainingCampFeedbackCategoryId+'\')}"><i class="glyphicon glyphicon-plus"></i></a>';
 									str+=' </div>';
 									str+='</div>';
+									str+='<div id="addCateforyTextId'+result[i].id+i+''+j+'">';
+									str+='</div>';
 								}
 																
 								str+='</ul>';
