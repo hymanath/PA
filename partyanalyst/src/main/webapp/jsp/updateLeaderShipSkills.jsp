@@ -546,7 +546,7 @@ function getLeaderShipDetails()
 						  str+='<div class="row" id="healthCardCntaddDiv">';
 						  str+='</div>';
 						  str+='<div class="row">';
-						  str+='<div class="col-md-offset-8 col-md-1">';
+						  str+='<div class="col-md-offset-8 col-md-1 pull-right">';
 						  str+='<i class="glyphicon glyphicon-plus m_top10 add-plus healthCardadd" onclick="addHealthCard();"></i>';
 						  str+='</div>';
 						  str+='</div>';
@@ -564,7 +564,7 @@ function getLeaderShipDetails()
 					str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading">';
 					
-					str+='<h4 class="panel-title">FEEDBACK DOCUMENT <a href="javascript:{openDialogueBox()}" id="healthCrdupdatsBtn" class="btn btn-xs btn-success pull-right "> UPDATE </a></h4>';
+					str+='<h4 class="panel-title">FEEDBACK DOCUMENT </h4>';
 					
 					//str+='<h4 class="panel-title">FEEDBACK DOCUMENT <a href="trainingCampFeedback.action?cadreId='+cadreId+'&batchId='+GbatchId+'&campId='+GcampId+'&programId='+GprogramId+'" target="_blank" id="healthCrdupdatsBtn" class="btn btn-xs btn-success pull-right "> UPDATE </a></h4>';
 					
@@ -680,7 +680,7 @@ str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDo
 				str+='<div class="col-md-6">';
 					str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading">';
-					str+='<h4 class="panel-title"> UPLOAD NEW FEEDBACK DOCUMENT</h4>';
+					str+='<h4 class="panel-title"> UPLOAD NEW FEEDBACK DOCUMENT <a href="javascript:{openDialogueBox()}" id="healthCrdupdatsBtn" class="btn btn-xs btn-success pull-right "> UPDATE </a> </h4>';
 					str+='</div>';
 					str+='<div class="panel-body">';
 					str+='<div class="row">';
