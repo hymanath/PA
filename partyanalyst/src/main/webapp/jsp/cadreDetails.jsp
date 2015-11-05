@@ -1674,7 +1674,7 @@ var globalCadreId = '${cadreId}';
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
-					
+					  getConductedPartyMeetingDetails("","","true");
 				}
 			});
 		}
@@ -2413,7 +2413,7 @@ $(document).ready(function() {
   var cb = function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
   }
-  getConductedPartyMeetingDetails("","","true");
+
 setcolorsForStatus();
   var optionSet1 = {
 	startDate: moment().subtract(29, 'days'),
@@ -5745,6 +5745,7 @@ function buildPublicScoreTable(myResult)
 }
 
 function getCategoryFeedBackAnswerForCadre(){
+
 	var jsObj ={
 		tdpCadreId:globalCadreId
 	}
@@ -5754,20 +5755,42 @@ function getCategoryFeedBackAnswerForCadre(){
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
 		var str='';
-		if(result!=null && result.size>0){
+		if(result!=null && result.length>0){
 			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default">';
 			for(var i in result){
 				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
 				  str+='<h4 class="panel-title">';
-				  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">Collapsible Group Item #1</a>';
+				  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'+result[i].mainCategoryName+'</a>';
 				  str+='</h4>';
 				  str+='</div>';
-				  str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-				  str+='<div class="panel-body">';
-				  str+='Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably havent heard of them accusamus labore sustainable VHS.';
-				  str+='</div>';
-				  str+='</div>';
+				  if(result[i].categoryFeedBackList != null && result[i].categoryFeedBackList.length>0)
+				  {
+					  for(var k in result[i].categoryFeedBackList)
+					  {
+						str+='<div id="collapse'+i+''+k+'11" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+						str+='<div class="panel-body">';
+						 str+='<h4 class="panel-heading	">';
+						str+=''+result[i].categoryFeedBackList[k].subCategoryName+'';
+						  str+='</h4>';
+						  str+='<div class="panel-body">';
+							str+=''+result[i].categoryFeedBackList[k].description+'';
+							str+='</div>';
+						
+						str+='</div>';
+						
+						str+='</div>';  
+					  }					  
+				  }
+				  else
+				  {
+					  str+='<div id="collapse'+i+'0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+						str+='<div class="panel-body">';
+						str+=''+result[i].categoryFeedBackList[k].subCategoryName+' -- '+result[i].categoryFeedBackList[k].description+'';
+						str+='</div>';
+						str+='</div>'; 
+				  }
+				  
 			}
 			str+='</div>';
 			str+='</div>';
@@ -5834,7 +5857,7 @@ $(document).on("click",".detailsCls",function(){
 	$("#dataLoadingsImgForTrainingDetails").show();
 	getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
 	getRemarkSOfCadreByCallPurpose(programId,cadreId);
-	//getCategoryFeedBackAnswerForCadre();//call for feedback answer
+	getCategoryFeedBackAnswerForCadre();//call for feedback answer
 });
 
 function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
@@ -6069,7 +6092,7 @@ $('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:5
 					}
 			});
 	
-	},500);
+	},1000);
 }
 
 function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
