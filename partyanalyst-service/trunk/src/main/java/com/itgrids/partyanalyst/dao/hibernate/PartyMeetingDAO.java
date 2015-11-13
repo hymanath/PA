@@ -197,7 +197,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        }
 	        
 	        if(startDate!=null && endDate!=null){
-	            sb.append(" and date(model.startDate)>=:startDate and date(model.endDate)<=:endDate ");
+	            sb.append(" and  ( (date(model.startDate)>=:startDate and date(model.startDate)<=:endDate) or (date(model.endDate)>=:startDate and date(model.endDate)<=:endDate) ) ");
 	        }
 	        
 	        sb.append(" order by model.startDate desc ");
@@ -324,8 +324,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        }
 	        
 	        if(startDate!=null && endDate!=null){
-	            query.setParameter("startDate", startDate);
-	            query.setParameter("endDate", endDate);
+	            query.setDate("startDate", startDate);
+	            query.setDate("endDate", endDate);
 	        }
 	        return query.list();
 	    }
