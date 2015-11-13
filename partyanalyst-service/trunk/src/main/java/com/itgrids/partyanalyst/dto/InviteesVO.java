@@ -27,9 +27,61 @@ public class InviteesVO implements java.io.Serializable {
 	private List<InviteesVO> publicRepresentatorsList = new ArrayList<InviteesVO>();
 	private List<InviteesVO> groupVOList = new ArrayList<InviteesVO>();
 	
+	private String reportType;
+	private String actionType;
+	private String stateStr;
+	private String groupName;
+	private String eventId;
+	private String startIndex;
+	private String maxIndex;
+
 	
 	public Long getStateId() {
 		return stateId;
+	}
+	public String getReportType() {
+		return reportType;
+	}
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
+	
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
+	}
+	public String getStateStr() {
+		return stateStr;
+	}
+	public void setStateStr(String stateStr) {
+		this.stateStr = stateStr;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getEventId() {
+		return eventId;
+	}
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
+	}
+	
+	public String getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(String startIndex) {
+		this.startIndex = startIndex;
+	}
+	public String getMaxIndex() {
+		return maxIndex;
+	}
+	public void setMaxIndex(String maxIndex) {
+		this.maxIndex = maxIndex;
 	}
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
