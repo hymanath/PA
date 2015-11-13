@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -1647,5 +1649,19 @@ public class WebServiceHandler {
 	 return null;
 	 }
 	
-	
+	 @POST
+	 @Path("/getWebServiceInviteesDetails")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public List<TdpCadreVO> getWebServiceEventInviteesList(InviteesVO inviteesVO){
+	 try {
+		 return webServiceHandlerService.getWebServiceEventInviteesList(0L,
+				 "state","1", inviteesVO.getStateId(), inviteesVO.getGroupVOList(),Long.valueOf(inviteesVO.getEventId()),inviteesVO.getActionType(),inviteesVO.getStateStr(),
+				 inviteesVO.getReportType(), Integer.valueOf(inviteesVO.getStartIndex()),Integer.valueOf(inviteesVO.getMaxIndex()));
+	 } catch (Exception e) {
+	 LOG.error("Exception Occured in getWebServiceEventInviteesList() Method, Exception is ",e);
+	 }
+	 return null;
+	 }
+	 
 }
