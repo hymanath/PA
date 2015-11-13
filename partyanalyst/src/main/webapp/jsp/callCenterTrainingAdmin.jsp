@@ -949,10 +949,14 @@ $(document).ready(function() {
 		$('.callerId').append('<option value="0">Select Caller</option>');
 		$('#agentId').append('<option value="0">Select Caller</option>');
 		
+		var jsObj={
+			searchType:"",
+		}
+
 		$.ajax({
 			type:'POST',
 			 url: 'getUsersofUserTypeAction.action',
-			 data : {task:JSON.stringify()} ,
+			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				var str='';
 				if(result !=null){
