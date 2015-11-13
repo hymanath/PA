@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
@@ -60,6 +61,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -2989,5 +2991,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		 return membershipIdsList;
 		 }
+	 
+	   public List<TdpCadreVO>  getWebServiceEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,String reportType, Integer startIndex,Integer maxIndex)
+	    {
+	    	List<TdpCadreVO> returnList = null;
+	    	try {
+	    		returnList = cadreCommitteeService.getEventInviteesList(userId, accessLevel, accessValue, stateId, inviteesVOList, eventId, actionType, stateStr, reportType, startIndex, maxIndex);
+			} catch (Exception e) {
+				Log.error("Exception raised in getWebServiceEventInviteesList  method in WebServiceHandlerService",e);
+			}
+	    	return returnList;
+	    }
+	   
+	   
 }
 
