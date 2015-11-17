@@ -30,4 +30,5 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	//public List<Object[]> getAllBatchesForTrainers();
 	public List<Object[]> getAllCentersForTrainers();
 	public List<Object[]> getBatches(String type,Long programId,Long campId);
+	public String getBatchNameWithDateAndCamp(Date date,Long campId);
 }
