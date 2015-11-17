@@ -691,6 +691,8 @@
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
 				 <value>com.itgrids.partyanalyst.model.AtendeeType</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
+				 
 			</list>
 		</property>
 	</bean>
@@ -3174,6 +3176,9 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 <bean id="eventInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="trainingCampFeedbackAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackAnswerDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 

@@ -51,9 +51,37 @@ public class SimpleVO implements java.io.Serializable{
    private Long inviteeCount;
    private Long inviteeAttendedCount;
    private int nonInviteeAttendedCount;
+   private Long cadreId;
+   private Long campId;
+   private Long programId;
+   private String status;
    
    
    
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+	public Long getCampId() {
+		return campId;
+	}
+	public void setCampId(Long campId) {
+		this.campId = campId;
+	}
+	public Long getCadreId() {
+		return cadreId;
+	}
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
 	public int getNonInviteeAttendedCount() {
 		return nonInviteeAttendedCount;
 	}
