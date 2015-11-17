@@ -2535,4 +2535,22 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	
     	return Action.SUCCESS;
     }
+    
+    public String getProgramCampBatchDetailsForAMemberBasedOnCadreId(){
+    	try {
+			LOG.info("Entered into getProgramCampBatchDetailsForAMemberBasedOnCadreId");
+			jObj = new JSONObject(getTask());
+			
+			Long cadreId = jObj.getLong("cadreId");
+			String type = jObj.getString("type");
+			
+			List<Long> cadteIdList = new ArrayList<Long>(0);
+			cadteIdList.add(cadreId);
+			
+			trainingCampService.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadteIdList,type);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getProgramCampBatchDetailsForAMemberBasedOnCadreId", e);
+		}
+    	return Action.SUCCESS;
+    }
 }
