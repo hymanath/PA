@@ -8729,4 +8729,142 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return voList;
 		}
+		
+		public void getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type){
+			List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
+			try {
+				LOG.info("Entered into getProgramCampBatchDetailsForAMemberBasedOnCadreId service");
+				
+				Date fromDate=null,toDate=null;
+				if(type.equalsIgnoreCase("today")){
+					Calendar c=new GregorianCalendar();
+					fromDate=c.getTime();
+					toDate=c.getTime();
+				}else if(type.equalsIgnoreCase("fifteen")){
+					Calendar c=new GregorianCalendar();
+					toDate=c.getTime();
+					c.add(Calendar.DATE, -15);
+					fromDate=c.getTime();
+				}else if(type.equalsIgnoreCase("thirty")){
+					Calendar c=new GregorianCalendar();
+					toDate=c.getTime();
+					c.add(Calendar.DATE, -30);
+					fromDate=c.getTime();
+				}
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				List<Object[]> attendeeListObject = trainingCampBatchAttendeeDAO.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadreIdList,fromDate,toDate);
+				List<Object[]> attendenceListObject = trainingCampAttendanceDAO.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadreIdList,fromDate,toDate);
+				
+				Map<Long,List<SimpleVO>> attendeeMap = new HashMap<Long, List<SimpleVO>>();
+				Map<Long,List<SimpleVO>> attendenceMap = new HashMap<Long, List<SimpleVO>>();
+				
+				if(attendeeListObject != null && attendeeListObject.size() > 0){
+					for (Object[] objects : attendeeListObject) {
+						if(attendeeMap.get((Long)objects[0])==null){
+							attendeeMap.put((Long)objects[0], new ArrayList<SimpleVO>(0));
+						}
+						List<SimpleVO> tempAttendeeList = attendeeMap.get((Long)objects[0]);
+						SimpleVO vo = new SimpleVO();
+						vo.setCadreId((Long)objects[0]);
+						vo.setBatchId((Long)objects[1]);
+						vo.setBatchName(objects[2].toString());
+						vo.setCampId((Long)objects[3]);
+						vo.setCampName(objects[4].toString());
+						vo.setProgramId((Long)objects[5]);
+						vo.setProgName(objects[6].toString());
+						vo.setDate(sdf.parse(sdf.format(objects[7])));
+						tempAttendeeList.add(vo);
+					}
+				}
+				
+				if(attendenceListObject != null && attendenceListObject.size() > 0){
+					for (Object[] objects : attendenceListObject) {
+						if(attendenceMap.get((Long)objects[0])==null){
+							attendenceMap.put((Long)objects[0], new ArrayList<SimpleVO>(0));
+						}
+						List<SimpleVO> tempAttendenceList = attendenceMap.get((Long)objects[0]);
+						SimpleVO vo = new SimpleVO();
+						vo.setCadreId((Long)objects[0]);
+						vo.setBatchId((Long)objects[1]);
+						vo.setBatchName(objects[2].toString());
+						vo.setCampId((Long)objects[3]);
+						vo.setCampName(objects[4].toString());
+						vo.setProgramId((Long)objects[5]);
+						vo.setProgName(objects[6].toString());
+						vo.setDate(sdf.parse(sdf.format(objects[7])));
+						tempAttendenceList.add(vo);
+					}
+				}
+				
+				if(attendeeMap != null && attendeeMap.size()>0){
+					if(attendenceMap != null && attendenceMap.size()>0){
+						for (Entry<Long, List<SimpleVO>> entry : attendeeMap.entrySet())
+						{
+							List<SimpleVO> simplevo = entry.getValue();
+							if(simplevo!=null && simplevo.size()>0){
+								for (SimpleVO simpleVO2 : simplevo) {
+									//if cadre is not present in attendene
+									if(attendenceMap.get(simpleVO2)==null){
+										SimpleVO vo = new SimpleVO();
+										vo.setCadreId(simpleVO2.getCadreId());
+										vo.setBatchId(simpleVO2.getBatchId());
+										vo.setBatchName(simpleVO2.getBatchName());
+										vo.setCampId(simpleVO2.getCampId());
+										vo.setCampName(simpleVO2.getBatchName());
+										vo.setProgramId(simpleVO2.getProgramId());
+										vo.setProgName(simpleVO2.getProgName());
+										vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+										vo.setStatus("Absent");
+										voList.add(vo);
+									}else{
+										List<SimpleVO> voIn =attendenceMap.get(simpleVO2);
+										for (SimpleVO simpleVO3 : voIn) {
+											//if cadre is present in attendence
+											if(simpleVO3.getCadreId().equals(simpleVO2.getCadreId())){
+												SimpleVO vo = new SimpleVO();
+												vo.setCadreId(simpleVO2.getCadreId());
+												vo.setBatchId(simpleVO2.getBatchId());
+												vo.setBatchName(simpleVO2.getBatchName());
+												vo.setCampId(simpleVO2.getCampId());
+												vo.setCampName(simpleVO2.getBatchName());
+												vo.setProgramId(simpleVO2.getProgramId());
+												vo.setProgName(simpleVO2.getProgName());
+												vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+												vo.setStatus("IA");
+												voList.add(vo);
+											}
+										}
+									}
+								}
+							}
+						}
+					}else{
+						for (Entry<Long, List<SimpleVO>> entry : attendeeMap.entrySet())
+						{
+							List<SimpleVO> simplevo = entry.getValue();
+							if(simplevo!=null && simplevo.size()>0){
+								for (SimpleVO simpleVO2 : simplevo) {
+									SimpleVO vo = new SimpleVO();
+									vo.setCadreId(simpleVO2.getCadreId());
+									vo.setBatchId(simpleVO2.getBatchId());
+									vo.setBatchName(simpleVO2.getBatchName());
+									vo.setCampId(simpleVO2.getCampId());
+									vo.setCampName(simpleVO2.getBatchName());
+									vo.setProgramId(simpleVO2.getProgramId());
+									vo.setProgName(simpleVO2.getProgName());
+									vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+									vo.setStatus("Absent");
+									voList.add(vo);
+								}
+							}
+						}
+					}
+				}
+				
+				
+								
+			} catch (Exception e) {
+				LOG.error("Exception raised at getProgramCampBatchDetailsForAMemberBasedOnCadreId service", e);
+			}
+		}
 }

@@ -30,4 +30,5 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	//public List<Object[]> getInviteeAttendedDetails(List<Long> batchIds,Date fromDate,Date toDate);
 	public List<Object[]> getInviteeAttendedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
 	public List<Long> getAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
+	public List<Object[]> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,Date fromDate,Date toDate);
 }
