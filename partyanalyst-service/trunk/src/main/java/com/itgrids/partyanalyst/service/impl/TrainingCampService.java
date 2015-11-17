@@ -8867,4 +8867,11 @@ class TrainingCampService implements ITrainingCampService{
 				LOG.error("Exception raised at getProgramCampBatchDetailsForAMemberBasedOnCadreId service", e);
 			}
 		}
+		
+		public String getBatchNameWithDateAndCamp(Date date,Long campId){
+			if(date!=null && campId>0l){
+				return trainingCampBatchDAO.getBatchNameWithDateAndCamp(date,campId);
+			}
+			return null;
+		}
 }
