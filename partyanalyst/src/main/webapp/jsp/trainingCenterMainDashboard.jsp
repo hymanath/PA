@@ -1239,6 +1239,24 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$("#speakersAttendence").html("");
 		getAttendenceForTrainers($(this).val());
 	});
+	
+	function getProgramCampBatchDetailsForAMemberBasedOnCadreId(){
+		var type = $( "input:radio[name=filterRadio]:checked" ).val();
+		var cadreId = 7072180;
+		var jObj={
+				cadreId : cadreId,
+				type:type
+			}
+		
+		$.ajax({
+		   type:'POST',
+		   url :'getProgramCampBatchDetailsForAMemberBasedOnCadreIdAction.action',
+		   data: {task:JSON.stringify(jObj)},
+		}).done(function(result){
+			
+		});
+	}
+	
 </script>
 </body>
 </html>	
