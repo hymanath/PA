@@ -18,7 +18,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 	 
 	public List<Object[]> getFeedbackDetailsForCadre(Long cadreId){
 		Query query = getSession().createQuery(" select model.trainingCampFeedbackCategory.feedbackCategoryId, model.answer,model.trainingCampFeedbackCategoryId " +
-				"from TrainingCampFeedbackAnswer model where model.tdpCadreId=:cadreId ");
+				"from TrainingCampFeedbackAnswer model where model.tdpCadreId=:cadreId and model.isDeleted='N' ");
 		query.setParameter("cadreId", cadreId);
 		return query.list();
 	}
