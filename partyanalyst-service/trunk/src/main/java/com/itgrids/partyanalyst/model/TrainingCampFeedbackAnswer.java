@@ -30,6 +30,7 @@ public class TrainingCampFeedbackAnswer {
 	private TdpCadre tdpCadre;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String isDeleted;
 	
 	
 	@Id
@@ -106,7 +107,13 @@ public class TrainingCampFeedbackAnswer {
 		this.updatedTime = updatedTime;
 	}
 	
-		
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 
 }
