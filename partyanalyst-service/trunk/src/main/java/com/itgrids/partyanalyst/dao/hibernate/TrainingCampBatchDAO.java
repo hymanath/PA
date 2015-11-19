@@ -354,12 +354,14 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return query.list();
 	}
 	
-	public String getBatchNameWithDateAndCamp(Date date,Long campId){
-		Query query = getSession().createQuery("select model.trainingCampBatchName " +
+	public List<String> getBatchNameWithDateAndCamp(Date date,Long campId){
+		Query query = getSession().createQuery("select distinct model.trainingCampBatchName " +
 				"from TrainingCampBatch model " +
 				"where model.trainingCampSchedule.trainingCampId=:campId " +
-				"and date(model.fromDate) <= :date and date(model.toDate) >= :date " +
+				"and :date between date(model.fromDate) and date(model.toDate) " +
 				"and model.isCancelled='false' ");
-		return (String)query.uniqueResult();
+		query.setParameter("date", date);
+		query.setParameter("campId", campId);
+		return query.list();
 	}
 }
