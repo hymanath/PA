@@ -8358,7 +8358,15 @@ class TrainingCampService implements ITrainingCampService{
 				
 				//test
 				
-				
+				List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList();
+				List<Long> cadreIdsLsit = new ArrayList<Long>(0);
+						
+				if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
+				{
+					for (String cadreId : excludeTdpCadreIdsList) {
+						cadreIdsLsit.add(Long.valueOf(cadreId));
+					}
+				}
 				if(searchType != null && !searchType.isEmpty())
 				{
 					if(searchType.trim().equalsIgnoreCase("count"))
@@ -8403,31 +8411,37 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					else if(searchType.trim().equalsIgnoreCase("individual") || searchType.trim().equalsIgnoreCase("consolidated"))
 					{
-						 Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
+						/* Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
 						 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
-						 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();
+						 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();*/
 
 						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate, toDate);
-						Map<Long,SimpleVO> inviteesMap = new LinkedHashMap<Long, SimpleVO>(0);
+						Map<Long,List<SimpleVO>> inviteesMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
 								
 						if(invitationdtls != null && invitationdtls.size()>0)
 						{
 							for (Object[] invitee : invitationdtls) {
 								Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(invitee[0]);
-								String name = commonMethodsUtilService.getStringValueForObject(invitee[1]);
-								String imageStr = commonMethodsUtilService.getStringValueForObject(invitee[2]);
-								String membershipNo = commonMethodsUtilService.getStringValueForObject(invitee[3]);
-								String mobileNo = commonMethodsUtilService.getStringValueForObject(invitee[4]);
-								Long invitedCount = commonMethodsUtilService.getLongValueForObject(invitee[5]);
+								if(!cadreIdsLsit.contains(tdpCadreId))
+								{
+									List<SimpleVO> membrsList = new ArrayList<SimpleVO>(0);
+									String name = commonMethodsUtilService.getStringValueForObject(invitee[1]);
+									String imageStr = commonMethodsUtilService.getStringValueForObject(invitee[2]);
+									String membershipNo = commonMethodsUtilService.getStringValueForObject(invitee[3]);
+									String mobileNo = commonMethodsUtilService.getStringValueForObject(invitee[4]);
+									Long invitedCount = commonMethodsUtilService.getLongValueForObject(invitee[5]);
+									
+									SimpleVO vo = new SimpleVO();
+									vo.setName(name);
+									vo.setId(tdpCadreId);
+									vo.setMembershipNo(membershipNo);
+									vo.setImageStr(imageStr);
+									vo.setMobileNo(mobileNo);
+									vo.setInviteeCount(invitedCount);
+									membrsList.add(vo);
+									inviteesMap.put(tdpCadreId, membrsList);
+								}
 								
-								SimpleVO vo = new SimpleVO();
-								vo.setName(name);
-								vo.setId(tdpCadreId);
-								vo.setMembershipNo(membershipNo);
-								vo.setImageStr(imageStr);
-								vo.setMobileNo(mobileNo);
-								vo.setInviteeCount(invitedCount);
-								inviteesMap.put(tdpCadreId, vo);
 							}
 						}
 						
@@ -8439,27 +8453,47 @@ class TrainingCampService implements ITrainingCampService{
 							{
 								for (Object[] attendance : attendedDtls) {
 									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(attendance[0]);
-									String program = commonMethodsUtilService.getStringValueForObject(attendance[1]);
-									String camp =commonMethodsUtilService.getStringValueForObject(attendance[2]);
-									//String batch = commonMethodsUtilService.getStringValueForObject(attendance[3]);
-									
-									Long campId = commonMethodsUtilService.getLongValueForObject(attendance[4]);
-									String dateStr = commonMethodsUtilService.getStringValueForObject(attendance[5]);
-									//Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
-									
-									if(inviteesMap != null && inviteesMap.size()>0)
+									if(!cadreIdsLsit.contains(tdpCadreId))
 									{
-										String batchStr  ="Speakers";
-										if(type.equalsIgnoreCase("today"))
-											 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId);
-										SimpleVO vo = inviteesMap.get(tdpCadreId);
-										if(vo != null)
+										String program = commonMethodsUtilService.getStringValueForObject(attendance[1]);
+										String camp =commonMethodsUtilService.getStringValueForObject(attendance[2]);
+										//String batch = commonMethodsUtilService.getStringValueForObject(attendance[3]);
+										
+										Long campId = commonMethodsUtilService.getLongValueForObject(attendance[4]);
+										String dateStr = commonMethodsUtilService.getStringValueForObject(attendance[5]);
+										//Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
+										
+										if(inviteesMap != null && inviteesMap.size()>0)
 										{
-											vo.setBatchName(batchStr);
-											vo.setCampName(camp);
-											vo.setProgName(program);
+											String batchStr  ="Speakers";
+											if(type.equalsIgnoreCase("today"))
+												 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId);
+											List<SimpleVO> voList = inviteesMap.get(tdpCadreId);
+											if(voList != null && voList.size()>0)
+											{
+												for (SimpleVO vo : voList) {
+													if(vo != null)
+													{
+														if(vo.getDateString() == null){
+															vo.setBatchName(batchStr);
+															vo.setCampName(camp);
+															vo.setProgName(program);
+															vo.setDateString(dateStr);
+														}
+														/*else
+														{
+															SimpleVO simplVO = new SimpleVO();
+															simplVO=vo;
+															simplVO.setDateString(dateStr);
+															voList.add(simplVO);
+														}*/
+													}
+												}
+												
+											}
 										}
 									}
+									
 								}
 							}
 						//}
@@ -8475,10 +8509,16 @@ class TrainingCampService implements ITrainingCampService{
 									Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
 									if(inviteesMap != null && inviteesMap.size()>0)
 									{
-										SimpleVO vo = inviteesMap.get(tdpCadreId);
-										if(vo != null)
+										List<SimpleVO> voList = inviteesMap.get(tdpCadreId);
+										if(voList != null && voList.size()>0)
 										{
-											vo.setInviteeAttendedCount(attendedCount);
+											for (SimpleVO vo : voList) {
+												if(vo != null)
+												{
+													vo.setInviteeAttendedCount(attendedCount);
+												}
+											}
+											
 										}
 									}
 								}
@@ -8488,66 +8528,98 @@ class TrainingCampService implements ITrainingCampService{
 						
 						if(inviteesMap != null && inviteesMap.size()>0)
 						{
-							List<Object[]> cadrePublicRepresentativList = tdpCadreCandidateDAO.getPublicRepresentaativesDetailsForCadreIdsList(new ArrayList<Long>(inviteesMap.keySet()));
+							List<Object[]> cadrePublicRepresentativList = tdpCadreCandidateDAO.getPublicsRepresentaativesDetailsForCadreIdsList(new ArrayList<Long>(inviteesMap.keySet()));
 							Map<Long,String> cadreBenefitsMap = new LinkedHashMap<Long, String>(0);									
 							if(cadrePublicRepresentativList != null && cadrePublicRepresentativList.size()>0)
 							{
-									parliamentInfoMap = cadreDetailsUtils.getAreaWiseList("Parliament", 1L, "ALL", false);
-									assemblyInfoMap = cadreDetailsUtils.getAreaWiseList("Assembly", 1L, "ALL", false);
-									mandalsListMap = cadreDetailsUtils.getAreaWiseList("MPTCORZPTC", 1L, "ALL", false);
-								
 								for (Object[] cadreCandidate : cadrePublicRepresentativList) {
 									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(cadreCandidate[0]);
-									String publicRepresentativeStr = "";
-									String publicRepresentativeType = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
-									SimpleVO vo = inviteesMap.get(tdpCadreId);
-									if(vo != null)
+									if(!cadreIdsLsit.contains(tdpCadreId))
 									{
-										if(publicRepresentativeType.equalsIgnoreCase("MLA") || publicRepresentativeType.equalsIgnoreCase("EX MLA")
-												|| publicRepresentativeType.equalsIgnoreCase("2014 ASSEMBLY CONTESTED"))
+										String publicRepresentativeStr = "";
+										String publicRepresentativeType = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+
+										List<SimpleVO> voList = inviteesMap.get(tdpCadreId);
+										if(voList != null && voList.size()>0)
 										{
-											List<IdNameVO> assemblyList = assemblyInfoMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
-											if(assemblyList != null && assemblyList.size()>0)
-											{
-												IdNameVO vo1 = assemblyList.get(0);
-												vo.setStatus(vo1.getName()+" Assembly");
+											for (SimpleVO vo : voList) {
+												if(vo != null)
+												{
+
+													vo.setStatus(commonMethodsUtilService.getStringValueForObject(cadreCandidate[6]));
+													
+													if(publicRepresentativeType != null && (publicRepresentativeType.trim().equalsIgnoreCase("MLA") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("EX MLA") ||
+															publicRepresentativeType.trim().equalsIgnoreCase("2014 AP STATE MINISTERS") ||
+															publicRepresentativeType.trim().equalsIgnoreCase("2014 ASSEMBLY CONTESTED") ||
+															publicRepresentativeType.trim().equalsIgnoreCase("CONSTITUENCY INCHARGE") ||
+															publicRepresentativeType.trim().equalsIgnoreCase("3-MEN COMMITTEE")))
+													{
+														vo.setStatus(vo.getStatus()+" Assembly");
+													}
+													
+													if(publicRepresentativeType.equalsIgnoreCase("MP") || publicRepresentativeType.equalsIgnoreCase("2014 PARLIAMENT CONTESTED")  
+															|| publicRepresentativeType.equalsIgnoreCase("EX MP"))
+													{
+														vo.setStatus(vo.getStatus()+" Parliament");
+													}
+													else if(publicRepresentativeType != null && (
+															publicRepresentativeType.trim().equalsIgnoreCase("ZPTC") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("MPTC") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("MPP") ||
+															publicRepresentativeType.trim().trim().equalsIgnoreCase("VICE MPP") ))
+													{
+														vo.setStatus(vo.getStatus()+" Assembly");
+													}
+													else if(publicRepresentativeType.trim() != null && (
+															publicRepresentativeType.trim().equalsIgnoreCase("MUNCIPAL CHAIRMAN") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("MUNCIPAL CHAIRPERSON") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("MAYOR") ||
+															publicRepresentativeType.trim().equalsIgnoreCase("DEPUTY MAYOR")))
+													{
+														LocalElectionBody body = localElectionBodyDAO.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
+														vo.setStatus(body.getName()+" "+body.getElectionType().getElectionType());
+													}
+													else if(publicRepresentativeType != null && (
+															publicRepresentativeType.trim().equalsIgnoreCase("MLC") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("ZP VICE CHAIRMAN") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("ZP CHAIRMAN") ) )
+													{
+														try {
+															vo.setStatus(districtDAO.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5])).getDistrictName()+" District");
+														} catch (Exception e) {
+															e.printStackTrace();
+														}
+														
+													}
+													else if(publicRepresentativeType != null && (
+															publicRepresentativeType.trim().equalsIgnoreCase("MP (RAJYA SABHA)") || 
+															publicRepresentativeType.trim().equalsIgnoreCase("EX STATE MINISTER") ))
+													{
+														
+														try {
+															vo.setStatus(stateDAO.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5])).getStateName()+" State");
+														} catch (Exception e) {
+															 e.printStackTrace();
+														}
+														
+													}
+												
+												}
 											}
+											
 										}
-										
-										if(publicRepresentativeType.equalsIgnoreCase("MP") || publicRepresentativeType.equalsIgnoreCase("EX MP"))
-										{
-											List<IdNameVO> assemblyList = parliamentInfoMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
-											if(assemblyList != null && assemblyList.size()>0)
-											{
-												IdNameVO vo1 = assemblyList.get(0);
-												vo.setStatus(vo1.getName()+" Parliament");
-											}
-										}
-										else if(publicRepresentativeType != null && (
-												publicRepresentativeType.trim().equalsIgnoreCase("ZPTC") || 
-												publicRepresentativeType.trim().equalsIgnoreCase("MPTC") || 
-												publicRepresentativeType.trim().equalsIgnoreCase("MPP") ))
-										{
-											List<IdNameVO> assemblyList = mandalsListMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
-											if(assemblyList != null && assemblyList.size()>0)
-											{
-												IdNameVO vo1 = assemblyList.get(0);
-												vo.setStatus(vo1.getName()+" Assembly");
-											}
-										}
-										
-									}
 									
-									if(cadreBenefitsMap.get(tdpCadreId) != null){
-										publicRepresentativeStr = cadreBenefitsMap.get(tdpCadreId);
-										if(!publicRepresentativeStr.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]).trim()))
-											publicRepresentativeStr = publicRepresentativeStr+",<br> "+commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+										if(cadreBenefitsMap.get(tdpCadreId) != null){
+											publicRepresentativeStr = cadreBenefitsMap.get(tdpCadreId);
+											if(!publicRepresentativeStr.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]).trim()))
+												publicRepresentativeStr = publicRepresentativeStr+",<br> "+commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+										}
+										else{
+											publicRepresentativeStr = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+										}
+										cadreBenefitsMap.put(tdpCadreId, publicRepresentativeStr);
 									}
-									else{
-										
-										publicRepresentativeStr = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
-									}
-									cadreBenefitsMap.put(tdpCadreId, publicRepresentativeStr);
 								}
 							}
 							
@@ -8556,41 +8628,56 @@ class TrainingCampService implements ITrainingCampService{
 							{
 								for (Object[] partyPosition : cadrePartyPositionDetals) {
 									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(partyPosition[0]);
-									Long committeeLevelId = commonMethodsUtilService.getLongValueForObject(partyPosition[2]);
-									Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
-							    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
-							    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
-							    	//String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
-									String committeeLocation = cadreDetailsUtils.getCommitteeLocationNameByLocationTypeAndId(committeeLevelId, committeeLevelValue);
-									
-									String partyPossition =""+committeeStr+"- "+committeeLocation+" - "+roleStr;
-									if(cadreBenefitsMap.get(tdpCadreId) != null){
-										String partyPossitin = cadreBenefitsMap.get(tdpCadreId);
-										if(!partyPossitin.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(partyPossition).trim()))
-											partyPossition = partyPossitin+",<br> "+commonMethodsUtilService.getStringValueForObject(partyPossition);
+									if(!cadreIdsLsit.contains(tdpCadreId))
+									{
+										Long committeeLevelId = commonMethodsUtilService.getLongValueForObject(partyPosition[2]);
+										Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
+								    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
+								    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
+								    	String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
+								    	String committeeLocation  ="";
+								    	if(committeeLevelId != 12L)
+								    		committeeLocation = cadreDetailsUtils.getCommitteeLocationNameByLocationTypeAndId(committeeLevelId, committeeLevelValue);
+										
+										String partyPossition =""+committeeStr+"- "+committeeLocation+" "+committeeLevelStr+"- "+roleStr;
+										if(cadreBenefitsMap.get(tdpCadreId) != null){
+											String partyPossitin = cadreBenefitsMap.get(tdpCadreId);
+											if(!partyPossitin.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(partyPossition).trim()))
+												partyPossition = partyPossitin+",<br> "+commonMethodsUtilService.getStringValueForObject(partyPossition);
+										}
+										else{
+											partyPossition = commonMethodsUtilService.getStringValueForObject(partyPossition);
+										}
+										
+										cadreBenefitsMap.put(tdpCadreId, partyPossition);
 									}
-									else{
-										partyPossition = commonMethodsUtilService.getStringValueForObject(partyPossition);
-									}
 									
-									cadreBenefitsMap.put(tdpCadreId, partyPossition);
 								}
 							}
 							
 							if(cadreBenefitsMap != null && cadreBenefitsMap.size()>0)
 							{
 								for (Long tdpCadreId : cadreBenefitsMap.keySet()) {
-									SimpleVO vo = inviteesMap.get(tdpCadreId);
-									if(vo != null)
+									List<SimpleVO> voList = inviteesMap.get(tdpCadreId);
+									if(voList != null && voList.size()>0)
 									{
-										vo.setPartyBenefitStr(cadreBenefitsMap.get(tdpCadreId));
+										for (SimpleVO vo : voList) {
+											if(vo != null)
+											{
+												vo.setPartyBenefitStr(cadreBenefitsMap.get(tdpCadreId));
+											}
+										}
+										
 									}
 								}
 							}
 							
 							if(inviteesMap != null && inviteesMap.size()>0)
 							{
-								finalvo.addAll(inviteesMap.values());
+								for (Long cadreId : inviteesMap.keySet()) {
+									finalvo.addAll(inviteesMap.get(cadreId));
+								}
+								
 							}
 						}
 					}
