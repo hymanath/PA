@@ -15,6 +15,9 @@
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
 <style type="text/css">
 .panel-group .panel
 {
@@ -33,6 +36,20 @@ header.eventsheader {
 }
 .summaryCls{color:#252D47;text-decoration: underline;}
 .summaryCls:hover{text-decoration: underline;}
+
+#speakersTab tr.odd td.sorting_1,#districtTableId tr.odd td.sorting_1{
+    background-color: #d3d3d3 !important;
+}
+#speakersTab tr.even td.sorting_1 , #districtTableId tr.even td.sorting_1{
+    background-color: #fafafa !important;
+}
+#speakersTab tr.odd,#districtTableId tr.odd {
+    background-color: #f3f3f3 !important;
+}
+#speakersTab th {
+    background-color: #DDDDDD !important;
+	color:#666666;
+}
 </style>
 </head>
 <body>
@@ -223,11 +240,17 @@ header.eventsheader {
 												<div class="pull-right"><input type="radio" checked name="filterRadio" value="today" class="filterRadio"/><label>&nbsp;Today</label>
 												<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/><label>&nbsp;15 Days</label>
 												<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/><label>&nbsp;30 Days</label>
-												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label></div>
+												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
+												</div>
+												<div class=" ">
+													<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
+													<input type="radio" name="filtersRadio" value="count" class="filtersRadio"/><label>&nbsp;Count </label>
+													<input type="radio" name="filtersRadio" value="consolidated" class="filtersRadio"/><label>&nbsp;Consolidated</label>												
+												</div>
 											</div>
 											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
 											
-											<div id="speakersAttendence"></div>
+											<div id="speakersAttendence" style="margin-top:10px;"></div>
 										</div>
                                     </div>
                                 </div>
@@ -377,15 +400,35 @@ header.eventsheader {
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
+
+<div id="resultModalId" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"> Speaker Attendance Details </h4>
+      </div>
+	  <div class="modal-body">
+        <div id="resultInnerDIvId">
+			<img id="modalLoadingImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mousewheel.js"></script>
 <script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="training/dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="training/dist/HighCharts/highcharts.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
 <script type="text/javascript">
 var fromTypeGlob;
 $(function () {
@@ -1011,7 +1054,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	
 	function getAttendenceForTrainers(type){
-		var jObj={type:type}
+		
+		var typeStr = $("input[name='filterRadio']:checked").val();
+		var searchType = $("input[name='filtersRadio']:checked").val();		
+		
+		var jObj={
+			type:typeStr,
+			searchType:searchType
+		}
 		$("#speakersAttendenceImg").show();
 		$.ajax({
 		   type:'POST',
@@ -1020,28 +1070,125 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}).done(function(result){
 			if(result!=null && result.length>0){
 				var str='';
-				str+='<table class="table table-bordered text-center">';
-				str+='<thead>';
-				str+='<th class="text-center">Program</th>';
-				str+='<th class="text-center">Camp</th>';
-				str+='<th class="text-center">Invitees Count</th>';
-				str+='<th class="text-center">Invitees Attended Count</th>';
-				str+='<th class="text-center">Non-Invitees Attended Count</th>';
-				str+='</thead>';				
-				str+='<tbody>';
-				for(var i in result){
-					str+='<tr>';
-					str+='<td>'+result[i].progName+'</td>';
-					str+='<td>'+result[i].centerName+'</td>';
-					str+='<td>'+result[i].inviteeCount+'</td>';
-					str+='<td>'+result[i].inviteeAttendedCount+'</td>';
-					str+='<td>'+result[i].nonInviteeAttendedCount+'</td>';
-					str+='</tr>';
+				str+='<table class="table table-bordered" id="speakersTab" >';
+				if(searchType == 'count')
+				{					
+					str+='<thead>';
+					str+='<th class="text-center">Program</th>';
+					str+='<th class="text-center">Camp</th>';
+					str+='<th class="text-center">Invitees Count</th>';
+					str+='<th class="text-center">Invitees Attended Count</th>';
+					str+='<th class="text-center">Non-Invitees Attended Count</th>';
+					str+='</thead>';				
+					str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+						str+='<td>'+result[i].progName+'</td>';
+						str+='<td>'+result[i].centerName+'</td>';
+						str+='<td>'+result[i].inviteeCount+'</td>';
+						str+='<td>'+result[i].inviteeAttendedCount+'</td>';
+						str+='<td>'+result[i].nonInviteeAttendedCount+'</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					$("#speakersAttendenceImg").hide();
+					$("#speakersAttendence").html(str);
 				}
-				str+='</tbody>';
-				str+='</table>';
-				$("#speakersAttendenceImg").hide();
-				$("#speakersAttendence").html(str);
+				else if(searchType =='individual')
+				{	
+					str+='<thead>';
+					str+='<th class="text-center">  </th>';
+					str+='<th class="text-center"> SPEAKER </th>';
+					str+='<th class="text-center"> DESIGNATION </th>';
+					str+='<th class="text-center">PROGRAM</th>';
+					str+='<th class="text-center">TRAINING CAMP</th>';
+					if(type == 'today')
+						str+='<th class="text-center">BATCH NAME</th>';
+					
+					str+='<th class="text-center">  DATE </th>';
+					str+='<th class="text-center"> STATUS </th>';
+					str+='</thead>';				
+					str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
+						str+='<td> <b> NAME: </b> <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].name+' </a><br> ';
+						
+						if(result[i].status != null)
+							str+=' <b>   </b>'+result[i].status+'';
+						str+='</td>';
+						if(result[i].partyBenefitStr != null)
+							str+='<td style="text-align:center;">'+result[i].partyBenefitStr+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						str+='<td>'+result[i].progName+'</td>';
+						str+='<td>'+result[i].campName+'</td>';
+						if(type == 'today')
+							str+='<td>'+result[i].batchName+'</td>';
+						if(result[i].dateString != null)
+							str+='<td style="text-align:center;"> '+result[i].dateString+' </td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						 
+						if(result[i].inviteeAttendedCount != null && result[i].inviteeAttendedCount>0)
+							str+='<td style="text-align:center;"> ATTENDED </td>';
+						else
+							str+='<td style="text-align:center;"> ABSENT </td>';
+							
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					$("#speakersAttendenceImg").hide();
+					$("#speakersAttendence").html(str);
+					$('#speakersTab').dataTable({
+						"aaSorting": [[ 5, "desc" ]],
+						"iDisplayLength": 20,
+						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+					$('#speakersTab').removeClass('dataTable');
+				}
+				else if(searchType =='consolidated')
+				{	
+					str+='<thead>';
+					str+='<th class="text-center">  </th>';
+					str+='<th class="text-center"> SPEAKER </th>';
+					str+='<th class="text-center"> DESIGNATION </th>';
+					str+='<th class="text-center"> ATTENDED COUNT </th>';
+					str+='</thead>';				
+					str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';						
+						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
+						str+='<td> <b> NAME: </b> <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].name+' </a><br>';
+						
+						if(result[i].status != null)
+							str+=' <b>   </b>'+result[i].status+'';
+						str+='</td>';
+						if(result[i].partyBenefitStr != null)
+							str+='<td style="text-align:center;">'+result[i].partyBenefitStr+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						if(result[i].inviteeAttendedCount != null && result[i].inviteeAttendedCount>0)
+							str+='<td style="text-align:center; cursor:pointer;" attr_cadre_id="'+result[i].id+'" class="callFunctionCls"> '+result[i].inviteeAttendedCount+' </td>';
+						else
+							str+='<td style="text-align:center;"> 0 </td>';
+							
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					$("#speakersAttendenceImg").hide();
+					$("#speakersAttendence").html(str);
+					$('#speakersTab').dataTable({
+						"aaSorting": [[ 5, "desc" ]],
+						"iDisplayLength": 20,
+						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+					
+					$('#speakersTab').removeClass('dataTable');
+				}
 			}else{
 				$("#speakersAttendenceImg").hide();
 				$("#speakersAttendence").html("No Data Available...");
@@ -1239,21 +1386,64 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$("#speakersAttendence").html("");
 		getAttendenceForTrainers($(this).val());
 	});
+	$(".filtersRadio").click(function(){
+		$("#speakersAttendence").html("");
+		getAttendenceForTrainers($(this).val());
+	});
 	
-	function getProgramCampBatchDetailsForAMemberBasedOnCadreId(){
+	$(document).on("click",".callFunctionCls",function(){
+		getProgramCampBatchDetailsForAMemberBasedOnCadreId($(this).attr("attr_cadre_id"));
+	});
+	
+	function getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadreId){
+		$("#resultModalId").modal("show");
+		$("#resultInnerDIvId").html('');
+		$("#modalLoadingImg").show();
 		var type = $( "input:radio[name=filterRadio]:checked" ).val();
-		var cadreId = 7072180;
+		//var cadreId = 7072180;
+		var cadreId = cadreId;
 		var jObj={
 				cadreId : cadreId,
 				type:type
 			}
-		
 		$.ajax({
 		   type:'POST',
 		   url :'getProgramCampBatchDetailsForAMemberBasedOnCadreIdAction.action',
 		   data: {task:JSON.stringify(jObj)},
 		}).done(function(result){
-			
+			if(result != null && result.length > 0){
+				var str='';
+				str+='<table class="table table-bordered" id="tableId">';
+				str+='<tr>';
+				str+='<td>Program Name</td>';
+				str+='<td>Camp Name</td>';				
+				//str+='<td>Batch Name</td>';
+				str+='<td>Date</td>';
+				str+='<td>Status</td>';
+				str+='</tr>';
+				for(var i in result){
+					str+='<tr>';		
+					str+='<td>'+result[i].progName+'</td>';	
+					if(result[i].campId == 1)
+						str+='<td> SVV </td>';		
+					else if(result[i].campId == 2)
+						str+='<td> EWK </td>';
+					else if(result[i].campId == 3)
+						str+='<td> GPN </td>';
+					else if(result[i].campId == 4)
+						str+='<td> AKKC </td>';					
+					//str+='<td>'+result[i].batchName+'</td>';
+					str+='<td>'+result[i].dateString+'</td>';
+					str+='<td>'+result[i].status+'</td>';
+					str+='</tr>';
+				}
+				str+='</table>';
+				$("#modalLoadingImg").hide();
+				$("#resultInnerDIvId").html(str);
+			}else{
+				$("#modalLoadingImg").hide();
+				$("#resultInnerDIvId").html("No Date Found...");
+			}
 		});
 	}
 	
