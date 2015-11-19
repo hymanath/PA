@@ -773,6 +773,11 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 					" where model.electionScope.electionType.electionType in ('ZPTC','MPTC')" +
 					" and model.state.stateId = :stateID and model.deformDate is null  ");
 		}
+		else if(electionType != null && (electionType.equalsIgnoreCase("MLC")))
+		{
+			str.append("select model.district.districtId , model.district.districtName,model.district.districtName,model.district.districtId from Constituency model" +
+					" where model.state.stateId = :stateID and model.deformDate is null  ");
+		}
 		else
 		{
 			str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
