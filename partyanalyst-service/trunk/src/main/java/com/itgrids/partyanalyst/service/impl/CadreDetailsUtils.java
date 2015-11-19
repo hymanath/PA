@@ -417,6 +417,10 @@ public class CadreDetailsUtils implements ICadreDetailsUtils{
 				{
 					location = stateDAO.get(locationValue).getStateName();
 				}
+				else if(committeeLevelId.longValue() == 12L)
+				{
+					location = " Central Committee ";
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getLocationNameByLocationTypeAndId() method, Exception - ",e);
