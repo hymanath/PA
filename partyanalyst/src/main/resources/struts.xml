@@ -10989,7 +10989,7 @@
 	
 	<action name="getProgramCampBatchDetailsForAMemberBasedOnCadreIdAction" class="trainingCampAction" method="getProgramCampBatchDetailsForAMemberBasedOnCadreId">
 	    <result type="json" name="success">		   
-		    <param name="root">status</param>
+		    <param name="root">simpleVOList</param>
 		</result>
 	</action>
 	
