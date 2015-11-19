@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -129,6 +130,7 @@ import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -202,11 +204,27 @@ class TrainingCampService implements ITrainingCampService{
     private IFeedbackCategoryDAO feedbackCategoryDAO;
     private ITrainingCampFeedbackCategoryDAO trainingCampFeedbackCategoryDAO;
     private ITrainingCampCadreFeedbackDocumentDAO trainingCampCadreFeedbackDocumentDAO;
-	
-
+	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private ICadreDetailsUtils cadreDetailsUtils;
 
     
-    public ITrainingCampFeedbackAnswerDAO getTrainingCampFeedbackAnswerDAO() {
+    public ICadreDetailsUtils getCadreDetailsUtils() {
+		return cadreDetailsUtils;
+	}
+
+	public void setCadreDetailsUtils(ICadreDetailsUtils cadreDetailsUtils) {
+		this.cadreDetailsUtils = cadreDetailsUtils;
+	}
+
+	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
+		return tdpCadreCandidateDAO;
+	}
+
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
+
+	public ITrainingCampFeedbackAnswerDAO getTrainingCampFeedbackAnswerDAO() {
 		return trainingCampFeedbackAnswerDAO;
 	}
 
@@ -8316,7 +8334,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return simpleVO;
 		}
-		public List<SimpleVO> getAttendenceForTrainers(String type){
+		public List<SimpleVO> getAttendenceForTrainers(String type,String searchType){
 			List<SimpleVO> finalvo = new ArrayList<SimpleVO>();
 			try {
 				LOG.info("Entered into getAttendenceForTrainers");
@@ -8339,46 +8357,246 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				
 				//test
-				List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
 				
-				if(res!=null && res.size()>0){
-					for(Object[] object:res){
-						SimpleVO vo = new SimpleVO();
-						vo.setCenterId((Long)object[0]);
-						vo.setCenterName(object[1].toString());
-						vo.setProgName(object[3].toString());
+				
+				if(searchType != null && !searchType.isEmpty())
+				{
+					if(searchType.trim().equalsIgnoreCase("count"))
+					{
+						List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
 						
-						List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
-						if(invited!=null && invited.size()>0){
-							Object[] obj = invited.get(0);
-							vo.setInviteeCount((Long)obj[1]);
-						}
-						
-						List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
-						if(inviteeAttended!=null && inviteeAttended.size()>0){
-							Object[] obj = inviteeAttended.get(0); 
-							vo.setInviteeAttendedCount((Long)obj[1]);
-						}
-						
-						List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
-						List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
-						
-						int temp=0;
-						if(attendedDetails!=null && attendedDetails.size()>0){
-							for(Long long1:attendedDetails){
-								if(!invitedDetails.contains(long1)){
-									temp=temp+1;
+						if(res!=null && res.size()>0){
+							for(Object[] object:res){
+								SimpleVO vo = new SimpleVO();
+								vo.setCenterId((Long)object[0]);
+								vo.setCenterName(object[1].toString());
+								vo.setProgName(object[3].toString());
+								
+								List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								if(invited!=null && invited.size()>0){
+									Object[] obj = invited.get(0);
+									vo.setInviteeCount((Long)obj[1]);
 								}
+								
+								List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								if(inviteeAttended!=null && inviteeAttended.size()>0){
+									Object[] obj = inviteeAttended.get(0); 
+									vo.setInviteeAttendedCount((Long)obj[1]);
+								}
+								
+								List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								
+								int temp=0;
+								if(attendedDetails!=null && attendedDetails.size()>0){
+									for(Long long1:attendedDetails){
+										if(!invitedDetails.contains(long1)){
+											temp=temp+1;
+										}
+									}
+								}
+								
+								vo.setNonInviteeAttendedCount(temp);
+								finalvo.add(vo);
+							}
+						}
+					}
+					else if(searchType.trim().equalsIgnoreCase("individual") || searchType.trim().equalsIgnoreCase("consolidated"))
+					{
+						 Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
+						 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
+						 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();
+
+						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate, toDate);
+						Map<Long,SimpleVO> inviteesMap = new LinkedHashMap<Long, SimpleVO>(0);
+								
+						if(invitationdtls != null && invitationdtls.size()>0)
+						{
+							for (Object[] invitee : invitationdtls) {
+								Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(invitee[0]);
+								String name = commonMethodsUtilService.getStringValueForObject(invitee[1]);
+								String imageStr = commonMethodsUtilService.getStringValueForObject(invitee[2]);
+								String membershipNo = commonMethodsUtilService.getStringValueForObject(invitee[3]);
+								String mobileNo = commonMethodsUtilService.getStringValueForObject(invitee[4]);
+								Long invitedCount = commonMethodsUtilService.getLongValueForObject(invitee[5]);
+								
+								SimpleVO vo = new SimpleVO();
+								vo.setName(name);
+								vo.setId(tdpCadreId);
+								vo.setMembershipNo(membershipNo);
+								vo.setImageStr(imageStr);
+								vo.setMobileNo(mobileNo);
+								vo.setInviteeCount(invitedCount);
+								inviteesMap.put(tdpCadreId, vo);
 							}
 						}
 						
-						vo.setNonInviteeAttendedCount(temp);
+						//if(!searchType.trim().equals("consolidated"))
+						//{
+							List<Object[]> attendedDtls  = trainingCampAttendanceDAO.getSpeakersAttendedAreaDetailsForCenter(null, null, fromDate, toDate);
+							
+							if(attendedDtls != null && attendedDtls.size()>0)
+							{
+								for (Object[] attendance : attendedDtls) {
+									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(attendance[0]);
+									String program = commonMethodsUtilService.getStringValueForObject(attendance[1]);
+									String camp =commonMethodsUtilService.getStringValueForObject(attendance[2]);
+									//String batch = commonMethodsUtilService.getStringValueForObject(attendance[3]);
+									
+									Long campId = commonMethodsUtilService.getLongValueForObject(attendance[4]);
+									String dateStr = commonMethodsUtilService.getStringValueForObject(attendance[5]);
+									//Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
+									
+									if(inviteesMap != null && inviteesMap.size()>0)
+									{
+										String batchStr  ="Speakers";
+										if(type.equalsIgnoreCase("today"))
+											 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId);
+										SimpleVO vo = inviteesMap.get(tdpCadreId);
+										if(vo != null)
+										{
+											vo.setBatchName(batchStr);
+											vo.setCampName(camp);
+											vo.setProgName(program);
+										}
+									}
+								}
+							}
+						//}
 						
-						finalvo.add(vo);
 						
+						//if(searchType.trim().equals("consolidated"))
+						//{
+							List<Object[]> attendedCountDtls  = trainingCampAttendanceDAO.getSpeakersAttendedDetailsForCenter(null, null, fromDate, toDate);
+							if(attendedCountDtls != null && attendedCountDtls.size()>0)
+							{
+								for (Object[] attendance : attendedCountDtls) {
+									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(attendance[0]);
+									Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
+									if(inviteesMap != null && inviteesMap.size()>0)
+									{
+										SimpleVO vo = inviteesMap.get(tdpCadreId);
+										if(vo != null)
+										{
+											vo.setInviteeAttendedCount(attendedCount);
+										}
+									}
+								}
+							}
+						//}
+						
+						
+						if(inviteesMap != null && inviteesMap.size()>0)
+						{
+							List<Object[]> cadrePublicRepresentativList = tdpCadreCandidateDAO.getPublicRepresentaativesDetailsForCadreIdsList(new ArrayList<Long>(inviteesMap.keySet()));
+							Map<Long,String> cadreBenefitsMap = new LinkedHashMap<Long, String>(0);									
+							if(cadrePublicRepresentativList != null && cadrePublicRepresentativList.size()>0)
+							{
+									parliamentInfoMap = cadreDetailsUtils.getAreaWiseList("Parliament", 1L, "ALL", false);
+									assemblyInfoMap = cadreDetailsUtils.getAreaWiseList("Assembly", 1L, "ALL", false);
+									mandalsListMap = cadreDetailsUtils.getAreaWiseList("MPTCORZPTC", 1L, "ALL", false);
+								
+								for (Object[] cadreCandidate : cadrePublicRepresentativList) {
+									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(cadreCandidate[0]);
+									String publicRepresentativeStr = "";
+									String publicRepresentativeType = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+									SimpleVO vo = inviteesMap.get(tdpCadreId);
+									if(vo != null)
+									{
+										if(publicRepresentativeType.equalsIgnoreCase("MLA") || publicRepresentativeType.equalsIgnoreCase("EX MLA")
+												|| publicRepresentativeType.equalsIgnoreCase("2014 ASSEMBLY CONTESTED"))
+										{
+											List<IdNameVO> assemblyList = assemblyInfoMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												vo.setStatus(vo1.getName()+" Assembly");
+											}
+										}
+										
+										if(publicRepresentativeType.equalsIgnoreCase("MP") || publicRepresentativeType.equalsIgnoreCase("EX MP"))
+										{
+											List<IdNameVO> assemblyList = parliamentInfoMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												vo.setStatus(vo1.getName()+" Parliament");
+											}
+										}
+										else if(publicRepresentativeType != null && (
+												publicRepresentativeType.trim().equalsIgnoreCase("ZPTC") || 
+												publicRepresentativeType.trim().equalsIgnoreCase("MPTC") || 
+												publicRepresentativeType.trim().equalsIgnoreCase("MPP") ))
+										{
+											List<IdNameVO> assemblyList = mandalsListMap.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5]));
+											if(assemblyList != null && assemblyList.size()>0)
+											{
+												IdNameVO vo1 = assemblyList.get(0);
+												vo.setStatus(vo1.getName()+" Assembly");
+											}
+										}
+										
+									}
+									
+									if(cadreBenefitsMap.get(tdpCadreId) != null){
+										publicRepresentativeStr = cadreBenefitsMap.get(tdpCadreId);
+										if(!publicRepresentativeStr.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]).trim()))
+											publicRepresentativeStr = publicRepresentativeStr+",<br> "+commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+									}
+									else{
+										
+										publicRepresentativeStr = commonMethodsUtilService.getStringValueForObject(cadreCandidate[3]);
+									}
+									cadreBenefitsMap.put(tdpCadreId, publicRepresentativeStr);
+								}
+							}
+							
+							List<Object[]> cadrePartyPositionDetals =  tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList(new ArrayList<Long>(inviteesMap.keySet()));
+							if(cadrePartyPositionDetals != null && cadrePartyPositionDetals.size()>0)
+							{
+								for (Object[] partyPosition : cadrePartyPositionDetals) {
+									Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(partyPosition[0]);
+									Long committeeLevelId = commonMethodsUtilService.getLongValueForObject(partyPosition[2]);
+									Long committeeLevelValue = partyPosition[3] != null?Long.parseLong(partyPosition[3].toString()):0l;
+							    	String committeeStr = partyPosition[5] != null?partyPosition[5].toString():"";
+							    	String roleStr = partyPosition[7] != null?partyPosition[7].toString():"";
+							    	//String committeeLevelStr = partyPosition[8] != null?partyPosition[8].toString():"";
+									String committeeLocation = cadreDetailsUtils.getCommitteeLocationNameByLocationTypeAndId(committeeLevelId, committeeLevelValue);
+									
+									String partyPossition =""+committeeStr+"- "+committeeLocation+" - "+roleStr;
+									if(cadreBenefitsMap.get(tdpCadreId) != null){
+										String partyPossitin = cadreBenefitsMap.get(tdpCadreId);
+										if(!partyPossitin.trim().equalsIgnoreCase(commonMethodsUtilService.getStringValueForObject(partyPossition).trim()))
+											partyPossition = partyPossitin+",<br> "+commonMethodsUtilService.getStringValueForObject(partyPossition);
+									}
+									else{
+										partyPossition = commonMethodsUtilService.getStringValueForObject(partyPossition);
+									}
+									
+									cadreBenefitsMap.put(tdpCadreId, partyPossition);
+								}
+							}
+							
+							if(cadreBenefitsMap != null && cadreBenefitsMap.size()>0)
+							{
+								for (Long tdpCadreId : cadreBenefitsMap.keySet()) {
+									SimpleVO vo = inviteesMap.get(tdpCadreId);
+									if(vo != null)
+									{
+										vo.setPartyBenefitStr(cadreBenefitsMap.get(tdpCadreId));
+									}
+								}
+							}
+							
+							if(inviteesMap != null && inviteesMap.size()>0)
+							{
+								finalvo.addAll(inviteesMap.values());
+							}
+						}
 					}
 					
 				}
+				
 				
 				
 				//test
@@ -8396,7 +8614,6 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					centers.get((Long)obj[2]).add((Long)obj[0]);
 				}
-				
 								
 				for (Map.Entry<Long,List<Long>> entry : centers.entrySet()){
 					List<SimpleVO> voList = new ArrayList<SimpleVO>();
@@ -8479,10 +8696,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 				
-				
-				
 				*/
-				
 				
 			} catch (Exception e) {
 				LOG.error("Exception raised at getAttendenceForTrainers ", e);
@@ -8491,6 +8705,7 @@ class TrainingCampService implements ITrainingCampService{
 			return finalvo;
 			
 		}
+		
 		
 		public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId){
 			List<CategoryFeedbackVO> voList = new ArrayList<CategoryFeedbackVO>();
@@ -8730,7 +8945,7 @@ class TrainingCampService implements ITrainingCampService{
 			return voList;
 		}
 		
-		public void getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type){
+		public List<SimpleVO> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type){
 			List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
 			try {
 				LOG.info("Entered into getProgramCampBatchDetailsForAMemberBasedOnCadreId service");
@@ -8755,15 +8970,15 @@ class TrainingCampService implements ITrainingCampService{
 				List<Object[]> attendeeListObject = trainingCampBatchAttendeeDAO.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadreIdList,fromDate,toDate);
 				List<Object[]> attendenceListObject = trainingCampAttendanceDAO.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadreIdList,fromDate,toDate);
 				
-				Map<Long,List<SimpleVO>> attendeeMap = new HashMap<Long, List<SimpleVO>>();
-				Map<Long,List<SimpleVO>> attendenceMap = new HashMap<Long, List<SimpleVO>>();
+				Map<String,List<SimpleVO>> attendeeMap = new HashMap<String, List<SimpleVO>>();
+				Map<String,List<SimpleVO>> attendenceMap = new HashMap<String, List<SimpleVO>>();
 				
 				if(attendeeListObject != null && attendeeListObject.size() > 0){
 					for (Object[] objects : attendeeListObject) {
-						if(attendeeMap.get((Long)objects[0])==null){
-							attendeeMap.put((Long)objects[0], new ArrayList<SimpleVO>(0));
+						if(attendeeMap.get(sdf.format(objects[7]))==null){
+							attendeeMap.put(sdf.format(objects[7]), new ArrayList<SimpleVO>(0));
 						}
-						List<SimpleVO> tempAttendeeList = attendeeMap.get((Long)objects[0]);
+						List<SimpleVO> tempAttendeeList = attendeeMap.get(sdf.format(objects[7]));
 						SimpleVO vo = new SimpleVO();
 						vo.setCadreId((Long)objects[0]);
 						vo.setBatchId((Long)objects[1]);
@@ -8772,17 +8987,17 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setCampName(objects[4].toString());
 						vo.setProgramId((Long)objects[5]);
 						vo.setProgName(objects[6].toString());
-						vo.setDate(sdf.parse(sdf.format(objects[7])));
+						vo.setDateString(sdf.format(objects[7]));
 						tempAttendeeList.add(vo);
 					}
 				}
 				
 				if(attendenceListObject != null && attendenceListObject.size() > 0){
 					for (Object[] objects : attendenceListObject) {
-						if(attendenceMap.get((Long)objects[0])==null){
-							attendenceMap.put((Long)objects[0], new ArrayList<SimpleVO>(0));
+						if(attendenceMap.get(sdf.format(objects[7]))==null){
+							attendenceMap.put(sdf.format(objects[7]), new ArrayList<SimpleVO>(0));
 						}
-						List<SimpleVO> tempAttendenceList = attendenceMap.get((Long)objects[0]);
+						List<SimpleVO> tempAttendenceList = attendenceMap.get(sdf.format(objects[7]));
 						SimpleVO vo = new SimpleVO();
 						vo.setCadreId((Long)objects[0]);
 						vo.setBatchId((Long)objects[1]);
@@ -8791,20 +9006,20 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setCampName(objects[4].toString());
 						vo.setProgramId((Long)objects[5]);
 						vo.setProgName(objects[6].toString());
-						vo.setDate(sdf.parse(sdf.format(objects[7])));
+						vo.setDateString(sdf.format(objects[7]));
 						tempAttendenceList.add(vo);
 					}
 				}
 				
 				if(attendeeMap != null && attendeeMap.size()>0){
 					if(attendenceMap != null && attendenceMap.size()>0){
-						for (Entry<Long, List<SimpleVO>> entry : attendeeMap.entrySet())
+						for (Entry<String, List<SimpleVO>> entry : attendeeMap.entrySet())
 						{
 							List<SimpleVO> simplevo = entry.getValue();
 							if(simplevo!=null && simplevo.size()>0){
 								for (SimpleVO simpleVO2 : simplevo) {
 									//if cadre is not present in attendene
-									if(attendenceMap.get(simpleVO2)==null){
+									if(attendenceMap.get(simpleVO2.getDateString())==null){
 										SimpleVO vo = new SimpleVO();
 										vo.setCadreId(simpleVO2.getCadreId());
 										vo.setBatchId(simpleVO2.getBatchId());
@@ -8813,14 +9028,14 @@ class TrainingCampService implements ITrainingCampService{
 										vo.setCampName(simpleVO2.getBatchName());
 										vo.setProgramId(simpleVO2.getProgramId());
 										vo.setProgName(simpleVO2.getProgName());
-										vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+										vo.setDateString(simpleVO2.getDateString());
 										vo.setStatus("Absent");
 										voList.add(vo);
 									}else{
-										List<SimpleVO> voIn =attendenceMap.get(simpleVO2);
+										List<SimpleVO> voIn =attendenceMap.get(simpleVO2.getDateString());
 										for (SimpleVO simpleVO3 : voIn) {
 											//if cadre is present in attendence
-											if(simpleVO3.getCadreId().equals(simpleVO2.getCadreId())){
+											if(simpleVO3.getDateString().equals(simpleVO2.getDateString())){
 												SimpleVO vo = new SimpleVO();
 												vo.setCadreId(simpleVO2.getCadreId());
 												vo.setBatchId(simpleVO2.getBatchId());
@@ -8829,7 +9044,7 @@ class TrainingCampService implements ITrainingCampService{
 												vo.setCampName(simpleVO2.getBatchName());
 												vo.setProgramId(simpleVO2.getProgramId());
 												vo.setProgName(simpleVO2.getProgName());
-												vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+												vo.setDateString(simpleVO2.getDateString());
 												vo.setStatus("IA");
 												voList.add(vo);
 											}
@@ -8839,7 +9054,7 @@ class TrainingCampService implements ITrainingCampService{
 							}
 						}
 					}else{
-						for (Entry<Long, List<SimpleVO>> entry : attendeeMap.entrySet())
+						for (Entry<String, List<SimpleVO>> entry : attendeeMap.entrySet())
 						{
 							List<SimpleVO> simplevo = entry.getValue();
 							if(simplevo!=null && simplevo.size()>0){
@@ -8852,7 +9067,7 @@ class TrainingCampService implements ITrainingCampService{
 									vo.setCampName(simpleVO2.getBatchName());
 									vo.setProgramId(simpleVO2.getProgramId());
 									vo.setProgName(simpleVO2.getProgName());
-									vo.setDate(sdf.parse(sdf.format(simpleVO2.getDate())));
+									vo.setDateString(sdf.format(simpleVO2.getDate()));
 									vo.setStatus("Absent");
 									voList.add(vo);
 								}
@@ -8866,11 +9081,21 @@ class TrainingCampService implements ITrainingCampService{
 			} catch (Exception e) {
 				LOG.error("Exception raised at getProgramCampBatchDetailsForAMemberBasedOnCadreId service", e);
 			}
+			
+			return voList;
 		}
 		
 		public String getBatchNameWithDateAndCamp(Date date,Long campId){
+			
 			if(date!=null && campId>0l){
-				return trainingCampBatchDAO.getBatchNameWithDateAndCamp(date,campId);
+				List<String> batchsList =  trainingCampBatchDAO.getBatchNameWithDateAndCamp(date,campId);
+				if(batchsList != null && batchsList.size()>0)
+				{
+					if(batchsList.size() == 1)
+						return batchsList.get(0);
+					if(batchsList.size() == 2)
+						return batchsList.get(1);
+				}
 			}
 			return null;
 		}
