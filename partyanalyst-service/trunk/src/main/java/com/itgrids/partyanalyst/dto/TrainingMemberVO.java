@@ -33,8 +33,50 @@ public class TrainingMemberVO implements Serializable{
 	private Long locationType;
 	private Long basicCommitteeTypeId;
 	private String type;
+	private Long invitationCount;
+	private Long attendedCount;
+	private String programStr;
+	private String trainingCampStr;
+	private String batchStr;
+	private String dateStr;
 	
 	
+	public Long getInvitationCount() {
+		return invitationCount;
+	}
+	public void setInvitationCount(Long invitationCount) {
+		this.invitationCount = invitationCount;
+	}
+	public Long getAttendedCount() {
+		return attendedCount;
+	}
+	public void setAttendedCount(Long attendedCount) {
+		this.attendedCount = attendedCount;
+	}
+	public String getProgramStr() {
+		return programStr;
+	}
+	public void setProgramStr(String programStr) {
+		this.programStr = programStr;
+	}
+	public String getTrainingCampStr() {
+		return trainingCampStr;
+	}
+	public void setTrainingCampStr(String trainingCampStr) {
+		this.trainingCampStr = trainingCampStr;
+	}
+	public String getBatchStr() {
+		return batchStr;
+	}
+	public void setBatchStr(String batchStr) {
+		this.batchStr = batchStr;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
 	public Long getLocationId() {
 		return locationId;
 	}
