@@ -305,6 +305,28 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return (List<Long>)query.list();
    }
    
+   
+   public List<Object[]> getSpeakersDetails(Date fromdate, Date toDate)
+   {
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append("select distinct model.tdpCadreId, model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCadre.mobileNo," +
+	   		" count(model.tdpCadreId) " +
+	   		"  from TrainingCampBatchAttendee model where model.isDeleted='false' and model.trainingCampBatch.attendeeTypeId =2 and " +
+	   		" model.trainingCampBatch.attendeeType.isDeleted ='false' " );
+	   
+	   if(fromdate != null && toDate != null)
+		   queryStr.append(" and ( date(model.insertedTime) >= :fromdate and date(model.insertedTime) <= :toDate ) ");
+	   
+	   queryStr.append(" group by model.tdpCadreId order by model.trainingCampBatchId ");
+	   
+	   Query query = getSession().createQuery(queryStr.toString());
+	   if(fromdate != null && toDate != null){
+		   query.setParameter("fromdate", fromdate);
+		   query.setParameter("toDate", toDate);
+	   }
+	   
+	   return query.list();
+   }
    public List<Object[]> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,Date fromDate,Date toDate){
 	   StringBuilder sb = new StringBuilder();
 	   
@@ -321,7 +343,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		   sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
 	   }
 	   
-	   sb.append(" group by model.attendedTime and model.trainingCampBatchId ");
+	   sb.append(" group by date(model.attendedTime), model.trainingCampBatchId ");
 	   
 	   Query query = getSession().createQuery(sb.toString());
 	   

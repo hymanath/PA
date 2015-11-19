@@ -90,7 +90,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		//queryStr.append("  from PublicRepresentative model where model.candidateId in (:candidateIdsList) order by model.candidate.lastname " );
 
 		queryStr.append(" select distinct model.candidate.candidateId, model.candidate.lastname, model.candidate.mobile, model.candidate.gender," +
-				"   model.publicRepresentativeType.type,model.levelValue ");
+				"   model.publicRepresentativeType.type,model.levelValue,model.levelId ");
 		queryStr.append("  from PublicRepresentative model where model.candidateId in (:candidateIdsList) order by model.candidate.lastname " );
 		
 		Query query = getSession().createQuery(queryStr.toString());

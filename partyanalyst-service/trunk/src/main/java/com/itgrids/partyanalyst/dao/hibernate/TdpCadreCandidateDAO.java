@@ -44,7 +44,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	public List<Object[]> getPublicRepresentaativesDetailsForCadreIdsList(List<Long> cadreIdsList){
 		
 		Query query=getSession().createQuery(" select model.tdpCadre.tdpCadreId, model.tdpCadre.voter.voterIDCardNo, model1.publicRepresentativeType.publicRepresentativeTypeId," +
-				" model1.publicRepresentativeType.type " +
+				" model1.publicRepresentativeType.type,model1.levelId, model1.levelValue " +
 				" from TdpCadreCandidate model,PublicRepresentative model1 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
 				" and model.tdpCadre.tdpCadreId in (:cadreIdsList)  ");
