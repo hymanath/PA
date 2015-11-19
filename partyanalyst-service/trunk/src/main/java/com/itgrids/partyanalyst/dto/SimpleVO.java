@@ -8,9 +8,12 @@ public class SimpleVO implements java.io.Serializable{
 	
    private Long id;
    private String name;
+   private String membershipNo;
    
    private String dateString;
    private Date date;
+   private String imageStr;
+   private String mobileNo;
    
    private Long count;
    private Long total;
@@ -51,6 +54,7 @@ public class SimpleVO implements java.io.Serializable{
    private Long inviteeCount;
    private Long inviteeAttendedCount;
    private int nonInviteeAttendedCount;
+   private String partyBenefitStr;
    private Long cadreId;
    private Long campId;
    private Long programId;
@@ -58,6 +62,12 @@ public class SimpleVO implements java.io.Serializable{
    
    
    
+	public String getPartyBenefitStr() {
+		return partyBenefitStr;
+	}
+	public void setPartyBenefitStr(String partyBenefitStr) {
+		this.partyBenefitStr = partyBenefitStr;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -285,5 +295,23 @@ public void setNonInvitee(boolean nonInvitee) {
 	public void setLocValue(Long locValue) {
 		this.locValue = locValue;
 	}
-    
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	public String getImageStr() {
+		return imageStr;
+	}
+	public void setImageStr(String imageStr) {
+		this.imageStr = imageStr;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
    }
