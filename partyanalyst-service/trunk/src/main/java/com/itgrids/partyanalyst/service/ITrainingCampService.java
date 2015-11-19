@@ -113,11 +113,11 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
 	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
 	public SimpleVO getDayWiseAttendnenceForBatch(Long batchId);
-	public List<SimpleVO> getAttendenceForTrainers(String type);
+	public List<SimpleVO> getAttendenceForTrainers(String type,String searchType);
 	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
 	public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds);
 	public List<IdNameVO> getBatches(String type,Long programId,Long centerId);
 	public String saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers);
-	public void getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type);
+	public List<SimpleVO> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type);
 }
