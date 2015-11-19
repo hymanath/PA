@@ -364,4 +364,10 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("campId", campId);
 		return query.list();
 	}
+	
+	public List<String> getExcudingTdpCadreIdsList(){
+		Query query = getSession().createSQLQuery(" select distinct model.tdp_cadre_id from training_camp_staff model ");
+		return query.list();
+	}
+	
 }
