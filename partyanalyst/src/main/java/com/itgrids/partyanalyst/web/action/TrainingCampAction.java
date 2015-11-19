@@ -2445,8 +2445,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.info("ntered into getAttendenceForTrainers");
 			jObj=new JSONObject(getTask());
 			String type=jObj.getString("type");
-			
-			simpleVOList = trainingCampService.getAttendenceForTrainers(type);
+			String searchType=jObj.getString("searchType");
+			simpleVOList = trainingCampService.getAttendenceForTrainers(type,searchType);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAttendenceForTrainers", e);
 		}
@@ -2547,7 +2547,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			List<Long> cadteIdList = new ArrayList<Long>(0);
 			cadteIdList.add(cadreId);
 			
-			trainingCampService.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadteIdList,type);
+			simpleVOList = trainingCampService.getProgramCampBatchDetailsForAMemberBasedOnCadreId(cadteIdList,type);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getProgramCampBatchDetailsForAMemberBasedOnCadreId", e);
 		}
