@@ -2785,6 +2785,8 @@
 		<property name="trainingCampCadreFeedbackDocumentDAO" ref="trainingCampCadreFeedbackDocumentDAO"/>
 		<property name="feedbackCategoryDAO" ref="feedbackCategoryDAO"/>
 		<property name="trainingCampFeedbackAnswerDAO" ref="trainingCampFeedbackAnswerDAO"/>
+		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"/>
+		<property name="cadreDetailsUtils" ref="cadreDetailsUtils"/>
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
@@ -2834,6 +2836,32 @@
 		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
 		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 	</bean>
-	
+		
+	<bean name="cadreDetailsUtils" class="com.itgrids.partyanalyst.service.impl.CadreDetailsUtils">
+	<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	<property name="voterDAO" ref="voterDAO" />
+	<property name="boothDAO" ref="boothDAO" />
+	<property name="panchayatDAO" ref="panchayatDAO" />
+	<property name="tehsilDAO" ref="tehsilDAO" />
+	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	<property name="constituencyDAO" ref="constituencyDAO" />
+	<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	<property name="districtDAO" ref="districtDAO" />
+	<property name="stateDAO" ref="stateDAO" />
+	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
+	<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
+	<property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
+	<property name="tdpRolesDAO" ref="tdpRolesDAO" />
+	<property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO" />
+	<property name="tdpBasicCommitteeDAO" ref="tdpBasicCommitteeDAO" />
+	<property name="tdpCommitteeElectrolRolesDAO" ref="tdpCommitteeElectrolRolesDAO" />
+	<property name="tdpCommitteeElectrolsDAO" ref="tdpCommitteeElectrolsDAO" />
+	<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
+	<property name="tdpCommitteeRoleDAO" ref="tdpCommitteeRoleDAO" />
+	<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" />
+	<property name="cadreCommitteeRoleDAO" ref="cadreCommitteeRoleDAO" />	
+	<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />	
+	</bean>
 </beans>		
 	
