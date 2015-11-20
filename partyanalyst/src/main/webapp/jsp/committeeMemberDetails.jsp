@@ -112,13 +112,13 @@
 		body {
     background: url("") repeat scroll 0 0 !important;
 }
-#constiTableId tr.odd td.sorting_1,#districtTableId tr.odd td.sorting_1{
+#speakersTab tr.odd td.sorting_1,#districtTableId tr.odd td.sorting_1{
     background-color: #d3d3d3 !important;
 }
-#constiTableId tr.even td.sorting_1 , #districtTableId tr.even td.sorting_1{
+#speakersTab tr.even td.sorting_1 , #districtTableId tr.even td.sorting_1{
     background-color: #fafafa !important;
 }
-#constiTableId tr.odd,#districtTableId tr.odd {
+#speakersTab tr.odd,#districtTableId tr.odd {
     background-color: #f3f3f3 !important;
 }
 
@@ -1789,11 +1789,19 @@
 				{											
 					str+='<tr>';
 						//str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
-						var disres = result[i].address.split("_");
+						var disres ;
+						if(result[i].address != null)
+							disres = result[i].address.split("_");
+						else
+							disres =["",""];
 						str+='<td style="text-align:center;"> '+disres[0]+' </td>';
 						str+='<td> '+disres[1]+' </td>';
 						//str+='<td> '+result[i].address+' </td>';
-						var res = result[i].constituency.split("_");
+						var res;
+						if(result[i].constituency != null)
+							 res = result[i].constituency.split("_");
+						 else
+							 res =["",""];
 						if(res[0] == "0")
 						{
 							str+='<td style="text-align:center;"> - </td>';
