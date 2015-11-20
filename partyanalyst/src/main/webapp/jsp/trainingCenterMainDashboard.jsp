@@ -15,9 +15,8 @@
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css">
 
-
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
 <style type="text/css">
 .panel-group .panel
 {
@@ -139,58 +138,37 @@ header.eventsheader {
                                                 </ul>
                                                 <p class="m_0">Training Center</p>
                                             </td>
-                                            <td style="vertical-align:middle">
-												<table class="table-condensed m_0" align="center" style="padding:5px;">
+                                            <td style="vertical-align:middle;padding:0px;">
+												<table class="font-13 m_0 table-bordered table table-condensed text-center">
 													<tr>
-														<td>
-															<!--<h4>TOTAL MEMBERS</h4>
-															<ul style="padding-left:10px;">
-																<li><span id="totalMembers">0</span> CONFIRMED</li>
-																<li><span id="totalMembersIn">0</span> INVITEE ATTENDED</li>
-																<li><span id="totalMembersNonIn">0</span> NON INVITEE ATTENDED</li>
-															</ul>-->
-															<!--<h1 class="m_0" id="totalMembers">0</h1> 
-															<p class="m_0">Total Members</p>	-->
-														</td>
-														<td>
-															<table class="font-13 m_0 table-bordered table table-condensed text-center">
-																<tr>
-																	<td></td>
-																	<td>Confirmed</td>
-																	<td>Invitees Attended</td>
-																	<td>Non-Invitees Attended</td>
-																</tr>
-																<tr class="text-danger">
-																	<td >UPCOMING - </td>
-																	<td id="upcomingMembers" style="font-weight:bold;">0</td>
-																	<td id="upcomingMembersAte" style="font-weight:bold;">0</td>
-																	<td id="upcomingMembersNonAte" style="font-weight:bold;">0</td>
-																</tr>
-																<tr class="text-yellow">
-																	<td >RUNNING - </td>
-																	<td id="runningMembers" style="font-weight:bold;">0</td>
-																	<td id="runningMembersAte" style="font-weight:bold;">0</td>
-																	<td id="runningMembersNonAte" style="font-weight:bold;">0</td>
-																</tr>
-																<tr class="text-success">
-																	<td >COMPLETED - </td>
-																	<td id="completedMembers" style="font-weight:bold;">0</td>
-																	<td id="completedMembersAte" style="font-weight:bold;">0</td>
-																	<td id="completedMembersNonAte" style="font-weight:bold;">0</td>
-																</tr>
-																<tr>
-																	<td >TOTAL  </td>
-																	<td id="totalMembers" style="font-weight:bold;">0</td>
-																	<td id="totalMembersIn" style="font-weight:bold;">0</td>
-																	<td id="totalMembersNonIn" style="font-weight:bold;">0</td>
-																</tr>
-															</table>
-															 <!--<ul class="ul-top-block m_0 font-12">
-																<li class="text-danger">UPCOMING -<span class="pull-right" id="upcomingMembers">0</span></li>
-																<li class="text-yellow">RUNNING - <span class="pull-right" id="runningMembers">0</span></li>
-																<li class="text-success">COMPLETED - <span class="pull-right" id="completedMembers">0</span></li>
-															</ul>-->
-														</td>
+														<td></td>
+														<td>Confirmed</td>
+														<td>Invitees Attended</td>
+														<td>Non-Invitees Attended</td>
+													</tr>
+													<tr class="text-danger">
+														<td >UPCOMING - </td>
+														<td id="upcomingMembers" style="font-weight:bold;">0</td>
+														<td id="upcomingMembersAte" style="font-weight:bold;">0</td>
+														<td id="upcomingMembersNonAte" style="font-weight:bold;">0</td>
+													</tr>
+													<tr class="text-yellow">
+														<td >RUNNING - </td>
+														<td id="runningMembers" style="font-weight:bold;">0</td>
+														<td id="runningMembersAte" style="font-weight:bold;">0</td>
+														<td id="runningMembersNonAte" style="font-weight:bold;">0</td>
+													</tr>
+													<tr class="text-success">
+														<td >COMPLETED - </td>
+														<td id="completedMembers" style="font-weight:bold;">0</td>
+														<td id="completedMembersAte" style="font-weight:bold;">0</td>
+														<td id="completedMembersNonAte" style="font-weight:bold;">0</td>
+													</tr>
+													<tr>
+														<td >TOTAL  </td>
+														<td id="totalMembers" style="font-weight:bold;">0</td>
+														<td id="totalMembersIn" style="font-weight:bold;">0</td>
+														<td id="totalMembersNonIn" style="font-weight:bold;">0</td>
 													</tr>
 												</table>
                                             </td>
@@ -233,16 +211,25 @@ header.eventsheader {
 						<section>
                             <div class="row">
                             	<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4 col-md-offset-8">
+											<div class="pull-right">
+												<input type="radio" checked name="filterRadio" value="today" class="filterRadio"/>
+												<label>&nbsp;Today</label>
+												<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/>
+												<label>&nbsp;15 Days</label>
+												<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/>
+												<label>&nbsp;30 Days</label>
+												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
+											</div>
+										</div>
+									</div>
                                 	<div class="panel panel-default">
                                     	<div class="panel-body pad_0">
 											<div class="panel-heading bg_d">
 												<span class="panel-title text-bold">Speakers Attendance</span>
-												<div class="pull-right"><input type="radio" checked name="filterRadio" value="today" class="filterRadio"/><label>&nbsp;Today</label>
-												<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/><label>&nbsp;15 Days</label>
-												<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/><label>&nbsp;30 Days</label>
-												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
-												</div>
-												<div class=" ">
+												
+												<div class="pull-right">
 													<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
 													<input type="radio" name="filtersRadio" value="count" class="filtersRadio"/><label>&nbsp;Count </label>
 													<input type="radio" name="filtersRadio" value="consolidated" class="filtersRadio"/><label>&nbsp;Consolidated</label>												
@@ -250,7 +237,7 @@ header.eventsheader {
 											</div>
 											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
 											
-											<div id="speakersAttendence" style="margin-top:10px;"></div>
+											<div id="speakersAttendence" class="table-responsive"></div>
 										</div>
                                     </div>
                                 </div>
@@ -422,8 +409,9 @@ header.eventsheader {
 </div>
 
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script src="dist/DatatableBootstrap/DatatableB.js" type="text/javascript"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mousewheel.js"></script>
 <script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
@@ -1144,8 +1132,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					$("#speakersAttendence").html(str);
 					$('#speakersTab').dataTable({
 						"aaSorting": [[ 5, "desc" ]],
-						"iDisplayLength": 20,
-						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+						"iDisplayLength": 10,
+						"sDom": '<"top">rt<"bottom"><"clear"flp>i',
+						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
 					});
 					$('#speakersTab').removeClass('dataTable');
 				}
@@ -1183,8 +1172,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					$("#speakersAttendence").html(str);
 					$('#speakersTab').dataTable({
 						"aaSorting": [[ 5, "desc" ]],
-						"iDisplayLength": 20,
-						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+						"sDom": '<"top"i>rt<"bottom"><"clear"flp>',
+						"iDisplayLength": 10,
+						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
 					});
 					
 					$('#speakersTab').removeClass('dataTable');
