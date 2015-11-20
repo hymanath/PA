@@ -3,13 +3,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
-import javax.smartcardio.ATR;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
-import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
 
 public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampAttendance,Long> implements ITrainingCampAttendanceDAO{
