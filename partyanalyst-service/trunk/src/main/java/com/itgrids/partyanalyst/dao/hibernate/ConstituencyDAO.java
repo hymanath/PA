@@ -769,18 +769,18 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		boolean isDistrictApplied=false;
 		if(electionType != null && (electionType.equalsIgnoreCase("MPTC") ||  electionType.equalsIgnoreCase("ZPTC")))
 		{
-			str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
+			str.append("select distinct model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
 					" where model.electionScope.electionType.electionType in ('ZPTC','MPTC')" +
 					" and model.state.stateId = :stateID and model.deformDate is null  ");
 		}
 		else if(electionType != null && (electionType.equalsIgnoreCase("MLC")))
 		{
-			str.append("select model.district.districtId , model.district.districtName,model.district.districtName,model.district.districtId from Constituency model" +
+			str.append("select distinct model.district.districtId , model.district.districtName,model.district.districtName,model.district.districtId from Constituency model" +
 					" where model.state.stateId = :stateID and model.deformDate is null  ");
 		}
 		else
 		{
-			str.append("select model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
+			str.append("select distinct model.constituencyId , model.name,model.district.districtName,model.district.districtId from Constituency model" +
 					" where model.electionScope.electionType.electionType  in (:electionType)" +
 					" and model.state.stateId = :stateID and model.deformDate is null  ");
 		}
@@ -802,7 +802,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("stateID", stateID);
-		if(electionType != null && (!electionType.equalsIgnoreCase("MPTC") &&  !electionType.equalsIgnoreCase("ZPTC")))
+		if(electionType != null && (!electionType.equalsIgnoreCase("MPTC") &&  !electionType.equalsIgnoreCase("ZPTC") && !electionType.equalsIgnoreCase("MLC")))
 		{
 			query.setParameter("electionType", electionType);
 		}
