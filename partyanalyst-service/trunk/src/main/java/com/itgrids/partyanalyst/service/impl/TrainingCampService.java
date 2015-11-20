@@ -8416,8 +8416,8 @@ class TrainingCampService implements ITrainingCampService{
 						 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();*/
 
 						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate, toDate);
+						Map<Long,List<SimpleVO>> inviteisMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
 						Map<Long,List<SimpleVO>> inviteesMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
-								
 						if(invitationdtls != null && invitationdtls.size()>0)
 						{
 							for (Object[] invitee : invitationdtls) {
@@ -8439,16 +8439,16 @@ class TrainingCampService implements ITrainingCampService{
 									vo.setMobileNo(mobileNo);
 									vo.setInviteeCount(invitedCount);
 									membrsList.add(vo);
-									inviteesMap.put(tdpCadreId, membrsList);
+									inviteisMap.put(tdpCadreId, membrsList);
 								}
 								
 							}
 						}
 						
-						//if(!searchType.trim().equals("consolidated"))
-						//{
+						if(!searchType.trim().equals("consolidated"))
+						{
 							List<Object[]> attendedDtls  = trainingCampAttendanceDAO.getSpeakersAttendedAreaDetailsForCenter(null, null, fromDate, toDate);
-							
+							Map<Long,Map<String,SimpleVO>> daywisecadremap = new LinkedHashMap<Long, Map<String,SimpleVO>>(0);
 							if(attendedDtls != null && attendedDtls.size()>0)
 							{
 								for (Object[] attendance : attendedDtls) {
@@ -8462,13 +8462,17 @@ class TrainingCampService implements ITrainingCampService{
 										Long campId = commonMethodsUtilService.getLongValueForObject(attendance[4]);
 										String dateStr = commonMethodsUtilService.getStringValueForObject(attendance[5]);
 										//Long attendedCount = commonMethodsUtilService.getLongValueForObject(attendance[1]);
-										
-										if(inviteesMap != null && inviteesMap.size()>0)
+										Map<String,SimpleVO> daymap = new LinkedHashMap<String, SimpleVO>(0); 
+										if(daywisecadremap.get(tdpCadreId) != null)
+										{
+											daymap = daywisecadremap.get(tdpCadreId);
+										}
+										if(inviteisMap != null && inviteisMap.size()>0)
 										{
 											String batchStr  ="Speakers";
 											if(type.equalsIgnoreCase("today"))
 												 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId);
-											List<SimpleVO> voList = inviteesMap.get(tdpCadreId);
+											List<SimpleVO> voList = inviteisMap.get(tdpCadreId);
 											if(voList != null && voList.size()>0)
 											{
 												for (SimpleVO vo : voList) {
@@ -8479,25 +8483,51 @@ class TrainingCampService implements ITrainingCampService{
 															vo.setCampName(camp);
 															vo.setProgName(program);
 															vo.setDateString(dateStr);
+															daymap.put(dateStr.trim(), vo);
 														}
-														/*else
+														else
 														{
 															SimpleVO simplVO = new SimpleVO();
-															simplVO=vo;
+															simplVO.setName(vo.getName());
+															simplVO.setId(vo.getId());
+															simplVO.setMembershipNo(vo.getMembershipNo());
+															simplVO.setImageStr(vo.getImageStr());
+															simplVO.setMobileNo(vo.getMobileNo());
+															simplVO.setInviteeCount(vo.getInviteeCount());
 															simplVO.setDateString(dateStr);
-															voList.add(simplVO);
-														}*/
+															simplVO.setBatchName(batchStr);
+															simplVO.setCampName(camp);
+															simplVO.setProgName(program);
+															
+															daymap.put(dateStr.trim(), simplVO);
+														}
 													}
 												}
-												
 											}
+											daywisecadremap.put(tdpCadreId, daymap);
 										}
+									}
+								}
+							}
+							
+							if(daywisecadremap != null && daywisecadremap.size()>0)
+							{
+								for (Long tdpcadrId : daywisecadremap.keySet()) {
+									Map<String,SimpleVO> daymap =  daywisecadremap.get(tdpcadrId);
+									if(daymap != null && daymap.size()>0)
+									{
+										List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
+										voList.addAll(daymap.values());
+										inviteesMap.put(tdpcadrId, voList);
 									}
 									
 								}
 							}
-						//}
-						
+						}
+						else
+						{
+							inviteesMap = inviteisMap;
+						}
 						
 						//if(searchType.trim().equals("consolidated"))
 						//{
