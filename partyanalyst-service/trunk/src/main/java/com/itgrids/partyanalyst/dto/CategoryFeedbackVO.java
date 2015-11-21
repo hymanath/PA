@@ -12,10 +12,31 @@ public class CategoryFeedbackVO {
 	private String subCategoryName;
 	private Long id;
 	private String name;
+	private String imageStr;
 	private List<CategoryFeedbackVO> categoryFeedBackList = new ArrayList<CategoryFeedbackVO>(0);
+	private List<CategoryFeedbackVO> healthCardsPaths = new ArrayList<CategoryFeedbackVO>(0);
+	private List<CategoryFeedbackVO> feedbackCardsPaths = new ArrayList<CategoryFeedbackVO>(0);
 	private List<String> description = new ArrayList<String>(0);
 	
 	
+	public List<CategoryFeedbackVO> getHealthCardsPaths() {
+		return healthCardsPaths;
+	}
+	public void setHealthCardsPaths(List<CategoryFeedbackVO> healthCardsPaths) {
+		this.healthCardsPaths = healthCardsPaths;
+	}
+	public List<CategoryFeedbackVO> getFeedbackCardsPaths() {
+		return feedbackCardsPaths;
+	}
+	public void setFeedbackCardsPaths(List<CategoryFeedbackVO> feedbackCardsPaths) {
+		this.feedbackCardsPaths = feedbackCardsPaths;
+	}
+	public String getImageStr() {
+		return imageStr;
+	}
+	public void setImageStr(String imageStr) {
+		this.imageStr = imageStr;
+	}
 	public Long getId() {
 		return id;
 	}
