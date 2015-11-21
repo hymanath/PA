@@ -5745,7 +5745,7 @@ function buildPublicScoreTable(myResult)
 }
 
 function getCategoryFeedBackAnswerForCadre(){
-
+$("#feedbackDivId").html("");
 	var jsObj ={
 		tdpCadreId:globalCadreId
 	}
@@ -5759,41 +5759,81 @@ function getCategoryFeedBackAnswerForCadre(){
 			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default">';
 			for(var i in result){
-				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
-				  str+='<h4 class="panel-title">';
-				  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'+result[i].mainCategoryName+'</a>';
-				  str+='</h4>';
-				  str+='</div>';
-				  if(result[i].categoryFeedBackList != null && result[i].categoryFeedBackList.length>0)
-				  {
-					  for(var k in result[i].categoryFeedBackList)
+				
+				if(result[i].mainCategoryName != null)
+				{
+					str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+					  str+='<h4 class="panel-title">';
+					  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'+result[i].mainCategoryName+'</a>';
+					  str+='</h4>';
+					  str+='</div>';
+					  if(result[i].categoryFeedBackList != null && result[i].categoryFeedBackList.length>0)
 					  {
-						str+='<div id="collapse'+i+''+k+'11" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-						str+='<div class="panel-body">';
-						 str+='<h4 class="panel-heading	">';
-						str+=''+result[i].categoryFeedBackList[k].subCategoryName+'';
-						  str+='</h4>';
-						  str+='<div class="panel-body">';
-							str+=''+result[i].categoryFeedBackList[k].description+'';
+						  for(var k in result[i].categoryFeedBackList)
+						  {
+							str+='<div id="collapse'+i+''+k+'11" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+							str+='<div class="panel-body">';
+							 str+='<h4 class="panel-heading	">';
+							str+=''+result[i].categoryFeedBackList[k].subCategoryName+'';
+							  str+='</h4>';
+							  str+='<div class="panel-body">';
+								str+=''+result[i].categoryFeedBackList[k].description+'';
+								str+='</div>';
+							
 							str+='</div>';
-						
-						str+='</div>';
-						
-						str+='</div>';  
-					  }					  
-				  }
-				  else
+							
+							str+='</div>';  
+						  }					  
+					  }
+					  else
+					  {
+						  str+='<div id="collapse'+i+'0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+							str+='<div class="panel-body">';
+							str+=''+result[i].mainCategoryName+' -- '+result[i].description+'';
+							str+='</div>';
+							str+='</div>'; 
+					  }
+					str+='</div>';
+					str+='</div>';
+				}
+				
+			
+				  if(result[i].healthCardsPaths != null && result[i].healthCardsPaths.length>0)
 				  {
-					  str+='<div id="collapse'+i+'0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-						str+='<div class="panel-body">';
-						str+=''+result[i].categoryFeedBackList[k].subCategoryName+' -- '+result[i].categoryFeedBackList[k].description+'';
-						str+='</div>';
-						str+='</div>'; 
+					str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:10px;">';
+					str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+					  str+='<h4 class="panel-title">';
+					  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse101"> HEALTH CARD FILES:  </a>';
+					  str+='</h4>';
+					  str+='</div>';
+						for(var K in result[i].healthCardsPaths)
+						{
+							 str+='<div style="margin-left:25px;"> <a href="http://www.mytdp.com/'+result[i].healthCardsPaths[K].imageStr+'" target="_bank">HealthCard_File_'+(K+1)+'</a></div>';
+						}					
+					str+='</div>';
+					str+='</div>'; 
+				  }
+				  
+				  if(result[i].feedbackCardsPaths != null && result[i].feedbackCardsPaths.length>0)
+				  {
+					str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:10px;">';
+					str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+					  str+='<h4 class="panel-title">';
+					  str+='<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse101"> FEEDBACK UPLOADED FILES:  </a>';
+					  str+='</h4>';
+					  str+='</div>';
+						for(var K in result[i].feedbackCardsPaths)
+						{
+							  str+='<div style="margin-left:25px;"> <a href="http://www.mytdp.com/'+result[i].feedbackCardsPaths[K].imageStr+'" target="_bank"> Feedback_File_'+(K+1)+'</a></div>';
+						}					
+					str+='</div>';
+					str+='</div>'; 
 				  }
 				  
 			}
-			str+='</div>';
-			str+='</div>';
+		
 		}
 		$("#feedbackDivId").html(str);
 	});
