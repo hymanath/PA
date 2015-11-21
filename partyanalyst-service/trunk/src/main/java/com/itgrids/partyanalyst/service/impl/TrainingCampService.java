@@ -8917,9 +8917,42 @@ class TrainingCampService implements ITrainingCampService{
 						voList.add(vo);
 					}
 				}
+					
+					if(voList == null || voList.size()==0)
+					{
+						CategoryFeedbackVO vo = new CategoryFeedbackVO();
+						voList.add(vo);
+					}
 				
-				
-				
+					CategoryFeedbackVO mainVO =voList.get(0);
+					
+					if(mainVO != null )
+					{
+						List<Object[]> healthCardList = trainingCampCadreFeedbackHealthCardDAO.getHealthCardAttachments(cadreId);
+						List<Object[]> feedbackCardList = trainingCampCadreFeedbackDocumentDAO.getFeedbackDocuments(cadreId);
+						List<CategoryFeedbackVO> healthCarddsList = new ArrayList<CategoryFeedbackVO>(0);
+						List<CategoryFeedbackVO> feedBackCarddsList = new ArrayList<CategoryFeedbackVO>(0);
+						if(healthCardList != null && healthCardList.size()>0)
+						{
+							for (Object[] health : healthCardList) {
+								CategoryFeedbackVO vo = new CategoryFeedbackVO();
+								vo.setImageStr(IConstants.HEALTH_CARD_FOLDER+""+commonMethodsUtilService.getStringValueForObject(health[0]));
+								healthCarddsList.add(vo);
+							}
+						}
+						
+						if(feedbackCardList != null && feedbackCardList.size()>0)
+						{
+							for (Object[] health : feedbackCardList) {
+								CategoryFeedbackVO vo = new CategoryFeedbackVO();
+								vo.setImageStr(IConstants.CADRE_FEEDBACK_DOCUMENT+""+commonMethodsUtilService.getStringValueForObject(health[0]));
+								feedBackCarddsList.add(vo);
+							}
+						}
+						
+						mainVO.setHealthCardsPaths(healthCarddsList);
+						mainVO.setFeedbackCardsPaths(feedBackCarddsList);
+					}
 			}
 			
 			return voList;
