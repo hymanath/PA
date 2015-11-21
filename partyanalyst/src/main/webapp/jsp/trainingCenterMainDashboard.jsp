@@ -1133,7 +1133,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					$('#speakersTab').dataTable({
 						"aaSorting": [[ 5, "desc" ]],
 						"iDisplayLength": 10,
-						"sDom": '<"top">rt<"bottom"><"clear"flp>i',
+						//"sDom": '<"top">rt<"bottom"><"clear"flp>i',
 						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
 					});
 					$('#speakersTab').removeClass('dataTable');
@@ -1172,7 +1172,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					$("#speakersAttendence").html(str);
 					$('#speakersTab').dataTable({
 						"aaSorting": [[ 5, "desc" ]],
-						"sDom": '<"top"i>rt<"bottom"><"clear"flp>',
+						//"sDom": '<"top"i>rt<"bottom"><"clear"flp>',
 						"iDisplayLength": 10,
 						"aLengthMenu": [[15, 30, 60,100, -1], [15, 30, 60,100, "All"]]
 					});
