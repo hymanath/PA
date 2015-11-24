@@ -8380,20 +8380,20 @@ class TrainingCampService implements ITrainingCampService{
 								vo.setCenterName(object[1].toString());
 								vo.setProgName(object[3].toString());
 								
-								List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								List<Object[]> invited = trainingCampBatchAttendeeDAO.getInvitedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate,cadreIdsLsit);
 								if(invited!=null && invited.size()>0){
 									Object[] obj = invited.get(0);
 									vo.setInviteeCount((Long)obj[1]);
 								}
 								
-								List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenter((Long)object[0],(Long)object[2],fromDate,toDate,cadreIdsLsit);
 								if(inviteeAttended!=null && inviteeAttended.size()>0){
 									Object[] obj = inviteeAttended.get(0); 
 									vo.setInviteeAttendedCount((Long)obj[1]);
 								}
 								
-								List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
-								List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate);
+								List<Long> invitedDetails = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate,cadreIdsLsit);
+								List<Long> attendedDetails = trainingCampAttendanceDAO.getAttendedDetailsForCenter((Long)object[0],(Long)object[2],fromDate,toDate,cadreIdsLsit);
 								
 								int temp=0;
 								if(attendedDetails!=null && attendedDetails.size()>0){
@@ -8411,10 +8411,6 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					else if(searchType.trim().equalsIgnoreCase("individual") || searchType.trim().equalsIgnoreCase("consolidated"))
 					{
-						/* Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
-						 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
-						 Map<Long,List<IdNameVO>> mandalsListMap = new HashMap<Long, List<IdNameVO>>();*/
-
 						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate, toDate);
 						Map<Long,List<SimpleVO>> inviteisMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
 						Map<Long,List<SimpleVO>> inviteesMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
@@ -8441,7 +8437,6 @@ class TrainingCampService implements ITrainingCampService{
 									membrsList.add(vo);
 									inviteisMap.put(tdpCadreId, membrsList);
 								}
-								
 							}
 						}
 						
