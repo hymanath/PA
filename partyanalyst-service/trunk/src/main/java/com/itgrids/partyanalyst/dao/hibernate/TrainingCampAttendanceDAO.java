@@ -347,7 +347,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }*/
   
-  public List<Object[]> getInviteeAttendedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+  public List<Object[]> getInviteeAttendedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> cadreIdsLsit){
 	  StringBuilder sb = new StringBuilder();
 	  
 	  sb.append(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId, count(distinct model.attendance.tdpCadre.tdpCadreId)" +
@@ -357,11 +357,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId " +
 	  		" and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' ");
 	  if(fromDate!=null && toDate!=null){
-		  sb.append(" and date(model.attendance.attendedTime) between :fromDate and :toDate ");
+		  sb.append(" and (date(model.attendance.attendedTime) between :fromDate and :toDate)  ");
 	  }
-	  
+	  if(cadreIdsLsit != null && cadreIdsLsit.size()>0)
+	   {
+		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:cadreIdsLsit) ");		  
+	   }
 	  Query query = getSession().createQuery(sb.toString());
-	  
+	  if(cadreIdsLsit!=null && cadreIdsLsit!=null){
+		   query.setParameterList("cadreIdsLsit", cadreIdsLsit);
+	  }
 	  if(fromDate!=null && toDate!=null){
 		  query.setDate("fromDate", fromDate);
 		  query.setDate("toDate", toDate);
@@ -371,7 +376,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
-  public List<Long> getAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+  public List<Long> getAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> cadreIdsLsit){
 	  StringBuilder sb = new StringBuilder();
 	  
 	  sb.append(" select distinct model.attendance.tdpCadre.tdpCadreId" +
@@ -384,9 +389,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  sb.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
 	  
 	  if(fromDate!=null && toDate!=null){
-		  sb.append(" and date(model.attendance.attendedTime) between :fromDate and :toDate ");
+		  sb.append(" and ( date(model.attendance.attendedTime) between :fromDate and :toDate )  ");
 	  }
+	  if(cadreIdsLsit != null && cadreIdsLsit.size()>0)
+	   {
+		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:cadreIdsLsit) ");		  
+	   }
 	  Query query = getSession().createQuery(sb.toString());
+	  if(cadreIdsLsit!=null && cadreIdsLsit!=null){
+		   query.setParameterList("cadreIdsLsit", cadreIdsLsit);
+	  }
 	  if(centerId != null && centerId.longValue()>0L)
 		  query.setParameter("centerId", centerId);
 	  if(programId != null && programId.longValue()>0L)	  
