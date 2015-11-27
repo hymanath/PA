@@ -21,12 +21,12 @@ public class RabbitMQConsumer {
 		 
 		 Connection conn = factory.newConnection();
 	     Channel channel = conn.createChannel();
-	     String exchangeName = "event_attendee_ws";
-	     String queueName = "attendee_queue";
-	     String routingKey = "event_Ws_1";
+	     String exchangeName = "attendance_kamal";
+	     String queueName = "kamal_test";
+	     String routingKey = "Dandu";
 	     boolean durable = true;
 	     
-	     channel.exchangeDeclare(exchangeName, "direct", durable);
+	     channel.exchangeDeclare(exchangeName, "topic", durable);
 	     channel.queueDeclare(queueName, durable,false,false,null);
 	     channel.queueBind(queueName, exchangeName, routingKey);
 	     boolean noAck = false;
@@ -47,11 +47,11 @@ public class RabbitMQConsumer {
          
 	    		 String msg = new String(delivery.getBody());
 	    		 
-	    		 boolean result = doWork(msg);
-	    		 if(result)
-	    			 System.out.println("Success");
-	    		 else
-	    			 System.out.println("Failure");
+	    		// boolean result = doWork(msg);
+	    		 //if(result)
+	    			 System.out.println("msg");
+	    		 /*else
+	    			 System.out.println("Failure");*/
 	    		 
 	    		 channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
 	    	 }catch(Exception e)
