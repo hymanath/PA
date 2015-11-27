@@ -10,6 +10,12 @@ import com.rabbitmq.client.MessageProperties;
 
 public class RabbitMQProducer {
 
+	public static void main(String ... args)
+	{
+		RabbitMQProducer producer = new RabbitMQProducer();
+		producer.sendMessagesWithReplyAck("attendance_kamal","Dandu",null);
+	}
+	
 	public boolean sendMessagesWithReplyAck(String exchangeName,String routingKey,List<String> msgList)
 	{
 		boolean result = false;
@@ -28,7 +34,7 @@ public class RabbitMQProducer {
 		
 		int ind = 0;
 		  
-		for(String message : msgList)
+		/*for(String message : msgList)
 		{
 			try{
 				byte[] messageBodyBytes = message.getBytes();
@@ -39,7 +45,13 @@ public class RabbitMQProducer {
 			{
 				e.printStackTrace();
 			}
-		}
+		}*/
+		String message = "Kamalakar";
+		byte[] messageBodyBytes = message.getBytes();
+		channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,messageBodyBytes);
+		result = channel.waitForConfirms();
+		System.out.println(++ind+" Is Submitted --> "+result);
+		
 		channel.close();
 		conn.close();
 		}catch(Exception e)
