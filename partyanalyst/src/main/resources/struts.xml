@@ -10993,5 +10993,11 @@
 		</result>
 	</action>
 	
+	<action name="updateActivityAction" class="committeeDashBoardAction" method="updateActivity">
+	   	<result name="success">/jsp/updateActivity.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
 </package>
 </struts>      

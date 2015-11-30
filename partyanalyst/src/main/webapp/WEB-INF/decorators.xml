@@ -437,5 +437,6 @@
 		<pattern>/committeeDetailedAnalysis*</pattern>
 		<pattern>/cadreDetailsAction*</pattern>
 		<pattern>/articleDetailsAction*</pattern>
+		<pattern>/updateActivityAction*</pattern>
 	 </decorator>
 </decorators>

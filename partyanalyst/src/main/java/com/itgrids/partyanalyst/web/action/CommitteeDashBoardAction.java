@@ -877,4 +877,27 @@ public String getAllConstituencysForADistrict(){
 	   return Action.SUCCESS;
 	}
 	
+	public String updateActivity(){
+
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+		String accessType = regVO.getAccessType();
+		if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+		{
+			pageAccessType = accessType;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
