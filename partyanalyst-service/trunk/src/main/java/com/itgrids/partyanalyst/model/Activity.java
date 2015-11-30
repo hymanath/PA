@@ -124,7 +124,7 @@ public class Activity extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_sub_type_id")
+	@JoinColumn(name="activity_sub_type_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivitySubType getActivitySubType() {
