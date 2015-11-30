@@ -695,6 +695,16 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDocument</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.Activity</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityInfoFile</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLevel</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationInfo</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityRunningStatus</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityScope</value>
+				 <value>com.itgrids.partyanalyst.model.ActivitySubType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityType</value>
+				 
 			     </list>
 			
 		</property>
