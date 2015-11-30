@@ -27,7 +27,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class ActivityLocationInfo extends BaseModel implements Serializable{
 	
 	private Long activityLocationInfoId;
-	private Long acivityScopeId;
+	private Long activityScopeId;
 	private Long locationLevel;
 	private Long locationValue;
 	private Long inviteeCount;
@@ -50,12 +50,12 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.activityLocationInfoId = activityLocationInfoId;
 	}
 	
-	@Column(name="acivity_scope_id")
-	public Long getAcivityScopeId() {
-		return acivityScopeId;
+	@Column(name="activity_scope_id")
+	public Long getActivityScopeId() {
+		return activityScopeId;
 	}
-	public void setAcivityScopeId(Long acivityScopeId) {
-		this.acivityScopeId = acivityScopeId;
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
 	}
 	
 	@Column(name="location_level")
@@ -115,7 +115,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="acivity_scope_id")
+	@JoinColumn(name="activity_scope_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivityScope getActivityScope() {
@@ -126,7 +126,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_running_status_id")
+	@JoinColumn(name="activity_running_status_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivityRunningStatus getActivityRunningStatus() {
@@ -137,7 +137,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="location_level")
+	@JoinColumn(name="location_level", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public RegionScopes getRegionScopes() {
