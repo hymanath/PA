@@ -35,6 +35,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private Date insertionTime;
 	
 	private Activity activity;
+	private ActivityLevel activityLevel;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -111,5 +112,16 @@ public class ActivityScope extends BaseModel implements Serializable{
 	}
 	public void setActivity(Activity activity) {
 		this.activity = activity;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_level_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityLevel getActivityLevel() {
+		return activityLevel;
+	}
+	public void setActivityLevel(ActivityLevel activityLevel) {
+		this.activityLevel = activityLevel;
 	}
 }

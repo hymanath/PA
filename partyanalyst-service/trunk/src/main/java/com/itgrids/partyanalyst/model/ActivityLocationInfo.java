@@ -38,6 +38,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	
 	private ActivityScope activityScope;
 	private ActivityRunningStatus activityRunningStatus;
+	private RegionScopes regionScopes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -133,5 +134,16 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	public void setActivityRunningStatus(ActivityRunningStatus activityRunningStatus) {
 		this.activityRunningStatus = activityRunningStatus;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="location_level")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RegionScopes getRegionScopes() {
+		return regionScopes;
+	}
+	public void setRegionScopes(RegionScopes regionScopes) {
+		this.regionScopes = regionScopes;
 	}
 }
