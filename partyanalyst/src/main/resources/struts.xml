@@ -10999,6 +10999,12 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="getActivityDetails" class="committeeDashBoardAction" method="getActivityDetails">
+	    <result type="json" name="success">		   
+		    <param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
 	<action name="getIVRSummaryByTdpCadreIdAction" class="cadreDetailsAction" method="getIVRSummaryByTdpCadreId">
 			<result type="json" name="success">
 				<param name="root">ivrResponseVO</param>
