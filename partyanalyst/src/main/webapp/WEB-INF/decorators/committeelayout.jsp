@@ -121,6 +121,9 @@
 							<li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
 						</c:if>
 					</c:if>
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE')}">
+						 <li><a tabindex="-1" href="updateActivityAction.action">Activity Details</a></li>
+					</c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>                 
             </div>
