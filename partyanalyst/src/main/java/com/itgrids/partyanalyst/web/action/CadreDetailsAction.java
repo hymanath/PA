@@ -719,5 +719,33 @@ public String updateLeaderShip(){
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getIVRSummaryByTdpCadreId(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			
+			//simpleVoList = trainingCampService.getRemarkSOfCadreByCallPurpose(cadreId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getIVRSummaryByTdpCadreId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTotalIVRDetailsByTdpCadreId(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			
+			//simpleVoList = trainingCampService.getRemarkSOfCadreByCallPurpose(cadreId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 
 }
