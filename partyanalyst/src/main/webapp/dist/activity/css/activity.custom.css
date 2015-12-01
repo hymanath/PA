@@ -1,0 +1,71 @@
+footer
+{
+	background:#5C2D25;
+	text-align:center !important;
+	color:#fff;
+	padding:20px;
+}
+.panel-custom
+{
+	border-radius:0px
+}
+.panel-custom .panel-heading
+{
+	background:#ccc;
+	border-radius:0px
+}
+.panel-custom .panel-body
+{
+	background:#EFF3F4
+}
+.m_top10
+{
+	margin-top:10px;
+}
+.btn-custom , .btn-custom:hover, .btn-custom:focus, .btn-custom:active
+{
+	background:#00B17D !important;
+	border-radius:0px;
+}
+.font-12
+{
+	font-size:12px;
+}
+.nav-tabs-custom > li.active > a, .nav-tabs-custom > li.active > a:hover, .nav-tabs-custom > li.active > a:focus
+{
+	background:#D3D4D6;
+	color:#666
+}
+.nav-tabs-custom > li > a
+{
+	background:#E1E1E1;
+	color:#666
+}
+.input-g .form-control
+{
+	border-right:0px;
+	border-radius:0px;
+}
+.input-g .input-group-addon
+{
+	background-color:#fff;
+	border-radius:0px;
+}
+.bg_ff
+{
+	background:#fff
+}
+.input-g1 .form-control
+{
+	border-left:0px;
+	border-radius:0px;
+}
+.input-g1 .input-group-addon
+{
+	background-color:#fff;
+	border-radius:0px;
+}
+.m_0
+{
+	margin:0px;
+}
