@@ -4929,12 +4929,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			
 			//query
+			SimpleDateFormat sdf=new SimpleDateFormat("dd MMM yyyy");
 			List<Object[]> list=communicationMediaResponseDAO.getIVRDetailsByTdpCadreId(tdpCadreId);
 			if(list!=null && list.size()>0){
 				for(Object[] obj:list){
 					String ivrName=obj[2]!=null?obj[2].toString():"";
 					IVRResponseVO ivrVO=ivrMap.get(ivrName);
 					ivrVO.setTdpCadreName(obj[5]!=null?obj[5].toString():"");
+					ivrVO.setDateString(obj[6]!=null?sdf.format((Date)obj[6]):"");
 					if(ivrVO.getTotalCount()==null){
 						ivrVO.setTotalCount(0l);
 					}
