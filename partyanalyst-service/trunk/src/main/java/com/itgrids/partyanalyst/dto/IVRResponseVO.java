@@ -5,6 +5,18 @@ import java.util.List;
 
 public class IVRResponseVO implements Serializable{
      
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Boolean getIsAnswered() {
+		return isAnswered;
+	}
+	public void setIsAnswered(Boolean isAnswered) {
+		this.isAnswered = isAnswered;
+	}
 	public String getDateString() {
 		return dateString;
 	}
@@ -15,6 +27,7 @@ public class IVRResponseVO implements Serializable{
 	private Long answeredcount;
 	private Long unAnsweredCount;
 	
+	private Boolean isAnswered;
 	private String name;
 	private String question;
 	private String option;
@@ -26,7 +39,7 @@ public class IVRResponseVO implements Serializable{
 	private List<String> descriptionList;
 	private String tdpCadreName;
 	private String dateString;
-	
+	private String description;
 	public Long getTotalCount() {
 		return totalCount;
 	}
