@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
@@ -144,6 +145,7 @@ public interface ICadreCommitteeService {
 	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark);
 	 public List<Long> getAllRemovedCadre();
 	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
+	 public ResultStatus saveActivityDetails(final ActivityVO activityVO);
 	 public BasicVO getActivityTypeList();
 	 public List<IdNameVO> getActivityLevelsList();
 	 public List<IdNameVO> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId);

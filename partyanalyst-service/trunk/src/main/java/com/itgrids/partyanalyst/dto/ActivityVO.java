@@ -23,7 +23,7 @@ public class ActivityVO implements Serializable{
 	private String remarks;
 	private String startDate;
 	private String endDate;
-	private List<ActivityVO> activityVoList;
+	private List<ActivityVO> activityVoList = new ArrayList<ActivityVO>();
 	
 	
 	public List<ActivityVO> getActivityVoList() {
