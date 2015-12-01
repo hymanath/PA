@@ -2344,6 +2344,31 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 
+	 <bean id="communicationMediaTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="communicationMediaTypeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaTypeInfoDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="mediaOptionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MediaOptionTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="communicationMediaQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaQuestionDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="communicationMediaRoundDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaRoundDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="mediaOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MediaOptionsDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="communicationMediaQuestionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaQuestionOptionsDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="communicationMediaResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaResponseDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  
 	 <bean id="activityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
