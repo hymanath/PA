@@ -712,8 +712,9 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityScope</value>
 				 <value>com.itgrids.partyanalyst.model.ActivitySubType</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityType</value>
-				   <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
-				   <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
+				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
+				  <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
+				 <value>com.itgrids.partyanalyst.model.LocationInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -3229,6 +3230,9 @@
 	 </bean>
 	  <bean id="trainingCampFeedbackCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackCategoryDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	 <bean id="locationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocationInfoDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
 </beans>
