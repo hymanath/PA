@@ -16344,6 +16344,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										} catch (ParseException e) {
 											LOG.error("Exception rised in saveActivityDetails()",e);
 										}
+										activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 										
 										activityLocationInfoDAO.save(activityLocationInfo);
 									 }
