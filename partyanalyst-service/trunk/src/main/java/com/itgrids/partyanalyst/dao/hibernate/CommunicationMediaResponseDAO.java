@@ -50,7 +50,8 @@ public class CommunicationMediaResponseDAO extends GenericDaoHibernate<Communica
 		Query query=getSession().createQuery(" " +
 		  " select distinct model.communicationMediaResponseId," +
 		  "        model.tdpCadre.tdpCadreId,model.communicationMediaQuestion.communicationMediaTypeInfo.name," +
-		  "        model.mediaOptionsId,model.comments " +
+		  "        model.mediaOptionsId,model.comments," +
+		  "        model.tdpCadre.firstname " +
 		  " from  CommunicationMediaResponse model " +
 		  " where model.tdpCadre.isDeleted='N' and model.isDeleted='false' and model.isValid='true' " +
 		  "       and model.tdpCadre.tdpCadreId=:tdpCadreId ");

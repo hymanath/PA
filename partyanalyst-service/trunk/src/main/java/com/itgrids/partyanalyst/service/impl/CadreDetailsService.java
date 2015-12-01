@@ -4934,7 +4934,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				for(Object[] obj:list){
 					String ivrName=obj[2]!=null?obj[2].toString():"";
 					IVRResponseVO ivrVO=ivrMap.get(ivrName);
-					
+					ivrVO.setTdpCadreName(obj[5]!=null?obj[5].toString():"");
 					if(ivrVO.getTotalCount()==null){
 						ivrVO.setTotalCount(0l);
 					}
