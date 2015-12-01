@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gdata.data.youtube.YtRelationship.Status;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -22,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -59,14 +64,34 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ICadreRegistrationService 			cadreRegistrationService;
 	private CadreCommitteeMemberVO 				boothsInfo;
 	private ByeElectionVO 						byeEleInfo;
-	private BasicVO basicVO;
+	private BasicVO 							basicVO = new BasicVO();
 	private CadreCommitteeRolesInfoVO			cadreCommitteeRolesInfoVO;
 	private Long								distId;
-	private List<String> constiList;
+	private List<String> 						constiList;
+	private ActivityVO 							activityVO = new ActivityVO() ;
+	private InputStream 						inputStream;
+	private ResultStatus 						resultStatus;
 	
 	
 	
-	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+	public ActivityVO getActivityVO() {
+		return activityVO;
+	}
+	public void setActivityVO(ActivityVO activityVO) {
+		this.activityVO = activityVO;
+	}
 	public List<String> getConstiList() {
 		return constiList;
 	}
@@ -897,7 +922,55 @@ public String getAllConstituencysForADistrict(){
 			pageAccessType = accessType;
 		}
 		
+		basicVO = cadreCommitteeService.getActivityTypeList();
+		idNameVOList = cadreCommitteeService.getActivityLevelsList();
+		
 		return Action.SUCCESS;
 	}
 	
+	public String getActivityDetails(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "error";
+			}
+			
+			jObj = new JSONObject(getTask());
+			Long activityTypeId =jObj.getLong("activityTypeId");
+			Long activityLevelId = jObj.getLong("activityLevelId");
+			idNameVOList = cadreCommitteeService.getActivitiesListByTypeAndLevel(activityTypeId,activityLevelId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getActivityDetails ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	
+	public String getLocationDetailsForActivity()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long checkedId =jObj.getLong("checkedId");
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			Long activityLevelId =jObj.getLong("activityLevelId");
+			String searchBy =jObj.getString("searchBy");
+			Long locationId = jObj.getLong("locationId");
+			
+			boolean isChecked = false;
+			if(checkedId.longValue() == 1L)
+				isChecked = true;
+			
+			locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(isChecked,activityScopeId,activityLevelId,searchBy,locationId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
