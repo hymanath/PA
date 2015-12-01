@@ -695,6 +695,15 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDocument</value>
+				   
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaType</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaTypeInfo</value>
+				  <value>com.itgrids.partyanalyst.model.CommunicationMediaRound</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.MediaOptionType</value>
+				 <value>com.itgrids.partyanalyst.model.MediaOptions</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaQuestionOptions</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaResponse</value>
 				 
 				 <value>com.itgrids.partyanalyst.model.Activity</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityInfoFile</value>
@@ -732,6 +741,7 @@
 			   
 				<value>com.itgrids.partyanalyst.model.ConstiCasteGroupPerc</value>
 				<value>com.itgrids.partyanalyst.model.CasteGroup</value>
+				
 			</list>
 			
 		</property>
