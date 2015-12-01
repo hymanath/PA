@@ -18,6 +18,7 @@ public class IVRResponseVO implements Serializable{
 	private List<IVRResponseVO> optionsList;
 	
 	private List<String> descriptionList;
+	private String tdpCadreName;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -85,6 +86,12 @@ public class IVRResponseVO implements Serializable{
 	}
 	public void setDescriptionList(List<String> descriptionList) {
 		this.descriptionList = descriptionList;
+	}
+	public String getTdpCadreName() {
+		return tdpCadreName;
+	}
+	public void setTdpCadreName(String tdpCadreName) {
+		this.tdpCadreName = tdpCadreName;
 	}
 	
 }
