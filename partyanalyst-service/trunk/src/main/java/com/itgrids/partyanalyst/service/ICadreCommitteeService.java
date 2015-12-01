@@ -145,6 +145,7 @@ public interface ICadreCommitteeService {
 	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark);
 	 public List<Long> getAllRemovedCadre();
 	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
+	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,Long constituencyId);
 	 public ResultStatus saveActivityDetails(final ActivityVO activityVO);
 	 public BasicVO getActivityTypeList();
 	 public List<IdNameVO> getActivityLevelsList();

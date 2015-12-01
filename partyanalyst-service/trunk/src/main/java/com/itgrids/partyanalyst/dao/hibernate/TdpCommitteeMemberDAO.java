@@ -1832,4 +1832,17 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllCommitteeMembInfoInLocation(Long locationLvl,List<Long> locationVal){
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
+				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpRolesId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCadre.mobileNo " +
+				" from TdpCommitteeMember model" +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
+				" and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:locationVal) and model.isActive ='Y'" +
+				" and model.tdpCommitteeRole.tdpRolesId in (1,3)  " );
+		query.setParameter("locationLvl", locationLvl);
+		query.setParameterList("locationVal", locationVal);
+		return query.list();
+	}
 }

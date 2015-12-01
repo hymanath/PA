@@ -16319,7 +16319,6 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return cadreIds;
 	}
 	
-
 	public ResultStatus saveActivityDetails(final ActivityVO activityVO){
 		ResultStatus resultStatus = new ResultStatus();
 			 try {
@@ -16561,5 +16560,185 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return returnVO;
 	}
 	
+	public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,Long constituencyId){
+		
+		CadreCommitteeMemberVO finalVo = new CadreCommitteeMemberVO();
+		
+		try{
+			/*Long activityLevelId = 2l;
+			Long constituencyId=232l;*/
+			
+			List<Long> constituencyIds = new ArrayList<Long>();
+			constituencyIds.add(constituencyId);
+			
+			
+			Map<Long,Map<Long,CadreCommitteeMemberVO>> mandalMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
+			Map<Long,Map<Long,CadreCommitteeMemberVO>> divisionMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
+			Map<Long,Map<Long,CadreCommitteeMemberVO>> townMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
+			Map<Long,Map<Long,CadreCommitteeMemberVO>> villageMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
+			Map<Long,Map<Long,CadreCommitteeMemberVO>> wardMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
+			
+			
+			List<LocationWiseBoothDetailsVO> mandalList = null;
+			List<LocationWiseBoothDetailsVO> panchayatList=null;
+
+			List<Long> mandalIds =new ArrayList<Long>(0);
+			List<Long> localBodyIds =new ArrayList<Long>(0);
+			List<Long> divisionIds =new ArrayList<Long>(0);
+			List<Long> panchayties =new ArrayList<Long>(0);
+			List<Long> wards =new ArrayList<Long>(0);
+			
+			if(activityLevelId ==2l){	
+				mandalList = getLocationsList(constituencyId,"Mandal");
+			}else if(activityLevelId ==1l){
+				panchayatList = getLocationsList(constituencyId,"panchayat");
+			}
+			if(mandalList != null){
+				for (LocationWiseBoothDetailsVO vo : mandalList) {
+					Long mandalIdWithExtra = vo.getLocationId();
+					if(mandalIdWithExtra !=null){
+						
+						if(mandalIdWithExtra.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+							
+							if( Long.valueOf(mandalIdWithExtra.toString().substring(1)) == 20l ||  Long.valueOf(mandalIdWithExtra.toString().substring(1)) == 124l || Long.valueOf(mandalIdWithExtra.toString().substring(1)) == 119l ){
+								divisionIds.add(Long.valueOf(mandalIdWithExtra.toString().substring(1)));
+							}else{
+								localBodyIds.add(Long.valueOf(mandalIdWithExtra.toString().substring(1)));
+							}
+							
+			        	}else{
+			        		mandalIds.add(Long.valueOf(mandalIdWithExtra.toString().substring(1)));
+			        	}
+					}
+					
+				}
+			}
+			if(panchayatList != null){
+				for (LocationWiseBoothDetailsVO vo : panchayatList) {
+					Long panchayatIdsWithExtra = vo.getLocationId();
+					if(panchayatIdsWithExtra !=null){
+						
+						if(panchayatIdsWithExtra.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+							panchayties.add(Long.valueOf(panchayatIdsWithExtra.toString().substring(1)));
+			        	}else{
+			        		wards.add(Long.valueOf(panchayatIdsWithExtra.toString().substring(1)));
+			        	}
+					}
+					
+				}
+			}
+			
+			List<Object[]> result =null;
+			List<Object[]> result1 =null;
+			List<Object[]> result2 =null;
+
+		if(activityLevelId ==2l){	
+			if(mandalIds !=null && mandalIds.size()>0){
+				//0 role,,1name,2membership,3tdpCommitteeMemberId,4cadreId,5tdpCommitteeRoleId,6.committeeName,7.committeeLevelValue,8.mobileNo
+				result =  tdpCommitteeMemberDAO.getAllCommitteeMembInfoInLocation(5l,mandalIds);//president and general secratary
+				if(result !=null && result.size()>0){
+					mandalMap = setForMapByLocation(result,mandalMap,"Mandal");
+				}
+				
+			}
+			if(localBodyIds !=null && localBodyIds.size()>0){
+				result1 = tdpCommitteeMemberDAO.getAllCommitteeMembInfoInLocation(7l,localBodyIds);
+				if(result1 !=null && result1.size()>0){
+					townMap = setForMapByLocation(result1,townMap,"Town");
+				}
+				
+			}
+			if(divisionIds !=null && divisionIds.size()>0){
+				result2 =tdpCommitteeMemberDAO.getAllCommitteeMembInfoInLocation(9l,divisionIds);
+				if(result2 !=null && result2.size()>0){
+					divisionMap = setForMapByLocation(result2,divisionMap,"Division");
+				}
+				
+			}
+			
+			
+			finalVo.setGenericMap1(mandalMap);
+			finalVo.setGenericMap2(townMap);
+			finalVo.setGenericMap3(divisionMap);
+			
+		}else if(activityLevelId == 1l){
+			if(panchayties !=null && panchayties.size()>0){
+				result =  tdpCommitteeMemberDAO.getAllCommitteeMembInfoInLocation(6l,panchayties);//president and general secratary
+				if(result !=null && result.size()>0){
+					villageMap = setForMapByLocation(result,villageMap,"village");
+				}
+				
+			}
+			if(wards !=null && wards.size()>0){
+				result1 =  tdpCommitteeMemberDAO.getAllCommitteeMembInfoInLocation(8l,panchayties);//president and general secratary
+				if(result1 !=null && result1.size()>0){
+					wardMap = setForMapByLocation(result1,wardMap,"ward");
+				}
+				
+			}
+			
+			finalVo.setGenericMap1(villageMap);
+			finalVo.setGenericMap2(wardMap);
+		}
+		
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		return finalVo;
+	}
+	public Map<Long,Map<Long,CadreCommitteeMemberVO>> setForMapByLocation(List<Object[]> result,Map<Long,Map<Long,CadreCommitteeMemberVO>> allocatedMap,String type){
+		try{
+			if(result !=null && result.size()>0){
+				
+				
+				for (Object[] objects : result) {
+					
+					Map<Long,CadreCommitteeMemberVO> roleMap = new HashMap<Long, CadreCommitteeMemberVO>(0);
+					
+					CadreCommitteeMemberVO mainVo = null;
+					if(allocatedMap !=null && allocatedMap.size()>0){
+						roleMap = allocatedMap.get(objects[7] !=null ? (Long)objects[7]:0l );
+					}else{
+						allocatedMap = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>();
+					}
+					
+					if(roleMap !=null && roleMap.size()>0){
+						mainVo = roleMap.get(objects[5] !=null ? (Long)objects[5]:0l);
+					}else{
+						roleMap = new HashMap<Long, CadreCommitteeMemberVO>();
+					}
+					
+					if(mainVo ==null){
+						mainVo = new CadreCommitteeMemberVO();
+					}
+					
+					mainVo.setRole(objects[0] !=null ? objects[0].toString():"") ;//role
+					mainVo.setName(objects[1] !=null ? objects[1].toString():"");//memberName
+					mainVo.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
+					mainVo.setCadreId(objects[3] !=null ? (Long)objects[3]:0l);
+					mainVo.setCommiteeName(objects[6] !=null ? objects[6].toString():"");
+					mainVo.setLevelValue(objects[7] !=null ? (Long)objects[7]:0l);
+					mainVo.setMobileNo(objects[8] !=null ? objects[8].toString():"");
+					mainVo.setRoleId(objects[5] !=null ? (Long)objects[5]:0l);
+					
+					/*if(type.equalsIgnoreCase("Town") || type.equalsIgnoreCase("ward") || type.equalsIgnoreCase("Division")){
+						mainVo.setLevelValue(Long.parseLong("1"+mainVo.getLevelValue().toString()));
+					}else if(type.equalsIgnoreCase("mandal") ||  type.equalsIgnoreCase("village")){
+						mainVo.setLevelValue(Long.parseLong("2"+mainVo.getLevelValue().toString()));
+					}*/
+					
+					roleMap.put(mainVo.getRoleId(), mainVo);
+					allocatedMap.put(mainVo.getLevelValue(), roleMap);
+					
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return allocatedMap;
+	}
 	
 }
