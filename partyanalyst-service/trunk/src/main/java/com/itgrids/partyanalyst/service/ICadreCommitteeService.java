@@ -151,4 +151,7 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getActivityLevelsList();
 	 public List<IdNameVO> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId);
 	 public LocationWiseBoothDetailsVO getActivityLocationDetails(boolean isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId);
+	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId);
+	 public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId);
+	 
 }
