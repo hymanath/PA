@@ -145,7 +145,6 @@ public interface ICadreCommitteeService {
 	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark);
 	 public List<Long> getAllRemovedCadre();
 	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
-	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,Long constituencyId);
 	 public ResultStatus saveActivityDetails(final ActivityVO activityVO);
 	 public BasicVO getActivityTypeList();
 	 public List<IdNameVO> getActivityLevelsList();
@@ -153,5 +152,7 @@ public interface ICadreCommitteeService {
 	 public LocationWiseBoothDetailsVO getActivityLocationDetails(boolean isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId);
 	 public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId);
+	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,List<Long> constituencyIds,List<LocationWiseBoothDetailsVO> mandalList,
+				List<LocationWiseBoothDetailsVO> panchayatList);
 	 
 }
