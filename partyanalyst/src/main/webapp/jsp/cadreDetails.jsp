@@ -662,23 +662,9 @@ var globalCadreId = '${cadreId}';
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
                     </div>
                     <div class="panel-body">
-                    	<div class="row">
-                        	
-                            <div class="col-xs-12">
-                            	<table class="table m_0 table-bordered">
-                                	<tr class="text-center">
-                                    	<td><span id="totalCallsId">-</span><br/><b>Total Calls</b></td>
-                                        <td><span id="totalAnsweredId">-</span><br/><b>Answered</b></td>
-                                        <td><span id="totalUnAnsweredId">-</span><br/><b>UnAnswered</b></td>
-                                    </tr>
-									
-                                </table>
-								<button type="button"  class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10" onclick="getTotalIVRDetailsByTdpCadreId()">View Details</button>
-                            </div>
-							 
-                        
-                            </div>
-							
+					<div id="ivrSummaryajaxImg"></div>
+					<div id="ivrSummaryDetailsId"></div>
+                    	
                         </div>
                     </div>
 				<!-- IVR SUMMARY  END ---->
@@ -1244,15 +1230,22 @@ var globalCadreId = '${cadreId}';
 	
 <div class="modal fade" id="Ivrmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body " id="modalBodyId">
-	  
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       
-      </div>
-    </div>
+  <div class="col-md-12 col-xs-12">
+	 <div class="panel panel-default">
+		<div class="panel-heading">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="panel-title text-bold">IVR DETAILS FOR <span id="ivrCadreNameId"></span></h4>
+        </div>
+		<div class="panel-body">
+		<div id="ivrDetailsdataLoding"></div>
+		 <div id="modalBodyId"></div>
+		 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+		 </div>
+	
+	 </div>
+	 
+  </div>
+   
   </div>
 </div>
 </section>
@@ -6253,6 +6246,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 }
 	getIVRSummaryByTdpCadreId();
 	function getIVRSummaryByTdpCadreId(){
+		$("#ivrSummaryajaxImg").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 		var tdpCadreId='${param.cadreId}' ;
 		
 		var jsObj ={
@@ -6263,31 +6257,50 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			url :'getIVRSummaryByTdpCadreIdAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+			$("#ivrSummaryajaxImg").html('');
 			if(result!=null){
-			  
-			  if(result.totalCount==null){
-				  $("#totalCallsId").html(0);
-			  }else{
-				  $("#totalCallsId").html(result.totalCount);
-			  }
-			  
-			  if(result.answeredcount==null){
-				  $("#totalAnsweredId").html(0);
-			  }else{
-				  $("#totalAnsweredId").html(result.answeredcount);
-			  }
-			  
-			  if(result.unAnsweredCount==null){
-				  $("#totalUnAnsweredId").html(0);
-			  }else{
-				  $("#totalUnAnsweredId").html(result.unAnsweredCount);
-			  }
+			  var str ='';
+			  str+='<div class="row">';
+					str+='<div class="col-xs-12">';
+						str+='<table class="table m_0 table-bordered">';
+							str+='<tr class="text-center">';
+							if(result.totalCount==null){
+								str+='<td ><span> - </span><br/><b>Total Calls</b></td>';
+							}else{
+								str+='<td >'+result.totalCount+'<br/><b>Total Calls</b></td>';
+							}
+							if(result.answeredcount==null){
+								str+='<td ><span> - </span><br/><b>Answered Calls</b></td>';
+							}else{
+								str+='<td >'+result.answeredcount+'<br/><b>Answered Calls</b></td>';
+							}
+							if(result.unAnsweredCount==null){
+								str+='<td ><span> - </span><br/><b>UnAnswered Calls</b></td>';
+							}else{
+								str+='<td >'+result.unAnsweredCount+'<br/><b>UnAnswered Calls</b></td>';
+							}		
+							str+='</tr>';
+						str+='</table>';
+						str+='<button type="button"  class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10">View Details</button>';
+						//str+='<img id="ivrDetailsdataLoding" src="images/icons/search.gif" style="display:none;"/>';
+					str+='</div>';
+			str+='</div>';
+			
+			 $("#ivrSummaryDetailsId").html(str);
+			 
 			}
 		});
     } 
-		
+	$(document).on("click",".Ivrpopupopen",function(){
+	$("#Ivrmodal").modal("show");
+	getTotalIVRDetailsByTdpCadreId();
+	
+	});	
 
 	function getTotalIVRDetailsByTdpCadreId(){
+		
+		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+		
 		var tdpCadreId='${param.cadreId}' ;
 		var jsObj ={
 			tdpCadreId:tdpCadreId
@@ -6297,12 +6310,13 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			url :'getTotalIVRDetailsByTdpCadreIdAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+			$("#ivrDetailsdataLoding").html('');
 			if(result!=null && result.length>0){
 				buildIvrDetails(result);
 			}else{
 				$('#modalBodyId').html("NO DATA AVAILABLE..");
 			}
-			$("#Ivrmodal").modal("show");
+			
 		});
 		
 	}
@@ -6311,22 +6325,22 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 		
 		var str='';
 		for(var i in results){
-			
-			 str+='<div class="col-xs-12">';
+			$("#ivrCadreNameId").html(results[i].tdpCadreName);
+			 str+='<div class="well" style="border: 2px solid rgb(204, 204, 204);">';
 			 
 				str+='<p><b>IVR NAME</b> : '+results[i].name+'</p>';
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
-					  str+='<div class="col-xs-12" style="margin-left: -17px;">';
+					  str+='<div class="">';
 							str+='<div class="row"> ';
-								str+='<div class="col-xs-3" > ';
-									str+='<p style="width: 125px !important;"><b>TOTAL CALLS</b> : '+results[i].totalCount+'</p>';
+								str+='<div class="col-xs-4" > ';
+									str+='<p><b>TOTAL CALLS</b> :&nbsp;&nbsp;  <span class="badge">'+results[i].totalCount+'</span></p>';
 								str+='</div>';
 								str+='<div class="col-xs-4"> ';
-									str+='<p><b>ANSWERED</b> : '+results[i].answeredcount+'</p>';
+									str+='<p><b>ANSWERED CALLS</b> :&nbsp;&nbsp; <span class="badge">'+results[i].answeredcount+'</span></p>';
 								str+='</div>';
-								 str+='<div class="col-xs-5"> ';
-									str+='<p><b>UNANSWERED</b> : '+results[i].unAnsweredCount+'</p>';
+								 str+='<div class="col-xs-4"> ';
+									str+='<p><b>UNANSWERED CALLS</b> :&nbsp;&nbsp; <span class="badge">'+results[i].unAnsweredCount+'</span></p>';
 								 str+='</div>';
 						  str+='</div>';
 					 str+=' </div>';
@@ -6334,9 +6348,13 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			 str+='<p><b>ANSWERED CALLS</b> : </p>';
 			   if(results[i].optionTypeId==1){
 				   for(var j in results[i].optionsList){
-					 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' <span> - '+results[i].optionsList[j].optionCount+'</span></div>';  
+					   if(results[i].optionsList[j].optionCount==null){
+						 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' &nbsp;&nbsp;<span> - &nbsp;&nbsp; <span class="badge">0</span></span></div>'; 
+					   }else{
+						 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' &nbsp;&nbsp;<span> -  &nbsp;<span class="badge">'+results[i].optionsList[j].optionCount+'</span></span></div>'; 
+					   }
 				   }
-			   }else{
+			  }else{
 				   for(var j in results[i].descriptionList){
 					 str+='<div><b> DESCRIPTION:</b> :'+results[i].descriptionList[j]+' </div>';  
 				    }
