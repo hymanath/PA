@@ -713,6 +713,7 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityScope</value>
 				 <value>com.itgrids.partyanalyst.model.ActivitySubType</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityType</value>
+				 <value>com.itgrids.partyanalyst.model.LocationInfo</value>
 				 
 			     </list>
 			
