@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gdata.data.youtube.YtRelationship.Status;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
@@ -47,6 +45,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private JSONObject							jObj;
 	private String 								task,pageAccessType;
 	private LocationWiseBoothDetailsVO          locationWiseBoothDetailsVO;
+	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVOList;
 	private ICadreCommitteeService				cadreCommitteeService;
 	@Autowired 
 	private IWebServiceHandlerService1 			webServiceHandlerService1;
@@ -74,6 +73,13 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	
 	
 	
+	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVOList() {
+		return locationWiseBoothDetailsVOList;
+	}
+	public void setLocationWiseBoothDetailsVOList(
+			List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList) {
+		this.locationWiseBoothDetailsVOList = locationWiseBoothDetailsVOList;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -973,4 +979,5 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	
 }
