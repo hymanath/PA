@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +45,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -106,6 +108,7 @@ import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
@@ -129,6 +132,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -220,6 +224,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private ITdpCommitteeVacantPostDAO tdpCommitteeVacantPostDAO;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	@Autowired
 	private ITdpRolesDAO tdpRolesDAO;
 	private IEventGroupDAO eventGroupDAO;
@@ -241,6 +246,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	
 	
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+
+	public void setActivityLocationInfoDAO(
+			IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -16253,4 +16267,57 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return cadreIds;
 	}
 	
+	public ResultStatus saveActivityDetails(final ActivityVO activityVO){
+		ResultStatus resultStatus = new ResultStatus();
+			 try {
+				 String status = (String) transactionTemplate.execute(new TransactionCallback() {
+					 public Object doInTransaction(TransactionStatus status) {
+						 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+						 
+						 if(activityVO != null){
+							 Long activityScopeId = activityVO.getActivityLevelId();
+							 List<ActivityVO> activityList = activityVO.getActivityVoList();
+							 if(activityList != null && activityList.size() > 0){
+								 for (ActivityVO activityvo : activityList) {
+									 if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0){
+										 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
+											
+										activityLocationInfo.setActivityScopeId(activityScopeId);
+										activityLocationInfo.setLocationLevel(activityvo.getLocationLevel());
+										activityLocationInfo.setLocationValue(activityvo.getLocationValue());
+										try {
+											activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+											activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+										} catch (ParseException e) {
+											LOG.error("Exception rised in saveActivityDetails()",e);
+										}
+										
+										activityLocationInfoDAO.save(activityLocationInfo);
+									 }
+								}
+							 }
+						 }
+						 
+						 return "success";
+						 
+					 }});
+				 
+				 if(status != null)
+				 {
+					 resultStatus.setResultCode(0);
+					 resultStatus.setMessage("success");
+				 }
+				 else
+				 {
+					 resultStatus.setResultCode(1);
+					 resultStatus.setMessage("error");
+				 }
+			} catch (Exception e) {
+				LOG.error("Exception rised in saveActivityDetails()",e);
+				 resultStatus.setResultCode(1);
+				 resultStatus.setMessage("error");
+			}
+			 return resultStatus;
+		 }
+		 
 }

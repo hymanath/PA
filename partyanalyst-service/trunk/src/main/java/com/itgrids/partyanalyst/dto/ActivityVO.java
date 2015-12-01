@@ -12,7 +12,8 @@ public class ActivityVO implements Serializable{
 	private Long activityNameId;
 	private String plannedDate;
 	private String ConductedDate;
-	private Long locationLevelId;
+	private Long locationLevel;
+	private Long locationValue;
 	private Long constituencyId;
 	private Long mandalId;
 	private Long localElectionBodyId;
@@ -20,13 +21,17 @@ public class ActivityVO implements Serializable{
 	private Long wardId;
 	private Long attendedCount;
 	private String remarks;
-	private List<File> imageForDisplayList = new ArrayList<File>(0); 
-	private List<String> imageForDisplayContentTypeList =new ArrayList<String>(0);
-	private List<String> imageForDisplayFileNameList = new ArrayList<String>(0);
 	private String startDate;
 	private String endDate;
+	private List<ActivityVO> activityVoList;
 	
 	
+	public List<ActivityVO> getActivityVoList() {
+		return activityVoList;
+	}
+	public void setActivityVoList(List<ActivityVO> activityVoList) {
+		this.activityVoList = activityVoList;
+	}
 	public Long getActivityTypeId() {
 		return activityTypeId;
 	}
@@ -56,12 +61,6 @@ public class ActivityVO implements Serializable{
 	}
 	public void setConductedDate(String conductedDate) {
 		ConductedDate = conductedDate;
-	}
-	public Long getLocationLevelId() {
-		return locationLevelId;
-	}
-	public void setLocationLevelId(Long locationLevelId) {
-		this.locationLevelId = locationLevelId;
 	}
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -105,26 +104,6 @@ public class ActivityVO implements Serializable{
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-	public List<File> getImageForDisplayList() {
-		return imageForDisplayList;
-	}
-	public void setImageForDisplayList(List<File> imageForDisplayList) {
-		this.imageForDisplayList = imageForDisplayList;
-	}
-	public List<String> getImageForDisplayContentTypeList() {
-		return imageForDisplayContentTypeList;
-	}
-	public void setImageForDisplayContentTypeList(
-			List<String> imageForDisplayContentTypeList) {
-		this.imageForDisplayContentTypeList = imageForDisplayContentTypeList;
-	}
-	public List<String> getImageForDisplayFileNameList() {
-		return imageForDisplayFileNameList;
-	}
-	public void setImageForDisplayFileNameList(
-			List<String> imageForDisplayFileNameList) {
-		this.imageForDisplayFileNameList = imageForDisplayFileNameList;
-	}
 	public String getStartDate() {
 		return startDate;
 	}
@@ -136,5 +115,17 @@ public class ActivityVO implements Serializable{
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+	public Long getLocationLevel() {
+		return locationLevel;
+	}
+	public void setLocationLevel(Long locationLevel) {
+		this.locationLevel = locationLevel;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
 	}
 }

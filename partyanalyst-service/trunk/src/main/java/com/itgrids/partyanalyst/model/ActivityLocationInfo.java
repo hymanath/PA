@@ -32,12 +32,11 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Long locationValue;
 	private Long inviteeCount;
 	private Long attendedCount;
-	private Date activityDate;
-	private Long activityRunningStatusId;
+	private Date plannedDate;
+	private Date conductedDate;
 	private Date insertionTime;
 	
 	private ActivityScope activityScope;
-	private ActivityRunningStatus activityRunningStatus;
 	private RegionScopes regionScopes;
 	
 	@Id
@@ -90,20 +89,20 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.attendedCount = attendedCount;
 	}
 	
-	@Column(name="activity_date")
-	public Date getActivityDate() {
-		return activityDate;
+	@Column(name="planned_date")
+	public Date getPlannedDate() {
+		return plannedDate;
 	}
-	public void setActivityDate(Date activityDate) {
-		this.activityDate = activityDate;
+	public void setPlannedDate(Date plannedDate) {
+		this.plannedDate = plannedDate;
 	}
 	
-	@Column(name="activity_running_status_id")
-	public Long getActivityRunningStatusId() {
-		return activityRunningStatusId;
+	@Column(name="conducted_date")
+	public Date getConductedDate() {
+		return conductedDate;
 	}
-	public void setActivityRunningStatusId(Long activityRunningStatusId) {
-		this.activityRunningStatusId = activityRunningStatusId;
+	public void setConductedDate(Date conductedDate) {
+		this.conductedDate = conductedDate;
 	}
 	
 	@Column(name="insertion_time")
@@ -123,17 +122,6 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	public void setActivityScope(ActivityScope activityScope) {
 		this.activityScope = activityScope;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_running_status_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ActivityRunningStatus getActivityRunningStatus() {
-		return activityRunningStatus;
-	}
-	public void setActivityRunningStatus(ActivityRunningStatus activityRunningStatus) {
-		this.activityRunningStatus = activityRunningStatus;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
