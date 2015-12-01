@@ -495,4 +495,24 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  
   }
   
+  public List<Object[]> getTodaySpeakersAttendedDetails(Date toDayDate){
+	  StringBuilder sb = new StringBuilder();
+	  
+	  sb.append(" select distinct A.tdp_cadre_id,TCB.training_camp_batch_id,A.attended_time  from training_camp_attendance TCA, attendance A,  " +
+		  		" training_camp_batch TCB , attendee_type AT1   where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
+	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  " );
+	  sb.append(" TCB.attendee_type_id = 2 and AT1.is_deleted='false' and TCB.is_cancelled = 'false'  ");
+	  
+	  if(toDayDate!=null){
+		  sb.append(" and ( date(A.attended_time) =:toDayDate ) ");
+	  }
+	  
+	  Query query = getSession().createSQLQuery(sb.toString());
+	 
+	  if(toDayDate!=null){
+		  query.setDate("toDayDate", toDayDate);
+	  }
+	  return query.list();
+  }
+  
 }

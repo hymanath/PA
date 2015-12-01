@@ -107,6 +107,19 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 					" and model1.constituency.constituencyId = model.constituency.constituencyId ", params);
 		}
 	}
+	
+	public List<Object[]> findWardsByLocalBodyConstituncyListIds(Long localElectionBodyId, List<Long> constituencyIdsList) {
+		Object[] params = {localElectionBodyId,constituencyIdsList};
+		if(localElectionBodyId.longValue() != 20l){
+		  return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name  from AssemblyLocalElectionBodyWard model " +
+				" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.assemblyLocalElectionBody.constituency.constituencyId in ( ? ) ", params);
+		}else{
+			return getHibernateTemplate().find("select model.constituency.constituencyId,concat(model.constituency.name,'(',model1.wardName,')')  from AssemblyLocalElectionBodyWard model,LocalElectionBodyWard model1 " +
+					" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.assemblyLocalElectionBody.constituency.constituencyId  in ( ? ) " +
+					" and model1.constituency.constituencyId = model.constituency.constituencyId ", params);
+		}
+	}
+	
 	public List<Object[]> findWardsByLocalBodyIds(List<Long> localElectionBodyIds) {
 		//0wardId,1constituencyId
 		  Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.assemblyLocalElectionBody.constituency.constituencyId  from AssemblyLocalElectionBodyWard model " +
