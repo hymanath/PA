@@ -690,9 +690,20 @@
 				 <value>com.itgrids.partyanalyst.model.StudentRecomendation</value>
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
-				 <value>com.itgrids.partyanalyst.model.AtendeeType</value>
+				 <value>com.itgrids.partyanalyst.model.AttendeeType</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
+				 <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
+				                
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaType</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaTypeInfo</value>
+				  <value>com.itgrids.partyanalyst.model.CommunicationMediaRound</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.MediaOptionType</value>
+				 <value>com.itgrids.partyanalyst.model.MediaOptions</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaQuestionOptions</value>
+				 <value>com.itgrids.partyanalyst.model.CommunicationMediaResponse</value>
+				
 				 <value>com.itgrids.partyanalyst.model.Activity</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityInfoFile</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityLevel</value>
@@ -3187,6 +3198,10 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	  <bean id="trainingCampFeedbackAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackAnswerDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	           <!--  ivr -->
+	  <bean id="communicationMediaResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaResponseDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 
