@@ -6265,17 +6265,17 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 						str+='<table class="table m_0 table-bordered">';
 							str+='<tr class="text-center">';
 							if(result.totalCount==null){
-								str+='<td ><span> - </span><br/><b>Total Calls</b></td>';
+								str+='<td ><span> 0 </span><br/><b>Total Calls</b></td>';
 							}else{
 								str+='<td >'+result.totalCount+'<br/><b>Total Calls</b></td>';
 							}
 							if(result.answeredcount==null){
-								str+='<td ><span> - </span><br/><b>Answered Calls</b></td>';
+								str+='<td ><span> 0 </span><br/><b>Answered Calls</b></td>';
 							}else{
 								str+='<td >'+result.answeredcount+'<br/><b>Answered Calls</b></td>';
 							}
 							if(result.unAnsweredCount==null){
-								str+='<td ><span> - </span><br/><b>UnAnswered Calls</b></td>';
+								str+='<td ><span> 0 </span><br/><b>UnAnswered Calls</b></td>';
 							}else{
 								str+='<td >'+result.unAnsweredCount+'<br/><b>UnAnswered Calls</b></td>';
 							}		
@@ -6331,7 +6331,13 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			$("#ivrCadreNameId").html(results[i].tdpCadreName);
 			 str+='<div class="well" style="border: 2px solid rgb(204, 204, 204);">';
 			 
-				str+='<p><b>IVR NAME</b> : '+results[i].name+' <span class="col-xs-offset-3"><b>Date</b> : '+results[i].dateString+'</span></p>';
+				str+='<p><b>IVR NAME</b> : '+results[i].name+''; 
+				if(results[i].dateString !=null && results[i].dateString.trim().length>0){
+					str+='<span class="col-xs-offset-3"><b>Date</b> : '+results[i].dateString+'</span></p>';
+				}else{
+					str+='<span class="col-xs-offset-3"><b>Date</b> :&nbsp;&nbsp;&nbsp;&nbsp; - </span></p>';
+				}
+				
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
 				if(results[i].answeredcount!=null && results[i].answeredcount>0){
