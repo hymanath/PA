@@ -166,7 +166,7 @@
                         <div role="tabpanel" class="tab-pane active" id="home">                  	
                      
                         </div>
-						       <button class="btn btn-custom btn-success">SAVE</button>     
+						       <input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/>    
                         <div role="tabpanel" class="tab-pane" id="profile">...</div>
                         <div role="tabpanel" class="tab-pane" id="messages">...</div>
                         <div role="tabpanel" class="tab-pane" id="settings">...</div>
@@ -371,12 +371,12 @@ function getPanchayatWardByMandal(mandalId){
 	
 function getLocationDetailsForActivity()
 {
-	
+	var activityLevelId =2;
 	var jObj = {
 		checkedId:"2",
 		activityScopeId:$('#ActivityList').val(),
 		//activityLevelId:$('#activityLevelList').val(),
-		activityLevelId:5,
+		activityLevelId:activityLevelId,
 		searchBy:"Constituency",
 		locationId:$('#constiList').val(),
 		task:"getLocationDetailsForActivity"
@@ -409,16 +409,18 @@ function getLocationDetailsForActivity()
 					{
 						str+='<tr>';
 						//str+='<td></td>';
-						str+='<td>'+result.result[i].locationName+'</td>';
+						str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+						str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
+						str+='<td> '+result.result[i].locationName+'</td>';
 						str+='<td  style="text-align:center;">';
 						str+='<div class="input-g1 input-group">';
 							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							str+='<input type="text" class="dateCls form-control" name="'+i+'" />';
+							str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate"/>';
 						str+='</div></td>';
 						str+='<td  style="text-align:center;">';
 						str+='<div class="input-g1 input-group">';
 							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							str+='<input type="text" class="dateCls form-control" name="'+i+'" />';
+							str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate"/>';
 						str+='</div></td>';
 						str+='<td  style="text-align:center;"> President </td>';
 						str+='<td  style="text-align:center;"> General Secretary </td>';
@@ -494,3 +496,4 @@ function buildingResults(result,locationName){
 </script>
 </body>
 </html>
+ 
