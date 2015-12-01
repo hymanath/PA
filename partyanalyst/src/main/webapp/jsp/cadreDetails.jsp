@@ -659,7 +659,7 @@ var globalCadreId = '${cadreId}';
 				<!--START  IVR SUMMARY---->
 				 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
+                    	<h4 class="panel-title text-bold"><img style="width: 30px; height: 30px;" src="./images/ivr summary.jpg"></img>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
                     </div>
                     <div class="panel-body">
 					<div id="ivrSummaryajaxImg"></div>
@@ -1234,7 +1234,7 @@ var globalCadreId = '${cadreId}';
 	 <div class="panel panel-default">
 		<div class="panel-heading">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="panel-title text-bold">IVR DETAILS FOR <span id="ivrCadreNameId"></span></h4>
+            <h4 class="panel-title text-bold">IVR DETAILS - <span style="color:green;" id="ivrCadreNameId"></span></h4>
         </div>
 		<div class="panel-body">
 		<div id="ivrDetailsdataLoding"></div>
@@ -6328,10 +6328,30 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			$("#ivrCadreNameId").html(results[i].tdpCadreName);
 			 str+='<div class="well" style="border: 2px solid rgb(204, 204, 204);">';
 			 
-				str+='<p><b>IVR NAME</b> : '+results[i].name+'</p>';
+				str+='<p><b>IVR NAME</b> : '+results[i].name+' <span class="col-xs-offset-3"><b>Date</b> : '+results[i].dateString+'</span></p>';
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
-					  str+='<div class="">';
+				if(results[i].answeredcount!=null && results[i].answeredcount>0){
+					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.jpg"></img></p>';
+					str+='<p><b>OPTION SELECTED : </b></p>';
+					if(results[i].optionTypeId==1){
+				       for(var j in results[i].optionsList){
+						   if(results[i].optionsList[j].optionCount!=null){
+							 str+='<div>'+results[i].optionsList[j].option+' </div>'; 
+						   }
+				        }
+			         }else{
+				        for(var j in results[i].descriptionList){
+					       str+='<div>'+results[i].descriptionList[j]+' </div>';  
+				         }
+			          }
+				}else{
+					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call not answered.jpg"></img></p>';
+				}
+				
+				
+				
+					  /* str+='<div class="">';
 							str+='<div class="row"> ';
 								str+='<div class="col-xs-4" > ';
 									str+='<p><b>TOTAL CALLS</b> :&nbsp;&nbsp;  <span class="badge">'+results[i].totalCount+'</span></p>';
@@ -6343,9 +6363,9 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 									str+='<p><b>UNANSWERED CALLS</b> :&nbsp;&nbsp; <span class="badge">'+results[i].unAnsweredCount+'</span></p>';
 								 str+='</div>';
 						  str+='</div>';
-					 str+=' </div>';
+					 str+=' </div>'; */
 					 
-			 str+='<p><b>ANSWERED CALLS</b> : </p>';
+			 /* str+='<p><b>ANSWERED CALLS</b> : </p>';
 			   if(results[i].optionTypeId==1){
 				   for(var j in results[i].optionsList){
 					   if(results[i].optionsList[j].optionCount==null){
@@ -6358,7 +6378,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 				   for(var j in results[i].descriptionList){
 					 str+='<div><b> DESCRIPTION:</b> :'+results[i].descriptionList[j]+' </div>';  
 				    }
-			   }
+			   } */
 	    		
 		  str+='</div>';
 		}
