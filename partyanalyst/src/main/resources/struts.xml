@@ -11001,13 +11001,13 @@
 	
 	<action name="getIVRSummaryByTdpCadreIdAction" class="cadreDetailsAction" method="getIVRSummaryByTdpCadreId">
 			<result type="json" name="success">
-				<param name="root">simpleVOList</param>
+				<param name="root">ivrResponseVO</param>
 			</result>
 		</action>
 		
 		<action name="getTotalIVRDetailsByTdpCadreIdAction" class="cadreDetailsAction" method="getTotalIVRDetailsByTdpCadreId">
 			<result type="json" name="success">
-				<param name="root">simpleVOList</param>
+				<param name="root">ivrResponseVOlist</param>
 			</result>
 		</action>
 		

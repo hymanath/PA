@@ -2603,8 +2603,8 @@
 		 <property name="studentCourseDAO" ref="studentCourseDAO" />
 		 <property name="studentAddressDAO" ref="studentAddressDAO" />
 		 <property name="studentRecomendationDAO" ref="studentRecomendationDAO" />
-		  <property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
-		  
+		 <property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
+		 <property name="communicationMediaResponseDAO" ref="communicationMediaResponseDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
