@@ -16509,6 +16509,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					{
 						reportList = getMandalMunicCorpDetailsNew(locationId);
+						
 					}
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.MANDAL))
 					{
@@ -16526,6 +16527,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						
 					}
 				}
+				
 				
 				if(reportList != null && reportList.size()>0)
 				{
