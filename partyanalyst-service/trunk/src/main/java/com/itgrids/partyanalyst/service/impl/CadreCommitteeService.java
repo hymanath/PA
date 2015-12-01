@@ -45,7 +45,12 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityDAO;
+import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
+import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -132,7 +137,9 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.ActivityLevel;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
+import com.itgrids.partyanalyst.model.ActivitySubType;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -224,7 +231,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private ITdpCommitteeVacantPostDAO tdpCommitteeVacantPostDAO;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
-	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	@Autowired
 	private ITdpRolesDAO tdpRolesDAO;
 	private IEventGroupDAO eventGroupDAO;
@@ -243,6 +249,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private CadreRegistrationService cadreRegistrationService;
 	private IStateDAO stateDAO;
 	
+	private IActivityTypeDAO activityTypeDAO;
+	private IActivitySubTypeDAO activitySubTypeDAO;
+	private IActivityDAO activityDAO;
+	private IActivityLevelDAO activityLevelDAO;
+	private IActivityScopeDAO activityScopeDAO;
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	
 	
 	
@@ -253,6 +265,46 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public void setActivityLocationInfoDAO(
 			IActivityLocationInfoDAO activityLocationInfoDAO) {
 		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+
+	public IActivitySubTypeDAO getActivitySubTypeDAO() {
+		return activitySubTypeDAO;
+	}
+
+	public void setActivitySubTypeDAO(IActivitySubTypeDAO activitySubTypeDAO) {
+		this.activitySubTypeDAO = activitySubTypeDAO;
+	}
+
+	public IActivityScopeDAO getActivityScopeDAO() {
+		return activityScopeDAO;
+	}
+
+	public void setActivityScopeDAO(IActivityScopeDAO activityScopeDAO) {
+		this.activityScopeDAO = activityScopeDAO;
+	}
+
+	public IActivityTypeDAO getActivityTypeDAO() {
+		return activityTypeDAO;
+	}
+
+	public void setActivityTypeDAO(IActivityTypeDAO activityTypeDAO) {
+		this.activityTypeDAO = activityTypeDAO;
+	}
+
+	public IActivityDAO getActivityDAO() {
+		return activityDAO;
+	}
+
+	public void setActivityDAO(IActivityDAO activityDAO) {
+		this.activityDAO = activityDAO;
+	}
+
+	public IActivityLevelDAO getActivityLevelDAO() {
+		return activityLevelDAO;
+	}
+
+	public void setActivityLevelDAO(IActivityLevelDAO activityLevelDAO) {
+		this.activityLevelDAO = activityLevelDAO;
 	}
 
 	public IStateDAO getStateDAO() {
@@ -16267,12 +16319,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return cadreIds;
 	}
 	
+
 	public ResultStatus saveActivityDetails(final ActivityVO activityVO){
 		ResultStatus resultStatus = new ResultStatus();
 			 try {
 				 String status = (String) transactionTemplate.execute(new TransactionCallback() {
 					 public Object doInTransaction(TransactionStatus status) {
-						 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+						 SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
 						 
 						 if(activityVO != null){
 							 Long activityScopeId = activityVO.getActivityLevelId();
@@ -16320,4 +16373,192 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			 return resultStatus;
 		 }
 		 
+	
+	
+	public BasicVO getActivityTypeList()
+	{
+		BasicVO basicVO = null;
+		try {
+			List<ActivitySubType> activityTypeLsit = activitySubTypeDAO.getAll();
+			if(activityTypeLsit != null && activityTypeLsit.size()>0)
+			{
+				List<BasicVO> activitiesLsit = new ArrayList<BasicVO>();
+				for (ActivitySubType activityType : activityTypeLsit) {
+					BasicVO vo = new BasicVO();
+					vo.setId(activityType.getActivitySubTypeId());
+					vo.setName(activityType.getSubType());
+					activitiesLsit.add(vo);
+				}
+				
+				if(activitiesLsit != null && activitiesLsit.size()>0)
+				{
+					basicVO = new BasicVO();
+					basicVO.setPanchayatVoterInfo(activitiesLsit);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
+		}
+		return basicVO;
+	}
+	
+	public List<IdNameVO> getActivityLevelsList()
+	{
+		List<IdNameVO> idNameVoList = null;
+		try {
+			List<ActivityLevel> activityTypeLsit = activityLevelDAO.getAll();
+			if(activityTypeLsit != null && activityTypeLsit.size()>0)
+			{
+				idNameVoList = new ArrayList<IdNameVO>();
+				for (ActivityLevel activityType : activityTypeLsit) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(activityType.getActivityLevelId());
+					vo.setName(activityType.getLevel());
+					idNameVoList.add(vo);
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
+		}
+		return idNameVoList;
+	}
+	
+	public List<IdNameVO> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId)
+	{
+		List<IdNameVO> idNameVoList = null;
+		try {
+			List<Object[]> activityTypeLsit = activityScopeDAO.getActivitiesListByTypeAndLevel(activityTypeId, activityLevelId);
+			if(activityTypeLsit != null && activityTypeLsit.size()>0)
+			{
+				idNameVoList = new ArrayList<IdNameVO>();
+				for (Object[] activityType : activityTypeLsit) {
+					IdNameVO vo = new IdNameVO();
+					if(activityType[0] != null && Long.valueOf(activityType[0].toString().trim()).longValue() >0L)
+					{
+						vo.setId(Long.valueOf(activityType[0].toString().trim()));
+						vo.setName(activityType[1] != null ? activityType[1].toString():"");
+						idNameVoList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivitiesListByTypeAndLevel() method, Exception - ",e);
+		}
+		return idNameVoList;
+	}
+	
+	
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsByConstituencyList(List<Long> constituencyIds){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<Long> greaterCorpIds = new ArrayList<Long>();
+		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByAllConstituencies(constituencyIds);
+		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+	        for(SelectOptionVO location:locations){
+	        	vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
+	        	vo.setLocationName(location.getName()+" Mandal");
+	        	locationsList.add(vo);
+	        }
+	        for(Object[] localBodi:localBodies){
+	        	Long localBdyId = (Long)localBodi[0];
+	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString());
+		        	locationsList.add(vo);
+	        	}else{
+	        		greaterCorpIds.add(localBdyId);
+	        	}
+	        }
+	        if(greaterCorpIds.size() > 0){
+        	  for(Long id:greaterCorpIds){
+        		  List<Object[]>  wards = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyConstituncyListIds(id, constituencyIds);
+        		  for(Object[] location:wards){
+        			  vo = new LocationWiseBoothDetailsVO();
+  		        	vo.setLocationId(Long.valueOf("3"+location[0].toString()));
+  		        	vo.setLocationName(location[1].toString());
+  		        	locationsList.add(vo);
+        		  }
+        	  }
+	        }
+	        return locationsList;
+	}
+	
+	public LocationWiseBoothDetailsVO getActivityLocationDetails(boolean isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId)
+	{
+		LocationWiseBoothDetailsVO returnVO = null;	
+		try {
+			List<LocationWiseBoothDetailsVO> returnList = null;
+			List<Long> updatedLocationIdsList  = null;
+			List<LocationWiseBoothDetailsVO> reportList = null;
+			if(activityScopeId != null && activityScopeId.longValue()>0L)
+			{
+				updatedLocationIdsList = activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId);
+			}
+			if(activityLevelId != null && activityLevelId.longValue()>0L)
+			{
+				if(activityLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
+				{
+					if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.DISTRICT))
+					{
+						List<Long> constituencyIds = constituencyDAO.getConstituencyIdsByDistrictId(locationId,IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+						reportList = getMandalMunicCorpDetailsByConstituencyList(constituencyIds);
+					}
+					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						reportList = getMandalMunicCorpDetailsNew(locationId);
+					}
+					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.MANDAL))
+					{
+						
+					}
+				}
+				else if(activityLevelId.longValue() == IConstants.VILLAGE_COMMITTEE_LEVEL_ID)
+				{
+					if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						reportList = getPanchayatWardDivisionDetailsNew(locationId);
+					}
+					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.MANDAL))
+					{
+						
+					}
+				}
+				
+				if(reportList != null && reportList.size()>0)
+				{
+					returnVO = new LocationWiseBoothDetailsVO();
+					returnList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+					if(isChecked)
+					{
+						for (LocationWiseBoothDetailsVO vo : reportList) {
+							String locationIdStr = vo.getLocationId().toString().substring(1);
+							Long locatonId = Long.valueOf(locationIdStr);
+							if(!updatedLocationIdsList.contains(locatonId))
+								returnList.add(vo);
+						}
+					}
+					else
+						returnList.addAll(reportList);
+					
+					Collections.sort(returnList,new Comparator<LocationWiseBoothDetailsVO>() {
+						public int compare(LocationWiseBoothDetailsVO o1,
+								LocationWiseBoothDetailsVO o2) {
+							return o1.getLocationName().compareTo(o2.getLocationName());
+						}
+					});
+					
+					returnVO.setResult(returnList);
+				}
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getActivityLocationDetails() method, Exception - ",e);
+		}
+		
+		return returnVO;
+	}
+	
+	
 }
