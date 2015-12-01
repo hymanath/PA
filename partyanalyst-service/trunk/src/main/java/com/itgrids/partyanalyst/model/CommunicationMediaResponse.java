@@ -24,6 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CommunicationMediaResponse extends BaseModel implements java.io.Serializable{
   
+	
 	private Long communicationMediaResponseId;
 	private Long communicationMediaRoundId;
 	private Long communicationMediaQuestionId;
@@ -35,7 +36,7 @@ public class CommunicationMediaResponse extends BaseModel implements java.io.Ser
 	private String comments;
 	private String isValid;
 	private String isDeleted; 
-	
+	private Date ivrDate;
 	private CommunicationMediaRound communicationMediaRound;
 	private CommunicationMediaQuestion communicationMediaQuestion;
 	private MediaOptions mediaOptions;
@@ -177,5 +178,11 @@ public class CommunicationMediaResponse extends BaseModel implements java.io.Ser
 		this.tdpCadre = tdpCadre;
 	}
 	
-	
+	@Column(name = "ivr_date")
+	public Date getIvrDate() {
+		return ivrDate;
+	}
+	public void setIvrDate(Date ivrDate) {
+		this.ivrDate = ivrDate;
+	}
 }

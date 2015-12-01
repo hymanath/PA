@@ -5,6 +5,12 @@ import java.util.List;
 
 public class IVRResponseVO implements Serializable{
      
+	public String getDateString() {
+		return dateString;
+	}
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
 	private Long totalCount;
 	private Long answeredcount;
 	private Long unAnsweredCount;
@@ -19,6 +25,7 @@ public class IVRResponseVO implements Serializable{
 	
 	private List<String> descriptionList;
 	private String tdpCadreName;
+	private String dateString;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -93,5 +100,5 @@ public class IVRResponseVO implements Serializable{
 	public void setTdpCadreName(String tdpCadreName) {
 		this.tdpCadreName = tdpCadreName;
 	}
-	
+    	
 }
