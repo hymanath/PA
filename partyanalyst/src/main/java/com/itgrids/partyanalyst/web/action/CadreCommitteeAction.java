@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -98,10 +99,19 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
      private EventCreationVO eventCreationVO;
 	private List<VO> resultList;
 	private Long locationId;
+	private ActivityVO activityVO;
 	
 	
 	
 	
+	public ActivityVO getActivityVO() {
+		return activityVO;
+	}
+
+	public void setActivityVO(ActivityVO activityVO) {
+		this.activityVO = activityVO;
+	}
+
 	public Long getLocationId() {
 		return locationId;
 	}
@@ -2002,5 +2012,20 @@ public String getSummaryDetails(){
 		
 	}
 	
-	
+	public String saveActivityDetails(){
+		
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			
+			status = cadreCommitteeService.saveActivityDetails(activityVO);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return Action.SUCCESS;
+	}
 }
