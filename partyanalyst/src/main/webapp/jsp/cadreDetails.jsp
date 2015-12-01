@@ -6313,7 +6313,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;">');
 		var tdpCadreId='${param.cadreId}' ;
 		//record counts per page in pagination.
-	       var rcrdsCount = 5;
+	       var rcrdsCount = 3;
 		var jsObj ={
 			tdpCadreId:tdpCadreId,
 			startIndex:startIndex,
