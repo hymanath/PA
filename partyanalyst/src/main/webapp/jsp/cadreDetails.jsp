@@ -659,7 +659,7 @@ var globalCadreId = '${cadreId}';
 				<!--START  IVR SUMMARY---->
 				 <div class="panel panel-default">
                 	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><img style="width: 30px; height: 30px;" src="./images/ivr summary.jpg"></img>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
+                    	<h4 class="panel-title text-bold"><img style="width: 27px; height: 27px;" src="./images/ivr summary.png"></img>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
                     </div>
                     <div class="panel-body">
 					<div id="ivrSummaryajaxImg"></div>
@@ -1237,7 +1237,7 @@ var globalCadreId = '${cadreId}';
             <h4 class="panel-title text-bold">IVR DETAILS - <span style="color:green;" id="ivrCadreNameId"></span></h4>
         </div>
 		<div class="panel-body">
-		<div id="ivrDetailsdataLoding"></div>
+		<div id="ivrDetailsdataLoding" class="col-xs-offset-6"></div>
 		 <div id="modalBodyId"></div>
 		 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
 		 </div>
@@ -6281,8 +6281,12 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 							}		
 							str+='</tr>';
 						str+='</table>';
-						str+='<button type="button"  class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10">View Details</button>';
-						//str+='<img id="ivrDetailsdataLoding" src="images/icons/search.gif" style="display:none;"/>';
+						if(result.totalCount==null){
+							str+='<button type="button" style="display:none;" class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10">View Details</button>';
+						}else{
+							str+='<button type="button"  class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10">View Details</button>';
+						}
+					
 					str+='</div>';
 			str+='</div>';
 			
@@ -6299,8 +6303,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 
 	function getTotalIVRDetailsByTdpCadreId(){
 		
-		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-		
+		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;">');
 		var tdpCadreId='${param.cadreId}' ;
 		var jsObj ={
 			tdpCadreId:tdpCadreId
@@ -6332,7 +6335,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
 				if(results[i].answeredcount!=null && results[i].answeredcount>0){
-					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.jpg"></img></p>';
+					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.png"></img></p>';
 					str+='<p><b>OPTION SELECTED : </b></p>';
 					if(results[i].optionTypeId==1){
 				       for(var j in results[i].optionsList){
@@ -6346,7 +6349,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 				         }
 			          }
 				}else{
-					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call not answered.jpg"></img></p>';
+					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call not answered.png"></img></p>';
 				}
 				
 				
