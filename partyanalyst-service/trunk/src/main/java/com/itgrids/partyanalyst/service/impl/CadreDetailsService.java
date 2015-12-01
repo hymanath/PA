@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.ICommunicationMediaResponseDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -142,7 +144,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IStudentAddressDAO studentAddressDAO;
 	private IStudentRecomendationDAO studentRecomendationDAO;
 	private ITdpCadreFamilyInfoDAO  tdpCadreFamilyInfoDAO;
-	
+	private ICommunicationMediaResponseDAO communicationMediaResponseDAO;
 	
 	
 	
@@ -562,7 +564,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
 	}
-
+	public void setCommunicationMediaResponseDAO(
+			ICommunicationMediaResponseDAO communicationMediaResponseDAO) {
+		this.communicationMediaResponseDAO = communicationMediaResponseDAO;
+	}
+	 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
@@ -4848,6 +4854,148 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		return referalList;
 	}
+     
+	//IVR
+	public IVRResponseVO getIVRSummaryByTdpCadreId(Long tdpCadreId){
+		IVRResponseVO ivrResponseVO =new IVRResponseVO();
+		try{
+			
+			List<Object[]> summaryList=communicationMediaResponseDAO.getIVRSummaryByTdpCadreId(tdpCadreId);
+			if(summaryList!=null && summaryList.size()>0){
+				for(Object[] obj:summaryList){
+					
+					if(ivrResponseVO.getTotalCount()==null){
+						ivrResponseVO.setTotalCount(0l);
+					}
+					ivrResponseVO.setTotalCount(ivrResponseVO.getTotalCount()+1);
+					
+					if(obj[2]!=null || obj[3]!=null){//answered
+						
+						if(ivrResponseVO.getAnsweredcount()==null){
+							ivrResponseVO.setAnsweredcount(0l);
+						}
+						ivrResponseVO.setAnsweredcount(ivrResponseVO.getAnsweredcount()+1);
+						
+					}else{//unanswerd
+						
+						if(ivrResponseVO.getUnAnsweredCount()==null){
+							ivrResponseVO.setUnAnsweredCount(0l);
+						}
+						ivrResponseVO.setUnAnsweredCount(ivrResponseVO.getUnAnsweredCount()+1);
+					}
+					
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getIVRSummaryByTdpCadreId() method, Exception - ",e);
+		}
+		return ivrResponseVO;
+	}
+	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId){
+		List<IVRResponseVO> ivrResponseVOList =null;
+		try{
+			//template
+			List<Object[]> statList=communicationMediaResponseDAO.getQuestionAndoptionsByTdpCadreId(tdpCadreId);
+			Map<String,IVRResponseVO> ivrMap=new LinkedHashMap<String,IVRResponseVO>();
+			
+			
+			if(statList!=null && statList.size()>0){
+				for(Object[] obj:statList){
+					
+					boolean ivrExisted=true;
+					IVRResponseVO ivrVO=ivrMap.get(obj[0].toString());
+					if(ivrVO==null){
+						ivrExisted=false;
+						ivrVO=new IVRResponseVO();
+					}
+					ivrVO.setName(obj[0]!=null?obj[0].toString():"");
+					ivrVO.setQuestion(obj[1]!=null?obj[1].toString():"");
+					ivrVO.setOptionTypeId(obj[2]!=null?(Long)obj[2]:0l);
+					if(ivrVO.getOptionTypeId()==1l){
+						if(ivrVO.getOptionsList()==null){
+							ivrVO.setOptionsList(new ArrayList<IVRResponseVO>());
+						}
+						IVRResponseVO optionVO=new IVRResponseVO();
+						optionVO.setOptionId(obj[3]!=null?(Long)obj[3]:0l);
+						optionVO.setOption(obj[4]!=null?obj[4].toString():"");
+						ivrVO.getOptionsList().add(optionVO);
+					}
+					if(!ivrExisted){
+						ivrMap.put(obj[0].toString(),ivrVO);
+					}
+				}
+			}
+			
+			
+			//query
+			List<Object[]> list=communicationMediaResponseDAO.getIVRDetailsByTdpCadreId(tdpCadreId);
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					String ivrName=obj[2]!=null?obj[2].toString():"";
+					IVRResponseVO ivrVO=ivrMap.get(ivrName);
+					
+					if(ivrVO.getTotalCount()==null){
+						ivrVO.setTotalCount(0l);
+					}
+					ivrVO.setTotalCount(ivrVO.getTotalCount()+1);
+					
+					if(obj[3]!=null){
+						
+						//answered count
+						if(ivrVO.getAnsweredcount()==null){
+							ivrVO.setAnsweredcount(0l);
+						}
+						ivrVO.setAnsweredcount(ivrVO.getAnsweredcount()+1);
+						
+						Long optionId=(Long)obj[3];
+						IVRResponseVO optionVO=getMatchedOption(optionId,ivrVO.getOptionsList());
+						if(optionVO!=null){
+							if(optionVO.getOptionCount()==null){
+								optionVO.setOptionCount(0l);
+							}
+							optionVO.setOptionCount(optionVO.getOptionCount()+1);
+						}
+						
+					}else if(obj[4]!=null){
+						//answered count
+						if(ivrVO.getAnsweredcount()==null){
+							ivrVO.setAnsweredcount(0l);
+						}
+						ivrVO.setAnsweredcount(ivrVO.getAnsweredcount()+1);
+						
+						if(ivrVO.getDescriptionList()==null){
+							ivrVO.setDescriptionList(new ArrayList<String>());
+						}
+						ivrVO.getDescriptionList().add(obj[4].toString());
+					}else{
+						//unanswered count
+						if(ivrVO.getUnAnsweredCount()==null){
+							ivrVO.setUnAnsweredCount(0l);
+						}
+						ivrVO.setUnAnsweredCount(ivrVO.getUnAnsweredCount()+1);
+					}
+				}
+			}
+			
+			if(ivrMap!=null && ivrMap.size()>0){
+				ivrResponseVOList=new ArrayList<IVRResponseVO>(ivrMap.values());
+			}
+		}catch (Exception e){
+			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);
+		}
+		return ivrResponseVOList;
+	}
 	
-  
+	public IVRResponseVO getMatchedOption(Long id,List<IVRResponseVO> list){
+		if(list!=null && list.size()>0 && id!=null && id>0l){
+			for (IVRResponseVO VO : list) {
+				if(VO.getOptionId().equals(id)){
+					return VO;
+				}
+			}
+		}
+		return null;
+	}
+	
 }
