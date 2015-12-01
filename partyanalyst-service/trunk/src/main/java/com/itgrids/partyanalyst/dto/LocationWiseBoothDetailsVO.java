@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,13 +14,42 @@ public class LocationWiseBoothDetailsVO {
 	private Set<SelectOptionVO> booths;
 	private Set<SelectOptionVO> subLocations;
 	private List<SelectOptionVO> hamletsOfTownship;
-	private List<LocationWiseBoothDetailsVO> result;
+	private List<LocationWiseBoothDetailsVO> result = new ArrayList<LocationWiseBoothDetailsVO>(0);
 	private Long population;
 	private Long votesPolled;
 	private Long total = 0l;;
 	private String electionYear;
 	private Long count;
 	
+	private Long id;
+	private String name;
+	private String mobileNo;
+	
+	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getElectionYear() {
 		return electionYear;
 	}
