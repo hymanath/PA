@@ -8,17 +8,100 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Update Activity</title>
-	    <link href="dist/css/bootstrap.min.css" rel="stylesheet"/>
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
+	<!-- Bootstrap -->
+    <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
+	 <!-- Custom Styles -->
+    <link href="css/cadreCommitee/style.css" rel="stylesheet">
+	<!----slick.css----->
+	<link rel="stylesheet" type="text/css" href="css/cadreCommitee/slick/slick.css"/>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/cadreCommittee/bootstrap.min.js"></script>
+	<!----slick Js----->
 	
+   	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	<!--<script type="text/javascript" src="js/bootstrap.js" ></script> -->
-	 <link href="dist/js/bootstrap.min.js" rel="stylesheet"/> 
+	 
+	 <!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">  
+</head>
 <body>
-   	
 <div class="container">
+	<form method="POST" enctype="multipart/form-data" name="uploadInsureeDetailsForm" action="saveActivityDetailsAction.action">
+	<input type="hidden" value="1" name="activityVO.activityLevelId"></input>
+		<table class="table table-bordered">
+			<thead>
+				<th>Location Id</th>
+				<th>Location Value</th>
+				<th>Planned Date</th>
+				<th>Conducted Date</th>
+				<th>View</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="hidden" value="5" name="activityVO.activityVoList[0].locationLevel">mandal</td>
+					<td><input type="hidden" value="10" name="activityVO.activityVoList[0].locationValue">allur</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[0].plannedDate">2015-12-01 12:00:00</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[0].ConductedDate">2015-12-01 12:00:00</td>
+					<td><input type="button" class="btn btn-success text-bold" onclick="gettingCadreDetails();" value="View"></td>
+				</tr>
+				<tr>
+					<td><input type="hidden" value="5" name="activityVO.activityVoList[1].locationLevel">mandal</td>
+					<td><input type="hidden" value="10" name="activityVO.activityVoList[1].locationValue">allur</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[1].plannedDate">2015-12-01 12:00:00</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[1].ConductedDate">2015-12-01 12:00:00</td>
+				</tr>
+				<tr>
+					<td><input type="hidden" value="5" name="activityVO.activityVoList[2].locationLevel">mandal</td>
+					<td><input type="hidden" value="10" name="activityVO.activityVoList[2].locationValue">allur</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[2].plannedDate">2015-12-01 12:00:00</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[2].ConductedDate">2015-12-01 12:00:00</td>
+				</tr>
+				<tr>
+					<td><input type="hidden" value="5" name="activityVO.activityVoList[3].locationLevel">mandal</td>
+					<td><input type="hidden" value="10" name="activityVO.activityVoList[3].locationValue">allur</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[3].plannedDate">2015-12-01 12:00:00</td>
+					<td><input type="hidden" value="2015-12-01 12:00:00" name="activityVO.activityVoList[3].ConductedDate">2015-12-01 12:00:00</td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="button" class="btn btn-success text-bold" onclick="submitForm();" value="Update"/>
+	</form>
+</div>
+<!--<div class="container">
 	<div class="row">
    		<div class="col-md-12">
         	<div class="panel panel-default panel-custom">
@@ -98,7 +181,7 @@
                 <div class="panel-body">
                 	<div>
                       <!-- Nav tabs -->
-                      <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                      <!--<ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Planed</a></li>
                         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Conducted</a></li>
                         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Lately Conducted</a></li>
@@ -116,7 +199,7 @@
                       </ul>
                     
                       <!-- Tab panes -->
-                      <div class="tab-content">
+                      <!--<div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
                         	<table class="table table-bordered bg_ff">
                             	<thead>
@@ -185,14 +268,13 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <footer>
 	<p>All &copy; 2015 Telugu Desam Party</p>
 </footer>
-<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/js/custom.js" type="text/javascript"></script>
-<script src="dist/Date/moment.js" type="text/javascript"></script>
+<script src="dist/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
 
 <script>
@@ -217,12 +299,44 @@ function getActivityNames()
 		});
 		
 }
+function submitForm(){
+	var uploadHandler = {
+		upload: function(result) {
+			console.log(result);
+			uploadResult = result.responseText;
+			var myResult = (String)(uploadResult);
+			
+			if(myResult.search('success') != -1){
+				
+			}else{
+			}
+		},
+		error: function(){
+			console.log('upload error');
+		}
+		};
+	YAHOO.util.Connect.setForm('uploadInsureeDetailsForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','saveActivityDetailsAction.action',uploadHandler);
+}
+
+function gettingCadreDetails(){	
+		 var jsObj={
+		         locationId:232,locationType:5,basicCommitteeTypeId:1,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "gettingCadreDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
+		});
+	}
 </script>
 </body>
 </html>
-
-
-
-
-		   
-		   
