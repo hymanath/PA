@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -122,8 +124,41 @@ public class CadreCommitteeMemberVO {
 	
 	private Long levelId;
 	private Long levelValue;
+	private Long roleId;
+	
+	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap1 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
+	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap2 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
+	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap3 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	
 	
+	
+	public Map<Long, Map<Long, CadreCommitteeMemberVO>> getGenericMap1() {
+		return genericMap1;
+	}
+	public void setGenericMap1(
+			Map<Long, Map<Long, CadreCommitteeMemberVO>> genericMap1) {
+		this.genericMap1 = genericMap1;
+	}
+	public Map<Long, Map<Long, CadreCommitteeMemberVO>> getGenericMap2() {
+		return genericMap2;
+	}
+	public void setGenericMap2(
+			Map<Long, Map<Long, CadreCommitteeMemberVO>> genericMap2) {
+		this.genericMap2 = genericMap2;
+	}
+	public Map<Long, Map<Long, CadreCommitteeMemberVO>> getGenericMap3() {
+		return genericMap3;
+	}
+	public void setGenericMap3(
+			Map<Long, Map<Long, CadreCommitteeMemberVO>> genericMap3) {
+		this.genericMap3 = genericMap3;
+	}
+	public Long getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
 	public Long getMeetingTypeId() {
 		return meetingTypeId;
 	}
