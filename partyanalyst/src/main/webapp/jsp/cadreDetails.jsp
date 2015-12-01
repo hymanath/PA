@@ -29,7 +29,11 @@
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
+	     <!--   server side pagination CSS-->
+    <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style>
+ #paginationDivId .prev,.next{width:60px !important;}
+ 
 .inbox-messages
 {
 	color:#fff !important
@@ -1239,6 +1243,7 @@ var globalCadreId = '${cadreId}';
 		<div class="panel-body">
 		<div id="ivrDetailsdataLoding" class="col-xs-offset-6"></div>
 		 <div id="modalBodyId"></div>
+		 <div id="paginationDivId"  style="margin-top:35px;"></div>
 		 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
 		 </div>
 	
@@ -1315,6 +1320,8 @@ var globalCadreId = '${cadreId}';
 	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
+	   <!--  SERVER SIDE PAGINATION JS -->
+    <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<script>
 	
@@ -6297,17 +6304,22 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
     } 
 	$(document).on("click",".Ivrpopupopen",function(){
 	$("#Ivrmodal").modal("show");
-	getTotalIVRDetailsByTdpCadreId();
+	getTotalIVRDetailsByTdpCadreId(0);
 	
 	});	
 
-	function getTotalIVRDetailsByTdpCadreId(){
+	function getTotalIVRDetailsByTdpCadreId(startIndex){
 		
 		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;">');
 		var tdpCadreId='${param.cadreId}' ;
+		//record counts per page in pagination.
+	       var rcrdsCount = 5;
 		var jsObj ={
-			tdpCadreId:tdpCadreId
+			tdpCadreId:tdpCadreId,
+			startIndex:startIndex,
+		    maxIndex:rcrdsCount
 		}
+		   
 		$.ajax({
 			type:'GET',
 			url :'getTotalIVRDetailsByTdpCadreIdAction.action',
@@ -6315,7 +6327,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 		}).done(function(result){
 			$("#ivrDetailsdataLoding").html('');
 			if(result!=null && result.length>0){
-				buildIvrDetails(result);
+				buildIvrDetails(result,startIndex,rcrdsCount);
 			}else{
 				$('#modalBodyId').html("NO DATA AVAILABLE..");
 			}
@@ -6324,74 +6336,49 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 		
 	}
 	
-	function buildIvrDetails(results){
+	function buildIvrDetails(results,startIndex,rcrdsCount){
 		
 		var str='';
 		for(var i in results){
 			$("#ivrCadreNameId").html(results[i].tdpCadreName);
 			 str+='<div class="well" style="border: 2px solid rgb(204, 204, 204);">';
 			 
-				str+='<p><b>IVR NAME</b> : '+results[i].name+''; 
-				if(results[i].dateString !=null && results[i].dateString.trim().length>0){
-					str+='<span class="col-xs-offset-3"><b>Date</b> : '+results[i].dateString+'</span></p>';
-				}else{
-					str+='<span class="col-xs-offset-3"><b>Date</b> :&nbsp;&nbsp;&nbsp;&nbsp; - </span></p>';
-				}
-				
+				str+='<p><b>IVR NAME</b> : '+results[i].name+' <span class="col-xs-offset-3"><b>Date</b> : '+results[i].dateString+'</span></p>';
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
-				if(results[i].answeredcount!=null && results[i].answeredcount>0){
+				if(results[i].isAnswered){
 					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.png"></img></p>';
-					str+='<p><b>OPTION SELECTED : </b></p>';
-					if(results[i].optionTypeId==1){
-				       for(var j in results[i].optionsList){
-						   if(results[i].optionsList[j].optionCount!=null){
-							 str+='<div>'+results[i].optionsList[j].option+' </div>'; 
-						   }
-				        }
-			         }else{
-				        for(var j in results[i].descriptionList){
-					       str+='<div>'+results[i].descriptionList[j]+' </div>';  
-				         }
-			          }
+					if(results[i].optionId!=null && results[i].optionId>0){
+						 str+='<p><b>OPTION SELECTED : </b></p>';
+						 str+='<div>'+results[i].option+' </div>'; 
+					}else{
+						str+='<p><b>COMMENT : </b></p>';
+						str+='<div>'+results[i].description+' </div>'; 
+					}
 				}else{
 					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call not answered.png"></img></p>';
 				}
-				
-				
-				
-					  /* str+='<div class="">';
-							str+='<div class="row"> ';
-								str+='<div class="col-xs-4" > ';
-									str+='<p><b>TOTAL CALLS</b> :&nbsp;&nbsp;  <span class="badge">'+results[i].totalCount+'</span></p>';
-								str+='</div>';
-								str+='<div class="col-xs-4"> ';
-									str+='<p><b>ANSWERED CALLS</b> :&nbsp;&nbsp; <span class="badge">'+results[i].answeredcount+'</span></p>';
-								str+='</div>';
-								 str+='<div class="col-xs-4"> ';
-									str+='<p><b>UNANSWERED CALLS</b> :&nbsp;&nbsp; <span class="badge">'+results[i].unAnsweredCount+'</span></p>';
-								 str+='</div>';
-						  str+='</div>';
-					 str+=' </div>'; */
-					 
-			 /* str+='<p><b>ANSWERED CALLS</b> : </p>';
-			   if(results[i].optionTypeId==1){
-				   for(var j in results[i].optionsList){
-					   if(results[i].optionsList[j].optionCount==null){
-						 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' &nbsp;&nbsp;<span> - &nbsp;&nbsp; <span class="badge">0</span></span></div>'; 
-					   }else{
-						 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' &nbsp;&nbsp;<span> -  &nbsp;<span class="badge">'+results[i].optionsList[j].optionCount+'</span></span></div>'; 
-					   }
-				   }
-			  }else{
-				   for(var j in results[i].descriptionList){
-					 str+='<div><b> DESCRIPTION:</b> :'+results[i].descriptionList[j]+' </div>';  
-				    }
-			   } */
-	    		
 		  str+='</div>';
 		}
 		$('#modalBodyId').html(str);
+		//code for server side pagination.
+		if(startIndex==0){
+		
+			$("#paginationDivId").pagination({
+				items: results[0].totalCount,
+				itemsOnPage:rcrdsCount,
+				cssStyle: 'light-theme',
+				onPageClick: function(pageNumber, event) {
+					var num=(pageNumber-1)*rcrdsCount;
+					getTotalIVRDetailsByTdpCadreId(num);
+				}
+			});
+			if(results[0].totalCount>rcrdsCount){
+				$("#paginationDivId").show();
+			}else{
+				$("#paginationDivId").hide();
+			}
+	    }
 	}
 </script>
 

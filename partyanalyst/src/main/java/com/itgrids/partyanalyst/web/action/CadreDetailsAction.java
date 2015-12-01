@@ -750,8 +750,9 @@ public String updateLeaderShip(){
 		try{
 			jObj=new JSONObject(getTask());
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
-			
-			ivrResponseVOlist=cadreDetailsService.getTotalIVRDetailsByTdpCadreId(tdpCadreId);
+			int startIndex=jObj.getInt("startIndex");
+			int maxIndex=jObj.getInt("maxIndex");
+			ivrResponseVOlist=cadreDetailsService.getTotalIVRDetailsByTdpCadreId(tdpCadreId,startIndex,maxIndex);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);
