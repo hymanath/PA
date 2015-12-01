@@ -329,6 +329,9 @@ table.gridtable td {
 	border-color: #666666;
 	background-color: #ffffff;
 }
+.m_top10{
+	margin-top:10px;
+}
 </style>
 	
 	<!--<style type="text/css">
@@ -370,6 +373,7 @@ var globalCadreId = '${cadreId}';
                 	<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>
                     </tr>
+					
 					<tr style="background:red" id="deletedReasonId">
                       
                     </tr>
@@ -651,6 +655,33 @@ var globalCadreId = '${cadreId}';
                     </div>
 				
                 </div>
+				
+				<!--START  IVR SUMMARY---->
+				 <div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
+                    </div>
+                    <div class="panel-body">
+                    	<div class="row">
+                        	
+                            <div class="col-xs-12">
+                            	<table class="table m_0 table-bordered">
+                                	<tr class="text-center">
+                                    	<td id="totalCallsId">0<br/><b>Total Calls</b></td>
+                                        <td id="totalAnsweredId">0<br/><b>Total Answered</b></td>
+                                        <td id="totalUnAnsweredId">0<br/><b>Total UnAnswered</b></td>
+                                    </tr>
+									
+                                </table>
+								<button type="button" class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10" onclick="getTotalIVRDetailsByTdpCadreId()">View Details</button>
+                            </div>
+							 
+                        
+                            </div>
+							
+                        </div>
+                    </div>
+				<!-- IVR SUMMARY  END ---->
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES</h4>
@@ -1211,6 +1242,38 @@ var globalCadreId = '${cadreId}';
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 	
+<div class="modal fade" id="Ivrmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body ">
+	   <div class="col-xs-12">
+			<p><b>IVR NAME</b> : నమస్కారం  డిసెంబర్</p>
+			<p><b>QUESTION</b> : నమస్కారం  డిసెంబర్  1 నుంచి  14 వరకు  తలపెట్టిన  జనచైతన్య  యాత్రకు  సంభందించి  ప్రచార  సామాగ్రి  మీకు  అందని  యెడల  మీ  నియోజకవర్గ  ఎంఎల్యే   లేదా  ఇంచార్జి   నుంచి  అందుకొని  మీ  గ్రామ మరియు  వార్డు  నాయకులకు  అందించవలసినది.  </p>
+				  <div class="col-xs-12" style="margin-left: -17px;">
+						<div class="row"> 
+							<div class="col-xs-3" > 
+								<p style="width: 125px !important;"><b>TOTAL CALLS</b> : 50</p>
+							</div>
+							<div class="col-xs-4"> 
+								<p><b>TOTAL ANSWERED</b> : 50</p>
+							</div>
+							 <div class="col-xs-5"> 
+								<p><b>TOTAL UNANSWERED</b> : 50</p>
+							 </div>
+					  </div>
+				  </div>
+		   <p><b>ANSWERED CALLS</b> : </p>
+		   <div><b>OPTION 1</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార సామాగ్రి   అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించిన  యెడల  1 నొక్కండి     <span> - 20</span></div>
+			<div><b>OPTION 2</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార  సామాగ్రి  అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించని   యెడల  2 నొక్కండి  <span> - 20</span></div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 			<!-- model For benefits -->
 		<div class="modal fade" id="modelForBenefitsId">
@@ -5898,6 +5961,7 @@ $(document).on("click",".detailsCls",function(){
 	getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
 	getRemarkSOfCadreByCallPurpose(programId,cadreId);
 	getCategoryFeedBackAnswerForCadre();//call for feedback answer
+	
 });
 
 function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
@@ -6206,7 +6270,87 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 	$('#'+divId+'').html(str);
 	
 }
+	getIVRSummaryByTdpCadreId();
+	function getIVRSummaryByTdpCadreId(){
+		var tdpCadreId='${param.cadreId}' ;
+		
+		var jsObj ={
+			tdpCadreId:tdpCadreId
+		}
+		$.ajax({
+			type:'GET',
+			url :'getIVRSummaryByTdpCadreIdAction.action',
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result.registeredCount != 0){
+				var registeredCount = result.registeredCount;
+			}else{
+				var registeredCount = "-";
+			}
+			
+			if(result.registeredCount != 0){
+				var registeredCount = result.registeredCount;
+			}else{
+				var registeredCount = "-";
+			}
+			
+			if(result.registeredCount != 0){
+				var registeredCount = result.registeredCount;
+			}else{
+				var registeredCount = "-";
+			}
+			
+			$("#totalCallsId").html(registeredCount);
+			$("#totalAnsweredId").html(registeredCount);
+			$("#totalUnAnsweredId").html(registeredCount);
+		});
+}
+		//$(".Ivrpopupopen").click(function() {
+		
+		//}); 
 
+	function getTotalIVRDetailsByTdpCadreId(){
+		var tdpCadreId='${param.cadreId}' ;
+		var jsObj ={
+			tdpCadreId:tdpCadreId
+		}
+		$.ajax({
+			type:'GET',
+			url :'getTotalIVRDetailsByTdpCadreIdAction.action',
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			buildIvrDetails(results);
+			$("#Ivrmodal").modal("show");
+		});
+		
+	}
+	
+	function buildIvrDetails(results){
+		
+		var str='';
+		for(var i in results){
+			 str+='<div class="col-xs-12">';
+				str+='<p><b>IVR NAME</b> : నమస్కారం  డిసెంబర్</p>';
+				str+='<p><b>QUESTION</b> : నమస్కారం  డిసెంబర్  1 నుంచి  14 వరకు  తలపెట్టిన  జనచైతన్య  యాత్రకు  సంభందించి  ప్రచార  సామాగ్రి  మీకు  అందని  యెడల  మీ  నియోజకవర్గ  ఎంఎల్యే   లేదా  ఇంచార్జి   నుంచి  అందుకొని  మీ  గ్రామ మరియు  వార్డు  నాయకులకు  అందించవలసినది.  </p>';
+					  str+='<div class="col-xs-12" style="margin-left: -17px;">';
+							str+='<div class="row"> ';
+								str+='<div class="col-xs-3" > ';
+									str+='<p style="width: 125px !important;"><b>TOTAL CALLS</b> : 50</p>';
+								str+='</div>';
+								str+='<div class="col-xs-4"> ';
+									str+='<p><b>TOTAL ANSWERED</b> : 50</p>';
+								str+='</div>';
+								 str+='<div class="col-xs-5"> ';
+									str+='<p><b>TOTAL UNANSWERED</b> : 50</p>';
+								 str+='</div>';
+						  str+='</div>';
+					 str+=' </div>';
+			 str+='<p><b>ANSWERED CALLS</b> : </p>';
+			   str+='<div><b>OPTION 1</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార సామాగ్రి   అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించిన  యెడల  1 నొక్కండి     <span> - 20</span></div>';
+				str+='<div><b>OPTION 2</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార  సామాగ్రి  అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించని   యెడల  2 నొక్కండి  <span> - 20</span></div>';
+		  str+='</div>';
+		}
+	}
 </script>
 
 </body>

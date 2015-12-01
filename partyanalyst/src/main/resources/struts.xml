@@ -10999,5 +10999,17 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="getIVRSummaryByTdpCadreIdAction" class="cadreDetailsAction" method="getIVRSummaryByTdpCadreId">
+			<result type="json" name="success">
+				<param name="root">simpleVOList</param>
+			</result>
+		</action>
+		
+		<action name="getTotalIVRDetailsByTdpCadreIdAction" class="cadreDetailsAction" method="getTotalIVRDetailsByTdpCadreId">
+			<result type="json" name="success">
+				<param name="root">simpleVOList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
