@@ -6,13 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONArray;
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -20,8 +17,9 @@ import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
-import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
+import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
@@ -69,10 +67,23 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private SimpleVO 					   simpleVO;
 	private NtrTrustStudentVO				ntrTrustStudentVo;
 	private List<CategoryFeedbackVO>		categoryFeedbackVoList;
+	private IVRResponseVO ivrResponseVO;
+	private List<IVRResponseVO> ivrResponseVOlist;
 	
-	
-	
-	
+	public IVRResponseVO getIvrResponseVO() {
+		return ivrResponseVO;
+	}
+	public void setIvrResponseVO(IVRResponseVO ivrResponseVO) {
+		this.ivrResponseVO = ivrResponseVO;
+	}
+    
+
+	public List<IVRResponseVO> getIvrResponseVOlist() {
+		return ivrResponseVOlist;
+	}
+	public void setIvrResponseVOlist(List<IVRResponseVO> ivrResponseVOlist) {
+		this.ivrResponseVOlist = ivrResponseVOlist;
+	}
 	public List<CategoryFeedbackVO> getCategoryFeedbackVoList() {
 		return categoryFeedbackVoList;
 	}
@@ -724,9 +735,9 @@ public String updateLeaderShip(){
 		
 		try{
 			jObj=new JSONObject(getTask());
-			Long cadreId = jObj.getLong("tdpCadreId");
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
 			
-			//simpleVoList = trainingCampService.getRemarkSOfCadreByCallPurpose(cadreId);
+		    ivrResponseVO=cadreDetailsService.getIVRSummaryByTdpCadreId(tdpCadreId);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getIVRSummaryByTdpCadreId() method, Exception - ",e);
@@ -738,9 +749,9 @@ public String updateLeaderShip(){
 		
 		try{
 			jObj=new JSONObject(getTask());
-			Long cadreId = jObj.getLong("tdpCadreId");
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
 			
-			//simpleVoList = trainingCampService.getRemarkSOfCadreByCallPurpose(cadreId);
+			ivrResponseVOlist=cadreDetailsService.getTotalIVRDetailsByTdpCadreId(tdpCadreId);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);

@@ -667,13 +667,13 @@ var globalCadreId = '${cadreId}';
                             <div class="col-xs-12">
                             	<table class="table m_0 table-bordered">
                                 	<tr class="text-center">
-                                    	<td id="totalCallsId">0<br/><b>Total Calls</b></td>
-                                        <td id="totalAnsweredId">0<br/><b>Total Answered</b></td>
-                                        <td id="totalUnAnsweredId">0<br/><b>Total UnAnswered</b></td>
+                                    	<td><span id="totalCallsId">-</span><br/><b>Total Calls</b></td>
+                                        <td><span id="totalAnsweredId">-</span><br/><b>Answered</b></td>
+                                        <td><span id="totalUnAnsweredId">-</span><br/><b>UnAnswered</b></td>
                                     </tr>
 									
                                 </table>
-								<button type="button" class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10" onclick="getTotalIVRDetailsByTdpCadreId()">View Details</button>
+								<button type="button"  class="btn btn-primary btn-custom btn-sm Ivrpopupopen pull-right m_top10" onclick="getTotalIVRDetailsByTdpCadreId()">View Details</button>
                             </div>
 							 
                         
@@ -1245,27 +1245,8 @@ var globalCadreId = '${cadreId}';
 <div class="modal fade" id="Ivrmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-body ">
-	   <div class="col-xs-12">
-			<p><b>IVR NAME</b> : నమస్కారం  డిసెంబర్</p>
-			<p><b>QUESTION</b> : నమస్కారం  డిసెంబర్  1 నుంచి  14 వరకు  తలపెట్టిన  జనచైతన్య  యాత్రకు  సంభందించి  ప్రచార  సామాగ్రి  మీకు  అందని  యెడల  మీ  నియోజకవర్గ  ఎంఎల్యే   లేదా  ఇంచార్జి   నుంచి  అందుకొని  మీ  గ్రామ మరియు  వార్డు  నాయకులకు  అందించవలసినది.  </p>
-				  <div class="col-xs-12" style="margin-left: -17px;">
-						<div class="row"> 
-							<div class="col-xs-3" > 
-								<p style="width: 125px !important;"><b>TOTAL CALLS</b> : 50</p>
-							</div>
-							<div class="col-xs-4"> 
-								<p><b>TOTAL ANSWERED</b> : 50</p>
-							</div>
-							 <div class="col-xs-5"> 
-								<p><b>TOTAL UNANSWERED</b> : 50</p>
-							 </div>
-					  </div>
-				  </div>
-		   <p><b>ANSWERED CALLS</b> : </p>
-		   <div><b>OPTION 1</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార సామాగ్రి   అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించిన  యెడల  1 నొక్కండి     <span> - 20</span></div>
-			<div><b>OPTION 2</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార  సామాగ్రి  అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించని   యెడల  2 నొక్కండి  <span> - 20</span></div>
-      </div>
+      <div class="modal-body " id="modalBodyId">
+	  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -6282,32 +6263,29 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			url :'getIVRSummaryByTdpCadreIdAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			if(result.registeredCount != 0){
-				var registeredCount = result.registeredCount;
-			}else{
-				var registeredCount = "-";
+			if(result!=null){
+			  
+			  if(result.totalCount==null){
+				  $("#totalCallsId").html(0);
+			  }else{
+				  $("#totalCallsId").html(result.totalCount);
+			  }
+			  
+			  if(result.answeredcount==null){
+				  $("#totalAnsweredId").html(0);
+			  }else{
+				  $("#totalAnsweredId").html(result.answeredcount);
+			  }
+			  
+			  if(result.unAnsweredCount==null){
+				  $("#totalUnAnsweredId").html(0);
+			  }else{
+				  $("#totalUnAnsweredId").html(result.unAnsweredCount);
+			  }
 			}
-			
-			if(result.registeredCount != 0){
-				var registeredCount = result.registeredCount;
-			}else{
-				var registeredCount = "-";
-			}
-			
-			if(result.registeredCount != 0){
-				var registeredCount = result.registeredCount;
-			}else{
-				var registeredCount = "-";
-			}
-			
-			$("#totalCallsId").html(registeredCount);
-			$("#totalAnsweredId").html(registeredCount);
-			$("#totalUnAnsweredId").html(registeredCount);
 		});
-}
-		//$(".Ivrpopupopen").click(function() {
+    } 
 		
-		//}); 
 
 	function getTotalIVRDetailsByTdpCadreId(){
 		var tdpCadreId='${param.cadreId}' ;
@@ -6319,7 +6297,11 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			url :'getTotalIVRDetailsByTdpCadreIdAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			buildIvrDetails(results);
+			if(result!=null && result.length>0){
+				buildIvrDetails(result);
+			}else{
+				$('#modalBodyId').html("NO DATA AVAILABLE..");
+			}
 			$("#Ivrmodal").modal("show");
 		});
 		
@@ -6329,27 +6311,40 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 		
 		var str='';
 		for(var i in results){
+			
 			 str+='<div class="col-xs-12">';
-				str+='<p><b>IVR NAME</b> : నమస్కారం  డిసెంబర్</p>';
-				str+='<p><b>QUESTION</b> : నమస్కారం  డిసెంబర్  1 నుంచి  14 వరకు  తలపెట్టిన  జనచైతన్య  యాత్రకు  సంభందించి  ప్రచార  సామాగ్రి  మీకు  అందని  యెడల  మీ  నియోజకవర్గ  ఎంఎల్యే   లేదా  ఇంచార్జి   నుంచి  అందుకొని  మీ  గ్రామ మరియు  వార్డు  నాయకులకు  అందించవలసినది.  </p>';
+			 
+				str+='<p><b>IVR NAME</b> : '+results[i].name+'</p>';
+				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
+				
 					  str+='<div class="col-xs-12" style="margin-left: -17px;">';
 							str+='<div class="row"> ';
 								str+='<div class="col-xs-3" > ';
-									str+='<p style="width: 125px !important;"><b>TOTAL CALLS</b> : 50</p>';
+									str+='<p style="width: 125px !important;"><b>TOTAL CALLS</b> : '+results[i].totalCount+'</p>';
 								str+='</div>';
 								str+='<div class="col-xs-4"> ';
-									str+='<p><b>TOTAL ANSWERED</b> : 50</p>';
+									str+='<p><b>ANSWERED</b> : '+results[i].answeredcount+'</p>';
 								str+='</div>';
 								 str+='<div class="col-xs-5"> ';
-									str+='<p><b>TOTAL UNANSWERED</b> : 50</p>';
+									str+='<p><b>UNANSWERED</b> : '+results[i].unAnsweredCount+'</p>';
 								 str+='</div>';
 						  str+='</div>';
 					 str+=' </div>';
+					 
 			 str+='<p><b>ANSWERED CALLS</b> : </p>';
-			   str+='<div><b>OPTION 1</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార సామాగ్రి   అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించిన  యెడల  1 నొక్కండి     <span> - 20</span></div>';
-				str+='<div><b>OPTION 2</b> : మీకు   జనచైతన్య  యాత్రల  ప్రచార  సామాగ్రి  అంది  మీ  గ్రామ  మరియు  వార్డు  నాయకులకు  అందించని   యెడల  2 నొక్కండి  <span> - 20</span></div>';
+			   if(results[i].optionTypeId==1){
+				   for(var j in results[i].optionsList){
+					 str+='<div><b>OPTION '+results[i].optionsList[j].optionId+'</b> :'+results[i].optionsList[j].option+' <span> - '+results[i].optionsList[j].optionCount+'</span></div>';  
+				   }
+			   }else{
+				   for(var j in results[i].descriptionList){
+					 str+='<div><b> DESCRIPTION:</b> :'+results[i].descriptionList[j]+' </div>';  
+				    }
+			   }
+	    		
 		  str+='</div>';
 		}
+		$('#modalBodyId').html(str);
 	}
 </script>
 
