@@ -712,6 +712,8 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityScope</value>
 				 <value>com.itgrids.partyanalyst.model.ActivitySubType</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityType</value>
+				   <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
+				   <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
 			</list>
 		</property>
 	</bean>
@@ -3200,10 +3202,6 @@
 	  <bean id="trainingCampFeedbackAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackAnswerDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	           <!--  ivr -->
-	  <bean id="communicationMediaResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommunicationMediaResponseDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
 	 
 	 <bean id="activityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
@@ -3227,6 +3225,9 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 <bean id="activityTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="trainingCampFeedbackCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackCategoryDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 
