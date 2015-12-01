@@ -59,5 +59,5 @@ public interface ICadreDetailsService {
 	public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> familyCadreIds,Long institutionId);
 	 
 	public IVRResponseVO getIVRSummaryByTdpCadreId(Long tdpCadreId);
-	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId);
+	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId,int startIndex,int maxIndex);
 }

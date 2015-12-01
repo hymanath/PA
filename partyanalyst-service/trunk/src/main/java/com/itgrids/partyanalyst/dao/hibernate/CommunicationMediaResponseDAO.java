@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICommunicationMediaResponseDAO;
+import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.model.CommunicationMediaResponse;
 
 public class CommunicationMediaResponseDAO extends GenericDaoHibernate<CommunicationMediaResponse,Long> implements ICommunicationMediaResponseDAO{
@@ -43,10 +44,32 @@ public class CommunicationMediaResponseDAO extends GenericDaoHibernate<Communica
 		addScalar("optionId",  Hibernate.LONG).
 		addScalar("options", Hibernate.STRING);
 		query.setParameter("tdpCadreId",tdpCadreId);
+		
 		return query.list();
 	}
-	public List<Object[]> getIVRDetailsByTdpCadreId(Long tdpCadreId){
+	public List<Object[]> getIVRDetailsByTdpCadreId(Long tdpCadreId,List<String> ivrNameList,int startIndex,int maxIndex){
 	
+		Query query=getSession().createQuery(" " +
+		  " select distinct model.communicationMediaResponseId," +
+		  "        model.tdpCadre.tdpCadreId,model.communicationMediaQuestion.communicationMediaTypeInfo.name," +
+		  "        model.mediaOptionsId,model.comments," +
+		  "        model.tdpCadre.firstname,model.ivrDate " +
+		  " from  CommunicationMediaResponse model " +
+		  " where model.tdpCadre.isDeleted='N' and model.isDeleted='false' and model.isValid='true' " +
+		  "       and model.tdpCadre.tdpCadreId=:tdpCadreId " +
+		  "       and model.communicationMediaQuestion.communicationMediaTypeInfo.name in (:ivrNameList)");
+		query.setParameter("tdpCadreId",tdpCadreId);
+		query.setParameterList("ivrNameList",ivrNameList);
+		if(startIndex!=0){
+			query.setFirstResult(startIndex);
+		}
+		if(maxIndex!=0){
+			query.setMaxResults(maxIndex);	
+		}
+		return query.list();
+	}
+	public List<Object[]> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId){
+		
 		Query query=getSession().createQuery(" " +
 		  " select distinct model.communicationMediaResponseId," +
 		  "        model.tdpCadre.tdpCadreId,model.communicationMediaQuestion.communicationMediaTypeInfo.name," +
@@ -58,5 +81,28 @@ public class CommunicationMediaResponseDAO extends GenericDaoHibernate<Communica
 		query.setParameter("tdpCadreId",tdpCadreId);
 		return query.list();
 	}
-
+	
+	
+    public List<Object[]> getIVRDetailsByTdpCadreId1(Long tdpCadreId,int startIndex,int maxIndex){
+    	
+		Query query=getSession().createQuery(" " +
+		  " select distinct model.communicationMediaResponseId," +
+		  "        model.tdpCadre.tdpCadreId,model.tdpCadre.firstname, " +
+		  "        model.communicationMediaQuestion.communicationMediaTypeInfo.name,model.ivrDate," +
+		  "        model.communicationMediaQuestion.question," +
+		  "        model1.mediaOptionsId,model1.options,model.comments"+
+		  " from  CommunicationMediaResponse model left join model.mediaOptions model1 " +
+		  " where model.tdpCadre.isDeleted='N' and model.isDeleted='false' and model.isValid='true' " +
+		  "       and model.tdpCadre.tdpCadreId=:tdpCadreId " +
+		  " order by model.ivrDate desc ");
+		query.setParameter("tdpCadreId",tdpCadreId);
+		if(startIndex!=0){
+			query.setFirstResult(startIndex);
+		}
+		if(maxIndex!=0){
+			query.setMaxResults(maxIndex);	
+		}
+		return query.list();
+	}
+    
 }

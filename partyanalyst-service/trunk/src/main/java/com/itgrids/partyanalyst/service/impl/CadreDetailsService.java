@@ -4892,112 +4892,43 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		return ivrResponseVO;
 	}
-	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId){
-		List<IVRResponseVO> ivrResponseVOList =null;
-		try{
-			//template
-			List<Object[]> statList=communicationMediaResponseDAO.getQuestionAndoptionsByTdpCadreId(tdpCadreId);
-			Map<String,IVRResponseVO> ivrMap=new LinkedHashMap<String,IVRResponseVO>();
-			
-			
-			if(statList!=null && statList.size()>0){
-				for(Object[] obj:statList){
-					
-					boolean ivrExisted=true;
-					IVRResponseVO ivrVO=ivrMap.get(obj[0].toString());
-					if(ivrVO==null){
-						ivrExisted=false;
-						ivrVO=new IVRResponseVO();
-					}
-					ivrVO.setName(obj[0]!=null?obj[0].toString():"");
-					ivrVO.setQuestion(obj[1]!=null?obj[1].toString():"");
-					ivrVO.setOptionTypeId(obj[2]!=null?(Long)obj[2]:0l);
-					if(ivrVO.getOptionTypeId()==1l){
-						if(ivrVO.getOptionsList()==null){
-							ivrVO.setOptionsList(new ArrayList<IVRResponseVO>());
-						}
-						IVRResponseVO optionVO=new IVRResponseVO();
-						optionVO.setOptionId(obj[3]!=null?(Long)obj[3]:0l);
-						optionVO.setOption(obj[4]!=null?obj[4].toString():"");
-						ivrVO.getOptionsList().add(optionVO);
-					}
-					if(!ivrExisted){
-						ivrMap.put(obj[0].toString(),ivrVO);
-					}
-				}
-			}
-			
-			
-			//query
-			SimpleDateFormat sdf=new SimpleDateFormat("dd MMM yyyy");
-			List<Object[]> list=communicationMediaResponseDAO.getIVRDetailsByTdpCadreId(tdpCadreId);
+	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId,int startIndex,int maxIndex){
+		
+		  List<IVRResponseVO> ivrResponseVOList =new ArrayList<IVRResponseVO>();
+  	try{
+  		SimpleDateFormat sdf=new SimpleDateFormat("dd MMM yyyy");
+			List<Object[]> list=communicationMediaResponseDAO.getIVRDetailsByTdpCadreId1(tdpCadreId,startIndex,maxIndex);
 			if(list!=null && list.size()>0){
 				for(Object[] obj:list){
-					String ivrName=obj[2]!=null?obj[2].toString():"";
-					IVRResponseVO ivrVO=ivrMap.get(ivrName);
-					ivrVO.setTdpCadreName(obj[5]!=null?obj[5].toString():"");
-					ivrVO.setDateString(obj[6]!=null?sdf.format((Date)obj[6]):"");
-					if(ivrVO.getTotalCount()==null){
-						ivrVO.setTotalCount(0l);
-					}
-					ivrVO.setTotalCount(ivrVO.getTotalCount()+1);
+					IVRResponseVO ivrvo=new IVRResponseVO();
+					ivrvo.setTdpCadreName(obj[2]!=null?obj[2].toString():"");
+					ivrvo.setName(obj[3]!=null?obj[3].toString():"");
+					ivrvo.setDateString(obj[4]!=null?sdf.format((Date)obj[4]):"");
+					ivrvo.setQuestion(obj[5]!=null?obj[5].toString():"");
 					
-					if(obj[3]!=null){
-						
-						//answered count
-						if(ivrVO.getAnsweredcount()==null){
-							ivrVO.setAnsweredcount(0l);
-						}
-						ivrVO.setAnsweredcount(ivrVO.getAnsweredcount()+1);
-						
-						Long optionId=(Long)obj[3];
-						IVRResponseVO optionVO=getMatchedOption(optionId,ivrVO.getOptionsList());
-						if(optionVO!=null){
-							if(optionVO.getOptionCount()==null){
-								optionVO.setOptionCount(0l);
-							}
-							optionVO.setOptionCount(optionVO.getOptionCount()+1);
-						}
-						
-					}else if(obj[4]!=null){
-						//answered count
-						if(ivrVO.getAnsweredcount()==null){
-							ivrVO.setAnsweredcount(0l);
-						}
-						ivrVO.setAnsweredcount(ivrVO.getAnsweredcount()+1);
-						
-						if(ivrVO.getDescriptionList()==null){
-							ivrVO.setDescriptionList(new ArrayList<String>());
-						}
-						ivrVO.getDescriptionList().add(obj[4].toString());
+					if(obj[6]!=null){
+						ivrvo.setIsAnswered(true);
+						ivrvo.setOptionId((Long)obj[6]);
+						ivrvo.setOption(obj[7]!=null?obj[7].toString():"");
+					}else if(obj[8]!=null){
+						ivrvo.setIsAnswered(true);
+						ivrvo.setDescription(obj[8].toString());
 					}else{
-						//unanswered count
-						if(ivrVO.getUnAnsweredCount()==null){
-							ivrVO.setUnAnsweredCount(0l);
-						}
-						ivrVO.setUnAnsweredCount(ivrVO.getUnAnsweredCount()+1);
+						ivrvo.setIsAnswered(false);
 					}
+					ivrResponseVOList.add(ivrvo);
 				}
 			}
-			
-			if(ivrMap!=null && ivrMap.size()>0){
-				ivrResponseVOList=new ArrayList<IVRResponseVO>(ivrMap.values());
-			}
+			if(startIndex==0){
+				List<Object[]> totalCountslist=communicationMediaResponseDAO.getIVRDetailsByTdpCadreId1(tdpCadreId,startIndex,0);
+				if(ivrResponseVOList!=null && ivrResponseVOList.size()>0  && totalCountslist!=null && totalCountslist.size()>0){
+					ivrResponseVOList.get(0).setTotalCount(Long.valueOf(totalCountslist.size()));
+				}
+			 }
 		}catch (Exception e){
-			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);
+			LOG.error("Exception Occured in getIVRSummaryByTdpCadreId() method, Exception - ",e);
 		}
-		return ivrResponseVOList;
-	}
-	
-	public IVRResponseVO getMatchedOption(Long id,List<IVRResponseVO> list){
-		if(list!=null && list.size()>0 && id!=null && id>0l){
-			for (IVRResponseVO VO : list) {
-				if(VO.getOptionId().equals(id)){
-					return VO;
-				}
-			}
-		}
-		return null;
-	}
+  	return ivrResponseVOList;
+  }
 	
 }
