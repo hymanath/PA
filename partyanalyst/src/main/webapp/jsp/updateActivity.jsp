@@ -10,13 +10,14 @@
 <title>Update Activity</title>
 	<link href="dist/activity/css/bootstrap.min.css" rel="stylesheet"/>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>	
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/css/activity.custom.css' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/Date/daterangepicker-bs3.css' rel='stylesheet' type='text/css'>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>	
+	<script src="dist/activity/js/bootstrap.min.js" type="text/javascript"></script> 
 	<!--<script type="text/javascript" src="js/bootstrap.js" ></script> -->
-	 <script src="dist/activity/js/bootstrap.min.js" type="text/javascript"></script> 
 	 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
 	 <script src="dist/activity/Date/daterangepicker.js" type="text/javascript"></script>
 	 
@@ -179,6 +180,20 @@
 	</form>
 	
 </div>
+
+<div id="dialogSummaryDistsrict" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h3 class="panel-header text-center"></h3>
+					  </div>
+						<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
+				</div>
+			</div>
+    </div>
 <footer>
 	<p>All &copy; 2015 Telugu Desam Party</p>
 </footer>
@@ -229,7 +244,7 @@ function submitForm(){
 	YAHOO.util.Connect.asyncRequest('POST','saveActivityDetailsAction.action',uploadHandler);
 }
 
-function gettingCadreDetails(locationId){	
+function gettingCadreDetails(locationId,locationName){	
 	locationId = ""+locationId+"";
 	 locationId = locationId.slice(1);
 	 
@@ -253,6 +268,7 @@ function gettingCadreDetails(locationId){
 				  location.reload(); 
 				}
 			}
+			buildingResults(result,locationName);
 		});
 	}
 	
@@ -406,7 +422,7 @@ function getLocationDetailsForActivity()
 						str+='</div></td>';
 						str+='<td  style="text-align:center;"> President </td>';
 						str+='<td  style="text-align:center;"> General Secretary </td>';
-						str+='<td style="text-align:center;"> <input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+');"/></td>';
+						str+='<td style="text-align:center;"> <input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/></td>';
 						str+='</tr>';
 					}
 					str+='</table>';
@@ -418,6 +434,63 @@ function getLocationDetailsForActivity()
 }
 
 getUserAccessConstituencyList();
+
+function buildingResults(result,locationName){
+	
+	var str = '';
+	
+			str+='<table class="table table-bordered" id="constiTableId">';
+		str+='<thead>';
+		str+='<th style="width:50px;"> </th>';
+		str+='<th style="padding-left: 72px;"> MEMBER </th>';
+		str+='<th style="padding-left: 19px;"> MOBILE NO </th>';
+		str+='<th style="padding-left: 19px;"> AGE </th>';
+		str+='<th style="padding-left: 19px;"> GENDER </th>';
+		str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
+		//str+='<th style="padding-left: 19px;"> VOTER ID </th>';
+		str+='</thead>';
+		for(var i in result){
+		 str+='<tr>';
+		str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
+		
+		 str+=' </td>';
+		 str+='<td> '+result[i].name+' ';
+		 //if(basicCmmtyId != 1){
+		 if(result[i].commiteeName!=null){
+			 str+='<br>'+result[i].commiteeName+' - ';
+		 }else{
+			 str+='<br>';
+		 }
+		/* }
+		else{
+			 str+='<br>';
+		 }*/
+		 
+		  //if(basicCmmtyId == 1){
+		 if(result[i].role!=null){
+			 str+=' '+result[i].role+'';
+		 }else{
+			 str+='';
+		 }
+		str+=' <br/> <span> Constituency : '+result[i].constituencyName+' </span>';
+		str+=' <br/> <span> MemberShipNo : '+result[i].id+' </span>';
+		//str+=' <br/> <span> MemberShipNo : <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'"> '+result[i].id+' </a> </span>';
+		  str+=' </td>';	  
+		str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].mobileNo+'</td>';
+		 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
+		 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
+		 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
+		 // str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].voterCardNo+' </td>';
+		 str+='</tr>';
+		}
+	   str+='</tbody>';
+	   str+='</table>';
+	
+	$("#cadreDetailsDiv").html(str);
+	
+	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+' Main Committee Members </span>');
+	 $("#dialogSummaryDistsrict").modal("show");
+}
 </script>
 </body>
 </html>
