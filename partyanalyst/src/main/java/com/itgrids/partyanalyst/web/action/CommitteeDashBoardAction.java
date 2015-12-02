@@ -984,4 +984,18 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
+	public String getComitteeMembersInfoInActivity(){
+
+		try{
+			jObj = new JSONObject(getTask());
+			
+			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoInActivity(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }

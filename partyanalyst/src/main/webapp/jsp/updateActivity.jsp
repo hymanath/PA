@@ -426,7 +426,7 @@ function getPanchayatWardByMandal(mandalId){
 	}
 	
 function buildingResults(result,locationName){
-	
+	 
 	var str = '';
 	
 			str+='<table class="table table-bordered" id="constiTableId">';
@@ -437,7 +437,7 @@ function buildingResults(result,locationName){
 		str+='<th style="padding-left: 19px;"> AGE </th>';
 		str+='<th style="padding-left: 19px;"> GENDER </th>';
 		str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
-		//str+='<th style="padding-left: 19px;"> VOTER ID </th>';
+		//str+='<th style="padding-left: 19px;"> MObile no </th>';
 		str+='</thead>';
 		for(var i in result){
 		 str+='<tr>';
@@ -478,8 +478,6 @@ function buildingResults(result,locationName){
 	
 	$("#cadreDetailsDiv").html(str);
 	
-	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+' Main Committee Members </span>');
-	 $("#dialogSummaryDistsrict").modal("show");
 }
 
 
@@ -643,6 +641,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 
 
 function gettingCadreDetails(locationId,locationName){	
+	
+	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+' Main Committee Members </span>');
+	$("#dialogSummaryDistsrict").modal("show");
+	
 	locationId = ""+locationId+"";
 	var firstChar = locationId.substr(0,1);
 	//console.log(firstChar);
@@ -671,12 +673,12 @@ function gettingCadreDetails(locationId,locationName){
 	}
 	
 		 var jsObj={
-		         locationId:locationId,locationType:locationType,basicCommitteeTypeId:1,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
+		         locationId:locationId,locationType:locationType,basicCommitteeTypeId:1
 		       };
 			   
 		 $.ajax({
 			type : "GET",
-			url : "gettingCadreDetailsAction.action",
+			url : "getComitteeMembersInfoInActivityAction.action",
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){

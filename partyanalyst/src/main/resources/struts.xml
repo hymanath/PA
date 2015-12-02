@@ -11035,5 +11035,10 @@
 			</result>
 		</action>
 		
+		<action name="getComitteeMembersInfoInActivityAction" class="committeeDashBoardAction" method="getComitteeMembersInfoInActivity">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVOList</param>
+			</result>
+		</action>
 </package>
 </struts>      
