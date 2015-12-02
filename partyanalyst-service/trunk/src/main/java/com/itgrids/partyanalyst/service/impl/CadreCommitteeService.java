@@ -16336,9 +16336,33 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0) || 
 											( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0 )){
 										 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
-											
+										 
+										 String locationTypeflagId = activityvo.getLocationLevel().toString().substring(0, 1);										
+										 Long locationLevel = activityvo.getLocationLevel();
+										 Long locationLevelId = 6L;
+										 if(locationLevel.longValue() == 1L)
+										 {
+											 if(locationTypeflagId.equalsIgnoreCase("1"))
+													locationLevelId = 6L;
+												if(locationTypeflagId.equalsIgnoreCase("2"))
+													locationLevelId = 8L;
+										 }
+										 else if(locationLevel.longValue() == 2L)
+										 {
+											 	if(locationTypeflagId.equalsIgnoreCase("1"))
+													locationLevelId = 7L;
+												if(locationTypeflagId.equalsIgnoreCase("2"))
+													locationLevelId = 5L;
+												if(locationTypeflagId.equalsIgnoreCase("3"))
+													locationLevelId = 9L;
+										 }
+										 else if(locationLevel.longValue() == 3L)
+											 locationLevelId = 11L;
+										 else if(locationLevel.longValue() == 4L)
+											 locationLevelId = 10L;
+										
 										activityLocationInfo.setActivityScopeId(activityScopeId);
-										activityLocationInfo.setLocationLevel(activityvo.getLocationLevel());
+										activityLocationInfo.setLocationLevel(locationLevelId);
 										activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
 										try {
 											activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
@@ -16489,7 +16513,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        return locationsList;
 	}
 	
-	public LocationWiseBoothDetailsVO getActivityLocationDetails(boolean isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId)
+	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
+			 String searchStartDateStr,String searchEndDateStr)
 	{
 		LocationWiseBoothDetailsVO returnVO = null;	
 		try {
@@ -16497,33 +16522,61 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			List<Long> updatedLocationIdsList  = new ArrayList<Long>(0);
 			List<LocationWiseBoothDetailsVO> reportList = null;
 			List<Long> constituencyIds = new ArrayList<Long>(0);
-			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>(0);
+			Map<Long,List<ActivityVO>> activityMap = new LinkedHashMap<Long, List<ActivityVO>>(0);
 			//List<LocationWiseBoothDetailsVO> mandalList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 			//List<LocationWiseBoothDetailsVO> panchayatList=new ArrayList<LocationWiseBoothDetailsVO>(0);
 			
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
-			SimpleDateFormat format1 = new SimpleDateFormat("yy-MM-dd");
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date startDate = format.parse(searchStartDateStr);
+			Date endDate = format.parse(searchEndDateStr);
+			
 			if(activityScopeId != null && activityScopeId.longValue()>0L)
 			{
-				 List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId);
+				 List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId,startDate,endDate);
 				 if(updatedList != null && updatedList.size()>0)
 				 {
 					 for (Object[] locations : updatedList) {
 						 Long locationValue = locations[0] != null ? Long.valueOf(locations[0].toString()):0L;
-						 String planDate = locations[1] != null ? locations[1].toString():"";
-						 String conductedDate = locations[2] != null ? locations[2].toString():"";
+						 String planDate = locations[1] != null ? locations[1].toString():null;
+						 String conductedDate = locations[2] != null ? locations[2].toString():null;
+						 Long locationlevel = locations[3] != null ? Long.valueOf(locations[3].toString()):0L;
+						 
 						 Date planDateStr = format1.parse(planDate);
 						 Date conductedDateStr = format1.parse(conductedDate);
-						 
+
+						 Long locationLevelId = 1L;
+						 if(locationlevel.longValue() == 6L || locationlevel.longValue() == 7L)
+						 {
+							 locationLevelId = 1L;
+						 }
+						 else if(locationlevel.longValue() == 8L || locationlevel.longValue() == 5L)
+						 {
+							 locationLevelId = 2L;
+						 }
+						 else if(locationlevel.longValue() == 9L)
+						 {
+							 locationLevelId = 3L;
+						 }
+						 String finalIdStr = locationLevelId+""+locationValue;
+						 Long finalLocationId = Long.valueOf(finalIdStr);
+						 List<ActivityVO> list = new ArrayList<ActivityVO>(0);
+						 if(activityMap.get(finalLocationId) != null)
+						 {
+							 list = activityMap.get(finalLocationId);
+						 }
 						 ActivityVO vo = new ActivityVO();
 						 vo.setPlannedDate(format.format(planDateStr).toString());
 						 vo.setConductedDate(format.format(conductedDateStr).toString());
-						 vo.setLocationValue(locationValue);
-						 activityMap.put(locationValue, vo);
+						 vo.setLocationValue(finalLocationId);
+						 vo.setLocationLevel(locationlevel);
+						 list.add(vo);
+						 activityMap.put(finalLocationId, list);
 						 updatedLocationIdsList.add(locationValue);
 					}
 				 }
-				 //
+				 
 			}
 			if(activityLevelId != null && activityLevelId.longValue()>0L)
 			{
@@ -16617,25 +16670,67 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				{
 					returnVO = new LocationWiseBoothDetailsVO();
 					returnList = new ArrayList<LocationWiseBoothDetailsVO>(0);
-					if(isChecked)
+					if(isChecked != null && isChecked.equalsIgnoreCase("notConducted"))
 					{
-							for (LocationWiseBoothDetailsVO vo : reportList) {
-									String locationIdStr = vo.getLocationId().toString().substring(1);
-									if(!updatedLocationIdsList.contains(Long.valueOf(locationIdStr)))
-										returnList.add(vo);
-							}
-					}
-					else{
 						for (LocationWiseBoothDetailsVO vo : reportList) {
-								String locatinId = vo.getLocationId().toString().substring(1);//11
-								Long id = Long.valueOf(locatinId);
-								ActivityVO activityVO = activityMap.get(id);//11
-								if(activityVO != null)
+							String locationIdStr = vo.getLocationId().toString().substring(1);
+							if(!updatedLocationIdsList.contains(Long.valueOf(locationIdStr))){
+								
+								LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
+								finalVO = vo;
+								List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+								if(activityVOList != null && activityVOList.size()>0)
 								{
-									vo.setPlanedDate(activityVO.getPlannedDate());
-									vo.setConductedDate(activityVO.getConductedDate());
+									for (ActivityVO activityVO : activityVOList) {
+										finalVO.setPlanedDate(activityVO.getPlannedDate());
+										finalVO.setConductedDate(activityVO.getConductedDate());
+										returnList.add(finalVO);
+									}
+								}else
+								{
+									returnList.add(finalVO);
 								}
-								returnList.add(vo);
+							}
+						}
+					}
+					else if(isChecked != null && isChecked.equalsIgnoreCase("conducted")){
+						for (LocationWiseBoothDetailsVO vo : reportList) {
+							String locationIdStr = vo.getLocationId().toString().substring(1);
+							if(updatedLocationIdsList.contains(Long.valueOf(locationIdStr))){
+								LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
+								finalVO = vo;
+								List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+								if(activityVOList != null && activityVOList.size()>0)
+								{
+									for (ActivityVO activityVO : activityVOList) {
+										finalVO.setPlanedDate(activityVO.getPlannedDate());
+										finalVO.setConductedDate(activityVO.getConductedDate());
+										returnList.add(finalVO);
+									}
+								}else
+								{
+									returnList.add(finalVO);
+								}
+							}
+						}
+					}
+					else if(isChecked != null && isChecked.equalsIgnoreCase("all")){
+						for (LocationWiseBoothDetailsVO vo : reportList) {
+
+							LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
+							finalVO = vo;
+							List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+							if(activityVOList != null && activityVOList.size()>0)
+							{
+								for (ActivityVO activityVO : activityVOList) {
+									finalVO.setPlanedDate(activityVO.getPlannedDate());
+									finalVO.setConductedDate(activityVO.getConductedDate());
+									returnList.add(finalVO);
+								}
+							}else
+							{
+								returnList.add(finalVO);
+							}
 						}
 					}
 						/*
