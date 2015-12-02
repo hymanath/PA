@@ -2019,11 +2019,11 @@ public String getSummaryDetails(){
 			if(regVO==null){
 				return "input";
 			}
-			
-			status = cadreCommitteeService.saveActivityDetails(activityVO);
+			Long userId = regVO.getRegistrationID();
+			status = cadreCommitteeService.saveActivityDetails(activityVO,userId);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception occured in saveActivityDetails() At CadreCommitteeAction",e);
 		}
 		
 		return Action.SUCCESS;
