@@ -73,7 +73,15 @@
    		<div class="col-md-12">
         	<div class="panel panel-default panel-custom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES</h4>
+                	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES
+						<span class="pull-right" >
+							<div class="input-group col-md-12" style="margin-top:-8px">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+								<input type="text" class="searchDateCls form-control" />
+							</div>
+						</span>
+					</h4>
+					
                 </div>
                 <div class="panel-body">
                 	<div class="row">
@@ -81,21 +89,25 @@
                         	<img src="img/searchicon.png" style="border-right:1px solid #00B17D">
                         </div>
                         <div class="col-md-9">
+							<div class="row">
+								<div class="col-md-9" id="ErrDiv" style="color:#E6211E;">
+								</div>
+							</div>
                         	<div class="row">
 							<div class="col-md-4">
                                 	<label>Activity Type</label>
                                     <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" onchange="get();" cssClass="input-block-level form-control"/>
-                                </div>
-                            	<div class="col-md-4">
-                                	<label>Activity Level</label>
-                                    <s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
-                                </div>
-                                <div class="col-md-4">
-                                	<label> Activity Name </label>
-                                    <select id="ActivityList" class="form-control" name="activityVO.activityLevelId">
-                                    	<option value="0"> Select Activity </option>
-                                    </select>
-                                </div>
+                            </div>
+							<div class="col-md-4">
+								<label>Activity Level</label>
+								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
+							</div>
+							<div class="col-md-4">
+								<label> Activity Name </label>
+								<select id="ActivityList" class="form-control" name="activityVO.activityLevelId">
+									<option value="0"> Select Activity </option>
+								</select>
+							</div>
 								<!--
                                 <div class="col-md-12 m_top10">
                                 	<label class="radio-inline">
@@ -109,37 +121,38 @@
                                     </label>
                                 </div>
 								-->
-                                <div class="col-md-4">
-                                	<label>Constituency</label>
-                                    <select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)">
-                                    	
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                	<label >Mandal/ Town/ Division</label>
-                                    <select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">
-                                    	<option value="0"> Mandal/ Town/ Division</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                	<label>Panchayat/ Ward</label>
-                                    <select id="villageWardsList" class="form-control">
-                                    	<option value="0"> Select Panchayat/ Ward</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 m_top10">
-                                	<button class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity();">SEARCH</button>
-                                </div>
+							<div class="col-md-4">
+								<label>Constituency</label>
+								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)">
+									
+								</select>
+							</div>
+							<div class="col-md-4">
+								<label >Mandal/ Town/ Division</label>
+								<select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">
+									<option value="0"> Mandal/ Town/ Division</option>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<label>Panchayat/ Ward</label>
+								<select id="villageWardsList" class="form-control">
+									<option value="0"> Select Panchayat/ Ward</option>
+								</select>
+							</div>
+						   <div class="col-md-4 m_top10">
+								<button class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity(0,0);">SEARCH</button>
+							</div>
+								
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
-        	<div class="panel panel-default panel-custom">
+        <div class="col-md-12" >
+        	<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
             	<div class="panel-heading">
-                	<h4 class="panel-title">SEARCH RESULTS<span class="font-12">- Activity Name(Activity level)</span>
+                	<h4 class="panel-title">SEARCH RESULTS  <span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
                     	<label class="checkbox-inline">
 							<span>
@@ -148,6 +161,10 @@
 							<span  style="margin-left:30px;">
 								<input type="checkbox" class="checkboxCls" checked="checked" id="notConductedId">Show Not Conducted Locations
 							</span>
+							<span  style="margin-left:30px;">
+								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity(0,0);">
+							</span>
+							
                         </label>
                     </span>
                     </h4>
@@ -174,7 +191,7 @@
                     
                       <!-- Tab panes -->
                       <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home"></div>
+                        <div role="tabpanel" class="tab-pane active" id="home" style="margin-top:10px;"></div>
 						          
                         <div role="tabpanel" class="tab-pane" id="profile">...</div>
                         <div role="tabpanel" class="tab-pane" id="messages">...</div>
@@ -211,9 +228,67 @@
 
 <script>
 $(document).ready(function(){
-	
-	
+	//$('.searchDateCls').daterangepicker();
+	$('.applyBtn').click(function(){
+		
+		var startDate = $("input[name=daterangepicker_start]").val();
+		var endDate =  $("input[name=daterangepicker_end]").val();
+		getLocationDetailsForActivity(startDate,endDate);
+		//alert(startDate);
+	});
 });
+
+var fromTypeGlob;
+$(function () {
+	var cb = function(start, end, label) {
+	//console.log(start.toISOString(), end.toISOString(), label);
+	$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' - ' + end.format('D MMMM, YYYY'));
+	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+  }
+  var optionSet1 = {
+	startDate: moment().startOf('month'),
+	endDate: moment().endOf('month'),
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [ moment().subtract(30, 'days'),moment()],
+	   'Lat 60 Days': [moment().subtract(60, 'days'),moment()],
+	   'Last 180 Days': [moment().subtract(6, 'months'),moment()],
+	   'Last 365 Days': [moment().subtract(1, 'year'),moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'DD/MM/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('.searchDateCls').val(moment().format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY'));
+
+  $('.searchDateCls').daterangepicker(optionSet1, cb);
+
+  $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+});
+
 function getActivityNames()
 {
 	var jObj = {
@@ -239,7 +314,10 @@ function submitForm(){
 			var myResult = (String)(uploadResult);
 			
 			if(myResult.search('success') != -1){
-				
+				alert("Successfully UPdated");
+				var startDate = $("input[name=daterangepicker_start]").val();
+				var endDate =  $("input[name=daterangepicker_end]").val();
+				getLocationDetailsForActivity(startDate,endDate);
 			}else{
 			}
 		},
@@ -405,116 +483,162 @@ function buildingResults(result,locationName){
 }
 
 
-function getLocationDetailsForActivity()
+function getLocationDetailsForActivity(startDate,endDate)
 {
-	$('#home').html("");
+	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
-	var locationId = $('#villageWardsList').val();
-	var searchBy="Panchayat";
+	var ActivityId =$('#ActivityList').val();
+	var constituencyId =$('#constiList').val();
 	
-	if(locationId == 0)
+	
+	$('#ErrDiv').html("");
+	var errStr ='';
+	if(activityTypeId == null || activityTypeId == 0)
 	{
-		locationId = $('#mandalsList').val();
-		searchBy = "mandal";
-		if(locationId == 0)
-		{
-			locationId = $('#constiList').val();
-			searchBy = "Constituency";
-		}
+		errStr+="Please Select Activity Type.";
+	}
+	else if(activityLevelId == null || activityLevelId == 0)
+	{
+		errStr+="Please Select Activity Level.";
+	}
+	else if(ActivityId == null || ActivityId == 0)
+	{
+		errStr+="Please Select Activity .";
+	}
+	else if(constituencyId == null || constituencyId == 0)
+	{
+		errStr+="Please Select Constituency.";
 	}
 	
-	var value = 2;
-	if($("#notConductedId").is(':checked'))
-		value = 1;
-	if($("#conductedId").is(':checked'))
-		value = 2;
-	
-	var jObj = {
-		checkedId:value,
-		activityScopeId:$('#ActivityList').val(),
-		activityLevelId:activityLevelId,
-		searchBy:searchBy,
-		locationId:locationId,
-		task:"getLocationDetailsForActivity"
-	};		
-	$.ajax({
-          type:'GET',
-          url: 'getLocationDetailsForActivity.action',
-         data : {task:JSON.stringify(jObj)} ,
-     }).done(function(result){			
-			//console.log(result);
-			var str='';
-			if( result!= null)
+	if(errStr!= null && errStr.length>0)
+		$('#ErrDiv').html(errStr);
+	else
+	{
+		$('#resultsDiv').show();	
+		$('#home').html("<img src='images/Loading-data.gif'/>");	
+			if(startDate == 0)
 			{
-				str+='<table class="table table-bordered bg_ff" id="locationsTab">';
-				str+='<thead>';
-				str+='<tr>';
-				//str+='<th>CONSTITUENCY</th>';
-				if(activityLevelId == 2)
-					str+='<th style="background-color:#00B17D;">MANDAL/ TOWN/ DIVISION</th>';
-				else if(activityLevelId == 1)					
-					str+='<th style="background-color:#00B17D;">PANCHAYAT/ WARD</th>';
-				
-				str+='<th style="background-color:#00B17D;">PLANNED DATE</th>';
-				str+='<th style="background-color:#00B17D;">CONDUCTED DATE</th>';
-				//str+='<th>PRESIDENT</th>';
-				//str+='<th>GENERAL SECRETARY</th>';
-				str+='<th style="background-color:#00B17D;">COMMITTEE MEMBERS</th>';
-				str+='</tr>';
-				str+='</thead>';
-				
-				if(result.result != null && result.result.length>0){
-					for(var i in result.result)
-					{
-						str+='<tr>';
-						//str+='<td></td>';
-						str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
-						str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
-						str+='<td> '+result.result[i].locationName+'</td>';
-						str+='<td  style="text-align:center;">';
-						str+='<div class="input-g1 input-group">';
-							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							if(result.result[i].planedDate != null)
-								str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value="'+result.result[i].planedDate+'"/>';
-							else
-								str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
-						str+='</div></td>';
-						str+='<td  style="text-align:center;">';
-						str+='<div class="input-g1 input-group">';
-							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							if(result.result[i].conductedDate != null)
-								str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
-							else
-								str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
-						str+='</div></td>';
-						/*
-						if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
-						{
-							if(result.result[i].hamletsOfTownship.length >= 1)
-								str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[0].name+'<br>'+result.result[i].hamletsOfTownship[0].partno+' </td>';
-							if(result.result[i].hamletsOfTownship.length >= 2)
-								str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[1].name+'<br>'+result.result[i].hamletsOfTownship[1].partno+' </td>';
-						}else{
-							str+='<td  style="text-align:center;"> - </td>';
-							str+='<td  style="text-align:center;"> - </td>';
-						}
-						*/
-						str+='<td style="text-align:center;"> <input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/></td>';
-						str+='</tr>';
-					}
-					str+='</table>';
+				startDate = $("input[name=daterangepicker_start]").val();
+				endDate =  $("input[name=daterangepicker_end]").val();
+			}	
+			
+			var searchBy="Panchayat";
+			var locationId = $('#villageWardsList').val();	
+			if(locationId == 0)
+			{
+				locationId = $('#mandalsList').val();
+				searchBy = "mandal";
+				if(locationId == 0)
+				{
+					locationId = $('#constiList').val();
+					searchBy = "Constituency";
 				}
 			}
-			$('#home').html(str);
-			$('#home').append(' <div><input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
-			$('.dateCls').daterangepicker({singleDatePicker:true});
 			
-			$("#locationsTab").dataTable({
-			"iDisplayLength": 20,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-		});
+			var value = "all";
+			if($("#notConductedId").is(':checked') && $("#conductedId").is(':checked'))
+			{
+				value = "all";
+			}
+			else{
+				if($("#notConductedId").is(':checked'))
+				value = "notConducted";
+			if($("#conductedId").is(':checked'))
+				value = "conducted";
+			}
+			
+			
+			var jObj = {
+				startDate:startDate,
+				endDate:endDate,
+				checkedValue:value,
+				activityScopeId:$('#ActivityList').val(),
+				activityLevelId:activityLevelId,
+				searchBy:searchBy,
+				locationId:locationId,
+				task:"getLocationDetailsForActivity"
+			};		
+			$.ajax({
+				  type:'GET',
+				  url: 'getLocationDetailsForActivity.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){			
+					//console.log(result);
+					var str='';
+					if( result!= null)
+					{
+						str+='<table class="table table-bordered bg_ff" id="locationsTab">';
+						str+='<thead>';
+						str+='<tr>';
+						//str+='<th>CONSTITUENCY</th>';
+						if(activityLevelId == 2)
+							str+='<th style="background-color:#00B17D;">MANDAL/ TOWN/ DIVISION</th>';
+						else if(activityLevelId == 1)					
+							str+='<th style="background-color:#00B17D;">PANCHAYAT/ WARD</th>';
+						
+						str+='<th style="background-color:#00B17D;">PLANNED DATE</th>';
+						str+='<th style="background-color:#00B17D;">CONDUCTED DATE</th>';
+						//str+='<th>PRESIDENT</th>';
+						//str+='<th>GENERAL SECRETARY</th>';
+						str+='<th style="background-color:#00B17D;">COMMITTEE MEMBERS</th>';
+						str+='</tr>';
+						str+='</thead>';
+						
+						if(result.result != null && result.result.length>0){
+							for(var i in result.result)
+							{
+								str+='<tr>';
+								//str+='<td></td>';
+								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+								str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
+								str+='<td> '+result.result[i].locationName+'</td>';
+								str+='<td  style="text-align:center;">';
+								str+='<div class="input-g1 input-group">';
+									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
+									if(result.result[i].planedDate != null)
+										str+=''+result.result[i].planedDate+'';
+									else
+										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
+								str+='</div></td>';
+								str+='<td  style="text-align:center;">';
+								str+='<div class="input-g1 input-group">';
+									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
+									if(result.result[i].conductedDate != null)
+										str+=''+result.result[i].conductedDate+'';
+									else
+										str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+								str+='</div></td>';
+								/*
+								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
+								{
+									if(result.result[i].hamletsOfTownship.length >= 1)
+										str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[0].name+'<br>'+result.result[i].hamletsOfTownship[0].partno+' </td>';
+									if(result.result[i].hamletsOfTownship.length >= 2)
+										str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[1].name+'<br>'+result.result[i].hamletsOfTownship[1].partno+' </td>';
+								}else{
+									str+='<td  style="text-align:center;"> - </td>';
+									str+='<td  style="text-align:center;"> - </td>';
+								}
+								*/
+								str+='<td style="text-align:center;"> <input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/></td>';
+								str+='</tr>';
+							}
+							str+='</table>';
+						}
+					}
+					$('#home').html(str);
+					$('#home').append(' <div><input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
+					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
+					
+					$("#locationsTab").dataTable({
+					"iDisplayLength": 20,
+					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+					$("#locationsTab").removeClass("dataTable");
+					$('#headingId').html(''+$("#ActivityList option:selected").text()+' - '+$("#activityLevelList option:selected").text()+'');
+				});	
+	}
 		
-		});		
 }
 
 
@@ -566,6 +690,8 @@ function gettingCadreDetails(locationId,locationName){
 	}
 	
 getUserAccessConstituencyList();
+
+
 
 </script>
 </body>
