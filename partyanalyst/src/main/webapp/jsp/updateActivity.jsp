@@ -217,7 +217,7 @@
 						<h3 class="panel-header text-center"></h3>
 					  </div>
 						<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
-						<center><img class="text-center" id="dataLoadingImg" src="images/icons/loading.gif" style="display:none;"/></center>
+						<center><img class="text-center" id="dataLoadingImg" src="images/Loading-data.gif" style="display:none;"/></center>
 				</div>
 			</div>
     </div>
