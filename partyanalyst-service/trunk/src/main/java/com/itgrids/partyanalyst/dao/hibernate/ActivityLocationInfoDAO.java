@@ -16,10 +16,10 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 	}
 
 	
-	public List<Long> getUpdatedLocationsListForScope(Long activityScopeId)
+	public List<Object[]> getUpdatedLocationsListForScope(Long activityScopeId)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.locationValue from ActivityLocationInfo model where " +
+		queryStr.append(" select distinct model.locationValue,date(model.plannedDate),date(model.conductedDate) from ActivityLocationInfo model where " +
 				"model.activityScopeId =:activityScopeId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
