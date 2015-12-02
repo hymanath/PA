@@ -142,8 +142,12 @@
                 	<h4 class="panel-title">SEARCH RESULTS<span class="font-12">- Activity Name(Activity level)</span>
                     <span class="pull-right">
                     	<label class="checkbox-inline">
-                        	<input type="checkbox" class="checkboxCls" id="conductedId">Show Conducted Locations
-                        	<input type="checkbox" class="checkboxCls" id="notConductedId">Show Not Conducted Locations
+							<span>
+								<input type="checkbox" class="checkboxCls" id="conductedId">Show Conducted Locations
+							</span>
+							<span  style="margin-left:30px;">
+								<input type="checkbox" class="checkboxCls" checked="checked" id="notConductedId">Show Not Conducted Locations
+							</span>
                         </label>
                     </span>
                     </h4>
@@ -422,6 +426,9 @@ function getLocationDetailsForActivity()
 	var value = 2;
 	if($("#notConductedId").is(':checked'))
 		value = 1;
+	if($("#conductedId").is(':checked'))
+		value = 2;
+	
 	var jObj = {
 		checkedId:value,
 		activityScopeId:$('#ActivityList').val(),
@@ -467,12 +474,18 @@ function getLocationDetailsForActivity()
 						str+='<td  style="text-align:center;">';
 						str+='<div class="input-g1 input-group">';
 							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate"/>';
+							if(result.result[i].planedDate != null)
+								str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value="'+result.result[i].planedDate+'"/>';
+							else
+								str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 						str+='</div></td>';
 						str+='<td  style="text-align:center;">';
 						str+='<div class="input-g1 input-group">';
 							str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-							str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate"/>';
+							if(result.result[i].conductedDate != null)
+								str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+							else
+								str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
 						str+='</div></td>';
 						/*
 						if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
