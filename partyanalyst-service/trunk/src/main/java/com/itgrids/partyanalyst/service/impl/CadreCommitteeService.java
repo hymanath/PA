@@ -16501,6 +16501,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			//List<LocationWiseBoothDetailsVO> mandalList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 			//List<LocationWiseBoothDetailsVO> panchayatList=new ArrayList<LocationWiseBoothDetailsVO>(0);
 			
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+			SimpleDateFormat format1 = new SimpleDateFormat("yy-MM-dd");
 			if(activityScopeId != null && activityScopeId.longValue()>0L)
 			{
 				 List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId);
@@ -16510,10 +16512,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 Long locationValue = locations[0] != null ? Long.valueOf(locations[0].toString()):0L;
 						 String planDate = locations[1] != null ? locations[1].toString():"";
 						 String conductedDate = locations[2] != null ? locations[2].toString():"";
+						 Date planDateStr = format1.parse(planDate);
+						 Date conductedDateStr = format1.parse(conductedDate);
 						 
 						 ActivityVO vo = new ActivityVO();
-						 vo.setPlannedDate(planDate);
-						 vo.setConductedDate(conductedDate);
+						 vo.setPlannedDate(format.format(planDateStr).toString());
+						 vo.setConductedDate(format.format(conductedDateStr).toString());
 						 vo.setLocationValue(locationValue);
 						 activityMap.put(locationValue, vo);
 						 updatedLocationIdsList.add(locationValue);
@@ -16623,8 +16627,9 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					}
 					else{
 						for (LocationWiseBoothDetailsVO vo : reportList) {
-							String locatinId = vo.getLocationId().toString().substring(1);
-								ActivityVO activityVO = activityMap.get(Long.valueOf(locatinId));
+								String locatinId = vo.getLocationId().toString().substring(1);//11
+								Long id = Long.valueOf(locatinId);
+								ActivityVO activityVO = activityMap.get(id);//11
 								if(activityVO != null)
 								{
 									vo.setPlanedDate(activityVO.getPlannedDate());
