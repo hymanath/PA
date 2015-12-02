@@ -217,6 +217,7 @@
 						<h3 class="panel-header text-center"></h3>
 					  </div>
 						<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
+						<center><img class="text-center" id="dataLoadingImg" src="images/icons/loading.gif" style="display:none;"/></center>
 				</div>
 			</div>
     </div>
@@ -476,6 +477,7 @@ function buildingResults(result,locationName){
 	   str+='</tbody>';
 	   str+='</table>';
 	
+	$("#dataLoadingImg").hide();
 	$("#cadreDetailsDiv").html(str);
 	
 }
@@ -642,8 +644,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 
 function gettingCadreDetails(locationId,locationName){	
 	
+	$("#cadreDetailsDiv").html('');
 	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+' Main Committee Members </span>');
 	$("#dialogSummaryDistsrict").modal("show");
+	$("#dataLoadingImg").show();
 	
 	locationId = ""+locationId+"";
 	var firstChar = locationId.substr(0,1);
@@ -698,4 +702,3 @@ getUserAccessConstituencyList();
 </script>
 </body>
 </html>
- 
