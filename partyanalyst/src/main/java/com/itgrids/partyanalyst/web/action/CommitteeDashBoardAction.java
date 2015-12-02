@@ -967,17 +967,16 @@ public String getAllConstituencysForADistrict(){
 	{
 		try {
 			jObj = new JSONObject(getTask());
-			Long checkedId =jObj.getLong("checkedId");
+			String checkedValue =jObj.getString("checkedValue");
 			Long activityScopeId = jObj.getLong("activityScopeId");
 			Long activityLevelId =jObj.getLong("activityLevelId");
 			String searchBy =jObj.getString("searchBy");
 			Long locationId = jObj.getLong("locationId");
+			String searchStartDateStr=jObj.getString("startDate");
+			String searchEndDateStr=jObj.getString("endDate");
 			
-			boolean isChecked = false;
-			if(checkedId.longValue() == 1L)
-				isChecked = true;
-			
-			locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(isChecked,activityScopeId,activityLevelId,searchBy,locationId);
+			locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
+					locationId,searchStartDateStr,searchEndDateStr);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
