@@ -1845,4 +1845,49 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		query.setParameterList("locationVal", locationVal);
 		return query.list();
 	}
+	
+	/*public List<Object[]> getComitteeMembersInfoInActivity(Long levelId,Long locationVal,Long committeeTypeId)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image, " +
+				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+				" model.tdpCadre.mobileNo,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,constituency.name " +
+				" from TdpCommitteeMember model left join model.tdpCadre.userAddress.constituency constituency " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal");
+		if(committeeTypeId.longValue() !=0L)
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
+		else 
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId != 1 ");
+		
+		
+		str.append(" order by model.tdpCommitteeRole.tdpRoles.tdpRolesId  ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameter("locationVal", locationVal);
+		if(committeeTypeId.longValue() !=0L)
+			query.setParameter("committeeTypeId", committeeTypeId);
+		return query.list();
+			
+	}*/
+	
+	public List<Object[]> getComitteeMembersInfoInActivity(Long levelId,Long locationVal,Long committeeTypeId)
+	{
+		Query query = getSession().createSQLQuery("select TR.tdp_roles_id,TR.role,TC.tdp_cadre_id,TC.first_name,TC.image,C.caste_name,TC.gender, " +
+							" TC.age,CC.category_name,TC.mobile_no,TBC.name,CO.name " +
+							" from tdp_committee_member TCM,tdp_committee_role TCR,tdp_roles TR,tdp_cadre TC,caste_state CS,caste C,caste_category_group CCG,caste_category CC, " +
+							" tdp_committee TCO,tdp_basic_committee TBC,user_address UA,constituency CO " +
+							" where TCM.tdp_committee_role_id = TCR.tdp_committee_role_id and TCR.tdp_roles_id = TR.tdp_roles_id and TCM.tdp_cadre_id = TC.tdp_cadre_id " +
+							" and TC.caste_state_id = CS.caste_state_id and CS.caste_id = C.caste_id and CS.caste_category_group_id = CCG.caste_category_group_id " +
+							" and CCG.caste_category_id = CC.caste_category_id and TCR.tdp_committee_id = TCO.tdp_committee_id " +
+							" and TCO.tdp_basic_committee_id = TBC.tdp_basic_committee_id and TC.address_id = UA.user_address_id and UA.constituency_id = CO.constituency_id " +
+							" and TCO.tdp_committee_level_id = :levelId and TCM.is_active = 'Y' and TCO.tdp_committee_level_value = :locationVal " +
+							" and TCO.tdp_basic_committee_id = :committeeTypeId order by TR.tdp_roles_id ");
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("locationVal", locationVal);
+		query.setParameter("committeeTypeId", committeeTypeId);
+		
+		return query.list();
+	}
 }
