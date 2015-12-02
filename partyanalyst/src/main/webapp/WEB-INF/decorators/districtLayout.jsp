@@ -55,7 +55,7 @@
                     <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
                     Menu <img src="images/menu_icon.png" />
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+                    <ul class="dropdown-menu districtdropdown" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
 					 <c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a tabindex="-1" href="dashBoardAction.action"> Main DashBoard </a></li>
 					</c:if>
@@ -117,7 +117,8 @@
 						</c:if>
                     </c:if>
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE')}">
-						 <li><a tabindex="-1" href="updateActivityAction.action">Activity Details</a></li>
+					  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+						 <li><a tabindex="-1" href="updateActivityAction.action">ACTIVITY DETAILS</a></li>
 					</c:if>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>                 
@@ -142,10 +143,17 @@
 		<div>
 	<div>	
 	</footer>
-
-
-	
-	
+<script>
+$(".dropdown-toggle").click(function(){
+	$(".districtdropdown").toggle()
+});	
+/*
+$(document).click(function(e){
+	$(".districtdropdown").hide();
+	e.preventDefault()
+});
+*/
+</script>
 </body>
 
 </html>
