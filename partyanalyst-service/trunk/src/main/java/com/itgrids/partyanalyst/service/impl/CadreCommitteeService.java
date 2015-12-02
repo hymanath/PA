@@ -17116,5 +17116,42 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return allocatedMap;
 	}
+	
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoInActivity(Long locationId,Long locationType,Long basicCommitteeTypeId)
+	{
+		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList= new ArrayList<CadreCommitteeMemberVO>();
+		try
+		{
+			//19tehsilId, 20localElectionBodyId 21constituencyId
+		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoInActivity(locationType,locationId,basicCommitteeTypeId);
+		    if(tdpCadresList!=null && tdpCadresList.size()>0){
+		    	
+		    	for (Object[] objects : tdpCadresList){
+		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
+		    		
+		    		cadreCommitteeMemberVO.setLevel(objects[0] != null ? Long.valueOf(objects[0].toString().trim()):0L);//roleId
+		    		cadreCommitteeMemberVO.setRole(objects[1] != null ?objects[1].toString():"");//role
+		    		cadreCommitteeMemberVO.setId(objects[2] != null ?Long.valueOf(objects[2].toString()):0L);//cadreId
+		    		cadreCommitteeMemberVO.setName(objects[3] != null ?objects[3].toString():"");//cadreName
+		    		cadreCommitteeMemberVO.setImagePath(objects[4] != null ?objects[4].toString():"");//image
+		    		cadreCommitteeMemberVO.setCasteName(objects[5] != null ? objects[5].toString().trim():"");
+		    		cadreCommitteeMemberVO.setGender(objects[6] != null ? objects[6].toString().trim():"");
+		    		cadreCommitteeMemberVO.setAge(objects[7] != null ? objects[7].toString().trim():"");
+		    		cadreCommitteeMemberVO.setCasteGroupName(objects[8] != null ? objects[8].toString().trim():"");
+		    		cadreCommitteeMemberVO.setMobileNo(objects[9] != null ? objects[9].toString().trim():"");
+		    		cadreCommitteeMemberVO.setCommiteeName(objects[10] != null ? objects[10].toString().trim():"");
+		    		cadreCommitteeMemberVO.setConstituencyName(objects[11] != null ? objects[11].toString(): "");
+		    		
+		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+				}
+		    }	
+		}
+		catch(Exception e){
+			
+			LOG.error("Exception raised in getComitteeMembersInfoByCommiteTypeAndLocation", e);
+		}
+		return cadreCommitteeMemberVOList;
+	}
+
 
 }

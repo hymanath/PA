@@ -155,5 +155,5 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId);
 	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,List<Long> constituencyIds,List<LocationWiseBoothDetailsVO> mandalList,
 				List<LocationWiseBoothDetailsVO> panchayatList);
-	 
+	 public List<CadreCommitteeMemberVO> getComitteeMembersInfoInActivity(Long locationId,Long locationType,Long basicCommitteeTypeId);
 }
