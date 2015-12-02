@@ -149,7 +149,8 @@ public interface ICadreCommitteeService {
 	 public BasicVO getActivityTypeList();
 	 public List<IdNameVO> getActivityLevelsList();
 	 public List<IdNameVO> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId);
-	 public LocationWiseBoothDetailsVO getActivityLocationDetails(boolean isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId);
+	 public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
+			 String searchDateStr,String searchEndDateStr);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId);
 	 public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId);
 	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,List<Long> constituencyIds,List<LocationWiseBoothDetailsVO> mandalList,
