@@ -16321,7 +16321,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return cadreIds;
 	}
 	
-	public ResultStatus saveActivityDetails(final ActivityVO activityVO){
+	public ResultStatus saveActivityDetails(final ActivityVO activityVO,final Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 			 try {
 				 String status = (String) transactionTemplate.execute(new TransactionCallback() {
@@ -16371,6 +16371,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										} catch (ParseException e) {
 											LOG.error("Exception rised in saveActivityDetails()",e);
 										}
+										activityLocationInfo.setInsertedBy(userId);
+										activityLocationInfo.setUpdatedBy(userId);
 										activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 										
 										activityLocationInfoDAO.save(activityLocationInfo);

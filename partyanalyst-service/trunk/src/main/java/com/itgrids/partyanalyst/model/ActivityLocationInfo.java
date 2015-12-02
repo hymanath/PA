@@ -36,10 +36,14 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Date conductedDate;
 	private Date insertionTime;
 	private Long constituencyId;
+	private Long insertedBy;
+	private Long updatedBy;
 	
 	private Constituency constituency;
 	private ActivityScope activityScope;
 	private RegionScopes regionScopes;
+	private User insertedUser;
+	private User updatedUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -156,5 +160,41 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.constituency = constituency;
 	}
 	
+	@Column(name="inserted_by")
+	public Long getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(Long insertedBy) {
+		this.insertedBy = insertedBy;
+	}
 	
+	@Column(name="updated_by")
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="inserted_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedUser() {
+		return updatedUser;
+	}
+	public void setUpdatedUser(User updatedUser) {
+		this.updatedUser = updatedUser;
+	}
 }
