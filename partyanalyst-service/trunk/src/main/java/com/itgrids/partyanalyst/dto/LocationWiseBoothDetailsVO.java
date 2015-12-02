@@ -24,8 +24,33 @@ public class LocationWiseBoothDetailsVO {
 	private Long id;
 	private String name;
 	private String mobileNo;
+	private String planedDate;
+	private String conductedDate;
 	
 	
+	public String getPlanedDate() {
+		return planedDate;
+	}
+
+	public void setPlanedDate(String planedDate) {
+		this.planedDate = planedDate;
+	}
+
+	public String getConductedDate() {
+		return conductedDate;
+	}
+
+	public void setConductedDate(String conductedDate) {
+		this.conductedDate = conductedDate;
+	}
+
+	public LocationWiseBoothDetailsVO(){}
+	
+	public LocationWiseBoothDetailsVO(Long locationId,String locationName)
+	{
+		this.locationId=locationId;
+		this.locationName = locationName;
+	}
 	public String getMobileNo() {
 		return mobileNo;
 	}
