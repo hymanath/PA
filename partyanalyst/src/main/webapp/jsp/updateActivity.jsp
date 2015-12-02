@@ -123,7 +123,7 @@
 								-->
 							<div class="col-md-4">
 								<label>Constituency</label>
-								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)">
+								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
 									
 								</select>
 							</div>
