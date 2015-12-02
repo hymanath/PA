@@ -35,7 +35,9 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Date plannedDate;
 	private Date conductedDate;
 	private Date insertionTime;
+	private Long constituencyId;
 	
+	private Constituency constituency;
 	private ActivityScope activityScope;
 	private RegionScopes regionScopes;
 	
@@ -134,4 +136,25 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setRegionScopes(RegionScopes regionScopes) {
 		this.regionScopes = regionScopes;
 	}
+	
+	@Column(name="constituency_Id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_Id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	
 }
