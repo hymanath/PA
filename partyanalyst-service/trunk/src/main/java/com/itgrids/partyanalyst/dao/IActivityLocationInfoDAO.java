@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 
 public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInfo, Long>{
-	public List<Long> getUpdatedLocationsListForScope(Long activityScopeId);
+	public List<Object[]> getUpdatedLocationsListForScope(Long activityScopeId);
 }
