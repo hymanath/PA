@@ -16326,7 +16326,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			 try {
 				 String status = (String) transactionTemplate.execute(new TransactionCallback() {
 					 public Object doInTransaction(TransactionStatus status) {
-						 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+						 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 						 
 						 if(activityVO != null){
 							 Long activityScopeId = activityVO.getActivityLevelId();
@@ -16337,9 +16337,9 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0 )){
 										 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
 										 
-										 String locationTypeflagId = activityvo.getLocationLevel().toString().substring(0, 1);										
+										 String locationTypeflagId = activityvo.getLocationValue().toString().substring(0, 1);										
 										 Long locationLevel = activityvo.getLocationLevel();
-										 Long locationLevelId = 6L;
+										 Long locationLevelId = null;
 										 if(locationLevel.longValue() == 1L)
 										 {
 											 if(locationTypeflagId.equalsIgnoreCase("1"))
@@ -16360,7 +16360,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											 locationLevelId = 11L;
 										 else if(locationLevel.longValue() == 4L)
 											 locationLevelId = 10L;
-										
+										 
+										activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
 										activityLocationInfo.setActivityScopeId(activityScopeId);
 										activityLocationInfo.setLocationLevel(locationLevelId);
 										activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
@@ -16543,10 +16544,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 String conductedDate = locations[2] != null ? locations[2].toString():null;
 						 Long locationlevel = locations[3] != null ? Long.valueOf(locations[3].toString()):0L;
 						 
-						 Date planDateStr = format1.parse(planDate);
-						 Date conductedDateStr = format1.parse(conductedDate);
+						 Date planDateStr = planDate != null ? format1.parse(planDate):null;
+						 Date conductedDateStr = conductedDate != null ? format1.parse(conductedDate):null;
 
-						 Long locationLevelId = 1L;
+						 Long locationLevelId = 0L;
 						 if(locationlevel.longValue() == 6L || locationlevel.longValue() == 7L)
 						 {
 							 locationLevelId = 1L;
@@ -16567,8 +16568,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							 list = activityMap.get(finalLocationId);
 						 }
 						 ActivityVO vo = new ActivityVO();
-						 vo.setPlannedDate(format.format(planDateStr).toString());
-						 vo.setConductedDate(format.format(conductedDateStr).toString());
+						 if(planDateStr != null)
+							 vo.setPlannedDate(format.format(planDateStr).toString());
+						 if(conductedDateStr != null)
+							 vo.setConductedDate(format.format(conductedDateStr).toString());
 						 vo.setLocationValue(finalLocationId);
 						 vo.setLocationLevel(locationlevel);
 						 list.add(vo);
