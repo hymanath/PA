@@ -691,7 +691,12 @@ function gettingCadreDetails(locationId,locationName){
 				  location.reload(); 
 				}
 			}
-			buildingResults(result,locationName);
+			if(result != null && result.length > 0){
+				buildingResults(result,locationName);
+			}else{
+				$("#dataLoadingImg").hide();
+				$("#cadreDetailsDiv").html('NO DATA AVAILABLE...');
+			}
 		});
 	}
 	
