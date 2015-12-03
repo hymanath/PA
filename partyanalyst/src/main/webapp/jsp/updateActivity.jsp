@@ -54,7 +54,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 	
  <style type="text/css">
 	.m_top10{margin-top:10px}
@@ -140,7 +140,7 @@
 								</select>
 							</div>
 						   <div class="col-md-4 m_top10">
-								<button class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity(0,0);">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity(0,0);">SEARCH</button>
 							</div>
 								
                             </div>
@@ -150,6 +150,19 @@
             </div>
         </div>
         <div class="col-md-12" >
+		
+			<!---Start  Assembly wise Activity--->
+		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
+		  <div class="panel-heading">
+			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES</h4> 
+		  </div>
+		   <div class="panel-body">
+			<div id="buildAssConsActivity"></div>
+		   </div>
+		
+		</div>
+		<!--- Assembly wise Activity End--->
+		
         	<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
             	<div class="panel-heading">
                 	<h4 class="panel-title">SEARCH RESULTS  <span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
@@ -572,15 +585,15 @@ function getLocationDetailsForActivity(startDate,endDate)
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
 						if(activityLevelId == 2)
-							str+='<th style="background-color:#00B17D;">MANDAL/ TOWN/ DIVISION</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1)					
-							str+='<th style="background-color:#00B17D;">PANCHAYAT/ WARD</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
 						
-						str+='<th style="background-color:#00B17D;">PLANNED DATE</th>';
-						str+='<th style="background-color:#00B17D;">CONDUCTED DATE</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
-						str+='<th style="background-color:#00B17D;">COMMITTEE MEMBERS</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
 						str+='</tr>';
 						str+='</thead>';
 						
@@ -701,8 +714,87 @@ function gettingCadreDetails(locationId,locationName){
 	}
 	
 getUserAccessConstituencyList();
+ 
+ $("#searchId").click(function(){
+	 
+    $('#assemblydivId').show();
+	$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
+	
+    var jsObj={   startDate:$("input[name=daterangepicker_start]").val(),
+                  endDate:$("input[name=daterangepicker_end]").val(),
+                  activityScopeId:$('#ActivityList').val(),
+                  activityLevelId:$("#ActivityList option:selected").val(),
+                  stateId:1
+              };
+       
+     $.ajax({
+      type : "GET",
+      url : "asemblyConstWiseActivitiesAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+       if(result!=null && result.length>0){
+         buildAsemblyConstWiseActivities(result);
+       }else{
+         $("#buildAssConsActivity").html("NO DATA AVAILABLE...");
+       }
+     
+    });   
+   });
 
-
+  function buildAsemblyConstWiseActivities(result){
+    
+    var str ='';
+    str+='<table class="table table-bordered table-responsive bg_ff dataTableDiv">';
+          str+='<thead>';
+            str+='<tr role="row">';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL ACTIVITIES</th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">EXECUTED ACTIVITIES</th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT EXECUTED ACTIVITIES</th>';
+            str+='</tr>';
+          str+='</thead>';
+        str+='<tbody>';
+          for(var i in result){
+            str+='<tr class="text_center">';
+              
+                str+='<td >'+result[i].name+'</td>';
+             
+              if(result[i].totalCount !=null){
+                str+='<td >'+result[i].totalCount+'</td>';
+              }else{
+                str+='<td> 0 </td>';
+              }
+              if(result[i].plannedCount !=null){
+                str+='<td >'+result[i].plannedCount+'</td>';
+              }else{
+                str+='<td > 0 </td>';
+              }
+              if(result[i].conductedCount !=null){
+                str+='<td >'+result[i].conductedCount+'</td>';
+              }else{
+                str+='<td > 0 </td>';
+              }
+              if(result[i].nonConductedCount !=null){
+                str+='<td >'+result[i].nonConductedCount+'</td>';
+              }else{
+                str+='<td > 0 </td>';
+              }
+              str+='</tr>';
+          }
+        
+        str+='</tbody>';
+    str+='</table>';
+    
+    $("#buildAssConsActivity").html(str);
+   
+     $(".dataTableDiv").dataTable({
+		"iDisplayLength": 10,
+		"aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
+	 });
+	  $(".dataTableDiv").removeClass("dataTable");
+  }
 
 </script>
 </body>
