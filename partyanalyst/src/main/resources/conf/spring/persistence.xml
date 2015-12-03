@@ -715,6 +715,16 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityType</value>
 				 <value>com.itgrids.partyanalyst.model.LocationInfo</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityOption</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityOptionType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionnaire</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionnaireOption</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionAnswer</value>
+				 <value>com.itgrids.partyanalyst.model.DocumentType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityDocument</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityInfoDocument</value>
+				 
 			     </list>
 			
 		</property>
