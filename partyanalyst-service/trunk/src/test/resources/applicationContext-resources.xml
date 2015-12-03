@@ -715,6 +715,17 @@
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
 				  <value>com.itgrids.partyanalyst.model.FeedbackCategory</value>
 				 <value>com.itgrids.partyanalyst.model.LocationInfo</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityOption</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityOptionType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionnaire</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionnaireOption</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityQuestionAnswer</value>
+				 <value>com.itgrids.partyanalyst.model.DocumentType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityDocument</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityInfoDocument</value>
+				 
 			</list>
 		</property>
 	</bean>
@@ -3232,6 +3243,34 @@
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	 <bean id="locationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocationInfoDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	  <bean id="activityQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityOptionDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityOptionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityOptionTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityQuestionnaireDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionnaireDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityQuestionnaireOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionnaireOptionDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityQuestionAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionAnswerDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="documentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.DocumentTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDocumentDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityInfoDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityInfoDocumentDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
