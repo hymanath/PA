@@ -70,7 +70,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ActivityVO 							activityVO = new ActivityVO() ;
 	private InputStream 						inputStream;
 	private ResultStatus 						resultStatus;
-	
+	private List<ActivityVO>                    activitiesVOList;
 	
 	
 	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVOList() {
@@ -256,6 +256,15 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public void setBoothsInfo(CadreCommitteeMemberVO boothsInfo) {
 		this.boothsInfo = boothsInfo;
 	}
+	
+	
+	public List<ActivityVO> getActivitiesVOList() {
+		return activitiesVOList;
+	}
+	public void setActivitiesVOList(List<ActivityVO> activitiesVOList) {
+		this.activitiesVOList = activitiesVOList;
+	}
+	
 	public String execute(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
@@ -983,7 +992,25 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String asemblyConstWiseActivities(){
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			
+			jObj = new JSONObject(getTask());
+			String startDateString =jObj.getString("startDate");
+			String endDateString = jObj.getString("endDate");
+			Long activityScopeId =jObj.getLong("activityScopeId");
+			Long activityLevelId =jObj.getLong("activityLevelId");	
+			Long stateId=jObj.getLong("stateId");
+			activitiesVOList=cadreCommitteeService.asemblyConstWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getComitteeMembersInfoInActivity(){
 
 		try{

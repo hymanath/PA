@@ -2689,6 +2689,7 @@
 		   <property name="activityLevelDAO" ref="activityLevelDAO" />
 		   <property name="activityScopeDAO" ref="activityScopeDAO" />
 		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
+		   <property name="locationInfoDAO" ref="locationInfoDAO" />
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
