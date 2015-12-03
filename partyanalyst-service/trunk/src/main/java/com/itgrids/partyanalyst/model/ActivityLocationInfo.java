@@ -41,7 +41,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	
 	private Constituency constituency;
 	private ActivityScope activityScope;
-	private RegionScopes regionScopes;
+	private TdpCommitteeLevel tdpCommitteeLevel;
 	private User insertedUser;
 	private User updatedUser;
 	
@@ -130,17 +130,6 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.activityScope = activityScope;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="location_level", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public RegionScopes getRegionScopes() {
-		return regionScopes;
-	}
-	public void setRegionScopes(RegionScopes regionScopes) {
-		this.regionScopes = regionScopes;
-	}
-	
 	@Column(name="constituency_Id")
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -197,4 +186,17 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="location_level", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCommitteeLevel getTdpCommitteeLevel() {
+		return tdpCommitteeLevel;
+	}
+	public void setTdpCommitteeLevel(TdpCommitteeLevel tdpCommitteeLevel) {
+		this.tdpCommitteeLevel = tdpCommitteeLevel;
+	}
+	
+	
 }
