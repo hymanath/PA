@@ -38,6 +38,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Long constituencyId;
 	private Long insertedBy;
 	private Long updatedBy;
+	private Date updatedTime;
 	
 	private Constituency constituency;
 	private ActivityScope activityScope;
@@ -186,6 +187,15 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="location_level", insertable=false, updatable = false)
