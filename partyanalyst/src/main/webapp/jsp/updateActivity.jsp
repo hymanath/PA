@@ -451,7 +451,7 @@ function buildingResults(result,locationName){
 		str+='<th style="padding-left: 19px;"> AGE </th>';
 		str+='<th style="padding-left: 19px;"> GENDER </th>';
 		str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
-		//str+='<th style="padding-left: 19px;"> MObile no </th>';
+		str+='<th style="padding-left: 19px;"> Update Mobile No </th>';
 		str+='</thead>';
 		for(var i in result){
 		 str+='<tr>';
@@ -485,7 +485,16 @@ function buildingResults(result,locationName){
 		 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
 		 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
 		 // str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].voterCardNo+' </td>';
+		 str+='<td><input type="button" class="btn btn-custom btn-success" value="Update Mobile No" id="editBtnId'+i+'" onclick="showHide('+i+');" name="Edit">';
+		 str+='</br>'
+		 str+='<div id="errMobileId'+i+'" style="color:red"></div>';
+		 str+='<input type="text" class="m_top10" disabled maxlength="10" id="updatemobileNo'+i+'" value="'+result[i].mobileNo+'" />';
+		 str+='</br>'
+		 str+='<input type="button" class="btn btn-custom btn-success m_top10" name="save" onclick="updateMobileNumber(\''+i+'\',\''+result[i].id+'\')" id="saveBtnId'+i+'" style="display:none" value="Save Mobile No" />';
+		 str+='<div id="successMobileId'+i+'" style="color:green"></div>';
+		 str+='</td>';
 		 str+='</tr>';
+		 
 		}
 	   str+='</tbody>';
 	   str+='</table>';
@@ -495,6 +504,47 @@ function buildingResults(result,locationName){
 	
 }
 
+function showHide(index){
+	
+	$("#saveBtnId"+index).show();
+	$('#updatemobileNo'+index).removeAttr('disabled');
+	$("#editBtnId"+index).hide();
+}
+
+function updateMobileNumber(index,tdpCadreId){
+	
+	$("#successMobileId"+index).html("");
+	$("#errMobileId"+index).html("");
+	
+	var mobileNo = $("#updatemobileNo"+index).val();
+	if(isNaN(mobileNo) || mobileNo.trim().length != 10){
+		$("#errMobileId"+index).html("Enter Valid Number");
+		return;
+	}
+	
+	var jObj={
+		tdpCadreId:tdpCadreId,
+		mobileNo:mobileNo
+	};
+	$.ajax({
+	  type:'POST',
+	  url: 'updateMobileNumberForCadreAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jObj)},
+	  }).done(function(result){
+			if(result != null){
+				if(result.resultCode == 0){
+					if(result.message == "SUCCESS"){
+						$("#successMobileId"+index).html("Mobile Number Is Successfully Updated...");
+					}else{
+						$("#errMobileId"+index).html("Invalid Mobile Number...");
+					}
+				}else{
+					$("#errMobileId"+index).html("Sorry,Mobile Number Is Not Updated...");
+				}
+			}
+	  });
+}
 
 function getLocationDetailsForActivity(startDate,endDate)
 {
@@ -799,3 +849,4 @@ getUserAccessConstituencyList();
 </script>
 </body>
 </html>
+
