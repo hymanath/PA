@@ -73,7 +73,7 @@
    		<div class="col-md-12">
         	<div class="panel panel-default panel-custom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES
+                	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES 
 						<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -154,7 +154,7 @@
 			<!---Start  Assembly wise Activity--->
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
-			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES</h4> 
+			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> 
 		  </div>
 		   <div class="panel-body">
 			<div id="buildAssConsActivity"></div>
