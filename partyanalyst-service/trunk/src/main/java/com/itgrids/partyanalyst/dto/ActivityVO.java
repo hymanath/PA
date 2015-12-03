@@ -25,6 +25,12 @@ public class ActivityVO implements Serializable{
 	private String endDate;
 	private List<ActivityVO> activityVoList = new ArrayList<ActivityVO>();
 	
+	private Long id;
+	private String name;
+	private Long totalCount;
+	private Long plannedCount;
+	private Long conductedCount;
+	private Long nonConductedCount;
 	
 	public List<ActivityVO> getActivityVoList() {
 		return activityVoList;
@@ -128,4 +134,41 @@ public class ActivityVO implements Serializable{
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getPlannedCount() {
+		return plannedCount;
+	}
+	public void setPlannedCount(Long plannedCount) {
+		this.plannedCount = plannedCount;
+	}
+	public Long getConductedCount() {
+		return conductedCount;
+	}
+	public void setConductedCount(Long conductedCount) {
+		this.conductedCount = conductedCount;
+	}
+	public Long getNonConductedCount() {
+		return nonConductedCount;
+	}
+	public void setNonConductedCount(Long nonConductedCount) {
+		this.nonConductedCount = nonConductedCount;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

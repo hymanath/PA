@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 
 public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInfo, Long>{
 	public List<Object[]> getUpdatedLocationsListForScope(Long activityScopeId,Date startDate,Date endDate);
+	public List<Object[]> getAssemblyConstWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds);
 }

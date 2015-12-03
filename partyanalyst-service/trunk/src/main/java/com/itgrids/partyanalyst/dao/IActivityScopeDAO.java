@@ -8,4 +8,7 @@ import com.itgrids.partyanalyst.model.ActivityScope;
 
 public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	public List<Object[]> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId);
+	
+	public Object[] getDatesForActivityByActivityScopeId(Long activityScopeId);
+	public Long getNoOFTimesOfAnActivity(Long activityScopeId);
 }

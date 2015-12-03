@@ -38,7 +38,7 @@ public class Activity extends BaseModel implements Serializable{
 	private Date insertionTime;
 	private Date updationTime;
 	private String isActive;
-	
+	private Long  noOfTimes;
 	private ActivitySubType activitySubType;
 	
 	@Id
@@ -133,4 +133,13 @@ public class Activity extends BaseModel implements Serializable{
 	public void setActivitySubType(ActivitySubType activitySubType) {
 		this.activitySubType = activitySubType;
 	}
+	
+	@Column(name="no_of_times")
+	public Long getNoOfTimes() {
+		return noOfTimes;
+	}
+	public void setNoOfTimes(Long noOfTimes) {
+		this.noOfTimes = noOfTimes;
+	}
+	
 }
