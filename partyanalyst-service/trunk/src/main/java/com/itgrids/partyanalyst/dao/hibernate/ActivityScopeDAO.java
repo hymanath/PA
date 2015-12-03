@@ -28,4 +28,15 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		
 		return query.list();
 	}
+	public Object[] getDatesForActivityByActivityScopeId(Long activityScopeId){ 
+		
+		Query query=getSession().createQuery(" select date(model.activity.startDate),date(model.activity.endDate) from ActivityScope model where model.activityScopeId =:activityScopeId ");
+		query.setParameter("activityScopeId", activityScopeId);
+		return (Object[])query.uniqueResult();
+	}
+	public Long getNoOFTimesOfAnActivity(Long activityScopeId){
+		Query query=getSession().createQuery(" select model.activity.noOfTimes from ActivityScope model where model.activityScopeId =:activityScopeId");
+		query.setParameter("activityScopeId", activityScopeId);
+		return (Long)query.uniqueResult();
+	}
 }

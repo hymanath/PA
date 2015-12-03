@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.INewDistrictConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -257,9 +258,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IActivityLevelDAO activityLevelDAO;
 	private IActivityScopeDAO activityScopeDAO;
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private ILocationInfoDAO locationInfoDAO;
 	
 	
-	
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public void setTdpRolesDAO(ITdpRolesDAO tdpRolesDAO) {
+		this.tdpRolesDAO = tdpRolesDAO;
+	}
+
+	public void setLocationInfoDAO(ILocationInfoDAO locationInfoDAO) {
+		this.locationInfoDAO = locationInfoDAO;
+	}
+
 	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
 		return activityLocationInfoDAO;
 	}
@@ -17155,5 +17168,98 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return cadreCommitteeMemberVOList;
 	}
 
-
+	public List<ActivityVO> asemblyConstWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId){
+		List<ActivityVO> finalList=null;
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		try{
+			      //stat data
+			
+			 //get Constituencies.
+			 List<Long> constIds=new ArrayList<Long>(0);
+			 BasicVO basicVO=getAccessLocationValuesByState(accessType,accessValue,stateId,userId);
+			 if(basicVO!=null && basicVO.getHamletVoterInfo()!=null && basicVO.getHamletVoterInfo().size()>0){
+				 
+				 List<BasicVO> constList=basicVO.getHamletVoterInfo();
+				 finalList=new ArrayList<ActivityVO>(0);
+				 for(BasicVO vo:constList){
+					 ActivityVO conVO=new ActivityVO();
+					 conVO.setId(vo.getId());
+					 conVO.setName(vo.getName());
+					 conVO.setTotalCount(0l);
+					 conVO.setPlannedCount(0l);
+					 conVO.setConductedCount(0l);
+					 conVO.setNonConductedCount(0l);
+					 finalList.add(conVO);
+					 constIds.add(conVO.getId());
+				 }
+				 
+				//Dates
+				 Date startDate=null;
+				 Date endDate=null;
+				 if(startDateString!=null && startDateString.trim().length()>0){
+					 startDate=sdf.parse(startDateString);
+				 }
+				 if(endDateString!=null && startDateString.trim().length()>0){
+					 endDate=sdf.parse(endDateString);
+				 }
+				 
+				 //planned data
+				 List<Object[]> plannedlist=activityLocationInfoDAO.getAssemblyConstWiseDetails(startDate,endDate,activityScopeId,constIds);
+				 if(plannedlist!=null && plannedlist.size()>0){
+					 for(Object[] obj:plannedlist){
+						 Long constId=(Long)obj[0];
+						 ActivityVO convo=getMatchedConstVO(constId,finalList);
+						 if(convo!=null){
+							 convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+							 convo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
+							 convo.setNonConductedCount(convo.getPlannedCount()-convo.getConductedCount());
+						 }
+					 }
+				 }
+				 
+				 //total counts.
+				 Long activityTimes=activityScopeDAO.getNoOFTimesOfAnActivity(activityScopeId);
+				 if(activityTimes ==null){
+					 activityTimes=1l;
+				 }
+				 
+				 List<Long> levelIds=new ArrayList<Long>();
+				 if(activityLevelId==1l){//village/ward
+					 levelIds.add(6l);
+					 levelIds.add(8l);
+				 }else if(activityLevelId==2l){//mandal/town/division
+					 levelIds.add(5l);
+					 levelIds.add(7l);
+				 }else if(activityLevelId==3l){//district
+					 levelIds.add(3l);
+				 }else if(activityLevelId==4l){//state
+					 levelIds.add(2l);
+				 }
+				 List<Object[]> totalCounts=locationInfoDAO.getAssemblyWiseTotalCounts(levelIds,constIds);
+				 if(totalCounts!=null && totalCounts.size()>0){
+					 for(Object[] obj:totalCounts){
+						 Long constId=(Long)obj[0];
+						 ActivityVO convo=getMatchedConstVO(constId,finalList);
+						 if(convo!=null){
+							 Long count=obj[1]!=null?(Long)obj[1]:0l ;
+							 convo.setTotalCount(count*activityTimes);
+						 }
+					 }
+				 }
+			 }
+		}catch(Exception e){
+			LOG.error("Exception raised in asemblyConstWiseActivities", e);
+		}
+		return finalList;
+	}
+	public ActivityVO getMatchedConstVO(Long id,List<ActivityVO> list){
+		if(id!=null && list!=null && list.size()>0){
+			for(ActivityVO vo:list){
+				if(vo.getId().equals(id)){
+					return vo;
+				}
+			}
+		}
+		return null;
+	}
 }

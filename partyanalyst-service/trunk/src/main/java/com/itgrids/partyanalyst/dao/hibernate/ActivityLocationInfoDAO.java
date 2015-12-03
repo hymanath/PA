@@ -33,4 +33,32 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getAssemblyConstWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds){
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append("" +
+		" select   model.constituency.constituencyId,count(*),count(conductedDate)" +
+		" from     ActivityLocationInfo model " +
+		" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) ");
+		if(startDate!=null){
+			sb.append(" and date(model.plannedDate) >=:startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.plannedDate) <=:endDate ");
+		}
+		sb.append(" group by model.constituency.constituencyId ");
+		
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameterList("constIds",constIds);
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		return query.list();
+	}
 }
