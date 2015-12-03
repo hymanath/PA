@@ -1,0 +1,129 @@
+package com.itgrids.partyanalyst.model;
+
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
+
+@Entity
+@Table(name="activity_questionnaire")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ActivityQuestionnaire extends BaseModel implements Serializable{
+	
+	private Long activityQuestionnaireId;
+	private Long activityScopeId;
+	private Long activityQuestionId;
+	private Long activityOptionTypeId;
+	private Long parentActivityQuestionnaireId;
+	private Long orderNo;
+	private String isDeleted;
+	
+	private ActivityScope activityScope;
+	private ActivityQuestion activityQuestion;
+	private ActivityOptionType activityOptionType;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "activity_questionnaire_id", unique = true, nullable = false)
+	public Long getActivityQuestionnaireId() {
+		return activityQuestionnaireId;
+	}
+	public void setActivityQuestionnaireId(Long activityQuestionnaireId) {
+		this.activityQuestionnaireId = activityQuestionnaireId;
+	}
+	
+	@Column(name = "activity_scope_id")
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
+	}
+	
+	@Column(name = "activity_question_id")
+	public Long getActivityQuestionId() {
+		return activityQuestionId;
+	}
+	public void setActivityQuestionId(Long activityQuestionId) {
+		this.activityQuestionId = activityQuestionId;
+	}
+	
+	@Column(name = "activity_option_type_id")
+	public Long getActivityOptionTypeId() {
+		return activityOptionTypeId;
+	}
+	public void setActivityOptionTypeId(Long activityOptionTypeId) {
+		this.activityOptionTypeId = activityOptionTypeId;
+	}
+	
+	@Column(name = "parent_activity_questionnaire_id")
+	public Long getParentActivityQuestionnaireId() {
+		return parentActivityQuestionnaireId;
+	}
+	public void setParentActivityQuestionnaireId(Long parentActivityQuestionnaireId) {
+		this.parentActivityQuestionnaireId = parentActivityQuestionnaireId;
+	}
+	
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_scope_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityScope getActivityScope() {
+		return activityScope;
+	}
+	public void setActivityScope(ActivityScope activityScope) {
+		this.activityScope = activityScope;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_question_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityQuestion getActivityQuestion() {
+		return activityQuestion;
+	}
+	public void setActivityQuestion(ActivityQuestion activityQuestion) {
+		this.activityQuestion = activityQuestion;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_option_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityOptionType getActivityOptionType() {
+		return activityOptionType;
+	}
+	public void setActivityOptionType(ActivityOptionType activityOptionType) {
+		this.activityOptionType = activityOptionType;
+	}
+}
