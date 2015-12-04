@@ -39,6 +39,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date updatedTime;
+	private String ivrStatus;
 	
 	private Constituency constituency;
 	private ActivityScope activityScope;
@@ -208,5 +209,11 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.tdpCommitteeLevel = tdpCommitteeLevel;
 	}
 	
-	
+	@Column(name="ivr_status")
+	public String getIvrStatus() {
+		return ivrStatus;
+	}
+	public void setIvrStatus(String ivrStatus) {
+		this.ivrStatus = ivrStatus;
+	}
 }
