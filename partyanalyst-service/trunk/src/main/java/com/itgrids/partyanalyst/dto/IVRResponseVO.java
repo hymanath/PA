@@ -40,6 +40,8 @@ public class IVRResponseVO implements Serializable{
 	private String tdpCadreName;
 	private String dateString;
 	private String description;
+	private Long roundId;
+	
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -112,6 +114,12 @@ public class IVRResponseVO implements Serializable{
 	}
 	public void setTdpCadreName(String tdpCadreName) {
 		this.tdpCadreName = tdpCadreName;
+	}
+	public Long getRoundId() {
+		return roundId;
+	}
+	public void setRoundId(Long roundId) {
+		this.roundId = roundId;
 	}
     	
 }
