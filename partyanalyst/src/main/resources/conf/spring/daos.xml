@@ -2426,5 +2426,12 @@
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
+	 <bean id="activityAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttributeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityLocationAttributeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationAttributeInfoDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	<!--  end -->
 </beans>		
