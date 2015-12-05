@@ -4916,6 +4916,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}else{
 						ivrvo.setIsAnswered(false);
 					}
+					
+					ivrvo.setRoundId((Long) (obj[9] != null ? obj[9]:0l));
+					
 					ivrResponseVOList.add(ivrvo);
 				}
 			}

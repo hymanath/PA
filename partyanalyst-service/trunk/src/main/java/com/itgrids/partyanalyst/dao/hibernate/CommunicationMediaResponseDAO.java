@@ -90,7 +90,7 @@ public class CommunicationMediaResponseDAO extends GenericDaoHibernate<Communica
 		  "        model.tdpCadre.tdpCadreId,model.tdpCadre.firstname, " +
 		  "        model.communicationMediaQuestion.communicationMediaTypeInfo.name,model.ivrDate," +
 		  "        model.communicationMediaQuestion.question," +
-		  "        model1.mediaOptionsId,model1.options,model.comments"+
+		  "        model1.mediaOptionsId,model1.options,model.comments,model.communicationMediaRound.communicationMediaRoundId "+
 		  " from  CommunicationMediaResponse model left join model.mediaOptions model1 " +
 		  " where model.tdpCadre.isDeleted='N' and model.isDeleted='false' and model.isValid='true' " +
 		  "       and model.tdpCadre.tdpCadreId=:tdpCadreId " +
