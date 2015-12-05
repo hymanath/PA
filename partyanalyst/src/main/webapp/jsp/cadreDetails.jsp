@@ -6347,7 +6347,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 				str+='<p><b>QUESTION</b> : '+results[i].question+'</p>';
 				
 				if(results[i].isAnswered){
-					str+='<p></b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.png"></img></p>';
+					str+='<p><b>CALL ANSWERED</b> &nbsp;&nbsp;:&nbsp;&nbsp; <img style="width: 30px; height: 30px;" src="./images/call answered.png"></img>&nbsp;&nbsp; <b>( ROUND - '+results[i].roundId+' )</b></p>';
 					if(results[i].optionId!=null && results[i].optionId>0){
 						 str+='<p><b>OPTION SELECTED : </b></p>';
 						 str+='<div>'+results[i].option+' </div>'; 
