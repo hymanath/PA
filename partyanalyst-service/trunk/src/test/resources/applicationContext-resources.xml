@@ -726,6 +726,9 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityDocument</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityInfoDocument</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.ActivityAttribute</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationAttributeInfo</value>
+				 
 			</list>
 		</property>
 	</bean>
@@ -3271,6 +3274,13 @@
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="activityInfoDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityInfoDocumentDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean id="activityAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttributeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityLocationAttributeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationAttributeInfoDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
