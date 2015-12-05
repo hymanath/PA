@@ -2882,5 +2882,9 @@
 	<property name="cadreCommitteeRoleDAO" ref="cadreCommitteeRoleDAO" />	
 	<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />	
 	</bean>
+	
+	<bean name="activityService" class="com.itgrids.partyanalyst.service.impl.ActivityService">
+		<property name="activityAttributeQuestionnaireInfoDAO" ref="activityAttributeQuestionnaireInfoDAO" />
+	</bean>
 </beans>		
 	
