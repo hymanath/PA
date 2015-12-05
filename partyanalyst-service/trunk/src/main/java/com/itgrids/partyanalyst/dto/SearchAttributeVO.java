@@ -18,8 +18,15 @@ public class SearchAttributeVO implements Serializable{
 	private List<Long> attributesIdsList = new ArrayList<Long>(0);
 	private Long typeId;
 	private String conditionType;
+	private String attributeType;
 	
 	
+	public String getAttributeType() {
+		return attributeType;
+	}
+	public void setAttributeType(String attributeType) {
+		this.attributeType = attributeType;
+	}
 	public String getConditionType() {
 		return conditionType;
 	}

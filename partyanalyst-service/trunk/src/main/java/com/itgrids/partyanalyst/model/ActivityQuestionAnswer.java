@@ -30,6 +30,7 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	private Long activityOptionId;
 	private String optionTxt;
 	private String isDeleted;
+	private Long count;
 	
 	private ActivityQuestionnaire activityQuestionnaire;
 	private ActivityLocationInfo activityLocationInfo;
@@ -117,4 +118,13 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	public void setActivityOption(ActivityOption activityOption) {
 		this.activityOption = activityOption;
 	}
+	
+	@Column(name = "count")
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	
 }
