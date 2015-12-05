@@ -27,8 +27,9 @@ public class ActivityAttributeQuestionnaireInfo extends BaseModel implements Ser
 	private Long activityAttributeQuestionnaireInfoId;
 	private Long activityAttributeId;
 	private Long activityQuestionnaireId;
-	private ActivityAttribute activityAttribute;
+	private String isDeleted;
 	
+	private ActivityAttribute activityAttribute;
 	private ActivityQuestionnaire activityQuestionnaire;
 
 	
@@ -86,4 +87,14 @@ public class ActivityAttributeQuestionnaireInfo extends BaseModel implements Ser
 	public void setActivityQuestionnaire(ActivityQuestionnaire activityQuestionnaire) {
 		this.activityQuestionnaire = activityQuestionnaire;
 	}
+
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 }
