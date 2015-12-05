@@ -725,6 +725,9 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityDocument</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityInfoDocument</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.ActivityAttribute</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationAttributeInfo</value>
+				 
 			     </list>
 			
 		</property>
