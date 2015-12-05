@@ -302,7 +302,7 @@ $(function () {
   $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
 });
-
+/*
 function getActivityNames()
 {
 	var jObj = {
@@ -320,6 +320,7 @@ function getActivityNames()
 		});
 		
 }
+*/
 function submitForm(){
 	var uploadHandler = {
 		upload: function(result) {
