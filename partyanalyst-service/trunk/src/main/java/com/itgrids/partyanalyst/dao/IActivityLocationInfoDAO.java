@@ -13,4 +13,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getAssemblyConstWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds);
 	public List<Object[]> getActivityPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO);
 	public List<Object[]> getActivityAttributeCountsByLocation(SearchAttributeVO searchAttributeVO);
+	public List<Object[]> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO);
 }
