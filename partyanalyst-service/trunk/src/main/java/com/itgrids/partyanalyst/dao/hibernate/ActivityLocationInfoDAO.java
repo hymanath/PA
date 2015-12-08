@@ -539,7 +539,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 			}
 			else
 			{
-				queryStr.append(" model.locationLevel ");
+				queryStr.append(" date(model.plannedDate) ");
 			}
 			queryStr.append(" asc ");
 			
