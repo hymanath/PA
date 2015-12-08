@@ -2885,6 +2885,7 @@
 	
 	<bean name="activityService" class="com.itgrids.partyanalyst.service.impl.ActivityService">
 		<property name="activityAttributeQuestionnaireInfoDAO" ref="activityAttributeQuestionnaireInfoDAO" />
+		<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 	</bean>
 </beans>		
 	
