@@ -515,4 +515,15 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
+  public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId){
+	  Query query = getSession().createQuery(" select count(distinct tcba.tdpCadreId),date(tca.insertedTime) " +
+	  									" from TrainingCampAttendance tca,TrainingCampBatchAttendee tcba " +
+	  									" where " +
+	  									" tca.trainingCampBatchId = tcba.trainingCampBatchId and " +
+	  									" tca.trainingCampBatchId=:batchId and tca.attendance.tdpCadreId=tcba.tdpCadreId and tcba.isDeleted='false' " +
+	  									" group by date(tca.insertedTime) ");
+	  query.setParameter("batchId", batchId);
+	  return query.list();
+  }
+  
 }

@@ -5924,15 +5924,16 @@ class TrainingCampService implements ITrainingCampService{
 					  }
 					 
 					 //date wise counts.
-					 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
+					 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
+					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId);
 					 
 					 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 						 
 						 for(Object[] obj: dateWiseCounts){
 							 if(obj[0]!=null){
-								SimpleVO vo= finalMap.get((Date)obj[0]);
+								SimpleVO vo= finalMap.get((Date)obj[1]);
 								if(vo!=null){
-									vo.setTotal(obj[1]!=null?(Long)obj[1]:0l);//attended.
+									vo.setTotal(obj[0]!=null?(Long)obj[0]:0l);//attended.
 									vo.setCount(confirmedCount-vo.getTotal());//absent.
 								}
 							 }
