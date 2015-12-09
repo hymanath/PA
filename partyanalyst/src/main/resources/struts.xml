@@ -11042,10 +11042,23 @@
 		</result>
     </action>	
     
-		<action name="getComitteeMembersInfoInActivityAction" class="committeeDashBoardAction" method="getComitteeMembersInfoInActivity">
-			<result type="json" name="success">
-				<param name="root">cadreCommitteeMemberVOList</param>
-			</result>
-		</action>
+	<action name="getComitteeMembersInfoInActivityAction" class="committeeDashBoardAction" method="getComitteeMembersInfoInActivity">
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeMemberVOList</param>
+		</result>
+	</action>
+		
+	<action name="activitiesDashboard" class="activityAction">
+	   	<result name="success">/jsp/activitiesDashboard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
+	<action name="getActivityDetailsBySearchCriteria" class="activityAction" method="getActivityDetailsBySearchCriteria">
+		<result type="json" name="success">
+			<param name="root">activityVO</param>
+		</result>
+	</action>
+		
 </package>
 </struts>      
