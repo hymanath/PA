@@ -1243,7 +1243,7 @@ public class ActivityService implements IActivityService{
 			
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
 			
-			datesMap = getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+			datesMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
 			List<Object[]> plannedActivities = null;
 			List<Object[]> infoCellconductedActivities = null;
@@ -1446,48 +1446,4 @@ public class ActivityService implements IActivityService{
 		}
 	}
 	
-	public Map<String,ActivityVO> getDatesWiseCounts(Date startDate,Date endDate,String name){
-		
-		Map<String,ActivityVO> returnMap = new LinkedHashMap<String,ActivityVO>();
-		try {
-			
-			List<String> dates=getBetweenDatesInString(startDate,endDate);
-			
-			if(name != null && name.trim().length() > 0){
-				if(dates != null && dates.size() > 0){
-					for (int i = 0; i < dates.size(); i++) {
-						ActivityVO vo = new ActivityVO();
-						vo.setName(dates.get(i)+" ( "+name+"-"+(i+1)+" ) ");
-						returnMap.put(dates.get(i), vo);
-					}
-				}
-			}else{
-				if(dates != null && dates.size() > 0){
-					for (int i = 0; i < dates.size(); i++) {
-						ActivityVO vo = new ActivityVO();
-						vo.setName(dates.get(i));
-						returnMap.put(dates.get(i), vo);
-					}
-				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception raised in getDatesWiseCounts in ActivityService service", e);
-		}
-		return returnMap;
-	}
-	
-	public List<String> getBetweenDatesInString(Date fromDate,Date toDate){
-		
-		List<String> dateStr = new ArrayList<String>(0);
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(fromDate);
-		cal.add(Calendar.DATE, -1);
-		
-		while (cal.getTime().before(toDate)) {
-		    cal.add(Calendar.DATE, 1);
-		    dateStr.add(sdf.format(cal.getTime()));
-		}
-		return dateStr;
-	}
 }
