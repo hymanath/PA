@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,6 +11,9 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.opensymphony.xwork2.Action;
@@ -29,7 +33,22 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private String 								task;
 	private ActivityVO							activityVO;
 	
+	private BasicVO 							basicVO = new BasicVO();
+	private List<IdNameVO>  					idNameVOList;
 	
+	
+	public BasicVO getBasicVO() {
+		return basicVO;
+	}
+	public void setBasicVO(BasicVO basicVO) {
+		this.basicVO = basicVO;
+	}
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
 	public ActivityVO getActivityVO() {
 		return activityVO;
 	}
@@ -72,6 +91,14 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	
 	public String execute()
 	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		
+		basicVO = activityService.getActivityTypeList();
+		idNameVOList = activityService.getActivityLevelsList();
+				
 		return Action.SUCCESS;
 	}
 	

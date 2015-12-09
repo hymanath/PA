@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -74,13 +75,37 @@
 	<div class="row">
     	<div class="col-md-12 col-sm-12 col-xs-12">
         	<div class="panel panel-default panel-custom">
-            	<div class="panel-heading pad_0">
-                	<select class="select">
-                    	<option>JANA CHAITANYA YATRA</option>
-                    </select>
-                </div>
+            	<div class="panel-heading">
+					<h4 class="panel-title">ACTIVITY DASHBOARD
+						<span class="pull-right" >
+							<div class="input-group col-md-12" style="margin-top:-8px">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+								<input type="text" class="searchDateCls form-control" />
+							</div>
+						</span>
+					</h4>
+				</div>
                 <div class="panel-body">
-                	<div class="panel panel-default panel-custom1">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-3">
+								<label>Activity Type</label>
+                                <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+							</div>
+							<div class="col-md-3">
+								<label>Activity Level</label>
+								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
+							</div>
+							<div class="col-md-3">
+								<label> Activity Name </label>
+								<select id="ActivityList" class="form-control">
+									<option value="0"> Select Activity </option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+					<div class="panel panel-default panel-custom1">
                     	<div class="panel-heading bg_66">
                         	<h4 class="panel-title">VILLAGE/WARD</h4>
                         </div>
@@ -500,6 +525,56 @@ $(".panel-heading","click",function(){
 	}else{
 		$(this).removeClass("bod")
 	}
+});
+
+$(function () {
+	var cb = function(start, end, label) {
+	//console.log(start.toISOString(), end.toISOString(), label);
+	$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' - ' + end.format('D MMMM, YYYY'));
+	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+  }
+  var optionSet1 = {
+	startDate: moment().startOf('month'),
+	endDate: moment().endOf('month'),
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [ moment().subtract(30, 'days'),moment()],
+	   'Lat 60 Days': [moment().subtract(60, 'days'),moment()],
+	   'Last 180 Days': [moment().subtract(6, 'months'),moment()],
+	   'Last 365 Days': [moment().subtract(1, 'year'),moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary',
+	cancelClass: 'btn-small',
+	format: 'DD/MM/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('.searchDateCls').val(moment().format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY'));
+
+  $('.searchDateCls').daterangepicker(optionSet1, cb);
+
+  $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
 });
 //alert($(".getChildWidth9").width())
 
@@ -993,6 +1068,7 @@ function buildDayWiseResults(result,divId)
 }
 getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+
 </script>
 </body>
 </html>
