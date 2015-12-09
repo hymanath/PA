@@ -300,5 +300,15 @@ public class Scheduler {
 		return rs;
 	}
 	
-	
+	public void updateTrainingCampSpeakersDetails()
+	  {
+	    try{
+	      //if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+	        schedulerService.updateTrainingCampSpeakersDetails();
+	    }
+	    catch(Exception e)
+	    {
+	      log.info("\n\n Total insertMahanaduEventInfo Table effected records"); 
+	    }
+	  }
 }
