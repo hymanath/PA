@@ -1,10 +1,16 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
@@ -185,4 +191,77 @@ public class CommonMethodsUtilService {
 			}
 		}
 		
+
+		public String copyFile(String sourcePath,String destinationPath){
+			//synchronized ("copyFile"){
+		 try{
+			File file = new File(sourcePath);
+			if(file.exists()){
+				FileUtils.copyFile(file,  new File(destinationPath));
+				LOG.error("Copy success");
+				return "success";
+			}
+		  }catch(Exception e){
+			  LOG.error("Exception raised in copyFile ", e);
+			  LOG.error("Copy error");
+			  return "error";
+		  }
+		// }
+		 return "failure";
+		}
+		
+		public boolean checkFileExistingOrNot(String path){
+			File f = new File(path);
+			if(f.exists()) { 
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		/**
+		 * 
+		 * @param uniqueKey
+		 * @param uploadImageContentType
+		 * @param uploadImage
+		 * @param url
+         * @param fileSepatator
+		 * @return
+		 */
+		public String uploadImage(String  uniqueKey ,String uploadImageContentType,File uploadImage,String folderurl,String fileSepatator)
+		{
+			try{
+				
+				 if(uploadImageContentType != null && uploadImage != null && uniqueKey != null){
+					 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+					  String destinationPath = folderurl + pathSeperator + uniqueKey+".jpg";
+					  String sourcePath =   folderurl + pathSeperator + uniqueKey;
+					  String status = copyFile(sourcePath,destinationPath);
+					  
+					
+					BufferedImage image = ImageIO.read(uploadImage);
+					
+					if(image == null)
+						return null;
+					LOG.info("Image is Read");
+					String contentTypeArr[] = uploadImageContentType.split("/"); // ex : application/jpeg
+					String fileName = sourcePath+uniqueKey.toString()+"."+contentTypeArr[1];
+					LOG.info("file name -- "+fileName);
+					//String imageName =  cadreId.toString()+"."+constiName[1];
+					
+					FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+					
+					ImageIO.write(image, contentTypeArr[1],filName);
+					LOG.info("file uploaded");
+		            filName.close();
+				 }
+	            return "success";
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception raised in uploadCadreImage in CadreRegistrationService service", e);
+				return null;
+				
+			}
+		}
 }

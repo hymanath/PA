@@ -949,4 +949,5 @@ public interface IConstants {
     public static final Long MONTHLY_DISTRICT_MEETING_ID=2L;
     public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
     public static final String CADRE_FEEDBACK_DOCUMENT = "cadre_feedback_document";
+    public static final String[] ACTIVITY_REPORT_FIELDS = {"INFO CELL PLANNED","IVR PLANNED","INFO CELL NOT PLANNED","IVR NOT PLANNED"};
 }
