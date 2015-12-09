@@ -634,25 +634,54 @@ function buildResult(result)
 	str+='<td><h3 class="m_top20 m_bottom10">'+result.totalCount+'</h3><hr class="custom-hr"/></td>';
 	
 	if(result.activityVoList != null && result.activityVoList.length>0){
-		str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].plannedCount+'</h3><hr class="custom-hr"/></td>';
-		str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].notPlannedCount+'</h3><hr class="custom-hr"/></td>';
+		//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].plannedCount+'</h3><hr class="custom-hr"/></td>';
+		//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].notPlannedCount+'</h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[0].activityVoList != null && result.activityVoList[0].activityVoList.length>0){
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[0].conductedCount+' ('+result.activityVoList[0].activityVoList[0].percentage+'%)</h3><hr class="custom-hr"/></td>';
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[1].conductedCount+' ('+result.activityVoList[0].activityVoList[1].percentage+'%)</h3><hr class="custom-hr"/></td>';
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[2].conductedCount+' ('+result.activityVoList[0].activityVoList[2].percentage+'%)</h3><hr class="custom-hr"/></td>';
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[3].conductedCount+' ('+result.activityVoList[0].activityVoList[3].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[0].conductedCount+'</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[1].conductedCount+' ('+result.activityVoList[0].activityVoList[1].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[2].conductedCount+'('+result.activityVoList[0].activityVoList[2].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[3].conductedCount+' ('+result.activityVoList[0].activityVoList[3].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[4].conductedCount+'('+result.activityVoList[0].activityVoList[4].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[5].conductedCount+' ('+result.activityVoList[0].activityVoList[5].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[6].conductedCount+'('+result.activityVoList[0].activityVoList[6].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[7].conductedCount+'('+result.activityVoList[0].activityVoList[7].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[8].conductedCount+'('+result.activityVoList[0].activityVoList[8].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[9].conductedCount+' ('+result.activityVoList[0].activityVoList[9].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[10].conductedCount+'('+result.activityVoList[0].activityVoList[10].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			//str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[0].activityVoList[11].conductedCount+' ('+result.activityVoList[0].activityVoList[11].percentage+'%)</h3><hr class="custom-hr"/></td>';
+			
 		}		
 	}
 	
 	str+='</tr>';
 	str+='<tr>';
-	str+='<td class="bg_ef text-center">TOTAL VILLAGE/WARD</td>';
+	/*str+='<td class="bg_ef text-center">TOTAL VILLAGE/WARD</td>';
 	str+='<td class="bg_ef text-center">PLANNED VILLAGE/WARD</td>';
 	str+='<td class="bg_ef text-center">NOT PLANNED VILLAGE/WARD</td>';
 	str+='<td class="bg_ef text-center">INFO CELL COVERED</td>';
 	str+='<td class="bg_ef text-center">IVR COVERED</td>';
 	str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED</td>';
 	str+='<td class="bg_ef text-center">NO OF IMAGE RECEIVED @ WHATSAPP</td>';
+	*/
+	str+='<td class="bg_ef text-center">TOTAL</td>';
+	str+='<td class="bg_ef text-center">PLANNED</td>';
+	
+	str+='<td class="bg_ef text-center">IVR COVERED</td>';
+	//str+='<td class="bg_ef text-center">IVR COVERED %</td>';
+	//str+='<td class="bg_ef text-center"> IVR NOT PLANNED </td>';
+	//str+='<td class="bg_ef text-center"> IVR TOTAL </td>';
+	
+	str+='<td class="bg_ef text-center">INFO CELL COVERED </td>';
+	//str+='<td class="bg_ef text-center">INFO CELL COVERED %</td>';
+	//str+='<td class="bg_ef text-center">INFO CELL NOT PLANNED</td>';
+	
+	str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED</td>';
+	//str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED %</td>';
+	str+='<td class="bg_ef text-center">NO OF WHATSAPP IMAGES RECIEVED</td>';
+	
+	
 	str+='</tr>';
 	str+='</table>';
 	str+='</div>';
@@ -713,29 +742,20 @@ function buildVillageResult(result,divId,locationId)
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
 				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].totalCount+'</td>';
 				else
-					str+='<td class="dynChildWidth"> - </td>';
+					str+='<td class="dynChildWidth2"> - </td>';
 				
-				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				
-				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-
-				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			{
+				for(var j in result.activityVoList[i].activityVoList)
 				{
-					for(var j in result.activityVoList[i].activityVoList)
-					{
+					if(j<9)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-					}
-				}				
-				str+='<td class="dynChildWidth3"> - </td>';
-				str+='<td class="dynChildWidth3"> - </td>';
+					else
+						str+='<td class="dynChildWidth7">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+				}
+			}
 				
 				str+='<tr>';
 				str+='</table>';
@@ -774,29 +794,20 @@ function buildMandalResult(result,divId,locationId)
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
 				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].totalCount+'</td>';
 				else
-					str+='<td class="dynChildWidth"> - </td>';
+					str+='<td class="dynChildWidth2"> - </td>';
 				
-				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				
-				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			{
+				for(var j in result.activityVoList[i].activityVoList)
 				{
-					for(var j in result.activityVoList[i].activityVoList)
-					{
+					if(j<9)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-					}
-				}				
-				str+='<td class="dynChildWidth3"> - </td>';
-				str+='<td class="dynChildWidth3"> - </td>';
-				
+					else
+						str+='<td class="dynChildWidth7">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+				}
+			}
 				str+='<tr>';
 				str+='</table>';
 				str+='</a>';
@@ -837,28 +848,20 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
 				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].totalCount+'</td>';
 				else
-					str+='<td class="dynChildWidth"> - </td>';
+					str+='<td class="dynChildWidth2"> - </td>';
 				
-				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				
-				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			{
+				for(var j in result.activityVoList[i].activityVoList)
 				{
-					for(var j in result.activityVoList[i].activityVoList)
-					{
+					if(j<9)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-					}
-				}				
-				str+='<td class="dynChildWidth3"> - </td>';
-				str+='<td class="dynChildWidth3"> - </td>';
+					else
+						str+='<td class="dynChildWidth7">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+				}
+			}
 				
 				str+='<tr>';
 				str+='</table>';
@@ -892,14 +895,21 @@ function buildsLocationsResult(result,divId){
 	str+='<tr class="font-12">';
 	str+='<td class="dynWidth" style="width:220px">LOCATION NAME</td>';
 	str+='<td class="getChildWidth">TOTAL</td>';
-	str+='<td class="getChildWidth2">PLANNED</td>';
-	str+='<td class="getChildWidth10">NOT PLANNED</td>';
-	str+='<td class="getChildWidth3">INFO CELL COVERED</td>';
-	str+='<td class="getChildWidth4">INFO CELL COVERED %</td>';
-	str+='<td class="getChildWidth5">IVR COVERED</td>';
-	str+='<td class="getChildWidth6">IVR COVERED %</td>';
-	str+='<td class="getChildWidth7">WHATSAPP IMAGES COVERED</td>';
-	str+='<td class="getChildWidth9">NO OF IMAGE RECEIVED @ WHATSAPP</td>';
+	str+='<td class="getChildWidth1">PLANNED</td>';
+	
+	str+='<td class="getChildWidth2">IVR COVERED</td>';
+	str+='<td class="getChildWidth3">IVR COVERED %</td>';
+	str+='<td class="getChildWidth4"> IVR NOT PLANNED </td>';
+	str+='<td class="getChildWidth5"> IVR TOTAL </td>';
+	
+	str+='<td class="getChildWidth6">INFO CELL COVERED</td>';
+	str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
+	str+='<td class="getChildWidth8">INFO CELL NOT PLANNED</td>';
+	
+	str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED</td>';
+	str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED %</td>';
+	str+='<td class="getChildWidth9">NO OF WHATSAPP IMAGES RECIEVED</td>';
+	
 	str+='</tr>';
 		
     
@@ -908,7 +918,7 @@ function buildsLocationsResult(result,divId){
 		for(var i in result.activityVoList)
 		{
 			str+='<tr>';
-			str+='<td colspan="11" class="pad_0">';
+			str+='<td colspan="13" class="pad_0">';
 			str+='<div class="panel-group m_0" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
@@ -918,30 +928,21 @@ function buildsLocationsResult(result,divId){
 			str+='<tr>';
 			str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].totalCount+'</td>';
 				else
-					str+='<td class="dynChildWidth"> - </td>';
+					str+='<td class="dynChildWidth2"> - </td>';
 				
-				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
-				
-				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
-					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
-				else
-					str+='<td class="dynChildWidth"> - </td>';
 			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 			{
 				for(var j in result.activityVoList[i].activityVoList)
 				{
-					str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+					if(j<9)
+						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
+					else
+						str+='<td class="dynChildWidth7">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
 				}
 			}
-			
-			str+='<td class="dynChildWidth3"> - </td>';
-			str+='<td class="dynChildWidth3"> - </td>';
-			
+
 			str+='</tr>';
 			str+='</table>';
 			str+='</a>';
@@ -1023,24 +1024,26 @@ function buildDayWiseResults(result,divId)
 		
 		for(var i in result.activityVoList)
 		{
-			var clsCount = 0;
 			str+='<li>';
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
 			str+='<td style="width:175px;"><span class="days">'+result.activityVoList[i].name+'</span></td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount>0)
-				str+='<td class="dynChildWidth3">'+result.activityVoList[i].totalCount+'</td>';
+				str+='<td class="dynChildWidth2">'+result.activityVoList[i].totalCount+'</td>';
 			else
-				str+='<td class="dynChildWidth3"> - </td>';
-					
-			clsCount = parseInt(clsCount)+parseInt(i+1);
+				str+='<td class="dynChildWidth2"> - </td>';
+			/*		
+			if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount>0)
+				str+='<td class="dynChildWidth2">'+result.activityVoList[i].plannedCount+'</td>';
+			else
+				str+='<td class="dynChildWidth2"> - </td>';
+			*/
 			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 			{
 				for(var j in result.activityVoList[i].activityVoList)
-				{
-					clsCount = parseInt(clsCount)+parseInt(j+1);	
-					str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-					str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
+				{	
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
 				}
 			}
 			str+='</tr>';
