@@ -30,9 +30,6 @@ public class Scheduler {
 	private ResultStatus rs;
     private IMahaNaduService mahaNaduService;
 	
-	
-	
-	
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -302,4 +299,6 @@ public class Scheduler {
 		}
 		return rs;
 	}
+	
+	
 }

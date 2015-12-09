@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
@@ -20,13 +21,17 @@ import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SchedulerService implements ISchedulerService{
@@ -49,8 +54,27 @@ public class SchedulerService implements ISchedulerService{
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
 	private TransactionTemplate transactionTemplate;
 	private IMobileService mobileService;
+	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
+	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	
-	
+	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
+		return trainingCampBatchAttendeeDAO;
+	}
+
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
+	}
+
+	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
+		return trainingCampAttendanceDAO;
+	}
+
+	public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
+	}
+
 	public IMobileService getMobileService() {
 		return mobileService;
 	}
@@ -721,4 +745,37 @@ public class SchedulerService implements ISchedulerService{
 		return effectedCount;
 	}
 	
+	public void updateTrainingCampSpeakersDetails()
+	{
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					try {
+						DateUtilService date = new DateUtilService();
+						Date todayDate = date.getCurrentDateAndTime();
+						List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
+						if(speakersList != null && speakersList.size()>0)
+						{
+							for (Object[] speaker : speakersList) {
+								Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 
+								Long batchId =speaker[1] != null ? Long.valueOf(speaker[1].toString()):0L;
+								String attendedTimeStr = speaker[2] != null ?speaker[2].toString():"";
+								
+								TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+								trainingCampBatchAttendee.setTdpCadreId(tdpCadreId);
+								trainingCampBatchAttendee.setTrainingCampBatchId(batchId);
+								trainingCampBatchAttendee.setAttendedTime(new SimpleDateFormat("yy-MM-dd hh:mm::ss").parse(attendedTimeStr));
+								trainingCampBatchAttendee.setInsertedTime(todayDate);
+								trainingCampBatchAttendee.setUpdatedTime(todayDate);
+								trainingCampBatchAttendee.setInsertedBy(1L);
+								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+							}
+						}					
+					} catch (Exception e) {}
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Exception Raised in updateTrainingCampSpeakersDetails()",e); 
+		}
+	}
 }
