@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -101,4 +103,7 @@ public interface IRegionServiceData {
 	
 	public List<SelectOptionVO> getAllMandalsByAllConstituencies(List<Long> constiIds);
 	
+	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO);
+	
+	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
 }
