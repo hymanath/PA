@@ -478,7 +478,7 @@ public class ActivityService implements IActivityService{
 					if(locationsMap.get(areaId) != null){
 						aactivityVO = locationsMap.get(areaId);
 						if(aactivityVO != null){
-							aactivityVO.setNotPlannedCount(commonMethodsUtilService.getLongValueForObject(activity[3]));
+							//aactivityVO.setNotPlannedCount(commonMethodsUtilService.getLongValueForObject(activity[3]));
 						}
 					}
 					else{
@@ -486,7 +486,7 @@ public class ActivityService implements IActivityService{
 						aactivityVO.setId(areaId);
 						aactivityVO.setName(commonMethodsUtilService.getStringValueForObject(activity[1]));
 						aactivityVO.setLocationLevel(commonMethodsUtilService.getLongValueForObject(activity[2]));
-						aactivityVO.setPlannedCount(commonMethodsUtilService.getLongValueForObject(activity[3]));
+						//aactivityVO.setPlannedCount(commonMethodsUtilService.getLongValueForObject(activity[3]));
 						
 						locationsMap.put(aactivityVO.getId(), aactivityVO);
 					}
@@ -501,6 +501,11 @@ public class ActivityService implements IActivityService{
 	public void segrigateResultsTypes(List<Object[]> activitiesList,Map<Long,ActivityVO> locationsMap,String type,String extentionNo)
 	{
 		try {
+			if(locationsMap == null || locationsMap.size() == 0)
+			{
+				segrigatePlannedResult(activitiesList, locationsMap, extentionNo);
+			}
+			
 			if(activitiesList != null && activitiesList.size()>0)
 			{
 				Map<String,ActivityVO> activityMap1 = null;
@@ -548,6 +553,7 @@ public class ActivityService implements IActivityService{
 						}
 						infoCellVO.setName(type.trim());
 						infoCellVO.setConductedCount(totalCount);
+						infoCellVO.setPercentage(totalCount.toString());
 					}
 				}
 			}
@@ -576,8 +582,26 @@ public class ActivityService implements IActivityService{
 							Long totalCount = 0L;
 							if(infoCellVO != null)
 							{
-								totalCount = totalCount+(infoCellVO.getConductedCount() != null ? infoCellVO.getConductedCount():0L);
-								infoCellVO.setConductedCount(totalCount);
+								if(type.contains("%"))
+								{
+									String tempType = type.replace("%", "");
+									ActivityVO tempInfoCellVO = getMatchActivityVO(aactivityVO.getActivityVoList(), tempType.trim());
+									Long plannedCount = getMatchActivityVO(aactivityVO.getActivityVoList(), "PLANNED".trim()).getConductedCount();
+									if(tempInfoCellVO != null)
+									{
+										Long count = tempInfoCellVO.getConductedCount();
+										if(count != null && count.longValue()>0L){
+											double perc = (count*100.0)/plannedCount;;
+											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+											infoCellVO.setPercentage(percentage);
+										}
+									}
+								}
+								else
+								{
+									totalCount = totalCount+(infoCellVO.getConductedCount() != null ? infoCellVO.getConductedCount():0L);
+									infoCellVO.setPercentage(totalCount.toString());
+								}
 							}
 						}
 						
@@ -728,11 +752,22 @@ public class ActivityService implements IActivityService{
 					searchAttributeVO.setConditionType("ivr");
 						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 					
-					segrigatePlannedResult(plannedActivities,locationsMap,null);					
-					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL PLANNED",null);
-					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR PLANNED",null);
+					segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
+					
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED",null);
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %",null);
+					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED",null);
+					
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED",null);
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %",null);
 					segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
-					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
+					
+					segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED",null);					
+					segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED %",null);	
+					segrigateResultsTypes(null,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
+					
+					
+					
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 					
@@ -741,21 +776,29 @@ public class ActivityService implements IActivityService{
 						searchAttributeVO.setLocationIdsList(districtIds);
 						searchAttributeVO.setConditionType("planned");
 						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-						searchAttributeVO.setConditionType("infocell");
+					searchAttributeVO.setConditionType(" infocell ");
 						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-						searchAttributeVO.setConditionType("ivr");
+					searchAttributeVO.setConditionType("ivr");
 						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 
-						searchAttributeVO.setConditionType("infocell");
-							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
-						searchAttributeVO.setConditionType("ivr");
-							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);  
-						
-							segrigatePlannedResult(plannedActivities,locationsMap,null);					
-							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL PLANNED",null);
-							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR PLANNED",null);
-							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
-							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);	
+					searchAttributeVO.setConditionType("infocell");
+						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+					searchAttributeVO.setConditionType("ivr");
+						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+					
+					segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
+					
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED",null);
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %",null);
+					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED",null);
+					
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED",null);
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %",null);
+					segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
+					
+					segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED",null);					
+					segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED %",null);	
+					segrigateResultsTypes(null,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
 					}
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
@@ -764,22 +807,30 @@ public class ActivityService implements IActivityService{
 					{
 						searchAttributeVO.setLocationIdsList(constituencyList);
 						searchAttributeVO.setConditionType("planned");
-						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-						searchAttributeVO.setConditionType("infocell");
-						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+						searchAttributeVO.setConditionType(" infocell ");
+							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 						searchAttributeVO.setConditionType("ivr");
-						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-
+							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+	
 						searchAttributeVO.setConditionType("infocell");
 							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
 						searchAttributeVO.setConditionType("ivr");
 							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 						
-							segrigatePlannedResult(plannedActivities,locationsMap,null);					
-							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL PLANNED",null);
-							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR PLANNED",null);
-							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
-							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
+						segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
+						
+						segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED",null);
+						segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %",null);
+						segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED",null);
+						
+						segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED",null);
+						segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %",null);
+						segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
+						
+						segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED",null);					
+						segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED %",null);	
+						segrigateResultsTypes(null,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED",null);
 					}
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
@@ -815,23 +866,32 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.MANDAL_COMMITTEE_LEVEL_ID);
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(mandalsIdsList);
-							searchAttributeVO.setConditionType("planned");
-							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-							searchAttributeVO.setConditionType("infocell");
-							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-							searchAttributeVO.setConditionType("ivr");
-							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 
+							searchAttributeVO.setConditionType("planned");
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+							searchAttributeVO.setConditionType(" infocell ");
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							searchAttributeVO.setConditionType("ivr");
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+	
 							searchAttributeVO.setConditionType("infocell");
 								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
 							searchAttributeVO.setConditionType("ivr");
 								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 							
-								segrigatePlannedResult(plannedActivities,mandalMap,"2");					
-								segrigateResultsTypes(infoCellconductedActivities,mandalMap,"INFO CELL PLANNED","2");
-								segrigateResultsTypes(ivrconductedActivities,mandalMap,"IVR PLANNED","2");
-								segrigateResultsTypes(infoCellNotPlannedActivities,mandalMap,"INFO CELL NOT PLANNED","2");
-								segrigateResultsTypes(ivrNotPlannedActivities,mandalMap,"INFO CELL NOT PLANNED","2");
+							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","2");
+							
+							segrigateResultsTypes(ivrconductedActivities,mandalMap,"IVR COVERED","2");
+							segrigateResultsTypes(ivrconductedActivities,mandalMap,"IVR COVERED %","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,mandalMap,"IVR NOT PLANNED","2");
+							
+							segrigateResultsTypes(infoCellconductedActivities,mandalMap,"INFO CELL COVERED","2");
+							segrigateResultsTypes(infoCellconductedActivities,mandalMap,"INFO CELL COVERED %","2");
+							segrigateResultsTypes(infoCellNotPlannedActivities,mandalMap,"INFO CELL NOT PLANNED","2");
+							
+							segrigateResultsTypes(null,mandalMap,"WHATSAPP IMAGES COVERED","2");					
+							segrigateResultsTypes(null,mandalMap,"WHATSAPP IMAGES COVERED %","2");	
+							segrigateResultsTypes(null,mandalMap,"NO OF WHATSAPP IMAGES RECIEVED","2");
 						}
 						
 						if(munciORTownORCorpIdsList != null && munciORTownORCorpIdsList.size()>0)
@@ -847,17 +907,29 @@ public class ActivityService implements IActivityService{
 							
 							searchAttributeVO.setConditionType("planned");
 							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-							searchAttributeVO.setConditionType("infocell");
+						searchAttributeVO.setConditionType(" infocell ");
 							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-							searchAttributeVO.setConditionType("ivr");
+						searchAttributeVO.setConditionType("ivr");
 							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-							
-							
-							segrigatePlannedResult(plannedActivities,MunciTownMap,"1");					
-							segrigateResultsTypes(infoCellconductedActivities,MunciTownMap,"INFO CELL PLANNED","1");
-							segrigateResultsTypes(ivrconductedActivities,MunciTownMap,"IVR PLANNED","1");
-							segrigateResultsTypes(infoCellNotPlannedActivities,MunciTownMap,"INFO CELL NOT PLANNED","1");
-							segrigateResultsTypes(ivrNotPlannedActivities,MunciTownMap,"INFO CELL NOT PLANNED","1");
+
+						searchAttributeVO.setConditionType("infocell");
+							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+						searchAttributeVO.setConditionType("ivr");
+							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						
+						segrigateResultsTypes(plannedActivities,MunciTownMap,"PLANNED","1");
+						
+						segrigateResultsTypes(ivrconductedActivities,MunciTownMap,"IVR COVERED","1");
+						segrigateResultsTypes(ivrconductedActivities,MunciTownMap,"IVR COVERED %","1");
+						segrigateResultsTypes(ivrNotPlannedActivities,MunciTownMap,"IVR NOT PLANNED","1");
+						
+						segrigateResultsTypes(infoCellconductedActivities,MunciTownMap,"INFO CELL COVERED","1");
+						segrigateResultsTypes(infoCellconductedActivities,MunciTownMap,"INFO CELL COVERED %","1");
+						segrigateResultsTypes(infoCellNotPlannedActivities,MunciTownMap,"INFO CELL NOT PLANNED","1");
+						
+						segrigateResultsTypes(null,MunciTownMap,"WHATSAPP IMAGES COVERED","1");					
+						segrigateResultsTypes(null,MunciTownMap,"WHATSAPP IMAGES COVERED %","1");	
+						segrigateResultsTypes(null,MunciTownMap,"NO OF WHATSAPP IMAGES RECIEVED","1");
 						}
 						
 						if(divisionIdsList != null && divisionIdsList.size()>0)
@@ -869,15 +941,34 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.DIVISION_COMMITTEE_LEVEL_ID);
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(divisionIdsList);
-							plannedActivities = new ArrayList<Object[]>();
-							infoCellconductedActivities = new ArrayList<Object[]>(); 
-							ivrconductedActivities = new ArrayList<Object[]>(); 
 							
-							segrigatePlannedResult(plannedActivities,divisionMap,"3");					
-							segrigateResultsTypes(infoCellconductedActivities,divisionMap,"INFO CELL PLANNED","3");
-							segrigateResultsTypes(ivrconductedActivities,divisionMap,"IVR PLANNED","3");
+
+							searchAttributeVO.setConditionType("planned");
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+							searchAttributeVO.setConditionType(" infocell ");
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							searchAttributeVO.setConditionType("ivr");
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+	
+							searchAttributeVO.setConditionType("infocell");
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+							searchAttributeVO.setConditionType("ivr");
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							
+							segrigateResultsTypes(plannedActivities,divisionMap,"PLANNED","3");
+							
+							segrigateResultsTypes(ivrconductedActivities,divisionMap,"IVR COVERED","3");
+							segrigateResultsTypes(ivrconductedActivities,divisionMap,"IVR COVERED %","3");
+							segrigateResultsTypes(ivrNotPlannedActivities,divisionMap,"IVR NOT PLANNED","3");
+							
+							segrigateResultsTypes(infoCellconductedActivities,divisionMap,"INFO CELL COVERED","3");
+							segrigateResultsTypes(infoCellconductedActivities,divisionMap,"INFO CELL COVERED %","3");
 							segrigateResultsTypes(infoCellNotPlannedActivities,divisionMap,"INFO CELL NOT PLANNED","3");
-							segrigateResultsTypes(ivrNotPlannedActivities,divisionMap,"INFO CELL NOT PLANNED","3");
+							
+							segrigateResultsTypes(null,divisionMap,"WHATSAPP IMAGES COVERED","3");					
+							segrigateResultsTypes(null,divisionMap,"WHATSAPP IMAGES COVERED %","3");	
+							segrigateResultsTypes(null,divisionMap,"NO OF WHATSAPP IMAGES RECIEVED","3");
+						
 						}
 						
 						if(mandalMap != null && mandalMap.size()>0)
@@ -915,23 +1006,31 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.WARD_COMMITTEE_LEVEL_ID);
 								
-								searchAttributeVO.setConditionType("planned");
+							searchAttributeVO.setConditionType("planned");
 								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-								searchAttributeVO.setConditionType("infocell");
+							searchAttributeVO.setConditionType(" infocell ");
 								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-								searchAttributeVO.setConditionType("ivr");
+							searchAttributeVO.setConditionType("ivr");
 								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 
-								searchAttributeVO.setConditionType("infocell");
-									infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
-								searchAttributeVO.setConditionType("ivr");
-									ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-								
-									segrigatePlannedResult(plannedActivities,locationsMap,"2");					
-									segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL PLANNED","2");
-									segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR PLANNED","2");
-									segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","2");
-									segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","2");
+							searchAttributeVO.setConditionType("infocell");
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+							searchAttributeVO.setConditionType("ivr");
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							
+							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","2");
+							
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED","2");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED","2");
+							
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","2");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","2");
+							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","2");
+							
+							segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED","2");					
+							segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED %","2");	
+							segrigateResultsTypes(null,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","2");
 							}
 							else if(locationTypeIds.contains(IConstants.VILLAGE_COMMITTEE_LEVEL_ID)){ // panchayat
 								searchAttributeVO.getLocationTypeIdsList().clear();
@@ -939,21 +1038,30 @@ public class ActivityService implements IActivityService{
 								
 								searchAttributeVO.setConditionType("planned");
 								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
-								searchAttributeVO.setConditionType("infocell");
+							searchAttributeVO.setConditionType(" infocell ");
 								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-								searchAttributeVO.setConditionType("ivr");
+							searchAttributeVO.setConditionType("ivr");
 								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 
-								searchAttributeVO.setConditionType("infocell");
-									infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
-								searchAttributeVO.setConditionType("ivr");
-									ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
-								
-									segrigatePlannedResult(plannedActivities,locationsMap,"1");					
-									segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL PLANNED","1");
-									segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR PLANNED","1");
-									segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","1");
-									segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","1");
+							searchAttributeVO.setConditionType("infocell");
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+							searchAttributeVO.setConditionType("ivr");
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							
+							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","1");
+							
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED","1");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %","1");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED","1");
+							
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","1");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","1");
+							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","1");
+							
+							segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED","1");					
+							segrigateResultsTypes(null,locationsMap,"WHATSAPP IMAGES COVERED %","1");	
+							segrigateResultsTypes(null,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","1");
+							
 							}
 						}
 					}
@@ -1143,49 +1251,62 @@ public class ActivityService implements IActivityService{
 			
 			List<Object[]> infoCellNotPlannedActivities = null;
 			List<Object[]> ivrNotPlannedActivities = null;
+			
+			searchAttributeVO.setConditionType("planned");
+				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
+			searchAttributeVO.setConditionType(" infocell ");
+				infoCellconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+			searchAttributeVO.setConditionType("ivr");
+				ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+
+			searchAttributeVO.setConditionType("infocell");
+				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 	
+			searchAttributeVO.setConditionType("ivr");
+				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+			
 			if(datesMap != null && datesMap.size()>0)
 			{
 				for (String dateStr : datesMap.keySet()) {
 					ActivityVO aactivityVO =datesMap.get(dateStr);
-					aactivityVO.setTotalCount(0L);
-					String[] attributesArr = IConstants.ACTIVITY_REPORT_FIELDS;
-					Map<String,ActivityVO> activityMap1 = new LinkedHashMap<String, ActivityVO>(0);
-					if(attributesArr != null && attributesArr.length>0)
+					if(aactivityVO != null)
 					{
-						for(int i=0;i< attributesArr.length;i++){
-							ActivityVO infoCellVO1 = new ActivityVO();
-							infoCellVO1.setName(attributesArr[i].toString());
-							infoCellVO1.setConductedCount(0L);
-							infoCellVO1.setPercentage("0.00");
-							infoCellVO1.setNotPlannedPerc("0.00");
-							activityMap1.put(infoCellVO1.getName(), infoCellVO1);
+						aactivityVO.setTotalCount(0L);
+						String[] attributesArr = IConstants.ACTIVITY_REPORT_FIELDS;
+						Map<String,ActivityVO> activityMap1 = new LinkedHashMap<String, ActivityVO>(0);
+						if(attributesArr != null && attributesArr.length>0)
+						{
+							for(int i=0;i< attributesArr.length;i++){
+								ActivityVO infoCellVO1 = new ActivityVO();
+								infoCellVO1.setName(attributesArr[i].toString());
+								infoCellVO1.setConductedCount(0L);
+								infoCellVO1.setPercentage("0.00");
+								infoCellVO1.setNotPlannedPerc("0.00");
+								activityMap1.put(infoCellVO1.getName(), infoCellVO1);
+							}
+						}
+						SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd");
+						searchAttributeVO.setStartDate(foramt.parse(dateStr));
+						searchAttributeVO.setEndDate(foramt.parse(dateStr));
+						
+						aactivityVO.setActivityMap(activityMap1);
+						
+						if(plannedActivities != null && plannedActivities.size()>0)
+						{
+							for (Object[] activity : plannedActivities) {
+								String dateStr1 = commonMethodsUtilService.getStringValueForObject(activity[3]);
+								if(dateStr.trim().equalsIgnoreCase(dateStr1.trim())){
+									aactivityVO.setPlannedCount(commonMethodsUtilService.getLongValueForObject(activity[4]));
+								}
+							}
 						}
 					}
-					SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd");
-					searchAttributeVO.setStartDate(foramt.parse(dateStr));
-					searchAttributeVO.setEndDate(foramt.parse(dateStr));
-					
-				searchAttributeVO.setConditionType("planned");
-					plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
-				searchAttributeVO.setConditionType(" infocell ");
-					infoCellconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
-				searchAttributeVO.setConditionType("ivr");
-					ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
-
-				searchAttributeVO.setConditionType("infocell");
-					infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 	
-				searchAttributeVO.setConditionType("ivr");
-					ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
-				
-					buildResult(infoCellconductedActivities,datesMap,"INFO CELL PLANNED",null);
-					buildResult(ivrconductedActivities,datesMap,"IVR PLANNED",null);
-					buildResult(infoCellNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
-					buildResult(ivrNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
-					
-					aactivityVO.setActivityMap(activityMap1);
 				}
 			}
 			
+				buildResult(infoCellconductedActivities,datesMap,"INFO CELL PLANNED",null);
+				buildResult(ivrconductedActivities,datesMap,"IVR PLANNED",null);
+				buildResult(infoCellNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
+				buildResult(ivrNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
 				
 			//0.locationId,1.locationName,2.locationLevelId,3.date,4.count
 			//List<Object[]> dayWiseList = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
