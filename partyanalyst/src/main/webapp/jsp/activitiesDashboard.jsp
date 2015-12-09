@@ -637,9 +637,21 @@ function buildVillageResult(result,divId,locationId)
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
-				str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
-				str+='<td class="dynChildWidth2">'+result.activityVoList[i].plannedCount+'</td>';
-				str+='<td class="dynChildWidth10">'+result.activityVoList[i].notPlannedCount+'</td>';
+				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+
 				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 				{
 					for(var j in result.activityVoList[i].activityVoList)
@@ -647,9 +659,8 @@ function buildVillageResult(result,divId,locationId)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
 					}
 				}				
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
 				
 				str+='<tr>';
 				str+='</table>';
@@ -687,9 +698,20 @@ function buildMandalResult(result,divId,locationId)
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
-				str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
-				str+='<td class="dynChildWidth2">'+result.activityVoList[i].plannedCount+'</td>';
-				str+='<td class="dynChildWidth10">'+result.activityVoList[i].notPlannedCount+'</td>';
+				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
 				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 				{
 					for(var j in result.activityVoList[i].activityVoList)
@@ -697,9 +719,8 @@ function buildMandalResult(result,divId,locationId)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
 					}
 				}				
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
 				
 				str+='<tr>';
 				str+='</table>';
@@ -740,9 +761,20 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
 				str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
-				str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
-				str+='<td class="dynChildWidth2">'+result.activityVoList[i].plannedCount+'</td>';
-				str+='<td class="dynChildWidth10">'+result.activityVoList[i].notPlannedCount+'</td>';
+				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
 				if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 				{
 					for(var j in result.activityVoList[i].activityVoList)
@@ -750,9 +782,8 @@ function buildConstituencyResult(result,divId,locationId)
 						str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
 					}
 				}				
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
-				str+='<td class="dynChildWidth7"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
+				str+='<td class="dynChildWidth3"> - </td>';
 				
 				str+='<tr>';
 				str+='</table>';
@@ -811,9 +842,20 @@ function buildsLocationsResult(result,divId){
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
 			str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
-			str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
-			str+='<td class="dynChildWidth2">'+result.activityVoList[i].plannedCount+'</td>';
-			str+='<td class="dynChildWidth10">'+result.activityVoList[i].notPlannedCount+'</td>';
+			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].totalCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].plannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
+				
+				if(result.activityVoList[i].notPlannedCount != null && result.activityVoList[i].notPlannedCount >0)
+					str+='<td class="dynChildWidth">'+result.activityVoList[i].notPlannedCount+'</td>';
+				else
+					str+='<td class="dynChildWidth"> - </td>';
 			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
 			{
 				for(var j in result.activityVoList[i].activityVoList)
@@ -822,9 +864,8 @@ function buildsLocationsResult(result,divId){
 				}
 			}
 			
-			str+='<td class="dynChildWidth7"> - </td>';
-			str+='<td class="dynChildWidth8"> - </td>';
-			str+='<td class="dynChildWidth9"> - </td>';
+			str+='<td class="dynChildWidth3"> - </td>';
+			str+='<td class="dynChildWidth3"> - </td>';
 			
 			str+='</tr>';
 			str+='</table>';
@@ -882,7 +923,7 @@ function getDaywiseInfo(searchType,locationId,divId)
 		endDate:"08-12-2015",
 		task:"getActivityDetailsBySearchCriteria"
 		};
-		$('#'+divId+'').html('');
+			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
 		
 		$.ajax({
           type:'GET',
@@ -902,34 +943,53 @@ function buildDayWiseResults(result,divId)
 	
 	str+='<div>';
 	str+='<ul class="villageDays getwidthForRes">';
-	str+='<li >';
-	str+='<table class="table table-col table-condensed" style="display:inline" >';
-	str+='<tr>';
-	str+='<td style="width:175px;"><span class="days">DAY 1</span></td>';
-	str+='<td class="dynChildWidth">100</td>';
-	str+='<td class="dynChildWidth2">200</td>';
-	str+='<td class="dynChildWidth3">200</td>';
-	str+='<td class="dynChildWidth4">200</td>';
-	str+='<td class="dynChildWidth5">200</td>';
-	str+='<td class="dynChildWidth6">200</td>';
-	str+='<td class="dynChildWidth7">200</td>';
-	str+='<td class="dynChildWidth8">200</td>';
-	str+='<td class="dynChildWidth9">200</td>';
-	str+='</tr>';
-	str+='</table>';
-	str+='<ul class="slick-training ">';
-	str+='<li>';
-	str+='<a class="fancybox" rel="group" href="dist/activity/img/searchicon.png"><img src="dist/activity/img/searchicon.png" alt="" style="height:25px" /></a>';
-	str+='</li>';
-	str+='<li>';
-	str+='<a class="fancybox" rel="group" href="dist/activity/img/searchicon.png"><img src="dist/activity/img/searchicon.png" alt="" style="height:25px" /></a>';
-	str+='</li>';
-	str+='</ul>';
-
-	str+='</li>';
+	if(result.activityVoList != null && result.activityVoList.length>0)
+	{
+		
+		for(var i in result.activityVoList)
+		{
+			var clsCount = 0;
+			str+='<li>';
+			str+='<table class="table table-col table-condensed" style="display:inline" >';
+			str+='<tr>';
+			str+='<td style="width:175px;"><span class="days">'+result.activityVoList[i].name+'</span></td>';
+			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount>0)
+				str+='<td class="dynChildWidth3">'+result.activityVoList[i].totalCount+'</td>';
+			else
+				str+='<td class="dynChildWidth3"> - </td>';
+					
+			clsCount = parseInt(clsCount)+parseInt(i+1);
+			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
+			{
+				for(var j in result.activityVoList[i].activityVoList)
+				{
+					clsCount = parseInt(clsCount)+parseInt(j+1);	
+					str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
+					str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
+				}
+			}
+			str+='</tr>';
+			str+='</table>';
+			/*
+			str+='<ul class="slick-training ">';
+			str+='<li>';
+			str+='<a class="fancybox" rel="group" href="dist/activity/img/searchicon.png"><img src="dist/activity/img/searchicon.png" alt="" style="height:25px" /></a>';
+			str+='</li>';
+			str+='<li>';
+			str+='<a class="fancybox" rel="group" href="dist/activity/img/searchicon.png"><img src="dist/activity/img/searchicon.png" alt="" style="height:25px" /></a>';
+			str+='</li>';
+			str+='</ul>';
+*/
+			str+='</li>';
+		}
+	}
+	
+	
+	
 	str+='</ul>';
 	str+='</div>';
 	$('#'+divId+'').html(str);
+	dynamicwidth();
 }
 getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
