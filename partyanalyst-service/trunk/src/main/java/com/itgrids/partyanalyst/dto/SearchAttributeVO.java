@@ -24,8 +24,15 @@ public class SearchAttributeVO implements Serializable{
 	private Long scopeId;
 	private Long scopeValue;
 	private String attributeType;
+	private List<Long> questionnaireIdsList = new ArrayList<Long>(0);
 	
 	
+	public List<Long> getQuestionnaireIdsList() {
+		return questionnaireIdsList;
+	}
+	public void setQuestionnaireIdsList(List<Long> questionnaireIdsList) {
+		this.questionnaireIdsList = questionnaireIdsList;
+	}
 	public Long getScopeId() {
 		return scopeId;
 	}
