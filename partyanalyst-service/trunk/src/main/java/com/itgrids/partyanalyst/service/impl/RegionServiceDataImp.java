@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
 import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -32,7 +33,9 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -44,6 +47,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -72,9 +76,27 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IPanchayatDAO panchayatDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private ILocationInfoDAO locationInfoDAO;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	
-	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
+	public ILocationInfoDAO getLocationInfoDAO() {
+		return locationInfoDAO;
+	}
+
+	public void setLocationInfoDAO(ILocationInfoDAO locationInfoDAO) {
+		this.locationInfoDAO = locationInfoDAO;
+	}
+
 	public void setUserDistrictAccessInfoDAO(
 			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
 		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
@@ -1788,6 +1810,72 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return mandalNames;
 	}
+	
+	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO)
+	{
+		List<BasicVO> returnList = null;
+		try {
+			List<Object[]>  areaWiseCountList = locationInfoDAO.areaCountListByAreaIdsOnScope(searchAttributeVO);
+			if(areaWiseCountList != null && areaWiseCountList.size()>0)
+			{
+				returnList = new ArrayList<BasicVO>(0);
+				for (Object[] area : areaWiseCountList) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(area[0]);
+					Long count = commonMethodsUtilService.getLongValueForObject(area[1]);
+					
+					BasicVO vo = new BasicVO();
+					vo.setId(locationId);				
+					vo.setTotalVoters(count);
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			log.error("error Occured while executing areaCountListByAreaIdsOnScope in RegionServiceDataImp Service...",e);
+		}
+		return returnList;
+	}
+	
+	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue){
+		String userAccessValue = "ALL";
+		try {
+			
+			if(accessType.equalsIgnoreCase("MP"))
+			{				
+				List<Object[]> list = constituencyDAO.getParliamentConstituencyByParliamentId(accessValue);
+				userAccessValue = list.get(0)[1].toString() + " Parliament";
+			}
+			else
+			{
+				List<Long> districtIds = new ArrayList<Long>();
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+				{
+					for (Object[] districtId : accessDistrictsList) {
+						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(districtIds != null && districtIds.size() == 1)
+					{
+						Long districtId = districtIds.get(0).longValue();
+						if(districtId != 0L)
+							userAccessValue =  districtDAO.get(districtId).getDistrictName()+" District";
+					}
+					else if(districtIds != null && districtIds.contains(1L)) // Adilabad
+					{
+						userAccessValue = "TS";
+					}
+					else if(districtIds != null && districtIds.contains(11L))//Srikakulam
+					{
+						userAccessValue = "AP";
+					}
+				}	
+			}
+		} catch (Exception e) {
+			log.error("Exception raised in userAccessTypeDetailsForDashBoard", e);
+		}
+		return userAccessValue;
+	}
+	
 }
 	
  
