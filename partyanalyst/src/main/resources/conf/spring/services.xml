@@ -1327,8 +1327,8 @@
 		<property name="tdpCadreAgerangeInfoDAO" ref="tdpCadreAgerangeInfoDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="mobileService" ref="mobileService"/>
-		<!--<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"/>
-		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/> -->
+		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"/>
+		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
 		
 		
 	</bean>
@@ -1372,17 +1372,17 @@
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
     	<property name="cronExpression" value="0 0/20 * * * ?" />
 	</bean>
-			<!--
+			
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="updateTrainingCampSpeakerDtls" />
-    	<property name="cronExpression" value="0 30 0 * * ?" />
+    	<property name="cronExpression" value="0 30 7 * * ?" />
 	</bean>	
 	
 	<bean name="updateTrainingCampSpeakerDtls" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="updateTrainingCampSpeakersDetails" /> 
 	</bean>	
-	-->
+	
 	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayCardPrintDetailsInsertJob" />
     	<property name="cronExpression" value="0 40 16 * * ?" />
@@ -1550,7 +1550,7 @@
 			<ref bean="insertTriggerForEveryDayMobiles" />
 			<ref bean="mahanaduEventInfo" />
 			<ref bean="mahanaduVisitInfoTrig" />
-				<!--	<ref bean="updateTrainingCampSpeakers" />-->
+			<ref bean="updateTrainingCampSpeakers" />
 			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
 			<ref bean="schForSri2" />
