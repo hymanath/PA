@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -18,6 +17,8 @@ import com.itgrids.partyanalyst.dao.IActivityAttributeQuestionnaireInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
@@ -80,8 +81,24 @@ public class ActivityService implements IActivityService{
 	private ICadreCommitteeService cadreCommitteeService;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IActivityAttributeQuestionnaireInfoDAO activityAttributeQuestionnaireInfoDAO;
+	private IActivityQuestionnaireDAO activityQuestionnaireDAO;
+	private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
 	
 	
+	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
+		return activityQuestionAnswerDAO;
+	}
+	public void setActivityQuestionAnswerDAO(
+			IActivityQuestionAnswerDAO activityQuestionAnswerDAO) {
+		this.activityQuestionAnswerDAO = activityQuestionAnswerDAO;
+	}
+	public IActivityQuestionnaireDAO getActivityQuestionnaireDAO() {
+		return activityQuestionnaireDAO;
+	}
+	public void setActivityQuestionnaireDAO(
+			IActivityQuestionnaireDAO activityQuestionnaireDAO) {
+		this.activityQuestionnaireDAO = activityQuestionnaireDAO;
+	}
 	public IActivityAttributeQuestionnaireInfoDAO getActivityAttributeQuestionnaireInfoDAO() {
 		return activityAttributeQuestionnaireInfoDAO;
 	}
@@ -721,6 +738,11 @@ public class ActivityService implements IActivityService{
 						searchAttributeVO.getLocationTypeIdsList().add(11L);
 					}
 				}
+				
+			List<Long> questionnaireIds = activityQuestionnaireDAO.getQuestionnaireIdsListByScopeId(searchAttributeVO.getAttributesIdsList().get(0));
+			searchAttributeVO.setQuestionnaireIdsList(questionnaireIds);
+			
+			List<Object[]> questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
 				
 			if(searchAttributeVO.getSearchType() != null && searchAttributeVO.getConditionType().trim().contains("daywiseResult")){
 				List<ActivityVO> dayWiseResultList = getActivityDayWiseCountsByLocation(searchAttributeVO);

@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.ActivityQuestionnaire;
 
 public interface IActivityQuestionnaireDAO extends GenericDao<ActivityQuestionnaire, Long>{
 
+	public List<Long> getQuestionnaireIdsListByScopeId(Long scopeId);
 }
