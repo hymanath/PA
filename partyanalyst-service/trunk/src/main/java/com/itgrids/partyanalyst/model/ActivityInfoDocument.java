@@ -38,7 +38,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private ActivityDocument activityDocument;
 	private User insertedUser;
 	private User updatedUser;
-	
+	private Long day;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_info_document_id", unique = true, nullable = false)
@@ -145,4 +145,14 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	@Column(name = "day")
+	public Long getDay() {
+		return day;
+	}
+	public void setDay(Long day) {
+		this.day = day;
+	}
+	
+	
+	
 }
