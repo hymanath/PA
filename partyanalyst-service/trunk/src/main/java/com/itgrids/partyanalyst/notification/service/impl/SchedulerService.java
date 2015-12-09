@@ -746,36 +746,40 @@ public class SchedulerService implements ISchedulerService{
 	}
 	
 	public void updateTrainingCampSpeakersDetails()
-	{
-		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-					try {
-						DateUtilService date = new DateUtilService();
-						Date todayDate = date.getCurrentDateAndTime();
-						List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
-						if(speakersList != null && speakersList.size()>0)
-						{
-							for (Object[] speaker : speakersList) {
-								Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 
-								Long batchId =speaker[1] != null ? Long.valueOf(speaker[1].toString()):0L;
-								String attendedTimeStr = speaker[2] != null ?speaker[2].toString():"";
-								
-								TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
-								trainingCampBatchAttendee.setTdpCadreId(tdpCadreId);
-								trainingCampBatchAttendee.setTrainingCampBatchId(batchId);
-								trainingCampBatchAttendee.setAttendedTime(new SimpleDateFormat("yy-MM-dd hh:mm::ss").parse(attendedTimeStr));
-								trainingCampBatchAttendee.setInsertedTime(todayDate);
-								trainingCampBatchAttendee.setUpdatedTime(todayDate);
-								trainingCampBatchAttendee.setInsertedBy(1L);
-								trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
-							}
-						}					
-					} catch (Exception e) {}
-				}
-			});
-		} catch (Exception e) {
-			LOG.error("Exception Raised in updateTrainingCampSpeakersDetails()",e); 
-		}
-	}
+	  {
+	    try {
+	      transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+	        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+	          try {
+	            DateUtilService date = new DateUtilService();
+	            Date todayDate = date.getCurrentDateAndTime();
+	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
+	            if(speakersList != null && speakersList.size()>0)
+	            {
+	              for (Object[] speaker : speakersList) {
+	                Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 
+	                Long batchId =speaker[1] != null ? Long.valueOf(speaker[1].toString()):0L;
+	                String attendedTimeStr = speaker[2] != null ?speaker[2].toString():"";
+	                
+	                TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+	                trainingCampBatchAttendee.setTdpCadreId(tdpCadreId);
+	                trainingCampBatchAttendee.setTrainingCampBatchId(batchId);
+	                trainingCampBatchAttendee.setAttendedTime(new SimpleDateFormat("yy-MM-dd hh:mm:sss").parse(attendedTimeStr));
+	                trainingCampBatchAttendee.setInsertedTime(todayDate);
+	                trainingCampBatchAttendee.setUpdatedTime(todayDate);
+	                trainingCampBatchAttendee.setInsertedBy(1L);
+	                trainingCampBatchAttendee.setUpdatedBy(1L);
+	                trainingCampBatchAttendee.setIsDeleted("false");
+	                trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+	              }
+	            }          
+	          } catch (Exception e) {
+	        	  System.out.println(e);
+	          }
+	        }
+	      });
+	    } catch (Exception e) {
+	      LOG.error("Exception Raised in updateTrainingCampSpeakersDetails()",e); 
+	    }
+	  }
 }
