@@ -29,7 +29,9 @@ public class LocationInfo extends BaseModel implements Serializable{
 	private Long scopeId;
 	private Long scopeValue;
 	private Long count;
+	private Long publicationDateId;
 	
+	private PublicationDate publicationDate;
 	private RegionScopes regionScopes;
 	private RegionScopes regionScopes2;
 	
@@ -96,6 +98,25 @@ public class LocationInfo extends BaseModel implements Serializable{
 	}
 	public void setRegionScopes2(RegionScopes regionScopes2) {
 		this.regionScopes2 = regionScopes2;
+	}
+	
+	@Column(name = "publication_date_id")
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="publication_date_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PublicationDate getPublicationDate() {
+		return publicationDate;
+	}
+	public void setPublicationDate(PublicationDate publicationDate) {
+		this.publicationDate = publicationDate;
 	}
 	
 	
