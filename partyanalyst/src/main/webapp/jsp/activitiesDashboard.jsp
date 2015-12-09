@@ -90,17 +90,20 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label>Activity Type</label>
-                                <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+                                <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
 							</div>
 							<div class="col-md-3">
 								<label>Activity Level</label>
-								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
+								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="1" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
 							</div>
 							<div class="col-md-3">
 								<label> Activity Name </label>
 								<select id="ActivityList" class="form-control">
 									<option value="0"> Select Activity </option>
 								</select>
+							</div>
+							<div class="col-md-3">
+								<button id="submitId" class="btn btn-block btn-custom btn-success" onclick="getDetails();" style="margin-top: 25px;"> Get Details </button>
 							</div>
 						</div>
 					</div>
@@ -516,6 +519,7 @@
 <script src="dist/activity/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/activity/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/activity/FancyBox/jquery.fancybox.js" type="text/javascript"></script>
+<script src="js/utility.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();
 $(".panel-heading","click",function(){
@@ -575,7 +579,22 @@ $(function () {
 
   $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  getActivityNames();
+//getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 });
+
+$(document).on('click','.ranges li',function(){
+    if($(this).html()!='Custom'){
+		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+	 }
+  });
+  
+  $(document).on('click','.applyBtn',function(){
+         getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+  });
 //alert($(".getChildWidth9").width())
 
 //$(".your-class").slick();
@@ -597,7 +616,6 @@ $(".btn-hover").click(function()
 })
 $(".fancybox").fancybox();
 
-
 function getActivityNames()
 {
 	$('#ActivityList').find('option').remove();
@@ -616,8 +634,10 @@ function getActivityNames()
 			if(result != null && result.length >0)
 			{
 				for(var i in result)
-					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+					$('#ActivityList').append('<option value="'+result[i].id+'" selected="true">'+result[i].name+'</option>');	
 			}
+			getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+			getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 		});
 		
 }
@@ -690,15 +710,30 @@ function buildResult(result)
 }
 function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 {
+	if(searchType != "state" && searchType != "district"){
+		if(showHideResults(divId)){
+			$("#"+divId).html("");
+			return;
+		}
+	}
+	
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	
+	 var activityScopeId = $("#ActivityList").val();
+	 var activityLevelId = $("#activityLevelList").val();
+	
 		var jObj = {
 		stateId:1,
 		searchType:searchType,
 		conditionType:"locationWiseResult",		
-		startDate:"30-11-2015",
-		endDate:"08-12-2015",
+		startDate:fromDateStr,     //30-11-2015
+		endDate:toDateStr,       //08-12-2015
 		locationId:locationId,
-		activityScopeId:1,
-		activityLevelId:1,
+		activityScopeId:activityScopeId,   //1
+		activityLevelId:activityLevelId,   //1
 		task:"getActivityDetailsBySearchCriteria"
 		};
 		$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -988,15 +1023,28 @@ function dynamicwidth()
 
 function getDaywiseInfo(searchType,locationId,divId)
 {
+	if(showHideResults(divId)){
+		$("#"+divId).html("");
+		return;
+	}
+		
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	
+	 var activityScopeId = $("#ActivityList").val();
+	 var activityLevelId = $("#activityLevelList").val();
+	 
 		var jObj = {
 		stateId:1,
 		searchType:searchType,
 		conditionType:"daywiseResult",
 		locationId:locationId,
-		activityScopeId:1,
-		activityLevelId:1,
-		startDate:"30-11-2015",
-		endDate:"08-12-2015",
+		activityScopeId:activityScopeId,   //1
+		activityLevelId:activityLevelId,   //1
+		startDate:fromDateStr,   //30-11-2015
+		endDate:toDateStr,     //08-12-2015
 		task:"getActivityDetailsBySearchCriteria"
 		};
 			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -1069,8 +1117,11 @@ function buildDayWiseResults(result,divId)
 	$('#'+divId+'').html(str);
 	dynamicwidth();
 }
-getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+
+function getDetails(){
+	getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+}
 
 </script>
 </body>
