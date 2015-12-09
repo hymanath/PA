@@ -438,5 +438,6 @@
 		<pattern>/cadreDetailsAction*</pattern>
 		<pattern>/articleDetailsAction*</pattern>
 		<pattern>/updateActivityAction*</pattern>
+		<pattern>/activitiesDashboard*</pattern>
 	 </decorator>
 </decorators>
