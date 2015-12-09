@@ -1,9 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityVO implements Serializable{
 	
@@ -24,14 +25,43 @@ public class ActivityVO implements Serializable{
 	private String startDate;
 	private String endDate;
 	private List<ActivityVO> activityVoList = new ArrayList<ActivityVO>();
-	
+	private Map<String,ActivityVO>  activityMap = new LinkedHashMap<String,ActivityVO>(0);
 	private Long id;
 	private String name;
 	private Long totalCount;
+	private Long notPlannedCount;
 	private Long plannedCount;
 	private Long conductedCount;
 	private Long nonConductedCount;
+	private String percentage;
+	private String notPlannedPerc;
 	
+	
+	public String getNotPlannedPerc() {
+		return notPlannedPerc;
+	}
+	public void setNotPlannedPerc(String notPlannedPerc) {
+		this.notPlannedPerc = notPlannedPerc;
+	}
+	public Map<String, ActivityVO> getActivityMap() {
+		return activityMap;
+	}
+	public void setActivityMap(Map<String, ActivityVO> activityMap) {
+		this.activityMap = activityMap;
+	}
+	
+	public Long getNotPlannedCount() {
+		return notPlannedCount;
+	}
+	public void setNotPlannedCount(Long notPlannedCount) {
+		this.notPlannedCount = notPlannedCount;
+	}
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 	public List<ActivityVO> getActivityVoList() {
 		return activityVoList;
 	}

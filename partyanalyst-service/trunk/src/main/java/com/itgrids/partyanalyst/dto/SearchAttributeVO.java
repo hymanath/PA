@@ -15,12 +15,47 @@ public class SearchAttributeVO implements Serializable{
 	private String searchType;
 	private List<Long> locationIdsList = new ArrayList<Long>();
 	private List<Long> locationTypeIdsList = new ArrayList<Long>();
+	private Long locationId;
+	private Long locationValue;
 	private List<Long> attributesIdsList = new ArrayList<Long>(0);
 	private Long typeId;
 	private String conditionType;
+	private Long levelId;
+	private Long scopeId;
+	private Long scopeValue;
 	private String attributeType;
 	
 	
+	public Long getScopeId() {
+		return scopeId;
+	}
+	public void setScopeId(Long scopeId) {
+		this.scopeId = scopeId;
+	}
+	public Long getScopeValue() {
+		return scopeValue;
+	}
+	public void setScopeValue(Long scopeValue) {
+		this.scopeValue = scopeValue;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
 	public String getAttributeType() {
 		return attributeType;
 	}
