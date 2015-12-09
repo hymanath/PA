@@ -4,8 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -13,6 +18,8 @@ import javax.imageio.stream.FileImageOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
+
+import com.itgrids.partyanalyst.dto.ActivityVO;
 
 public class CommonMethodsUtilService {
 	private static Logger LOG = Logger.getLogger(CommonMethodsUtilService.class);
@@ -263,5 +270,50 @@ public class CommonMethodsUtilService {
 				return null;
 				
 			}
+		}
+		
+		public Map<String,ActivityVO> getDatesWiseCounts(Date startDate,Date endDate,String name){
+			
+			Map<String,ActivityVO> returnMap = new LinkedHashMap<String,ActivityVO>();
+			try {
+				
+				List<String> dates=getBetweenDatesInString(startDate,endDate);
+				
+				if(name != null && name.trim().length() > 0){
+					if(dates != null && dates.size() > 0){
+						for (int i = 0; i < dates.size(); i++) {
+							ActivityVO vo = new ActivityVO();
+							vo.setName(dates.get(i)+" ( "+name+"-"+(i+1)+" ) ");
+							returnMap.put(dates.get(i), vo);
+						}
+					}
+				}else{
+					if(dates != null && dates.size() > 0){
+						for (int i = 0; i < dates.size(); i++) {
+							ActivityVO vo = new ActivityVO();
+							vo.setName(dates.get(i));
+							returnMap.put(dates.get(i), vo);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised in getDatesWiseCounts in ActivityService service", e);
+			}
+			return returnMap;
+		}
+		
+		public List<String> getBetweenDatesInString(Date fromDate,Date toDate){
+			
+			List<String> dateStr = new ArrayList<String>(0);
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(fromDate);
+			cal.add(Calendar.DATE, -1);
+			
+			while (cal.getTime().before(toDate)) {
+			    cal.add(Calendar.DATE, 1);
+			    dateStr.add(sdf.format(cal.getTime()));
+			}
+			return dateStr;
 		}
 }
