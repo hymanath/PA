@@ -157,5 +157,6 @@ public interface ICadreCommitteeService {
 				List<LocationWiseBoothDetailsVO> panchayatList);
 	 public List<CadreCommitteeMemberVO> getComitteeMembersInfoInActivity(Long locationId,Long locationType,Long basicCommitteeTypeId);
 	 public List<ActivityVO> asemblyConstWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
+	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsByConstituencyList(List<Long> constituencyIds);
 	 
 }
