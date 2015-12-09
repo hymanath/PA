@@ -644,6 +644,7 @@
 		<property name="panchayatDAO" ref="panchayatDAO"></property>	
 		<property name="wardDAO" ref="wardDAO" />	
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />	
+		<property name="locationInfoDAO" ref="locationInfoDAO" />
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
@@ -2885,7 +2886,27 @@
 	
 	<bean name="activityService" class="com.itgrids.partyanalyst.service.impl.ActivityService">
 		<property name="activityAttributeQuestionnaireInfoDAO" ref="activityAttributeQuestionnaireInfoDAO" />
+		<property name="stateDAO" ref="stateDAO"/>
+		<property name="districtDAO" ref="districtDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
+		<property name="tehsilDAO" ref="tehsilDAO"></property>	
+		<property name="panchayatDAO" ref="panchayatDAO"></property>	
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	  	<property name="activityTypeDAO" ref="activityTypeDAO" />
+		<property name="activitySubTypeDAO" ref="activitySubTypeDAO" />
+		<property name="activityDAO" ref="activityDAO" />
+		<property name="activityLevelDAO" ref="activityLevelDAO" />
+		<property name="activityScopeDAO" ref="activityScopeDAO" />
 		<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
+		<property name="locationInfoDAO" ref="locationInfoDAO" />
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 	</bean>
 </beans>		
 	
