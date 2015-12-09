@@ -2907,6 +2907,8 @@
 		<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 		<property name="locationInfoDAO" ref="locationInfoDAO" />
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
+		<property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO" />
+		<property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
 	</bean>
 </beans>		
 	
