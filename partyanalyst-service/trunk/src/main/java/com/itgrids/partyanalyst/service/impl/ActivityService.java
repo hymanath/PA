@@ -1137,11 +1137,17 @@ public class ActivityService implements IActivityService{
 			
 			datesMap = getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
+			List<Object[]> plannedActivities = null;
+			List<Object[]> infoCellconductedActivities = null;
+			List<Object[]> ivrconductedActivities = null;
 			
+			List<Object[]> infoCellNotPlannedActivities = null;
+			List<Object[]> ivrNotPlannedActivities = null;
 			if(datesMap != null && datesMap.size()>0)
 			{
 				for (String dateStr : datesMap.keySet()) {
 					ActivityVO aactivityVO =datesMap.get(dateStr);
+					aactivityVO.setTotalCount(0L);
 					String[] attributesArr = IConstants.ACTIVITY_REPORT_FIELDS;
 					Map<String,ActivityVO> activityMap1 = new LinkedHashMap<String, ActivityVO>(0);
 					if(attributesArr != null && attributesArr.length>0)
@@ -1155,6 +1161,27 @@ public class ActivityService implements IActivityService{
 							activityMap1.put(infoCellVO1.getName(), infoCellVO1);
 						}
 					}
+					SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd");
+					searchAttributeVO.setStartDate(foramt.parse(dateStr));
+					searchAttributeVO.setEndDate(foramt.parse(dateStr));
+					
+				searchAttributeVO.setConditionType("planned");
+					plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
+				searchAttributeVO.setConditionType(" infocell ");
+					infoCellconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+				searchAttributeVO.setConditionType("ivr");
+					ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+
+				searchAttributeVO.setConditionType("infocell");
+					infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 	
+				searchAttributeVO.setConditionType("ivr");
+					ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+				
+					buildResult(infoCellconductedActivities,datesMap,"INFO CELL PLANNED",null);
+					buildResult(ivrconductedActivities,datesMap,"IVR PLANNED",null);
+					buildResult(infoCellNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
+					buildResult(ivrNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
+					
 					aactivityVO.setActivityMap(activityMap1);
 				}
 			}
@@ -1163,13 +1190,8 @@ public class ActivityService implements IActivityService{
 			//0.locationId,1.locationName,2.locationLevelId,3.date,4.count
 			//List<Object[]> dayWiseList = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
 			
-			List<Object[]> plannedActivities = null;
-			List<Object[]> infoCellconductedActivities = null;
-			List<Object[]> ivrconductedActivities = null;
 			
-			List<Object[]> infoCellNotPlannedActivities = null;
-			List<Object[]> ivrNotPlannedActivities = null;
-			
+			/*
 			searchAttributeVO.setConditionType("planned");
 				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
 			searchAttributeVO.setConditionType(" infocell ");
@@ -1186,7 +1208,7 @@ public class ActivityService implements IActivityService{
 				buildResult(ivrconductedActivities,datesMap,"IVR PLANNED",null);
 				buildResult(infoCellNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
 				buildResult(ivrNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
-				
+				*/
 			/*if(dayWiseList != null && dayWiseList.size() > 0){
 				for (Object[] objects : dayWiseList) {
 					ActivityVO mapvo = new ActivityVO();
@@ -1314,7 +1336,7 @@ public class ActivityService implements IActivityService{
 				if(dates != null && dates.size() > 0){
 					for (int i = 0; i < dates.size(); i++) {
 						ActivityVO vo = new ActivityVO();
-						vo.setName(dates.get(i)+" ( "+name+"-"+i+" ) ");
+						vo.setName(dates.get(i)+" ( "+name+"-"+(i+1)+" ) ");
 						returnMap.put(dates.get(i), vo);
 					}
 				}
