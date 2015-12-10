@@ -1117,6 +1117,10 @@ function buildDayWiseImages(result,divId)
 	
 }
 
+$(".tbtn").click(function(){
+    $(".themeControll").toggleClass("active");
+});
+
 </script>
 </body>
 </html>
