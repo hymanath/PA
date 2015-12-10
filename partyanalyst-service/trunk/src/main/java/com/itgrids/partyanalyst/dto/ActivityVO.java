@@ -28,15 +28,97 @@ public class ActivityVO implements Serializable{
 	private Map<String,ActivityVO>  activityMap = new LinkedHashMap<String,ActivityVO>(0);
 	private Long id;
 	private String name;
+	
 	private Long totalCount;
-	private Long notPlannedCount;
 	private Long plannedCount;
+	private Long notPlannedCount;
+	
+	private Long ivrcovered;
+	private String ivrcoveredPerc;
+	private Long ivrNotPlanned;
+	private Long ivrTotal;
+	
+	private Long infoCellcovered;
+	private String infoCellcoveredPerc;
+	private Long infoCellNotPlanned;
+	private Long infoCellTotal;
+	
+	private Long whatsAppCovered;
+	private String whatsAppCoveredPerc;
+	private Long imagesCount;
+	
 	private Long conductedCount;
 	private Long nonConductedCount;
 	private String percentage;
 	private String notPlannedPerc;
 	
 	
+	public Long getIvrcovered() {
+		return ivrcovered;
+	}
+	public void setIvrcovered(Long ivrcovered) {
+		this.ivrcovered = ivrcovered;
+	}
+	public String getIvrcoveredPerc() {
+		return ivrcoveredPerc;
+	}
+	public void setIvrcoveredPerc(String ivrcoveredPerc) {
+		this.ivrcoveredPerc = ivrcoveredPerc;
+	}
+	public Long getIvrNotPlanned() {
+		return ivrNotPlanned;
+	}
+	public void setIvrNotPlanned(Long ivrNotPlanned) {
+		this.ivrNotPlanned = ivrNotPlanned;
+	}
+	public Long getIvrTotal() {
+		return ivrTotal;
+	}
+	public void setIvrTotal(Long ivrTotal) {
+		this.ivrTotal = ivrTotal;
+	}
+	public Long getInfoCellcovered() {
+		return infoCellcovered;
+	}
+	public void setInfoCellcovered(Long infoCellcovered) {
+		this.infoCellcovered = infoCellcovered;
+	}
+	public String getInfoCellcoveredPerc() {
+		return infoCellcoveredPerc;
+	}
+	public void setInfoCellcoveredPerc(String infoCellcoveredPerc) {
+		this.infoCellcoveredPerc = infoCellcoveredPerc;
+	}
+	public Long getInfoCellNotPlanned() {
+		return infoCellNotPlanned;
+	}
+	public void setInfoCellNotPlanned(Long infoCellNotPlanned) {
+		this.infoCellNotPlanned = infoCellNotPlanned;
+	}
+	public Long getInfoCellTotal() {
+		return infoCellTotal;
+	}
+	public void setInfoCellTotal(Long infoCellTotal) {
+		this.infoCellTotal = infoCellTotal;
+	}
+	public Long getWhatsAppCovered() {
+		return whatsAppCovered;
+	}
+	public void setWhatsAppCovered(Long whatsAppCovered) {
+		this.whatsAppCovered = whatsAppCovered;
+	}
+	public String getWhatsAppCoveredPerc() {
+		return whatsAppCoveredPerc;
+	}
+	public void setWhatsAppCoveredPerc(String whatsAppCoveredPerc) {
+		this.whatsAppCoveredPerc = whatsAppCoveredPerc;
+	}
+	public Long getImagesCount() {
+		return imagesCount;
+	}
+	public void setImagesCount(Long imagesCount) {
+		this.imagesCount = imagesCount;
+	}
 	public String getNotPlannedPerc() {
 		return notPlannedPerc;
 	}
