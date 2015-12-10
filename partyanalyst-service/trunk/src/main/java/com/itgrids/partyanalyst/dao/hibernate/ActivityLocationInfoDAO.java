@@ -94,7 +94,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 					queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 				}
 				
-				queryStr.append(" model.locationLevel,count(model.activityLocationInfoId) from ActivityLocationInfo model " );
+				queryStr.append(" model.locationLevel,count(model.locationValue) from ActivityLocationInfo model " );
 				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 					queryStr.append("  ,Tehsil T ,Panchayat P ");
@@ -282,7 +282,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 			}
 			
-			queryStr.append(" model.locationLevel,count(model.activityLocationInfoId) from ActivityLocationInfo model " );
+			queryStr.append(" model.locationLevel,count(model.locationValue) from ActivityLocationInfo model " );
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 				queryStr.append("  ,Tehsil T ,Panchayat P ");
@@ -636,7 +636,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 			}
 			
-			queryStr.append(" model.locationLevel,date(model.plannedDate),count(distinct model.activityLocationInfoId) from ActivityLocationInfo model " );
+			queryStr.append(" model.locationLevel,date(model.plannedDate),count(distinct model.locationValue) from ActivityLocationInfo model " );
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 				queryStr.append("  ,Tehsil T ,Panchayat P ");
