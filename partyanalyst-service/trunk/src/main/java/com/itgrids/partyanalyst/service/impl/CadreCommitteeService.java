@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityDAO;
+import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
@@ -126,6 +128,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
+import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -260,7 +263,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	private ILocationInfoDAO locationInfoDAO;
 	
+	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	
+	
+	
+	
+	public IActivityInfoDocumentDAO getActivityInfoDocumentDAO() {
+		return activityInfoDocumentDAO;
+	}
+
+	public void setActivityInfoDocumentDAO(
+			IActivityInfoDocumentDAO activityInfoDocumentDAO) {
+		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
+	}
+
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
@@ -17261,5 +17277,30 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			}
 		}
 		return null;
+	}
+	
+	public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo)
+	{
+		List<EventDocumentVO> returnList = null;
+		try{
+			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo);
+			if(list != null && list.size() > 0)
+			{
+				returnList = new ArrayList<EventDocumentVO>();
+				for(Object[] params : list)
+				{
+					EventDocumentVO vo = new EventDocumentVO();
+					vo.setName(params[0] != null ? params[0].toString() : "");
+					vo.setPath(params[1] != null ? params[1].toString() : "");
+					vo.setDay(params[2] != null ? (Long)params[2] : 0);
+					returnList.add(vo);
+				}
+			}
+			
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getEventDocumentsForLocation", e);
+		}
+		return returnList;
 	}
 }
