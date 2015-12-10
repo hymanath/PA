@@ -23,22 +23,26 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
-		if(inputVO.getLocationScopeId() == 3)
+		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
-		if(inputVO.getLocationScopeId() == 4)
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency"))
 			str.append(" and model.userAddress.constituency.constituencyId = :locationValue");
-		if(inputVO.getLocationScopeId() == 5)
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal"))
 			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue");
-		if(inputVO.getLocationScopeId() == 6)
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
-		if(inputVO.getLocationScopeId() == 7)
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
 		
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("locationValue", inputVO.getLocationValue());
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
 		query.setParameter("activityDocumentId", inputVO.getActivityId());
+		if(inputVO.getLocationScope().equalsIgnoreCase("village"))
+		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+		else
+			query.setParameter("locationValue",inputVO.getLocationValue());
+		
 		return query.list();
 	}
 
