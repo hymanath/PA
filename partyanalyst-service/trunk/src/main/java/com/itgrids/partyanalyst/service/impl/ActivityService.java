@@ -1500,6 +1500,19 @@ public class ActivityService implements IActivityService{
 			
 			List<Object[]> infoCellNotPlannedActivities = null;
 			List<Object[]> ivrNotPlannedActivities = null;
+			 
+			if(searchAttributeVO.getSearchType() != null)
+			{
+				if(searchAttributeVO.getSearchType().trim().length()>0)
+				{
+					if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE) || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)
+							 || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL) || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN))
+					{
+						searchAttributeVO.getLocationIdsList().add(Long.valueOf(searchAttributeVO.getLocationId().toString().substring(1)));
+					}
+				}
+			}
+			
 			
 			searchAttributeVO.setConditionType("planned");
 				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
