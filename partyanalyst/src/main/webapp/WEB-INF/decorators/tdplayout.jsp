@@ -489,7 +489,7 @@ margin-top:10px;
 						<div>
 							<ul>
 					<li><a href="updateActivityAction.action"><span>  Activities Entry  </span></a></li>
-					<li><a href="activitiesDashboard.action?eventId=1"><span> Activities DashBoard  </span></a></li>
+					<li><a href="activitiesDashboard.action"><span> Activities DashBoard  </span></a></li>
 					<li><a href="eventInvitees.action"><span> Event Invitees  </span></a></li>
 					<li><a href="eventDashboardAction.action?eventId=1"><span> Events DashBoard  </span></a></li>
 					</ul>
