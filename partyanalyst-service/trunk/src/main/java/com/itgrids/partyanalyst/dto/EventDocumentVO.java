@@ -15,9 +15,16 @@ public class EventDocumentVO {
 	private Long activityId;
 	private List<EventDocumentVO> subList = new ArrayList<EventDocumentVO>();
 	
+	private String locationScope;
 	
 	
 	
+	public String getLocationScope() {
+		return locationScope;
+	}
+	public void setLocationScope(String locationScope) {
+		this.locationScope = locationScope;
+	}
 	public List<EventDocumentVO> getSubList() {
 		return subList;
 	}
