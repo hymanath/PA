@@ -332,7 +332,7 @@ function buildResult(result)
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff" >';
 	str+='<tr class="text-center">';
-	str+='<td class="pad_0" rowspan="2" style="box-sizing:none;"><img src="dist/activityDashboard/img/andhrap.jpg" class="img-responsive head-td" style="height:150px;" ></td>';
+	str+='<td class="pad_0" rowspan="2" style="box-sizing:none;"><img src="dist/activityDashboard/img/andhrap.jpg" class="img-responsive head-td" style="height:176px;" ></td>';
 	var i=0;
 		if(result.totalCount != null && result.totalCount >0)
 			str+='<td><h3 class="m_top20 m_bottom10">'+result.totalCount+'</h3><hr class="custom-hr"/></td>';
@@ -543,7 +543,7 @@ function buildVillageResult(result,divId,locationId)
 				str+='</table>';
 			//	str+='</a>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'panchayat\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'panchayat\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 				str+='</div>';
 					str+='</div>';
 					str+='<div id="dayWisePanchayatInfo'+result.activityVoList[i].id+'"></div>';
@@ -631,7 +631,7 @@ function buildMandalResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
 					str+='<div id="panchayatLevelId'+i+'"></div>';
@@ -725,7 +725,7 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\')" >Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',this)" >Day Wise</button>';
 				str+='</div>';
 				
 				str+='<div id="collapseOne1LevelMandal1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
@@ -864,7 +864,7 @@ function buildsLocationsResult(result,divId){
 			str+='</table>';
 			str+='</a>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 			str+='</div>';			
 			str+='<div id="constituencyLevelId'+i+'">';
 			str+='</div>';
@@ -904,8 +904,9 @@ function dynamicwidth()
 }
 
 
-function getDaywiseInfo(searchType,locationId,divId)
+function getDaywiseInfo(searchType,locationId,divId,currentElement)
 {
+	$(currentElement).parent().find('.PlusnMinusSign').trigger('click');
 	if(showHideResults(divId)){
 		$("#"+divId).html("");
 		return;
