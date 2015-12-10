@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventDocumentVO {
 	
 	private String path;
@@ -10,9 +13,17 @@ public class EventDocumentVO {
 	private Long locationValue;
 	private Long activityLevel;
 	private Long activityId;
+	private List<EventDocumentVO> subList = new ArrayList<EventDocumentVO>();
 	
 	
 	
+	
+	public List<EventDocumentVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<EventDocumentVO> subList) {
+		this.subList = subList;
+	}
 	public Long getActivityId() {
 		return activityId;
 	}
