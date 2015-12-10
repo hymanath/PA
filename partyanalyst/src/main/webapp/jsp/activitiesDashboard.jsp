@@ -1304,6 +1304,10 @@ function buildDayWiseResults(result,divId)
 					str+='<td class="dynChildWidth2">'+result.activityVoList[i].ivrTotal+'</td>';
 			else
 				str+='<td class="dynChildWidth2"> - </td>';
+			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
+					str+='<td class="dynChildWidth2">'+result.activityVoList[i].infoCellTotal+'</td>';
+			else
+				str+='<td class="dynChildWidth2"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth2">'+result.activityVoList[i].infoCellcovered+'('+result.activityVoList[i].infoCellcoveredPerc+'%)</td>';
 			else
