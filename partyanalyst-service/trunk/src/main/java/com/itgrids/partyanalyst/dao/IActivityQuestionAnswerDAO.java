@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionAnswer, Long>{
 
 	public List<Object[]> getActivityQuestionnairesCountsByLocation(SearchAttributeVO searchAttributeVO);
+	public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchAttributeVO searchAttributeVO,Long optionId);
 }
