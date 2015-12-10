@@ -485,10 +485,11 @@ margin-top:10px;
 					
 					<!--<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>-->
 					
-					<li><a onmousedown="return false;" class="parent"><span>Events</span></a>
+					<li><a onmousedown="return false;" class="parent"><span> Events & Activities </span></a>
 						<div>
 							<ul>
-					
+					<li><a href="updateActivityAction.action"><span>  Activities Entry  </span></a></li>
+					<li><a href="activitiesDashboard.action?eventId=1"><span> Activities DashBoard  </span></a></li>
 					<li><a href="eventInvitees.action"><span> Event Invitees  </span></a></li>
 					<li><a href="eventDashboardAction.action?eventId=1"><span> Events DashBoard  </span></a></li>
 					</ul>
