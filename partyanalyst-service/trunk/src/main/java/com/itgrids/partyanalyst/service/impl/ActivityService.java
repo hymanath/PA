@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
+import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityLevel;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
@@ -1491,8 +1492,24 @@ public class ActivityService implements IActivityService{
 		try {
 			
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
-			
+			Activity activity = activityScopeDAO.get(searchAttributeVO.getScopeId()).getActivity();
 			datesMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+			
+			Set<String> datesList = datesMap.keySet();
+			
+			if(datesList != null && datesList.size() > 0){
+				
+				List<String> availableDatesList = commonMethodsUtilService.getAvailableDates(datesList, activity.getStartDate().toString(), activity.getEndDate().toString());
+				
+				if(availableDatesList != null && availableDatesList.size() > 0){
+					for (String dateStr : datesList) {
+						if(!(availableDatesList.contains(dateStr))){
+							datesMap.remove(dateStr);
+						}
+					}
+				}
+			}
+			
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
 			List<Object[]> plannedActivities = null;
 			List<Object[]> infoCellconductedActivities = null;

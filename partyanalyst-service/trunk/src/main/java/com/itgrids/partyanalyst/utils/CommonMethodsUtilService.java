@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -315,5 +316,32 @@ public class CommonMethodsUtilService {
 			    dateStr.add(sdf.format(cal.getTime()));
 			}
 			return dateStr;
+		}
+		
+		public List<String> getAvailableDates(Set<String> datesList, String startDateStr,String endDateStr){
+			
+			List<String> availableList = new ArrayList<String>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			try {
+				
+				if(datesList != null && datesList.size() > 0){
+					for (String dateString : datesList) {
+						Date testDate = sdf.parse(dateString);
+						Date startDate = sdf.parse(startDateStr);
+						Date endDate = sdf.parse(endDateStr);
+						if(startDate != null && endDate != null){
+							if(testDate.after(startDate) && testDate.before(endDate)){
+								String dateStr = sdf.format(testDate);
+								availableList.add(dateStr);
+							}
+						}
+					}
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised in getAvailableDates in ActivityService service", e);
+			}
+			
+			return availableList;
 		}
 }
