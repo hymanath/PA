@@ -39,6 +39,8 @@ public class ActivityDocument extends BaseModel implements Serializable{
 	private DocumentType documentType;
 	private User insertedUser;
 	private User updatedUser;
+	private Long activityScopeId;
+	private ActivityScope activityScope;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -154,4 +156,27 @@ public class ActivityDocument extends BaseModel implements Serializable{
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	@Column(name="activity_scope_id")
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_scope_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityScope getActivityScope() {
+		return activityScope;
+	}
+	public void setActivityScope(ActivityScope activityScope) {
+		this.activityScope = activityScope;
+	}
+	
+	
+	
+	
+	
+	
 }
