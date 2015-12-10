@@ -20,7 +20,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
-				"  from ActivityInfoDocument model where model.activityDocumentId = :activityDocumentId");
+				"  from ActivityInfoDocument model where model.activityScopeId = :activityDocumentId");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		if(inputVO.getLocationScopeId() == 3)
@@ -33,10 +33,12 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScopeId() == 7)
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationValue", inputVO.getLocationValue());
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
+		query.setParameter("activityDocumentId", inputVO.getActivityId());
 		return query.list();
 	}
 
