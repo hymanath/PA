@@ -1042,7 +1042,7 @@ public String getAllConstituencysForADistrict(){
 			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
 			jObj = new JSONObject(getTask());
 			EventDocumentVO inputVo = new EventDocumentVO();
-			inputVo.setLocationScopeId(jObj.getLong("locationScopeId"));
+			inputVo.setLocationScope(jObj.getString("locationScope"));
 			inputVo.setLocationValue(jObj.getLong("locationValue"));
 			inputVo.setActivityId(jObj.getLong("activityId"));	
 			inputVo.setDay(jObj.getLong("day"));
