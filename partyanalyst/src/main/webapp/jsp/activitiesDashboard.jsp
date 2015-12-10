@@ -396,13 +396,13 @@ function buildResult(result)
 	str+='<td class="bg_ef text-center">TOTAL</td>';
 	str+='<td class="bg_ef text-center">PLANNED</td>';
 	
-	str+='<td class="bg_ef text-center">IVR COVERED</td>';
+	str+='<td class="bg_ef text-center">IVR COVERED   <small>(PLANNED) </small></td>';
 	//str+='<td class="bg_ef text-center">IVR COVERED %</td>';
 	str+='<td class="bg_ef text-center"> IVR NOT PLANNED </td>';
 	str+='<td class="bg_ef text-center"> IVR TOTAL </td>';
 	
 	str+='<td class="bg_ef text-center">INFO CELL TOTAL </td>';
-	str+='<td class="bg_ef text-center">INFO CELL COVERED </td>';
+	str+='<td class="bg_ef text-center">INFO CELL COVERED   <small>(PLANNED) </small> </td>';
 	//str+='<td class="bg_ef text-center">INFO CELL COVERED %</td>';
 	str+='<td class="bg_ef text-center">INFO CELL NOT PLANNED</td>';
 	
@@ -542,7 +542,7 @@ function buildVillageResult(result,divId,locationId)
 				str+='</tr>';
 				str+='</table>';
 			//	str+='</a>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
+		//	str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'panchayat\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 				str+='</div>';
 					str+='</div>';
@@ -630,7 +630,7 @@ function buildMandalResult(result,divId,locationId)
 				str+='<tr>';
 				str+='</table>';
 				str+='</a>';
-				str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
+				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
@@ -724,7 +724,7 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='<tr>';
 				str+='</table>';
 				str+='</a>';
-				str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
+				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',this)" >Day Wise</button>';
 				str+='</div>';
 				
@@ -755,13 +755,13 @@ function buildsLocationsResult(result,divId){
 	str+='<td class="getChildWidth">TOTAL</td>';
 	str+='<td class="getChildWidth2">PLANNED</td>';
 	
-	str+='<td class="getChildWidth3">IVR COVERED</td>';
+	str+='<td class="getChildWidth3">IVR COVERED   <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth3">IVR COVERED %</td>';
 	str+='<td class="getChildWidth4"> IVR NOT PLANNED </td>';
 	str+='<td class="getChildWidth5"> IVR TOTAL </td>';
 	
 	str+='<td class="getChildWidth6">INFO CELL TOTAL</td>';
-	str+='<td class="getChildWidth7">INFO CELL COVERED</td>';
+	str+='<td class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
 	str+='<td class="getChildWidth8">INFO CELL NOT PLANNED</td>';
 	
@@ -863,7 +863,7 @@ function buildsLocationsResult(result,divId){
 			str+='</tr>';
 			str+='</table>';
 			str+='</a>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
+			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
 			str+='</div>';			
 			str+='<div id="constituencyLevelId'+i+'">';
