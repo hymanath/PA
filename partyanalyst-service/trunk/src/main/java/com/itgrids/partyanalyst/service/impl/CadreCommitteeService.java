@@ -17282,6 +17282,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo)
 	{
 		List<EventDocumentVO> returnList = null;
+		List<Long> days =new ArrayList<Long>();
 		try{
 			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo);
 			if(list != null && list.size() > 0)
@@ -17289,11 +17290,22 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				returnList = new ArrayList<EventDocumentVO>();
 				for(Object[] params : list)
 				{
-					EventDocumentVO vo = new EventDocumentVO();
-					vo.setName(params[0] != null ? params[0].toString() : "");
-					vo.setPath(params[1] != null ? params[1].toString() : "");
-					vo.setDay(params[2] != null ? (Long)params[2] : 0);
-					returnList.add(vo);
+					EventDocumentVO vo = null;
+					if(!days.contains((Long)params[2]))
+					{
+					 vo = new EventDocumentVO();
+					 vo.setDay(params[2] != null ? (Long)params[2] : 0);
+					 returnList.add(vo);
+					 days.add((Long)params[2]);
+					}
+					vo=getMatchedVO(returnList,(Long)params[2]);
+					if(vo != null)
+					{
+						EventDocumentVO subVo = new EventDocumentVO();
+						subVo.setName(params[0] != null ? params[0].toString() : "");
+						subVo.setPath(params[1] != null ? params[1].toString() : "");
+						vo.getSubList().add(subVo);
+					}
 				}
 			}
 			
@@ -17302,5 +17314,15 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			LOG.error("Exception raised in getEventDocumentsForLocation", e);
 		}
 		return returnList;
+	}
+	
+	public EventDocumentVO getMatchedVO(List<EventDocumentVO> returnList,Long id)
+	{
+		if(returnList == null || returnList.size() == 0)
+			return null;
+		for(EventDocumentVO vo : returnList)
+			if(vo.getDay().longValue() == id.longValue())
+				return vo;
+		return null;
 	}
 }
