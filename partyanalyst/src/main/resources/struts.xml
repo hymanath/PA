@@ -11060,5 +11060,15 @@
 		</result>
 	</action>
 		
+		<action name="eventDocumentAction" class="committeeDashBoardAction" method="updateActivity">
+	   	<result name="success">/jsp/eventDocuments.jsp</result>
+		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		<action name="getEventDocumentsAction" class="committeeDashBoardAction" method="getEventDocumentsForLocation">
+			<result type="json" name="success">
+				<param name="root">docsList</param>
+			</result>
+		</action>
 </package>
 </struts>      

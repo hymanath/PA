@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -71,8 +72,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private InputStream 						inputStream;
 	private ResultStatus 						resultStatus;
 	private List<ActivityVO>                    activitiesVOList;
+	private List<EventDocumentVO> docsList;
 	
 	
+	
+	public List<EventDocumentVO> getDocsList() {
+		return docsList;
+	}
+	public void setDocsList(List<EventDocumentVO> docsList) {
+		this.docsList = docsList;
+	}
 	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVOList() {
 		return locationWiseBoothDetailsVOList;
 	}
@@ -1022,6 +1031,26 @@ public String getAllConstituencysForADistrict(){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getEventDocumentsForLocation()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			EventDocumentVO inputVo = new EventDocumentVO();
+			inputVo.setLocationScopeId(jObj.getLong("locationScopeId"));
+			inputVo.setLocationValue(jObj.getLong("locationValue"));
+			inputVo.setActivityId(jObj.getLong("activityId"));	
+			inputVo.setDay(jObj.getLong("day"));
+			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getEventDocumentsForLocation ",e);
+		}
 		return Action.SUCCESS;
 	}
 	
