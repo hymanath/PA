@@ -18,6 +18,8 @@
 <link href="dist/activityDashboard/Slick/slick.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Slick/slick-theme.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/FancyBox/jquery.fancybox.css" rel="stylesheet" type="text/css">
+<link href="dist/Slick/slick.css" rel="stylesheet" type="text/css">
+<link href="dist/Slick/slick-theme.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 
 .dk-selected 
@@ -189,6 +191,8 @@
 <script src="dist/activityDashboard/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/FancyBox/jquery.fancybox.js" type="text/javascript"></script>
 <script src="js/utility.js" type="text/javascript"></script>
+<script src="dist/SelectDropDown/dropkick.js" type="text/javascript"></script>
+<script src="dist/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();	
 $(".panel-heading","click",function(){
@@ -935,12 +939,12 @@ function getDaywiseInfo(searchType,locationId,divId)
         }).done(function(result){
 			console.log(result);
 			if(result != null){
-				buildDayWiseResults(result,divId);
+				buildDayWiseResults(result,divId,jObj);
 			}
 		});
 }
 
-function buildDayWiseResults(result,divId)
+function buildDayWiseResults(result,divId,jObj)
 {
 	var str='';
 	
@@ -1010,15 +1014,11 @@ function buildDayWiseResults(result,divId)
 				str+='<td class="dynChildWidth10 aligncenter"> - </td>';
 			str+='</tr>';
 			str+='</table>';
-			
-			 /*  str+='<ul class="slick-training">';
-				  str+='<li>';
-					 str+='<img src="dist/activityDashboard/img/searchicon.png" alt="" style="height:25px" data-toggle="modal" data-target="#myModal" />';
-				 str+=' </li>';
-				  str+='<li>';
-					str+='<img src="dist/activityDashboard/img/searchicon.png" alt="" style="height:25px" data-toggle="modal" data-target="#myModal" />';
-				  str+='</li>';
-				str+='</ul>';  */
+			/*var regularExp = /\((.*)\)/;
+			var day = result.activityVoList[i].name.match(regularExp)[1];
+			str+='<ul class="slick-training slick'+day.trim()+'" id="'+divId+'slick'+day.trim()+'" style="display:none;">';
+		
+			str+='</ul>';*/
 
 			str+='</li>';
 		}
@@ -1068,6 +1068,7 @@ function buildDayWiseResults(result,divId)
 	$('.slider-nav li:first-child').trigger('click');
 })
 	
+	//getEventDocuments(divId,jObj);
 }
 
 function getDetails(){
@@ -1075,9 +1076,46 @@ function getDetails(){
 	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 }
 
-$(".tbtn").click(function(){
-    $(".themeControll").toggleClass("active");
-});
+function getEventDocuments(divId,jObj)
+{
+	
+	 var activityId = $("#ActivityList").val();
+		var jObj = {
+		activityId:jObj.activityScopeId,
+		locationScope:jObj.searchType,
+		locationValue:jObj.locationId,		
+		day:0,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getEventDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDayWiseImages(result,divId);
+		});
+}
+function buildDayWiseImages(result,divId)
+{
+	if(result != null)
+	{
+		for(var i in result)
+	{
+		var str ='';
+			for(var j in result[i].subList)
+			{
+			str+='<li>';
+			str+='<a class="fancybox" rel="group" href="activity/'+result[i].subList[j].path+'"><img src="activity/'+result[i].subList[j].path+'" alt="" style="height:25px" /></a>';
+			str+='</li>';	
+			}
+		$("#"+divId+"slickDay-"+result[i].day).css("display","block");	
+		$("#"+divId+"slickDay-"+result[i].day).html(str);
+	}
+	}
+	
+	
+}
+
 </script>
 </body>
 </html>
