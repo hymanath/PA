@@ -153,7 +153,32 @@
          </div>
      </div>
     </div>
+<div class="themeControll">
+
+  <div class="linkinner">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1 m_top10">
+			<label>Activity Type</label>
+            <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+		</div>
+		<div class="col-md-10 col-md-offset-1">
+			<label>Activity Level</label>
+			<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="1" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames('onchange');" cssClass="input-block-level form-control"/>
+		</div>
+		<div class="col-md-10 col-md-offset-1">
+			<label> Activity Name </label>
+			<select id="ActivityList" class="form-control">
+				<option value="0"> Select Activity </option>
+			</select>
+		</div>
+		<div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
+			<button id="submitId" class="btn btn-block btn-success btn-sm btn-custom" onclick="getDetails();"> Get Details </button>
+		</div>
+	</div>
+  </div>
+  <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
 </div>
+
 
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
@@ -165,8 +190,15 @@
 <script src="dist/activityDashboard/FancyBox/jquery.fancybox.js" type="text/javascript"></script>
 <script src="js/utility.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(".select").dropkick();
-	
+$(".select").dropkick();	
+$(".panel-heading","click",function(){
+	if($(this).find(".accordion-toggle,.PlusnMinusSign1,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){
+		$(this).parent().parent().find(".bod").removeClass("bod");
+		$(this).addClass("bod")
+	}else{
+		$(this).removeClass("bod")
+	}
+});
 
 $(function () {
 	var cb = function(start, end, label) {
@@ -224,7 +256,7 @@ $(function () {
 
 });
 $(document).on('click', '.panel-heading', function(){
-	alert(2);
+	//alert(2);
 	if($(this).find(".accordion-toggle,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){
 		$(this).parent().parent().find(".bod").removeClass("bod");
 		$(this).parent().parent().find(".bod").removeClass("bod-b");
