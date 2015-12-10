@@ -309,9 +309,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
 				queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIdsList) ");
 			
-			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
-				queryStr.append(" and ( date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
-			}
+			
 			
 			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 			{
@@ -423,10 +421,10 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
 				query.setParameterList("activityScopeIdsList", searchAttributeVO.getAttributesIdsList());
 			
-			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
+			/*if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
 				query.setDate("startDate", searchAttributeVO.getStartDate());
 				query.setDate("endDate", searchAttributeVO.getEndDate());
-			}
+			}*/
 			if(searchAttributeVO.getLocationIdsList() != null && searchAttributeVO.getLocationIdsList().size()>0)
 				query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
 			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
