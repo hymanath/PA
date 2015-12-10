@@ -75,6 +75,7 @@
 </head>
 
 <body>
+
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -89,7 +90,7 @@
 						</span>
 					</h4>
 				</div>
-                <div class="panel-body">
+                <!--<div class="panel-body">
                 	<div class="panel panel-default panel-custom1">
 					<div class="col-md-12">
 						<div class="row">
@@ -113,7 +114,7 @@
 						</div>
 					</div>
 					</div>
-				</div>
+				</div>-->
 					<div class="panel panel-default panel-custom1">
                     	<div class="panel-heading bg_66">
                         	<h4 class="panel-title">VILLAGE/WARD</h4>
@@ -515,6 +516,30 @@
             </div>
         </div>
     </div>
+<div class="themeControll">
+
+  <div class="linkinner">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1 m_top10">
+			<label>Activity Type</label>
+            <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+		</div>
+		<div class="col-md-10 col-md-offset-1">
+			<label>Activity Level</label>
+			<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="1" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames('onchange');" cssClass="input-block-level form-control"/>
+		</div>
+		<div class="col-md-10 col-md-offset-1">
+			<label> Activity Name </label>
+			<select id="ActivityList" class="form-control">
+				<option value="0"> Select Activity </option>
+			</select>
+		</div>
+		<div class="col-md-10 col-md-offset-1 m_top20" style="margin-bottom:10px;">
+			<button id="submitId" class="btn btn-block btn-success btn-sm btn-custom" onclick="getDetails();"> Get Details </button>
+		</div>
+	</div>
+  </div>
+  <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
 </div>
 
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -585,7 +610,7 @@ $(function () {
 
   $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-  getActivityNames();
+  getActivityNames('onload');
 //getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 //getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 });
@@ -613,7 +638,7 @@ $(".btn-hover").click(function()
 
 $(".fancybox").fancybox();
 
-function getActivityNames()
+function getActivityNames(type)
 {
 	$('#ActivityList').find('option').remove();
 	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
@@ -633,8 +658,10 @@ function getActivityNames()
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'" selected="true">'+result[i].name+'</option>');	
 			}
-			getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-			getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+			if(type == "onload"){
+				getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
+				getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+			}
 		});
 		
 }
@@ -1394,6 +1421,9 @@ function getDetails(){
 	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 }
 
+$(".tbtn").click(function(){
+    $(".themeControll").toggleClass("active");
+});
 </script>
 </body>
 </html>
