@@ -39,6 +39,9 @@ public class BasicVO implements Serializable{
 	private String district;
 	private Long parlimentId;
 	private String parliament;
+	private List<BasicVO> daysList;
+	private List<BasicVO> locationsList;
+	
 	
 	public BasicVO(){}
 	
@@ -49,6 +52,22 @@ public class BasicVO implements Serializable{
 		
 	}
 	
+	public List<BasicVO> getDaysList() {
+		return daysList;
+	}
+
+	public void setDaysList(List<BasicVO> daysList) {
+		this.daysList = daysList;
+	}
+
+	public List<BasicVO> getLocationsList() {
+		return locationsList;
+	}
+
+	public void setLocationsList(List<BasicVO> locationsList) {
+		this.locationsList = locationsList;
+	}
+
 	public List<String> getAgeRanges() {
 		return ageRanges;
 	}

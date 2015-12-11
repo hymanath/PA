@@ -162,5 +162,6 @@ public interface ICadreCommitteeService {
 	 public List<ActivityVO> asemblyConstWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsByConstituencyList(List<Long> constituencyIds);
 	 public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo);
+	 public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo);
 	 
 }

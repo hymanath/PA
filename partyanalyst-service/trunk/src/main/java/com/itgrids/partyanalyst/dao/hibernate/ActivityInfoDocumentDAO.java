@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDocument, Long> implements IActivityInfoDocumentDAO{
 
@@ -36,8 +37,6 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 				str.append(" and model.userAddress.district.districtId >= 11 ");
 			}
 		}
-	
-			
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("constituency"))
@@ -59,7 +58,10 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getLocationScope().equalsIgnoreCase("village"))
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
+		{
+			if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
+		}
 		if(startDate != null)
 		{
 			query.setDate("startDate", startDate);
@@ -67,5 +69,92 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		}
 		return query.list();
 	}
+
+	
+	public List<Object[]> getLocations(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+		{
+			str.append(" select distinct model.userAddress.district.districtId,model.userAddress.district.districtName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+		{
+			str.append(" select distinct model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.MANDAL))
+		{
+			str.append(" select distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" select distinct model.userAddress.localElectionBody.localElectionBodyId, model.userAddress.localElectionBody.name ");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+		{
+			str.append(" select  distinct model.userAddress.panchayat.panchayatId, model.userAddress.panchayat.panchayatName ");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+		{
+			str.append(" select  model.userAddress.ward.constituencyId, model.userAddress.ward.name ");
+		}
+		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null ");
+		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+		{
+			if(inputVO.getLocationValue() == 36)
+			{
+				str.append(" and model.userAddress.district.districtId <= 10 ");
+			}
+			
+			if(inputVO.getLocationValue() == 1)
+			{
+				str.append(" and model.userAddress.district.districtId >= 11 ");
+			}
+			
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+			str.append(" and model.userAddress.district.districtId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency"))
+			str.append(" and model.userAddress.constituency.constituencyId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue");
+		/*if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");*/
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+		if(startDate != null)
+		{
+			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
+		}
+		if(inputVO.getActivityId() > 0)
+		{
+			str.append(" and model.activityDocument.activityScopeId = :activityScopeId");
+		}
+		Query query = getSession().createQuery(str.toString());
+		/*if(inputVO.getDay() > 0)
+			query.setParameter("day", inputVO.getDay());*/
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+		else
+		{
+			if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+			query.setParameter("locationValue",inputVO.getLocationValue());
+		}
+		if(startDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(inputVO.getActivityId() > 0)
+			query.setParameter("activityScopeId",inputVO.getActivityId());
+		return query.list();
+	}
+	
+	
+	
 
 }
