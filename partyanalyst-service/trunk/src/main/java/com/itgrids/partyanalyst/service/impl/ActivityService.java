@@ -752,7 +752,18 @@ public class ActivityService implements IActivityService{
 									vo.setIvrNotPlanned(count);
 							}
 							else if(type.trim().equalsIgnoreCase("IVR TOTAL")){
-								vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
+								if(vo.getIvrcovered() != null && vo.getIvrNotPlanned() != null)
+									vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
+								else if(vo.getIvrcovered() != null)
+									vo.setIvrTotal(vo.getIvrcovered());
+								else if(vo.getIvrNotPlanned() != null)
+									vo.setIvrTotal(vo.getIvrNotPlanned());
+								if(vo.getIvrTotal() != null && vo.getTotalCount() != null)
+								{
+									double perc = (vo.getIvrTotal()*100.0)/vo.getTotalCount();;
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									vo.setIvrTotalPerc(percentage);
+								}
 							}
 							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED")){
 								if(vo.getInfoCellcovered() != null)
@@ -771,8 +782,21 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setInfoCellNotPlanned(count);
 							}
-							else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL")){
-								vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
+							else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL") ){
+								
+								if(vo.getInfoCellNotPlanned() != null && vo.getInfoCellcovered() != null)
+									vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
+								else if(vo.getInfoCellcovered() != null)
+									vo.setInfoCellTotal(vo.getInfoCellcovered());
+								else if(vo.getInfoCellNotPlanned() != null)
+									vo.setInfoCellTotal(vo.getInfoCellNotPlanned());
+								
+								if(vo.getInfoCellTotal() != null && vo.getTotalCount() != null)
+								{
+									double perc = (vo.getInfoCellTotal()*100.0)/vo.getTotalCount();;
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									vo.setInfoCellTotalPerc(percentage);
+								}
 							}
 							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED")){
 								if(vo.getWhatsAppCovered() != null)
@@ -830,8 +854,19 @@ public class ActivityService implements IActivityService{
 										else
 											vo.setIvrNotPlanned(count);
 									}
-									else if(type.trim().equalsIgnoreCase("IVR TOTAL") && vo.getIvrcovered() != null &&  vo.getIvrNotPlanned() != null){
-										vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
+									else if(type.trim().equalsIgnoreCase("IVR TOTAL")){
+										if(vo.getIvrcovered() != null && vo.getIvrNotPlanned() != null)
+											vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
+										else if(vo.getIvrcovered() != null)
+											vo.setIvrTotal(vo.getIvrcovered());
+										else if(vo.getIvrNotPlanned() != null)
+											vo.setIvrTotal(vo.getIvrNotPlanned());
+										if(vo.getIvrTotal() != null && vo.getTotalCount() != null)
+										{
+											double perc = (vo.getIvrTotal()*100.0)/vo.getTotalCount();;
+											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+											vo.setIvrTotalPerc(percentage);
+										}
 									}
 									else if(type.trim().equalsIgnoreCase("INFO CELL COVERED")){
 										if(vo.getInfoCellcovered() != null)
@@ -850,8 +885,21 @@ public class ActivityService implements IActivityService{
 										else
 											vo.setInfoCellNotPlanned(count);
 									}
-									else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL") && vo.getInfoCellcovered() != null && vo.getInfoCellNotPlanned() != null){
-										vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
+									else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL") ){
+										
+										if(vo.getInfoCellNotPlanned() != null && vo.getInfoCellcovered() != null)
+											vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
+										else if(vo.getInfoCellcovered() != null)
+											vo.setInfoCellTotal(vo.getInfoCellcovered());
+										else if(vo.getInfoCellNotPlanned() != null)
+											vo.setInfoCellTotal(vo.getInfoCellNotPlanned());
+										
+										if(vo.getInfoCellTotal() != null && vo.getTotalCount() != null)
+										{
+											double perc = (vo.getInfoCellTotal()*100.0)/vo.getTotalCount();;
+											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+											vo.setInfoCellTotalPerc(percentage);
+										}
 									}
 									else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED")){
 										if(vo.getWhatsAppCovered() != null)
@@ -907,10 +955,12 @@ public class ActivityService implements IActivityService{
 			{
 				List<BasicVO> activitiesLsit = new ArrayList<BasicVO>();
 				for (ActivitySubType activityType : activityTypeLsit) {
-					BasicVO vo = new BasicVO();
-					vo.setId(activityType.getActivitySubTypeId());
-					vo.setName(activityType.getSubType());
-					activitiesLsit.add(vo);
+					if(activityType.getIsDeleted().equalsIgnoreCase("N")){
+						BasicVO vo = new BasicVO();
+						vo.setId(activityType.getActivitySubTypeId());
+						vo.setName(activityType.getSubType());
+						activitiesLsit.add(vo);
+					}
 				}
 				
 				if(activitiesLsit != null && activitiesLsit.size()>0)
@@ -1591,7 +1641,9 @@ public class ActivityService implements IActivityService{
 				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 	
 			searchAttributeVO.setConditionType("ivr");
 				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
-			
+				List<Object[]> questionnairesCount =activityQuestionAnswerDAO.getActivityQuestionnairesCountsByDayWise(searchAttributeVO);
+				List<Object[]> yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByDayWise(searchAttributeVO,1L);
+				 
 				buildResult(plannedActivities,datesMap,"PLANNED",null);
 				
 				buildResult(ivrconductedActivities,datesMap,"IVR COVERED",null);
@@ -1604,9 +1656,9 @@ public class ActivityService implements IActivityService{
 				buildResult(infoCellNotPlannedActivities,datesMap,"INFO CELL NOT PLANNED",null);
 				buildResult(ivrNotPlannedActivities,datesMap,"INFO CELL TOTAL",null);
 				
-				buildResult(null,datesMap,"WHATSAPP IMAGES COVERED",null);					
-				buildResult(null,datesMap,"WHATSAPP IMAGES COVERED %",null);	
-				buildResult(null,datesMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
+				buildResult(yesCount,datesMap,"WHATSAPP IMAGES COVERED",null);					
+				buildResult(yesCount,datesMap,"WHATSAPP IMAGES COVERED %",null);	
+				buildResult(questionnairesCount,datesMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
 				
 			if(datesMap != null && datesMap.size()>0)
 			{
