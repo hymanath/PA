@@ -321,16 +321,16 @@ public class CommonMethodsUtilService {
 		public List<String> getAvailableDates(Set<String> datesList, String startDateStr,String endDateStr){
 			
 			List<String> availableList = new ArrayList<String>();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				
+				Date startDate = sdf.parse(startDateStr.substring(0, 10));
+				Date endDate = sdf.parse(endDateStr.substring(0, 10));
 				if(datesList != null && datesList.size() > 0){
 					for (String dateString : datesList) {
-						Date testDate = sdf.parse(dateString);
-						Date startDate = sdf.parse(startDateStr);
-						Date endDate = sdf.parse(endDateStr);
+						Date testDate = format.parse(dateString);
 						if(startDate != null && endDate != null){
-							if(testDate.after(startDate) && testDate.before(endDate)){
+							if(testDate.equals(startDate) || (testDate.after(startDate) && testDate.before(endDate)) || testDate.equals(endDate)){
 								String dateStr = sdf.format(testDate);
 								availableList.add(dateStr);
 							}
