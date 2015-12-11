@@ -11070,5 +11070,11 @@
 				<param name="root">docsList</param>
 			</result>
 		</action>
+		<action name="getLocationsHierarchyForEventAction" class="committeeDashBoardAction" method="getLocationsHierarchyForEvent">
+			<result type="json" name="success">
+				<param name="root">basicVO</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      

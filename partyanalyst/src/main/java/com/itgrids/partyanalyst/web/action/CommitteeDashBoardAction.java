@@ -1045,11 +1045,34 @@ public String getAllConstituencysForADistrict(){
 			inputVo.setLocationScope(jObj.getString("locationScope"));
 			inputVo.setLocationValue(jObj.getLong("locationValue"));
 			inputVo.setActivityId(jObj.getLong("activityId"));	
+			inputVo.setStrDate(jObj.getString("fromDateStr"));	
+			inputVo.setEndDate(jObj.getString("toDateStr"));
 			inputVo.setDay(jObj.getLong("day"));
 			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getEventDocumentsForLocation ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationsHierarchyForEvent()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			EventDocumentVO inputVo = new EventDocumentVO();
+			inputVo.setLocationScope(jObj.getString("locationScope"));
+			inputVo.setLocationValue(jObj.getLong("locationValue"));
+			inputVo.setActivityId(jObj.getLong("activityId"));	
+			inputVo.setStrDate(jObj.getString("fromDateStr"));	
+			inputVo.setEndDate(jObj.getString("toDateStr"));
+			basicVO=cadreCommitteeService.getLocationsHierarchyForEvent(inputVo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocationsHierarchyForEvent ",e);
 		}
 		return Action.SUCCESS;
 	}
