@@ -727,24 +727,24 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
 			}
 			
-			queryStr.append(" group by  ");
+			queryStr.append("   ");
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append("  model.constituency.district.districtId,date(model.plannedDate)  ");
+				queryStr.append(" group by model.constituency.district.districtId,date(model.plannedDate)  ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-				queryStr.append(" model.constituency.constituencyId,date(model.plannedDate)");
+				queryStr.append(" group by  model.constituency.constituencyId,date(model.plannedDate)");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-				queryStr.append(" T.tehsilId,date(model.plannedDate) ");
+				queryStr.append("  group by  T.tehsilId,date(model.plannedDate) ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-				queryStr.append(" LEB.localElectionBodyId,date(model.plannedDate) ");
+				queryStr.append("  group by  LEB.localElectionBodyId,date(model.plannedDate) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-				queryStr.append(" P.panchayatId,date(model.plannedDate) ");
+				queryStr.append("  group by  P.panchayatId,date(model.plannedDate) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-				queryStr.append(" C.constituencyId,date(model.plannedDate) ");
+				queryStr.append(" group by   C.constituencyId,date(model.plannedDate) ");
 			}
 			queryStr.append(" order by  date(model.plannedDate) asc  ");
 			query = getSession().createQuery(queryStr.toString());
