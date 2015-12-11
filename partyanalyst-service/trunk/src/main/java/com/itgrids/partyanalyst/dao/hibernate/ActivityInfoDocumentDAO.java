@@ -155,6 +155,12 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	}
 	
 	
-	
+	public Integer deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId)
+	{
+		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.idDeleted = 'Y' where nodel.activityInfoDocumentId =:acitivityInfoDocId ");
+		
+		query.setParameter("acitivityInfoDocId", acitivityInfoDocId);
+		return query.executeUpdate();
+	}
 
 }
