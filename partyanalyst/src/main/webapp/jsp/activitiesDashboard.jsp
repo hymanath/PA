@@ -91,31 +91,7 @@
 						</span>
 					</h4>
 				</div>
-                <!--<div class="panel-body">
-                	<div class="">
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-3">
-								<label>Activity Type</label>
-                                <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
-							</div>
-							<div class="col-md-3">
-								<label>Activity Level</label>
-								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="1" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
-							</div>
-							<div class="col-md-3">
-								<label> Activity Name </label>
-								<select id="ActivityList" class="form-control">
-									<option value="0"> Select Activity </option>
-								</select>
-							</div>
-							<div class="col-md-3">
-								<button id="submitId" class="btn btn-block btn-custom btn-success" onclick="getDetails();" style="margin-top: 25px;"> Get Details </button>
-							</div>
-						</div>
-					</div>
-					</div>
-				</div>-->
+                
 					<div class="panel panel-default panel-custom1">
                     	<div class="panel-heading bg_66">
                         	<h4 class="panel-title">VILLAGE/WARD</h4>
@@ -124,27 +100,6 @@
 						<div class="col-md-12">
 							<div id="stateWiseViewDid"></div>
 						</div>
-                        	<!--<div class="table-responsive">
-                                <table class="table table-bordered bg_ff">
-                                    <tr class="text-center">
-                                    	<td class="pad_0" rowspan="2" style="box-sizing:none;"><img src="dist/activity/img/andhrap.jpg" class="img-responsive head-td" style="height:150px;" ></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                        <td><h3 class="m_top20 m_bottom10">16689</h3><hr class="custom-hr"/></td>
-                                    </tr>
-                                    <tr>
-                                    	<td class="bg_ef text-center">TOTAL VILLAGE/WARD</td>
-                                        <td class="bg_ef text-center">PLANNED VILLAGE/WARD</td>
-                                        <td class="bg_ef text-center">INFO CELL COVERED</td>
-                                        <td class="bg_ef text-center">IVR COVERED</td>
-                                        <td class="bg_ef text-center">WHATSAPP IMAGE COVERED</td>
-                                        <td class="bg_ef text-center">NO OF IMAGE RECEIVED @ WHATSAPP</td>
-                                    </tr>
-                                </table>
-                            </div>-->
 							<div class="table-responsive" id="alignmentWidth" style="padding:10px;">
 				
 							</div>
@@ -250,8 +205,8 @@ $(function () {
 
   $('.searchDateCls').daterangepicker(optionSet1, cb);
 
-  $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
-  $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+ // $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
+  //$('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
   getActivityNames('onload');
 //getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 //getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
@@ -357,11 +312,11 @@ function buildResult(result)
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].ivrTotal+'</h3><hr class="custom-hr"/></td>';
+				str+='<td style="background:#EA9A31;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].ivrTotal+'<small>('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].infoCellTotal+'</h3><hr class="custom-hr"/></td>';
+				str+='<td style="background:#EA9A31;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].infoCellTotal+'<small>('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
@@ -398,13 +353,13 @@ function buildResult(result)
 	
 	str+='<td class="bg_ef text-center">IVR COVERED   <small>(PLANNED) </small></td>';
 	//str+='<td class="bg_ef text-center">IVR COVERED %</td>';
-	str+='<td class="bg_ef text-center"> IVR NOT PLANNED </td>';
-	str+='<td class="bg_ef text-center"> IVR TOTAL </td>';
+	str+='<td class="bg_ef text-center"> IVR COVERED <small> (NOT-PLANNED)</small> </td>';
+	str+='<td class="bg_ef text-center" style="background:#EA9A31;"> IVR TOTAL </td>';
 	
-	str+='<td class="bg_ef text-center">INFO CELL TOTAL </td>';
+	str+='<td class="bg_ef text-center"  style="background:#EA9A31;">INFO CELL TOTAL </td>';
 	str+='<td class="bg_ef text-center">INFO CELL COVERED   <small>(PLANNED) </small> </td>';
 	//str+='<td class="bg_ef text-center">INFO CELL COVERED %</td>';
-	str+='<td class="bg_ef text-center">INFO CELL NOT PLANNED</td>';
+	str+='<td class="bg_ef text-center">INFO CELL COVERED <small> (NOT-PLANNED)</small></td>';
 	
 	str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED</td>';
 	//str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED %</td>';
@@ -419,52 +374,88 @@ function buildResult(result)
 }
 function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 {
-	if(searchType != "state" && searchType != "district"){
-		if(showHideResults(divId)){
-			$("#"+divId).html("");
-			return;
-		}
+	
+	//aria-expanded
+	if(searchType == 'booth'){
+		$(".villageNameAnchorCls").addClass('collapsed');
+		$(".villageNameAnchorCls").removeClass('bod bod-b');
 	}
-	
-	  var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
-	
-	 var activityScopeId = $("#ActivityList").val();
-	 var activityLevelId = $("#activityLevelList").val();
-	
-		var jObj = {
-		stateId:1,
-		searchType:searchType,
-		conditionType:"locationWiseResult",		
-		startDate:fromDateStr,     //30-11-2015
-		endDate:toDateStr,       //08-12-2015
-		locationId:locationId,
-		activityScopeId:activityScopeId,   //1
-		activityLevelId:activityLevelId,   //1
-		task:"getActivityDetailsBySearchCriteria"
-		};
-		$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+	else if(searchType == 'village'){
+		$(".PlusnMinusSignV").addClass('collapsed');
+		//$(".PlusnMinusSignV").attr('aria-expanded','true');
+		$(".villageListCls").html("");		
+		$(".mandalNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'mandal'){
+		$(".PlusnMinusSignM").addClass('collapsed');
+		//$(".PlusnMinusSignM").attr('aria-expanded','true');
 		
-		$.ajax({
-          type:'GET',
-          url: 'getActivityDetailsBySearchCriteria.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			console.log(result);
-			if(result != null)
-				if(searchType == 'state')
-					buildResult(result);
-				else if(searchType == 'district')
-					buildsLocationsResult(result,divId);
-				else if(searchType == 'constituency')
-					buildConstituencyResult(result,divId,locationId);
-				else if(searchType == 'mandal')
-					buildMandalResult(result,divId,locationId);
-				else if(searchType == 'village')
-					buildVillageResult(result,divId,locationId);
-		});
+		$(".mandalsLsitCls").html("");		
+		$(".constiNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'constituency'){
+		$(".PlusnMinusSignd").addClass('collapsed');
+		//$(".PlusnMinusSignd").attr('aria-expanded','true');
+		$(".constiListCls").html("");		
+		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
+	}
+		
+	
+	 
+	if(locationId >0)
+	{
+		if(searchType != "state" && searchType != "district"){
+			if(showHideResults(divId)){
+				$("#"+divId).html("");
+				//return;
+			}
+		}
+		
+		$('html,body').animate({
+			scrollTop: $("#"+divId).offset().top},
+        'slow');
+		
+		var dates=$('.searchDateCls ').val();
+		  var dateArray=dates.split("/");
+		  var fromDateStr=dateArray[0];
+		  var toDateStr=dateArray[1];
+		
+		 var activityScopeId = $("#ActivityList").val();
+		 var activityLevelId = $("#activityLevelList").val();
+		
+			var jObj = {
+			stateId:1,
+			searchType:searchType,
+			conditionType:"locationWiseResult",		
+			startDate:fromDateStr,     //30-11-2015
+			endDate:toDateStr,       //08-12-2015
+			locationId:locationId,
+			activityScopeId:activityScopeId,   //1
+			activityLevelId:activityLevelId,   //1
+			task:"getActivityDetailsBySearchCriteria"
+			};
+			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getActivityDetailsBySearchCriteria.action',
+			 data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				console.log(result);
+				if(result != null)
+					if(searchType == 'state')
+						buildResult(result);
+					else if(searchType == 'district')
+						buildsLocationsResult(result,divId);
+					else if(searchType == 'constituency')
+						buildConstituencyResult(result,divId,locationId);
+					else if(searchType == 'mandal')
+						buildMandalResult(result,divId,locationId);
+					else if(searchType == 'village')
+						buildVillageResult(result,divId,locationId);
+			});
+	}		
+	  
 }
 
 
@@ -479,8 +470,8 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading" role="tab" id="headingOneLevelMandal1'+i+'">';
-			//str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			str+='<div class="panel-heading villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
 				str+='<tr>';
@@ -506,16 +497,16 @@ function buildVillageResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter">'+result.activityVoList[i].ivrTotal+'</td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter">'+result.activityVoList[i].infoCellTotal+'</td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
 			
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth7 aligncenter"> - </td>';
 			/*if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -541,12 +532,12 @@ function buildVillageResult(result,divId,locationId)
 				
 				str+='</tr>';
 				str+='</table>';
-			//	str+='</a>';
+				str+='</a>';
 		//	str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'panchayat\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
 				str+='</div>';
 					str+='</div>';
-					str+='<div id="dayWisePanchayatInfo'+result.activityVoList[i].id+'"></div>';
+					str+='<div id="dayWisePanchayatInfo'+result.activityVoList[i].id+'" class="daywiseSCls"></div>';
 				str+='</div>';
 			str+='</div>';
 			
@@ -569,8 +560,8 @@ function buildMandalResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading" role="tab" id="headingOneLevelMandal1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			str+='<div class="panel-heading mandalNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
@@ -596,13 +587,13 @@ function buildMandalResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter">'+result.activityVoList[i].ivrTotal+'</td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter">'+result.activityVoList[i].infoCellTotal+'</td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -631,12 +622,12 @@ function buildMandalResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs"  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
-					str+='<div id="panchayatLevelId'+i+'"></div>';
+					str+='<div id="panchayatLevelId'+i+'" class="villageListCls"></div>';
 					str+='</div>';
-					str+='<div id="dayWiseMandalInfo'+result.activityVoList[i].id+'"></div>';
+					str+='<div id="dayWiseMandalInfo'+result.activityVoList[i].id+'"  class="daywiseSCls"></div>';
 				str+='</div>';
 			str+='</div>';
 			str+='</div>';
@@ -649,7 +640,7 @@ function buildMandalResult(result,divId,locationId)
 	$('#'+divId+'').html(str);
 	dynamicwidth();
 }
-
+//ccc
 function buildConstituencyResult(result,divId,locationId)
 {	
 	var str='';
@@ -661,8 +652,8 @@ function buildConstituencyResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="accordion1Level1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			str+='<div class="panel-heading constiNameAnchorCls" role="tab" id="headingOneLevel1'+i+'">';
+			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
@@ -689,13 +680,13 @@ function buildConstituencyResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter">'+result.activityVoList[i].ivrTotal+'</td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter">'+result.activityVoList[i].infoCellTotal+'</td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -725,13 +716,13 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',this)" >Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\')" >Day Wise</button>';
 				str+='</div>';
 				
 				str+='<div id="collapseOne1LevelMandal1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
-				str+='<div id="mandalLevelId'+i+'"></div>';
+				str+='<div id="mandalLevelId'+i+'" class="mandalsLsitCls"></div>';
 				str+='</div>';
-				str+='<div id="dayWiseConstituencyInfo'+result.activityVoList[i].id+'"></div>';
+				str+='<div id="dayWiseConstituencyInfo'+result.activityVoList[i].id+'"  class="daywiseSCls"></div>';
 				str+='</div>';
 			str+='</div>';
 			str+='</div>';
@@ -744,6 +735,14 @@ function buildConstituencyResult(result,divId,locationId)
 	$('#'+divId+'').html(str);
 	dynamicwidth();
 }
+/*
+if(searchType == 'mandal'){
+		$(".PlusnMinusSignM").addClass('collapsed');
+		$(".mandalsLsitCls").html("");		
+		$(".mandalsLsitCls").parent().find("div").removeClass('bod bod-b');
+	}
+*/
+//dddd
 function buildsLocationsResult(result,divId){
 	
 	$('#'+divId+'').html('');
@@ -757,13 +756,13 @@ function buildsLocationsResult(result,divId){
 	
 	str+='<td class="getChildWidth3">IVR COVERED   <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth3">IVR COVERED %</td>';
-	str+='<td class="getChildWidth4"> IVR NOT PLANNED </td>';
-	str+='<td class="getChildWidth5"> IVR TOTAL </td>';
+	str+='<td class="getChildWidth4"> IVR COVERED (NOT-PLANNED) </td>';
+	str+='<td class="getChildWidth5" style="background:#EA9A31;"> IVR TOTAL </td>';
 	
-	str+='<td class="getChildWidth6">INFO CELL TOTAL</td>';
+	str+='<td class="getChildWidth6" style="background:#EA9A31;">INFO CELL TOTAL</td>';
 	str+='<td class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
-	str+='<td class="getChildWidth8">INFO CELL NOT PLANNED</td>';
+	str+='<td class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</td>';
 	
 	
 	str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED</td>';
@@ -783,7 +782,7 @@ function buildsLocationsResult(result,divId){
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSign collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
+			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
 			
@@ -810,13 +809,13 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter">'+result.activityVoList[i].ivrTotal+'</td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter">'+result.activityVoList[i].infoCellTotal+'</td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -842,41 +841,20 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth10 aligncenter"> - </td>';
 			
-/*			
-			if(result.activityVoList[i].activityVoList != null && result.activityVoList[i].activityVoList.length>0)
-			{
-				for(var j in result.activityVoList[i].activityVoList)
-				{
-					if(j<9){
-						if(j==0)
-							str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-						else if(j==5)
-							str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].conductedCount+'</td>';
-						else
-							str+='<td class="dynChildWidth3">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
-					}						
-					else
-						str+='<td class="dynChildWidth7">'+result.activityVoList[i].activityVoList[j].percentage+'</td>';
-				}
-			}
-*/
+
 			str+='</tr>';
 			str+='</table>';
 			str+='</a>';
 			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs" onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',this)">Day Wise</button>';
+			//str+='<button class="btn btn-custom btn-hover btn-xs " href="javascript:{getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\');}">Day Wise</button>';
+			str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
 			str+='</div>';			
-			str+='<div id="constituencyLevelId'+i+'">';
-			str+='</div>';
+			str+='<div id="constituencyLevelId'+i+'" class="constiListCls"> </div>';
 			str+='<div id="collapseOneLevel1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
-			
-			str+='<div id="constituencyLevelId'+i+'">';
-			str+='</div>';
-
 		
 		str+='</div>';
 		str+='</div>';
-		str+='<div id="dayWiseInfo'+result.activityVoList[i].id+'">';
+		str+='<div id="dayWiseInfo'+result.activityVoList[i].id+'" class="daywiseSCls">';
 		str+='</div>';
 		
 		str+='</td>';
@@ -903,13 +881,34 @@ function dynamicwidth()
 	$(".dynChildWidth").css("width",$(".getChildWidth").width()+15);
 }
 
-
-function getDaywiseInfo(searchType,locationId,divId,currentElement)
+function getDaywiseInfo(searchType,locationId,divId)
 {
-	$(currentElement).parent().find('.PlusnMinusSign').trigger('click');
+	$(".daywiseSCls").html("");	
+	$('html,body').animate({
+        scrollTop: $("#"+divId).offset().top},
+        'slow');
+	if(searchType == 'district'){
+		$(".PlusnMinusSignd").addClass('collapsed');
+		$(".constiListCls").html("");	
+		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
+	}
+	else if(searchType == 'constituency'){
+		$(".PlusnMinusSignM").addClass('collapsed');
+		$(".mandalsLsitCls").html("");		
+		$(".constiNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'mandal'){
+		$(".PlusnMinusSignV").addClass('collapsed');
+		$(".villageListCls").html("");		
+		$(".mandalNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'village'){
+		$(".villageNameAnchorCls").addClass('collapsed');
+	}
+	
 	if(showHideResults(divId)){
 		$("#"+divId).html("");
-		return;
+		//return;
 	}
 		
 	  var dates=$('.searchDateCls ').val();
