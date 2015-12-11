@@ -17283,8 +17283,16 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	{
 		List<EventDocumentVO> returnList = null;
 		List<Long> days =new ArrayList<Long>();
+		Date startDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
-			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo);
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
+			{
+				startDate = format.parse(inputVo.getStrDate().toString());
+				toDate = format.parse(inputVo.getEndDate().toString());
+			}
+			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
 			if(list != null && list.size() > 0)
 			{
 				returnList = new ArrayList<EventDocumentVO>();

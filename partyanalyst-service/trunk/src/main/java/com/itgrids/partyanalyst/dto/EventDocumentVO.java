@@ -16,9 +16,23 @@ public class EventDocumentVO {
 	private List<EventDocumentVO> subList = new ArrayList<EventDocumentVO>();
 	
 	private String locationScope;
+	private String strDate;
+	private String endDate;
 	
 	
 	
+	public String getStrDate() {
+		return strDate;
+	}
+	public void setStrDate(String strDate) {
+		this.strDate = strDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	public String getLocationScope() {
 		return locationScope;
 	}
