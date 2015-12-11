@@ -17347,23 +17347,48 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				toDate = format.parse(inputVo.getEndDate().toString());
 			}
 		List<Object[]> list  = null;
-		List<BasicVO> locationsList = null;
+		List<BasicVO> locationsList = new ArrayList<BasicVO>();
+		
 		if(inputVo.getLocationScope().equalsIgnoreCase("constituency"))
 		{
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.MANDAL);
-			locationsList = setLocationsListForMandal(list,IConstants.MANDAL);
+			List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
-			locationsList = setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+			List<BasicVO> localbodyList = setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+			if(mandalList != null && mandalList.size() > 0)
+			locationsList.addAll(mandalList);
+			if(localbodyList != null && localbodyList.size() > 0)
+			locationsList.addAll(localbodyList);
+			vo.setLocationsList(locationsList);
+		}
+		else if(inputVo.getLocationScope().equalsIgnoreCase("mandal"))
+		{
+			
+			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
+			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+			{
+				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
+				if(mandalList != null && mandalList.size() > 0)
+				locationsList.addAll(mandalList);
+			}
+			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			{
+				List<BasicVO> localbodyList =  setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+				if(localbodyList != null && localbodyList.size() > 0)
+				locationsList.addAll(localbodyList);
+			}
+			vo.setLocationsList(locationsList);
 		}
 		else
 		{
 			
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
 			locationsList = setLocationsList(list);
+			vo.setLocationsList(locationsList);
 		}
 		
 		//List<BasicVO> days = setLocationsList(daysList);
-		vo.setLocationsList(locationsList);
+		
 		//vo.setDaysList(days);
 		}
 		catch(Exception e){
