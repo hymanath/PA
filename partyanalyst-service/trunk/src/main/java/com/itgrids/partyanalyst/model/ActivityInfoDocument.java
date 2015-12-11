@@ -40,6 +40,8 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private User updatedUser;
 	private Long day;
 	private UserAddress userAddress;
+	private String isDeleted;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_info_document_id", unique = true, nullable = false)
@@ -163,6 +165,16 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
+	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 	
 	
 	
