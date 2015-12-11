@@ -1492,24 +1492,17 @@ public class ActivityService implements IActivityService{
 		try {
 			
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
-			Activity activity = activityScopeDAO.get(searchAttributeVO.getScopeId()).getActivity();
-			datesMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
-			
-			Set<String> datesList = datesMap.keySet();
-			
+			Map<String,ActivityVO> initialDateMap = new LinkedHashMap<String, ActivityVO>();
+			Activity activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0)).getActivity();
+			initialDateMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+
+			Set<String> datesList = initialDateMap.keySet();
+			List<String> availableDatesList  =null;
 			if(datesList != null && datesList.size() > 0){
-				
-				List<String> availableDatesList = commonMethodsUtilService.getAvailableDates(datesList, activity.getStartDate().toString(), activity.getEndDate().toString());
-				
-				if(availableDatesList != null && availableDatesList.size() > 0){
-					for (String dateStr : datesList) {
-						if(!(availableDatesList.contains(dateStr))){
-							datesMap.remove(dateStr);
-						}
-					}
-				}
+				availableDatesList = commonMethodsUtilService.getAvailableDates(datesList, activity.getStartDate().toString(), activity.getEndDate().toString());
 			}
-			
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			datesMap = commonMethodsUtilService.getDatesWiseCounts(sdf.parse(availableDatesList.get(0)), sdf.parse(availableDatesList.get(availableDatesList.size()-1)), "Day");
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
 			List<Object[]> plannedActivities = null;
 			List<Object[]> infoCellconductedActivities = null;
