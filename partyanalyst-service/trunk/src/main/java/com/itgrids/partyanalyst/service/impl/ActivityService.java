@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -11,11 +14,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityAttributeDAO;
 import com.itgrids.partyanalyst.dao.IActivityAttributeQuestionnaireInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
+import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
+import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
@@ -37,12 +46,18 @@ import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.Activity;
+import com.itgrids.partyanalyst.model.ActivityDocument;
+import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.model.ActivityLevel;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
@@ -50,11 +65,14 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class ActivityService implements IActivityService{
 
@@ -88,8 +106,39 @@ public class ActivityService implements IActivityService{
 	private IActivityQuestionnaireOptionDAO activityQuestionnaireOptionDAO;
 	private IActivityAttributeDAO activityAttributeDAO;
 	private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IActivityDocumentDAO activityDocumentDAO;
+	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
+	private IUserAddressDAO userAddressDAO;
+	private TransactionTemplate transactionTemplate = null;
 	
 	
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	public IActivityDocumentDAO getActivityDocumentDAO() {
+		return activityDocumentDAO;
+	}
+	public void setActivityDocumentDAO(IActivityDocumentDAO activityDocumentDAO) {
+		this.activityDocumentDAO = activityDocumentDAO;
+	}
+	public IActivityInfoDocumentDAO getActivityInfoDocumentDAO() {
+		return activityInfoDocumentDAO;
+	}
+	public void setActivityInfoDocumentDAO(
+			IActivityInfoDocumentDAO activityInfoDocumentDAO) {
+		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
+	}
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
 	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
 		return activityQuestionAnswerDAO;
 	}
@@ -265,6 +314,13 @@ public class ActivityService implements IActivityService{
 	public void setCadreCommitteeService(
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
+	}
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr)
@@ -1652,5 +1708,289 @@ public class ActivityService implements IActivityService{
 	}
 	
 
+	
+	
+	public ResultStatus eventsUploadForm(final EventFileUploadVO eventFileUploadVO)
+	{
+		final ResultStatus resultStatus = new ResultStatus();
+		try{
+		
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+				
+			
+			
+			UserAddress userAddress = saveUserAddress(eventFileUploadVO);
+			
+			ActivityDocument activityDocument = new ActivityDocument();
+			if(eventFileUploadVO.getActivityDate() != null && !eventFileUploadVO.getActivityDate().equals("undefined"))
+			{
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			    try {
+					activityDocument.setActivityDate(dateFormat.parse(eventFileUploadVO.getActivityDate()));
+				} catch (ParseException e) {
+					LOG.error(" Exception Occured in eventsUploadForm() method, Exception - ",e);	
+				}
+			}
+			
+			StringBuilder str = new StringBuilder();
+			Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+			str.append(randomNumber).append(".").append(eventFileUploadVO.getFileExtension());
+			activityDocument.setDocumentName(str.toString());
+			
+			String folderName = folderCreation();
+			
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			 int day = calendar.get(Calendar.DAY_OF_MONTH);
+			 int temp = month+1;
+			 
+			 StringBuilder pathBuilder = new StringBuilder();
+			 pathBuilder.append(year).append("/").append(temp).append("_").append(day).append("/").append(randomNumber).append(".")
+			 .append(eventFileUploadVO.getFileExtension());
+			 
+			activityDocument.setPath(pathBuilder.toString());
+			
+			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
+			copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
+			
+			activityDocument.setInsertedBy(eventFileUploadVO.getUserId());
+			activityDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
+			
+			activityDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			activityDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			activityDocument.setActivityScopeId(eventFileUploadVO.getActivityScopeId());
+			
+			activityDocument = activityDocumentDAO.save(activityDocument);
+			
+		    ActivityInfoDocument activityInfoDocument = new ActivityInfoDocument();
+		    activityInfoDocument.setActivityDocumentId(activityDocument.getActivityDocumentId());
+		    activityInfoDocument.setInsertedBy(eventFileUploadVO.getUserId());
+		    activityInfoDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
+			
+		    activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		    activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
+		    
+		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLocationScopeId());
+		    activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLaocationValueAddress());
+			
+		    activityInfoDocument.setDay(eventFileUploadVO.getDay());
+		    
+		    activityInfoDocument.setIsDeleted("N");
+		    
+		    activityInfoDocument = activityInfoDocumentDAO.save(activityInfoDocument);
+		    
+		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		    resultStatus.setResultState(activityInfoDocument.getActivityInfoDocumentId());
+		    
+			}	
+	      });
+			
+		}catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			LOG.error(" Exception Occured in eventsUploadForm() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
+	
+	
+	public String copyFile(String sourcePath,String destinationPath){
+		 try{
+			File destFile = new File(destinationPath);
+			 if (!destFile.exists()) 
+				 destFile.createNewFile();
+			 File file = new File(sourcePath);
+			if(file.exists()){
+				FileUtils.copyFile(file,destFile);
+				LOG.error("Copy success");
+				return "success";
+			}
+		  }catch(Exception e){
+			  LOG.error("Exception raised in copyFile ", e);
+			  LOG.error("Copy error");
+			  return "error";
+		  }
+		 return "failure";
+		}
+	
+	public static String folderCreation(){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+	  		
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			 int day = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String activityDocDir = createFolder(staticPath+IConstants.ACTIVITY_DOCUMENTS);
+			 
+			 String yr = String.valueOf(year); // YEAR YYYY
+			 String yrDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr;
+			 
+			 String yrFldrSts = createFolder(yrDir);
+			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 StringBuilder str = new StringBuilder();
+			 int temp = month+1;
+			 str.append(temp).append("-").append(day);
+			 
+			 
+			 String mnth = str.toString();
+			 String mnthDir = staticPath+"/"+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
+			 String mnthDirSts = createFolder(mnthDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"/"+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+		 
+		 
+		 
+}
+	
+	public static String createFolder(String dir){
+	 	try {
+			File theDir = new File(dir);
+			  // if the directory does not exist, create it
+			  if (!theDir.exists()) {
+			    boolean result = false;
+			    try{
+			        theDir.mkdir();
+			        result = true;
+			     } catch(SecurityException se){
+			        //handle it
+			     }        
+			     if(result) {    
+			      LOG.debug("DIR With Name "+dir+" created");  
+			     }
+			  }else{
+				  LOG.debug("DIR With Name "+dir+" EXISTS");
+			  }
+			  return "SUCCESS";
+		} catch (Exception e) {
+			LOG.error(dir+" Failed to Create");
+			return "FAILED";
+		}
+	}
+	
+	
+	public UserAddress saveUserAddress(EventFileUploadVO eventFileUploadVO)
+	{
+		try{
+			UserAddress userAddress = new UserAddress();
+			
+			Long levelId = null;
+			Long levelValue = null;
+			
+			if(eventFileUploadVO.getLevelId().equals(2l)){
+				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
+				levelId = 2l;
+				levelValue = eventFileUploadVO.getStateId();
+			}
+			else if(eventFileUploadVO.getLevelId().equals(3l))
+			{
+				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
+				levelId = 3l;
+				levelValue = eventFileUploadVO.getDistrictId();
+			}
+			else if(eventFileUploadVO.getLevelId().equals(4l))
+			{
+				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(eventFileUploadVO.getConstituencyId()));
+				levelId = 4l;
+				levelValue = eventFileUploadVO.getConstituencyId();
+			}
+			else if(eventFileUploadVO.getLevelId().equals(5l))
+			{
+				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(eventFileUploadVO.getConstituencyId()));
+				
+				Long id = eventFileUploadVO.getMandalOrMuncipalityId();
+				String idStr = id.toString().substring(0,1);
+				
+				levelValue = Long.parseLong(id.toString().substring(1,id.toString().length()));
+				
+				if(idStr.equalsIgnoreCase("1")){//Muncipality
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(levelValue));
+					levelId = 6l;
+				}
+				else{
+					userAddress.setTehsil(tehsilDAO.get(levelValue));
+					levelId = 5l;	
+				}
+			}
+			else if(eventFileUploadVO.getLevelId().equals(6l))
+			{
+				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(eventFileUploadVO.getConstituencyId()));
+				
+				Long id = eventFileUploadVO.getPanchayatId();
+				String idStr = id.toString().substring(0,1);
+				
+				levelValue = Long.parseLong(id.toString().substring(1,id.toString().length()));//panchayatOrWard
+				
+				Long mandalOrMunId = eventFileUploadVO.getMandalOrMuncipalityId();
+				Long manMunValue = Long.parseLong(mandalOrMunId.toString().substring(1,mandalOrMunId.toString().length()));
+				
+				//Panchayat
+				if(idStr.equalsIgnoreCase("1"))
+				{
+					levelId = 7l;
+					userAddress.setTehsil(tehsilDAO.get(manMunValue));
+					userAddress.setPanchayatId(levelValue);
+				}
+				else{//ward
+					levelId = 8l;
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(manMunValue));
+					userAddress.setWard(constituencyDAO.get(levelValue));
+				}
+				
+			}
+			
+			userAddress = userAddressDAO.save(userAddress);
+			
+			eventFileUploadVO.setLocationScopeId(levelId);
+			eventFileUploadVO.setLaocationValueAddress(levelValue);
+			return userAddress;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in saveUserAddress() method, Exception - ",e);
+		}
+		return null;
+	}
+	
+	
+	
+	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoDocId(acitivityInfoDocId);
+			resultStatus.setResultCode(0);
+		}catch (Exception e) {
+			resultStatus.setResultCode(1);
+			LOG.error(" Exception Occured in deleteEventUploadFilebyActivityInfoDocId() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
 	
 }
