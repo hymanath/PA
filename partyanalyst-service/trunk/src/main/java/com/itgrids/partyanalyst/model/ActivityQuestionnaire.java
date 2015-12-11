@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,6 +32,10 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	private Long parentActivityQuestionnaireId;
 	private Long orderNo;
 	private String isDeleted;
+	private Long insertedBy;
+	private Long updatedBy;
+	private Date insertedTime;
+	private Date updatedTime;
 	
 	private ActivityScope activityScope;
 	private ActivityQuestion activityQuestion;
@@ -125,5 +130,34 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	}
 	public void setActivityOptionType(ActivityOptionType activityOptionType) {
 		this.activityOptionType = activityOptionType;
+	}
+	
+	@Column(name = "inserted_by")
+	public Long getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(Long insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+	@Column(name = "updated_by")
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 }
