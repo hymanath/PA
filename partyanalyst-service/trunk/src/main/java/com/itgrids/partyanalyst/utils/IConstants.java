@@ -678,7 +678,7 @@ public interface IConstants {
 	 * partyanalyst.com for live server
 	 * localhost for development environment
     */	
-    public final static String DEPLOYED_HOST = "localhost";
+    public final static String DEPLOYED_HOST = "tdpserver";
     
     public final static Double GOOD = 40.00;
     public final static Double VERY_GOOD = 20.00;
@@ -742,8 +742,8 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-    public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-    //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+    public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
     //public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
     
@@ -760,7 +760,7 @@ public interface IConstants {
     public static final String RESEND="RESEND";
    // public static final String DISTRICT_IDS ="1";
     public static int censusYear = 2011;
-    public static final String SMS_APP_URL = "http://www.mytdp.com/Survey";
+    public static final String SMS_APP_URL = "http://localhost:8080/Survey";
     
     public static final Long PREV_PARLIAMENT_ELECTION_ID = 17l;
     public static final Long PRES_PARLIAMENT_ELECTION_ID = 260l;
@@ -837,8 +837,8 @@ public interface IConstants {
     public static final String CADRE_2014_START_DATE = "2014-11-03";
     public static final String CADRE_2014_LAST_DATE = "2014-12-02";
     
-    public static final String AP_CADRE_2014_END_DATE = "2014-12-23 11:59:59";
-    public static final String TG_CADRE_2014_END_DATE = "2014-12-23 11:59:59";
+    public static final String AP_CADRE_2014_END_DATE = "2014-12-23 16:00:00";
+    public static final String TG_CADRE_2014_END_DATE = "2014-12-23 16:00:00";
     
     public static final String MINORITY_CASTE_IDS = "292,301,430";
     public static final boolean ENABLE_CADRE_LOGS = false;
@@ -947,9 +947,11 @@ public interface IConstants {
     public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=3L;
     public static final Long MONTHLY_STATE_MEETING_ID=1L;
     public static final Long MONTHLY_DISTRICT_MEETING_ID=2L;
-    public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
-    public static final String CADRE_FEEDBACK_DOCUMENT = "cadre_feedback_document";
+
+	 public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
+	 public static final String CADRE_FEEDBACK_DOCUMENT = "cadre_feedback_document";
     //public static final String[] ACTIVITY_REPORT_FIELDS = {"INFO CELL PLANNED","INFO CELL NOT PLANNED","INFO CELL COVERED","INFO CELL COVERED %","IVR PLANNED","IVR NOT PLANNED",
     	//"IVR NOT PLANNED %","WHATSAPP IMAGES COVERED","WHATSAPP IMAGES COVERED %",};
     public static final String[] ACTIVITY_REPORT_FIELDS ={"PLANNED","IVR COVERED","IVR COVERED %","IVR NOT PLANNED","TOTAL IVR","INFO CELL COVERED","INFO CELL COVERED %","INFO CELL NOT PLANNED","WHATSAPP IMAGES COVERED","WHATSAPP IMAGES COVERED %","NO OF WHATSAPP IMAGES RECIEVED"};
+    public static final String ACTIVITY_DOCUMENTS ="activity_documents";
 }
