@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 
 public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocument, Long>{
 	public List<Object[]> getEventDocuments(EventDocumentVO inputVO,Date startDate,Date endDate);
+	public List<Object[]> getLocations(EventDocumentVO inputVO,Date startDate,Date endDate,String type);
+	
 }

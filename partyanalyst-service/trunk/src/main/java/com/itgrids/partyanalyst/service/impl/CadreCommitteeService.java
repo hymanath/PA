@@ -17333,4 +17333,83 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				return vo;
 		return null;
 	}
+	
+	public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo)
+	{
+		BasicVO vo = new BasicVO();
+		Date startDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		try{
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
+			{
+				startDate = format.parse(inputVo.getStrDate().toString());
+				toDate = format.parse(inputVo.getEndDate().toString());
+			}
+		List<Object[]> list  = null;
+		List<BasicVO> locationsList = null;
+		if(inputVo.getLocationScope().equalsIgnoreCase("constituency"))
+		{
+			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.MANDAL);
+			locationsList = setLocationsListForMandal(list,IConstants.MANDAL);
+			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
+			locationsList = setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+		}
+		else
+		{
+			
+			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
+			locationsList = setLocationsList(list);
+		}
+		
+		//List<BasicVO> days = setLocationsList(daysList);
+		vo.setLocationsList(locationsList);
+		//vo.setDaysList(days);
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getLocationsHierarchyForEvent", e);
+		}
+		return vo;
+	}
+	
+	public List<BasicVO> setLocationsList(List<Object[]> list)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				BasicVO vo = new BasicVO();
+				vo.setId((Long)params[0]);
+				vo.setName(params[1].toString());
+				returnList.add(vo);
+			}
+		}
+		return returnList;
+	}
+	
+	public List<BasicVO> setLocationsListForMandal(List<Object[]> list,String type)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				BasicVO vo = new BasicVO();
+				if(type.equalsIgnoreCase(IConstants.MANDAL))
+				{
+				vo.setId(new Long("2"+params[0].toString()));
+				vo.setName(params[1].toString() +"Mandal ");
+				}
+				else
+				{
+					vo.setId(new Long("1"+params[0].toString()));
+					vo.setName(params[1].toString() +"Muncipality ");
+				}
+				
+				returnList.add(vo);
+			}
+		}
+		return returnList;
+	}
 }
