@@ -6,6 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ *
+ */
 public class ActivityVO implements Serializable{
 	
 	private Long activityTypeId;
@@ -37,11 +41,13 @@ public class ActivityVO implements Serializable{
 	private String ivrcoveredPerc;
 	private Long ivrNotPlanned;
 	private Long ivrTotal;
+	private String ivrTotalPerc;
 	
 	private Long infoCellcovered;
 	private String infoCellcoveredPerc;
 	private Long infoCellNotPlanned;
 	private Long infoCellTotal;
+	private String infoCellTotalPerc;
 	
 	private Long whatsAppCovered;
 	private String whatsAppCoveredPerc;
@@ -53,6 +59,18 @@ public class ActivityVO implements Serializable{
 	private String notPlannedPerc;
 	
 	
+	public String getIvrTotalPerc() {
+		return ivrTotalPerc;
+	}
+	public void setIvrTotalPerc(String ivrTotalPerc) {
+		this.ivrTotalPerc = ivrTotalPerc;
+	}
+	public String getInfoCellTotalPerc() {
+		return infoCellTotalPerc;
+	}
+	public void setInfoCellTotalPerc(String infoCellTotalPerc) {
+		this.infoCellTotalPerc = infoCellTotalPerc;
+	}
 	public Long getIvrcovered() {
 		return ivrcovered;
 	}
