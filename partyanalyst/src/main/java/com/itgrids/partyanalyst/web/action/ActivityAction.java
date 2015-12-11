@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -7,13 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.opensymphony.xwork2.Action;
@@ -35,7 +42,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	
 	private BasicVO 							basicVO = new BasicVO();
 	private List<IdNameVO>  					idNameVOList;
-	
+	private ResultStatus resultStatus;
 	
 	public BasicVO getBasicVO() {
 		return basicVO;
@@ -89,6 +96,13 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		this.request = request;
 	}
 	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public String execute()
 	{
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -143,4 +157,112 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String eventsUploadForm()
+	{
+		try{
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			
+			EventFileUploadVO eventFileUploadVO = new EventFileUploadVO();
+			eventFileUploadVO.setUserId(regVO.getRegistrationID());
+			eventFileUploadVO.setUpdatedBy(regVO.getRegistrationID());
+			
+		       MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+		       String fileUrl = "" ;
+		       List<String> filePaths = null;
+		   		while(fileParams.hasMoreElements())
+		   		{
+		   			String key = fileParams.nextElement();
+		   			
+				   			File[] files = multiPartRequestWrapper.getFiles(key);
+				   			filePaths = new ArrayList<String>();
+				   			if(files != null && files.length > 0)
+				   			for(File f : files)
+				   			{
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   	            String ext = "";
+				   	            if(extension.length > 1){
+				   	              ext = extension[extension.length-1];
+				   	           eventFileUploadVO.setFileExtension(ext);
+				   	        eventFileUploadVO.setFile(f);
+				   	            }
+				   			}
+		   		}
+		     
+		   		Enumeration enumeration= request.getParameterNames();
+				while (enumeration.hasMoreElements()) {
+					String reqParamName = (String) enumeration.nextElement();
+					Object reqValue = request.getParameter(reqParamName) ;
+					
+				if(reqParamName != null && reqValue != null && !reqValue.toString().equalsIgnoreCase("undefined"))
+				{	
+					if(reqParamName.equalsIgnoreCase("stateId")){
+						eventFileUploadVO.setStateId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("districtId")){
+						eventFileUploadVO.setDistrictId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("constituencyId")){
+						eventFileUploadVO.setConstituencyId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("manOrMunId")){
+						eventFileUploadVO.setMandalOrMuncipalityId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("panchayatId")){
+						eventFileUploadVO.setPanchayatId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("levelId")){
+						eventFileUploadVO.setLevelId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("levelValue")){
+						eventFileUploadVO.setLevelValue(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("day")){
+						eventFileUploadVO.setDay(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("activityScopeId")){
+						eventFileUploadVO.setActivityScopeId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
+					}
+					if(reqParamName.equalsIgnoreCase("activityDate")){
+						eventFileUploadVO.setActivityDate(reqValue!= null?reqValue.toString():null);
+					 }
+				  }
+					
+				}
+				resultStatus = activityService.eventsUploadForm(eventFileUploadVO);	
+		       
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in eventsUploadForm() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+	}
+	
+	/*public String eventFieUpload()
+	{
+		try{
+			basicVO = activityService.getActivityTypeList();
+			idNameVOList = activityService.getActivityLevelsList();
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;	
+	}*/
+	
+	public String deleteUploadedFile()
+	{
+		try{
+			
+			//activityService.deleteEventUploadFilebyActivityInfoDocId();
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in deleteUploadedFile() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;
+	}
+
 }
