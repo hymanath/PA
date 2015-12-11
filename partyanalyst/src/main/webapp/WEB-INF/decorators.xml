@@ -343,6 +343,7 @@
 			   <pattern>/cadreVoterSearchAction*</pattern>
 			   	<pattern>/cadredashBoardAction*</pattern>
 			<pattern>/tdpCadreFamilyUpdationAction*</pattern>
+			<pattern>/eventFieUploadAction*</pattern>
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
