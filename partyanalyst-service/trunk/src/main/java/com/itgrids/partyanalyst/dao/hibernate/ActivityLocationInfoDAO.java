@@ -143,7 +143,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 					}
 					else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 						queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-						queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 						queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
@@ -197,7 +197,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 					queryStr.append(" group by T.tehsilId,model.locationLevel order by ");
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-						queryStr.append(" LEB.localElectionBodyId,model.locationLevel order by ");
+						queryStr.append(" group by  LEB.localElectionBodyId,model.locationLevel order by ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 					queryStr.append(" group by P.panchayatId,model.locationLevel order by ");
@@ -205,7 +205,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
 					queryStr.append(" group by C.constituencyId,model.locationLevel order by ");
 				}
-				
+			
 				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 					queryStr.append("  model.constituency.district.districtName  ");
@@ -328,7 +328,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
@@ -383,7 +383,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				queryStr.append(" group by T.tehsilId,model.locationLevel order by ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-					queryStr.append(" LEB.localElectionBodyId,model.locationLevel order by ");
+					queryStr.append("  group by  LEB.localElectionBodyId,model.locationLevel order by ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 				queryStr.append(" group by P.panchayatId,model.locationLevel order by ");
@@ -516,7 +516,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
@@ -685,7 +685,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
