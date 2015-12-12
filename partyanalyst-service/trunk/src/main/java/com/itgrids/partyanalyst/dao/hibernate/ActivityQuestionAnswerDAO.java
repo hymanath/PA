@@ -146,7 +146,7 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 				queryStr.append(" group by T.tehsilId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-					queryStr.append(" LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
+					queryStr.append(" group by LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 				queryStr.append(" group by P.panchayatId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
@@ -332,7 +332,7 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchA
 				queryStr.append(" group by T.tehsilId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-					queryStr.append(" LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
+					queryStr.append(" group by  LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 				queryStr.append(" group by P.panchayatId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
@@ -519,7 +519,7 @@ public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO
 			queryStr.append(" group by T.tehsilId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
 		}
 		else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-				queryStr.append(" LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
+				queryStr.append("  group by  LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
 		}
 		else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 			queryStr.append(" group by P.panchayatId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
@@ -684,7 +684,7 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAt
 			queryStr.append(" group by T.tehsilId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
 		}
 		else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-				queryStr.append(" LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
+				queryStr.append("  group by  LEB.localElectionBodyId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
 		}
 		else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 			queryStr.append(" group by P.panchayatId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
