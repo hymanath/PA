@@ -688,8 +688,8 @@ public class ActivityService implements IActivityService{
 												vo.setWhatsAppCovered(count);
 										}
 										else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L && 
-												vo.getPlannedCount() != null  && vo.getPlannedCount().longValue()>0L){
-											double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
+												vo.getInfoCellTotal() != null  && vo.getInfoCellTotal().longValue()>0L){
+											double perc = (vo.getWhatsAppCovered()*100.0)/vo.getInfoCellTotal();
 											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 											vo.setWhatsAppCoveredPerc(percentage);
 										}
@@ -819,8 +819,8 @@ public class ActivityService implements IActivityService{
 									vo.setWhatsAppCovered(count);
 							}
 							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L && 
-									 vo.getPlannedCount() != null &&  vo.getPlannedCount().longValue()>0L){
-								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
+									 vo.getInfoCellTotal() != null &&  vo.getInfoCellTotal().longValue()>0L){
+								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getInfoCellTotal();
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setWhatsAppCoveredPerc(percentage);
 							}
@@ -925,8 +925,8 @@ public class ActivityService implements IActivityService{
 											vo.setWhatsAppCovered(count);
 									}
 									else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L  && 
-											 vo.getPlannedCount() != null &&  vo.getPlannedCount().longValue()>0L ){
-										double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
+											 vo.getInfoCellTotal() != null &&  vo.getInfoCellTotal().longValue()>0L ){
+										double perc = (vo.getWhatsAppCovered()*100.0)/vo.getInfoCellTotal();
 										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 										vo.setWhatsAppCoveredPerc(percentage);
 									}
@@ -1306,7 +1306,7 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.DIVISION_COMMITTEE_LEVEL_ID);
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(divisionIdsList);
-							
+							searchAttributeVO.setSearchType("URBAN");
 							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
 							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
 							searchAttributeVO.setConditionType("planned");
@@ -1507,27 +1507,70 @@ public class ActivityService implements IActivityService{
 								totalPlannedCount = activityVO.getPlannedCount();
 								
 							}
-							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL) || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 								searchAttributeVO.setScopeId(5L);
-								String mandalTownORDivisionId = searchAttributeVO.getScopeValue().toString().trim().substring(1);
-								searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
-								activityVO.setName(activityVO.getName()+" Mandal");
-								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
-								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
-								{
-									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
-									activityVO.setTotalCount(totalAreasCount);
+								String firstCharId = locationId.toString().trim().substring(0,1);
+								if(firstCharId.trim().equalsIgnoreCase("2")){
+									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
+									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
+									activityVO.setName(activityVO.getName()+" Mandal");
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+									{
+										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+										activityVO.setTotalCount(totalAreasCount);
+									}
+									totalPlannedCount = activityVO.getPlannedCount();
 								}
-								totalPlannedCount = activityVO.getPlannedCount();
-								searchAttributeVO.setScopeId(7L);
-								areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
-								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
-								{
-									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
-									activityVO.setTotalCount(totalAreasCount);
+								else{
+									searchAttributeVO.setScopeId(7L);
+									firstCharId = locationId.toString().trim().substring(0,1);
+									if(firstCharId.trim().equalsIgnoreCase("1")){
+									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
+									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
+									activityVO.setName(activityVO.getName());
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+									{
+										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+										activityVO.setTotalCount(totalAreasCount);
+									}
+									totalPlannedCount = activityVO.getPlannedCount();
+									}
 								}
-								
 							}
+						/*	else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+								searchAttributeVO.setScopeId(5L);
+								String firstCharId = locationId.toString().trim().substring(0,1);
+								if(firstCharId.trim().equalsIgnoreCase("2")){
+									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
+									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
+									activityVO.setName(activityVO.getName()+" Mandal");
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+									{
+										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+										activityVO.setTotalCount(totalAreasCount);
+									}
+									totalPlannedCount = activityVO.getPlannedCount();
+								}
+								else{
+									searchAttributeVO.setScopeId(7L);
+									firstCharId = locationId.toString().trim().substring(0,1);
+									if(firstCharId.trim().equalsIgnoreCase("1")){
+									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
+									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
+									activityVO.setName(activityVO.getName());
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+									{
+										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+										activityVO.setTotalCount(totalAreasCount);
+									}
+									totalPlannedCount = activityVO.getPlannedCount();
+									}
+								}
+							}*/
 							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE) || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
 								activityVO.setTotalCount(1L);
 							}
@@ -1689,7 +1732,10 @@ public class ActivityService implements IActivityService{
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
 			Map<String,ActivityVO> initialDateMap = new LinkedHashMap<String, ActivityVO>();
 			Activity activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0)).getActivity();
-			initialDateMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null)
+				initialDateMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+			else
+				initialDateMap = commonMethodsUtilService.getDatesWiseCounts(activity.getStartDate(), activity.getEndDate(), "Day");
 
 			Set<String> datesList = initialDateMap.keySet();
 			List<String> availableDatesList  =null;
@@ -1697,7 +1743,12 @@ public class ActivityService implements IActivityService{
 				availableDatesList = commonMethodsUtilService.getAvailableDates(datesList, activity.getStartDate().toString(), activity.getEndDate().toString());
 			}
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-			datesMap = commonMethodsUtilService.getDatesWiseCounts(sdf.parse(availableDatesList.get(0)), sdf.parse(availableDatesList.get(availableDatesList.size()-1)), "Day");
+			try {
+				datesMap = commonMethodsUtilService.getDatesWiseCounts(sdf.parse(availableDatesList.get(0)), sdf.parse(availableDatesList.get(availableDatesList.size()-1)), "Day");
+			} catch (Exception e) {
+				datesMap = commonMethodsUtilService.getDatesWiseCounts(activity.getStartDate(), activity.getEndDate(), "Day");
+			}
+			
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
 			List<Object[]> plannedActivities = null;
 			List<Object[]> infoCellconductedActivities = null;
@@ -1829,8 +1880,9 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setWhatsAppCovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered().longValue()>0L && vo.getPlannedCount().longValue()>0L){
-								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
+							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null && vo.getWhatsAppCovered().longValue()>0L && 
+									vo.getInfoCellTotal() != null && vo.getInfoCellTotal().longValue()>0L){
+								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getInfoCellTotal();
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setWhatsAppCoveredPerc(percentage);
 							}
