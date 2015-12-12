@@ -52,7 +52,7 @@
 	float:right;
 	position:relative;
 	margin-right:3px;
-	top:-25px
+	top:-8px
 }
 .panel-customtd .panel-heading:hover , .panel-customtd .panel-heading:hover table
 {
@@ -89,7 +89,7 @@
     	<div class="col-md-12 col-sm-12 col-xs-12">
         	<div class="panel panel-default panel-custom">
             	<div style="padding:10px 15px;background:#ccc">
-					<h4 class="panel-title">ACTIVITY DASHBOARD
+					<h4 class="panel-title"> ACTIVITIES DASHBOARD
 						<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -101,7 +101,7 @@
                 <div class="panel-body">
 					<div class="panel panel-default panel-custom1 m_0">
                     	<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
-                        	<h4 class="panel-title">VILLAGE/WARD</h4>
+                        	<h4 class="panel-title" id="headingDiv" style="font-weight:bold;">VILLAGE/WARD</h4>
                         </div>
                         <div class="panel-body pad_0"  >
 							<div class="row">
@@ -176,7 +176,7 @@ $(function () {
 	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
   }
   var optionSet1 = {
-	startDate: moment(),
+	startDate: moment().subtract(30, 'days'),
 	endDate: moment(),
 	showDropdowns: true,
 	showWeekNumbers: true,
@@ -310,7 +310,7 @@ function buildResult(result)
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		
 		if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].ivrcovered+'<small class="font-10 text-danger">('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/>';
+				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].ivrcovered+'<small class="font-10 text-danger" title="IVR covered percentage from planned activities.">('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -322,15 +322,15 @@ function buildResult(result)
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].ivrTotal+'<small class="font-10 text-danger">('+result.activityVoList[i].ivrTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].ivrTotal+'<small class="font-10 text-danger" title="IVR covered percentage from total activities.">('+result.activityVoList[i].ivrTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].infoCellTotal+'<small class="font-10 text-danger">('+result.activityVoList[i].infoCellTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].infoCellTotal+'<small class="font-10 text-danger" title="INFO cell covered percentage from total activities.">('+result.activityVoList[i].infoCellTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].infoCellcovered+'<small class="font-10 text-danger">('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].infoCellcovered+'<small class="font-10 text-danger" title="INFO Cell covered percentage from planned activities.">('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -342,7 +342,7 @@ function buildResult(result)
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].whatsAppCovered+'<small class="font-10 text-danger">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].whatsAppCovered+'<small class="font-10 text-danger" title="Whatsapp covered percentage from total INFO Cell covered activities.">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -414,6 +414,9 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 	 
 	if(locationId >0)
 	{
+		var name = $('#ActivityList :selected').text();
+		var actiivityLevelStr = $('#activityLevelList :selected').text();
+		$('#headingDiv').html(''+name.toUpperCase()+' - '+actiivityLevelStr.toUpperCase()+' LEVEL');
 		if(searchType != "state" && searchType != "district"){
 			if(showHideResults(divId)){
 				$("#"+divId).html("");
@@ -432,7 +435,7 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 		
 		 var activityScopeId = $("#ActivityList").val();
 		 var activityLevelId = $("#activityLevelList").val();
-		console.log(dateArray.length);
+		//console.log(dateArray.length);
 			if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
@@ -939,7 +942,11 @@ function getDaywiseInfo(searchType,locationId,divId)
 			
 			 var activityScopeId = $("#ActivityList").val();
 			 var activityLevelId = $("#activityLevelList").val();
-			 
+			 if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
 				var jObj = {
 				stateId:1,
 				searchType:searchType,
