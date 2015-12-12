@@ -35,9 +35,12 @@
 {
 	border-radius:0px;
 }
-.panel-customtd .panel-heading
+.panel-customtd .panel-heading , .panel-village
 {
 	padding:21px 5px;
+}
+.panel-village:hover  > .btn-hover{
+	display:block
 }
 .panel-heading:hover > .btn-hover
 {
@@ -73,6 +76,10 @@
 .aligncenter{
 	text-align:center;
 }
+.font-10
+{
+	font-size:10px;
+}
 </style>
 </head>
 
@@ -81,7 +88,7 @@
 	<div class="row">
     	<div class="col-md-12 col-sm-12 col-xs-12">
         	<div class="panel panel-default panel-custom">
-            	<div class="panel-heading">
+            	<div style="padding:10px 15px;background:#ccc">
 					<h4 class="panel-title">ACTIVITY DASHBOARD
 						<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
@@ -91,25 +98,28 @@
 						</span>
 					</h4>
 				</div>
-                
-					<div class="panel panel-default panel-custom1">
-                    	<div class="panel-heading bg_66">
+                <div class="panel-body">
+					<div class="panel panel-default panel-custom1 m_0">
+                    	<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
                         	<h4 class="panel-title">VILLAGE/WARD</h4>
                         </div>
                         <div class="panel-body pad_0"  >
-						<div class="col-md-12">
-							<div id="stateWiseViewDid"></div>
-						</div>
-							<div class="table-responsive" id="alignmentWidth" style="padding:10px;">
+							<div class="row">
+								<div class="col-md-12">
+									<div id="stateWiseViewDid"></div>
+								</div>
+							</div>
+							<div class="table-responsive" id="alignmentWidth" style="margin-top:10px;">
 				
 							</div>
-                    </div>
-                   
+						</div>
+                
+					</div>
 				</div>
-             </div>
-         </div>
-     </div>
+			</div>
+		</div>
     </div>
+</div>
 <div class="themeControll">
 
   <div class="linkinner">
@@ -162,11 +172,11 @@ $(".panel-heading","click",function(){
 $(function () {
 	var cb = function(start, end, label) {
 	//console.log(start.toISOString(), end.toISOString(), label);
-	$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' / ' + end.format('D MMMM, YYYY'));
+	//$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' / ' + end.format('D MMMM, YYYY'));
 	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
   }
   var optionSet1 = {
-	startDate: moment().subtract(30, 'days'),
+	startDate: moment(),
 	endDate: moment(),
 	showDropdowns: true,
 	showWeekNumbers: true,
@@ -201,7 +211,7 @@ $(function () {
 		firstDay: 1
 	}
   };
-  $('.searchDateCls').val(moment().format('DD-MM-YYYY') + ' / ' + moment().format('DD-MM-YYYY'));
+	//$('.searchDateCls').val(moment().format('DD-MM-YYYY') + ' / ' + moment().format('DD-MM-YYYY'));
 
   $('.searchDateCls').daterangepicker(optionSet1, cb);
 
@@ -210,7 +220,7 @@ $(function () {
   getActivityNames('onload');
 //getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 //getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
-
+$(".searchDateCls").val(" ");
 
 
 });
@@ -300,7 +310,7 @@ function buildResult(result)
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		
 		if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].ivrcovered+'<small>('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/>';
+				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].ivrcovered+'<small class="font-10 text-danger">('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -312,15 +322,15 @@ function buildResult(result)
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-				str+='<td style="background:#EA9A31;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].ivrTotal+'<small>('+result.activityVoList[i].ivrcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].ivrTotal+'<small class="font-10 text-danger">('+result.activityVoList[i].ivrTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-				str+='<td style="background:#EA9A31;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].infoCellTotal+'<small>('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td style="color:#a94442;"><h3 class="m_top20 m_bottom10" >'+result.activityVoList[i].infoCellTotal+'<small class="font-10 text-danger">('+result.activityVoList[i].infoCellTotalPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].infoCellcovered+'<small>('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].infoCellcovered+'<small class="font-10 text-danger">('+result.activityVoList[i].infoCellcoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -332,7 +342,7 @@ function buildResult(result)
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 		if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].whatsAppCovered+'<small>('+result.activityVoList[i].whatsAppCoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
+				str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].whatsAppCovered+'<small class="font-10 text-danger">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</small></h3><hr class="custom-hr"/></td>';
 		else
 			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
 	/*	if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -354,9 +364,9 @@ function buildResult(result)
 	str+='<td class="bg_ef text-center">IVR COVERED   <small>(PLANNED) </small></td>';
 	//str+='<td class="bg_ef text-center">IVR COVERED %</td>';
 	str+='<td class="bg_ef text-center"> IVR COVERED <small> (NOT-PLANNED)</small> </td>';
-	str+='<td class="bg_ef text-center" style="background:#EA9A31;"> IVR TOTAL </td>';
+	str+='<td class="bg_ef text-center" style="color:#a94442;"> IVR TOTAL </td>';
 	
-	str+='<td class="bg_ef text-center"  style="background:#EA9A31;">INFO CELL TOTAL </td>';
+	str+='<td class="bg_ef text-center"  style="color:#a94442;">INFO CELL TOTAL </td>';
 	str+='<td class="bg_ef text-center">INFO CELL COVERED   <small>(PLANNED) </small> </td>';
 	//str+='<td class="bg_ef text-center">INFO CELL COVERED %</td>';
 	str+='<td class="bg_ef text-center">INFO CELL COVERED <small> (NOT-PLANNED)</small></td>';
@@ -407,7 +417,7 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 		if(searchType != "state" && searchType != "district"){
 			if(showHideResults(divId)){
 				$("#"+divId).html("");
-				//return;
+				return;
 			}
 		}
 		
@@ -422,7 +432,12 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 		
 		 var activityScopeId = $("#ActivityList").val();
 		 var activityLevelId = $("#activityLevelList").val();
-		
+		console.log(dateArray.length);
+			if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
 			var jObj = {
 			stateId:1,
 			searchType:searchType,
@@ -441,7 +456,7 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 			  url: 'getActivityDetailsBySearchCriteria.action',
 			 data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
-				console.log(result);
+				//console.log(result);
 				if(result != null)
 					if(searchType == 'state')
 						buildResult(result);
@@ -457,7 +472,7 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 	}		
 	  
 }
-
+//vvv
 
 function buildVillageResult(result,divId,locationId)
 {	
@@ -470,12 +485,12 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
+			str+='<div class="panel-village villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
 				str+='<tr>';
-				str+='<td style="width:200px;">'+result.activityVoList[i].name+'</td>';
+				str+='<td style="width:180px;">'+result.activityVoList[i].name+'</td>';
 				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -497,13 +512,13 @@ function buildVillageResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
@@ -532,7 +547,7 @@ function buildVillageResult(result,divId,locationId)
 				
 				str+='</tr>';
 				str+='</table>';
-				str+='</a>';
+				str+='</span>';
 		//	str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
 				str+='</div>';
@@ -548,7 +563,7 @@ function buildVillageResult(result,divId,locationId)
 	dynamicwidth();
 }
 
-
+//mmm
 function buildMandalResult(result,divId,locationId)
 {	
 	var str='';
@@ -565,7 +580,7 @@ function buildMandalResult(result,divId,locationId)
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
-				str+='<td style="width:200px;">'+result.activityVoList[i].name+'</td>';
+				str+='<td style="width:185px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -587,13 +602,13 @@ function buildMandalResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -657,7 +672,7 @@ function buildConstituencyResult(result,divId,locationId)
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				str+='<tr>';
-				str+='<td style="width:210px;" class="removeDiv">'+result.activityVoList[i].name+'</td>';
+				str+='<td style="width:185px;" class="removeDiv">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -680,13 +695,13 @@ function buildConstituencyResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -750,16 +765,16 @@ function buildsLocationsResult(result,divId){
 	str+='<table class="table table-col" style="border:1px solid #ccc" >';
 	str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
 	str+='<tr class="font-12">';
-	str+='<td class="dynWidth" style="width:220px">LOCATION NAME</td>';
+	str+='<td class="dynWidth" style="width:230px">LOCATION NAME</td>';
 	str+='<td class="getChildWidth">TOTAL</td>';
 	str+='<td class="getChildWidth2">PLANNED</td>';
 	
 	str+='<td class="getChildWidth3">IVR COVERED   <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth3">IVR COVERED %</td>';
 	str+='<td class="getChildWidth4"> IVR COVERED (NOT-PLANNED) </td>';
-	str+='<td class="getChildWidth5" style="background:#EA9A31;"> IVR TOTAL </td>';
+	str+='<td class="getChildWidth5" style="color:#a94442;"> IVR TOTAL </td>';
 	
-	str+='<td class="getChildWidth6" style="background:#EA9A31;">INFO CELL TOTAL</td>';
+	str+='<td class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</td>';
 	str+='<td class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></td>';
 	//str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
 	str+='<td class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</td>';
@@ -786,7 +801,7 @@ function buildsLocationsResult(result,divId){
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
 			
-			str+='<td style="width:210px;">'+result.activityVoList[i].name+'</td>';
+			str+='<td style="width:190px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -809,13 +824,13 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth5 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
-				str+='<td class="dynChildWidth6 aligncenter" style="background:#EA9A31;"> - </td>';
+				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
 					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
@@ -884,64 +899,73 @@ function dynamicwidth()
 function getDaywiseInfo(searchType,locationId,divId)
 {
 	$(".daywiseSCls").html("");	
-	$('html,body').animate({
-        scrollTop: $("#"+divId).offset().top},
-        'slow');
-	if(searchType == 'district'){
-		$(".PlusnMinusSignd").addClass('collapsed');
-		$(".constiListCls").html("");	
-		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
-	}
-	else if(searchType == 'constituency'){
-		$(".PlusnMinusSignM").addClass('collapsed');
-		$(".mandalsLsitCls").html("");		
-		$(".constiNameAnchorCls").removeClass('bod bod-b');
-	}
-	else if(searchType == 'mandal'){
-		$(".PlusnMinusSignV").addClass('collapsed');
-		$(".villageListCls").html("");		
-		$(".mandalNameAnchorCls").removeClass('bod bod-b');
-	}
-	else if(searchType == 'village'){
-		$(".villageNameAnchorCls").addClass('collapsed');
-	}
-	
-	if(showHideResults(divId)){
-		$("#"+divId).html("");
-		//return;
-	}
+	var isOpened = $("#"+divId+"").hasClass("opened");	
+	console.log(isOpened);
+	if(!isOpened)
+	{	
+		$(".daywiseSCls").removeClass("opened");
 		
-	  var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
-	
-	 var activityScopeId = $("#ActivityList").val();
-	 var activityLevelId = $("#activityLevelList").val();
-	 
-		var jObj = {
-		stateId:1,
-		searchType:searchType,
-		conditionType:"daywiseResult",
-		locationId:locationId,
-		activityScopeId:activityScopeId,   //1
-		activityLevelId:activityLevelId,   //1
-		startDate:fromDateStr,   //30-11-2015
-		endDate:toDateStr,     //08-12-2015
-		task:"getActivityDetailsBySearchCriteria"
-		};
-			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
-		
-		$.ajax({
-          type:'GET',
-          url: 'getActivityDetailsBySearchCriteria.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			console.log(result);
-			if(result != null){
-				buildDayWiseResults(result,divId,jObj);
+			$('html,body').animate({
+				scrollTop: $("#"+divId).offset().top},
+				'slow');
+			if(searchType == 'district'){
+				$(".PlusnMinusSignd").addClass('collapsed');
+				$(".constiListCls").html("");	
+				$(".constiListCls").parent().find("div").removeClass('bod bod-b');
 			}
-		});
+			else if(searchType == 'constituency'){
+				$(".PlusnMinusSignM").addClass('collapsed');
+				$(".mandalsLsitCls").html("");		
+				$(".constiNameAnchorCls").removeClass('bod bod-b');
+			}
+			else if(searchType == 'mandal'){
+				$(".PlusnMinusSignV").addClass('collapsed');
+				$(".villageListCls").html("");		
+				$(".mandalNameAnchorCls").removeClass('bod bod-b');
+			}
+			else if(searchType == 'village'){
+				$(".villageNameAnchorCls").addClass('collapsed');
+			}
+			
+			if(showHideResults(divId)){
+				$("#"+divId).html("");
+				//return;
+			}
+				
+			  var dates=$('.searchDateCls ').val();
+			  var dateArray=dates.split("/");
+			  var fromDateStr=dateArray[0];
+			  var toDateStr=dateArray[1];
+			
+			 var activityScopeId = $("#ActivityList").val();
+			 var activityLevelId = $("#activityLevelList").val();
+			 
+				var jObj = {
+				stateId:1,
+				searchType:searchType,
+				conditionType:"daywiseResult",
+				locationId:locationId,
+				activityScopeId:activityScopeId,   //1
+				activityLevelId:activityLevelId,   //1
+				startDate:fromDateStr,   //30-11-2015
+				endDate:toDateStr,     //08-12-2015
+				task:"getActivityDetailsBySearchCriteria"
+				};
+					$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+				
+				$.ajax({
+				  type:'GET',
+				  url: 'getActivityDetailsBySearchCriteria.action',
+				 data : {task:JSON.stringify(jObj)} ,
+				}).done(function(result){
+					//console.log(result);
+					$("#"+divId+"").addClass("opened");
+					if(result != null){
+						buildDayWiseResults(result,divId,jObj);
+					}
+				});
+	}else
+		$(".daywiseSCls").removeClass("opened");	
 }
 
 function buildDayWiseResults(result,divId,jObj)
@@ -981,11 +1005,11 @@ function buildDayWiseResults(result,divId,jObj)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter">'+result.activityVoList[i].ivrTotal+'</td>';
+					str+='<td class="dynChildWidth5 aligncenter"  style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'</td>';
 			else
 				str+='<td class="dynChildWidth5 aligncenter"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-			str+='<td class="dynChildWidth6 aligncenter">'+result.activityVoList[i].infoCellTotal+'</td>';
+			str+='<td class="dynChildWidth6 aligncenter"  style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'</td>';
 		  else
 			str+='<td class="dynChildWidth6 aligncenter"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
