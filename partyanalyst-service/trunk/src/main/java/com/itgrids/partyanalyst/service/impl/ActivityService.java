@@ -588,122 +588,129 @@ public class ActivityService implements IActivityService{
 		}
 	}
 	
-	/*@SuppressWarnings("null")
-	public void segrigateResultsTypes(List<Object[]> activitiesList,Map<Long,ActivityVO> locationsMap,String type,String extentionNo)
+	public void segrigatefinalResultsTypes(List<Object[]> activitiesList,Map<Long,ActivityVO> locationsMap,String type,String extentionNo)
 	{
 		try {
-			if(locationsMap == null || locationsMap.size() == 0)
-			{
-				segrigatePlannedResult(activitiesList, locationsMap, extentionNo);
-			}
-			
-			if(activitiesList != null && activitiesList.size()>0)
-			{
-				Map<String,ActivityVO> activityMap1 = null;
-				for (Object[] activity : activitiesList) {
-					Long areaId = 0L;
-					if(extentionNo != null && !extentionNo.isEmpty()){
-						String locationId = extentionNo+""+commonMethodsUtilService.getStringValueForObject(activity[0]);
-						areaId = Long.valueOf(locationId.trim());
-					}
-					else
-					{
-						areaId = commonMethodsUtilService.getLongValueForObject(activity[0]);
-					}
-					ActivityVO aactivityVO = locationsMap.get(areaId);
-					if(aactivityVO != null){
-						Map<String,ActivityVO> activityMap = aactivityVO.getActivityMap();
-						ActivityVO infoCellVO = null;
-						if(activityMap == null || activityMap.size()==0)
-						{
-							String[] attributesArr = IConstants.ACTIVITY_REPORT_FIELDS;
-							activityMap1 = new LinkedHashMap<String, ActivityVO>(0);
-							if(attributesArr != null && attributesArr.length>0)
-							{
-								for(int i=0;i< attributesArr.length;i++){
-									ActivityVO infoCellVO1 = new ActivityVO();
-									infoCellVO1.setName(attributesArr[i].toString());
-									infoCellVO1.setConductedCount(0L);
-									infoCellVO1.setPercentage("0.00");
-									infoCellVO1.setNotPlannedPerc("0.00");
-									activityMap1.put(infoCellVO1.getName(), infoCellVO1);
-								}
-								aactivityVO.setActivityMap(activityMap1);
-							}
-							infoCellVO = activityMap1.get(type.trim());
-						}else{
-							infoCellVO = activityMap.get(type.trim());
-						}
-						//ActivityVO infoCellVO = activityMap.get(type.trim());
-						Long totalCount = commonMethodsUtilService.getLongValueForObject(activity[3]);
-						if(infoCellVO == null){
-							infoCellVO = new ActivityVO();
-						}
-						else{
-							totalCount = totalCount+(infoCellVO.getConductedCount() != null ? infoCellVO.getConductedCount():0L);
-						}
-						infoCellVO.setName(type.trim());
-						infoCellVO.setConductedCount(totalCount);
-						infoCellVO.setPercentage(totalCount.toString());
-					}
-				}
-			}
-			
+
 			if(locationsMap != null && locationsMap.size()>0)
 			{
-				for (Long locationId : locationsMap.keySet()) {
-					ActivityVO aactivityVO = locationsMap.get(locationId);
-					if(aactivityVO != null)
-					{
-						Map<String,ActivityVO> activityMap = aactivityVO.getActivityMap();
-						if(aactivityVO.getActivityVoList() == null || aactivityVO.getActivityVoList().size()== 0)
+				for (Long locationsId : locationsMap.keySet()) {
+
+						ActivityVO vo = locationsMap.get(locationsId);
+						if(vo != null)
 						{
-							if(activityMap != null && activityMap.size()>0){
-								if(activityMap != null && activityMap.size()>0){
-									for (String typeStr  : activityMap.keySet()){
-										ActivityVO infoCellVO = activityMap.get(typeStr);
-										infoCellVO.setPercentage("0.00");
-											aactivityVO.getActivityVoList().add(infoCellVO);
-									}
-								}
-							}
-						}else
-						{
-							ActivityVO infoCellVO = getMatchActivityVO(aactivityVO.getActivityVoList(), type.trim());
-							Long totalCount = 0L;
-							if(infoCellVO != null)
+							String[] typeArr = IConstants.ACTIVITY_REPORT_FIELDS;
+							if(typeArr != null && typeArr.length>0)
 							{
-								if(type.contains("%"))
+								for(int i=0;i<typeArr.length;i++)
 								{
-									String tempType = type.replace("%", "");
-									ActivityVO tempInfoCellVO = getMatchActivityVO(aactivityVO.getActivityVoList(), tempType.trim());
-									Long plannedCount = getMatchActivityVO(aactivityVO.getActivityVoList(), "PLANNED".trim()).getConductedCount();
-									if(tempInfoCellVO != null)
+									type = typeArr[i];
+									if(type != null)
 									{
-										Long count = tempInfoCellVO.getConductedCount();
-										if(count != null && count.longValue()>0L){
-											double perc = (count*100.0)/plannedCount;;
+
+										Long count = 0L;
+										if(type.trim().equalsIgnoreCase("PLANNED")){
+											if(vo.getPlannedCount() != null)
+												vo.setPlannedCount(count+vo.getPlannedCount());
+											else
+												vo.setPlannedCount(count);
+										}
+										else if(type.trim().equalsIgnoreCase("IVR COVERED")){
+											if(vo.getIvrcovered() != null)
+												vo.setIvrcovered(count+vo.getIvrcovered());
+											else
+												vo.setIvrcovered(count);
+										}
+										else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null &&   vo.getIvrcovered().longValue()>0L && 
+												 vo.getPlannedCount() != null  &&  vo.getPlannedCount().longValue()>0L ){
+											double perc = (vo.getIvrcovered()*100.0)/vo.getPlannedCount();;
 											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
-											infoCellVO.setPercentage(percentage);
+											vo.setIvrcoveredPerc(percentage);
+										}
+										else if(type.trim().equalsIgnoreCase("IVR NOT PLANNED")){
+											if(vo.getIvrNotPlanned() != null)
+												vo.setIvrNotPlanned(count+vo.getIvrNotPlanned());
+											else
+												vo.setIvrNotPlanned(count);
+										}
+										else if(type.trim().equalsIgnoreCase("IVR TOTAL")){
+											if(vo.getIvrcovered() != null && vo.getIvrNotPlanned() != null)
+												vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
+											else if(vo.getIvrcovered() != null)
+												vo.setIvrTotal(vo.getIvrcovered());
+											else if(vo.getIvrNotPlanned() != null)
+												vo.setIvrTotal(vo.getIvrNotPlanned());
+											if(vo.getIvrTotal() != null && vo.getTotalCount() != null)
+											{
+												double perc = (vo.getIvrTotal()*100.0)/vo.getTotalCount();;
+												String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+												vo.setIvrTotalPerc(percentage);
+											}
+										}
+										else if(type.trim().equalsIgnoreCase("INFO CELL COVERED")){
+											if(vo.getInfoCellcovered() != null)
+												vo.setInfoCellcovered(count+vo.getInfoCellcovered());
+											else
+												vo.setInfoCellcovered(count);
+										}
+										else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L 
+												&& vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
+											double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
+											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+											vo.setInfoCellcoveredPerc(percentage);
+										}
+										else if(type.trim().equalsIgnoreCase("INFO CELL NOT PLANNED")){
+											if(vo.getInfoCellNotPlanned() != null)
+												vo.setInfoCellNotPlanned(count+vo.getInfoCellNotPlanned());
+											else
+												vo.setInfoCellNotPlanned(count);
+										}
+										else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL") ){
+											
+											if(vo.getInfoCellNotPlanned() != null && vo.getInfoCellcovered() != null)
+												vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
+											else if(vo.getInfoCellcovered() != null)
+												vo.setInfoCellTotal(vo.getInfoCellcovered());
+											else if(vo.getInfoCellNotPlanned() != null)
+												vo.setInfoCellTotal(vo.getInfoCellNotPlanned());
+											
+											if(vo.getInfoCellTotal() != null && vo.getTotalCount() != null)
+											{
+												double perc = (vo.getInfoCellTotal()*100.0)/vo.getTotalCount();;
+												String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+												vo.setInfoCellTotalPerc(percentage);
+											}
+										}
+										else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED")){
+											if(vo.getWhatsAppCovered() != null)
+												vo.setWhatsAppCovered(count+vo.getWhatsAppCovered());
+											else
+												vo.setWhatsAppCovered(count);
+										}
+										else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L && 
+												vo.getPlannedCount() != null  && vo.getPlannedCount().longValue()>0L){
+											double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
+											String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+											vo.setWhatsAppCoveredPerc(percentage);
+										}
+										else if(type.trim().equalsIgnoreCase("NO OF WHATSAPP IMAGES RECIEVED")){
+											if(vo.getImagesCount() != null)
+												vo.setImagesCount(count+vo.getImagesCount());
+											else
+												vo.setImagesCount(count);
 										}
 									}
 								}
-								else
-								{
-									totalCount = totalCount+(infoCellVO.getConductedCount() != null ? infoCellVO.getConductedCount():0L);
-									infoCellVO.setPercentage(totalCount.toString());
-								}
 							}
 						}
-						
-					}
 				}
 			}
 		} catch (Exception e) {
 			 LOG.error("Exception Occured in segrigateFirstResult() method, Exception - ",e);
 		}
-	}*/
 	
+		
+	}
 	@SuppressWarnings("null")
 	public void segrigateResultsTypes(List<Object[]> activitiesList,Map<Long,ActivityVO> locationsMap,String type,String extentionNo)
 	{
@@ -723,6 +730,11 @@ public class ActivityService implements IActivityService{
 					Long areaId = Long.valueOf(locationId.trim());
 				
 					ActivityVO vo = locationsMap.get(areaId);
+					if(vo == null)
+					{
+						segrigatePlannedResult(activitiesList, locationsMap, extentionNo);
+						vo = locationsMap.get(areaId);
+					}
 					if(vo != null)
 					{
 						if(type != null)
@@ -740,7 +752,8 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setIvrcovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null && vo.getPlannedCount() != null){
+							else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null &&  vo.getIvrcovered().longValue()>0L 
+									&& vo.getPlannedCount() != null &&  vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getIvrcovered()*100.0)/vo.getPlannedCount();;
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setIvrcoveredPerc(percentage);
@@ -771,7 +784,8 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setInfoCellcovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getPlannedCount() != null){
+							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L && 
+									 vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setInfoCellcoveredPerc(percentage);
@@ -804,7 +818,8 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setWhatsAppCovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null && vo.getPlannedCount() != null){
+							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L && 
+									 vo.getPlannedCount() != null &&  vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setWhatsAppCoveredPerc(percentage);
@@ -843,7 +858,8 @@ public class ActivityService implements IActivityService{
 										else
 											vo.setIvrcovered(count);
 									}
-									else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null && vo.getPlannedCount() != null){
+									else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null &&   vo.getIvrcovered().longValue()>0L && 
+											 vo.getPlannedCount() != null &&   vo.getPlannedCount().longValue()>0L){
 										double perc = (vo.getIvrcovered()*100.0)/vo.getPlannedCount();;
 										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 										vo.setIvrcoveredPerc(percentage);
@@ -874,7 +890,8 @@ public class ActivityService implements IActivityService{
 										else
 											vo.setInfoCellcovered(count);
 									}
-									else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getPlannedCount() != null){
+									else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null &&  vo.getInfoCellcovered().longValue()>0L  && 
+											 vo.getPlannedCount() != null  && vo.getPlannedCount().longValue()>0L ){
 										double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
 										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 										vo.setInfoCellcoveredPerc(percentage);
@@ -907,7 +924,8 @@ public class ActivityService implements IActivityService{
 										else
 											vo.setWhatsAppCovered(count);
 									}
-									else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null && vo.getPlannedCount() != null){
+									else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered() != null &&  vo.getWhatsAppCovered().longValue()>0L  && 
+											 vo.getPlannedCount() != null &&  vo.getPlannedCount().longValue()>0L ){
 										double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
 										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 										vo.setWhatsAppCoveredPerc(percentage);
@@ -1010,34 +1028,36 @@ public class ActivityService implements IActivityService{
 					searchAttributeVO.setScopeId(activityScope.getScopeId());
 					searchAttributeVO.setScopeValue(activityScope.getScopeValue());
 					activityLevelId = activityScope.getActivityLevel().getActivityLevelId();
+					
+					if(activityLevelId != null && activityLevelId.longValue()>0L)
+					{
+						if(activityLevelId.longValue() == 1L)
+						{
+							searchAttributeVO.getLocationTypeIdsList().add(6L);
+							searchAttributeVO.getLocationTypeIdsList().add(8L);
+						}
+						else if(activityLevelId.longValue() == 2L)
+						{
+							searchAttributeVO.getLocationTypeIdsList().add(5L);
+							searchAttributeVO.getLocationTypeIdsList().add(7L);
+							searchAttributeVO.getLocationTypeIdsList().add(9L);
+						}
+						else if(activityLevelId.longValue() == 3L)
+						{
+							searchAttributeVO.getLocationTypeIdsList().add(10L);
+						}
+						else if(activityLevelId.longValue() == 4L)
+						{
+							searchAttributeVO.getLocationTypeIdsList().add(11L);
+						}
+					}
+					
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
 					if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 					{
 						Long totalAreasCount = getTotalAreaCountByList(areaWiseCountLsit);
 						returnVO.setTotalCount(totalAreasCount);
-					}
-				}
-				if(activityLevelId != null && activityLevelId.longValue()>0L)
-				{
-					if(activityLevelId.longValue() == 1L)
-					{
-						searchAttributeVO.getLocationTypeIdsList().add(6L);
-						searchAttributeVO.getLocationTypeIdsList().add(8L);
-					}
-					else if(activityLevelId.longValue() == 2L)
-					{
-						searchAttributeVO.getLocationTypeIdsList().add(5L);
-						searchAttributeVO.getLocationTypeIdsList().add(7L);
-						searchAttributeVO.getLocationTypeIdsList().add(9L);
-					}
-					else if(activityLevelId.longValue() == 3L)
-					{
-						searchAttributeVO.getLocationTypeIdsList().add(10L);
-					}
-					else if(activityLevelId.longValue() == 4L)
-					{
-						searchAttributeVO.getLocationTypeIdsList().add(11L);
 					}
 				}
 				
@@ -1218,21 +1238,21 @@ public class ActivityService implements IActivityService{
 							searchAttributeVO.setConditionType("ivr");
 								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 							
-							segrigateResultsTypes(plannedActivities,mandalMap,"PLANNED","2");
+							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","2");
 							
-							segrigateResultsTypes(ivrconductedActivities,mandalMap,"IVR COVERED","2");
-							segrigateResultsTypes(ivrconductedActivities,mandalMap,"IVR COVERED %","2");
-							segrigateResultsTypes(ivrNotPlannedActivities,mandalMap,"IVR NOT PLANNED","2");
-							segrigateResultsTypes(ivrNotPlannedActivities,mandalMap,"IVR TOTAL","2");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED","2");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL","2");
 							
-							segrigateResultsTypes(infoCellconductedActivities,mandalMap,"INFO CELL COVERED","2");
-							segrigateResultsTypes(infoCellconductedActivities,mandalMap,"INFO CELL COVERED %","2");
-							segrigateResultsTypes(infoCellNotPlannedActivities,mandalMap,"INFO CELL NOT PLANNED","2");
-							segrigateResultsTypes(ivrNotPlannedActivities,mandalMap,"INFO CELL TOTAL","2");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","2");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","2");
+							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL","2");
 							
-							segrigateResultsTypes(yesCount,mandalMap,"WHATSAPP IMAGES COVERED","2");					
-							segrigateResultsTypes(yesCount,mandalMap,"WHATSAPP IMAGES COVERED %","2");	
-							segrigateResultsTypes(questionnairesCount,mandalMap,"NO OF WHATSAPP IMAGES RECIEVED","2");	
+							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","2");					
+							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","2");	
+							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","2");	
 						}
 						
 						if(munciORTownORCorpIdsList != null && munciORTownORCorpIdsList.size()>0)
@@ -1245,7 +1265,7 @@ public class ActivityService implements IActivityService{
 							
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(munciORTownORCorpIdsList);
-							
+							searchAttributeVO.setSearchType("URBAN");
 							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
 							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
 							searchAttributeVO.setConditionType("planned");
@@ -1260,21 +1280,21 @@ public class ActivityService implements IActivityService{
 						searchAttributeVO.setConditionType("ivr");
 							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 						
-						segrigateResultsTypes(plannedActivities,MunciTownMap,"PLANNED","1");
+						segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","1");
 						
-						segrigateResultsTypes(ivrconductedActivities,MunciTownMap,"IVR COVERED","1");
-						segrigateResultsTypes(ivrconductedActivities,MunciTownMap,"IVR COVERED %","1");
-						segrigateResultsTypes(ivrNotPlannedActivities,MunciTownMap,"IVR NOT PLANNED","1");
-						segrigateResultsTypes(ivrNotPlannedActivities,MunciTownMap,"IVR TOTAL","1");
+						segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED","1");
+						segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %","1");
+						segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED","1");
+						segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL","1");
 						
-						segrigateResultsTypes(infoCellconductedActivities,MunciTownMap,"INFO CELL COVERED","1");
-						segrigateResultsTypes(infoCellconductedActivities,MunciTownMap,"INFO CELL COVERED %","1");
-						segrigateResultsTypes(infoCellNotPlannedActivities,MunciTownMap,"INFO CELL NOT PLANNED","1");
-						segrigateResultsTypes(ivrNotPlannedActivities,MunciTownMap,"INFO CELL TOTAL","1");
+						segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","1");
+						segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","1");
+						segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","1");
+						segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL","1");
 						
-						segrigateResultsTypes(yesCount,MunciTownMap,"WHATSAPP IMAGES COVERED","1");					
-						segrigateResultsTypes(yesCount,MunciTownMap,"WHATSAPP IMAGES COVERED %","1");	
-						segrigateResultsTypes(questionnairesCount,MunciTownMap,"NO OF WHATSAPP IMAGES RECIEVED","1");	
+						segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","1");					
+						segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","1");	
+						segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","1");	
 						}
 						
 						if(divisionIdsList != null && divisionIdsList.size()>0)
@@ -1301,30 +1321,30 @@ public class ActivityService implements IActivityService{
 							searchAttributeVO.setConditionType("ivr");
 								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
 							
-							segrigateResultsTypes(plannedActivities,divisionMap,"PLANNED","3");
+							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","3");
 							
-							segrigateResultsTypes(ivrconductedActivities,divisionMap,"IVR COVERED","3");
-							segrigateResultsTypes(ivrconductedActivities,divisionMap,"IVR COVERED %","3");
-							segrigateResultsTypes(ivrNotPlannedActivities,divisionMap,"IVR NOT PLANNED","3");
-							segrigateResultsTypes(ivrNotPlannedActivities,divisionMap,"IVR TOTAL","3");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED","3");
+							segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %","3");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED","3");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL","3");
 							
-							segrigateResultsTypes(infoCellconductedActivities,divisionMap,"INFO CELL COVERED","3");
-							segrigateResultsTypes(infoCellconductedActivities,divisionMap,"INFO CELL COVERED %","3");
-							segrigateResultsTypes(infoCellNotPlannedActivities,divisionMap,"INFO CELL NOT PLANNED","3");
-							segrigateResultsTypes(ivrNotPlannedActivities,divisionMap,"IVR TOTAL","3");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","3");
+							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","3");
+							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","3");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL","3");
 							
-							segrigateResultsTypes(yesCount,divisionMap,"WHATSAPP IMAGES COVERED","3");					
-							segrigateResultsTypes(yesCount,divisionMap,"WHATSAPP IMAGES COVERED %","3");	
-							segrigateResultsTypes(questionnairesCount,divisionMap,"NO OF WHATSAPP IMAGES RECIEVED","3");	
+							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","3");					
+							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","3");	
+							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","3");	
 						
 						}
 						
-						if(mandalMap != null && mandalMap.size()>0)
+						/*if(mandalMap != null && mandalMap.size()>0)
 							locationsMap.putAll(mandalMap);
 						else if(MunciTownMap != null && MunciTownMap.size()>0)
 							locationsMap.putAll(MunciTownMap);
 						else if(divisionMap != null && divisionMap.size()>0)
-							locationsMap.putAll(divisionMap);
+							locationsMap.putAll(divisionMap);*/
 					}
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
@@ -1353,7 +1373,7 @@ public class ActivityService implements IActivityService{
 							if(locationTypeIds.contains(IConstants.WARD_COMMITTEE_LEVEL_ID)){//ward
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.WARD_COMMITTEE_LEVEL_ID);
-								
+								searchAttributeVO.setSearchType("WARD");
 								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
 								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
 							searchAttributeVO.setConditionType("planned");
@@ -1378,7 +1398,7 @@ public class ActivityService implements IActivityService{
 							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","2");
 							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","2");
 							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","2");
-							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL","2");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL","2");
 							
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","2");					
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","2");	
@@ -1387,7 +1407,7 @@ public class ActivityService implements IActivityService{
 							else if(locationTypeIds.contains(IConstants.VILLAGE_COMMITTEE_LEVEL_ID)){ // panchayat
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.VILLAGE_COMMITTEE_LEVEL_ID);
-								
+								searchAttributeVO.setSearchType("VILLAGE");
 								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
 								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
 								searchAttributeVO.setConditionType("planned");
@@ -1412,7 +1432,7 @@ public class ActivityService implements IActivityService{
 							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED","1");
 							segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %","1");
 							segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED","1");
-							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL","1");
+							segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL","1");
 							
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","1");					
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","1");	
@@ -1424,6 +1444,8 @@ public class ActivityService implements IActivityService{
 				}
 				if(returnVO != null && locationsMap != null && locationsMap.size()>0)
 				{
+					segrigatefinalResultsTypes(null,locationsMap,"","");
+					
 					if(activityLevelId != null && activityLevelId.longValue()>0L)
 					{
 						if(activityLevelId.longValue() == 1L)
@@ -1505,26 +1527,10 @@ public class ActivityService implements IActivityService{
 									activityVO.setTotalCount(totalAreasCount);
 								}
 								
-							}/*
-							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-								searchAttributeVO.setScopeId(6L);
-								activityVO.setName(activityVO.getName()+" Village");
-								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
-								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
-								{
-									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
-									activityVO.setTotalCount(totalAreasCount);
-								}
-								
-								searchAttributeVO.setScopeId(8L);
-								areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
-								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
-								{
-									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
-									activityVO.setTotalCount(totalAreasCount);
-								}
-								
-							}*/
+							}
+							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE) || searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+								activityVO.setTotalCount(1L);
+							}
 							if(!searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE) && totalPlannedCount != null && totalPlannedCount.longValue()>0L)
 							{
 								List<ActivityVO> activityVOList  = activityVO.getActivityVoList();
@@ -1539,13 +1545,13 @@ public class ActivityService implements IActivityService{
 										}
 									}
 								}
-								if(activityVO.getPlannedCount() != null && activityVO.getPlannedCount().longValue()>0L)
+								if(activityVO.getPlannedCount() != null && activityVO.getPlannedCount().longValue()>0L && totalAreasCount.longValue()>0L)
 								{
 									double perc = (activityVO.getPlannedCount() * 100.0)/totalAreasCount;
 									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 									activityVO.setPercentage(percentage);
 								}
-								if(activityVO.getNotPlannedCount() != null && activityVO.getNotPlannedCount().longValue()>0L)
+								if(activityVO.getNotPlannedCount() != null && activityVO.getNotPlannedCount().longValue()>0L && totalAreasCount.longValue()>0L)
 								{
 									double perc1 = (activityVO.getNotPlannedCount() * 100.0)/totalAreasCount;
 									String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
@@ -1557,6 +1563,89 @@ public class ActivityService implements IActivityService{
 								returnVO.getActivityVoList().add(locationsMap.get(locationId));
 							}
 						}
+					}
+				}
+			}
+			
+			if(returnVO != null && returnVO.getActivityVoList() != null && returnVO.getActivityVoList().size()>0)
+			{
+				Long totalCount = 0L;
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					totalCount = returnVO.getTotalCount();
+					if(totalCount.longValue()>0L)
+						for (ActivityVO activityVO : returnVO.getActivityVoList()) {
+							
+							double perc = (activityVO.getIvrTotal() * 100.0)/totalCount;
+							String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+							activityVO.setIvrTotalPerc(percentage);
+							
+							double perc1 = (activityVO.getInfoCellTotal() * 100.0)/totalCount;
+							String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
+							activityVO.setInfoCellTotalPerc(percentage1);
+						}
+					if(returnVO.getPercentage() == null)
+						returnVO.setPercentage("0.00");
+					if(returnVO.getIvrcoveredPerc() == null)
+						returnVO.setIvrcoveredPerc("0.00");
+					if(returnVO.getIvrTotalPerc() == null)
+						returnVO.setIvrTotalPerc("0.00");
+					
+					if(returnVO.getInfoCellcoveredPerc() == null)
+						returnVO.setInfoCellcoveredPerc("0.00");
+					if(returnVO.getInfoCellTotalPerc() == null)
+						returnVO.setInfoCellTotalPerc("0.00");
+					
+					if(returnVO.getWhatsAppCoveredPerc() == null)
+						returnVO.setWhatsAppCoveredPerc("0.00");
+				}
+				else{
+					for (ActivityVO activityVO : returnVO.getActivityVoList()) {
+						
+						if(activityVO.getIvrTotal() != null && activityVO.getTotalCount()!=null){
+						double perc = (activityVO.getIvrTotal() * 100.0)/activityVO.getTotalCount();
+						String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+						activityVO.setIvrTotalPerc(percentage);
+						}
+						else if(activityVO.getIvrcovered() != null && activityVO.getTotalCount()!=null){
+							double perc = (activityVO.getIvrcovered() * 100.0)/activityVO.getTotalCount();
+							String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+							activityVO.setIvrTotalPerc(percentage);
+						}
+						else if(activityVO.getIvrNotPlanned() != null && activityVO.getTotalCount()!=null){
+							double perc = (activityVO.getIvrNotPlanned() * 100.0)/activityVO.getTotalCount();
+							String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+							activityVO.setIvrTotalPerc(percentage);
+						}
+						if(activityVO.getInfoCellTotal() != null && activityVO.getTotalCount() !=null){
+						double perc1 = (activityVO.getInfoCellTotal() * 100.0)/activityVO.getTotalCount();
+						String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
+						activityVO.setInfoCellTotalPerc(percentage1);
+						}
+						else if(activityVO.getInfoCellcovered() != null && activityVO.getTotalCount() !=null){
+							double perc1 = (activityVO.getInfoCellcovered() * 100.0)/activityVO.getTotalCount();
+							String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
+							activityVO.setInfoCellTotalPerc(percentage1);
+							}
+						else if(activityVO.getInfoCellNotPlanned() != null && activityVO.getTotalCount() !=null){
+							double perc1 = (activityVO.getInfoCellNotPlanned() * 100.0)/activityVO.getTotalCount();
+							String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
+							activityVO.setInfoCellTotalPerc(percentage1);
+							}
+						
+						if(activityVO.getPercentage() == null)
+							activityVO.setPercentage("0.00");
+						if(activityVO.getIvrcoveredPerc() == null)
+							activityVO.setIvrcoveredPerc("0.00");
+						if(activityVO.getIvrTotalPerc() == null)
+							activityVO.setIvrTotalPerc("0.00");
+						
+						if(activityVO.getInfoCellcoveredPerc() == null)
+							activityVO.setInfoCellcoveredPerc("0.00");
+						if(activityVO.getInfoCellTotalPerc() == null)
+							activityVO.setInfoCellTotalPerc("0.00");
+						
+						if(activityVO.getWhatsAppCoveredPerc() == null)
+							activityVO.setWhatsAppCoveredPerc("0.00");
 					}
 				}
 			}
@@ -1702,7 +1791,8 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setIvrcovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("IVR COVERED %")){
+							else if(type.trim().equalsIgnoreCase("IVR COVERED %") && vo.getIvrcovered() != null && vo.getIvrcovered().longValue()>0L
+									 && vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getIvrcovered()*100.0)/vo.getPlannedCount();;
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setIvrcoveredPerc(percentage);
@@ -1718,7 +1808,8 @@ public class ActivityService implements IActivityService{
 							}
 							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED"))
 								vo.setInfoCellcovered(count);
-							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %")){
+							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L 
+									&& vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setInfoCellcoveredPerc(percentage);
@@ -1738,7 +1829,7 @@ public class ActivityService implements IActivityService{
 								else
 									vo.setWhatsAppCovered(count);
 							}
-							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %")){
+							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED %") && vo.getWhatsAppCovered().longValue()>0L && vo.getPlannedCount().longValue()>0L){
 								double perc = (vo.getWhatsAppCovered()*100.0)/vo.getPlannedCount();
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setWhatsAppCoveredPerc(percentage);
