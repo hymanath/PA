@@ -8,7 +8,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
-import java.util.Set;
 
 public class StateElectionResultsVO {
 

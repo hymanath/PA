@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class UserGroupsVO {

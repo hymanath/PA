@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TrainingCampVO implements java.io.Serializable{
 

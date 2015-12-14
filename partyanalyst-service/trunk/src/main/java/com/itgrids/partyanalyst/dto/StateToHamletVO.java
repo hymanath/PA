@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 
 public class StateToHamletVO extends ResultStatus{
 	private SelectOptionVO state;

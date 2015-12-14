@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class UserEventDetailsVO implements Serializable{
