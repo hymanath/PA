@@ -2268,4 +2268,55 @@ public class ActivityService implements IActivityService{
 		return resultStatus;
 	}
 	
+	public ActivityVO getQuestionnaireForScope(Long scopeId){
+		ActivityVO finalVO = new ActivityVO(); 
+		try {
+			LOG.info("Entered into getQuestionnaireForScope");
+			
+			List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId);
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					ActivityVO matchedVO = getMatchedQuestionVo(finalVO,(Long)objects[0]);
+					
+					if(matchedVO == null){
+						matchedVO = new ActivityVO();
+						matchedVO.setQuestionId((Long)objects[0]);
+						matchedVO.setQuestion(objects[1].toString());
+						matchedVO.setOptionTypeId((Long)objects[2]);
+						matchedVO.setOptionType(objects[3].toString());
+						finalVO.getActivityVoList().add(matchedVO);
+					}
+					
+					ActivityVO optionVO = new ActivityVO();
+					optionVO.setOptionId((Long)objects[4]);
+					optionVO.setOption(objects[5].toString());
+					matchedVO.getOptionsList().add(optionVO);
+					
+				}
+			}
+				
+				
+		} catch (Exception e) {
+			LOG.error("Exception raised at getQuestionnaireForScope", e);
+		}
+		return finalVO;
+	}
+	
+	public ActivityVO getMatchedQuestionVo(ActivityVO vo,Long qid){
+		try {
+			LOG.info("Entered into getMatchedQuestionVo");
+			if(vo!=null && vo.getActivityVoList()!=null && vo.getActivityVoList().size()>0){
+				for(ActivityVO voIn : vo.getActivityVoList()){
+					if(voIn.getQuestionId().equals(qid)){
+						return voIn;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMatchedQuestionVo", e);
+		}
+		return null;
+	}
+	
 }

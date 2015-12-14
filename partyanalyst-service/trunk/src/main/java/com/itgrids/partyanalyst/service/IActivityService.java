@@ -22,5 +22,6 @@ public interface IActivityService {
 	
 	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId);
 	public ResultStatus saveActivityQuestionnaireDetails(final ActivityVO finalvo);
+	public ActivityVO getQuestionnaireForScope(Long scopeId);
 
 }
