@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ApprovalInfoVO implements Serializable {
 
