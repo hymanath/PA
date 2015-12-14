@@ -26,11 +26,13 @@ public class LocationInfo extends BaseModel implements Serializable{
 
 	private Long locationInfoId;
 	private Long levelId;
+	private Long constituencyId;
 	private Long scopeId;
 	private Long scopeValue;
 	private Long count;
 	private Long publicationDateId;
 	
+	private Constituency constituency;
 	private PublicationDate publicationDate;
 	private RegionScopes regionScopes;
 	private RegionScopes regionScopes2;
@@ -117,6 +119,25 @@ public class LocationInfo extends BaseModel implements Serializable{
 	}
 	public void setPublicationDate(PublicationDate publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+	
+	@Column(name = "constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
 	}
 	
 	
