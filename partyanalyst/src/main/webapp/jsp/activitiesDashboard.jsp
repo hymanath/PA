@@ -488,7 +488,7 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-village villageNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<div class="panel-heading panel-village villageNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
 			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
@@ -1183,3 +1183,4 @@ $(".tbtn").click(function(){
 </script>
 </body>
 </html>
+
