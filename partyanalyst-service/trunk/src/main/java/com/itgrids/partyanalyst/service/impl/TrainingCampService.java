@@ -108,6 +108,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
+import com.itgrids.partyanalyst.model.CadreDeleteReason;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -5145,6 +5146,54 @@ class TrainingCampService implements ITrainingCampService{
             	}
             }				
 				finalList=new ArrayList<CadreDetailsVO>(batchMap.values());
+				
+				//seeting feedBack annswers && documents Counts -- start
+					if(finalList!=null && finalList.size()>0){
+						for (CadreDetailsVO cadreDetailsVO : finalList) {
+							List<Long> tdpCadreIds1 = new ArrayList<Long>(0);
+							if(cadreDetailsVO.getSubList()!=null && cadreDetailsVO.getSubList().size()>0){
+								for(CadreDetailsVO voIN : cadreDetailsVO.getSubList()){
+									tdpCadreIds1.add(voIN.getId());
+								}
+							}
+							
+							
+							if(tdpCadreIds1 != null && tdpCadreIds1.size() > 0){
+								
+								Map<Long,Long> answersMap = new HashMap<Long, Long>(0);
+								Map<Long,Long> documentsMap = new HashMap<Long, Long>(0);
+								
+								//get feedBack Answers Count For Cadre Wise
+								List<Object[]> answersObjList = trainingCampFeedbackAnswerDAO.getAnswresCountForCadreWise(tdpCadreIds1);
+								
+								if(answersObjList != null && answersObjList.size() > 0){
+									for (Object[] objects : answersObjList) {
+										answersMap.put((Long)objects[1],(Long)objects[0]);//cadreId,Count of categories
+									}
+								}
+								
+								//get feedBack Document Count For Cadre wise
+								List<Object[]> documentesObjList = trainingCampCadreFeedbackDocumentDAO.getDocumentsCountForCadreWise(tdpCadreIds1);
+								
+								if(documentesObjList != null && documentesObjList.size() > 0){
+									for (Object[] objects : documentesObjList) {
+										documentsMap.put((Long)objects[1], (Long)objects[0]);
+									}
+								}
+								
+								for (CadreDetailsVO cadreDetailsVO1 : finalList) {
+									if(cadreDetailsVO1.getSubList()!=null && cadreDetailsVO1.getSubList().size()>0){
+										for(CadreDetailsVO voIN : cadreDetailsVO1.getSubList()){
+											voIN.setFeedBackAnswersCount(answersMap.get(voIN.getId())!=null?answersMap.get(voIN.getId()):0l);
+											voIN.setFeedBackDocumentsCount(documentsMap.get(voIN.getId())!=null?documentsMap.get(voIN.getId()):0l);
+										}
+									}
+								}
+							}
+						}
+					}
+				//seeting feedBack annswers && documents Counts -- end
+				
 				batchMap.clear();
 			}
 		}catch(Exception e){
