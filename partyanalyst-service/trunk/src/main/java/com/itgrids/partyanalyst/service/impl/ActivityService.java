@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -115,6 +117,9 @@ public class ActivityService implements IActivityService{
 	
 	
 	
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -136,9 +141,6 @@ public class ActivityService implements IActivityService{
 	}
 	public IUserAddressDAO getUserAddressDAO() {
 		return userAddressDAO;
-	}
-	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
-		this.userAddressDAO = userAddressDAO;
 	}
 	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
 		return activityQuestionAnswerDAO;
@@ -2328,6 +2330,265 @@ public class ActivityService implements IActivityService{
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMatchedQuestionVo", e);
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ResultStatus uploadActivityDocuments(Long activityId,String sourcePath,ActivityDocumentVO activityLocation)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			File sourceFolder = new File(IConstants.STATIC_CONTENT_FOLDER_URL+"/"+IConstants.ACTIVITY_DOCUMENT_UPLOAD+"/"+sourcePath);
+			String[] arr = sourceFolder.getName().split("_"); 
+			String level = arr[0];
+			String levelName = arr[1];
+			String destPath = createMainFolderForActivityDocuments();
+			
+			if(activityLocation == null)
+				activityLocation = new ActivityDocumentVO();
+			
+			if(level.equalsIgnoreCase("State"))
+			{
+				activityLocation.setStateId(stateDAO.getStateIdByStateName(levelName));
+			}
+			else if(level.equalsIgnoreCase("District"))
+			{
+				Long districtId = districtDAO.getDistrictByStateIdAndDistrictName(activityLocation.getStateId(),levelName);
+				if(districtId == null)
+					return null;
+				activityLocation.setDistrictId(districtId);
+			}
+			else if(level.equalsIgnoreCase("Constituency"))
+			{
+				Long constituencyId = constituencyDAO.getConstituencyIdByDistrictIdAndConstituencyName(activityLocation.getDistrictId(),levelName);
+				if(constituencyId == null)
+					return null;
+				activityLocation.setConstituencyId(constituencyId);
+			}
+			else if(level.equalsIgnoreCase("Mandal"))
+			{
+				List<Object> list = tehsilDAO.findTehsilIdByTehsilNameAndDistrict(levelName, activityLocation.getDistrictId());
+				if(list.size() == 0 || list.get(0) == null)
+					return null;
+				activityLocation.setMandalId((Long)list.get(0));
+			}
+			else if(level.equalsIgnoreCase("Town"))
+			{
+				List<Object> list = localElectionBodyDAO.getLocalElectionBodyIdByNameAndDistrictId(levelName, activityLocation.getDistrictId());
+				if(list.size() == 0 || list.get(0) == null)
+					return null;
+				activityLocation.setTownId((Long)list.get(0));
+			}
+			else if(level.equalsIgnoreCase("Panchayat"))
+			{
+				Long panchayatId = panchayatDAO.getPanchayatIdByTehsilIdAndPanchayatName(activityLocation.getMandalId(),levelName);
+				if(panchayatId == null)
+					return null;
+				activityLocation.setPanchayatId(panchayatId);
+			}
+			else if(level.equalsIgnoreCase("Ward"))
+			{
+				Long wardId = constituencyDAO.getWardIdByTownIdAndWardName(activityLocation.getMandalId(),levelName);
+				if(wardId == null)
+					return null;
+				activityLocation.setPanchayatId(wardId);
+			}
+			for(File subFolder : sourceFolder.listFiles())
+			{
+				try{
+					if(subFolder.isDirectory())
+					{
+						String subFolderStr1 = subFolder.getName().split("_")[0];
+						if(subFolderStr1.equalsIgnoreCase("Day"))
+						{
+							File destFolder = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.ACTIVITY_DOCUMENT_FOLDER+"/"+destPath+"/"+sourcePath+"/"+subFolder.getName());
+							if(!destFolder.exists())
+								destFolder.mkdir();
+							
+							ActivityDocumentVO activityDocumentVO = new ActivityDocumentVO();
+							activityDocumentVO.setActivityId(activityId);
+							activityDocumentVO.setDay(Long.valueOf(subFolder.getName().split("_")[1]));
+							activityDocumentVO.setPath(destPath+"/"+sourcePath+"/"+subFolder.getName()+"/");
+							activityDocumentVO.setActivityDate(new DateUtilService().getDateByStringAndFormat(subFolder.getName().split("_")[2],"yyyy-MM-dd"));
+							activityDocumentVO.setLevel(level);
+							activityDocumentVO.setLevelValue(levelName);
+							
+							List<String> docList = new ArrayList<String>(0);
+							for(File document : subFolder.listFiles())
+							{
+								if(!document.isDirectory())
+								{
+									String docName = Integer.valueOf(RandomNumberGeneraion.randomGenerator(6)).toString()+".jpg";
+									FileUtils.copyFile(document,new File(destFolder.getAbsolutePath()+"/"+docName));
+									docList.add(docName);
+								}
+							}
+							activityDocumentVO.setDocList(docList);
+							saveActivityDocumentsUpload(activityDocumentVO,activityLocation);
+						}
+						else if(getLevelsList().contains(subFolderStr1))
+						{
+							uploadActivityDocuments(activityId,sourcePath+"/"+subFolder.getName(),activityLocation);
+						}
+					}
+				}catch(Exception e)
+				{
+					LOG.error("Exception occured in subfolder - "+subFolder.getName()+" - ",e);
+				}
+			}
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in uploadActivityDocuments() Method - ",e);
+		}
+		return resultStatus;
+	}
+	
+	public ResultStatus saveActivityDocumentsUpload(ActivityDocumentVO activityDocumentVO,ActivityDocumentVO activityLocation)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			UserAddress userAddress = new UserAddress();
+			Long locationScopeId = null;
+			Long locationScopeValue = null;
+			
+			if(activityDocumentVO.getLevel().equalsIgnoreCase("State"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				locationScopeId = 2L;
+				locationScopeValue = activityLocation.getStateId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("District"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				
+				locationScopeId = 3L;
+				locationScopeValue = activityLocation.getDistrictId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("Constituency"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
+				
+				locationScopeId = 4L;
+				locationScopeValue = activityLocation.getConstituencyId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("Mandal"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
+				userAddress.setTehsil(tehsilDAO.get(activityLocation.getMandalId()));
+				
+				locationScopeId = 5L;
+				locationScopeValue = activityLocation.getMandalId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("Town"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(activityLocation.getTownId()));
+				
+				locationScopeId = 7L;
+				locationScopeValue = activityLocation.getTownId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("Panchayat"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
+				userAddress.setTehsil(tehsilDAO.get(activityLocation.getMandalId()));
+				userAddress.setPanchayat(panchayatDAO.get(activityLocation.getPanchayatId()));
+				
+				locationScopeId = 6L;
+				locationScopeValue = activityLocation.getPanchayatId();
+			}
+			else if(activityDocumentVO.getLevel().equalsIgnoreCase("Ward"))
+			{
+				userAddress.setState(stateDAO.get(activityLocation.getStateId()));
+				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(activityLocation.getTownId()));
+				userAddress.setWard(constituencyDAO.get(activityLocation.getWardId()));
+				
+				locationScopeId = 8L;
+				locationScopeValue = activityLocation.getWardId();
+			}
+			userAddress = userAddressDAO.save(userAddress);
+			
+			for(String docName : activityDocumentVO.getDocList())
+			{
+				ActivityDocument activityDocument = new ActivityDocument();
+				activityDocument.setDocumentName(docName);
+				activityDocument.setPath(activityDocumentVO.getPath()+docName);
+				activityDocument.setActivityDate(activityDocumentVO.getActivityDate());
+				activityDocument.setInsertedBy(1L);
+				activityDocument.setUpdatedBy(1L);
+				activityDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				activityDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				activityDocument.setActivityScopeId(activityDocumentVO.getActivityId());
+				activityDocument = activityDocumentDAO.save(activityDocument);
+				
+				ActivityInfoDocument activityInfoDocument = new ActivityInfoDocument();
+				
+				activityInfoDocument.setActivityDocument(activityDocument);
+				activityInfoDocument.setUserAddress(userAddress);
+				activityInfoDocument.setLocationScopeId(locationScopeId);
+				activityInfoDocument.setLocationValueAddress(locationScopeValue);
+				activityInfoDocument.setDay(activityDocumentVO.getDay());
+				activityInfoDocument.setInsertedBy(1L);
+				activityInfoDocument.setUpdatedBy(1L);
+				activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				activityInfoDocumentDAO.save(activityInfoDocument);
+			}
+				
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return resultStatus;
+	}
+	
+	public static List<String> getLevelsList()
+	{
+		List<String> list = new ArrayList<String>(0);
+		list.add("State");
+		list.add("District");
+		list.add("Constituency");
+		list.add("Mandal");
+		list.add("Town");
+		list.add("Panchayat");
+		list.add("Ward");
+		return list;
+	}
+	
+	public String createMainFolderForActivityDocuments()
+	{
+		try{
+			Date date = new Date();
+			Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+			calendar.setTime(date);
+			
+			int year = calendar.get(Calendar.YEAR);
+		    int month = calendar.get(Calendar.MONTH);
+		    int day = calendar.get(Calendar.DAY_OF_MONTH);
+		    
+		    File yearDir = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.ACTIVITY_DOCUMENT_FOLDER+"/"+year);
+		    if(!yearDir.exists())
+		    		yearDir.mkdir();
+		    
+		    File monthDir = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.ACTIVITY_DOCUMENT_FOLDER+"/"+year+"/"+(month+1)+"_"+day);
+		    if(!monthDir.exists())
+		    	monthDir.mkdir();
+		    return year+"/"+(month+1)+"_"+day;
+		}catch(Exception e)
+		{
+			LOG.error(e);
 		}
 		return null;
 	}
