@@ -441,5 +441,6 @@
 		<pattern>/updateActivityAction*</pattern>
 		<pattern>/activitiesDashboard*</pattern>
 		<pattern>/eventFieUploadAction*</pattern>
+		<pattern>/eventMultiFieUploadAction*</pattern>
 	 </decorator>
 </decorators>
