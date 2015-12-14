@@ -23,7 +23,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.locationValue,date(model.plannedDate),date(model.conductedDate),model.locationLevel from ActivityLocationInfo model where " +
-				"model.activityScopeId =:activityScopeId ");
+				"model.activityScopeId =:activityScopeId and model.conductedDate is not null ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and (date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
 
@@ -768,4 +768,14 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 	
 	}
 
+	public Long getActivityLocationInfoIdByLocationLevelAndLocationValue(Long locationLevel,Long locationValue){
+		
+		Query query = getSession().createQuery(" select model.activityLocationInfoId from ActivityLocationInfo model " +
+							" where model.locationLevel = :locationLevel and model.locationValue = :locationValue ");
+		
+		query.setParameter("locationLevel", locationLevel);
+		query.setParameter("locationValue", locationValue);
+		
+		return (Long) query.uniqueResult();
+	}
 }

@@ -21,5 +21,6 @@ public interface IActivityService {
 	public ResultStatus eventsUploadForm(EventFileUploadVO eventFileUploadVO);
 	
 	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId);
+	public ResultStatus saveActivityQuestionnaireDetails(final ActivityVO finalvo);
 
 }

@@ -15,4 +15,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getActivityNotPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO);
 	public List<Object[]> getActivityAttributeCountsByLocation(SearchAttributeVO searchAttributeVO);
 	public List<Object[]> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO);
+	public Long getActivityLocationInfoIdByLocationLevelAndLocationValue(Long locationLevel,Long locationValue);
 }
