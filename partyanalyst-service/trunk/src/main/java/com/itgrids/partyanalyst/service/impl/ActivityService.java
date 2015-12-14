@@ -1075,6 +1075,8 @@ public class ActivityService implements IActivityService{
 				List<Object[]> infoCellNotPlannedActivities = null;
 				List<Object[]> ivrNotPlannedActivities = null;
 				
+				List<LocationWiseBoothDetailsVO>  locationsList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+				
 				List<Long> questionnaireIds = activityQuestionnaireDAO.getQuestionnaireIdsListByScopeId(searchAttributeVO.getAttributesIdsList().get(0));
 				searchAttributeVO.setQuestionnaireIdsList(questionnaireIds);
 				List<Object[]> questionnairesCount = null;
@@ -1196,14 +1198,11 @@ public class ActivityService implements IActivityService{
 					List<LocationWiseBoothDetailsVO>  mandalMunciDivisionIdsList = cadreCommitteeService.getMandalMunicCorpDetailsByConstituencyList(searchAttributeVO.getLocationIdsList());
 					if(mandalMunciDivisionIdsList != null && mandalMunciDivisionIdsList.size()>0)
 					{
+						locationsList.addAll(mandalMunciDivisionIdsList);
 						List<Long> mandalsIdsList = new ArrayList<Long>(0);
 						List<Long> munciORTownORCorpIdsList = new ArrayList<Long>(0);
 						List<Long> divisionIdsList = new ArrayList<Long>(0);
-						
-						Map<Long,ActivityVO> mandalMap = new LinkedHashMap<Long, ActivityVO>(0);
-						Map<Long,ActivityVO> MunciTownMap = new LinkedHashMap<Long, ActivityVO>(0);
-						Map<Long,ActivityVO> divisionMap = new LinkedHashMap<Long, ActivityVO>(0);
-						
+				
 						for (LocationWiseBoothDetailsVO detailsVO : mandalMunciDivisionIdsList) {
 							String locationIdStr = detailsVO.getLocationId().toString().substring(0, 1);
 							if(locationIdStr.equalsIgnoreCase("2"))
@@ -1339,13 +1338,6 @@ public class ActivityService implements IActivityService{
 							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","3");	
 						
 						}
-						
-						/*if(mandalMap != null && mandalMap.size()>0)
-							locationsMap.putAll(mandalMap);
-						else if(MunciTownMap != null && MunciTownMap.size()>0)
-							locationsMap.putAll(MunciTownMap);
-						else if(divisionMap != null && divisionMap.size()>0)
-							locationsMap.putAll(divisionMap);*/
 					}
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
@@ -1355,6 +1347,7 @@ public class ActivityService implements IActivityService{
 					
 					if(villagesORWardsList != null && villagesORWardsList.size()>0)
 					{
+						locationsList.addAll(villagesORWardsList);
 						searchAttributeVO.getLocationTypeIdsList().clear();
 						Set<Long> locationTypeIds = new HashSet<Long>(0);
 						for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : villagesORWardsList) {
@@ -1437,14 +1430,33 @@ public class ActivityService implements IActivityService{
 							
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED","1");					
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","1");	
-							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","1");	
-							
+							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","1");
+
 							}
 						}
 					}
 				}
 				if(returnVO != null && locationsMap != null && locationsMap.size()>0)
 				{
+					
+					if(locationsMap != null && locationsMap.size()>0)
+	                {
+	                  Set<Long> ids = locationsMap.keySet();
+	                  if(locationsList != null && locationsList.size()>0)
+	                  	{
+	                	  for (LocationWiseBoothDetailsVO vo : locationsList) 
+	                	  {
+							if(!(ids.contains(vo.getLocationId())))
+		                	  {
+		                      ActivityVO Vo = new ActivityVO();
+		                      Vo .setId(vo.getLocationId());
+		                      Vo .setName(vo.getLocationName());
+		                      locationsMap.put(vo.getLocationId(), Vo);
+		                    }
+						}
+	                  }
+	                }
+					
 					segrigatefinalResultsTypes(null,locationsMap,"","");
 					
 					if(activityLevelId != null && activityLevelId.longValue()>0L)
@@ -2246,7 +2258,8 @@ public class ActivityService implements IActivityService{
 							activityQuestionAnswer.setActivityQuestionnaireId(activityVO.getQuestionId());
 							activityQuestionAnswer.setActivityLocationInfoId(activityLocationInfoId);
 							activityQuestionAnswer.setActivityOptionId(activityVO.getOptionId());
-							activityQuestionAnswer.setCount(activityVO.getCount());
+							if(activityVO.getCount() != null && activityVO.getCount().longValue()>0L)
+								activityQuestionAnswer.setCount(activityVO.getCount());
 							activityQuestionAnswer.setOptionTxt(activityVO.getRemarks());
 							activityQuestionAnswer.setIsDeleted("N");
 							activityQuestionAnswer.setInsertedBy(finalvo.getId());
