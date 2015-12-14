@@ -24,4 +24,12 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getDocumentsCountForCadreWise(List<Long> tdpCadreIds){
+		Query query = getSession().createQuery(" select count(model.filePath),model.tdpCadreId " +
+				" from TrainingCampCadreFeedbackDocument model " +
+				" where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N' group by model.tdpCadreId ");
+		query.setParameterList("tdpCadreIds",tdpCadreIds);
+		return query.list();
+	}
 }

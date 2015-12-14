@@ -62,9 +62,23 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private String committeeType;
 	private String familyUpdted;
 	private String memberShipId;
+	private Long feedBackAnswersCount;
+	private Long feedBackDocumentsCount;
 	
 	
 	
+	public Long getFeedBackAnswersCount() {
+		return feedBackAnswersCount;
+	}
+	public void setFeedBackAnswersCount(Long feedBackAnswersCount) {
+		this.feedBackAnswersCount = feedBackAnswersCount;
+	}
+	public Long getFeedBackDocumentsCount() {
+		return feedBackDocumentsCount;
+	}
+	public void setFeedBackDocumentsCount(Long feedBackDocumentsCount) {
+		this.feedBackDocumentsCount = feedBackDocumentsCount;
+	}
 	public List<IdNameVO> getFeedbackDocuments() {
 		return feedbackDocuments;
 	}
