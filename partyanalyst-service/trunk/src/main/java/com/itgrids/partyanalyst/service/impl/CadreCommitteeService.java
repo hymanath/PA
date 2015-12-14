@@ -17296,10 +17296,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		Date toDate = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
-			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
 			{
-				startDate = format.parse(inputVo.getStrDate().toString());
-				toDate = format.parse(inputVo.getEndDate().toString());
+				startDate = format.parse(inputVo.getStrDate().toString().trim());
+				toDate = format.parse(inputVo.getEndDate().toString().trim());
 			}
 			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
 			if(list != null && list.size() > 0)
@@ -17401,10 +17401,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		Date toDate = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
-			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
 			{
-				startDate = format.parse(inputVo.getStrDate().toString());
-				toDate = format.parse(inputVo.getEndDate().toString());
+				startDate = format.parse(inputVo.getStrDate().trim().toString());
+				toDate = format.parse(inputVo.getEndDate().trim().toString());
 			}
 		List<Object[]> list  = null;
 		List<BasicVO> locationsList = new ArrayList<BasicVO>();
@@ -17414,7 +17414,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.MANDAL);
 			List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
-			List<BasicVO> localbodyList = setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+			List<BasicVO> localbodyList = setLocationsListForMandal(list,"Muncipality");
 			if(mandalList != null && mandalList.size() > 0)
 			locationsList.addAll(mandalList);
 			if(localbodyList != null && localbodyList.size() > 0)
@@ -17427,13 +17427,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
 			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			{
-				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
+				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.PANCHAYAT);
 				if(mandalList != null && mandalList.size() > 0)
 				locationsList.addAll(mandalList);
 			}
 			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			{
-				List<BasicVO> localbodyList =  setLocationsListForMandal(list,IConstants.LOCAL_ELECTION_BODY);
+				List<BasicVO> localbodyList =  setLocationsListForMandal(list,IConstants.WARD);
 				if(localbodyList != null && localbodyList.size() > 0)
 				locationsList.addAll(localbodyList);
 			}
@@ -17481,15 +17481,15 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			for(Object[] params : list)
 			{
 				BasicVO vo = new BasicVO();
-				if(type.equalsIgnoreCase(IConstants.MANDAL))
+				if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase(IConstants.PANCHAYAT))
 				{
 				vo.setId(new Long("2"+params[0].toString()));
-				vo.setName(params[1].toString() +"Mandal ");
+				vo.setName(params[1].toString() + " " +type);
 				}
-				else
+				if(type.equalsIgnoreCase("Muncipality") || type.equalsIgnoreCase(IConstants.WARD))
 				{
 					vo.setId(new Long("1"+params[0].toString()));
-					vo.setName(params[1].toString() +"Muncipality ");
+					vo.setName(params[1].toString() + " " +type);
 				}
 				
 				returnList.add(vo);
