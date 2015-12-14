@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Panchayat;
 
 public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{
@@ -65,4 +64,5 @@ public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{
 	
 	public List<Object[]> getAllPanchayatsWithTehsilIdsInMandals(List<Long> ids);
 	public List<Object[]> getAllPanchayatsInMandalsByPublciationId(Long constituencyId,List<Long> ids,Long publicationId);
+	public Long getPanchayatIdByTehsilIdAndPanchayatName(Long tehsilId,String panchayatName);
 }
