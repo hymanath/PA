@@ -1501,6 +1501,20 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return (Long) query.uniqueResult();
 	}
 	
+	public Long getConstituencyIdByDistrictIdAndConstituencyName(Long districtId,String constituencyName)
+	{
+		Query query = getSession().createQuery("Select model.constituencyId from Constituency model where model.electionScope.electionScopeId = 2 and deformDate is null and model.district.districtId = :districtId and model.name = :constituencyName");
+		query.setParameter("districtId", districtId);
+		query.setParameter("constituencyName", constituencyName);
+		return (Long) query.uniqueResult();
+	}
 	
+	public Long getWardIdByTownIdAndWardName(Long localElectionBodyId,String wardName)
+	{
+		Query query = getSession().createQuery("Select model.constituencyId from Constituency model where model.localElectionBody.localElectionBodyId = :localElectionBodyId and model.name = :wardName");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("wardName", wardName);
+		return (Long) query.uniqueResult();
+	}
 	
 }
