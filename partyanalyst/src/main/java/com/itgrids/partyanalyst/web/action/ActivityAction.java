@@ -257,7 +257,8 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	{
 		try{
 			
-			//activityService.deleteEventUploadFilebyActivityInfoDocId();
+			jObj = new JSONObject(getTask());
+			resultStatus = activityService.deleteEventUploadFilebyActivityInfoDocId(jObj.getLong("acitivityInfoDocId"));
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in deleteUploadedFile() method, Exception - ",e); 

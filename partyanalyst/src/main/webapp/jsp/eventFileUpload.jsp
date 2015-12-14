@@ -6,6 +6,9 @@
 
 <html>
 <head>
+<style>
+.errorCls{color:red;font-size:12px;}
+</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -13,11 +16,6 @@
 
 <title>File Upload</title>
 
-    <script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
-	<script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
-	<script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
-	
-	
     <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 	<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 
@@ -26,86 +24,94 @@
 	
 	
 	<!-- Bootstrap -->
-    <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/activityDashboard/css/bootstrap.css" rel="stylesheet">
+    <link href="dist/activityDashboard/css/custom.css" rel="stylesheet">
+    <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet">
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
     <!-- <script src="js/cadreCommittee/bootstrap.min.js"></script> -->
-    <link href="dist/Daterange/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
-	  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head>
 <body>
 <div class="container m_top20">
-
-     <div class="col-sm-5">
-			<label>Activity Type</label>
-            <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						File Upload
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6">
+								<label>Activity Type</label>
+								<s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
+							</div>
+							<div class="col-md-6">
+								<label  class="control-label">Activity Level</label>
+								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="0" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
+							 </div>
+							 <div class="col-md-6">
+									<label> Activity Name </label>
+									<select id="ActivityList" class="form-control">
+										<option value="0"> Select Activity </option>
+									</select>
+							 </div>
+							<div class="col-md-6">
+								<label>Day   </label>
+								<select id="day" class="form-control"></select> </div>
+							<div class="col-md-6">
+								<label>Activity Date </label>
+								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
+							</div>
+							<div class="col-md-6" id="locationLevelsDiv"><label>Location Levels  </label>
+								<select id="levelIds" onchange="hideAndShowDiv()" class="form-control">
+									 <option value="2">State</option>
+									 <option value="3">District</option>
+									 <option value="4">Constituency</option>
+									 <option value="5">Mandal/Municipality</option>
+									 <option value="6">Panchayat</option>
+								</select>
+							</div>
+							<div class="col-md-6" id="stateDiv"><label>State </label>
+								<select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="form-control">
+									<option value="0">Select State</option>
+									<option value="1">AndhraPradesh</option>
+									<option value="36">Telangana</option>
+								</select>
+							</div> 
+							<div class="col-md-6" id="districtDiv" style="display:none;"><label>District</label>
+								<select class="form-control " id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
+									<option value="0"> Select District </option>
+								</select>
+							</div>
+											
+							<div class="col-md-6" id="constitunecyDiv" style="display:none;"><label>Constituency : </label>
+								<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
+									<option value="0"> Select Constituency </option>
+								</select>
+							</div>
+							<div class="col-md-6" style="padding-top: 10px ;display:none;" id="mandalDiv"><label>Mandal/Municipality :</label>
+								<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandal();">
+									<option value="0"> Select Mandal/Municipality </option>
+								</select>
+							</div>
+											
+							<div class="col-md-6" style="padding-top: 10px;display:none;" id="panchayatDiv"><label>Panchayat/Ward :</label>
+								<select class="form-control " id="panchaytList" class="form-control" >
+									<option value="0"> Select Panchayat </option>
+								</select>
+							</div>
+							<div class="col-md-12" style="margin-top: 38px;">
+								<div class="errorDiv"></div>
+								<input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
+								<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
+							</div>	
+						</div>
+					</div>
+				</div>
 		</div>
-	 <div class="col-sm-5">
-	    <label  class="control-label">Activity Level</label>
-        <s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="0" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
-     </div>
-	 <div class="col-md-5">
-			<label> Activity Name </label>
-			<select id="ActivityList" class="form-control">
-				<option value="0"> Select Activity </option>
-			</select>
-	 </div>
-	
-	<div class="col-md-5"> <label>Day   </label><select id="day" class="form-control"></select> </div>
-	 
-    <div class="col-md-5">
-	    <label>Activity Date </label>
-		 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
-							
 	</div>
-	
-	<div class="col-md-5" id="locationLevelsDiv"><label>Location Levels  </label>
-		<select id="levelIds" onchange="hideAndShowDiv()" class="form-control">
-			 <option value="2">State</option>
-			 <option value="3">District</option>
-			 <option value="4">Constituency</option>
-			 <option value="5">Mandal/Municipality</option>
-			 <option value="6">Panchayat</option>
-		</select>
-	</div>
-	<div>
-		<div class="col-md-5" id="stateDiv"><label>State </label>
-			<select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="form-control">
-			    <option value="0">Select State</option>
-				<option value="1">AndhraPradesh</option>
-				<option value="36">Telangana</option>
-			</select>
-		</div> 
-		<div class="col-md-5" id="districtDiv" style="display:none;"><label>District</label>
-			<select class="form-control " id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
-				<option value="0"> Select District </option>
-			</select>
-		</div>
-						
-		<div class="col-md-5" id="constitunecyDiv" style="display:none;"><label>Constituency : </label>
-			<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
-				<option value="0"> Select Constituency </option>
-			</select>
-		</div>
-						
-		<div class="col-md-5" style="padding-top: 10px ;display:none;" id="mandalDiv"><label>Mandal/Municipality :</label>
-			<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandal();">
-				<option value="0"> Select Mandal/Municipality </option>
-			</select>
-		</div>
-						
-		<div class="col-md-5" style="padding-top: 10px;display:none;" id="panchayatDiv"><label>Panchayat :</label>
-			<select class="form-control " id="panchaytList" class="form-control" >
-				<option value="0"> Select Panchayat </option>
-			</select>
-		</div>
-	</div>
-	
-	<div class="col-md-10" style="margin-top: 38px;">
-		 <input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
-	</div>	
-
 	<!-- <div class="col-md-10  offset10" style="margin-bottom:15px;">
 		 <input type="button" value="Submit" id="submit_input2" class="btn btn-success " />
 	</div>	 -->
@@ -114,16 +120,18 @@
 	<!-- </form> -->
  
 </div>
-<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="dist/js/moment.min.js" type="text/javascript"></script>
-<script src="dist/Daterange/daterangepicker.js" type="text/javascript"></script>
+
+<script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
+
 <script type="text/javascript">
-
-	 /*$(document).ready(function(){
-
-	$( "#activityDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
-	});*/
-	$( "#activityDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+ var gobalVar = 0;
+  $( "#activityDate" ).daterangepicker({singleDatePicker:true});
 
 	function getDays()
 	{
@@ -382,15 +390,31 @@ function hideAndShowDiv()
 	}
 }
 
-/*$("#activityDate").datepicker({
-			dateFormat: "yy-mm-dd",
-			changeMonth: true,
-	        changeYear: true,
-			maxDate: new Date()
-		});*/
+$(document).on("click",".deleteFile",function() {
+ 
+ var acitivityInfoDocId = $(this).attr("id");
+ 
+ var jsObj=
+   {				
+	  acitivityInfoDocId:acitivityInfoDocId,
+	  task:"deleteFile"				
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'deleteUploadedFileAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result.resultCode == 0){
+	         $(this).closest("li").html("");
+		   }
+	   });
+
+})
+$(".bootstrap-filestyle").hide();
 		
  	getDays();
-	//submitImages();
+	
 </script>
 </body>
 </html>

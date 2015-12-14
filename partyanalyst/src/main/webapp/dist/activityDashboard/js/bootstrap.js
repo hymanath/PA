@@ -2712,4 +2712,3 @@ if (typeof jQuery === 'undefined') {
 		});
 	});
 })(window.jQuery);
-$(":file").filestyle({icon: false});
