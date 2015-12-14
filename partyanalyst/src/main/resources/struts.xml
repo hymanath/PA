@@ -11098,6 +11098,12 @@
 			</result>
 	   </action>
 	   
+	    <action name="saveActivityQuestionnaireDetailsAction" class="activityAction" method="saveActivityQuestionnaireDetails">
+	  	   <result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+	   </action>
+	   
 	   <action name="eventMultiFieUploadAction" class="activityAction">
 		    <result name="success">/jsp/eventMultiFieUpload.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
