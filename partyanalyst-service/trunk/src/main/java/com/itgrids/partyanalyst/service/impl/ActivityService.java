@@ -1963,7 +1963,7 @@ public class ActivityService implements IActivityService{
 			activityDocument = activityDocumentDAO.save(activityDocument);
 			
 		    ActivityInfoDocument activityInfoDocument = new ActivityInfoDocument();
-		    activityInfoDocument.setActivityDocumentId(activityDocument.getActivityDocumentId());
+		    activityInfoDocument.setActivityDocument(activityDocument);
 		    activityInfoDocument.setInsertedBy(eventFileUploadVO.getUserId());
 		    activityInfoDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
 			
