@@ -1,10 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -263,6 +263,52 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}catch (Exception e) {
 			LOG.error("Exception Occured in deleteUploadedFile() method, Exception - ",e); 
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveActivityQuestionnaireDetails(){
+		
+		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			ActivityVO finalvo = new ActivityVO();
+			List<ActivityVO> questionList = new ArrayList<ActivityVO>();
+			
+			jObj = new JSONObject(getTask());
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			Long activityLevelId = jObj.getLong("activityLevelId");
+			Long activityLevelValue = jObj.getLong("activityLevelValue");
+			JSONArray questionArr = jObj.getJSONArray("responseArray");
+			
+			finalvo.setId(regVO.getRegistrationID());
+			finalvo.setActivityTypeId(activityScopeId);
+			finalvo.setActivityLevelId(activityLevelId);
+			finalvo.setLocationValue(activityLevelValue);
+			
+			if(questionArr != null && questionArr.length() > 0){
+				for (int i = 0; i < questionArr.length(); i++) {
+					ActivityVO vo = new ActivityVO();
+					
+					JSONObject questionObj = questionArr.getJSONObject(i);
+					vo.setQuestionId(questionObj.getLong("questionId"));
+					vo.setOptionId(questionObj.getLong("optionId"));
+					vo.setRemarks(questionObj.getString("remarks"));
+					vo.setCount(questionObj.getLong("count"));
+					vo.setOthers(questionObj.getString("others"));
+					
+					questionList.add(vo);
+				}
+			}
+			
+			finalvo.setActivityVoList(questionList);
+			
+			resultStatus = activityService.saveActivityQuestionnaireDetails(finalvo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in saveActivityQuestionnaireDetails() method, Exception - ",e); 
+		}
+		
 		return Action.SUCCESS;
 	}
 
