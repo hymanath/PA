@@ -12,8 +12,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
-import net.sf.cglib.core.EmitUtils;
-
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
