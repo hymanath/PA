@@ -312,4 +312,19 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 
+	
+	public String getQuestionnaireForScope(){
+		try {
+			LOG.info("Entered into getQuestionnaireForScope");
+			
+			jObj = new JSONObject(getTask());
+			
+			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getQuestionnaireForScope", e);
+		}
+		return Action.SUCCESS;
+	}
+
 }
