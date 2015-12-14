@@ -11,7 +11,6 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.Ward;
 
 public class VoterLocationVO implements Serializable{
 

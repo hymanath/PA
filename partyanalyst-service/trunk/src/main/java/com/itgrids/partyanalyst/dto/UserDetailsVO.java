@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserDetailsVO {
 	private String name ;
