@@ -246,6 +246,28 @@
 			</div>
     </div>
 
+	<!-- questions modal start-->
+	
+	<div class="modal fade" id="questionsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content" style="border-radius:0px;">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">Questionnaire</h4>
+		  </div>
+		  <div class="modal-body">
+			<div id="questionsDivBodyId"></div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" id="saveResult" class="btn btn-custom btn-success">Save</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<!-- questions modal end -->
+							
+							
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -760,7 +782,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 									str+='<td  style="text-align:center;"> - </td>';
 								}
 								*/
-								str+='<td style="text-align:center;"> <input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/></td>';
+								str+='<td style="text-align:center;">';
+								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
+								//str+='<input type="button" value="Update Questionnaire" class="btn btn-success btn-xs" id="updateQBtnId"/>';
+								str+='</td>';
 								str+='</tr>';
 							}
 							str+='</table>';
@@ -932,7 +957,105 @@ getUserAccessDistrictList();
 	 });
 	  $(".dataTableDiv").removeClass("dataTable");
   }
+  
+	
+	$(document).on("click","#updateQBtnId",function(){	
+		var scopeId = $("#ActivityList").val();
+		if(scopeId==null || scopeId==0){
+			alert("Please Select Activity Name");
+			return false;
+		}else{
+			var jsObj={   
+				scopeId : scopeId
+            };
+       
+			$.ajax({
+				type : "GET",
+				url : "getQuestionnaireForScopeAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				$("#questionsModal").modal("show");
+				var str='';
+				if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
+					for(var i in result.activityVoList){
+						str+='<div class="row">'
+						str+='<div class="col-md-12 m_top10">';
+							str+='<label>'+result.activityVoList[i].question+' ? </label><br/>';
+						str+='</div>';
+						str+='<div class="col-md-4">';
 
+						if(result.activityVoList[i].optionsList!=null && result.activityVoList[i].optionsList.length>0){
+							if(result.activityVoList[i].optionTypeId==1){
+								str+='<select class="form-control selectedVal" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'">';
+								str+='<option value="0">Select Option </option>';
+								for(var j in result.activityVoList[i].optionsList){
+									str+='<option value="'+result.activityVoList[i].optionsList[j].optionId+'">'+result.activityVoList[i].optionsList[j].option+'</option>';
+								}
+								str+='</select>';
+							}
+							if(result.activityVoList[i].optionTypeId==2){
+								for(var j in result.activityVoList[i].optionsList){
+									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
+								}
+							}
+							
+						}
+						str+='</div>';
+						str+='</div>';
+					}
+				}else{
+					str+='<h4>No Data Found.</h4>';
+				}
+				$("#questionsDivBodyId").html(str);
+			});
+		}
+	  
+  });
+
+	$(document).on("click","#saveResult",function(){
+		var resultArr=[];
+		$(".selectedVal").each(function(){
+		var value='';
+			if($(this).attr("attr_type")=="selectbox"){
+				var key=$(this).attr("attr_qid");
+				value=$(this).val();
+			}
+			if($(this).attr("attr_type")=="ckeckBox"){
+				if(this.checked)
+					value = this.value;			
+			}
+			if(value != null && value.length>0)
+			{
+				var obj={
+				questionId : $(this).attr("attr_qid"),
+				optionId : value,
+				remarks: " ",
+				count:0,
+				others:" "
+				};
+				resultArr.push(obj);
+			}	
+				
+		});
+		
+		 var jsObj={
+		         activityScopeId:activityScopeId,
+				 activityLevelId:activityLevelId,
+				 activityLevelValue:activityLevelValue,
+				 responseArray:resultArr
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "saveActivityQuestionnaireDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+		//console.log(resultArr);
+	});
 </script>
 </body>
 </html>
