@@ -96,7 +96,7 @@
                         	<div class="row">
 							<div class="col-md-4">
                                 	<label>Activity Type</label>
-                                    <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" onchange="get();" cssClass="input-block-level form-control"/>
+                                    <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
                             </div>
 							<div class="col-md-4">
 								<label>Activity Level</label>
@@ -121,26 +121,36 @@
                                     </label>
                                 </div>
 								-->
-							<div class="col-md-4">
+								<div class="row">
+							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;">
+								<label>District</label>
+								<select id="districtList" class="form-control" name="activityVO.districtId" >
+									
+								</select>
+							</div>	
+							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;">
 								<label>Constituency</label>
 								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
 									
 								</select>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4 m_top10" id="mandalDivId" style="display:none;">
 								<label >Mandal/ Town/ Division</label>
 								<select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">
 									<option value="0"> Mandal/ Town/ Division</option>
 								</select>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4 m_top10" id="panchayatDivId" style="display:none;">
 								<label>Panchayat/ Ward</label>
 								<select id="villageWardsList" class="form-control">
 									<option value="0"> Select Panchayat/ Ward</option>
 								</select>
 							</div>
-						   <div class="col-md-4 m_top10">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity(0,0);">SEARCH</button>
+							</div>
+							<div class="row">
+						   <div class="col-md-3 m_top10">
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','');">SEARCH</button>
+							</div>
 							</div>
 								
                             </div>
@@ -154,7 +164,8 @@
 			<!---Start  Assembly wise Activity--->
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
-			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> 
+			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
+			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES </h4>
 		  </div>
 		   <div class="panel-body">
 			<div id="buildAssConsActivity"></div>
@@ -175,7 +186,7 @@
 								<input type="checkbox" class="checkboxCls" checked="checked" id="notConductedId">Show Not Conducted Locations
 							</span>
 							<span  style="margin-left:30px;">
-								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity(0,0);">
+								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
 							</span>
 							
                         </label>
@@ -245,8 +256,16 @@ $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
 	$('.applyBtn').click(function(){
 		
-		var startDate = $("input[name=daterangepicker_start]").val();
-		var endDate =  $("input[name=daterangepicker_end]").val();
+		/*var startDate = $("input[name=daterangepicker_start]").val();
+		var endDate =  $("input[name=daterangepicker_end]").val();*/
+	var startDate = "";
+	var endDate = "";
+	var dates=$('.searchDateCls ').val();
+		if(dates != null && dates.trim().length > 0){
+			var dateArray=dates.split("to");
+		  startDate=dateArray[0];
+		  endDate=dateArray[1];
+		}
 		getLocationDetailsForActivity(startDate,endDate);
 		//alert(startDate);
 	});
@@ -256,12 +275,12 @@ var fromTypeGlob;
 $(function () {
 	var cb = function(start, end, label) {
 	//console.log(start.toISOString(), end.toISOString(), label);
-	$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' - ' + end.format('D MMMM, YYYY'));
+	//$('.searchDateCls').html(start.format('D MMMM, YYYY')- + ' - ' + end.format('D MMMM, YYYY'));
 	//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
   }
   var optionSet1 = {
-	startDate: moment().startOf('month'),
-	endDate: moment().endOf('month'),
+	//startDate: moment().startOf('month'),
+	//endDate: moment().endOf('month'),
 	showDropdowns: true,
 	showWeekNumbers: true,
 	timePicker: false,
@@ -295,7 +314,7 @@ $(function () {
 		firstDay: 1
 	}
   };
-  $('.searchDateCls').val(moment().format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY'));
+  //$('.searchDateCls').val(moment().format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY'));
 
   $('.searchDateCls').daterangepicker(optionSet1, cb);
 
@@ -330,8 +349,17 @@ function submitForm(){
 			
 			if(myResult.search('success') != -1){
 				alert("Successfully UPdated");
-				var startDate = $("input[name=daterangepicker_start]").val();
-				var endDate =  $("input[name=daterangepicker_end]").val();
+				/*var startDate = $("input[name=daterangepicker_start]").val();
+				var endDate =  $("input[name=daterangepicker_end]").val();*/
+			var startDate = "";
+			var endDate = "";
+			
+			var dates=$('.searchDateCls ').val();
+				if(dates != null && dates.trim().length > 0){
+					var dateArray=dates.split("to");
+				  startDate=dateArray[0];
+				  endDate=dateArray[1];
+				}
 				getLocationDetailsForActivity(startDate,endDate);
 			}else{
 			}
@@ -347,8 +375,29 @@ function submitForm(){
 	
 function getActivityNames()
 {
+	$("#constituencyDivId").hide();
+	$("#mandalDivId").hide();
+	$("#panchayatDivId").hide();
+	$("#districtDivId").hide();
+	
 	$('#ActivityList').find('option').remove();
 	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
+	
+	var activityLevelId = $('#activityLevelList').val();
+	
+	if(activityLevelId == 1){
+		$("#constituencyDivId").show();
+		$("#mandalDivId").show();
+		$("#panchayatDivId").show();
+	}
+	else if(activityLevelId == 2){
+		$("#constituencyDivId").show();
+		$("#mandalDivId").show();
+	}
+	else if(activityLevelId == 3){
+		$("#districtDivId").show();
+	}
+	
 	var jObj = {
 			activityTypeId : $('#activityTypeList').val(),
 			activityLevelId:$('#activityLevelList').val(),
@@ -394,6 +443,27 @@ function getUserAccessConstituencyList()
 		
 }
 
+function getUserAccessDistrictList()
+{
+	$('#districtList').find('option').remove();
+	$('#districtList').append('<option value="0"> Select District</option>');	
+	var jObj = {
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getUserAccessDistrictListAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#districtList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		});
+		
+}
 
 function getMunciMandalsList(constituencyId)
 {
@@ -580,10 +650,16 @@ function getLocationDetailsForActivity(startDate,endDate)
 	{
 		$('#resultsDiv').show();	
 		$('#home').html("<img src='images/Loading-data.gif'/>");	
-			if(startDate == 0)
+			if(startDate.trim().length == 0)
 			{
-				startDate = $("input[name=daterangepicker_start]").val();
-				endDate =  $("input[name=daterangepicker_end]").val();
+				/*startDate = $("input[name=daterangepicker_start]").val();
+				endDate =  $("input[name=daterangepicker_end]").val();*/
+				var dates=$('.searchDateCls ').val();
+				if(dates != null && dates.trim().length > 0){
+					var dateArray=dates.split("to");
+				  startDate=dateArray[0];
+				  endDate=dateArray[1];
+				}
 			}	
 			
 			var searchBy="Panchayat";
@@ -765,14 +841,24 @@ function gettingCadreDetails(locationId,locationName){
 	}
 	
 getUserAccessConstituencyList();
+getUserAccessDistrictList();
  
  $("#searchId").click(function(){
 	 
     $('#assemblydivId').show();
 	$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
+	var startDate = "";
+	var endDate = "";
 	
-    var jsObj={   startDate:$("input[name=daterangepicker_start]").val(),
-                  endDate:$("input[name=daterangepicker_end]").val(),
+	var dates=$('.searchDateCls ').val();
+		if(dates != null && dates.trim().length > 0){
+			var dateArray=dates.split("to");
+		  startDate=dateArray[0];
+		  endDate=dateArray[1];
+		}
+	
+    var jsObj={   startDate:startDate,    //$("input[name=daterangepicker_start]").val(),
+                  endDate:endDate,     //$("input[name=daterangepicker_end]").val(),
                   activityScopeId:$('#ActivityList').val(),
                   activityLevelId:$("#ActivityList option:selected").val(),
                   stateId:1

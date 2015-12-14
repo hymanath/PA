@@ -73,9 +73,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ResultStatus 						resultStatus;
 	private List<ActivityVO>                    activitiesVOList;
 	private List<EventDocumentVO> docsList;
+	private List<BasicVO>                       basicVOList = new ArrayList<BasicVO>();
 	
 	
 	
+	public List<BasicVO> getBasicVOList() {
+		return basicVOList;
+	}
+	public void setBasicVOList(List<BasicVO> basicVOList) {
+		this.basicVOList = basicVOList;
+	}
 	public List<EventDocumentVO> getDocsList() {
 		return docsList;
 	}
@@ -639,6 +646,22 @@ public String getUserAccessListConstituency()
 	}
 	return Action.SUCCESS;
 }
+public String getUserAccessDistrictList()
+{
+	try{
+	HttpSession session = request.getSession();
+	RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+	jObj = new JSONObject(getTask());
+
+	basicVOList = cadreCommitteeService.getDistrictsByUserId(user.getRegistrationID(),user.getIsAdmin(),user.getAccessType(),Long.valueOf(user.getAccessValue()));
+	
+	}
+	catch(Exception e)
+	{
+		
+	}
+	return Action.SUCCESS;
+}
 public List<BasicVO> getUserAccessConstituencies(){
 	HttpSession session = request.getSession();
 	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
@@ -993,8 +1016,14 @@ public String getAllConstituencysForADistrict(){
 			String searchStartDateStr=jObj.getString("startDate");
 			String searchEndDateStr=jObj.getString("endDate");
 			
-			locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
-					locationId,searchStartDateStr,searchEndDateStr);
+			if(searchStartDateStr != null && searchStartDateStr.trim().length() > 0 && searchEndDateStr != null && searchEndDateStr.trim().length() > 0){
+				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
+						locationId,searchStartDateStr,searchEndDateStr);
+			}else{
+				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
+						locationId,null,null);
+			}
+			
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
