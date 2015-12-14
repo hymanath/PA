@@ -2,8 +2,6 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
