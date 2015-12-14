@@ -199,14 +199,20 @@ color: red !important;
 							<div style="" class="row">
 								<div class="col-md-10 col-md-offset-1" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;width:1025px">
 									<div class="">		
-<div class="col-md-2">
-										<label class="checkbox"><input type="checkbox" value="goals" id="goalsId" class="checkbox">Goals</label>
-									</div>	
-<div class="col-md-2">
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="goals" id="goalsId" class="checkbox">Goals</label>
+										</div>	
+										<div class="col-md-2">
 											<label class="checkbox"><input type="checkbox" value="health" id="healthCheckId" class="checkbox">Health</label>
-										</div>									
+										</div>
+										<div class="col-md-2">
+											<label class="checkbox"><input type="checkbox" value="feedBackAnswer" id="feedBackAnswerChkId" class="checkbox">FeedBack Answers</label>
+										</div>
+										<div class="col-md-3">
+											<label class="checkbox"><input type="checkbox" value="feedBackDocuments" id="feedBackDocumentsChkId" class="checkbox">FeedBack Documents</label>
+										</div>
 										
-								  </div>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -434,6 +440,12 @@ function exportToExcel()
 					  if(checkBoxArray[10]){
 						str+='<th>Facebook Known</th>';
 					  }
+					  if(checkBoxArray[11]){
+						str+='<th>FeedBack Answers</th>';
+					  }
+					  if(checkBoxArray[12]){
+						str+='<th>Facebook Documents</th>';
+					  }
 					  /*str+='<th>IsFamilyUpdated</th>'
 					  str+='<th>Achievements</th>'
 					  str+='<th>Goals</th>'
@@ -572,6 +584,12 @@ function exportToExcel()
 					   }else{
 						   str+='<td><span class="text-center facebookUsingCls">No</span></td>';						   
 					   }
+					  }
+					  if(checkBoxArray[11]){
+						str+='<td><span class="text-center facebookUsingCls">'+results[i].subList[j].feedBackAnswersCount+'</span></td>';							 
+					  }
+					  if(checkBoxArray[12]){
+						str+='<td><span class="text-center facebookUsingCls">'+results[i].subList[j].feedBackDocumentsCount+'</span></td>';							 
 					  }
 					  /* if(results[i].subList[j].familyUpdted=='Yes'){
 						   str+='<td><i class="glyphicon glyphicon-ok text-success text-center"></i></td>'
@@ -1327,8 +1345,10 @@ function exportToExcel()
 	  var whatsupUsing = document.getElementById("whatsupUsingId").checked;
 	  var whatsupSharing = document.getElementById("whatsupSharingId").checked;
 	  var facebookKnown = document.getElementById("facebookKnownId").checked;
+	  var feedBackAnswer = document.getElementById("feedBackAnswerChkId").checked;
+	  var feedBackDocuments = document.getElementById("feedBackDocumentsChkId").checked;
 	  
-	  checkBoxArray = [isFamilyUpdated,achievements,goals,leadershipLevel,communicationSkills,leadershipSkills,health,smartPhoneUsing,whatsupUsing,whatsupSharing,facebookKnown];
+	  checkBoxArray = [isFamilyUpdated,achievements,goals,leadershipLevel,communicationSkills,leadershipSkills,health,smartPhoneUsing,whatsupUsing,whatsupSharing,facebookKnown,feedBackAnswer,feedBackDocuments];
 	  
 	  $("#ajaxImage").show();
 	  $("#accordion").html('');
