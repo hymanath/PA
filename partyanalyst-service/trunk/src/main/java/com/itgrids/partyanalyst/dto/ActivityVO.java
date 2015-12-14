@@ -58,24 +58,48 @@ public class ActivityVO implements Serializable{
 	private Long nonConductedCount;
 	private String percentage;
 	private String notPlannedPerc;
-	
+	private List<ActivityVO> questionList = new ArrayList<ActivityVO>(0);
 	private Long questionId;
+	private String question;
 	private Long optionId;
+	private String option;
+	private Long optionTypeId;
+	private String optionType;
+	private List<ActivityVO> optionsList = new ArrayList<ActivityVO>(0);
+	
 	private String others;
 	private Long count;
 	
 	
+	public String getOthers() {
+		return others;
+	}
+	public void setOthers(String others) {
+		this.others = others;
+	}
 	public Long getCount() {
 		return count;
 	}
 	public void setCount(Long count) {
 		this.count = count;
 	}
-	public Long getQuestionId() {
-		return questionId;
+	public List<ActivityVO> getOptionsList() {
+		return optionsList;
 	}
-	public void setQuestionId(Long questionId) {
-		this.questionId = questionId;
+	public void setOptionsList(List<ActivityVO> optionsList) {
+		this.optionsList = optionsList;
+	}
+	public Long getOptionTypeId() {
+		return optionTypeId;
+	}
+	public void setOptionTypeId(Long optionTypeId) {
+		this.optionTypeId = optionTypeId;
+	}
+	public String getOptionType() {
+		return optionType;
+	}
+	public void setOptionType(String optionType) {
+		this.optionType = optionType;
 	}
 	public Long getOptionId() {
 		return optionId;
@@ -83,11 +107,29 @@ public class ActivityVO implements Serializable{
 	public void setOptionId(Long optionId) {
 		this.optionId = optionId;
 	}
-	public String getOthers() {
-		return others;
+	public String getOption() {
+		return option;
 	}
-	public void setOthers(String others) {
-		this.others = others;
+	public void setOption(String option) {
+		this.option = option;
+	}
+	public Long getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+	public List<ActivityVO> getQuestionList() {
+		return questionList;
+	}
+	public void setQuestionList(List<ActivityVO> questionList) {
+		this.questionList = questionList;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
 	}
 	public String getIvrTotalPerc() {
 		return ivrTotalPerc;
