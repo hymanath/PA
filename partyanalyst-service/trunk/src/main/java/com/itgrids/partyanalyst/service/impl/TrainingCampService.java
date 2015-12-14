@@ -5642,17 +5642,28 @@ class TrainingCampService implements ITrainingCampService{
 	{
 		DateUtilService date = new DateUtilService();
 		try{
-		for(SimpleVO vo : feedbackAnswers)
-		{
-		TrainingCampFeedbackAnswer trainingCampFeedbackAnswer = new TrainingCampFeedbackAnswer();
-		trainingCampFeedbackAnswer.setTdpCadreId(tdpCadreId);
-		trainingCampFeedbackAnswer.setAnswer(vo.getName());
-		trainingCampFeedbackAnswer.setTrainingCampFeedbackCategoryId(vo.getId());
-		trainingCampFeedbackAnswer.setInsertedTime(date.getCurrentDateAndTime());
-		trainingCampFeedbackAnswer.setUpdatedTime(date.getCurrentDateAndTime());
-		trainingCampFeedbackAnswerDAO.save(trainingCampFeedbackAnswer);
-		
-		}
+			for(SimpleVO vo : feedbackAnswers)
+			{
+				try {
+					Long trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryDAO.getTrainingcampFeedbackcategoryId(vo.getId());
+					if(trainingCampFeedbackCategoryId != null && trainingCampFeedbackCategoryId.longValue()>0)
+					{
+						TrainingCampFeedbackAnswer trainingCampFeedbackAnswer = new TrainingCampFeedbackAnswer();
+						trainingCampFeedbackAnswer.setTdpCadreId(tdpCadreId);
+						trainingCampFeedbackAnswer.setAnswer(vo.getName());
+						
+						trainingCampFeedbackAnswer.setTrainingCampFeedbackCategoryId(trainingCampFeedbackCategoryId);
+						trainingCampFeedbackAnswer.setInsertedTime(date.getCurrentDateAndTime());
+						trainingCampFeedbackAnswer.setUpdatedTime(date.getCurrentDateAndTime());
+						trainingCampFeedbackAnswer.setIsDeleted("N");
+						trainingCampFeedbackAnswerDAO.save(trainingCampFeedbackAnswer);
+					}
+					else
+						return "error";
+				} catch (Exception e) {
+					return "error";
+				}
+			}
 		}
 		catch (Exception e) {
 			LOG.error(" Error Occured in saveCadreFeedBackAnswers" ,e);
