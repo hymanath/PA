@@ -149,6 +149,7 @@ import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -1208,7 +1209,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        }
 	        if(mandalIds.size() > 0){
 	        	//0panchayatId,1panchayatName,2tehsilName
-	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(mandalIds);
+	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandalsByPublciationId(constituencyId,mandalIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 	        	for(Object[] panchayat:panchayatsList){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+(Long)panchayat[0]));
@@ -16443,10 +16444,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			{
 				List<BasicVO> activitiesLsit = new ArrayList<BasicVO>();
 				for (ActivitySubType activityType : activityTypeLsit) {
-					BasicVO vo = new BasicVO();
-					vo.setId(activityType.getActivitySubTypeId());
-					vo.setName(activityType.getSubType());
-					activitiesLsit.add(vo);
+					if(activityType.getIsDeleted().equalsIgnoreCase("N")){
+						BasicVO vo = new BasicVO();
+						vo.setId(activityType.getActivitySubTypeId());
+						vo.setName(activityType.getSubType());
+						activitiesLsit.add(vo);
+					}
 				}
 				
 				if(activitiesLsit != null && activitiesLsit.size()>0)
@@ -16561,8 +16564,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 			
-			Date startDate = format.parse(searchStartDateStr);
-			Date endDate = format.parse(searchEndDateStr);
+			Date startDate = null;
+			Date endDate = null;
+			
+			if(searchStartDateStr != null && searchStartDateStr.trim().length() > 0 && searchEndDateStr != null && searchEndDateStr.trim().length() > 0){
+				startDate = format.parse(searchStartDateStr);
+				endDate = format.parse(searchEndDateStr);
+			}
+			
 			
 			if(activityScopeId != null && activityScopeId.longValue()>0L)
 			{
@@ -17332,6 +17341,57 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			if(vo.getDay().longValue() == id.longValue())
 				return vo;
 		return null;
+	}
+	
+	public List<BasicVO> getDistrictsByUserId(Long userId,String isAdmin,String accessType,Long accessValue){
+		
+		List<BasicVO> basicVOList = new ArrayList<BasicVO>();
+		
+		try {
+			
+			if(isAdmin.equalsIgnoreCase("true")){
+				List<Object[]> districtsList = districtDAO.getDistrictsForState(1l);
+				
+				if(districtsList != null && districtsList.size() > 0){
+					for (Object[] objects : districtsList) {
+						BasicVO vo = new BasicVO();
+						
+						vo.setId((Long) (objects[0] != null ? objects[0]:0l));
+						vo.setName(objects[1] != null ? objects[1].toString():"");
+						
+						basicVOList.add(vo);
+					}
+				}
+			}
+			else{
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				
+				if(accessDistrictsList != null && accessDistrictsList.size() > 0){
+					for (Object[] objects : accessDistrictsList) {
+						BasicVO vo = new BasicVO();
+						
+						vo.setId((Long) (objects[0] != null ? objects[0]:0l));
+						vo.setName(objects[1] != null ? objects[1].toString():"");
+						
+						basicVOList.add(vo);
+					}
+				}else{
+					District district = districtDAO.get(accessValue);
+					
+					if(district != null){
+						BasicVO vo = new BasicVO();
+						
+						vo.setId(district.getDistrictId());
+						vo.setName(district.getDistrictName());
+						
+						basicVOList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return basicVOList;
 	}
 	
 	public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo)
