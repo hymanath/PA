@@ -26,8 +26,6 @@ import org.hibernate.annotations.NotFoundAction;
 public class ActivityInfoDocument extends BaseModel implements Serializable{
 	
 	private Long activityInfoDocumentId;
-	private Long activityDocumentId;
-	private Long activityAddressId;
 	private Long locationScopeId;
 	private Long locationValueAddress;
 	private Long insertedBy;
@@ -40,6 +38,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private User updatedUser;
 	private Long day;
 	private UserAddress userAddress;
+	
 	private String isDeleted;
 	
 	@Id
@@ -50,22 +49,6 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	public void setActivityInfoDocumentId(Long activityInfoDocumentId) {
 		this.activityInfoDocumentId = activityInfoDocumentId;
-	}
-	
-	@Column(name = "activity_document_id")
-	public Long getActivityDocumentId() {
-		return activityDocumentId;
-	}
-	public void setActivityDocumentId(Long activityDocumentId) {
-		this.activityDocumentId = activityDocumentId;
-	}
-	
-	@Column(name = "activity_address_id")
-	public Long getActivityAddressId() {
-		return activityAddressId;
-	}
-	public void setActivityAddressId(Long activityAddressId) {
-		this.activityAddressId = activityAddressId;
 	}
 	
 	@Column(name = "location_scope_id")
@@ -117,7 +100,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_document_id", insertable=false, updatable = false)
+	@JoinColumn(name="activity_document_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivityDocument getActivityDocument() {
@@ -156,7 +139,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 		this.day = day;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_address_id", insertable=false, updatable = false)
+	@JoinColumn(name="activity_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
