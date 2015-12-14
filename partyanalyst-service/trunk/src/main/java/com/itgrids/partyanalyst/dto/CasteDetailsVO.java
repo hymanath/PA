@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.List;
 
 public class CasteDetailsVO {
 	private String castName;
