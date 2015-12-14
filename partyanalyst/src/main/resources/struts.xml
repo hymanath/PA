@@ -11114,6 +11114,10 @@
 		      <param name="root">activitiesVOList</param>
 		    </result>
        </action>
-		
+	<action name="getQuestionnaireForScopeAction" class="activityAction" method="getQuestionnaireForScope">
+		<result type="json" name="success">
+			<param name="root">activityVO</param>
+		</result>
+	</action>
 </package>
 </struts>      
