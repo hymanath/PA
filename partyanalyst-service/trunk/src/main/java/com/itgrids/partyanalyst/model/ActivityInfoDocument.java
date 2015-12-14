@@ -32,6 +32,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long activityAddressId;
 	
 	private ActivityDocument activityDocument;
 	private User insertedUser;
@@ -155,6 +156,14 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name = "activity_address_id")
+	public Long getActivityAddressId() {
+		return activityAddressId;
+	}
+	public void setActivityAddressId(Long activityAddressId) {
+		this.activityAddressId = activityAddressId;
 	}
 	
 	
