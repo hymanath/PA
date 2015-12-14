@@ -1,15 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.utils.IConstants;
-
 import java.sql.SQLException;
 import java.util.List;
-
-import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
-import com.itgrids.partyanalyst.dao.columns.enums.StateColumnNames;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
@@ -18,6 +10,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
+
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.columns.enums.StateColumnNames;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class StateDAO extends GenericDaoHibernate<State, Long> implements IStateDAO {
@@ -190,6 +187,13 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		Query query = getSession().createQuery("select model.stateId , model.stateName from State model where model.stateId in (:stateIds)");
 		query.setParameterList("stateIds", stateIds);
 		return query.list();
+	}
+	
+	public Long getStateIdByStateName(String stateName)
+	{
+		Query query = getSession().createQuery("Select model.stateId from State model where model.stateName = :stateName");
+		query.setParameter("stateName",stateName);
+		return (Long) query.uniqueResult();
 	}
 	
 }
