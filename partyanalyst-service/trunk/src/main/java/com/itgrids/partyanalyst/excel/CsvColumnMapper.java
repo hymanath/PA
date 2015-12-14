@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.excel;
 
-import java.lang.reflect.Method;
-
 import jxl.Sheet;
 
 import org.apache.commons.lang.StringUtils;
