@@ -2915,6 +2915,7 @@
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="activityQuestionnaireOptionDAO" ref="activityQuestionnaireOptionDAO" />
 		
 	</bean>
 </beans>		
