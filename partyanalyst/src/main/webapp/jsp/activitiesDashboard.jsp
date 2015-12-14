@@ -488,67 +488,76 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-village villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<div class="panel-village villageNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
 			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
-				str+='<tr>';
-				str+='<td style="width:180px;">'+result.activityVoList[i].name+'</td>';
-				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
-			else
-				str+='<td class="dynChildWidth aligncenter"> - </td>';
-			if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
-					str+='<td class="dynChildWidth2 aligncenter">'+result.activityVoList[i].plannedCount+'</td>';
-			else
-				str+='<td class="dynChildWidth2 aligncenter"> - </td>';
-			if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
-			else
-				str+='<td class="dynChildWidth3 aligncenter"> - </td>';
-		/*	if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
-					str+='<td class="dynChildWidth2">'+result.activityVoList[i].ivrcoveredPerc+'</td>';
-			else
-				str+='<td class="dynChildWidth2"> - </td>';*/
-			if(result.activityVoList[i].ivrNotPlanned != null && result.activityVoList[i].ivrNotPlanned >0)
-					str+='<td class="dynChildWidth4 aligncenter">'+result.activityVoList[i].ivrNotPlanned+'</td>';
-			else
-				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
-			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
-			else
-				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
-			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
-			else
-				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
-			
-			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-					str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
-			else
-				str+='<td class="dynChildWidth7 aligncenter"> - </td>';
-			/*if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
-					str+='<td class="dynChildWidth2">'+result.activityVoList[i].infoCellcoveredPerc+'</td>';
-			else
-				str+='<td class="dynChildWidth2"> - </td>';*/
-			if(result.activityVoList[i].infoCellNotPlanned != null && result.activityVoList[i].infoCellNotPlanned >0)
-					str+='<td class="dynChildWidth8 aligncenter">'+result.activityVoList[i].infoCellNotPlanned+'</td>';
-			else
-				str+='<td class="dynChildWidth8 aligncenter"> - </td>';
-			if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
-			else
-				str+='<td class="dynChildWidth9 aligncenter"> - </td>';
-			/*if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
-					str+='<td class="dynChildWidth2">'+result.activityVoList[i].whatsAppCoveredPerc+'</td>';
-			else
-				str+='<td class="dynChildWidth2"> - </td>';*/
-			if(result.activityVoList[i].imagesCount != null && result.activityVoList[i].imagesCount >0)
-					str+='<td class="dynChildWidth10 aligncenter">'+result.activityVoList[i].imagesCount+'</td>';
-			else
-				str+='<td class="dynChildWidth10 aligncenter"> - </td>';
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+				{
+					str+='<tr class="bg_ef">';
+				}
+				else
+				{
+					str+='<tr>';
+				}
+					str+='<td style="width:180px;">'+result.activityVoList[i].name+'</td>';
+					if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+						str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
+					else
+						str+='<td class="dynChildWidth aligncenter"> - </td>';
+					if(result.activityVoList[i].plannedCount != null && result.activityVoList[i].plannedCount >0)
+							str+='<td class="dynChildWidth2 aligncenter">'+result.activityVoList[i].plannedCount+'</td>';
+					else
+						str+='<td class="dynChildWidth2 aligncenter"> - </td>';
+					if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
+							str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					else
+						str+='<td class="dynChildWidth3 aligncenter"> - </td>';
+				/*	if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
+							str+='<td class="dynChildWidth2">'+result.activityVoList[i].ivrcoveredPerc+'</td>';
+					else
+						str+='<td class="dynChildWidth2"> - </td>';*/
+					if(result.activityVoList[i].ivrNotPlanned != null && result.activityVoList[i].ivrNotPlanned >0)
+							str+='<td class="dynChildWidth4 aligncenter">'+result.activityVoList[i].ivrNotPlanned+'</td>';
+					else
+						str+='<td class="dynChildWidth4 aligncenter"> - </td>';
+					if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
+							str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
+					else
+						str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
+					if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
+							str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
+					else
+						str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
+					
+					if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
+							str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					else
+						str+='<td class="dynChildWidth7 aligncenter"> - </td>';
+					/*if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
+							str+='<td class="dynChildWidth2">'+result.activityVoList[i].infoCellcoveredPerc+'</td>';
+					else
+						str+='<td class="dynChildWidth2"> - </td>';*/
+					if(result.activityVoList[i].infoCellNotPlanned != null && result.activityVoList[i].infoCellNotPlanned >0)
+							str+='<td class="dynChildWidth8 aligncenter">'+result.activityVoList[i].infoCellNotPlanned+'</td>';
+					else
+						str+='<td class="dynChildWidth8 aligncenter"> - </td>';
+					if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
+							str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
+					else
+						str+='<td class="dynChildWidth9 aligncenter"> - </td>';
+					/*if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
+							str+='<td class="dynChildWidth2">'+result.activityVoList[i].whatsAppCoveredPerc+'</td>';
+					else
+						str+='<td class="dynChildWidth2"> - </td>';*/
+					if(result.activityVoList[i].imagesCount != null && result.activityVoList[i].imagesCount >0)
+							str+='<td class="dynChildWidth10 aligncenter">'+result.activityVoList[i].imagesCount+'</td>';
+					else
+						str+='<td class="dynChildWidth10 aligncenter"> - </td>';
+					
+					str+='</tr>';
 				
-				str+='</tr>';
+				
 				str+='</table>';
 				str+='</span>';
 		//	str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
@@ -578,11 +587,18 @@ function buildMandalResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading mandalNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<div class="panel-heading mandalNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
-				str+='<tr>';
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal ==0 )
+				{
+					str+='<tr class="bg_ef">';
+				} 
+				else{
+					str+='<tr>';
+				}
+				
 				str+='<td style="width:185px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
@@ -670,11 +686,18 @@ function buildConstituencyResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="accordion1Level1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading constiNameAnchorCls" role="tab" id="headingOneLevel1'+i+'">';
+			str+='<div class="panel-heading constiNameAnchorCls bg_ef" role="tab" id="headingOneLevel1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
-				str+='<tr>';
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal ==0)
+				{
+					str+='<tr class="bg_ef">';
+				}
+				else {
+					str+='<tr>';
+				}
+				
 				str+='<td style="width:185px;" class="removeDiv">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
@@ -799,11 +822,17 @@ function buildsLocationsResult(result,divId){
 			str+='<div class="panel-group m_0" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
+			str+='<div class="panel-heading bg_ef" role="tab" id="headingOneLevel1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
-			str+='<table class="table table-col table-condensed" style="display:inline" >';
-			str+='<tr>';
 			
+			str+='<table class="table table-col table-condensed" style="display:inline" >';
+			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+			{
+				str+='<tr class="bg_ef">';
+			}
+			else {
+				str+='<tr>';
+			}
 			str+='<td style="width:190px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
