@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import com.itgrids.partyanalyst.excel.ConstituencyBlock;
-import com.itgrids.partyanalyst.model.Constituency;
 
 public class UploadFormVo {
 	private File inputFile;
