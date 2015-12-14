@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.model.Panchayat;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements IPanchayatDAO{
 
@@ -267,4 +268,18 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		query.setParameterList("ids", ids);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllPanchayatsInMandalsByPublciationId(Long constituencyId,List<Long> ids,Long publicationId)
+	{
+		String queryString = "select distinct B.panchayat.panchayatId, B.panchayat.panchayatName,B.tehsil.tehsilName from  Booth B " +
+				"  where B.publicationDate.publicationDateId = :publicationId and B.constituency.constituencyId = :constituencyId " +
+				" and B.tehsil.tehsilId in (:ids) order by B.tehsil.tehsilName,B.panchayat.panchayatName";
+		
+		Query query = getSession().createQuery(queryString);
+		query.setParameterList("ids", ids);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
 }

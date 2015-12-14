@@ -19,6 +19,7 @@ public class ActivityVO implements Serializable{
 	private String ConductedDate;
 	private Long locationLevel;
 	private Long locationValue;
+	private Long districtId;
 	private Long constituencyId;
 	private Long mandalId;
 	private Long localElectionBodyId;
@@ -299,6 +300,12 @@ public class ActivityVO implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 	
 }
