@@ -59,7 +59,36 @@ public class ActivityVO implements Serializable{
 	private String percentage;
 	private String notPlannedPerc;
 	
+	private Long questionId;
+	private Long optionId;
+	private String others;
+	private Long count;
 	
+	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+	public Long getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	public String getOthers() {
+		return others;
+	}
+	public void setOthers(String others) {
+		this.others = others;
+	}
 	public String getIvrTotalPerc() {
 		return ivrTotalPerc;
 	}

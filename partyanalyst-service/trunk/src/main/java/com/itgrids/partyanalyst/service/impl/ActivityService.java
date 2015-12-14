@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.model.ActivityLevel;
+import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -2184,6 +2185,85 @@ public class ActivityService implements IActivityService{
 		}catch (Exception e) {
 			resultStatus.setResultCode(1);
 			LOG.error(" Exception Occured in deleteEventUploadFilebyActivityInfoDocId() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
+	
+	public ResultStatus saveActivityQuestionnaireDetails(final ActivityVO finalvo)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					Long activityLevelId = finalvo.getActivityLevelId();
+					
+					String activityLevelValueStr = "";
+					String locationIdStr = "";
+					Long locationLevelId = 0l;
+					Long locationValue = 0l;
+					Long locationLevel = 0l;
+					
+					if(activityLevelId == 1l){
+						activityLevelValueStr = finalvo.getLocationValue().toString().substring(0, 1);
+						locationIdStr = finalvo.getLocationValue().toString().substring(1);
+						locationLevelId = Long.parseLong(activityLevelValueStr);
+						locationValue = Long.parseLong(locationIdStr);
+								
+						if(locationLevelId == 11){
+							locationLevel = 6l;
+						}
+						else if(locationLevelId == 2l){
+							locationLevel = 8l;
+						}
+					}
+					else if(activityLevelId == 2l){
+						activityLevelValueStr = finalvo.getLocationValue().toString().substring(0, 1);
+						locationIdStr = finalvo.getLocationValue().toString().substring(1);
+						locationLevelId = Long.parseLong(activityLevelValueStr);
+						locationValue = Long.parseLong(locationIdStr);
+						
+						if(locationLevelId == 11){
+							locationLevel = 7l;
+						}
+						else if(locationLevelId == 2l){
+							locationLevel = 5l;
+						}
+						else if(locationLevelId == 3l){
+							locationLevel = 9l;
+						}
+					}
+					
+					Long activityLocationInfoId = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(locationLevel, locationValue);
+					
+					List<ActivityVO> voList = finalvo.getActivityVoList();
+					
+					if(voList != null && voList.size() > 0){
+						for (ActivityVO activityVO : voList) {
+							ActivityQuestionAnswer activityQuestionAnswer = new ActivityQuestionAnswer();
+							
+							activityQuestionAnswer.setActivityQuestionnaireId(activityVO.getQuestionId());
+							activityQuestionAnswer.setActivityLocationInfoId(activityLocationInfoId);
+							activityQuestionAnswer.setActivityOptionId(activityVO.getOptionId());
+							activityQuestionAnswer.setCount(activityVO.getCount());
+							activityQuestionAnswer.setOptionTxt(activityVO.getRemarks());
+							activityQuestionAnswer.setIsDeleted("N");
+							activityQuestionAnswer.setInsertedBy(finalvo.getId());
+							activityQuestionAnswer.setUpdatedBy(finalvo.getId());
+							activityQuestionAnswer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							activityQuestionAnswer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							
+							activityQuestionAnswerDAO.save(activityQuestionAnswer);
+						}
+					}
+				}
+			});
+			
+			resultStatus.setResultCode(0);
+		}catch (Exception e) {
+			resultStatus.setResultCode(1);
+			LOG.error(" Exception Occured in saveActivityQuestionnaireDetails() method, Exception - ",e);
 		}
 		return resultStatus;
 	}
