@@ -3,8 +3,6 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.itgrids.partyanalyst.model.AddressType;
-
 public class AddressVO implements Serializable {
 
 	/**
