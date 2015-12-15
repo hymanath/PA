@@ -17457,6 +17457,41 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return vo;
 	}
 	
+	public List<BasicVO> getAvailableDates(EventDocumentVO inputVo)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		
+		Date startDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		try{
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
+			{
+				startDate = format.parse(inputVo.getStrDate().trim().toString());
+				toDate = format.parse(inputVo.getEndDate().trim().toString());
+			}
+		 List<Object[]> list  = null;
+			
+				list = activityInfoDocumentDAO.getAvailableDates(inputVo,startDate,toDate,null);
+			
+			if(list != null && list.size() > 0)
+			{
+			for(Object[] params : list)
+			{
+				BasicVO vo = new BasicVO();
+				vo.setId((Long)params[0]);
+				vo.setName(params[1].toString());
+				returnList.add(vo);
+			}
+		}
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getAvailableDates", e);
+		}
+		return returnList;
+	}
+	
+	
 	public List<BasicVO> setLocationsList(List<Object[]> list)
 	{
 		List<BasicVO> returnList = new ArrayList<BasicVO>();
