@@ -1041,8 +1041,12 @@ public String getAllConstituencysForADistrict(){
 			String endDateString = jObj.getString("endDate");
 			Long activityScopeId =jObj.getLong("activityScopeId");
 			Long activityLevelId =jObj.getLong("activityLevelId");	
+			Long levelId = jObj.getLong("levelId");
 			Long stateId=jObj.getLong("stateId");
-			activitiesVOList=cadreCommitteeService.asemblyConstWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			if(levelId == 3l)
+				activitiesVOList=cadreCommitteeService.getDistrictWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			else
+				activitiesVOList=cadreCommitteeService.asemblyConstWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
