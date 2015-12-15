@@ -778,4 +778,32 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 		
 		return (Long) query.uniqueResult();
 	}
+	
+public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> distIds){
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append("" +
+		" select   model.constituency.district.districtId,count(*),count(conductedDate),model.activityScope.activity.noOfTimes " +
+		" from     ActivityLocationInfo model " +
+		" where    model.activityScopeId =:activityScopeId and model.constituency.district.districtId in (:distIds) ");
+		if(startDate!=null){
+			sb.append(" and date(model.plannedDate) >=:startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.plannedDate) <=:endDate ");
+		}
+		sb.append(" group by model.constituency.district.districtId ");
+		
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameterList("distIds",distIds);
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		return query.list();
+	}
 }
