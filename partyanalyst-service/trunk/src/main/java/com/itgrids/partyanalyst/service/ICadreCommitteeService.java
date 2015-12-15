@@ -164,5 +164,6 @@ public interface ICadreCommitteeService {
 	 public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo);
 	 public List<BasicVO> getDistrictsByUserId(Long userId,String isAdmin,String accessType,Long accessValue);
 	 public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo);
+		public List<BasicVO> getAvailableDates(EventDocumentVO inputVo);
 	 
 }
