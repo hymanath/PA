@@ -165,7 +165,8 @@
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
 			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES </h4>
+			<h4 class="panel-title" id="constituencyHeadingId" style="display:none">ASSEMBLY CONSTITUENCY WISE ACTIVITIES </h4>
+			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
 		  </div>
 		   <div class="panel-body">
 			<div id="buildAssConsActivity"></div>
@@ -870,10 +871,13 @@ getUserAccessDistrictList();
  
  $("#searchId").click(function(){
 	 
+	 $("#districtHeadingId").hide();
+	 $("#constituencyHeadingId").hide();
     $('#assemblydivId').show();
 	$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
 	var startDate = "";
 	var endDate = "";
+	var levelId = $("#activityLevelList option:selected").val();
 	
 	var dates=$('.searchDateCls ').val();
 		if(dates != null && dates.trim().length > 0){
@@ -886,6 +890,7 @@ getUserAccessDistrictList();
                   endDate:endDate,     //$("input[name=daterangepicker_end]").val(),
                   activityScopeId:$('#ActivityList').val(),
                   activityLevelId:$("#ActivityList option:selected").val(),
+				  levelId:levelId,
                   stateId:1
               };
        
@@ -896,7 +901,7 @@ getUserAccessDistrictList();
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
        if(result!=null && result.length>0){
-         buildAsemblyConstWiseActivities(result);
+			buildAsemblyConstWiseActivities(result,levelId);
        }else{
          $("#buildAssConsActivity").html("NO DATA AVAILABLE...");
        }
@@ -904,13 +909,22 @@ getUserAccessDistrictList();
     });   
    });
 
-  function buildAsemblyConstWiseActivities(result){
+  function buildAsemblyConstWiseActivities(result,levelId){
     
+	if(levelId == 3)
+		$("#districtHeadingId").show();
+	else
+		$("#constituencyHeadingId").show();
+	 
     var str ='';
     str+='<table class="table table-bordered table-responsive bg_ff dataTableDiv">';
           str+='<thead>';
             str+='<tr role="row">';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
+			if(levelId == 3)
+				str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center"> DISTRICT </th>';
+			else
+				str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
+              //str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL ACTIVITIES</th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">EXECUTED ACTIVITIES</th>';
@@ -1061,4 +1075,3 @@ getUserAccessDistrictList();
 </script>
 </body>
 </html>
-
