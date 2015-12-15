@@ -258,8 +258,8 @@
 		  <div class="modal-body">
 			<div id="questionsDivBodyId"></div>
 		  </div>
-		  <div class="modal-footer">
-			<button type="button" id="saveResult" class="btn btn-custom btn-success">Save</button>
+		  <div class="modal-footer" id="questionsDivFooterId">
+			<!--<button type="button" id="saveResult" class="btn btn-custom btn-success">Save</button>-->
 		  </div>
 		</div>
 	  </div>
@@ -784,7 +784,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								*/
 								str+='<td style="text-align:center;">';
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
-								//str+='<input type="button" value="Update Questionnaire" class="btn btn-success btn-xs" id="updateQBtnId"/>';
+								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								str+='</td>';
 								str+='</tr>';
 							}
@@ -961,6 +961,7 @@ getUserAccessDistrictList();
 	
 	$(document).on("click","#updateQBtnId",function(){	
 		var scopeId = $("#ActivityList").val();
+		var locationValue = $(this).attr("attr_location_Value");
 		if(scopeId==null || scopeId==0){
 			alert("Please Select Activity Name");
 			return false;
@@ -1004,6 +1005,7 @@ getUserAccessDistrictList();
 						str+='</div>';
 						str+='</div>';
 					}
+					$("#questionsDivFooterId").html('<button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+locationValue+'">Save</button>');
 				}else{
 					str+='<h4>No Data Found.</h4>';
 				}
@@ -1040,10 +1042,10 @@ getUserAccessDistrictList();
 		});
 		
 		 var jsObj={
-		         activityScopeId:activityScopeId,
-				 activityLevelId:activityLevelId,
-				 activityLevelValue:activityLevelValue,
-				 responseArray:resultArr
+		         activityScopeId : $("#ActivityList").val(),
+				 activityLevelId : $("#activityLevelList").val(),
+				 activityLevelValue : $(this).attr("attr_location_Value"),
+				 responseArray : resultArr
 		       };
 			   
 		 $.ajax({
