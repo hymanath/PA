@@ -561,7 +561,13 @@ function buildVillageResult(result,divId,locationId)
 				str+='</table>';
 				str+='</span>';
 		//	str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+		if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+				{
+					str+='';
+				}
+				else {
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+				}
 				str+='</div>';
 					str+='</div>';
 					str+='<div id="dayWisePanchayatInfo'+result.activityVoList[i].id+'" class="daywiseSCls"></div>';
@@ -656,7 +662,14 @@ function buildMandalResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0 )
+				{
+					str+='';
+				}
+				else {
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+				}
+			
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
 					str+='<div id="panchayatLevelId'+i+'" class="villageListCls"></div>';
@@ -690,7 +703,7 @@ function buildConstituencyResult(result,divId,locationId)
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
-				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal ==0)
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 				{
 					str+='<tr style="background:#F4A460">';
 				}
@@ -757,7 +770,14 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\')" >Day Wise</button>';
+					if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+				{
+					str+='';
+				}
+				else {
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\')" >Day Wise</button>';
+				}
+			
 				str+='</div>';
 				
 				str+='<div id="collapseOne1LevelMandal1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
@@ -894,7 +914,13 @@ function buildsLocationsResult(result,divId){
 			str+='</a>';
 			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			//str+='<button class="btn btn-custom btn-hover btn-xs " href="javascript:{getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\');}">Day Wise</button>';
-			str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+			{
+				str+='';
+			}
+			else {
+				str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+			}
 			str+='</div>';			
 			str+='<div id="constituencyLevelId'+i+'" class="constiListCls"> </div>';
 			str+='<div id="collapseOneLevel1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
