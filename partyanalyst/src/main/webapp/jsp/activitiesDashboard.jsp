@@ -488,13 +488,13 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading panel-village villageNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<div class="panel-heading panel-village villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
 			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
 				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 				{
-					str+='<tr class="bg_ef">';
+					str+='<tr style="background:#F4A460">';
 				}
 				else
 				{
@@ -587,13 +587,13 @@ function buildMandalResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading mandalNameAnchorCls bg_ef" role="tab" id="headingOneLevelMandal1'+i+'">';
+			str+='<div class="panel-heading mandalNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
-				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal ==0 )
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0 )
 				{
-					str+='<tr class="bg_ef">';
+					str+='<tr style="background:#F4A460">';
 				} 
 				else{
 					str+='<tr>';
@@ -686,13 +686,13 @@ function buildConstituencyResult(result,divId,locationId)
 			str+='<div class="panel-group panel-group1 m_0" id="accordion1Level1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading constiNameAnchorCls bg_ef" role="tab" id="headingOneLevel1'+i+'">';
+			str+='<div class="panel-heading constiNameAnchorCls" role="tab" id="headingOneLevel1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal ==0)
 				{
-					str+='<tr class="bg_ef">';
+					str+='<tr style="background:#F4A460">';
 				}
 				else {
 					str+='<tr>';
@@ -822,13 +822,13 @@ function buildsLocationsResult(result,divId){
 			str+='<div class="panel-group m_0" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
-			str+='<div class="panel-heading bg_ef" role="tab" id="headingOneLevel1'+i+'">';
+			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
 			
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 			{
-				str+='<tr class="bg_ef">';
+				str+='<tr style="background:#F4A460">';
 			}
 			else {
 				str+='<tr>';
