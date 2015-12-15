@@ -12,4 +12,5 @@ public interface ITrainingCampFeedbackCategoryDAO extends GenericDao<TrainingCam
 	 public List<Object[]> getCategoriesByIds(Long programId,Long campId,Long batchId,List<Long> catgoryIds);
 	 public List<Object[]> getOptionsForQuestions(Long programId,Long campId,Long batchId,List<Long> catgoryIds);
 	 public List<Object[]> getParentAndChildCategoryIds(List<Long> fbcatIds);
+	 public Long getTrainingcampFeedbackcategoryId(Long fbcatId);
 }
