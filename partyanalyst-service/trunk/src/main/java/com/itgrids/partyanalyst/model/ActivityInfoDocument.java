@@ -140,7 +140,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 		this.day = day;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_address_id")
+	@JoinColumn(name="activity_address_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
