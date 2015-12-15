@@ -98,6 +98,11 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 		 query.setParameterList("fbcatIds", fbcatIds);
 		 return query.list();
 	 }
-	 
+	 public Long getTrainingcampFeedbackcategoryId(Long fbcatId){
+		 Query query = getSession().createQuery(" select distinct model.trainingCampFeedbackCategoryId from " +
+		 		"TrainingCampFeedbackCategory model where model.feedbackCategoryId in (:fbcatId)");
+		 query.setParameter("fbcatId", fbcatId);
+		 return (Long) query.uniqueResult();
+	 }
 	 
 }
