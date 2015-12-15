@@ -17532,4 +17532,108 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return returnList;
 	}
+	
+public List<BasicVO> getDistrictsListByUserId(Long userId,String accessType,Long accessValue){
+		
+		List<BasicVO> basicVOList = new ArrayList<BasicVO>();
+		
+		try {
+			
+			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+			
+			if(accessDistrictsList != null && accessDistrictsList.size() > 0){
+				for (Object[] objects : accessDistrictsList) {
+					BasicVO vo = new BasicVO();
+					
+					vo.setId((Long) (objects[0] != null ? objects[0]:0l));
+					vo.setName(objects[1] != null ? objects[1].toString():"");
+					
+					basicVOList.add(vo);
+				}
+			}
+			
+			if(accessType.equalsIgnoreCase("district")){
+				District district = districtDAO.get(accessValue);
+				
+				if(district != null){
+					BasicVO vo = new BasicVO();
+					
+					vo.setId(district.getDistrictId());
+					vo.setName(district.getDistrictName());
+					
+					basicVOList.add(vo);
+				}
+			}
+			else if(accessType.equalsIgnoreCase("state")){
+				List<Object[]> districtsList = districtDAO.getDistrictsForState(1l);
+				
+				if(districtsList != null && districtsList.size() > 0){
+					for (Object[] objects : districtsList) {
+						BasicVO vo = new BasicVO();
+						
+						vo.setId((Long) (objects[0] != null ? objects[0]:0l));
+						vo.setName(objects[1] != null ? objects[1].toString():"");
+						
+						basicVOList.add(vo);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return basicVOList;
+	}
+
+public List<ActivityVO> getDistrictWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId){
+	List<ActivityVO> finalList=null;
+	SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+	try{
+		 
+		List<Long> distIds = new ArrayList<Long>(0);
+		List<BasicVO> districtList = getDistrictsListByUserId(userId,accessType,accessValue);
+		 if(districtList !=null && districtList.size()>0){
+			 
+			 finalList=new ArrayList<ActivityVO>(0);
+			 for(BasicVO vo:districtList){
+				 ActivityVO distVO=new ActivityVO();
+				 distVO.setId(vo.getId());
+				 distVO.setName(vo.getName());
+				 distVO.setTotalCount(0l);
+				 distVO.setPlannedCount(1l);
+				 distVO.setConductedCount(0l);
+				 distVO.setNonConductedCount(0l);
+				 finalList.add(distVO);
+				 distIds.add(distVO.getId());
+			 }
+			 
+			//Dates
+			 Date startDate=null;
+			 Date endDate=null;
+			 if(startDateString!=null && startDateString.trim().length()>0){
+				 startDate=sdf.parse(startDateString);
+			 }
+			 if(endDateString!=null && startDateString.trim().length()>0){
+				 endDate=sdf.parse(endDateString);
+			 }
+			 
+			 //planned data
+			 List<Object[]> plannedlist=activityLocationInfoDAO.getDistrictWiseDetails(startDate,endDate,activityScopeId,distIds);
+			 if(plannedlist!=null && plannedlist.size()>0){
+				 for(Object[] obj:plannedlist){
+					 Long distId=(Long)obj[0];
+					 ActivityVO distvo=getMatchedConstVO(distId,finalList);
+					 if(distvo!=null){
+						 distvo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+						 distvo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
+						 distvo.setNonConductedCount(distvo.getPlannedCount()-distvo.getConductedCount());
+					}
+				 }
+			 }
+		 }
+	}catch(Exception e){
+		LOG.error("Exception raised in getDistrictWiseActivities", e);
+	}
+	return finalList;
+}
 }
