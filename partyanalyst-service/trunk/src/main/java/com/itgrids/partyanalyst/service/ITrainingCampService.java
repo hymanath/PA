@@ -123,8 +123,9 @@ public interface ITrainingCampService {
 	public List<TrainingCampVO> getFeedBackCountsOfTraining();
 	public List<IdNameVO> getProgramsForFeedBack();
 	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId);
-	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,Long programId,String type);
+	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,List<Long> catrgoryIds,Long programId,String type);
 	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type);
 	public List<IdNameVO> getAllDistrictsByState(Long stateId);
 	public List<IdNameVO> getAllConstituencysByDistrict(Long districtId);
+	public List<IdNameVO> getAllCategories();
 }
