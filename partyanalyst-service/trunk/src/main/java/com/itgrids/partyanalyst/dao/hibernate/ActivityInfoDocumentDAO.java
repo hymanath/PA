@@ -29,12 +29,12 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		{
 			if(inputVO.getLocationValue() == 36)
 			{
-				str.append(" and model.userAddress.district.districtId <= 10 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
 			
 			if(inputVO.getLocationValue() == 1)
 			{
-				str.append(" and model.userAddress.district.districtId >= 11 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
 		}
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
@@ -62,7 +62,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
-			if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
 		}
 		if(startDate != null)
@@ -109,14 +109,13 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		{
 			if(inputVO.getLocationValue() == 36)
 			{
-				str.append(" and model.userAddress.district.districtId <= 10 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
 			
 			if(inputVO.getLocationValue() == 1)
 			{
-				str.append(" and model.userAddress.district.districtId >= 11 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
-			
 		}
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
@@ -144,7 +143,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
-			if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
 		}
 		if(startDate != null)
@@ -176,14 +175,13 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		{
 			if(inputVO.getLocationValue() == 36)
 			{
-				str.append(" and model.userAddress.district.districtId <= 10 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
 			
 			if(inputVO.getLocationValue() == 1)
 			{
-				str.append(" and model.userAddress.district.districtId >= 11 ");
+				str.append(" and model.userAddress.state.stateId = :locationValue ");
 			}
-			
 		}
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
@@ -216,7 +214,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
-			if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
 		}
 		if(startDate != null)
