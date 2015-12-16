@@ -129,7 +129,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		
 		str.append(" select model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCadre.mobileNo," +
 				" model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId,model.trainingCampFeedbackCategory.feedbackCategory.categoryName," +
-				" model.answer " +
+				" model.answer,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.image " +
 				" from TrainingCampFeedbackAnswer model ");
 		
 		str.append(" where model.trainingCampFeedbackCategory.isDeleted='N' ");
@@ -143,6 +143,9 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		if(programId !=null && programId>0){
 			str.append(" and  model.trainingCampFeedbackCategory.trainingCampProgramId = :programId  ");
 		}
+		
+		str.append(" group by model.tdpCadre.tdpCadreId,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId " +
+				" order by  model.tdpCadre.firstname ");
 		
 		Query query = getSession().createQuery(str.toString());
 		

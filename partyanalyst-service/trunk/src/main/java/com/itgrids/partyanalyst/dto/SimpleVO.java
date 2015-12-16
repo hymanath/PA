@@ -66,9 +66,11 @@ public class SimpleVO implements java.io.Serializable{
    private int twoDaysNIACount=0;
    private int threeDaysNIACount=0;
    
+   private Long constituencyId;
+   private String constituencyName;
    
    
-	public int getOneDayNIACount() {
+   public int getOneDayNIACount() {
 		return oneDayNIACount;
 	}
 	public void setOneDayNIACount(int oneDayNIACount) {
@@ -85,6 +87,18 @@ public class SimpleVO implements java.io.Serializable{
 	}
 	public void setThreeDaysNIACount(int threeDaysNIACount) {
 		this.threeDaysNIACount = threeDaysNIACount;
+	}
+	public Long getConstituencyId() {
+	return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 	public Long getCategoryId() {
 	return categoryId;
