@@ -18,8 +18,6 @@
 <link href="dist/activityDashboard/Slick/slick.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Slick/slick-theme.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/FancyBox/jquery.fancybox.css" rel="stylesheet" type="text/css">
-<link href="dist/Slick/slick.css" rel="stylesheet" type="text/css">
-<link href="dist/Slick/slick-theme.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 
 .dk-selected 
@@ -146,7 +144,21 @@
   <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
 </div>
 
-
+<!-------start popup build------------>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+       <div id="buildPoupupImage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--------End Popup build----------->
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/custom.js" type="text/javascript"></script>
@@ -157,8 +169,9 @@
 <script src="dist/activityDashboard/FancyBox/jquery.fancybox.js" type="text/javascript"></script>
 <script src="js/utility.js" type="text/javascript"></script>
 <script src="dist/SelectDropDown/dropkick.js" type="text/javascript"></script>
-<script src="dist/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
+	var GlobalPopupScope;
+	var GlobalPopuplocation;
 $(".select").dropkick();	
 $(".panel-heading","click",function(){
 	if($(this).find(".accordion-toggle,.PlusnMinusSign1,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){
@@ -168,6 +181,16 @@ $(".panel-heading","click",function(){
 		$(this).removeClass("bod")
 	}
 });
+$(".panel-headingModal").click(function(){
+	if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
+		$(this).parent().parent().find(".bodM").removeClass("bodM");
+		$(this).addClass("bodM")
+	}else{
+		$(this).removeClass("bodM");
+	}
+});
+
+	  
 
 $(function () {
 	var cb = function(start, end, label) {
@@ -235,9 +258,19 @@ $(document).on('click', '.panel-heading', function(){
 	}else{
 		$(this).addClass("bod")
 		$(this).addClass("bod-b");
-		$(".villageDays").hide();
+		//$(".villageDays").hide();
 	}
 });
+$(".panel-headingModal").click(function(){
+	if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
+		$(this).parent().parent().find(".bodM").removeClass("bodM");
+		$(this).addClass("bodM")
+	}else{
+		$(this).removeClass("bodM");
+	}
+});
+
+		
 $(document).on('click','.ranges li',function(){
     if($(this).html()!='Custom'){
 		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
@@ -566,9 +599,11 @@ function buildVillageResult(result,divId,locationId)
 					str+='';
 				}
 				else {
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
 				}
 				str+='</div>';
+			/*str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+				str+='</div>';*/
 					str+='</div>';
 					str+='<div id="dayWisePanchayatInfo'+result.activityVoList[i].id+'" class="daywiseSCls"></div>';
 				str+='</div>';
@@ -579,6 +614,15 @@ function buildVillageResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
+	setTimeout(function(){	
+	$('.slick-training').slick({
+      dots: false,
+      slide: 'li',
+      infinite: false,
+      speed: 300,
+      variableWidth: true,
+      });
+	},300)
 }
 
 //mmm
@@ -662,14 +706,14 @@ function buildMandalResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0 )
+			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0 )
 				{
 					str+='';
 				}
 				else {
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
 				}
-			
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
 					str+='<div id="panchayatLevelId'+i+'" class="villageListCls"></div>';
@@ -686,6 +730,15 @@ function buildMandalResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
+	setTimeout(function(){	
+	$('.slick-training').slick({
+      dots: false,
+      slide: 'li',
+      infinite: false,
+      speed: 300,
+      variableWidth: true,
+      });
+	},300);
 }
 //ccc
 function buildConstituencyResult(result,divId,locationId)
@@ -770,14 +823,14 @@ function buildConstituencyResult(result,divId,locationId)
 				str+='</table>';
 				str+='</a>';
 				//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
-					if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
+			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')" >Day Wise</button>';
+				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 				{
 					str+='';
 				}
 				else {
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\')" >Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')" >Day Wise</button>';
 				}
-			
 				str+='</div>';
 				
 				str+='<div id="collapseOne1LevelMandal1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevel1'+i+'">';
@@ -795,6 +848,15 @@ function buildConstituencyResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
+	setTimeout(function(){	
+	$('.slick-training').slick({
+      dots: false,
+      slide: 'li',
+      infinite: false,
+      speed: 300,
+      variableWidth: true,
+      });
+	},300)
 }
 /*
 if(searchType == 'mandal'){
@@ -914,12 +976,13 @@ function buildsLocationsResult(result,divId){
 			str+='</a>';
 			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs"><i class="glyphicon glyphicon-align-justify"></i></button>';
 			//str+='<button class="btn btn-custom btn-hover btn-xs " href="javascript:{getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\');}">Day Wise</button>';
+			//str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
 			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 			{
 				str+='';
 			}
 			else {
-				str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\')">Day Wise</button>';
+				str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
 			}
 			str+='</div>';			
 			str+='<div id="constituencyLevelId'+i+'" class="constiListCls"> </div>';
@@ -938,7 +1001,15 @@ function buildsLocationsResult(result,divId){
 	str+='</table>';
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-
+	setTimeout(function(){	
+	$('.slick-training').slick({
+      dots: false,
+      slide: 'li',
+      infinite: false,
+      speed: 300,
+      variableWidth: true,
+      });
+	},300)
 }
 function dynamicwidth()
 {
@@ -954,7 +1025,7 @@ function dynamicwidth()
 	$(".dynChildWidth").css("width",$(".getChildWidth").width()+15);
 }
 
-function getDaywiseInfo(searchType,locationId,divId)
+function getDaywiseInfo(searchType,locationId,divId,locationName)
 {
 	$(".daywiseSCls").html("");	
 	var isOpened = $("#"+divId+"").hasClass("opened");	
@@ -1011,6 +1082,7 @@ function getDaywiseInfo(searchType,locationId,divId)
 				activityLevelId:activityLevelId,   //1
 				startDate:fromDateStr,   //30-11-2015
 				endDate:toDateStr,     //08-12-2015
+				locationName:locationName,
 				task:"getActivityDetailsBySearchCriteria"
 				};
 					$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -1032,13 +1104,12 @@ function getDaywiseInfo(searchType,locationId,divId)
 
 function buildDayWiseResults(result,divId,jObj)
 {
+
 	var str='';
-	
 	str+='<div>';
 	str+='<ul class="villageDays getwidthForRes">';
 	if(result.activityVoList != null && result.activityVoList.length>0)
 	{
-		
 		for(var i in result.activityVoList)
 		{
 			str+='<li>';
@@ -1100,11 +1171,12 @@ function buildDayWiseResults(result,divId,jObj)
 				str+='<td class="dynChildWidth10 aligncenter"> - </td>';
 			str+='</tr>';
 			str+='</table>';
-			/*var regularExp = /\((.*)\)/;
+			var regularExp = /\((.*)\)/;
 			var day = result.activityVoList[i].name.match(regularExp)[1];
 			str+='<ul class="slick-training slick'+day.trim()+'" id="'+divId+'slick'+day.trim()+'" style="display:none;">';
 		
-			str+='</ul>';*/
+			str+='</ul>';
+			
 
 			str+='</li>';
 		}
@@ -1116,6 +1188,7 @@ function buildDayWiseResults(result,divId,jObj)
 	var getWidth=$(".getwidthForRes").width()-80;
 	var responsive=$("#alignmentWidth").width();
 	$(".slick-training").css("width",getWidth);
+	setTimeout(function(){	
 	$('.slick-training').slick({
       dots: false,
       slide: 'li',
@@ -1123,7 +1196,7 @@ function buildDayWiseResults(result,divId,jObj)
       speed: 300,
       variableWidth: true,
       });
-	  
+	},300)
 	  $(".slick-training li").click(function(){
 	$(".slick-training-modal").css("width","90%");
 	$('.slick-training-modal').slick({
@@ -1151,10 +1224,10 @@ function buildDayWiseResults(result,divId,jObj)
 	  focusOnSelect: true,
 	  variableWidth: true
 	});
-	$('.slider-nav li:first-child').trigger('click');
+	//$('.slider-nav li:first-child').trigger('click');
 })
-	
-	//getEventDocuments(divId,jObj);
+	getEventDocuments(divId,jObj);
+
 }
 
 function getDetails(){
@@ -1162,15 +1235,32 @@ function getDetails(){
 	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
 }
 
-function getEventDocuments(divId,jObj)
+var globallocationScope;
+var globallocationValue;
+var globallocationName;
+var globalActivityScope;
+var globalImages;
+function getEventDocuments(divId,Obj)
 {
 	
+	 var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
 	 var activityId = $("#ActivityList").val();
+	  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
 		var jObj = {
-		activityId:jObj.activityScopeId,
-		locationScope:jObj.searchType,
-		locationValue:jObj.locationId,		
+		activityId:Obj.activityScopeId,
+		locationScope:Obj.searchType,
+		locationValue:Obj.locationId,		
 		day:0,
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		locationName:Obj.locationName,
 		task:""
 		};
 		$.ajax({
@@ -1178,11 +1268,22 @@ function getEventDocuments(divId,jObj)
           url: 'getEventDocumentsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			globallocationScope = '';
+			globallocationValue = '';
+			globallocationName = '';
+			globalActivityScope ='';
+			globallocationScope = jObj.locationScope;
+			globallocationValue = jObj.locationValue;
+			globallocationName = jObj.locationName;
+			globalActivityScope = jObj.activityId;
 			buildDayWiseImages(result,divId);
-		});
+			
+			});
 }
 function buildDayWiseImages(result,divId)
 {
+	globalPopupresult = "";
+	globalPopupresult = result;
 	if(result != null)
 	{
 		for(var i in result)
@@ -1191,22 +1292,752 @@ function buildDayWiseImages(result,divId)
 			for(var j in result[i].subList)
 			{
 			str+='<li>';
-			str+='<a class="fancybox" rel="group" href="activity/'+result[i].subList[j].path+'"><img src="activity/'+result[i].subList[j].path+'" alt="" style="height:25px" /></a>';
+			str+='<img src="activity_documents/'+result[i].subList[j].path+'" alt="" style="height:25px" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
 			str+='</li>';	
 			}
 		$("#"+divId+"slickDay-"+result[i].day).css("display","block");	
 		$("#"+divId+"slickDay-"+result[i].day).html(str);
+		
 	}
 	}
-	
-	
+ var getWidth=$(".getwidthForRes").width()-80;
+		var responsive=$("#alignmentWidth").width();
+		$(".slick-training").css("width",getWidth);
+		
+		$('.slick-training').slick({
+		  dots: false,
+		  slide: 'li',
+		  infinite: false,
+		  speed: 300,
+		  variableWidth: true,
+		  });
+		
 }
 
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
 
+$(document).on('click', '.Imagepopup', function(){	
+   $("#myModal").modal("show");
+   
+   var str='';
+   
+    str+='<div class="row">';
+			 str+='<div class="col-md-9">';
+				 str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+					<!-- Brand and toggle get grouped for better mobile display -->
+					 str+='<div class="navbar-header">';
+					   str+='<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">';
+						 str+='<span class="sr-only">Toggle navigation</span>';
+						 str+='<span class="icon-bar"></span>';
+						 str+='<span class="icon-bar"></span>';
+						 str+='<span class="icon-bar"></span>';
+					   str+='</button>';
+					 str+='</div>';
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					 str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
+						/* str+='<li class="active"><a href="#">Day 1 <span class="sr-only">(current)</span></a></li>';
+						 str+='<li><a href="#">Day 2</a></li>';
+						 str+='<li><a href="#">Day 3</a></li>';
+						 str+='</li>';*/
+					   str+='</ul>';
+					 str+='</div>';<!-- /.navbar-collapse -->
+				 str+='</nav>';
+				 str+='<div class="bg_cc pad_10" id="popupImages">';
+					 /*str+='<ul class="slider-for">';
+						 str+='<li><img src="activity_documents /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="activity_documents /Desert.jpg"></li>';
+						
+					 str+='</ul>';
+					 str+='<ul class="slider-nav">';
+						 str+='<li><img src="activity_documents /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="activity_documents /Desert.jpg"></li>';
+					 str+='</ul>';*/
+				 str+='</div>';
+			 str+='</div>';
+			str+='<div class="col-md-3" style="background:#fff;box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);position:absolute;bottom:0px;right:0px;top:0px;padding:0px" id="locationsPopup">';
+				/* str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+				   str+='<div class="panel panel-default panel-custommodal">';
+					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModal">';
+					   str+='<a role="button" class="accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionModal" href="#collapseOneModal" aria-expanded="true" aria-controls="collapseOneModal">';
+						 str+='<h4 class="panel-title">Vijayanagaram';
+						 str+='</h4>';
+					   str+='</a>';
+					 str+='</div>';
+					 str+='<div id="collapseOneModal" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneModal">';
+					   str+='<div class="panel-body pad_0">';
+						  str+='<ul class="villageDaysModal">';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 2</a></li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 3</a></li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 4</a></li>';
+						  str+='</ul>';
+					   str+='</div>';
+					 str+='</div>';
+				   str+='</div>';
+				   str+='<div class="panel panel-default panel-custommodal">';
+					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingTwo">';
+					 str+='<a class="collapsed accordionmodal-toggle" role="button" data-toggle="collapse" data-parent="#accordionModal" href="#collapseTwoModal" aria-expanded="false" aria-controls="collapseTwoModal">';
+						 str+='<h4 class="panel-title">Srikakulam';
+						 str+='</h4>';
+					 str+='</a>';
+					 str+='</div>';
+					 str+='<div id="collapseTwoModal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">';
+					   str+='<div class="panel-body pad_0">';
+						  str+='<ul class="villageDaysModal">';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 2</a> </li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 3</a> </li>';
+							 str+='<li><span class="line"/></span><a href="#">Constituency 4</a> </li>';
+						  str+='</ul>';
+					   str+='</div>';
+					 str+='</div>';
+				   str+='</div>';
+				   str+='<div class="panel panel-default panel-custommodal">';
+					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingThreeModal">';
+					 str+='<a class="collapsed accordionmodal-toggle" role="button" data-toggle="collapse" data-parent="#accordionModal" href="#collapseThreeModal" aria-expanded="false" aria-controls="collapseThreeModal">';
+						 str+='<h4 class="panel-title">Khammam';	
+						 str+='</h4>';
+					str+='</a>';
+					str+='</div>';
+					str+='<div id="collapseThreeModal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreeModal">';
+					 str+='<div class="panel-body pad_0">';
+						 str+='<ul class="villageDaysModal">';
+							str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							str+='<li><span class="line"/></span><a href="#">Constituency 2</a></li>';
+							str+='<li><span class="line"/></span><a href="#">Constituency 3</a></li>';
+							str+='<li><span class="line"/></span><a href="#">Constituency 4</a></li>';
+						 str+='</ul>';
+					  str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+				str+='</div>';*/
+			str+='</div>';
+		str+='</div>';
+		
+		$("#buildPoupupImage").html(str);
+		$(".panel-headingModal").click(function(){
+			if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
+				$(this).parent().parent().find(".bodM").removeClass("bodM");
+				$(this).addClass("bodM")
+			}else{
+				$(this).removeClass("bodM");
+			}
+		});
+		setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 3,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			  centerMode: true,
+			  focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
+		/*$(".slick-training li").click(function(){
+			 $(".slick-training-modal").css("width","90%");
+			$('.slick-training-modal').slick({
+			  dots: false,
+			  slide: 'li',
+			  infinite: false,
+			  speed: 300,
+			  variableWidth: true,
+			  });
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 3,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			  centerMode: true,
+			  focusOnSelect: true,
+			  variableWidth: true
+			});
+			$('.slider-nav li:first-child').trigger('click');
+		}) */
+//getLocationsForPopup();
+
+
+
+buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
+buildLocationsForPopup(globallocationScope,globallocationValue,globalActivityScope);
+
+});
+	function getAvailableDatesForPopup(locationScope,locationValue)
+	{
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	  var activityScopeId = $("#ActivityList").val();
+	 if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+	 var locationScope ="state";
+	 var locationValue =0;
+		var jObj = {
+		activityId:activityScopeId,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getAvailableDatesForActivitiesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildAvailableDatesPopup1(result);
+		});
+}
+
+
+/*function getLocationsForPopup()
+{
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	 var activityScopeId = $("#ActivityList").val();
+	 var activityLevelId = $("#activityLevelList").val();
+	  var locationScope ="state";
+	   if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+	 var locationValue =0;
+		var jObj = {
+		activityId:activityScopeId,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getLocationsHierarchyForEventAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDistrictsForPopup(result,'locationsPopup');
+		});
+	
+}*/
+
+function getLocationsForPopupcli(locationScope,locationValue,divId,subLevel)
+{
+	
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	 var activityScopeId = $("#ActivityList").val();
+	 if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+	  var locationScope =locationScope;
+	 var locationValue =locationValue;
+		var jObj = {
+		activityId:activityScopeId,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getLocationsHierarchyForEventAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildSublevelLocationsForPopup1(result,divId,subLevel)
+		});
+}
+
+function getAvailableDatesForPopupcli(locationScope,locationValue)
+{
+	 $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	 var activityScopeId = $("#ActivityList").val();
+	 if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+	  var locationScope =locationScope;
+	 var locationValue =locationValue;
+		var jObj = {
+		activityId:activityScopeId,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getAvailableDatesForActivitiesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildAvailableDatesPopup1(result,jObj);
+		});
+}
+
+function buildAvailableDatesPopup1(result,jObj)
+{
+	var str ='';
+	for(var i in result)
+	{
+		
+		
+		str+='<li class="daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+	}
+	$("#popupDaysDiv").html(str);
+	
+			GlobalPopupScope = jObj.locationScope;
+				GlobalPopuplocation =jObj.locationValue;
+				
+	
+}
+/*function buildDistrictsForPopup(resultList,divId)
+{
+	var str = '';
+	var result = resultList.locationsList;
+	 str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+			for(var i in result)
+				   {
+					   str+='<div class="panel panel-default panel-custommodal m_0">';
+						  str+='<div class="panel-heading panel-headingModal popupDist" role="tab" id="headingdistrict'+result[i].id+'Modal" attr='+result[i].id+'>';
+						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapsedistrict'+result[i].id+'Modal" aria-expanded="true" aria-controls="collapsedistrict'+result[i].id+'Modal">';
+							 str+='<h4 class="panel-title popupTitle" attr="'+result[i].name+'">'+result[i].name+'';
+							 str+='</h4>';
+						   str+='</a>';
+						 str+='</div>';
+						 str+='<div id="collapsedistrict'+result[i].id+'Modal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingdistrict'+result[i].id+'Modal">';
+						   str+='<div class="panel-body pad_0">';
+							  str+='<div class="popupConstituencies" id="popupdistConstituencies'+result[i].id+'" style="margin-left:10px;">';
+								// str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							str+='</div>';
+						   str+='</div>';
+						 str+='</div>';
+						 str+='</div>';
+					}
+			  str+='</div>';
+				$("#"+divId).html(str);
+			
+}*/
+
+function buildLocationsForPopup(locationScope,locationValue,ActivityScope)
+{
+	$("#myModalLabel").html(''+globallocationName+'');
+	var subLeveldivId = '';
+	if(locationScope == "state")
+	subLeveldivId = "popupstateConstituencies"+locationValue;
+		if(locationScope == "district")
+		subLeveldivId = "popupdistConstituencies"+locationValue;
+		if(locationScope == "constituency")
+		subLeveldivId = "constiSubLevel"+locationValue;
+		if(locationScope == "mandal")
+		subLeveldivId= "mandalSubLevel"+locationValue;
+		var str = '';
+		str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+			
+					   str+='<div class="panel panel-default panel-custommodal m_0">';
+						  str+='<div class="panel-heading panel-headingModal popupLevel" role="tab" id="headinglevel'+locationValue+'Modal" attr='+locationValue+'>';
+						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapselevel'+locationValue+'Modal" aria-expanded="true" aria-controls="collapselevel'+globallocationValue+'Modal">';
+							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">'+globallocationName+'';
+							 str+='</h4>';
+						   str+='</a>';
+						 str+='</div>';
+						 str+='<div id="collapselevel'+locationValue+'Modal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinglevel'+locationValue+'Modal">';
+						   str+='<div class="panel-body pad_0">';
+							  str+='<div class="" id="'+subLeveldivId+'" style="margin-left:10px;">';
+								// str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							str+='</div>';
+						   str+='</div>';
+						 str+='</div>';
+						 str+='</div>';
+					
+			  str+='</div>';
+				$("#locationsPopup").html(str);
+			
+}
+var index=0;
+var index1=0;
+function buildSublevelLocationsForPopup1(resultList,divId,subLevel)
+{
+
+	var str = '';
+	var result = resultList.locationsList;
+	index1++;
+	str+='<div class="panel-group" id="accordionsub'+index1+'" role="tablist" aria-multiselectable="true" style="margin:0px">';
+	for(var i in result)
+	{
+		index++;
+		//index1++;
+	  str+='<div class="panel panel-default">';
+		str+='<div class="panel-heading" role="tab" id="headingOne'+index+'">';
+		str+='<a role="button" data-toggle="collapse" attr="'+result[i].id+'" class="'+subLevel+'" data-parent="#accordionsub'+index1+'" href="#collapseOne'+index+'" aria-expanded="true" aria-controls="collapseOne'+index+'">';
+			str+='<h4 class="panel-title popupTitle" attr="'+result[i].name+'"> '+result[i].name+'</h4>';
+		str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseOne'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+index+'">';
+		  str+='<div class="panel-body">';
+			str+='<div class="subLevelCls" id="'+subLevel+''+result[i].id+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
+	str+='</div>';
+	$("#"+divId).html(str);
+}
+$(document).on('click','.popupLevel',function(){
+	
+		callPopupLoad(globallocationScope,globallocationValue,globalActivityScope);
+	});
+
+  $(document).on('click','.distSubLevel',function(){
+	
+		var id = $(this).attr("attr");
+		var divId = "popupdistConstituencies"+id;
+		getLocationsForPopupcli("district",id,divId,"constiSubLevel");
+		getAvailableDatesForPopupcli("district",id);
+		GlobalPopupScope = "district";
+		GlobalPopuplocation =id;
+		 getEventDocumentsForPopup("district",id,0);
+  });
+  
+    $(document).on('click','.constiSubLevel',function(){
+		GlobalPopupScope = "";
+		GlobalPopuplocation = "";
+		var id = $(this).attr("attr");
+		var divId = "constiSubLevel"+id;
+		getLocationsForPopupcli("constituency",id,divId,"mandalSubLevel");
+		getAvailableDatesForPopupcli("constituency",id);
+		GlobalPopupScope = "constituency";
+		GlobalPopuplocation =id;
+		 getEventDocumentsForPopup("constituency",id,0);
+		
+  });
+  
+     $(document).on('click','.mandalSubLevel',function(){
+		var id = $(this).attr("attr");
+		var divId = "mandalSubLevel"+id;
+		getLocationsForPopupcli("mandal",id,divId,"villageSubLevel");
+		getAvailableDatesForPopupcli("mandal",id);
+		GlobalPopupScope = "mandal";
+		GlobalPopuplocation =id;
+		 getEventDocumentsForPopup("mandal",id,0);
+  });
+  
+  $(document).on('click','.villageSubLevel',function(){
+		var id = $(this).attr("attr");
+		GlobalPopupScope = "village";
+		GlobalPopuplocation =id;
+		getAvailableDatesForPopupcli("village",id);
+		 getEventDocumentsForPopup("village",id,0);
+  });
+   
+  function callPopupLoad(locationScope,id,activityId)
+  {
+		if(locationScope == "state")
+		{
+			var divId = "popupstateConstituencies"+id;
+			getLocationsForPopupcli("state",id,divId,"distSubLevel");
+			getAvailableDatesForPopupcli("state",id);
+		}
+		
+		if(locationScope == "district")
+		{
+			var divId = "popupdistConstituencies"+id;
+			getLocationsForPopupcli("district",id,divId,"constiSubLevel");
+			getAvailableDatesForPopupcli("district",id);
+			getEventDocumentsForPopup("district",id,0);
+		}
+		if(locationScope == "constituency")
+		{
+			var divId = "constiSubLevel"+id;
+			getLocationsForPopupcli("constituency",id,divId,"mandalSubLevel");
+			getAvailableDatesForPopupcli("constituency",id);
+			getEventDocumentsForPopup("constituency",id,0);
+		}
+		
+		if(locationScope == "mandal")
+		{
+			var divId = "mandalSubLevel"+id;
+			getLocationsForPopupcli("mandal",id,divId,"villageSubLevel");
+			getAvailableDatesForPopupcli("mandal",id);
+			getEventDocumentsForPopup("mandal",id,0);
+		}
+		
+		if(locationScope == "village")
+		{
+			getEventDocumentsForPopup("village",id,0);
+		}
+		
+		
+  }
+ $(document).on('click','.popupTitle',function(){
+	  $("#myModalLabel").html(''+$(this).attr("attr")+'');
+  })
+  
+  function getEventDocumentsForPopup(searchType,locationId,day)
+{
+
+	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
+	 var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+		var jObj = {
+		activityId:globalActivityScope,
+		locationScope:searchType,
+		locationValue:locationId,		
+		day:day,
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		type:"popup",
+		//locationName:obj.locationName,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getEventDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDayWiseImagesForPopup1(result);
+			});
+}
+
+
+function buildDayWiseImagesForPopup1(result)
+{
+	$("#popupImages").html('');
+	var str ='';
+	setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 3,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			  centerMode: true,
+			  focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
+	if(result != null)
+	{
+	
+		str+='<ul class="slider-for">';
+			for(var i in result)
+			{
+			for(var j in result[i].subList)
+			{
+				
+				str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';
+			}
+			}
+			  str+='</ul>';
+		str+='<ul class="slider-nav">';	
+		for(var i in result)
+		{	 
+			for(var j in result[i].subList)
+			{
+				
+				 str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';	
+				
+			}
+		}
+				str+='</ul>';
+			$("#popupImages").html(str);
+		}
+	GlobalPopupScope = globallocationScope;
+	GlobalPopuplocation =globallocationValue;
+	$(".imgTrig").trigger("click");
+	}
+	
+	
+	
+
+function buildDayWiseImagesForPopup(result,path,day)
+{
+	
+	var str ='';
+	setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 3,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			  centerMode: true,
+			  focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
+	if(result != null)
+	{
+	for(var i in result)
+	{
+		 if(result[i].day == day)
+			{
+		
+			str+='<ul class="slider-for">';
+			for(var j in result[i].subList)
+			{
+					str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';
+				
+			}
+			  str+='</ul>';
+			  str+='<ul class="slider-nav">';
+			 
+			for(var j in result[i].subList)
+			{
+				if(result[i].subList[j].path==path)
+					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="activity_documents/'+result[i].subList[j].path+'"></a></li>';
+				else
+				 str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';	
+				
+			}
+				str+='</ul>';
+			$("#popupImages").html(str);
+			
+			}
+		}
+	}
+	
+	getAvailableDates(globallocationScope,globallocationValue,day);
+
+	setTimeout(function(){imgTrigger()},800);
+	
+}
+function imgTrigger()
+{
+
+	$('.imgTrig1').trigger('click');
+}
+function getAvailableDates(locationScope,locationValue,day)
+	{
+		
+	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
+	  var dates=$('.searchDateCls ').val();
+	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	  var activityScopeId = $("#ActivityList").val();
+	 if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+	
+		var jObj = {
+		activityId:activityScopeId,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getAvailableDatesForActivitiesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				var str ='';
+				for(var i in result)
+				{
+					if(result[i].id==day)
+					str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					  else
+					str+='<li class="daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+				}
+				$("#popupDaysDiv").html(str);
+				GlobalPopupScope = jObj.locationScope;
+				GlobalPopuplocation =jObj.locationValue;
+				
+		});
+}
+ $(document).on('click','.daysCls',function(){
+	
+	 $(".daysCls").removeClass( "active" )
+	 $(this).addClass("active");
+	 var day = $(this).attr("attr");
+		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day);
+  })
+
+
 </script>
 </body>
 </html>
+
 
