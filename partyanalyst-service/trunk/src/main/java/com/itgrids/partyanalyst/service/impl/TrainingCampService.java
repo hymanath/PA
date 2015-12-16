@@ -9542,7 +9542,8 @@ class TrainingCampService implements ITrainingCampService{
 		
 	}
 	public List<TrainingCampVO> setTotalValueFromCategoryList(List<TrainingCampVO> countList){
-		try{			
+		try{
+			Long totalCount=0l;
 			for (TrainingCampVO vo : countList) {				
 				List<TrainingCampVO> categoryList = vo.getTrainingCampVOList();		
 				Long totalCategoryCount = 0l;
@@ -9550,11 +9551,14 @@ class TrainingCampService implements ITrainingCampService{
 					for (TrainingCampVO trainingCampVO : categoryList) {								
 						if(trainingCampVO.getAssignedCount() !=null){							
 							totalCategoryCount = totalCategoryCount + trainingCampVO.getAssignedCount();
+							totalCount =totalCount + trainingCampVO.getAssignedCount();
 						} 															
 					}					
 				}
 				vo.setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
 			}
+			
+			countList.get(0).setAcceptedCount(totalCount);
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at setTotalValueFromCategoryList service", e);
@@ -9709,6 +9713,7 @@ class TrainingCampService implements ITrainingCampService{
 	
 	public List<TrainingCampVO> setTotalValueToSecondList(List<TrainingCampVO> trainingCampList){		
 		try{			
+			Long districtCount=0l;
 			for (TrainingCampVO trainingCampVO : trainingCampList) {				
 				List<TrainingCampVO> secondList = trainingCampVO.getTrainingCampVOList();
 				if(secondList !=null && secondList.size()>0){
@@ -9718,12 +9723,14 @@ class TrainingCampService implements ITrainingCampService{
 						if(thirdList !=null && thirdList.size()>0){							
 							for (TrainingCampVO trainingCampVO3 : thirdList) {								
 								secondListWiseTotalCount = secondListWiseTotalCount + trainingCampVO3.getAssignedCount();
+								districtCount = districtCount + trainingCampVO3.getAssignedCount();
 							}						
 						}
 					}					
 					secondList.get(0).setTotalProgrammesCount(secondListWiseTotalCount);
 				}				
 			}
+			trainingCampList.get(0).setAcceptedCount(districtCount);
 		}catch (Exception e) {
 			LOG.error("Exception raised at setTotalValueToSecondList service", e);
 		}		
