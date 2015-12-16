@@ -2451,6 +2451,7 @@ public class ActivityService implements IActivityService{
 	
 	public ResultStatus saveActivityDocumentsUpload(ActivityDocumentVO activityDocumentVO,ActivityDocumentVO activityLocation)
 	{
+		LOG.error((new Date()).toString()+" - Enter into saveActivityDocumentsUpload() Method, with Level - "+activityDocumentVO.getLevel()+" and Path - "+activityDocumentVO.getPath());
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			UserAddress userAddress = new UserAddress();
@@ -2550,10 +2551,10 @@ public class ActivityService implements IActivityService{
 				activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				activityInfoDocumentDAO.save(activityInfoDocument);
 			}
-				
+			LOG.error((new Date()).toString()+" - Saving Completed ");	
 		}catch(Exception e)
 		{
-			LOG.error(e);
+			LOG.error("Exception occured in saveActivityDocumentsUpload () Method ",e);
 		}
 		return resultStatus;
 	}
