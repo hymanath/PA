@@ -69,7 +69,7 @@ $(document).ready(function() {
        uploadFile: {
 		  
             url: "eventsUploadFormAction.action",
-            data: {"activityScopeId":$("#activityLevelList").val(),"day":$("#day").val(),
+            data: {"activityScopeId":$("#ActivityList").val(),"day":$("#day").val(),
 			     "levelId":$("#levelIds").val(),"stateId":$("#statesDivId").val(),
 				 "districtId":$("#districtId").val(),"constituencyId":$("#constituencyId").val(),
 				 "manOrMunId":$("#mandalList").val(),"panchayatId":$("#panchaytList").val(),
@@ -83,6 +83,7 @@ $(document).ready(function() {
                 el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
                     $("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");    
                 });
+				//window.location.href="eventFieUploadAction.action";
             },
             error: function(el){
                 var parent = el.find(".jFiler-jProgressBar").parent();
