@@ -1960,7 +1960,7 @@ public class ActivityService implements IActivityService{
 			 int temp = month+1;
 			 
 			 StringBuilder pathBuilder = new StringBuilder();
-			 pathBuilder.append(year).append("/").append(temp).append("_").append(day).append("/").append(randomNumber).append(".")
+			 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
 			 .append(eventFileUploadVO.getFileExtension());
 			 
 			activityDocument.setPath(pathBuilder.toString());
