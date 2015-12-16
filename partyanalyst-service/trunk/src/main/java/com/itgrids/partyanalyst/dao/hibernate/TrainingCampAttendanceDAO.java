@@ -525,5 +525,40 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  query.setParameter("batchId", batchId);
 	  return query.list();
   }
+
+  public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date){
+	  Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId " +
+	  		" from TrainingCampAttendance model " +
+	  		" where model.trainingCampBatch.trainingCampBatchId=:batchId " +
+	  		" and date(model.attendance.attendedTime)=:date ");
+	  query.setParameter("batchId", batchId);
+	  query.setParameter("date", date);
+	  return query.list();
+  }
   
+  public List<Long> getNonInviteesNoDaysCount(Long batchId){
+	  Query query = getSession().createQuery("select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
+	  		"where tca.attendance.attendanceId=a.attendanceId and " +
+	  		"a.tdpCadreId not in (select tdpCadreId from TrainingCampBatchAttendee where isDeleted='false' and trainingCampBatchId=:batchId) " +
+	  		"and tca.trainingCampBatchId=:batchId group by date(a.attendedTime),a.tdpCadreId");
+	 /* Query query = getSession().createSQLQuery("select  a.tdp_cadre_id from training_camp_attendance tca,attendance a " +
+	  		"where tca.attendance_id=a.attendance_id and " +
+	  		"a.tdp_cadre_id not in (select tdp_cadre_id from training_camp_batch_attendee where is_deleted='false' and training_camp_batch_id=:batchId) " +
+	  		"and tca.training_camp_batch_id=:batchId group by date(a.attended_time),a.tdp_cadre_id");*/
+	  query.setParameter("batchId",batchId);
+	  return query.list();
+  }
+  
+  public List<Object[]> getNonInviteesCadreBtBatch(Long batchId){
+	  Query query = getSession().createQuery("select distinct model.attendance.tdpCadre.tdpCadreId,model.attendance.tdpCadre.memberShipNo," +
+	   		" model.attendance.tdpCadre.firstname,model.attendance.tdpCadre.mobileNo,model.attendance.tdpCadre.image," +
+	   		"model.attendance.tdpCadre.userAddress.constituency.constituencyId," +
+	   		" model.attendance.tdpCadre.userAddress.constituency.name " +
+	  		" from TrainingCampAttendance model " +
+	  		" where model.trainingCampBatchId=:batchId " +
+	  		" and model.attendance.tdpCadre.tdpCadreId not in (select model1.tdpCadre.tdpCadreId from TrainingCampBatchAttendee model1 " +
+	  		"	where model1.trainingCampBatchId=:batchId and model1.isDeleted='false' ) ");
+	  query.setParameter("batchId",batchId);
+	  return query.list();
+  }
 }
