@@ -9306,4 +9306,508 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return null;
 		}
+		
+		public List<TrainingCampVO> getFeedBackCountsOfTraining(){
+			
+			List<TrainingCampVO> programList = new ArrayList<TrainingCampVO>();
+			try{
+				
+				Map<Long,Map<Long,TrainingCampVO>> programMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
+				
+				//0.programId,1.pgName,2.campId,3.campName,4.MembersCount
+				List<Object[]> membersDetails = trainingCampCadreFeedbackDetailsDAO.getFeedBackMembersCountProgramWise();
+				
+				if(membersDetails !=null && membersDetails.size()>0){
+					programMap = countsAssigningToMap(membersDetails,programMap,"members");
+				}
+				//0.programId,1.pgName,2.campId,3.campName,4.filesCount
+				List<Object[]> filesCount =  trainingCampCadreFeedbackDocumentDAO.getFeedBackDocumentsCountProgramWise();
+				
+				if(filesCount !=null && filesCount.size()>0){
+					programMap = countsAssigningToMap(filesCount,programMap,"files");
+				}
+				
+				
+				
+				if(programMap !=null && programMap.size()>0){
+					programList = setMapValuesToList(programMap,programList);
+				}
+				
+				//Total Count
+				
+				
+				if(programList !=null && programList.size()>0){
+					Long totalFeedBackCount=0l;
+					Long totalFeedBackDocuments=0l;
+					for (TrainingCampVO programVo : programList) {						
+						List<TrainingCampVO> campList = programVo.getTrainingCampVOList();
+						
+						if(campList !=null && campList.size()>0){
+							for (TrainingCampVO trainingCampVO : campList) {
+								if(trainingCampVO.getAssignedCount() != null){
+									totalFeedBackCount = totalFeedBackCount + trainingCampVO.getAssignedCount();//total Assigned Members Count
+								}
+								if(trainingCampVO.getFilledCount() !=null){
+									totalFeedBackDocuments = totalFeedBackDocuments + trainingCampVO.getFilledCount();//total Documents Count
+								}
+								
+							}
+						}
+						
+					}
+					
+					programList.get(0).setAvailableMembersCount(totalFeedBackCount);
+					programList.get(0).setTotalProgrammesCount(totalFeedBackDocuments);
+					
+				}
+				
+				
+				return programList;
+				
+			}catch (Exception e) {
+				LOG.error("Exception raised at getFeedBackCountsOfTraining service", e);
+			}
+			return programList;
+			
+		}
+	
+		public Map<Long,Map<Long,TrainingCampVO>> countsAssigningToMap(List<Object[]> membersDetails,Map<Long,Map<Long,TrainingCampVO>> countMap,String type){
+			
+			try{
+				for (Object[] objects : membersDetails) {
+					
+					Map<Long,TrainingCampVO> campMap = new HashMap<Long, TrainingCampVO>();
+					TrainingCampVO vo=new TrainingCampVO();
+					
+					campMap = countMap.get(objects[0] !=null ? (Long)objects[0]:0l);
+					if(campMap ==null){
+						campMap = new HashMap<Long, TrainingCampVO>();
+					}else{
+						vo = campMap.get(objects[2] !=null ? (Long)objects[2]:0l);
+					}
+					if(vo ==null){
+						vo = new TrainingCampVO();
+					}
+					
+					vo.setProgramId((Long)objects[0]);// in case "getFeedbackCategoryCountsCenterWise", it's campId
+					vo.setCampId((Long)objects[2]);//in case "getFeedbackCategoryCountsCenterWise", category Id
+					vo.setProgramName(objects[1] !=null ? objects[1].toString():"");//in case "getFeedbackCategoryCountsCenterWise", campName
+					vo.setCampName(objects[3] !=null ? objects[3].toString():"");//in case "getFeedbackCategoryCountsCenterWise", category Name
+					if(type.equalsIgnoreCase("members")){
+						vo.setAssignedCount(objects[4] !=null ? (Long)objects[4]:0l);//members Count
+					}else if(type.equalsIgnoreCase("files")){
+						vo.setFilledCount(objects[4] !=null ? (Long)objects[4]:0l);//files count
+					}
+					
+					campMap.put(vo.getCampId(),vo);
+					countMap.put(vo.getProgramId(), campMap);
+					
+				}			
+				return countMap;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return countMap;
+			
+		}
+		
+		public List<TrainingCampVO> setMapValuesToList(Map<Long,Map<Long,TrainingCampVO>> programMap,List<TrainingCampVO> programList){
+			try{
+				
+				for (Entry<Long, Map<Long, TrainingCampVO>> mainMap : programMap.entrySet()) {
+					
+					TrainingCampVO programVo = new TrainingCampVO();
+					programVo.setProgramId(mainMap.getKey());//programId 
+					
+					Map<Long, TrainingCampVO> campMap = mainMap.getValue();
+					if(campMap !=null && campMap.size()>0){						
+						List<TrainingCampVO> campList = new ArrayList<TrainingCampVO>();
+						campList.addAll(campMap.values());//camp Wise Count
+						programVo.setTrainingCampVOList(campList);
+						
+					}//campList End
+					
+					
+					programList.add(programVo);
+				}//programList End
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return programList;
+		}
+		
+	public List<IdNameVO> getProgramsForFeedBack(){
+		List<IdNameVO> programsList = new ArrayList<IdNameVO>(); 
+		try{			
+			//0.programId,1.pgName
+			List<Object[]> allPrograms = trainingCampProgramDAO.getAllTrainingPrograms();
+			if(allPrograms !=null && allPrograms.size()>0){
+				
+				for (Object[] objects : allPrograms) {					
+					IdNameVO idNameVO = new IdNameVO();					
+					idNameVO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					idNameVO.setName(objects[1] !=null ? objects[1].toString():"");
+					
+					programsList.add(idNameVO);
+				}
+				
+				return programsList;
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at getAllPrograms service", e);
+		}
+		return programsList;
+		
+	}
+	
+	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId){
+		
+		List<TrainingCampVO> categoryCountList = new ArrayList<TrainingCampVO>();
+		try{
+			
+			Map<Long,Map<Long,TrainingCampVO>> centerMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
+			
+			//0.center or camp id,1.campName,2.categoryId,3.categoryName,4.count
+			List<Object[]> centerResult = trainingCampFeedbackAnswerDAO.getFeedbackCategoryCountsCenterWise(programId);
+			
+			if(centerResult !=null && centerResult.size()>0){
+				centerMap = countsAssigningToMap(centerResult,centerMap,"members");
+				
+				if(centerMap !=null && centerMap.size()>0){
+					categoryCountList = setMapValuesToList(centerMap,categoryCountList);
+				}
+				
+				if(categoryCountList !=null && categoryCountList.size()>0){					
+					categoryCountList = setTotalValueFromCategoryList(categoryCountList);					
+				}				
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getFeedbackCategoryCountsCenterWise service", e);
+		}
+		return categoryCountList;
+		
+	}
+	public List<TrainingCampVO> setTotalValueFromCategoryList(List<TrainingCampVO> countList){
+		try{			
+			for (TrainingCampVO vo : countList) {				
+				List<TrainingCampVO> categoryList = vo.getTrainingCampVOList();		
+				Long totalCategoryCount = 0l;
+				if(categoryList !=null && categoryList.size()>0){							
+					for (TrainingCampVO trainingCampVO : categoryList) {								
+						if(trainingCampVO.getAssignedCount() !=null){							
+							totalCategoryCount = totalCategoryCount + trainingCampVO.getAssignedCount();
+						} 															
+					}					
+				}
+				vo.setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at setTotalValueFromCategoryList service", e);
+		}
+		return countList;
+	}
+	
+	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,Long programId,String type){
+		
+		List<TrainingCampVO> trainingCampList = new ArrayList<TrainingCampVO>();
+		
+		try{
+			
+			Map<Long,Map<Long,TrainingCampVO>> districtMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
+			Map<Long,Map<Long,Map<Long,TrainingCampVO>>> constiMap = new HashMap<Long, Map<Long,Map<Long,TrainingCampVO>>>();
+			
+			List<Object[]> districtObjectList=null;
+			List<Object[]> districtWithConstiObjectList=null;
+			if(type !=null && type.equalsIgnoreCase("districts")){
+				//0.districtId,1.distName,2.categoryId,3.categoryName,4.count
+				districtObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencIds, programId, type);				
+			}else if(type !=null && type.equalsIgnoreCase("constituecys")){
+				//0.districtId,1.distName,2.constituencyId,3.name,4.categoryId,5.categoryName,6.count
+				districtWithConstiObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencIds, programId, type);
+			}
+			
+			//Only for District Scenario.
+			if(districtObjectList !=null && districtObjectList.size()>0){				
+				districtMap = countsAssigningToMap(districtObjectList,districtMap,"members");				
+				if(districtMap !=null && districtMap.size()>0){
+					trainingCampList = setMapValuesToList(districtMap,trainingCampList);
+				}
+				
+				if(trainingCampList !=null && trainingCampList.size()>0){					
+					trainingCampList = setTotalValueFromCategoryList(trainingCampList);					
+				}
+				
+			}
+			
+			
+			//district &&  Constiturncy Wise Scenario
+			
+			if(districtWithConstiObjectList !=null && districtWithConstiObjectList.size()>0){
+				constiMap=assigningValuesToFinalMap(districtWithConstiObjectList,constiMap);					
+				if(constiMap !=null && constiMap.size()>0){
+					trainingCampList=assigningValuesToFinalList(constiMap,trainingCampList);
+				}
+				
+				if(trainingCampList !=null && trainingCampList.size()>0){
+					setTotalValueToSecondList(trainingCampList);
+				}				
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at getFeedbackDetailsOfEachDistrictAndConstituencyWise service", e);
+		}
+		return trainingCampList;		
+	}
+	
+	public Map<Long,Map<Long,Map<Long,TrainingCampVO>>> assigningValuesToFinalMap(List<Object[]> districtWithConstiObjectList,Map<Long,Map<Long,Map<Long,TrainingCampVO>>> finalMap){
+		try{
+			
+			if(districtWithConstiObjectList !=null && districtWithConstiObjectList.size()>0){				
+				for (Object[] objects : districtWithConstiObjectList) {					
+					Map<Long,Map<Long,TrainingCampVO>> secondMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
+					Map<Long,TrainingCampVO> thirdMap = new HashMap<Long, TrainingCampVO>();					
+					TrainingCampVO finalVo=new TrainingCampVO();
+					
+					secondMap = finalMap.get(objects[0] !=null ? (Long)objects[0]:0l);
+					if(secondMap !=null && secondMap.size()>0){
+						thirdMap = secondMap.get(objects[2] !=null ? (Long)objects[2]:0l);
+					}else{
+						secondMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
+					}
+					
+					if(thirdMap !=null && thirdMap.size()>0){
+						finalVo = thirdMap.get(objects[4] !=null ? (Long)objects[4]:0l);
+					}else{
+						thirdMap = new HashMap<Long, TrainingCampVO>();
+					}
+					
+					if(finalVo == null){
+						finalVo=new TrainingCampVO();
+					}
+					
+					finalVo.setProgramId(objects[0] !=null ? (Long)objects[0]:0l);//districtId
+					finalVo.setProgramName(objects[1] !=null ? objects[1].toString():"");//district Name
+					
+					finalVo.setCampId(objects[2] !=null ? (Long)objects[2]:0l);
+					finalVo.setCampName(objects[3] !=null ? objects[3].toString():"");
+					
+					finalVo.setThirdId(objects[4] !=null ? (Long)objects[4]:0l);
+					finalVo.setThirdName(objects[5] !=null ? objects[5].toString():"");
+					
+					finalVo.setAssignedCount(objects[6] !=null ? (Long)objects[6]:0l);
+					
+					thirdMap.put(finalVo.getThirdId(), finalVo);
+					secondMap.put(finalVo.getCampId(), thirdMap);
+					finalMap.put(finalVo.getProgramId(), secondMap);
+					
+				}
+				
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at assigningValuesToFinalMap service", e);
+		}
+		
+		return finalMap;
+	}
+	
+	public List<TrainingCampVO> assigningValuesToFinalList(Map<Long,Map<Long,Map<Long,TrainingCampVO>>> finalMap,List<TrainingCampVO> trainingCampList){
+		
+		try{
+			
+			if(finalMap !=null && finalMap.size()>0){
+				
+				for (Entry<Long, Map<Long, Map<Long, TrainingCampVO>>> mainMap : finalMap.entrySet()) {					
+					Long firstId = mainMap.getKey();					
+					TrainingCampVO firstVo = new TrainingCampVO(); 
+					firstVo.setProgramId(firstId);
+					
+					Map<Long, Map<Long, TrainingCampVO>> secondMap = mainMap.getValue();	
+					List<TrainingCampVO> secondList = new ArrayList<TrainingCampVO>();
+					
+					if(secondMap !=null && secondMap.size()>0){							
+						for (Entry<Long,Map<Long, TrainingCampVO>> secondMainMap : secondMap.entrySet()) {							
+							Long secondId = secondMainMap.getKey();
+							TrainingCampVO secondVo = new TrainingCampVO(); 							
+							secondVo.setCampId(secondId);
+							
+							Map<Long, TrainingCampVO> thirdMap = secondMainMap.getValue();						
+							if(thirdMap !=null && thirdMap.size()>0){								
+								List<TrainingCampVO> list = new ArrayList<TrainingCampVO>(thirdMap.values());														
+								secondVo.setTrainingCampVOList(list);									
+							}
+							secondList.add(secondVo);							
+						}						
+					}
+					
+					firstVo.setTrainingCampVOList(secondList);					
+					trainingCampList.add(firstVo);
+					
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at assigningValuesToFinalList service", e);
+		}
+		
+		return trainingCampList;
+	}
+	
+	public List<TrainingCampVO> setTotalValueToSecondList(List<TrainingCampVO> trainingCampList){		
+		try{			
+			for (TrainingCampVO trainingCampVO : trainingCampList) {				
+				List<TrainingCampVO> secondList = trainingCampVO.getTrainingCampVOList();
+				if(secondList !=null && secondList.size()>0){
+					Long secondListWiseTotalCount =0l;
+					for (TrainingCampVO trainingCampVO2 : secondList) {						
+						List<TrainingCampVO> thirdList = trainingCampVO2.getTrainingCampVOList();
+						if(thirdList !=null && thirdList.size()>0){							
+							for (TrainingCampVO trainingCampVO3 : thirdList) {								
+								secondListWiseTotalCount = secondListWiseTotalCount + trainingCampVO3.getAssignedCount();
+							}						
+						}
+					}					
+					secondList.get(0).setTotalProgrammesCount(secondListWiseTotalCount);
+				}				
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at setTotalValueToSecondList service", e);
+		}		
+		return trainingCampList;
+	}
+	
+	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type){
+		List<SimpleVO> finalList = new ArrayList<SimpleVO>();
+		try{			
+			Map<Long,Map<Long,SimpleVO>> cadreMap = new HashMap<Long, Map<Long,SimpleVO>>();
+			List<Object[]> cadreDetails = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfCadre(locationId,programId,type);			
+			if(cadreDetails !=null && cadreDetails.size()>0){				
+				cadreMap = setCadreDetailsToMap(cadreDetails,cadreMap);
+			}
+			
+			if(cadreMap !=null && cadreMap.size()>0){
+				finalList = setCadreValuesToList(cadreMap,finalList);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getFeedbackDetailsOfCadre service", e);
+		}
+		return finalList;
+	}
+	public Map<Long,Map<Long,SimpleVO>> setCadreDetailsToMap(List<Object[]> cadreDetails,Map<Long,Map<Long,SimpleVO>> cadreMap){
+	
+		try{			
+			for (Object[] objects : cadreDetails) {				
+				Map<Long,SimpleVO> categoryMap = new HashMap<Long, SimpleVO>();
+				SimpleVO vo=new SimpleVO();				
+				categoryMap = cadreMap.get(objects[0] !=null ? (Long)objects[0]:0l);//cadreId
+				if(categoryMap ==null){
+					categoryMap = new HashMap<Long, SimpleVO>();
+				}else{
+					vo = categoryMap.get(objects[4] !=null ? (Long)objects[4]:0l);//feed back categoryId
+				}
+				if(vo ==null){
+					vo = new SimpleVO();
+				}
+				
+				vo.setId(objects[0] !=null ? (Long)objects[0]:0l);
+				vo.setName(objects[1] !=null ? objects[1].toString():"");
+				
+				vo.setCategoryId(objects[4] !=null ? (Long)objects[4]:0l);
+				vo.setCategory(objects[5] !=null ? objects[5].toString():"");				
+				vo.setRemarks(objects[6] !=null ? objects[6].toString():"");//answer
+				
+				vo.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
+				vo.setMobileNo(objects[3] !=null ? objects[3].toString():"");
+				
+			
+				categoryMap.put(vo.getCategoryId(),vo);
+				cadreMap.put(vo.getId(), categoryMap);
+				
+			}			
+			return cadreMap;
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at setCadreDetailsToMap service", e);
+		}
+		return cadreMap;
+	}
+	
+	public List<SimpleVO> setCadreValuesToList(Map<Long,Map<Long,SimpleVO>> cadreMap,List<SimpleVO> simpleList){
+		try{		
+			for (Entry<Long, Map<Long, SimpleVO>> mainMap : cadreMap.entrySet()) {
+				
+				SimpleVO cadreVo = new SimpleVO();
+				cadreVo.setId(mainMap.getKey());
+				
+				Map<Long, SimpleVO> categoryMap = mainMap.getValue();
+				
+				if(categoryMap !=null && categoryMap.size()>0){						
+					List<SimpleVO> categoryList = new ArrayList<SimpleVO>();
+					categoryList.addAll(categoryMap.values());
+					cadreVo.setSimpleVOList1(categoryList);					
+				}	
+				simpleList.add(cadreVo);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at setCadreValuesToList service", e);
+		}
+		return simpleList;
+	}
+	public List<IdNameVO> getAllDistrictsByState(Long stateId){
+		List<IdNameVO> districtList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> districtDetails = (List<Object[]>) districtDAO.getDistrictIdAndNameByState(stateId);
+			
+		
+			if(districtDetails !=null && districtDetails.size()>0){
+				districtList = assigningValuesToIdnameVo(districtDetails,districtList);				
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getAllDistrictsByState service", e);
+		}
+		return districtList;
+	}
+	public List<IdNameVO> assigningValuesToIdnameVo(List<Object[]> objectDetails,List<IdNameVO> finalResult){
+		try{
+			
+			for (Object[] object : objectDetails) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId(object[0] !=null ? (Long)object[0]:0l);
+				vo.setName(object[1] !=null ? object[1].toString():"");
+				
+				finalResult.add(vo);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at assigningValuesToIdnameVo service", e);
+		}
+		return finalResult;
+	}
+	
+	public List<IdNameVO> getAllConstituencysByDistrict(Long districtId){
+		List<IdNameVO> constituencyList = new ArrayList<IdNameVO>();
+		try{			
+			List<Long> districtIds = new ArrayList<Long>(0);
+			if(districtId !=null && districtId>0){
+				districtIds.add(districtId);
+			}			
+			List<Object[]> constituencys = constituencyDAO.getDistrictConstituenciesList(districtIds);
+			if(constituencys !=null && constituencys.size()>0){
+				constituencyList = assigningValuesToIdnameVo(constituencys,constituencyList);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAllConstituencysByDistrict service", e);
+		}
+		return constituencyList;
+	}
+	
 }
