@@ -43,64 +43,10 @@
 									</div>
 									<div class="panel-body pad_0">
 										<div class="table-responsive bg_ff" id="centerWiseCategoryDivId">
-											<!--<table class="table table-bordered m_0">
-												<thead class="bg_d">
-													<th>Center</th>
-													<th>Category</th>
-													<th>Count</th>
-													<th>Total Category Count</th>
-												</thead>
-												<tr>
-													<td rowspan="3">GPN Center</td>
-													<td>మీ నియోజకవర్గం పార్టీ, పార్టీ నాయకులు</td>
-													<td>100</td>
-													<td rowspan="3" style="vertical-align:middle" class="text-center">100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమం లో సమస్యల వివరాలు</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమము లో పథకాల అమలు ఫై మీ అభిప్రాయం</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td rowspan="3">EWK Center</td>
-													<td>మీ నియోజకవర్గం పార్టీ, పార్టీ నాయకులు</td>
-													<td>100</td>
-													<td rowspan="3" style="vertical-align:middle" class="text-center">100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమం లో సమస్యల వివరాలు</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమము లో పథకాల అమలు ఫై మీ అభిప్రాయం</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td rowspan="3">AKKC Center</td>
-													<td>మీ నియోజకవర్గం పార్టీ, పార్టీ నాయకులు</td>
-													<td>100</td>
-													<td rowspan="3" style="vertical-align:middle" class="text-center">100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమం లో సమస్యల వివరాలు</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td>మీ గ్రామమము లో పథకాల అమలు ఫై మీ అభిప్రాయం</td>
-													<td>100</td>
-												</tr>
-												<tr>
-													<td colspan="1" class="text-center"><b>TOTAL</b></td>
-													<td>1000</td>
-													<td>500</td>
-												</tr>
-											</table> -->
 										</div>
 									</div>
 								</div>
+								<center><img id="centerWiseCategoryAjaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
 							</div>
 						</div>
 						<div class="row">
@@ -129,80 +75,20 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="table-responsive m_top20" id="distConstCatWiseCounts">
-									<!--<table class="table table-bordered m_0">
-										<thead class="bg_d">
-											<th>District</th>
-											<th>Category</th>
-											<th>Count</th>
-										</thead>
-										<tr>
-											<td rowspan="3">Adilabad</td>
-											<td>Category 1</td>
-											<td>100</td>
-										</tr>
-										<tr>
-											<td>Category 2</td>
-											<td>100</td>
-										</tr>
-										<tr>
-											<td>Category 3</td>
-											<td>100</td>
-										</tr>
-										<tr>
-											<td colspan="2" class="text-center"><b>TOTAL</b></td>
-											<td><b>2000</b></td>
-										</tr>
-									</table>-->
 								</div>
+								<center><img id="distConstCatWiseCountsAjaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-12" id="feedBackDetailsDivId" style="display:none;">
 								<div class="panel panel-default m_top20">
 									<div class="panel-heading">
 										<h4 class="panel-title">FEEDBACK FULL DETAILS<button class="pull-right btn-xs btn btn-success">EXPORT TO PDF</button></h4>
 									</div>
 									<div class="panel-body pad_0">
 										<div class="table-responsive" id="cadreDetailsDivId">
-											<!--<table class="table table-bordered">
-												<thead class="bg_d">
-													<th></th>
-													<th>CADRE NAME</th>
-													<th>MEMBERSHIP NO</th>
-													<th>MOBILE NO</th>
-													<th>CATEGORY</th>
-												
-													<th>Feedback Answer</th>
-												</thead>
-												<tr>
-													<td><img src="dist/img/profile-img.png" style="height:40px;width:40px;display:block;margin:auto"></td>
-													<td>B AYYAPPA</td>
-													<td>12345678</td>
-													<td>9848012345</td>
-													<td>Category 1</td>
-													
-													<td>Problems...</td>
-												</tr>
-												<tr>
-													<td><img src="dist/img/profile-img.png" style="height:40px;width:40px;display:block;margin:auto"></td>
-													<td>B AYYAPPA</td>
-													<td>12345678</td>
-													<td>9848012345</td>
-													<td>Category 1</td>
-													
-													<td>Problems...</td>
-												</tr>
-												<tr>
-													<td><img src="dist/img/profile-img.png" style="height:40px;width:40px;display:block;margin:auto"></td>
-													<td>B AYYAPPA</td>
-													<td>12345678</td>
-													<td>9848012345</td>
-													<td>Category 1</td>
-												
-													<td>Problems...</td>
-												</tr>
-											</table> -->
 										</div>
+										<center><img id="cadreDetailsAjaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
 									</div>
 								</div>
 							</div>
@@ -257,6 +143,7 @@ function getAllPrograms(){
 	function feedbackCategoryCountsCenterWise(){
 		$("#programNameTitleId").html($("#selectProgramId :selected").text());
 		$("#centerWiseCategoryDivId").html("");
+		$("#centerWiseCategoryAjaxImage").show();
 		//$("#centerWiseCategoryMainDivId").hide();
 		
 		var programId = $("#selectProgramId").val();
@@ -314,6 +201,7 @@ function getAllPrograms(){
 				str+='</tbody>';
 			str+='</table>';
 			
+			$("#centerWiseCategoryAjaxImage").hide();
 			$("#centerWiseCategoryDivId").html(str);
 			//$("#centerWiseCategoryMainDivId").show();
 		}else{
@@ -371,13 +259,20 @@ function getAllPrograms(){
 			}
 		});
 	}
-	getFeedbackDetailsOfCadre();
-	function getFeedbackDetailsOfCadre(){
+	//getFeedbackDetailsOfCadre();
+//function getFeedbackDetailsOfCadre(){
+$(document).on('click','.feedBackDetailsCls',function(){
 		
+		$("#feedBackDetailsDivId").show();
+		$("#cadreDetailsAjaxImage").show();
 		$("#cadreDetailsDivId").html("");
-		programId=1;
-		locationId =22;
-		type ="district";
+		
+		var programId = $("#selectProgramId").val();
+		var locationId = $(this).attr("attr_constituencyId");
+		
+		//programId=1;
+		//locationId =22;
+		type ="constituecy";
 		
 		var jsObj={
 			programId:programId,
@@ -394,10 +289,11 @@ function getAllPrograms(){
 				buildFeedbackDetailsOfCadre(result);
 			}
 			else{
+				$("#cadreDetailsAjaxImage").hide();
 				$("#cadreDetailsDivId").html("NO DATA AVAILABLE...");
 			}
 		});
-	}
+	});
 	
 function buildFeedbackDetailsOfCadre(result){
 	
@@ -440,6 +336,7 @@ function buildFeedbackDetailsOfCadre(result){
 		}
 	str+='</table>';
 	
+	$("#cadreDetailsAjaxImage").hide();
 	$("#cadreDetailsDivId").html(str);
 	 $(".dataTableDiv").dataTable();
 	 $(".dataTableDiv").removeClass("dataTable");
@@ -449,6 +346,7 @@ function buildFeedbackDetailsOfCadre(result){
 	
 	function getFeedbackDetailsOfEachDistrictAndConstituencyWise(){
 		$("#distConstCatWiseCounts").html("");
+		$("#distConstCatWiseCountsAjaxImage").show();
 		var jsObj={
 			districtId : $("#selectDistrictId").val(),
 			constituencyId : $("#selectConstituencyId").val(),
@@ -484,7 +382,7 @@ function buildFeedbackDetailsOfCadre(result){
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
 									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].cmpBatchCount+'</td>';
-									str+='<td>'+result[i].trainingCampVOList[0].totalProgrammesCount+'</td>';
+									str+='<td attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" class="feedBackDetailsCls" style="cursor:pointer">'+result[i].trainingCampVOList[0].totalProgrammesCount+'</td>';
 									str+='</tr>';
 								}
 							}
@@ -493,10 +391,12 @@ function buildFeedbackDetailsOfCadre(result){
 				}
 				str+='</tbody>';
 				str+='</table>';
+				$("#distConstCatWiseCountsAjaxImage").hide();
 				$("#distConstCatWiseCounts").html(str);
 				 $('#resultTableDivId').dataTable();
 				 $('#resultTableDivId').removeClass("dataTable");
 			}else{
+				$("#distConstCatWiseCountsAjaxImage").hide();
 				$("#distConstCatWiseCounts").html("<h4>No Data Available.</h4>");
 			}
 		});
