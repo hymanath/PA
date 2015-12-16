@@ -1936,7 +1936,7 @@ public class ActivityService implements IActivityService{
 			ActivityDocument activityDocument = new ActivityDocument();
 			if(eventFileUploadVO.getActivityDate() != null && !eventFileUploadVO.getActivityDate().equals("undefined"))
 			{
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			    try {
 					activityDocument.setActivityDate(dateFormat.parse(eventFileUploadVO.getActivityDate()));
 				} catch (ParseException e) {
