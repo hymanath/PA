@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Training Center</title>
+<title>Feedback Details</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -442,7 +442,7 @@ function buildFeedbackDetailsOfCadre(result){
 	
 	$("#cadreDetailsDivId").html(str);
 	 $(".dataTableDiv").dataTable();
-	 $("#cadreDetailsDivId").removeClass("dataTable");
+	 $(".dataTableDiv").removeClass("dataTable");
 }
 	
 		
