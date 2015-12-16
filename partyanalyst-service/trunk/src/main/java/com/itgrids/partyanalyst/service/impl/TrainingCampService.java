@@ -9774,6 +9774,10 @@ class TrainingCampService implements ITrainingCampService{
 				
 				vo.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
 				vo.setMobileNo(objects[3] !=null ? objects[3].toString():"");
+								
+				vo.setConstituencyId(objects[7] !=null ? (Long)objects[7]:0l);
+				vo.setConstituencyName(objects[8] !=null ? objects[8].toString():"");
+				vo.setImageStr(objects[9] !=null ? objects[9].toString():"");
 				
 			
 				categoryMap.put(vo.getCategoryId(),vo);
