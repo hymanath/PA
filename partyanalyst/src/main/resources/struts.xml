@@ -11158,5 +11158,18 @@
 				<param name="root">idNameList</param>
 			</result>
     </action>
+    
+    <action name="getFeedbackDetailsOfEachDistrictAndConstituencyWiseAction" class="trainingCampAction" method="getFeedbackDetailsOfEachDistrictAndConstituencyWise">
+	  	   <result type="json" name="success">
+				<param name="root">campVoList</param>
+			</result>
+    </action>
+    
+    <action name="getAllCategoriesAction" class="trainingCampAction" method="getAllCategories">
+	  	   <result type="json" name="success">
+				<param name="root">idNameList</param>
+			</result>
+    </action>
+    
 </package>
 </struts>      
