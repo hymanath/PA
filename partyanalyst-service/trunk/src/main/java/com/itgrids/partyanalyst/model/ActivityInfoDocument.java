@@ -32,7 +32,6 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
-	private Long activityAddressId;
 	
 	private ActivityDocument activityDocument;
 	private User insertedUser;
@@ -140,7 +139,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 		this.day = day;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_address_id", insertable=false, updatable = false)
+	@JoinColumn(name="activity_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
@@ -157,17 +156,5 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	@Column(name = "activity_address_id")
-	public Long getActivityAddressId() {
-		return activityAddressId;
-	}
-	public void setActivityAddressId(Long activityAddressId) {
-		this.activityAddressId = activityAddressId;
-	}
-	
-	
-	
-	
 	
 }
