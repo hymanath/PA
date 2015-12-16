@@ -7659,6 +7659,12 @@ class TrainingCampService implements ITrainingCampService{
 			try{
 				//0.cadreId,1.membership No,2.firstName,3.mobileNo
 				List<Object[]> confirmedList = trainingCampBatchAttendeeDAO.getConfirmedCadreByBatch(batchId);
+				//non invitees details
+				List<Object[]> nonInviteesList = trainingCampAttendanceDAO.getNonInviteesCadreBtBatch(batchId);
+				
+				if(nonInviteesList!=null && nonInviteesList.size()>0){
+					confirmedList.addAll(nonInviteesList);
+				}
 				
 				//batch startDate and and endDate 
 				  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
@@ -7680,6 +7686,9 @@ class TrainingCampService implements ITrainingCampService{
 						
 						  CadreVo vo = new CadreVo();
 						  Long tdpCadreId = cadre[0] != null ? (Long)cadre[0]:0l;
+						  if(!confirmedList.contains(tdpCadreId)){
+							  vo.setIsNonInvitee("Yes");
+						  }
 						  vo.setCadreId(cadre[0] !=null ? (Long)cadre[0]:0l);
 						  
 						  List<Object[]> designationDetailsList = tdpCommitteeMemberDAO.getTdpCommitteeMemberPosition(tdpCadreId);//tdpCommitteeLevel,role
@@ -8343,6 +8352,7 @@ class TrainingCampService implements ITrainingCampService{
 				 //date wise counts.
 				 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
 				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId);
+				 List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId);
 				 
 				 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 					 
@@ -8352,6 +8362,16 @@ class TrainingCampService implements ITrainingCampService{
 							if(vo!=null){
 								vo.setTotal(obj[1]!=null?(Long)obj[0]:0l);//attended.
 								vo.setCount(confirmedCount-vo.getTotal());//absent.
+								List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,new SimpleDateFormat("yyyy-MM-dd").parse(obj[1].toString()));
+								if(attendedCadreIdsList!=null && attendedCadreIdsList.size()>0){
+									int count=0;
+									for(Long long1 : attendedCadreIdsList){
+										if(!attendeeCadreIdsList.contains(long1)){
+											count=count+1;
+										}
+									}
+								vo.setNonInviteeAttendedCount(count);	
+								}
 							}
 						 }
 					 }
@@ -8391,10 +8411,41 @@ class TrainingCampService implements ITrainingCampService{
 				simpleVO.setDay1Count(oneDay);
 				simpleVO.setDay2Count(twoDays);
 				simpleVO.setDay3Count(ThreeDays);
+				
+				//non invitees No of days Count
+				List<Long> nonInviteedIds = trainingCampAttendanceDAO.getNonInviteesNoDaysCount(batchId);
+				List<Long> checkExistingId = new ArrayList<Long>(0);
+				int threedaysNIACount=0,twodaysNIACount=0,onedayNIACount=0;
+				if(nonInviteedIds!=null && nonInviteedIds.size()>0){
+					for (Long long1 : nonInviteedIds) {
+						if(!checkExistingId.contains(long1)){
+							int count=0;
+							for (Long long2 : nonInviteedIds) {
+								if(long2.equals(long1)){
+									checkExistingId.add(long1);
+									count++;
+								}
+							}
+							if(count==1){
+								onedayNIACount++;
+							}else if(count==2){
+								twodaysNIACount++;
+							}else if(count==3){
+								threedaysNIACount++;
+							}
+						}
+						
+					}
+				}
+				
+				simpleVO.setOneDayNIACount(onedayNIACount);
+				simpleVO.setTwoDaysNIACount(twodaysNIACount);
+				simpleVO.setThreeDaysNIACount(threedaysNIACount);
 			}catch(Exception e){
 				 LOG.error(" Error Occured in getAttendedCountSummaryByBatch method in TraininingCampService class" ,e);
 			}
 			return simpleVO;
+		
 		}
 		public List<SimpleVO> getAttendenceForTrainers(String type,String searchType){
 			List<SimpleVO> finalvo = new ArrayList<SimpleVO>();
