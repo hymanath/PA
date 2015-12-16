@@ -2911,12 +2911,11 @@
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 		<property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO" />
 		<property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
-		<property name="activityDocumentDAO" ref="activityDocumentDAO" />
-		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
-		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO"/>
+		<property name="activityDocumentDAO" ref="activityDocumentDAO"/>
+		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="activityQuestionnaireOptionDAO" ref="activityQuestionnaireOptionDAO" />
-		
 	</bean>
 </beans>		
 	
