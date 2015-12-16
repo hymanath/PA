@@ -107,7 +107,7 @@ function getActivityNames()
 	  
      $(".errorDiv").html("");
 	 var activityLevel = $("#activityLevelList").val();
-	 var activityScopeIdName = $("#ActivityList").val();
+	 var activityScopeId = $("#ActivityList").val();
 	 var sourceFolderId = $("#sourceFolderId").val().trim();
 	 
 	 var str = '';
@@ -117,7 +117,7 @@ function getActivityNames()
 		str += 'Please Select Activity Level <br>';
 		flag = false;
 	}
-	if(activityName == 0){
+	if(activityScopeId == 0){
 		str += 'Please Select Activity Name <br>';
 		flag = false;
 	}
@@ -134,7 +134,7 @@ function getActivityNames()
 	 var jsObj=
 	   {		
           activityScopeId:activityScopeId,	   
-		  activityName:activityName,
+		  sourceFolderId:sourceFolderId,
 		  task:"uploadFile"				
 		}
 		$.ajax({
