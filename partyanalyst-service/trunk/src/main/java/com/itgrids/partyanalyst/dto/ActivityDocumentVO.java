@@ -23,6 +23,15 @@ public class ActivityDocumentVO implements Serializable{
 	private Long townId;
 	private Long panchayatId;
 	private Long wardId;
+	private long count;
+
+	public long getCount() {
+		return count;
+	}
+
+	public void setCount(long count) {
+		this.count = count;
+	}
 
 	public Long getConstituencyId() {
 		return constituencyId;
