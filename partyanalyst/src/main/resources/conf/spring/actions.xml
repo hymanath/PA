@@ -1555,7 +1555,7 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
-		
+		<property name="activityService" ref="activityService" />
 		
 	</bean>
 	
