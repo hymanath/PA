@@ -2553,4 +2553,78 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS;
     }
+    
+    public String getFeedBackCountsOfTraining(){
+    	try{    		
+    		campVoList = trainingCampService.getFeedBackCountsOfTraining();
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getFeedBackCountsOfTraining", e);
+		}
+    	return Action.SUCCESS;
+    }
+    
+    public String feedbackOverViewDetails(){
+    	return Action.SUCCESS;
+    }
+    public String getProgramsForFeedBack(){
+    	try{
+    		
+    		idNameList = trainingCampService.getProgramsForFeedBack();
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getProgramsForFeedBack", e);
+		}
+    	return Action.SUCCESS;
+    }
+    
+    public String getFeedbackCategoryCountsCenterWise(){
+    	try{
+    		jObj = new JSONObject(getTask());			
+			Long programId = jObj.getLong("programId");
+			campVoList = trainingCampService.getFeedbackCategoryCountsCenterWise(programId);
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getFeedbackCategoryCountsCenterWise", e);
+		}
+    	return Action.SUCCESS;
+    }
+    public String getFeedbackDetailsOfCadre(){
+    	try{
+    		jObj = new JSONObject(getTask());			
+			Long programId = jObj.getLong("programId");
+			Long locationId = jObj.getLong("locationId");
+			String type = jObj.getString("type");
+			
+			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type);
+    		
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getFeedbackCategoryCountsCenterWise", e);
+		}
+    	return Action.SUCCESS;
+    }
+    public String getAllDistrictsByState(){
+    	try{
+    		jObj = new JSONObject(getTask());			
+			Long stateId = jObj.getLong("stateId");
+			
+			idNameList=trainingCampService.getAllDistrictsByState(stateId);
+			
+    	}catch(Exception e){
+    		LOG.error("Exception raised at getAllDistrictsByState", e);
+    	}
+    	return Action.SUCCESS;
+    }
+    public String getAllConstituencysByDistrict(){
+    	try{
+    		jObj = new JSONObject(getTask());			
+			Long districtId = jObj.getLong("districtId");
+			
+			idNameList=trainingCampService.getAllConstituencysByDistrict(districtId);
+			
+    	}catch(Exception e){
+    		LOG.error("Exception raised at getAllConstituencysByDistrict", e);
+    	}
+    	return Action.SUCCESS;
+    }
 }

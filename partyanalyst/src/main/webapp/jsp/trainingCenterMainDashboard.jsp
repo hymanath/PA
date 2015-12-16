@@ -200,7 +200,7 @@ header.eventsheader {
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">Currently Running Batches Attendence</h4>
+                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING BATCHES ATTENDENCE</h4>
                                         </div>
                                         <div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
 										</div>
@@ -210,7 +210,17 @@ header.eventsheader {
                         </section>
 						<section>
                             <div class="row">
+							
                             	<div class="col-md-12">
+								<div class="panel panel-default" id="feedBackCountMainDivId" style="display:none">
+										<div class="panel-heading bg_d">
+											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs">VIEW FULL DETAILS</button></span></h4>	
+										</div>
+										<div class="panel-body pad_0">
+											<div style="" id="feedBackCountId"></div>
+										</div>
+								</div>
+								
 									<div class="row">
 										<div class="col-md-4 col-md-offset-8">
 											<div class="pull-right">
@@ -224,10 +234,11 @@ header.eventsheader {
 											</div>
 										</div>
 									</div>
+									
                                 	<div class="panel panel-default">
                                     	<div class="panel-body pad_0">
 											<div class="panel-heading bg_d">
-												<span class="panel-title text-bold">Speakers Attendance</span>
+												<span class="panel-title text-bold">SPEAKERS ATTENDANCE</span>
 												
 												<div class="pull-right">
 													<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
@@ -383,6 +394,7 @@ header.eventsheader {
             </div>
         </div>
     </div>
+<!-- feedback count Div-->
 </main>
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
@@ -482,6 +494,7 @@ $(function () {
 	getDayWiseCountsForRunningBatches("onLoad");
 	getAttendenceForTrainers("today");
 	//$(".ranges ul li:nth-child(5)").trigger("click");
+	getFeedBackCountsOfTraining();
 	
 });
 
@@ -1435,6 +1448,58 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				$("#resultInnerDIvId").html("No Date Found...");
 			}
 		});
+	}
+	function getFeedBackCountsOfTraining(){		
+			$.ajax({
+		   type:'POST',
+		   url :'getFeedBackCountsOfTrainingAction.action',
+		   data: {},
+		}).done(function(result){
+			var str='';
+			
+			if(result !=null && result.length>0)
+			{				
+			 str+='<table class="table table-bordered m_0">';
+				str+='<thead>';
+						str+='<th>Training Program Name</th>';
+						str+='<th>Training Center Name</th>';
+						str+='<th>FeedBack Provided</th>';
+						str+='<th>Feedback Documents</th>';
+				str+='</thead>';
+				
+				str+='<tbody>';
+					var campLength=0;
+				for(var i in result){
+					if(result[i].trainingCampVOList !=null){
+						campLength = parseInt(campLength)+parseInt(result[i].trainingCampVOList.length);
+					}					
+					for(var j in result[i].trainingCampVOList){
+						 if(j==0){
+							 str+='<td rowspan='+campLength+' id="'+result[i].trainingCampVOList[j].programId+'">'+result[i].trainingCampVOList[j].programName+'</td>';	
+						 }
+						
+						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].campName+'</td>';	
+						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].assignedCount+'</td>';	
+						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].filledCount+'</td>';	
+						  
+						  str+='</tr>';
+					}
+				}
+				str+='<tr>';
+					str+='<td colspan="2" class="text-center"><b>TOTAL</b></td>';
+					str+='<td><b>'+result[0].availableMembersCount+'</b></td>';
+					str+='<td><b>'+result[0].totalProgrammesCount+'</b></td>';
+				str+='</tr>';			
+					
+				str+='</tbody>';				
+			 str+='</table>';
+			
+			$("#feedBackCountId").html(str);
+			$("#feedBackCountMainDivId").show();
+			}
+			
+		});
+		
 	}
 	
 </script>

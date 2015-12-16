@@ -164,6 +164,7 @@
 		<pattern>/trainingProgramMainDashBoardAction*</pattern>
 		<pattern>/updateLeaderShipAction*</pattern>
 		<pattern>/trainingCampFeedback*</pattern>
+		<pattern>/feedbackOverViewDetailsAction*</pattern>
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
