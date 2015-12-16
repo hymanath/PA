@@ -1984,7 +1984,7 @@ public class ActivityService implements IActivityService{
 			
 		    activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		    activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
+		    activityInfoDocument.setUserAddress(userAddress);
 		    
 		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLocationScopeId());
 		    activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLaocationValueAddress());
@@ -2389,10 +2389,10 @@ public class ActivityService implements IActivityService{
 			}
 			else if(level.equalsIgnoreCase("Ward"))
 			{
-				Long wardId = constituencyDAO.getWardIdByTownIdAndWardName(activityLocation.getMandalId(),levelName);
+				Long wardId = constituencyDAO.getWardIdByTownIdAndWardName(activityLocation.getTownId(),levelName);
 				if(wardId == null)
 					return null;
-				activityLocation.setPanchayatId(wardId);
+				activityLocation.setWardId(wardId);
 			}
 			for(File subFolder : sourceFolder.listFiles())
 			{
@@ -2422,6 +2422,7 @@ public class ActivityService implements IActivityService{
 									String docName = Integer.valueOf(RandomNumberGeneraion.randomGenerator(6)).toString()+".jpg";
 									FileUtils.copyFile(document,new File(destFolder.getAbsolutePath()+"/"+docName));
 									docList.add(docName);
+									activityLocation.setCount(activityLocation.getCount()+1);
 								}
 							}
 							activityDocumentVO.setDocList(docList);
@@ -2437,10 +2438,13 @@ public class ActivityService implements IActivityService{
 					LOG.error("Exception occured in subfolder - "+subFolder.getName()+" - ",e);
 				}
 			}
-			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultState(activityLocation.getCount());
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in uploadActivityDocuments() Method - ",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
 		}
 		return resultStatus;
 	}
@@ -2502,7 +2506,7 @@ public class ActivityService implements IActivityService{
 				userAddress.setDistrict(districtDAO.get(activityLocation.getDistrictId()));
 				userAddress.setConstituency(constituencyDAO.get(activityLocation.getConstituencyId()));
 				userAddress.setTehsil(tehsilDAO.get(activityLocation.getMandalId()));
-				userAddress.setPanchayat(panchayatDAO.get(activityLocation.getPanchayatId()));
+				userAddress.setPanchayatId(activityLocation.getPanchayatId());
 				
 				locationScopeId = 6L;
 				locationScopeValue = activityLocation.getPanchayatId();
