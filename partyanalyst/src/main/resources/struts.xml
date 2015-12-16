@@ -11041,6 +11041,12 @@
 			<param name="root">activitiesVOList</param>
 		</result>
     </action>	
+        
+    <action name="uploadActivityDocuments" class="committeeDashBoardAction" method="uploadActivityDocuments">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+    </action>
     
 	<action name="getComitteeMembersInfoInActivityAction" class="committeeDashBoardAction" method="getComitteeMembersInfoInActivity">
 		<result type="json" name="success">
