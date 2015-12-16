@@ -394,3 +394,246 @@ footer
 {
 	display:inline-block
 }
+.panel-custommodal
+{
+	border-radius:0px;
+	border:1px solid #fff !important;
+}
+.panel-custommodal .panel-heading
+{
+	border-radius:0px;
+	background:#f5f5f5;
+	box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);
+}
+.panel-custommodal .panel-heading a , .villageDaysModal li a
+{
+	color:#666;
+}
+.customModal
+{
+	border-radius:0px;
+	background:rgba(255,255,255,0.9)
+}
+.customModal .modal-header
+{
+	background:#ddd;
+	color:#666
+}
+.bg_cc
+{
+	background:#ccc !important;
+}
+.slick-training 
+{
+	background:#fff;
+	height:30px;
+	margin-left:50px;
+}
+.slider-nav
+{
+	background:#fff;
+	padding:0px
+}
+.slider-nav li
+{
+	margin-left:3px;
+	border:2px solid #663300;
+}
+.slider-nav li img
+{
+	height:40px;
+}
+.slider-for
+{
+	padding:0px;
+}
+.slider-for li img
+{
+	width:100%;
+	height:350px;
+	margin:auto;
+	display:block;
+	box-shadow:0px 0px 8px rgba(0,0,0,0.65)
+}
+.navbarCollapseCustom
+{
+	background:transparent;
+	border:0px;
+	margin:0px;
+	min-height:40px;
+}
+.navbarCollapseCustom .navbar-collapse
+{
+	border-bottom:2px solid #663300
+}
+.navbarCollapseCustom li a
+{
+	padding:8px;
+}
+.navbarCollapseCustom li.active a,.navbarCollapseCustom li a:hover,.navbarCollapseCustom li a:focus
+{
+	border-bottom:3px solid #663300;
+	background:#fff;
+}
+.navbarCollapseCustom .navbar-nav > .active > a, .navbarCollapseCustom .navbar-nav > .active > a:hover, .navbarCollapseCustom .navbar-nav > .active > a:focus
+{
+	background:#fff;
+}
+.pad_10
+{
+	padding:10px;
+}
+.accordionmodal-toggle , .accordionmodal-toggle:active ,.accordionmodal-toggle:hover
+{
+	color:#666 !important
+}
+.accordionmodal-toggle:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+    color: inherit;
+	font-size:10px;
+	margin-top:0px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	background:#E0D6CC;
+	border:1px solid #663300;
+	padding:1px 3px;
+}
+.accordionmodal-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.villageDays
+{
+	padding:0px;
+	margin:0px;
+	padding-left:45px;
+	background:#efeae5;
+	margin-top:6px
+}
+.villageDays li
+{
+	list-style:none;
+	border-left:1px solid #663300;
+}
+.villageDays li .days
+{
+	background:#663300;
+	color:#fff;
+	border-radius:21px;
+	line-height:34px;
+	position:relative;
+	display:block;
+	left:40px;
+	text-align:center;
+	width:70px
+}
+.villageDays li .days:before
+{
+	border-top:1px solid #663300;
+	content:' ';
+	display:block;
+	left:-45px;
+	top:50%;
+	width:50px;
+	position:absolute;
+}
+.villageDays li table
+{
+	background:#efeae5 !important
+}
+.slick-training
+{
+	margin:0px;
+}
+.slick-training li
+{
+	border:0px;
+	margin-right:2px;
+	margin-top:2px
+}
+.slick-training li img
+{
+	width:30px;
+	height:40px;
+	border:2px solid #663300
+}
+.dropdown-menu-custom
+{
+	padding:15px;
+	margin-top:10px;
+	border-radius:0px;
+	min-width:180px;
+}
+.dropdown-menu-custom li
+{
+	padding:2px 6px;
+	color:#000;
+	border-bottom:1px solid #ddd
+}
+.dropdown-menu-custom li:last-child
+{
+	border-bottom:0px solid #666
+}
+.dropdown-menu-custom:after {
+	bottom: 100%;
+	right: 5px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 8px;
+	margin-left: -8px;
+}
+.villageDaysModal
+{
+	padding:0px;
+	margin:0px;
+	background:#efeae5
+}
+.villageDaysModal li
+{
+	list-style:none;
+	padding:10px;
+	padding-left:30px;
+	border-bottom:1px solid #663300;
+}
+.villageDaysModal li:last-child
+{
+	border-bottom:0px;
+}
+.arrow_box {
+	position: relative;
+	background: #ccc !important;
+	border: 1px solid #ccc;
+	border-radius:0px;
+}
+.arrow_box:after, .arrow_box:before {
+	right: 100%;
+	top: 12px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-right-color: #ccc;
+	border-width: 10px;
+	margin-top: -10px;
+}
+.arrow_box:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-right-color: #ccc;
+	border-width: 11px;
+	margin-top: -11px;
+}
