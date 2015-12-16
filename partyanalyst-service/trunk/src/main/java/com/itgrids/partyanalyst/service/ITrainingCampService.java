@@ -120,4 +120,11 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getBatches(String type,Long programId,Long centerId);
 	public String saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers);
 	public List<SimpleVO> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type);
+	public List<TrainingCampVO> getFeedBackCountsOfTraining();
+	public List<IdNameVO> getProgramsForFeedBack();
+	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId);
+	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,Long programId,String type);
+	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type);
+	public List<IdNameVO> getAllDistrictsByState(Long stateId);
+	public List<IdNameVO> getAllConstituencysByDistrict(Long districtId);
 }

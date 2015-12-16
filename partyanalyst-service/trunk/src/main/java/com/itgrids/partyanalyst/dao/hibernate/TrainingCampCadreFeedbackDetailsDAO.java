@@ -121,6 +121,21 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		}
     	return (Long)query.uniqueResult();
     }
+ 
+ public List<Object[]> getFeedBackMembersCountProgramWise(){
+	 
+	 Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId , " +
+	 		" model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName," +
+	 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId," +
+	 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName,count(distinct model.tdpCadre.tdpCadreId) " +
+	 		" from " +
+	 		" TrainingCampCadreFeedbackDetails model " +
+	 		" where model.trainingCampBatch.isCancelled = 'false' " +
+	 		" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+	 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
+	 
+	 return query.list();
+ }
     
     
 }

@@ -95,8 +95,23 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long runningAttendenceNonIn;
 	private Long memberCountNonIn;
 	
+	private Long thirdId;
+	private String thirdName;
 	
+		
 	
+	public Long getThirdId() {
+		return thirdId;
+	}
+	public void setThirdId(Long thirdId) {
+		this.thirdId = thirdId;
+	}	
+	public String getThirdName() {
+		return thirdName;
+	}
+	public void setThirdName(String thirdName) {
+		this.thirdName = thirdName;
+	}
 	public Long getMemberCountNonIn() {
 		return memberCountNonIn;
 	}
