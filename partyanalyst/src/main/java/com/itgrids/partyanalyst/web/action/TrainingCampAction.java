@@ -2627,4 +2627,47 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	}
     	return Action.SUCCESS;
     }
+    
+    public String getFeedbackDetailsOfEachDistrictAndConstituencyWise(){
+    	try {
+			LOG.info("Entered into getFeedbackDetailsOfEachDistrictAndConstituencyWise");
+			
+			jObj = new JSONObject(getTask());
+			
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long categoryId = jObj.getLong("categoryId");
+			
+			List<Long> districtIds = new ArrayList<Long>(0);
+			if(districtId>0l){
+				districtIds.add(districtId);
+			}
+			
+			List<Long> constituencyIds = new ArrayList<Long>(0);
+			if(constituencyId>0l){
+				constituencyIds.add(constituencyId);
+			}
+			
+			List<Long> categoryIds = new ArrayList<Long>(0);
+			if(categoryId>0l){
+				categoryIds.add(categoryId);
+			}
+					
+			campVoList = trainingCampService.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds,constituencyIds,categoryIds,jObj.getLong("programId"),jObj.getString("type"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFeedbackDetailsOfEachDistrictAndConstituencyWise", e);
+		}
+    	return Action.SUCCESS;
+    }
+    
+    public String getAllCategories(){
+    	try {
+			LOG.info("Entered into getAllCategories");
+			idNameList = trainingCampService.getAllCategories();
+		} catch (Exception e) {
+			LOG.error("Entered into getAllCategories", e);
+		}
+    	return Action.SUCCESS; 
+    }
 }
