@@ -11097,8 +11097,7 @@
 				<param name="root">resultStatus</param>
 			</result>
 	   </action>
-	   
-	    <action name="saveActivityQuestionnaireDetailsAction" class="activityAction" method="saveActivityQuestionnaireDetails">
+	   <action name="saveActivityQuestionnaireDetailsAction" class="activityAction" method="saveActivityQuestionnaireDetails">
 	  	   <result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
@@ -11119,5 +11118,11 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
+	   		<action name="getAvailableDatesForActivitiesAction" class="committeeDashBoardAction" method="getAvailableDatesForActivities">
+			<result type="json" name="success">
+				<param name="root">basicVOList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
