@@ -13,7 +13,6 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 </head>
 <body>
 <header>
@@ -31,16 +30,16 @@
 						<div class="row">
 							<div class="col-md-4">
 								<label>Select Training Program</label>
-								<select class="form-control" id="selectProgramId" onchange="FeedbackCategoryCountsCenterWise();">
+								<select class="form-control" id="selectProgramId" onchange="feedbackCategoryCountsCenterWise();">
 									<option value="0">Select Program</option>
 								</select>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<div class="panel panel-default m_top20" id="centerWiseCategoryMainDivId" style="display:none;">
+								<div class="panel panel-default m_top20" id="centerWiseCategoryMainDivId" style="">
 									<div class="panel-heading">
-										<h4 class="panel-title">LEADERSHIP SKILLS</h4>
+										<h4 class="panel-title" id="programNameTitleId"></h4>
 									</div>
 									<div class="panel-body pad_0">
 										<div class="table-responsive bg_ff" id="centerWiseCategoryDivId">
@@ -114,23 +113,23 @@
 							<div class="col-md-3">
 								<label>Select Constituency</label>
 								<select class="form-control" id="selectConstituencyId">
-									<option>Select Constituency</option>
-								</select>
-							</div>
-							<!--<div class="col-md-3">
-								<label>Select Training Program</label>
-								<select class="form-control">
-									<option>Training Program Name</option>
+									<option value="0">All</option>
 								</select>
 							</div>
 							<div class="col-md-3">
-								<button class="m_top20 btn btn-success btn-sm">SUBMIT</button>
-							</div> -->
+								<label>Select Category</label>
+								<select class="form-control" id="selectCategoryId">
+									<option value="0">All</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<button class="m_top20 btn btn-success btn-sm" onclick="getFeedbackDetailsOfEachDistrictAndConstituencyWise();">SUBMIT</button>
+							</div> 
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<div class="table-responsive m_top20">
-									<table class="table table-bordered m_0">
+								<div class="table-responsive m_top20" id="distConstCatWiseCounts">
+									<!--<table class="table table-bordered m_0">
 										<thead class="bg_d">
 											<th>District</th>
 											<th>Category</th>
@@ -153,7 +152,7 @@
 											<td colspan="2" class="text-center"><b>TOTAL</b></td>
 											<td><b>2000</b></td>
 										</tr>
-									</table>
+									</table>-->
 								</div>
 							</div>
 						</div>
@@ -220,11 +219,13 @@
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
 <script>
 $(function () {
 	getAllPrograms();
 	getAllDistrictsByState(1);
+	getAllCategories();
 });
 
 
@@ -246,15 +247,17 @@ function getAllPrograms(){
 					$("#selectProgramId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				}
 			}	
-			FeedbackCategoryCountsCenterWise();	
+			feedbackCategoryCountsCenterWise();	
+			getFeedbackDetailsOfEachDistrictAndConstituencyWise();
 		}
 	});
 }
 
 //$("#selectProgramId").change(function(){
-	function FeedbackCategoryCountsCenterWise(){
+	function feedbackCategoryCountsCenterWise(){
+		$("#programNameTitleId").html($("#selectProgramId :selected").text());
 		$("#centerWiseCategoryDivId").html("");
-		$("#centerWiseCategoryMainDivId").hide();
+		//$("#centerWiseCategoryMainDivId").hide();
 		
 		var programId = $("#selectProgramId").val();
 		if(programId ==null || programId ==0){
@@ -298,16 +301,23 @@ function getAllPrograms(){
 							}
 							str+='</tr>';
 						 }
-						
 						 
 						}
 					}
+					str+='<tr>';
+						 str+='<td style="border-right: 1px solid #EFF3F4;">TOTAL</td>';
+						 str+='<td style="border: 1px solid #EFF3F4;"></td>';
+						 str+='<td ></td>';
+						 str+='<td>'+result[0].acceptedCount+'</td>';
+					str+='</tr>';
 				
 				str+='</tbody>';
 			str+='</table>';
 			
 			$("#centerWiseCategoryDivId").html(str);
-			$("#centerWiseCategoryMainDivId").show();
+			//$("#centerWiseCategoryMainDivId").show();
+		}else{
+			$("#centerWiseCategoryDivId").html("<h4>No Data Available</h4>");
 		}
 	});
 	}
@@ -341,7 +351,7 @@ function getAllPrograms(){
 		
 		//$("#selectConstituencyId").val(0);
 		$('#selectConstituencyId').children().remove();
-		$("#selectConstituencyId").append('<option value="0">Select Constituency</option>');
+		$("#selectConstituencyId").append('<option value="0">All</option>');
 		
 		var districtId = $("#selectDistrictId").val();
 		
@@ -388,7 +398,7 @@ function getAllPrograms(){
 			}
 		});
 	}
-		
+	
 function buildFeedbackDetailsOfCadre(result){
 	
 	var str = '';
@@ -432,8 +442,84 @@ function buildFeedbackDetailsOfCadre(result){
 	
 	$("#cadreDetailsDivId").html(str);
 	 $(".dataTableDiv").dataTable();
+	 $("#cadreDetailsDivId").removeClass("dataTable");
 }
+	
+		
+	
+	function getFeedbackDetailsOfEachDistrictAndConstituencyWise(){
+		$("#distConstCatWiseCounts").html("");
+		var jsObj={
+			districtId : $("#selectDistrictId").val(),
+			constituencyId : $("#selectConstituencyId").val(),
+			categoryId : $("#selectCategoryId").val(),
+			programId : $("#selectProgramId").val(),
+			type : "constituecys"
+		}
+		$.ajax({
+			type:'POST',
+			url: 'getFeedbackDetailsOfEachDistrictAndConstituencyWiseAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}			
+		}).done(function(result){
+			if(result!=null && result.length>0){
+				var str='';
+				str+='<table class="table table-bordered m_0" id="resultTableDivId">';
+				str+='<thead>';
+				str+='<thaed>';
+				str+='<th>District</th>';
+				str+='<th>Constituency</th>';
+				str+='<th>Category</th>';
+				str+='<th>Count</th>';
+				str+='<th>Total Category Count</th>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length > 0){
+						for(var j in result[i].trainingCampVOList){
+							if(result[i].trainingCampVOList[j].trainingCampVOList != null && result[i].trainingCampVOList[j].trainingCampVOList.length > 0){
+								for(var k in result[i].trainingCampVOList[j].trainingCampVOList){
+									str+='<tr>';
+									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+'</td>';
+									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';
+									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
+									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].cmpBatchCount+'</td>';
+									str+='<td>'+result[i].trainingCampVOList[0].totalProgrammesCount+'</td>';
+									str+='</tr>';
+								}
+							}
+						}
+					}
+				}
+				str+='</tbody>';
+				str+='</table>';
+				$("#distConstCatWiseCounts").html(str);
+				 $('#resultTableDivId').dataTable();
+				 $('#resultTableDivId').removeClass("dataTable");
+			}else{
+				$("#distConstCatWiseCounts").html("<h4>No Data Available.</h4>");
+			}
+		});
+	}	
 
+	function getAllCategories(){
+		
+		$.ajax({
+			  type:'POST',
+			  url: 'getAllCategoriesAction.action',
+			  dataType: 'json',
+			  data: {}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				var str='';
+				for(var i in result){
+					$("#selectCategoryId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				}
+			}
+			
+		});
+	}
+	
 </script>
 </body>
 </html>
