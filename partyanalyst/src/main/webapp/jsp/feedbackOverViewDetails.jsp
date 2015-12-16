@@ -106,14 +106,14 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label>Select District</label>
-								<select class="form-control">
-									<option>District Name</option>
+								<select class="form-control" id="selectDistrictId">
+									<option value="0">All</option>
 								</select>
 							</div>
 							<div class="col-md-3">
 								<label>Select Constituency</label>
-								<select class="form-control">
-									<option>Constituency Name</option>
+								<select class="form-control" id="selectConstituencyId">
+									<option>Select Constituency</option>
 								</select>
 							</div>
 							<!--<div class="col-md-3">
@@ -163,8 +163,8 @@
 										<h4 class="panel-title">FEEDBACK FULL DETAILS<button class="pull-right btn-xs btn btn-success">EXPORT TO PDF</button></h4>
 									</div>
 									<div class="panel-body pad_0">
-										<div class="table-responsive">
-											<table class="table table-bordered">
+										<div class="table-responsive" id="cadreDetailsDivId">
+											<!--<table class="table table-bordered">
 												<thead class="bg_d">
 													<th></th>
 													<th>CADRE NAME</th>
@@ -201,7 +201,7 @@
 												
 													<td>Problems...</td>
 												</tr>
-											</table>
+											</table> -->
 										</div>
 									</div>
 								</div>
@@ -222,6 +222,7 @@
 <script>
 $(function () {
 	getAllPrograms();
+	getAllDistrictsByState(1);
 });
 
 
@@ -301,8 +302,10 @@ $("#selectProgramId").change(function(){
 			$("#centerWiseCategoryMainDivId").show();
 		}
 	});
-	
+});
 	function getAllDistrictsByState(stateId){
+		$("#selectDistrictId option:selected").remove();
+		$("#selectDistrictId").append('<option value="0">All</option>');
 		
 		var jsObj={
 			stateId:stateId
@@ -312,12 +315,28 @@ $("#selectProgramId").change(function(){
           url: 'getAllDistrictsByStateAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}			
-		}).done(function(){
-			
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				for(var i in result){
+					$("#selectDistrictId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
+			}
 		});
 		
 	}
+	
+	$("#selectDistrictId").change(function(){
+		getAllConstituencyByDistrict();
+	});
+
 	function getAllConstituencyByDistrict(){
+		
+		//$("#selectConstituencyId").val(0);
+		$('#selectConstituencyId').children().remove();
+		$("#selectConstituencyId").append('<option value="0">Select Constituency</option>');
+		
+		var districtId = $("#selectDistrictId").val();
+		
 		var jsObj={
 			districtId:districtId
 		}
@@ -326,15 +345,37 @@ $("#selectProgramId").change(function(){
           url: 'getAllConstituencysByDistrictAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}			
-		}).done(function(){
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				for(var i in result){
+					$("#selectConstituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
+			}
+		});
+	}
+	
+	function getFeedbackDetailsOfCadre(){
+		//cadreDetailsDivId
+		programId=1;
+		locationId =20;
+		type ="district";
+		
+		var jsObj={
+			programId:programId,
+			locationId:locationId,
+			type:type
+		}
+		$.ajax({
+		  type:'POST',
+          url: 'getFeedbackDetailsOfCadreAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}			
+		}).done(function(result){
 			
 		});
 	}
 		
-		
-});
-
 
 </script>
 </body>
-</html>	
+</html>
