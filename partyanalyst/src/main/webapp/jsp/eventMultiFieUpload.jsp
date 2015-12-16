@@ -7,6 +7,7 @@
 <head>
 <style>
 .errorCls{color:red;font-size:12px;}
+.successCls{color:red;font-size:13px;}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -36,8 +37,9 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-						     
-						      <div class="errorDiv"></div>
+						    
+							<div class="successDiv"></div>
+						    <div class="errorDiv"></div>
 							 
 							<div class="col-md-6">
 								<label>Activity Type</label>
@@ -106,9 +108,11 @@ function getActivityNames()
   $(document).on("click","#uploadDocument",function() {
 	  
      $(".errorDiv").html("");
+	 $(".successDiv").html("");
+	 
 	 var activityLevel = $("#activityLevelList").val();
 	 var activityScopeId = $("#ActivityList").val();
-	 var sourceFolderId = $("#sourceFolderId").val().trim();
+	 var sourceFolderName = $("#sourceFolderId").val().trim();
 	 
 	 var str = '';
 	 var flag = true;
@@ -121,7 +125,7 @@ function getActivityNames()
 		str += 'Please Select Activity Name <br>';
 		flag = false;
 	}
-	if(sourceFolderId.length == 0){
+	if(sourceFolderName.length == 0){
 		str += 'Please Enter Source Folder Name <br>';
 		flag = false;
 	}
@@ -133,8 +137,8 @@ function getActivityNames()
 	 
 	 var jsObj=
 	   {		
-          activityScopeId:activityScopeId,	   
-		  sourceFolderId:sourceFolderId,
+          activityScopeId : activityScopeId,	   
+		  sourceFolderName : sourceFolderName,
 		  task:"uploadFile"				
 		}
 		$.ajax({
@@ -143,12 +147,27 @@ function getActivityNames()
 				  dataType: 'json',
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
-			   console.log(result)
+			   showResult(result);
 		   });
 
 })
 	
-	
+function showResult(result)
+{
+	$(".errorDiv").html("");
+	$(".successDiv").html("");
+
+	if(result.resultCode == 1)
+	{
+		$(".errorDiv").html("Upload failed, For the below reasons - ");
+		$(".errorDiv").html(result.exceptionEncountered);
+	}
+
+	if(result.resultCode == 1)
+	{
+		$(".successDiv").html("Upload successfull, Total Documents uploaded - "+result.resultState);
+	}
+}
 </script>
 </body>
 </html>
