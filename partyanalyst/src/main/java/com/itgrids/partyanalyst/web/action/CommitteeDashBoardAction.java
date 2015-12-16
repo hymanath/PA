@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
@@ -74,9 +75,11 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<ActivityVO>                    activitiesVOList;
 	private List<EventDocumentVO> docsList;
 	private List<BasicVO>                       basicVOList = null;
+	private IActivityService activityService;
 	
-	
-	
+	public void setActivityService(IActivityService activityService) {
+		this.activityService = activityService;
+	}
 	public List<BasicVO> getBasicVOList() {
 		return basicVOList;
 	}
@@ -1109,7 +1112,6 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getAvailableDatesForActivities()
 	{
 		try {
@@ -1131,5 +1133,14 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
+	public String uploadActivityDocuments(){
+		try {
+				jObj = new JSONObject(getTask());
+				resultStatus = activityService.uploadActivityDocuments(jObj.getLong("activityScopeId"),jObj.getString("sourceFolderName"),null);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
