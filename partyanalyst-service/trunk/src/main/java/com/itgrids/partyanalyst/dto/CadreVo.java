@@ -75,9 +75,18 @@ public class CadreVo implements Serializable{
 	
 	private String designation;
 	private String designationLocation;
-	
+	private String isNonInvitee;
 		
 	
+
+	
+	public String getIsNonInvitee() {
+		return isNonInvitee;
+	}
+
+	public void setIsNonInvitee(String isNonInvitee) {
+		this.isNonInvitee = isNonInvitee;
+	}
 
 	public String getDesignationLocation() {
 		return designationLocation;
