@@ -68,9 +68,23 @@ public class SimpleVO implements java.io.Serializable{
    
    private Long constituencyId;
    private String constituencyName;
+   private String designationLevel;
+   private String designation;
    
    
-   public int getOneDayNIACount() {
+   public String getDesignationLevel() {
+	return designationLevel;
+}
+public void setDesignationLevel(String designationLevel) {
+	this.designationLevel = designationLevel;
+}
+public String getDesignation() {
+	return designation;
+}
+public void setDesignation(String designation) {
+	this.designation = designation;
+}
+public int getOneDayNIACount() {
 		return oneDayNIACount;
 	}
 	public void setOneDayNIACount(int oneDayNIACount) {

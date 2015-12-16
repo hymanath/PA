@@ -9745,6 +9745,27 @@ class TrainingCampService implements ITrainingCampService{
 			if(cadreDetails !=null && cadreDetails.size()>0){				
 				cadreMap = setCadreDetailsToMap(cadreDetails,cadreMap);
 			}
+			Set<Long> cadreIds = cadreMap.keySet();
+			
+			List<Object[]> designationDetails = tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList1(new ArrayList<Long>(cadreIds));
+			
+			if(designationDetails != null && designationDetails.size() > 0){
+				for (Object[] objects : designationDetails) {
+					
+					Long cadreId = (Long) (objects[0] != null ? objects[0]:0l); 
+					String designationLevel = objects[7].toString()+" Level "+objects[4].toString()+" Committee ";
+					String designation = objects[6] != null ? objects[6].toString():"";
+					Map<Long,SimpleVO> designationMap = cadreMap.get(cadreId);
+					
+					for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
+					 
+						SimpleVO vo = mainMap.getValue();
+						
+						vo.setDesignationLevel(designationLevel);
+						vo.setDesignation(designation);
+					}
+				}
+			}
 			
 			if(cadreMap !=null && cadreMap.size()>0){
 				finalList = setCadreValuesToList(cadreMap,finalList);
