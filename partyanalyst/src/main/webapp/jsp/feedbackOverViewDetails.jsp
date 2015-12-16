@@ -30,7 +30,7 @@
 						<div class="row">
 							<div class="col-md-4">
 								<label>Select Training Program</label>
-								<select class="form-control" id="selectProgramId">
+								<select class="form-control" id="selectProgramId" onchange="FeedbackCategoryCountsCenterWise();">
 									<option value="0">Select Program</option>
 								</select>
 							</div>
@@ -238,13 +238,19 @@ function getAllPrograms(){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			for(var i in result){
-				$("#selectProgramId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>'); 
-			}			
+				if(result[i].id==1){
+					$("#selectProgramId").append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');
+				}else{
+					$("#selectProgramId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+				}
+			}	
+			FeedbackCategoryCountsCenterWise();	
 		}
 	});
 }
 
-$("#selectProgramId").change(function(){
+//$("#selectProgramId").change(function(){
+	function FeedbackCategoryCountsCenterWise(){
 		$("#centerWiseCategoryDivId").html("");
 		$("#centerWiseCategoryMainDivId").hide();
 		
@@ -302,7 +308,7 @@ $("#selectProgramId").change(function(){
 			$("#centerWiseCategoryMainDivId").show();
 		}
 	});
-});
+	}
 	function getAllDistrictsByState(stateId){
 		$("#selectDistrictId option:selected").remove();
 		$("#selectDistrictId").append('<option value="0">All</option>');
