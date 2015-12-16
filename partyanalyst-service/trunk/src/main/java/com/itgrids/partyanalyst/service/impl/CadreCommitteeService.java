@@ -17600,7 +17600,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 				 distVO.setId(vo.getId());
 				 distVO.setName(vo.getName());
 				 distVO.setTotalCount(0l);
-				 distVO.setPlannedCount(1l);
+				 distVO.setPlannedCount(0l);
 				 distVO.setConductedCount(0l);
 				 distVO.setNonConductedCount(0l);
 				 finalList.add(distVO);
