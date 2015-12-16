@@ -1749,22 +1749,22 @@ function buildDayWiseAttendnenceForBatch(result,center){
 					str+='<td>'+result.batchName+'</td>';
 					for(var j in result.simpleVOList1){
 						if(result.simpleVOList1[j].total!=null){
-							str+='<td>'+result.simpleVOList1[j].total+'</td>'
+							str+='<td>'+result.simpleVOList1[j].total+' - IA <br/>'+result.simpleVOList1[j].nonInviteeAttendedCount+' - NIA</td>'
 						}else{
 							str+='<td>0</td>'
 						}
 					}
 					if(result.day1Count !=null){
-						str+='<td>'+result.day1Count+'</td>';
+						str+='<td>'+result.day1Count+' - IA<br/>'+result.oneDayNIACount+' - NIA</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					if(result.day1Count !=null){
-						str+='<td>'+result.day2Count+'</td>';
+						str+='<td>'+result.day2Count+' - IA<br/>'+result.twoDaysNIACount+' - NIA</td>';
 					}else{
 						str+='<td>0</td>';
 					}if(result.day1Count !=null){
-						str+='<td>'+result.day3Count+'</td>';
+						str+='<td>'+result.day3Count+' - IA<br/>'+result.threeDaysNIACount+' - NIA</td>';
 					}else{
 						str+='<td>0</td>';
 					}
