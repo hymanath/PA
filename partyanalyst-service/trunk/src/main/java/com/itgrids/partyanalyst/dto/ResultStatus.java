@@ -19,8 +19,7 @@ public class ResultStatus implements Serializable{
     private String exceptionMsg;
     private String message;
     private String host;
-    
-    
+    private Long resultState;
     
     public String getHost() {
 		return host;
@@ -34,7 +33,6 @@ public class ResultStatus implements Serializable{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	private Long resultState;
     
     public int getResultCode() {
 		return resultCode;
