@@ -13,8 +13,8 @@ public class TrainingCampAttendanceDAOHibetnateTest extends BaseDaoTestCase{
 		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		trainingCampAttendanceDAO.getAll();
-	}
+	}*/
 }
