@@ -48,11 +48,12 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
-			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
 		}
+		
 		Query query = getSession().createQuery(str.toString());
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
@@ -194,6 +195,11 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");*/
 		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
@@ -206,7 +212,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		/*if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());*/
 		
-		if(inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") || inputVO.getLocationScope().equalsIgnoreCase("village") )
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
