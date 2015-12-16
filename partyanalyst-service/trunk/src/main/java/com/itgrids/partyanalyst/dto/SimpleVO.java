@@ -62,9 +62,30 @@ public class SimpleVO implements java.io.Serializable{
    
    private Long categoryId;
    private String category;
+   private int oneDayNIACount=0;
+   private int twoDaysNIACount=0;
+   private int threeDaysNIACount=0;
    
    
    
+	public int getOneDayNIACount() {
+		return oneDayNIACount;
+	}
+	public void setOneDayNIACount(int oneDayNIACount) {
+		this.oneDayNIACount = oneDayNIACount;
+	}
+	public int getTwoDaysNIACount() {
+		return twoDaysNIACount;
+	}
+	public void setTwoDaysNIACount(int twoDaysNIACount) {
+		this.twoDaysNIACount = twoDaysNIACount;
+	}
+	public int getThreeDaysNIACount() {
+		return threeDaysNIACount;
+	}
+	public void setThreeDaysNIACount(int threeDaysNIACount) {
+		this.threeDaysNIACount = threeDaysNIACount;
+	}
 	public Long getCategoryId() {
 	return categoryId;
 	}
