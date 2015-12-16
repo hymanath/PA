@@ -110,6 +110,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.model.CadreDeleteReason;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.FeedbackCategory;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
@@ -9566,7 +9567,7 @@ class TrainingCampService implements ITrainingCampService{
 		return countList;
 	}
 	
-	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,Long programId,String type){
+	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencyIds,List<Long> categoryIds,Long programId,String type){
 		
 		List<TrainingCampVO> trainingCampList = new ArrayList<TrainingCampVO>();
 		
@@ -9579,10 +9580,10 @@ class TrainingCampService implements ITrainingCampService{
 			List<Object[]> districtWithConstiObjectList=null;
 			if(type !=null && type.equalsIgnoreCase("districts")){
 				//0.districtId,1.distName,2.categoryId,3.categoryName,4.count
-				districtObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencIds, programId, type);				
+				districtObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type);				
 			}else if(type !=null && type.equalsIgnoreCase("constituecys")){
 				//0.districtId,1.distName,2.constituencyId,3.name,4.categoryId,5.categoryName,6.count
-				districtWithConstiObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencIds, programId, type);
+				districtWithConstiObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type);
 			}
 			
 			//Only for District Scenario.
@@ -9893,4 +9894,24 @@ class TrainingCampService implements ITrainingCampService{
 		return constituencyList;
 	}
 	
+	public List<IdNameVO> getAllCategories(){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		try {
+			LOG.info("Entered into getAllCategories");
+			List<FeedbackCategory> feedbackCategoryList = feedbackCategoryDAO.getAll();
+			
+			if(feedbackCategoryList != null && feedbackCategoryList.size() > 0){
+				for (FeedbackCategory feedbackCategory : feedbackCategoryList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(feedbackCategory.getFeedbackCategoryId());
+					vo.setName(feedbackCategory.getCategoryName());
+					voList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getAllCategories", e);
+		}
+		return voList;
+	}
 }

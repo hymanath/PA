@@ -47,28 +47,28 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 				"  from " +
 				" TrainingCampFeedbackAnswer model" +
 				" where " +
-				" model.trainingCampFeedbackCategory.isDeleted='N'" +
+				" model.trainingCampFeedbackCategory.isDeleted='N' and model.trainingCampFeedbackCategory.trainingCampProgramId=:programId " +
 				" group by " +
 				"  model.trainingCampFeedbackCategory.trainingCamp.trainingCampId,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId ");
-		
+		query.setParameter("programId", programId);
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,Long programId,String type){
+	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds, List<Long> categoryIds,Long programId,String type){
 		
 		StringBuilder str = new StringBuilder();	
 		
 		if(type !=null && type.equalsIgnoreCase("districts")){
-			str.append(" select dist.districtId;dist.districtName,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
-					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackCategoryId)," +
+			str.append(" select dist.districtId,dist.districtName,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
+					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackCategoryId) " +
 					" from  TrainingCampFeedbackAnswer tcfa,TrainingCampFeedbackCategory tcfc,TdpCadre tc,District dist " +
 					" where model.tdpCadreId = tc.tdpCadreId" +
 					" and tc.userAddress.district.districtId=dist.districtId  ");
 		}
 		else if(type !=null && type.equalsIgnoreCase("constituecys")){
-			str.append(" select dist.districtId;dist.districtName,const.constituencyId,const.name" +
+			str.append(" select dist.districtId,dist.districtName,const.constituencyId,const.name" +
 				"  ,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
-					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackCategoryId)," +
+					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackCategoryId) " +
 				
 					" from  TrainingCampFeedbackAnswer model,TrainingCampFeedbackCategory tcfc,TdpCadre tc,District dist,Constituency const " +
 					
@@ -84,6 +84,9 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		}
 		if(constituencIds !=null && constituencIds.size()>0){
 			str.append(" and const.constituencyId in (:constituencIds) ");
+		}
+		if(categoryIds != null && categoryIds.size() > 0){
+			str.append(" and model.trainingCampFeedbackCategory.feedbackCategoryId in (:categoryIds) ");
 		}
 		if(programId !=null && programId>0){
 			str.append(" and  model.trainingCampFeedbackCategory.trainingCampProgramId = :programId  ");
@@ -104,6 +107,9 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		}
 		if(constituencIds !=null && constituencIds.size()>0){
 			query.setParameterList("constituencIds", constituencIds);
+		}
+		if(categoryIds != null && categoryIds.size() > 0){
+			query.setParameterList("categoryIds", categoryIds);
 		}
 		
 		if(programId !=null && programId>0){
