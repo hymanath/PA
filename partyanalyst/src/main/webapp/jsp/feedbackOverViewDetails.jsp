@@ -13,6 +13,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 </head>
 <body>
 <header>
@@ -218,6 +219,7 @@
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <script>
 $(function () {
@@ -359,11 +361,12 @@ function getAllPrograms(){
 			}
 		});
 	}
-	
+	getFeedbackDetailsOfCadre();
 	function getFeedbackDetailsOfCadre(){
-		//cadreDetailsDivId
+		
+		$("#cadreDetailsDivId").html("");
 		programId=1;
-		locationId =20;
+		locationId =22;
 		type ="district";
 		
 		var jsObj={
@@ -377,10 +380,59 @@ function getAllPrograms(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}			
 		}).done(function(result){
-			
+			if(result != null && result.length > 0){
+				buildFeedbackDetailsOfCadre(result);
+			}
+			else{
+				$("#cadreDetailsDivId").html("NO DATA AVAILABLE...");
+			}
 		});
 	}
 		
+function buildFeedbackDetailsOfCadre(result){
+	
+	var str = '';
+	
+	str+='<table class="table table-bordered dataTableDiv">';
+		str+='<thead class="bg_d">';
+			str+='<th>IMAGE</th>';
+			str+='<th>CADRE NAME</th>';
+			str+='<th>DESIGNATION</th>';
+			str+='<th>MOBILE NO</th>';
+			str+='<th>CATEGORY</th>';
+			str+='<th>ANSWER</th>';
+		str+='</thead>';
+		for(var i in result){
+			if(result[i].simpleVOList1 != null && result[i].simpleVOList1.length > 0){
+				for(var j in result[i].simpleVOList1){
+					str+='<tr>';
+						if(result[i].simpleVOList1[j].imageStr != null){
+							str+='<td><img src="images/cadre_images/'+result[i].simpleVOList1[j].imageStr+'" style="height:40px" class="img-reponsive"></td>';
+						}
+						else{
+							str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>';
+						}
+						str+='<td>';
+						str+='<p>'+result[i].simpleVOList1[j].name+'</p>';
+						str+='<p>'+result[i].simpleVOList1[j].constituencyName+'</p>';
+						str+='<p>'+result[i].simpleVOList1[j].id+'</p>';
+						str+='</td>';
+						str+='<td>';
+						str+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						str+='<p>'+result[i].simpleVOList1[j].designationLevel+'</p>';
+						str+='</td>';
+						str+='<td>'+result[i].simpleVOList1[j].mobileNo+'</td>';
+						str+='<td>'+result[i].simpleVOList1[j].category+'</td>';
+						str+='<td>'+result[i].simpleVOList1[j].remarks+'</td>';
+					str+='</tr>';
+				}
+			}
+		}
+	str+='</table>';
+	
+	$("#cadreDetailsDivId").html(str);
+	 $(".dataTableDiv").dataTable();
+}
 
 </script>
 </body>
