@@ -9,14 +9,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Feedback Details</title>
+<title>Training Center</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 </head>
+<style>
+header.eventsheader { 
+ background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
+ background-origin: border-box;
+ background-repeat: no-repeat;
+ height: 71px; 
+}
+footer{background-color:#5c2d25;color:#ccc;padding:30px}
+</style>
 <body>
-<header>
-	<img src="dist/img/header.jpg" width="100%">
+<header  class="eventsheader">
+<!-- <img src="css/Training/img/header.jpg" width="100%"> -->
+	<div class="container">
+        <div class="row">
+            <div class="col-md-2 col-xs-4 col-sm-1">
+                <img src="dist/img/logo.png" class="img-responsive">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1">
+                <img src="dist/img/CBN1.png" class="img-responsive">
+            </div>
+            <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:27px;"></p>               
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
+            </div>
+			<div class="col-md-2 col-xs-1 col-sm-1">
+				<div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
+            </div>			
+        </div>       
+    </div>	
 </header>
 <main>
 	<div class="container">
@@ -100,7 +127,7 @@
 	</div>
 </main>
 <footer>
-		<img src="dist/img/footer.jpg" width="100%">
+		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -109,6 +136,7 @@
 
 <script>
 $(function () {
+	$("#mainheading").html("TRAINING CAMP CADRE FEEDBACK REPORT");
 	getAllPrograms();
 	getAllDistrictsByState(1);
 	getAllCategories();
@@ -338,8 +366,8 @@ function buildFeedbackDetailsOfCadre(result){
 	
 	$("#cadreDetailsAjaxImage").hide();
 	$("#cadreDetailsDivId").html(str);
-	 $(".dataTableDiv").dataTable();
-	 $(".dataTableDiv").removeClass("dataTable");
+	$(".dataTableDiv").dataTable();
+	$(".dataTableDiv").removeClass("dataTable");
 }
 	
 		
