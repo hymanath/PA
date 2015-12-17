@@ -30,7 +30,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedbackCategoryCountsCenterWise(Long programId){
+	public List<Object[]> getFeedbackCategoryCountsCenterWise(Long programId,Date fromDate,Date toDate){
 		
 		/*select tc.training_camp_id,tc.camp_name,fc.feedback_category_id,fc.category_name,count(distinct tcfc.training_camp_feedback_category_id)
 		 from training_camp_feedback_answer tcfa,training_camp_feedback_category tcfc,feedback_category fc,training_camp tc
@@ -41,20 +41,32 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		 tcfc.training_camp_program_id=1 and tcfc.is_deleted='N'
 		 group by tc.training_camp_id,fc.feedback_category_id;*/
 		
-		Query query = getSession().createQuery(" select model.trainingCampFeedbackCategory.trainingCamp.trainingCampId," +
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.trainingCampFeedbackCategory.trainingCamp.trainingCampId," +
 				"  model.trainingCampFeedbackCategory.trainingCamp.campName,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
 				" model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackAnswerId) " +
 				"  from " +
 				" TrainingCampFeedbackAnswer model" +
 				" where " +
-				" model.trainingCampFeedbackCategory.isDeleted='N' and model.trainingCampFeedbackCategory.trainingCampProgramId=:programId " +
-				" group by " +
+				" model.trainingCampFeedbackCategory.isDeleted='N' and model.trainingCampFeedbackCategory.trainingCampProgramId=:programId ");
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+		}
+		
+		sb.append(" group by " +
 				"  model.trainingCampFeedbackCategory.trainingCamp.trainingCampId,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId ");
+		
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("programId", programId);
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds, List<Long> categoryIds,Long programId,String type){
+	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds, List<Long> categoryIds,Long programId,String type,Date fromDate,Date toDate){
 		
 		StringBuilder str = new StringBuilder();	
 		
@@ -91,6 +103,9 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		if(programId !=null && programId>0){
 			str.append(" and  model.trainingCampFeedbackCategory.trainingCampProgramId = :programId  ");
 		}
+		if(fromDate != null && toDate != null){
+			str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+		}
 		
 		if(type !=null && type.equalsIgnoreCase("districts")){
 			str.append(" group by dist.districtId,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId order by dist.districtName," +
@@ -116,10 +131,15 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			query.setParameter("programId", programId);
 		}
 		
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type){
+	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,Date fromDate,Date toDate){
 		
 		/*Minimum Query
 		 *  select tc.tdp_cadre_id,fc.feedback_category_id,tcfa.answer
@@ -150,6 +170,10 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			str.append(" and  model.trainingCampFeedbackCategory.trainingCampProgramId = :programId  ");
 		}
 		
+		if(fromDate != null && toDate != null){
+			str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+		}
+		
 		str.append(" " +
 				" order by  model.tdpCadre.firstname ");
 		
@@ -157,7 +181,10 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		
 		query.setParameter("locationId", locationId);
 		query.setParameter("programId", programId);
-		
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();		
 	}
 	
@@ -174,7 +201,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			 		" where model.trainingCampFeedbackCategory.isDeleted='N'");
 		 
 		 if(startDate !=null && endDate !=null){
-			 str.append(" and date(model.updatedTime) :startDate and :endDate  ");
+			 str.append(" and date(model.updatedTime) between :startDate and :endDate  ");
 		 }
 		 
 		 str.append("group by model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId," +
@@ -185,8 +212,8 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		 Query query = getSession().createQuery(str.toString());
 		 
 		 if(startDate !=null && endDate !=null){
-			 query.setParameter("startDate", "startDate");
-			 query.setParameter("endDate", "endDate");
+			 query.setParameter("startDate", startDate);
+			 query.setParameter("endDate", endDate);
 		 }
 		 
 		 return query.list();
