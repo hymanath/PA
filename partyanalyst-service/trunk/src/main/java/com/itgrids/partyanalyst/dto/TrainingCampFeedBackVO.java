@@ -6,6 +6,9 @@ public class TrainingCampFeedBackVO {
 	
 	private String name;
 	private Long id;
+	private String constituency;
+	private String district;
+	
 	private List<TrainingCampFeedBackVO> subList;
 	
 	
