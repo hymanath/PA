@@ -212,11 +212,12 @@ header.eventsheader {
                             <div class="row">
 							
                             	<div class="col-md-12">
-								<div class="panel panel-default" id="feedBackCountMainDivId" style="display:none">
+								<div class="panel panel-default" id="feedBackCountMainDivId" style="">
 										<div class="panel-heading bg_d">
-											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs" id="viewDetailsBtnId">VIEW FULL DETAILS</button></span></h4>	
+											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs" id="viewDetailsBtnId" style="display:none">VIEW FULL DETAILS</button></span></h4>	
 										</div>
 										<div class="panel-body pad_0">
+											<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
 											<div style="" id="feedBackCountId"></div>
 										</div>
 								</div>
@@ -494,7 +495,7 @@ $(function () {
 	getDayWiseCountsForRunningBatches("onLoad");
 	getAttendenceForTrainers("today");
 	//$(".ranges ul li:nth-child(5)").trigger("click");
-	getFeedBackCountsOfTraining();
+	getFeedBackCountsOfTraining("onLoad");
 	
 });
 
@@ -1349,6 +1350,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		getAttendedCountForBatchesByLocation("onClick");
 		getInvitedAttendedCadreCountByBatchIds("onClick");
 		getDayWiseCountsForRunningBatches("onClick");
+		getFeedBackCountsOfTraining("onClick");
 	});
 	
 	$(document).on("click",".ranges li",function(){
@@ -1357,6 +1359,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		getAttendedCountForBatchesByLocation("onClick");
 		getInvitedAttendedCadreCountByBatchIds("onClick");
 		getDayWiseCountsForRunningBatches("onClick");
+		getFeedBackCountsOfTraining("onClick");
 	});
 	
 	$(document).on("click",".summaryCls",function(){
@@ -1449,16 +1452,33 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			}
 		});
 	}
-	function getFeedBackCountsOfTraining(){		
-			$.ajax({
+	function getFeedBackCountsOfTraining(fromType){
+			
+			$("#feefbackLoadingImgId").show();
+			$("#viewDetailsBtnId").hide();
+			
+			var dates;
+			if(fromType=="onLoad"){
+				dates="";
+			}else{
+				dates=$("#selectDate").val();
+			}
+	
+		var jsObj={
+			dates : dates
+		}
+		$.ajax({
 		   type:'POST',
 		   url :'getFeedBackCountsOfTrainingAction.action',
-		   data: {},
+		   data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
 			var str='';
-			
+			$("#feefbackLoadingImgId").hide();
 			if(result !=null && result.length>0)
-			{				
+			{
+			
+			$("#viewDetailsBtnId").show();
+		
 			 str+='<table class="table table-bordered m_0">';
 				str+='<thead>';
 						str+='<th>Training Program Name</th>';
@@ -1495,7 +1515,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			 str+='</table>';
 			
 			$("#feedBackCountId").html(str);
-			$("#feedBackCountMainDivId").show();
+			//$("#feedBackCountMainDivId").show();
+			}
+			else{
+				$("#feedBackCountId").html("Feedback Data Not Available.");
 			}
 			
 		});

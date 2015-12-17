@@ -2555,8 +2555,24 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     }
     
     public String getFeedBackCountsOfTraining(){
-    	try{    		
-    		campVoList = trainingCampService.getFeedBackCountsOfTraining();
+    	try{    
+    		
+    		jObj = new JSONObject(getTask());	
+    		
+    		String selDate = jObj.getString("dates");
+			
+    		String temp[] = null;
+    		if(selDate !=null && !selDate.isEmpty()){
+    			temp = selDate.split("-");
+    		}
+    	
+    		if(temp !=null && temp.length>0){
+    			campVoList = trainingCampService.getFeedBackCountsOfTraining(temp[0].toString(),temp[1].toString());
+    		}else{
+    			campVoList = trainingCampService.getFeedBackCountsOfTraining("","");
+    		}
+    		
+    		
     		
     	}catch (Exception e) {
     		LOG.error("Exception raised at getFeedBackCountsOfTraining", e);
