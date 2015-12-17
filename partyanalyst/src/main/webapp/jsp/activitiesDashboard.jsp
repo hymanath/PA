@@ -1790,7 +1790,7 @@ function buildDayWiseImagesForPopup(result,path,day)
 			str+='<ul class="slider-for">';
 			for(var j in result[i].subList)
 			{
-				if(j < 10)
+				if(j < 20)
 				{
 						str+='<li><img src="activity_documents/' +result[i].subList[j].path+'"></li>';
 				}
@@ -1800,7 +1800,7 @@ function buildDayWiseImagesForPopup(result,path,day)
 			 
 			for(var j in result[i].subList)
 			{
-				if(j < 10)
+				if(j < 20)
 				{
 				if(result[i].subList[j].path==path)
 					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
