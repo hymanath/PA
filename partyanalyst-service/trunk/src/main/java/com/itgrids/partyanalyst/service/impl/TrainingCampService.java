@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.dialect.FrontBaseDialect;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -9525,15 +9526,20 @@ class TrainingCampService implements ITrainingCampService{
 		
 	}
 	
-	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId){
+	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId,String fromDateStr,String toDateStr){
 		
 		List<TrainingCampVO> categoryCountList = new ArrayList<TrainingCampVO>();
 		try{
-			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = null,toDate = null;
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
 			Map<Long,Map<Long,TrainingCampVO>> centerMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
 			
 			//0.center or camp id,1.campName,2.categoryId,3.categoryName,4.count
-			List<Object[]> centerResult = trainingCampFeedbackAnswerDAO.getFeedbackCategoryCountsCenterWise(programId);
+			List<Object[]> centerResult = trainingCampFeedbackAnswerDAO.getFeedbackCategoryCountsCenterWise(programId,fromDate,toDate);
 			
 			if(centerResult !=null && centerResult.size()>0){
 				centerMap = countsAssigningToMap(centerResult,centerMap,"members");
@@ -9579,12 +9585,17 @@ class TrainingCampService implements ITrainingCampService{
 		return countList;
 	}
 	
-	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencyIds,List<Long> categoryIds,Long programId,String type){
+	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencyIds,List<Long> categoryIds,Long programId,String type,String fromDateStr,String toDateStr){
 		
 		List<TrainingCampVO> trainingCampList = new ArrayList<TrainingCampVO>();
 		
 		try{
-			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate=null,toDate=null;
+			if(fromDateStr!=null && toDateStr!=null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
 			Map<Long,Map<Long,TrainingCampVO>> districtMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
 			Map<Long,Map<Long,Map<Long,TrainingCampVO>>> constiMap = new HashMap<Long, Map<Long,Map<Long,TrainingCampVO>>>();
 			
@@ -9592,10 +9603,10 @@ class TrainingCampService implements ITrainingCampService{
 			List<Object[]> districtWithConstiObjectList=null;
 			if(type !=null && type.equalsIgnoreCase("districts")){
 				//0.districtId,1.distName,2.categoryId,3.categoryName,4.count
-				districtObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type);				
+				districtObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type, fromDate,toDate);				
 			}else if(type !=null && type.equalsIgnoreCase("constituecys")){
 				//0.districtId,1.distName,2.constituencyId,3.name,4.categoryId,5.categoryName,6.count
-				districtWithConstiObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type);
+				districtWithConstiObjectList = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds, constituencyIds,categoryIds, programId, type,fromDate,toDate);
 			}
 			
 			//Only for District Scenario.
@@ -9750,11 +9761,17 @@ class TrainingCampService implements ITrainingCampService{
 		return trainingCampList;
 	}
 	
-	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type){
+	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,String fromDateStr,String toDateStr){
 		List<SimpleVO> finalList = new ArrayList<SimpleVO>();
-		try{			
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate=null,toDate=null;
+			if(fromDateStr!=null && toDateStr!=null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
 			Map<Long,Map<Long,SimpleVO>> cadreMap = new HashMap<Long, Map<Long,SimpleVO>>();
-			List<Object[]> cadreDetails = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfCadre(locationId,programId,type);			
+			List<Object[]> cadreDetails = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfCadre(locationId,programId,type,fromDate,toDate);			
 			if(cadreDetails !=null && cadreDetails.size()>0){				
 				cadreMap = setCadreDetailsToMap(cadreDetails,cadreMap);
 			}
@@ -9824,7 +9841,7 @@ class TrainingCampService implements ITrainingCampService{
 				}else{
 					//vo.setRemarks(objects[6] !=null ? objects[6].toString():"");//answer
 					if(vo.getRemarks()!=null && vo.getRemarks().trim()!=""){
-						vo.setRemarks(vo.getRemarks()+" , "+objects[6].toString());
+						vo.setRemarks(vo.getRemarks()+" & "+objects[6].toString());
 					}else{
 						vo.setRemarks(objects[6] !=null ? objects[6].toString():"");
 					}
