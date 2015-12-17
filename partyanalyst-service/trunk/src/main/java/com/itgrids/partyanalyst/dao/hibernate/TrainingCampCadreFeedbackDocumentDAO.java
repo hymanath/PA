@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -32,18 +33,32 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedBackDocumentsCountProgramWise(){
+	public List<Object[]> getFeedBackDocumentsCountProgramWise(Date startDate,Date endDate){
 		
-		Query query = getSession().createQuery("select model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 				" model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName," +
 				" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId," +
-				" model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName,count(model.filePath ) " +
+				" model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName,count(model.filePath ) " +				
 				" from " +
 				" TrainingCampCadreFeedbackDocument model " +
 				" where model.trainingCampBatch.isCancelled = 'false' " +
-				" and model.isDeleted ='N' " +
-		 		" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+				"  and model.isDeleted ='N' " );
+		
+		 if(startDate !=null && endDate !=null){
+			 str.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		 }
+		 str.append("group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 		 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
+				
+			Query query = getSession().createQuery(str.toString());
+			
+		 
+			 if(startDate !=null && endDate !=null){
+				 query.setParameter("startDate", startDate);
+				 query.setParameter("endDate", endDate);
+			 }
 		
 		return query.list();
 	}
