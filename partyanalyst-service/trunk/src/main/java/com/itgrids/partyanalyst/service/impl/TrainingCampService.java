@@ -9359,23 +9359,33 @@ class TrainingCampService implements ITrainingCampService{
 			return null;
 		}
 		
-		public List<TrainingCampVO> getFeedBackCountsOfTraining(){
+		public List<TrainingCampVO> getFeedBackCountsOfTraining(String fromDateStr,String toDateStr){
 			
 			List<TrainingCampVO> programList = new ArrayList<TrainingCampVO>();
 			try{
+				
+				Date startDate =null;
+				Date endDate=null;
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				if((fromDateStr !=null && !fromDateStr.isEmpty()) && (toDateStr !=null && !toDateStr.isEmpty()) ){
+					startDate=sdf.parse(fromDateStr);
+					endDate = sdf.parse(toDateStr);
+				}
+				
 				
 				Map<Long,Map<Long,TrainingCampVO>> programMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
 				
 				//0.programId,1.pgName,2.campId,3.campName,4.MembersCount
 				//List<Object[]> membersDetails = trainingCampCadreFeedbackDetailsDAO.getFeedBackMembersCountProgramWise();
 				
-				List<Object[]> membersDetails = trainingCampFeedbackAnswerDAO.getFeedBackMembersCountProgramWise();
+				List<Object[]> membersDetails = trainingCampFeedbackAnswerDAO.getFeedBackMembersCountProgramWise(startDate,endDate);
 				
 				if(membersDetails !=null && membersDetails.size()>0){
 					programMap = countsAssigningToMap(membersDetails,programMap,"members");
 				}
 				//0.programId,1.pgName,2.campId,3.campName,4.filesCount
-				List<Object[]> filesCount =  trainingCampCadreFeedbackDocumentDAO.getFeedBackDocumentsCountProgramWise();
+				List<Object[]> filesCount =  trainingCampCadreFeedbackDocumentDAO.getFeedBackDocumentsCountProgramWise(startDate,endDate);
 				
 				if(filesCount !=null && filesCount.size()>0){
 					programMap = countsAssigningToMap(filesCount,programMap,"files");

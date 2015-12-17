@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -7,7 +8,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampFeedbackAnswerDAO;
 import com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer;
-import com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory;
 
 public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingCampFeedbackAnswer, Long> implements ITrainingCampFeedbackAnswerDAO{
 
@@ -161,19 +161,33 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();		
 	}
 	
-	 public List<Object[]> getFeedBackMembersCountProgramWise(){
+	 public List<Object[]> getFeedBackMembersCountProgramWise(Date startDate,Date endDate){
 		 
-		 Query query = getSession().createQuery(" select model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId , " +
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append(" select model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId , " +
 			 		" model.trainingCampFeedbackCategory.trainingCampProgram.programName," +
 			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId ," +
 			 		" model.trainingCampFeedbackCategory.trainingCamp.campName,count(distinct model.trainingCampFeedbackAnswerId) " +
 			 		" from " +
 			 		" TrainingCampFeedbackAnswer model" +
-			 		" where model.trainingCampFeedbackCategory.isDeleted='N' " +
-			 		" group by model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId," +
-			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId" +
-			 		" order by model.trainingCampFeedbackCategory.trainingCampProgram.programName,model.trainingCampFeedbackCategory.trainingCamp.campName " );
+			 		" where model.trainingCampFeedbackCategory.isDeleted='N'");
 		 
+		 if(startDate !=null && endDate !=null){
+			 str.append(" and date(model.updatedTime) :startDate and :endDate  ");
+		 }
+		 
+		 str.append("group by model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId," +
+			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId" +
+			 		" order by model.trainingCampFeedbackCategory.trainingCampProgram.programName," +
+			 		" model.trainingCampFeedbackCategory.trainingCamp.campName ");
+		 
+		 Query query = getSession().createQuery(str.toString());
+		 
+		 if(startDate !=null && endDate !=null){
+			 query.setParameter("startDate", "startDate");
+			 query.setParameter("endDate", "endDate");
+		 }
 		 
 		 return query.list();
 	 }
