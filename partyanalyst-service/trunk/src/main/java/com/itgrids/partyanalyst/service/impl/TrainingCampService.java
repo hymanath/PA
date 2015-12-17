@@ -9554,9 +9554,9 @@ class TrainingCampService implements ITrainingCampService{
 							totalCategoryCount = totalCategoryCount + trainingCampVO.getAssignedCount();
 							totalCount =totalCount + trainingCampVO.getAssignedCount();
 						} 															
-					}					
+					}
+					categoryList.get(0).setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
 				}
-				vo.setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
 			}
 			
 			countList.get(0).setAcceptedCount(totalCount);
