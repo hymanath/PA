@@ -9367,7 +9367,9 @@ class TrainingCampService implements ITrainingCampService{
 				Map<Long,Map<Long,TrainingCampVO>> programMap = new HashMap<Long, Map<Long,TrainingCampVO>>();
 				
 				//0.programId,1.pgName,2.campId,3.campName,4.MembersCount
-				List<Object[]> membersDetails = trainingCampCadreFeedbackDetailsDAO.getFeedBackMembersCountProgramWise();
+				//List<Object[]> membersDetails = trainingCampCadreFeedbackDetailsDAO.getFeedBackMembersCountProgramWise();
+				
+				List<Object[]> membersDetails = trainingCampFeedbackAnswerDAO.getFeedBackMembersCountProgramWise();
 				
 				if(membersDetails !=null && membersDetails.size()>0){
 					programMap = countsAssigningToMap(membersDetails,programMap,"members");

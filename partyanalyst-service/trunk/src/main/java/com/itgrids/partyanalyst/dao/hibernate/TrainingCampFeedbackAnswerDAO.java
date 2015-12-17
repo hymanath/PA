@@ -161,6 +161,23 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();		
 	}
 	
+	 public List<Object[]> getFeedBackMembersCountProgramWise(){
+		 
+		 Query query = getSession().createQuery(" select model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId , " +
+			 		" model.trainingCampFeedbackCategory.trainingCampProgram.programName," +
+			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId ," +
+			 		" model.trainingCampFeedbackCategory.trainingCamp.campName,count(distinct model.trainingCampFeedbackAnswerId) " +
+			 		" from " +
+			 		" TrainingCampFeedbackAnswer model" +
+			 		" where model.trainingCampFeedbackCategory.isDeleted='N' " +
+			 		" group by model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId," +
+			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId" +
+			 		" order by model.trainingCampFeedbackCategory.trainingCampProgram.programName,model.trainingCampFeedbackCategory.trainingCamp.campName " );
+		 
+		 
+		 return query.list();
+	 }
+	
 	
 	 
 }
