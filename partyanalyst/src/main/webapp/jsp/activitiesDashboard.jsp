@@ -1239,7 +1239,7 @@ function buildDayWiseImages(result,divId)
 				if(j < 20)
 				{
 					str+='<li>';
-					str+='<img src="activity_documents/' +result[i].subList[j].path+'" alt="" style="height:25px;cursor:pointer;" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
+					str+='<img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" alt="" style="height:25px;cursor:pointer;" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
 					str+='</li>';
 				}
 			
@@ -1703,7 +1703,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			for(var j in result[i].subList)
 			{
 				
-				str+='<li><img src="activity_documents/' +result[i].subList[j].path+'"></li>';
+				str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
 			}
 			}
 			  str+='</ul>';
@@ -1713,7 +1713,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			for(var j in result[i].subList)
 			{
 				
-				 str+='<li><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
+				 str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
 				
 			}
 		}
@@ -1779,7 +1779,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 function buildDayWiseImagesForPopup(result,path,day)
 {
 	
-	var str ='';
+/*	var str ='';
 	if(result != null)
 	{
 	for(var i in result)
@@ -1792,7 +1792,7 @@ function buildDayWiseImagesForPopup(result,path,day)
 			{
 				if(j < 20)
 				{
-						str+='<li><img src="activity_documents/' +result[i].subList[j].path+'"></li>';
+						str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
 				}
 			}
 			  str+='</ul>';
@@ -1803,9 +1803,9 @@ function buildDayWiseImagesForPopup(result,path,day)
 				if(j < 20)
 				{
 				if(result[i].subList[j].path==path)
-					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
+					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
 				else
-				 str+='<li><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';		
+				 str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';		
 				}
 		  }
 				str+='</ul>';
@@ -1840,7 +1840,7 @@ setTimeout(function(){
 		
 			}
 		}
-	}
+	}*/
 	
 	getAvailableDates(globallocationScope,globallocationValue,day);
 
@@ -1884,7 +1884,11 @@ function getAvailableDates(locationScope,locationValue,day)
 				for(var i in result)
 				{
 					if(result[i].id==day)
-					str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					{
+						str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,day,0);
+					}
+					
 					  else
 					str+='<li class="daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
 				}
