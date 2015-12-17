@@ -410,7 +410,7 @@ function buildFeedbackDetailsOfCadre(result){
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
 									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].cmpBatchCount+'</td>';
-									str+='<td attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" class="feedBackDetailsCls" style="cursor:pointer">'+result[i].trainingCampVOList[0].totalProgrammesCount+'</td>';
+									str+='<td attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" class="feedBackDetailsCls" style="cursor:pointer">'+result[i].trainingCampVOList[j].trainingCampVOList[0].totalProgrammesCount+'</td>';
 									str+='</tr>';
 								}
 							}
