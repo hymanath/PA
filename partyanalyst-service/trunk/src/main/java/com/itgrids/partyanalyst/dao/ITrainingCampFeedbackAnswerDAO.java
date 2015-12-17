@@ -12,4 +12,5 @@ public interface ITrainingCampFeedbackAnswerDAO extends GenericDao<TrainingCampF
 	public List<Object[]> getFeedbackCategoryCountsCenterWise(Long programId);
 	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,List<Long> categoryIds,Long programId,String type);
 	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type);
+	public List<Object[]> getFeedBackMembersCountProgramWise();
 }
