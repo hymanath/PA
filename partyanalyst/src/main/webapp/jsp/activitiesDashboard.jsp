@@ -18,6 +18,8 @@
 <link href="dist/activityDashboard/Slick/slick.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Slick/slick-theme.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/FancyBox/jquery.fancybox.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+
 <style type="text/css">
 
 .dk-selected 
@@ -78,6 +80,12 @@
 {
 	font-size:10px;
 }
+.prev{
+	width:60px !important;
+}
+.next{
+	width:60px !important;
+}
 </style>
 </head>
 
@@ -88,8 +96,8 @@
         	<div class="panel panel-default panel-custom">
             	<div style="padding:10px 15px;background:#ccc">
 					<h4 class="panel-title"> ACTIVITIES DASHBOARD
-						<span class="pull-right" >
-							<div class="input-group col-md-12" style="margin-top:-8px">
+						<span class="pull-right col-md-12" >
+							<div class="input-group col-md-3 pull-right" style="margin-top:-27px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 								<input type="text" class="searchDateCls form-control" />
 							</div>
@@ -169,6 +177,7 @@
 <script src="dist/activityDashboard/FancyBox/jquery.fancybox.js" type="text/javascript"></script>
 <script src="js/utility.js" type="text/javascript"></script>
 <script src="dist/SelectDropDown/dropkick.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 	var GlobalPopupScope;
 	var GlobalPopuplocation;
@@ -614,15 +623,7 @@ function buildVillageResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-	setTimeout(function(){	
-	$('.slick-training').slick({
-      dots: false,
-      slide: 'li',
-      infinite: false,
-      speed: 300,
-      variableWidth: true,
-      });
-	},300)
+	
 }
 
 //mmm
@@ -730,15 +731,7 @@ function buildMandalResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-	setTimeout(function(){	
-	$('.slick-training').slick({
-      dots: false,
-      slide: 'li',
-      infinite: false,
-      speed: 300,
-      variableWidth: true,
-      });
-	},300);
+	
 }
 //ccc
 function buildConstituencyResult(result,divId,locationId)
@@ -848,15 +841,7 @@ function buildConstituencyResult(result,divId,locationId)
 	
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-	setTimeout(function(){	
-	$('.slick-training').slick({
-      dots: false,
-      slide: 'li',
-      infinite: false,
-      speed: 300,
-      variableWidth: true,
-      });
-	},300)
+	
 }
 /*
 if(searchType == 'mandal'){
@@ -1001,15 +986,7 @@ function buildsLocationsResult(result,divId){
 	str+='</table>';
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-	setTimeout(function(){	
-	$('.slick-training').slick({
-      dots: false,
-      slide: 'li',
-      infinite: false,
-      speed: 300,
-      variableWidth: true,
-      });
-	},300)
+	
 }
 function dynamicwidth()
 {
@@ -1185,47 +1162,7 @@ function buildDayWiseResults(result,divId,jObj)
 	str+='</div>';
 	$('#'+divId+'').html(str);
 	dynamicwidth();
-	var getWidth=$(".getwidthForRes").width()-80;
-	var responsive=$("#alignmentWidth").width();
-	$(".slick-training").css("width",getWidth);
-	setTimeout(function(){	
-	$('.slick-training').slick({
-      dots: false,
-      slide: 'li',
-      infinite: false,
-      speed: 300,
-      variableWidth: true,
-      });
-	},300)
-	  $(".slick-training li").click(function(){
-	$(".slick-training-modal").css("width","90%");
-	$('.slick-training-modal').slick({
-	  dots: false,
-	  slide: 'li',
-	  infinite: false,
-	  speed: 300,
-	  variableWidth: true,
-	  });
-	$('.slider-for').slick({
-	  slidesToShow: 1,
-	  slidesToScroll: 1,
-	  slide: 'li',
-	  arrows: false,
-	  fade: true,
-	  asNavFor: '.slider-nav'
-	});
-	$('.slider-nav').slick({
-	  slidesToShow: 3,
-	  slidesToScroll: 1,
-	  slide: 'li',
-	  asNavFor: '.slider-for',
-	  dots: false,
-	  centerMode: true,
-	  focusOnSelect: true,
-	  variableWidth: true
-	});
-	//$('.slider-nav li:first-child').trigger('click');
-})
+	
 	getEventDocuments(divId,jObj);
 
 }
@@ -1242,7 +1179,7 @@ var globalActivityScope;
 var globalImages;
 function getEventDocuments(divId,Obj)
 {
-	
+	//$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
 	 var dates=$('.searchDateCls ').val();
 	  var dateArray=dates.split("/");
 	  var fromDateStr=dateArray[0];
@@ -1261,13 +1198,16 @@ function getEventDocuments(divId,Obj)
 		fromDateStr:fromDateStr,
 		toDateStr:toDateStr,
 		locationName:Obj.locationName,
-		task:""
+		startIndex:0,
+		maxIndex:0,
+		task:"daywise"
 		};
 		$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			//$('#'+divId+'').html('');
 			globallocationScope = '';
 			globallocationValue = '';
 			globallocationName = '';
@@ -1282,20 +1222,29 @@ function getEventDocuments(divId,Obj)
 }
 function buildDayWiseImages(result,divId)
 {
+	
 	globalPopupresult = "";
 	globalPopupresult = result;
 	if(result != null)
 	{
 		for(var i in result)
 	{
-		var str ='';
+	
+		$("#"+divId+"slickDay-"+result[i].day).css("display","block");	
+		 $("#"+divId+"slickDay-"+result[i].day).html('<img src="./images/Loading-data.gif" />');
+		
+			var str ='';
 			for(var j in result[i].subList)
 			{
-			str+='<li>';
-			str+='<img src="activity_documents/'+result[i].subList[j].path+'" alt="" style="height:25px" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
-			str+='</li>';	
+				if(j < 20)
+				{
+					str+='<li>';
+					str+='<img src="activity_documents/' +result[i].subList[j].path+'" alt="" style="height:25px;cursor:pointer;" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
+					str+='</li>';
+				}
+			
 			}
-		$("#"+divId+"slickDay-"+result[i].day).css("display","block");	
+		
 		$("#"+divId+"slickDay-"+result[i].day).html(str);
 		
 	}
@@ -1347,17 +1296,18 @@ $(document).on('click', '.Imagepopup', function(){
 				 str+='</nav>';
 				 str+='<div class="bg_cc pad_10" id="popupImages">';
 					 /*str+='<ul class="slider-for">';
-						 str+='<li><img src="activity_documents /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="activity_documents /Desert.jpg"></li>';
+						 str+='<li><img src="http://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="http://mytdp.com/activity_documents  /Desert.jpg"></li>';
 						
 					 str+='</ul>';
 					 str+='<ul class="slider-nav">';
-						 str+='<li><img src="activity_documents /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="activity_documents /Desert.jpg"></li>';
+						 str+='<li><img src="http://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="http://mytdp.com/activity_documents  /Desert.jpg"></li>';
 					 str+='</ul>';*/
 				 str+='</div>';
+				str+=' <div id="paginationDivId"></div>';
 			 str+='</div>';
-			str+='<div class="col-md-3" style="background:#fff;box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);position:absolute;bottom:0px;right:0px;top:0px;padding:0px" id="locationsPopup">';
+			str+='<div class="col-md-3" style="background:#fff;box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);position:absolute;bottom:0px;right:0px;top:0px;padding:0px;overflow:scroll" id="locationsPopup">';
 				/* str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
 				   str+='<div class="panel panel-default panel-custommodal">';
 					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModal">';
@@ -1426,67 +1376,10 @@ $(document).on('click', '.Imagepopup', function(){
 				$(this).removeClass("bodM");
 			}
 		});
-		setTimeout(function(){		
-			$('.slider-for').slick({
-			  slidesToShow: 1,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  arrows: false,
-			  fade: true,
-			  asNavFor: '.slider-nav'
-			});
-			$('.slider-nav').slick({
-			  slidesToShow: 3,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  asNavFor: '.slider-for',
-			  dots: false,
-			  centerMode: true,
-			  focusOnSelect: true,
-			  variableWidth: true
-
-				})
-			$(".slick-list").css("margin-left","17px;");	
-			$(".slick-list").css("margin-right","17px;");	
-			//$('.slider-nav li:first-child').trigger('click');
-			//$('.slider-nav li:first-child').trigger('click');
-		},300);
-		
-		/*$(".slick-training li").click(function(){
-			 $(".slick-training-modal").css("width","90%");
-			$('.slick-training-modal').slick({
-			  dots: false,
-			  slide: 'li',
-			  infinite: false,
-			  speed: 300,
-			  variableWidth: true,
-			  });
-			$('.slider-for').slick({
-			  slidesToShow: 1,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  arrows: false,
-			  fade: true,
-			  asNavFor: '.slider-nav'
-			});
-			$('.slider-nav').slick({
-			  slidesToShow: 3,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  asNavFor: '.slider-for',
-			  dots: false,
-			  centerMode: true,
-			  focusOnSelect: true,
-			  variableWidth: true
-			});
-			$('.slider-nav li:first-child').trigger('click');
-		}) */
-//getLocationsForPopup();
-
-
-
+	
 buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 buildLocationsForPopup(globallocationScope,globallocationValue,globalActivityScope);
+
 
 });
 	function getAvailableDatesForPopup(locationScope,locationValue)
@@ -1521,38 +1414,6 @@ buildLocationsForPopup(globallocationScope,globallocationValue,globalActivitySco
 }
 
 
-/*function getLocationsForPopup()
-{
-	  var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
-	 var activityScopeId = $("#ActivityList").val();
-	 var activityLevelId = $("#activityLevelList").val();
-	  var locationScope ="state";
-	   if(dateArray.length == 1)
-			{
-				fromDateStr=" ";
-				toDateStr=" ";
-			}
-	 var locationValue =0;
-		var jObj = {
-		activityId:activityScopeId,
-		locationScope:locationScope,
-		locationValue:locationValue,	
-		fromDateStr:fromDateStr,
-		toDateStr:toDateStr,
-		task:""
-		};
-		$.ajax({
-          type:'GET',
-          url: 'getLocationsHierarchyForEventAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			buildDistrictsForPopup(result,'locationsPopup');
-		});
-	
-}*/
 
 function getLocationsForPopupcli(locationScope,locationValue,divId,subLevel)
 {
@@ -1634,33 +1495,7 @@ function buildAvailableDatesPopup1(result,jObj)
 				
 	
 }
-/*function buildDistrictsForPopup(resultList,divId)
-{
-	var str = '';
-	var result = resultList.locationsList;
-	 str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
-			for(var i in result)
-				   {
-					   str+='<div class="panel panel-default panel-custommodal m_0">';
-						  str+='<div class="panel-heading panel-headingModal popupDist" role="tab" id="headingdistrict'+result[i].id+'Modal" attr='+result[i].id+'>';
-						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapsedistrict'+result[i].id+'Modal" aria-expanded="true" aria-controls="collapsedistrict'+result[i].id+'Modal">';
-							 str+='<h4 class="panel-title popupTitle" attr="'+result[i].name+'">'+result[i].name+'';
-							 str+='</h4>';
-						   str+='</a>';
-						 str+='</div>';
-						 str+='<div id="collapsedistrict'+result[i].id+'Modal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingdistrict'+result[i].id+'Modal">';
-						   str+='<div class="panel-body pad_0">';
-							  str+='<div class="popupConstituencies" id="popupdistConstituencies'+result[i].id+'" style="margin-left:10px;">';
-								// str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
-							str+='</div>';
-						   str+='</div>';
-						 str+='</div>';
-						 str+='</div>';
-					}
-			  str+='</div>';
-				$("#"+divId).html(str);
-			
-}*/
+
 
 function buildLocationsForPopup(locationScope,locationValue,ActivityScope)
 {
@@ -1695,6 +1530,7 @@ function buildLocationsForPopup(locationScope,locationValue,ActivityScope)
 					
 			  str+='</div>';
 				$("#locationsPopup").html(str);
+				
 			
 }
 var index=0;
@@ -1739,7 +1575,7 @@ $(document).on('click','.popupLevel',function(){
 		getAvailableDatesForPopupcli("district",id);
 		GlobalPopupScope = "district";
 		GlobalPopuplocation =id;
-		 getEventDocumentsForPopup("district",id,0);
+		 getEventDocumentsForPopup("district",id,0,0);
   });
   
     $(document).on('click','.constiSubLevel',function(){
@@ -1751,7 +1587,7 @@ $(document).on('click','.popupLevel',function(){
 		getAvailableDatesForPopupcli("constituency",id);
 		GlobalPopupScope = "constituency";
 		GlobalPopuplocation =id;
-		 getEventDocumentsForPopup("constituency",id,0);
+		 getEventDocumentsForPopup("constituency",id,0,0);
 		
   });
   
@@ -1762,7 +1598,7 @@ $(document).on('click','.popupLevel',function(){
 		getAvailableDatesForPopupcli("mandal",id);
 		GlobalPopupScope = "mandal";
 		GlobalPopuplocation =id;
-		 getEventDocumentsForPopup("mandal",id,0);
+		 getEventDocumentsForPopup("mandal",id,0,0);
   });
   
   $(document).on('click','.villageSubLevel',function(){
@@ -1770,7 +1606,7 @@ $(document).on('click','.popupLevel',function(){
 		GlobalPopupScope = "village";
 		GlobalPopuplocation =id;
 		getAvailableDatesForPopupcli("village",id);
-		 getEventDocumentsForPopup("village",id,0);
+		 getEventDocumentsForPopup("village",id,0,0);
   });
    
   function callPopupLoad(locationScope,id,activityId)
@@ -1787,14 +1623,14 @@ $(document).on('click','.popupLevel',function(){
 			var divId = "popupdistConstituencies"+id;
 			getLocationsForPopupcli("district",id,divId,"constiSubLevel");
 			getAvailableDatesForPopupcli("district",id);
-			getEventDocumentsForPopup("district",id,0);
+			getEventDocumentsForPopup("district",id,0,0);
 		}
 		if(locationScope == "constituency")
 		{
 			var divId = "constiSubLevel"+id;
 			getLocationsForPopupcli("constituency",id,divId,"mandalSubLevel");
 			getAvailableDatesForPopupcli("constituency",id);
-			getEventDocumentsForPopup("constituency",id,0);
+			getEventDocumentsForPopup("constituency",id,0,0);
 		}
 		
 		if(locationScope == "mandal")
@@ -1802,12 +1638,12 @@ $(document).on('click','.popupLevel',function(){
 			var divId = "mandalSubLevel"+id;
 			getLocationsForPopupcli("mandal",id,divId,"villageSubLevel");
 			getAvailableDatesForPopupcli("mandal",id);
-			getEventDocumentsForPopup("mandal",id,0);
+			getEventDocumentsForPopup("mandal",id,0,0);
 		}
 		
 		if(locationScope == "village")
 		{
-			getEventDocumentsForPopup("village",id,0);
+			getEventDocumentsForPopup("village",id,0,0);
 		}
 		
 		
@@ -1816,9 +1652,10 @@ $(document).on('click','.popupLevel',function(){
 	  $("#myModalLabel").html(''+$(this).attr("attr")+'');
   })
   
-  function getEventDocumentsForPopup(searchType,locationId,day)
+  function getEventDocumentsForPopup(searchType,locationId,day,num)
 {
 
+	
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
 	  var dateArray=dates.split("/");
@@ -1837,49 +1674,26 @@ $(document).on('click','.popupLevel',function(){
 		fromDateStr:fromDateStr,
 		toDateStr:toDateStr,
 		type:"popup",
+		startIndex:num,
+		maxIndex:10,
 		//locationName:obj.locationName,
-		task:""
+		 task:"popupdaywise"
 		};
 		$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			buildDayWiseImagesForPopup1(result);
+			buildDayWiseImagesForPopup1(result,jObj);
 			});
 }
 
 
-function buildDayWiseImagesForPopup1(result)
+function buildDayWiseImagesForPopup1(result,jObj)
 {
 	$("#popupImages").html('');
 	var str ='';
-	setTimeout(function(){		
-			$('.slider-for').slick({
-			  slidesToShow: 1,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  arrows: false,
-			  fade: true,
-			  asNavFor: '.slider-nav'
-			});
-			$('.slider-nav').slick({
-			  slidesToShow: 3,
-			  slidesToScroll: 1,
-			  slide: 'li',
-			  asNavFor: '.slider-for',
-			  dots: false,
-			  centerMode: true,
-			  focusOnSelect: true,
-			  variableWidth: true
 
-				})
-			$(".slick-list").css("margin-left","17px;");	
-			$(".slick-list").css("margin-right","17px;");	
-			//$('.slider-nav li:first-child').trigger('click');
-			//$('.slider-nav li:first-child').trigger('click');
-		},300);
-		
 	if(result != null)
 	{
 	
@@ -1889,7 +1703,7 @@ function buildDayWiseImagesForPopup1(result)
 			for(var j in result[i].subList)
 			{
 				
-				str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';
+				str+='<li><img src="activity_documents/' +result[i].subList[j].path+'"></li>';
 			}
 			}
 			  str+='</ul>';
@@ -1899,26 +1713,14 @@ function buildDayWiseImagesForPopup1(result)
 			for(var j in result[i].subList)
 			{
 				
-				 str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';	
+				 str+='<li><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
 				
 			}
 		}
 				str+='</ul>';
 			$("#popupImages").html(str);
-		}
-	GlobalPopupScope = globallocationScope;
-	GlobalPopuplocation =globallocationValue;
-	$(".imgTrig").trigger("click");
-	}
-	
-	
-	
-
-function buildDayWiseImagesForPopup(result,path,day)
-{
-	
-	var str ='';
-	setTimeout(function(){		
+			
+			setTimeout(function(){		
 			$('.slider-for').slick({
 			  slidesToShow: 1,
 			  slidesToScroll: 1,
@@ -1933,8 +1735,8 @@ function buildDayWiseImagesForPopup(result,path,day)
 			  slide: 'li',
 			  asNavFor: '.slider-for',
 			  dots: false,
-			  centerMode: true,
-			  focusOnSelect: true,
+			 // centerMode: true,
+			focusOnSelect: true,
 			  variableWidth: true
 
 				})
@@ -1944,6 +1746,40 @@ function buildDayWiseImagesForPopup(result,path,day)
 			//$('.slider-nav li:first-child').trigger('click');
 		},300);
 		
+			var itemsCount=result[0].totalResult;
+			
+			
+	    var maxResults=jObj.maxIndex;
+	   if(jObj.startIndex==0){
+		   $("#paginationDivId").html('');
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num);
+				
+			}
+		});
+
+		}
+	GlobalPopupScope = globallocationScope;
+	GlobalPopuplocation =globallocationValue;
+	$(".imgTrig").trigger("click");
+	}
+	
+	
+	
+}
+	
+	
+
+function buildDayWiseImagesForPopup(result,path,day)
+{
+	
+	var str ='';
 	if(result != null)
 	{
 	for(var i in result)
@@ -1954,30 +1790,61 @@ function buildDayWiseImagesForPopup(result,path,day)
 			str+='<ul class="slider-for">';
 			for(var j in result[i].subList)
 			{
-					str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';
-				
+				if(j < 10)
+				{
+						str+='<li><img src="activity_documents/' +result[i].subList[j].path+'"></li>';
+				}
 			}
 			  str+='</ul>';
 			  str+='<ul class="slider-nav">';
 			 
 			for(var j in result[i].subList)
 			{
+				if(j < 10)
+				{
 				if(result[i].subList[j].path==path)
-					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="activity_documents/'+result[i].subList[j].path+'"></a></li>';
+					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
 				else
-				 str+='<li><img src="activity_documents/'+result[i].subList[j].path+'"></li>';	
-				
-			}
+				 str+='<li><img src="activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';		
+				}
+		  }
 				str+='</ul>';
 			$("#popupImages").html(str);
 			
+			
+setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 3,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			  centerMode: true,
+			  focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
 			}
 		}
 	}
 	
 	getAvailableDates(globallocationScope,globallocationValue,day);
 
-	setTimeout(function(){imgTrigger()},800);
+	//setTimeout(function(){imgTrigger()},800);
 	
 }
 function imgTrigger()
@@ -2032,7 +1899,7 @@ function getAvailableDates(locationScope,locationValue,day)
 	 $(".daysCls").removeClass( "active" )
 	 $(this).addClass("active");
 	 var day = $(this).attr("attr");
-		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day);
+		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day,0);
   })
 
 
