@@ -13,6 +13,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 </head>
 <style>
 header.eventsheader { 
@@ -96,7 +97,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 								</select>
 							</div>
 							<div class="col-md-3">
-								<button class="m_top20 btn btn-success btn-sm" onclick="getFeedbackDetailsOfEachDistrictAndConstituencyWise();">SUBMIT</button>
+								<button class="m_top20 btn btn-success btn-sm" onclick="getFeedbackDetailsOfEachDistrictAndConstituencyWise();" style="margin-top:26px;">SUBMIT</button>
 							</div> 
 						</div>
 						<div class="row">
@@ -132,7 +133,12 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+<!-- scrollator -->
+	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
+
 
 <script>
 var datesGlob = "${param.dates}";
@@ -331,6 +337,7 @@ $(document).on('click','.feedBackDetailsCls',function(){
 function buildFeedbackDetailsOfCadre(result){
 	var str = '';
 	
+	str+='<div class="scollCadreDivCls">';
 	str+='<table class="table table-bordered dataTableDiv">';
 		str+='<thead class="bg_d">';
 			str+='<th>IMAGE</th>';
@@ -378,9 +385,14 @@ function buildFeedbackDetailsOfCadre(result){
 			}
 		}
 	str+='</table>';
+	str+='</div>';
 	
 	$("#cadreDetailsAjaxImage").hide();
 	$("#cadreDetailsDivId").html(str);
+	$(".scollCadreDivCls").mCustomScrollbar({setHeight: "500px",axis:"yx"});
+	$('html,body').animate({
+         scrollTop: $("#cadreDetailsDivId").offset().top 
+    });
 	//$(".dataTableDiv").dataTable();
 	//$(".dataTableDiv").removeClass("dataTable");
 }
@@ -406,6 +418,7 @@ function buildFeedbackDetailsOfCadre(result){
 		}).done(function(result){
 			if(result!=null && result.length>0){
 				var str='';
+				str+='<div class="scrollDivConstituencycls">';
 				str+='<table class="table table-bordered m_0" id="resultTableDivId">';
 				str+='<thead>';
 				str+='<thaed>';
@@ -416,7 +429,7 @@ function buildFeedbackDetailsOfCadre(result){
 				str+='<th>Total Category Count</th>';
 				str+='</thead>';
 				str+='<tbody>';
-				for(var i in result){
+				/* for(var i in result){
 					if(result[i].trainingCampVOList != null && result[i].trainingCampVOList.length > 0){
 						for(var j in result[i].trainingCampVOList){
 							if(result[i].trainingCampVOList[j].trainingCampVOList != null && result[i].trainingCampVOList[j].trainingCampVOList.length > 0){
@@ -432,13 +445,57 @@ function buildFeedbackDetailsOfCadre(result){
 							}
 						}
 					}
+				} */
+				
+				for(var i in result){
+					
+					str+='<tr>';
+					var districtLength=0;
+					if(result[i].trainingCampVOList !=null && result[i].trainingCampVOList.length>0){
+						
+						for(var j in result[i].trainingCampVOList){
+							districtLength = parseInt(districtLength)+parseInt(result[i].trainingCampVOList[j].trainingCampVOList.length);
+						}
+						
+						var alreadyBuild=false;
+						for(var j in result[i].trainingCampVOList){							
+							if(result[i].trainingCampVOList[j].trainingCampVOList !=null && result[i].trainingCampVOList[j].trainingCampVOList.length>0){							
+								for(var k in result[i].trainingCampVOList[j].trainingCampVOList){							
+									if(k==0){
+										
+										if(!alreadyBuild){
+											alreadyBuild = true;
+											str+='<td rowspan='+districtLength+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+'</td>';
+										}														
+										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';										
+									}
+									
+									str+='<td id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
+									
+									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].assignedCount+'</td>';
+									
+									if(k==0){
+										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' style="cursor:pointer" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" class="feedBackDetailsCls">'+result[i].trainingCampVOList[j].trainingCampVOList[k].totalProgrammesCount+'</td>';
+									}
+									
+									str+='</tr>';
+								}
+								
+							}
+							
+						}
+						
+					}					
 				}
+				
 				str+='</tbody>';
 				str+='</table>';
+				str+='</div>';
 				$("#distConstCatWiseCountsAjaxImage").hide();
 				$("#distConstCatWiseCounts").html(str);
-				 $('#resultTableDivId').dataTable();
-				 $('#resultTableDivId').removeClass("dataTable");
+				// $('#resultTableDivId').dataTable();
+				// $('#resultTableDivId').removeClass("dataTable");
+			$(".scrollDivConstituencycls").mCustomScrollbar({setHeight: "500px",axis:"yx"});
 			}else{
 				$("#distConstCatWiseCountsAjaxImage").hide();
 				$("#distConstCatWiseCounts").html("<h4>No Data Available.</h4>");
