@@ -9783,7 +9783,7 @@ class TrainingCampService implements ITrainingCampService{
 		try{			
 			for (Object[] objects : cadreDetails) {				
 				Map<Long,SimpleVO> categoryMap = new HashMap<Long, SimpleVO>();
-				SimpleVO vo=new SimpleVO();				
+				SimpleVO vo=null;				
 				categoryMap = cadreMap.get(objects[0] !=null ? (Long)objects[0]:0l);//cadreId
 				if(categoryMap ==null){
 					categoryMap = new HashMap<Long, SimpleVO>();
@@ -9792,21 +9792,33 @@ class TrainingCampService implements ITrainingCampService{
 				}
 				if(vo ==null){
 					vo = new SimpleVO();
+					
+					vo.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					vo.setName(objects[1] !=null ? objects[1].toString():"");
+					
+					vo.setCategoryId(objects[4] !=null ? (Long)objects[4]:0l);
+					vo.setCategory(objects[5] !=null ? objects[5].toString():"");				
+					
+					
+					vo.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
+					vo.setMobileNo(objects[3] !=null ? objects[3].toString():"");
+									
+					vo.setConstituencyId(objects[7] !=null ? (Long)objects[7]:0l);
+					vo.setConstituencyName(objects[8] !=null ? objects[8].toString():"");
+					vo.setImageStr(objects[9] !=null ? objects[9].toString():"");
+					
+					vo.setRemarks(objects[6] !=null ? objects[6].toString():"");
+					
+				}else{
+					//vo.setRemarks(objects[6] !=null ? objects[6].toString():"");//answer
+					if(vo.getRemarks()!=null && vo.getRemarks().trim()!=""){
+						vo.setRemarks(vo.getRemarks()+" , "+objects[6].toString());
+					}else{
+						vo.setRemarks(objects[6] !=null ? objects[6].toString():"");
+					}
 				}
 				
-				vo.setId(objects[0] !=null ? (Long)objects[0]:0l);
-				vo.setName(objects[1] !=null ? objects[1].toString():"");
 				
-				vo.setCategoryId(objects[4] !=null ? (Long)objects[4]:0l);
-				vo.setCategory(objects[5] !=null ? objects[5].toString():"");				
-				vo.setRemarks(objects[6] !=null ? objects[6].toString():"");//answer
-				
-				vo.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
-				vo.setMobileNo(objects[3] !=null ? objects[3].toString():"");
-								
-				vo.setConstituencyId(objects[7] !=null ? (Long)objects[7]:0l);
-				vo.setConstituencyName(objects[8] !=null ? objects[8].toString():"");
-				vo.setImageStr(objects[9] !=null ? objects[9].toString():"");
 				
 			
 				categoryMap.put(vo.getCategoryId(),vo);
