@@ -291,6 +291,70 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }
    
+   public List<Object[]> getInvitedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList){
+	   
+	   StringBuilder sb = new StringBuilder();
+	   
+	   sb.append(" select model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName, " +
+	   			" model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
+	   			" count(distinct model.tdpCadre.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatch.attendeeTypeId=2 " +
+	   			" and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' and model.isDeleted='false' ");
+	   
+	   if(fromDate!=null && toDate!=null){
+		   sb.append(" and ( date(model.attendedTime) between :fromDate and :toDate) ");
+	   }
+	   if(cadreIdsList != null && cadreIdsList.size()>0)
+	   {
+		   sb.append(" and model.tdpCadre.tdpCadreId not in (:cadreIdsList) ");		  
+	   }
+	   
+	   sb.append(" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   
+	   if(fromDate!=null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+	   }
+	   if(cadreIdsList!=null && cadreIdsList!=null){
+		   query.setParameterList("cadreIdsList", cadreIdsList);
+	   }
+	   
+	   return query.list();
+   }
+   
+public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList){
+	   
+	   StringBuilder sb = new StringBuilder();
+	   
+	   sb.append(" select distinct model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName, " +
+	   			" model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
+	   			"  model.tdpCadre.tdpCadreId from TrainingCampBatchAttendee model where model.trainingCampBatch.attendeeTypeId=2 " +
+	   			" and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false' and model.isDeleted='false' ");
+	   
+	   if(fromDate!=null && toDate!=null){
+		   sb.append(" and ( date(model.attendedTime) between :fromDate and :toDate) ");
+	   }
+	   if(cadreIdsList != null && cadreIdsList.size()>0)
+	   {
+		   sb.append(" and model.tdpCadre.tdpCadreId not in (:cadreIdsList) ");		  
+	   }
+	   
+	   //sb.append(" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   
+	   if(fromDate!=null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+	   }
+	   if(cadreIdsList!=null && cadreIdsList!=null){
+		   query.setParameterList("cadreIdsList", cadreIdsList);
+	   }
+	   
+	   return query.list();
+   }
+
    public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> cadreIdsLsit){
 	   StringBuilder sb = new StringBuilder();
 	   sb.append(" select distinct model.tdpCadre.tdpCadreId " +
