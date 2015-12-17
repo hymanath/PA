@@ -214,7 +214,7 @@ header.eventsheader {
                             	<div class="col-md-12">
 								<div class="panel panel-default" id="feedBackCountMainDivId" style="display:none">
 										<div class="panel-heading bg_d">
-											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs">VIEW FULL DETAILS</button></span></h4>	
+											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs" id="viewDetailsBtnId">VIEW FULL DETAILS</button></span></h4>	
 										</div>
 										<div class="panel-body pad_0">
 											<div style="" id="feedBackCountId"></div>
@@ -1501,6 +1501,11 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 		
 	}
+	
+	$("#viewDetailsBtnId").click(function(){
+		//window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'&cf='+callFrom+'', '_blank');
+		window.open('feedbackOverViewDetailsAction.action', '_blank');
+	});
 	
 </script>
 </body>
