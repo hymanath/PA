@@ -140,6 +140,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.ActivityLevel;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
@@ -17302,6 +17303,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				toDate = format.parse(inputVo.getEndDate().toString().trim());
 			}
 			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
+			Long totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate);
 			if(list != null && list.size() > 0)
 			{
 				returnList = new ArrayList<EventDocumentVO>();
@@ -17324,6 +17326,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						vo.getSubList().add(subVo);
 					}
 				}
+				if(totalCount != null)
+					returnList.get(0).setTotalResult(totalCount);
 			}
 			
 		}
@@ -17483,6 +17487,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				vo.setName(params[1].toString());
 				returnList.add(vo);
 			}
+			Collections.sort(returnList,sortDays);
 		}
 		}
 		catch (Exception e) {
@@ -17490,7 +17495,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return returnList;
 	}
-	
+	 public static Comparator<BasicVO> sortDays = new Comparator<BasicVO>()
+				{	  
+						  public int compare(BasicVO arg1,BasicVO arg2)
+							{  
+							  	return (arg1.getId().intValue()) - (arg2.getId().intValue());
+							}
+				};
 	
 	public List<BasicVO> setLocationsList(List<Object[]> list)
 	{

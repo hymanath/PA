@@ -15,5 +15,6 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	
 	public Integer deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId);
 	public List<Object[]> getAvailableDates(EventDocumentVO inputVO,Date startDate,Date endDate,String type);
+	public Long getEventDocumentsCount(EventDocumentVO inputVO,Date startDate,Date endDate);
 	
 }
