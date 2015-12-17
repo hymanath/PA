@@ -1084,6 +1084,10 @@ public String getAllConstituencysForADistrict(){
 			inputVo.setStrDate(jObj.getString("fromDateStr"));	
 			inputVo.setEndDate(jObj.getString("toDateStr"));
 			inputVo.setDay(jObj.getLong("day"));
+			
+			inputVo.setStartIndex(jObj.getInt("startIndex"));
+			inputVo.setMaxIndex(jObj.getInt("maxIndex"));
+			
 			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo);
 			
 		} catch (Exception e) {
