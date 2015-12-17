@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +49,8 @@ public class SimpleVO implements java.io.Serializable{
    private Long centerId;
    private String centerName;
    private String percentage;
-   private List<Long> inviteeList;
-   private List<Long> inviteeAttendedList;
+   private List<Long> inviteeList = new ArrayList<Long>(0);
+   private List<Long> inviteeAttendedList = new ArrayList<Long>(0);
    
    private Long inviteeCount;
    private Long inviteeAttendedCount;
@@ -179,6 +180,9 @@ public int getOneDayNIACount() {
 	}
 	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
 		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	public List<Long> getInviteeList() {
+		return inviteeList;
 	}
 	public void setInviteeList(List<Long> inviteeList) {
 		this.inviteeList = inviteeList;

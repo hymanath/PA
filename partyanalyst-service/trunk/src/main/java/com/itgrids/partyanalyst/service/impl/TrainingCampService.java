@@ -8451,6 +8451,8 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		public List<SimpleVO> getAttendenceForTrainers(String type,String searchType){
 			List<SimpleVO> finalvo = new ArrayList<SimpleVO>();
+			Map<Long,SimpleVO> mapvo = new LinkedHashMap<Long, SimpleVO>();
+			
 			try {
 				LOG.info("Entered into getAttendenceForTrainers");
 				
@@ -8486,7 +8488,90 @@ class TrainingCampService implements ITrainingCampService{
 				{
 					if(searchType.trim().equalsIgnoreCase("count"))
 					{
-						List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
+						List<Object[]> list = trainingCampBatchAttendeeDAO.getInvitedCountsForCenterAndProgram(fromDate, toDate, cadreIdsLsit);
+						
+						if(list != null && list.size() > 0){
+							for (Object[] obj : list) {
+								SimpleVO vo = new SimpleVO();
+								
+								vo.setCenterId((Long)obj[0]);
+								vo.setCenterName(obj[1].toString());
+								vo.setProgName(obj[3].toString());
+								vo.setInviteeCount((Long) obj[4]);
+								
+								mapvo.put((Long) obj[0], vo);
+								//finalvo.add(vo);
+							}
+						}
+						
+						List<Object[]> list1 = trainingCampAttendanceDAO.getInviteeAttendedCountsForCenterAndProgram(fromDate, toDate, cadreIdsLsit);
+						
+						if(list1 != null && list1.size() > 0){
+							for (Object[] obj : list1) {
+								
+								SimpleVO vo = mapvo.get((Long)obj[0]);
+								vo.setInviteeAttendedCount((Long) obj[4]);
+							}
+						}
+						
+						List<Object[]> list2 = trainingCampBatchAttendeeDAO.getInvitedDetailsForCenterAndProgram(fromDate, toDate, cadreIdsLsit);
+						
+						if(list2 != null && list2.size() > 0){
+							for (Object[] obj : list2) {
+								
+								Long campId = (Long) obj[0]; 
+								Long cadreId = (Long) obj[4];
+								
+								SimpleVO vo = mapvo.get(campId);
+								List<Long> inviteeList = new ArrayList<Long>(0);
+								if(vo != null){
+									inviteeList = vo.getInviteeList();
+								}
+								inviteeList.add(cadreId);
+								vo.setInviteeList(inviteeList);
+							}
+						}
+						
+						List<Object[]> list3 = trainingCampAttendanceDAO.getInviteeAttendedDetailsForCenterAndProgram(fromDate, toDate, cadreIdsLsit);
+
+						if(list3 != null && list3.size() > 0){
+							for (Object[] obj : list3) {
+								
+								Long campId = (Long) obj[0]; 
+								Long cadreId = (Long) obj[4];
+								
+								SimpleVO vo = mapvo.get(campId);
+								List<Long> inviteeAttendedList = new ArrayList<Long>(0);
+								if(vo != null){
+									inviteeAttendedList = vo.getInviteeAttendedList();
+								}
+								inviteeAttendedList.add(cadreId);
+								vo.setInviteeAttendedList(inviteeAttendedList);
+							}
+						}
+						
+						if(mapvo != null && mapvo.size()>0)
+						{
+							for (Long campId : mapvo.keySet()) {
+								SimpleVO vo = mapvo.get(campId);
+								List<Long> invitedDetails = vo.getInviteeList();
+								List<Long> attendedDetails = vo.getInviteeAttendedList();
+								
+								int temp=0;
+								if(attendedDetails!=null && attendedDetails.size()>0){
+									for(Long long1:attendedDetails){
+										if(!invitedDetails.contains(long1)){
+											temp=temp+1;
+										}
+									}
+								}
+								vo.setNonInviteeAttendedCount(temp);
+							}
+							
+							finalvo.addAll(mapvo.values());
+						}
+						
+						/*List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
 						
 						if(res!=null && res.size()>0){
 							for(Object[] object:res){
@@ -8522,7 +8607,7 @@ class TrainingCampService implements ITrainingCampService{
 								vo.setNonInviteeAttendedCount(temp);
 								finalvo.add(vo);
 							}
-						}
+						}*/
 					}
 					else if(searchType.trim().equalsIgnoreCase("individual") || searchType.trim().equalsIgnoreCase("consolidated"))
 					{
