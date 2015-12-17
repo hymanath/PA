@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
@@ -121,10 +122,20 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private List<FeedbackQuestionVO> quetsionsList;
 	
 	private Long cadreId;
+	private String dates;
 	
 
 	
 	
+
+	
+	public String getDates() {
+		return dates;
+	}
+
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
 
 	public Long getCadreId() {
 		return cadreId;
@@ -2598,7 +2609,20 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		jObj = new JSONObject(getTask());			
 			Long programId = jObj.getLong("programId");
-			campVoList = trainingCampService.getFeedbackCategoryCountsCenterWise(programId);
+			
+			String selDate = jObj.getString("dates");
+			
+    		String temp[] = null;
+    		if(selDate !=null && !selDate.isEmpty()){
+    			temp = selDate.split("-");
+    		}
+			
+    		if(temp !=null && temp.length>0){
+    			campVoList = trainingCampService.getFeedbackCategoryCountsCenterWise(programId,temp[0].trim(),temp[1]);
+    		}else{
+    			campVoList = trainingCampService.getFeedbackCategoryCountsCenterWise(programId,null,null);
+    		}
+
     		
     	}catch (Exception e) {
     		LOG.error("Exception raised at getFeedbackCategoryCountsCenterWise", e);
@@ -2612,7 +2636,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long locationId = jObj.getLong("locationId");
 			String type = jObj.getString("type");
 			
-			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type);
+			String selDate = jObj.getString("dates");
+			
+			String temp[] = null;
+    		if(selDate !=null && !selDate.isEmpty()){
+    			temp = selDate.split("-");
+    		}
+			
+    		if(temp !=null && temp.length>0){
+    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,temp[0].trim(),temp[1]);
+    		}else{
+    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,null,null);
+    		}
+    		
     		
     	}catch (Exception e) {
     		LOG.error("Exception raised at getFeedbackCategoryCountsCenterWise", e);
@@ -2654,6 +2690,14 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long constituencyId = jObj.getLong("constituencyId");
 			Long categoryId = jObj.getLong("categoryId");
 			
+			String selDate = jObj.getString("dates");
+			
+			String temp[] = null;
+    		if(selDate !=null && !selDate.isEmpty()){
+    			temp = selDate.split("-");
+    		}
+			
+			
 			List<Long> districtIds = new ArrayList<Long>(0);
 			if(districtId>0l){
 				districtIds.add(districtId);
@@ -2668,8 +2712,12 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			if(categoryId>0l){
 				categoryIds.add(categoryId);
 			}
-					
-			campVoList = trainingCampService.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds,constituencyIds,categoryIds,jObj.getLong("programId"),jObj.getString("type"));
+			
+			if(temp !=null && temp.length>0){
+				campVoList = trainingCampService.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds,constituencyIds,categoryIds,jObj.getLong("programId"),jObj.getString("type"),temp[0].trim(),temp[1]);
+			}else{
+				campVoList = trainingCampService.getFeedbackDetailsOfEachDistrictAndConstituencyWise(districtIds,constituencyIds,categoryIds,jObj.getLong("programId"),jObj.getString("type"),null,null);
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getFeedbackDetailsOfEachDistrictAndConstituencyWise", e);

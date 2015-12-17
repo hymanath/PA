@@ -110,7 +110,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 							<div class="col-md-12" id="feedBackDetailsDivId" style="display:none;">
 								<div class="panel panel-default m_top20">
 									<div class="panel-heading">
-										<h4 class="panel-title">FEEDBACK FULL DETAILS<button class="pull-right btn-xs btn btn-success">EXPORT TO PDF</button></h4>
+										<h4 class="panel-title"><span id="constNameId"></span> FEEDBACK DETAILS<button class="pull-right btn-xs btn btn-success">EXPORT TO PDF</button></h4>
 									</div>
 									<div class="panel-body pad_0">
 										<div class="table-responsive" id="cadreDetailsDivId">
@@ -135,6 +135,8 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
 <script>
+var datesGlob = "${param.dates}";
+
 $(function () {
 	$("#mainheading").html("TRAINING CAMP CADRE FEEDBACK REPORT");
 	getAllPrograms();
@@ -179,7 +181,8 @@ function getAllPrograms(){
 			return;
 		}
 		var jsObj={
-			programId:programId
+			programId:programId,
+			dates : datesGlob
 		}
 		$.ajax({
 		  type:'POST',
@@ -187,6 +190,7 @@ function getAllPrograms(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#centerWiseCategoryAjaxImage").hide();
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<table class="table table-bordered m_0">';
@@ -290,7 +294,7 @@ function getAllPrograms(){
 	//getFeedbackDetailsOfCadre();
 //function getFeedbackDetailsOfCadre(){
 $(document).on('click','.feedBackDetailsCls',function(){
-		
+		$("#constNameId").html($(this).attr("attr_constituencyName"));
 		$("#feedBackDetailsDivId").show();
 		$("#cadreDetailsAjaxImage").show();
 		$("#cadreDetailsDivId").html("");
@@ -305,7 +309,8 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		var jsObj={
 			programId:programId,
 			locationId:locationId,
-			type:type
+			type:type,
+			dates : datesGlob
 		}
 		$.ajax({
 		  type:'POST',
@@ -324,7 +329,6 @@ $(document).on('click','.feedBackDetailsCls',function(){
 	});
 	
 function buildFeedbackDetailsOfCadre(result){
-	
 	var str = '';
 	
 	str+='<table class="table table-bordered dataTableDiv">';
@@ -337,25 +341,36 @@ function buildFeedbackDetailsOfCadre(result){
 			str+='<th>ANSWER</th>';
 		str+='</thead>';
 		for(var i in result){
+			str+='<tr>';
 			if(result[i].simpleVOList1 != null && result[i].simpleVOList1.length > 0){
 				for(var j in result[i].simpleVOList1){
-					str+='<tr>';
+					
+					if(j==0){
+						
 						if(result[i].simpleVOList1[j].imageStr != null){
-							str+='<td><img src="images/cadre_images/'+result[i].simpleVOList1[j].imageStr+'" style="height:40px" class="img-reponsive"></td>';
+							str+='<td rowspan="'+result[i].simpleVOList1.length+'"><img src="images/cadre_images/'+result[i].simpleVOList1[j].imageStr+'" style="height:40px" class="img-reponsive"></td>';
 						}
 						else{
-							str+='<td><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>';
+							str+='<td rowspan="'+result[i].simpleVOList1.length+'"><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>';
 						}
-						str+='<td>';
+						str+='<td rowspan="'+result[i].simpleVOList1.length+'">';
 						str+='<p>'+result[i].simpleVOList1[j].name+'</p>';
 						str+='<p>'+result[i].simpleVOList1[j].constituencyName+'</p>';
 						str+='<p>'+result[i].simpleVOList1[j].id+'</p>';
 						str+='</td>';
-						str+='<td>';
+						str+='<td rowspan="'+result[i].simpleVOList1.length+'">';
+						if(result[i].simpleVOList1[j].designation==null){
+							result[i].simpleVOList1[j].designation="-";
+						}
 						str+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						if(result[i].simpleVOList1[j].designationLevel==null){
+							result[i].simpleVOList1[j].designationLevel="-";
+						}
 						str+='<p>'+result[i].simpleVOList1[j].designationLevel+'</p>';
 						str+='</td>';
-						str+='<td>'+result[i].simpleVOList1[j].mobileNo+'</td>';
+						str+='<td rowspan="'+result[i].simpleVOList1.length+'">'+result[i].simpleVOList1[j].mobileNo+'</td>';
+					}
+						
 						str+='<td>'+result[i].simpleVOList1[j].category+'</td>';
 						str+='<td>'+result[i].simpleVOList1[j].remarks+'</td>';
 					str+='</tr>';
@@ -366,8 +381,8 @@ function buildFeedbackDetailsOfCadre(result){
 	
 	$("#cadreDetailsAjaxImage").hide();
 	$("#cadreDetailsDivId").html(str);
-	$(".dataTableDiv").dataTable();
-	$(".dataTableDiv").removeClass("dataTable");
+	//$(".dataTableDiv").dataTable();
+	//$(".dataTableDiv").removeClass("dataTable");
 }
 	
 		
@@ -380,7 +395,8 @@ function buildFeedbackDetailsOfCadre(result){
 			constituencyId : $("#selectConstituencyId").val(),
 			categoryId : $("#selectCategoryId").val(),
 			programId : $("#selectProgramId").val(),
-			type : "constituecys"
+			type : "constituecys",
+			dates : datesGlob
 		}
 		$.ajax({
 			type:'POST',
@@ -410,7 +426,7 @@ function buildFeedbackDetailsOfCadre(result){
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';
 									str+='<td attr_district_id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
 									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].assignedCount+'</td>';
-									str+='<td attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" class="feedBackDetailsCls" style="cursor:pointer">'+result[i].trainingCampVOList[j].trainingCampVOList[0].totalProgrammesCount+'</td>';
+									str+='<td attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" class="feedBackDetailsCls" style="cursor:pointer">'+result[i].trainingCampVOList[j].trainingCampVOList[0].totalProgrammesCount+'</td>';
 									str+='</tr>';
 								}
 							}
