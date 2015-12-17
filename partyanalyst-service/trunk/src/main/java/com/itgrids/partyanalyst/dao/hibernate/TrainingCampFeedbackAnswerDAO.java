@@ -43,7 +43,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		
 		Query query = getSession().createQuery(" select model.trainingCampFeedbackCategory.trainingCamp.trainingCampId," +
 				"  model.trainingCampFeedbackCategory.trainingCamp.campName,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
-				" model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(model.trainingCampFeedbackCategoryId ) " +
+				" model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackAnswerId) " +
 				"  from " +
 				" TrainingCampFeedbackAnswer model" +
 				" where " +
@@ -60,7 +60,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		
 		if(type !=null && type.equalsIgnoreCase("districts")){
 			str.append(" select dist.districtId,dist.districtName,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
-					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(model.trainingCampFeedbackCategoryId) " +
+					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackAnswerId) " +
 					" from  TrainingCampFeedbackAnswer tcfa,TrainingCampFeedbackCategory tcfc,TdpCadre tc,District dist " +
 					" where model.tdpCadreId = tc.tdpCadreId" +
 					" and tc.userAddress.district.districtId=dist.districtId  ");
@@ -68,7 +68,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		else if(type !=null && type.equalsIgnoreCase("constituecys")){
 			str.append(" select dist.districtId,dist.districtName,const.constituencyId,const.name" +
 				"  ,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId," +
-					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(model.trainingCampFeedbackCategoryId) " +
+					"  model.trainingCampFeedbackCategory.feedbackCategory.categoryName,count(distinct model.trainingCampFeedbackAnswerId) " +
 				
 					" from  TrainingCampFeedbackAnswer model,TrainingCampFeedbackCategory tcfc,TdpCadre tc,District dist,Constituency const " +
 					
@@ -150,7 +150,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			str.append(" and  model.trainingCampFeedbackCategory.trainingCampProgramId = :programId  ");
 		}
 		
-		str.append(" group by model.tdpCadre.tdpCadreId,model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId " +
+		str.append(" " +
 				" order by  model.tdpCadre.firstname ");
 		
 		Query query = getSession().createQuery(str.toString());
