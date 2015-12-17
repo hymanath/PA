@@ -1499,7 +1499,13 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						 }
 						
 						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].campName+'</td>';	
+						  if(result[i].trainingCampVOList[j].assignedCount==null){
+							  result[i].trainingCampVOList[j].assignedCount=0;
+						  }
 						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].assignedCount+'</td>';	
+						  if(result[i].trainingCampVOList[j].filledCount==null){
+							  result[i].trainingCampVOList[j].filledCount=0;
+						  }
 						  str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].filledCount+'</td>';	
 						  
 						  str+='</tr>';
@@ -1526,8 +1532,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	
 	$("#viewDetailsBtnId").click(function(){
-		//window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'&cf='+callFrom+'', '_blank');
-		window.open('feedbackOverViewDetailsAction.action', '_blank');
+		var dates='';
+		if(fromTypeGlob=="onLoad"){
+			dates='';
+		}else if(fromTypeGlob=="onClick"){
+			dates = $("#selectDate").val();
+		}
+		
+		window.open('feedbackOverViewDetailsAction.action?dates='+dates+'', '_blank');
 	});
 	
 </script>
