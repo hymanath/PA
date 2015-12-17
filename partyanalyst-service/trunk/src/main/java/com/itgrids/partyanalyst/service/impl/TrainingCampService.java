@@ -9554,9 +9554,9 @@ class TrainingCampService implements ITrainingCampService{
 							totalCategoryCount = totalCategoryCount + trainingCampVO.getAssignedCount();
 							totalCount =totalCount + trainingCampVO.getAssignedCount();
 						} 															
-					}
-					categoryList.get(0).setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
+					}					
 				}
+				vo.setTotalProgrammesCount(totalCategoryCount);//total category Count for Each Center
 			}
 			
 			countList.get(0).setAcceptedCount(totalCount);
@@ -9717,21 +9717,21 @@ class TrainingCampService implements ITrainingCampService{
 			Long districtCount=0l;
 			for (TrainingCampVO trainingCampVO : trainingCampList) {				
 				List<TrainingCampVO> secondList = trainingCampVO.getTrainingCampVOList();
-				if(secondList !=null && secondList.size()>0){
-					Long secondListWiseTotalCount =0l;
+				if(secondList !=null && secondList.size()>0){					
 					for (TrainingCampVO trainingCampVO2 : secondList) {						
 						List<TrainingCampVO> thirdList = trainingCampVO2.getTrainingCampVOList();
-						if(thirdList !=null && thirdList.size()>0){							
+						if(thirdList !=null && thirdList.size()>0){
+							Long thirdListWiseTotalCount =0l;
 							for (TrainingCampVO trainingCampVO3 : thirdList) {								
-								secondListWiseTotalCount = secondListWiseTotalCount + trainingCampVO3.getAssignedCount();
+								thirdListWiseTotalCount = thirdListWiseTotalCount + trainingCampVO3.getAssignedCount();
 								districtCount = districtCount + trainingCampVO3.getAssignedCount();
-							}						
+							}
+							thirdList.get(0).setTotalProgrammesCount(thirdListWiseTotalCount);
 						}
-					}					
-					secondList.get(0).setTotalProgrammesCount(secondListWiseTotalCount);
+					}										
 				}				
 			}
-			trainingCampList.get(0).setAcceptedCount(districtCount);
+			//trainingCampList.get(0).setAcceptedCount(districtCount);
 		}catch (Exception e) {
 			LOG.error("Exception raised at setTotalValueToSecondList service", e);
 		}		
