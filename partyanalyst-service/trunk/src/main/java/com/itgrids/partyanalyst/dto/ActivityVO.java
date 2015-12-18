@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Map;
  * @author Administrator
  *
  */
-public class ActivityVO implements Serializable{
+public class ActivityVO implements Comparable<ActivityVO>{
 	
 	private Long activityTypeId;
 	private Long activityLevelId;
@@ -371,6 +370,15 @@ public class ActivityVO implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int compareTo(ActivityVO obj) {
+		if(obj instanceof ActivityVO){
+			ActivityVO vo = (ActivityVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
 	}
 	public Long getDistrictId() {
 		return districtId;
