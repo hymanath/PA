@@ -434,4 +434,12 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   return query.list();
 	   
    }
+   
+   public List<Long> getTodaySpeakersDetails(Date todayDate){
+	   Query query = getSession().createQuery("select tcba.tdpCadreId from TrainingCampBatchAttendee tcba, TrainingCampBatch tcb " +
+	   		" where tcba.trainingCampBatchId=tcb.trainingCampBatchId and tcb.attendeeTypeId=2 and date(tcba.attendedTime)=:todayDate " +
+	   		"order by tcba.trainingCampBatchAttendeeId desc");
+	   query.setParameter("todayDate", todayDate);
+	   return query.list();
+   }
 }
