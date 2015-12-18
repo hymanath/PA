@@ -326,7 +326,7 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		  data: {task:JSON.stringify(jsObj)}			
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildFeedbackDetailsOfCadre(result);
+				buildFeedbackDetailsOfCadre(result,locationId);
 			}
 			else{
 				$("#cadreDetailsAjaxImage").hide();
@@ -335,7 +335,7 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		});
 	});
 	
-function buildFeedbackDetailsOfCadre(result){
+function buildFeedbackDetailsOfCadre(result,constId){
 	var str = '';
 	
 	str+='<div class="scollCadreDivCls">';
@@ -364,7 +364,7 @@ function buildFeedbackDetailsOfCadre(result){
 						str+='<td rowspan="'+result[i].simpleVOList1.length+'">';
 						str+='<p>'+result[i].simpleVOList1[j].name+'</p>';
 						str+='<p>'+result[i].simpleVOList1[j].constituencyName+'</p>';
-						str+='<p>'+result[i].simpleVOList1[j].id+'</p>';
+						str+='<p class="redirectToCadrePageCls" attr_cadreId="'+result[i].simpleVOList1[j].id+'" style="cursor:pointer">'+result[i].simpleVOList1[j].membershipNo+'</p>';
 						str+='</td>';
 						str+='<td rowspan="'+result[i].simpleVOList1.length+'">';
 						if(result[i].simpleVOList1[j].designation==null){
@@ -521,6 +521,11 @@ function buildFeedbackDetailsOfCadre(result){
 			
 		});
 	}
+	
+	$(document).on("click",".redirectToCadrePageCls",function(){
+		var cadreId = $(this).attr("attr_cadreId");
+		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
+	});
 	
 </script>
 </body>
