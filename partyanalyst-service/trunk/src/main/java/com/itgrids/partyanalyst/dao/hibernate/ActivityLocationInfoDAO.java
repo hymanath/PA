@@ -113,10 +113,10 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 					queryStr.append(" where model.plannedDate is not null ");
 				}
 				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
-					queryStr.append(" where model.conductedDate is not null ");
+					queryStr.append(" where model.plannedDate is not null and  model.conductedDate is not null ");
 				}
 				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
-					queryStr.append(" where model.ivrStatus = 'Y' ");
+					queryStr.append(" where  model.plannedDate is not null and model.ivrStatus = 'Y' ");
 				}
 				
 				if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
