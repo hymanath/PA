@@ -222,30 +222,30 @@ header.eventsheader {
 										</div>
 								</div>
 								
-									<div class="row">
-										<div class="col-md-4 col-md-offset-8">
-											<div class="pull-right">
-												<input type="radio" checked name="filterRadio" value="today" class="filterRadio"/>
-												<label>&nbsp;Today</label>
-												<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/>
-												<label>&nbsp;15 Days</label>
-												<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/>
-												<label>&nbsp;30 Days</label>
-												<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
-											</div>
-										</div>
-									</div>
 									
                                 	<div class="panel panel-default">
                                     	<div class="panel-body pad_0">
 											<div class="panel-heading bg_d">
-												<span class="panel-title text-bold">SPEAKERS ATTENDANCE</span>
-												
+												<span class="panel-title text-bold">SPEAKERS ATTENDANCE <span class="col-md-offset-3" id="spekrsTotalDiv"></span></span>
+														<div class="pull-right">
+															<input type="radio" checked name="filterRadio" value="today" class="filterRadio"/>
+															<label>&nbsp;Today</label>
+															<input type="radio" name="filterRadio" value="fifteen" class="filterRadio"/>
+															<label>&nbsp;15 Days</label>
+															<input type="radio" name="filterRadio" value="thirty" class="filterRadio"/>
+															<label>&nbsp;30 Days</label>
+															<input type="radio" name="filterRadio" value="all" class="filterRadio"/><label>&nbsp;All</label>
+														</div>
+
+									<div class="row">
+													<div class="col-md-4 col-md-offset-8">
 												<div class="pull-right">
 													<input type="radio" checked name="filtersRadio" value="individual" class="filtersRadio"/><label>&nbsp;Individual</label>
 													<input type="radio" name="filtersRadio" value="count" class="filtersRadio"/><label>&nbsp;Count </label>
 													<input type="radio" name="filtersRadio" value="consolidated" class="filtersRadio"/><label>&nbsp;Consolidated</label>												
 												</div>
+											</div>
+											</div>
 											</div>
 											<div><img id="speakersAttendenceImg" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif"></div>
 											
@@ -1059,7 +1059,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		
 		var typeStr = $("input[name='filterRadio']:checked").val();
 		var searchType = $("input[name='filtersRadio']:checked").val();		
-		
+		$("#spekrsTotalDiv").html("");
 		var jObj={
 			type:typeStr,
 			searchType:searchType
@@ -1096,6 +1096,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='</table>';
 					$("#speakersAttendenceImg").hide();
 					$("#speakersAttendence").html(str);
+					$("#spekrsTotalDiv").html("  ( <b> TOTAL : "+result[0].total+" Members </b> ) ");
 				}
 				else if(searchType =='individual')
 				{	
@@ -1196,6 +1197,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			}else{
 				$("#speakersAttendenceImg").hide();
 				$("#speakersAttendence").html("No Data Available...");
+					$("#spekrsTotalDiv").html("");
 			}
 		});
 	}
