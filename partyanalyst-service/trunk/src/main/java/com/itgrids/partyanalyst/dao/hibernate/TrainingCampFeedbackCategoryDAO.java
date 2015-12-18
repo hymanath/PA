@@ -105,4 +105,21 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 		 return (Long) query.uniqueResult();
 	 }
 	 
+	 public List<Object[]> getCategoriesHavingParent(String type){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName ");
+		 if(type.equalsIgnoreCase("parent")){	
+			 sb.append(",model.parentFeedbackCategory.feedbackCategoryId,model.parentFeedbackCategory.categoryName ");
+		 }
+		 sb.append(" from TrainingCampFeedbackCategory model");
+		 if(type.equalsIgnoreCase("parent")){
+			 sb.append(" where model.parentFeedbackCategoryId is not null");
+		 }
+		 else if(type.equalsIgnoreCase("child")){
+			 sb.append(" where model.parentFeedbackCategoryId is null and model.isSubCategoryExist='N' ");
+		 }
+		 sb.append(" and model.isDeleted='N' group by model.feedbackCategory.feedbackCategoryId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 return query.list();
+	 }
 }
