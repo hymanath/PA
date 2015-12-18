@@ -17415,9 +17415,9 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		
 		if(inputVo.getLocationScope().equalsIgnoreCase("constituency"))
 		{
-			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.MANDAL);
+			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.MANDAL);
 			List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
-			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
+			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
 			List<BasicVO> localbodyList = setLocationsListForMandal(list,"Muncipality");
 			if(mandalList != null && mandalList.size() > 0)
 			locationsList.addAll(mandalList);
@@ -17428,7 +17428,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		else if(inputVo.getLocationScope().equalsIgnoreCase("mandal"))
 		{
 			
-			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
+			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
 			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			{
 				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.PANCHAYAT);
@@ -17446,14 +17446,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		else
 		{
 			
-			list = activityInfoDocumentDAO.getLocations(inputVo,startDate,toDate,null);
+			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
 			locationsList = setLocationsList(list);
 			vo.setLocationsList(locationsList);
 		}
 		
-		//List<BasicVO> days = setLocationsList(daysList);
 		
-		//vo.setDaysList(days);
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getLocationsHierarchyForEvent", e);
@@ -17513,6 +17511,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				BasicVO vo = new BasicVO();
 				vo.setId((Long)params[0]);
 				vo.setName(params[1].toString());
+				vo.setCount(params[2] != null ? (Long)params[2] : 0);
 				returnList.add(vo);
 			}
 		}
@@ -17532,12 +17531,18 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				vo.setId(new Long("2"+params[0].toString()));
 				vo.setName(params[1].toString() + " " +type);
 				}
-				if(type.equalsIgnoreCase("Muncipality") || type.equalsIgnoreCase(IConstants.WARD))
+				if(type.equalsIgnoreCase("Muncipality"))
 				{
 					vo.setId(new Long("1"+params[0].toString()));
 					vo.setName(params[1].toString() + " " +type);
 				}
 				
+				if(type.equalsIgnoreCase(IConstants.WARD))
+				{
+					vo.setId(new Long("1"+params[0].toString()));
+					vo.setName(params[1].toString());
+				}
+				vo.setCount(params[2] != null ? (Long)params[2] : 0);
 				returnList.add(vo);
 			}
 		}
