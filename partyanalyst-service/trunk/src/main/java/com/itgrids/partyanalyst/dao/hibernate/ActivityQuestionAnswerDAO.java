@@ -63,7 +63,7 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 			}
 			
 			queryStr.append(" where model.activityQuestionnaireId is not null ");
-			
+			queryStr.append(" and model.isDeleted ='N' ");
 			if(searchAttributeVO.getQuestionnaireIdsList() != null && searchAttributeVO.getQuestionnaireIdsList().size() > 0){
 				queryStr.append(" and model.activityQuestionnaire.activityQuestionnaireId in (:questionnaireIdsList) ");
 			}
@@ -259,7 +259,7 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchA
 			/*if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
 				queryStr.append(" and ( date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
 			}*/
-			
+			queryStr.append(" and model.isDeleted ='N' ");
 			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){

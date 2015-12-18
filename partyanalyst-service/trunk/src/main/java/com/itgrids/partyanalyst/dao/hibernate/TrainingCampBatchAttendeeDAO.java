@@ -435,6 +435,28 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   
    }
    
+   public Long getTotalSpeakersCountDetails(List<Long> cadreIdList,Date fromDate,Date toDate){
+	   StringBuilder sb = new StringBuilder();
+	   
+	   sb.append(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model " +
+	   		" where model.isDeleted='false' and model.trainingCampBatch.attendeeTypeId=2 and model.trainingCampBatch.attendeeType.isDeleted='false' " +
+	   		" and model.tdpCadreId not in (:cadreIdList) and model.trainingCampBatch.isCancelled = 'false' ");
+	   if(fromDate != null && toDate != null){
+		   sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	   }
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   
+	   query.setParameterList("cadreIdList", cadreIdList);
+	   if(fromDate != null && toDate != null){
+		   query.setParameter("fromDate", fromDate);
+		   query.setParameter("toDate", toDate);
+	   }
+	   
+	   return (Long) query.uniqueResult();
+	   
+   }
+   
    public List<Long> getTodaySpeakersDetails(Date todayDate){
 	   Query query = getSession().createQuery("select tcba.tdpCadreId from TrainingCampBatchAttendee tcba, TrainingCampBatch tcb " +
 	   		" where tcba.trainingCampBatchId=tcb.trainingCampBatchId and tcb.attendeeTypeId=2 and date(tcba.attendedTime)=:todayDate " +
