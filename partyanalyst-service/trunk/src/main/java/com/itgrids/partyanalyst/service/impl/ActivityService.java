@@ -1366,7 +1366,9 @@ public class ActivityService implements IActivityService{
 						{
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(locationIdsList);
-							if(locationTypeIds.contains(IConstants.WARD_COMMITTEE_LEVEL_ID)){//ward
+							
+							if(locationTypeIds.contains(IConstants.WARD_COMMITTEE_LEVEL_ID))
+							{//ward
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.WARD_COMMITTEE_LEVEL_ID);
 								searchAttributeVO.setSearchType("WARD");
@@ -1400,7 +1402,8 @@ public class ActivityService implements IActivityService{
 							segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %","2");	
 							segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED","2");	
 							}
-							else if(locationTypeIds.contains(IConstants.VILLAGE_COMMITTEE_LEVEL_ID)){ // panchayat
+							else if(locationTypeIds.contains(IConstants.VILLAGE_COMMITTEE_LEVEL_ID))
+							{ // panchayat
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.VILLAGE_COMMITTEE_LEVEL_ID);
 								searchAttributeVO.setSearchType("VILLAGE");
@@ -1627,6 +1630,7 @@ public class ActivityService implements IActivityService{
 			
 			if(returnVO != null && returnVO.getActivityVoList() != null && returnVO.getActivityVoList().size()>0)
 			{
+				Collections.sort(returnVO.getActivityVoList());				
 				Long totalCount = 0L;
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					totalCount = returnVO.getTotalCount();
