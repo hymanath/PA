@@ -48,7 +48,8 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 				"  from " +
 				" TrainingCampFeedbackAnswer model" +
 				" where " +
-				" model.trainingCampFeedbackCategory.isDeleted='N' and model.trainingCampFeedbackCategory.trainingCampProgramId=:programId ");
+				" model.trainingCampFeedbackCategory.isDeleted='N' and model.trainingCampFeedbackCategory.trainingCampProgramId=:programId " +
+				" and model.tdpCadre.isDeleted='N' ");
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.updatedTime) between :fromDate and :toDate ");
 		}
@@ -89,7 +90,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 					" and tc.userAddress.constituency.constituencyId = const.constituencyId  ");
 		}
 		
-		str.append(" and model.trainingCampFeedbackCategory.isDeleted='N' ");
+		str.append(" and model.trainingCampFeedbackCategory.isDeleted='N' and model.tdpCadre.isDeleted='N' ");
 		
 		if(districtIds !=null && districtIds.size()>0){
 			str.append(" and dist.districtId in (:districtIds) ");
@@ -158,7 +159,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 				" model.answer,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.image " +
 				" from TrainingCampFeedbackAnswer model ");
 		
-		str.append(" where model.trainingCampFeedbackCategory.isDeleted='N' ");
+		str.append(" where model.trainingCampFeedbackCategory.isDeleted='N' and model.tdpCadre.isDeleted='N' ");
 		
 		if(categoryId!=null && categoryId>0l){
 			str.append(" and model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId=:categoryId ");
@@ -205,7 +206,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			 		" model.trainingCampFeedbackCategory.trainingCamp.campName,count(distinct model.trainingCampFeedbackAnswerId) " +
 			 		" from " +
 			 		" TrainingCampFeedbackAnswer model" +
-			 		" where model.trainingCampFeedbackCategory.isDeleted='N'");
+			 		" where model.trainingCampFeedbackCategory.isDeleted='N' and model.tdpCadre.isDeleted='N' ");
 		 
 		 if(startDate !=null && endDate !=null){
 			 str.append(" and date(model.updatedTime) between :startDate and :endDate  ");
