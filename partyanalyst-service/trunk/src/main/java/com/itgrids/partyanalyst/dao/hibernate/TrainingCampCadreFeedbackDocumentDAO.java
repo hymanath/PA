@@ -44,7 +44,7 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 				" from " +
 				" TrainingCampCadreFeedbackDocument model " +
 				" where model.trainingCampBatch.isCancelled = 'false' " +
-				"  and model.isDeleted ='N' " );
+				"  and model.isDeleted ='N' and model.tdpCadre.isDeleted='N' " );
 		
 		 if(startDate !=null && endDate !=null){
 			 str.append(" and date(model.insertedTime) between :startDate and :endDate ");
