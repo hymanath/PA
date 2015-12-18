@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -56,7 +57,17 @@ public class SchedulerService implements ISchedulerService{
 	private IMobileService mobileService;
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private ITrainingCampBatchDAO trainingCampBatchDAO;
 	
+	
+	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
+		return trainingCampBatchDAO;
+	}
+
+	public void setTrainingCampBatchDAO(ITrainingCampBatchDAO trainingCampBatchDAO) {
+		this.trainingCampBatchDAO = trainingCampBatchDAO;
+	}
+
 	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
 		return trainingCampBatchAttendeeDAO;
 	}
@@ -753,24 +764,46 @@ public class SchedulerService implements ISchedulerService{
 	          try {
 	            DateUtilService date = new DateUtilService();
 	            Date todayDate = date.getCurrentDateAndTime();
-	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
+	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(new SimpleDateFormat("MM/dd/yyy").parse("12/17/2015"));
+	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(new SimpleDateFormat("MM/dd/yyy").parse("12/17/2015"));
+	            
+	           List<String> existingIdslist = new ArrayList<String>(0);
+	           if(speakersListInAttendee!=null && speakersListInAttendee.size()>0){
+	        	   for(Long long1 : speakersListInAttendee){
+	        		   existingIdslist.add(long1.toString());
+		           }
+	           }
+	           
+	           //staff cadreIds
+	           List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList();
+	           List<String> staffCadreIdsList = new ArrayList<String>(0);
+	               
+	           if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
+	           {
+	             for (String cadreId : excludeTdpCadreIdsList) {
+	            	 staffCadreIdsList.add(cadreId);
+	             }
+	           }
+	            
 	            if(speakersList != null && speakersList.size()>0)
 	            {
 	              for (Object[] speaker : speakersList) {
-	                Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 
-	                Long batchId =speaker[1] != null ? Long.valueOf(speaker[1].toString()):0L;
-	                String attendedTimeStr = speaker[2] != null ?speaker[2].toString():"";
-	                
-	                TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
-	                trainingCampBatchAttendee.setTdpCadreId(tdpCadreId);
-	                trainingCampBatchAttendee.setTrainingCampBatchId(batchId);
-	                trainingCampBatchAttendee.setAttendedTime(new SimpleDateFormat("yy-MM-dd hh:mm:sss").parse(attendedTimeStr));
-	                trainingCampBatchAttendee.setInsertedTime(todayDate);
-	                trainingCampBatchAttendee.setUpdatedTime(todayDate);
-	                trainingCampBatchAttendee.setInsertedBy(1L);
-	                trainingCampBatchAttendee.setUpdatedBy(1L);
-	                trainingCampBatchAttendee.setIsDeleted("false");
-	                trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+	            	  if(!existingIdslist.contains(speaker[0].toString()) && !staffCadreIdsList.contains(speaker[0].toString())){
+	            		  	Long tdpCadreId =speaker[0] != null ? Long.valueOf(speaker[0].toString()):0L; 
+			                Long batchId =speaker[1] != null ? Long.valueOf(speaker[1].toString()):0L;
+			                String attendedTimeStr = speaker[2] != null ?speaker[2].toString():"";
+			                
+			                TrainingCampBatchAttendee trainingCampBatchAttendee = new TrainingCampBatchAttendee();
+			                trainingCampBatchAttendee.setTdpCadreId(tdpCadreId);
+			                trainingCampBatchAttendee.setTrainingCampBatchId(batchId);
+			                trainingCampBatchAttendee.setAttendedTime(new SimpleDateFormat("yy-MM-dd hh:mm:sss").parse(attendedTimeStr));
+			                trainingCampBatchAttendee.setInsertedTime(todayDate);
+			                trainingCampBatchAttendee.setUpdatedTime(todayDate);
+			                trainingCampBatchAttendee.setInsertedBy(1L);
+			                trainingCampBatchAttendee.setUpdatedBy(1L);
+			                trainingCampBatchAttendee.setIsDeleted("false");
+			                trainingCampBatchAttendeeDAO.save(trainingCampBatchAttendee);
+	            	  } 
 	              }
 	            }          
 	          } catch (Exception e) {
