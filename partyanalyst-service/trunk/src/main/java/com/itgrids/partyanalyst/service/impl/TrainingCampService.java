@@ -8571,6 +8571,14 @@ class TrainingCampService implements ITrainingCampService{
 							finalvo.addAll(mapvo.values());
 						}
 						
+						Long totalSpeakersCount =  trainingCampBatchAttendeeDAO.getTotalSpeakersCountDetails(cadreIdsLsit,fromDate, toDate);
+						
+						if(finalvo != null && finalvo.size()>0)
+						{
+							SimpleVO vo = finalvo.get(0);
+							if(vo != null)
+								vo.setTotal(totalSpeakersCount != null ? totalSpeakersCount:0L);
+						}
 						/*List<Object[]> res = trainingCampBatchDAO.getAllCentersForTrainers();
 						
 						if(res!=null && res.size()>0){
