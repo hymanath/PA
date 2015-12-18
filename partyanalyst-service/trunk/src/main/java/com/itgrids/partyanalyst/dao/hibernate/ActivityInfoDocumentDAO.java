@@ -217,6 +217,90 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	}
 	
 	
+	public List<Object[]> getLocationWiseImageCount(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+		{
+			str.append(" select distinct model.userAddress.district.districtId,model.userAddress.district.districtName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+		{
+			str.append(" select distinct model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.MANDAL))
+		{
+			str.append(" select distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" select distinct model.userAddress.localElectionBody.localElectionBodyId, model.userAddress.localElectionBody.name ");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+		{
+			str.append(" select  distinct model.userAddress.panchayat.panchayatId, model.userAddress.panchayat.panchayatName");
+		}
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+		{
+			str.append(" select  distinct model.userAddress.ward.constituencyId, model.userAddress.ward.name");
+		}
+		str.append(" ,count(model.activityDocument.activityDocumentId)");
+		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null ");
+		if(startDate != null)
+		{
+			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
+		}
+		if(inputVO.getActivityId() > 0)
+		{
+			str.append(" and model.activityDocument.activityScopeId = :activityScopeId");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+		{
+			if(inputVO.getLocationValue() == 36)
+			{
+				str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.district.districtId ");
+			}
+			
+			if(inputVO.getLocationValue() == 1)
+			{
+				str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.district.districtId ");
+			}
+		}
+		
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+			str.append(" and model.userAddress.district.districtId = :locationValue group by model.userAddress.constituency.constituencyId ");
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.MANDAL))
+			str.append(" and model.userAddress.constituency.constituencyId = :locationValue group by model.userAddress.tehsil.tehsilId ");
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append(" and model.userAddress.constituency.constituencyId = :locationValue group by model.userAddress.localElectionBody.localElectionBodyId ");
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue group by model.userAddress.panchayat.panchayatId");
+	
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue group by model.userAddress.ward.constituencyId ");
+		Query query = getSession().createQuery(str.toString());
+		if(inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+		else
+		{
+			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+			query.setParameter("locationValue",inputVO.getLocationValue());
+		}
+		if(startDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(inputVO.getActivityId() > 0)
+			query.setParameter("activityScopeId",inputVO.getActivityId());
+		return query.list();
+	}
+	
 	public Integer deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId)
 	{
 		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.isDeleted = 'Y' where model.activityInfoDocumentId =:acitivityInfoDocId ");
