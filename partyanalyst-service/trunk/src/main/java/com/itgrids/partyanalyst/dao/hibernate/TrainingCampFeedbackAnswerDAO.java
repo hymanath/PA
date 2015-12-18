@@ -139,7 +139,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,Date fromDate,Date toDate){
+	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,Date fromDate,Date toDate,Long categoryId){
 		
 		/*Minimum Query
 		 *  select tc.tdp_cadre_id,fc.feedback_category_id,tcfa.answer
@@ -159,6 +159,10 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 				" from TrainingCampFeedbackAnswer model ");
 		
 		str.append(" where model.trainingCampFeedbackCategory.isDeleted='N' ");
+		
+		if(categoryId!=null && categoryId>0l){
+			str.append(" and model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId=:categoryId ");
+		}
 		
 		if(type !=null && type.equalsIgnoreCase("district")){
 			str.append(" and model.tdpCadre.userAddress.district.districtId = :locationId ");
@@ -184,6 +188,9 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
+		}
+		if(categoryId!=null && categoryId>0l){
+			query.setParameter("categoryId", categoryId);
 		}
 		return query.list();		
 	}
