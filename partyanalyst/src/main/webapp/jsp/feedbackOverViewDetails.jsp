@@ -316,6 +316,7 @@ $(document).on('click','.feedBackDetailsCls',function(){
 			programId:programId,
 			locationId:locationId,
 			type:type,
+			categoryId : $("#selectCategoryId").val(),
 			dates : datesGlob
 		}
 		$.ajax({

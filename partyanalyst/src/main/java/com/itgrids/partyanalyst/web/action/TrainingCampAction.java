@@ -2635,7 +2635,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long programId = jObj.getLong("programId");
 			Long locationId = jObj.getLong("locationId");
 			String type = jObj.getString("type");
-			
+			Long categoryId = jObj.getLong("categoryId");
 			String selDate = jObj.getString("dates");
 			
 			String temp[] = null;
@@ -2644,9 +2644,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		}
 			
     		if(temp !=null && temp.length>0){
-    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,temp[0].trim(),temp[1]);
+    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,temp[0].trim(),temp[1],categoryId);
     		}else{
-    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,null,null);
+    			simpleVOList = trainingCampService.getFeedbackDetailsOfCadre(locationId,programId,type,null,null,categoryId);
     		}
     		
     		
