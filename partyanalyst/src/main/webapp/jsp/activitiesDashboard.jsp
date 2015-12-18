@@ -1220,6 +1220,7 @@ function getEventDocuments(divId,Obj)
 			
 			});
 }
+var globalTotalImages;
 function buildDayWiseImages(result,divId)
 {
 	
@@ -1248,6 +1249,8 @@ function buildDayWiseImages(result,divId)
 		$("#"+divId+"slickDay-"+result[i].day).html(str);
 		
 	}
+	globalTotalImages =0;
+	globalTotalImages = result[0].totalResult;
 	}
  var getWidth=$(".getwidthForRes").width()-80;
 		var responsive=$("#alignmentWidth").width();
@@ -1515,7 +1518,7 @@ function buildLocationsForPopup(locationScope,locationValue,ActivityScope)
 					   str+='<div class="panel panel-default panel-custommodal m_0">';
 						  str+='<div class="panel-heading panel-headingModal popupLevel" role="tab" id="headinglevel'+locationValue+'Modal" attr='+locationValue+'>';
 						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapselevel'+locationValue+'Modal" aria-expanded="true" aria-controls="collapselevel'+globallocationValue+'Modal">';
-							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">'+globallocationName+'';
+							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">'+globallocationName+'('+globalTotalImages+')';
 							 str+='</h4>';
 						   str+='</a>';
 						 str+='</div>';
@@ -1549,7 +1552,7 @@ function buildSublevelLocationsForPopup1(resultList,divId,subLevel)
 	  str+='<div class="panel panel-default">';
 		str+='<div class="panel-heading" role="tab" id="headingOne'+index+'">';
 		str+='<a role="button" data-toggle="collapse" attr="'+result[i].id+'" class="'+subLevel+'" data-parent="#accordionsub'+index1+'" href="#collapseOne'+index+'" aria-expanded="true" aria-controls="collapseOne'+index+'">';
-			str+='<h4 class="panel-title popupTitle" attr="'+result[i].name+'"> '+result[i].name+'</h4>';
+			str+='<h4 class="panel-title popupTitle" attr="'+result[i].name+'"> '+result[i].name+'('+result[i].count+')</h4>';
 		str+='</a>';
 		str+='</div>';
 		str+='<div id="collapseOne'+index+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+index+'">';
