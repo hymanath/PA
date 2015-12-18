@@ -9846,7 +9846,7 @@ class TrainingCampService implements ITrainingCampService{
 		return trainingCampList;
 	}
 	
-	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,String fromDateStr,String toDateStr){
+	public List<SimpleVO> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,String fromDateStr,String toDateStr,Long categoryId){
 		List<SimpleVO> finalList = new ArrayList<SimpleVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -9856,7 +9856,7 @@ class TrainingCampService implements ITrainingCampService{
 				toDate = sdf.parse(toDateStr);
 			}
 			Map<Long,Map<Long,SimpleVO>> cadreMap = new HashMap<Long, Map<Long,SimpleVO>>();
-			List<Object[]> cadreDetails = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfCadre(locationId,programId,type,fromDate,toDate);			
+			List<Object[]> cadreDetails = trainingCampFeedbackAnswerDAO.getFeedbackDetailsOfCadre(locationId,programId,type,fromDate,toDate,categoryId);			
 			if(cadreDetails !=null && cadreDetails.size()>0){				
 				cadreMap = setCadreDetailsToMap(cadreDetails,cadreMap);
 			}
@@ -10024,13 +10024,26 @@ class TrainingCampService implements ITrainingCampService{
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
 			LOG.info("Entered into getAllCategories");
-			List<FeedbackCategory> feedbackCategoryList = feedbackCategoryDAO.getAll();
 			
-			if(feedbackCategoryList != null && feedbackCategoryList.size() > 0){
-				for (FeedbackCategory feedbackCategory : feedbackCategoryList) {
+			//categories having parent
+			List<Object[]> categoriesWithParentObjList = trainingCampFeedbackCategoryDAO.getCategoriesHavingParent("parent");
+			//categories not having parent
+			List<Object[]> categoriesWithNoParentObjList = trainingCampFeedbackCategoryDAO.getCategoriesHavingParent("child");
+			
+			if(categoriesWithParentObjList != null && categoriesWithParentObjList.size() > 0){
+				for (Object[] objects : categoriesWithParentObjList) {
 					IdNameVO vo = new IdNameVO();
-					vo.setId(feedbackCategory.getFeedbackCategoryId());
-					vo.setName(feedbackCategory.getCategoryName());
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString()+" - "+objects[3].toString());
+					voList.add(vo);
+				}
+			}
+			
+			if(categoriesWithNoParentObjList != null && categoriesWithNoParentObjList.size() > 0){
+				for (Object[] objects : categoriesWithNoParentObjList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
 					voList.add(vo);
 				}
 			}
