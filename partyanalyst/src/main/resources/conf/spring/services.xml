@@ -1329,7 +1329,7 @@
 		<property name="mobileService" ref="mobileService"/>
 		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"/>
 		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
-		
+		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO"/>
 		
 	</bean>
 	
@@ -1375,7 +1375,7 @@
 			
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="updateTrainingCampSpeakerDtls" />
-    	<property name="cronExpression" value="0 30 7 * * ?" />
+    	<property name="cronExpression" value="0 30 5,9,13 * * ?" />
 	</bean>	
 	
 	<bean name="updateTrainingCampSpeakerDtls" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
