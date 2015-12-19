@@ -444,7 +444,7 @@ function exportToExcel()
 						str+='<th>FeedBack Answers</th>';
 					  }
 					  if(checkBoxArray[12]){
-						str+='<th>Facebook Documents</th>';
+						str+='<th>FeedBack Documents</th>';
 					  }
 					  /*str+='<th>IsFamilyUpdated</th>'
 					  str+='<th>Achievements</th>'
