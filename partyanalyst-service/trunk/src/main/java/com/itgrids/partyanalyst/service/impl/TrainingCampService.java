@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackCategoryDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAtrPointDAO;
@@ -209,9 +210,19 @@ class TrainingCampService implements ITrainingCampService{
     private ITrainingCampCadreFeedbackDocumentDAO trainingCampCadreFeedbackDocumentDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICadreDetailsUtils cadreDetailsUtils;
+	private IHamletDAO hamletDAO;
 
     
-    public ICadreDetailsUtils getCadreDetailsUtils() {
+	
+    public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+	public ICadreDetailsUtils getCadreDetailsUtils() {
 		return cadreDetailsUtils;
 	}
 
@@ -9880,6 +9891,8 @@ class TrainingCampService implements ITrainingCampService{
 					Long cadreId = (Long) (objects[0] != null ? objects[0]:0l); 
 					String designationLevel = objects[7].toString()+" Level "+objects[4].toString()+" Committee ";
 					String designation = objects[6] != null ? objects[6].toString():"";
+					Long designationLevelId = (Long)objects[1];
+					Long designationLevelValue = (Long)objects[2]; 
 					Map<Long,SimpleVO> designationMap = cadreMap.get(cadreId);
 					
 					for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
@@ -9888,6 +9901,107 @@ class TrainingCampService implements ITrainingCampService{
 						
 						vo.setDesignationLevel(designationLevel);
 						vo.setDesignation(designation);
+						vo.setDesignationLevelId(designationLevelId);
+						vo.setDesignationLevelValue(designationLevelValue);
+					}
+				}
+			}
+			
+			SimpleVO designationLevelValueIdsVO = new SimpleVO();
+			for(Long long1 : cadreIds){
+				Map<Long,SimpleVO> designationMap = cadreMap.get(long1);
+				for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
+					SimpleVO vo = mainMap.getValue();
+					if(vo.getDesignationLevelId()==5l){
+						designationLevelValueIdsVO.getMandalIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==6l){
+						designationLevelValueIdsVO.getVillageIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==7l){
+						designationLevelValueIdsVO.getTownIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==8l){
+						designationLevelValueIdsVO.getWardIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==9l){
+						designationLevelValueIdsVO.getDivisionIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==10l){
+						designationLevelValueIdsVO.getStateIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==11l){
+						designationLevelValueIdsVO.getDistrictIdsList().add(vo.getDesignationLevelValue());
+					}else if(vo.getDesignationLevelId()==12l){
+						designationLevelValueIdsVO.getCentralIdsList().add(vo.getDesignationLevelValue());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getMandalIdsList()!=null && designationLevelValueIdsVO.getMandalIdsList().size()>0){
+				List<Object[]> madalNameObjList = tehsilDAO.getTehsilNameByTehsilIdsList(designationLevelValueIdsVO.getMandalIdsList());
+				if(madalNameObjList != null && madalNameObjList.size() > 0){
+					for (Object[] objects : madalNameObjList) {
+						designationLevelValueIdsVO.getMandalMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getVillageIdsList()!=null && designationLevelValueIdsVO.getVillageIdsList().size()>0){
+				List<Object[]> villageNameObjList = panchayatDAO.getPanchayatsByPanchayatIdsListAlongMandal(designationLevelValueIdsVO.getVillageIdsList());
+				if(villageNameObjList != null && villageNameObjList.size() > 0){
+					for (Object[] objects : villageNameObjList) {
+						designationLevelValueIdsVO.getVillageMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getTownIdsList()!=null && designationLevelValueIdsVO.getTownIdsList().size()>0){
+				List<Object[]> townNameObjList = localElectionBodyDAO.findByLocalElecBodyIds(designationLevelValueIdsVO.getTownIdsList());
+				if(townNameObjList != null && townNameObjList.size() > 0){
+					for (Object[] objects : townNameObjList) {
+						designationLevelValueIdsVO.getTownMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getWardIdsList()!=null && designationLevelValueIdsVO.getWardIdsList().size()>0){
+				List<Object[]> wardNameObjList = wardDAO.getWardDetailsForList(designationLevelValueIdsVO.getWardIdsList());
+				if(wardNameObjList != null && wardNameObjList.size() > 0){
+					for (Object[] objects : wardNameObjList) {
+						designationLevelValueIdsVO.getWardMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getDivisionIdsList() !=null && designationLevelValueIdsVO.getDivisionIdsList().size()>0){
+				List<Object[]> divisonNameObjList = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(designationLevelValueIdsVO.getDivisionIdsList());
+				if(divisonNameObjList != null && divisonNameObjList.size() > 0){
+					for (Object[] objects : divisonNameObjList) {
+						designationLevelValueIdsVO.getDivisionMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			if(designationLevelValueIdsVO.getDistrictIdsList() !=null && designationLevelValueIdsVO.getDistrictIdsList().size()>0){
+				List<Object[]> distNameObjList = districtDAO.getDistrictNamesIds(designationLevelValueIdsVO.getDistrictIdsList());
+				if(distNameObjList != null && distNameObjList.size() > 0){
+					for (Object[] objects : distNameObjList) {
+						designationLevelValueIdsVO.getDistrictMap().put((Long)objects[0], objects[1].toString());
+					}
+				}
+			}
+			
+			for(Long long1 : cadreIds){
+				Map<Long,SimpleVO> designationMap = cadreMap.get(long1);
+				for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
+					SimpleVO vo = mainMap.getValue();
+					if(vo.getDesignationLevelId()==5l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getMandalMap().get(vo.getDesignationLevelValue()));
+					}else if(vo.getDesignationLevelId()==6l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getVillageMap().get(vo.getDesignationLevelValue()));
+					}else if(vo.getDesignationLevelId()==7l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getTownMap().get(vo.getDesignationLevelValue()));
+					}else if(vo.getDesignationLevelId()==8l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getWardMap().get(vo.getDesignationLevelValue()));
+					}else if(vo.getDesignationLevelId()==9l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getDivisionMap().get(vo.getDesignationLevelValue()));
+					}else if(vo.getDesignationLevelId()==11l){
+						vo.setDesignationLevelName(designationLevelValueIdsVO.getDistrictMap().get(vo.getDesignationLevelValue()));
 					}
 				}
 			}
