@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,20 +72,154 @@ public class SimpleVO implements java.io.Serializable{
    private String constituencyName;
    private String designationLevel;
    private String designation;
+   private Long designationLevelId;
+   private Long designationLevelValue;
+   private String designationLevelName;
+   private List<Long> mandalIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> mandalMap = new HashMap<Long, String>(0);
+   private List<Long> villageIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> villageMap = new HashMap<Long, String>(0);
+   private List<Long> townIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> townMap = new HashMap<Long,String>(0);
+   private List<Long> wardIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> wardMap = new HashMap<Long, String>(0);
+   private List<Long> divisionIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> divisionMap = new HashMap<Long, String>(0);
+   private List<Long> stateIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> stateMap = new HashMap<Long, String>(0);
+   private List<Long> districtIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> districtMap = new HashMap<Long, String>(0);
+   private List<Long> centralIdsList = new ArrayList<Long>(0);
+   private Map<Long,String> centralMap = new HashMap<Long, String>(0);
    
    
-   public String getDesignationLevel() {
-	return designationLevel;
+   
+   	public Map<Long, String> getMandalMap() {
+	return mandalMap;
 }
-public void setDesignationLevel(String designationLevel) {
-	this.designationLevel = designationLevel;
+public void setMandalMap(Map<Long, String> mandalMap) {
+	this.mandalMap = mandalMap;
 }
-public String getDesignation() {
-	return designation;
+public Map<Long, String> getVillageMap() {
+	return villageMap;
 }
-public void setDesignation(String designation) {
-	this.designation = designation;
+public void setVillageMap(Map<Long, String> villageMap) {
+	this.villageMap = villageMap;
 }
+public Map<Long, String> getTownMap() {
+	return townMap;
+}
+public void setTownMap(Map<Long, String> townMap) {
+	this.townMap = townMap;
+}
+public Map<Long, String> getWardMap() {
+	return wardMap;
+}
+public void setWardMap(Map<Long, String> wardMap) {
+	this.wardMap = wardMap;
+}
+public Map<Long, String> getDivisionMap() {
+	return divisionMap;
+}
+public void setDivisionMap(Map<Long, String> divisionMap) {
+	this.divisionMap = divisionMap;
+}
+public Map<Long, String> getStateMap() {
+	return stateMap;
+}
+public void setStateMap(Map<Long, String> stateMap) {
+	this.stateMap = stateMap;
+}
+public Map<Long, String> getDistrictMap() {
+	return districtMap;
+}
+public void setDistrictMap(Map<Long, String> districtMap) {
+	this.districtMap = districtMap;
+}
+public Map<Long, String> getCentralMap() {
+	return centralMap;
+}
+public void setCentralMap(Map<Long, String> centralMap) {
+	this.centralMap = centralMap;
+}
+	public List<Long> getMandalIdsList() {
+		return mandalIdsList;
+	}
+	public void setMandalIdsList(List<Long> mandalIdsList) {
+		this.mandalIdsList = mandalIdsList;
+	}
+	public List<Long> getVillageIdsList() {
+		return villageIdsList;
+	}
+	public void setVillageIdsList(List<Long> villageIdsList) {
+		this.villageIdsList = villageIdsList;
+	}
+	public List<Long> getTownIdsList() {
+		return townIdsList;
+	}
+	public void setTownIdsList(List<Long> townIdsList) {
+		this.townIdsList = townIdsList;
+	}
+	public List<Long> getWardIdsList() {
+		return wardIdsList;
+	}
+	public void setWardIdsList(List<Long> wardIdsList) {
+		this.wardIdsList = wardIdsList;
+	}
+	public List<Long> getDivisionIdsList() {
+		return divisionIdsList;
+	}
+	public void setDivisionIdsList(List<Long> divisionIdsList) {
+		this.divisionIdsList = divisionIdsList;
+	}
+	public List<Long> getStateIdsList() {
+		return stateIdsList;
+	}
+	public void setStateIdsList(List<Long> stateIdsList) {
+		this.stateIdsList = stateIdsList;
+	}
+	public List<Long> getDistrictIdsList() {
+		return districtIdsList;
+	}
+	public void setDistrictIdsList(List<Long> districtIdsList) {
+		this.districtIdsList = districtIdsList;
+	}
+	public List<Long> getCentralIdsList() {
+		return centralIdsList;
+	}
+	public void setCentralIdsList(List<Long> centralIdsList) {
+		this.centralIdsList = centralIdsList;
+	}
+	public Long getDesignationLevelId() {
+   		return designationLevelId;
+	}
+	public void setDesignationLevelId(Long designationLevelId) {
+		this.designationLevelId = designationLevelId;
+	}
+	public Long getDesignationLevelValue() {
+		return designationLevelValue;
+	}
+	public void setDesignationLevelValue(Long designationLevelValue) {
+		this.designationLevelValue = designationLevelValue;
+	}
+	public String getDesignationLevelName() {
+		return designationLevelName;
+	}
+	public void setDesignationLevelName(String designationLevelName) {
+		this.designationLevelName = designationLevelName;
+	}
+	public String getDesignationLevel() {
+		return designationLevel;
+	}
+	public void setDesignationLevel(String designationLevel) {
+		this.designationLevel = designationLevel;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 public int getOneDayNIACount() {
 		return oneDayNIACount;
 	}
