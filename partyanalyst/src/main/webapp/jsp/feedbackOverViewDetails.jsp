@@ -58,7 +58,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 						<div class="row">
 							<div class="col-md-4">
 								<label>Select Training Program</label>
-								<select class="form-control" id="selectProgramId" onchange="feedbackCategoryCountsCenterWise();">
+								<select class="form-control" id="selectProgramId" onchange="feedbackCategoryCountsCenterWise(),getFeedbackDetailsOfEachDistrictAndConstituencyWise();">
 									<option value="0">Select Program</option>
 								</select>
 							</div>
@@ -180,6 +180,9 @@ function getAllPrograms(){
 		$("#programNameTitleId").html($("#selectProgramId :selected").text());
 		$("#centerWiseCategoryDivId").html("");
 		$("#centerWiseCategoryAjaxImage").show();
+		$("#selectDistrictId").val(0);
+		$("#selectConstituencyId").val(0);
+		$("#selectCategoryId").val(0);
 		//$("#centerWiseCategoryMainDivId").hide();
 		
 		var programId = $("#selectProgramId").val();
@@ -393,7 +396,10 @@ function buildFeedbackDetailsOfCadre(result,constId){
 						if(result[i].simpleVOList1[j].designation==null){
 							result[i].simpleVOList1[j].designation="-";
 						}
-						str+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						if(result[i].simpleVOList1[j].designationLevelName==null){
+							result[i].simpleVOList1[j].designationLevelName="-";
+						}
+						str+='<p>'+result[i].simpleVOList1[j].designation+' - '+result[i].simpleVOList1[j].designationLevelName+'</p>';
 						if(result[i].simpleVOList1[j].designationLevel==null){
 							result[i].simpleVOList1[j].designationLevel="-";
 						}
