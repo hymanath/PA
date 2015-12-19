@@ -111,11 +111,11 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 							<div class="col-md-12" id="feedBackDetailsDivId" style="display:none;">
 								<div class="panel panel-default m_top20">
 									<div class="panel-heading">
-										<h4 class="panel-title"><span id="constNameId"></span> FEEDBACK DETAILS<button class="pull-right btn-xs btn btn-success">EXPORT TO PDF</button></h4>
+										<h4 class="panel-title"><span id="constNameId"></span> FEEDBACK DETAILS<button class="pull-right btn-xs btn btn-success cadreDetailsExcelCls" >EXPORT TO EXCEL</button><button class="pull-right btn-xs btn btn-success" style="margin-right:20px;">EXPORT TO PDF</button></h4>
 									</div>
 									<div class="panel-body pad_0">
-										<div class="table-responsive" id="cadreDetailsDivId">
-										</div>
+										<div class="table-responsive" id="cadreDetailsDivId"></div>
+										<div class="table-responsive" id="cadreDetailsExcelDivId" style="display:none;"></div>
 										<center><img id="cadreDetailsAjaxImage" src="./images/ajaxImg2.gif" alt="Processing Image" style="height:45px;display:none;margin-top:20px"/></center>
 									</div>
 								</div>
@@ -185,6 +185,9 @@ function getAllPrograms(){
 		$("#selectCategoryId").val(0);
 		//$("#centerWiseCategoryMainDivId").hide();
 		
+		$("#feedBackDetailsDivId").hide();
+		$("#cadreDetailsDivId").html("");
+		
 		var programId = $("#selectProgramId").val();
 		if(programId ==null || programId ==0){
 			return;
@@ -219,7 +222,7 @@ function getAllPrograms(){
 						
 						 for(var j in result[i].trainingCampVOList){
 							if(j==0){
-								str+='<td id="'+result[i].trainingCampVOList[j].programId+'" rowspan='+categoryLength+'>'+result[i].trainingCampVOList[j].programName+' &nbsp<span class="feedBackDetailsCls" attr_type="center" attr_locationId='+result[i].trainingCampVOList[j].programId+' style="cursor:pointer;" attr_categoryId="0"> ('+result[i].totalProgrammesCount+')</span></td>';
+								str+='<td id="'+result[i].trainingCampVOList[j].programId+'" rowspan='+categoryLength+'>'+result[i].trainingCampVOList[j].programName+' &nbsp<span class="feedBackDetailsCls" attr_type="center" attr_locationId='+result[i].trainingCampVOList[j].programId+' style="cursor:pointer;" attr_categoryId="0" attr_constituencyName='+result[i].trainingCampVOList[j].programName+'> ('+result[i].totalProgrammesCount+')</span></td>';
 							}
 							
 							str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].campName+'</td>';							
@@ -275,6 +278,8 @@ function getAllPrograms(){
 	
 	$("#selectDistrictId").change(function(){
 		getAllConstituencyByDistrict();
+		$("#feedBackDetailsDivId").hide();
+		$("#cadreDetailsDivId").html("");
 	});
 
 	function getAllConstituencyByDistrict(){
@@ -304,17 +309,25 @@ function getAllPrograms(){
 	//getFeedbackDetailsOfCadre();
 //function getFeedbackDetailsOfCadre(){
 $(document).on('click','.feedBackDetailsCls',function(){
+	
+	var titleName = $(this).attr("attr_constituencyName");
+	if(titleName !=null && titleName !=""){
+		titleName+=" FEEDBACK DETAILS ";
+	}else{
+		titleName = "FEEDBACK DETAILS";
+	}
+	
+	
 		$("#constNameId").html($(this).attr("attr_constituencyName"));
 		$("#feedBackDetailsDivId").show();
 		$("#cadreDetailsAjaxImage").show();
+		
 		$("#cadreDetailsDivId").html("");
 		
 		var programId = $("#selectProgramId").val();
 		
 		var locationType=$(this).attr("attr_type");
 		
-		/* alert(locationType);
-		return; */
 		
 		var locationId=0;
 		var categoryId=0;
@@ -352,7 +365,7 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		  data: {task:JSON.stringify(jsObj)}			
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildFeedbackDetailsOfCadre(result,locationId);
+				buildFeedbackDetailsOfCadre(result,locationId,datesGlob,titleName);
 			}
 			else{
 				$("#cadreDetailsAjaxImage").hide();
@@ -361,8 +374,9 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		});
 	});
 	
-function buildFeedbackDetailsOfCadre(result,constId){
+function buildFeedbackDetailsOfCadre(result,constId,dates,title){
 	var str = '';
+	var str2='';
 	
 	str+='<div class="scollCadreDivCls">';
 	str+='<table class="table table-bordered dataTableDiv">';
@@ -417,8 +431,72 @@ function buildFeedbackDetailsOfCadre(result,constId){
 	str+='</table>';
 	str+='</div>';
 	
+		
+	//excel building 
+	
+	if(dates !=null && dates !="" && dates !=undefined){
+		str2+='<div >Title : <b>'+title+'</b></div>';
+		str2+='<div>Report Date : &nbsp <b>'+dates+'</b></div>';
+	}else{
+		str2+='<div >Title : <b>'+title+'</b></div>';
+		str2+='<div>Report Date : &nbsp <b> ALL </b></div>';
+	}
+	
+
+	
+	str2+='<table class="table table-bordered dataTableDiv style="margin-top:20px;">';
+		str2+='<thead class="bg_d">';
+			str2+='<th>IMAGE</th>';
+			str2+='<th>CADRE NAME</th>';
+			str2+='<th>DESIGNATION</th>';
+			str2+='<th>MOBILE NO</th>';
+			str2+='<th>CATEGORY</th>';
+			str2+='<th>ANSWER</th>';
+		str2+='</thead>';
+		for(var i in result){
+			str2+='<tr>';
+			if(result[i].simpleVOList1 != null && result[i].simpleVOList1.length > 0){
+				for(var j in result[i].simpleVOList1){
+					
+					if(j==0){
+						
+						if(result[i].simpleVOList1[j].imageStr != null){
+							str2+='<td rowspan="'+result[i].simpleVOList1.length+'"><img src="images/cadre_images/'+result[i].simpleVOList1[j].imageStr+'" style="height:40px" class="img-reponsive"></td>';
+						}
+						else{
+							str2+='<td rowspan="'+result[i].simpleVOList1.length+'"><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>';
+						}
+						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">';
+						str2+='<p>'+result[i].simpleVOList1[j].name+'</p>';
+						str2+='<p>'+result[i].simpleVOList1[j].constituencyName+'</p>';
+						str2+='<p class="redirectToCadrePageCls" attr_cadreId="'+result[i].simpleVOList1[j].id+'" style="cursor:pointer">'+result[i].simpleVOList1[j].membershipNo+'</p>';
+						str2+='</td>';
+						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">';
+						if(result[i].simpleVOList1[j].designation==null){
+							result[i].simpleVOList1[j].designation="-";
+						}
+						str2+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						if(result[i].simpleVOList1[j].designationLevel==null){
+							result[i].simpleVOList1[j].designationLevel="-";
+						}
+						str2+='<p>'+result[i].simpleVOList1[j].designationLevel+'</p>';
+						str2+='</td>';
+						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">'+result[i].simpleVOList1[j].mobileNo+'</td>';
+					}
+						
+						str2+='<td>'+result[i].simpleVOList1[j].category+'</td>';
+						str2+='<td>'+result[i].simpleVOList1[j].remarks+'</td>';
+					str2+='</tr>';
+				}
+			}
+		}
+	str2+='</table>';
+	
 	$("#cadreDetailsAjaxImage").hide();
 	$("#cadreDetailsDivId").html(str);
+	
+	$("#cadreDetailsExcelDivId").html(str2);
+	
 	$(".scollCadreDivCls").mCustomScrollbar({setHeight: "500px",axis:"yx"});
 	$('html,body').animate({
          scrollTop: $("#cadreDetailsDivId").offset().top 
@@ -432,6 +510,7 @@ function buildFeedbackDetailsOfCadre(result,constId){
 	function getFeedbackDetailsOfEachDistrictAndConstituencyWise(){
 		$("#distConstCatWiseCounts").html("");
 		$("#distConstCatWiseCountsAjaxImage").show();
+		$("cadreDetailsDivId").html("");
 		var jsObj={
 			districtId : $("#selectDistrictId").val(),
 			constituencyId : $("#selectConstituencyId").val(),
@@ -495,7 +574,7 @@ function buildFeedbackDetailsOfCadre(result,constId){
 										
 										if(!alreadyBuild){
 											alreadyBuild = true;
-											str+='<td rowspan='+districtLength+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+' &nbsp (<span class="feedBackDetailsCls" attr_type="district" attr_locationId = '+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+' style="cursor:pointer;">'+result[i].districtCount+'</span>) </td>';
+											str+='<td rowspan='+districtLength+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+' &nbsp (<span class="feedBackDetailsCls" attr_type="district" attr_locationId = '+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+' style="cursor:pointer;" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+'">'+result[i].districtCount+'</span>) </td>';
 										}														
 										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+' &nbsp (<span class="feedBackDetailsCls" style="cursor:pointer" attr_type="constituecy" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" attr_categoryId="0">'+result[i].trainingCampVOList[j].trainingCampVOList[k].totalProgrammesCount+'</span>) </td>';										
 									}
@@ -555,6 +634,34 @@ function buildFeedbackDetailsOfCadre(result,constId){
 		var cadreId = $(this).attr("attr_cadreId");
 		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
 	});
+	
+	$( ".cadreDetailsExcelCls" ).click(function() {
+			tableToExcel('cadreDetailsExcelDivId', 'Cadre Details');
+		});
+	
+	var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+$("#selectConstituencyId").change(function(){
+	$("#feedBackDetailsDivId").hide();
+	$("#cadreDetailsDivId").html("");
+});
+
+$("#selectCategoryId").change(function(){
+	$("#feedBackDetailsDivId").hide();
+	$("#cadreDetailsDivId").html("");
+});
+
+
 	
 </script>
 </body>
