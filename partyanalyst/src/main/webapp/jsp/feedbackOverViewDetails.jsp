@@ -204,7 +204,7 @@ function getAllPrograms(){
 						str+='<th>TRAINING CENTER</th>';
 						str+='<th>CATEGORY</th>';
 						str+='<th>COUNT</th>';
-						str+='<th>TOTAL CATEGORY COUNT</th>';
+						//str+='<th>TOTAL CATEGORY COUNT</th>';
 				str+='</thead>';
 				
 				str+='<tbody>';
@@ -216,14 +216,15 @@ function getAllPrograms(){
 						
 						 for(var j in result[i].trainingCampVOList){
 							if(j==0){
-								str+='<td id="'+result[i].trainingCampVOList[j].programId+'" rowspan='+categoryLength+'>'+result[i].trainingCampVOList[j].programName+'</td>';
+								str+='<td id="'+result[i].trainingCampVOList[j].programId+'" rowspan='+categoryLength+'>'+result[i].trainingCampVOList[j].programName+' &nbsp<span class="feedBackDetailsCls" attr_type="center" attr_locationId='+result[i].trainingCampVOList[j].programId+' style="cursor:pointer;" attr_categoryId="0"> ('+result[i].totalProgrammesCount+')</span></td>';
 							}
 							
 							str+='<td id="'+result[i].trainingCampVOList[j].campId+'">'+result[i].trainingCampVOList[j].campName+'</td>';							
-							str+='<td>'+result[i].trainingCampVOList[j].assignedCount+'</td>';
-							if(j==0){
+							str+='<td><span class="feedBackDetailsCls" style="cursor:pointer;" attr_categoryId='+result[i].trainingCampVOList[j].campId+' attr_type="center" attr_locationId='+result[i].trainingCampVOList[j].programId+' >'+result[i].trainingCampVOList[j].assignedCount+'</span></td>';
+							
+							/* if(j==0){
 								str+='<td rowspan='+categoryLength+'>'+result[i].totalProgrammesCount+'</td>';
-							}
+							} */
 							str+='</tr>';
 						 }
 						 
@@ -231,9 +232,9 @@ function getAllPrograms(){
 					}
 					str+='<tr>';
 						 str+='<td style="border-right: 1px solid #EFF3F4;">TOTAL</td>';
-						 str+='<td style="border: 1px solid #EFF3F4;"></td>';
-						 str+='<td ></td>';
-						 str+='<td>'+result[0].acceptedCount+'</td>';
+						// str+='<td style="border: 1px solid #EFF3F4;"></td>';
+						str+='<td ></td>';
+						 str+='<td class="feedBackDetailsCls" style="cursor:pointer;" attr_categoryId="0" attr_type='+null+' attr_locationId="0">'+result[0].acceptedCount+'</td>';
 					str+='</tr>';
 				
 				str+='</tbody>';
@@ -306,17 +307,39 @@ $(document).on('click','.feedBackDetailsCls',function(){
 		$("#cadreDetailsDivId").html("");
 		
 		var programId = $("#selectProgramId").val();
-		var locationId = $(this).attr("attr_constituencyId");
+		
+		var locationType=$(this).attr("attr_type");
+		
+		/* alert(locationType);
+		return; */
+		
+		var locationId=0;
+		var categoryId=0;
+		if(locationType !=null && locationType=="constituecy"){
+			locationId = $(this).attr("attr_constituencyId");
+			var category = $(this).attr("attr_categoryId");		
+			if(category ==0){
+				categoryId =  $("#selectCategoryId").val();
+			}else{
+				categoryId = category;
+			}
+		}else if(locationType !=null && locationType=="center"){
+			locationId = $(this).attr("attr_locationId");
+			categoryId = $(this).attr("attr_categoryId");			
+		}else if(locationType !=null && locationType=="district"){
+			locationId = $(this).attr("attr_locationId");
+			categoryId =  $("#selectCategoryId").val();
+		}
 		
 		//programId=1;
 		//locationId =22;
-		type ="constituecy";
+		//type ="constituecy";
 		
 		var jsObj={
 			programId:programId,
 			locationId:locationId,
-			type:type,
-			categoryId : $("#selectCategoryId").val(),
+			type:locationType,
+			categoryId :categoryId,
 			dates : datesGlob
 		}
 		$.ajax({
@@ -427,7 +450,7 @@ function buildFeedbackDetailsOfCadre(result,constId){
 				str+='<th>Constituency</th>';
 				str+='<th>Category</th>';
 				str+='<th>Count</th>';
-				str+='<th>Total Category Count</th>';
+				//str+='<th>Total Category Count</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				/* for(var i in result){
@@ -466,18 +489,18 @@ function buildFeedbackDetailsOfCadre(result,constId){
 										
 										if(!alreadyBuild){
 											alreadyBuild = true;
-											str+='<td rowspan='+districtLength+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+'</td>';
+											str+='<td rowspan='+districtLength+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].programName+' &nbsp (<span class="feedBackDetailsCls" attr_type="district" attr_locationId = '+result[i].trainingCampVOList[j].trainingCampVOList[k].programId+' style="cursor:pointer;">'+result[i].districtCount+'</span>) </td>';
 										}														
-										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'</td>';										
+										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' id='+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+' &nbsp (<span class="feedBackDetailsCls" style="cursor:pointer" attr_type="constituecy" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" attr_categoryId="0">'+result[i].trainingCampVOList[j].trainingCampVOList[k].totalProgrammesCount+'</span>) </td>';										
 									}
 									
 									str+='<td id='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdName+'</td>';
 									
-									str+='<td>'+result[i].trainingCampVOList[j].trainingCampVOList[k].assignedCount+'</td>';
+									str+='<td class="feedBackDetailsCls" style="cursor:pointer" attr_type="constituecy" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" attr_categoryId='+result[i].trainingCampVOList[j].trainingCampVOList[k].thirdId+'>'+result[i].trainingCampVOList[j].trainingCampVOList[k].assignedCount+'</td>';
 									
-									if(k==0){
-										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' style="cursor:pointer" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" class="feedBackDetailsCls">'+result[i].trainingCampVOList[j].trainingCampVOList[k].totalProgrammesCount+'</td>';
-									}
+									/* if(k==0){
+										str+='<td rowspan='+result[i].trainingCampVOList[j].trainingCampVOList.length+' style="cursor:pointer" attr_constituencyId="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campId+'" attr_constituencyName="'+result[i].trainingCampVOList[j].trainingCampVOList[k].campName+'" attr_type="constituecy" class="feedBackDetailsCls">'+result[i].trainingCampVOList[j].trainingCampVOList[k].totalProgrammesCount+'</td>';
+									} */
 									
 									str+='</tr>';
 								}
