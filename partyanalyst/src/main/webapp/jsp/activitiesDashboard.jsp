@@ -321,8 +321,9 @@ function getActivityNames(type)
 			if(result != null && result.length >0)
 			{
 				for(var i in result)
-					$('#ActivityList').append('<option value="'+result[i].id+'" selected="true">'+result[i].name+'</option>');	
+					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 			}
+			$('#ActivityList').val(1);
 			if(type == "onload"){
 				getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
 				getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
