@@ -97,9 +97,16 @@ public class TrainingCampVO implements java.io.Serializable{
 	
 	private Long thirdId;
 	private String thirdName;
+	private Long districtCount=0l;
 	
 		
 	
+	public Long getDistrictCount() {
+		return districtCount;
+	}
+	public void setDistrictCount(Long districtCount) {
+		this.districtCount = districtCount;
+	}
 	public Long getThirdId() {
 		return thirdId;
 	}
