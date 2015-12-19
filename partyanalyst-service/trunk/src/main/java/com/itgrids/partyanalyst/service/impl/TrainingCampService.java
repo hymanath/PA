@@ -9830,8 +9830,8 @@ class TrainingCampService implements ITrainingCampService{
 	
 	public List<TrainingCampVO> setTotalValueToSecondList(List<TrainingCampVO> trainingCampList){		
 		try{			
-			Long districtCount=0l;
-			for (TrainingCampVO trainingCampVO : trainingCampList) {				
+			for (TrainingCampVO trainingCampVO : trainingCampList) {
+				Long districtWiseCount=0l;
 				List<TrainingCampVO> secondList = trainingCampVO.getTrainingCampVOList();
 				if(secondList !=null && secondList.size()>0){					
 					for (TrainingCampVO trainingCampVO2 : secondList) {						
@@ -9840,11 +9840,13 @@ class TrainingCampService implements ITrainingCampService{
 							Long thirdListWiseTotalCount =0l;
 							for (TrainingCampVO trainingCampVO3 : thirdList) {								
 								thirdListWiseTotalCount = thirdListWiseTotalCount + trainingCampVO3.getAssignedCount();
-								districtCount = districtCount + trainingCampVO3.getAssignedCount();
+								districtWiseCount = districtWiseCount + trainingCampVO3.getAssignedCount();
 							}
 							thirdList.get(0).setTotalProgrammesCount(thirdListWiseTotalCount);
 						}
-					}										
+					}
+					
+					trainingCampVO.setDistrictCount(districtWiseCount);
 				}				
 			}
 			//trainingCampList.get(0).setAcceptedCount(districtCount);

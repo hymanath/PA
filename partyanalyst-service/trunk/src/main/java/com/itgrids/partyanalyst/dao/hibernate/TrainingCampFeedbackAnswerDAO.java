@@ -166,9 +166,14 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		}
 		
 		if(type !=null && type.equalsIgnoreCase("district")){
+			if(locationId !=null && locationId>0)
 			str.append(" and model.tdpCadre.userAddress.district.districtId = :locationId ");
 		}else if(type !=null && type.equalsIgnoreCase("constituecy")){
+			if(locationId !=null && locationId>0)
 			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationId ");
+		}else if(type !=null && type.equalsIgnoreCase("center")){
+			if(locationId !=null && locationId>0)
+			str.append(" and model.trainingCampFeedbackCategory.trainingCampId = :locationId ");
 		}
 		
 		if(programId !=null && programId>0){
@@ -184,8 +189,13 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		query.setParameter("locationId", locationId);
-		query.setParameter("programId", programId);
+		if(locationId !=null && locationId>0){
+			query.setParameter("locationId", locationId);
+		}
+		if(programId !=null && programId>0){
+			query.setParameter("programId", programId);
+		}
+		
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
