@@ -950,11 +950,10 @@ public interface IConstants {
 
 	 public static final String HEALTH_CARD_FOLDER = "tdp_cadre_health_cards";
 	 public static final String CADRE_FEEDBACK_DOCUMENT = "cadre_feedback_document";
-    //public static final String[] ACTIVITY_REPORT_FIELDS = {"INFO CELL PLANNED","INFO CELL NOT PLANNED","INFO CELL COVERED","INFO CELL COVERED %","IVR PLANNED","IVR NOT PLANNED",
-    	//"IVR NOT PLANNED %","WHATSAPP IMAGES COVERED","WHATSAPP IMAGES COVERED %",};
     public static final String[] ACTIVITY_REPORT_FIELDS ={"PLANNED","IVR COVERED","IVR COVERED %","IVR NOT PLANNED","IVR TOTAL","INFO CELL COVERED","INFO CELL COVERED %","INFO CELL NOT PLANNED","INFO CELL TOTAL","WHATSAPP IMAGES COVERED","WHATSAPP IMAGES COVERED %","NO OF WHATSAPP IMAGES RECIEVED"};
     public static final String ACTIVITY_DOCUMENTS ="activity_documents";
-    public static final String ACTIVITY_DOCUMENT_UPLOAD  ="";
-    public static final String ACTIVITY_DOCUMENT_FOLDER  ="";
+    public static final String ACTIVITY_DOCUMENT_FOLDER = "activity_documents";
+    public static final String ACTIVITY_DOCUMENT_UPLOAD = "activity_documents_upload";
+    
     
 }
