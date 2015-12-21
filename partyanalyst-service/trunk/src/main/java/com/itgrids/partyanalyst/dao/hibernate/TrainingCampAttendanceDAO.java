@@ -20,14 +20,37 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	
 	  Query query=getSession().createQuery("  " +
 	  " select    model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel,count(distinct model.attendance.tdpCadreId) " +
-	  " from      TrainingCampAttendance model,TdpCommitteeMember model2 " +
+	  " from      TrainingCampAttendance model,TdpCommitteeMember model2,TrainingCampBatchAttendee tcba " +
 	  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
 	  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' " +
+	  "			and model.attendance.tdpCadreId=tcba.tdpCadreId and model.trainingCampBatch.trainingCampBatchId=tcba.trainingCampBatchId and tcba.isDeleted='false' " +
 	  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
 	  query.setParameterList("trainingCampBatchIds",batchIds);
 	  return query.list();
   }
+  
+  public List<Long> getInviteeCadreIds(List<Long> batchIds){
+	  Query query=getSession().createQuery("  " +
+			  " select    distinct model.attendance.tdpCadreId " +
+			  " from      TrainingCampAttendance model,TdpCommitteeMember model2,TrainingCampBatchAttendee tcba " +
+			  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
+			  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' " +
+			  "			and model.attendance.tdpCadreId=tcba.tdpCadreId and model.trainingCampBatch.trainingCampBatchId=tcba.trainingCampBatchId and tcba.isDeleted='false' ");
+			  query.setParameterList("trainingCampBatchIds",batchIds);
+			  return query.list();
+  }
 
+  public List<Object[]> getAttendedNonInviteesCountForBatchesByLocation(List<Long> batchIds,List<Long> cadreIds){
+	  Query query=getSession().createQuery("  " +
+			  " select    model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel,count(distinct model.attendance.tdpCadreId) " +
+			  " from      TrainingCampAttendance model,TdpCommitteeMember model2 " +
+			  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
+			  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' and model.attendance.tdpCadreId not in (:cadreIds) " +
+			  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+			  query.setParameterList("trainingCampBatchIds",batchIds);
+			  query.setParameterList("cadreIds",cadreIds);
+			  return query.list();
+  }
   public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type){
 	
 		 StringBuilder sb=new StringBuilder();

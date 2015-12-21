@@ -7,7 +7,7 @@ public class IdNameVO implements Serializable{
 	private String name;
 	private Long districtid;
 	private Long availableCount;
-	private Long actualCount;
+	private Long actualCount=0l;
 	
 	public IdNameVO(){}
 	
