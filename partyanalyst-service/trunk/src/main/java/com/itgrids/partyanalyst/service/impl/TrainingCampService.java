@@ -9912,21 +9912,21 @@ class TrainingCampService implements ITrainingCampService{
 				Map<Long,SimpleVO> designationMap = cadreMap.get(long1);
 				for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
 					SimpleVO vo = mainMap.getValue();
-					if(vo.getDesignationLevelId()==5l){
+					if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==5l){
 						designationLevelValueIdsVO.getMandalIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==6l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==6l){
 						designationLevelValueIdsVO.getVillageIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==7l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==7l){
 						designationLevelValueIdsVO.getTownIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==8l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==8l){
 						designationLevelValueIdsVO.getWardIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==9l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==9l){
 						designationLevelValueIdsVO.getDivisionIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==10l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==10l){
 						designationLevelValueIdsVO.getStateIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==11l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==11l){
 						designationLevelValueIdsVO.getDistrictIdsList().add(vo.getDesignationLevelValue());
-					}else if(vo.getDesignationLevelId()==12l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==12l){
 						designationLevelValueIdsVO.getCentralIdsList().add(vo.getDesignationLevelValue());
 					}
 				}
@@ -9990,17 +9990,17 @@ class TrainingCampService implements ITrainingCampService{
 				Map<Long,SimpleVO> designationMap = cadreMap.get(long1);
 				for (Entry<Long,SimpleVO> mainMap : designationMap.entrySet()) {
 					SimpleVO vo = mainMap.getValue();
-					if(vo.getDesignationLevelId()==5l){
+					if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==5l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getMandalMap().get(vo.getDesignationLevelValue()));
-					}else if(vo.getDesignationLevelId()==6l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==6l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getVillageMap().get(vo.getDesignationLevelValue()));
-					}else if(vo.getDesignationLevelId()==7l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==7l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getTownMap().get(vo.getDesignationLevelValue()));
-					}else if(vo.getDesignationLevelId()==8l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==8l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getWardMap().get(vo.getDesignationLevelValue()));
-					}else if(vo.getDesignationLevelId()==9l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==9l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getDivisionMap().get(vo.getDesignationLevelValue()));
-					}else if(vo.getDesignationLevelId()==11l){
+					}else if(vo.getDesignationLevelId() !=null && vo.getDesignationLevelId()==11l){
 						vo.setDesignationLevelName(designationLevelValueIdsVO.getDistrictMap().get(vo.getDesignationLevelValue()));
 					}
 				}
