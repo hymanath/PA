@@ -39,6 +39,10 @@
 	</script>
 	
 <style class="text/css">
+.levelHolderClass h2
+{
+	margin-top:0px
+}
 header.eventsheader 
 {
     background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
@@ -81,7 +85,7 @@ footer
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" class="img-responsive" alt="ntr">   
             </div>
-            <div class="col-md-3 col-xs-1 col-sm-1 span2">
+            <div class="col-md-3 col-xs-1 col-sm-1 span3">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
             	<p style="margin-top:5px;margin-bottom:0px;font-size:13px;color:#fff;font-weight:bold">Welcome, ${sessionScope.UserName} | </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
@@ -280,7 +284,7 @@ footer
 						</li></c:if></c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP' ) ||  fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
 						 <li>
-								<a href="#"><i class="glyphicon glyphicon-tree-deciduous ico-white"></i><span>&nbsp;&nbsp;2014 Cadre</span></a>
+								<a href="#"><i class="fa fa-child ico-white"></i><span>&nbsp;&nbsp;2014 Cadre</span></a>
 								 <h2><i class="glyphicon glyphicon-tree-deciduous ico-white line_heightDiv"></i>&nbsp;&nbsp;2014 Cadre</h2>
 								 <ul>
 								 <c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) ||  fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' )}">
@@ -423,15 +427,15 @@ footer
 									</ul>
 							</li></c:if>
 						<li>
-								<a href="#"><i class="fa fa-screenshot ico-white"></i><span>&nbsp;&nbsp;Party Meetings</span></a>
-								 <h2><i class="fa fa-screenshot ico-white line_heightDiv"></i> Party Meetings</h2>
+								<a href="#"><i class="fa fa-user-secret ico-white"></i><span>&nbsp;&nbsp;Party Meetings</span></a>
+								 <h2><i class="fa fa-user-secret ico-white line_heightDiv"></i> Party Meetings</h2>
 								<ul>
 								 
 								  <li>
 									<a href="partyMeetingsDashBoard.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Metting Dasboard</span></a>
 									</li>
 									  <li>
-									<a href="meetingList.action"><i class="fa fa-check-o ico-white"></i><span>&nbsp;&nbsp;Metting Min & Atr</span></a>
+									<a href="meetingList.action"><i class="fa fa-street-view ico-white"></i><span>&nbsp;&nbsp;Metting Min & Atr</span></a>
 									</li>
 									</ul>
 						</li>
