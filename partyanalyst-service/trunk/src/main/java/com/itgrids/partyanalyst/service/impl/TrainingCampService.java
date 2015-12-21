@@ -6529,7 +6529,13 @@ class TrainingCampService implements ITrainingCampService{
 					
 					List<Long> batchIds=trainingCampVO.getCompletedBatchIds();
 					if(batchIds!=null && batchIds.size()>0){
-						List<Object[]> list=trainingCampAttendanceDAO.getAttendedCountForBatchesByLocation(batchIds);
+						List<Object[]> list=trainingCampAttendanceDAO.getAttendedCountForBatchesByLocation(batchIds);//invites
+						List<Long> listNonInviteesIds = trainingCampAttendanceDAO.getInviteeCadreIds(batchIds);//non-invites
+						
+						List<Object[]> nonInvitessList = null;
+						if(listNonInviteesIds != null && listNonInviteesIds.size() > 0){
+							nonInvitessList = trainingCampAttendanceDAO.getAttendedNonInviteesCountForBatchesByLocation(batchIds,listNonInviteesIds);
+						}
 						
 						if(list!=null && list.size()>0){
 							for(Object[] obj:list){
@@ -6544,6 +6550,24 @@ class TrainingCampService implements ITrainingCampService{
 								}else if(levelId==11l){
 									IdNameVO vo=finalMap.get(11l);
 									vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+								}
+								
+							}
+						}
+						
+						if(nonInvitessList!=null && nonInvitessList.size()>0){
+							for(Object[] obj:nonInvitessList){
+								Long levelId=(Long)obj[0];
+								
+								if(levelId==6l || levelId==8l){
+									IdNameVO vo=finalMap.get(6l);
+									vo.setActualCount(vo.getActualCount()+(obj[2]!=null?(Long)obj[2]:0l));
+								}else if(levelId==5l ||levelId==7l || levelId==9l){
+									IdNameVO vo=finalMap.get(5l);
+									vo.setActualCount(vo.getActualCount()+(obj[2]!=null?(Long)obj[2]:0l));
+								}else if(levelId==11l){
+									IdNameVO vo=finalMap.get(11l);
+									vo.setActualCount(obj[2]!=null?(Long)obj[2]:0l);
 								}
 								
 							}
