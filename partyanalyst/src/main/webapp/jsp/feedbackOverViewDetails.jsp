@@ -467,19 +467,33 @@ function buildFeedbackDetailsOfCadre(result,constId,dates,title){
 							str2+='<td rowspan="'+result[i].simpleVOList1.length+'"><img src="dist/img/profile-img.png" style="height:40px" class="img-reponsive" ></td>';
 						}
 						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">';
-						str2+='<p>'+result[i].simpleVOList1[j].name+'</p>';
+						str2+='<span>'+result[i].simpleVOList1[j].name+'</span><br/>';
+						str2+='<span>'+result[i].simpleVOList1[j].constituencyName+'</span><br/>';
+						str2+='<span>'+result[i].simpleVOList1[j].membershipNo+'</span><br/>';
+						/* str2+='<p>'+result[i].simpleVOList1[j].name+'</p>';
 						str2+='<p>'+result[i].simpleVOList1[j].constituencyName+'</p>';
-						str2+='<p class="redirectToCadrePageCls" attr_cadreId="'+result[i].simpleVOList1[j].id+'" style="cursor:pointer">'+result[i].simpleVOList1[j].membershipNo+'</p>';
+						str2+='<p class="redirectToCadrePageCls" attr_cadreId="'+result[i].simpleVOList1[j].id+'" style="cursor:pointer">'+result[i].simpleVOList1[j].membershipNo+'</p>'; */
 						str2+='</td>';
 						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">';
 						if(result[i].simpleVOList1[j].designation==null){
 							result[i].simpleVOList1[j].designation="-";
 						}
-						str2+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						if(result[i].simpleVOList1[j].designationLevelName==null){
+							result[i].simpleVOList1[j].designationLevelName="-";
+						}
+						
+						str2+='<span>'+result[i].simpleVOList1[j].designation+' - <b>'+result[i].simpleVOList1[j].designationLevelName+'</b></span><br/>';
 						if(result[i].simpleVOList1[j].designationLevel==null){
 							result[i].simpleVOList1[j].designationLevel="-";
 						}
-						str2+='<p>'+result[i].simpleVOList1[j].designationLevel+'</p>';
+						
+						str2+='<span>'+result[i].simpleVOList1[j].designationLevel+'</span><br/>';
+						
+						/* str2+='<p>'+result[i].simpleVOList1[j].designation+'</p>';
+						if(result[i].simpleVOList1[j].designationLevel==null){
+							result[i].simpleVOList1[j].designationLevel="-";
+						}
+						str2+='<p>'+result[i].simpleVOList1[j].designationLevel+'</p>'; */
 						str2+='</td>';
 						str2+='<td rowspan="'+result[i].simpleVOList1.length+'">'+result[i].simpleVOList1[j].mobileNo+'</td>';
 					}
