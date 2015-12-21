@@ -32,7 +32,7 @@ header.eventsheader {
  background-origin: border-box;
  background-repeat: no-repeat;
  height: 71px; 
-}
+} 
 .summaryCls{color:#252D47;text-decoration: underline;}
 .summaryCls:hover{text-decoration: underline;}
 
@@ -52,9 +52,9 @@ header.eventsheader {
 </style>
 </head>
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 <!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -74,7 +74,7 @@ header.eventsheader {
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					     <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					    <!-- <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
 						    <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN')}">
 								<li><a tabindex="-1" href="callCenterTrainingAdmin.action"> CALLERS ADMIN DASHBOARD </a></li>
 								<li><a tabindex="-1" href="callCenterTrainingAgentDashBoard.action"> CALLERS DASHBOARD </a></li>
@@ -101,7 +101,7 @@ header.eventsheader {
     </div>
 	
 	
-</header>
+</header>-->
 <main>
 	<div class="container">
     	<div class="row">

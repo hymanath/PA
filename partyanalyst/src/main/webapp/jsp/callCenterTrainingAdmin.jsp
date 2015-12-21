@@ -115,9 +115,9 @@ footer
 #agentProcessingImg,#trainingBatchProcessImg{margin-left: 12px;}
 </style>
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 <!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -166,11 +166,11 @@ footer
 	
 
 	
-</header>
-<section style="margin-top:40px;">
+</header>-->
+<section>
 	
 	<div class="container">
-		
+		<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default panel-custom">
 				<div class="panel-heading">
@@ -500,6 +500,7 @@ footer
 			</div>
 		</div>
 	</div>
+</div>
 	<!-- batch -->
 	<!---Modal-1----------------->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog">

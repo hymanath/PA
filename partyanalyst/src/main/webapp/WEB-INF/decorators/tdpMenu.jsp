@@ -70,37 +70,37 @@ footer
     <header class="eventsheader">
 	<div class="container">
         <div class="row">
-            <div class="col-md-2 col-xs-4 col-sm-1">
+            <div class="col-md-2 col-xs-4 col-sm-1 span2">
                 <img src="dist/img/logo.png" class="img-responsive" alt="logo">
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1">
+            <div class="col-md-1 col-xs-1 col-sm-1 span1">
                 <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
             </div>
-            <div class="col-md-5 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:38px !important;color:#5c2d25 !important;">TELUGU DESAM PARTY</p>               
+            <div class="col-md-5 col-xs-7 col-sm-7 span5 text-center">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:24px !important;color:#5c2d25 !important;margin-top:10px;">TELUGU DESAM PARTY</p>               
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" alt="ntr">   
+            <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" class="img-responsive" alt="ntr">   
             </div>
-            <div class="col-md-3 col-xs-1 col-sm-1">
+            <div class="col-md-3 col-xs-1 col-sm-1 span2">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
-            	<p class="m_top10"   style="font-size:16px;color:#fff;font-weight:bold">Welcome, ${sessionScope.UserName} | </c:if>
+            	<p style="margin-top:5px;margin-bottom:0px;font-size:13px;color:#fff;font-weight:bold">Welcome, ${sessionScope.UserName} | </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p class="m_top10"   style="font-size:16px;color:#fff;font-weight:bold">Welcome, ${sessionScope.UserName} |</c:if>
+				<p style="font-size:13px;color:#fff;font-weight:bold;margin-top:5px;margin-bottom:0px;">Welcome, ${sessionScope.UserName} |</c:if>
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-											<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
-											|
-										</c:if>
-										<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-									
-									<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
-										<!--<span>|</span>
-										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
-										
-									</c:if>
-									</p>
-									<a id="trigger" style="margin-top: 3px;" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs m_top10 fullcollapse" href="#">
-                    Menu <img src="images/menu_icon.png">
-                    </a>
+						<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+						|
+					</c:if>
+					<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+				
+				<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
+					<!--<span>|</span>
+					<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
+					
+				</c:if>
+				</p>
+				<a id="trigger" style="margin-top: 3px;" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs m_top10 fullcollapse" href="#">
+					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
+                </a>
 				
             </div>
         </div>       
@@ -112,7 +112,7 @@ footer
                 <h2><i class="fa fa-reorder line_heightDiv"></i>All Categories</h2>
 					<ul>
 						<li>
-							<a href="home.action"><i class="glyphicon glyphicon-home"></i><span>&nbsp;&nbsp;Home</span></a>
+							<a href="home.action"><i class="fa fa-home"></i><span>&nbsp;&nbsp;Home</span></a>
 							<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_PERFORMANCE_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_COMPARISION_REPORT' ) ||
 							fn:contains(sessionScope.USER.entitlements, 'PARTY_RESULTS_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_RESULTS_ANALYSIS_REPORT' )  ||
@@ -253,64 +253,64 @@ footer
 								 </ul>
 						</li></c:if></c:if>
 						 <li>
-								<a href="dailyVerificationReportsAction.action"><i class="glyphicon glyphicon-folder-open ico-white"></i><span>&nbsp;&nbsp;CTP Project</span></a>
+								<a href="dailyVerificationReportsAction.action"><i class="fa fa-folder-open ico-white"></i><span>&nbsp;&nbsp;CTP Project</span></a>
 						</li>
 						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT' )}">
 						 <li>
-								<a href="#"><i class="glyphicon glyphicon-envelope ico-white"></i><span>&nbsp;&nbsp;Cadre Training</span></a>
-								 <h2><i class="glyphicon glyphicon-envelope ico-white line_heightDiv"></i> Cadre Training</h2>
+								<a href="#"><i class="fa fa-envelope ico-white"></i><span>&nbsp;&nbsp;Cadre Training</span></a>
+								 <h2><i class="fa fa-envelope ico-white line_heightDiv"></i> Cadre Training</h2>
 								 <ul>
 								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN' )}">
 								 <li>
-									<a href="trainingCenterDashBoardAction.action"><i class="glyphicon glyphicon-th-list ico-white"></i><span>&nbsp;&nbsp;Training Center Dashboard</span></a>
+									<a href="trainingCenterDashBoardAction.action"><i class="fa fa-th-list ico-white"></i><span>&nbsp;&nbsp;Training Center Dashboard</span></a>
 									</li></c:if>
 									<li>
-									<a href="callCenterTrainingAdmin.action"><i class="glyphicon glyphicon-th-large ico-white"></i><span>&nbsp;&nbsp;Caller Admin Dashboard</span></a>
+									<a href="callCenterTrainingAdmin.action"><i class="fa fa-th-large ico-white"></i><span>&nbsp;&nbsp;Caller Admin Dashboard</span></a>
 									</li>
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN' )}">
 									 <li>
-									<a href="callCenterTrainingAgentDashBoard.action"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Caller Dashboard</span></a>
+									<a href="campCallCenterTrainingAgentDashBoard.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Caller Dashboard</span></a>
 									</li></c:if>
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_SUPER_ADMIN' )}">
 									 <li>
-									<a href="trainingCampMainDashboard.action"><i class="glyphicon glyphicon-list-alt ico-white"></i><span>&nbsp;&nbsp;Training Feedback</span></a>
+									<a href="trainingCampMainDashboard.action"><i class="fa fa-list-alt ico-white"></i><span>&nbsp;&nbsp;Training Feedback</span></a>
 									</li></c:if>
 								 </ul>
 						</li></c:if></c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP' ) ||  fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
 						 <li>
 								<a href="#"><i class="glyphicon glyphicon-tree-deciduous ico-white"></i><span>&nbsp;&nbsp;2014 Cadre</span></a>
-								 <h2><i class="glyphicon glyphicon-tree-deciduous ico-white line_heightDiv"></i> 2014 Cadre</h2>
+								 <h2><i class="glyphicon glyphicon-tree-deciduous ico-white line_heightDiv"></i>&nbsp;&nbsp;2014 Cadre</h2>
 								 <ul>
 								 <c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) ||  fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' )}">
 									<li>
-									<a href="cadreSearchPageAction.action"><i class="glyphicon glyphicon-search ico-white"></i><span>&nbsp;&nbsp;Cadre Search</span></a>
+									<a href="cadreSearchPageAction.action"><i class="fa fa-search ico-white"></i><span>&nbsp;&nbsp;Cadre Search</span></a>
 									</li></c:if>
 									<li>
-									<a href="cadreVoterSearchAction.action"><i class="glyphicon glyphicon-magnet ico-white"></i><span>&nbsp;&nbsp;Cadre Voter Search</span></a>
+									<a href="cadreVoterSearchAction.action"><i class="fa fa-magnet ico-white"></i><span>&nbsp;&nbsp;Cadre Voter Search</span></a>
 									</li>
 								<li>
-									<a href="#"><i class="glyphicon glyphicon-pencil ico-white"></i><span>&nbsp;&nbsp;2014 Cadre Reports</span></a>
-									 <h2><i class="glyphicon glyphicon-pencil ico-white line_heightDiv"></i> 2014 Cadre</h2>
+									<a href="#"><i class="fa fa-pencil ico-white"></i><span>&nbsp;&nbsp;2014 Cadre Reports</span></a>
+									 <h2><i class="fa fa-pencil ico-white line_heightDiv"></i> 2014 Cadre</h2>
 									 <ul>
 									  <li>
-									<a href="cadreRegistrationAmountReportAction.action"><i class="glyphicon glyphicon-briefcase ico-white"></i><span>&nbsp;&nbsp;2014 Cadre Reconcilation Report</span></a>
+									<a href="cadreRegistrationAmountReportAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;2014 Cadre Reconcilation Report</span></a>
 									</li>
 									  <li>
-									<a href="leaderCadreDashBoardAction.action"><i class="glyphicon glyphicon-unchecked ico-white "></i><span>&nbsp;&nbsp;Leader Cadre Report</span></a>
+									<a href="leaderCadreDashBoardAction.action"><i class="fa fa-square-o ico-white "></i><span>&nbsp;&nbsp;Leader Cadre Report</span></a>
 									</li>
 									 <li>
-									<a href="cadreReportsAction.action"><i class="glyphicon glyphicon-filter ico-white"></i><span>&nbsp;&nbsp;Cadre Reports - 2014</span></a>
+									<a href="cadreReportsAction.action"><i class="fa fa-filter ico-white"></i><span>&nbsp;&nbsp;Cadre Reports - 2014</span></a>
 									</li>
 									 <li>
-									<a href="misReportAction.action"><i class="glyphicon glyphicon-globe ico-white"></i><span>&nbsp;&nbsp;MIS Reports</span></a>
+									<a href="misReportAction.action"><i class="fa fa-globe ico-white"></i><span>&nbsp;&nbsp;MIS Reports</span></a>
 									</li>
 									 </ul>
 								</li>
 								<li>
-									<a href="#"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Cadre Dasboard</span></a>
-									 <h2><i class="glyphicon glyphicon-dashboard ico-white line_heightDiv"></i> Cadre Dasboard</h2>
+									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Cadre Dasboard</span></a>
+									 <h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Cadre Dasboard</h2>
 									 <ul>
 									 <li>
 									<a href="cadreDashBoardAction.action"><i class="fa fa-book"></i><span>&nbsp;&nbsp;Andhra Pradesh/Telangana</span></a>
@@ -327,37 +327,37 @@ footer
 									 </ul>
 									</li>
 									<li>
-									<a href="tdpCadreCardsPrintingDashBoardAction.action"><i class="glyphicon glyphicon-bookmark ico-white"></i><span>&nbsp;&nbsp;Cadre Cards Printing Dashboard</span></a>
+									<a href="tdpCadreCardsPrintingDashBoardAction.action"><i class="fa fa-bookmark ico-white"></i><span>&nbsp;&nbsp;Cadre Cards Printing Dashboard</span></a>
 									</li>
 									<c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP' )}">
 									 <li>
-									<a href="cadreMemberShipCardDispatcherAction.action"><i class="glyphicon glyphicon-indent-left ico-white"></i><span>&nbsp;&nbsp;Cadre Membership Card Status</span></a>
+									<a href="cadreMemberShipCardDispatcherAction.action"><i class="fa fa-indent ico-white"></i><span>&nbsp;&nbsp;Cadre Membership Card Status</span></a>
 									</li></c:if>
 									</ul>
 						</li></c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
 						 <li>
-								<a href="#"><i class="glyphicon glyphicon-send ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>
-								 <h2><i class="glyphicon glyphicon-send ico-white line_heightDiv"></i> Committees</h2>
+								<a href="#"><i class="fa fa-send ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>
+								 <h2><i class="fa fa-send ico-white line_heightDiv"></i> Committees</h2>
 								 <ul>
 								<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' )}">
 								  <li>
-									<a href="#"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Committees Dasboard</span></a>
-									 <h2><i class="glyphicon glyphicon-dashboard ico-white line_heightDiv"></i> Committees Dasboard</h2>
+									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Committees Dasboard</span></a>
+									 <h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Committees Dasboard</h2>
 									 <ul>
 									 <c:if test="${ sessionScope.USER.isAdmin == 'true' ||  fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' )}">
 									<li>
-									<a href="committeeDashBoardAction.action"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Committee Dashboard</span></a>
+									<a href="committeeDashBoardAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Committee Dashboard</span></a>
 									</li>
 									<li>
-									<a href="cadreCommitteeRolesDashboard.action"><i class="glyphicon glyphicon-list ico-white"></i><span>&nbsp;&nbsp;Committee Details Report</span></a>
+									<a href="cadreCommitteeRolesDashboard.action"><i class="fa fa-list ico-white"></i><span>&nbsp;&nbsp;Committee Details Report</span></a>
 									</li></c:if>
 									 </ul>
 									</li>
 								</c:if>
 									<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
 								<li>
-									<a href="cadreCommitteeAction.action"><i class="glyphicon glyphicon-edit ico-white"></i><span>&nbsp;&nbsp;TDP Committees Management</span></a>
+									<a href="cadreCommitteeAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;TDP Committees Management</span></a>
 								</li>
 									</c:if>
 								 </ul>
@@ -367,40 +367,40 @@ footer
 						
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) || fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' )}">
 							<li>
-								<a href="#"><i class="glyphicon glyphicon-tasks ico-white"></i><span>&nbsp;&nbsp;Elections</span></a>
+								<a href="#"><i class="fa fa-tasks ico-white"></i><span>&nbsp;&nbsp;Elections</span></a>
 								
-								 <h2><i class="glyphicon glyphicon-tasks ico-white line_heightDiv"></i> Elections</h2>
+								 <h2><i class="fa fa-tasks ico-white line_heightDiv"></i> Elections</h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) }">
 								 <li>
-									<a href="currentBoothsStatus.action"><i class="glyphicon glyphicon-link ico-white"></i><span>&nbsp;&nbsp;Tirupathi Bye Elections Poll Management</span></a>
+									<a href="currentBoothsStatus.action"><i class="fa fa-link ico-white"></i><span>&nbsp;&nbsp;Tirupathi Bye Elections Poll Management</span></a>
 									</li></c:if>
 									<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
 									  <li>
-									<a href="acPcWiseElectionResultAction.action?stateId=1"><i class="glyphicon glyphicon-paperclip ico-white"></i><span>&nbsp;&nbsp;Live Results</span></a>
+									<a href="acPcWiseElectionResultAction.action?stateId=1"><i class="fa fa-paperclip ico-white"></i><span>&nbsp;&nbsp;Live Results</span></a>
 									</li></c:if>
 									</ul>
 							</li></c:if>
 						 <li>
-								<a href="cadreMissedCallCampaignAction.action"><i class="glyphicon glyphicon-phone ico-white"></i><span>&nbsp;&nbsp;Cadre Missed Call Campaign</span></a>
+								<a href="cadreMissedCallCampaignAction.action"><i class="fa fa-phone ico-white"></i><span>&nbsp;&nbsp;Cadre Missed Call Campaign</span></a>
 						</li>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) }">
 						<li>
-								<a href="#"><i class="glyphicon glyphicon-hdd ico-white"></i><span>&nbsp;&nbsp;IVR Campaign</span></a>
-								<h2><i class="glyphicon glyphicon-hdd ico-white line_heightDiv"></i> IVR Campaign</h2>
+								<a href="#"><i class="fa fa-hdd-o ico-white"></i><span>&nbsp;&nbsp;IVR Campaign</span></a>
+								<h2><i class="fa fa-hdd-o ico-white line_heightDiv"></i> IVR Campaign</h2>
 								<ul>
 								  <li>
-									<a href="cadreIvrReportAction.action"><i class="glyphicon glyphicon-bullhorn ico-white"></i><span>&nbsp;&nbsp;Cadre IVR Dasboard</span></a>
+									<a href="cadreIvrReportAction.action"><i class="fa fa-bullhorn ico-white"></i><span>&nbsp;&nbsp;Cadre IVR Dasboard</span></a>
 								  </li>
 								  <li>
-									<a href="villageIVRAction.action"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Committee IVR Dasboard</span></a>
+									<a href="villageIVRAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Committee IVR Dasboard</span></a>
 								  </li>
 								</ul>
 						 </li></c:if>
 						  <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) }">
 							<li>
-								<a href="#"><i class="glyphicon glyphicon-comment ico-white"></i><span>&nbsp;&nbsp;Events</span></a>
-								 <h2><i class="glyphicon glyphicon-comment ico-white line_heightDiv"></i> Events</h2>
+								<a href="#"><i class="fa fa-comment ico-white"></i><span>&nbsp;&nbsp;Events & Activities </span></a>
+								 <h2><i class="fa fa-comment ico-white line_heightDiv"></i> Events & Activities  </h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) }">
 								 <li><a href="updateActivityAction.action"><i class="fa fa-book"></i><span>  Activities Entry  </span></a></li></c:if>
@@ -409,29 +409,29 @@ footer
 									<a href="eventInvitees.action"><i class="fa fa-book"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
 									</li>
 									  <li>
-									<a href="eventDashboardAction.action?eventId=1"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Events Dasboard</span></a>
-									<h2><i class="glyphicon glyphicon-dashboard ico-white line_heightDiv"></i> Events Dasboard</h2>
+									<a href="eventDashboardAction.action?eventId=1"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Events Dasboard</span></a>
+									<h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Events Dasboard</h2>
 									<ul>
 									 <li>
-									<a href="mahanaduCadreVisitInfoAction.action"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+									<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
 									</li>
 									<li>
-									<a href="eventDashboardAction.action?eventId=1"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dasboard</span></a>
+									<a href="eventDashboardAction.action?eventId=1"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dasboard</span></a>
 									</li>
 									</ul>
 									</li>
 									</ul>
 							</li></c:if>
 						<li>
-								<a href="#"><i class="glyphicon glyphicon-screenshot ico-white"></i><span>&nbsp;&nbsp;Party Meetings</span></a>
-								 <h2><i class="glyphicon glyphicon-screenshot ico-white line_heightDiv"></i> Party Meetings</h2>
+								<a href="#"><i class="fa fa-screenshot ico-white"></i><span>&nbsp;&nbsp;Party Meetings</span></a>
+								 <h2><i class="fa fa-screenshot ico-white line_heightDiv"></i> Party Meetings</h2>
 								<ul>
 								 
 								  <li>
-									<a href="partyMeetingsDashBoard.action"><i class="glyphicon glyphicon-dashboard ico-white"></i><span>&nbsp;&nbsp;Metting Dasboard</span></a>
+									<a href="partyMeetingsDashBoard.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Metting Dasboard</span></a>
 									</li>
 									  <li>
-									<a href="meetingList.action"><i class="glyphicon glyphicon-check ico-white"></i><span>&nbsp;&nbsp;Metting Min & Atr</span></a>
+									<a href="meetingList.action"><i class="fa fa-check-o ico-white"></i><span>&nbsp;&nbsp;Metting Min & Atr</span></a>
 									</li>
 									</ul>
 						</li>
@@ -441,7 +441,7 @@ footer
 					<c:if test="${sessionScope.loginStatus == 'out'}">  
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FAMILY_DETAILS_UPDATION' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'MAHANADU' ) || fn:contains(sessionScope.USER.entitlements, 'CADREDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'CASTE_SURVEY_CALL_CENTER' ) || fn:contains(sessionScope.USER.entitlements, 'VIZAG_WM' ) || fn:contains(sessionScope.USER.entitlements, 'SURVEY_USER_CREATION' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2014' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'GHMC_CADRE_MEGA_DRIVE_USER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_CARD_SAMPLE' ) || fn:contains(sessionScope.USER.entitlements, 'TABDEALLOCATIONALTER' ) || fn:contains(sessionScope.USER.entitlements, 'PARTYCADREDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATIONFOR_OTHERSTATES' ) || fn:contains(sessionScope.USER.entitlements, 'MAHANADUTABALLOCATION' ) || fn:contains(sessionScope.USER.entitlements, 'OTHER_STATE_DELEGATE_REG' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_ADMIN' )}">
 					 <li>
-                        <a href="dashBoardAction.action"><i class="glyphicon glyphicon-dashboard"></i><span>&nbsp;&nbsp;Dashboard</span></a>
+                        <a href="dashBoardAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Dashboard</span></a>
                     </li>
 					</c:if></c:if>
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
@@ -465,12 +465,8 @@ footer
 	
 </header>
 <section>
-	<div class="container">
-		<div class="row" style="margin-top:50px">
-			<div class="col-md-12">
-				<p><decorator:body/> </p>
-			</div>
-		</div>
+	<div>
+		<decorator:body/>
 	</div>
 </section>
  <!-- /pusher -->	

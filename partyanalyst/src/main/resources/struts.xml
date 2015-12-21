@@ -10349,6 +10349,13 @@
 			<result name="input">/jsp/loginForm.jsp?src=callCenterTrainingAgent</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
+	
+	<action name="campCallCenterTrainingAgentDashBoard" class="trainingCampAction" method="callCenterTrainingAgent">
+			<result name="success">/jsp/callCenterTrainingAgentDahBoard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=callCenterTrainingAgent</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
 	<action name="getScheduleCallStatusCountAction" class="trainingCampAction" method="getScheduleCallStatusCount">
 		<result type="json" name="success">
 				<param name="root">statusCountList</param>

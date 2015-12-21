@@ -1,6 +1,6 @@
 .ico-white
 {
-	color:#fff;
+	color:#fff !important;
 }
 .mlpm_w {
 	position: absolute;
@@ -49,7 +49,7 @@
 	font-size: 1.5em;
 	line-height: 2.3em;
 	font-weight: bold;
-	color: #fff;
+	color: #fff !important;
 	padding: 0 .4em 0 .4em;
 }
 
@@ -81,7 +81,7 @@
 	line-height: 1.4em;
 	padding: .2em .2em;
 	text-decoration: none;
-	color: #fff;
+	color: #fff !important;
 }
 .mlpm_w span {
 	float:left;
