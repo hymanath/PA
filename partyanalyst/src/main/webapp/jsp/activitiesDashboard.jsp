@@ -553,7 +553,7 @@ function buildVillageResult(result,divId,locationId)
 					else
 						str+='<td class="dynChildWidth2 aligncenter"> - </td>';
 					if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-							str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+							str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 					else
 						str+='<td class="dynChildWidth3 aligncenter"> - </td>';
 				/*	if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -565,16 +565,16 @@ function buildVillageResult(result,divId,locationId)
 					else
 						str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 					if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-							str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
+							str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 					else
 						str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 					if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-							str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
+							str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 					else
 						str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 					
 					if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-							str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+							str+='<td class="dynChildWidth7 aligncenter" >'+result.activityVoList[i].infoCellcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 					else
 						str+='<td class="dynChildWidth7 aligncenter"> - </td>';
 					/*if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -586,7 +586,7 @@ function buildVillageResult(result,divId,locationId)
 					else
 						str+='<td class="dynChildWidth8 aligncenter"> - </td>';
 					if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-							str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
+							str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
 					else
 						str+='<td class="dynChildWidth9 aligncenter"> - </td>';
 					/*if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -651,7 +651,7 @@ function buildMandalResult(result,divId,locationId)
 					str+='<tr>';
 				}
 				
-				str+='<td style="width:185px;">'+result.activityVoList[i].name+'</td>';
+				str+='<td style="width:175px;">'+result.activityVoList[i].name+'</td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
 					str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -661,7 +661,7 @@ function buildMandalResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth2 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+')</span></td>';
+					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+')</span></td>';
 			else
 				str+='<td class="dynChildWidth3 aligncenter"> - </td>';
 			/*if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -673,15 +673,15 @@ function buildMandalResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth7 aligncenter"> - </td>';
 		/*	if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -693,7 +693,7 @@ function buildMandalResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth8 aligncenter"> - </td>';
 			if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth9 aligncenter"> - </td>';
 		/*	if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -769,7 +769,7 @@ function buildConstituencyResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth2 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth3 aligncenter"> - </td>';
 			/*if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -781,15 +781,15 @@ function buildConstituencyResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth7 aligncenter" > - </td>';
 			/*if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -801,7 +801,7 @@ function buildConstituencyResult(result,divId,locationId)
 			else
 				str+='<td class="dynChildWidth8 aligncenter"> - </td>';
 			if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth9 aligncenter"> - </td>';
 		/*	if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -859,7 +859,7 @@ function buildsLocationsResult(result,divId){
 	str+='<table class="table table-col" style="border:1px solid #ccc" >';
 	str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
 	str+='<tr class="font-12">';
-	str+='<td class="dynWidth" style="width:230px">LOCATION NAME</td>';
+	str+='<td class="dynWidth" style="width:200px">LOCATION NAME</td>';
 	str+='<td class="getChildWidth">TOTAL</td>';
 	str+='<td class="getChildWidth2">PLANNED</td>';
 	
@@ -912,7 +912,7 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth2 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrcovered != null && result.activityVoList[i].ivrcovered >0)
-					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth3 aligncenter">'+result.activityVoList[i].ivrcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth3 aligncenter"> - </td>';
 			/*if(result.activityVoList[i].ivrcoveredPerc != null && result.activityVoList[i].ivrcoveredPerc >0)
@@ -924,15 +924,15 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth4 aligncenter"> - </td>';
 			if(result.activityVoList[i].ivrTotal != null && result.activityVoList[i].ivrTotal >0)
-					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;">'+result.activityVoList[i].ivrTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].ivrTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth5 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0)
-					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;">'+result.activityVoList[i].infoCellTotal+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellTotalPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth6 aligncenter" style="color:#a94442;"> - </td>';
 			if(result.activityVoList[i].infoCellcovered != null && result.activityVoList[i].infoCellcovered >0)
-					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth7 aligncenter">'+result.activityVoList[i].infoCellcovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].infoCellcoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth7 aligncenter"> - </td>';
 		/*	if(result.activityVoList[i].infoCellcoveredPerc != null && result.activityVoList[i].infoCellcoveredPerc >0)
@@ -944,7 +944,7 @@ function buildsLocationsResult(result,divId){
 			else
 				str+='<td class="dynChildWidth8 aligncenter"> - </td>';
 			if(result.activityVoList[i].whatsAppCovered != null && result.activityVoList[i].whatsAppCovered >0)
-					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
+					str+='<td class="dynChildWidth9 aligncenter">'+result.activityVoList[i].whatsAppCovered+'<br/><span style="font-size: 11px;">('+result.activityVoList[i].whatsAppCoveredPerc+'%)</span></td>';
 			else
 				str+='<td class="dynChildWidth9 aligncenter"> - </td>';
 		/*	if(result.activityVoList[i].whatsAppCoveredPerc != null && result.activityVoList[i].whatsAppCoveredPerc >0)
@@ -1267,9 +1267,18 @@ function buildDayWiseImages(result,divId)
 		
 }
 
-$(".tbtn").click(function(){
+$(".tbtn").click(function(e){
     $(".themeControll").toggleClass("active");
+	e.stopPropagation();
 });
+$(".linkinner").click(function(e){
+	e.stopPropagation();
+});
+
+$(document).on("click", "body", function(){
+	 $(".themeControll").removeClass("active");
+});
+
 
 $(document).on('click', '.Imagepopup', function(){	
    $("#myModal").modal("show");
