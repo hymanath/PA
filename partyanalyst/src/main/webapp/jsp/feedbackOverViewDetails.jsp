@@ -413,7 +413,7 @@ function buildFeedbackDetailsOfCadre(result,constId,dates,title){
 						if(result[i].simpleVOList1[j].designationLevelName==null){
 							result[i].simpleVOList1[j].designationLevelName="-";
 						}
-						str+='<p>'+result[i].simpleVOList1[j].designation+' - '+result[i].simpleVOList1[j].designationLevelName+'</p>';
+						str+='<p>'+result[i].simpleVOList1[j].designation+' - <b>'+result[i].simpleVOList1[j].designationLevelName+'</b></p>';
 						if(result[i].simpleVOList1[j].designationLevel==null){
 							result[i].simpleVOList1[j].designationLevel="-";
 						}
