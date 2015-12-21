@@ -59,7 +59,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 							<div class="col-md-4">
 								<label>Select Training Program</label>
 								<select class="form-control" id="selectProgramId" onchange="feedbackCategoryCountsCenterWise(),getFeedbackDetailsOfEachDistrictAndConstituencyWise();">
-									<option value="0">Select Program</option>
+									<!--<option value="0">Select Program</option>-->
 								</select>
 							</div>
 						</div>
@@ -154,7 +154,7 @@ $(function () {
 function getAllPrograms(){
 	
 	$("#selectProgramId option:selected").remove();	
-	$("#selectProgramId").append('<option value="0">Select Program</option>'); 
+	//$("#selectProgramId").append('<option value="0">Select Program</option>'); 
 	$.ajax({
 		  type:'POST',
           url: 'getProgramsForFeedBackAction.action',
