@@ -39,13 +39,6 @@ header.eventsheader
     background-repeat: no-repeat;
     height: 71px;
 }
-footer
-{
-	position:fixed;
-	left:0;
-	right:0;
-	bottom:0
-}
 
 
 /* sidebar end */

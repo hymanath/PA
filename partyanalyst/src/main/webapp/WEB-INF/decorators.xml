@@ -151,7 +151,7 @@
        
         <pattern>/cadreSearchAndRegAction*</pattern> -->
 		<pattern>/eventDashboardAction*</pattern>
-		<pattern>/callCenterTrainingAdmin*</pattern>
+		<!-- <pattern>/callCenterTrainingAdmin*</pattern> -->
 		<pattern>/callCenterTrainingAgent*</pattern>
 		<!--<pattern>/callCenterTrainingAgentDahBoard*</pattern>-->
 		<pattern>/trainingAdminDashboard*</pattern>
@@ -160,7 +160,7 @@
 		<!--<pattern>/trainingCampMainDashboard*</pattern>-->
 		<pattern>/partyMeetingsDashBoard*</pattern>
 		<pattern>/trainingProgramDashboard*</pattern>
-		<pattern>/trainingCenterDashBoardAction*</pattern>
+		<!--<pattern>/trainingCenterDashBoardAction*</pattern> -->
 		<pattern>/trainingProgramMainDashBoardAction*</pattern>
 		<pattern>/updateLeaderShipAction*</pattern>
 		<pattern>/trainingCampFeedback*</pattern>
@@ -445,6 +445,10 @@
 		<pattern>/eventMultiFieUploadAction*</pattern>
 	 </decorator>
 	  <decorator name="tdpMenu" page="tdpMenu.jsp">
-	 <pattern>/activitiesDashboard*</pattern>
+	<pattern>/activitiesDashboard*</pattern>
+	 <pattern>/trainingCenterDashBoardAction*</pattern>
+	 <pattern>/trainingCampMainDashboard*</pattern>
+	 <pattern>/callCenterTrainingAdmin*</pattern>
+	 <pattern>/campCallCenterTrainingAgentDashBoard*</pattern>
 	 </decorator> 
 </decorators>

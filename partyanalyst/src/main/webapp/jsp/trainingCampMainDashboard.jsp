@@ -13,6 +13,7 @@
 	<link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="css/Training/css/custom.css" rel="stylesheet" type="text/css"/>
 	<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+
 	<link href="training/dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
@@ -60,9 +61,9 @@ color: red !important;
 </style>
 </head>
 <body>
-<header class="eventsheader">
+<!--<header class="eventsheader">
 	<!--<img src="dist/img/header.jpg" width="100%" alt="">-->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -106,7 +107,7 @@ color: red !important;
             </div>			
         </div>       
     </div>
-</header>
+</header>-->
 <!--  accordian start-->
 <main style="margin-top: 40px;">
 	<div class="container">
@@ -328,24 +329,15 @@ color: red !important;
 	<script src="dist/HighCharts/highcharts.js" type="text/javascript"></script> -->
 
 	
-	<script type="text/javascript">
+	<script>
 	
-var tableToExcel = (function() {
-var uri = 'data:application/vnd.ms-excel;base64,'
-, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-return function(table, name) {
-if (!table.nodeType) table = document.getElementById(table)
-var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-window.location.href = uri + base64(format(template, ctx))
-}
-})()
+
 function exportToExcel()
 {
 	 tableToExcel('exportExcelAttendanceTableId', 'Batch Attendence Details');
 }
-   
+ 
+
    $(document).ready(function() {
     $('#selecctall').click(function(event) { 	//on click 
         if(this.checked) { // check select status
@@ -1788,6 +1780,20 @@ function buildDayWiseAttendnenceForBatch(result,center){
 		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'&campId='+campId+'&programId='+programId+'','_blank');
 	});
 	
+	</script>
+	<script>
+var tableToExcel = (function() {
+ var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+
 	</script>
 </body>
 </html>
