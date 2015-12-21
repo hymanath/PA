@@ -985,7 +985,8 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				  for(var i in result){
 				    str+='<tr>';
                       str+='<td>'+result[i].name.toUpperCase()+'</td>';
-                      str+='<td>'+result[i].districtid+' ATTENDED</td>';
+                      str+='<td>'+result[i].districtid+' IA</td>';
+					  str+='<td>'+result[i].actualCount+' NIA</td>';
                       str+='</tr>';
 				  }
 				 str+='</table>';
