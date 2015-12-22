@@ -1527,8 +1527,10 @@ public String getSummaryDetails(){
 			}
 			
 			/*constituencies = getUserAccessConstituencies();*/
+			if(jObj.getString("locationId") != null &&  jObj.getLong("locationId") > 0){
+				locations=cadreCommitteeService.getMandalsByConstituency(constituencies.get(0).getId());
+			}
 			
-			locations=cadreCommitteeService.getMandalsByConstituency(constituencies.get(0).getId());
 		}catch(Exception e){
 			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
 		}

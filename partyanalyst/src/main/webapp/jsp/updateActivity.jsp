@@ -667,8 +667,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 		errStr+="Please Select Constituency.";
 	}
 	
-	if(errStr!= null && errStr.length>0)
+	if(errStr!= null && errStr.length>0){
 		$('#ErrDiv').html(errStr);
+		return;
+	}
 	else
 	{
 		$('#resultsDiv').show();	
@@ -870,6 +872,36 @@ getUserAccessConstituencyList();
 getUserAccessDistrictList();
  
  $("#searchId").click(function(){
+ 
+	var activityTypeId =$('#activityTypeList').val();
+	var activityLevelId =$('#activityLevelList').val();
+	var ActivityId =$('#ActivityList').val();
+	var constituencyId =$('#constiList').val();
+	
+	
+	$('#ErrDiv').html("");
+	var errStr ='';
+	if(activityTypeId == null || activityTypeId == 0)
+	{
+		errStr+="Please Select Activity Type.";
+	}
+	else if(activityLevelId == null || activityLevelId == 0)
+	{
+		errStr+="Please Select Activity Level.";
+	}
+	else if(ActivityId == null || ActivityId == 0)
+	{
+		errStr+="Please Select Activity .";
+	}
+	else if(constituencyId == null || constituencyId == 0)
+	{
+		errStr+="Please Select Constituency.";
+	}
+	
+	if(errStr!= null && errStr.length>0){
+		$('#ErrDiv').html(errStr);
+		return;
+	}
 	 
 	 $("#districtHeadingId").hide();
 	 $("#constituencyHeadingId").hide();
@@ -927,8 +959,9 @@ getUserAccessDistrictList();
               //str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL ACTIVITIES</th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
+			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">NOT PLANNED ACTIVITIES</th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">EXECUTED ACTIVITIES</th>';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT EXECUTED ACTIVITIES</th>';
+			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT EXECUTED ACTIVITIES</th>';
             str+='</tr>';
           str+='</thead>';
         str+='<tbody>';
@@ -947,12 +980,17 @@ getUserAccessDistrictList();
               }else{
                 str+='<td > 0 </td>';
               }
+			  if(result[i].notPlannedCount !=null){
+                str+='<td >'+result[i].notPlannedCount+'</td>';
+              }else{
+                str+='<td > 0 </td>';
+              }
               if(result[i].conductedCount !=null){
                 str+='<td >'+result[i].conductedCount+'</td>';
               }else{
                 str+='<td > 0 </td>';
               }
-              if(result[i].nonConductedCount !=null){
+			  if(result[i].nonConductedCount !=null){
                 str+='<td >'+result[i].nonConductedCount+'</td>';
               }else{
                 str+='<td > 0 </td>';
