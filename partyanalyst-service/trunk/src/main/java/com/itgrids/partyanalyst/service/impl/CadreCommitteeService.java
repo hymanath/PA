@@ -16397,8 +16397,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										activityLocationInfo.setLocationLevel(locationLevelId);
 										activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
 										try {
-											activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
-											activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+											if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+												activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+											else
+												activityLocationInfo.setPlannedDate(null);
+											if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
+												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+											else
+												activityLocationInfo.setConductedDate(null);
 										} catch (ParseException e) {
 											LOG.error("Exception rised in saveActivityDetails()",e);
 										}
@@ -16556,6 +16562,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		try {
 			List<LocationWiseBoothDetailsVO> returnList = null;
 			List<Long> updatedLocationIdsList  = new ArrayList<Long>(0);
+			List<Long> notUpdatedLocationIdsList  = new ArrayList<Long>(0);
 			List<LocationWiseBoothDetailsVO> reportList = null;
 			List<Long> constituencyIds = new ArrayList<Long>(0);
 			Map<Long,List<ActivityVO>> activityMap = new LinkedHashMap<Long, List<ActivityVO>>(0);
@@ -16617,7 +16624,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 vo.setLocationLevel(locationlevel);
 						 list.add(vo);
 						 activityMap.put(finalLocationId, list);
-						 updatedLocationIdsList.add(locationValue);
+						 if(conductedDate != null )
+			               updatedLocationIdsList.add(locationValue);
+			             else
+			               notUpdatedLocationIdsList.add(locationValue);
+						 //updatedLocationIdsList.add(locationValue);
 					}
 				 }
 				 
@@ -17236,9 +17247,49 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 Long constId=(Long)obj[0];
 						 ActivityVO convo=getMatchedConstVO(constId,finalList);
 						 if(convo!=null){
-							 convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+							 //convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
 							 convo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
-							 convo.setNonConductedCount(convo.getPlannedCount()-convo.getConductedCount());
+							 //convo.setNonConductedCount(convo.getPlannedCount()-convo.getConductedCount());
+						 }
+					 }
+				 }
+				 
+				List<Object[]> plannedCounts = activityLocationInfoDAO.getPlannedCountForAssemblyConstWise(startDate, endDate, activityScopeId, constIds);
+				 if(plannedCounts!=null && plannedCounts.size()>0){
+					 for(Object[] obj:plannedCounts){
+						 Long constId=(Long)obj[0];
+						 ActivityVO convo=getMatchedConstVO(constId,finalList);
+						 if(convo!=null){
+							 convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+							 //convo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
+							 //convo.setNonConductedCount(convo.getPlannedCount()-convo.getConductedCount());
+						 }
+					 }
+				 }
+				 
+				 List<Object[]> notConductedlist=activityLocationInfoDAO.getNotConductedCountForAssemblyConstWise(startDate, endDate, activityScopeId, constIds);
+				 if(notConductedlist!=null && notConductedlist.size()>0){
+					 for(Object[] obj:notConductedlist){
+						 Long constId=(Long)obj[0];
+						 ActivityVO convo=getMatchedConstVO(constId,finalList);
+						 if(convo!=null){
+							 //convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+							 //convo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
+							 convo.setNonConductedCount(obj[1]!=null?(Long)obj[1]:0l);
+						 }
+					 }
+				 }
+				 
+				 List<Object[]> notPlannedlist=activityLocationInfoDAO.getNotPlannedCountForAssemblyConstWise(activityScopeId,constIds);
+				 if(notPlannedlist!=null && notPlannedlist.size()>0){
+					 for(Object[] obj:notPlannedlist){
+						 Long constId=(Long)obj[0];
+						 ActivityVO convo=getMatchedConstVO(constId,finalList);
+						 if(convo!=null){
+							 //convo.setPlannedCount(obj[1]!=null?(Long)obj[1]:0l);
+							 //convo.setConductedCount(obj[2]!=null?(Long)obj[2]:0l);
+							 //convo.setNonConductedCount(convo.getPlannedCount()-convo.getConductedCount());
+							 convo.setNotPlannedCount((Long) (obj[1] != null ? obj[1]:0l));
 						 }
 					 }
 				 }
