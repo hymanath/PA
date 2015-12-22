@@ -130,7 +130,7 @@
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
         <pattern>/memberShipCardSamplePrint*</pattern>
-        <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
+        <!--<pattern>/cadreMemberShipCardDispatcherAction*</pattern>-->
         <pattern>/memberShipCardPrintStatusAction*</pattern>
         <pattern>/tdpCadreIdCardDetailsAction*</pattern>
 		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
@@ -315,34 +315,34 @@
        		<pattern>/userAccessRegionAction*</pattern>
        		<pattern>/ivrMobileAction*</pattern>
        		<pattern>/cadreRegistration*</pattern>
-       		<pattern>/cadreDashBoardAction*</pattern>
+       		<!--<pattern>/cadreDashBoardAction*</pattern>-->
 			<pattern>/ctpCasteReportAction*</pattern>
 			<pattern>/cadreRegistrationReportAction*</pattern>
 			<pattern>/cadreTransactionReportsAction*</pattern>
-			<pattern>/cadreRegAmountUpload*</pattern>
-			<pattern>/cadreRegistrationAmountReportAction*</pattern>
-			<pattern>/leaderCadreDashBoardAction*</pattern>
+			<!--<pattern>/cadreRegAmountUpload*</pattern>-->
+			<!--<pattern>/cadreRegistrationAmountReportAction*</pattern>
+			<pattern>/leaderCadreDashBoardAction*</pattern>-->
 			<pattern>/tdpCadreReportsAction*</pattern>
 			<pattern>/tabAllocationDetailsAction*</pattern>
 			<pattern>/hourWiseUserColletedInfoAction*</pattern>
 			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
 			 <pattern>/duplicateUsers*</pattern>
-			 <pattern>/cadreReportsAction*</pattern>
+			 <!--<pattern>/cadreReportsAction*</pattern>-->
 			 <pattern>/changeUserPasswords*</pattern>
 			  <pattern>/cadreBoothAnalysisAction*</pattern>
-			 <pattern>/misReportAction*</pattern>
-			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
+			 <!--<pattern>/misReportAction*</pattern>-->
+			 <!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
 			 <pattern>/tdpCallCenterAction*</pattern>
 			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
-			 <pattern>/cadreIvrReportAction*</pattern>	
-			<pattern>/villageIVRAction*</pattern>	
+			 <!--<pattern>/cadreIvrReportAction*</pattern>-->	
+			<!--<pattern>/villageIVRAction*</pattern>-->	
 			<pattern>/cadreMissedCallCampaignAction*</pattern>				 
-			 <pattern>/cadreCommitteeSearchAction*</pattern>			
-			 <pattern>/tdpCadreImagesVerification*</pattern>	
-			  <pattern>/currentBoothsStatus*</pattern>
-			   <pattern>/ivrCampaignUploadAction*</pattern> 
-			   <pattern>/cadreVoterSearchAction*</pattern>
-			   	<pattern>/cadredashBoardAction*</pattern>
+			<pattern>/cadreCommitteeSearchAction*</pattern>			
+			<pattern>/tdpCadreImagesVerification*</pattern>	
+			<pattern>/currentBoothsStatus*</pattern>
+			<pattern>/ivrCampaignUploadAction*</pattern> 
+			<!--<pattern>/cadreVoterSearchAction*</pattern>-->
+			<!--<pattern>/cadredashBoardAction*</pattern>-->
 			<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 			
 		 </decorator>
@@ -409,24 +409,24 @@
 			<pattern>/cadreSMSFileUpload*</pattern>
 	 </decorator>
 	  <decorator name="committeelayout" page="committeelayout.jsp">
-		<pattern>/cadreCommitteeSummaryAction*</pattern>
-		<pattern>/cadreCommitteeAction*</pattern>
+		<!--<pattern>/cadreCommitteeSummaryAction*</pattern>-->
+		<!--<pattern>/cadreCommitteeAction*</pattern>-->
 		<pattern>/cadreCommitteeRequestAction*</pattern>
 		<pattern>/committeeManagementAction*</pattern>
 		<pattern>/cadreProfileDetailsAction*</pattern>
 		
 		
-		<pattern>/committeeUpdateApproveAction*</pattern>
-		<pattern>/committeeDashBoardAction*</pattern> 
-		<pattern>/constituencyCommitteeSummaryAction*</pattern>
-		<pattern>/cadreCommitteeRolesDashboard*</pattern>
-		<pattern>/committeeInfoAction*</pattern>
+		<!--<pattern>/committeeUpdateApproveAction*</pattern>-->
+		<!--<pattern>/committeeDashBoardAction*</pattern> 
+		<pattern>/constituencyCommitteeSummaryAction*</pattern>-->
+		<!--<pattern>/cadreCommitteeRolesDashboard*</pattern>-->
+		<!--<pattern>/committeeInfoAction*</pattern>-->
 		 
 		  
 		
 	 </decorator>
 	  <decorator name="districtLayout" page="districtLayout.jsp">
-		<pattern>/cadreSearchPageAction*</pattern>
+		<!--<pattern>/cadreSearchPageAction*</pattern>-->
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
 		<pattern>/cadreSearchAndRegAction*</pattern>
 		<pattern>/cadreEnrollment*</pattern>
@@ -439,16 +439,45 @@
 		<pattern>/committeeDetailedAnalysis*</pattern>
 		<pattern>/cadreDetailsAction*</pattern>
 		<pattern>/articleDetailsAction*</pattern>
-		<pattern>/updateActivityAction*</pattern>
+		<!--<pattern>/updateActivityAction*</pattern>-->
 		<!--<pattern>/activitiesDashboard*</pattern>-->
 		<pattern>/eventFieUploadAction*</pattern>
 		<pattern>/eventMultiFieUploadAction*</pattern>
 	 </decorator>
+	 
 	  <decorator name="tdpMenu" page="tdpMenu.jsp">
 	<pattern>/activitiesDashboard*</pattern>
+	<!-- Training module Starts-->
 	 <pattern>/trainingCenterDashBoardAction*</pattern>
 	 <pattern>/trainingCampMainDashboard*</pattern>
 	 <pattern>/callCenterTrainingAdmin*</pattern>
 	 <pattern>/campCallCenterTrainingAgentDashBoard*</pattern>
+	 <!-- Training module ends-->
+	  <!-- Cadre module starts-->
+	 <pattern>/cadreSearchPageAction*</pattern>
+	 <pattern>/cadreVoterSearchAction*</pattern>
+	 <pattern>/cadreRegistrationAmountReportAction*</pattern>
+	 <pattern>/cadreRegAmountUpload*</pattern>
+	 <pattern>/leaderCadreDashBoardAction*</pattern>
+	 <pattern>/cadreReportsAction*</pattern>
+	 <pattern>/misReportAction*</pattern>
+	 <pattern>/cadreDashBoardAction*</pattern>
+	 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
+	 <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
+	  <!-- Cadre module ends-->
+	  <!-- Committee module Starts-->
+	 <pattern>/cadreCommitteeAction*</pattern>
+	 <pattern>/committeeDashBoardAction*</pattern>
+	 <pattern>/cadreCommitteeRolesDashboard*</pattern>
+	 <pattern>/committeeUpdateApproveAction*</pattern>
+	 <pattern>/constituencyCommitteeSummaryAction*</pattern>
+	 <pattern>/updateActivityAction*</pattern>
+	 <pattern>/committeeInfoAction*</pattern>
+	 <pattern>/cadreCommitteeSummaryAction*</pattern>
+	 <!-- Committee module ends-->
+	 <!-- IVR Campaign starts-->
+	  <pattern>/villageIVRAction*</pattern>
+	 <pattern>/cadreIvrReportAction*</pattern>
+	 <!-- IVR Campaign starts-->
 	 </decorator> 
 </decorators>

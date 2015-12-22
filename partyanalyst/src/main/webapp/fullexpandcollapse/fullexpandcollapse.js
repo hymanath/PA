@@ -33,10 +33,14 @@ $(document).ready(function(){
 		$( '#menu' ).multilevelpushmenu( 'expand' );
 		
 	});
+	$( document ).click(function(){
+	
+		$( '#menu' ).multilevelpushmenu( 'collapse' );
+		
+	});
 	
 	
-	
-	$(document).on('click', '.levelHolderClass', function(){  
+	$("#menu").on('click', '.levelHolderClass', function(){  
 
 		if($(this).find("i").hasClass("floatLeft"))
 		{

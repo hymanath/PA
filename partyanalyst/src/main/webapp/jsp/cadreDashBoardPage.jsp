@@ -10,13 +10,17 @@
 	<!-- Custom Styles-->
 	<link rel="stylesheet" type="text/css" href="css/style.css"> 
 	<!-- CSS animation -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/cadreRegistrationCSS/animate.css" >
-
+	<!--<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.css">-->
+	<link rel="stylesheet" type="text/css" href="styles/bootstrapInHome/bootstrap.css"/> 
     <link rel="stylesheet" type="text/css" href="js/scrollator/fm.scrollator.jquery.css">	
 	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 	<script type="text/javascript" src="js/icheck/icheck.min.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap3/bootstrap.js"></script>		
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -49,6 +53,8 @@
 
 	<!-- YUI Dependency files (End) -->
 <style>
+	body{background:#e5e5e5 }
+	p{margin:0px}
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}

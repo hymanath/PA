@@ -26,7 +26,7 @@
 	-->
 	
 	<link rel="stylesheet" type="text/css" href="js/cadreSearch/Naturallanguage/css/component.css" />
-	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="js/cadreSearch/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
 	<!--<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />-->
 	<link href="js/StaticFiles/StaticCssFiles/family=Roboto.css" rel='stylesheet' type='text/css' />
@@ -39,6 +39,9 @@
 	<link href="js/cadreSearch/PageTransitions/css/component.css" rel="stylesheet" type="text/css"> 
 	-->
 <style>
+body{background:#ededed}
+#searchDiv li{display:inline-block}
+.label-success[href], .badge-success[href]{background-color:#356635}
 .nl-field ul li{line-height:35px!important;}
 .nl-field a:hover{text-decoration:none!important;}
 .nl-ti-input input[type="text"]{height:45px! important; width:324px! important;}
@@ -119,7 +122,7 @@ z-index:2;
 		<div id="pt-main" class="pt-perspective" style="margin-left:-15px;">
         <div class="pt-page pt-page-1 container " style="left:-11px;">
 		<a class="btn pull-right" style="z-index: 999;display:none;" id="hideModifiSearchId" href="javascript:{modifySearchDiv('hideModifiSearchId');}" title="Close Search"> X </a>
-		<a class="btn pull-right" style="z-index: 999;display:none;" id="showModifiSearchId" href="javascript:{modifySearchDiv('showModifiSearchId');}"> Modify Search </a>
+		<a class="btn btn-default pull-right" style="z-index: 999;display:none;" id="showModifiSearchId" href="javascript:{modifySearchDiv('showModifiSearchId');}"> Modify Search </a>
             <div class="well search-content" id="modifySearchId">
                 <div class="main clearfix text-center ">
 				
