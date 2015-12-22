@@ -7,11 +7,12 @@
 <title> 2014 CADRE REPORTS </title>
 
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
-<script type="text/javascript" src="js/exportexcel.js"></script>
-	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+<link rel="stylesheet" type="text/css" href="daterangepicker/daterangepicker-bs3.css"/>
+
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-<script type="text/javascript" src="js/sample.js"></script>
+
 <style>
  #mahilaAndYouth .selected, #mahilaAndYouth .selectedchild{background:lightblue !important;}
  #mahilaAndYouth .selected1, #mahilaAndYouth .selected1child{background: #cad5df !important;}
@@ -40,6 +41,8 @@
 </style>
 </head>
 <body>
+
+	
    <div class="container m_top10">
 		<div id="usersWorkingStatusDiv">
 			<div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
@@ -93,7 +96,16 @@
 		</div>
 		
    </div>
+   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery.datepick.min.js"></script>
+<script type="text/javascript" src="js/exportexcel.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	
+	<script type="text/javascript" src="js/sample.js"></script>
    <script>
+   
    $("#fromDate").datepicker({
 			dateFormat: "dd-mm-yy",
 			changeMonth: true,
@@ -190,7 +202,6 @@
    
    function getLocationswiseleaderCadreInfoForBars(id)
    {
-	
 		$("#errStatusDiv").html("");
 		var scope="District";
 		if(id=="ap"){

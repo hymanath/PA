@@ -64,7 +64,7 @@
   <body  class="bgc">
 	
 		  	<!-- Header Row -->
-		<div class="row-fluid">
+		<!--<div class="row-fluid">
 			<div class="span12 header-bg text-center">
 				<div class="row-fluid">
 				  <div class="span4 offset4 ">
