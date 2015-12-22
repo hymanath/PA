@@ -23,7 +23,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.locationValue,date(model.plannedDate),date(model.conductedDate),model.locationLevel from ActivityLocationInfo model where " +
-				"model.activityScopeId =:activityScopeId and model.conductedDate is not null ");
+				"model.activityScopeId =:activityScopeId ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and (date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
 
@@ -64,6 +64,90 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 		return query.list();
 	}
 	
+	public List<Object[]> getPlannedCountForAssemblyConstWise(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds){
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append("" +
+			" select   model.constituency.constituencyId,count(model.plannedDate) " +
+			" from     ActivityLocationInfo model " +
+			" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is not null ");
+		if(startDate!=null){
+			sb.append(" and date(model.plannedDate) >=:startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.plannedDate) <=:endDate ");
+		}
+		sb.append(" group by model.constituency.constituencyId ");
+		
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameterList("constIds",constIds);
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		return query.list();
+	}
+	
+public List<Object[]> getNotPlannedCountForAssemblyConstWise(Long activityScopeId,List<Long> constIds){
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append("" +
+			" select   model.constituency.constituencyId,count(model.conductedDate) " +
+			" from     ActivityLocationInfo model " +
+			" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is null and model.conductedDate is not null ");
+		/*if(startDate!=null){
+			sb.append(" and date(model.plannedDate) >=:startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.plannedDate) <=:endDate ");
+		}*/
+		sb.append(" group by model.constituency.constituencyId ");
+		
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameterList("constIds",constIds);
+		/*if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}*/
+		return query.list();
+	}
+	
+public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.constituency.constituencyId,count(model.plannedDate) " +
+		" from     ActivityLocationInfo model " +
+		" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is not null and model.conductedDate is null ");
+	if(startDate!=null){
+		sb.append(" and date(model.plannedDate) >=:startDate ");
+	}
+	if(endDate!=null){
+		sb.append(" and date(model.plannedDate) <=:endDate ");
+	}
+	sb.append(" group by model.constituency.constituencyId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("constIds",constIds);
+	if(startDate!=null){
+		query.setDate("startDate",startDate);
+	}
+	if(endDate!=null){
+		query.setDate("endDate",endDate);
+	}
+	return query.list();
+}
+
 	public List<Object[]> getActivityPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO){
 				
 			StringBuilder queryStr = new StringBuilder();

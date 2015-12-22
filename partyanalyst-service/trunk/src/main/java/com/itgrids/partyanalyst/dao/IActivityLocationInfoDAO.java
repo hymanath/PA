@@ -17,4 +17,7 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO);
 	public Long getActivityLocationInfoIdByLocationLevelAndLocationValue(Long locationLevel,Long locationValue);
 	public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> distIds);
+	public List<Object[]> getPlannedCountForAssemblyConstWise(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds);
+	public List<Object[]> getNotPlannedCountForAssemblyConstWise(Long activityScopeId,List<Long> constIds);
+	public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds);
 }
