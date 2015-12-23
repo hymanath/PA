@@ -52,6 +52,7 @@ public class SimpleVO implements java.io.Serializable{
    private String percentage;
    private List<Long> inviteeList = new ArrayList<Long>(0);
    private List<Long> inviteeAttendedList = new ArrayList<Long>(0);
+   private List<Long> nonInviteeAttendedlist=new ArrayList<Long>(0);
    
    private Long inviteeCount;
    private Long inviteeAttendedCount;
@@ -92,7 +93,13 @@ public class SimpleVO implements java.io.Serializable{
    private List<Long> centralIdsList = new ArrayList<Long>(0);
    private Map<Long,String> centralMap = new HashMap<Long, String>(0);
    
+   private Long oneDayInvitedAttendedCount;
+   private Long twoDaysInvitedAttendedCount;
+   private Long threeDaysInvitedAttendedCount;
    
+   private Long oneDayNonInvitedAttendedCount;
+   private Long twoDaysNonInvitedAttendedCount;
+   private Long threeDaysNonInvitedAttendedCount;
    
    	public Map<Long, String> getMandalMap() {
 	return mandalMap;
@@ -515,6 +522,50 @@ public void setNonInvitee(boolean nonInvitee) {
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public List<Long> getNonInviteeAttendedlist() {
+		return nonInviteeAttendedlist;
+	}
+	public void setNonInviteeAttendedlist(List<Long> nonInviteeAttendedlist) {
+		this.nonInviteeAttendedlist = nonInviteeAttendedlist;
+	}
+	public Long getOneDayInvitedAttendedCount() {
+		return oneDayInvitedAttendedCount;
+	}
+	public void setOneDayInvitedAttendedCount(Long oneDayInvitedAttendedCount) {
+		this.oneDayInvitedAttendedCount = oneDayInvitedAttendedCount;
+	}
+	public Long getTwoDaysInvitedAttendedCount() {
+		return twoDaysInvitedAttendedCount;
+	}
+	public void setTwoDaysInvitedAttendedCount(Long twoDaysInvitedAttendedCount) {
+		this.twoDaysInvitedAttendedCount = twoDaysInvitedAttendedCount;
+	}
+	public Long getThreeDaysInvitedAttendedCount() {
+		return threeDaysInvitedAttendedCount;
+	}
+	public void setThreeDaysInvitedAttendedCount(Long threeDaysInvitedAttendedCount) {
+		this.threeDaysInvitedAttendedCount = threeDaysInvitedAttendedCount;
+	}
+	public Long getOneDayNonInvitedAttendedCount() {
+		return oneDayNonInvitedAttendedCount;
+	}
+	public void setOneDayNonInvitedAttendedCount(Long oneDayNonInvitedAttendedCount) {
+		this.oneDayNonInvitedAttendedCount = oneDayNonInvitedAttendedCount;
+	}
+	public Long getTwoDaysNonInvitedAttendedCount() {
+		return twoDaysNonInvitedAttendedCount;
+	}
+	public void setTwoDaysNonInvitedAttendedCount(
+			Long twoDaysNonInvitedAttendedCount) {
+		this.twoDaysNonInvitedAttendedCount = twoDaysNonInvitedAttendedCount;
+	}
+	public Long getThreeDaysNonInvitedAttendedCount() {
+		return threeDaysNonInvitedAttendedCount;
+	}
+	public void setThreeDaysNonInvitedAttendedCount(
+			Long threeDaysNonInvitedAttendedCount) {
+		this.threeDaysNonInvitedAttendedCount = threeDaysNonInvitedAttendedCount;
 	}
 	
    }
