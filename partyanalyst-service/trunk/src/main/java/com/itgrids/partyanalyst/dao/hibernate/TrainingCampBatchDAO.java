@@ -169,7 +169,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 
 		sb.append(" select model.trainingCampSchedule.trainingCampId,model.trainingCampSchedule.trainingCamp.campName,count(distinct model.trainingCampBatchId) " +
 		" from   TrainingCampBatch model " +
-		" where  model.trainingCampSchedule.trainingCampProgramId=:trainingCampProgramId and " +
+		" where  model.trainingCampSchedule.trainingCampProrgamId=:trainingCampProgramId and " +
 		"        model.trainingCampSchedule.trainingCampId=:trainingCampId and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' ");
 		if(fromDate!=null && toDate!=null){
 			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
@@ -225,7 +225,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		Query query = getSession().createQuery("select model.trainingCampBatchId,model.trainingCampBatchName " +
 				" from TrainingCampBatch model " +
 				" where model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId =:programId" +
-				" and  model.trainingCampSchedule.trainingCamp.trainingCampId =:campId and model.isCancelled = 'false'  " +
+				" and  model.trainingCampSchedule.trainingCamp.trainingCampId =:campId and model.isCancelled = 'false' and model.attendeeType.attendeeTypeId=1  " +
 				//" and date(model.fromDate) <= :presentDate " +
 				" order by date(model.fromDate) desc "); 
 		
