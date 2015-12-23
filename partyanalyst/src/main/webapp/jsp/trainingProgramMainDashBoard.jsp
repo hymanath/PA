@@ -619,15 +619,33 @@ function buildAttendedCountSummaryByBatch(result){
 				str+='<td>'+result[i].centerName+'</td>';
 				str+='<td>'+result[i].batchName+'</td>';
 				for(var j in result[i].simpleVOList1){
-					if(result[i].simpleVOList1[j].total!=null){
-						str+='<td>'+result[i].simpleVOList1[j].total+'</td>'
+					
+					
+					if(result[i].simpleVOList1[j].inviteeAttendedCount!=0  || result[i].simpleVOList1[j].nonInviteeAttendedCount!=0){
+						var inviteeAttendedCount='<b>'+result[i].simpleVOList1[j].inviteeAttendedCount+'</b>'+" IA";
+						var nonInviteeAttendedCount='<b>'+result[i].simpleVOList1[j].nonInviteeAttendedCount+'</b>'+" NIA";
+						var counts=inviteeAttendedCount+" - "+nonInviteeAttendedCount;
+						str+='<td>'+counts+'</td>'
 					}else{
 						str+='<td>0</td>'
 					}
 				}
-				str+='<td>'+result[i].day1Count+'</td>';
-				str+='<td>'+result[i].day2Count+'</td>';
-				str+='<td>'+result[i].day3Count+'</td>';
+				if((result[i].oneDayInvitedAttendedCount!=null && result[i].oneDayInvitedAttendedCount!=0) || (result[i].oneDayNonInvitedAttendedCount!=null && result[i].oneDayNonInvitedAttendedCount!=0)){
+				  str+='<td><b>'+result[i].oneDayInvitedAttendedCount+'</b> IA  -<b>'+result[i].oneDayNonInvitedAttendedCount+'</b> NIA </td>';	
+				}else{
+					str+='<td>0</td>'
+				}
+				if( (result[i].twoDaysInvitedAttendedCount!=null && result[i].twoDaysInvitedAttendedCount!=0) || (result[i].twoDaysNonInvitedAttendedCount!=null && result[i].twoDaysNonInvitedAttendedCount!=0)){
+				  str+='<td><b>'+result[i].twoDaysInvitedAttendedCount+'</b> IA  -<b>'+result[i].twoDaysNonInvitedAttendedCount+'</b> NIA </td>';	
+				}else{
+					str+='<td>0</td>'
+				}
+				if((result[i].threeDaysInvitedAttendedCount!=null && result[i].threeDaysInvitedAttendedCount!=0) || (result[i].threeDaysNonInvitedAttendedCount!=null && result[i].threeDaysNonInvitedAttendedCount!=0)){
+				  str+='<td><b>'+result[i].threeDaysInvitedAttendedCount+'</b> IA  -<b>'+result[i].threeDaysNonInvitedAttendedCount+'</b> NIA </td>';
+				}else{
+					str+='<td>0</td>'
+				}
+				
 				str+='</tr>';
 			}
 			str+='</tbody>';
