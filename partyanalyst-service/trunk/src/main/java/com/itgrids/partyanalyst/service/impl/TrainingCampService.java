@@ -5658,14 +5658,14 @@ class TrainingCampService implements ITrainingCampService{
 			for(SimpleVO vo : feedbackAnswers)
 			{
 				try {
-					Long trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryDAO.getTrainingcampFeedbackcategoryId(vo.getId());
-					if(trainingCampFeedbackCategoryId != null && trainingCampFeedbackCategoryId.longValue()>0)
+					//Long trainingCampFeedbackCategoryId = trainingCampFeedbackCategoryDAO.getTrainingcampFeedbackcategoryId(vo.getId());
+					if(vo.getId() != null && vo.getId().longValue()>0)
 					{
 						TrainingCampFeedbackAnswer trainingCampFeedbackAnswer = new TrainingCampFeedbackAnswer();
 						trainingCampFeedbackAnswer.setTdpCadreId(tdpCadreId);
 						trainingCampFeedbackAnswer.setAnswer(vo.getName());
 						
-						trainingCampFeedbackAnswer.setTrainingCampFeedbackCategoryId(trainingCampFeedbackCategoryId);
+						trainingCampFeedbackAnswer.setTrainingCampFeedbackCategoryId(vo.getId());
 						trainingCampFeedbackAnswer.setInsertedTime(date.getCurrentDateAndTime());
 						trainingCampFeedbackAnswer.setUpdatedTime(date.getCurrentDateAndTime());
 						trainingCampFeedbackAnswer.setIsDeleted("N");
