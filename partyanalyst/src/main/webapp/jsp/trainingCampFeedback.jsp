@@ -493,16 +493,15 @@ function getPrograms(){
 			 //console.log(categoryIds)
 			//  console.log(finalCategoryIdsList)
 			
-			var programId = '${param.programId}';
-			var campId = '${param.campId}';
-			var batchId = '${param.batchId}';
-			var GcadreId = '${param.cadreId}';
-			
-			
+			var programId = '${programId}';
+			var campId = '${campId}';
+			var batchId = '${batchId}';
+			var GcadreId = '${cadreId}';
+
 		  var jsObj={
-			  programId :0,
-			  campId :0,
-			  batchId:0,
+			  programId :programId,
+			  campId :campId,
+			  batchId:batchId,
 			  categoryIds:finalCategoryIdsList,
 			  task:"",
 			  cadreId:GcadreId
