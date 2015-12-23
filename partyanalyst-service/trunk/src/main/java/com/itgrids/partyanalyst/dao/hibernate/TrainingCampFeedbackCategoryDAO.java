@@ -20,7 +20,7 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 	 {
 		 StringBuilder str = new StringBuilder();
 		str.append("select distinct model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName from TrainingCampFeedbackCategory model" +
-		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' ");
+		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' and model.trainingCampBatch.attendeeTypeId=1 ");
 		if(programId > 0)
 			str.append(" and model.trainingCampProgramId = :programId");	
 		if(campId > 0)
@@ -44,7 +44,8 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 	 {
 		 StringBuilder str = new StringBuilder();
 		str.append("select distinct model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName,model.isSubCategoryExist,model.trainingCampFeedbackCategoryId from TrainingCampFeedbackCategory model" +
-		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' ");
+		 		" where model.parentFeedbackCategoryId is null and model.isDeleted ='N' " +
+		 		" and model.trainingCampBatch.attendeeTypeId=1 ");
 		if(programId > 0)
 			str.append(" and model.trainingCampProgramId = :programId");	
 		if(campId > 0)
@@ -70,7 +71,7 @@ public class TrainingCampFeedbackCategoryDAO extends GenericDaoHibernate<Trainin
 	 {
 		 StringBuilder str = new StringBuilder();
 		str.append("select model.parentFeedbackCategory.feedbackCategoryId,model.feedbackCategory.feedbackCategoryId,model.feedbackCategory.categoryName,model.trainingCampFeedbackCategoryId from TrainingCampFeedbackCategory model" +
-		 		" where model.isDeleted ='N' ");
+		 		" where model.isDeleted ='N' and model.trainingCampBatch.attendeeTypeId=1 ");
 		if(programId > 0)
 			str.append(" and model.trainingCampProgramId = :programId");	
 		if(campId > 0)

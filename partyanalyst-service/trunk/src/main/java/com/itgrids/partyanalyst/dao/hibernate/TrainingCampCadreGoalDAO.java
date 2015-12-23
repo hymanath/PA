@@ -19,7 +19,8 @@ public class TrainingCampCadreGoalDAO extends GenericDaoHibernate<TrainingCampCa
 		Query query=getSession().createQuery("" +
 		" select model.trainingCampCadreGoalId,model.goal,model.achievedOn " +
 		" from TrainingCampCadreGoal model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null " +
+		" and model.trainingCampBatch.attendeeTypeId=1 ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
@@ -29,7 +30,8 @@ public class TrainingCampCadreGoalDAO extends GenericDaoHibernate<TrainingCampCa
 		Query query=getSession().createQuery("" +
 		" select count(*) " +
 		" from TrainingCampCadreGoal model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null ");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null " +
+		" and model.trainingCampBatch.attendeeTypeId=1 ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		return (Long)query.uniqueResult();
@@ -37,7 +39,8 @@ public class TrainingCampCadreGoalDAO extends GenericDaoHibernate<TrainingCampCa
 	public int deleteGoalsforACadre(Long tdpCadreId,Long batchId){
 		
 		Query query=getSession().createQuery(" delete from TrainingCampCadreGoal model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.goal is not null " +
+		" and model.trainingCampBatch.attendeeTypeId=1 ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		int count = query.executeUpdate();	

@@ -6974,7 +6974,8 @@ class TrainingCampService implements ITrainingCampService{
 						   " left join tccfd.cadreComminicationSkillsStatus cs " +
 						   " left join tccfd.cadreLeadershipSkillsStatus ls " +
 						   " left join tccfd.cadreHealthStatus hs " +
-						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId ");
+						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId" +
+						   " and tca.trainingCampBatch.attendeeTypeId = 1 ");
 				
 				if(fromDate!=null && toDate!=null){
 					sbM.append(" and date(tccfd.trainingCampBatch.fromDate) >= :fromDate and date(tccfd.trainingCampBatch.toDate) <= :toDate ");
@@ -7030,7 +7031,7 @@ class TrainingCampService implements ITrainingCampService{
 			    }else if(type.equalsIgnoreCase("goal")){
 			    	sbM.append(",TrainingCampCadreGoal model ");
 			    }
-				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId ");
+				sbM.append(" where tca.attendance.tdpCadreId=model.tdpCadreId and tca.trainingCampBatch.attendeeTypeId = 1 ");
 				if(fromDate!=null && toDate!=null){
 					sbM.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
 				}

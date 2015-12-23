@@ -22,7 +22,8 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		" select model.cadreLeadershipLevelId,model.cadreComminicationSkillsStatusId,model.cadreLeadershipSkillsStatusId,model.cadreHealthStatusId,model.remarks," +
 		"        model.smartPhoneExist,model.watsappUsing,model.watsappShare,model.facebookUsing " +
 		" from TrainingCampCadreFeedbackDetails model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId " +
+		" and model.trainingCampBatch.attendeeTypeId=1 ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		query.setParameter("trainingCampBatchId", batchId);
 		return (Object[])query.uniqueResult();
@@ -31,7 +32,8 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	Query query=getSession().createQuery("" +
     			" select model.trainingCampCadreFeedbackDetailsId" +
     			" from TrainingCampCadreFeedbackDetails model " +
-    			" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId");
+    			" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId " +
+    			" and model.trainingCampBatch.attendeeTypeId=1 ");
         query.setParameter("tdpCadreId", tdpCadreId);
     	query.setParameter("trainingCampBatchId", batchId);
     	return (Long)query.uniqueResult();
@@ -49,7 +51,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	"      left join model.cadreComminicationSkillsStatus cs" +
     	"      left join model.cadreLeadershipSkillsStatus ls" +
     	"      left join model.cadreHealthStatus hs" +
-    	" where model.trainingCampBatchId in (:batches) " +
+    	" where model.trainingCampBatchId in (:batches) and model.trainingCampBatch.attendeeTypeId=1 " +
     	" order by  model.trainingCampCadreFeedbackDetailsId");
     	
     	query.setParameterList("batches",trainingCampBatchIds);
@@ -130,7 +132,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName,count(distinct model.tdpCadre.tdpCadreId) " +
 	 		" from " +
 	 		" TrainingCampCadreFeedbackDetails model " +
-	 		" where model.trainingCampBatch.isCancelled = 'false' " +
+	 		" where model.trainingCampBatch.isCancelled = 'false' and model.trainingCampBatch.attendeeTypeId=1 " +
 	 		" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 	 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
 	 

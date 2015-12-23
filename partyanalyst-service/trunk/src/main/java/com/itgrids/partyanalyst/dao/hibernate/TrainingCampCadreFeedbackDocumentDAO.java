@@ -20,7 +20,7 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 	public List<Object[]> getFeedbackDocuments(Long tdpCadreId)
 	{
 		Query query = getSession().createQuery("select model.filePath,model.trainingCampCadreFeedbackDocumentId from TrainingCampCadreFeedbackDocument model" +
-				" where model.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' ");
+				" where model.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' and model.trainingCampBatch.attendeeTypeId=1 ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 		
@@ -28,7 +28,8 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 	public List<Object[]> getDocumentsCountForCadreWise(List<Long> tdpCadreIds){
 		Query query = getSession().createQuery(" select count(model.filePath),model.tdpCadreId " +
 				" from TrainingCampCadreFeedbackDocument model " +
-				" where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N' group by model.tdpCadreId ");
+				" where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N'" +
+				"  and model.trainingCampBatch.attendeeTypeId=1  group by model.tdpCadreId ");
 		query.setParameterList("tdpCadreIds",tdpCadreIds);
 		return query.list();
 	}
@@ -44,7 +45,8 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 				" from " +
 				" TrainingCampCadreFeedbackDocument model " +
 				" where model.trainingCampBatch.isCancelled = 'false' " +
-				"  and model.isDeleted ='N' and model.tdpCadre.isDeleted='N' " );
+				"  and model.isDeleted ='N' and model.tdpCadre.isDeleted='N' " +
+				"  and model.trainingCampBatch.attendeeTypeId=1 " );
 		
 		 if(startDate !=null && endDate !=null){
 			 str.append(" and date(model.insertedTime) between :startDate and :endDate ");

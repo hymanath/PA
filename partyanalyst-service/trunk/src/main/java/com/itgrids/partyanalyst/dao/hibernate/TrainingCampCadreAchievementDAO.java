@@ -18,7 +18,8 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 		Query query=getSession().createQuery("" +
 		" select model.trainingCampCadreAchievementId,model.achievement " +
 		" from TrainingCampCadreAchievement model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null ");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null and " +
+		" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
@@ -28,7 +29,8 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 		Query query=getSession().createQuery("" +
 		" select count(*) " +
 		" from TrainingCampCadreAchievement model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null ");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null " +
+		" and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		return (Long)query.uniqueResult();
@@ -36,7 +38,8 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 	public int deleteAchievementsforACadre(Long tdpCadreId,Long batchId){
 		
 		Query query=getSession().createQuery(" delete from TrainingCampCadreAchievement model " +
-		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null");
+		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null " +
+		" and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
 		int count = query.executeUpdate();	
