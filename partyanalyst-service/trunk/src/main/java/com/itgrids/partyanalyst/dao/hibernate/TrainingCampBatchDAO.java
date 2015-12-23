@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.codehaus.jackson.map.ser.StdSerializers.UtilDateSerializer;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
@@ -370,4 +371,23 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return query.list();
 	}
 	
+	public List<Object[]> getBatchInviteeDetails(List<Long> batchIds){
+		
+		Query query=getSession().createSQLQuery(" " +
+		 " select DISTINCT TC.camp_name as campname ,TCB.training_camp_batch_id as batchId ,TCB.training_camp_batch_code as batchCode," +
+		 "        date(TCB.from_date) as fromdate,date(TCB.to_date) as toDate ,TCBA.tdp_cadre_id as cadreId" +
+		 " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
+		 "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
+		 "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
+		 " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 " +
+		 " order by TCB.training_camp_batch_id asc")
+		 .addScalar("campname",Hibernate.STRING)
+		 .addScalar("batchId",Hibernate.LONG)
+		 .addScalar("batchCode",Hibernate.STRING)
+		 .addScalar("fromdate",Hibernate.DATE)
+		 .addScalar("toDate",Hibernate.DATE)
+		 .addScalar("cadreId",Hibernate.LONG);
+		query.setParameterList("batchIds",batchIds);
+	    return query.list();
+	}
 }
