@@ -8,6 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Suggestive Model</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
