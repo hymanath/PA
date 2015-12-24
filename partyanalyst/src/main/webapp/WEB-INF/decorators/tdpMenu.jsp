@@ -96,7 +96,7 @@ footer
                 <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
             </div>
             <div class="col-md-4 col-xs-7 col-sm-7 span5 text-center" style="line-height:20px;">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;">TELUGU DESAM PARTY</p><p  style="color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare to dream - Strive to achive</p>                
+                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;">TELUGU DESAM PARTY</p><p  style="color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare to dream - Strive to achieve</p>                
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">   
             </div>
