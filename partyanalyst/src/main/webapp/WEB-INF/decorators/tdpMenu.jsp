@@ -21,6 +21,8 @@
 <link rel="stylesheet" href="dist/css/font-awesome.css">
 
 <!--YUI SCRIPT-->
+	<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
@@ -67,10 +69,7 @@ header.eventsheader
 }
 footer
 {
-	position:fixed;
-	left:0;
-	right:0;
-	bottom:0
+	
 }
 
 #menu_multilevelpushmenu {
@@ -526,13 +525,10 @@ footer
  <!-- /pusher -->	
 
 <footer>
-    <div class="text-center" >
+    <div class="text-center col-md-12 "  >
 		    All &copy; 2015 Telugu Desam Party
     </div>
 </footer>
-		
-		<!--<script src="dist/js/jquery-1.11.2.min.js"></script>-->
-		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
 		<script src="fullexpandcollapse/jquery.multilevelpushmenu.js"></script>
         <script type="text/javascript" src="fullexpandcollapse/fullexpandcollapse.js"></script>
 <script>
