@@ -16338,7 +16338,31 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return finalRs;
 	}
-	
+    public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId){
+		
+		ResultStatus finalRs = new ResultStatus();
+		DateUtilService dt = new DateUtilService();
+		try{
+			
+			if(cadreId !=null && cadreId.longValue()>0l){
+				
+			   TdpCadre cadreData= tdpCadreDAO.get(cadreId);
+			   cadreRegistrationService.saveDataToHistoryTable(cadreData);
+				
+				cadreData.setMobileNo(mobileNo);
+				cadreData.setCasteStateId(casteId);
+				cadreData.setUpdatedTime(dt.getCurrentDateAndTime());
+				tdpCadreDAO.save(cadreData);
+				
+				finalRs.setResultCode(0);
+			}
+			return finalRs;
+		}catch (Exception e) {
+			finalRs.setResultCode(1);
+			LOG.error("Exception Occured in updateMobileNumberForCadre() method, Exception - ",e);
+		}
+		return finalRs;
+	}
 	public List<Long> getAllRemovedCadre(){
 		List<Long> cadreIds =null;
 		try{
@@ -17703,4 +17727,31 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 	}
 	return finalList;
 }
+ public List<IdNameVO> getAllCastes(){
+	 
+	List<IdNameVO> idNameVOList=null;
+	try{
+		  List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
+		  idNameVOList=buildIdNameVOList(castesList);
+	}catch(Exception e){
+		LOG.error("Exception raised in getAllCastes", e);
+	}
+	return idNameVOList;
+ }
+ 
+ public  List<IdNameVO> buildIdNameVOList(List<Object[]> list){
+	 
+	 List<IdNameVO> idNameVOList=null;
+	 if(list!=null && list.size()>0){
+		 idNameVOList=new ArrayList<IdNameVO>();
+		 for(Object[] obj:list){
+			 IdNameVO vo=new IdNameVO();
+			 vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+			 vo.setName(obj[1]!=null?obj[1].toString():"");
+			 idNameVOList.add(vo);
+		 }
+	 }
+	 return idNameVOList;
+ }
+ 
 }
