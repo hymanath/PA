@@ -6,7 +6,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
  <html>
-	
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+	<link href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" type="text/css"/>
 
 		<style>
 			body{background:#f0f0f0;}
@@ -48,6 +51,10 @@
 <script>
 
 $(document).ready(function(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
    $('.datePickerCls').datepicker({
    dateFormat: 'dd-mm-yy'
    }).datepicker('setDate', new Date());
