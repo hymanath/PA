@@ -507,8 +507,8 @@
 	  <!--<pattern>/partyBoothResult2Action*</pattern>-->
 	  <pattern>/ministerAnalysisAction*</pattern>
 	  <!--<pattern>/populateVoterDataAction*</pattern>-->
-	  <pattern>/cadreRegisterPageAction*</pattern>
-	  <pattern>/cadreRegisterAction*</pattern>
+	  <!--<pattern>/cadreRegisterPageAction*</pattern>-->
+	  <!--<pattern>/cadreRegisterAction*</pattern>-->
 	  <!--<pattern>/specialPageManageAction*</pattern>-->
 	 <!-- <pattern>/righttoinformation*</pattern>-->
 	  <!--<pattern>/voterModificationReportAction*</pattern>-->
