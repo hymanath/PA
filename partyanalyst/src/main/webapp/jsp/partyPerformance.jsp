@@ -8,12 +8,15 @@
 	<TITLE>Party Performance Report</TITLE>
 
 	<!-- Dependencies --> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<!-- OPTIONAL: JSON (enables JSON validation) --> 
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	 <style type="text/css">
 
 		table.partyPerformanceCriteriaTable {

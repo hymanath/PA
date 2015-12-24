@@ -14,7 +14,8 @@
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <style>
@@ -30,9 +31,9 @@ table thead th , table tbody tr td{text-align:center !important}
 
 </head>
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 <!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -52,7 +53,7 @@ table thead th , table tbody tr td{text-align:center !important}
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <!--<li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
 					   
 					   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER') ||  fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TRAINING_CAMP_CALLER_GROUP_REDIRECT')}">
 						<li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
@@ -64,7 +65,7 @@ table thead th , table tbody tr td{text-align:center !important}
     </div>
 	
 	
-</header>
+</header>-->
 <main style="margin-top:40px">
 	<div class="container">
     	<div class="row">

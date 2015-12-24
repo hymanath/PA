@@ -11,7 +11,18 @@
 	<meta http-equiv="Content-Language" content="en" />
 	<meta name="Keywords" content="Register vote, Transfer vote, Duplicate vote, Cancel vote, Proxy vote, Sub proxy vote, Postal ballot voting, Army vote, NRI Voter, EVM, Form 6, Form 6A, Form 7 , Form 8, Form 8A ,Form 13F, Form 13G, Form 002,Form’s of Election Commission of India ,how to vote, voters guide, postal ballot , importance of voting, eligibility for voting in india, lost voter id, modify voter Id details, Democracy in india " />
 	<meta name="description" content="As an eligible voter it’s our right to vote, we provide you the information about registering, cancelling and transferring vote and getting duplicate voter id. And giving you some of the forms of Election Commission of India that are frequently used. And providing you the information about How NRI Voters to register, Voting of Army Voters using proxy and sub proxy." />
-	
+<!-- YUI Dependency files (Start)-->
+
+  <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/get-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/connection-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/animation-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/json-min.js" ></script>    
+  <script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
+  <script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+  <link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
+  <!-- YUI Dependency files (End) -->	
 
 <link media="screen" rel="stylesheet" href="styles/colorbox/colorbox.css"/>
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
@@ -24,7 +35,8 @@
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css"> 
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
 
@@ -41,6 +53,7 @@
 <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Voters Guide</title>
+
 <style>
 
 h2{

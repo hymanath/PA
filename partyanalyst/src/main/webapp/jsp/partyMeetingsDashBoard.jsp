@@ -14,6 +14,8 @@
 <link href="dist/Dropzone/basic.css" rel="stylesheet" type="text/css">
 <link href="dist/Dropzone/dropzone.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <style type="text/css">
 .linkinner label{color:#fff}
 .custom-select
@@ -47,9 +49,9 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 
 </head>
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 <!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -69,7 +71,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <!--<li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
 					   <li><a tabindex="-1" href="meetingList.action">Meetings List</a></li>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
@@ -79,7 +81,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
     </div>
 	
 	
-</header>
+</header>-->
 <main>
 	<div class="container">
     	<div class="row">
@@ -2486,20 +2488,7 @@ $(document).ready(function(e) {
 			tableToExcel('cummulativeTableIdForExcel','Cumulative Meetings Report');
 		}
 	}	
-
-	var tableToExcel = (function() {
-	var uri = 'data:application/vnd.ms-excel;base64,'
-    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-	return function(table, name) {
-    if (!table.nodeType) table = document.getElementById(table)
-    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-    window.location.href = uri + base64(format(template, ctx))
-  }
-  })()
-  
-  $(document).on('click','.getSummary', function() {
+$(document).on('click','.getSummary', function() {
 	  var fromType = $(this).attr("attr_type");
 	  var jsObj =	{
 			meetingId : $(this).attr("attr_meetingId"),
@@ -2551,6 +2540,19 @@ $(document).ready(function(e) {
 		});
 	 
   });
+</script>
+<script>
+ var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+  })() 
 </script>
 </body>
 </html>

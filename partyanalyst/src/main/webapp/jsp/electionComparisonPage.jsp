@@ -7,6 +7,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Election Comparison Report</title>
+<!--YUI Dependency files (Start) -->
+
+  <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/get-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/connection-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/animation-min.js" ></script>  
+  <script type="text/javascript" src="js/yahoo/json-min.js" ></script>    
+  <script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
+  <script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+  <link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
+ <!-- YUI Dependency files (End) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 table.CandidateElectionResultsTable{
 	font-family: verdana,arial,sans-serif;
