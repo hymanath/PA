@@ -73,7 +73,9 @@
 	</style>
 	<script>
 		var allRolesList = new Array();
-		var ageRangeArr = new Array();	
+		var ageRangeArr = new Array();
+        var casteArray=new Array();
+		
 			<c:forEach var="election" items="${ageRangeList}">
 				var elections ={
 				name:'${election}'
@@ -87,7 +89,12 @@
 				name:"${rol.locationName}"
 				}
 				allRolesList.push(rols);
-			</c:forEach>	
+			</c:forEach>
+			
+            <c:forEach var="caste" items="${castes}">
+				var casteObject = { id:"${caste.id}",name:"${caste.name}" }
+				casteArray.push(casteObject);
+			</c:forEach>			
 	
 	</script>
   </head>
@@ -351,6 +358,28 @@
 				</div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
+			
+			<!-- Modal for update cadre -->
+			<div class="modal fade" id="modalDivId">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalTitleId" style="color:red;"><span id="modalTitleNameId"></span></h4>
+				  </div>
+				  
+				  <div class="modal-body" id="modalBodyDivId"></div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="modalSuccessId"></span>
+					<span id="modalfooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				  
+				</div>
+			  </div>
+			</div>
 			
 			<script>
 	var accessType = "${sessionScope.USER.accessType}";
@@ -754,8 +783,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+';</li>';
 				str+='<li>Gender: '+result[i].gender+'</li>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
-				str+='<li>Caste: '+result[i].casteName+'</li>';
+				str+='<li>Mobile No: <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span></li>';
+				str+='<li>Caste: <span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
 				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
@@ -770,10 +799,16 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
+					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
+					
 						str+='<div id="rc'+result[i].tdpCadreId+'" class="pull-right cadreRemoveCls" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-remove remove-icon" data-toggle="tooltip" data-placement="bottom" title="Remove Cadre"></i></div>';
+						
+						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
+						
 					</c:if> 
 				}
+				
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1395,6 +1430,113 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	$("#removeModalDivId").modal("show");
   });
   
+  $(document).on("click",".updateCadreClass",function(){
+	  $("#modalSuccessId").html('');
+	  buildModal(this);
+  });
+  
+  $(document).on("click","#updatingCadreId",function(){
+	  
+	  $("#updateErrorMobileId").html('');
+	  $("#updateErrorCasteId").html('');
+	   
+	  var tdpCadreId=$(this).attr("attr_cadre_id");
+	  var mobileNo=$('#updateCadreMobileId').val();
+      var casteId=$('#updateCadreCasteSelectId option:selected').val();
+      var casteName=$('#updateCadreCasteSelectId option:selected').text();
+	  
+      if(isNaN(mobileNo) || mobileNo.indexOf(" ") != -1){
+		 $("#updateErrorMobileId").html("Please Enter Numbers Only...");
+		 return;
+	  }
+      if(mobileNo.trim().length < 10){
+		 $("#updateErrorMobileId").html("Please Enter Valid Mobile Number...");
+		 return;
+      }
+	  if(casteId==0){
+		  $("#updateErrorCasteId").html("Please Select Caste.");
+		  return;
+	  }
+	  if(!confirmDelete("Are you sure you want to Update Cadre ?")){
+		 return;
+	 }
+	 $("#modalSuccessId").html("<span style='color:green;'>Please Wait ,While updating...</span>");
+	 
+	  var jObj={
+		         tdpCadreId:tdpCadreId,
+		         mobileNo:mobileNo,
+				 casteId:casteId
+		       };
+	  $.ajax({
+		  type:'POST',
+		  url: 'updateMobileNumberAndCasteForCadreAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				if(result != null){
+					
+					if(result.resultCode == 0){
+					   $("#modalSuccessId").html("<span style='color:green;'>MobileNo And Caste Updated Successfully.</span>");
+					   
+					   //Refreshing data.
+					   $("#uc"+tdpCadreId).attr('attr_mobile_no',mobileNo);
+					   $("#uc"+tdpCadreId).attr('attr_caste_name',casteName);
+					   
+					   $("#mobile"+tdpCadreId).html(mobileNo);
+					   $("#caste"+tdpCadreId).html(casteName);
+					   
+					   setTimeout(function(){
+				            $("#modalDivId").modal("hide");
+				       }, 3000);
+					}else if(result.resultCode == 1){
+						$("#modalSuccessId").html("<span style='color:red;'>Sorry,MobileNo And Caste Are Not Updated.</span>");
+					}
+				}
+		  });
+  });
+  function buildModal(cadreDetails){
+	    
+		$("#modalTitleNameId").html('');
+	    $("#modalBodyDivId").html('');
+		$("#modalfooterNameId").html('');
+		
+		$("#modalTitleNameId").html('Update Cadre Mobile And Caste.');
+		$("#modalfooterNameId").html('<button type="button" id="updatingCadreId" attr_cadre_id='+$(cadreDetails).attr("attr_cadre_id")+' class="btn btn-primary btn-sm">Update</button>');
+		
+	    var str='';
+		str+='<div class="row">';
+		str+='<div class="col-md-12">';
+		str+='<div><b>Cadre Name :</b> <span>'+$(cadreDetails).attr("attr_cadre_name")+'</span></div>';
+		str+='</div>';
+		str+='</div>';
+
+		str+='<div class="row">';
+		str+='<div class="col-md-6 m_top10">';
+		str+='<div><b>Mobile NO : <span style="color:red">*</span></b> ';
+		str+='<input class="form-control" id="updateCadreMobileId" maxlength="10" value="'+$(cadreDetails).attr("attr_mobile_no")+'"></input></div>';
+		str+='<div id="updateErrorMobileId" style="color:red;"></div>';
+		str+='</div>';
+		str+='<div class="col-md-6 m_top10">';
+		str+='<div><b>Caste <span style="color:red">*</span>:</b>';
+		    str+='<select id="updateCadreCasteSelectId" class="form-control">';
+		        str+='<option value="0">Select Caste</option>';
+				for(var i in casteArray){
+					if(casteArray[i].name== $(cadreDetails).attr("attr_caste_name")){
+						str+='<option value="'+casteArray[i].id+'" selected>'+casteArray[i].name+'</option>';
+					}else{
+						str+='<option value="'+casteArray[i].id+'">'+casteArray[i].name+'</option>';
+					}	
+				}
+		    str+='</select>';
+		str+='</div>';
+		str+='<div id="updateErrorCasteId" style="color:red;"></div>';
+		str+='</div>';
+		
+		str+='</div>';
+		
+	  $("#modalBodyDivId").html(str);
+	  $("#modalDivId").modal("show");
+  }
   function getAllCadreDeleteReasons(){
 	  $("#reasonSelectId option").remove();
 	  
@@ -1441,7 +1583,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		 return;
 	 }
 	 
-	 if(!confirmDelete()){
+	 if(!confirmDelete("Are you sure you want to delete cadre ?")){
 		 return;
 	 }
 	
@@ -1479,8 +1621,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	  
   }
   
-  function confirmDelete(){
-	var deleteCadre = confirm("Are you sure you want to delete cadre ?");
+  function confirmDelete(msg){
+	var deleteCadre = confirm(msg);
 	  if (deleteCadre)
 		  return true;
 	  else
