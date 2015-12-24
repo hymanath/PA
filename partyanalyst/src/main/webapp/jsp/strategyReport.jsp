@@ -9,7 +9,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title> Party Analyst - Strategy Report</title>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+ 
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
