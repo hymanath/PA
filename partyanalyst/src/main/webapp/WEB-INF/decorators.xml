@@ -204,9 +204,9 @@
 			<!--<pattern>/electionComparisonAction*</pattern>-->
 			<!--<pattern>/partyResultsCriteriaAction*</pattern>-->
 			<!--<pattern>/partyPerformanceMain*</pattern>-->
-			<pattern>/crossVotingReportInputAction*</pattern>
-			<pattern>/mandalPageSDetailAction*</pattern>
-			<pattern>/partyBoothResultAction*</pattern>
+			<!--<pattern>/crossVotingReportInputAction*</pattern>-->
+			<!--<pattern>/mandalPageSDetailAction*</pattern>-->
+			<!--<pattern>/partyBoothResultAction*</pattern>-->
 			<!--<pattern>/ministerAnalysisAction*</pattern>-->
 			<pattern>/censusReportAction*</pattern>
 			<pattern>/populateVoterDataAction*</pattern>
@@ -249,7 +249,7 @@
 			<pattern>/voterDataToolsAction*</pattern>
 			<pattern>/electionResultsAnalysisAction*</pattern>
 			<pattern>/inflencingPeopleWindowAction*</pattern>
-			<pattern>/suggestiveModelAction*</pattern>
+			<!--<pattern>/suggestiveModelAction*</pattern>-->
 			<pattern>/mobileDataAction*</pattern>
 			<pattern>/messageCenterAction*</pattern>
 			<pattern>/uploadAudioFile*</pattern>
@@ -331,14 +331,14 @@
 			  <!--<pattern>/cadreBoothAnalysisAction*</pattern>-->
 			 <!--<pattern>/misReportAction*</pattern>-->
 			 <!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
-			 <pattern>/tdpCallCenterAction*</pattern>
-			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
+			 <!--<pattern>/tdpCallCenterAction*</pattern>-->
+			 <!--<pattern>/tdpCadreVolunteersDetailsAction*</pattern>-->
 			 <!--<pattern>/cadreIvrReportAction*</pattern>-->	
 			<!--<pattern>/villageIVRAction*</pattern>-->	
 			<!--<pattern>/cadreMissedCallCampaignAction*</pattern>-->				 
 			<!--<pattern>/cadreCommitteeSearchAction*</pattern>	-->		
 			<!--<pattern>/tdpCadreImagesVerification*</pattern>	-->
-			<pattern>/currentBoothsStatus*</pattern>
+			<!--<pattern>/currentBoothsStatus*</pattern>-->
 			<!--<pattern>/ivrCampaignUploadAction*</pattern> -->
 			<!--<pattern>/cadreVoterSearchAction*</pattern>-->
 			<!--<pattern>/cadredashBoardAction*</pattern>-->
@@ -530,6 +530,13 @@
 	   <pattern>/voterAddressAction*</pattern>
 	   <pattern>/casteReportAction*</pattern>
 	   <pattern>/predictedCasteAssignAction.action*</pattern>
+	   <pattern>/tdpCallCenterAction*</pattern>
+	   <pattern>/currentBoothsStatus*</pattern>
+	   <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
+	   <pattern>/suggestiveModelAction*</pattern>
+	   <pattern>/mandalPageSDetailAction*</pattern>
+	   <pattern>/crossVotingReportInputAction*</pattern>
+	   <pattern>/partyBoothResultAction*</pattern>
 			
 	 </decorator> 
 </decorators>
