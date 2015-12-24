@@ -52,9 +52,12 @@ th.thstyle{
 <script src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 
 <!-- Source file -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
 <script src="js/partyBoothResults/boothResults.js" ></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+   <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 
 var Localization = { <%

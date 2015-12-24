@@ -10,8 +10,10 @@
 <!-- YUI files dependencies (start) -->
 
 <!--CSS files (default YUI Sam Skin) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
- 
+ <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <!--JS files Dependencies -->
 <script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
