@@ -1,6 +1,6 @@
 .ico-white
 {
-	color:#fff !important;
+	color:#5c2d25 !important;
 }
 .mlpm_w {
 	position: absolute;
@@ -15,7 +15,7 @@
 	position: absolute;
 	overflow: hidden;
 	top: 0;
-	background: #ed181f;
+	background: #EFEAE5;
 	width: auto;
 	min-height: 100%;
 	font-family: 'Open Sans Condensed', sans-serif;
@@ -42,17 +42,16 @@
 }
 
 .mlpm_w .mlpm_inactive {
-	background: #ba0011;
+	background: #efeae5 ;
 }
 
 .mlpm_w h2 {
 	font-size: 1.5em;
 	line-height: 2.3em;
 	font-weight: bold;
-	color: #fff !important;
+	color: #5c2d25 ;
 	padding: 0 .4em 0 .4em;
 }
-
 .mlpm_w ul {
 	list-style: none;
 	padding: 0;
@@ -61,8 +60,7 @@
 
 .mlpm_w li {
 	cursor: pointer;
-	border-top: 1px solid #fff;
-	padding: .4em .4em .4em .4em;
+	border-top: 1px solid rgba(92, 45, 37, 0.3);
 }
 
 .mlpm_w li:last-child {
@@ -71,32 +69,38 @@
 
 .mlpm_w li:hover {
 	background-color: #5c2d25;
+	color:#fff !important
 }
-
-.mlpm_w a {
+.mlpm_w a{
 	display: block;
 	outline: none;
 	overflow: hidden;
 	font-size: 1.1em;
 	line-height: 1.4em;
-	padding: .2em .2em;
+	padding: .6em .6em;
 	text-decoration: none;
-	color: #fff !important;
+	color: #5c2d25;
+}
+.mlpm_w a i 
+{
+	color: #5c2d25;
 }
 .mlpm_w span {
 	float:left;
 }
-.mlpm_w a:hover {
-	color: #ffe;
+.mlpm_w li a:hover , .mlpm_w li a:hover i{
+	color: #fff !important;
 }
 
 .mlpm_w .backItemClass {
 	display: block;
-	padding: .4em .4em .4em .4em;
-	background: #ba0011;
+	background: #efeae5;
 	border-top: 1px solid #fff;
 }
-
+.mlpm_w .backItemClass:hover
+{
+	background:#5c2d25
+}
 .mlpm_w .floatRight {
 	float: right;
 }
