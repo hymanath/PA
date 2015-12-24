@@ -89,22 +89,33 @@ footer
     <header class="eventsheader">
 	<div class="container">
         <div class="row">
-            <div class="col-md-2 col-xs-4 col-sm-1 span2">
+            <div class="col-md-3 col-xs-4 col-sm-1 span2">
                 <img src="dist/img/logo.png" class="img-responsive" alt="logo">
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1 span1">
                 <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
             </div>
-            <div class="col-md-5 col-xs-7 col-sm-7 span5 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:24px !important;color:#5c2d25 !important;margin-top:10px;">TELUGU DESAM PARTY</p>               
+            <div class="col-md-4 col-xs-7 col-sm-7 span5 text-center" style="line-height:20px;">               
+                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;">TELUGU DESAM PARTY</p><p  style="color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare to dream - Strive to achive</p>                
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" class="img-responsive" alt="ntr">   
+            <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">   
             </div>
             <div class="col-md-3 col-xs-1 col-sm-1 span3">
+			
+				<a id="trigger" style="font-size: 24px; color: rgb(102, 51, 0); margin-left: 0px; margin-right: 0px;margin-top: 15px;" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle  fullcollapse pull-right" href="#">
+					 <i class="glyphicon glyphicon-align-justify icon-align-justify"  style="margin-left: 0px;"></i>
+                </a>
+				
+            </div>
+			
+        </div>       
+    </div>
+</header>
+<div class="col-md-7 col-xs-1 col-sm-1 span3">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
-            	<p style="margin-top:5px;margin-bottom:0px;font-size:12px;color:#fff;font-weight:bold">Welcome, ${sessionScope.UserName} | </c:if>
+            	<p style="margin-top:5px;margin-bottom:0px;font-size:10px;color:#333;" class="pull-right">Welcome, ${sessionScope.UserName} | </c:if></p>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p style="font-size:13px;color:#fff;font-weight:bold;margin-top:5px;margin-bottom:0px;">Welcome, ${sessionScope.UserName} |</c:if>
+				<p style="font-size:10px;color:#333;margin-top:5px;margin-bottom:0px;" class="pull-right">Welcome, ${sessionScope.UserName} |</c:if>
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 						|
@@ -117,18 +128,13 @@ footer
 					
 				</c:if>
 				</p>
-				<a id="trigger" style="margin-top: 3px;" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs m_top10 fullcollapse" href="#">
-					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
-                </a>
+				
 				
             </div>
-        </div>       
-    </div>
-</header>
 	<div class="container">
 		<div class="" id="menu" style="z-index:9999">
 			<nav class="">
-                <h2><i class="fa fa-reorder line_heightDiv"></i>All Categories</h2>
+                <h2><i class="fa fa-reorder line_heightDiv" style="color:#5c2d25;"></i>&nbsp;</h2>
 					<ul>
 						<li>
 							<a href="home.action"><i class="fa fa-home"></i><span>&nbsp;&nbsp;Home</span></a>
@@ -299,7 +305,7 @@ footer
 						</li></c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP' ) ||  fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
 						 <li>
-								<a href="#"><i class="fa fa-child ico-white"></i><span>&nbsp;&nbsp;2014 Cadre</span></a>
+								<a href="#"><i class="fa fa-archive ico-white"></i><span>&nbsp;&nbsp;2014 Cadre</span></a>
 								 <h2><i class="glyphicon glyphicon-tree-deciduous ico-white line_heightDiv"></i>&nbsp;&nbsp;2014 Cadre</h2>
 								 <ul>
 								 <c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) ||  fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' )}">
@@ -416,9 +422,9 @@ footer
 						</c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) || fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' )}">
 							<li>
-								<a href="#"><i class="fa fa-tasks ico-white"></i><span>&nbsp;&nbsp;Elections</span></a>
+								<a href="#"><i class="fa fa-fire ico-white"></i><span>&nbsp;&nbsp;Elections</span></a>
 								
-								 <h2><i class="fa fa-tasks ico-white line_heightDiv"></i> Elections</h2>
+								 <h2><i class="fa fa-fire ico-white line_heightDiv"></i> Elections</h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) }">
 								 <li>
@@ -452,10 +458,10 @@ footer
 								 <h2><i class="fa fa-comment ico-white line_heightDiv"></i> Events & Activities  </h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) }">
-								 <li><a href="updateActivityAction.action"><i class="fa fa-book"></i><span>  Activities Entry  </span></a></li></c:if>
-								 <li><a href="activitiesDashboard.action"><i class="fa fa-book"></i><span> Activities DashBoard  </span></a></li>
+								 <li><a href="updateActivityAction.action"><i class="fa fa-mail-forward"></i><span>&nbsp;&nbsp;Activities Entry  </span></a></li></c:if>
+								 <li><a href="activitiesDashboard.action"><i class="fa fa-firefox"></i><span>&nbsp;&nbsp;Activities DashBoard  </span></a></li>
 								  <li>
-									<a href="eventInvitees.action"><i class="fa fa-book"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
+									<a href="eventInvitees.action"><i class="fa fa-envelope-square"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
 									</li>
 									  <li>
 									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Events Dasboard</span></a>
@@ -536,6 +542,16 @@ function openAddNewProblemWindow()
 	var browser_addNewProblem = window.open("addNewProblemAction.action","addNewProblem","scrollbars=yes","height=100","width=100","left=200","top=200");	
 	browser_addNewProblem.focus();
 }
+/* $("#menu ul li").hover(
+  function () {
+    $(this).find("a").css("color","#fff");
+    $(this).find("i").css("color","#fff");
+  },
+  function () {
+    $(this).find("a").css("color","#5c2d25");
+    $(this).find("i").css("color","#5c2d25");
+  }
+); */
 </script>
 </body>
 </html>
