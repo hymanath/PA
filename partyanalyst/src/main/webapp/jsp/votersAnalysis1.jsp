@@ -8,7 +8,8 @@
 <head>
 
 <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -65,7 +66,7 @@
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
-
+<link rel="stylesheet" href="dist/css/bootstrap.css">
 
 <title>Voters Analysis</title>
 
@@ -1219,12 +1220,12 @@ $('.castDivs').hover(
 <div id="votersouterDiv" class="widget green">
 <!--<fieldset>-->
 
-<div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;">GET YOUR CONSTITUENCY'S COMPLETE INFORMATION UP TO BOOTH LEVEL.</h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
+<div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;"><b>GET YOUR CONSTITUENCY'S COMPLETE INFORMATION UP TO BOOTH LEVEL.</b></h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
 
 <div id="categoeryCreationDiv" style="float:right;">
 	
-	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
-	<a href="javascript:{}" class="btn" id="flagId" onclick="openFlagWindow();">Flag Maintenance</a>
+	<a href="javascript:{}" class="btn btn-default" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
+	<a href="javascript:{}" class="btn btn-default" id="flagId" onclick="openFlagWindow();">Flag Maintenance</a>
 </div>
 <div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
