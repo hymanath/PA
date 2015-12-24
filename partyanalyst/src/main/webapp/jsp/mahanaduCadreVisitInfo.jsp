@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MAHANADU VISITORS INFO</title>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+
  <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet"/>
 	<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 	<script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>

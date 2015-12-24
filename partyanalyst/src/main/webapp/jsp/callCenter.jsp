@@ -5,12 +5,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+<!-- YUI Dependency files (Start) -->
 
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>	
+	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>	
+	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>	
+	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>	
+	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>	
+	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
+	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
+	<!-- YUI Dependency files (End) -->
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script> 
 <script src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
-
 <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
   rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet"   
@@ -21,7 +32,9 @@
   href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet"     
   href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 
 <!-- JQuery files (End) -->
 <title>Call Center</title>

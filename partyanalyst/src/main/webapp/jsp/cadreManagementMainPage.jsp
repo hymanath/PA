@@ -13,6 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Management </title>
 <!-- YUI Dependency files (Start) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -38,6 +39,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <!-- YUI Skin Sam -->
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
@@ -50,6 +52,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/gallery-accordion.css">
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <!-- YUI Dependency files (End) -->
 <!-- Local script and css files (Start)-->
 <script type="text/javascript" src="js/cadreManagement/cadreManagement.js"></script>
