@@ -941,7 +941,7 @@ public interface IConstants {
     public static final Long  VILLAGE_PARTY_MEETING_LEVEL_ID =7l;
     public static final Long  WARD_PARTY_MEETING_LEVEL_ID =8l;
    
-    public static final String[] MONTH_NAMES = {"Jan", "Feb", "March", "April", "May", "June", "July", "August", "Sep", "Oct", "Nov", "Dec"};  
+    public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};  
     public static final Long MONTHLY_VILLAGEorWARD_MEETING_ID=14L;
     public static final Long MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID=15L;
     public static final Long MONTHLY_CONSTITUENCY_MEETING_ID=3L;
