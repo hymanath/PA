@@ -18,7 +18,7 @@
 <body>
 <div class="container" style="border: 2px solid rgb(204, 204, 204); padding: 20px; min-height:380px;">
 	<h4 class="text-center">CADRE IMAGES FOR VERIFICATION </h4>
-	<div class="row-fluid offset2" >
+	<div class="row-fluid offset" >
 		<div class="span4 offset2">
 			<span> Select District : </span>
 			<select id="districtSelect"  onChange="getAllConstituencyes(this.value)" class="input-block-level">
