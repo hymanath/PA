@@ -44,13 +44,15 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
 
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
@@ -67,6 +69,7 @@
 	<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 	<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
 	<script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){

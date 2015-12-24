@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Caste Wise Election Results Analysis</title>
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
@@ -16,6 +17,8 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
  <style>
  .marginClass{
 
@@ -1957,9 +1960,10 @@ input, button, select, textarea {
 	<body>
 	<div style="width:950px;margin-left:auto;margin-right:auto;">
 	<div  class="widget blue" id="votersBasicInformationDiv" style="font-family: verdana;font-size: 12px;margin-left:-11px;">
-	<div id="headingDiv"   style="border: 1px solid; background-color: rgb(73, 175, 205); border-radius: 4px 4px 4px 4px; font-family: verdana; font-size: 16px; color: white; margin-top: 10px; font-weight: bolder; height: 26px; padding-top: 8px;"><span style="margin-left:280px;">Caste Wise Election Results Analysis</span></div>
+	<div id="headingDiv"   style="border: 1px solid; background-color: rgb(73, 175, 205); border-radius: 4px 4px 4px 4px; font-family: verdana; font-size: 16px; color: white; margin-top: 20px; font-weight: bolder; height: 28px;"><span style="margin-left:280px;">Caste Wise Election Results Analysis</span></div>
 	<div align="center" style="border:2px solid #98DEF2;">
-		<div id="errorDiv" style="color:red;display:none"></div>
+	
+	<div id="errorDiv" style="color:red;display:none"></div>
 		<div id="errorMsgDiv" style="margin-left:1px;"></div>
 		<table style="">
 		

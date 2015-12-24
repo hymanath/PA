@@ -14,6 +14,7 @@
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
@@ -37,6 +38,8 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+	
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 
 	<!-- YUI Skin Sam -->
 
@@ -50,6 +53,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     
 <!-- YUI Dependency files (End) -->
 
@@ -789,11 +793,11 @@ var host = "<%=IConstants.DEPLOYED_HOST%>";
 	
 </head>
 <body>
-
+	<div class="container">
 		<div id="errorMessageDIV" class="yui-skin-sam">
-		<div id="smsErrorPopupDiv">
+			<div id="smsErrorPopupDiv">
+			</div>
 		</div>
-	</div>
 
 	<div id="constituencyMgmtDiv_main" style="padding-right:10px;padding-left:0px;">
 		<div id="constituencyMgmt_main_header" style="margin-left:27px;">
