@@ -6510,6 +6510,18 @@ class TrainingCampService implements ITrainingCampService{
 			districtVO.setDistrictid(0l);
 			finalMap.put(11l,districtVO);
 			
+			IdNameVO stateVO=new IdNameVO();
+			stateVO.setId(10l);
+			stateVO.setName("STATE LEVEL COMMITTEE MEMBERS");
+			stateVO.setDistrictid(0l);
+			finalMap.put(10l,stateVO);
+			
+			IdNameVO centralVO=new IdNameVO();
+			centralVO.setId(12l);
+			centralVO.setName("CENTRAL LEVEL COMMITTEE MEMBERS");
+			centralVO.setDistrictid(0l);
+			finalMap.put(12l,centralVO);
+			
 			
 			Map<String,TrainingCampVO>  compBatchMap =getCompletedRunningUpcomingBatchIds(endDateString,startDateString,stateId,"completed");
 			if(compBatchMap!=null && compBatchMap.size()>0){
@@ -6539,6 +6551,12 @@ class TrainingCampService implements ITrainingCampService{
 								}else if(levelId==11l){
 									IdNameVO vo=finalMap.get(11l);
 									vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+								}else if(levelId == 10l){
+									IdNameVO vo=finalMap.get(10l);
+									vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
+								}else if(levelId == 12l){
+									IdNameVO vo=finalMap.get(12l);
+									vo.setDistrictid(obj[2]!=null?(Long)obj[2]:0l);
 								}
 								
 							}
@@ -6556,6 +6574,12 @@ class TrainingCampService implements ITrainingCampService{
 									vo.setActualCount(vo.getActualCount()+(obj[2]!=null?(Long)obj[2]:0l));
 								}else if(levelId==11l){
 									IdNameVO vo=finalMap.get(11l);
+									vo.setActualCount(obj[2]!=null?(Long)obj[2]:0l);
+								}else if(levelId == 10l){
+									IdNameVO vo=finalMap.get(10l);
+									vo.setActualCount(obj[2]!=null?(Long)obj[2]:0l);
+								}else if(levelId == 12l){
+									IdNameVO vo=finalMap.get(12l);
 									vo.setActualCount(obj[2]!=null?(Long)obj[2]:0l);
 								}
 								
