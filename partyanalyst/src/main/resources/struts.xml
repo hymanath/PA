@@ -11183,6 +11183,11 @@
 				<param name="root">idNameList</param>
 			</result>
     </action>
-    
+    <action name="updateMobileNumberAndCasteForCadreAction" class="cadreCommitteeAction" method="updateMobileNumberAndCasteForCadre">
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	    <result type="json" name="success">
+		    <param name="root">status</param>
+		</result>
+	</action>
 </package>
 </struts>      

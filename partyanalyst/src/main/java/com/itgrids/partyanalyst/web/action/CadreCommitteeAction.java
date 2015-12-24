@@ -96,11 +96,11 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<BasicVO> basicList;
 	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
 	
-     private EventCreationVO eventCreationVO;
+    private EventCreationVO eventCreationVO;
 	private List<VO> resultList;
 	private Long locationId;
 	private ActivityVO activityVO;
-	
+	private List<IdNameVO>  castes;
 	
 	
 	
@@ -548,6 +548,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public void setEventCreationVO(EventCreationVO eventCreationVO) {
 		this.eventCreationVO = eventCreationVO;
 	}
+    
+	public List<IdNameVO> getCastes() {
+		return castes;
+	}
+
+	public void setCastes(List<IdNameVO> castes) {
+		this.castes = castes;
+	}
 
 	public String execute()
 	{	
@@ -605,6 +613,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
 		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
 		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+		castes=cadreCommitteeService.getAllCastes();
 		List<BasicVO> accLoc = getUserAccessConstituencies();
 		if(accLoc!=null && accLoc.size()>0){
 			finalStatus = accLoc.get(0).getName();
@@ -2013,7 +2022,29 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 		
 	}
-	
+	public String updateMobileNumberAndCasteForCadre(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			String mobileNo = jObj.getString("mobileNo");
+			Long   casteId =  jObj.getLong("casteId");
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			if(regVO==null){
+				return "error";
+			}
+			if(regVO != null && (regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT_GROUP") || regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT")))
+			{
+				status = cadreCommitteeService.updateMobileNumberAndCasteForCadre(tdpCadreId,mobileNo,casteId);
+			}
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getAllCadreDeleteReasons() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String saveActivityDetails(){
 		
 		try {
