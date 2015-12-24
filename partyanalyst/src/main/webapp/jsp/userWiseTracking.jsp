@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>User Tracking</title>
 <style>
@@ -304,6 +305,10 @@ function buildTable(result)
 			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 		});
 }
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 </script>
 </body>
 </html>
