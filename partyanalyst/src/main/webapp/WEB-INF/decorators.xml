@@ -210,8 +210,8 @@
 			<!--<pattern>/ministerAnalysisAction*</pattern>-->
 			<pattern>/censusReportAction*</pattern>
 			<pattern>/populateVoterDataAction*</pattern>
-			<!--<pattern>/cadreRegisterPageAction*</pattern>-->
-		<!--<pattern>/cadreRegisterAction*</pattern>-->
+			<pattern>/cadreRegisterPageAction*</pattern>
+			<pattern>/cadreRegisterAction*</pattern>
 			<pattern>/statePageAction*</pattern>
 			<!--<pattern>/electionComparisonReportAction*</pattern>-->
 			<pattern>/partyStrengthAction*</pattern>
@@ -313,18 +313,18 @@
        		<!--<pattern>/usersReport*</pattern>-->
        		<pattern>/userAccessRegionAction*</pattern>
        		<pattern>/ivrMobileAction*</pattern>
-       		<!--<pattern>/cadreRegistration*</pattern>-->
+       		<pattern>/cadreRegistration*</pattern>
        		<!--<pattern>/cadreDashBoardAction*</pattern>-->
 			<pattern>/ctpCasteReportAction*</pattern>
-			<!--<pattern>/cadreRegistrationReportAction*</pattern>-->
-			<!--<pattern>/cadreTransactionReportsAction*</pattern>-->
+			<pattern>/cadreRegistrationReportAction*</pattern>
+			<pattern>/cadreTransactionReportsAction*</pattern>
 			<!--<pattern>/cadreRegAmountUpload*</pattern>-->
 			<!--<pattern>/cadreRegistrationAmountReportAction*</pattern>-->
 			<!--<pattern>/leaderCadreDashBoardAction*</pattern>-->
-			<!--<pattern>/tdpCadreReportsAction*</pattern>-->
+			<pattern>/tdpCadreReportsAction*</pattern>
 			<pattern>/tabAllocationDetailsAction*</pattern>
 			<pattern>/hourWiseUserColletedInfoAction*</pattern>
-			 <!--<pattern>/cadreAgeGenderAnalysisAction*</pattern>-->
+			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
 			 <!--<pattern>/duplicateUsers*</pattern>-->
 			 <!--<pattern>/cadreReportsAction*</pattern>-->
 			 <pattern>/changeUserPasswords*</pattern>
@@ -336,13 +336,13 @@
 			 <!--<pattern>/cadreIvrReportAction*</pattern>-->	
 			<!--<pattern>/villageIVRAction*</pattern>-->	
 			<!--<pattern>/cadreMissedCallCampaignAction*</pattern>-->				 
-			<!--<pattern>/cadreCommitteeSearchAction*</pattern>	-->		
-			<!--<pattern>/tdpCadreImagesVerification*</pattern>	-->
+			<pattern>/cadreCommitteeSearchAction*</pattern>		
+			<pattern>/tdpCadreImagesVerification*</pattern>	
 			<!--<pattern>/currentBoothsStatus*</pattern>-->
 			<!--<pattern>/ivrCampaignUploadAction*</pattern> -->
 			<!--<pattern>/cadreVoterSearchAction*</pattern>-->
 			<!--<pattern>/cadredashBoardAction*</pattern>-->
-			<!--<pattern>/tdpCadreFamilyUpdationAction*</pattern>-->
+			<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 			
 		 </decorator>
        
@@ -433,7 +433,7 @@
 		<pattern>/mahanaduTabUsersManageAction*</pattern>
 		<pattern>/messageQueueManagementAction*</pattern>
 		<!--<pattern>/mahanaduCadreVisitInfoAction*</pattern>-->
-		<!--<pattern>/tdpCadreFamilyUpdationAction*</pattern>-->
+		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
 		<!--<pattern>/eventInvitees*</pattern>-->
 		<pattern>/committeeDetailedAnalysis*</pattern>
 		<!--<pattern>/cadreDetailsAction*</pattern>-->
@@ -507,8 +507,8 @@
 	  <!--<pattern>/partyBoothResult2Action*</pattern>-->
 	  <pattern>/ministerAnalysisAction*</pattern>
 	  <!--<pattern>/populateVoterDataAction*</pattern>-->
-	  <!--<pattern>/cadreRegisterPageAction*</pattern>-->
-	  <!--<pattern>/cadreRegisterAction*</pattern>-->
+	  <pattern>/cadreRegisterPageAction*</pattern>
+	  <pattern>/cadreRegisterAction*</pattern>
 	  <!--<pattern>/specialPageManageAction*</pattern>-->
 	 <!-- <pattern>/righttoinformation*</pattern>-->
 	  <!--<pattern>/voterModificationReportAction*</pattern>-->
