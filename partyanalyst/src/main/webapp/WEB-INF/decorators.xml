@@ -265,18 +265,18 @@
 			<pattern>/userRegPageAction*</pattern>
 			<!--<pattern>/casteReportAction*</pattern>-->
 			<!--<pattern>/voterAddressAction*</pattern>-->
-			<pattern>/houseHoldSurveyReportAction*</pattern>
+			<!--<pattern>/houseHoldSurveyReportAction*</pattern>-->
 			<pattern>/votersEditNewHHAction*</pattern>
-			<pattern>/houseHoldCreationAction*</pattern>
-			<pattern>/voterLocationAction*</pattern>
+			<!--<pattern>/houseHoldCreationAction*</pattern>-->
+			<!--<pattern>/voterLocationAction*</pattern>-->
 			<pattern>/stratagicReportsAction*</pattern>
 			<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
-			<pattern>/muncipalElectionDetailsAction*</pattern>
+			<!--<pattern>/muncipalElectionDetailsAction*</pattern>-->
 			<pattern>/voterAverageAgewiseAction*</pattern>
-			<pattern>/mergePanchayatAction*</pattern>
-			<pattern>/strategyModelAction*</pattern>
+			<!--<pattern>/mergePanchayatAction*</pattern>-->
+			<!--<pattern>/strategyModelAction*</pattern>-->
 			<pattern>/boothPollReportAction*</pattern>
-			<pattern>/getVotersAddressAction*</pattern>
+			<!--<pattern>/getVotersAddressAction*</pattern>-->
 			<pattern>/resetPasswordAction*</pattern>
 			<pattern>/criticalPanchayatsAction*</pattern>
 			<pattern>/partyHighLowPollingAction*</pattern>
@@ -298,12 +298,12 @@
 			<pattern>/surveyDataDetailsAction*</pattern>
 			<pattern>/dailyVerificationReportsAction*</pattern>
 			<pattern>/surveyMonitoringAction*</pattern>
-			<pattern>/candidateUpdateDetailsAction*</pattern>
+			<!--<pattern>/candidateUpdateDetailsAction*</pattern>-->
 			<!--<pattern>/userWiseTrackingAction*</pattern>-->
-			<pattern>/surveyUserTrackingAction*</pattern>
+			<!--<pattern>/surveyUserTrackingAction*</pattern>-->
 			<pattern>/constituencyDetailReportAction*</pattern>
 			<pattern>/surveyCallCenterAction*</pattern>
-			<pattern>/surveyAdmin*</pattern>
+			<!--<pattern>/surveyAdmin*</pattern>-->
        		<pattern>/houseHoldsSummaryReportAction*</pattern>
        		<!--<pattern>/assignUsersToWebMonitoringTeam*</pattern>-->
        		<pattern>/RegistrationAction*</pattern>
@@ -322,12 +322,12 @@
 			<!--<pattern>/cadreRegistrationAmountReportAction*</pattern>-->
 			<!--<pattern>/leaderCadreDashBoardAction*</pattern>-->
 			<pattern>/tdpCadreReportsAction*</pattern>
-			<pattern>/tabAllocationDetailsAction*</pattern>
-			<pattern>/hourWiseUserColletedInfoAction*</pattern>
+			<!--<pattern>/tabAllocationDetailsAction*</pattern>-->
+			<!--<pattern>/hourWiseUserColletedInfoAction*</pattern>-->
 			 <!-- <pattern>/cadreAgeGenderAnalysisAction*</pattern>-->
 			 <!--<pattern>/duplicateUsers*</pattern>-->
 			 <!--<pattern>/cadreReportsAction*</pattern>-->
-			 <pattern>/changeUserPasswords*</pattern>
+			<!-- <pattern>/changeUserPasswords*</pattern>-->
 			  <!--<pattern>/cadreBoothAnalysisAction*</pattern>-->
 			 <!--<pattern>/misReportAction*</pattern>-->
 			 <!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
@@ -507,12 +507,12 @@
 	  <!--<pattern>/partyBoothResult2Action*</pattern>-->
 	  <pattern>/ministerAnalysisAction*</pattern>
 	  <!--<pattern>/populateVoterDataAction*</pattern>-->
-	  <!--<pattern>/cadreRegisterPageAction*</pattern>-->
-	  <!--<pattern>/cadreRegisterAction*</pattern>-->
+	  <pattern>/cadreRegisterPageAction*</pattern>
+	  <pattern>/cadreRegisterAction*</pattern>
 	  <!--<pattern>/specialPageManageAction*</pattern>-->
 	 <!-- <pattern>/righttoinformation*</pattern>-->
 	  <!--<pattern>/voterModificationReportAction*</pattern>-->
-	  <pattern>/casteAndElectionResultsComparisonAction*</pattern>
+	<pattern>/casteAndElectionResultsComparisonAction*</pattern>
 	  <pattern>/constituencyManagementAction*</pattern>
 	  <pattern>/initailConstituencyManagementAction*</pattern>
 	  <pattern>/cadreManagementAction*</pattern>
@@ -543,6 +543,19 @@
 	  <pattern>/cadreCommitteeSearchAction*</pattern>
 	  <pattern>/tdpCadreImagesVerification*</pattern>
 	  <pattern>/tdpCadreFamilyUpdationAction*</pattern>	
-			
+
+	   <pattern>/tabAllocationDetailsAction*</pattern>
+	   <pattern>/surveyAdmin*</pattern>
+	   <pattern>/surveyUserTrackingAction*</pattern>
+	   <pattern>/candidateUpdateDetailsAction*</pattern>
+	   <pattern>/getVotersAddressAction*</pattern>
+	   <pattern>/strategyModelAction*</pattern>
+	   <pattern>/voterLocationAction*</pattern>
+	   <pattern>/houseHoldCreationAction*</pattern>
+	   <pattern>/houseHoldSurveyReportAction*</pattern>
+	   <pattern>/muncipalElectionDetailsAction*</pattern>
+	   <pattern>/hourWiseUserColletedInfoAction*</pattern>
+	   <pattern>/changeUserPasswords*</pattern>
+	   <pattern>/mergePanchayatAction*</pattern>
 	 </decorator> 
 </decorators>
