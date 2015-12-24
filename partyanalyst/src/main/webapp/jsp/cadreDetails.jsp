@@ -32,6 +32,7 @@
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style>
+#menu i{color : #fff !important}
  #paginationDivId .prev,.next{width:60px !important;}
  
 .inbox-messages

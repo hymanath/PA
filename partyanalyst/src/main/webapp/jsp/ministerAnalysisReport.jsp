@@ -6,9 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Ministers Analysis</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <style type="text/css">
 .main-mbg {
     background-color: #06ABEA;

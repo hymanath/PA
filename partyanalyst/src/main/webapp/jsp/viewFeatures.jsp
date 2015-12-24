@@ -5,6 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst - Features</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.min.css" rel="stylesheet" />
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
