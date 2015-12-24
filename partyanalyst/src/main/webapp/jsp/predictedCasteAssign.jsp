@@ -160,7 +160,9 @@ function callAjax(jsObj,url)
 			$("#casteCountDiv").html(str);
 		}
 	}
+$("#menu_multilevelpushmenu").hide();
  </script>
+
  <script>
  getCounts();
  </script>
