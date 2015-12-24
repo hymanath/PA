@@ -196,10 +196,10 @@
 			<pattern>/footerLinksAction*</pattern>
 			<!--<pattern>/viewFeaturesAction*</pattern>-->
 			<pattern>/voterDataManageAction*</pattern>
-			<pattern>/callCenterAction*</pattern>
+			<!--<pattern>/callCenterAction*</pattern>-->
 			<pattern>/partyBoothResult2Action*</pattern>
-			<pattern>/cadreManagementAction*</pattern>
-			<pattern>/constituencyManagementAction*</pattern>
+			<!--<pattern>/cadreManagementAction*</pattern>-->
+			<!--<pattern>/constituencyManagementAction*</pattern>-->
 			<pattern>/problemManagementReportAction*</pattern>
 			<!--<pattern>/electionComparisonAction*</pattern>-->
 			<!--<pattern>/partyResultsCriteriaAction*</pattern>-->
@@ -210,8 +210,8 @@
 			<!--<pattern>/ministerAnalysisAction*</pattern>-->
 			<pattern>/censusReportAction*</pattern>
 			<pattern>/populateVoterDataAction*</pattern>
-			<pattern>/cadreRegisterPageAction*</pattern>
-		<pattern>/cadreRegisterAction*</pattern>
+			<!--<pattern>/cadreRegisterPageAction*</pattern>-->
+		<!--<pattern>/cadreRegisterAction*</pattern>-->
 			<pattern>/statePageAction*</pattern>
 			<!--<pattern>/electionComparisonReportAction*</pattern>-->
 			<pattern>/partyStrengthAction*</pattern>
@@ -236,7 +236,7 @@
 			<pattern>/userGroupAction*</pattern>
 			<pattern>/setUserRestrictionAction*</pattern>
 			<pattern>/assignSubUserAction*</pattern>
-			<pattern>/casteAndElectionResultsComparisonAction*</pattern>
+			<!--<pattern>/casteAndElectionResultsComparisonAction*</pattern>-->
 			<pattern>/validationToolsAction*</pattern>
 			<pattern>/cadreOnlineRegisterPageAction*</pattern>
 			<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
@@ -260,11 +260,11 @@
 			<pattern>/demoRequestAction*</pattern>
 			<pattern>/constituencyInfoAction.action*</pattern>
 			<pattern>/mobileAppUserMgmtAction*</pattern>
-			<pattern>/predictedCasteAssignAction.action*</pattern>
+			<!--<pattern>/predictedCasteAssignAction.action*</pattern>-->
 			<pattern>/partialBoothPanchayatAction*</pattern>
 			<pattern>/userRegPageAction*</pattern>
-			<pattern>/casteReportAction*</pattern>
-			<pattern>/voterAddressAction*</pattern>
+			<!--<pattern>/casteReportAction*</pattern>-->
+			<!--<pattern>/voterAddressAction*</pattern>-->
 			<pattern>/houseHoldSurveyReportAction*</pattern>
 			<pattern>/votersEditNewHHAction*</pattern>
 			<pattern>/houseHoldCreationAction*</pattern>
@@ -299,36 +299,36 @@
 			<pattern>/dailyVerificationReportsAction*</pattern>
 			<pattern>/surveyMonitoringAction*</pattern>
 			<pattern>/candidateUpdateDetailsAction*</pattern>
-			<pattern>/userWiseTrackingAction*</pattern>
+			<!--<pattern>/userWiseTrackingAction*</pattern>-->
 			<pattern>/surveyUserTrackingAction*</pattern>
 			<pattern>/constituencyDetailReportAction*</pattern>
 			<pattern>/surveyCallCenterAction*</pattern>
 			<pattern>/surveyAdmin*</pattern>
        		<pattern>/houseHoldsSummaryReportAction*</pattern>
-       		<pattern>/assignUsersToWebMonitoringTeam*</pattern>
+       		<!--<pattern>/assignUsersToWebMonitoringTeam*</pattern>-->
        		<pattern>/RegistrationAction*</pattern>
        		<pattern>/partyCadreSearchAction*</pattern>
        		<pattern>/duplicateMobileNumbers*</pattern>
-       		<pattern>/surveyConstituencieOverview*</pattern>
-       		<pattern>/usersReport*</pattern>
+       		<!--<pattern>/surveyConstituencieOverview*</pattern>-->
+       		<!--<pattern>/usersReport*</pattern>-->
        		<pattern>/userAccessRegionAction*</pattern>
        		<pattern>/ivrMobileAction*</pattern>
-       		<pattern>/cadreRegistration*</pattern>
+       		<!--<pattern>/cadreRegistration*</pattern>-->
        		<!--<pattern>/cadreDashBoardAction*</pattern>-->
 			<pattern>/ctpCasteReportAction*</pattern>
-			<pattern>/cadreRegistrationReportAction*</pattern>
-			<pattern>/cadreTransactionReportsAction*</pattern>
+			<!--<pattern>/cadreRegistrationReportAction*</pattern>-->
+			<!--<pattern>/cadreTransactionReportsAction*</pattern>-->
 			<!--<pattern>/cadreRegAmountUpload*</pattern>-->
 			<!--<pattern>/cadreRegistrationAmountReportAction*</pattern>-->
 			<!--<pattern>/leaderCadreDashBoardAction*</pattern>-->
-			<pattern>/tdpCadreReportsAction*</pattern>
+			<!--<pattern>/tdpCadreReportsAction*</pattern>-->
 			<pattern>/tabAllocationDetailsAction*</pattern>
 			<pattern>/hourWiseUserColletedInfoAction*</pattern>
-			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
-			 <pattern>/duplicateUsers*</pattern>
+			 <!--<pattern>/cadreAgeGenderAnalysisAction*</pattern>-->
+			 <!--<pattern>/duplicateUsers*</pattern>-->
 			 <!--<pattern>/cadreReportsAction*</pattern>-->
 			 <pattern>/changeUserPasswords*</pattern>
-			  <pattern>/cadreBoothAnalysisAction*</pattern>
+			  <!--<pattern>/cadreBoothAnalysisAction*</pattern>-->
 			 <!--<pattern>/misReportAction*</pattern>-->
 			 <!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
 			 <pattern>/tdpCallCenterAction*</pattern>
@@ -336,13 +336,13 @@
 			 <!--<pattern>/cadreIvrReportAction*</pattern>-->	
 			<!--<pattern>/villageIVRAction*</pattern>-->	
 			<!--<pattern>/cadreMissedCallCampaignAction*</pattern>-->				 
-			<pattern>/cadreCommitteeSearchAction*</pattern>			
-			<pattern>/tdpCadreImagesVerification*</pattern>	
+			<!--<pattern>/cadreCommitteeSearchAction*</pattern>	-->		
+			<!--<pattern>/tdpCadreImagesVerification*</pattern>	-->
 			<pattern>/currentBoothsStatus*</pattern>
-			<pattern>/ivrCampaignUploadAction*</pattern> 
+			<!--<pattern>/ivrCampaignUploadAction*</pattern> -->
 			<!--<pattern>/cadreVoterSearchAction*</pattern>-->
 			<!--<pattern>/cadredashBoardAction*</pattern>-->
-			<pattern>/tdpCadreFamilyUpdationAction*</pattern>
+			<!--<pattern>/tdpCadreFamilyUpdationAction*</pattern>-->
 			
 		 </decorator>
        
@@ -384,11 +384,11 @@
 			<pattern>/assigningPartyToUserAction*</pattern>
 			<pattern>/adminUpload*</pattern>
 			<pattern>/profileManagePageAction*</pattern>
-			<pattern>/initailConstituencyManagementAction*</pattern>
+			<!--<pattern>/initailConstituencyManagementAction*</pattern>-->
 			<pattern>/partyPerformanceReport*</pattern>
 			<pattern>/abuseCommentaction*</pattern>
 			<pattern>/partyManagementAction*</pattern>
-			<pattern>/cadreManagementAction*</pattern>
+			<!--<pattern>/cadreManagementAction*</pattern>-->
 			<pattern>/cadreReportAction*</pattern>
 			<!--<pattern>/completeProblemDetailsSearchAction*</pattern>-->
 			<!--<pattern>/partyStrengthAction*</pattern>-->
@@ -432,9 +432,9 @@
 		<pattern>/peformanceOfCadreAction*</pattern>
 		<pattern>/mahanaduTabUsersManageAction*</pattern>
 		<pattern>/messageQueueManagementAction*</pattern>
-		<pattern>/mahanaduCadreVisitInfoAction*</pattern>
-		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
-		<pattern>/eventInvitees*</pattern>
+		<!--<pattern>/mahanaduCadreVisitInfoAction*</pattern>-->
+		<!--<pattern>/tdpCadreFamilyUpdationAction*</pattern>-->
+		<!--<pattern>/eventInvitees*</pattern>-->
 		<pattern>/committeeDetailedAnalysis*</pattern>
 		<!--<pattern>/cadreDetailsAction*</pattern>-->
 		<pattern>/articleDetailsAction*</pattern>
@@ -471,7 +471,7 @@
 	 <pattern>/cadreCommitteeRolesDashboard*</pattern>
 	 <pattern>/committeeUpdateApproveAction*</pattern>
 	 <pattern>/constituencyCommitteeSummaryAction*</pattern>
-	 <pattern>/updateActivityAction*</pattern>
+	<!-- <pattern>/updateActivityAction*</pattern>-->
 	 <pattern>/committeeInfoAction*</pattern>
 	 <pattern>/cadreCommitteeSummaryAction*</pattern>
 	 <!-- Committee module ends-->
@@ -479,7 +479,7 @@
 	  <pattern>/villageIVRAction*</pattern>
 	 <pattern>/cadreIvrReportAction*</pattern>
 	 <!-- IVR Campaign starts-->
-	 <pattern>/partyMeetingsDashBoard*</pattern>
+		 <pattern>/partyMeetingsDashBoard*</pattern>
 	 <pattern>/meetingList*</pattern>
 	 <!--<pattern>/statePageAction*</pattern>-->
 	 <pattern>/votersAnalysisNewAction*</pattern>
@@ -512,6 +512,24 @@
 	  <!--<pattern>/specialPageManageAction*</pattern>-->
 	 <!-- <pattern>/righttoinformation*</pattern>-->
 	  <!--<pattern>/voterModificationReportAction*</pattern>-->
+	<pattern>/casteAndElectionResultsComparisonAction*</pattern>
+	  <pattern>/constituencyManagementAction*</pattern>
+	  <pattern>/initailConstituencyManagementAction*</pattern>
+	  <pattern>/cadreManagementAction*</pattern>
+	  <pattern>/callCenterAction*</pattern>
+	   <pattern>/updateActivityAction*</pattern>
+	   <pattern>/eventInvitees*</pattern>
+	   <pattern>/mahanaduCadreVisitInfoAction*</pattern>
+	   <pattern>/duplicateUsers*</pattern>
+	   <pattern>/ivrCampaignUploadAction*</pattern>
+	   <pattern>/cadreBoothAnalysisAction*</pattern>
+	   <pattern>/surveyConstituencieOverview*</pattern>
+	   <pattern>/usersReport*</pattern>
+	   <pattern>/assignUsersToWebMonitoringTeam*</pattern>
+	   <pattern>/userWiseTrackingAction*</pattern>
+	   <pattern>/voterAddressAction*</pattern>
+	   <pattern>/casteReportAction*</pattern>
+	   <pattern>/predictedCasteAssignAction.action*</pattern>
 			
 	 </decorator> 
 </decorators>
