@@ -17,7 +17,6 @@
 <script src="dist/js/jquery-1.11.2.min.js"></script>
 <!--<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="fullexpandcollapse/custom.css" rel="stylesheet" type="text/css">-->
-<link rel="stylesheet" type="text/css" href="dist/css/icons.css" />
 <link rel="stylesheet" href="fullexpandcollapse/jquery.multilevelpushmenu_red.css">
 <link rel="stylesheet" href="fullexpandcollapse/fullexpandcollapse.css">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
@@ -556,7 +555,7 @@ footer
  <!-- /pusher -->	
 
 <footer>
-    <div class="text-center" >
+    <div class="text-center" style="text-align:center">
 		    All &copy; 2015 Telugu Desam Party
     </div>
 </footer>
