@@ -6,7 +6,11 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <HTML>
 <head> 
+
+	<link href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" /> 
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 	<div>
@@ -69,12 +73,17 @@
 </div>
 <div id="tableDiv" style="margin-top:23px;overflow:scroll;margin-left:25px;width:990px;" ></div>
 <span id="updateId" style="margin-left: 246px; margin-top:31px;display:none;width:70px"  class='btn btn-info' onclick="updatecandidateDetails()">Update</span>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!--<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>-->
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-<script>    
+<!--<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>-->
 
+<script>   
+ 
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 
 getAllDistrictsForAState();
 function candidateUpdateDetails()
@@ -152,6 +161,7 @@ $("#electionYearId").append("<option value="+result[i].id+">"+result[i].name+"</
 }
 });
 }
+
 function getAllDistrictsForAState()
 {
 
@@ -164,14 +174,15 @@ data: {stateId:1},
 
 success:function(result){
 
-for(var i in result){
-	$("#districtId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
-}
-	   $('#districtId').multiselect();
+		for(var i in result){
+			$("#districtId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		}
+	   //$('#districtId').multiselect();
 	}
 });
 
 }
+
 function casteHideOrShow()
 {
   
