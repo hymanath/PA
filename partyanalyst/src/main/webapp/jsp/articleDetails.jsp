@@ -105,6 +105,7 @@ body
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
  </div>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
  <script type="text/javascript" src="js/simplePagination/simplePagination3.js" ></script>
 <script>

@@ -186,7 +186,7 @@
             <pattern>/newhomePageAction*</pattern>
             <pattern>/newconnectPeoplePage*</pattern>
 	    	<!--<pattern>/voters*</pattern>-->
-	    	<pattern>/userProfile*</pattern>
+	    	<!--<pattern>/userProfile*</pattern>-->
 	    	<pattern>/votersAnalysisAction*</pattern>
 			<pattern>/loginInputAction*</pattern>
 			<!--<pattern>/freeUserRegistration*</pattern>-->
@@ -212,8 +212,8 @@
 			<pattern>/populateVoterDataAction*</pattern>
 			<!--<pattern>/cadreRegisterPageAction*</pattern>-->
 			<!--<pattern>/cadreRegisterAction*</pattern>-->
-			<pattern>/statePageAction*</pattern>
-			<!--<pattern>/electionComparisonReportAction*</pattern>-->
+			<!--<pattern>/statePageAction*</pattern>-->
+			<pattern>/electionComparisonReportAction*</pattern>
 			<!--<pattern>/partyStrengthAction*</pattern>-->
 			<pattern>/specialPageManageAction*</pattern>
 			<pattern>/righttoinformation*</pattern>
@@ -406,11 +406,11 @@
 			<pattern>/partyPerformanceJasper*</pattern>
 			<pattern>/tdpcadresmsstatusAction*</pattern>
 			<pattern>/cadreSMSFileUpload*</pattern>
-	 </decorator>
+	  </decorator>
 	  <decorator name="committeelayout" page="committeelayout.jsp">
 		<!--<pattern>/cadreCommitteeSummaryAction*</pattern>-->
 		<!--<pattern>/cadreCommitteeAction*</pattern>-->
-		<pattern>/cadreCommitteeRequestAction*</pattern>
+		<!--<pattern>/cadreCommitteeRequestAction*</pattern>-->
 		<pattern>/committeeManagementAction*</pattern>
 		<pattern>/cadreProfileDetailsAction*</pattern>
 		
@@ -426,25 +426,25 @@
 	 </decorator>
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<!--<pattern>/cadreSearchPageAction*</pattern>-->
-		<pattern>/committeeDistrictDashBoardAction*</pattern>
+		<!--<pattern>/committeeDistrictDashBoardAction*</pattern>-->
 		<pattern>/cadreSearchAndRegAction*</pattern>
 		<pattern>/cadreEnrollment*</pattern>
-		<pattern>/peformanceOfCadreAction*</pattern>
-		<pattern>/mahanaduTabUsersManageAction*</pattern>
-		<pattern>/messageQueueManagementAction*</pattern>
+		<!--<pattern>/peformanceOfCadreAction*</pattern>-->
+		<!--<pattern>/mahanaduTabUsersManageAction*</pattern>-->
+		<!--<pattern>/messageQueueManagementAction*</pattern>-->
 		<!--<pattern>/mahanaduCadreVisitInfoAction*</pattern>-->
-		<pattern>/tdpCadreFamilyUpdationAction*</pattern>
+		<!--<pattern>/tdpCadreFamilyUpdationAction*</pattern>-->
 		<!--<pattern>/eventInvitees*</pattern>-->
-		<pattern>/committeeDetailedAnalysis*</pattern>
+		<!--<pattern>/committeeDetailedAnalysis*</pattern>-->
 		<!--<pattern>/cadreDetailsAction*</pattern>-->
-		<pattern>/articleDetailsAction*</pattern>
+		<!--<pattern>/articleDetailsAction*</pattern>-->
 		<!--<pattern>/updateActivityAction*</pattern>-->
 		<!--<pattern>/activitiesDashboard*</pattern>-->
-		<pattern>/eventFieUploadAction*</pattern>
-		<pattern>/eventMultiFieUploadAction*</pattern>
+		<!--<pattern>/eventFieUploadAction*</pattern>-->
+		<!--<pattern>/eventMultiFieUploadAction*</pattern>-->
 	 </decorator>
 	 
-	  <decorator name="tdpMenu" page="tdpMenu.jsp">  
+	<decorator name="tdpMenu" page="tdpMenu.jsp">  
 	<pattern>/activitiesDashboard*</pattern>
 	<!-- Training module Starts-->
 	 <pattern>/trainingCenterDashBoardAction*</pattern>
@@ -471,47 +471,36 @@
 	 <pattern>/cadreCommitteeRolesDashboard*</pattern>
 	 <pattern>/committeeUpdateApproveAction*</pattern>
 	 <pattern>/constituencyCommitteeSummaryAction*</pattern>
-	<!-- <pattern>/updateActivityAction*</pattern>-->
 	 <pattern>/committeeInfoAction*</pattern>
 	 <pattern>/cadreCommitteeSummaryAction*</pattern>
 	 <!-- Committee module ends-->
 	 <!-- IVR Campaign starts-->
 	  <pattern>/villageIVRAction*</pattern>
 	 <pattern>/cadreIvrReportAction*</pattern>
-	 <!-- IVR Campaign starts-->
-		 <pattern>/partyMeetingsDashBoard*</pattern>
+	 <!-- IVR Campaign ends-->
+	 <pattern>/partyMeetingsDashBoard*</pattern>
 	 <pattern>/meetingList*</pattern>
-	 <!--<pattern>/statePageAction*</pattern>-->
+	 <pattern>/statePageAction*</pattern>
 	 <pattern>/votersAnalysisNewAction*</pattern>
 	  <pattern>/votersSearchAction*</pattern>
 	  <pattern>/cadreMissedCallCampaignAction*</pattern>
 	  <!-- Analysis Module Starts-->
 	 <pattern>/partyPerformanceMain*</pattern>
-	  <!--<pattern>/partyPerformanceReport*</pattern>-->
 	  <pattern>/electionComparisonAction*</pattern>
 	  <pattern>/partyResultsCriteriaAction*</pattern>
 	  <pattern>/electionResultsAnalysisAction*</pattern>
 	  <pattern>/partyResultsAction*</pattern>
-  <!--<pattern>/electionComparisonReportAction*</pattern>-->
 	  <pattern>/censusReportAction*</pattern>
 	  <pattern>/partyStrengthAction*</pattern>
 	  <!-- Analysis Module ends-->
 	  <pattern>/voters*</pattern>
-	  <!-- <pattern>/userProfile*</pattern>-->
-	  <!--<pattern>/votersAnalysisAction*</pattern>-->
+	  <pattern>/userProfile*</pattern>
 	  <pattern>/freeUserRegistration*</pattern>
 	  <pattern>/publicProfile*</pattern>
 	  <pattern>/adminSocialAction*</pattern>
 	  <pattern>/viewFeaturesAction*</pattern>
-	  <!--<pattern>/voterDataManageAction*</pattern>-->
-	  <!--<pattern>/partyBoothResult2Action*</pattern>-->
-	  <pattern>/ministerAnalysisAction*</pattern>
-	  <!--<pattern>/populateVoterDataAction*</pattern>-->
 	  <pattern>/cadreRegisterPageAction*</pattern>
 	  <pattern>/cadreRegisterAction*</pattern>
-	  <!--<pattern>/specialPageManageAction*</pattern>-->
-	 <!-- <pattern>/righttoinformation*</pattern>-->
-	  <!--<pattern>/voterModificationReportAction*</pattern>-->
 	<pattern>/casteAndElectionResultsComparisonAction*</pattern>
 	  <pattern>/constituencyManagementAction*</pattern>
 	  <pattern>/initailConstituencyManagementAction*</pattern>
@@ -560,12 +549,19 @@
 	  <pattern>/cadreRegistration*</pattern>
 	  <pattern>/tdpCadreReportsAction*</pattern>
 	  <pattern>/partyPerformanceReport*</pattern>
-	  
 	  <pattern>/partialBoothPanchayatAction*</pattern>
 	  <pattern>/stratagicReportsAction*</pattern>
 	  <pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 	  <pattern>/voterAverageAgewiseAction*</pattern>
 	  <pattern>/partyHighLowPollingAction*</pattern>
- 
+ 	  <pattern>/cadreCommitteeRequestAction*</pattern>
+	  <pattern>/committeeDistrictDashBoardAction*</pattern>
+	  <pattern>/peformanceOfCadreAction*</pattern>
+	  <pattern>/mahanaduTabUsersManageAction*</pattern>
+	  <pattern>/messageQueueManagementAction*</pattern>
+	  <pattern>/committeeDetailedAnalysis*</pattern>
+	  <pattern>/articleDetailsAction*</pattern>
+	  <pattern>/eventFieUploadAction*</pattern>
+	  <pattern>/eventMultiFieUploadAction*</pattern>
 	 </decorator> 
 </decorators>
