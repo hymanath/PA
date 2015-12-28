@@ -109,8 +109,12 @@ table.dataTable tr.odd {
 .error{color:red;}
 #summaryInfo h6{color:#023C59;margin-top:8px;}
 </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+ <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+  
 </head>
 <body>
 <div class="container m_top10" style=" background: none repeat scroll 0 0 #fff;
