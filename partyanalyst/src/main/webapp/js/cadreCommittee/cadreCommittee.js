@@ -489,6 +489,9 @@
 			locationValue = userLocation;
 		}
 
+		if(locationValue == null)
+			locationValue =0;
+		
 		var jsObj =
 		{
 			locationLevel :locationLevel,
