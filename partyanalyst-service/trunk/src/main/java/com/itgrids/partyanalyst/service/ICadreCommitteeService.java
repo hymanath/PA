@@ -145,7 +145,7 @@ public interface ICadreCommitteeService {
 	 
 	 public String getLocationName(Long LocationTypeId,Long locationValue);
 	 public List<IdNameVO> getAllCadreDeleteReasons();
-	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark);
+	 public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark,Long userId);
 	 public List<Long> getAllRemovedCadre();
 	 public void getLocationNameByLocationTypeAndId(Long committeeLevelId,Long locationValue,String location);
 	 public ResultStatus saveActivityDetails(final ActivityVO activityVO,final Long userId);
@@ -167,5 +167,5 @@ public interface ICadreCommitteeService {
 	 public List<BasicVO> getAvailableDates(EventDocumentVO inputVo);
 	 public List<ActivityVO> getDistrictWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 	 public List<IdNameVO> getAllCastes();
-	 public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId);
+	 public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId,Long userId);
 }
