@@ -192,13 +192,11 @@ var jsObj=
 		var url = "enableOrdisableAccessAction.action?"+rparam;						
 		callAjax(jsObj,url);	
 }
-$("#selectAll").live("click",function()
-{
+$(document).on("click","#selectAll",function(){
 	$("#unselectAll").attr("checked",false);
 	$(".checkEle").attr("checked",true);
 });
-$("#unselectAll").live("click",function()
-{
+$(document).on("click","#unselectAll",function(){
 	$("#selectAll").attr("checked",false);
 	$(".checkEle").attr("checked",false);
 });

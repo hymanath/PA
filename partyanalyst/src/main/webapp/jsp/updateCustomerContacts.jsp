@@ -7,6 +7,7 @@
 <HTML>
 <HEAD>
 <TITLE>Party Analyst - Customer Contact Details</TITLE>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
   <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
  <!--<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>-->

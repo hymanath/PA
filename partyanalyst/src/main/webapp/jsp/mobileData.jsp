@@ -7,7 +7,7 @@
 <html>
 <head>
 <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <!-- YUI Dependency files (Start) -->
  <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
  <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -911,8 +911,9 @@ errorDiv.innerHTML = '';
 		callAjax(jsObj,url);	
 		}
  }
- $("#createUserId").live("click",function()
- {
+ $(document).on("click","#createUserId",function(){
+/*  $("#createUserId").live("click",function()
+ { */
 	$("#superAdminInnerDiv").show();
  var str='';
   str+='<div class="widget">';
@@ -945,9 +946,8 @@ errorDiv.innerHTML = '';
    $("#superAdminInnerDiv").html(str);
 
  });
-
-$("#saveSuperAdminId").live("click",function()
-{
+ 
+$(document).on("click","#saveSuperAdminId",function(){
 	var str = '<font color="red">';
 	var userName=$("#UserNameId1").val() ;
 	var password =$("#PasswordId1").val() ;

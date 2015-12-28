@@ -17,6 +17,7 @@
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 	<script type="text/javascript" src="js/md5.js"></script>
 </head>
@@ -1875,8 +1876,7 @@ function getVotersAnalysisbasedOnLevel()
 }
 
 //change Password
-
-$(".changePwdLink").live("click",function(){
+$(document).on("click",".changePwdLink",function(){
 	 $("#allConnectedUsersDisplay_main").children().remove();
 	
 	 $("#connectPeoplePopup").dialog({
@@ -1903,14 +1903,10 @@ $(".changePwdLink").live("click",function(){
 
 		elmt.append(div);
 	});
-
-   $("#cancelButtonID").live("click",function(){
+$(document).on("click","#cancelButtonID",function(){
 	 $("#connectPeoplePopup").dialog("destroy");
    });
-
-   $("#changePWDButton").live("click",function(){
-	
-   
+$(document).on("click","#changePWDButton",function(){
 		var userName="${profileUserName}";
    
 		var cpwd = $.trim($("#currentPwdId").val());
@@ -2025,9 +2021,7 @@ $(".changePwdLink").live("click",function(){
 	}
   });
 //edit picture
-
-$(".editPictureLink").live("click",function(){
-	
+$(document).on("click",".editPictureLink",function(){
 $("#allConnectedUsersDisplay_main").children().remove();
 	
 	$("#connectPeoplePopup").dialog({
@@ -2127,12 +2121,10 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	});
 
 });
-
-$("#cancelPicButton").live("click",function(){
+$(document).on("click","#cancelPicButton",function(){
 	$("#connectPeoplePopup").dialog("destroy");
 });
-
-$("#uploadPicButton").live("click",function(){
+$(document).on("click","#uploadPicButton",function(){
 	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
 		var str = '<font color="red">';
 		if(uploadPhotoId.length == 0)
@@ -2146,8 +2138,7 @@ $("#uploadPicButton").live("click",function(){
 			 getUploadpic();
 		}
 });
-
-$("#uploadCoverPicButton").live("click",function(){
+$(document).on("click","#uploadCoverPicButton",function(){
 	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
 		var str = '<font color="red">';
 		if(uploadPhotoId.length == 0)

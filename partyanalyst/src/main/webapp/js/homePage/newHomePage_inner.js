@@ -431,11 +431,10 @@ if($(this).next().val()!="null"){rating= $(this).next().val();}
 }
 
  /* Stop page jumping when links are pressed  */
-    $('a[href="#"]').live("click", function(e) {
-         return false; // prevent default click action from happening!
+    $(document).on("click","a[href='#']", function(e){
+		return false; // prevent default click action from happening!
          e.preventDefault(); // same thing as above
-    });
-	
+         });
 	
 function getProblemDetails()
 {
