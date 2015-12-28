@@ -11,7 +11,10 @@
 <title>Voter Average Age Report </title>
 
 <!-- YUI Dependency files (Start) -->
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+  <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+  
 <script type="text/javascript" src="../js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="../js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="../js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -61,8 +64,13 @@
  <BODY>
 
 <center><div id="mainDiv" style="min-height:400px;">
-   <div style="margin-left:auto;margin-right:auto;margin-top:30px;">
-	   <span style="font-weight:bold;font-size:14px;">Select Constituency</span> :<font id="requiredValue" class="requiredFont">*</font><select id="constituencyId" onChange="getAverageVoterDetails();"><option value="0"> Select Constituency </option></select></div>	
+<div class="row">
+<div class="col-md-3 col-md-offset-4">
+ <div style="margin-left:auto;margin-right:auto;margin-top:30px;">
+	   <span style="font-weight:bold;font-size:14px;">Select Constituency</span> :<font id="requiredValue" class="requiredFont">*</font><select class="form-control" id="constituencyId" onChange="getAverageVoterDetails();"><option value="0"> Select Constituency </option></select></div>
+</div>
+</div>
+  	
    <div><img style="margin-top:100px;margin-left:50px;display:none;" src="images/icons/goldAjaxLoad.gif" id="ajaxImg"></div>
    <div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;display:none"></div>
 </div></center>
