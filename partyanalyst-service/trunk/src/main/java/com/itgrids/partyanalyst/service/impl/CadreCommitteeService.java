@@ -16314,7 +16314,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return listVo;
 	}
-	public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark){
+	public ResultStatus saveRemovingCadreDetailsAction(Long cadreId,Long reasonId,String remark,Long userId){
 		
 		ResultStatus finalRs = new ResultStatus();
 		try{
@@ -16326,7 +16326,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				cadreData.setIsDeleted("MD");
 				cadreData.setDeleteRemark(remark);
 				cadreData.setUpdatedTime(dt.getCurrentDateAndTime());
-				
+				cadreData.setUpdatedWebUserId(userId);
 				tdpCadreDAO.save(cadreData);
 				
 				finalRs.setResultCode(0);
@@ -16338,7 +16338,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		}
 		return finalRs;
 	}
-    public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId){
+    public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId,Long userId){
 		
 		ResultStatus finalRs = new ResultStatus();
 		DateUtilService dt = new DateUtilService();
@@ -16352,6 +16352,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				cadreData.setMobileNo(mobileNo);
 				cadreData.setCasteStateId(casteId);
 				cadreData.setUpdatedTime(dt.getCurrentDateAndTime());
+				cadreData.setUpdatedWebUserId(userId);
+				
 				tdpCadreDAO.save(cadreData);
 				
 				finalRs.setResultCode(0);
