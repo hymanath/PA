@@ -8,7 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Merge Panchayat</title>
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -66,19 +65,19 @@
 	  display:none;
 	}
 	#headingDiv
-{
-	background-color: #06ABEA;
-	color : #FFFFFF;
-	padding:5px;
-	border-radius : 5px;
-    padding: 6px;
-	text-align : center;
-	width: 950px;
-	margin-left: 0px; 
-	margin-bottom: 25px;
-	font-weight:bold;
-	font-size:15px;
-}
+	{
+		background-color: #06ABEA;
+		color : #FFFFFF;
+		padding:5px;
+		border-radius : 5px;
+		padding: 6px;
+		text-align : center;
+		width: 100%;
+		margin-left: 0px; 
+		margin-bottom: 25px;
+		font-weight:bold;
+		font-size:15px;
+	}
 	</style>
 	
  </head>
@@ -392,6 +391,7 @@ function clearFields(){
 </script>
  
 <body>
+	<div class="container">
 	<div id="mainDiv" style="border:2px solid #78BCE8;padding:20px;border-radius:5px;margin-top:25px;">
 	<div id="headingDiv"> Merging Panchayat Details </div>
 	<div class="container m_top20" style="margin-left:150px;">
@@ -476,6 +476,7 @@ function clearFields(){
 		
 		
 		<input type="button" class="btn btn-info offset2" value="Merge Panchayats" onclick="mergePanchayatDetails();"/>
+	</div>
 	</div>
 	</div>
 </body>
