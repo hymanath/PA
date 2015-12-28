@@ -7,6 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Survey Form Details</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
@@ -93,8 +95,7 @@ textarea {
 <script type="text/javascript">
    $(document).ready(function(){
       $("#formDIV").html("${formString}");
-	  $(".singleChoiceClass").live("click",function()
-	  {
+	  $(document).on("click",".singleChoiceClass",function(){
 	    var key = $(this).attr("key");	
 		$('.singleChoiceClass'+key).each(function() {
 		     $(this).removeAttr('checked');
