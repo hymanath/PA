@@ -143,6 +143,12 @@
 				buildData(result,scope);
 		});
    }
+   jQuery( document ).ready(function( $ ) {
+ $("#tabledataTab").dataTable({
+			         "iDisplayLength": 20,
+			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });	 
+});
    function buildData(result,type)
    {
 	   var str='';
@@ -215,10 +221,7 @@
 		if(type == "Constituency")
 		$("#leaderDataDiv").addClass("customMg");
 		$("#leaderDataDiv").html(str);
-		$("#tabledataTab").dataTable({
-			         "iDisplayLength": 20,
-			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			     });
+		
 				 
 		var firstRowId = $('#tabledataTab tr').eq(1).attr('id');
 		if(type == "District")

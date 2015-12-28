@@ -179,28 +179,8 @@
 <script src="dist/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
-	var GlobalPopupScope;
-	var GlobalPopuplocation;
-$(".select").dropkick();	
-$(".panel-heading","click",function(){
-	if($(this).find(".accordion-toggle,.PlusnMinusSign1,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){
-		$(this).parent().parent().find(".bod").removeClass("bod");
-		$(this).addClass("bod")
-	}else{
-		$(this).removeClass("bod")
-	}
-});
-$(".panel-headingModal").click(function(){
-	if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
-		$(this).parent().parent().find(".bodM").removeClass("bodM");
-		$(this).addClass("bodM")
-	}else{
-		$(this).removeClass("bodM");
-	}
-});
-
-	  
-
+jQuery( document ).ready(function( $ ) {
+ $(".select").dropkick();
 $(function () {
 	var cb = function(start, end, label) {
 	//console.log(start.toISOString(), end.toISOString(), label);
@@ -255,7 +235,31 @@ $(function () {
 $(".searchDateCls").val(" ");
 
 
+}); 
 });
+	var GlobalPopupScope;
+	var GlobalPopuplocation;
+
+$(".panel-heading","click",function(){
+	if($(this).find(".accordion-toggle,.PlusnMinusSign1,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){
+		$(this).parent().parent().find(".bod").removeClass("bod");
+		$(this).addClass("bod")
+	}else{
+		$(this).removeClass("bod")
+	}
+});
+$(".panel-headingModal").click(function(){
+	if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
+		$(this).parent().parent().find(".bodM").removeClass("bodM");
+		$(this).addClass("bodM")
+	}else{
+		$(this).removeClass("bodM");
+	}
+});
+
+	  
+
+
 $(document).on('click', '.panel-heading', function(){
 	//alert(2);
 	if($(this).find(".accordion-toggle,.accordion1-toggle,.accordion2-toggle,.accordion3-toggle").hasClass("collapsed")){

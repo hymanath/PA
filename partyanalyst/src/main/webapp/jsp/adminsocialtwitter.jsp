@@ -4,11 +4,12 @@
 <head>
 	<link href="styles/socialnetwork/style.css" rel="stylesheet" type="text/css" />
 	<link type="text/css" href="styles/socialnetwork/bootstrap.css"/>
+	<link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet"/>
 	<link type="text/css" href="styles/socialnetwork/bootstrap-responsive.min.css" rel="stylesheet" />
 	<link type="text/css" href="styles/socialnetwork/bootstrap-responsive.css" rel="stylesheet" />
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">
+
 </script>
 <style>
 

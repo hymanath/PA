@@ -191,7 +191,7 @@
 			<pattern>/loginInputAction*</pattern>
 			<!--<pattern>/freeUserRegistration*</pattern>-->
 			<!--<pattern>/publicProfile*</pattern>-->
-			<pattern>/adminSocialAction*</pattern>
+			<!--<pattern>/adminSocialAction*</pattern>-->
 			<pattern>/candidateUpdateFormAction*</pattern>
 			<pattern>/footerLinksAction*</pattern>
 			<!--<pattern>/viewFeaturesAction*</pattern>-->
@@ -208,13 +208,13 @@
 			<!--<pattern>/mandalPageSDetailAction*</pattern>-->
 			<!--<pattern>/partyBoothResultAction*</pattern>-->
 			<!--<pattern>/ministerAnalysisAction*</pattern>-->
-			<pattern>/censusReportAction*</pattern>
+			<!--<pattern>/censusReportAction*</pattern>-->
 			<pattern>/populateVoterDataAction*</pattern>
-			<pattern>/cadreRegisterPageAction*</pattern>
-			<pattern>/cadreRegisterAction*</pattern>
+			<!--<pattern>/cadreRegisterPageAction*</pattern>-->
+			<!--<pattern>/cadreRegisterAction*</pattern>-->
 			<pattern>/statePageAction*</pattern>
 			<!--<pattern>/electionComparisonReportAction*</pattern>-->
-			<pattern>/partyStrengthAction*</pattern>
+			<!--<pattern>/partyStrengthAction*</pattern>-->
 			<pattern>/specialPageManageAction*</pattern>
 			<pattern>/righttoinformation*</pattern>
 			<pattern>/voterModificationReportAction*</pattern>
@@ -238,7 +238,7 @@
 			<pattern>/assignSubUserAction*</pattern>
 			<!--<pattern>/casteAndElectionResultsComparisonAction*</pattern>-->
 			<pattern>/validationToolsAction*</pattern>
-			<pattern>/cadreOnlineRegisterPageAction*</pattern>
+			<!--<pattern>/cadreOnlineRegisterPageAction*</pattern>-->
 			<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 			<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 			<pattern>/surveyAnalysisAction*</pattern>
@@ -247,7 +247,7 @@
 			<pattern>/surveyFormSaveAction*</pattern>
 			<pattern>/surveyorProfileSaveAction*</pattern>
 			<pattern>/voterDataToolsAction*</pattern>
-			<pattern>/electionResultsAnalysisAction*</pattern>
+			<!--<pattern>/electionResultsAnalysisAction*</pattern>-->
 			<pattern>/inflencingPeopleWindowAction*</pattern>
 			<!--<pattern>/suggestiveModelAction*</pattern>-->
 			<pattern>/mobileDataAction*</pattern>
@@ -313,7 +313,7 @@
        		<!--<pattern>/usersReport*</pattern>-->
        		<pattern>/userAccessRegionAction*</pattern>
        		<pattern>/ivrMobileAction*</pattern>
-       		<pattern>/cadreRegistration*</pattern>
+       		<!--<pattern>/cadreRegistration*</pattern>-->
        		<!--<pattern>/cadreDashBoardAction*</pattern>-->
 			<pattern>/ctpCasteReportAction*</pattern>
 			<!--<pattern>/cadreRegistrationReportAction*</pattern>  -->
@@ -321,7 +321,7 @@
 			<!--<pattern>/cadreRegAmountUpload*</pattern>-->
 			<!--<pattern>/cadreRegistrationAmountReportAction*</pattern>-->
 			<!--<pattern>/leaderCadreDashBoardAction*</pattern>-->
-			<pattern>/tdpCadreReportsAction*</pattern>
+			<!--<pattern>/tdpCadreReportsAction*</pattern>-->
 			<!--<pattern>/tabAllocationDetailsAction*</pattern>-->
 			<!--<pattern>/hourWiseUserColletedInfoAction*</pattern>-->
 			 <!-- <pattern>/cadreAgeGenderAnalysisAction*</pattern>-->
@@ -385,7 +385,7 @@
 			<pattern>/adminUpload*</pattern>
 			<pattern>/profileManagePageAction*</pattern>
 			<!--<pattern>/initailConstituencyManagementAction*</pattern>-->
-			<pattern>/partyPerformanceReport*</pattern>
+			<!--<pattern>/partyPerformanceReport*</pattern>-->
 			<pattern>/abuseCommentaction*</pattern>
 			<pattern>/partyManagementAction*</pattern>
 			<!--<pattern>/cadreManagementAction*</pattern>-->
@@ -444,7 +444,7 @@
 		<pattern>/eventMultiFieUploadAction*</pattern>
 	 </decorator>
 	 
-	  <decorator name="tdpMenu" page="tdpMenu.jsp">
+	  <decorator name="tdpMenu" page="tdpMenu.jsp">  
 	<pattern>/activitiesDashboard*</pattern>
 	<!-- Training module Starts-->
 	 <pattern>/trainingCenterDashBoardAction*</pattern>
@@ -490,18 +490,18 @@
 	  <!--<pattern>/partyPerformanceReport*</pattern>-->
 	  <pattern>/electionComparisonAction*</pattern>
 	  <pattern>/partyResultsCriteriaAction*</pattern>
-	  <!--<pattern>/electionResultsAnalysisAction*</pattern>-->
-		<pattern>/partyResultsAction*</pattern>
-		<pattern>/electionComparisonReportAction*</pattern>
-		<!--<pattern>/censusReportAction*</pattern>-->
-		<!--<pattern>/partyStrengthAction*</pattern>-->
+	  <pattern>/electionResultsAnalysisAction*</pattern>
+	  <pattern>/partyResultsAction*</pattern>
+  <!--<pattern>/electionComparisonReportAction*</pattern>-->
+	  <pattern>/censusReportAction*</pattern>
+	  <pattern>/partyStrengthAction*</pattern>
 	  <!-- Analysis Module ends-->
 	  <pattern>/voters*</pattern>
-	 <!-- <pattern>/userProfile*</pattern>-->
+	  <!-- <pattern>/userProfile*</pattern>-->
 	  <!--<pattern>/votersAnalysisAction*</pattern>-->
 	  <pattern>/freeUserRegistration*</pattern>
 	  <pattern>/publicProfile*</pattern>
-	  <!--<pattern>/adminSocialAction*</pattern>-->
+	  <pattern>/adminSocialAction*</pattern>
 	  <pattern>/viewFeaturesAction*</pattern>
 	  <!--<pattern>/voterDataManageAction*</pattern>-->
 	  <!--<pattern>/partyBoothResult2Action*</pattern>-->
@@ -543,8 +543,7 @@
 	  <pattern>/cadreCommitteeSearchAction*</pattern>
 	  <pattern>/tdpCadreImagesVerification*</pattern>
 	  <pattern>/tdpCadreFamilyUpdationAction*</pattern>	
-
-	   <pattern>/tabAllocationDetailsAction*</pattern>
+	  <pattern>/tabAllocationDetailsAction*</pattern>
 	   <pattern>/surveyAdmin*</pattern>
 	   <pattern>/surveyUserTrackingAction*</pattern>
 	   <pattern>/candidateUpdateDetailsAction*</pattern>
@@ -557,5 +556,9 @@
 	   <pattern>/hourWiseUserColletedInfoAction*</pattern>
 	   <pattern>/changeUserPasswords*</pattern>
 	   <pattern>/mergePanchayatAction*</pattern>
+	  <pattern>/cadreOnlineRegisterPageAction*</pattern>
+	  <pattern>/cadreRegistration*</pattern>
+	  <pattern>/tdpCadreReportsAction*</pattern>
+	  <pattern>/partyPerformanceReport*</pattern>
 	 </decorator> 
 </decorators>

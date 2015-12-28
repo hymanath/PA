@@ -10,14 +10,13 @@
 <link type="text/css" href="dist/css/bootstrap.css" rel="stylesheet" />
 <link href="css/Training/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+<!--<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">-->
+<!--<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">-->
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
 <style>
 footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.eventsheader { 
@@ -256,9 +255,9 @@ table thead th , table tbody tr td{text-align:center !important}
 </footer>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 getUserAccessLocationDetails();
 	
@@ -352,9 +351,7 @@ getUserAccessLocationDetails();
 		});
 	}
 	
-	
-	
-$(document).ready(function() {
+
 	   /* $('#fromDate').daterangepicker(
 	  {
 		   singleDatePicker: true, 
@@ -444,19 +441,6 @@ $(document).ready(function() {
 		 });
 		 $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
-		 $('#options1').click(function() {
-		 $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-		 });
-
-		 $('#options2').click(function() {
-		 $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-		 });
-
-		 $('#destroy').click(function() {
-		 $('#reportrange').data('daterangepicker').remove();
-		 });
-	  
-});
    
    $("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
 </script>
