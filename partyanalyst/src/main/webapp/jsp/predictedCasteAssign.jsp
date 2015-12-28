@@ -8,14 +8,11 @@
 <html>
 <head>
 <title> Voters </title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<!-- Then get JQuery UI -->
-<script src="https://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
 <script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
 
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
@@ -55,7 +52,7 @@ To <input type="text" style="margin-left:97px;" id="toValue"/><BR>
 <div id="casteCountDiv"></div><br/>
 </div>
  <script type="text/javascript">
-
+$("#menu").trigger("click"); 
  function getCounts()
  {
 	  var jsObj=
@@ -160,7 +157,7 @@ function callAjax(jsObj,url)
 			$("#casteCountDiv").html(str);
 		}
 	}
-$("#menu_multilevelpushmenu").hide();
+
  </script>
 
  <script>
