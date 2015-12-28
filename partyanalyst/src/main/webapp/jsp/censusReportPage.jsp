@@ -24,8 +24,8 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
 
 <!-- Sam Skin CSS for TabView -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
-
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
@@ -229,6 +229,15 @@ select
 	var resultsP;
 	var checkedRadioName;
     google.load("visualization", "1", {packages:["corechart"]});
+	jQuery( document ).ready(function( $ ) {
+			$("#censusSelect").live("change",function(){
+					var val = $("#censusSelect").val();
+					if(val == 0)
+					{
+						$("#censusReporterror_Div").html('Please Select Census Type');
+					}
+			});
+		});
 	$(document).ready(function(){
 	document.getElementById("districtList").disabled= true;
 		$('#stRadioId').click(function(){
@@ -237,13 +246,7 @@ select
 		$('#diRadioId').click(function(){
 			document.getElementById("districtList").disabled= false;
 		});
-		$("#censusSelect").live("change",function(){
-     			var val = $("#censusSelect").val();
-				if(val == 0)
-			    {
-					$("#censusReporterror_Div").html('Please Select Census Type');
-			    }
-		});
+		
 
 	});
 	function showAjaxImage()

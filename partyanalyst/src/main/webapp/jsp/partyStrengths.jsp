@@ -20,8 +20,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>  
 
 <!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>

@@ -1039,10 +1039,10 @@ function SortByName(a, b){
 					str+='</table>';
 					$(targetDiv).html(str);
 					
-					$("#"+constant+"tabledata1").dataTable({
+					/*$("#"+constant+"tabledata1").dataTable({
 						"iDisplayLength": -1,
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-					});
+					});*/
 				 
 				 if(targetDiv == "#leaderDataDiv1"){
 					$("#leaderDataDiv1 .dataTables_length").hide();

@@ -573,7 +573,6 @@ function openAddNewProblemWindow()
 	var browser_addNewProblem = window.open("addNewProblemAction.action","addNewProblem","scrollbars=yes","height=100","width=100","left=200","top=200");	
 	browser_addNewProblem.focus();
 }
-console.log(${sessionScope.USER.entitlements})
 
 </script>
 </body>
