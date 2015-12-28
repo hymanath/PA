@@ -6,11 +6,12 @@
 <html>
 <head>
 <title>Send Voice Sms</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
-
+<link href="dist/css/bootstrap.css" rel="stylesheet"/>
 
  <style>
   .datagrid table {
@@ -58,6 +59,13 @@
 	
   </style>
 <script>
+
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 function ajaxToGetRecordingDetails()
 {			 $('#ajaxImage').show();
 
@@ -188,5 +196,8 @@ function buildVoiceSmsReport(results)
 
 
 <div id="reportDiv"></div>
+<script>
+Dat();
+</script>
 </body>
 </html>
