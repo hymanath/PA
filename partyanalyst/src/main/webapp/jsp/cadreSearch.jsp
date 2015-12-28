@@ -633,6 +633,10 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		 }
 		
 		$("#searchDataImg").show();
+
+		if(locationValue == null)
+			locationValue =0;
+		
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -1153,6 +1157,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						
 					$("#searchDataImg").show();
 					
+					if(locationValue == null)
+						locationValue =0;
 					var jsObj =
 					{
 						locationLevel :locationLevel,
