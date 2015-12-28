@@ -12,6 +12,9 @@
 <c:if test="${type == null || type == ''}"> 
 <title> Polling Low,Party Strong</title>
 </c:if> 
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery.doubleScroll.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <style>
@@ -57,7 +60,12 @@ color:#333333;
 <center> 
  <div id="mainDiv"> 
   <s:if test="{constituenciesList != null && constituenciesList.size >0}">
-    <div id="selectDiv"><span style="font-weight:bold;font-size:16px;">Select Constituency : </span> <s:select theme="simple"    name="constituencyId" id="constituencyId" list="constituenciesList" onChange="getAllCriticalPanchayats();" listKey="id" listValue="name" /></div> 
+  <div class="row">
+<div class="col-md-3 col-md-offset-4">
+   <div id="selectDiv"><span style="font-weight:bold;font-size:16px;">Select Constituency : </span> <s:select class="form-control" theme="simple"    name="constituencyId" id="constituencyId" list="constituenciesList" onChange="getAllCriticalPanchayats();" listKey="id" listValue="name" /></div> 
+</div>
+</div>
+ 
   </s:if>
   <div id="ajaxImage" style="margin-top:35px;"><img src="images/icons/goldAjaxLoad.gif"></div>
   <div id="partyHighTable"></div>
