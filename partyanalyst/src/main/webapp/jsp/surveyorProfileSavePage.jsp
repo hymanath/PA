@@ -8,7 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Survey Profilr Saving</title>
-<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
 <script type="text/javascript" src="js/surveyAnalysis/surveyAnalysis.js"></script>
 
@@ -25,6 +26,12 @@
 	}
 </style>
 <script>
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 function validateMethod(){
 var nameField = document.getElementById("name");
 var stateIdField = document.getElementById("stateId");
@@ -272,5 +279,8 @@ var villageIdField = document.getElementById("villageId");
 		</div>
 	</div>
 </div>
+<script>
+Dat();
+</script>
 </body>
 </html>

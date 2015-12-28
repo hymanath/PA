@@ -9,6 +9,8 @@
 <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
 
 <!-- YUI Dependency files (Start) -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -159,5 +161,8 @@
 
 
 </div>
+<script>
+Dat();
+</script>
 </body>
 </html>

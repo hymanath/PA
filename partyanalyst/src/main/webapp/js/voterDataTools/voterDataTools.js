@@ -331,17 +331,21 @@ function removeSelectElements(selectedElmt)
 	}
 	
 $(document).ready(function(){
-	
-$("#casteAssignedVotersHideMenu").live("click",function(){
+$(document).on("click","#casteAssignedVotersHideMenu",function(){
 	  $("#casteAssignedVotersInnerDiv").css("display","none");
 	  
 	  $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
-	});
-
-	$("#casteAssignedVotersShowMenu").live("click",function(){
+});
+$(document).on("click","#casteAssignedVotersShowMenu",function(){
 		$("#casteAssignedVotersInnerDiv").css("display","block");
 		$("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersHideMenu" class="btn"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 	
 });
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}

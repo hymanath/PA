@@ -4,9 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <title>Influencing People Details</title>
 <script>
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 function getRespectiveDetails()
 {
 	var level = $('#selLevelId option:selected').val();
@@ -262,5 +270,8 @@ function buildYUIDTTable(tableId,divId)
 </table>
 </div><br>
 <div id="influencePeopleMainDataDiv" class="yui-skin-sam" style="width:28.28cm;"></div>
+<script>
+Dat();
+</script>
 </body>
 </html>
