@@ -238,19 +238,19 @@
 			<pattern>/assignSubUserAction*</pattern>
 			<!--<pattern>/casteAndElectionResultsComparisonAction*</pattern>-->
 			<pattern>/validationToolsAction*</pattern>
+			
 			<!--<pattern>/cadreOnlineRegisterPageAction*</pattern>-->
 			<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 			<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 			<pattern>/surveyAnalysisAction*</pattern>
-			<pattern>/assigningSurveyToUserAction*</pattern>		
-			<pattern>/surveyFormAction*</pattern>
+			<!--<pattern>/assigningSurveyToUserAction*</pattern>-->		
+			<!--<pattern>/surveyFormAction*</pattern>-->
 			<pattern>/surveyFormSaveAction*</pattern>
-			<pattern>/surveyorProfileSaveAction*</pattern>
-			<pattern>/voterDataToolsAction*</pattern>
+			<!--<pattern>/surveyorProfileSaveAction*</pattern>-->
+			<!--<pattern>/voterDataToolsAction*</pattern>-->
 			<!--<pattern>/electionResultsAnalysisAction*</pattern>-->
-			<pattern>/inflencingPeopleWindowAction*</pattern>
+			<!--<pattern>/inflencingPeopleWindowAction*</pattern>-->
 			<!--<pattern>/suggestiveModelAction*</pattern>-->
-			
 			<!--<pattern>/mobileDataAction*</pattern>-->
 			<!--<pattern>/messageCenterAction*</pattern>-->
 			<!--<pattern>/uploadAudioFile*</pattern>-->
@@ -574,5 +574,11 @@
 	  <pattern>/articleDetailsAction*</pattern>
 	  <pattern>/eventFieUploadAction*</pattern>
 	  <pattern>/eventMultiFieUploadAction*</pattern>
+	  
+	  <pattern>/assigningSurveyToUserAction*</pattern>
+	  <pattern>/surveyFormAction*</pattern>
+	  <pattern>/surveyorProfileSaveAction*</pattern>
+	  <pattern>/voterDataToolsAction*</pattern>
+	  <pattern>/inflencingPeopleWindowAction*</pattern>
 	 </decorator> 
 </decorators>
