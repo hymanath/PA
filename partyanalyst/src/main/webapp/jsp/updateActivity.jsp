@@ -813,7 +813,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 function gettingCadreDetails(locationId,locationName){	
 	
 	$("#cadreDetailsDiv").html('');
-	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+' Main Committee Members </span>');
+	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+'  '+$("#activityLevelList option:selected").text()+' Main Committee Members </span>');
 	$("#dialogSummaryDistsrict").modal("show");
 	$("#dataLoadingImg").show();
 	
