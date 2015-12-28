@@ -25,14 +25,14 @@
 
 <!-- Sam Skin CSS for TabView -->
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js" ></script>
 
 <!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
@@ -229,23 +229,23 @@ select
 	var resultsP;
 	var checkedRadioName;
     google.load("visualization", "1", {packages:["corechart"]});
-	jQuery( document ).ready(function( $ ) {
-			$("#censusSelect").live("change",function(){
-					var val = $("#censusSelect").val();
-					if(val == 0)
-					{
-						$("#censusReporterror_Div").html('Please Select Census Type');
-					}
-			});
-		});
+	
+	$(document).on("change","#censusSelect",function(){
+			var val = $("#censusSelect").val();
+			if(val == 0)
+			{
+				$("#censusReporterror_Div").html('Please Select Census Type');
+			}
+	});
+
 	$(document).ready(function(){
-	document.getElementById("districtList").disabled= true;
-		$('#stRadioId').click(function(){
-			document.getElementById("districtList").disabled= true;
-		});
-		$('#diRadioId').click(function(){
-			document.getElementById("districtList").disabled= false;
-		});
+		document.getElementById("districtList").disabled= true;
+			$('#stRadioId').click(function(){
+				document.getElementById("districtList").disabled= true;
+			});
+			$('#diRadioId').click(function(){
+				document.getElementById("districtList").disabled= false;
+			});
 		
 
 	});
