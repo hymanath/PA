@@ -5,8 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet"/>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <title>Partial Booth Panchayat</title>
 </head>
 <script>
@@ -621,7 +623,8 @@ function validateTheFieldsForEdit()
 }
 </script>
 <body>
-<div id="mainDiv">
+<div class="container">
+	<div id="mainDiv">
 	<div>
 	<div id="headingDiv" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Save Partial Booth Panchayat Details</div>
 	<div id="bodyDiv" style="float: left; margin-left: 258px; margin-top: 18px;">
@@ -655,6 +658,8 @@ function validateTheFieldsForEdit()
 	</div>
 	</div>
 	<div id="editDetailsDiv"></div>
+</div>
+
 </div>
 </body>
 </html>
