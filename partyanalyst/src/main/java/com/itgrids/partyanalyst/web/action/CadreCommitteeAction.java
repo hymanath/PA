@@ -2013,7 +2013,7 @@ public String getSummaryDetails(){
 			}
 			if(regVO != null && (regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT_GROUP") || regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT")))
 			{
-				status = cadreCommitteeService.saveRemovingCadreDetailsAction(cadreId,reasonId,remark);
+				status = cadreCommitteeService.saveRemovingCadreDetailsAction(cadreId,reasonId,remark,regVO.getRegistrationID());
 			}
 		}
 		catch(Exception e){	
@@ -2037,7 +2037,7 @@ public String getSummaryDetails(){
 			}
 			if(regVO != null && (regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT_GROUP") || regVO.getEntitlements().contains("CADRE_DELETE_ENTITLEMENT")))
 			{
-				status = cadreCommitteeService.updateMobileNumberAndCasteForCadre(tdpCadreId,mobileNo,casteId);
+				status = cadreCommitteeService.updateMobileNumberAndCasteForCadre(tdpCadreId,mobileNo,casteId,regVO.getRegistrationID());
 			}
 		}
 		catch(Exception e){	
