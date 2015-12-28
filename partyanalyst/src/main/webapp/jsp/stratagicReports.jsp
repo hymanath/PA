@@ -5,6 +5,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+  
+  
+  
 	<style>
 		.m-top25{margin-top:25px;}
 		#constituencyId{width:200px;}
@@ -24,7 +30,7 @@
 
  <div class="container">
 	<div class="m-top25" style="width:500px;margin-left:auto;margin-right:auto;">
-	   <span style="font-weight:bold;font-size:16px;">Select Constituency</span> <s:select theme="simple" name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name"/>
+	   <span style="font-weight:bold;font-size:16px;">Select Constituency</span> <s:select   theme="simple" name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name"/>
        <div><input type="button" class="btn btn-primary" onClick="getReport();" value="Get Stratagic Report"></input></div>
 	</div>
 	
