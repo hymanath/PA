@@ -250,16 +250,18 @@
 			<!--<pattern>/electionResultsAnalysisAction*</pattern>-->
 			<pattern>/inflencingPeopleWindowAction*</pattern>
 			<!--<pattern>/suggestiveModelAction*</pattern>-->
-			<pattern>/mobileDataAction*</pattern>
-			<pattern>/messageCenterAction*</pattern>
-			<pattern>/uploadAudioFile*</pattern>
-			<pattern>/getvoiceSmsReportAction*</pattern>
-			<pattern>/updateCustomerContactsAction*</pattern>
-			<pattern>/dashBoardAction*</pattern>
+			
+			<!--<pattern>/mobileDataAction*</pattern>-->
+			<!--<pattern>/messageCenterAction*</pattern>-->
+			<!--<pattern>/uploadAudioFile*</pattern>-->
+			<!--<pattern>/getvoiceSmsReportAction*</pattern>-->
+			<!--<pattern>/updateCustomerContactsAction*</pattern>-->
+			<!--<pattern>/dashBoardAction*</pattern>-->
 			<pattern>/searchInfluencePeopleForSmsAction*</pattern>		
 			<pattern>/demoRequestAction*</pattern>
 			<pattern>/constituencyInfoAction.action*</pattern>
-			<pattern>/mobileAppUserMgmtAction*</pattern>
+			<!--<pattern>/mobileAppUserMgmtAction*</pattern>-->
+			
 			<!--<pattern>/predictedCasteAssignAction.action*</pattern>-->
 			<!--<pattern>/partialBoothPanchayatAction*</pattern>-->
 			<pattern>/userRegPageAction*</pattern>
@@ -554,6 +556,15 @@
 	  <pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 	  <pattern>/voterAverageAgewiseAction*</pattern>
 	  <pattern>/partyHighLowPollingAction*</pattern>
+	  
+	  <pattern>/mobileDataAction*</pattern>
+	  <pattern>/messageCenterAction*</pattern>
+	  <pattern>/uploadAudioFile*</pattern>
+	  <pattern>/getvoiceSmsReportAction*</pattern>
+	  <pattern>/updateCustomerContactsAction*</pattern>
+	  <pattern>/dashBoardAction*</pattern>
+	  <pattern>/mobileAppUserMgmtAction*</pattern>
+ 
  	  <pattern>/cadreCommitteeRequestAction*</pattern>
 	  <pattern>/committeeDistrictDashBoardAction*</pattern>
 	  <pattern>/peformanceOfCadreAction*</pattern>
