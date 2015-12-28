@@ -261,7 +261,7 @@
 			<pattern>/constituencyInfoAction.action*</pattern>
 			<pattern>/mobileAppUserMgmtAction*</pattern>
 			<!--<pattern>/predictedCasteAssignAction.action*</pattern>-->
-			<pattern>/partialBoothPanchayatAction*</pattern>
+			<!--<pattern>/partialBoothPanchayatAction*</pattern>-->
 			<pattern>/userRegPageAction*</pattern>
 			<!--<pattern>/casteReportAction*</pattern>-->
 			<!--<pattern>/voterAddressAction*</pattern>-->
@@ -269,17 +269,17 @@
 			<pattern>/votersEditNewHHAction*</pattern>
 			<!--<pattern>/houseHoldCreationAction*</pattern>-->
 			<!--<pattern>/voterLocationAction*</pattern>-->
-			<pattern>/stratagicReportsAction*</pattern>
-			<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
+			<!--<pattern>/stratagicReportsAction*</pattern>-->
+			<!--<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>-->
 			<!--<pattern>/muncipalElectionDetailsAction*</pattern>-->
-			<pattern>/voterAverageAgewiseAction*</pattern>
+			<!--<pattern>/voterAverageAgewiseAction*</pattern>-->
 			<!--<pattern>/mergePanchayatAction*</pattern>-->
 			<!--<pattern>/strategyModelAction*</pattern>-->
 			<pattern>/boothPollReportAction*</pattern>
 			<!--<pattern>/getVotersAddressAction*</pattern>-->
 			<pattern>/resetPasswordAction*</pattern>
 			<pattern>/criticalPanchayatsAction*</pattern>
-			<pattern>/partyHighLowPollingAction*</pattern>
+			<!--<pattern>/partyHighLowPollingAction*</pattern>-->
 			<pattern>/getInfectedBoothsAction*</pattern>
 			<pattern>/smsAction*</pattern>
 			<pattern>/strattegtReportsAction*</pattern>
@@ -560,5 +560,12 @@
 	  <pattern>/cadreRegistration*</pattern>
 	  <pattern>/tdpCadreReportsAction*</pattern>
 	  <pattern>/partyPerformanceReport*</pattern>
+	  
+	  <pattern>/partialBoothPanchayatAction*</pattern>
+	  <pattern>/stratagicReportsAction*</pattern>
+	  <pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
+	  <pattern>/voterAverageAgewiseAction*</pattern>
+	  <pattern>/partyHighLowPollingAction*</pattern>
+ 
 	 </decorator> 
 </decorators>
