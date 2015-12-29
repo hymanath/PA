@@ -12,5 +12,6 @@ public interface IActivityTeamLocationDAO extends GenericDao<ActivityTeamLocatio
 	public List<Long> getAssignedLocationsForTeamMembers(Long teamMemberId);
 	public List<Object[]> getTeamLeaderDetailsAndAssignedLocationsByLeaderId(Long leaderId);
 	public List<Long> getAssignedConstituenciesForTeamMembers(Long memberId);
+	public List<Long> getAssignedLocationsForTeamMembersByTeamLeaderId(Long teamLeaderId);
 
 }
