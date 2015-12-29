@@ -16,6 +16,7 @@
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css">
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
 .panel-group .panel
@@ -49,6 +50,7 @@ header.eventsheader {
     background-color: #DDDDDD !important;
 	color:#666666;
 }
+.table-scroll-1{max-height:400px;overflow-y:auto;z-index:999999}
 </style>
 </head>
 <body>
@@ -421,6 +423,31 @@ header.eventsheader {
   </div>
 </div>
 
+ <!-- model -->
+<div class="modal fade" id="myModalForCadreId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="cadreTitleId"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12">
+				<div style="background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%; border: medium none transparent; margin-bottom: 2px;" class="well well-sm">
+				<center><img id="dataLoadingsImgForCadrePopUpId" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				<div id="popupForCadreDetailsId" class="table-scroll-1"></div>	
+				</div>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
@@ -430,6 +457,10 @@ header.eventsheader {
 <script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="training/dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="training/dist/HighCharts/highcharts.js" type="text/javascript"></script>
+<!-- scrollator -->
+	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
 <script type="text/javascript">
 var fromTypeGlob;
 $(function () {
@@ -1037,14 +1068,16 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<td>'+result[i].batchName+'</td>';
 					for(var j in result[i].simpleVOList1){
 						if(result[i].simpleVOList1[j].total!=null){
-							str+='<td>'+result[i].simpleVOList1[j].total+'</td>'
+							str+='<td>'+result[i].simpleVOList1[j].total+' - IA <br/>'+result[i].simpleVOList1[j].nonInviteeAttendedCount+' - NIA</td>'
 						}else{
 							str+='<td>0</td>'
 						}
 					}
-					str+='<td>'+result[i].day1Count+'</td>';
-					str+='<td>'+result[i].day2Count+'</td>';
-					str+='<td>'+result[i].day3Count+'</td>';
+					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].oneDayNIACount+'</a> - NIA</td>';
+					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day2Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].twoDaysNIACount+'</a> - NIA</td>';
+					
+					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day3Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].threeDaysNIACount+'</a> - NIA</td>';
+					
 					str+='</tr>';
 				}
 				str+='</tbody>';
@@ -1544,6 +1577,73 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		
 		window.open('feedbackOverViewDetailsAction.action?dates='+dates+'', '_blank');
 	});
+	
+	$(document).on("click",".cadreDetailsCls",function(){
+		var batchId = $(this).attr("attr_batchId");
+		var type=$(this).attr("attr_type");
+		var dataType=$(this).attr("attr_dataType");
+		getDaysAttendedCadreDetails(batchId,dataType,type);
+		$("#myModalForCadreId").modal('show');
+	});
+	
+	function getDaysAttendedCadreDetails(batchId,dataType,type){
+		
+		$("#cadreTitleId").html('');
+		$("#popupForCadreDetailsId").html('');
+		
+		$("#dataLoadingsImgForCadrePopUpId").show();
+		
+		var jsObj={
+			batchId : batchId,
+			dataType:dataType,
+			type:type
+		}
+		$.ajax({
+		   type:'POST',
+		   url :'getDaysAttendedCadreDetailsAction.action',
+		   data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			$("#dataLoadingsImgForCadrePopUpId").hide();
+			$("#cadreTitleId").html("<div style='color:green;'>"+type.toUpperCase()+" Cadre Details</div>");
+			if(result !=null && result.length>0){
+				buildDaysAttendedCadreDetails(result);
+			}else{
+				$("#popupForCadreDetailsId").html("No Data Available.");
+			}
+			
+		});
+	}
+	function buildDaysAttendedCadreDetails(result){
+		var str='';
+		for(var i in result){
+			str+='<div class="media scrollDivConstituencycls" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
+				str+='<span href="#" class="media-left">';
+				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imagePath+'" />';
+				str+='</span>';
+				str+='<div class="media-body">';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].status+' </h5>';
+				str+='<ul class="list-inline">';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+				str+='<li>Caste: '+result[i].caste+'</li>';
+				str+='<li>MemberShip No: <span class="cadreCls" attr_cadre_id='+result[i].cadreId+' style="cursor:pointer">'+result[i].membershipNo+'<span></li>';
+				str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+		}
+		$("#popupForCadreDetailsId").html(str);
+		 $('.table-scroll-1').scrollator({
+			custom_class: 'table-scroll-1',
+		}); 
+		//$(".scrollDivConstituencycls").mCustomScrollbar({max-height:400px;overflow-y:auto;z-index:999999;});
+	}
+	
+	$(document).on("click",".cadreCls",function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
+	});
+
 	
 </script>
 </body>

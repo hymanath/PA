@@ -2734,4 +2734,19 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}
     	return Action.SUCCESS; 
     }
+    public String getDaysAttendedCadreDetails(){
+    	try{
+    		
+    		jObj = new JSONObject(getTask());
+    		
+    		Long batchId = jObj.getLong("batchId");
+    		String dataType=jObj.getString("dataType");
+    		String type=jObj.getString("type");
+    		
+    		simpleVOList=trainingCampService.getDaysAttendedCadreDetails(batchId,dataType,type);
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getDaysAttendedCadreDetails", e);
+		}
+    	return Action.SUCCESS;
+    }
 }
