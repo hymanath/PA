@@ -642,9 +642,9 @@ function getLeadersWiseActivityDetailsBySearchCriteria(locationId,searchType,div
 		}
 		else if(radioSearch == 'location'){
 			if(teamSearchType == 'organizersWiseId'){
-				if(searchType == 'district'){
+				//if(searchType == 'district'){
 					teamLeaderId = locationId;
-				}
+				//}
 			}
 		}
 		if(index == 3){
@@ -687,7 +687,7 @@ function getLeadersWiseActivityDetailsBySearchCriteria(locationId,searchType,div
 						buildResult(result);
 					else if(searchType == 'district' && index == 0)
 						buildsLocationsResult(result,divId,teamSearchType);
-					else if(searchType == 'district' && index == 1)
+					else if(searchType == 'constituency' && index == 1)
 						buildConstituencyResult(result,divId,locationId,teamSearchType);
 					else if(searchType == 'constituency' && index == 2)
 						buildMandalResult(result,divId,locationId,teamSearchType);
@@ -821,12 +821,12 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading mandalNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
-			if(teamSearchType == 'organizersWiseId'){
+			/*if(teamSearchType == 'organizersWiseId'){
 				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'panchayatLevelId'+i+'\',\'organizersWiseId\',\'location\',\'3\',\''+locationId+'\',\''+result.activityVoList[i].id+'\',\'member\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
-			}
-			else{
+			}*/
+			//else{
 				str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
-			}
+			//}
 			
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
@@ -901,7 +901,13 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 					str+='';
 				}
 				else {
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+					if(teamSearchType == 'organizersWiseId'){
+						str+='';
+						//str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+					}
+					else{
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+					}
 				}
 				str+='</div>';
 				str+='<div id="collapseOne1LevelPanchayat1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneLevelMandal1'+i+'">';
@@ -935,7 +941,7 @@ function buildConstituencyResult(result,divId,locationId,teamSearchType)
 			
 			str+='<div class="panel-heading constiNameAnchorCls" role="tab" id="headingOneLevel1'+i+'">';
 			if(teamSearchType == 'organizersWiseId'){
-				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'mandalLevelId'+i+'\',\'organizersWiseId\',\'location\',\'2\',\''+result.activityVoList[i].id+'\',\''+locationId+'\',\'leader\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'mandalLevelId'+i+'\',\'organizersWiseId\',\'location\',\'2\',\''+result.activityVoList[i].id+'\',\''+result.activityVoList[i].id+'\',\'member\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
 			}
 			else{
 				str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
@@ -1014,7 +1020,12 @@ function buildConstituencyResult(result,divId,locationId,teamSearchType)
 					str+='';
 				}
 				else {
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')" >Day Wise</button>';
+					if(teamSearchType == 'organizersWiseId'){
+						str+='';
+					}
+					else{
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')" >Day Wise</button>';
+					}
 				}
 				str+='</div>';
 				
@@ -1096,7 +1107,7 @@ function buildsLocationsResult(result,divId,teamSearchType){
 			
 			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
 			if(teamSearchType == 'organizersWiseId'){
-				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'district\',\'constituencyLevelId'+i+'\',\'organizersWiseId\',\'location\',\'1\',\'0\',\'0\',\'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
+				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\',\'organizersWiseId\',\'location\',\'1\',\'0\',\'0\',\'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
 			}
 			else{
 			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
@@ -1177,7 +1188,12 @@ function buildsLocationsResult(result,divId,teamSearchType){
 				str+='';
 			}
 			else {
-				str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+				if(teamSearchType == 'organizersWiseId'){
+					str+='';
+				}
+				else{
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+				}
 			}
 			str+='</div>';			
 			str+='<div id="constituencyLevelId'+i+'" class="constiListCls"> </div>';
