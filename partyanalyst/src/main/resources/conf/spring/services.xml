@@ -2810,6 +2810,7 @@
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"/>
 		<property name="cadreDetailsUtils" ref="cadreDetailsUtils"/>
 		<property name="hamletDAO" ref="hamletDAO"/>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
