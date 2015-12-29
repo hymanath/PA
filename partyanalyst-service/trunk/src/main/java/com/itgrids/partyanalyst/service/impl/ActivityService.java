@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityTeamLocationDAO;
+import com.itgrids.partyanalyst.dao.IActivityTeamMemberDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -114,9 +116,25 @@ public class ActivityService implements IActivityService{
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private IUserAddressDAO userAddressDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private IActivityTeamMemberDAO activityTeamMemberDAO;
+	private IActivityTeamLocationDAO activityTeamLocationDAO;
 	
 	
 	
+	public IActivityTeamMemberDAO getActivityTeamMemberDAO() {
+		return activityTeamMemberDAO;
+	}
+	public void setActivityTeamMemberDAO(
+			IActivityTeamMemberDAO activityTeamMemberDAO) {
+		this.activityTeamMemberDAO = activityTeamMemberDAO;
+	}
+	public IActivityTeamLocationDAO getActivityTeamLocationDAO() {
+		return activityTeamLocationDAO;
+	}
+	public void setActivityTeamLocationDAO(
+			IActivityTeamLocationDAO activityTeamLocationDAO) {
+		this.activityTeamLocationDAO = activityTeamLocationDAO;
+	}
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
@@ -1017,7 +1035,7 @@ public class ActivityService implements IActivityService{
 		}
 		return idNameVoList;
 	}
-	
+	//1111
 	
 	public ActivityVO getActivityDetailsBySearchCriteria(SearchAttributeVO searchAttributeVO)
 	{
@@ -1120,7 +1138,15 @@ public class ActivityService implements IActivityService{
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 					
-					List<Long> districtIds = districtDAO.getDistrictsInAState(searchAttributeVO.getTypeId());//AP/TS/ALL
+					List<Long> districtIds = null;
+					if(searchAttributeVO.getTeamSearchType().trim().equalsIgnoreCase("organizersWiseId") && searchAttributeVO.getRadioSearch().equalsIgnoreCase("location")){
+						//List<Long> ids = new ArrayList<Long>(0);
+						//ids.add(searchAttributeVO.getTeamLeaderId());
+						districtIds = activityTeamLocationDAO.getAssignedLocationsForTeamMembers(searchAttributeVO.getTeamLeaderId());
+					}
+					else
+						districtIds = districtDAO.getDistrictsInAState(searchAttributeVO.getTypeId());//AP/TS/ALL
+					
 					if(districtIds != null && districtIds.size()>0){
 						searchAttributeVO.setLocationIdsList(districtIds);
 						
@@ -1155,8 +1181,17 @@ public class ActivityService implements IActivityService{
 					segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED",null);		
 					}
 				}
-				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					List<Long> constituencyList = constituencyDAO.getConstituenciesInADistrict(searchAttributeVO.getLocationId());
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY) && searchAttributeVO.getRadioSearch().equalsIgnoreCase("location")){
+					
+					List<Long> constituencyList = null;
+					/*if(searchAttributeVO.getTeamSearchType().trim().equalsIgnoreCase("organizersWiseId")){
+						//List<Long> ids = new ArrayList<Long>(0);
+						//ids.add(searchAttributeVO.getId());
+						constituencyList = activityTeamLocationDAO.getAssignedLocationsForTeamMembers(searchAttributeVO.getTeamLeaderId());
+					}
+					else*/
+						constituencyList = constituencyDAO.getConstituenciesInADistrict(searchAttributeVO.getLocationId());//AP/TS/ALL
+					
 					if(constituencyList != null && constituencyList.size()>0)
 					{
 						searchAttributeVO.setLocationIdsList(constituencyList);
@@ -1711,6 +1746,312 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
+			
+			if(searchAttributeVO.getTeamSearchType().equalsIgnoreCase("organizersWiseId")){
+				
+				Map<Long,ActivityVO> leadersMap = new LinkedHashMap<Long, ActivityVO>();
+				Map<Long,ActivityVO> membersMap = new LinkedHashMap<Long, ActivityVO>();
+				List<Long> leadersIds = new ArrayList<Long>();
+				List<ActivityVO> allLctnsList = returnVO.getActivityVoList();
+				if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size() > 0){
+					if(searchAttributeVO.getTeamLeaderId().longValue() == 0 && searchAttributeVO.getTeamMemberId().longValue() == 0){
+						
+						List<Object[]> list = activityTeamMemberDAO.getTeamLeadersByActivityScope(searchAttributeVO.getAttributesIdsList());
+						if(list != null && list.size() > 0){
+							for (Object[] obj : list) {
+								ActivityVO vo = new ActivityVO();
+								
+								Long leaderId = obj[0] != null ? (Long) obj[0]:0l;
+								String leaderName = obj[1] != null ? obj[1].toString():"";
+								leadersIds.add(leaderId);
+								
+								List<Long> assignedLcnts = activityTeamLocationDAO.getAssignedLocationsForTeamMembers(leaderId);
+								
+								vo.setId(leaderId);
+								vo.setName(leaderName);
+								vo.setLocationIds(assignedLcnts);
+								
+								leadersMap.put(leaderId, vo);
+							}
+						}
+						
+						List<ActivityVO> leadersList = new ArrayList<ActivityVO> (leadersMap.values());
+						//List<ActivityVO> leadersList = (List<ActivityVO>) leadersMap.values();
+						if(leadersList != null && leadersList.size() > 0){
+							for (ActivityVO activityvo : leadersList) {
+								List<Long> locIds = activityvo.getLocationIds();
+								for (ActivityVO vo : allLctnsList) {
+									Long id = vo.getId();
+									if(locIds.contains(id)){
+										if(activityvo.getImagesCount() != null)
+											activityvo.setImagesCount(activityvo.getImagesCount()+vo.getImagesCount());
+										else
+											activityvo.setImagesCount(vo.getImagesCount());
+										if(activityvo.getInfoCellNotPlanned() != null)
+											activityvo.setInfoCellNotPlanned(activityvo.getInfoCellNotPlanned()+vo.getInfoCellNotPlanned());
+										else
+											activityvo.setInfoCellNotPlanned(vo.getInfoCellNotPlanned());
+										if(activityvo.getInfoCellTotal() != null)
+											activityvo.setInfoCellTotal(activityvo.getInfoCellTotal()+vo.getInfoCellTotal());
+										else
+											activityvo.setInfoCellTotal(vo.getInfoCellTotal());
+										if(activityvo.getInfoCellcovered() != null)
+											activityvo.setInfoCellcovered(activityvo.getInfoCellcovered()+vo.getInfoCellcovered());
+										else
+											activityvo.setInfoCellcovered(vo.getInfoCellcovered());
+										if(activityvo.getIvrNotPlanned() != null)
+											activityvo.setIvrNotPlanned(activityvo.getIvrNotPlanned()+vo.getIvrNotPlanned());
+										else
+											activityvo.setIvrNotPlanned(vo.getIvrNotPlanned());
+										if(activityvo.getIvrTotal() != null)
+											activityvo.setIvrTotal(activityvo.getIvrTotal()+vo.getIvrTotal());
+										else
+											activityvo.setIvrTotal(vo.getIvrTotal());
+										if(activityvo.getIvrcovered() != null)
+											activityvo.setIvrcovered(activityvo.getIvrcovered()+vo.getIvrcovered());
+										else
+											activityvo.setIvrcovered(vo.getIvrcovered());
+										if(activityvo.getPlannedCount() != null)
+											activityvo.setPlannedCount(activityvo.getPlannedCount()+vo.getPlannedCount());
+										else
+											activityvo.setPlannedCount(vo.getPlannedCount());
+										if(activityvo.getTotalCount() != null)
+											activityvo.setTotalCount(activityvo.getTotalCount()+vo.getTotalCount());
+										else
+											activityvo.setTotalCount(vo.getTotalCount());
+										if(activityvo.getWhatsAppCovered() != null)
+											activityvo.setWhatsAppCovered(activityvo.getWhatsAppCovered()+vo.getWhatsAppCovered());
+										else
+											activityvo.setWhatsAppCovered(vo.getWhatsAppCovered());
+									}
+								}
+								if(activityvo.getPlannedCount() != null && activityvo.getPlannedCount().longValue() > 0L && activityvo.getIvrcovered().longValue() > 0L)
+								{
+									double perc = (activityvo.getIvrcovered() * 100.0)/activityvo.getPlannedCount();
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									activityvo.setIvrcoveredPerc(percentage);   //ivr covered percentage
+								}
+								if(activityvo.getTotalCount() != null && activityvo.getTotalCount().longValue() > 0l && activityvo.getIvrTotal() != null && activityvo.getIvrTotal().longValue() > 0l){
+									double perc = (activityvo.getIvrTotal() * 100.0)/activityvo.getTotalCount();
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									activityvo.setIvrTotalPerc(percentage);
+								}
+								if(activityvo.getTotalCount() != null && activityvo.getTotalCount().longValue() > 0l && activityvo.getInfoCellTotal() != null && activityvo.getInfoCellTotal().longValue() > 0l){
+									double perc = (activityvo.getInfoCellTotal() * 100.0)/activityvo.getTotalCount();
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									activityvo.setInfoCellTotalPerc(percentage);
+								}
+								if(activityvo.getPlannedCount() != null && activityvo.getPlannedCount().longValue() > 0l && activityvo.getInfoCellcovered() != null && activityvo.getInfoCellcovered().longValue() > 0l){
+									double perc = (activityvo.getInfoCellcovered() * 100.0)/activityvo.getPlannedCount();
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									activityvo.setInfoCellcoveredPerc(percentage);
+								}
+								if(activityvo.getInfoCellTotal() != null && activityvo.getInfoCellTotal().longValue() > 0l && activityvo.getWhatsAppCovered() != null && activityvo.getWhatsAppCovered().longValue() > 0l){
+									double perc = (activityvo.getWhatsAppCovered() * 100.0)/activityvo.getInfoCellTotal();
+									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+									activityvo.setWhatsAppCoveredPerc(percentage);
+								}
+								
+								if(activityvo.getPercentage() == null)
+									activityvo.setPercentage("0.00");
+								if(activityvo.getIvrcoveredPerc()  == null)
+									activityvo.setIvrcoveredPerc("0.00");
+								if(activityvo.getIvrTotalPerc() == null)
+									activityvo.setIvrTotalPerc("0.00");
+								if(activityvo.getInfoCellTotalPerc() == null)
+									activityvo.setInfoCellTotalPerc("0.00");
+								if(activityvo.getInfoCellcoveredPerc() == null)
+									activityvo.setInfoCellcoveredPerc("0.00");
+								if(activityvo.getWhatsAppCoveredPerc() == null)
+									activityvo.setWhatsAppCoveredPerc("0.00");
+							}
+						}
+						
+						returnVO.getActivityVoList().clear();
+						returnVO.setActivityVoList(leadersList);
+					}
+					else if (searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getDistrictId().longValue() == 0){ 
+						
+						List<Long> assigLctnIds = new ArrayList<Long>();
+						ActivityVO vo1 = new ActivityVO();
+						List<ActivityVO> locationsList = new ArrayList<ActivityVO>();
+						
+						List<Object[]> list = activityTeamLocationDAO.getTeamLeaderDetailsAndAssignedLocationsByLeaderId(searchAttributeVO.getTeamLeaderId());
+						if(list != null && list.size() > 0){
+							for (Object[] obj : list) {
+								
+								vo1.setId(searchAttributeVO.getTeamLeaderId());
+								vo1.setName(obj[0] != null ? obj[0].toString():"");
+								Long lctnId = obj[1] != null ? (Long) obj[1]:0l;
+								assigLctnIds.add(lctnId);
+							}
+							vo1.setLocationIds(assigLctnIds);
+						}
+						leadersMap.put(searchAttributeVO.getTeamLeaderId(), vo1);
+						
+						if(allLctnsList != null && allLctnsList.size() > 0){
+							for (int i = 0; i < allLctnsList.size(); i++) {
+								ActivityVO vo = allLctnsList.get(i);
+								Long id = vo.getId();
+								if(assigLctnIds.contains(id)){
+									locationsList.add(vo);
+								}
+							}
+							returnVO.getActivityVoList().clear();
+							returnVO.setActivityVoList(locationsList);
+						}
+					}
+					else if(searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getDistrictId().longValue() > 0 && searchAttributeVO.getTeamMemberId().longValue() == 0){
+						
+						if(searchAttributeVO.getTeamLeaderId().longValue() > 0){
+							List<Object[]> teamMembers = activityTeamMemberDAO.getTeamMembersByTeamLeaderId(searchAttributeVO.getTeamLeaderId());
+							if(teamMembers != null && teamMembers.size() > 0){
+								for (Object[] obj : teamMembers) {
+									ActivityVO vo = new ActivityVO();
+									
+									Long memberId = (Long) (obj[0] != null ? obj[0]:0l);
+									List<Long> constituencyIds = activityTeamLocationDAO.getAssignedConstituenciesForTeamMembers(memberId);
+									
+									vo.setId(memberId);
+									vo.setName(obj[1] != null ? obj[1].toString():"");
+									vo.setLocationIds(constituencyIds);
+									
+									membersMap.put(memberId, vo);
+								}
+							}
+							
+							List<ActivityVO> membersList = new ArrayList<ActivityVO> (membersMap.values());
+							
+							if(membersList != null && membersList.size() > 0){
+								for (ActivityVO activtyvo : membersList) {
+									List<Long> locationIds = activtyvo.getLocationIds();
+									for (ActivityVO vo : allLctnsList) {
+										Long id = vo.getId();
+										if(locationIds.contains(id)){
+											if(activtyvo.getImagesCount() != null)
+												activtyvo.setImagesCount(activtyvo.getImagesCount()+vo.getImagesCount());
+											else
+												activtyvo.setImagesCount(vo.getImagesCount());
+											if(activtyvo.getInfoCellNotPlanned() != null)
+												activtyvo.setInfoCellNotPlanned(activtyvo.getInfoCellNotPlanned()+vo.getInfoCellNotPlanned());
+											else
+												activtyvo.setInfoCellNotPlanned(vo.getInfoCellNotPlanned());
+											if(activtyvo.getInfoCellTotal() != null)
+												activtyvo.setInfoCellTotal(activtyvo.getInfoCellTotal()+vo.getInfoCellTotal());
+											else
+												activtyvo.setInfoCellTotal(vo.getInfoCellTotal());
+											if(activtyvo.getInfoCellcovered() != null)
+												activtyvo.setInfoCellcovered(activtyvo.getInfoCellcovered()+vo.getInfoCellcovered());
+											else
+												activtyvo.setInfoCellcovered(vo.getInfoCellcovered());
+											if(activtyvo.getIvrNotPlanned() != null)
+												activtyvo.setIvrNotPlanned(activtyvo.getIvrNotPlanned()+vo.getIvrNotPlanned());
+											else
+												activtyvo.setIvrNotPlanned(vo.getIvrNotPlanned());
+											if(activtyvo.getIvrTotal() != null)
+												activtyvo.setIvrTotal(activtyvo.getIvrTotal()+vo.getIvrTotal());
+											else
+												activtyvo.setIvrTotal(vo.getIvrTotal());
+											if(activtyvo.getIvrcovered() != null)
+												activtyvo.setIvrcovered(activtyvo.getIvrcovered()+vo.getIvrcovered());
+											else
+												activtyvo.setIvrcovered(vo.getIvrcovered());
+											if(activtyvo.getPlannedCount() != null)
+												activtyvo.setPlannedCount(activtyvo.getPlannedCount()+vo.getPlannedCount());
+											else
+												activtyvo.setPlannedCount(vo.getPlannedCount());
+											if(activtyvo.getTotalCount() != null)
+												activtyvo.setTotalCount(activtyvo.getTotalCount()+vo.getTotalCount());
+											else
+												activtyvo.setTotalCount(vo.getTotalCount());
+											if(activtyvo.getWhatsAppCovered() != null)
+												activtyvo.setWhatsAppCovered(activtyvo.getWhatsAppCovered()+vo.getWhatsAppCovered());
+											else
+												activtyvo.setWhatsAppCovered(vo.getWhatsAppCovered());
+										}
+									}
+									
+									if(activtyvo.getPlannedCount() != null && activtyvo.getPlannedCount().longValue() > 0L && activtyvo.getIvrcovered().longValue() > 0L)
+									{
+										double perc = (activtyvo.getIvrcovered() * 100.0)/activtyvo.getPlannedCount();
+										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+										activtyvo.setIvrcoveredPerc(percentage);   //ivr covered percentage
+									}
+									if(activtyvo.getTotalCount() != null && activtyvo.getTotalCount().longValue() > 0l && activtyvo.getIvrTotal() != null && activtyvo.getIvrTotal().longValue() > 0l){
+										double perc = (activtyvo.getIvrTotal() * 100.0)/activtyvo.getTotalCount();
+										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+										activtyvo.setIvrTotalPerc(percentage);
+									}
+									if(activtyvo.getTotalCount() != null && activtyvo.getTotalCount().longValue() > 0l && activtyvo.getInfoCellTotal() != null && activtyvo.getInfoCellTotal().longValue() > 0l){
+										double perc = (activtyvo.getInfoCellTotal() * 100.0)/activtyvo.getTotalCount();
+										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+										activtyvo.setInfoCellTotalPerc(percentage);
+									}
+									if(activtyvo.getPlannedCount() != null && activtyvo.getPlannedCount().longValue() > 0l && activtyvo.getInfoCellcovered() != null && activtyvo.getInfoCellcovered().longValue() > 0l){
+										double perc = (activtyvo.getInfoCellcovered() * 100.0)/activtyvo.getPlannedCount();
+										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+										activtyvo.setInfoCellcoveredPerc(percentage);
+									}
+									if(activtyvo.getInfoCellTotal() != null && activtyvo.getInfoCellTotal().longValue() > 0l && activtyvo.getWhatsAppCovered() != null && activtyvo.getWhatsAppCovered().longValue() > 0l){
+										double perc = (activtyvo.getWhatsAppCovered() * 100.0)/activtyvo.getInfoCellTotal();
+										String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
+										activtyvo.setWhatsAppCoveredPerc(percentage);
+									}
+									
+									if(activtyvo.getPercentage() == null)
+										activtyvo.setPercentage("0.00");
+									if(activtyvo.getIvrcoveredPerc()  == null)
+										activtyvo.setIvrcoveredPerc("0.00");
+									if(activtyvo.getIvrTotalPerc() == null)
+										activtyvo.setIvrTotalPerc("0.00");
+									if(activtyvo.getInfoCellTotalPerc() == null)
+										activtyvo.setInfoCellTotalPerc("0.00");
+									if(activtyvo.getInfoCellcoveredPerc() == null)
+										activtyvo.setInfoCellcoveredPerc("0.00");
+									if(activtyvo.getWhatsAppCoveredPerc() == null)
+										activtyvo.setWhatsAppCoveredPerc("0.00");
+								}
+							}
+							
+							returnVO.getActivityVoList().clear();
+							returnVO.setActivityVoList(membersList);
+						}
+					}
+					else if (searchAttributeVO.getTeamLeaderId().longValue() == 0 && searchAttributeVO.getTeamMemberId().longValue() > 0){
+						
+						List<Long> assigLctnIds = new ArrayList<Long>();
+						ActivityVO vo1 = new ActivityVO();
+						List<ActivityVO> locationsList = new ArrayList<ActivityVO>();
+						
+						List<Object[]> list = activityTeamLocationDAO.getTeamLeaderDetailsAndAssignedLocationsByLeaderId(searchAttributeVO.getTeamMemberId());
+						if(list != null && list.size() > 0){
+							for (Object[] obj : list) {
+								
+								//vo1.setId(obj[1] != null ? (Long) obj[1]:0l);
+								vo1.setName(obj[0] != null ? obj[0].toString():"");
+								Long lctnId = obj[1] != null ? (Long) obj[1]:0l;
+								assigLctnIds.add(lctnId);
+							}
+							vo1.setLocationIds(assigLctnIds);
+						}
+						membersMap.put(searchAttributeVO.getTeamMemberId(), vo1);
+						
+						if(allLctnsList != null && allLctnsList.size() > 0){
+							for (int i = 0; i < allLctnsList.size(); i++) {
+								ActivityVO vo = allLctnsList.get(i);
+								Long id = vo.getId();
+								if(assigLctnIds.contains(id)){
+									locationsList.add(vo);
+								}
+							}
+							returnVO.getActivityVoList().clear();
+							returnVO.setActivityVoList(locationsList);
+						}
+					}
+				}
+			}
+			
+			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getActivityDetailsBySearchCriteria() ActivityService Class... ",e);
 		}
@@ -2602,4 +2943,78 @@ public class ActivityService implements IActivityService{
 		return null;
 	}
 	
+	public List<IdNameVO> getActivityLeadersDetailsByActivityScope(List<Long> activityScopeIds,boolean showCounts){
+		
+		List<IdNameVO> idNameVOList = new ArrayList<IdNameVO>();
+		List<Long>  leaderIds = new ArrayList<Long>();
+		Map<Long,IdNameVO> leadersMap = new LinkedHashMap<Long, IdNameVO>();
+		
+		try {
+			
+			List<Object[]> list = activityTeamMemberDAO.getTeamLeadersByActivityScope(activityScopeIds);
+			
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					Long leaderId = (Long) (obj[0] != null ? obj[0]:0l);
+					leaderIds.add(leaderId);
+					vo.setId(leaderId);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					leadersMap.put(leaderId, vo);
+				}
+			}
+			
+			if(showCounts){
+				
+				List<Object[]> list1 = activityTeamLocationDAO.getActivityLocationsForTeamLeders(leaderIds);
+				
+				if(list1 != null && list1.size() > 0){
+					for (Object[] obj : list1) {
+						
+						Long tlId = (Long) (obj[1] != null ? obj[1]:0l);
+						IdNameVO idNamevo = leadersMap.get(tlId);
+						if(idNamevo != null){
+							idNamevo.setDistrictid((Long) (obj[2] != null ? obj[2]:0l));
+							idNamevo.setAvailableCount((Long) (obj[3] != null ? obj[3]:0l));
+						}
+					}
+				}
+			}
+			
+			idNameVOList.addAll(leadersMap.values());
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getActivityLeadersDetailsByActivityScope () Method ",e);
+		}
+		
+		return idNameVOList;
+	}
+	
+	public List<IdNameVO> getTeamMembersByLeaderAndActivityScope(List<Long> teamLeaderIds,List<Long> activityScopeIds){
+		
+		List<IdNameVO> idNameVOList = new ArrayList<IdNameVO>();
+		
+		try {
+			
+			List<Object[]> list = activityTeamMemberDAO.getTeamMembersByTeamLeaderAndActivityScope(teamLeaderIds, activityScopeIds);
+			
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId((Long) (obj[0] != null ? obj[0]:0l));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					idNameVOList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getActivityLeadersDetailsByActivityScope () Method ",e);
+		}
+		
+		return idNameVOList;
+	}
 }

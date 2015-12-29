@@ -56,7 +56,7 @@ public class ActivityTeamLocation extends BaseModel implements Serializable{
 	public void setActivityTeamMemberId(Long activityTeamMemberId) {
 		this.activityTeamMemberId = activityTeamMemberId;
 	}
-	@Column(name="location_scpoe_id" ,length=20)
+	@Column(name="location_scope_id" ,length=20)
 	public Long getLocationScopeId() {
 		return locationScopeId;
 	}
