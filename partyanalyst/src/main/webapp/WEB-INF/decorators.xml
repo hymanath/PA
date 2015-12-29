@@ -583,10 +583,10 @@
 
 	  <pattern>/familyDetailsAction*</pattern>
 	  <pattern>/voterEditDataAction*</pattern>
-	    <pattern>/adminUpload*</pattern>
 
 	  
 	  <pattern>/adminUpload*</pattern>
 	  <pattern>/meetingDetailsList*</pattern>
+
 	 </decorator> 
 </decorators>
