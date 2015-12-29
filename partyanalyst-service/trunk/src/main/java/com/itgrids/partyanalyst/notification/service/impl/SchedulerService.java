@@ -764,8 +764,8 @@ public class SchedulerService implements ISchedulerService{
 	          try {
 	            DateUtilService date = new DateUtilService();
 	            Date todayDate = date.getCurrentDateAndTime();
-	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(new SimpleDateFormat("MM/dd/yyy").parse("12/17/2015"));
-	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(new SimpleDateFormat("MM/dd/yyy").parse("12/17/2015"));
+	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
+	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(todayDate);
 	            
 	           List<String> existingIdslist = new ArrayList<String>(0);
 	           if(speakersListInAttendee!=null && speakersListInAttendee.size()>0){
