@@ -232,6 +232,12 @@ html{overflow-x: hidden;}
 .paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
    padding-bottom: 10px;
 }
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 </style>
 
 
