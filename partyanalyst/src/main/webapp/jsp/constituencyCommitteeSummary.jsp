@@ -684,32 +684,37 @@ str+='</tr>';
 str+='</thead>';
 str+='</table>';
 	str+='</div>';
-	str += '<div>';
-	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-    str += '<caption class="tablecaption" >Caste Category Wise Information';
-    str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
-	str += '</caption>';
-	str += ' <thead>';
-	str += ' <tr>';
-	str += '<th width="25%">Caste Category</th>';
-	str += '<th width="25%">Total Count</th>';
-	str += '<th width="25%">Male</th>';
-	str += '<th width="25%">Female</th>';
-	str += '</tr>';
-	str += '</thead>';
-	for(var pr in result[0].casteGroupVO)
-	{
-		str += ' <tr>';
-		str += '<td>'+result[0].casteGroupVO[pr].castName+'</td>';
-		str += '<td>'+result[0].casteGroupVO[pr].casteId+'</td>';
-		str += '<td>'+result[0].casteGroupVO[pr].stateId+'</td>';
-		str += '<td>'+result[0].casteGroupVO[pr].castStateId+'</td>';
-		str += '</tr>';
-	}
 	
+	if(userAccessType != null && userAccessType == 'ALL')
+	{
+		str += '<div>';
+		str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+		str += '<caption class="tablecaption" >Caste Category Wise Information';
+		str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+		str += '</caption>';
+		str += ' <thead>';
+		str += ' <tr>';
+		str += '<th width="25%">Caste Category</th>';
+		str += '<th width="25%">Total Count</th>';
+		str += '<th width="25%">Male</th>';
+		str += '<th width="25%">Female</th>';
+		str += '</tr>';
+		str += '</thead>';
+		for(var pr in result[0].casteGroupVO)
+		{
+			str += ' <tr>';
+			str += '<td>'+result[0].casteGroupVO[pr].castName+'</td>';
+			str += '<td>'+result[0].casteGroupVO[pr].casteId+'</td>';
+			str += '<td>'+result[0].casteGroupVO[pr].stateId+'</td>';
+			str += '<td>'+result[0].casteGroupVO[pr].castStateId+'</td>';
+			str += '</tr>';
+		}
+		
 
-	str += '</table>';
-	str += '</div>';
+		str += '</table>';
+		str += '</div>';
+		
+	}
 	
 	str += '<div>';
 	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
