@@ -26,8 +26,44 @@ public class SearchAttributeVO implements Serializable{
 	private String attributeType;
 	private List<Long> questionnaireIdsList = new ArrayList<Long>(0);
 	private Long constituencyId;
+	private String teamSearchType;
+	private Long teamLeaderId;
+	private Long teamMemberId;
+	private String radioSearch;
+	private Long districtId;
 	
 	
+	
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getRadioSearch() {
+		return radioSearch;
+	}
+	public void setRadioSearch(String radioSearch) {
+		this.radioSearch = radioSearch;
+	}
+	public Long getTeamLeaderId() {
+		return teamLeaderId;
+	}
+	public void setTeamLeaderId(Long teamLeaderId) {
+		this.teamLeaderId = teamLeaderId;
+	}
+	public Long getTeamMemberId() {
+		return teamMemberId;
+	}
+	public void setTeamMemberId(Long teamMemberId) {
+		this.teamMemberId = teamMemberId;
+	}
+	public String getTeamSearchType() {
+		return teamSearchType;
+	}
+	public void setTeamSearchType(String teamSearchType) {
+		this.teamSearchType = teamSearchType;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

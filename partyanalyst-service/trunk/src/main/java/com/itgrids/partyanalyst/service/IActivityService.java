@@ -26,4 +26,6 @@ public interface IActivityService {
 	public ActivityVO getQuestionnaireForScope(Long scopeId);
 
 	public ResultStatus uploadActivityDocuments(Long activityId,String sourcePath,ActivityDocumentVO activityLocation);
+	public List<IdNameVO> getActivityLeadersDetailsByActivityScope(List<Long> activityScopeIds,boolean showCounts);
+	public List<IdNameVO> getTeamMembersByLeaderAndActivityScope(List<Long> teamLeaderIds,List<Long> activityScopeIds);
 }

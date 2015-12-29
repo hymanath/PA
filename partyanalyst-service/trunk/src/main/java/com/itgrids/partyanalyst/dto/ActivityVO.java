@@ -65,11 +65,18 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long optionTypeId;
 	private String optionType;
 	private List<ActivityVO> optionsList = new ArrayList<ActivityVO>(0);
+	private List<Long> locationIds = new ArrayList<Long>(0);
 	
 	private String others;
 	private Long count;
 	
 	
+	public List<Long> getLocationIds() {
+		return locationIds;
+	}
+	public void setLocationIds(List<Long> locationIds) {
+		this.locationIds = locationIds;
+	}
 	public String getOthers() {
 		return others;
 	}
