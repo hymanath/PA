@@ -684,8 +684,8 @@ str+='</tr>';
 str+='</thead>';
 str+='</table>';
 	str+='</div>';
-	
-	if(userAccessType != null && userAccessType == 'ALL')
+	//console.log(userAccessType);
+	if(userAccessType != null && userAccessType == 'All')
 	{
 		str += '<div>';
 		str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
@@ -971,7 +971,8 @@ function getRolesBasedReport(roleId)
 		var casteCategoryResult = result.casteCategoryWiseList;
 		if(casteCategoryResult != null)
 		{
-			
+			if(userAccessType != null && userAccessType == 'All')
+			{
 				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important;margin-bottom:35px" id="casteCategoryId">';
 				str+='<caption class="tablecaption" >Caste Category Wise Information';
 				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
@@ -993,34 +994,38 @@ function getRolesBasedReport(roleId)
 					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
 					str+='</tr>';
 				}
-				str+='</table>';			
+				str+='</table>';	
+			}				
 		}
 			
 		var casteWiseResult = result.casteWiseList;
 		if(casteWiseResult != null)
 		{
-			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId">';
-			str+='<caption class="tablecaption" >Caste Wise Information';
-			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
-			str+='</caption>';
-			str+='<thead>';
-			str+='<tr>';
-			str+='<th width="25%">Caste Name</th>';
-			str+='<th width="25%">Total Count</th>';
-			str+='<th width="25%">Male</th>';
-			str+='<th width="25%">Female</th>';
-			str+='</tr>';
-			str+='</thead>';
-			for(var i in casteWiseResult)
+			if(userAccessType != null && userAccessType == 'All')
 			{
+				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId">';
+				str+='<caption class="tablecaption" >Caste Wise Information';
+				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str+='</caption>';
+				str+='<thead>';
 				str+='<tr>';
-				str+='<td>'+casteWiseResult[i].caste+'</td>';
-					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
-					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
-					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
+				str+='<th width="25%">Caste Name</th>';
+				str+='<th width="25%">Total Count</th>';
+				str+='<th width="25%">Male</th>';
+				str+='<th width="25%">Female</th>';
 				str+='</tr>';
+				str+='</thead>';
+				for(var i in casteWiseResult)
+				{
+					str+='<tr>';
+					str+='<td>'+casteWiseResult[i].caste+'</td>';
+						str+='<td>'+casteWiseResult[i].totalCount+'</td>';
+						str+='<td>'+casteWiseResult[i].maleCount+'</td>';
+						str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
+					str+='</tr>';
+				}
+				str+='</table>    ';
 			}
-			str+='</table>    ';
 		}	
 		
 		var ageRangeWiseResult = result.ageRangeWiseList;
