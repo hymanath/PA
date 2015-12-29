@@ -17,6 +17,9 @@
 
 
 	<!-- YUI Dependency Files-->
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -44,8 +47,6 @@
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
 	<!-- YUI Skin Sam -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -65,9 +66,6 @@
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 <style type="text/css">
-
-	
-	
 	.yui-skin-sam .yui-dt-liner 
 	{
 		margin:0 0 0 0px;
@@ -2212,6 +2210,10 @@ function createNumberCoulmnChart()
 </div>
 
 <script type="text/javascript">	
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 		overallResultsForYearOne();
 		overallResultsForYearTwo();
 		getDiffPercent();
