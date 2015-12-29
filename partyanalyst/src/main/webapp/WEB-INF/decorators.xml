@@ -222,9 +222,9 @@
 	    	<pattern>/localBodyElectionAction*</pattern>
 			
 	    	<!--<pattern>/voterEditDataAction*</pattern>-->
-	    	<pattern>/missingVotersSearchAction*</pattern>
+	    	<!--<pattern>/missingVotersSearchAction*</pattern>-->
 	    	<pattern>/districtPageAction*</pattern>
-	    	<pattern>/sendUpdatesBySMSAction*</pattern>
+	    	<!--<pattern>/sendUpdatesBySMSAction*</pattern>-->
 	    	<pattern>/voterFamilyInfoAction*</pattern>
 	    	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
 	    	<pattern>/voterFamilyEditAction*</pattern>
@@ -234,11 +234,11 @@
 			<pattern>/voterBasicInfoAction*</pattern>
 			<pattern>/boothWiseModificationsCompleteInfo*</pattern>
 			<pattern>/cadreDisplayWindowAction*</pattern>		
-			<pattern>/userGroupAction*</pattern>
-			<pattern>/setUserRestrictionAction*</pattern>
-			<pattern>/assignSubUserAction*</pattern>
+			<!--<pattern>/userGroupAction*</pattern>-->
+			<!--<pattern>/setUserRestrictionAction*</pattern>-->
+			<!--<pattern>/assignSubUserAction*</pattern>-->
 			<!--<pattern>/casteAndElectionResultsComparisonAction*</pattern>-->
-			<pattern>/validationToolsAction*</pattern>
+			<!--<pattern>/validationToolsAction*</pattern>-->
 			<!--<pattern>/cadreOnlineRegisterPageAction*</pattern>-->
 			<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 			<pattern>/getCustomPageFamilyDetailsAction*</pattern>
@@ -587,6 +587,13 @@
 	  
 	  <pattern>/adminUpload*</pattern>
 	  <pattern>/meetingDetailsList*</pattern>
+	  
+	  <pattern>/validationToolsAction*</pattern>
+	  <pattern>/assignSubUserAction*</pattern>
+	  <pattern>/setUserRestrictionAction*</pattern>
+	  <pattern>/userGroupAction*</pattern>
+	  <pattern>/sendUpdatesBySMSAction*</pattern>
+	  <pattern>/missingVotersSearchAction*</pattern>
 
 	 </decorator> 
 </decorators>
