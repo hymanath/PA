@@ -2125,16 +2125,14 @@ function addToPolitician(voterId,name)
 		str+='</div>'
         $('#constituencyResults').html(str);
 	}
+		$(document).on("keyup","#refreshId",function(){
 
-	$("#refreshId").live("click",function()
-	{
 		$('#ShowConstMenu').html('Show <i class="icon-chevron-down"></i>');
 		$("#constituencyResultsInner").css("display","none");
 	});
 
 	var showConst=false;
-	
-	$('#ShowConstMenu').live('click',function(){
+	$(document).on("keyup","#ShowConstMenu",function(){
 		
 	if(showConst) {
 			$("#constituencyResultsInner").hide();
@@ -2147,8 +2145,7 @@ function addToPolitician(voterId,name)
 			showConst=true;
 		}
 	});
-	
-	$('#ShowConstMenu1').live('click',function(){
+	$(document).on("keyup","#ShowConstMenu1",function(){
 	
 	if(showConst) {
 			$("#newsCountDiv").hide();
@@ -2380,7 +2377,7 @@ $(document).ready(function(){
 		 $('#votersbasicinfoForAgeWiseDetls').hide();
 	   }
 	});*/
-    $("#constituencyList").live("change",function(){
+	$(document).on("change","#constituencyList",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 		{
 	      getAllTabs();
@@ -2389,22 +2386,22 @@ $(document).ready(function(){
 
 	  
 	});
-	$("#mandalField").live("change",function(){
+	$(document).on("change","#mandalField",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getAllTabs();
 	});
-	$("#panchayatField").live("change",function(){
+	$(document).on("change","#panchayatField",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	    getAllTabs();
 
 	});
-	$("#pollingStationField").live("change",function(){
+	$(document).on("change","#pollingStationField",function(){
 	  $('.voterDetails').html('');
 	  $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getAllTabs();
 	});
-    $("#publicationDateList").live("change",function(){
+	$(document).on("change","#publicationDateList",function(){
 		fromOnChange=true;
 		$('#ShowMenu').trigger('click');
 		//$('.voterDetails').html('');
@@ -2431,25 +2428,21 @@ $(document).ready(function(){
 			
 		}
 	});
-
-	$('.linkClass').live('click',function(){
+$(document).on("click",".linkClass",function(){
 
 		$('.linkClass').removeClass('selectedLink');
 		$(this).addClass('selectedLink');
 	});
-	
-	$("#electionYearsForCrossVoting").live("change",function(){
+	$(document).on("change","#electionYearsForCrossVoting",function(){
 		getParliamentConstituencyId();
 		getPartiesList();
 	
 	});	
-
-$('#publicationDateList').live('change',function(){
+$(document).on("change","#publicationDateList",function(){
 	getPreAndPresentPublicationDtaeList();
 hidePublicationblock();
 });
-
-$("#voterDetailedReportId").live("click",function(){
+$(document).on("click","#voterDetailedReportId",function(){
 	var constituencyId = $("#constituencyList").val();
 	var prevPId = $("#prevpublicationDateIdsList").val();
 	var presPId = $("#prespublicationDateIdsList").val();
@@ -6333,7 +6326,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			}
 
 	 }
-		$('#votersShareBtn').live("click",function(){
+	 $(document).on("click","#votersShareBtn",function(){
 
 			$('#votersInfoAjaxImg').css("display","block");
 			 $("#assAndUnass").html('');
@@ -6342,8 +6335,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			getvotersBasicInfo("voters",mainreqid,mainpublicationId,maintype);
 			
 		});
-
-		$('#votersShareBtnss').live("click",function(){
+        $(document).on("click","#votersShareBtnss",function(){
 		var hresult="";
 	
 
@@ -6455,8 +6447,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 				callAjax(jsObj,rparam);
 
 		}
-		
-		$("#crossVotingReportBtn").live("click",function(){
+		$(document).on("keyup","#crossVotingReportBtn",function(){
 
 			var elecValue =  $("#electionYearsForCrossVoting").val();
 			var partyValue = $("#PartySelect").val();
@@ -6942,7 +6933,7 @@ showHideNewsProblems();
  //$("#tabHeader_1").addClass("tabActiveHeader");
  //$("#tabHeader_2").removeClass("tabActiveHeader");
  //});
- $("#tabHeader_1").live("click",function(){
+ $(document).on("keyup","#tabHeader_1",function(){
 buildType="hamlet"; 
   
 	 if( maintype == "panchayat" ){
@@ -6957,7 +6948,7 @@ buildType="hamlet";
 	 }
 
 });
-$("#tabHeader_2").live("click",function(){
+$(document).on("click","#tabHeader_2",function(){
 buildType="booth";
  $("#tabpage_2").css({ display: "block" });
  if( maintype == "panchayat" ){
@@ -9371,9 +9362,7 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&importanceId="+publicationYear+"&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			reqBrowser.focus();
 	}
-
-	$(".checkbox").live("click",function()
-	{
+$(document).on("click",".checkbox",function(){
 		$('.checkbox').removeClass('checked1');
 		$(this).addClass("checked1");
 	});
@@ -9806,8 +9795,7 @@ $("#impFamiliesMoreInfoButn").attr("value","View Custom Voter Group Wise Family 
 
 
 
-
-    $('#hideshow').live('click', function(event) {        
+$(document).on("click","#hideshow",function(){      
          $('#castContainerChartInner').toggle('show');
 		 //$(this).val(if($((this).val()))
     });
