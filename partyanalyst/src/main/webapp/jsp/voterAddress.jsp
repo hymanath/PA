@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title> Party Analyst - Suggestive Model</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
@@ -58,7 +58,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
-
+		
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	
@@ -70,6 +70,12 @@ google.load("visualization", "1", {packages:["corechart"]});
 var maxr = 1000;
 </script>
 <style type="text/css">	
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 #suggestiveMainDiv{float: none;
     margin-left: auto;
     margin-right: auto;
