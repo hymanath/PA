@@ -22,6 +22,12 @@
 	<script type="text/javascript" src="js/md5.js"></script>
 </head>
 <style>
+#trigger{
+	font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 	.view{
 	color:white;
 	
