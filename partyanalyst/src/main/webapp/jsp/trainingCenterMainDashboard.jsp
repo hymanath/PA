@@ -1627,7 +1627,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<li>Age:'+result[i].age+';</li>';
 				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
 				str+='<li>Caste: '+result[i].caste+'</li>';
-				str+='<li>MemberShip No: <span class="cadreCls" attr_cadre_id='+result[i].cadreId+' style="cursor:pointer">'+result[i].membershipNo+'<span></li>';
+				str+='<li>MemberShip No: <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].membershipNo+'</a></li>';
 				str+='</ul>';
 				str+='</div>';
 			str+='</div>';
@@ -1639,10 +1639,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		//$(".scrollDivConstituencycls").mCustomScrollbar({max-height:400px;overflow-y:auto;z-index:999999;});
 	}
 	
-	$(document).on("click",".cadreCls",function(){
+	/* $(document).on("click",".cadreCls",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
 		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
-	});
+	}); */
 
 	
 </script>
