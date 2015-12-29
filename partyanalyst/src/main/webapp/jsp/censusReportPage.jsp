@@ -1663,6 +1663,10 @@ select
 	 </div>
   </div>
 	<script>
+  $(".eventsheader").find(".span2").removeClass("span2")
+  $(".eventsheader").find(".span1").removeClass("span1")
+  $(".eventsheader").find(".span3").removeClass("span3")
+  $(".eventsheader").find(".span5").removeClass("span5")
 	showDistrictSelect();
 	</script>
 </body>

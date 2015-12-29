@@ -21,9 +21,11 @@
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	
 	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
-
+	<!--<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">-->
+	<link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
 	<!-- YUI Dependency files (End) -->
 	<style>
+	
 	#contentDiv
 	{
 		border: 3px solid #707070;
