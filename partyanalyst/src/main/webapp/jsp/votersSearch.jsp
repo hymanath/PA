@@ -46,7 +46,12 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 <style type="text/css">
-
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 .labelClass{
 float:left;
 margin:3px 7px 0px 0px;
@@ -235,9 +240,11 @@ var RconstituencyId;
 var RLocalEleBodyId;
 
 var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
+
  $(document).ready(function(){
 
-
+	$("#trigger").parent().removeClass("span3")
+	$("#trigger").parent().addClass("span0")
 	 $('.fields').live("click",function(){
 		 //var indextoShow = $('#votersDetailsTable th:contains("'+$(this).val()+'")').index();
 		 var value = $(this).val();
