@@ -1768,7 +1768,7 @@ public class ActivityService implements IActivityService{
 								List<Long> assignedLcnts = activityTeamLocationDAO.getAssignedLocationsForTeamMembers(leaderId);
 								
 								vo.setId(leaderId);
-								vo.setName(leaderName);
+								vo.setName(leaderName+" (Gen.Secretary) ");
 								vo.setLocationIds(assignedLcnts);
 								
 								leadersMap.put(leaderId, vo);
@@ -1913,7 +1913,7 @@ public class ActivityService implements IActivityService{
 									List<Long> constituencyIds = activityTeamLocationDAO.getAssignedConstituenciesForTeamMembers(memberId);
 									
 									vo.setId(memberId);
-									vo.setName(obj[1] != null ? obj[1].toString():"");
+									vo.setName(obj[1] != null ? obj[1].toString()+" (Org.Secretary) ":"");
 									vo.setLocationIds(constituencyIds);
 									
 									membersMap.put(memberId, vo);
