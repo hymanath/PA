@@ -134,6 +134,11 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			String conditionType = jObj.getString("conditionType");
 			String startDateStr = jObj.getString("startDate");
 			String endDateStr = jObj.getString("endDate");
+			String teamSearchType = jObj.getString("teamSearchType");
+			Long teamLeaderId = jObj.getLong("teamLeaderId");
+			Long teamMemberId = jObj.getLong("teamMemberId");
+			String radioSearch = jObj.getString("radioSearch");
+			Long districtId = jObj.getLong("districtId");
 			
 			
 			SearchAttributeVO searchVO = new SearchAttributeVO();			
@@ -144,6 +149,11 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			searchVO.getAttributesIdsList().add(activityScopeId);
 			searchVO.setLevelId(activityLevelId);
 			searchVO.setConditionType(conditionType);
+			searchVO.setTeamSearchType(teamSearchType);
+			searchVO.setTeamLeaderId(teamLeaderId);
+			searchVO.setTeamMemberId(teamMemberId);
+			searchVO.setRadioSearch(radioSearch);
+			searchVO.setDistrictId(districtId);
 			try {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				searchVO.setStartDate(format.parse(startDateStr));
@@ -327,4 +337,43 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 
+	public String getTeamLeadersByActivityScope(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityScopeId = jObj.getLong("activityId");
+			
+			List<Long> activityScopeIds = new ArrayList<Long>();
+			activityScopeIds.add(activityScopeId);
+			
+			idNameVOList = activityService.getActivityLeadersDetailsByActivityScope(activityScopeIds,false);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getQuestionnaireForScope", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTeamMembersByTeamLeaderAndActivityScope(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityScopeId = jObj.getLong("activityId");
+			Long teamLeaderId = jObj.getLong("leaderId");
+			
+			List<Long> activityScopeIds = new ArrayList<Long>();
+			List<Long> teamLeaderIds = new ArrayList<Long>();
+			
+			activityScopeIds.add(activityScopeId);
+			teamLeaderIds.add(teamLeaderId);
+			
+			idNameVOList = activityService.getTeamMembersByLeaderAndActivityScope(teamLeaderIds,activityScopeIds);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getQuestionnaireForScope", e);
+		}
+		return Action.SUCCESS;
+	}
 }

@@ -2918,6 +2918,8 @@
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="activityQuestionnaireOptionDAO" ref="activityQuestionnaireOptionDAO" />
+		<property name="activityTeamMemberDAO" ref="activityTeamMemberDAO" />
+		<property name="activityTeamLocationDAO" ref="activityTeamLocationDAO" />
 	</bean>
 </beans>		
 	

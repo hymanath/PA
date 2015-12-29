@@ -11189,6 +11189,18 @@
 		    <param name="root">status</param>
 		</result>
 	</action>
+    <action name="getTeamLeadersByActivityScopeAction" class="activityAction" method="getTeamLeadersByActivityScope">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	 <action name="getTeamMembersByTeamLeaderAndActivityScopeAction" class="activityAction" method="getTeamMembersByTeamLeaderAndActivityScope">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+    
 	 <action name="getDaysAttendedCadreDetailsAction" class="trainingCampAction" method="getDaysAttendedCadreDetails">
 	  	   <result type="json" name="success">
 				<param name="root">simpleVOList</param>
