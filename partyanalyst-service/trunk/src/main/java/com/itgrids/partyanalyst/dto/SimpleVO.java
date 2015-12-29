@@ -43,9 +43,9 @@ public class SimpleVO implements java.io.Serializable{
    private SimpleVO simpleVO1;
    
   
-   private Long day1Count;
-   private Long day2Count;
-   private Long day3Count;
+   private Long day1Count=0l;
+   private Long day2Count=0l;
+   private Long day3Count=0l;
    
    private Long centerId;
    private String centerName;
@@ -101,7 +101,31 @@ public class SimpleVO implements java.io.Serializable{
    private Long twoDaysNonInvitedAttendedCount;
    private Long threeDaysNonInvitedAttendedCount;
    
-   	public Map<Long, String> getMandalMap() {
+   private Long notAttendedCount=0l;
+   private Long age=0l;
+   private String caste;
+   
+   
+   
+   	public String getCaste() {
+	return caste;
+}
+public void setCaste(String caste) {
+	this.caste = caste;
+}
+	public Long getAge() {
+	return age;
+}
+public void setAge(Long age) {
+	this.age = age;
+}
+	public Long getNotAttendedCount() {
+	return notAttendedCount;
+}
+public void setNotAttendedCount(Long notAttendedCount) {
+	this.notAttendedCount = notAttendedCount;
+}
+	public Map<Long, String> getMandalMap() {
 	return mandalMap;
 }
 public void setMandalMap(Map<Long, String> mandalMap) {

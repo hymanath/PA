@@ -128,4 +128,5 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getAllDistrictsByState(Long stateId);
 	public List<IdNameVO> getAllConstituencysByDistrict(Long districtId);
 	public List<IdNameVO> getAllCategories();
+	public List<SimpleVO> getDaysAttendedCadreDetails(Long batchId,String dayType,String type);
 }

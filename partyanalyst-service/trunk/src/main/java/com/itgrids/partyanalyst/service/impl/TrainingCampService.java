@@ -18,7 +18,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.dialect.FrontBaseDialect;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -51,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -110,9 +110,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampCallStatusVO;
 import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
-import com.itgrids.partyanalyst.model.CadreDeleteReason;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.FeedbackCategory;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
@@ -211,10 +209,15 @@ class TrainingCampService implements ITrainingCampService{
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICadreDetailsUtils cadreDetailsUtils;
 	private IHamletDAO hamletDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 
     
 	
-    public IHamletDAO getHamletDAO() {
+    public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
 
@@ -5999,20 +6002,33 @@ class TrainingCampService implements ITrainingCampService{
 					 //date wise counts.
 					 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
 					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId);
-					 
-					 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
+				
+					  List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId);
 						 
-						 for(Object[] obj: dateWiseCounts){
-							 if(obj[0]!=null){
-								SimpleVO vo= finalMap.get((Date)obj[1]);
-								if(vo!=null){
-									vo.setTotal(obj[0]!=null?(Long)obj[0]:0l);//attended.
-									vo.setCount(confirmedCount-vo.getTotal());//absent.
-								}
+						 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
+							 
+							 for(Object[] obj: dateWiseCounts){
+								 if(obj[0]!=null){
+									SimpleVO vo= finalMap.get((Date)obj[1]);
+									if(vo!=null){
+										vo.setTotal(obj[1]!=null?(Long)obj[0]:0l);//attended.
+										vo.setCount(confirmedCount-vo.getTotal());//absent.
+										List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,new SimpleDateFormat("yyyy-MM-dd").parse(obj[1].toString()));
+										if(attendedCadreIdsList!=null && attendedCadreIdsList.size()>0){
+											int count=0;
+											for(Long long1 : attendedCadreIdsList){
+												if(!attendeeCadreIdsList.contains(long1)){
+													count=count+1;
+												}
+											}
+										vo.setNonInviteeAttendedCount(count);	
+										}
+									}
+								 }
 							 }
 						 }
-					 }
 					 
+						 
 				 simpleVO.setTotal(confirmedCount);//confirmed people	
 				 simpleVO.setCount(totalBatchCount);//total attended.
 				 simpleVO.setDateString(perc);
@@ -6072,6 +6088,37 @@ class TrainingCampService implements ITrainingCampService{
 				simpleVO2.setDay1Count(oneDay);
 				simpleVO2.setDay2Count(twoDays);
 				simpleVO2.setDay3Count(ThreeDays);
+				
+				
+				//non invitees No of days Count
+				List<Long> nonInviteedIds = trainingCampAttendanceDAO.getNonInviteesNoDaysCount(batchId);
+				List<Long> checkExistingId = new ArrayList<Long>(0);
+				int threedaysNIACount=0,twodaysNIACount=0,onedayNIACount=0;
+				if(nonInviteedIds!=null && nonInviteedIds.size()>0){
+					for (Long long1 : nonInviteedIds) {
+						if(!checkExistingId.contains(long1)){
+							int count=0;
+							for (Long long2 : nonInviteedIds) {
+								if(long2.equals(long1)){
+									checkExistingId.add(long1);
+									count++;
+								}
+							}
+							if(count==1){
+								onedayNIACount++;
+							}else if(count==2){
+								twodaysNIACount++;
+							}else if(count==3){
+								threedaysNIACount++;
+							}
+						}
+						
+					}
+				}
+				
+				simpleVO2.setOneDayNIACount(onedayNIACount);
+				simpleVO2.setTwoDaysNIACount(twodaysNIACount);
+				simpleVO2.setThreeDaysNIACount(threedaysNIACount);
 				
 			}
     	}
@@ -10354,5 +10401,138 @@ class TrainingCampService implements ITrainingCampService{
 			LOG.error("Exception riased at getAllCategories", e);
 		}
 		return voList;
+	}
+	
+	public List<SimpleVO> getDaysAttendedCadreDetails(Long batchId,String dayType,String type){
+			
+			List<SimpleVO> fnlList = new ArrayList<SimpleVO>();
+			try{			
+				
+				/*Long batchId=simpleVO2.getBatchId();*/
+				Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null);
+				
+				Date fromDate=null;
+				Date toDate=null;
+				
+				if(batchDates!=null){
+					fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+					toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+				}
+				  
+				List<Date> dates=getBetweenDates(fromDate,toDate);
+				
+				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates);
+				
+				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId);
+				
+				List<Long> oneDayInviteeCadreIds = new ArrayList<Long>(); 
+				List<Long> twoDaysInviteeCadreIds = new ArrayList<Long>(); 
+				List<Long> threeDaysInviteeCadreIds = new ArrayList<Long>();
+				
+				for (Long long1 : attendeeList) {
+					int temp=0;
+					for (Object[] objects : batchAttendence) {
+						Long temp1=(Long)objects[0];
+						if(temp1.equals(long1)){
+							temp=temp+1;
+						}
+					}
+					if(temp==1){
+						oneDayInviteeCadreIds.add(long1);
+					}else if(temp==2){
+						twoDaysInviteeCadreIds.add(long1);
+					}else if(temp==3){
+						threeDaysInviteeCadreIds.add(long1);
+					}
+				}
+				
+				//non invitees No of days Count
+				
+				List<Long> oneDayNonInviteeCadreIds = new ArrayList<Long>(); 
+				List<Long> twoDaysNonInviteeCadreIds = new ArrayList<Long>();
+				List<Long> threeDaysNonInviteeCadreIds = new ArrayList<Long>();
+				
+				List<Long> nonInviteedIds = trainingCampAttendanceDAO.getNonInviteesNoDaysCount(batchId);
+				List<Long> checkExistingId = new ArrayList<Long>(0);
+				if(nonInviteedIds!=null && nonInviteedIds.size()>0){
+					for (Long long1 : nonInviteedIds) {
+						if(!checkExistingId.contains(long1)){
+							int count=0;
+							for (Long long2 : nonInviteedIds) {
+								if(long2.equals(long1)){
+									checkExistingId.add(long1);
+									count++;
+								}
+							}
+							if(count==1){
+								oneDayNonInviteeCadreIds.add(long1);
+							}else if(count==2){
+								twoDaysNonInviteeCadreIds.add(long1);
+							}else if(count==3){
+								threeDaysNonInviteeCadreIds.add(long1);
+							}
+						}
+						
+					}
+				}
+				
+				List<Object[]> cadreList=null;
+				if((type !=null && type.equalsIgnoreCase("Invitee"))){
+					if(dayType !=null && dayType.equalsIgnoreCase("oneDay")){
+						//0.cadreId,1.firstname,2.memberShipNo,3.mobileNo,4.image,5.dateOfBirth,6.constName
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(oneDayInviteeCadreIds);
+					}else if(dayType !=null && dayType.equalsIgnoreCase("twoDay")){
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(twoDaysInviteeCadreIds);
+					}else if(dayType !=null && dayType.equalsIgnoreCase("threeDay")){
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(threeDaysInviteeCadreIds);
+					}
+					
+				}else if((type !=null && type.equalsIgnoreCase("nonInvitee"))){
+					if(dayType !=null && dayType.equalsIgnoreCase("oneDay")){
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(oneDayNonInviteeCadreIds);
+					}else if(dayType !=null && dayType.equalsIgnoreCase("twoDay")){
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(twoDaysNonInviteeCadreIds);
+					}else if(dayType !=null && dayType.equalsIgnoreCase("threeDay")){
+						cadreList=tdpCadreDAO.getAllCadreDetailsByCadreIds(threeDaysNonInviteeCadreIds);
+					}
+				}
+				
+				if(cadreList !=null && cadreList.size()>0){
+					
+					for (Object[] objects : cadreList) {					
+						SimpleVO simpleVO = new SimpleVO();
+						
+						simpleVO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+						simpleVO.setName(objects[1] !=null ? objects[1].toString():"");
+						
+						simpleVO.setMembershipNo(objects[2] !=null ? objects[2].toString():"");
+						simpleVO.setMobileNo(objects[3] !=null ? objects[3].toString():"");
+						
+						if(objects[4] !=null){
+							String image = objects[4].toString();
+							String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+							simpleVO.setImageStr(imagePath);
+						}else{
+							simpleVO.setImageStr("");
+						}
+						
+						simpleVO.setConstituencyId(objects[6] !=null ? (Long)objects[6]:0l);
+						simpleVO.setConstituencyName(objects[7] !=null ? objects[7].toString():"");
+						
+						simpleVO.setAge(objects[9] !=null ? (Long)objects[9]:0l);
+						simpleVO.setCaste(objects[8] !=null ? objects[8].toString():"");
+						simpleVO.setStatus(objects[10] !=null ? objects[10].toString():"");//relative
+						
+						fnlList.add(simpleVO);
+					}
+					
+				}
+				
+				return fnlList;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+			return fnlList;
 	}
 }
