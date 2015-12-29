@@ -598,6 +598,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(toDayDate!=null){
 		  sb.append(" and ( date(A.attended_time) =:toDayDate ) ");
 	  }
+	  sb.append(" group by A.tdp_cadre_id ");
 	  
 	  Query query = getSession().createSQLQuery(sb.toString());
 	 
