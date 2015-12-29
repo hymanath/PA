@@ -8,7 +8,8 @@
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <TITLE>Election Results Analysis Report</TITLE>
 <!-- YUI Dependency files (Start) -->
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -42,7 +43,6 @@
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
@@ -53,7 +53,6 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
-	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <style>
@@ -105,7 +104,9 @@
     width: 124px;
 }
 </style>
+</HEAD>
 <SCRIPT>
+
 google.load("visualization", "1", {packages:["corechart"]});
 function callAjax(param,jsObj,url){
 	var myResults;
@@ -654,7 +655,7 @@ function openPartyPerformanceWindow(electionTypeId)
 
 </SCRIPT>
 
-</HEAD>
+
 
 <BODY>
 
@@ -726,9 +727,13 @@ function openPartyPerformanceWindow(electionTypeId)
 		</DIV>			
 	</div>
 	</div>
-<SCRIPT>
-initializePage();
-</SCRIPT>
+<script>
+
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+</script>
 </BODY>
 
 </HTML>
