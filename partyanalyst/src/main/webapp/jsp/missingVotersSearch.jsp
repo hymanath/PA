@@ -7,7 +7,8 @@ pageEncoding="ISO-8859-1"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title> Add Missing Voters </title>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script src="js/cleditor/jquery.cleditor.min.js"></script>
 <script src="js/sendUpdatesByEmail.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cleditor/jquery.cleditor.css">
@@ -93,6 +94,12 @@ font-weight:bold;
 var flag=false;
 var rowLength;
 /* This Method is used for calling the ajax method for getting publication dates */
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 function getPublicationDate()
 {
 	$('#voterForm').hide();
@@ -559,7 +566,7 @@ function appendAnotherVoterForm()
 /*
 	This Block Of code is used to delete the specifed row for the user selection
 */
-$(".deleteImg").live('click', function(event) {
+$(document).on("click",".deleteImg",function(){
 	var r=confirm("Do You Want To Delete Row ?");
 	if (r == true)
 	{
@@ -773,5 +780,8 @@ No Of Voters : <font class="requiredFont" style="color:red;font-size:large;">*</
 <div id="requestDiv" style="float: right; position: absolute; margin-left: 600px; width: 200px; margin-top: -20px;"></div>
 </div>
 </div>
+<script>
+Dat();
+</script>
 </body>
 </html>
