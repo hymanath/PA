@@ -1184,12 +1184,16 @@ public class ActivityService implements IActivityService{
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY) && searchAttributeVO.getRadioSearch().equalsIgnoreCase("location")){
 					
 					List<Long> constituencyList = null;
-					/*if(searchAttributeVO.getTeamSearchType().trim().equalsIgnoreCase("organizersWiseId")){
+					if(searchAttributeVO.getTeamSearchType().trim().equalsIgnoreCase("organizersWiseId")){
 						//List<Long> ids = new ArrayList<Long>(0);
 						//ids.add(searchAttributeVO.getId());
-						constituencyList = activityTeamLocationDAO.getAssignedLocationsForTeamMembers(searchAttributeVO.getTeamLeaderId());
+						//constituencyList = constituencyDAO.getConstituencyIdsByStateIdForAElectionType(searchAttributeVO.getTypeId(),2l);
+						if(searchAttributeVO.getTeamLeaderId().longValue() != 0)
+							constituencyList = activityTeamLocationDAO.getAssignedLocationsForTeamMembersByTeamLeaderId(searchAttributeVO.getTeamLeaderId());
+						else if(searchAttributeVO.getTeamMemberId().longValue() != 0)
+							constituencyList = activityTeamLocationDAO.getAssignedConstituenciesForTeamMembers(searchAttributeVO.getTeamMemberId());
 					}
-					else*/
+					else
 						constituencyList = constituencyDAO.getConstituenciesInADistrict(searchAttributeVO.getLocationId());//AP/TS/ALL
 					
 					if(constituencyList != null && constituencyList.size()>0)
@@ -1870,7 +1874,7 @@ public class ActivityService implements IActivityService{
 						returnVO.getActivityVoList().clear();
 						returnVO.setActivityVoList(leadersList);
 					}
-					else if (searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getDistrictId().longValue() == 0){ 
+					/*else if (searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getDistrictId().longValue() == 0){ 
 						
 						List<Long> assigLctnIds = new ArrayList<Long>();
 						ActivityVO vo1 = new ActivityVO();
@@ -1900,8 +1904,8 @@ public class ActivityService implements IActivityService{
 							returnVO.getActivityVoList().clear();
 							returnVO.setActivityVoList(locationsList);
 						}
-					}
-					else if(searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getDistrictId().longValue() > 0 && searchAttributeVO.getTeamMemberId().longValue() == 0){
+					}*/
+					else if(searchAttributeVO.getTeamLeaderId().longValue() > 0 && searchAttributeVO.getTeamMemberId().longValue() == 0){
 						
 						if(searchAttributeVO.getTeamLeaderId().longValue() > 0){
 							List<Object[]> teamMembers = activityTeamMemberDAO.getTeamMembersByTeamLeaderId(searchAttributeVO.getTeamLeaderId());

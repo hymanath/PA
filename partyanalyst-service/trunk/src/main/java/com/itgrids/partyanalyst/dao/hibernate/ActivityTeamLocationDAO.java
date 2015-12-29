@@ -57,4 +57,15 @@ public class ActivityTeamLocationDAO extends GenericDaoHibernate<ActivityTeamLoc
 		
 		return query.list();
 	}
+	
+	public List<Long> getAssignedLocationsForTeamMembersByTeamLeaderId(Long teamLeaderId){
+		
+		Query query = getSession().createQuery(" select model.locationScopeValue from ActivityTeamLocation model " +
+							" where model.activityTeamMemberId in (select model1.activityTeamMemberId from ActivityTeamMember model1 where model1.teamLeadId = :teamLeaderId " +
+							" and model1.isActive = 'true' ) and model.isActive = 'true' and model.locationScopeId = 4");
+		
+		query.setParameter("teamLeaderId", teamLeaderId);
+		
+		return query.list();
+	}
 }
