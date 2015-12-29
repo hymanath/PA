@@ -220,7 +220,8 @@
 			<pattern>/voterModificationReportAction*</pattern>
 	    	<pattern>/changePasswordAction*</pattern>
 	    	<pattern>/localBodyElectionAction*</pattern>
-	    	<pattern>/voterEditDataAction*</pattern>
+			
+	    	<!--<pattern>/voterEditDataAction*</pattern>-->
 	    	<pattern>/missingVotersSearchAction*</pattern>
 	    	<pattern>/districtPageAction*</pattern>
 	    	<pattern>/sendUpdatesBySMSAction*</pattern>
@@ -238,7 +239,6 @@
 			<pattern>/assignSubUserAction*</pattern>
 			<!--<pattern>/casteAndElectionResultsComparisonAction*</pattern>-->
 			<pattern>/validationToolsAction*</pattern>
-			
 			<!--<pattern>/cadreOnlineRegisterPageAction*</pattern>-->
 			<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 			<pattern>/getCustomPageFamilyDetailsAction*</pattern>
@@ -287,7 +287,7 @@
 			<pattern>/strattegtReportsAction*</pattern>
 			<pattern>/panchayatResultsAction*</pattern>
 			<pattern>/userEntitlementAction*</pattern>
-			<pattern>/familyDetailsAction*</pattern>
+			<!--<pattern>/familyDetailsAction*</pattern>-->
 			<pattern>/boothWiseResultsAction*</pattern>
 			<pattern>/importentFamilyResultsAction*</pattern>
 			<pattern>/getStrategyReportsAction*</pattern>
@@ -580,7 +580,13 @@
 	  <pattern>/surveyorProfileSaveAction*</pattern>
 	  <pattern>/voterDataToolsAction*</pattern>
 	  <pattern>/inflencingPeopleWindowAction*</pattern>
+
+	  <pattern>/familyDetailsAction*</pattern>
+	  <pattern>/voterEditDataAction*</pattern>
+	    <pattern>/adminUpload*</pattern>
+
 	  
 	  <pattern>/adminUpload*</pattern>
+
 	 </decorator> 
 </decorators>
