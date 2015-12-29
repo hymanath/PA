@@ -7,7 +7,8 @@
 <html>
 <title>Communication Centre </title>
 <head>
-	
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 	<script src="js/sendUpdatesBySMS.js"></script>
@@ -192,5 +193,8 @@ var locationDetails={
 	<button id="sendButton" onclick="handleSubmit()" > Send SMS </button> 
 </fieldset>
 </div>
+<script>
+Dat();
+</script>
 </body>
 </html>
