@@ -5,9 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Sub User</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 
-
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
@@ -28,6 +28,16 @@
 #parentUsersList{margin-left: 14px;}
 #mainAccountUsersList{margin-left: 4px;}
 #assignParentUser{margin-top: 12px;}
+#trigger{
+  font-size: 12px !important;
+    height: 22px;
+    line-height: 15px;
+    padding: 3px;
+}
+#menu h2
+{
+	margin:0px !important
+}
 </style>
 <script type="text/javascript">
 
@@ -255,7 +265,13 @@ function showSuccessMsg(result)
 }
 
 getAllPAUsers();
-
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+  $(".eventsheader").find(".span1").removeClass("span1")
+  $(".eventsheader").find(".span3").removeClass("span3")
+  $(".eventsheader").find(".span5").removeClass("span5")
+}
+  Dat();
 </script>
 </body>
 </html>
