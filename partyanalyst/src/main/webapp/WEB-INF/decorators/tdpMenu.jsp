@@ -106,7 +106,7 @@ footer
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
 				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;" class="pull-left">Welcome, ${sessionScope.UserName} |</c:if>
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+						<a style="color:green !important;" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 						|
 				</c:if>
 				<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
