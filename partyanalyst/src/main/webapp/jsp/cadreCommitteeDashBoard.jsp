@@ -860,42 +860,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
         <div class="row m_top20">        	 
             <div class="row" id="commityClsi">
-  <!--              <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1130px;">
-                   
-				   <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
-					
-					 <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="display:none;">
-						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
-					</span>
-					 <span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
-					</span>
-					<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp;VILLAGE / WARD &nbsp;</label>
-					</span>&nbsp;&nbsp;
-					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck"  checked="true">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
-					</span>
-					
-					
-					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
-						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp;DISTRICT &nbsp;&nbsp;</label>
-					</span>
-	
-					<br>
-					<span class="btn btn-success btn-xs form-inline  " id="considerAffDiv" >
-						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFLIATED COMMITTEES &nbsp;&nbsp;</label>
-					</span>
-					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -70px;margin-bottom:20px;display:none;"> Export To Excel </span>
-					</div>
-					-->
-					
-					 <div class="col-md-12 col-xs-12 col-sm-12" >
+             	<div class="col-md-12 col-xs-12 col-sm-12" >
                     
 					
-					 <div style="display:inline-block; margin-right: 25px;" >
+					 <div style="display:inline-block; margin-right: 25px;" id="searchScenariodiv">
                      <h5 class="text-success areaBtnsDiv" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px" >LOCATION</h5>
                      <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
@@ -1202,9 +1170,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					});
 					
 					if(userAccessType=="MP"){
-						$("#commityClsi").hide();
+						//$("#commityClsi").hide();
+						$("#searchScenariodiv").hide();
+						$("#districtCommDiv").hide();
+						$("#villageId").prop('checked','checked');
+						$("#constiRdId").prop('checked','checked');
+						$("#districtId").removeAttr('checked');
+						$("#districtCommId").removeAttr('checked');
 					}else{
 						$("#commityClsi").show();
+						$("#searchScenariodiv").show();
+						$("#districtCommDiv").show();
 					}
 
 					if(userAccessType == 'ALL'){
@@ -1264,6 +1240,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						getDistrictWiseCommittesSummary();
 					}else{					
 						if(userAccessType=="MP"){
+							//$("#districtCommDiv").hide();
 							getCommitteeCountByState("TS");
 							getCommitteeDetails("TS","mandalAll");
 							getCommitteeDetails("TS","villageAll");
