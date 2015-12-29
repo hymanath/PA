@@ -71,6 +71,12 @@ google.load("visualization", "1", {packages:["corechart"]});
 var maxr = 1000;
 </script>
 <style type="text/css">	
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 #suggestiveMainDiv{float: none;
     margin-left: auto;
     margin-right: auto;
