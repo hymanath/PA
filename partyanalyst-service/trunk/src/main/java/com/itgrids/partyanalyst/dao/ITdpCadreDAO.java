@@ -380,4 +380,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> checkVoterCardNosCadreOrNot(String voterCardNoStr);
 		public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList);
 		public List<Long> getAllRemovedCadre();
+		public List<Object[]> getAllCadreDetailsByCadreIds(List<Long> cadreIds);
 }
