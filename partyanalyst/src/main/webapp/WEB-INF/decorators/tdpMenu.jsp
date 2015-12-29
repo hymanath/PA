@@ -96,15 +96,15 @@ footer
                 <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
             </div>
             <div class="col-md-4 col-xs-7 col-sm-7 span5 text-center" style="line-height:20px;">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;">TELUGU DESAM PARTY</p><p  style="color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare to dream - Strive to achieve</p>                
+                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;margin-bottom:0px;text-align:center">TELUGU DESAM PARTY</p><p  style="text-align:center;color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare to dream - Strive to achieve</p>                
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  
             </div>
             <div class="col-md-3 col-xs-1 col-sm-1 span3">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
-            	<p style="margin-top:5px;margin-bottom:0px;font-size:10px;color:#333;" class="pull-right">Welcome, ${sessionScope.UserName} | </c:if></p>
+            	<p style="margin-top:1px;margin-bottom:0px;font-size:10px;color:#333;padding:0px;" class="pull-left">Welcome, ${sessionScope.UserName} |</p> </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p style="font-size:10px;color:#333;margin-top:5px;margin-bottom:0px;" class="pull-right">Welcome, ${sessionScope.UserName} |</c:if>
+				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;" class="pull-left">Welcome, ${sessionScope.UserName} |</c:if>
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 						|
@@ -117,7 +117,8 @@ footer
 					
 				</c:if>
 				</p>
-				<a id="trigger" style="margin-top: 3px;" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs m_top10 fullcollapse" href="#">
+				<br/>
+				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs fullcollapse" href="#">
 					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
                 </a>
 				
