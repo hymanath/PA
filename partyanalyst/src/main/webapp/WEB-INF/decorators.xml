@@ -155,7 +155,7 @@
 		<!--<pattern>/callCenterTrainingAgentDahBoard*</pattern>-->
 		<pattern>/trainingAdminDashboard*</pattern>
 		<!--<pattern>/meetingList*</pattern>-->
-		<pattern>/meetingDetailsList*</pattern>
+		<!--<pattern>/meetingDetailsList*</pattern>-->
 		<!--<pattern>/trainingCampMainDashboard*</pattern>-->
 		<!--<pattern>/partyMeetingsDashBoard*</pattern>-->
 		<pattern>/trainingProgramDashboard*</pattern>
@@ -587,6 +587,6 @@
 
 	  
 	  <pattern>/adminUpload*</pattern>
-
+	  <pattern>/meetingDetailsList*</pattern>
 	 </decorator> 
 </decorators>
