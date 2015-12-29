@@ -28,7 +28,12 @@
 <script type="text/javascript" src="js/exportexcel.js"></script>
 <title>IVR Report</title>
 <style>
-
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 	.border-none{border:none;}
 	.text-lowercase{text-transform:lowercase;}
 	.text-uppercase{text-transform:uppercase;}
