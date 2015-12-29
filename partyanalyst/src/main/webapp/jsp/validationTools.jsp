@@ -9,6 +9,8 @@
 <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
 
 <!-- YUI Dependency files (Start) -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -289,7 +291,13 @@
 </div>
 
 <script type="text/javascript">
-
+$("#trigger").parent().find("p").removeClass("pull-left")
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 function getSubLevelInfo()
 {
 $("#ajaxImgId").show();
@@ -1866,75 +1874,64 @@ $(document).ready(function(){
 	});
 
 		
-	$("#hideMenu").live("click",function(){
+		$(document).on("click","#hideMenu",function(){
 		$("#votersBasicInnerDiv").css("display","none");
 		$("#hideAndShow").html('<a id="showMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 	});
 
 
-	$("#showMenu").live("click",function(){
+		$(document).on("click","#showMenu",function(){
 		$("#votersBasicInnerDiv").css("display","block");
 		$("#hideAndShow").html('<a id="hideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
-
-	$("#panchayatHideMenu").live("click",function(){
-	  $("#panchayatMappingInnerDiv").css("display","none");
+		$(document).on("click","#panchayatHideMenu",function(){
+		$("#panchayatMappingInnerDiv").css("display","none");
 	  
-	  $("#panchayatHideAndShow").html('<a id="panchayatShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		$("#panchayatHideAndShow").html('<a id="panchayatShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
-
-	$("#panchayatShowMenu").live("click",function(){
+		$(document).on("click","#panchayatShowMenu",function(){
 		$("#panchayatMappingInnerDiv").css("display","block");
 		$("#panchayatHideAndShow").html('<a id="panchayatHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
-	
-	$("#eleResHideMenu").live("click",function(){
-	  $("#electionResultsMainDiv").css("display","none");
-	  
+	  $(document).on("click","#eleResHideMenu",function(){
+	  $("#electionResultsMainDiv").css("display","none"); 
 	  $("#eleResHideAndShow").html('<a id="eleResShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
-
-	$("#eleResShowMenu").live("click",function(){
+		$(document).on("click","#eleResShowMenu",function(){
 		$("#electionResultsMainDiv").css("display","block");
 		$("#eleResHideAndShow").html('<a id="eleResHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
-
-	$("#boothHideMenu").live("click",function(){
-	  $("#boothMappingInnerDiv").css("display","none");
+		$(document).on("click","#boothHideMenu",function(){
+		$("#boothMappingInnerDiv").css("display","none");
 	  
-	  $("#boothHideAndShow").html('<a id="boothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		$("#boothHideAndShow").html('<a id="boothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
-
-	$("#boothShowMenu").live("click",function(){
+		$(document).on("click","#boothShowMenu",function(){
 		$("#boothMappingInnerDiv").css("display","block");
 		$("#boothHideAndShow").html('<a id="boothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 
-
-	$("#unMappedBoothHideMenu").live("click",function(){
-	  $("#unMappedBoothsInnerDiv").css("display","none");
+		$(document).on("click","#unMappedBoothHideMenu",function(){
+	    $("#unMappedBoothsInnerDiv").css("display","none");
 	  
-	  $("#unMappedBoothHideAndShow").html('<a id="unMappedBoothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+	    $("#unMappedBoothHideAndShow").html('<a id="unMappedBoothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
-
-	$("#unMappedBoothShowMenu").live("click",function(){
+        $(document).on("click","#unMappedBoothShowMenu",function(){
 		$("#unMappedBoothsInnerDiv").css("display","block");
 		$("#unMappedBoothHideAndShow").html('<a id="unMappedBoothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 
-
-	$("#casteAssignedVotersHideMenu").live("click",function(){
-	  $("#casteAssignedVotersInnerDiv").css("display","none");
+		$(document).on("click","#casteAssignedVotersHideMenu",function(){
+	    $("#casteAssignedVotersInnerDiv").css("display","none");
 	  
-	  $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+	    $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
-
-	$("#casteAssignedVotersShowMenu").live("click",function(){
+        $(document).on("click","#casteAssignedVotersShowMenu",function(){
 		$("#casteAssignedVotersInnerDiv").css("display","block");
 		$("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersHideMenu" class="btn"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
@@ -1943,6 +1940,7 @@ $(document).ready(function(){
 	
 	
 });
+Dat();
 </script>
 </body>
 </html>
