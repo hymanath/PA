@@ -9,7 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>User Groups</title>
 <!-- YUI Dependency files (Start) -->
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -1665,11 +1666,17 @@ buildLayout();
 
 </script>
 <script>
+function Dat(){
+	$(".eventsheader").find(".span2").removeClass("span2")
+	$(".eventsheader").find(".span1").removeClass("span1")
+	$(".eventsheader").find(".span3").removeClass("span3")
+	$(".eventsheader").find(".span5").removeClass("span5")
+}
 $(document).ready(function()  {
 	
    var characters = 90;
     $("#counter").append("You have <strong>"+  characters+"</strong> characters remaining");
-    $("#groupNameText").live("keyup",function(){
+	$(document).on("keyup","#groupNameText",function(){
 		
         if($(this).val().length > characters){
         $(this).val($(this).val().substr(0, characters));
@@ -1686,6 +1693,7 @@ $(document).ready(function()  {
     }
     });
 });
+Dat();
 </script>
 </body>
 </html>
