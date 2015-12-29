@@ -384,7 +384,7 @@
 			<pattern>/problemSearchAction*</pattern>
 			<pattern>/completeProblemDetailsAction*</pattern>
 			<pattern>/assigningPartyToUserAction*</pattern>
-			<pattern>/adminUpload*</pattern>
+			<!--<pattern>/adminUpload*</pattern>-->
 			<pattern>/profileManagePageAction*</pattern>
 			<!--<pattern>/initailConstituencyManagementAction*</pattern>-->
 			<!--<pattern>/partyPerformanceReport*</pattern>-->
@@ -556,7 +556,7 @@
 	  <pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 	  <pattern>/voterAverageAgewiseAction*</pattern>
 	  <pattern>/partyHighLowPollingAction*</pattern>
-	  
+ 	  
 	  <pattern>/mobileDataAction*</pattern>
 	  <pattern>/messageCenterAction*</pattern>
 	  <pattern>/uploadAudioFile*</pattern>
@@ -580,5 +580,7 @@
 	  <pattern>/surveyorProfileSaveAction*</pattern>
 	  <pattern>/voterDataToolsAction*</pattern>
 	  <pattern>/inflencingPeopleWindowAction*</pattern>
+	  
+	  <pattern>/adminUpload*</pattern>
 	 </decorator> 
 </decorators>
