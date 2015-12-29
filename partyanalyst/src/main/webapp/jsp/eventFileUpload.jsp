@@ -26,7 +26,7 @@
 	<!-- Bootstrap -->
     <link href="dist/activityDashboard/css/bootstrap.css" rel="stylesheet">
     <link href="dist/activityDashboard/css/custom.css" rel="stylesheet">
-    <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet">
+    <link href="daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
@@ -123,8 +123,8 @@
 
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="daterangepicker/moment.js" type="text/javascript"></script>
+<script src="daterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
