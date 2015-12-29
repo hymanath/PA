@@ -115,6 +115,43 @@
 									<div id="stateWiseViewDid"></div>
 								</div>
 							</div>
+							<!--<div class="panel panel-default m_top10">
+								<div class="panel-heading">
+									<h4 class="panel-title">FILTER DATA</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-4">
+											<label>GENERAL SECRETARY</label>
+											<select class="form-control" id="teamLeaderId" onchange="getActivityTeamMemberDeatils()">
+												<option value="0">All</option>
+											</select>
+										</div>
+										<div class="col-md-4">
+											<label>CO-ORDINATING SECRETARY</label>
+											<select class="form-control" id="teamMemberId">
+												<option value="0">All</option>
+											</select>
+										</div>
+										<div class="col-md-4" style="margin-top: 25px;">
+											<button class="btn btn-block btn-custom btn-success" id="getDetailsBtnId" type="button"> GET DETAILS </button>
+										</div>
+									</div>
+								</div>
+							</div>-->
+							<div class="row">
+								<div class="col-md-12">
+									<div class=" pad_10">
+										<label class="radio-inline">
+											<input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" id="locationWiseId" value="1">LOCATION WISE
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="searchBasedOn" class="searchTypeCls" id="organizersWiseId" value="2">ORGANIZERS WISE
+										</label>
+										<input type="hidden" id="searchTypeId" value="locationWiseId" />
+									</div>
+								</div>
+							</div>
 							<div class="table-responsive" id="alignmentWidth" style="margin-top:10px;">
 				
 							</div>
@@ -230,8 +267,8 @@ $(function () {
  // $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   //$('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
   getActivityNames('onload');
-//getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+//getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location');
+//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
 $(".searchDateCls").val(" ");
 
 
@@ -286,14 +323,14 @@ $(".panel-headingModal").click(function(){
 		
 $(document).on('click','.ranges li',function(){
     if($(this).html()!='Custom'){
-		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location');
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
 	 }
   });
   
   $(document).on('click','.applyBtn',function(){
-         getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+         getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location');
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
   });
 //alert($(".getChildWidth9").width())
 
@@ -329,8 +366,9 @@ function getActivityNames(type)
 			}
 			$('#ActivityList').val(1);
 			if(type == "onload"){
-				getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-				getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+				//getTeamLeadersByActivityScope();
+				getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location');
+				getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
 			}
 		});
 		
@@ -429,9 +467,9 @@ function buildResult(result)
 	$('#stateWiseViewDid').html(str);
 	dynamicwidth();
 }
-function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
+function getActivityDetailsBySearchCriteria(locationId,searchType,divId,teamSearchType,radioSearch)
 {
-	
+	//alert(radioSearch);
 	//aria-expanded
 	if(searchType == 'booth'){
 		$(".villageNameAnchorCls").addClass('collapsed');
@@ -482,6 +520,18 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 		
 		 var activityScopeId = $("#ActivityList").val();
 		 var activityLevelId = $("#activityLevelList").val();
+		 
+		var teamLeaderId = 0;
+		
+		if(radioSearch == 'location'){
+			if(teamSearchType == 'organizersWiseId'){
+				if(searchType == 'district'){
+					teamLeaderId = locationId;
+				}
+			}
+		}
+		//var teamMemberId = $("#teamMemberId").val();		 
+		 
 		//console.log(dateArray.length);
 			if(dateArray.length == 1)
 			{
@@ -497,6 +547,11 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 			locationId:locationId,
 			activityScopeId:activityScopeId,   //1
 			activityLevelId:activityLevelId,   //1
+			teamSearchType:teamSearchType,
+			teamLeaderId:teamLeaderId,
+			teamMemberId:0,
+			radioSearch:radioSearch,
+			districtId:0,
 			task:"getActivityDetailsBySearchCriteria"
 			};
 			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -511,12 +566,132 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId)
 					if(searchType == 'state')
 						buildResult(result);
 					else if(searchType == 'district')
-						buildsLocationsResult(result,divId);
+						buildsLocationsResult(result,divId,teamSearchType);
 					else if(searchType == 'constituency')
-						buildConstituencyResult(result,divId,locationId);
+						buildConstituencyResult(result,divId,locationId,teamSearchType);
 					else if(searchType == 'mandal')
-						buildMandalResult(result,divId,locationId);
+						buildMandalResult(result,divId,locationId,teamSearchType);
 					else if(searchType == 'village')
+						buildVillageResult(result,divId,locationId);
+			});
+	}		
+	  
+}
+
+function getLeadersWiseActivityDetailsBySearchCriteria(locationId,searchType,divId,teamSearchType,radioSearch,index,districtId,leaderId,ledMemsearch)
+{
+	//alert(radioSearch);
+	//aria-expanded
+	if(searchType == 'booth'){
+		$(".villageNameAnchorCls").addClass('collapsed');
+		$(".villageNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'village'){
+		$(".PlusnMinusSignV").addClass('collapsed');
+		//$(".PlusnMinusSignV").attr('aria-expanded','true');
+		$(".villageListCls").html("");		
+		$(".mandalNameAnchorCls").removeClass('bod bod-b');
+	}
+	else if(searchType == 'mandal'){
+		$(".PlusnMinusSignM").addClass('collapsed');
+		//$(".PlusnMinusSignM").attr('aria-expanded','true');
+		
+		$(".mandalsLsitCls").html("");		
+		$(".constiNameAnchorCls").removeClass('bod bod-b');
+	}
+	/*else if(searchType == 'constituency'){
+		$(".PlusnMinusSignd").addClass('collapsed');
+		//$(".PlusnMinusSignd").attr('aria-expanded','true');
+		$(".constiListCls").html("");		
+		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
+	}*/
+		
+	
+	 
+	if(locationId >0)
+	{
+		var name = $('#ActivityList :selected').text();
+		var actiivityLevelStr = $('#activityLevelList :selected').text();
+		$('#headingDiv').html(''+name.toUpperCase()+' - '+actiivityLevelStr.toUpperCase()+' LEVEL');
+		//if(searchType != "state" && searchType != "district"){
+			if(showHideResults(divId)){
+				$("#"+divId).html("");
+				return;
+			}
+		//}
+		
+		/*$('html,body').animate({
+			scrollTop: $("#"+divId).offset().top},
+        'slow');*/
+		
+		var dates=$('.searchDateCls ').val();
+		  var dateArray=dates.split("/");
+		  var fromDateStr=dateArray[0];
+		  var toDateStr=dateArray[1];
+		
+		 var activityScopeId = $("#ActivityList").val();
+		 var activityLevelId = $("#activityLevelList").val();
+		 //alert(leaderId);
+		var teamLeaderId = 0;
+		var teamMemberId = 0;
+		if(leaderId != 0){
+			if(ledMemsearch == 'member')
+				teamMemberId = leaderId;
+			else
+				teamLeaderId = leaderId;
+		}
+		else if(radioSearch == 'location'){
+			if(teamSearchType == 'organizersWiseId'){
+				if(searchType == 'district'){
+					teamLeaderId = locationId;
+				}
+			}
+		}
+		if(index == 3){
+			locationId = districtId;
+		}
+		//var teamMemberId = $("#teamMemberId").val();		 
+		 
+		//console.log(dateArray.length);
+			if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			}
+			var jObj = {
+			stateId:1,
+			searchType:searchType,
+			conditionType:"locationWiseResult",		
+			startDate:fromDateStr,     //30-11-2015
+			endDate:toDateStr,       //08-12-2015
+			locationId:locationId,
+			activityScopeId:activityScopeId,   //1
+			activityLevelId:activityLevelId,   //1
+			teamSearchType:teamSearchType,
+			teamLeaderId:teamLeaderId,
+			teamMemberId:teamMemberId,
+			radioSearch:radioSearch,
+			districtId:districtId,
+			task:"getActivityDetailsBySearchCriteria"
+			};
+			$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getActivityDetailsBySearchCriteria.action',
+			 data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				//console.log(result);
+				if(result != null)
+					if(searchType == 'state')
+						buildResult(result);
+					else if(searchType == 'district' && index == 0)
+						buildsLocationsResult(result,divId,teamSearchType);
+					else if(searchType == 'district' && index == 1)
+						buildConstituencyResult(result,divId,locationId,teamSearchType);
+					else if(searchType == 'constituency' && index == 2)
+						buildMandalResult(result,divId,locationId,teamSearchType);
+					else if(searchType == 'constituency' && index == 3)
 						buildVillageResult(result,divId,locationId);
 			});
 	}		
@@ -536,7 +711,7 @@ function buildVillageResult(result,divId,locationId)
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading panel-village villageNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
-			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\');">';
+			str+='<span role="button" onclick="getActivityDetailsBySearchCriteria(0,\'booth\',\'\',\'locationWiseId\',\'location\');">';
 			
 				str+='<table class="table table-col table-condensed"  style="display:inline;color:#333;" >';
 				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
@@ -632,19 +807,27 @@ function buildVillageResult(result,divId,locationId)
 }
 
 //mmm
-function buildMandalResult(result,divId,locationId)
+function buildMandalResult(result,divId,locationId,teamSearchType)
 {	
 	var str='';
 	if(result.activityVoList != null && result.activityVoList.length>0)
 	{
 		for(var i in result.activityVoList)
-			{				
+			{			
+				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+				{
 			str+='<div class="panel-body">';
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading mandalNameAnchorCls" role="tab" id="headingOneLevelMandal1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			if(teamSearchType == 'organizersWiseId'){
+				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'panchayatLevelId'+i+'\',\'organizersWiseId\',\'location\',\'3\',\''+locationId+'\',\''+result.activityVoList[i].id+'\',\'member\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			}
+			else{
+				str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'village\',\'panchayatLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#collapseOne1LevelPanchayat1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			}
+			
 			
 				str+='<table class="table table-col table-condensed" style="display:inline" >';
 				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0 )
@@ -730,7 +913,7 @@ function buildMandalResult(result,divId,locationId)
 			str+='</div>';
 			str+='</div>';
 			str+='</div>';
-			
+			}
 			}
 	}
 	
@@ -739,7 +922,7 @@ function buildMandalResult(result,divId,locationId)
 	
 }
 //ccc
-function buildConstituencyResult(result,divId,locationId)
+function buildConstituencyResult(result,divId,locationId,teamSearchType)
 {	
 	var str='';
 	if(result.activityVoList != null && result.activityVoList.length>0)
@@ -751,9 +934,13 @@ function buildConstituencyResult(result,divId,locationId)
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading constiNameAnchorCls" role="tab" id="headingOneLevel1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
-			
-				str+='<table class="table table-col table-condensed" style="display:inline" >';
+			if(teamSearchType == 'organizersWiseId'){
+				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'mandalLevelId'+i+'\',\'organizersWiseId\',\'location\',\'2\',\''+result.activityVoList[i].id+'\',\''+locationId+'\',\'leader\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			}
+			else{
+				str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'mandal\',\'mandalLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion1Level1'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1'+i+'" href="#collapseOne1LevelMandal1'+i+'" aria-expanded="true" aria-controls="collapseOne1LevelMandal1'+i+'">';
+			}
+			str+='<table class="table table-col table-condensed" style="display:inline" >';
 				if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
 				{
 					str+='<tr style="background:#F4A460">';
@@ -855,36 +1042,49 @@ if(searchType == 'mandal'){
 		$(".mandalsLsitCls").parent().find("div").removeClass('bod bod-b');
 	}
 */
+
+var isAlreadyBuild = false;
 //dddd
-function buildsLocationsResult(result,divId){
+function buildsLocationsResult(result,divId,teamSearchType){
 	
 	$('#'+divId+'').html('');
 	var str='';
-	str+='<table class="table table-col" style="border:1px solid #ccc" >';
-	str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
-	str+='<tr class="font-12">';
-	str+='<td class="dynWidth" style="width:200px">LOCATION NAME</td>';
-	str+='<td class="getChildWidth">TOTAL</td>';
-	str+='<td class="getChildWidth2">PLANNED</td>';
-	
-	str+='<td class="getChildWidth3">IVR COVERED   <span style="font-size: 11px;">(PLANNED) </span></td>';
-	//str+='<td class="getChildWidth3">IVR COVERED %</td>';
-	str+='<td class="getChildWidth4"> IVR COVERED (NOT-PLANNED) </td>';
-	str+='<td class="getChildWidth5" style="color:#a94442;"> IVR TOTAL </td>';
-	
-	str+='<td class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</td>';
-	str+='<td class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></td>';
-	//str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
-	str+='<td class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</td>';
-	
-	
-	str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED</td>';
-	//str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED %</td>';
-	str+='<td class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</td>';
-	
-	str+='</tr>';
+	if(!isAlreadyBuild){
 		
-    
+		isAlreadyBuild = true;
+		
+		str+='<table class="table table-col" style="border:1px solid #ccc" >';
+		if(teamSearchType == 'organizersWiseId')
+			str+='<caption class="cap-custom"><b>GENERAL SECRATORY WISE - VILLAGE/WARD</b></caption>';
+		else
+			str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
+		str+='<tr class="font-12">';
+		if(teamSearchType == 'organizersWiseId')
+			str+='<td class="dynWidth" style="width:200px">GENERAL SECRETORY</td>';
+		else
+			str+='<td class="dynWidth" style="width:200px">LOCATION NAME</td>';
+			
+		str+='<td class="getChildWidth">TOTAL</td>';
+		str+='<td class="getChildWidth2">PLANNED</td>';
+		
+		str+='<td class="getChildWidth3">IVR COVERED   <span style="font-size: 11px;">(PLANNED) </span></td>';
+		//str+='<td class="getChildWidth3">IVR COVERED %</td>';
+		str+='<td class="getChildWidth4"> IVR COVERED (NOT-PLANNED) </td>';
+		str+='<td class="getChildWidth5" style="color:#a94442;"> IVR TOTAL </td>';
+		
+		str+='<td class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</td>';
+		str+='<td class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></td>';
+		//str+='<td class="getChildWidth7">INFO CELL COVERED %</td>';
+		str+='<td class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</td>';
+		
+		
+		str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED</td>';
+		//str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED %</td>';
+		str+='<td class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</td>';
+		
+		str+='</tr>';
+	}
+	
 	if(result.activityVoList != null && result.activityVoList.length>0)
 	{
 		for(var i in result.activityVoList)
@@ -895,7 +1095,12 @@ function buildsLocationsResult(result,divId){
 			str+='<div class="panel panel-default panel-customtd">';
 			
 			str+='<div class="panel-heading" role="tab" id="headingOneLevel1'+i+'">';
-			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
+			if(teamSearchType == 'organizersWiseId'){
+				str+='<a role="button" onclick="getLeadersWiseActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'district\',\'constituencyLevelId'+i+'\',\'organizersWiseId\',\'location\',\'1\',\'0\',\'0\',\'\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
+			}
+			else{
+			str+='<a role="button" onclick="getActivityDetailsBySearchCriteria(\''+result.activityVoList[i].id+'\',\'constituency\',\'constituencyLevelId'+i+'\',\'locationWiseId\',\'location\');" class="accordion'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOneLevel1'+i+'" aria-expanded="true" aria-controls="collapseOneLevel1'+i+'">';
+			}
 			
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			if(result.activityVoList[i].infoCellTotal == null || result.activityVoList[i].infoCellTotal == 0)
@@ -1050,6 +1255,10 @@ function getDaywiseInfo(searchType,locationId,divId,locationName)
 			
 			 var activityScopeId = $("#ActivityList").val();
 			 var activityLevelId = $("#activityLevelList").val();
+			 
+			 //var teamLeaderId = $("#teamLeaderId").val();
+			//var teamMemberId = $("#teamMemberId").val();
+			 
 			 if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
@@ -1065,6 +1274,11 @@ function getDaywiseInfo(searchType,locationId,divId,locationName)
 				startDate:fromDateStr,   //30-11-2015
 				endDate:toDateStr,     //08-12-2015
 				locationName:locationName,
+				teamSearchType:"locationWiseId",
+				teamLeaderId:0,
+				teamMemberId:0,
+				radioSearch:'location',
+				districtId:0,
 				task:"getActivityDetailsBySearchCriteria"
 				};
 					$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -1173,8 +1387,8 @@ function buildDayWiseResults(result,divId,jObj)
 }
 
 function getDetails(){
-	getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid');
-	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth');
+	getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location');
+	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
 }
 
 var globallocationScope;
@@ -1923,7 +2137,92 @@ function getAvailableDates(locationScope,locationValue,day)
 		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day,0);
   })
 
+ /* function getTeamLeadersByActivityScope()
+  {
+	$('#teamLeaderId').find('option').remove();
+	$('#teamLeaderId').append('<option value="0"> All </option>');
+	
+	 var activityScopeId = $("#ActivityList").val();
+	 
+	 var jObj = {
+			activityId:activityScopeId,
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getTeamLeadersByActivityScopeAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#teamLeaderId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+		});
+  }*/
+  
+ /* function getActivityTeamMemberDeatils(){
+	
+	$('#teamMemberId').find('option').remove();
+	$('#teamMemberId').append('<option value="0"> All </option>');
+	
+	 var activityScopeId = $("#ActivityList").val();
+	 var leaderId = $("#teamLeaderId").val();
+	 
+	 var jObj = {
+			activityId : activityScopeId,
+			leaderId : leaderId
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getTeamMembersByTeamLeaderAndActivityScopeAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#teamMemberId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+		});
+  }*/
 
+ /* $(document).on('click', '#getDetailsBtnId', function(){
+	
+	var teamLeaderId = $("#teamLeaderId").val();
+	var teamMemberId = $("#teamMemberId").val();
+	
+	if(teamLeaderId == 0 || (teamLeaderId != 0 && teamMemberId == 0)){
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','teamSelection','location');
+	}
+	else if(teamLeaderId != 0 && teamMemberId != 0){
+		getActivityDetailsBySearchCriteria(1,'constituency','alignmentWidth','teamSelection','location');
+	} 
+	
+  });*/
+  
+$(document).on('click', '.searchTypeCls', function(){
+	
+	var id = $(this).attr('id');
+	
+	if(id.trim() == 'locationWiseId')
+	{
+		$('#searchTypeId').val('locationWiseId');
+	}
+	if(id.trim() == 'organizersWiseId')
+	{	
+		$('#searchTypeId').val('organizersWiseId');
+	}
+	isAlreadyBuild = false;
+	var searchRadioType = $('#searchTypeId').val();
+	
+	if(searchRadioType == 'locationWiseId'){
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location');
+	}
+	else if(searchRadioType == 'organizersWiseId'){
+		getLeadersWiseActivityDetailsBySearchCriteria(1,'district','alignmentWidth','organizersWiseId','organizers',0,0,0,'');
+	}
+	
+});
+  
 </script>
 </body>
 </html>
