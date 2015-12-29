@@ -355,7 +355,7 @@ function exportToExcel()
 	$(document).ready(function(){
     });
 
-	$("#mainheading").html(" TRAINING CAMP FEEDBACK DETAILS ");
+	//$("#mainheading").html(" TRAINING CAMP FEEDBACK DETAILS ");
 	
 	     //global variables
 		 var leaderShipLevelArray = [];

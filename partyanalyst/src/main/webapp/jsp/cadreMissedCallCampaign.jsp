@@ -7,8 +7,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Cadre Missed Call Campaign</title>
+
 <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+
 <style type="text/css">
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 *{border-radius:0px !important;}
 #chartdiv {
 	width		: 100%;
@@ -194,6 +203,8 @@ display:none;
 <script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 
 <script type="text/javascript">
+	$("#trigger").parent().addClass("span0")
+	$("#trigger").parent().removeClass("span3")
 	$('.scrollable_div').scrollator();
 
 	 $(document).ready(function() {

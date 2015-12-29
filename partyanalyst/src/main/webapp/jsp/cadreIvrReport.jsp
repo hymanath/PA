@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">	
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
  <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
@@ -28,6 +28,7 @@
 <script type="text/javascript" src="js/exportexcel.js"></script>
 <title>IVR Report</title>
 <style>
+
 	.border-none{border:none;}
 	.text-lowercase{text-transform:lowercase;}
 	.text-uppercase{text-transform:uppercase;}
@@ -234,6 +235,8 @@ textarea {
 		
 	</div>
 <script>
+$("#trigger").parent().addClass("span0")
+$("#trigger").parent().removeClass("span3")
 var isDistrictRequired = false;
 var selectedLocation ="District";
 var tgIds ="8,4,295,296,2,5,1,3,7,6,10,13,15,12,18,16,342,343,11,321,23,322,318,26,30,24,20,323,31,319,21,320,40,35,36,32,37,41,39,337,336,34,57,367,345,346,347,56,348,349,351,350,55,58,60,59,50,49,315,47,314,51,316,46,317,44,43,54,313,52,53,66,335,68,64,369,69,73,63,62,70,61,65,71,67,77,338,79,339,78,84,82,75,81,85,74,89,87,362,86,91,93,94,363,364,97,365,92,324,107,101,104,103,325,105,102,326,100,80";
@@ -650,12 +653,14 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 			url : "getCadreIVRCountByDateAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){			
-			buildIvrCountByDate(result,state);
+			//buildIvrCountByDate(result,state);
+			buildIvrCountByDate(result);
 		});
 	}
 	
 
-function buildIvrCountByDate(result,state)
+//function buildIvrCountByDate(result,state)
+function buildIvrCountByDate(result)
 	{
 		var answerPerc = result[0].answeredPerc ;
 		var errorPerc = (result[0].totalError / result[0].total * 100);

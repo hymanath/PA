@@ -13,6 +13,7 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
 <style>
+h2{margin-left:0px !important}
   #userNameId,#imeiId{
      height: 30px;
      width: 220px;
@@ -62,6 +63,11 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+  $(".eventsheader").find(".span2").removeClass("span2")
+  $(".eventsheader").find(".span1").removeClass("span1")
+  $(".eventsheader").find(".span3").removeClass("span3")
+  $(".eventsheader").find(".span5").removeClass("span5")
+  
 	  $(".dropdown-menu").html('<li><a href="newlogoutAction.action">LOGOUT</a></li>');
 	  function changeShowDetails(){
 	     $("#userNameId").val("");

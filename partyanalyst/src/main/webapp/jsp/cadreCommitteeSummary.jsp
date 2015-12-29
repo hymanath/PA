@@ -13,12 +13,8 @@
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="dist/js/bootstrap.min.js"></script>
-			<!--Circle js file-->
-    <script src="js/jquery.classyloader.min.js"></script>
-
+	
+<script src="dist/js/jquery-1.11.2.min.js"></script>
     
 </head>
 
@@ -122,8 +118,10 @@
 		<!--<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
 		</footer>-->
-
-
+	
+	<script src="dist/js/bootstrap.min.js"></script>
+			<!--Circle js file-->
+    <script src="js/jquery.classyloader.min.js"></script>
     <script>
 	var reqlocationType = "";
 	var accessType = '${sessionScope.USER.accessType}';
@@ -144,31 +142,37 @@
 		{
 		getCommitteeSummaryInfo();
 		}
+		jQuery.noConflict();
+		(function( $ ) {
+		  $(function() {
+			$('.loader5').ClassyLoader({
+				speed: 10,
+				diameter: 80,
+				fontSize: '30px',
+				fontFamily: 'Courier',
+				fontColor: 'rgba(0,0,0,0.4)',
+				lineColor: 'rgba(0,166,81,0.9)',
+				percentage: 80,
+				lineWidth: 15,
+				remainingLineColor: 'rgba(0,0,0,0.5)',
+				
+			});
+			$('.loader4').ClassyLoader({
+				speed: 10,
+				diameter: 80,
+				fontSize: '30px',
+				fontFamily: 'Courier',
+				fontColor: 'rgba(0,0,0,0.4)',
+				lineColor: 'rgba(0,166,81,0.9)',
+				percentage: 40,
+				lineWidth: 15,
+				remainingLineColor: 'rgba(0,0,0,0.5)',
+				
+			});
+		  });
+		})(jQuery);
 		
-		$('.loader5').ClassyLoader({
-			speed: 10,
-			diameter: 80,
-			fontSize: '30px',
-			fontFamily: 'Courier',
-			fontColor: 'rgba(0,0,0,0.4)',
-			lineColor: 'rgba(0,166,81,0.9)',
-			percentage: 80,
-			lineWidth: 15,
-			remainingLineColor: 'rgba(0,0,0,0.5)',
-			
-		});
-		$('.loader4').ClassyLoader({
-			speed: 10,
-			diameter: 80,
-			fontSize: '30px',
-			fontFamily: 'Courier',
-			fontColor: 'rgba(0,0,0,0.4)',
-			lineColor: 'rgba(0,166,81,0.9)',
-			percentage: 40,
-			lineWidth: 15,
-			remainingLineColor: 'rgba(0,0,0,0.5)',
-			
-		});
+		
 	});
 	</script>
 	<script>
