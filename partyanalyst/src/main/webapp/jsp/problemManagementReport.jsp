@@ -14,6 +14,8 @@
 
 
 <!-- YUI Dependency files (Start) -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -2419,6 +2421,12 @@ function buildResultDataTable(result)
             oDT: myDataTable
         };
 }
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
 
 </script>  
 <body >
@@ -2555,6 +2563,7 @@ function buildResultDataTable(result)
 <div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
 <script type="text/javascript">
 executeOnload();
+Data();
 </script>
 </body>
 
