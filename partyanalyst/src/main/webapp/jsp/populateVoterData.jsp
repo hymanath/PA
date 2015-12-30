@@ -7,9 +7,10 @@
 <html>
 <head>
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-
 <!-- YUI Dependency files (Start) -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -18,7 +19,7 @@
 	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
 	<script src="js/yahoo/resize-min.js"></script> 
 	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script>didist 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
@@ -1566,7 +1567,7 @@ $("#districtvotermodificationDataInsertBtn").click(function(){
 		 callAjax(jsObj,url);
 
 	});
-
+Data();
 </script>
 </body>
 </html>
