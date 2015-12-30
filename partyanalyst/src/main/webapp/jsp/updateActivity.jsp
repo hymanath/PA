@@ -788,6 +788,9 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<td style="text-align:center;">';
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
+								
+								str+='<a href="eventFieUploadAction.action" target= _blank class="btn btn-success btn-xs" style="margin-left: 5px;">Upload Images</a>';
+								
 								str+='</td>';
 								str+='</tr>';
 							}
