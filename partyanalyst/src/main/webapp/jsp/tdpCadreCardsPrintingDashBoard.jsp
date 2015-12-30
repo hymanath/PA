@@ -14,7 +14,14 @@
 	<link href="js/cardsDashBoard/scrollator/fm.scrollator.jquery.css" rel="stylesheet">		
 	<link href="js/cardsDashBoard/assets/css/smain.css" rel="stylesheet" type="text/css" media="screen">
 
-	<style>	
+	<style>
+	#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
+ body{background:#E5E5E5}	
 		.widget{background:#f9f9f9; border:1px solid #ddd; margin-bottom:15px;padding:0px !important;}
 		.widget-heading{border-bottom:1px solid #c1c1c1; background:#ddd; padding:1px 10px;}
 		.widget-body{padding:10px;}
@@ -224,8 +231,9 @@
 	//$('.scrollable_div').scrollator();
 	//$("[name='my-checkbox']").bootstrapSwitch();
 	//$("[name='radio1']").bootstrapSwitch();
-	
-			
+	$("#trigger").find("i").addClass("fa fa-align-justify")
+		$("#trigger").parent().addClass("span0")
+        $("#trigger").parent().removeClass("span3")	
     function getTotalPrintingStatusCount(type,searchTypeId){
 		 $('#accordion2').html('');
 		 $('#districtAccordion').html('');
