@@ -1734,14 +1734,20 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	str+='</tbody>';
 	str+='</table>';
 	$("#buldingConstituenciesDivId").append(str);
-	 $('#constituencyOverView').dataTable({
+	 /* $('#constituencyOverView').dataTable({
 		"iDisplayLength": 50,
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
-		});
+		}); */
 	
 	
 	
 }
+jQuery( document ).ready(function( $ ) {
+ $('#constituencyOverView').dataTable({
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
+});
 function getConstituencyDetalReport(constituencyId,locationName){
 
 	var jobj = {

@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script>
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
+	<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"> 
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />

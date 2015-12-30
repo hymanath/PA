@@ -594,6 +594,8 @@
 	  <pattern>/userGroupAction*</pattern>
 	  <pattern>/sendUpdatesBySMSAction*</pattern>
 	  <pattern>/missingVotersSearchAction*</pattern>
+	  
+	  <pattern>/dailyVerificationReportsAction*</pattern>
 
 	 </decorator> 
 </decorators>
