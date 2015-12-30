@@ -353,3 +353,9 @@ function openNewWindow(locationType, locationId)
   var updateBrowser = window.open(urlStr,'',"scrollbars=yes,height=600,width=750,left=200,top=200", '_blank');	
 	updateBrowser.focus();
 }
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
