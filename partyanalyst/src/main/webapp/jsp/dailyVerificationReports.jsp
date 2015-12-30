@@ -18,7 +18,12 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
 		<style>
-		
+		#trigger{
+  font-size: 12px !important;
+    height: 23px;
+    line-height: 15px;
+    padding: 3px;
+}
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
 			.widgetservey{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px;}
@@ -108,9 +113,13 @@
  
 var sRegionId = 0;
 var internalRegionId = 0;
-$( document ).ready(function() {
-$('#boothId').multiselect({
+jQuery( document ).ready(function( $ ) {
+  $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
+});
+$( document ).ready(function() {
+/* $('#boothId').multiselect({
+	  noneSelectedText:"Select Booth(s)"}); */
 	$('.datepicker').datepicker({dateFormat: 'dd-mm-yy',minDate: '14-07-2014',maxDate: new Date()}); 
 	$(".toDatepicker").datepicker("setDate", new Date());
 	/*$(".fromDatepicker").datepicker("setDate", '14-07-2014');*/
