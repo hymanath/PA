@@ -12,7 +12,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst</title>
-  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<style type="text/css">
 	#voterManagementMainDiv{
 		float: none;margin: 35px auto 20px;padding-top: 10px;
@@ -949,6 +950,10 @@ function getConstituencyTempList(){
 		callAjax(jsObj,url);
 
 	}
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 getConstituencyTempList();
 </script>
 </body>
