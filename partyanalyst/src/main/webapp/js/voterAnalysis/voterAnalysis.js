@@ -1123,7 +1123,7 @@ $(document).ready(function(){
 		 $('#votersbasicinfoForAgeWiseDetls').hide();
 	   }
 	});
-    $("#constituencyList").live("change",function(){
+	$(document).on("change","#constituencyList",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 		{
 	      getBasicInfo();
@@ -1132,27 +1132,26 @@ $(document).ready(function(){
 
 	  
 	});
-	$("#mandalField").live("change",function(){
+	$(document).on("change","#mandalField",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 2 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
 		 getPreviousElectionVotingTrends();
 
 	});
-	$("#panchayatField").live("change",function(){
+	$(document).on("change","#panchayatField",function(){
 	   if($(this).val() != 0 && $("#reportLevel").val() == 3 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
 	   getPreviousElectionVotingTrends();
 
 	});
-	$("#pollingStationField").live("change",function(){
+	$(document).on("change","#pollingStationField",function(){
 	  $('.voterDetails').html('');
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 && $("#reportLevel").val() == 4 && $("#publicationDateList option").length > 0 && $("#publicationDateList").val() != 0)
 	      getBasicInfo();
 		
 	});
-    $("#publicationDateList").live("change",function(){
-    
+	$(document).on("change","#publicationDateList",function(){
        $('.voterDetails').html('');
 	   $('.noteDiv').html('');
 	   if($(this).val() != 0 ){
@@ -1178,9 +1177,7 @@ $(document).ready(function(){
 			
 		}
 	});
-
-	$('.linkClass').live('click',function(){
-
+$(document).on("click",".linkClass",function(){
 		$('.linkClass').removeClass('selectedLink');
 		$(this).addClass('selectedLink');
 	});
@@ -4046,4 +4043,10 @@ if(isMuncipality)
 	var urlStr="votersCategoeryAction.action";
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
+}
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 }
