@@ -20,7 +20,14 @@
     </script>
 
 <style>
-
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
+#mainheading{margin-top:16px;padding:0px}
+.header-text{padding:0px;}
 h2{
 	font-size: 20px;
     line-height: 36px;
