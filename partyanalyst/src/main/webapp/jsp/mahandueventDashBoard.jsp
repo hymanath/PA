@@ -36,11 +36,23 @@
     padding: 5px;
 	width:216px;
 }
+
+    header.eventsheader {  
+    background:url("dist/eventDashboard/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    height: 71px;   
+}
+
+#processingDialogue{heigth:100% !important;}
+.prev, .next {width:45px !important}
+.customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
+.customclass1{border:none !important;background:none !important}
 </style>
 </head>
 
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 	<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
@@ -70,7 +82,7 @@
     </div>
 	
 	
-</header>
+</header>-->
  <div class="themeControll">
  <!--<h4 class="m_bottom0">
  	<form class="me-select display-style">
@@ -81,16 +93,14 @@
 	</form>
   </h4>-->
   <div class="linkinner"> 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" >
-              
-                </div>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ></div>
   </div>
   <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
 </div>   
     
 
-<section class="container">
-		
+<section>
+	<div class="container">	
 	<div class="row" style="padding:5px;">
 		
 		<div class="col-md-3 col-md-offset-8">
@@ -110,7 +120,7 @@
 		
 		
 		
-    </div>
+
 	<div class="row">
     	<div class="col-md-4 col-sm-6 col-xs-12" style="">
         	<div class="panel panel-default panel-custom-green">
@@ -259,12 +269,8 @@
 			</div>
     </div>
 	<div id="processingDialogue"></div>
+	</div>
 </section>
-<footer>
-	<div class="text-center">
-    	All &copy; 2015 Telugu Desam Party
-    </div>
-</footer>
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -1315,16 +1321,8 @@ Highcharts.setOptions({
 }
 
 </script>
-</body>
-​<style>
-    header.eventsheader {  
-    background:url("dist/eventDashboard/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
-    background-origin: border-box;
-    background-repeat: no-repeat;
-    height: 71px;   
-}
-</style>
-<script>
+<script type="text/javascript">
+
 getEvents();
 
 $(".tbtn").click(function(){
@@ -1624,10 +1622,5 @@ function showHide()
 }
 
 </script>
-<style>
-#processingDialogue{heigth:100% !important;}
-.prev, .next {width:45px !important}
-.customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
-.customclass1{border:none !important;background:none !important}
-</style>
+</body>
 </html>

@@ -149,7 +149,7 @@
 		<!--<pattern>/constituencyCommitteeSummaryAction*</pattern>-->
 		<!--<pattern>/cadreCommitteeRolesDashboard*</pattern>-->
 		<!--<pattern>/cadreSearchAndRegAction*</pattern> -->
-		<pattern>/eventDashboardAction*</pattern>
+		<!-- <pattern>/eventDashboardAction*</pattern> -->
 		<!-- <pattern>/callCenterTrainingAdmin*</pattern> -->
 		<pattern>/callCenterTrainingAgent*</pattern>
 		<!--<pattern>/callCenterTrainingAgentDahBoard*</pattern>-->
@@ -298,7 +298,7 @@
 			<pattern>/home*</pattern>
 			<pattern>/surveyDataDetailsAction*</pattern>
 			<pattern>/surveyDataDetailsAction*</pattern>
-			<pattern>/dailyVerificationReportsAction*</pattern>
+			<!--  <pattern>/dailyVerificationReportsAction*</pattern>-->
 			<pattern>/surveyMonitoringAction*</pattern>
 			<!--<pattern>/candidateUpdateDetailsAction*</pattern>-->
 			<!--<pattern>/userWiseTrackingAction*</pattern>-->
@@ -596,6 +596,7 @@
 	  <pattern>/missingVotersSearchAction*</pattern>
 	  
 	  <pattern>/dailyVerificationReportsAction*</pattern>
+	  <pattern>/eventDashboardAction*</pattern>
 
 	 </decorator> 
 </decorators>
