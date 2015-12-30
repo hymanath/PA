@@ -1917,7 +1917,7 @@ public class ActivityService implements IActivityService{
 									List<Long> constituencyIds = activityTeamLocationDAO.getAssignedConstituenciesForTeamMembers(memberId);
 									
 									vo.setId(memberId);
-									vo.setName(obj[1] != null ? obj[1].toString()+" (Org.Secretary) ":"");
+									vo.setName(obj[1] != null ? obj[1].toString()+" (Org.Secretary / Secretary) ":"");
 									vo.setLocationIds(constituencyIds);
 									
 									membersMap.put(memberId, vo);
