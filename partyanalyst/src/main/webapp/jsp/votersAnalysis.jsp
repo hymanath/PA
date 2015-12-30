@@ -7,9 +7,10 @@
 <html>
 <head>
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-
 <!-- YUI Dependency files (Start) -->
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -941,6 +942,10 @@ function openNewWindow(){
 function showHideDiv(){
   $('#newsDiv').toggle('slow');
  }
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 </script>
 </body>
 </html>
