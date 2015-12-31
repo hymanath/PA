@@ -8,6 +8,7 @@
 <head>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <title>Infected Booths</title> 
 
 <style>
@@ -166,7 +167,9 @@ input, button, select, textarea {
 			}else{
 			$("#infectedBoothsId").html("<br/><legend>No Panchayats Available</legend>");
 			}
+			if(result!=null){
 			window.open(result.url);
+			}
 		}
 		
 		function sortAscending(data_A, data_B)

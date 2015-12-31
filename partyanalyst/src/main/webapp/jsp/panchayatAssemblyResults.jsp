@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS REPORT</title>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
@@ -16,6 +17,12 @@
   google.load("visualization", "1", {packages:["corechart"]});
 </script>
 <style type="text/css">
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 
   #ajaxImage{
     display:none; 
@@ -77,7 +84,8 @@ background-color: #CDE6FC;
 <div id="buildTableDiv1" style="margin-left:194px;"></div>
 
 <script>
-
+$("#trigger").parent().addClass("span0")
+$("#trigger").parent().removeClass("span3")	
 var constituencyId = '${constituencyId}';
 function getPanchayatAssemblyResultDetails()
 {
