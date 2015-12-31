@@ -304,16 +304,16 @@
 			<!--<pattern>/userWiseTrackingAction*</pattern>-->
 			<!--<pattern>/surveyUserTrackingAction*</pattern>-->
 			<pattern>/constituencyDetailReportAction*</pattern>
-			<pattern>/surveyCallCenterAction*</pattern>
+			<!--<pattern>/surveyCallCenterAction*</pattern>-->
 			<!--<pattern>/surveyAdmin*</pattern>-->
-       		<pattern>/houseHoldsSummaryReportAction*</pattern>
+       		<!--<pattern>/houseHoldsSummaryReportAction*</pattern>-->
        		<!--<pattern>/assignUsersToWebMonitoringTeam*</pattern>-->
        		<pattern>/RegistrationAction*</pattern>
        		<pattern>/partyCadreSearchAction*</pattern>
-       		<pattern>/duplicateMobileNumbers*</pattern>
+       		<!--<pattern>/duplicateMobileNumbers*</pattern>-->
        		<!--<pattern>/surveyConstituencieOverview*</pattern>-->
        		<!--<pattern>/usersReport*</pattern>-->
-       		<pattern>/userAccessRegionAction*</pattern>
+       		<!--<pattern>/userAccessRegionAction*</pattern>-->
        		<pattern>/ivrMobileAction*</pattern>
        		<!--<pattern>/cadreRegistration*</pattern>-->
        		<!--<pattern>/cadreDashBoardAction*</pattern>-->
@@ -604,6 +604,16 @@
 	  <pattern>/problemManagementReportAction*</pattern>
 	  <pattern>/voterDataManageAction*</pattern>
 	  <pattern>/votersAnalysisAction*</pattern>
+	  	  
+	  <pattern>/criticalPanchayatsAction*</pattern>
+	  <pattern>/getInfectedBoothsAction*</pattern>
+	  <pattern>/userEntitlementAction*</pattern>
+	  <pattern>/panchayatResultsAction*</pattern>
+	  
+	  <pattern>/userAccessRegionAction*</pattern>
+	  <pattern>/duplicateMobileNumbers*</pattern>
+	  <pattern>/houseHoldsSummaryReportAction*</pattern>
+	  <pattern>/surveyCallCenterAction*</pattern>
 	  
 	  <pattern>/criticalPanchayatsAction*</pattern>
 	  <pattern>/getInfectedBoothsAction*</pattern>
