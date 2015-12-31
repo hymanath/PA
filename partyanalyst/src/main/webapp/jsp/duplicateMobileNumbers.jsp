@@ -28,6 +28,12 @@
 </head>
 <body>
 <style>
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
 			.widgetservey{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px;}
