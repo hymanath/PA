@@ -7,7 +7,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>User Access</title>
-<script type="text/Javascript" src="js/homePage/jquery.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
 <style type="text/css">
   #managingCountryMainDiv
 		{
@@ -60,7 +62,7 @@
 			color: #FFFFFF;
           }
      p    {
-           line-height: 5px;
+         
            margin: 0 0 5px;
            padding: 0;
          }
@@ -73,7 +75,8 @@
             width: 12px;
          }
 </style>
-
+</head>
+<body>
 <script type="text/javascript">
 
   function getAllDistrictDetails(){
@@ -816,11 +819,17 @@ function showStateDetailForConstituency(results){
 	document.getElementById("constituencyMessage").innerHTML = str;
    }
  }
-
-
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
 </script>
-</head>
-<body>
+<script>
+Data();
+</script>
+
 <center>
  <h2 style="font-size: 17px; ">User Region Access Info</h2> 
  <table style="margin-bottom: 10px;">
