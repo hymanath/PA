@@ -280,13 +280,13 @@
 			<pattern>/boothPollReportAction*</pattern>
 			<!--<pattern>/getVotersAddressAction*</pattern>-->
 			<pattern>/resetPasswordAction*</pattern>
-			<pattern>/criticalPanchayatsAction*</pattern>
+			<!-- <pattern>/criticalPanchayatsAction*</pattern> -->
 			<!--<pattern>/partyHighLowPollingAction*</pattern>-->
-			<pattern>/getInfectedBoothsAction*</pattern>
+			<!-- <pattern>/getInfectedBoothsAction*</pattern> -->
 			<pattern>/smsAction*</pattern>
 			<pattern>/strattegtReportsAction*</pattern>
-			<pattern>/panchayatResultsAction*</pattern>
-			<pattern>/userEntitlementAction*</pattern>
+			<!-- <pattern>/panchayatResultsAction*</pattern> -->
+			<!-- <pattern>/userEntitlementAction*</pattern> -->
 			<!--<pattern>/familyDetailsAction*</pattern>-->
 			<pattern>/boothWiseResultsAction*</pattern>
 			<pattern>/importentFamilyResultsAction*</pattern>
@@ -604,5 +604,10 @@
 	  <pattern>/problemManagementReportAction*</pattern>
 	  <pattern>/voterDataManageAction*</pattern>
 	  <pattern>/votersAnalysisAction*</pattern>
+	  
+	  <pattern>/criticalPanchayatsAction*</pattern>
+	  <pattern>/getInfectedBoothsAction*</pattern>
+	  <pattern>/userEntitlementAction*</pattern>
+	  <pattern>/panchayatResultsAction*</pattern>
 	 </decorator> 
 </decorators>

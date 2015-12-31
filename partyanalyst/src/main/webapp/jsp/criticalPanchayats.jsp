@@ -9,6 +9,7 @@
 <title>Critical Panchayats</title>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+ <link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript"> 
   google.load("visualization", "1", {packages:["corechart"]});
 </script>

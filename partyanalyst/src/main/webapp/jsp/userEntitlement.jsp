@@ -8,10 +8,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="js/UserEntitlement/UserEntitlements.js"></script>
 <title>User Entitlement</title>
 
 	<style type="text/css">
+	#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 	.background
 	{
 		background:url("./images/new_homepage/js-banner-bg1.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
