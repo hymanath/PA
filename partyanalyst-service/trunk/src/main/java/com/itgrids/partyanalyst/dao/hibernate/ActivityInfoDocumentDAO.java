@@ -301,11 +301,11 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}
 	
-	public Integer deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId)
+	public Integer deleteEventUploadFilebyActivityInfoDocId(List<Long> activityInfoDocIdList)
 	{
-		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.isDeleted = 'Y' where model.activityInfoDocumentId =:acitivityInfoDocId ");
+		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.isDeleted = 'Y' where model.activityInfoDocumentId in(:activityInfoDocIdList) ");
 		
-		query.setParameter("acitivityInfoDocId", acitivityInfoDocId);
+		query.setParameterList("activityInfoDocIdList", activityInfoDocIdList);
 		return query.executeUpdate();
 	}
 	
@@ -369,6 +369,34 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getActivityId() > 0)
 			query.setParameter("activityScopeId",inputVO.getActivityId());
 		return query.list();
+	}
+	
+	public List<Object[]> getActivityDocumentsImagesByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate,Integer startIndex,Integer maxIndex)
+	{
+		Query query = getSession().createQuery(" select model.activityInfoDocumentId,model.activityDocument.path from ActivityInfoDocument model where model.locationScopeId =:levelId" +
+				"  and model.locationValueAddress =:levelValue and model.day =:day and model.activityDocument.activityScopeId =:activityScopeId and date(model.activityDocument.activityDate) =:activityDate and model.isDeleted = 'N' ");
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("day", day);
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setDate("activityDate", activityDate);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	
+	
+	public Long getActivityDocumentsImagesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate)
+	{
+		Query query = getSession().createQuery(" select count(model.activityInfoDocumentId) from ActivityInfoDocument model where model.locationScopeId =:levelId" +
+				"  and model.locationValueAddress =:levelValue and model.day =:day and model.activityDocument.activityScopeId =:activityScopeId and date(model.activityDocument.activityDate) =:activityDate and model.isDeleted = 'N' ");
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("day", day);
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setDate("activityDate", activityDate);
+		
+		return (Long) query.uniqueResult();
 	}
 	
 

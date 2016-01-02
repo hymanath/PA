@@ -238,5 +238,58 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 	 }
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocationWiseQuestionsAnswersDetails(Long locationId,String location)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId,model.trainingCampFeedbackCategory.feedbackCategory.categoryName,model.answer,   ");
+		str.append(" model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.lastname,model.tdpCadre.userAddress.district.districtName, " +
+				" model.tdpCadre.userAddress.constituency.name,model.tdpCadre.userAddress.constituencyId,model.tdpCadre.memberShipNo ");
+		str.append(" from TrainingCampFeedbackAnswer model where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(location != null && locationId > 0 &&  location.equalsIgnoreCase("district")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId = :locationId  ");
+		}
+		else if(location != null && locationId > 0 && location.equalsIgnoreCase("constituency")){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationId  ");
+		}
+		
+		str.append(" order by model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(locationId > 0)
+		 query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBasicLocationDetails(Long locationId,String location)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.tdpCadre.userAddress.district.districtName,model.tdpCadre.userAddress.constituency.name,model.trainingCampFeedbackCategory.trainingCampBatch.trainingCampBatchId," +
+				" model.trainingCampFeedbackCategory.trainingCampBatch.trainingCampBatchCode  ");
+				
+		str.append(" from TrainingCampFeedbackAnswer model where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(location != null && locationId > 0 &&  location.equalsIgnoreCase("district")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId = :locationId  ");
+		}
+		else if(location != null && locationId > 0 && location.equalsIgnoreCase("constituency")){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationId  ");
+		}
+		
+		str.append(" order by model.trainingCampFeedbackCategory.feedbackCategory.feedbackCategoryId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(locationId > 0)
+		 query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+	
 	 
 }
