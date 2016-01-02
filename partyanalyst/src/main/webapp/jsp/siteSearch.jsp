@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <title>Search in PartyAnalyst for Politician and Constituency</title>
 
 <style type="text/css">
@@ -68,7 +70,10 @@ $(document).ready(function() {
     customSearchControl.setResultSetSize(google.search.Search.LINK_TARGET_BLANK);
     customSearchControl.draw('cse');
   }, true);
-  
+ $(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5") 
 </script>
 </div>
 </body>
