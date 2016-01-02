@@ -794,22 +794,23 @@ $(document).on("click",".deleteBtnCls",function() {
  });
  
  acitivityInfoDocId = acitivityInfoDocId.substr(0,acitivityInfoDocId.length-1);
- 
- var jsObj=
-   {				
-	  acitivityInfoDocId:acitivityInfoDocId,
-	  task:"deleteFile"				
-	}
-	$.ajax({
-			  type:'GET',
-			  url: 'deleteUploadedFileAction.action',
-			  dataType: 'json',
-			  data: {task:JSON.stringify(jsObj)}
-	   }).done(function(result){
-		   if(result.resultCode == 0){
-	         getActivityImages(0);
-		   }
-	   });
+ if(confirm("Are you sure you want to remove this file?")){
+	    var jsObj=
+	    {				
+		  acitivityInfoDocId:acitivityInfoDocId,
+		  task:"deleteFile"				
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'deleteUploadedFileAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result.resultCode == 0){
+				 getActivityImages(0);
+			   }
+		   });
+   }
 
 });
 
