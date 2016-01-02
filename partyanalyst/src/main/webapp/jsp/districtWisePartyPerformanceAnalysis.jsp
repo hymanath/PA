@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>District Wise Party Performance Analysis</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <!-- YUI Dependency Files-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -177,6 +179,10 @@ google.load("visualization", "1", {packages:["corechart"]});
 </div>
    <script type="text/javascript">
 	 getAllStates();
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
    </script>
    </center>
 </body>
