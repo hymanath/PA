@@ -13,9 +13,14 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getLocations(EventDocumentVO inputVO,Date startDate,Date endDate,String type);
 	
 	
-	public Integer deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId);
+	public Integer deleteEventUploadFilebyActivityInfoDocId(List<Long> activityInfoDocIdList);
 	public List<Object[]> getAvailableDates(EventDocumentVO inputVO,Date startDate,Date endDate,String type);
 	public Long getEventDocumentsCount(EventDocumentVO inputVO,Date startDate,Date endDate);
 	public List<Object[]> getLocationWiseImageCount(EventDocumentVO inputVO,Date startDate,Date endDate,String type);
+	
+	public List<Object[]> getActivityDocumentsImagesByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate,Integer startIndex,Integer maxIndex);
+	
+	public Long getActivityDocumentsImagesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate);
+	
 	
 }
