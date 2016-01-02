@@ -6,8 +6,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Live Election Results Analysis</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+	<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<!-- YUI Dependency files (Start) -->
+<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script>  
+<script type="text/javascript" src="js/yahoo/element-min.js"></script> 	
+<script src="js/yahoo/resize-min.js"></script> 
+<script src="js/yahoo/layout-min.js"></script>  
+<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+<script type="text/javascript" src="js/json/json-min.js"></script>
+<script type="text/javascript" src="js/yahoo/connection-min.js"></script>  
+<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>   
+<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+<!-- YUI Dependency files (End) -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 <style>
  
  .yui-skin-sam.yui-dt table th {
@@ -1552,8 +1569,13 @@ function showGenderAnalysisInConstituencyElection(result)
       };
 	}
 }
-
-
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
+Data();
 </script>
 </body>
 </html>
