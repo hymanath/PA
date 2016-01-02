@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Party To User</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 	#assignPartyMainDiv
 	{
@@ -281,8 +283,12 @@ function showPartyDetails(results)
 	  else if(results.resultCode == 121)
              document.getElementById("userErrorMessageDiv").innerHTML='<b><font color="blue">Already Assigned</font></b>';	  
   }
-  
-
+ function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5") 
+} 
 </script>
 </head>
 <body>
@@ -365,6 +371,8 @@ function showPartyDetails(results)
 
 </div>
 
-
+<script>
+Data();
+</script>
 </body>
 </html>

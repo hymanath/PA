@@ -207,6 +207,7 @@ textarea {
 </style>
 
 <script type="text/javascript">
+
 var problemFilesArray = new Array();
 var ratingtrue = true;
 var cadreProblemDetails;
@@ -2583,5 +2584,7 @@ $(".eventsheader").find(".span2").removeClass("span2")
 $(".eventsheader").find(".span1").removeClass("span1")
 $(".eventsheader").find(".span3").removeClass("span3")
 $(".eventsheader").find(".span5").removeClass("span5")
+setTimeout(function(){ $("#menu").css("width","0px") }, 100);
+
 </script>
 
