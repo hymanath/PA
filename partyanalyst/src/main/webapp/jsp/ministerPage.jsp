@@ -15,6 +15,8 @@
 <s:if test="metaInfoVO != null && metaInfoVO.description != null">
 <meta name="description" content="${metaInfoVO.description}"/>
 </s:if>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
@@ -1547,7 +1549,10 @@ function showStatesDiv(){
 	$('.stateLabel').show();
 
 }
-
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 </script>
 </body>
 </html>
