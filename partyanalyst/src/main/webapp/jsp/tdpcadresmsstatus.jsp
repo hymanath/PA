@@ -14,13 +14,18 @@
 
 <script>
 
-$('document').ready(function(){
+/* $('document').ready(function(){
 	$( "#date" ).datepicker();
-});
+}); */
 
 </script>
 <style>
-
+#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
 .background {
     background: none repeat scroll 0 0 #e5e5e5;
 	}
