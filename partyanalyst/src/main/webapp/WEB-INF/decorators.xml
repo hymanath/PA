@@ -303,7 +303,7 @@
 			<!--<pattern>/candidateUpdateDetailsAction*</pattern>-->
 			<!--<pattern>/userWiseTrackingAction*</pattern>-->
 			<!--<pattern>/surveyUserTrackingAction*</pattern>-->
-			<pattern>/constituencyDetailReportAction*</pattern>
+			<!-- <pattern>/constituencyDetailReportAction*</pattern> -->
 			<!--<pattern>/surveyCallCenterAction*</pattern>-->
 			<!--<pattern>/surveyAdmin*</pattern>-->
        		<!--<pattern>/houseHoldsSummaryReportAction*</pattern>-->
@@ -406,7 +406,7 @@
 			<pattern>/sitemapAction*</pattern>
 			<pattern>/newsZoneAction*</pattern>
 			<pattern>/partyPerformanceJasper*</pattern>
-			<pattern>/tdpcadresmsstatusAction*</pattern>
+			<!-- <pattern>/tdpcadresmsstatusAction*</pattern> -->
 			<pattern>/cadreSMSFileUpload*</pattern>
 	  </decorator>
 	  <decorator name="committeelayout" page="committeelayout.jsp">
@@ -615,9 +615,7 @@
 	  <pattern>/houseHoldsSummaryReportAction*</pattern>
 	  <pattern>/surveyCallCenterAction*</pattern>
 	  
-	  <pattern>/criticalPanchayatsAction*</pattern>
-	  <pattern>/getInfectedBoothsAction*</pattern>
-	  <pattern>/userEntitlementAction*</pattern>
-	  <pattern>/panchayatResultsAction*</pattern>
+	  <pattern>/constituencyDetailReportAction*</pattern>
+	  <pattern>/tdpcadresmsstatusAction*</pattern>
 	 </decorator> 
 </decorators>

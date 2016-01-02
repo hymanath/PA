@@ -18,6 +18,13 @@
 			<!--------------------	-->
 	<!----------------------->
 		<style>
+		#trigger{
+  font-size: 12px !important;
+    height: 15px;
+    line-height: 15px;
+    padding: 3px;
+}
+
 		#commentStatusDiv
 		{
 		  font-weight:bold;
