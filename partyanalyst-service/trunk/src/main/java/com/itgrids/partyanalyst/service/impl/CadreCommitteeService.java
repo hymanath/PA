@@ -16522,14 +16522,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	{
 		List<IdNameVO> idNameVoList = null;
 		try {
-			List<ActivityLevel> activityTypeLsit = activityLevelDAO.getAll();
+			List<Object[]> activityTypeLsit = activityLevelDAO.actvityLvlOrder();
 			if(activityTypeLsit != null && activityTypeLsit.size()>0)
 			{
 				idNameVoList = new ArrayList<IdNameVO>();
-				for (ActivityLevel activityType : activityTypeLsit) {
+				for (Object[] object : activityTypeLsit) {
 					IdNameVO vo = new IdNameVO();
-					vo.setId(activityType.getActivityLevelId());
-					vo.setName(activityType.getLevel());
+					vo.setId(Long.valueOf(object[0].toString().trim()));
+					vo.setName(object[1] != null ? object[1].toString():"");
 					idNameVoList.add(vo);
 				}
 				
