@@ -43,6 +43,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private BasicVO 							basicVO = new BasicVO();
 	private List<IdNameVO>  					idNameVOList;
 	private ResultStatus resultStatus;
+	private Long activityScopeId;
+	private Long locationValue;
+	private Long activityLevel;
+	private String locationName;
+	private String temp;
+	private List<BasicVO> basicVOList;
 	
 	public BasicVO getBasicVO() {
 		return basicVO;
@@ -102,6 +108,44 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+	public Long getActivityLevel() {
+		return activityLevel;
+	}
+	public void setActivityLevel(Long activityLevel) {
+		this.activityLevel = activityLevel;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getTemp() {
+		return temp;
+	}
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+	
+	public List<BasicVO> getBasicVOList() {
+		return basicVOList;
+	}
+	public void setBasicVOList(List<BasicVO> basicVOList) {
+		this.basicVOList = basicVOList;
 	}
 	public String execute()
 	{
@@ -209,21 +253,6 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					
 				if(reqParamName != null && reqValue != null && !reqValue.toString().equalsIgnoreCase("undefined"))
 				{	
-					if(reqParamName.equalsIgnoreCase("stateId")){
-						eventFileUploadVO.setStateId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
-					}
-					if(reqParamName.equalsIgnoreCase("districtId")){
-						eventFileUploadVO.setDistrictId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
-					}
-					if(reqParamName.equalsIgnoreCase("constituencyId")){
-						eventFileUploadVO.setConstituencyId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
-					}
-					if(reqParamName.equalsIgnoreCase("manOrMunId")){
-						eventFileUploadVO.setMandalOrMuncipalityId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
-					}
-					if(reqParamName.equalsIgnoreCase("panchayatId")){
-						eventFileUploadVO.setPanchayatId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
-					}
 					if(reqParamName.equalsIgnoreCase("levelId")){
 						eventFileUploadVO.setLevelId(reqValue!= null?Long.parseLong(reqValue.toString()):0l);
 					}
@@ -268,7 +297,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		try{
 			
 			jObj = new JSONObject(getTask());
-			resultStatus = activityService.deleteEventUploadFilebyActivityInfoDocId(jObj.getLong("acitivityInfoDocId"));
+			resultStatus = activityService.deleteEventUploadFilebyActivityInfoDocId(jObj.getString("acitivityInfoDocId"));
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in deleteUploadedFile() method, Exception - ",e); 
@@ -376,4 +405,20 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getActivityDocumentsImages()
+	{
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			basicVOList = activityService.getActivityDocumentsImages(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("day"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"),jObj.getLong("activityScopeId"),jObj.getString("activityDate"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getActivityDocumentsImages()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }

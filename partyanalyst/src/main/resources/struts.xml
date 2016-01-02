@@ -11207,5 +11207,17 @@
 			</result>
     </action>
 	
+    <action name="getLocationWiseQuestionsAnswersAction" class="trainingCampAction" method="getLocationWiseQuestionsAnswers">
+    	<result type="json" name="success">
+			<param name="root">path</param>
+		</result>
+    </action>
+    
+    <action name="getActivityDocumentsImagesAction" class="activityAction" method="getActivityDocumentsImages">
+        <result type="json" name="success">
+		  <param name="root">basicVOList</param>
+		</result>
+    </action>
+    
 </package>
 </struts>      
