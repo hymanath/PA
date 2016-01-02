@@ -315,8 +315,8 @@ footer
 						</li></c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS')}">
 						 <li>
-								<a href="#"><i class="fa fa-send ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>
-								 <h2><i class="fa fa-send ico-white line_heightDiv"></i> Committees</h2>
+								<a href="#"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>
+								 <h2><i class="fa fa-group ico-white line_heightDiv"></i> Committees</h2>
 								 <ul>
 								<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
 								  <li>
@@ -381,8 +381,8 @@ footer
 						
 						<c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) }">
 							<li>
-								<a href="#"><i class="fa fa-comment ico-white"></i><span>&nbsp;&nbsp;Events & Activities </span></a>
-								 <h2><i class="fa fa-comment ico-white line_heightDiv"></i> Events & Activities  </h2>
+								<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Events & Activities </span></a>
+								 <h2><img class=" ico-white line_heightDiv  pull-left" src="images/events.jpg"></img> Events & Activities  </h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT') }">
 								 <li><a href="updateActivityAction.action"><i class="fa fa-mail-forward"></i><span>  Activities Entry  </span></a></li></c:if>
@@ -474,9 +474,9 @@ footer
 						<c:if test="${sessionScope.USER.isAdmin == 'true' &&							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) || fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
 							<li>
-								<a href="#"><i class="fa fa-fire ico-white"></i><span>&nbsp;&nbsp;Elections</span></a>
+								<a href="#"><img  class=" ico-white pull-left" src="images/elections.jpg"></img><span>&nbsp;&nbsp;Elections</span></a>
 								
-								 <h2><i class="fa fa-fire ico-white line_heightDiv"></i> Elections</h2>
+								 <h2><img class=" ico-white line_heightDiv pull-left" src="images/elections.jpg"></img> Elections</h2>
 								 <ul>
 								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) }">
 								 <li>
@@ -495,8 +495,8 @@ footer
 						</c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) }">
 						<li>
-								<a href="#"><i class="fa fa-hdd-o ico-white"></i><span>&nbsp;&nbsp;IVR Campaign</span></a>
-								<h2><i class="fa fa-hdd-o ico-white line_heightDiv"></i> IVR Campaign</h2>
+								<a href="#"><img class=" ico-white pull-left" src="images/ivr.jpg"></img><span>&nbsp;&nbsp;IVR Campaign</span></a>
+								<h2><img class=" ico-white line_heightDiv pull-left" src="images/ivr.jpg"></img> IVR Campaign</h2>
 								<ul>
 								  <li>
 									<a href="cadreIvrReportAction.action"><i class="fa fa-bullhorn ico-white"></i><span>&nbsp;&nbsp;Cadre IVR Dashoard</span></a>
