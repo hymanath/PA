@@ -8,18 +8,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Candidate To Ministry</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script
 	src="js/jQuery/jquery-ui.min.js">
 </script>
 <script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
-<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
 <link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
 <link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/demos.css" />
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <style>
+ body{
+	 font-size:14px
+	 }
 .tinyDateCal
 {
 position:absolute;
@@ -1392,6 +1396,10 @@ function getMinistersTypeDetails()
 getAllPositions();
 getAllElectionTypes();
 getMinistersType();
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 </script>
 </body>
 </html>
