@@ -60,7 +60,7 @@
 	.m_top10{margin-top:10px}
 	.input-g1 .form-control{border-radius:0px;border-left:0px}
 	.input-g1 .input-group-addon{border-radius:0px;background:#fff;}
-	
+	.starMark{font:15px;color:red;}
 
  </style>
 </head>
@@ -74,12 +74,12 @@
         	<div class="panel panel-default panel-custom">
             	<div class="panel-heading">
                 	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES 
-						<span class="pull-right" >
+						<!--<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 								<input type="text" class="searchDateCls form-control" />
 							</div>
-						</span>
+						</span>-->
 					</h4>
 					
                 </div>
@@ -94,15 +94,15 @@
 								</div>
 							</div>
                         	<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-4"><span class="starMark">*</span>
                                 	<label>Activity Type</label>
                                     <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
                             </div>
-							<div class="col-md-4">
+							<div class="col-md-4"><span class="starMark">*</span>
 								<label>Activity Level</label>
 								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4"><span class="starMark">*</span>
 								<label> Activity Name </label>
 								<select id="ActivityList" class="form-control" name="activityVO.activityLevelId">
 									<option value="0"> Select Activity </option>
@@ -122,13 +122,13 @@
                                 </div>
 								-->
 								<div class="row">
-							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;">
+							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;"><span class="starMark">*</span>
 								<label>District</label>
 								<select id="districtList" class="form-control" name="activityVO.districtId" >
 									
 								</select>
 							</div>	
-							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;">
+							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
 								<label>Constituency</label>
 								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
 									
@@ -148,7 +148,7 @@
 							</div>
 							</div>
 							<div class="row">
-						   <div class="col-md-3 m_top10">
+						   <div class="col-md-3 m_top10" style="float:right;">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','');">SEARCH</button>
 							</div>
 							</div>
@@ -177,7 +177,7 @@
 		
         	<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
             	<div class="panel-heading">
-                	<h4 class="panel-title">SEARCH RESULTS  <span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
+                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
                     	<label class="checkbox-inline">
 							<span>
@@ -197,7 +197,7 @@
                 <div class="panel-body">
                 	<div>
                       <!-- Nav tabs -->
-                      <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                      <!--<ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Planed</a></li>
                        <!-- <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Conducted</a></li>
                         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Lately Conducted</a></li>
@@ -211,8 +211,8 @@
                                 </span>
                                 
                             </div>
-                        </li>-->
-                      </ul>
+                        </li>
+                      </ul>-->
                     
                       <!-- Tab panes -->
                       <div class="tab-content">
@@ -398,6 +398,11 @@ function submitForm(){
 	
 function getActivityNames()
 {
+	$('#mandalsList').find('option').remove();
+	$('#mandalsList').append('<option value="0"> Select Mandal/Town/Division</option>');
+	$('#villageWardsList').find('option').remove();
+	$('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');
+	
 	$("#constituencyDivId").hide();
 	$("#mandalDivId").hide();
 	$("#panchayatDivId").hide();
@@ -491,7 +496,9 @@ function getUserAccessDistrictList()
 function getMunciMandalsList(constituencyId)
 {
 	$('#mandalsList').find('option').remove();
-		$('#mandalsList').append('<option value="0"> Select Mandal/Town/Division</option>');
+	$('#mandalsList').append('<option value="0"> Select Mandal/Town/Division</option>');
+	$('#villageWardsList').find('option').remove();
+	$('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');
 	var jObj = {
 			task:"getUserAccessConstituencyList",
 			locationId:constituencyId
@@ -642,11 +649,11 @@ function updateMobileNumber(index,tdpCadreId){
 
 function getLocationDetailsForActivity(startDate,endDate)
 {
+	
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
 	var constituencyId =$('#constiList').val();
-	
 	
 	$('#ErrDiv').html("");
 	var errStr ='';
@@ -806,7 +813,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 					});
 					$("#locationsTab").removeClass("dataTable");
-					$('#headingId').html(''+$("#ActivityList option:selected").text()+' - '+$("#activityLevelList option:selected").text()+'');
+					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
+					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 				});	
 	}
 		
@@ -879,7 +887,7 @@ getUserAccessDistrictList();
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
-	var constituencyId =$('#constiList').val();
+	var districtId =$('#districtList').val();
 	
 	
 	$('#ErrDiv').html("");
@@ -896,9 +904,9 @@ getUserAccessDistrictList();
 	{
 		errStr+="Please Select Activity .";
 	}
-	else if(constituencyId == null || constituencyId == 0)
+	else if(districtId == null || districtId == 0)
 	{
-		errStr+="Please Select Constituency.";
+		errStr+="Please Select District.";
 	}
 	
 	if(errStr!= null && errStr.length>0){
@@ -1153,6 +1161,9 @@ getUserAccessDistrictList();
 		window.open('eventFieUploadAction.action?activityScopeId='+activityScopeId+'&locationValue='+locationValue+'&activityLevel='+locationLevelId+'&locationName='+locationName+'','_blank');
 	});
 	
+	$(document).on("change","#activityTypeList",function(){
+		getActivityNames();
+	});
 </script>
 </body>
 </html>
