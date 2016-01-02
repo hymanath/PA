@@ -7,6 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"></link> 
@@ -880,7 +882,8 @@ var custom_paginator = {
 };
 
   $(document).ready(function() {
-    $('#custom_paginator_class a').live("click",function() {
+	  $(document).on("keyup","#custom_paginator_class a",function(){
+   // $('#custom_paginator_class a').live("click",function() {
 	   
         $('#custom_paginator_class a').removeClass('pagenationStyle');
 		$(this).addClass('pagenationStyle');
@@ -982,6 +985,12 @@ function showFreeUserProblemDetails(result)
 	}
 
   problemDetailsDivEle.innerHTML = str;
+}
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
 }
 </script>
 <style type="text/css">
@@ -1209,6 +1218,7 @@ function showFreeUserProblemDetails(result)
 </div>
 <script type="text/javascript">
   getProblems();
+   Data();
 </script>
 </body>
 </html>
