@@ -69,11 +69,9 @@ $(document).ready(function() {
        uploadFile: {
 		  
             url: "eventsUploadFormAction.action",
-            data: {"activityScopeId":$("#ActivityList").val(),"day":$("#day").val(),
-			     "levelId":$("#levelIds").val(),"stateId":$("#statesDivId").val(),
-				 "districtId":$("#districtId").val(),"constituencyId":$("#constituencyId").val(),
-				 "manOrMunId":$("#mandalList").val(),"panchayatId":$("#panchaytList").val(),
-				 "activityDate":$("#activityDate").val()},
+            data: {"activityScopeId":gobalActivityScopeId,"day":$("#day").val(),
+				   "levelId":gobalLevelId,levelValue:gobalLevelValue,
+					"activityDate":$("#activityDate").val()},
             type: 'POST',
 			
            enctype: 'multipart/form-data',
