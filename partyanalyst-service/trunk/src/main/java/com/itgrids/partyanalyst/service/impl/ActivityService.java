@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -2277,10 +2278,10 @@ public class ActivityService implements IActivityService{
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					
-				
-			
-			
-			UserAddress userAddress = saveUserAddress(eventFileUploadVO);
+					
+			//UserAddress userAddress = saveUserAddress(eventFileUploadVO);
+					
+			UserAddress userAddress = saveUserAddressByLevelIdAndLevelValue(eventFileUploadVO.getLevelId(), eventFileUploadVO.getLevelValue());
 			
 			ActivityDocument activityDocument = new ActivityDocument();
 			if(eventFileUploadVO.getActivityDate() != null && !eventFileUploadVO.getActivityDate().equals("undefined"))
@@ -2335,9 +2336,12 @@ public class ActivityService implements IActivityService{
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUserAddress(userAddress);
 		    
-		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLocationScopeId());
-		    activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLaocationValueAddress());
-			
+		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
+		    if(eventFileUploadVO.getLevelId() < 5l)
+		     activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLevelValue());
+		    else
+		     activityInfoDocument.setLocationValueAddress(Long.parseLong(eventFileUploadVO.getLevelValue().toString().substring(1).toString()));
+		    
 		    activityInfoDocument.setDay(eventFileUploadVO.getDay());
 		    
 		    activityInfoDocument.setIsDeleted("N");
@@ -2537,13 +2541,121 @@ public class ActivityService implements IActivityService{
 	}
 	
 	
+	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue)
+	{
+		try{
+			UserAddress userAddress = null;
+			if(levelId == 2l){
+				userAddress = new UserAddress();
+				userAddress.setState(stateDAO.get(levelValue));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 3l){
+				userAddress = new UserAddress();
+				District distinct = districtDAO.get(levelValue);
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 4l){
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 5l){//mandal
+				userAddress = new UserAddress();
+				Long mandalId = Long.parseLong(levelValue.toString().substring(1));
+				Tehsil tehsil = tehsilDAO.get(mandalId);
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(mandalId);
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 6l){//panchayat
+				userAddress = new UserAddress();
+				Long panchayatId = Long.parseLong(levelValue.toString().substring(1));
+				Panchayat panchayat = panchayatDAO.get(panchayatId);
+				
+				Tehsil tehsil = tehsilDAO.get(panchayat.getTehsil().getTehsilId());
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(tehsil.getTehsilId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress.setPanchayatId(panchayat.getPanchayatId());
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 7l){//muncipality
+				userAddress = new UserAddress();
+				Long locationBodyId = Long.parseLong(levelValue.toString().substring(1));
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(locationBodyId);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+					
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(locationBodyId));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 8l ){//ward
+				userAddress = new UserAddress();
+				Long wardConstituencyId = Long.parseLong(levelValue.toString().substring(1));
+				Long localEleBodyId = constituencyDAO.get(wardConstituencyId).getLocalElectionBody().getLocalElectionBodyId();
+				
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(localEleBodyId);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setWard(constituencyDAO.get(wardConstituencyId));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			
+			return userAddress;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in saveUserAddress() method, Exception - ",e);
+		}
+		return null;
+	}
 	
-	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(Long acitivityInfoDocId)
+	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(String acitivityInfoDocId)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
+			List<Long> activityInfoDocIdList = new ArrayList<Long>();
+			String[] idStr = acitivityInfoDocId.split(",");
+			for(String id: idStr){
+				activityInfoDocIdList.add(Long.parseLong(id));
+			}
 			
-			activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoDocId(acitivityInfoDocId);
+			activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoDocId(activityInfoDocIdList);
 			resultStatus.setResultCode(0);
 		}catch (Exception e) {
 			resultStatus.setResultCode(1);
@@ -3021,4 +3133,38 @@ public class ActivityService implements IActivityService{
 		
 		return idNameVOList;
 	}
+	
+	
+	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate)
+	{
+		List<BasicVO> resultList = null;
+		try{
+			if(levelId >= 5l){
+				levelValue = Long.parseLong(levelValue.toString().substring(1).toString());
+			}
+			Date actDate = null;
+			if(activityDate != null){
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+				actDate = dateFormat.parse(activityDate);
+			}
+			List<Object[]> list = activityInfoDocumentDAO.getActivityDocumentsImagesByLevelIdAndLevelValue(levelId, levelValue,day,activityScopeId,actDate,startIndex,maxIndex);
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<BasicVO>();
+				for(Object[] params: list){
+					BasicVO basicVO = new BasicVO();
+					basicVO.setId((Long)params[0]);
+					basicVO.setName(params[1] != null?params[1].toString():"");
+					resultList.add(basicVO);
+				}
+				
+				resultList.get(0).setCount(activityInfoDocumentDAO.getActivityDocumentsImagesCountByLevelIdAndLevelValue(levelId, levelValue,day,activityScopeId,actDate));
+			}
+		}catch (Exception e) {
+			LOG.error("Exception occured in getActivityDocumentsImages() Method ",e);
+		}
+		return resultList;
+	}
+	
+	
 }
