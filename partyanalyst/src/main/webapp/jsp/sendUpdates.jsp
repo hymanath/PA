@@ -8,6 +8,8 @@
 
 
 <title>Send Updates to Mobile</title>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
@@ -333,7 +335,12 @@ function showSmsStatus(result)
 	}
 errorEle.innerHTML ="";
 }
-
+function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
 </script>
 </head>
 <body>
@@ -395,6 +402,9 @@ background:#3E678F;border-radius:5px;color:#ffffff;" value="Send" onclick="sendS
 //sendSmsToUsersTable();
 //selectCheckBox();
 
+</script>
+<script>
+Data();
 </script>
 </body>
 
