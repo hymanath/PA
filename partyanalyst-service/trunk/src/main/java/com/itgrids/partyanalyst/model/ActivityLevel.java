@@ -19,6 +19,7 @@ public class ActivityLevel extends BaseModel implements Serializable{
 	
 	private Long activityLevelId;
 	private String level;
+	private Long activityOrderId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,4 +38,14 @@ public class ActivityLevel extends BaseModel implements Serializable{
 	public void setLevel(String level) {
 		this.level = level;
 	}
+	@Column(name="activity_order_id")
+	public Long getActivityOrderId() {
+		return activityOrderId;
+	}
+	public void setActivityOrderId(Long activityOrderId) {
+		this.activityOrderId = activityOrderId;
+	}
+	
+	
+	
 }
