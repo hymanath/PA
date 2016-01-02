@@ -44,7 +44,7 @@
 		<pattern>/cadreSearchAction.action*</pattern>
 		<pattern>/ecrComparedResultsAction.action*</pattern>
 		<!--<pattern>/completeResultForAPollAction.action*</pattern>  -->
-		<!--<pattern>/getAllPollsAction.action*</pattern> -->
+		<pattern>/getAllPollsAction.action*</pattern> 
 		<pattern>/influencingPeopleAction*</pattern>
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
 		<pattern>/influencingPeopleDataAction*</pattern>
@@ -363,7 +363,7 @@
 			<!--<pattern>/assignCandidateToElectionAction*</pattern>-->
 			<!--<pattern>/assignKeyCandidateAction*</pattern>-->
 			<!--<pattern>/cncSearchResultsAction*</pattern>-->
-			<pattern>/searchPartyAnalystAction*</pattern>
+			<!--<pattern>/searchPartyAnalystAction*</pattern>-->
 			<!--pattern>/districtWisePartyPerformanceAction*</pattern>-->
 			<!--<pattern>/partyResultsCriteriaAction*</pattern>-->
 			<!--<pattern>/partyResultsAction*</pattern>-->
@@ -371,24 +371,24 @@
 			<pattern>/userTrackingReportAction*</pattern>
 			<pattern>/newsMonitoringService*</pattern>
 			<!--<pattern>/searchInPartyAnalyst*</pattern>-->
-			<!--<pattern>/customPagesAction*</pattern>-->
+			<pattern>/customPagesAction*</pattern>
 			<pattern>/completeResultForAPollAction*</pattern>
-			<!--<pattern>/getAllPollsAction*</pattern>
-			<pattern>/VotersPulse*</pattern>-->
-			<!--<pattern>/constituencyProfileReport*</pattern>-->
-			<!--<pattern>/partyCandidateAnalyzer*</pattern>-->
+			<pattern>/getAllPollsAction*</pattern>
+			<pattern>/VotersPulse*</pattern>
+			<pattern>/constituencyProfileReport*</pattern>
+			<pattern>/partyCandidateAnalyzer*</pattern>
 			<pattern>/problemCompleteInfoAction*</pattern>
-			<!--<pattern>/electionAnalysisAndManagementTool*</pattern>-->
+			<pattern>/electionAnalysisAndManagementTool*</pattern>
 			<pattern>/connectPeopleAction*</pattern>
 			<!--<pattern>/sendUpdatesAction*</pattern>-->
 			<!--<pattern>/problemSearchAction*</pattern>-->
 			<!--<pattern>/completeProblemDetailsAction*</pattern>-->
-			<pattern>/assigningPartyToUserAction*</pattern>
+			<!--<pattern>/assigningPartyToUserAction*</pattern>-->
 			<!--<pattern>/adminUpload*</pattern>-->
 			<pattern>/profileManagePageAction*</pattern>
 			<!--<pattern>/initailConstituencyManagementAction*</pattern>-->
 			<!--<pattern>/partyPerformanceReport*</pattern>-->
-			<pattern>/abuseCommentaction*</pattern>
+			<!--<pattern>/abuseCommentaction*</pattern>-->
 			<pattern>/partyManagementAction*</pattern>
 			<!--<pattern>/cadreManagementAction*</pattern>-->
 			<pattern>/cadreReportAction*</pattern>
@@ -399,12 +399,12 @@
 			<pattern>/mandalPageElectionInfoAction*</pattern>
 			<pattern>/specialPageInfoAction*</pattern>
 			<pattern>/removeVideosAction*</pattern>
-			<pattern>/createThumbNailsAction*</pattern>
-			<pattern>/generatePdfForGallaryAction*</pattern>
+			<!--<pattern>/createThumbNailsAction*</pattern>-->
+		<!--	<pattern>/generatePdfForGallaryAction*</pattern>-->
 			<pattern>/sendUpdatesByemailAction*</pattern>
 			<pattern>/assigningCandidatesToVoterAction*</pattern>
 			<pattern>/sitemapAction*</pattern>
-			<pattern>/newsZoneAction*</pattern>
+			<!--<pattern>/newsZoneAction*</pattern>-->
 			<pattern>/partyPerformanceJasper*</pattern>
 			<!-- <pattern>/tdpcadresmsstatusAction*</pattern> -->
 			<pattern>/cadreSMSFileUpload*</pattern>
@@ -626,14 +626,15 @@
 	 <pattern>/districtWisePartyPerformanceAction*</pattern>
 	 <pattern>/ministersPageAction*</pattern>
 	<pattern>/searchInPartyAnalyst*</pattern>
-	<pattern>/customPagesAction*</pattern>
-	<pattern>/getAllPollsAction*</pattern>
-	<pattern>/VotersPulse*</pattern>
-	<pattern>/constituencyProfileReport*</pattern>
-	<pattern>/partyCandidateAnalyzer*</pattern>
-	<pattern>/electionAnalysisAndManagementTool*</pattern>
 	<pattern>/sendUpdatesAction*</pattern>
 	<pattern>/problemSearchAction*</pattern>
 	<pattern>/completeProblemDetailsAction*</pattern>
+	
+	<pattern>/assigningPartyToUserAction*</pattern>
+	<pattern>/abuseCommentaction*</pattern>
+	<pattern>/generatePdfForGallaryAction*</pattern>
+	<pattern>/newsZoneAction*</pattern>
+    <pattern>/searchPartyAnalystAction*</pattern>
+	<pattern>/createThumbNailsAction*</pattern>
 	 </decorator> 
 </decorators>
