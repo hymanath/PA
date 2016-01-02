@@ -16471,7 +16471,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	public BasicVO getActivityTypeList()
 	{
 		BasicVO basicVO = null;
-		try {
+		/*try {
 			List<ActivitySubType> activityTypeLsit = activitySubTypeDAO.getAll();
 			if(activityTypeLsit != null && activityTypeLsit.size()>0)
 			{
@@ -16491,7 +16491,28 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					basicVO.setPanchayatVoterInfo(activitiesLsit);
 				}
 			}
-		} catch (Exception e) {
+		}*/ 
+		try{
+			List<Object[]> activityTypeLsit = activitySubTypeDAO.activityTypeNames();
+			if(activityTypeLsit != null && activityTypeLsit.size()>0)
+			{
+				List<BasicVO> activitiesLsit = new ArrayList<BasicVO>();
+				for (Object[] activityType : activityTypeLsit) {
+					
+						BasicVO vo = new BasicVO();
+						vo.setId((Long) (activityType[0] != null?activityType[0]:0L));
+						vo.setName(activityType[1] != null?activityType[1].toString():"");
+						activitiesLsit.add(vo);
+					
+				}
+				if(activitiesLsit != null && activitiesLsit.size()>0)
+				{
+					basicVO = new BasicVO();
+					basicVO.setPanchayatVoterInfo(activitiesLsit);
+				}
+			}
+		}
+			catch (Exception e) {
 			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
 		}
 		return basicVO;
