@@ -358,31 +358,31 @@
 			<pattern>/newsDisplayAction*</pattern>
 			<pattern>/electionDetailsReportAction*</pattern>
 			<pattern>/constituencyPageAction*</pattern>
-			<pattern>/electionResultsUpdateAction*</pattern>
-			<pattern>/electionLiveResultsAnalysisAction*</pattern>
-			<pattern>/assignCandidateToElectionAction*</pattern>
-			<pattern>/assignKeyCandidateAction*</pattern>
-			<pattern>/cncSearchResultsAction*</pattern>
+			<!--<pattern>/electionResultsUpdateAction*</pattern>-->
+			<!--<pattern>/electionLiveResultsAnalysisAction*</pattern>-->
+			<!--<pattern>/assignCandidateToElectionAction*</pattern>-->
+			<!--<pattern>/assignKeyCandidateAction*</pattern>-->
+			<!--<pattern>/cncSearchResultsAction*</pattern>-->
 			<pattern>/searchPartyAnalystAction*</pattern>
-			<pattern>/districtWisePartyPerformanceAction*</pattern>
+			<!--pattern>/districtWisePartyPerformanceAction*</pattern>-->
 			<!--<pattern>/partyResultsCriteriaAction*</pattern>-->
 			<!--<pattern>/partyResultsAction*</pattern>-->
-			<pattern>/ministersPageAction*</pattern>
+			<!--<pattern>/ministersPageAction*</pattern>-->
 			<pattern>/userTrackingReportAction*</pattern>
 			<pattern>/newsMonitoringService*</pattern>
-			<pattern>/searchInPartyAnalyst*</pattern>
-			<pattern>/customPagesAction*</pattern>
+			<!--<pattern>/searchInPartyAnalyst*</pattern>-->
+			<!--<pattern>/customPagesAction*</pattern>-->
 			<pattern>/completeResultForAPollAction*</pattern>
-			<pattern>/getAllPollsAction*</pattern>
-			<pattern>/VotersPulse*</pattern>
-			<pattern>/constituencyProfileReport*</pattern>
-			<pattern>/partyCandidateAnalyzer*</pattern>
+			<!--<pattern>/getAllPollsAction*</pattern>
+			<pattern>/VotersPulse*</pattern>-->
+			<!--<pattern>/constituencyProfileReport*</pattern>-->
+			<!--<pattern>/partyCandidateAnalyzer*</pattern>-->
 			<pattern>/problemCompleteInfoAction*</pattern>
-			<pattern>/electionAnalysisAndManagementTool*</pattern>
+			<!--<pattern>/electionAnalysisAndManagementTool*</pattern>-->
 			<pattern>/connectPeopleAction*</pattern>
-			<pattern>/sendUpdatesAction*</pattern>
-			<pattern>/problemSearchAction*</pattern>
-			<pattern>/completeProblemDetailsAction*</pattern>
+			<!--<pattern>/sendUpdatesAction*</pattern>-->
+			<!--<pattern>/problemSearchAction*</pattern>-->
+			<!--<pattern>/completeProblemDetailsAction*</pattern>-->
 			<pattern>/assigningPartyToUserAction*</pattern>
 			<!--<pattern>/adminUpload*</pattern>-->
 			<pattern>/profileManagePageAction*</pattern>
@@ -617,5 +617,23 @@
 	  
 	  <pattern>/constituencyDetailReportAction*</pattern>
 	  <pattern>/tdpcadresmsstatusAction*</pattern>
+	 
+	 <pattern>/electionResultsUpdateAction*</pattern>
+	 <pattern>/electionLiveResultsAnalysisAction*</pattern>
+	 <pattern>/assignCandidateToElectionAction*</pattern>
+	 <pattern>/assignKeyCandidateAction*</pattern>
+	 <pattern>/cncSearchResultsAction*</pattern>
+	 <pattern>/districtWisePartyPerformanceAction*</pattern>
+	 <pattern>/ministersPageAction*</pattern>
+	<pattern>/searchInPartyAnalyst*</pattern>
+	<pattern>/customPagesAction*</pattern>
+	<pattern>/getAllPollsAction*</pattern>
+	<pattern>/VotersPulse*</pattern>
+	<pattern>/constituencyProfileReport*</pattern>
+	<pattern>/partyCandidateAnalyzer*</pattern>
+	<pattern>/electionAnalysisAndManagementTool*</pattern>
+	<pattern>/sendUpdatesAction*</pattern>
+	<pattern>/problemSearchAction*</pattern>
+	<pattern>/completeProblemDetailsAction*</pattern>
 	 </decorator> 
 </decorators>
