@@ -5,7 +5,8 @@
 
 <html>
 <head>
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
  <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script src="https://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
@@ -387,6 +388,11 @@ function hideOptionsDiv(){
 		$('#optionsDiv').hide('slow');			
 	}
 }
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5") 
+
 </script>
 </body>
 </html>

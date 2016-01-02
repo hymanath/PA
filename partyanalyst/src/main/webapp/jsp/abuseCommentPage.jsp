@@ -9,7 +9,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Comments Abuse</title>
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
@@ -461,7 +462,12 @@ function checkingData(results)
 	res = str;
  
  }
-
+ function Data(){
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5") 
+}
 
 
 </script>
@@ -510,6 +516,7 @@ function checkingData(results)
 
 		<script type="text/javascript">
 			showAllNewPostedAbuseComment();	
+			Data();
 		</script>
 	
 </body>

@@ -8,7 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>News Zone</title>
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -594,8 +595,13 @@ function onYouTubePlayerReady(playerId)
 	var ytplayer = document.getElementById("myytplayer");
 	//ytplayer.cueVideoById(videoId:, startSeconds:Number, suggestedQuality:String):Void
 }
-
-
+function Data()
+{
+$(".eventsheader").find(".span2").removeClass("span2")
+$(".eventsheader").find(".span1").removeClass("span1")
+$(".eventsheader").find(".span3").removeClass("span3")
+$(".eventsheader").find(".span5").removeClass("span5")
+}
 </script>
 
 </head>
@@ -675,6 +681,7 @@ function onYouTubePlayerReady(playerId)
 	LoadVideoBar();
 	LoadVideoBar1();
 	LoadVideoBar2();
+	Data();
 </script>
 
 </body>
