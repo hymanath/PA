@@ -5274,8 +5274,8 @@ var custom_paginator = {
 
  
   $(document).ready(function() {
-    $('#custom_paginator_class a').live("click",function() {
-	   
+	  $(document).on("click","#custom_paginator_class a",function(){
+    //$('#custom_paginator_class a').live("click",function() {
         $('#custom_paginator_class a').removeClass('pagenationStyle');
 		$(this).addClass('pagenationStyle');
       });
