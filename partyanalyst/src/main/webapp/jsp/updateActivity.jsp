@@ -789,7 +789,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								
-								str+='<a href="eventFieUploadAction.action" target= _blank class="btn btn-success btn-xs" style="margin-left: 5px;">Upload Images</a>';
+								str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>';
 								
 								str+='</td>';
 								str+='</tr>';
@@ -1113,6 +1113,46 @@ getUserAccessDistrictList();
 		});
 		//console.log(resultArr);
 	});
+	
+	$(document).on("click","#uploadImagesId",function(){
+		
+		var locationValue = $(this).attr("attr_location_Value");
+		var activityLevel = $("#activityLevelList").val();
+		var activityScopeId = $("#ActivityList").val();
+		var locationName = $(this).attr("attr_location_Name");
+		
+		
+		
+		var locationTypeId = $('#activityLevelList').val();
+		var activityLevellId = $('#activityLevelList').val();
+		
+		var locationLevelId = $('#activityLevelList').val();
+		
+	    if(activityLevellId == 3 || activityLevellId == 4){}
+		else{
+			var firstChar = locationValue.substr(0,1);
+			//locationLevelId = 5;
+			if(activityLevellId == 2)
+		    {
+				if(firstChar == 2)
+					locationLevelId = 5;//mandal
+				else if(firstChar == 3)
+					locationLevelId = 8;//division
+				else if(firstChar == 1)
+					locationLevelId = 7;//localEleBody	
+			}
+			else if(activityLevellId == 1)
+			{
+				if(firstChar == 1)
+					locationLevelId = 6;//panchayat
+				else if(firstChar == 2)
+					locationLevelId = 8;//ward
+			}
+		}
+		
+		window.open('eventFieUploadAction.action?activityScopeId='+activityScopeId+'&locationValue='+locationValue+'&activityLevel='+locationLevelId+'&locationName='+locationName+'','_blank');
+	});
+	
 </script>
 </body>
 </html>

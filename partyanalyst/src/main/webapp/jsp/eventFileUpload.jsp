@@ -8,6 +8,7 @@
 <head>
 <style>
 .errorCls{color:red;font-size:12px;}
+.prev, .next{min-width:44px !important}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -32,6 +33,9 @@
 	<!----slick.css----->
     <!-- <script src="js/cadreCommittee/bootstrap.min.js"></script> -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	
 </head>
 <body>
 <div class="container m_top20">
@@ -39,10 +43,20 @@
 		<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<b>File Upload</b>
+						<b id="locationNameId">File Upload</b>
 					</div>
 					<div class="panel-body">
 						<div class="row">
+						<div class="col-md-6">
+								<label>Activity Date </label>
+								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
+							</div>	
+						  <div class="col-md-6">
+							 <label>Day   </label>
+							 <select id="day" class="form-control"></select> 
+						   </div>
+							
+						<div id="showHideDiv" style="display:none;">
 							<div class="col-md-6">
 								<label>Activity Type</label>
 								<s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="1" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
@@ -57,13 +71,8 @@
 										<option value="0"> Select Activity </option>
 									</select>
 							 </div>
-							<div class="col-md-6">
-								<label>Day   </label>
-								<select id="day" class="form-control"></select> </div>
-							<div class="col-md-6">
-								<label>Activity Date </label>
-								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
-							</div>
+							
+							
 							<div class="col-md-6" id="locationLevelsDiv"><label>Location Levels  </label>
 								<select id="levelIds" onchange="hideAndShowDiv()" class="form-control">
 									 <option value="2">State</option>
@@ -102,11 +111,18 @@
 									<option value="0"> Select Panchayat </option>
 								</select>
 							</div>
+							
+						</div>
+							<div id="uploadDiv" class="col-md-6 m_top20">
+							    <button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>
+							</div>
 							<div class="col-md-12" style="margin-top: 38px;">
 								<div class="errorDiv"></div>
 								<input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
 								<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
 							</div>	
+							
+							
 						</div>
 					</div>
 				</div>
@@ -121,6 +137,27 @@
  
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title imgTitleCls" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+       <div id="imagesDiv" class="row"></div>
+	   <div id="paginationDivId"></div>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary deleteBtnCls" style="display:none">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
 <script src="daterangepicker/moment.js" type="text/javascript"></script>
@@ -128,11 +165,56 @@
 <script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 <script type="text/javascript">
+
+//showHideDiv
+
+var actScopeId = '${activityScopeId}';
+var locationValueID = '${locationValue}';
+var actvityLevelId = '${activityLevel}';
+var locationName = '${locationName}';
+
+
+
+var gobalLevelId = 0;
+var gobalLevelValue = 0;
+var gobalActivityScopeId = 0;
+
+
+if(actScopeId>0 && locationValueID > 0 && actvityLevelId> 0)
+{
+	$("#showHideDiv").hide();
+	$("#locationNameId").html(""+locationName+"");
+	
+	gobalActivityScopeId = actScopeId;
+	gobalLevelId = actvityLevelId ;
+	gobalLevelValue = locationValueID;
+}
+else
+{
+  $("#showHideDiv").show();
+}
+
  var gobalVar = 0;
   $( "#activityDate" ).daterangepicker({singleDatePicker:true});
 
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	
+    if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+    var today = mm+'/'+dd+'/'+yyyy;
+    $("#activityDate").val(today);
+  
+  
 	function getDays()
 	{
 	  for(var i=1;i<=20;i++){
@@ -172,8 +254,8 @@
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
-	   $("#districtId").empty();
-	   $("#searchDataImgForDist").hide();
+	  // $("#districtId").empty();
+	  // $("#searchDataImgForDist").hide();
      for(var i in result){
 	   if(result[i].id == 0){
          // $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
@@ -242,8 +324,8 @@
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
-	   $("#constituencyId").empty();
-	   $("#searchDataImgForConst").hide();
+	   //$("#constituencyId").empty();
+	  // $("#searchDataImgForConst").hide();
      for(var i in result){
 	   if(result[i].id == 0){
           //$("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
@@ -353,6 +435,7 @@ function hideAndShowDiv()
 		$("#mandalDiv").hide();
 		$("#panchayatDiv").hide();
 	
+	$("#statesDivId").val(0);
 	$("#districtId  option").remove();
 	$("#districtId").append('<option value="0">Select District</option>');
 	$("#constituencyId  option").remove();
@@ -410,10 +493,345 @@ $(document).on("click",".deleteFile",function() {
 		   }
 	   });
 
-})
+});
+
+
+
+function getActivityImages(startIndex)
+{
+	$("#imagesDiv").html("");
+	$("#myModalLabel").html("");
+	$(".jFiler-items-list li").remove();
+	var activityDate = $("#activityDate").val();
+	$(".deleteBtnCls").hide();
+	
+	var flag = validateFields();
+	
+	if(!flag){
+		
+	 return;
+
+	}else{
+		$("#myModal").modal("show")
+	}
+ 
+	
+	$("#myModalLabel").html(""+locationName+"");
+	
+   var jsObj=
+   {				
+	  levelId         : gobalLevelId,
+	  levelValue      : gobalLevelValue,
+	  day             : $("#day").val(),
+	  activityScopeId : gobalActivityScopeId,
+	  activityDate    : activityDate,
+	  startIndex      : startIndex,
+	  maxIndex        : 12,
+	  task            : ""				
+	}
+	
+	$.ajax({
+			  type:'GET',
+			  url: 'getActivityDocumentsImagesAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		  buildActivityImages(result,startIndex);
+	   });	
+}
+
+function validateFields()
+{
+	var flag = true;
+	if(actScopeId >0 && locationValueID > 0 && actvityLevelId> 0){}
+	else
+	{
+		var activityLevel = $("#activityLevelList").val();
+		var activityName = $("#ActivityList").val();
+		var activityDate = $("#activityDate").val();
+		var levelIds = $("#levelIds").val();
+		var stateId = $("#statesDivId").val();
+		var uploadFileSize = 0;
+		
+		var str = '';
+			
+		if(activityLevel == 0){
+			str += 'Please Select Activity Level <br>';
+			flag = false;
+		}
+			
+		if(activityName == 0){
+			str += 'Please Select Activity Name <br>';
+			flag = false;
+		}
+			
+		if(levelIds == 0){
+			str += 'Please Select Location Level <br>';
+			flag = false;
+		}
+			
+		if(levelIds > 0){
+			if(levelIds == 2 && stateId == 0){
+				str += 'Please Select State <br>';
+				flag = false;
+			}
+			else if(levelIds == 3){
+				var districtId = $("#districtId").val();
+				if(stateId == 0){
+					str += 'Please Select State <br>';
+					flag = false;
+				}
+				if(districtId == 0){
+					str += 'Please Select District <br>';
+					flag = false;
+				}
+			}
+				
+			else if(levelIds == 4){
+				var districtId = $("#districtId").val();
+				var constituencyId = $("#constituencyId").val();
+				if(stateId == 0){
+					str += 'Please Select State <br>';
+					flag = false;
+				}
+				if(districtId == 0){
+					str += 'Please Select District <br>';
+					flag = false;
+				}
+				if(constituencyId == 0){
+					str += 'Please Select Constituency <br>';
+					flag = false;
+				}
+			}
+				
+			else if(levelIds == 5){
+				var districtId = $("#districtId").val();
+				var constituencyId = $("#constituencyId").val();
+				var mandalOrMunId = $("#mandalList").val();
+				if(stateId == 0){
+					str += 'Please Select State <br>';
+				}
+				if(districtId == 0){
+					str += 'Please Select District <br>';
+					flag = false;
+				}
+				if(constituencyId == 0){
+					str += 'Please Select Constituency <br>';
+					flag = false;
+				}
+				if(mandalOrMunId == 0){
+					str += 'Please Select Mandal/Municipality <br>';
+					flag = false;
+				}
+			}
+				
+			else if(levelIds == 6){
+				var districtId = $("#districtId").val();
+				var constituencyId = $("#constituencyId").val();
+				var mandalOrMunId = $("#mandalList").val();
+				var panchayatId = $("#panchaytList").val();
+					
+				if(stateId == 0){
+					str += 'Please Select State <br>';
+					flag = false;
+				}
+				if(districtId == 0){
+					str += 'Please Select District <br>';
+					flag = false;
+				}
+				if(constituencyId == 0){
+					str += 'Please Select Constituency <br>';
+				}
+				if(mandalOrMunId == 0){
+					str += 'Please Select Mandal/Municipality <br>';
+					flag = false;
+				}
+				if(panchayatId == 0){
+					str += 'Please Select Panchayat/Ward <br>';
+					flag = false;
+				}
+			}
+				
+		}
+			
+		$(".errorDiv").html(str).addClass("errorCls");
+		if(!flag){
+			$(".jFiler-items-list").html("");
+			return false;
+		}
+		if(flag)//setting levelId and levelValue
+		{
+			if(levelIds == 2)
+			{
+				gobalLevelId = 2;//state
+				gobalLevelValue = $("#statesDivId").val();
+				locationName = $("#statesDivId option:selected").text();
+			}
+			else if(levelIds == 3)
+			{
+				gobalLevelId = 3;//district
+				gobalLevelValue = $("#districtId").val();
+				locationName = $("#districtId option:selected").text();
+			}
+			else if(levelIds == 4)
+			{
+				gobalLevelId = 4;//constituency
+				gobalLevelValue = $("#constituencyId").val();
+				locationName = $("#constituencyId option:selected").text();
+			}	
+			else if(levelIds == 5)
+			{
+				var locationValue = $("#mandalList").val();
+				locationName = $("#mandalList option:selected").text();
+				
+				var firstChar = locationValue.substr(0,1);
+				if(firstChar == 2)
+				{
+				  gobalLevelId = 5;//mandal
+				  gobalLevelValue = locationValue;
+				}
+				else if(firstChar == 1)
+				{
+					gobalLevelId = 7;//localelectionBody
+					gobalLevelValue = locationValue; 
+				}
+			}
+				
+			else if(levelIds == 6)
+			{
+				var locationValue = $("#panchaytList").val();
+				locationName = $("#panchaytList option:selected").text();
+				
+				var firstChar = locationValue.substr(0,1);
+				if(firstChar == 1)
+				{
+					gobalLevelId = 6;//panchayat
+					gobalLevelValue = locationValue;
+				}
+				else 
+				{
+					gobalLevelId = 8;//ward or division
+					gobalLevelValue = locationValue; 
+				}
+			}
+				gobalActivityScopeId = activityName;
+		}
+	}
+	return flag;
+}
+
+function buildActivityImages(result,startIndex)
+{
+	if(result == null || result.length == 0){
+		$("#paginationDivId").html("");
+		$("#imagesDiv").html("<p class='text-center'>No Data Avaliable.</p>");
+		return;
+	}
+	var str = '';
+	str +='<div class="col-md-12"><p><input type="checkbox" class="deleteAllCheckCls" style="cursor:pointer;"/>&nbsp;&nbsp;Select All</p></div>';
+	for(var i in result)
+	{
+		
+		str +='<div class="col-md-3">';
+		str +='<div class="panel panel-default" style="margin-bottom:10px;">';
+			str +='<div class="panel-heading" style="padding:2px">';
+				str +='<h4 class="panel-title"><input type="checkbox" style="cursor:pointer;" value="'+result[i].id+'" class="deleteLocationImgCheck"/></h4>';
+			str +='</div>';
+			str +='<div class="panel-body" style="padding:0px;">';
+				str +='<img src="activity_documents/'+result[i].name+'" class="img-responsive" style="height:120px;width:100%" />';
+			str +='</div>';
+		str +='</div>';
+		str +='</div>';
+	}
+	
+	 var itemsCount=result[0].count;
+	   if(startIndex==0){
+		   $("#paginationDivId").html('');
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: 12,
+			cssStyle: 'light-theme',
+			
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*12;
+				getActivityImages(num);
+			}
+		});
+
+		}
+	
+	
+	$("#imagesDiv").html(str);
+}
+
+$(document).on("click",".deleteAllCheckCls",function() {
+	if($(this).is(":checked") == true){
+		$(".deleteLocationImgCheck" ).prop( "checked", true );
+		$(".deleteBtnCls").show();
+	}
+	else{
+	 $(".deleteLocationImgCheck" ).prop( "checked", false );	
+	 $(".deleteBtnCls").hide();
+	}
+});
+
+$(document).on("click",".deleteLocationImgCheck",function() {
+	if($(this).is(":checked") == true){
+		$(".deleteBtnCls").show();
+	}
+	else{
+		$(".deleteAllCheckCls" ).prop( "checked", false );
+	}
+});
+
+$(document).on("click",".deleteBtnCls",function() {
+ 
+ var acitivityInfoDocId = "";
+ $(".deleteLocationImgCheck").each(function(){
+	 if($(this).is(":checked") == true){
+	  acitivityInfoDocId += $(this).val()+",";
+	 }
+ });
+ 
+ acitivityInfoDocId = acitivityInfoDocId.substr(0,acitivityInfoDocId.length-1);
+ 
+ var jsObj=
+   {				
+	  acitivityInfoDocId:acitivityInfoDocId,
+	  task:"deleteFile"				
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'deleteUploadedFileAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result.resultCode == 0){
+	         getActivityImages(0);
+		   }
+	   });
+
+});
+
+$(document).on("click",".deleteLocationImgCheck",function() {
+	var imageCheck = false;
+	$(".deleteLocationImgCheck").each(function(){
+		if($(this).is(":checked") == true){imageCheck = true;}
+		});
+	if(!imageCheck){
+		$(".deleteBtnCls").hide();
+	}
+    else{
+	   $(".deleteBtnCls").show();
+    }	
+});
+
+
 $(".bootstrap-filestyle").hide();
 		
  	getDays();
+	
+
 	
 </script>
 </body>
