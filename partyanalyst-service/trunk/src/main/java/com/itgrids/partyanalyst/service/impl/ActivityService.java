@@ -2686,7 +2686,7 @@ public class ActivityService implements IActivityService{
 						locationLevelId = Long.parseLong(activityLevelValueStr);
 						locationValue = Long.parseLong(locationIdStr);
 								
-						if(locationLevelId == 11){
+						if(locationLevelId.longValue() == 1l){
 							locationLevel = 6l;
 						}
 						else if(locationLevelId == 2l){
@@ -2699,7 +2699,7 @@ public class ActivityService implements IActivityService{
 						locationLevelId = Long.parseLong(activityLevelValueStr);
 						locationValue = Long.parseLong(locationIdStr);
 						
-						if(locationLevelId == 11){
+						if(locationLevelId == 1l){
 							locationLevel = 7l;
 						}
 						else if(locationLevelId == 2l){
