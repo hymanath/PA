@@ -16436,11 +16436,23 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										} catch (ParseException e) {
 											LOG.error("Exception rised in saveActivityDetails()",e);
 										}
-										activityLocationInfo.setInsertedBy(userId);
-										activityLocationInfo.setUpdatedBy(userId);
-										activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+
+										List<Long> availableIds = activityLocationInfoDAO.isAlreadyAvailableActivityLocationDtls(
+												activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
+										if(availableIds != null && availableIds.size()>0){
+											ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
+											existingVO.setUpdatedBy(userId);
+											existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											activityLocationInfoDAO.save(existingVO);
+										}	
+										else{
+											activityLocationInfo.setInsertedBy(userId);
+											activityLocationInfo.setUpdatedBy(userId);
+											activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+											activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											activityLocationInfoDAO.save(activityLocationInfo);
+										}
 										
-										activityLocationInfoDAO.save(activityLocationInfo);
 									 }
 								}
 							 }
