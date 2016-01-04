@@ -312,9 +312,9 @@ footer
   </section>
 </main>
 
-<footer>
+<!--<footer>
 		<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
-</footer>
+</footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>

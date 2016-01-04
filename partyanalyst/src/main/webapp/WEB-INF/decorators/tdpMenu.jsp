@@ -563,7 +563,7 @@ footer
 
 <footer>
     <div class="text-center" style="text-align:center">
-		    All &copy; 2015 Telugu Desam Party
+		    All &copy; Telugu Desam Party
     </div>
 </footer>
 		

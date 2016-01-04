@@ -45,9 +45,9 @@ footer
 </style>
 </head>
 <body>
-<header  class="eventsheader">
+<!--<header  class="eventsheader">
 <!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-	<div class="container">
+	<!--<div class="container">
         <div class="row">
             <div class="col-md-2 col-xs-4 col-sm-1">
                 <img src="dist/img/logo.png" class="img-responsive">
@@ -67,7 +67,7 @@ footer
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					  <!-- <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
 					   <li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
@@ -77,7 +77,7 @@ footer
     </div>
 	
 	
-</header>
+</header>-->
 <main>
   <section style="margin-top:40px;">
 	<div class="container">
@@ -406,9 +406,9 @@ footer
     </div>
   </div>
 </div>
-<footer>
+<!--<footer>
 	<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
-</footer>
+</footer>-->
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
 <!--<script src="dist/DateRange/moment.js" type="text/javascript"></script>	

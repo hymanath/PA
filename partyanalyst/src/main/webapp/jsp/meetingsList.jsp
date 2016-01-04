@@ -250,9 +250,9 @@ table thead th , table tbody tr td{text-align:center !important}
     </div>
   </div>
 </div>
-<footer>
+<!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
-</footer>
+</footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
@@ -442,7 +442,7 @@ getUserAccessLocationDetails();
 		 $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
    
-   $("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
+   //$("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
 </script>
 <script>
 	function getTheMeetingLevelDetails(){
