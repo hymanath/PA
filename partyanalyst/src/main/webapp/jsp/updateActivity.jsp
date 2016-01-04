@@ -139,6 +139,7 @@
 								<select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">
 									<option value="0"> Mandal/ Town/ Division</option>
 								</select>
+								<span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg"></span>
 							</div>
 							<div class="col-md-4 m_top10" id="panchayatDivId" style="display:none;">
 								<label>Panchayat/ Ward</label>
@@ -160,6 +161,17 @@
             </div>
         </div>
         <div class="col-md-12" >
+		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
+		  <div class="panel-heading">
+			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
+			<h4 class="panel-title" id="constituencyHeadingId" style="display:none"> </h4>
+			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
+		  </div>
+		   <div class="panel-body">
+			<div id="buildAssConsActivity"></div>
+		   </div>
+		
+		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
             	<div class="panel-heading">
                 	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
@@ -215,17 +227,7 @@
                 </div>
             </div>
 			<!---Start  Assembly wise Activity--->
-		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
-		  <div class="panel-heading">
-			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title" id="constituencyHeadingId" style="display:none"> </h4>
-			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
-		  </div>
-		   <div class="panel-body">
-			<div id="buildAssConsActivity"></div>
-		   </div>
 		
-		</div>
 		<!--- Assembly wise Activity End--->
 		</div>
     </div>
@@ -407,7 +409,7 @@ function getActivityNames()
 	$("#mandalDivId").hide();
 	$("#panchayatDivId").hide();
 	$("#districtDivId").hide();
-	
+	$("#constiList").val(0);
 	$('#ActivityList').find('option').remove();
 	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
 	
@@ -503,6 +505,7 @@ function getMunciMandalsList(constituencyId)
 			task:"getUserAccessConstituencyList",
 			locationId:constituencyId
 		};
+		$("#procesingImg").show();
 		$.ajax({
           type:'GET',
           url: 'getMandalCorporationsByConstituencyAction.action',
@@ -511,6 +514,7 @@ function getMunciMandalsList(constituencyId)
 			
 			if(result != null && result.length >0)
 			{
+				$("#procesingImg").hide();
 				for(var i in result)
 					$('#mandalsList').append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
 			}
@@ -937,7 +941,7 @@ getUserAccessDistrictList();
     var jsObj={   startDate:startDate,    //$("input[name=daterangepicker_start]").val(),
                   endDate:endDate,     //$("input[name=daterangepicker_end]").val(),
                   activityScopeId:$('#ActivityList').val(),
-                  activityLevelId:$("#ActivityList option:selected").val(),
+                  activityLevelId:$("#activityLevelList option:selected").val(),
 				  levelId:levelId,
                   stateId:1
               };
