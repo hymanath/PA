@@ -16004,7 +16004,9 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		        	vo.setLocationName(localBodi[1].toString() +" "+ localBodi[2].toString());
 		        	locationsList.add(vo);
 	        	}else{
-	        		greaterCorpIds.add(localBdyId);
+	        		if(!greaterCorpIds.contains(localBdyId)){
+	        			greaterCorpIds.add(localBdyId);
+	        		}
 	        	}
 	        }
 	        if(greaterCorpIds.size() > 0){
