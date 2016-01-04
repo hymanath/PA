@@ -907,7 +907,7 @@ getUserAccessDistrictList();
 	{
 		errStr+="Please Select Activity .";
 	}
-	else if(districtId == null || districtId == 0)
+	else if(activityLevelId >= 3 && (districtId == null || districtId == 0))
 	{
 	 if(activityLevelId == 3){
 		errStr+="Please Select District.";
@@ -1064,12 +1064,14 @@ getUserAccessDistrictList();
 								}
 								str+='</select>';
 							}
-							if(result.activityVoList[i].optionTypeId==2){
+							else if(result.activityVoList[i].optionTypeId==2){
 								for(var j in result.activityVoList[i].optionsList){
 									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
 								}
 							}
-							
+							else if(result.activityVoList[i].optionTypeId==3){
+									str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" /></label>';
+							}
 						}
 						str+='</div>';
 						str+='</div>';
@@ -1088,6 +1090,7 @@ getUserAccessDistrictList();
 		var resultArr=[];
 		$(".selectedVal").each(function(){
 		var value='';
+		var remarks='';
 			if($(this).attr("attr_type")=="selectbox"){
 				var key=$(this).attr("attr_qid");
 				value=$(this).val();
@@ -1096,12 +1099,17 @@ getUserAccessDistrictList();
 				if(this.checked)
 					value = this.value;			
 			}
+			else{
+				remarks = $(this).val();
+				value = "3";
+			}
+			 
 			if(value != null && value.length>0)
 			{
 				var obj={
 				questionId : $(this).attr("attr_qid"),
 				optionId : value,
-				remarks: " ",
+				remarks: remarks,
 				count:0,
 				others:" "
 				};
@@ -1109,14 +1117,14 @@ getUserAccessDistrictList();
 			}	
 				
 		});
-		
+		 
 		 var jsObj={
 		         activityScopeId : $("#ActivityList").val(),
 				 activityLevelId : $("#activityLevelList").val(),
 				 activityLevelValue : $(this).attr("attr_location_Value"),
 				 responseArray : resultArr
 		       };
-			   
+			  
 		 $.ajax({
 			type : "GET",
 			url : "saveActivityQuestionnaireDetailsAction.action",
