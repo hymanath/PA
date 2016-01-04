@@ -2403,12 +2403,18 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     {
     	try{
     		
-    		jObj = new JSONObject(getTask());
-    		Long tdpCadreId = jObj.getLong("tdpCadreId");
-    		String mobileNo = jObj.getString("mobileNo");
-    		
-    		resultStatus = cadreRegistrationService.updateMobileNumberForCadre(tdpCadreId,mobileNo);
-    		
+    		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO!=null){
+				Long userId = regVO.getRegistrationID();
+				jObj = new JSONObject(getTask());
+	    		Long tdpCadreId = jObj.getLong("tdpCadreId");
+	    		String mobileNo = jObj.getString("mobileNo");
+	    		resultStatus = cadreRegistrationService.updateMobileNumberForCadre(tdpCadreId,mobileNo,userId);
+			}else{
+				return Action.INPUT;
+			}
+			
+    		 
     	}catch (Exception e) {
     		LOG.error("Exception Occured in updateMobileNumber() method, Exception - ",e);
 		}
