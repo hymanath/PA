@@ -181,14 +181,17 @@
                     <span class="pull-right">
                     	<label class="checkbox-inline">
 							<span>
-								<input type="checkbox" class="checkboxCls" id="conductedId">Show Conducted Locations
+								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','');" name="radio1">All
+							</span>
+							<span>
+								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','');" name="radio1">Show Conducted Locations
 							</span>
 							<span  style="margin-left:30px;">
-								<input type="checkbox" class="checkboxCls" checked="checked" id="notConductedId">Show Not Conducted Locations
+								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','');" name="radio1">Show Not Conducted Locations
 							</span>
-							<span  style="margin-left:30px;">
+							<!--<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
-							</span>
+							</span>-->
 							
                         </label>
                     </span>
@@ -293,7 +296,6 @@ $(document).ready(function(){
 		//alert(startDate);
 	});
 });
-
 var fromTypeGlob;
 $(function () {
 	var cb = function(start, end, label) {
@@ -671,7 +673,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 	}
 	else if(constituencyId == null || constituencyId == 0)
 	{
+		
+		if(activityLevelId == 1 || activityLevelId == 2){
 		errStr+="Please Select Constituency.";
+		}
 	}
 	
 	if(errStr!= null && errStr.length>0){
@@ -708,7 +713,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 			}
 			
 			var value = "all";
-			if($("#notConductedId").is(':checked') && $("#conductedId").is(':checked'))
+			if($("#all").is(':checked'))
 			{
 				value = "all";
 			}
@@ -890,7 +895,7 @@ getUserAccessDistrictList();
 	var districtId =$('#districtList').val();
 	
 	
-	$('#ErrDiv').html("");
+	//$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
 	{
@@ -906,8 +911,10 @@ getUserAccessDistrictList();
 	}
 	else if(districtId == null || districtId == 0)
 	{
+	 if(activityLevelId == 3){
 		errStr+="Please Select District.";
 	}
+		}
 	
 	if(errStr!= null && errStr.length>0){
 		$('#ErrDiv').html(errStr);
@@ -971,7 +978,7 @@ getUserAccessDistrictList();
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL ACTIVITIES</th>';
               str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
 			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">NOT PLANNED ACTIVITIES</th>';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">EXECUTED ACTIVITIES</th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center"> CONDUCTED ACTIVITIES</th>';
 			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT EXECUTED ACTIVITIES</th>';
             str+='</tr>';
           str+='</thead>';
