@@ -26,8 +26,7 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"> -->
 	
-	<!-- Add fancyBox main JS and CSS files -->
-<script type="text/javascript" src="pdfSupportedFiles/source/jquery.fancybox.js?v=2.1.5"></script>
+
 <link rel="stylesheet" type="text/css" href="pdfSupportedFiles/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 <link rel="stylesheet" type="text/css" href="js/slick/slick.css">
 	
@@ -178,7 +177,8 @@ footer
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="js/slick/slick.js"></script>
 	
-	
+		<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="pdfSupportedFiles/source/jquery.fancybox.js?v=2.1.5"></script>
 <script type="text/javascript">
 var leaderShipLevelArray = [];
 		 var communicationSkillsArray = [];
