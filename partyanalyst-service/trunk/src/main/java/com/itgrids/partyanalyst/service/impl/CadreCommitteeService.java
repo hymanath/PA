@@ -16441,6 +16441,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 												activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
 										if(availableIds != null && availableIds.size()>0){
 											ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
+											existingVO = activityLocationInfo;
 											existingVO.setUpdatedBy(userId);
 											existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 											activityLocationInfoDAO.save(existingVO);
