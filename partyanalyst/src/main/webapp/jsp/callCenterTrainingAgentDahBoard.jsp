@@ -441,11 +441,11 @@ if(result[i].subList[j].subList[k].scheduleStatusList[m].name == "Invalid Mobile
 invalid = invalid + result[i].subList[j].subList[k].scheduleStatusList[m].count;
 }
 if(allocated > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\',\'\');">'+allocated+'</a></td>';
+str+=' <td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
 str+=' <td>'+allocated+'</td>';
 if(answered > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
+str+='<td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';
 if(dialed > 0 || undialed > 0)
@@ -453,13 +453,13 @@ if(dialed > 0 || undialed > 0)
 str+=' <td>';
 if(dialed > 0) 
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\',\'\');">'+dialed+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\'callStatus\',\'\');">'+dialed+'</a>';
 }
 else
 str+=''+dialed+'';
 if(undialed > 0)
 {
-str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\',\'\');">'+undialed+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\'callStatus\',\'\');">'+undialed+'</a>';
 }
 else
 str+='/'+undialed+'';
@@ -470,7 +470,7 @@ else
 str+='<td>'+dialed+'/'+undialed+'</td>';
 }
 if(interested > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
+str+=' <td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'interested\',\'scheduleCallStatus\',\'\');">'+interested+'</a></td>';
 else
 str+=' <td>'+interested+'</td>';
 if(notInterested > 0)
@@ -484,7 +484,7 @@ if(switchOff > 0 || userbusy > 0)
 str+='<td>';
 if(switchOff > 0)
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\'callStatus\',\'\');">'+switchOff+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\'callStatus\',\'\');">'+switchOff+'</a>';
 }
 else
 {
@@ -492,7 +492,7 @@ str+='0';
 }
 if(userbusy > 0)
 {
-str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\',\'\');">'+userbusy+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\'callStatus\',\'\');">'+userbusy+'</a>';
 }
 else{
 str+='/0';
@@ -507,9 +507,9 @@ if(callBack > 0)
 {
    //str+=' <td>'+callBack+'/'+todaycallBack+'</td>';
    str += '<td>';
-   str += '<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
+   str += '<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
    if(todaycallBack > 0)
-	 str += '<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
+	 str += '<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
    else
 	 str += ''+todaycallBack+'';
    str += '</td>';
@@ -521,7 +521,7 @@ if(later > 0 || pending > 0)
 str+='<td>';
 if(later > 0)
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
 }
 else
 {
@@ -529,7 +529,7 @@ str+='0';
 }
 if(pending > 0)
 {
-str+='/<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
 }
 else
 {
@@ -543,7 +543,7 @@ str+='<td>'+later+'/'+pending+'</td>';
 str+='<td>';
 if(wrong > 0)
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Wrong Mobile No\',\'scheduleCallStatus\',\'\');">'+wrong+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgent(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Wrong Mobile No\',\'scheduleCallStatus\',\'\');">'+wrong+'</a>';
 }
 else
 {
@@ -668,11 +668,11 @@ if(result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].name == "Pen
 pending = pending + result[i].subList[j].subList[k].subList[p].scheduleStatusList[m].count;
 }
 if(allocated > 0)
-str+=' <td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
+str+=' <td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'allocated\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+allocated+'</a></td>';
 else
 str+=' <td>'+allocated+'</td>';
 if(answered > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+answered+'</a></td>';
+str+='<td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'answered\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+answered+'</a></td>';
 else
 str+='<td>'+answered+'</td>';
 
@@ -681,7 +681,7 @@ if(dialed > 0 || undialed > 0)
 str+='<td>';
 if(dialed > 0) 
 {
-str+=' <a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+dialed+'</a>';
+str+=' <a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'dialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+dialed+'</a>';
 }
 else{
 str+=''+dialed+'';
@@ -700,7 +700,7 @@ if(accepted > 0)
 str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'confirmed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+accepted+'</a></td>';
 else*/
 if(undialed > 0){
-str+='/<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+undialed+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'undialed\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+undialed+'</a>';
 }
 else
 {
@@ -714,7 +714,7 @@ str+='<td>'+dialed+'/'+undialed+'</td>';
 str+='<td>'+accepted+'</td>';
 
 if(notInterested > 0)
-str+='<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
+str+='<td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'notInterested\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+notInterested+'</a></td>';
 else
 str+='<td>'+notInterested+'</td>';
 if(userbusy > 0 || switchOff > 0)
@@ -722,7 +722,7 @@ if(userbusy > 0 || switchOff > 0)
 str+='<td>';
 if(switchOff > 0)
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+switchOff+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Switchoff\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+switchOff+'</a>';
 }
 else
 {
@@ -730,7 +730,7 @@ str+='0';
 }
 if(userbusy > 0)
 {
-str+='/<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+userbusy+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'busy\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'callStatus\',\'\');">'+userbusy+'</a>';
 }
 else
 {
@@ -744,9 +744,9 @@ str+='<td>'+userbusy+'</td>';
 
 if(callBack > 0)
 {
-  str += '<td><a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
+  str += '<td><a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+callBack+'</a>/';
    if(todaycallBack > 0)
-	str += '<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
+	str += '<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'callback\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'today\');">'+todaycallBack+'</a>';
 	else
 	  str += ''+todaycallBack+'';
 	str += '</td>';
@@ -758,7 +758,7 @@ if(later > 0 || pending > 0)
 str+='<td>';
 if(later > 0)
 {
-str+='<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
+str+='<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'later\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+later+'</a>';
 }
 else
 {
@@ -766,7 +766,7 @@ str+='0';
 }
 if(pending > 0)
 {
-str+='/<a style="cursor:pointer;" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
+str+='/<a style="cursor:pointer;text-decoration:underline" onclick="redirectToAgentwithBatch(\''+jObj.callPurposeId+'\',\''+result[i].id+'\',\''+result[i].subList[j].id+'\',\''+result[i].subList[j].subList[k].id+'\',\'Pending\',\''+result[i].subList[j].subList[k].subList[p].id+'\',\'scheduleCallStatus\',\'\');">'+pending+'</a>';
 }
 else
 {
