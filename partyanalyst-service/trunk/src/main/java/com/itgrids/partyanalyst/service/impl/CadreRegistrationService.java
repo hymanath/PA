@@ -1714,10 +1714,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+							tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						
 					}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
+						tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 				    }else{
 					  if(insertType.equalsIgnoreCase("new")){
@@ -1738,13 +1740,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 								//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						  
 					  }else{
 						  //tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 						  //uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-						  
+						  tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						    tdpCadre1= tdpCadreDAO.save(tdpCadre);	
 					  }
 					}
@@ -1757,6 +1760,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						  tdpCadre1.setMemberShipNo(membershipNo);
 						}
 					   uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre1);
+					   tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					   tdpCadre1 = tdpCadreDAO.save(tdpCadre1);
 					   
 					   
@@ -10431,7 +10435,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return returnList;
 	}
 	
-	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo)
+	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo,Long userId)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try {
@@ -10441,6 +10445,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
 				saveDataToHistoryTable(tdpCadre);
 				tdpCadre.setMobileNo(mobileNo);
+				
+				tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+				tdpCadre.setUpdatedWebUserId(userId);
+				
 				tdpCadreDAO.save(tdpCadre);
 				
 				resultStatus.setResultCode(0);

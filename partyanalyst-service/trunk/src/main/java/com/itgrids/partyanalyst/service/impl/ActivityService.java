@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.model.ActivityLevel;
+import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
@@ -119,9 +121,15 @@ public class ActivityService implements IActivityService{
 	private TransactionTemplate transactionTemplate = null;
 	private IActivityTeamMemberDAO activityTeamMemberDAO;
 	private IActivityTeamLocationDAO activityTeamLocationDAO;
+	private BoothDAO boothDAO;
 	
 	
-	
+	public BoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(BoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
 	public IActivityTeamMemberDAO getActivityTeamMemberDAO() {
 		return activityTeamMemberDAO;
 	}
@@ -2709,11 +2717,35 @@ public class ActivityService implements IActivityService{
 							locationLevel = 9l;
 						}
 					}
+					else if(locationLevelId.longValue() == 3L)
+						locationLevel = 11L;
+					 else if(locationLevelId.longValue() == 4L)
+						 locationLevel = 10L;
 					
-					Long activityLocationInfoId = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(locationLevel, locationValue);
+					List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(finalvo.getActivityTypeId(),locationLevel, locationValue);
+					ActivityLocationInfo tempactivityLocationInfo =null;
+					if(ids == null || ids.size()==0L)
+					{
+						ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
+							 
+						//activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
+						activityLocationInfo.setActivityScopeId(finalvo.getActivityTypeId());
+						activityLocationInfo.setLocationLevel(locationLevel);
+						activityLocationInfo.setLocationValue(locationValue);
+						activityLocationInfo.setInsertedBy(finalvo.getId());
+						activityLocationInfo.setUpdatedBy(finalvo.getId());
+						activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+						activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						tempactivityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
+					}
+					
+					if(tempactivityLocationInfo != null){
+						ids = new ArrayList<Long>(0);
+						ids.add(tempactivityLocationInfo.getActivityLocationInfoId());
+					}
 					
 					List<ActivityVO> voList = finalvo.getActivityVoList();
-					
+					Long activityLocationInfoId = ids.get(0);
 					if(voList != null && voList.size() > 0){
 						for (ActivityVO activityVO : voList) {
 							ActivityQuestionAnswer activityQuestionAnswer = new ActivityQuestionAnswer();
