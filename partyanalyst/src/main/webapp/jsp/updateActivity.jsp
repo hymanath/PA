@@ -160,22 +160,7 @@
             </div>
         </div>
         <div class="col-md-12" >
-		
-			<!---Start  Assembly wise Activity--->
-		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
-		  <div class="panel-heading">
-			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title" id="constituencyHeadingId" style="display:none">ASSEMBLY CONSTITUENCY WISE ACTIVITIES </h4>
-			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
-		  </div>
-		   <div class="panel-body">
-			<div id="buildAssConsActivity"></div>
-		   </div>
-		
-		</div>
-		<!--- Assembly wise Activity End--->
-		
-        	<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
+		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
             	<div class="panel-heading">
                 	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
@@ -229,7 +214,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+			<!---Start  Assembly wise Activity--->
+		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
+		  <div class="panel-heading">
+			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
+			<h4 class="panel-title" id="constituencyHeadingId" style="display:none"> </h4>
+			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
+		  </div>
+		   <div class="panel-body">
+			<div id="buildAssConsActivity"></div>
+		   </div>
+		
+		</div>
+		<!--- Assembly wise Activity End--->
+		</div>
     </div>
 	</form>
 	
@@ -505,7 +503,6 @@ function getMunciMandalsList(constituencyId)
 			task:"getUserAccessConstituencyList",
 			locationId:constituencyId
 		};
-		
 		$.ajax({
           type:'GET',
           url: 'getMandalCorporationsByConstituencyAction.action',
@@ -732,6 +729,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 				activityScopeId:$('#ActivityList').val(),
 				activityLevelId:activityLevelId,
 				searchBy:searchBy,
+				locationId:locationId,
 				locationId:locationId,
 				task:"getLocationDetailsForActivity"
 			};		
@@ -1026,6 +1024,7 @@ getUserAccessDistrictList();
 		"aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
 	 });
 	  $(".dataTableDiv").removeClass("dataTable");
+	  $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
   }
   
 	
