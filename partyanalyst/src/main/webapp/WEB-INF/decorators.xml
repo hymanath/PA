@@ -151,7 +151,7 @@
 		<!--<pattern>/cadreSearchAndRegAction*</pattern> -->
 		<!-- <pattern>/eventDashboardAction*</pattern> -->
 		<!-- <pattern>/callCenterTrainingAdmin*</pattern> -->
-		<pattern>/callCenterTrainingAgent*</pattern>
+		<!--<pattern>/callCenterTrainingAgent*</pattern>-->
 		<!--<pattern>/callCenterTrainingAgentDahBoard*</pattern>-->
 		<pattern>/trainingAdminDashboard*</pattern>
 		<!--<pattern>/meetingList*</pattern>-->
@@ -636,5 +636,7 @@
 	<pattern>/newsZoneAction*</pattern>
     <pattern>/searchPartyAnalystAction*</pattern>
 	<pattern>/createThumbNailsAction*</pattern>
+	
+	<pattern>/callCenterTrainingAgent*</pattern>
 	 </decorator> 
 </decorators>
