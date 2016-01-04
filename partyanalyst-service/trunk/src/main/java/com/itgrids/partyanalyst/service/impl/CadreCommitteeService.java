@@ -16385,7 +16385,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			 try {
 				 String status = (String) transactionTemplate.execute(new TransactionCallback() {
 					 public Object doInTransaction(TransactionStatus status) {
-						 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+						 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						 
 						 if(activityVO != null){
 							 Long activityScopeId = activityVO.getActivityLevelId();
@@ -16403,16 +16403,16 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										 {
 											 if(locationTypeflagId.equalsIgnoreCase("1"))
 													locationLevelId = 6L;
-												if(locationTypeflagId.equalsIgnoreCase("2"))
+											 else if(locationTypeflagId.equalsIgnoreCase("2"))
 													locationLevelId = 8L;
 										 }
 										 else if(locationLevel.longValue() == 2L)
 										 {
 											 	if(locationTypeflagId.equalsIgnoreCase("1"))
 													locationLevelId = 7L;
-												if(locationTypeflagId.equalsIgnoreCase("2"))
+											 	else if(locationTypeflagId.equalsIgnoreCase("2"))
 													locationLevelId = 5L;
-												if(locationTypeflagId.equalsIgnoreCase("3"))
+											 	else if(locationTypeflagId.equalsIgnoreCase("3"))
 													locationLevelId = 9L;
 										 }
 										 else if(locationLevel.longValue() == 3L)
@@ -16453,7 +16453,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 											activityLocationInfoDAO.save(activityLocationInfo);
 										}
-										
+										activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										//activityLocationInfoDAO.isAlreadAvailableActivity();
 									 }
 								}
 							 }
@@ -17374,6 +17375,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				 }else if(activityLevelId==4l){//state
 					 levelIds.add(2l);
 				 }
+				 
 				 List<Object[]> totalCounts=locationInfoDAO.getAssemblyWiseTotalCounts(levelIds,constIds);
 				 if(totalCounts!=null && totalCounts.size()>0){
 					 for(Object[] obj:totalCounts){
