@@ -685,7 +685,7 @@ str+='</thead>';
 str+='</table>';
 	str+='</div>';
 	//console.log(userAccessType);
-	if(userAccessType != null && userAccessType == 'All')
+	if(userAccessType != null && userAccessType == 'All') 
 	{
 		str += '<div>';
 		str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';

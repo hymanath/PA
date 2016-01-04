@@ -240,11 +240,11 @@ lable{line-height:40px;}
 <div class="container">
 	
 <div class="row">
-
+<!-- 
 		<div class="dashboard-header m-top5">
 			<img style="cursor:default;" src="./images/dashboard/DashBoard_Page_Header.jpg"></img>
 		</div>
-
+ -->
 <div class="row-fluid m-top10" >
 <!---------Left Section ----------->
 <div class="span3">
