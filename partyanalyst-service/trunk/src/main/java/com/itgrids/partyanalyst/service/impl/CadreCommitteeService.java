@@ -16441,7 +16441,20 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 												activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
 										if(availableIds != null && availableIds.size()>0){
 											ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
-											existingVO = activityLocationInfo;
+											existingVO.setConstituencyId(activityVO.getConstituencyId());
+											existingVO.setActivityScopeId(activityScopeId);
+											existingVO.setLocationLevel(locationLevelId);
+											existingVO.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
+											try {
+												if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+													existingVO.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+												
+												if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
+													existingVO.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+												
+											} catch (ParseException e) {
+												LOG.error("Exception rised in saveActivityDetails()",e);
+											}
 											existingVO.setUpdatedBy(userId);
 											existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 											activityLocationInfoDAO.save(existingVO);
