@@ -727,6 +727,15 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		@SuppressWarnings("unchecked")
+		public List<Long> getConstituencyForPanchayat(Long panchayatId){
+			Object[] params = {panchayatId};
+			String queryString =null;
+			queryString="select distinct model.constituency.constituencyId from Booth model where model.panchayat.panchayatId=? and " +
+					" model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ";
+			return getHibernateTemplate().find(queryString,params);
+		}
+		
+		@SuppressWarnings("unchecked")
 		public List<String> getPartNoByPanchayatIdAndPublicationDateIdsList(Long locationValue, List<Long> publicationDateIdsList, Long constituencyId, String type)
 		{
 			StringBuilder stringBuilder = new StringBuilder();

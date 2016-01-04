@@ -852,15 +852,16 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 	
 	}
 
-	public Long getActivityLocationInfoIdByLocationLevelAndLocationValue(Long locationLevel,Long locationValue){
+	public List<Long> getActivityLocationInfoIdByLocationLevelAndLocationValue(Long activityScopeId,Long locationLevel,Long locationValue){
 		
 		Query query = getSession().createQuery(" select model.activityLocationInfoId from ActivityLocationInfo model " +
-							" where model.locationLevel = :locationLevel and model.locationValue = :locationValue ");
+							" where model.locationLevel = :locationLevel and model.locationValue = :locationValue and model.activityScopeId=:activityScopeId ");
 		
+		query.setParameter("activityScopeId", activityScopeId);
 		query.setParameter("locationLevel", locationLevel);
 		query.setParameter("locationValue", locationValue);
 		
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 	
 public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long activityScopeId,List<Long> distIds){
@@ -890,4 +891,17 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		}
 		return query.list();
 	}
+
+	public List<Long> isAlreadyAvailableActivityLocationDtls(Long activityScopeId,Long locationLevel,Long locationValue){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select distinct model.activityLocationInfoId from ActivityLocationInfo model where model.activityScopeId =:activityScopeId and" +
+				"  model.locationLevel =:locationLevel and model.locationValue =:locationValue");
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId",activityScopeId);
+		query.setParameter("locationLevel",locationLevel);
+		query.setParameter("locationValue",locationValue);
+		
+		return query.list();
+	} 
 }
