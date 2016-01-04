@@ -2920,6 +2920,7 @@
 		<property name="activityQuestionnaireOptionDAO" ref="activityQuestionnaireOptionDAO" />
 		<property name="activityTeamMemberDAO" ref="activityTeamMemberDAO" />
 		<property name="activityTeamLocationDAO" ref="activityTeamLocationDAO" />
+		<property name="boothDAO" ref="boothDAO" />
 	</bean>
 </beans>		
 	
