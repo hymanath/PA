@@ -109,15 +109,30 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 	}
 	
 	public List<Object[]> findWardsByLocalBodyConstituncyListIds(Long localElectionBodyId, List<Long> constituencyIdsList) {
-		Object[] params = {localElectionBodyId,constituencyIdsList};
-		if(localElectionBodyId.longValue() != 20l){
+		/*Object[] params = {localElectionBodyId,constituencyIdsList};
+		if(localElectionBodyId.longValue() != 20l && localElectionBodyId.longValue() != 124l){
 		  return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name  from AssemblyLocalElectionBodyWard model " +
 				" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.assemblyLocalElectionBody.constituency.constituencyId in ( ? ) ", params);
 		}else{
 			return getHibernateTemplate().find("select model.constituency.constituencyId,concat(model.constituency.name,'(',model1.wardName,')')  from AssemblyLocalElectionBodyWard model,LocalElectionBodyWard model1 " +
 					" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.assemblyLocalElectionBody.constituency.constituencyId  in ( ? ) " +
 					" and model1.constituency.constituencyId = model.constituency.constituencyId ", params);
-		}
+		}*/
+		Query query = null;
+		if(localElectionBodyId.longValue() != 20l && localElectionBodyId.longValue() != 124l){
+			 query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name  from AssemblyLocalElectionBodyWard model " +
+						" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = :localElectionBodyId and " +
+						" model.assemblyLocalElectionBody.constituency.constituencyId in ( :constituencyIdsList ) ");
+			}else{
+				 query = getSession().createQuery("select model.constituency.constituencyId,concat(model.constituency.name,'(',model1.wardName,')')  from AssemblyLocalElectionBodyWard model,LocalElectionBodyWard model1 " +
+					" where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = :localElectionBodyId  " +
+					" and model.assemblyLocalElectionBody.constituency.constituencyId  in ( :constituencyIdsList ) " +
+					" and model1.constituency.constituencyId = model.constituency.constituencyId  ");
+			}
+			  query.setParameter("localElectionBodyId",localElectionBodyId);
+			  query.setParameterList("constituencyIdsList", constituencyIdsList);
+			  return query.list();
+				
 	}
 	
 	public List<Object[]> findWardsByLocalBodyIds(List<Long> localElectionBodyIds) {
