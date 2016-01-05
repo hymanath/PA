@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 
 public interface IAttendanceService {
@@ -16,4 +18,5 @@ public interface IAttendanceService {
 	public PartyMeetingInviteeVO getPartyMeetingInvittees(Long partyMeetingId);
 	
 	public PartyMeetingInviteeVO getTrainingCampBatchInvittees(Long trainingCampBatchId);
+	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
 }
