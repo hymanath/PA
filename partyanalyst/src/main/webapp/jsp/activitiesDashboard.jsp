@@ -300,12 +300,14 @@ $(".panel-headingModal").click(function(){
 		
 $(document).on('click','.ranges li',function(){
     if($(this).html()!='Custom'){
+		isAlreadyBuild = false;
 		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
 		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 	 }
   });
   
   $(document).on('click','.applyBtn',function(){
+		isAlreadyBuild = false;
          getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
 		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
   });
