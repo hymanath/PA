@@ -17666,7 +17666,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			for(Object[] params : list)
 			{
 				BasicVO vo = new BasicVO();
-				if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase(IConstants.PANCHAYAT))
+				if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase(IConstants.WARD))
 				{
 				vo.setId(new Long("2"+params[0].toString()));
 				vo.setName(params[1].toString() + " " +type);
@@ -17677,7 +17677,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					vo.setName(params[1].toString() + " " +type);
 				}
 				
-				if(type.equalsIgnoreCase(IConstants.WARD))
+				if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 				{
 					vo.setId(new Long("1"+params[0].toString()));
 					vo.setName(params[1].toString());
