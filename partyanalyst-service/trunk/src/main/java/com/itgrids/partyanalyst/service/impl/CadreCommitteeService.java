@@ -1110,9 +1110,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        	vo.setLocationName(location.getName()+" Mandal");
 	        	locationsList.add(vo);
 	        }
+	        int count =0;
 	        for(Object[] localBodi:localBodies){
+	        	count = count+1;
 	        	if(((Long)localBodi[0]).longValue() != 20l &&  ((Long)localBodi[0]).longValue() != 124l && ((Long)localBodi[0]).longValue() != 119l){
 		        	vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString());
+		        	locationsList.add(vo);
+	        	}
+	        	else
+	        	{
+	        		if(count==1)
+	        			locationsList.clear();
+	        		
+	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
 		        	vo.setLocationName(localBodi[1].toString());
 		        	locationsList.add(vo);
@@ -1201,9 +1213,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
 	        	if(location.getLocationId().toString().substring(0,1).trim().equalsIgnoreCase("1")){
 	        		Long localBdyId = Long.valueOf(location.getLocationId().toString().substring(1));
-	        		if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		//if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
 	        		   localBodyIds.add(localBdyId);
-	        		}
+	        		//}
 	        	}else{
 	        		mandalIds.add(Long.valueOf(location.getLocationId().toString().substring(1)));
 	        	}
