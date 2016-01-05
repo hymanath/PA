@@ -2784,13 +2784,14 @@ public class ActivityService implements IActivityService{
 			List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId);
 			
 			if(objList != null && objList.size() > 0){
+				int number=0;
 				for (Object[] objects : objList) {
 					ActivityVO matchedVO = getMatchedQuestionVo(finalVO,(Long)objects[0]);
-					
+					number = number+1;
 					if(matchedVO == null){
 						matchedVO = new ActivityVO();
 						matchedVO.setQuestionId((Long)objects[0]);
-						matchedVO.setQuestion(objects[1].toString());
+						matchedVO.setQuestion(number+") "+objects[1].toString());
 						matchedVO.setOptionTypeId((Long)objects[2]);
 						matchedVO.setOptionType(objects[3].toString());
 						finalVO.getActivityVoList().add(matchedVO);
