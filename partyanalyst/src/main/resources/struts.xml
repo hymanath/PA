@@ -11218,6 +11218,11 @@
 		  <param name="root">basicVOList</param>
 		</result>
     </action>
+    <action name="saveCadreActivityAttendanceInfoAction" class="activityAction" method="saveCadreActivityAttendanceInfo">
+        <result type="json" name="success">
+		  <param name="root">resultStatus</param>
+		</result>
+    </action>
     
 </package>
 </struts>      
