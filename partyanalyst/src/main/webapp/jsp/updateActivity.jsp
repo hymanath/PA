@@ -164,11 +164,13 @@
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
 			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title" id="constituencyHeadingId" style="display:none"> </h4>
+			<h4 class="panel-title"><span  id="constituencyHeadingId"  style="display:none">ASSEMBLY CONSTITUENCY WISE ACTIVITIES</span><span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span> 
+			<span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
+			</h4>
 			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
 		  </div>
-		   <div class="panel-body">
-			<div id="buildAssConsActivity"></div>
+		   <div class="panel-body" style="display:none" id="assblyBody">
+			<div id="buildAssConsActivity" style="display:none"></div>
 		   </div>
 		
 		</div>
@@ -924,10 +926,10 @@ getUserAccessDistrictList();
 		return;
 	}
 	 
-	 $("#districtHeadingId").hide();
-	 $("#constituencyHeadingId").hide();
-    $('#assemblydivId').show();
-	$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
+	// $("#districtHeadingId").hide();
+	//$("#constituencyHeadingId").hide();
+   //$('#assemblydivId').show();
+	//$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
 	var startDate = "";
 	var endDate = "";
 	var levelId = $("#activityLevelList option:selected").val();
@@ -953,17 +955,41 @@ getUserAccessDistrictList();
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
+		 $('#assemblydivId').show();
        if(result!=null && result.length>0){
+		   //alert(1234)
+		   $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
+		   $("#showAsmblyData").show();
+		   if(levelId == 3)
+				$("#districtHeadingId").show();
+		  else
+		        $("#constituencyHeadingId").show();
 			buildAsemblyConstWiseActivities(result,levelId);
        }else{
+		   $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
+		   $("#constituencyHeadingId").hide();
+		   $("#districtHeadingId").hide();
+		    $("#showAsmblyData").hide();
          $("#buildAssConsActivity").html("NO DATA AVAILABLE...");
        }
      
     });   
    });
-
+   
+$("#showAsmblyData").click(function(){
+	 $("#buildAssConsActivity").show();
+	 $("#assblyBody").show();
+	 $("#showAsmblyData").hide();
+	 $("#hideAsmblyData").show();
+});
+$("#hideAsmblyData").click(function(){
+	 $("#buildAssConsActivity").hide();
+	 $("#assblyBody").hide();
+	 $("#showAsmblyData").show();
+	 $("#hideAsmblyData").hide();
+});
   function buildAsemblyConstWiseActivities(result,levelId){
-    
+   
 	if(levelId == 3)
 		$("#districtHeadingId").show();
 	else
@@ -1029,7 +1055,7 @@ getUserAccessDistrictList();
 		"aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
 	 });
 	  $(".dataTableDiv").removeClass("dataTable");
-	  $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
+	  $("#buildAssConsActivity").hide();
   }
   
 	
