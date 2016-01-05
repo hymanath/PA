@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -49,7 +51,16 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private String locationName;
 	private String temp;
 	private List<BasicVO> basicVOList;
+	private IAttendanceService attendanceService;
 	
+	
+	
+	public IAttendanceService getAttendanceService() {
+		return attendanceService;
+	}
+	public void setAttendanceService(IAttendanceService attendanceService) {
+		this.attendanceService = attendanceService;
+	}
 	public BasicVO getBasicVO() {
 		return basicVO;
 	}
@@ -419,6 +430,20 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String saveCadreActivityAttendanceInfo()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			ActivityAttendanceVO VO = new ActivityAttendanceVO();
+			VO.setActivityId(jObj.getLong("activityId"));
+			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
+			VO.setType(jObj.getString("userType"));
+			resultStatus = attendanceService.saveCadreActivityAttendance(VO,regVO.getRegistrationID());		
+		}catch (Exception e) {
+			LOG.error("Exception raised at saveCadreActivityAttendanceInfo()", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }

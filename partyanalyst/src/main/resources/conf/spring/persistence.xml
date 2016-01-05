@@ -729,6 +729,9 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityAttributeQuestionnaireInfo</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTeamLocation</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTeamMember</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationPublicAttendance</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationAttendance</value>
+				 
 				 
 			     </list>
 			

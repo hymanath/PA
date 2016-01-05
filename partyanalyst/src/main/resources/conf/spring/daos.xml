@@ -2438,5 +2438,12 @@
 	 <bean id="activityTeamLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTeamLocationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="activityLocationPublicAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationPublicAttendanceDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityLocationAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationAttendanceDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	<!--  end -->
 </beans>		
