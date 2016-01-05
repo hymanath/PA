@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceErrorDAO;
@@ -19,6 +22,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
@@ -56,7 +60,18 @@ public class AttendanceService implements IAttendanceService{
 	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO;
 	private IVoterDAO voterDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private TransactionTemplate transactionTemplate = null;
 	
+	
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public void setTrainingCampBatchAttendeeDAO(
 			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
 		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
@@ -551,4 +566,38 @@ public class AttendanceService implements IAttendanceService{
 		}
 		return result;
 	}
+	
+	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId)
+	{
+		
+		 ResultStatus result = new ResultStatus();
+		
+		 try{
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+		DateUtilService date = new DateUtilService();
+		Attendance attendance = new Attendance();
+		attendance.setTdpCadreId(inputVO.getTdpCadreId());
+		attendance.setAttendedTime(date.getCurrentDateAndTime());
+		attendance.setInsertedById(userId);
+		attendance.setInsertedTime(date.getCurrentDateAndTime());
+		attendance.setSyncSource("WEB");
+		attendance = attendanceDAO.save(attendance);
+		PartyMeetingAttendance partyMeetingAttendance = new PartyMeetingAttendance();
+		partyMeetingAttendance.setPartyMeetingId(inputVO.getActivityId());
+		partyMeetingAttendance.setAttendance(attendance);
+		partyMeetingAttendance.setInsertedTime(date.getCurrentDateAndTime());
+		partyMeetingAttendanceDAO.save(partyMeetingAttendance);
+		}});
+			  result.setResultCode(0);
+		}
+		catch (Exception e) {
+			LOG.error("Exception occured in saveAttendanceInfo Method() - ",e);
+			result.setResultCode(1);
+		}
+		return result;
+	}
+	
+	
 }
