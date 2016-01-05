@@ -23,7 +23,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				" model.activityOption.activityOptionId, " +//option id
 				" model.activityOption.option " +//option
 				" from ActivityQuestionnaireOption model " +
-				" where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId order by model.orderNo ");
+				" where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId order by model.activityQuestionnaire.orderNo ");
 		query.setParameter("scopeId", scopeId);
 		return query.list();
 	}
