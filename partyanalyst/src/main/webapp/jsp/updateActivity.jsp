@@ -262,6 +262,7 @@
 		  <div class="modal-body">
 			<div id="questionsDivBodyId"></div>
 		  </div>
+		  <div id="errMsg" style="color:green;margin:20px;"></div>
 		  <div class="modal-footer" id="questionsDivFooterId">
 			<!--<button type="button" id="saveResult" class="btn btn-custom btn-success">Save</button>-->
 		  </div>
@@ -775,7 +776,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].planedDate != null)
-										str+=''+result.result[i].planedDate+'';
+										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value="'+result.result[i].planedDate+'"/>';
 									else
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								str+='</div></td>';
@@ -783,7 +784,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
-										str+=''+result.result[i].conductedDate+'';
+										str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
 									else
 										str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
 								str+='</div></td>';
@@ -799,7 +800,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 									str+='<td  style="text-align:center;"> - </td>';
 								}
 								*/
-								str+='<td style="text-align:center;">';
+								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								
@@ -1135,7 +1136,12 @@ getUserAccessDistrictList();
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			if(result != null && result.resultCode == 0){
+				$("#errMsg").html("Question Saved Successfully")
+			}else{
+				$("#errMsg").html("Exception Occurred try Again")
+			}
+			//console.log(result);
 		});
 		//console.log(resultArr);
 	});
