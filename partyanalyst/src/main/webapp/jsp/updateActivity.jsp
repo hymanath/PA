@@ -807,7 +807,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								}
 								*/
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
-								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\');"/>&nbsp;&nbsp;';
+								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								
 								str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>';
@@ -835,7 +835,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 }
 
 
-function gettingCadreDetails(locationId,locationName){	
+function gettingCadreDetails(locationId,locationName,constituencyId){	
 	
 	$("#cadreDetailsDiv").html('');
 	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+'  '+$("#activityLevelList option:selected").text()+' Main Committee Members </span>');
@@ -870,7 +870,7 @@ function gettingCadreDetails(locationId,locationName){
 	}
 	
 		 var jsObj={
-		         locationId:locationId,locationType:locationType,basicCommitteeTypeId:1
+		         locationId:locationId,locationType:locationType,basicCommitteeTypeId:1,constituencyId:constituencyId
 		       };
 			   
 		 $.ajax({

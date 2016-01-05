@@ -1061,7 +1061,7 @@ public String getAllConstituencysForADistrict(){
 		try{
 			jObj = new JSONObject(getTask());
 			
-			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoInActivity(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
+			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoInActivity(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),jObj.getLong("constituencyId"));
 			
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
