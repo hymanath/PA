@@ -45,9 +45,9 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
-			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
@@ -105,9 +105,9 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
-			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
@@ -338,9 +338,9 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
 		
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
-			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
+		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
