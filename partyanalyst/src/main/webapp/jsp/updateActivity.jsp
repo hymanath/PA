@@ -121,7 +121,7 @@
                                     </label>
                                 </div>
 								-->
-								<div class="row">
+								
 							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;"><span class="starMark">*</span>
 								<label>District</label>
 								<select id="districtList" class="form-control" name="activityVO.districtId" >
@@ -149,7 +149,7 @@
 							</div>
 							</div>
 							<div class="row">
-						   <div class="col-md-3 m_top10" style="float:right;">
+							<div class="col-md-3 m_top10 col-md-offset-4">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','');">SEARCH</button>
 							</div>
 							</div>
@@ -164,10 +164,11 @@
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
 			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title"><span  id="constituencyHeadingId"  style="display:none">ASSEMBLY CONSTITUENCY WISE ACTIVITIES</span><span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span> 
-			<span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
+			<h4 class="panel-title"><span  id="constituencyHeadingId"  style="display:none">  CONSTITUENCY WISE ACTIVITIES</span>
 			</h4>
 			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
+			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span> 
+			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
 		  </div>
 		   <div class="panel-body" style="display:none" id="assblyBody">
 			<div id="buildAssConsActivity" style="display:none"></div>
@@ -677,7 +678,6 @@ function getLocationDetailsForActivity(startDate,endDate)
 	}
 	else if(constituencyId == null || constituencyId == 0)
 	{
-		
 		if(activityLevelId == 1 || activityLevelId == 2){
 		errStr+="Please Select Constituency.";
 		}
@@ -689,7 +689,11 @@ function getLocationDetailsForActivity(startDate,endDate)
 	}
 	else
 	{
-		$('#resultsDiv').show();	
+		if(activityLevelId == 3){
+		$('#resultsDiv').hide();
+		}else{
+			$('#resultsDiv').show();
+		}		
 		$('#home').html("<img src='images/Loading-data.gif'/>");	
 			if(startDate.trim().length == 0)
 			{
@@ -958,15 +962,20 @@ getUserAccessDistrictList();
 		 $('#assemblydivId').show();
        if(result!=null && result.length>0){
 		   //alert(1234)
-		   $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
+		   
 		   $("#showAsmblyData").show();
-		   if(levelId == 3)
+		   if(levelId == 3){
 				$("#districtHeadingId").show();
-		  else
+				$("#constituencyHeadingId").hide();
+				 $("#districtHeadingId").html('DISTRICT WISE ACTIVITIES  '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
+		   }else{
+			   $("#constituencyHeadingId").html('ASSEMBLY CONSTITUENCY WISE ACTIVITIES  '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 		        $("#constituencyHeadingId").show();
+				$("#districtHeadingId").hide();
+		   }
 			buildAsemblyConstWiseActivities(result,levelId);
        }else{
-		   $("#constituencyHeadingId").html(''+$("#activityLevelList option:selected").text()+' ASSEMBLY CONSTITUENCY WISE ACTIVITIES');
+		   $("#constituencyHeadingId").html('ASSEMBLY CONSTITUENCY WISE ACTIVITIES  '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 		   $("#constituencyHeadingId").hide();
 		   $("#districtHeadingId").hide();
 		    $("#showAsmblyData").hide();
