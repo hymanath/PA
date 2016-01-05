@@ -122,7 +122,7 @@
                                 </div>
 								-->
 								
-							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;"><span class="starMark">*</span>
+							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;">
 								<label>District</label>
 								<select id="districtList" class="form-control" name="activityVO.districtId" >
 									
@@ -170,8 +170,8 @@
 			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span> 
 			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
 		  </div>
-		   <div class="panel-body" style="display:none" id="assblyBody">
-			<div id="buildAssConsActivity" style="display:none"></div>
+		   <div class="panel-body" id="assblyBody">
+			<div id="buildAssConsActivity" ></div>
 		   </div>
 		
 		</div>
@@ -656,7 +656,7 @@ function updateMobileNumber(index,tdpCadreId){
 
 function getLocationDetailsForActivity(startDate,endDate)
 {
-	
+	$("#buildAssConsActivity").hide();
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
@@ -778,7 +778,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
 								str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								str+='<td> '+result.result[i].locationName+'</td>';
-								str+='<td  style="text-align:center;">';
+								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].planedDate != null)
@@ -786,7 +786,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 									else
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								str+='</div></td>';
-								str+='<td  style="text-align:center;">';
+								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
@@ -896,7 +896,7 @@ function gettingCadreDetails(locationId,locationName){
 getUserAccessConstituencyList();
 getUserAccessDistrictList();
  
- $("#searchId").click(function(){
+ $("#ActivityList").change(function(){
  
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
@@ -918,22 +918,17 @@ getUserAccessDistrictList();
 	{
 		errStr+="Please Select Activity .";
 	}
-	else if(activityLevelId >= 3 && (districtId == null || districtId == 0))
-	{
-	 if(activityLevelId == 3){
-		errStr+="Please Select District.";
-	}
-		}
+	
 	
 	if(errStr!= null && errStr.length>0){
 		$('#ErrDiv').html(errStr);
 		return;
 	}
-	 
+	 $("#assemblydivId").show();
 	// $("#districtHeadingId").hide();
 	//$("#constituencyHeadingId").hide();
    //$('#assemblydivId').show();
-	//$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
+	$("#buildAssConsActivity").html("<img style='margin-left: 390px;' src='images/Loading-data.gif'/>");
 	var startDate = "";
 	var endDate = "";
 	var levelId = $("#activityLevelList option:selected").val();
@@ -952,8 +947,7 @@ getUserAccessDistrictList();
 				  levelId:levelId,
                   stateId:1
               };
-       
-     $.ajax({
+      $.ajax({
       type : "GET",
       url : "asemblyConstWiseActivitiesAction.action",
       dataType: 'json',
@@ -961,9 +955,8 @@ getUserAccessDistrictList();
     }).done(function(result){
 		 $('#assemblydivId').show();
        if(result!=null && result.length>0){
-		   //alert(1234)
-		   
-		   $("#showAsmblyData").show();
+		   $("#hideAsmblyData").show();
+		   $("#showAsmblyData").hide();
 		   if(levelId == 3){
 				$("#districtHeadingId").show();
 				$("#constituencyHeadingId").hide();
@@ -978,6 +971,7 @@ getUserAccessDistrictList();
 		   $("#constituencyHeadingId").html('ASSEMBLY CONSTITUENCY WISE ACTIVITIES  '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 		   $("#constituencyHeadingId").hide();
 		   $("#districtHeadingId").hide();
+		   $("#hideAsmblyData").hide();
 		    $("#showAsmblyData").hide();
          $("#buildAssConsActivity").html("NO DATA AVAILABLE...");
        }
@@ -1064,7 +1058,7 @@ $("#hideAsmblyData").click(function(){
 		"aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
 	 });
 	  $(".dataTableDiv").removeClass("dataTable");
-	  $("#buildAssConsActivity").hide();
+	 // $("#buildAssConsActivity").hide();
   }
   
 	
