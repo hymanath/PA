@@ -476,4 +476,5 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByDistricts(List<Long> districtIdsList, Long publicationDateId);
 	 public List<Object[]> getTehsilsIdsAndLocalBodyIdsListByConstituencyIds(List<Long> constituencyIdsList, Long publicationDateId);
 	 public List<Long> getConstituencyForPanchayat(Long panchayatId);
+	 public Long getLocalElectionBodyByConstituency(Long constituencyId);
 }

@@ -17257,11 +17257,19 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return allocatedMap;
 	}
 	
-	public List<CadreCommitteeMemberVO> getComitteeMembersInfoInActivity(Long locationId,Long locationType,Long basicCommitteeTypeId)
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoInActivity(Long locationId,Long locationType,Long basicCommitteeTypeId,Long constituencyId)
 	{
 		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList= new ArrayList<CadreCommitteeMemberVO>();
 		try
 		{
+			if(constituencyId != null && constituencyId.longValue() > 0){
+				Long localElectionBodyId = boothDAO.getLocalElectionBodyByConstituency(constituencyId);
+				if(localElectionBodyId != null){
+					if(localElectionBodyId.longValue() == 20L || localElectionBodyId.longValue() == 124L || localElectionBodyId.longValue() == 119L){
+						locationType = 9l;
+					}
+				}
+			}
 			//19tehsilId, 20localElectionBodyId 21constituencyId
 		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoInActivity(locationType,locationId,basicCommitteeTypeId);
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
