@@ -1390,6 +1390,7 @@ function buildDayWiseResults(result,divId,jObj)
 }
 
 function getDetails(){
+	isAlreadyBuild = false;
 	getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
 	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 }
