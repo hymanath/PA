@@ -436,12 +436,31 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			jObj = new JSONObject(getTask());
 			ActivityAttendanceVO VO = new ActivityAttendanceVO();
-			VO.setActivityId(jObj.getLong("activityId"));
+			VO.setActivityLocationInfoId(jObj.getLong("activityLocationInfoId"));
 			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
-			VO.setType(jObj.getString("userType"));
-			resultStatus = attendanceService.saveCadreActivityAttendance(VO,regVO.getRegistrationID());		
+			
+			resultStatus = attendanceService.saveCadreActivityAttendance(VO,regVO.getRegistrationID());	
+			
+						
 		}catch (Exception e) {
 			LOG.error("Exception raised at saveCadreActivityAttendanceInfo()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String savePublicActivityAttendanceInfo()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			ActivityAttendanceVO VO = new ActivityAttendanceVO();
+			VO.setActivityLocationInfoId(jObj.getLong("activityLocationInfoId"));
+			VO.setName(jObj.getString("name"));
+			VO.setMobileNumber(jObj.getString("mobileNumber"));
+			VO.setVoterCard(jObj.getString("voterCard"));
+				resultStatus = attendanceService.savePublicActivityAttendance(VO,regVO.getRegistrationID());		
+		}catch (Exception e) {
+			LOG.error("Exception raised at savePublicActivityAttendanceInfo()", e);
 		}
 		return Action.SUCCESS;
 	}

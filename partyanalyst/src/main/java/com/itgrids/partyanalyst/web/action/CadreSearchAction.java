@@ -371,5 +371,17 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-
+	public String getBloodGroups(){
+		
+		try{
+			 JSONObject jObj = new JSONObject(request.getParameter("task"));
+			
+				bloodGroupList = cadreManagementService.getAllBloodGroupTypes();
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getBloodGroups",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
