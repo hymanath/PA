@@ -11223,6 +11223,16 @@
 		  <param name="root">resultStatus</param>
 		</result>
     </action>
+    <action name="savePublicActivityAttendanceInfoAction" class="activityAction" method="savePublicActivityAttendanceInfo">
+        <result type="json" name="success">
+		  <param name="root">resultStatus</param>
+		</result>
+    </action>
+       <action name="getBloodGroupsAction" class="cadreSearchAction" method="getBloodGroups">
+        <result type="json" name="success">
+		  <param name="root">bloodGroupList</param>
+		</result>
+    </action>
     
 </package>
 </struts>      

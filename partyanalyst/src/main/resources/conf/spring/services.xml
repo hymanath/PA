@@ -2826,6 +2826,10 @@
 		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="activityLocationPublicAttendanceDAO" ref="activityLocationPublicAttendanceDAO"></property>
+		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO"></property>
+		
 	</bean>
 	
 	<bean name="partyMeetingService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingService">
