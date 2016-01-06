@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.ActivityQuestionnaireOption;
 
 public interface IActivityQuestionnaireOptionDAO extends GenericDao<ActivityQuestionnaireOption, Long>{
 	public List<Object[]> getQuestionnaireForScope(Long scopeId);
+	public List<Object[]> getQuestionnaireOfScope(Long scopeId);
 }
