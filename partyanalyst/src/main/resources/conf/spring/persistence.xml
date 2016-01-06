@@ -731,7 +731,9 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityTeamMember</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityLocationPublicAttendance</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityLocationAttendance</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.UserActivityScope</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityScopeRequiredAttributes</value>
+				 <value>com.itgrids.partyanalyst.model.RequiredAttribute</value>
 				 
 			     </list>
 			
