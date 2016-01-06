@@ -2444,6 +2444,15 @@
 	 <bean id="activityLocationAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationAttendanceDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="userActivityScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.userActivityScopeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="requiredAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.requiredAttributeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="activityScopeRequiredAttributesDAO" class="com.itgrids.partyanalyst.dao.hibernate.activityScopeRequiredAttributesDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 
 	<!--  end -->
 </beans>		
