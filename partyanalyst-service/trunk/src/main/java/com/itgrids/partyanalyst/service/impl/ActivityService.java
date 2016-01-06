@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -3208,35 +3209,101 @@ public class ActivityService implements IActivityService{
 		return resultList;
 	}
 	
-	public ActivityVO getUserActivityDetailsByUserId(Long userId){
+	public ActivityWSVO getUserActivityDetailsByUserId(Long userId){
 		
-		ActivityVO activityVO = new ActivityVO();
+		ActivityWSVO activityWSVO = new ActivityWSVO();
 		
 		try {
 			
-			List<ActivityVO> voList = new ArrayList<ActivityVO>();
+			List<ActivityWSVO> voList = new ArrayList<ActivityWSVO>();
+			//List<ActivityWSVO> questionsVoList = new ArrayList<ActivityWSVO>();
+			ActivityWSVO questionsvo = new ActivityWSVO();
 			
 			List<Object[]> list = userActivityScopeDAO.getUserActivityDetailsByUserId(userId);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					ActivityVO vo = new ActivityVO();
+					ActivityWSVO vo = new ActivityWSVO();
 					
 					//vo.setId((Long) (obj[0] != null ? obj[0]:0l));
 					//vo.setUserId((Long) (obj[1] != null ? obj[1]:0l));
-					vo.setActivityScopeId((Long) (obj[2] != null ? obj[2]:0l));
+					Long scopeId = (Long) (obj[2] != null ? obj[2]:0l);
+					vo.setActivityScopeId(scopeId);
 					vo.setName(obj[3] != null ? obj[3].toString():"");
 					vo.setScopeValue((Long) (obj[4] != null ? obj[4]:0l));
 					
+					questionsvo = getQuestionsListForScopeId(scopeId);
+					vo.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
 					voList.add(vo);
 				}
 			}
-			activityVO.setUserId(userId);
-			activityVO.setActivityVoList(voList);
+			activityWSVO.setUserId(userId);
+			activityWSVO.setActivityWSVOList(voList);
 			
 		} catch (Exception e) {
-			LOG.error("Exception occured in getActivityDocumentsImages() Method ",e);
+			LOG.error("Exception occured in getUserActivityDetailsByUserId() Method ",e);
 		}
-		return activityVO;
+		return activityWSVO;
 	}
+	
+	public ActivityWSVO getQuestionsListForScopeId(Long scopeId){
+		
+		ActivityWSVO finalVO = new ActivityWSVO(); 
+		try {
+			
+			  List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireOfScope(scopeId);
+			    
+			    if(objList != null && objList.size() > 0){
+			      for (Object[] objects : objList) {
+			        ActivityWSVO mtchdVO = getMatchedActivityWSVO(finalVO.getAcitivityQuesList(),Long.valueOf(objects[6].toString()),"respondent");
+			        if(mtchdVO==null){
+			          mtchdVO = new ActivityWSVO();
+			          mtchdVO.setRespondentTypeId(Long.valueOf(objects[6].toString()));
+			          mtchdVO.setRespondentType(objects[7].toString());
+			          finalVO.getAcitivityQuesList().add(mtchdVO);
+			        }
+			        
+			        ActivityWSVO matchedVO = getMatchedActivityWSVO(mtchdVO.getQuestionList(),Long.valueOf(objects[0].toString()),"question");
+			        
+			        int number = mtchdVO.getQuestionList().size()+1;
+			        if(matchedVO == null){
+			          matchedVO = new ActivityWSVO();
+			          matchedVO.setQuestionId((Long)objects[0]);
+			          matchedVO.setQuestion(number+") "+objects[1].toString());
+			          matchedVO.setOptionTypeId((Long)objects[2]);
+			          matchedVO.setOptionType(objects[3].toString());
+			          mtchdVO.getQuestionList().add(matchedVO);
+			        }
+			        ActivityWSVO optionVO = new ActivityWSVO();
+			        optionVO.setOptionId((Long)objects[4]);
+			        optionVO.setOption(objects[5].toString());
+			        matchedVO.getOptionsList().add(optionVO);
+			      }
+			    }
+			    
+		} catch (Exception e) {
+			LOG.error("Exception occured in getQuestionsListForScopeId() Method ",e);
+		}
+		return finalVO;
+	}
+	
+	public ActivityWSVO getMatchedActivityWSVO(List<ActivityWSVO> list,Long id, String fltr){
+	    if(id!=null && list!=null && !list.isEmpty()){
+	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("Respondent")){
+	        for(ActivityWSVO voIn : list){
+	          if(voIn.getRespondentTypeId().equals(id)){
+	            return voIn;
+	          }
+	        }
+	      }
+	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("Question")){
+	        for(ActivityWSVO voIn : list){
+	          if(voIn.getQuestionId().equals(id)){
+	            return voIn;
+	          }
+	        }
+	      }
+	    }
+	    return null;
+	  }
 	
 }

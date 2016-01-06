@@ -34,8 +34,22 @@ public class ActivityWSVO {
 	private Long				respondentTypeId;
 	private String				respondentType;
 	private List<ActivityWSVO>	acitivityQuesList =new ArrayList<ActivityWSVO>(0);
+	private List<ActivityWSVO> activityWSVOList = new ArrayList<ActivityWSVO>(0);
+	private Long scopeValue;
 	
 	
+	public Long getScopeValue() {
+		return scopeValue;
+	}
+	public void setScopeValue(Long scopeValue) {
+		this.scopeValue = scopeValue;
+	}
+	public List<ActivityWSVO> getActivityWSVOList() {
+		return activityWSVOList;
+	}
+	public void setActivityWSVOList(List<ActivityWSVO> activityWSVOList) {
+		this.activityWSVOList = activityWSVOList;
+	}
 	public Long getUserId() {
 		return userId;
 	}
