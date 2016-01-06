@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
@@ -122,8 +123,15 @@ public class ActivityService implements IActivityService{
 	private IActivityTeamMemberDAO activityTeamMemberDAO;
 	private IActivityTeamLocationDAO activityTeamLocationDAO;
 	private BoothDAO boothDAO;
+	private IUserActivityScopeDAO userActivityScopeDAO;
 	
 	
+	public IUserActivityScopeDAO getUserActivityScopeDAO() {
+		return userActivityScopeDAO;
+	}
+	public void setUserActivityScopeDAO(IUserActivityScopeDAO userActivityScopeDAO) {
+		this.userActivityScopeDAO = userActivityScopeDAO;
+	}
 	public BoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -2177,7 +2185,8 @@ public class ActivityService implements IActivityService{
 			{
 				for (String dateStr : datesMap.keySet()) {
 					ActivityVO vo = datesMap.get(dateStr);
-					finalList.add(vo);
+					if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue() > 0)
+						finalList.add(vo);
 				}
 			}
 		} catch (Exception e) {
@@ -3199,5 +3208,34 @@ public class ActivityService implements IActivityService{
 		return resultList;
 	}
 	
+	public ActivityVO getUserActivityDetailsByUserId(Long userId){
+		
+		ActivityVO activityVO = new ActivityVO();
+		
+		try {
+			
+			List<ActivityVO> voList = new ArrayList<ActivityVO>();
+			
+			List<Object[]> list = userActivityScopeDAO.getUserActivityDetailsByUserId(userId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					ActivityVO vo = new ActivityVO();
+					
+					vo.setId((Long) (obj[0] != null ? obj[0]:0l));
+					vo.setUserId((Long) (obj[1] != null ? obj[1]:0l));
+					vo.setActivityScopeId((Long) (obj[2] != null ? obj[2]:0l));
+					vo.setName(obj[3] != null ? obj[3].toString():"");
+					vo.setScopeValue((Long) (obj[4] != null ? obj[4]:0l));
+					
+					voList.add(vo);
+				}
+			}
+			activityVO.setActivityVoList(voList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getActivityDocumentsImages() Method ",e);
+		}
+		return activityVO;
+	}
 	
 }

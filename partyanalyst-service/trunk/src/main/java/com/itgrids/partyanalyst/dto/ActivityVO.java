@@ -70,7 +70,30 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String others;
 	private Long count;
 	
+	private Long userId;
+	private Long activityScopeId;
+	private Long scopeValue;
 	
+	
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
+	}
+	public Long getScopeValue() {
+		return scopeValue;
+	}
+	public void setScopeValue(Long scopeValue) {
+		this.scopeValue = scopeValue;
+	}
 	public List<Long> getLocationIds() {
 		return locationIds;
 	}
