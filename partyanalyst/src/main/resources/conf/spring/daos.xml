@@ -2444,13 +2444,13 @@
 	 <bean id="activityLocationAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationAttendanceDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="userActivityScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.userActivityScopeDAO">
+	 <bean id="userActivityScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserActivityScopeDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="requiredAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.requiredAttributeDAO">
+	 <bean id="requiredAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RequiredAttributeDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="activityScopeRequiredAttributesDAO" class="com.itgrids.partyanalyst.dao.hibernate.activityScopeRequiredAttributesDAO">
+	 <bean id="activityScopeRequiredAttributesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityScopeRequiredAttributesDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
