@@ -47,6 +47,8 @@ public class Attendance extends BaseModel implements Serializable{
 	private Long currentTabUserId;
 	private Long insertedById;
 	private Long tabPrimaryKey;
+	private Long activityLocationPublicAttendanceId;
+	private ActivityLocationPublicAttendance activityLocationPublicAttendance;
 	
 	public Attendance(){}
 
@@ -245,6 +247,27 @@ public class Attendance extends BaseModel implements Serializable{
 
 	public void setTabPrimaryKey(Long tabPrimaryKey) {
 		this.tabPrimaryKey = tabPrimaryKey;
+	}
+	@Column(name="activity_location_public_attendance_id")
+	public Long getActivityLocationPublicAttendanceId() {
+		return activityLocationPublicAttendanceId;
+	}
+
+	public void setActivityLocationPublicAttendanceId(
+			Long activityLocationPublicAttendanceId) {
+		this.activityLocationPublicAttendanceId = activityLocationPublicAttendanceId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_location_public_attendance_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityLocationPublicAttendance getActivityLocationPublicAttendance() {
+		return activityLocationPublicAttendance;
+	}
+
+	public void setActivityLocationPublicAttendance(
+			ActivityLocationPublicAttendance activityLocationPublicAttendance) {
+		this.activityLocationPublicAttendance = activityLocationPublicAttendance;
 	}
 	
 }
