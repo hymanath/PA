@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,8 @@ public class ActivityLocationPublicAttendance {
 	private String name;
 	private String mobile;
 	private String voterCard;
+	private Long bloodGroupId;
+	private Date insertedTime;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_location_public_attendance_id", unique = true, nullable = false)
@@ -47,6 +51,20 @@ public class ActivityLocationPublicAttendance {
 	}
 	public void setVoterCard(String voterCard) {
 		this.voterCard = voterCard;
+	}
+	@Column(name = "blood_group_id")
+	public Long getBloodGroupId() {
+		return bloodGroupId;
+	}
+	public void setBloodGroupId(Long bloodGroupId) {
+		this.bloodGroupId = bloodGroupId;
+	}
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	

@@ -19,4 +19,6 @@ public interface IAttendanceService {
 	
 	public PartyMeetingInviteeVO getTrainingCampBatchInvittees(Long trainingCampBatchId);
 	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
+
+	public ResultStatus savePublicActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
 }
