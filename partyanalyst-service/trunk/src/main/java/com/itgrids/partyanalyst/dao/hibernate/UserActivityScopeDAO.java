@@ -17,9 +17,14 @@ public class UserActivityScopeDAO extends GenericDaoHibernate<UserActivityScope,
 	
 	public List<Object[]> getUserActivityDetailsByUserId(Long userId){
 		
-		Query query = getSession().createQuery(" select model.userActivityScopeId,model.user.userId,model.activityScope.activityScopeId, " +
-							" model.activityScope.activity.activityName,model.scopeValue from UserActivityScope model " +
-							" where model.user.userId = :userId and model.isActive = 'Y' ");
+		Query query = getSession().createQuery(" select model.userActivityScopeId," +
+				" model.user.userId," +
+				" model.activityScope.activityScopeId, " +
+				" model.activityScope.activity.activityName," +
+				" model.activityScope.activityLevel.activityLevelId," +
+				" model.scopeValue, " +
+				" model.activityScope.activityLevel.level " +
+				" from UserActivityScope model where model.user.userId = :userId and model.isActive = 'Y' ");
 		
 		query.setParameter("userId", userId);
 		

@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -125,8 +127,23 @@ public class ActivityService implements IActivityService{
 	private IActivityTeamLocationDAO activityTeamLocationDAO;
 	private BoothDAO boothDAO;
 	private IUserActivityScopeDAO userActivityScopeDAO;
+	private IUserDAO  				userDAO;
+	private ICadreSurveyUserDAO		cadreSurveyUserDAO;
 	
 	
+	
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 	public IUserActivityScopeDAO getUserActivityScopeDAO() {
 		return userActivityScopeDAO;
 	}
@@ -3209,35 +3226,67 @@ public class ActivityService implements IActivityService{
 		return resultList;
 	}
 	
-	public ActivityWSVO getUserActivityDetailsByUserId(Long userId){
+	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password){
 		
 		ActivityWSVO activityWSVO = new ActivityWSVO();
 		
 		try {
+			Long userId = 0l;
+			List<Long> userIds = cadreSurveyUserDAO.getUserByUserNameAndPassword(username, password);
+			
+			if(userIds != null && userIds.size() > 0){
+				userId = userIds.get(0);
+			}
+			
+			if(userId.longValue() == 0){
+				activityWSVO.setName("Login Failed...");
+				return activityWSVO;
+			}
 			
 			List<ActivityWSVO> voList = new ArrayList<ActivityWSVO>();
 			//List<ActivityWSVO> questionsVoList = new ArrayList<ActivityWSVO>();
 			ActivityWSVO questionsvo = new ActivityWSVO();
 			
+			List<ActivityWSVO> usrAccLvlsLst = new ArrayList<ActivityWSVO>();
+			List<ActivityWSVO> usrAccScpeLst = new ArrayList<ActivityWSVO>();
+			
 			List<Object[]> list = userActivityScopeDAO.getUserActivityDetailsByUserId(userId);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					ActivityWSVO vo = new ActivityWSVO();
+					ActivityWSVO mtchdScpeVO = getMatchedActivityWSVO(voList,Long.valueOf(obj[5].toString()),"ActivityScopeId");
+					if(mtchdScpeVO==null){
+						mtchdScpeVO = new ActivityWSVO();
+						Long scopeId = (Long) (obj[2] != null ? obj[2]:0l);
+						mtchdScpeVO.setActivityScopeId(scopeId);
+						mtchdScpeVO.setName(obj[3] != null ? obj[3].toString():"");
+						mtchdScpeVO.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
+						mtchdScpeVO.setScopeValue((Long) (obj[5] != null ? obj[5]:0l));
+						mtchdScpeVO.setActivityLevel(obj[6] != null ? obj[6].toString():"");
+						mtchdScpeVO.getAccessLocationsList().add(mtchdScpeVO.getScopeValue());
+						questionsvo = getQuestionsListForScopeId(scopeId);
+						mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
+						voList.add(mtchdScpeVO);
+					}else{
+						mtchdScpeVO.getAccessLocationsList().add(Long.valueOf(obj[5].toString()));
+					}
 					
-					//vo.setId((Long) (obj[0] != null ? obj[0]:0l));
-					//vo.setUserId((Long) (obj[1] != null ? obj[1]:0l));
-					Long scopeId = (Long) (obj[2] != null ? obj[2]:0l);
-					vo.setActivityScopeId(scopeId);
-					vo.setName(obj[3] != null ? obj[3].toString():"");
-					vo.setScopeValue((Long) (obj[4] != null ? obj[4]:0l));
+					ActivityWSVO lvlvo = new ActivityWSVO();
+					ActivityWSVO scpvo = new ActivityWSVO();
 					
-					questionsvo = getQuestionsListForScopeId(scopeId);
-					vo.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
-					voList.add(vo);
+					lvlvo.setId((Long) (obj[4] != null ? obj[4]:0l));
+					lvlvo.setName(obj[6] != null ? obj[6].toString():"");
+					usrAccLvlsLst.add(lvlvo);
+					
+					scpvo.setId((Long) (obj[2] != null ? obj[2]:0l));
+					scpvo.setName(obj[3] != null ? obj[3].toString():"");
+					scpvo.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
+					usrAccScpeLst.add(scpvo);
 				}
 			}
 			activityWSVO.setUserId(userId);
 			activityWSVO.setActivityWSVOList(voList);
+			activityWSVO.setActivityLevelList(usrAccLvlsLst);
+			activityWSVO.setActivityScopeList(usrAccScpeLst);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getUserActivityDetailsByUserId() Method ",e);
@@ -3302,6 +3351,13 @@ public class ActivityService implements IActivityService{
 	          }
 	        }
 	      }
+	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("ActivityScopeId")){
+		        for(ActivityWSVO voIn : list){
+		          if(voIn.getActivityScopeId().equals(id)){
+		            return voIn;
+		          }
+		        }
+		      }
 	    }
 	    return null;
 	  }

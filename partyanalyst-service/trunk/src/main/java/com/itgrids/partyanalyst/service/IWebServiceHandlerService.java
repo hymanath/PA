@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -98,27 +99,29 @@ public interface IWebServiceHandlerService {
 	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo);
 	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo);
 	
-	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo);
-	 public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList);
-	 public Object getTDPCadreDetailsForSearch(CadrePrintInputVO input);
-	 public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
-	 public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO);
-	 public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
-	 public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
-	 public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
-	 public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
-	 public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
-	 public CadreOverviewVO getTdpCadreOverViewDetails(CadreOverviewVO inputVO);
-	 public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId);
-	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
-	 public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId);
-	 public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
-	  public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
-	  public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
-	  public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
-	  public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId);
-	  public List<Long> getAllRemovedCadre();
-	  public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
-	  public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId);
-	  public List<TdpCadreVO>  getWebServiceEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,String reportType, Integer startIndex,Integer maxIndex);
+	public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo);
+	public Object updatePrintedCardInfo(List<CardNFCDetailsVO> inputVOList);
+	public Object getTDPCadreDetailsForSearch(CadrePrintInputVO input);
+	public Object getTDPCadreDetailsByMemberShip(CadrePrintInputVO input);
+	public Object getCardPrintCountForAllUsers(CardPrintUserVO inputVO);
+	public Object getCardPrintCountByUser(CardPrintUserVO inputVO);
+	public UserEventDetailsVO updateDatasyncurl(UserEventDetailsVO inpuVo);
+	public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
+	public ResultStatus verifyEventSyncData(UserEventDetailsVO inputVO);
+	public WebServiceResultVO getCandidateAndLocationSummaryNews(String startDate,String endDate,String locationType,Long locationId,Long candidateId);
+	public CadreOverviewVO getTdpCadreOverViewDetails(CadreOverviewVO inputVO);
+	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId);
+	public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
+	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long tdpCadreId);
+	public PartyMeetingVO getMeetingTypeWiseDescription(Long tdpCadreId,Long partyMeetingTypeId);
+	public PartyMeetingVO getPartyMeetingsForCadreOverview(Long tdpCadreId);
+	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
+	public NtrTrustStudentVO getNtrTrustStudentDetailsInstitutionWise(List<Long> cadreIds);
+	public List<NtrTrustStudentVO> getStudentFormalDetailsByCadre(List<Long> tdpCadreids,Long institutionId);
+	public List<Long> getAllRemovedCadre();
+	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
+	public List<Long> getTdpCadreMemberShipsIdsByEvent(Long eventId);
+	public List<TdpCadreVO>  getWebServiceEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,String reportType, Integer startIndex,Integer maxIndex);
+	 
+	public ActivityWSVO getActivityLoginChecker(String userName, String password);
 }

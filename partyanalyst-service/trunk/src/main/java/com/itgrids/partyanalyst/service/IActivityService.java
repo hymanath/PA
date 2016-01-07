@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -33,6 +34,7 @@ public interface IActivityService {
 	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
 	
 	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate);
+	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password);
 	
 	
 }
