@@ -34,10 +34,45 @@ public class ActivityWSVO {
 	private Long				respondentTypeId;
 	private String				respondentType;
 	private List<ActivityWSVO>	acitivityQuesList =new ArrayList<ActivityWSVO>(0);
-	private List<ActivityWSVO> activityWSVOList = new ArrayList<ActivityWSVO>(0);
-	private Long scopeValue;
+	private List<ActivityWSVO> 	activityWSVOList = new ArrayList<ActivityWSVO>(0);
+	private Long 				scopeValue;
+	private Long 				activityLevelId;
+	private List<Long>			accessLocationsList=new ArrayList<Long>(0);
+	private String 				activityLevel;
+	private List<ActivityWSVO>  activityLevelList = new ArrayList<ActivityWSVO>(0);
+	private List<ActivityWSVO>  activityScopeList = new ArrayList<ActivityWSVO>(0);
 	
 	
+	public List<ActivityWSVO> getActivityLevelList() {
+		return activityLevelList;
+	}
+	public void setActivityLevelList(List<ActivityWSVO> activityLevelList) {
+		this.activityLevelList = activityLevelList;
+	}
+	public List<ActivityWSVO> getActivityScopeList() {
+		return activityScopeList;
+	}
+	public void setActivityScopeList(List<ActivityWSVO> activityScopeList) {
+		this.activityScopeList = activityScopeList;
+	}
+	public String getActivityLevel() {
+		return activityLevel;
+	}
+	public void setActivityLevel(String activityLevel) {
+		this.activityLevel = activityLevel;
+	}
+	public List<Long> getAccessLocationsList() {
+		return accessLocationsList;
+	}
+	public void setAccessLocationsList(List<Long> accessLocationsList) {
+		this.accessLocationsList = accessLocationsList;
+	}
+	public Long getActivityLevelId() {
+		return activityLevelId;
+	}
+	public void setActivityLevelId(Long activityLevelId) {
+		this.activityLevelId = activityLevelId;
+	}
 	public Long getScopeValue() {
 		return scopeValue;
 	}
