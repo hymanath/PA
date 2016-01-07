@@ -41,6 +41,11 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	private ActivityQuestion activityQuestion;
 	private ActivityOptionType activityOptionType;
 	
+	private Long				respondentTypeId;
+	private RespondentType		respondentType;
+	
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_questionnaire_id", unique = true, nullable = false)
@@ -160,4 +165,25 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	@Column(name = "respondent_type_id")
+	public Long getRespondentTypeId() {
+		return respondentTypeId;
+	}
+	public void setRespondentTypeId(Long respondentTypeId) {
+		this.respondentTypeId = respondentTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="respondent_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RespondentType getRespondentType() {
+		return respondentType;
+	}
+	public void setRespondentType(RespondentType respondentType) {
+		this.respondentType = respondentType;
+	}
+	
+	
 }
