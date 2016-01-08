@@ -52,9 +52,14 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private String temp;
 	private List<BasicVO> basicVOList;
 	private IAttendanceService attendanceService;
+	private List<String> dates;
 	
-	
-	
+	public List<String> getDates() {
+		return dates;
+	}
+	public void setDates(List<String> dates) {
+		this.dates = dates;
+	}
 	public IAttendanceService getAttendanceService() {
 		return attendanceService;
 	}
@@ -471,6 +476,18 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 				resultStatus = attendanceService.savePublicActivityAttendance(VO,regVO.getRegistrationID());		
 		}catch (Exception e) {
 			LOG.error("Exception raised at savePublicActivityAttendanceInfo()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getActivityDatesByScope()
+	{
+		try{
+		
+			jObj = new JSONObject(getTask());
+			dates =activityService.getActivityDates(jObj.getLong("activityScopeId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getActivityDatesByScope()", e);
 		}
 		return Action.SUCCESS;
 	}
