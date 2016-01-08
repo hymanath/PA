@@ -27,6 +27,8 @@ public class EventFileUploadVO implements Serializable{
 	private Long activityScopeId;
 	private Long locationScopeId;
 	private Long laocationValueAddress;
+	private String temp;
+	private String insertType;
 	
 	
 	public Long getUserId() {
@@ -126,6 +128,19 @@ public class EventFileUploadVO implements Serializable{
 	public void setLaocationValueAddress(Long laocationValueAddress) {
 		this.laocationValueAddress = laocationValueAddress;
 	}
+	public String getTemp() {
+		return temp;
+	}
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+	public String getInsertType() {
+		return insertType;
+	}
+	public void setInsertType(String insertType) {
+		this.insertType = insertType;
+	}
+	
 	
 	
 	
