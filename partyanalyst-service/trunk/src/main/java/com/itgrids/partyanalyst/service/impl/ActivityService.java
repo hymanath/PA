@@ -3413,6 +3413,24 @@ public class ActivityService implements IActivityService{
 	    }
 	    return null;
 	  }
+	public List<String> getActivityDates(Long activityScopeId)
+	{
+		List<String> dates = new ArrayList<String>();
+		Object[] obj = activityScopeDAO.getDatesForActivityByActivityScopeId(activityScopeId);
+		if(obj != null)
+		{
+			String Date = obj[0] != null ? obj[0].toString():"";
+			String Date1 = obj[1] != null ? obj[1].toString():"";
+			if(obj[0] != null)
+			{
+			dates.add(Date.substring(5, 7)+"/"+ Date.substring(8, 10)+"/"+Date.substring(0, 4));
+			}
+			if(obj[1] != null)
+				dates.add(Date1.substring(5, 7)+"/"+ Date1.substring(8, 10)+"/"+Date1.substring(0, 4));
+		}
+		return dates;
+	}
+	
 	
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId){
 		List<BasicVO> voList = new ArrayList<BasicVO>();
