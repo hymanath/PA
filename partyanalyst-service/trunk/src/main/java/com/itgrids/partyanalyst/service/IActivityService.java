@@ -36,6 +36,7 @@ public interface IActivityService {
 	
 	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate,String tempVar);
 	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password);
+	public List<String> getActivityDates(Long activityScopeId);
 	public Long savingTabDetails(final TabDetailsVO tabDetailsVO);
 	
 }
