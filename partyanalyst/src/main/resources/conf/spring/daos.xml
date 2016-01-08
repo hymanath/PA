@@ -2462,5 +2462,9 @@
 	 <bean id="attendenceQuestionAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.AttendenceQuestionAnswerDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean id="requiredAttributeRespondentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RequiredAttributeRespondentTypeDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	<!--  end -->
 </beans>		

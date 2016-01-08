@@ -380,7 +380,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			
 			jObj = new JSONObject(getTask());
 			
-			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"));
+			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"),jObj.getLong("requiredAttributeId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getQuestionnaireForScope", e);
@@ -488,6 +488,18 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			dates =activityService.getActivityDates(jObj.getLong("activityScopeId"));
 		}catch (Exception e) {
 			LOG.error("Exception raised at getActivityDatesByScope()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRequiredAttributesByActScopeId()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			basicVOList = activityService.getRequiredAttributesListForScope(jObj.getLong("activityScopeId"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getRequiredAttributesByActScopeId()", e);
 		}
 		return Action.SUCCESS;
 	}
