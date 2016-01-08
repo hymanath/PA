@@ -38,5 +38,6 @@ public interface IActivityService {
 	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password);
 	public List<String> getActivityDates(Long activityScopeId);
 	public Long savingTabDetails(final TabDetailsVO tabDetailsVO);
+	public ResultStatus savingAttendenceQuestionAnswer(final Long activityQuestionAnswerId,final Long attendenceId);
 	
 }
