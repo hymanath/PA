@@ -2851,13 +2851,16 @@ public class ActivityService implements IActivityService{
 		return resultStatus;
 	}
 	
-	public ActivityVO getQuestionnaireForScope(Long scopeId){
+	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId){
 		ActivityVO finalVO = new ActivityVO(); 
 		try {
 			LOG.info("Entered into getQuestionnaireForScope");
-			
-			List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId);
-			
+			List<Object[]> objList = null;
+			if(requiredAttributeId == null || requiredAttributeId == 0l){
+				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId);	
+			}else{
+				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
+			}
 			if(objList != null && objList.size() > 0){
 				int number=0;
 				for (Object[] objects : objList) {
