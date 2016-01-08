@@ -2459,5 +2459,8 @@
 	 <bean id="tabDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabDetailsDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="attendenceQuestionAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.AttendenceQuestionAnswerDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	<!--  end -->
 </beans>		
