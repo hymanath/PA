@@ -2334,7 +2334,8 @@ public class ActivityService implements IActivityService{
 					
 					
 			//UserAddress userAddress = saveUserAddress(eventFileUploadVO);
-					
+				
+			Date activityDate = null;		
 			UserAddress userAddress = saveUserAddressByLevelIdAndLevelValue(eventFileUploadVO.getLevelId(), eventFileUploadVO.getLevelValue());
 			
 			ActivityDocument activityDocument = new ActivityDocument();
@@ -2342,7 +2343,8 @@ public class ActivityService implements IActivityService{
 			{
 				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			    try {
-					activityDocument.setActivityDate(dateFormat.parse(eventFileUploadVO.getActivityDate()));
+			    	 activityDate = dateFormat.parse(eventFileUploadVO.getActivityDate());
+					 activityDocument.setActivityDate(activityDate);
 				} catch (ParseException e) {
 					LOG.error(" Exception Occured in eventsUploadForm() method, Exception - ",e);	
 				}
@@ -2396,9 +2398,26 @@ public class ActivityService implements IActivityService{
 		    else
 		     activityInfoDocument.setLocationValueAddress(Long.parseLong(eventFileUploadVO.getLevelValue().toString().substring(1).toString()));
 		    
-		    activityInfoDocument.setDay(eventFileUploadVO.getDay());
+		    if(eventFileUploadVO.getTemp() != null && eventFileUploadVO.getTemp().equalsIgnoreCase("dayCalCulationReq"))
+		    {
+		    	//conducted Date
+		    	Date activityStartDate = activityScopeDAO.getActivityStartDateByActivityScopeId(eventFileUploadVO.getActivityScopeId());
+		    	if(activityStartDate != null){
+		    		long diff = activityStartDate.getTime() - activityDate.getTime();
+		    		long dayDiff = diff / (24 * 60 * 60 * 1000);
+		    		
+		    		activityInfoDocument.setDay(Math.abs(dayDiff));
+		    	}
+		    }
+		    else
+		    {
+		      activityInfoDocument.setDay(eventFileUploadVO.getDay());
+		    }
+		    
+		    
 		    
 		    activityInfoDocument.setIsDeleted("N");
+		    activityInfoDocument.setInsertType(eventFileUploadVO.getInsertType());
 		    
 		    activityInfoDocument = activityInfoDocumentDAO.save(activityInfoDocument);
 		    
@@ -3214,7 +3233,7 @@ public class ActivityService implements IActivityService{
 	}
 	
 	
-	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate)
+	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate,String tempVar)
 	{
 		List<BasicVO> resultList = null;
 		try{
@@ -3226,6 +3245,15 @@ public class ActivityService implements IActivityService{
 				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 				actDate = dateFormat.parse(activityDate);
 			}
+			if(tempVar != null && tempVar.equalsIgnoreCase("dayCalCulationReq")){//conductedDate
+				Date activityStartDate = activityScopeDAO.getActivityStartDateByActivityScopeId(activityScopeId);
+		    	if(activityStartDate != null){
+		    		long diff = activityStartDate.getTime() - actDate.getTime();
+		    		long dayDiff = diff / (24 * 60 * 60 * 1000);
+		    		day = Math.abs(dayDiff);
+		    	}
+			}
+			
 			List<Object[]> list = activityInfoDocumentDAO.getActivityDocumentsImagesByLevelIdAndLevelValue(levelId, levelValue,day,activityScopeId,actDate,startIndex,maxIndex);
 			if(list != null && list.size() > 0)
 			{
