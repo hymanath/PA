@@ -11240,5 +11240,11 @@
 		</result>
     </action>
     
+    <action name="getRequiredAttributesByActScopeIdAction" class="activityAction" method="getRequiredAttributesByActScopeId">
+        <result type="json" name="success">
+		  <param name="root">basicVOList</param>
+		</result>
+    </action>
+    
 </package>
 </struts>      
