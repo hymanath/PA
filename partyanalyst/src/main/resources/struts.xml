@@ -11234,5 +11234,11 @@
 		</result>
     </action>
     
+     <action name="getActivityDatesAction" class="activityAction" method="getActivityDatesByScope">
+        <result type="json" name="success">
+		  <param name="root">dates</param>
+		</result>
+    </action>
+    
 </package>
 </struts>      
