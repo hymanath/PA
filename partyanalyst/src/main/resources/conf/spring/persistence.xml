@@ -736,6 +736,7 @@
 				 <value>com.itgrids.partyanalyst.model.RequiredAttribute</value>
 				 <value>com.itgrids.partyanalyst.model.RespondentType</value>
 				 <value>com.itgrids.partyanalyst.model.TabDetails</value>
+				 <value>com.itgrids.partyanalyst.model.AttendenceQuestionAnswer</value>
 			     </list>
 			
 		</property>
