@@ -1070,7 +1070,8 @@ $("#hideAsmblyData").click(function(){
 			return false;
 		}else{
 			var jsObj={   
-				scopeId : scopeId
+				scopeId : scopeId,
+				requiredAttributeId:0
             };
        
 			$.ajax({
