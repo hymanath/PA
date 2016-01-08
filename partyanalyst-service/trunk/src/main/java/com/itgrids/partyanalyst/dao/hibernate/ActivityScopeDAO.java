@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,5 +39,12 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		Query query=getSession().createQuery(" select model.activity.noOfTimes from ActivityScope model where model.activityScopeId =:activityScopeId");
 		query.setParameter("activityScopeId", activityScopeId);
 		return (Long)query.uniqueResult();
+	}
+	
+	public Date getActivityStartDateByActivityScopeId(Long activityScopeId)
+	{
+		Query query = getSession().createQuery(" select date(model.activity.startDate) from ActivityScope model where model.activityScopeId =:activityScopeId ");
+		query.setParameter("activityScopeId", activityScopeId);
+		return (Date) query.uniqueResult();
 	}
 }
