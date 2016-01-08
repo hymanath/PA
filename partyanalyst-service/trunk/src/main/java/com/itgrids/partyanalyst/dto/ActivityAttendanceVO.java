@@ -20,10 +20,15 @@ public class ActivityAttendanceVO {
 	private Long tabPrimaryKey;
 	private Long activityLocationInfoId;
 	private Long bloodGroup;
+	private String activityDate;
 	
 	
-	
-	
+	public String getActivityDate() {
+		return activityDate;
+	}
+	public void setActivityDate(String activityDate) {
+		this.activityDate = activityDate;
+	}
 	public Long getBloodGroup() {
 		return bloodGroup;
 	}

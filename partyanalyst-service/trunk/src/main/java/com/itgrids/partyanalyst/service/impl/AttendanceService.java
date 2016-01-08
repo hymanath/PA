@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -603,10 +605,21 @@ public class AttendanceService implements IAttendanceService{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
+			Date attendedeTime = null;
+			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
+			{
+				try {
+					attendedeTime = format.parse(inputVO.getActivityDate());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
 		DateUtilService date = new DateUtilService();
 		Attendance attendance = new Attendance();
 		attendance.setTdpCadreId(inputVO.getTdpCadreId());
-		attendance.setAttendedTime(date.getCurrentDateAndTime());
+		if(attendedeTime != null)
+		attendance.setAttendedTime(attendedeTime);
 		attendance.setInsertedById(userId);
 		attendance.setInsertedTime(date.getCurrentDateAndTime());
 		if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
@@ -622,6 +635,7 @@ public class AttendanceService implements IAttendanceService{
 		}
 		else
 		attendance.setSyncSource("WEB");
+		
 		attendance = attendanceDAO.save(attendance);
 		ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
 		activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
@@ -647,15 +661,27 @@ public class AttendanceService implements IAttendanceService{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
+						Date attendedeTime = null;
+						 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+						if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
+						{
+							try {
+								attendedeTime = format.parse(inputVO.getActivityDate());
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+						}
 		DateUtilService date = new DateUtilService();
 		ActivityLocationPublicAttendance activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
 		activityLocationPublicAttendance.setName(inputVO.getName());
 		activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
 		activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
 		activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
+		activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
 		activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
 		Attendance attendance = new Attendance();
-		attendance.setAttendedTime(date.getCurrentDateAndTime());
+		if(attendedeTime != null)
+			attendance.setAttendedTime(attendedeTime);
 		attendance.setInsertedById(userId);
 		attendance.setInsertedTime(date.getCurrentDateAndTime());
 		if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
