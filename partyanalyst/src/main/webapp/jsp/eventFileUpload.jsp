@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
 	
 </head>
 <body>
@@ -147,7 +148,7 @@
       </div>
       <div class="modal-body">
        <div id="imagesDiv" class="row"></div>
-	   <div id="paginationDivId"></div>
+	   <div id="paginationDiv"></div>
       </div>
       <div class="modal-footer">
         
@@ -181,7 +182,10 @@ var locationName = '${locationName}';
 var gobalLevelId = 0;
 var gobalLevelValue = 0;
 var gobalActivityScopeId = 0;
-
+var gobalLocName = "";
+var gobalActivityDate = null;
+var gobalTempVar = "dayCalCulationNotReq";
+var gobalDay = 0;
 
 if(actScopeId>0 && locationValueID > 0 && actvityLevelId> 0)
 {
@@ -191,6 +195,7 @@ if(actScopeId>0 && locationValueID > 0 && actvityLevelId> 0)
 	gobalActivityScopeId = actScopeId;
 	gobalLevelId = actvityLevelId ;
 	gobalLevelValue = locationValueID;
+	gobalLocName = locationName;
 }
 else
 {
@@ -496,53 +501,13 @@ $(document).on("click",".deleteFile",function() {
 });
 
 
-
-function getActivityImages(startIndex)
-{
-	$("#imagesDiv").html("");
-	$("#myModalLabel").html("");
-	$(".jFiler-items-list li").remove();
-	var activityDate = $("#activityDate").val();
-	$(".deleteBtnCls").hide();
-	
-	var flag = validateFields();
-	
-	if(!flag){
-		
-	 return;
-
-	}else{
-		$("#myModal").modal("show")
-	}
- 
-	
-	$("#myModalLabel").html(""+locationName+"");
-	
-   var jsObj=
-   {				
-	  levelId         : gobalLevelId,
-	  levelValue      : gobalLevelValue,
-	  day             : $("#day").val(),
-	  activityScopeId : gobalActivityScopeId,
-	  activityDate    : activityDate,
-	  startIndex      : startIndex,
-	  maxIndex        : 12,
-	  task            : ""				
-	}
-	
-	$.ajax({
-			  type:'GET',
-			  url: 'getActivityDocumentsImagesAction.action',
-			  dataType: 'json',
-			  data: {task:JSON.stringify(jsObj)}
-	   }).done(function(result){
-		  buildActivityImages(result,startIndex);
-	   });	
-}
-
 function validateFields()
 {
 	var flag = true;
+	
+	gobalDay = $("#day").val();
+	gobalActivityDate = $("#activityDate").val();
+				
 	if(actScopeId >0 && locationValueID > 0 && actvityLevelId> 0){}
 	else
 	{
@@ -715,118 +680,12 @@ function validateFields()
 				}
 			}
 				gobalActivityScopeId = activityName;
+				gobalLocName = locationName;
+				
 		}
 	}
 	return flag;
 }
-
-function buildActivityImages(result,startIndex)
-{
-	if(result == null || result.length == 0){
-		$("#paginationDivId").html("");
-		$("#imagesDiv").html("<p class='text-center'>No Data Avaliable.</p>");
-		return;
-	}
-	var str = '';
-	str +='<div class="col-md-12"><p><input type="checkbox" class="deleteAllCheckCls" style="cursor:pointer;"/>&nbsp;&nbsp;Select All</p></div>';
-	for(var i in result)
-	{
-		
-		str +='<div class="col-md-3">';
-		str +='<div class="panel panel-default" style="margin-bottom:10px;">';
-			str +='<div class="panel-heading" style="padding:2px">';
-				str +='<h4 class="panel-title"><input type="checkbox" style="cursor:pointer;" value="'+result[i].id+'" class="deleteLocationImgCheck"/></h4>';
-			str +='</div>';
-			str +='<div class="panel-body" style="padding:0px;">';
-				str +='<img src="activity_documents/'+result[i].name+'" class="img-responsive" style="height:120px;width:100%" />';
-			str +='</div>';
-		str +='</div>';
-		str +='</div>';
-	}
-	
-	 var itemsCount=result[0].count;
-	   if(startIndex==0){
-		   $("#paginationDivId").html('');
-		   $("#paginationDivId").pagination({
-			items: itemsCount,
-			itemsOnPage: 12,
-			cssStyle: 'light-theme',
-			
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*12;
-				getActivityImages(num);
-			}
-		});
-
-		}
-	
-	
-	$("#imagesDiv").html(str);
-}
-
-$(document).on("click",".deleteAllCheckCls",function() {
-	if($(this).is(":checked") == true){
-		$(".deleteLocationImgCheck" ).prop( "checked", true );
-		$(".deleteBtnCls").show();
-	}
-	else{
-	 $(".deleteLocationImgCheck" ).prop( "checked", false );	
-	 $(".deleteBtnCls").hide();
-	}
-});
-
-$(document).on("click",".deleteLocationImgCheck",function() {
-	if($(this).is(":checked") == true){
-		$(".deleteBtnCls").show();
-	}
-	else{
-		$(".deleteAllCheckCls" ).prop( "checked", false );
-	}
-});
-
-$(document).on("click",".deleteBtnCls",function() {
- 
- var acitivityInfoDocId = "";
- $(".deleteLocationImgCheck").each(function(){
-	 if($(this).is(":checked") == true){
-	  acitivityInfoDocId += $(this).val()+",";
-	 }
- });
- 
- acitivityInfoDocId = acitivityInfoDocId.substr(0,acitivityInfoDocId.length-1);
- if(confirm("Are you sure you want to remove this file?")){
-	    var jsObj=
-	    {				
-		  acitivityInfoDocId:acitivityInfoDocId,
-		  task:"deleteFile"				
-		}
-		$.ajax({
-				  type:'GET',
-				  url: 'deleteUploadedFileAction.action',
-				  dataType: 'json',
-				  data: {task:JSON.stringify(jsObj)}
-		   }).done(function(result){
-			   if(result.resultCode == 0){
-				 getActivityImages(0);
-			   }
-		   });
-   }
-
-});
-
-$(document).on("click",".deleteLocationImgCheck",function() {
-	var imageCheck = false;
-	$(".deleteLocationImgCheck").each(function(){
-		if($(this).is(":checked") == true){imageCheck = true;}
-		});
-	if(!imageCheck){
-		$(".deleteBtnCls").hide();
-	}
-    else{
-	   $(".deleteBtnCls").show();
-    }	
-});
-
 
 $(".bootstrap-filestyle").hide();
 		

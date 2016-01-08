@@ -69,9 +69,9 @@ $(document).ready(function() {
        uploadFile: {
 		  
             url: "eventsUploadFormAction.action",
-            data: {"activityScopeId":gobalActivityScopeId,"day":$("#day").val(),
-				   "levelId":gobalLevelId,levelValue:gobalLevelValue,
-					"activityDate":$("#activityDate").val()},
+            data: {"activityScopeId":gobalActivityScopeId,"day":gobalDay,
+						"levelId":gobalLevelId,levelValue:gobalLevelValue,
+						"activityDate":gobalActivityDate,gobalTempVar:gobalTempVar,insertType:"WEB"},
             type: 'POST',
 			
            enctype: 'multipart/form-data',
