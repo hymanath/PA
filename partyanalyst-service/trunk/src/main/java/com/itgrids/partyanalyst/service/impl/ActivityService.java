@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IActivityTeamMemberDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IAttendenceQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -76,6 +77,7 @@ import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
+import com.itgrids.partyanalyst.model.AttendenceQuestionAnswer;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -136,8 +138,16 @@ public class ActivityService implements IActivityService{
 	private ICadreSurveyUserDAO		cadreSurveyUserDAO;
 	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
 	private ITabDetailsDAO 			tabDetailsDAO;
+	private IAttendenceQuestionAnswerDAO 	attendenceQuestionAnswerDAO;
 	
 	
+	public IAttendenceQuestionAnswerDAO getAttendenceQuestionAnswerDAO() {
+		return attendenceQuestionAnswerDAO;
+	}
+	public void setAttendenceQuestionAnswerDAO(
+			IAttendenceQuestionAnswerDAO attendenceQuestionAnswerDAO) {
+		this.attendenceQuestionAnswerDAO = attendenceQuestionAnswerDAO;
+	}
 	public ITabDetailsDAO getTabDetailsDAO() {
 		return tabDetailsDAO;
 	}
@@ -3475,5 +3485,31 @@ public class ActivityService implements IActivityService{
 			LOG.error(" Exception Occured in saveTabDetails method in ActivityService ",e);
 		}
 		return tabDetailsId;
+	}
+	
+	public ResultStatus savingAttendenceQuestionAnswer(final Long activityQuestionAnswerId,final Long attendenceId){
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					AttendenceQuestionAnswer attendenceQuestionAnswer = new AttendenceQuestionAnswer();
+					
+					attendenceQuestionAnswer.setActivityQuestionAnswerId(activityQuestionAnswerId);
+					attendenceQuestionAnswer.setAttendanceId(attendenceId);
+					attendenceQuestionAnswer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					
+					attendenceQuestionAnswer = attendenceQuestionAnswerDAO.save(attendenceQuestionAnswer);
+				}
+			});
+			resultStatus.setResultCode(0);
+			resultStatus.setMessage("Details Saved Successfully...");
+		} catch (Exception e) {
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("Exception Occured...");
+			LOG.error("Exception Occured in savingAttendenceQuestionAnswer method in ActivityService",e);
+		}
+		return resultStatus;
 	}
 }
