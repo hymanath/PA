@@ -2456,5 +2456,8 @@
 	 <bean id="activityScopeRequiredAttributesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityScopeRequiredAttributesDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="tabDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabDetailsDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	<!--  end -->
 </beans>		
