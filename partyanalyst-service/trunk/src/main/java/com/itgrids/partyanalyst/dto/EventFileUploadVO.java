@@ -29,6 +29,8 @@ public class EventFileUploadVO implements Serializable{
 	private Long laocationValueAddress;
 	private String temp;
 	private String insertType;
+	private TabDetailsVO tabDetailsVO;
+	private String imageBase64String;
 	
 	
 	public Long getUserId() {
@@ -139,6 +141,18 @@ public class EventFileUploadVO implements Serializable{
 	}
 	public void setInsertType(String insertType) {
 		this.insertType = insertType;
+	}
+	public TabDetailsVO getTabDetailsVO() {
+		return tabDetailsVO;
+	}
+	public void setTabDetailsVO(TabDetailsVO tabDetailsVO) {
+		this.tabDetailsVO = tabDetailsVO;
+	}
+	public String getImageBase64String() {
+		return imageBase64String;
+	}
+	public void setImageBase64String(String imageBase64String) {
+		this.imageBase64String = imageBase64String;
 	}
 	
 	

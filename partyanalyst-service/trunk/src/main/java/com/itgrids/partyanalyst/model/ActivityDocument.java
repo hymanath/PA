@@ -41,6 +41,8 @@ public class ActivityDocument extends BaseModel implements Serializable{
 	private User updatedUser;
 	private Long activityScopeId;
 	private ActivityScope activityScope;
+	private Long tabDetailsId;
+	private TabDetails tabDetails;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -174,9 +176,22 @@ public class ActivityDocument extends BaseModel implements Serializable{
 		this.activityScope = activityScope;
 	}
 	
+	@Column(name = "tab_details_id")
+	public Long getTabDetailsId() {
+		return tabDetailsId;
+	}
+	public void setTabDetailsId(Long tabDetailsId) {
+		this.tabDetailsId = tabDetailsId;
+	}
 	
-	
-	
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tab_details_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabDetails getTabDetails() {
+		return tabDetails;
+	}
+	public void setTabDetails(TabDetails tabDetails) {
+		this.tabDetails = tabDetails;
+	}
 }
