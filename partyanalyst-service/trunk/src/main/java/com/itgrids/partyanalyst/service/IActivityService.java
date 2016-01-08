@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface IActivityService {
@@ -35,6 +36,6 @@ public interface IActivityService {
 	
 	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate);
 	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password);
-	
+	public Long savingTabDetails(final TabDetailsVO tabDetailsVO);
 	
 }

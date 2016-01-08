@@ -13,6 +13,10 @@ import java.util.List;
  * @author Sasi
  * @date Jan 6, 2016
  */
+/**
+ * @author Client
+ *
+ */
 public class ActivityWSVO {
 	private Long				userId;
 	private Long				id;
@@ -41,8 +45,29 @@ public class ActivityWSVO {
 	private String 				activityLevel;
 	private List<ActivityWSVO>  activityLevelList = new ArrayList<ActivityWSVO>(0);
 	private List<ActivityWSVO>  activityScopeList = new ArrayList<ActivityWSVO>(0);
+	private List<BasicVO>		reqAttrList = new ArrayList<BasicVO>(0); 	
+	private String 				startDate;
+	private String 				endDate;
 	
 	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public List<BasicVO> getReqAttrList() {
+		return reqAttrList;
+	}
+	public void setReqAttrList(List<BasicVO> reqAttrList) {
+		this.reqAttrList = reqAttrList;
+	}
 	public List<ActivityWSVO> getActivityLevelList() {
 		return activityLevelList;
 	}

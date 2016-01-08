@@ -17,6 +17,7 @@ import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
+import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityTeamLocationDAO;
 import com.itgrids.partyanalyst.dao.IActivityTeamMemberDAO;
@@ -49,6 +51,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -64,6 +67,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
@@ -76,6 +80,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Panchayat;
+import com.itgrids.partyanalyst.model.TabDetails;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IActivityService;
@@ -129,9 +134,23 @@ public class ActivityService implements IActivityService{
 	private IUserActivityScopeDAO userActivityScopeDAO;
 	private IUserDAO  				userDAO;
 	private ICadreSurveyUserDAO		cadreSurveyUserDAO;
+	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
+	private ITabDetailsDAO 			tabDetailsDAO;
 	
 	
-	
+	public ITabDetailsDAO getTabDetailsDAO() {
+		return tabDetailsDAO;
+	}
+	public void setTabDetailsDAO(ITabDetailsDAO tabDetailsDAO) {
+		this.tabDetailsDAO = tabDetailsDAO;
+	}
+	public IActivityScopeRequiredAttributesDAO getActivityScopeRequiredAttributesDAO() {
+		return activityScopeRequiredAttributesDAO;
+	}
+	public void setActivityScopeRequiredAttributesDAO(
+			IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO) {
+		this.activityScopeRequiredAttributesDAO = activityScopeRequiredAttributesDAO;
+	}
 	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
 		return cadreSurveyUserDAO;
 	}
@@ -3246,14 +3265,14 @@ public class ActivityService implements IActivityService{
 			List<ActivityWSVO> voList = new ArrayList<ActivityWSVO>();
 			//List<ActivityWSVO> questionsVoList = new ArrayList<ActivityWSVO>();
 			ActivityWSVO questionsvo = new ActivityWSVO();
-			
+			List<BasicVO> reqAttrList = new ArrayList<BasicVO>();
 			List<ActivityWSVO> usrAccLvlsLst = new ArrayList<ActivityWSVO>();
 			List<ActivityWSVO> usrAccScpeLst = new ArrayList<ActivityWSVO>();
 			
 			List<Object[]> list = userActivityScopeDAO.getUserActivityDetailsByUserId(userId);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					ActivityWSVO mtchdScpeVO = getMatchedActivityWSVO(voList,Long.valueOf(obj[5].toString()),"ActivityScopeId");
+					ActivityWSVO mtchdScpeVO = getMatchedActivityWSVO(voList,Long.valueOf(obj[2].toString()),"ActivityScopeId");
 					if(mtchdScpeVO==null){
 						mtchdScpeVO = new ActivityWSVO();
 						Long scopeId = (Long) (obj[2] != null ? obj[2]:0l);
@@ -3262,25 +3281,30 @@ public class ActivityService implements IActivityService{
 						mtchdScpeVO.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
 						mtchdScpeVO.setScopeValue((Long) (obj[5] != null ? obj[5]:0l));
 						mtchdScpeVO.setActivityLevel(obj[6] != null ? obj[6].toString():"");
+						mtchdScpeVO.setStartDate(obj[7] != null ? obj[7].toString():"");
+						mtchdScpeVO.setEndDate(obj[8] != null ? obj[8].toString():"");
 						mtchdScpeVO.getAccessLocationsList().add(mtchdScpeVO.getScopeValue());
 						questionsvo = getQuestionsListForScopeId(scopeId);
 						mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
+						reqAttrList = getRequiredAttributesListForScope(scopeId);
+						mtchdScpeVO.setReqAttrList(reqAttrList);
 						voList.add(mtchdScpeVO);
+						
+						ActivityWSVO lvlvo = new ActivityWSVO();
+						ActivityWSVO scpvo = new ActivityWSVO();
+						
+						lvlvo.setId((Long) (obj[4] != null ? obj[4]:0l));
+						lvlvo.setName(obj[6] != null ? obj[6].toString():"");
+						usrAccLvlsLst.add(lvlvo);
+						
+						scpvo.setId((Long) (obj[2] != null ? obj[2]:0l));
+						scpvo.setName(obj[3] != null ? obj[3].toString():"");
+						scpvo.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
+						usrAccScpeLst.add(scpvo);
+						
 					}else{
 						mtchdScpeVO.getAccessLocationsList().add(Long.valueOf(obj[5].toString()));
 					}
-					
-					ActivityWSVO lvlvo = new ActivityWSVO();
-					ActivityWSVO scpvo = new ActivityWSVO();
-					
-					lvlvo.setId((Long) (obj[4] != null ? obj[4]:0l));
-					lvlvo.setName(obj[6] != null ? obj[6].toString():"");
-					usrAccLvlsLst.add(lvlvo);
-					
-					scpvo.setId((Long) (obj[2] != null ? obj[2]:0l));
-					scpvo.setName(obj[3] != null ? obj[3].toString():"");
-					scpvo.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
-					usrAccScpeLst.add(scpvo);
 				}
 			}
 			activityWSVO.setUserId(userId);
@@ -3362,4 +3386,48 @@ public class ActivityService implements IActivityService{
 	    return null;
 	  }
 	
+	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId){
+		List<BasicVO> voList = new ArrayList<BasicVO>();
+		try {
+			List<Object[]> list = activityScopeRequiredAttributesDAO.getActivityRequiredAttributesForScope(scopeId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					BasicVO vo = new BasicVO();
+					vo.setId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getRequiredAttributesListForScope method in ActivityService ",e);
+		}
+		return voList;
+	}
+	
+	public Long savingTabDetails(final TabDetailsVO tabDetailsVO){
+		Long tabDetailsId = 0l;
+		try {
+			TabDetails tabDetails = new TabDetails();
+					
+			tabDetails.setAttendedTime(tabDetailsVO.getAttendedTime());
+			tabDetails.setImei(tabDetailsVO.getImei());
+			tabDetails.setUniqueKey(tabDetailsVO.getUniqueKey());
+			tabDetails.setInsertedTime(tabDetailsVO.getInsertedTime());
+			tabDetails.setLatitude(tabDetailsVO.getLatitude());
+			tabDetails.setLongitude(tabDetailsVO.getLongitude());
+			tabDetails.setTabUserId(tabDetailsVO.getTabUserId());
+			tabDetails.setCurrentTabUserId(tabDetailsVO.getCurrentTabUserId());
+			tabDetails.setSyncSource(tabDetailsVO.getSyncSource());
+			tabDetails.setInsertedBy(tabDetailsVO.getInsertedBy());
+			tabDetails.setTabPrimaryKey(tabDetailsVO.getTabPrimaryKey());
+			
+			tabDetails = tabDetailsDAO.save(tabDetails);
+			
+			if(tabDetails != null)
+				tabDetailsId = tabDetails.getTabDetailsId();
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in saveTabDetails method in ActivityService ",e);
+		}
+		return tabDetailsId;
+	}
 }
