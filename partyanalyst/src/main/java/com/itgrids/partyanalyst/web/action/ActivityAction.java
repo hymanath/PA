@@ -279,6 +279,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					if(reqParamName.equalsIgnoreCase("activityDate")){
 						eventFileUploadVO.setActivityDate(reqValue!= null?reqValue.toString():null);
 					 }
+					if(reqParamName.equalsIgnoreCase("gobalTempVar")){
+						eventFileUploadVO.setTemp(reqValue!= null?reqValue.toString():null);
+					}
+					if(reqParamName.equalsIgnoreCase("insertType")){
+						eventFileUploadVO.setInsertType(reqValue!= null?reqValue.toString():null);
+					}
 				  }
 					
 				}
@@ -422,8 +428,9 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		try{
 			
 			jObj = new JSONObject(getTask());
+			String tempVar = jObj.getString("tempVar");
 			
-			basicVOList = activityService.getActivityDocumentsImages(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("day"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"),jObj.getLong("activityScopeId"),jObj.getString("activityDate"));
+			basicVOList = activityService.getActivityDocumentsImages(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("day"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"),jObj.getLong("activityScopeId"),jObj.getString("activityDate"),tempVar);
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getActivityDocumentsImages()", e);
