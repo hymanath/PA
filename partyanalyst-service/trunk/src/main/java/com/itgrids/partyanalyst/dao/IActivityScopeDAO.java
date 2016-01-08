@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -11,4 +12,7 @@ public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	
 	public Object[] getDatesForActivityByActivityScopeId(Long activityScopeId);
 	public Long getNoOFTimesOfAnActivity(Long activityScopeId);
+	
+	public Date getActivityStartDateByActivityScopeId(Long activityScopeId);
+	
 }
