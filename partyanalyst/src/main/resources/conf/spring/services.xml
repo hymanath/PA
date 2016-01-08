@@ -2928,6 +2928,7 @@
 		<property name="userActivityScopeDAO" ref="userActivityScopeDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
+		<property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
 	</bean>
 </beans>		
 	
