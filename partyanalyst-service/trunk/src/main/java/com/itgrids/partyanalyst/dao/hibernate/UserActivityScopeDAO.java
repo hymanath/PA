@@ -23,7 +23,9 @@ public class UserActivityScopeDAO extends GenericDaoHibernate<UserActivityScope,
 				" model.activityScope.activity.activityName," +
 				" model.activityScope.activityLevel.activityLevelId," +
 				" model.scopeValue, " +
-				" model.activityScope.activityLevel.level " +
+				" model.activityScope.activityLevel.level," +
+				" model.activityScope.activity.startDate, " +
+				" model.activityScope.activity.endDate " +
 				" from UserActivityScope model where model.user.userId = :userId and model.isActive = 'Y' ");
 		
 		query.setParameter("userId", userId);
