@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -398,6 +399,110 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	
+	
+	/*public List<Object[]> getLocationWiseActivityImageCount(SearchAttributeVO inputVO)
+	{
+		StringBuilder str = new StringBuilder();
+		if(inputVO.getSearchType().equalsIgnoreCase("district"))
+		{
+			str.append(" select distinct model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name ");
+		}
+		
+		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null ");
+		
+		if(inputVO.getAttributesIdsList() != null)
+		{
+			str.append(" and model.activityDocument.activityScopeId in(:attributesIdsList)");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		if(inputVO.getAttributesIdsList() != null)
+			query.setParameter("attributesIdsList",inputVO.getAttributesIdsList());
+		return query.list();
+	}*/
+	
+	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO)
+	{
+		StringBuilder str = new StringBuilder();
+		if(inputVO.getSearchType().equalsIgnoreCase("district"))
+		{
+			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName ");
+		}
+		if(inputVO.getSearchType().equalsIgnoreCase("constituency"))
+		{
+			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+			str.append(" T.tehsilId,T.tehsilName, ");
+		}
+		
+		else if( inputVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+			str.append(" LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+			str.append(" P.panchayatId,P.panchayatName, ");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+			str.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
+		}
+		
+		//Count
+		str.append(" ,count(model.activityDocument.activityDocumentId)");
+		str.append(",model.insertType");
+		
+		str.append(" from ActivityInfoDocument model ");
+		
+		if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+			str.append("  ,Tehsil T ,Panchayat P ");
+		}
+		else if( inputVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+			str.append(" ,LocalElectionBody LEB, Constituency C  ");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+			str.append(" , Panchayat P ");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+			str.append(" ,Constituency C ");
+		}
+		
+		str.append(" where model.activityDocument.activityDate is not null ");
+		
+		if(inputVO.getAttributesIdsList() != null)
+		{
+			str.append(" and model.activityLocationInfo.activityScopeId in(:attributesIdsList)");
+		}
+		 if(inputVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+				str.append(" group by model.insertType,model.activityLocationInfo.constituency.district.districtId ");
+			}
+		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0){
+			 if(inputVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				str.append(" and model.activityLocationInfo.constituency.district.districtId in (:locationIdsList) group by model.insertType,model.activityLocationInfo.constituency.constituencyId ");
+			}
+			else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+				str.append(" and P.tehsil.tehsilId = T.tehsilId and  model.activityLocationInfo.locationValue = P.panchayatId and model.activityLocationInfo.constituency.constituencyId in (:locationIdsList) group by  model.insertType,P.tehsil.tehsilId ");
+			}
+			else if( inputVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+				str.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and model.activityLocationInfo.constituency.constituencyId in (:locationIdsList) group by model.insertType,LEB.localElectionBodyId ");
+			}
+			else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+				str.append(" and  model.activityLocationInfo.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) group by model.insertType,model.activityLocationInfo.locationValue");
+			}
+			else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+				str.append(" and model.activityLocationInfo.locationValue = C.constituencyId and LEB.localElectionBodyId in (:locationIdsList) group by model.insertType,model.activityLocationInfo.locationValue");
+			}
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(inputVO.getAttributesIdsList() != null)
+			query.setParameterList("attributesIdsList",inputVO.getAttributesIdsList());
+		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0)
+			query.setParameterList("locationIdsList",inputVO.getLocationIdsList());
+		return query.list();
+	}
+	
+	
 	
 
 }

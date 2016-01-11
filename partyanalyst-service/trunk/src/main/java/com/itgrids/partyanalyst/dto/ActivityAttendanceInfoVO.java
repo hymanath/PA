@@ -20,6 +20,16 @@ public class ActivityAttendanceInfoVO {
 	
 	private Long totalWebPhotosAttendance=0l;
 	private Long totalInfoCellPhotosAttendance=0l;
+	
+	private String locationType;
+	
+	
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
 	public Long getId() {
 		return id;
 	}

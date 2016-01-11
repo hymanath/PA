@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 
 public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocument, Long>{
@@ -21,6 +22,7 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getActivityDocumentsImagesByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate,Integer startIndex,Integer maxIndex);
 	
 	public Long getActivityDocumentsImagesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate);
+	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO);
 	
 	
 }

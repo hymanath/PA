@@ -6,6 +6,6 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 
 public interface IActivityAttendanceService {
-	public List<ActivityAttendanceInfoVO> getLocationWiseActivityDetails(SearchAttributeVO searchVO);
+	public ActivityAttendanceInfoVO getLocationWiseActivityDetails(SearchAttributeVO searchVO);
 
 }

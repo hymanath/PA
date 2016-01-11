@@ -47,6 +47,8 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private User insertedUser;
 	private User updatedUser;
 	
+	private String insertType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_location_info_id", unique = true, nullable = false)
@@ -216,4 +218,13 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setIvrStatus(String ivrStatus) {
 		this.ivrStatus = ivrStatus;
 	}
+	@Column(name="insert_type")
+	public String getInsertType() {
+		return insertType;
+	}
+	public void setInsertType(String insertType) {
+		this.insertType = insertType;
+	}
+	
+	
 }
