@@ -738,6 +738,8 @@
 				 <value>com.itgrids.partyanalyst.model.TabDetails</value>
 				 <value>com.itgrids.partyanalyst.model.AttendenceQuestionAnswer</value>
 				 <value>com.itgrids.partyanalyst.model.RequiredAttributeRespondentType</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
 			     </list>
 			
 		</property>
