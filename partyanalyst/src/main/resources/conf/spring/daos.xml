@@ -2472,6 +2472,9 @@
 	 <bean id="activityTabUserLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserLocationDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="activityTabRequestBackupDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabRequestBackupDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	  <bean id="activityPerformLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityPerformLevelDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>

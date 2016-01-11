@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -1668,8 +1668,8 @@ public class WebServiceHandler {
 	 @GET
 	 @Path("/ActivityLoginChecker/{username}/{password}")
 	 @Produces(MediaType.APPLICATION_JSON)
-	 public ActivityWSVO getActivityLoginChecker(@PathParam("username") String userName, @PathParam("password") String password){
-		 return webServiceHandlerService.getActivityLoginChecker(userName,password);
+	 public ActivityLoginVO checkActivityTabUserLogin(@PathParam("username") String userName, @PathParam("password") String password){
+		 return webServiceHandlerService.checkActivityTabUserLogin(userName,password);
 	 }
 	 
 	 

@@ -2931,6 +2931,7 @@
 		<property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
 		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabUserLocationDAO" ref="activityTabUserLocationDAO" />
+		<property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 	</bean>
