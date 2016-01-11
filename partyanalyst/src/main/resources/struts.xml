@@ -11247,7 +11247,7 @@
     </action>
     <action name="getLocationWiseActivityDetailsAction" class="activityAction" method="getLocationWiseActivityDetails">
 		<result type="json" name="success">
-			<param name="root">attendanceList</param>
+			<param name="root">attendanceVo</param>
 		</result>
 	</action>
 </package>

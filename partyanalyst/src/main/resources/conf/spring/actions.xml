@@ -1608,7 +1608,7 @@
 	<bean id="activityAction" class="com.itgrids.partyanalyst.web.action.ActivityAction" singleton="false"> 
 		<property name="activityService" ref="activityService" />
 		<property name="attendanceService" ref="attendanceService" />
-		
+		<property name="activityAttendanceService" ref="activityAttendanceService" />
 	</bean>
 	
 </beans>	
