@@ -41,7 +41,8 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	
 	private String isDeleted;
 	private String insertType;
-	
+	private Long activityLocationInfoId;
+	private ActivityLocationInfo activityLocationInfo;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_info_document_id", unique = true, nullable = false)
@@ -164,6 +165,25 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	public void setInsertType(String insertType) {
 		this.insertType = insertType;
+	}
+	@Column(name = "activity_location_info_id")
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_location_info_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityLocationInfo getActivityLocationInfo() {
+		return activityLocationInfo;
+	}
+	public void setActivityLocationInfo(ActivityLocationInfo activityLocationInfo) {
+		this.activityLocationInfo = activityLocationInfo;
 	}
 	
 	
