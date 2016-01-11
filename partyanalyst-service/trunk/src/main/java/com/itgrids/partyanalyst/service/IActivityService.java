@@ -44,4 +44,5 @@ public interface IActivityService {
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
 	
 	public ActivityLoginVO checkActivityTabUserLogin(String userName,String password);
+	public Long getConstituencyId(Long locationLevel, Long locationValue);
 }

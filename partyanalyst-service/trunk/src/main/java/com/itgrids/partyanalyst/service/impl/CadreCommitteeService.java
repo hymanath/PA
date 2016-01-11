@@ -16404,82 +16404,86 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							 List<ActivityVO> activityList = activityVO.getActivityVoList();
 							 if(activityList != null && activityList.size() > 0){
 								 for (ActivityVO activityvo : activityList) {
-									 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0) || 
-											( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0 )){
-										 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
-										 
-										 String locationTypeflagId = activityvo.getLocationValue().toString().substring(0, 1);										
-										 Long locationLevel = activityvo.getLocationLevel();
-										 Long locationLevelId = null;
-										 if(locationLevel.longValue() == 1L)
-										 {
-											 if(locationTypeflagId.equalsIgnoreCase("1"))
-													locationLevelId = 6L;
-											 else if(locationTypeflagId.equalsIgnoreCase("2"))
-													locationLevelId = 8L;
-										 }
-										 else if(locationLevel.longValue() == 2L)
-										 {
-											 	if(locationTypeflagId.equalsIgnoreCase("1"))
-													locationLevelId = 7L;
-											 	else if(locationTypeflagId.equalsIgnoreCase("2"))
-													locationLevelId = 5L;
-											 	else if(locationTypeflagId.equalsIgnoreCase("3"))
-													locationLevelId = 9L;
-										 }
-										 else if(locationLevel.longValue() == 3L)
-											 locationLevelId = 11L;
-										 else if(locationLevel.longValue() == 4L)
-											 locationLevelId = 10L;
-										 
-										activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
-										activityLocationInfo.setActivityScopeId(activityScopeId);
-										activityLocationInfo.setLocationLevel(locationLevelId);
-										activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
-										try {
-											if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
-												activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
-											else
-												activityLocationInfo.setPlannedDate(null);
-											if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
-												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
-											else
-												activityLocationInfo.setConductedDate(null);
-										} catch (ParseException e) {
-											LOG.error("Exception rised in saveActivityDetails()",e);
-										}
+									 if(activityvo != null)
+									 {
 
-										List<Long> availableIds = activityLocationInfoDAO.isAlreadyAvailableActivityLocationDtls(
-												activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
-										if(availableIds != null && availableIds.size()>0){
-											ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
-											existingVO.setConstituencyId(activityVO.getConstituencyId());
-											existingVO.setActivityScopeId(activityScopeId);
-											existingVO.setLocationLevel(locationLevelId);
-											existingVO.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
+										 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0) || 
+												( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0 )){
+											 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
+											 
+											 String locationTypeflagId = activityvo.getLocationValue().toString().substring(0, 1);										
+											 Long locationLevel = activityvo.getLocationLevel();
+											 Long locationLevelId = null;
+											 if(locationLevel.longValue() == 1L)
+											 {
+												 if(locationTypeflagId.equalsIgnoreCase("1"))
+														locationLevelId = 6L;
+												 else if(locationTypeflagId.equalsIgnoreCase("2"))
+														locationLevelId = 8L;
+											 }
+											 else if(locationLevel.longValue() == 2L)
+											 {
+												 	if(locationTypeflagId.equalsIgnoreCase("1"))
+														locationLevelId = 7L;
+												 	else if(locationTypeflagId.equalsIgnoreCase("2"))
+														locationLevelId = 5L;
+												 	else if(locationTypeflagId.equalsIgnoreCase("3"))
+														locationLevelId = 9L;
+											 }
+											 else if(locationLevel.longValue() == 3L)
+												 locationLevelId = 11L;
+											 else if(locationLevel.longValue() == 4L)
+												 locationLevelId = 10L;
+											 
+											activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
+											activityLocationInfo.setActivityScopeId(activityScopeId);
+											activityLocationInfo.setLocationLevel(locationLevelId);
+											activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
 											try {
 												if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
-													existingVO.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
-												
+													activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+												else
+													activityLocationInfo.setPlannedDate(null);
 												if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
-													existingVO.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
-												
+													activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+												else
+													activityLocationInfo.setConductedDate(null);
 											} catch (ParseException e) {
 												LOG.error("Exception rised in saveActivityDetails()",e);
 											}
-											existingVO.setUpdatedBy(userId);
-											existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-											activityLocationInfoDAO.save(existingVO);
-										}	
-										else{
-											activityLocationInfo.setInsertedBy(userId);
-											activityLocationInfo.setUpdatedBy(userId);
-											activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+
+											List<Long> availableIds = activityLocationInfoDAO.isAlreadyAvailableActivityLocationDtls(
+													activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
+											if(availableIds != null && availableIds.size()>0){
+												ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
+												existingVO.setConstituencyId(activityVO.getConstituencyId());
+												existingVO.setActivityScopeId(activityScopeId);
+												existingVO.setLocationLevel(locationLevelId);
+												existingVO.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
+												try {
+													if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+														existingVO.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+													
+													if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
+														existingVO.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+													
+												} catch (ParseException e) {
+													LOG.error("Exception rised in saveActivityDetails()",e);
+												}
+												existingVO.setUpdatedBy(userId);
+												existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												activityLocationInfoDAO.save(existingVO);
+											}	
+											else{
+												activityLocationInfo.setInsertedBy(userId);
+												activityLocationInfo.setUpdatedBy(userId);
+												activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+												activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												activityLocationInfoDAO.save(activityLocationInfo);
+											}
 											activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-											activityLocationInfoDAO.save(activityLocationInfo);
-										}
-										activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-										//activityLocationInfoDAO.isAlreadAvailableActivity();
+											//activityLocationInfoDAO.isAlreadAvailableActivity();
+										 }
 									 }
 								}
 							 }
