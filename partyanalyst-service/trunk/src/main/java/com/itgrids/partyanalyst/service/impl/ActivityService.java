@@ -2832,7 +2832,10 @@ public class ActivityService implements IActivityService{
 					{
 						ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
 							 
-						//activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
+						Long constituencyId = getConstituencyId(locationLevel, locationValue);
+						if(constituencyId != null)
+							activityLocationInfo.setConstituencyId(constituencyId);
+						
 						activityLocationInfo.setActivityScopeId(finalvo.getActivityTypeId());
 						activityLocationInfo.setLocationLevel(locationLevel);
 						activityLocationInfo.setLocationValue(locationValue);
@@ -2880,6 +2883,51 @@ public class ActivityService implements IActivityService{
 		return resultStatus;
 	}
 	
+	public Long getConstituencyId(Long locationLevel, Long locationValue){
+		List<Long> constituencyIds = null;
+		Long constituencyId = 0l;
+		try{
+		Long localElectionBody = 0l;
+		if(locationLevel == 5l){//For Mandal
+			 constituencyIds = boothDAO.getConstituencyIdByPanchayatId(
+					locationValue, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
+			
+			}
+		else if(locationLevel == 6l){//For Village
+			constituencyIds = boothDAO.getConstituencyIdByPanchayatId(
+				locationValue, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
+		}
+		else if(locationLevel == 7l){// For Town
+			 localElectionBody = boothDAO.get(locationValue).getLocalBody().getLocalElectionBodyId();
+			if(localElectionBody != null){
+				constituencyIds = boothDAO.getConstituencyIdByLocalElectionBody(
+						 localElectionBody, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+		}
+		else if(locationLevel == 8l){//For Ward
+			localElectionBody = constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId();
+			if(localElectionBody != null){
+				constituencyIds = boothDAO.getConstituencyIdByLocalElectionBody(
+						localElectionBody, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
+			}
+		}
+		else if(locationLevel == 9l){//For Division
+			 constituencyId = boothDAO.get(locationValue).getConstituency().getConstituencyId();
+			 if(constituencyId == null){
+				 localElectionBody = constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId();
+					if(localElectionBody != null){
+						constituencyIds = boothDAO.getConstituencyIdByLocalElectionBody(
+								localElectionBody, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
+					}
+			 }
+		  }
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getConstituencyId() method, Exception - ",e);
+		}
+		if(constituencyIds!= null && constituencyIds.size() >0)
+			constituencyId = constituencyIds.get(0);
+		return constituencyId;
+	}
 	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId){
 		ActivityVO finalVO = new ActivityVO(); 
 		try {
