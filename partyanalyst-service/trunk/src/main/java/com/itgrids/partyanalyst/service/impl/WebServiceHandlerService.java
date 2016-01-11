@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO;
+import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -3013,15 +3014,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	    	return returnList;
 	    }
 	   
-	   public ActivityWSVO getActivityLoginChecker(String userName, String password){
+	   public ActivityLoginVO checkActivityTabUserLogin(String userName, String password){
 		   Log.debug("Entered into getActivityLoginChecker Webservice method");
-		   ActivityWSVO activityWSVO = new ActivityWSVO();
+		   ActivityLoginVO activityLoginVO = new ActivityLoginVO();
 		   try{
-			   activityWSVO = activityService.getUserActivityDetailsByUserId(userName, password);
+			   activityLoginVO = activityService.checkActivityTabUserLogin(userName, password);
 		   }catch (Exception e) {
 			   Log.error("Exception in getActivityLoginChecker Webservice method");
 		   }
-		   return activityWSVO;
+		   return activityLoginVO;
 	   }
 	   
 	   

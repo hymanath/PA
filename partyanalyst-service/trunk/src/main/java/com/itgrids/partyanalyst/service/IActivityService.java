@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
+import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -42,5 +43,5 @@ public interface IActivityService {
 	
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
 	
-	
+	public ActivityLoginVO checkActivityTabUserLogin(String userName,String password);
 }

@@ -25,7 +25,8 @@ public class ActivityTabUserLocationDAO extends GenericDaoHibernate<ActivityTabU
 				" model.activityLocationInfo.locationValue, " +
 				" model.activityLocationInfo.activityScope.activityLevel.level," +
 				" model.activityLocationInfo.activityScope.activity.startDate, " +
-				" model.activityLocationInfo.activityScope.activity.endDate " +
+				" model.activityLocationInfo.activityScope.activity.endDate, " +
+				" model.activityLocationInfo.activityLocationInfoId " +
 				" from ActivityTabUserLocation model where model.activityTabUser.activityTabUserId = :userId and model.isActive = 'Y' ");
 		
 		query.setParameter("userId", userId);

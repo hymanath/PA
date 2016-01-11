@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
 import com.itgrids.partyanalyst.dao.IActivityTabUserDAO;
 import com.itgrids.partyanalyst.dao.IActivityTabUserLocationDAO;
 import com.itgrids.partyanalyst.dao.IActivityTeamLocationDAO;
@@ -61,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
+import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -79,6 +81,8 @@ import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.ActivitySubType;
+import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
+import com.itgrids.partyanalyst.model.ActivityTabUser;
 import com.itgrids.partyanalyst.model.AttendenceQuestionAnswer;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
@@ -143,8 +147,16 @@ public class ActivityService implements IActivityService{
 	private IAttendenceQuestionAnswerDAO 	attendenceQuestionAnswerDAO;
 	private IActivityTabUserLocationDAO activityTabUserLocationDAO;
 	private IActivityTabUserDAO activityTabUserDAO;
+	private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
 	
 	
+	public IActivityTabRequestBackupDAO getActivityTabRequestBackupDAO() {
+		return activityTabRequestBackupDAO;
+	}
+	public void setActivityTabRequestBackupDAO(
+			IActivityTabRequestBackupDAO activityTabRequestBackupDAO) {
+		this.activityTabRequestBackupDAO = activityTabRequestBackupDAO;
+	}
 	public IActivityTabUserDAO getActivityTabUserDAO() {
 		return activityTabUserDAO;
 	}
@@ -3316,7 +3328,7 @@ public class ActivityService implements IActivityService{
 			}
 			
 			if(userId.longValue() == 0){
-				activityWSVO.setName("Login Failed...");
+				activityWSVO.setStatus("Failure");
 				return activityWSVO;
 			}
 			
@@ -3341,12 +3353,13 @@ public class ActivityService implements IActivityService{
 						mtchdScpeVO.setActivityLevel(obj[6] != null ? obj[6].toString():"");
 						mtchdScpeVO.setStartDate(obj[7] != null ? obj[7].toString():"");
 						mtchdScpeVO.setEndDate(obj[8] != null ? obj[8].toString():"");
+						//mtchdScpeVO.setActivityLocationInfoId((Long) (obj[9] != null ? obj[9]:0l));
 						mtchdScpeVO.getAccessLocationsList().add(mtchdScpeVO.getScopeValue());
 						questionsvo = getQuestionsListForScopeId(scopeId);
-						//mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
-						if(questionsvo!=null){
+						mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
+						/*if(questionsvo!=null){
 							mtchdScpeVO.setQuestionList(questionsvo.getQuestionList());
-						}
+						}*/
 						reqAttrList = getRequiredAttributesListForScope(scopeId);
 						mtchdScpeVO.setReqAttrList(reqAttrList);
 						voList.add(mtchdScpeVO);
@@ -3368,6 +3381,7 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
+			activityWSVO.setStatus("Success");
 			activityWSVO.setUserId(userId);
 			activityWSVO.setActivityWSVOList(voList);
 			activityWSVO.setActivityLevelList(usrAccLvlsLst);
@@ -3416,11 +3430,11 @@ public class ActivityService implements IActivityService{
 			      }
 			    }
 			    
-			    for(ActivityWSVO vo:finalVO.getAcitivityQuesList()){
+			   /* for(ActivityWSVO vo:finalVO.getAcitivityQuesList()){
 					if(vo!=null && !vo.getQuestionList().isEmpty()){
 						finalVO.getQuestionList().addAll(vo.getQuestionList());
 					}
-				}
+				}*/
 			    
 			    
 		} catch (Exception e) {
@@ -3545,5 +3559,46 @@ public class ActivityService implements IActivityService{
 			LOG.error("Exception Occured in savingAttendenceQuestionAnswer method in ActivityService",e);
 		}
 		return resultStatus;
+	}
+	
+	public String savingActivityTabDetails(){
+		
+		try {
+			ActivityTabRequestBackup activityTabRequestBackup = new ActivityTabRequestBackup();
+			
+			activityTabRequestBackup.setUserId(1l);
+			activityTabRequestBackup.setImeiNo("");
+			activityTabRequestBackup.setUniqueCode("");
+			activityTabRequestBackup.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			activityTabRequestBackup.setJsonArr("");
+			activityTabRequestBackup.setApkPrimaryKey(1l);
+			
+			activityTabRequestBackupDAO.save(activityTabRequestBackup);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in savingActivityTabDetails method in ActivityService",e);
+		}
+		return "success";
+	}
+	
+	public ActivityLoginVO checkActivityTabUserLogin(String userName,String password){
+		ActivityLoginVO loginvo = new ActivityLoginVO();
+		
+		try {
+			ActivityTabUser activityTabUser = activityTabUserDAO.checkActivityTabUserLogin(userName, password);
+			if(activityTabUser != null){
+				loginvo.setUserId(activityTabUser.getActivityTabUserId());
+				loginvo.setUserName(activityTabUser.getUserName());
+				loginvo.setPassword(activityTabUser.getPassword());
+				loginvo.setMobileNo(activityTabUser.getMobileNo());
+				loginvo.setStatus("Success");
+			}
+			else if(activityTabUser == null){
+				loginvo.setStatus("Failure");
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in checkActivityTabUserLogin method in ActivityService ",e);
+		}
+		return loginvo;
 	}
 }
