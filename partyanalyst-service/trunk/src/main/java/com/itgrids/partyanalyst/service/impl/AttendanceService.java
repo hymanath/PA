@@ -678,6 +678,8 @@ public class AttendanceService implements IAttendanceService{
 		activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
 		activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
 		activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
+		if(inputVO.getTdpCadreId() != null)
+		activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
 		activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
 		Attendance attendance = new Attendance();
 		if(attendedeTime != null)
