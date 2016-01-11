@@ -24,5 +24,14 @@ public class ActivityTabUserDAO extends GenericDaoHibernate<ActivityTabUser, Lon
 		query.setParameter("password", password);
 		return query.list();
 	}
+	
+	public ActivityTabUser checkActivityTabUserLogin(String userName,String password){
+		
+		Query query = getSession().createQuery(" select model from ActivityTabUser model where model.userName = :userName " +
+							" and model.password = :password and model.isActive = 'Y' ");
+		query.setParameter("userName", userName);
+		query.setParameter("password", password);
+		return (ActivityTabUser) query.uniqueResult();
+	}
 
 }

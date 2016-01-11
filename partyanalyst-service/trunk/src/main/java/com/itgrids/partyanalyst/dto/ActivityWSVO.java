@@ -48,8 +48,22 @@ public class ActivityWSVO {
 	private List<BasicVO>		reqAttrList = new ArrayList<BasicVO>(0); 	
 	private String 				startDate;
 	private String 				endDate;
+	private Long 				activityLocationInfoId;
+	private String 				status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
