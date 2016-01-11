@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
+import com.itgrids.partyanalyst.service.IActivityAttendanceService;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.opensymphony.xwork2.Action;
@@ -53,7 +55,17 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private List<BasicVO> basicVOList;
 	private IAttendanceService attendanceService;
 	private List<String> dates;
+	private IActivityAttendanceService activityAttendanceService;
+	private List<ActivityAttendanceInfoVO> attendanceList;
 	
+	
+	
+	public List<ActivityAttendanceInfoVO> getAttendanceList() {
+		return attendanceList;
+	}
+	public void setAttendanceList(List<ActivityAttendanceInfoVO> attendanceList) {
+		this.attendanceList = attendanceList;
+	}
 	public List<String> getDates() {
 		return dates;
 	}
@@ -162,6 +174,13 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setBasicVOList(List<BasicVO> basicVOList) {
 		this.basicVOList = basicVOList;
+	}
+	public IActivityAttendanceService getActivityAttendanceService() {
+		return activityAttendanceService;
+	}
+	public void setActivityAttendanceService(
+			IActivityAttendanceService activityAttendanceService) {
+		this.activityAttendanceService = activityAttendanceService;
 	}
 	public String execute()
 	{
@@ -505,5 +524,25 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+
+	public String getLocationWiseActivityDetails()
+	{
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			Long locationValue = jObj.getLong("locationValue");
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			SearchAttributeVO searchVO = new SearchAttributeVO();			
+			searchVO.setSearchType(searchType);
+			searchVO.setLocationValue(locationValue);
+			searchVO.getAttributesIdsList().add(activityScopeId);
+			attendanceList = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
+		}catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseActivityDetails()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
