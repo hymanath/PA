@@ -2932,5 +2932,7 @@
 		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabUserLocationDAO" ref="activityTabUserLocationDAO" />
 	</bean>
+	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
+	</bean>
 </beans>		
 	
