@@ -472,6 +472,8 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			VO.setMobileNumber(jObj.getString("mobileNumber"));
 			VO.setVoterCard(jObj.getString("voterCard"));
 			VO.setActivityDate(jObj.getString("conductedDate"));
+			if(jObj.getLong("tdpCadreId") > 0l)
+			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
 			VO.setBloodGroup(jObj.getLong("bloodGroupId"));
 				resultStatus = attendanceService.savePublicActivityAttendance(VO,regVO.getRegistrationID());		
 		}catch (Exception e) {
