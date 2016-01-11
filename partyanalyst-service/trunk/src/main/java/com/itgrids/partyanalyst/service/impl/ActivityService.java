@@ -35,6 +35,8 @@ import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityTabUserDAO;
+import com.itgrids.partyanalyst.dao.IActivityTabUserLocationDAO;
 import com.itgrids.partyanalyst.dao.IActivityTeamLocationDAO;
 import com.itgrids.partyanalyst.dao.IActivityTeamMemberDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
@@ -139,8 +141,23 @@ public class ActivityService implements IActivityService{
 	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
 	private ITabDetailsDAO 			tabDetailsDAO;
 	private IAttendenceQuestionAnswerDAO 	attendenceQuestionAnswerDAO;
+	private IActivityTabUserLocationDAO activityTabUserLocationDAO;
+	private IActivityTabUserDAO activityTabUserDAO;
 	
 	
+	public IActivityTabUserDAO getActivityTabUserDAO() {
+		return activityTabUserDAO;
+	}
+	public void setActivityTabUserDAO(IActivityTabUserDAO activityTabUserDAO) {
+		this.activityTabUserDAO = activityTabUserDAO;
+	}
+	public IActivityTabUserLocationDAO getActivityTabUserLocationDAO() {
+		return activityTabUserLocationDAO;
+	}
+	public void setActivityTabUserLocationDAO(
+			IActivityTabUserLocationDAO activityTabUserLocationDAO) {
+		this.activityTabUserLocationDAO = activityTabUserLocationDAO;
+	}
 	public IAttendenceQuestionAnswerDAO getAttendenceQuestionAnswerDAO() {
 		return attendenceQuestionAnswerDAO;
 	}
@@ -3292,7 +3309,7 @@ public class ActivityService implements IActivityService{
 		
 		try {
 			Long userId = 0l;
-			List<Long> userIds = cadreSurveyUserDAO.getUserByUserNameAndPassword(username, password);
+			List<Long> userIds = activityTabUserDAO.getUserByUserNameAndPassword(username, password);
 			
 			if(userIds != null && userIds.size() > 0){
 				userId = userIds.get(0);
@@ -3310,7 +3327,7 @@ public class ActivityService implements IActivityService{
 			List<ActivityWSVO> usrAccLvlsLst = new ArrayList<ActivityWSVO>();
 			List<ActivityWSVO> usrAccScpeLst = new ArrayList<ActivityWSVO>();
 			
-			List<Object[]> list = userActivityScopeDAO.getUserActivityDetailsByUserId(userId);
+			List<Object[]> list = activityTabUserLocationDAO.getUserActivityDetailsByUserId(userId);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					ActivityWSVO mtchdScpeVO = getMatchedActivityWSVO(voList,Long.valueOf(obj[2].toString()),"ActivityScopeId");
