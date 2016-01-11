@@ -2934,6 +2934,7 @@
 		<property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
+		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 	</bean>
 </beans>		
 	

@@ -56,15 +56,14 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private IAttendanceService attendanceService;
 	private List<String> dates;
 	private IActivityAttendanceService activityAttendanceService;
-	private List<ActivityAttendanceInfoVO> attendanceList;
+	private ActivityAttendanceInfoVO attendanceVo;
 	
-	
-	
-	public List<ActivityAttendanceInfoVO> getAttendanceList() {
-		return attendanceList;
+
+	public ActivityAttendanceInfoVO getAttendanceVo() {
+		return attendanceVo;
 	}
-	public void setAttendanceList(List<ActivityAttendanceInfoVO> attendanceList) {
-		this.attendanceList = attendanceList;
+	public void setAttendanceVo(ActivityAttendanceInfoVO attendanceVo) {
+		this.attendanceVo = attendanceVo;
 	}
 	public List<String> getDates() {
 		return dates;
@@ -536,8 +535,10 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			SearchAttributeVO searchVO = new SearchAttributeVO();			
 			searchVO.setSearchType(searchType);
 			searchVO.setLocationValue(locationValue);
-			searchVO.getAttributesIdsList().add(activityScopeId);
-			attendanceList = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
+			List<Long>  activityScopeIdsList = new ArrayList<Long>();
+			activityScopeIdsList.add(activityScopeId);
+			searchVO.setAttributesIdsList(activityScopeIdsList);
+			attendanceVo = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
 		}catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseActivityDetails()", e);
 		}
