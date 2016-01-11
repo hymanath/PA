@@ -377,7 +377,7 @@ function submitForm(){
 			var myResult = (String)(uploadResult);
 			
 			if(myResult.search('success') != -1){
-				alert("Successfully UPdated");
+				alert("Successfully Updated");
 				/*var startDate = $("input[name=daterangepicker_start]").val();
 				var endDate =  $("input[name=daterangepicker_end]").val();*/
 			var startDate = "";
@@ -656,7 +656,7 @@ function updateMobileNumber(index,tdpCadreId){
 
 function getLocationDetailsForActivity(startDate,endDate)
 {
-	$("#buildAssConsActivity").hide();
+	
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
@@ -753,6 +753,9 @@ function getLocationDetailsForActivity(startDate,endDate)
 					var str='';
 					if( result!= null)
 					{
+						$("#buildAssConsActivity").hide();
+						$("#hideAsmblyData").hide();
+						$("#showAsmblyData").show();
 						str+='<table class="table table-bordered bg_ff" id="locationsTab">';
 						str+='<thead>';
 						str+='<tr>';
