@@ -3326,7 +3326,10 @@ public class ActivityService implements IActivityService{
 						mtchdScpeVO.setEndDate(obj[8] != null ? obj[8].toString():"");
 						mtchdScpeVO.getAccessLocationsList().add(mtchdScpeVO.getScopeValue());
 						questionsvo = getQuestionsListForScopeId(scopeId);
-						mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
+						//mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
+						if(questionsvo!=null){
+							mtchdScpeVO.setQuestionList(questionsvo.getQuestionList());
+						}
 						reqAttrList = getRequiredAttributesListForScope(scopeId);
 						mtchdScpeVO.setReqAttrList(reqAttrList);
 						voList.add(mtchdScpeVO);
@@ -3386,6 +3389,8 @@ public class ActivityService implements IActivityService{
 			          matchedVO.setOptionTypeId((Long)objects[2]);
 			          matchedVO.setOptionType(objects[3].toString());
 			          mtchdVO.getQuestionList().add(matchedVO);
+			          matchedVO.setRespondentTypeId(Long.valueOf(objects[6].toString()));
+			          matchedVO.setRespondentType(objects[7].toString());
 			        }
 			        ActivityWSVO optionVO = new ActivityWSVO();
 			        optionVO.setOptionId((Long)objects[4]);
@@ -3394,9 +3399,18 @@ public class ActivityService implements IActivityService{
 			      }
 			    }
 			    
+			    for(ActivityWSVO vo:finalVO.getAcitivityQuesList()){
+					if(vo!=null && !vo.getQuestionList().isEmpty()){
+						finalVO.getQuestionList().addAll(vo.getQuestionList());
+					}
+				}
+			    
+			    
 		} catch (Exception e) {
 			LOG.error("Exception occured in getQuestionsListForScopeId() Method ",e);
 		}
+		
+		
 		return finalVO;
 	}
 	
