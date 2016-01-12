@@ -2144,7 +2144,8 @@
 	  <property name="trainingCampService" ref="trainingCampService"/>
 	  <property name="eventInviteeDAO" ref="eventInviteeDAO"/>
 	  <property name="eventDAO" ref="eventDAO"/>
-	  <property name="activityService" ref="activityService"/>  
+	  <property name="activityService" ref="activityService"/>
+	  <property name="attendanceService" ref="attendanceService"/>  
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
