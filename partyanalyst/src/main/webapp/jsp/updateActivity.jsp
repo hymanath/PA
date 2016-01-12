@@ -424,7 +424,6 @@
   </div>
 </div>						
 </div>						
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -445,7 +444,7 @@
   </div>
 </div>
 <!-- Modal -->
-
+	
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -1671,6 +1670,7 @@ $("#hideAsmblyData").click(function(){
   {
 	  $('#searchErrDiv').html('');
 	 
+	 var conductedDate = $("#conductedDate").val();
 	   $(".searchCadreCheck").each(function(){
 		   var cadreId = 0;
 		   if($(this).is(':checked'))
@@ -1684,6 +1684,7 @@ $("#hideAsmblyData").click(function(){
 			{
 				tdpCadreId :cadreId,
 				activityLocationInfoId:2,
+				conductedDate:conductedDate,
 				task:""
 			}
 		$.ajax({
@@ -1706,7 +1707,8 @@ $("#hideAsmblyData").click(function(){
 	  var voterCard = $("#publicVoterCardId").val().trim();
 	  var bloodGroupId = $("#publicbloodGroupId").val();
 	  var pattern = /^\d{10}$/;
-	  var bloodGroupId ="";
+	
+	  var conductedDate = $("#conductedDate").val();
 	  if(name.length == 0)
 			{
 				$('#searchErrDiv1').html('Name is Required').css("color","red");
@@ -1727,14 +1729,20 @@ $("#hideAsmblyData").click(function(){
 				$('#searchErrDiv1').html('Voter Card is Required').css("color","red");
 				return;
 			}
-		
-				var jsObj =
+			if(bloodGroupId == 0)
+			{
+				$('#searchErrDiv1').html('Blood Group is Required').css("color","red");
+				return;
+			}
+			 var jsObj =
 			{
 				name :name,
 				mobileNumber:mobileNumber,
 				voterCard:voterCard,
 				activityLocationInfoId:2,
 				bloodGroupId:bloodGroupId,
+				conductedDate:conductedDate,
+				tdpCadreId :0,
 				task:""
 			}
 		$.ajax({
@@ -1743,6 +1751,7 @@ $("#hideAsmblyData").click(function(){
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 			$(".clearPublic").val("");
+			$("#publicbloodGroupId").val(0);
 			$("#searchErrDiv1").html("Saved Successfully").css("color","green");
 		})
 	
@@ -1768,7 +1777,6 @@ $("#hideAsmblyData").click(function(){
 			}
 		}) 
   }
-  
   function validateFields()
   {
 	  $(".errorDiv").html("");
@@ -1960,7 +1968,35 @@ function buildBloodDonation(result){
 			
 $("#bloodDonationDetails").html(str);
 	
+function getActivityDates()
+{
+	 var jsObj =
+			{
+				activityScopeId:1,
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "getActivityDatesAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			if(result != null && result.length >0)
+			{
+				alert(result[0])
+				alert(result[1])
+				$('#conductedDate').daterangepicker({
+						singleDatePicker:true,
+						format: 'MM/DD/YYYY',
+						startDate: new Date(result[0]),
+						endDate: new Date(result[1]),
+						minDate: new Date(result[0]),
+						maxDate: new Date(result[1])
+						});
+			//	conductedDate	
+			}
+		}) 
 }
+  
 </script>
 </body>
 </html>
