@@ -49,7 +49,9 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 	{
 		ActivityAttendanceInfoVO returnVO = new ActivityAttendanceInfoVO();
 		List<ActivityAttendanceInfoVO> returnList = new ArrayList<ActivityAttendanceInfoVO>();
+		List<ActivityAttendanceInfoVO> returnList1 = new ArrayList<ActivityAttendanceInfoVO>();
 		returnVO.setSubList(returnList);
+		returnVO.setLocalBodyList(returnList1);
 		List<Long> levelIds = new ArrayList<Long>();
 		Long activityLevelId =null;
 		ActivityScope activityScope = activityScopeDAO.get(searchVO.getAttributesIdsList().get(0));
