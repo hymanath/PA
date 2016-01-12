@@ -2830,6 +2830,9 @@
 		<property name="transactionTemplate" ref="transactionTemplate"></property>
 		<property name="activityLocationPublicAttendanceDAO" ref="activityLocationPublicAttendanceDAO"></property>
 		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO"></property>
+		<property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"></property>
+		<property name="activityService" ref="activityService"></property>
+		<property name="activityTabUserAnswerDAO" ref="activityTabUserAnswerDAO"></property>
 		
 	</bean>
 	
@@ -2934,6 +2937,7 @@
 		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO" />
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		<property name="tabDetailsDAO" ref="tabDetailsDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
