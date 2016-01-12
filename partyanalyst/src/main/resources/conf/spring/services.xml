@@ -2929,14 +2929,14 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
 		<property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
-		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabUserLocationDAO" ref="activityTabUserLocationDAO" />
+		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO" />
 		<property name="activityScopeDAO" ref="activityScopeDAO" />
-		 </bean>
+	</bean>
 </beans>		
 	

@@ -2466,11 +2466,13 @@
 	 <bean id="requiredAttributeRespondentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RequiredAttributeRespondentTypeDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="activityTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserDAO">
-	   <property name="sessionFactory" ref="sessionFactory" />
-	 </bean>
+	 
 	 <bean id="activityTabUserLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserLocationDAO">
-	   <property name="sessionFactory" ref="sessionFactory" />
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean id="activityTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="activityTabRequestBackupDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabRequestBackupDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
