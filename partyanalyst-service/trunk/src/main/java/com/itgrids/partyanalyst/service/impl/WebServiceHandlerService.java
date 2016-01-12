@@ -38,7 +38,9 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
+import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -88,6 +90,7 @@ import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -170,8 +173,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ICadreCommitteeService cadreCommitteeService;
     private IEventInviteeDAO eventInviteeDAO;
     private IActivityService							activityService;
+    private IAttendanceService attendanceService;
     
     
+	public IAttendanceService getAttendanceService() {
+		return attendanceService;
+	}
+
+	public void setAttendanceService(IAttendanceService attendanceService) {
+		this.attendanceService = attendanceService;
+	}
+
 	public IActivityService getActivityService() {
 		return activityService;
 	}
@@ -3044,6 +3056,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   Log.error("Exception in getActivityCadreDetails Webservice method");
 		   }
 		   return tdpCadreWSVO;
+	   }
+	   
+	   public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo){
+		   ResultStatus rs = new ResultStatus();
+		   try {
+			   Log.debug(" entered into savePublicActivityAttendance webservice");
+			   rs = attendanceService.savePublicActivityAttendance(inputVo,inputVo.getTabUserId());
+		   } catch (Exception e) {
+			
+		   }
+		   return rs;
 	   }
 }
 
