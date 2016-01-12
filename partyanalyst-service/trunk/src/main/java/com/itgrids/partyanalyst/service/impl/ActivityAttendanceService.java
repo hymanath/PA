@@ -7,9 +7,11 @@ import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.service.IActivityAttendanceService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ActivityAttendanceService implements IActivityAttendanceService {
@@ -17,8 +19,19 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private IActivityLocationAttendanceDAO activityLocationAttendanceDAO;
 	private IActivityScopeDAO activityScopeDAO;
+	private IRegionServiceData regionServiceDataImp;
 	
 	
+	
+	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 	public IActivityScopeDAO getActivityScopeDAO() {
 		return activityScopeDAO;
 	}
@@ -86,8 +99,124 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 		getCadreAttendanceCount(searchVO,returnVO);
 		getPublicAttendanceCount(searchVO,returnVO);
 		getPhotosCount(searchVO,returnVO);
+		Long totalAreasCount =0L;
+		Long totalPlannedCount =0L;
+		SearchAttributeVO searchVO1 = searchVO;
+		if(activityLevelId != null && activityLevelId.longValue()>0L)
+		{
+			if(activityLevelId.longValue() == 1L)
+			{
+				searchVO1.getLocationTypeIdsList().add(6L);
+				searchVO1.getLocationTypeIdsList().add(8L);
+			}
+			else if(activityLevelId.longValue() == 2L)
+			{
+				searchVO1.getLocationTypeIdsList().add(5L);
+				searchVO1.getLocationTypeIdsList().add(7L);
+				//searchVO1.getLocationTypeIdsList().add(9L);
+			}
+			else if(activityLevelId.longValue() == 3L)
+			{
+				searchVO1.getLocationTypeIdsList().add(3L);
+			}
+			else if(activityLevelId.longValue() == 4L)
+			{
+				searchVO1.getLocationTypeIdsList().add(4L);
+			}
+		}
+		
+		if(returnVO.getSubList() != null && returnVO.getSubList().size() > 0)
+		{
+				for(ActivityAttendanceInfoVO mainVO : returnVO.getSubList())
+				{
+					totalAreasCount =0L;
+					
+					if(searchVO1.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+						searchVO1.setScopeId(3L);
+						searchVO1.setScopeValue(mainVO.getId());
+						//activityVO.setName(activityVO.getName()+" District");
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+						{
+							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+							mainVO.setTotalLocations(totalAreasCount);
+						}
+						
+					}
+					
+					if(searchVO1.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+						searchVO1.setScopeId(4L);
+						searchVO1.setScopeValue(mainVO.getId());
+						//activityVO.setName(activityVO.getName()+" District");
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+						{
+							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+							mainVO.setTotalLocations(totalAreasCount);
+						}
+						
+					}
+					
+					
+					if(searchVO1.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+						searchVO1.setScopeId(5L);
+						searchVO1.setScopeValue(mainVO.getId());
+						//activityVO.setName(activityVO.getName()+" District");
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+						{
+							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+							mainVO.setTotalLocations(totalAreasCount);
+						}
+						
+					}
+					if(searchVO1.getSearchType().equalsIgnoreCase(IConstants.VILLAGE) || searchVO1.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+						mainVO.setTotalLocations(1L);
+					}
+					
+				}	
+				
+				
+				for(ActivityAttendanceInfoVO localbodyVO : returnVO.getLocalBodyList())
+				{
+						totalAreasCount =0L;
+						if(searchVO1.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+						searchVO1.setScopeId(7L);
+						searchVO1.setScopeValue(localbodyVO.getId());
+						//activityVO.setName(activityVO.getName()+" District");
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+						{
+							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
+							localbodyVO.setTotalLocations(totalAreasCount);
+						}
+						
+					}
+					
+				}	
+				
+			}
+	
 		return returnVO;
 	}
+	
+	public Long getTotalAreaCountByList(List<BasicVO> areaWiseCountLsit)
+	{
+		Long totalAreasCount = 0L;
+		try {
+			if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
+			{
+				totalAreasCount = 0L;
+				for (BasicVO basicVO : areaWiseCountLsit) {
+					totalAreasCount = totalAreasCount+ basicVO.getTotalVoters().longValue();
+				}
+			}
+		} catch (Exception e) {
+			// LOG.error("Exception Occured in getActivityLocationDetails() method, Exception - ",e);
+		}
+		return totalAreasCount;
+	}
+	
 	
 	public void getCadreAttendanceCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO)
 	{

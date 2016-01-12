@@ -1171,15 +1171,15 @@ public class ActivityService implements IActivityService{
 						{
 							searchAttributeVO.getLocationTypeIdsList().add(5L);
 							searchAttributeVO.getLocationTypeIdsList().add(7L);
-							searchAttributeVO.getLocationTypeIdsList().add(9L);
+							//searchAttributeVO.getLocationTypeIdsList().add(9L);
 						}
 						else if(activityLevelId.longValue() == 3L)
 						{
-							searchAttributeVO.getLocationTypeIdsList().add(10L);
+							searchAttributeVO.getLocationTypeIdsList().add(3L);
 						}
 						else if(activityLevelId.longValue() == 4L)
 						{
-							searchAttributeVO.getLocationTypeIdsList().add(11L);
+							searchAttributeVO.getLocationTypeIdsList().add(4L);
 						}
 					}
 					
