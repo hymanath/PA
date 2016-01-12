@@ -3025,6 +3025,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   return activityLoginVO;
 	   }
 	   
+	   public ActivityWSVO getUserActivityDetailsByUserId(Long userId){
+		   Log.debug("Entered into getUserActivityDetailsByUserId Webservice method");
+		   ActivityWSVO activityVO = new ActivityWSVO();
+		   try{
+			   activityVO = activityService.getUserActivityDetailsByUserId(userId);
+		   }catch (Exception e) {
+			   Log.error("Exception in getUserActivityDetailsByUserId Webservice method");
+		   }
+		   return activityVO;
+	   }
+	   
 	   
 }
 
