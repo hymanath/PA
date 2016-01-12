@@ -41,6 +41,8 @@ public class BasicVO implements Serializable{
 	private String parliament;
 	private List<BasicVO> daysList;
 	private List<BasicVO> locationsList;
+	private List<BasicVO> constituencyList = new ArrayList<BasicVO>(0);
+	private List<BasicVO> districtList = new ArrayList<BasicVO>(0);
 	
 	
 	public BasicVO(){}
@@ -267,6 +269,22 @@ public class BasicVO implements Serializable{
 
 	public void setParliament(String parliament) {
 		this.parliament = parliament;
+	}
+
+	public List<BasicVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<BasicVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
+	public List<BasicVO> getDistrictList() {
+		return districtList;
+	}
+
+	public void setDistrictList(List<BasicVO> districtList) {
+		this.districtList = districtList;
 	}
 	
 	

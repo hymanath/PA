@@ -378,7 +378,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getEducationalRequestedAmountByMembershipId(String membershipId);
 	  
 	  public List<Object[]> checkVoterCardNosCadreOrNot(String voterCardNoStr);
-		public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList);
-		public List<Long> getAllRemovedCadre();
-		public List<Object[]> getAllCadreDetailsByCadreIds(List<Long> cadreIds);
+	  public List<Object[]> checkVoterCardNosCadreNosOrNot(List<String> voterCardNoList);
+	  public List<Long> getAllRemovedCadre();
+	  public List<Object[]> getAllCadreDetailsByCadreIds(List<Long> cadreIds);
+	  public List<Object[]> getCadreDetailsByMembershipNoOrVoterId(String memberShipNo,String voterId);
 }

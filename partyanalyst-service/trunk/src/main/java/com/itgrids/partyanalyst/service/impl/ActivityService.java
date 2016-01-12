@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -81,6 +82,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
@@ -156,8 +158,15 @@ public class ActivityService implements IActivityService{
 	private IActivityTabUserLocationDAO activityTabUserLocationDAO;
 	private IActivityTabUserDAO activityTabUserDAO;
 	private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
 	public IActivityTabRequestBackupDAO getActivityTabRequestBackupDAO() {
 		return activityTabRequestBackupDAO;
 	}
@@ -3634,6 +3643,25 @@ public class ActivityService implements IActivityService{
 		return loginvo;
 	}
 	
+	public TdpCadreWSVO getCadreDetailsByVoterIdorMemberShipNo(String memberShipNo,String voterCardNo){
+		TdpCadreWSVO tdpCadreWSVO = new TdpCadreWSVO();
+		try {
+			List<Object[]> list = tdpCadreDAO.getCadreDetailsByMembershipNoOrVoterId(memberShipNo, voterCardNo);
+			if(list != null && list.size() > 0){
+				Object[] obj = list.get(0);
+				if(obj != null){
+					tdpCadreWSVO.setTdpCadreId((Long) (obj[0] != null ? obj[0]:0l));
+					tdpCadreWSVO.setMemberShipNo(obj[1] != null ? obj[1].toString():"");
+					tdpCadreWSVO.setStatus("Success");
+				}
+			}
+		} catch (Exception e) {
+			tdpCadreWSVO.setStatus("Failure");
+			LOG.error("Exception Occured in getCadreDetailsByVoterIdorMemberShipNo method in ActivityService",e);
+		}
+		return tdpCadreWSVO;
+	}
+	
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId){
 		List<BasicVO> voList = new ArrayList<BasicVO>();
 		try {
@@ -3650,5 +3678,56 @@ public class ActivityService implements IActivityService{
 			Log.error("Exception Occured in getRequiredAttributesListForScope method in ActivityService ",e);
 		}
 		return voList;
+	}
+	
+	public BasicVO getActivityLocationWiseDetailsByScopeId(Long scopeId){
+		BasicVO finalvo = new BasicVO();
+		List<Long> constIds = new ArrayList<Long>();
+		List<Long> distIds = new ArrayList<Long>();
+		Map<Long,BasicVO> constMap = new LinkedHashMap<Long, BasicVO>();
+		Map<Long,BasicVO> distMap  = new LinkedHashMap<Long, BasicVO>();
+		try {
+			List<Object[]> list = activityLocationInfoDAO.getActivityLocationDetailsByScopeId(scopeId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					BasicVO vo = new BasicVO();
+					Long locationLvlId = (Long) (obj[2] != null ? obj[2]:0l);
+					vo.setId(locationLvlId);
+					if(locationLvlId.longValue() == 9l){
+						constIds.add(locationLvlId);
+						constMap.put(locationLvlId, vo);
+					}
+					else if(locationLvlId.longValue() == 7l){
+						distIds.add(locationLvlId);
+						distMap.put(locationLvlId, vo);
+					}
+				}
+			}
+			if(constIds != null && constIds.size() > 0){
+				List<Object[]> list1 = constituencyDAO.getConstituencyInfoByConstituencyIdList(constIds);
+				if(list1 != null && list1.size() > 0){
+					for (Object[] obj : list1) {
+						Long constId = (Long) (obj[0] != null ? obj[0]:0l);
+						BasicVO vo1 = constMap.get(constId);
+						vo1.setName(obj[1] != null ? obj[1].toString():"");
+					}
+				}
+			}
+			if(distIds != null && distIds.size() > 0){
+				List<Object[]> list2 = districtDAO.getDistrictDetailsByDistrictIds(distIds);
+				if(list2 != null && list2.size() > 0){
+					for (Object[] obj : list2) {
+						Long distId = (Long) (obj[0] != null ? obj[0]:0l);
+						BasicVO vo2 = distMap.get(distId);
+						vo2.setName(obj[1] != null ? obj[1].toString():"");
+					}
+				}
+			}
+			finalvo.setConstituencyList((List<BasicVO>) constMap.values());
+			finalvo.setDistrictList((List<BasicVO>) distMap.values());
+		} catch (Exception e) {
+			Log.error("Exception Occured in getActivityLocationWiseDetailsByScopeId method in ActivityService ",e);
+		}
+		return finalvo;
 	}
 }
