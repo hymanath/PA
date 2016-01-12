@@ -141,14 +141,12 @@
 							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;">
 								<label>District</label>
 								<select id="districtList" class="form-control" name="activityVO.districtId" >
-									
 								</select>
 							</div>	
 							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
 								<label>Constituency</label>
 								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
-									
-								</select>
+								</select><span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg3"></span>
 							</div>
 							<div class="col-md-4 m_top10" id="mandalDivId" style="display:none;">
 								<label >Mandal/ Town/ Division</label>
@@ -613,11 +611,12 @@ function getActivityNames()
 	else if(activityLevelId == 2){
 		$("#constituencyDivId").show();
 		$("#mandalDivId").show();
-	}
-	else if(activityLevelId == 3){
+	}else if(activityLevelId == 5){
 		$("#districtDivId").show();
 	}
-	
+	else if(activityLevelId == 3 ){
+		$("#districtDivId").show();
+	}
 	var jObj = {
 			activityTypeId : $('#activityTypeList').val(),
 			activityLevelId:$('#activityLevelList').val(),
@@ -662,7 +661,6 @@ function getUserAccessConstituencyList()
 		});
 		
 }
-
 function getUserAccessDistrictList()
 {
 	$('#districtList').find('option').remove();
@@ -847,7 +845,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
 	var constituencyId =$('#constiList').val();
-	
+	var districtId =$('#districtList').val();
 	$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
@@ -861,6 +859,12 @@ function getLocationDetailsForActivity(startDate,endDate)
 	else if(ActivityId == null || ActivityId == 0)
 	{
 		errStr+="Please Select Activity .";
+	}
+	else if(districtId == null || districtId == 0)
+	{
+		if(activityLevelId == 5 || activityLevelId == 3){
+		errStr+="Please Select District.";
+		}
 	}
 	else if(constituencyId == null || constituencyId == 0)
 	{
@@ -899,11 +903,18 @@ function getLocationDetailsForActivity(startDate,endDate)
 			{
 				locationId = $('#mandalsList').val();
 				searchBy = "mandal";
-				if(locationId == 0)
+				
+				 if(locationId == 0)
 				{
 					locationId = $('#constiList').val();
 					searchBy = "Constituency";
+					if(locationId == 0)
+				{
+					locationId = $('#districtList').val();
+					searchBy = "District";
 				}
+				}
+				
 			}
 			
 			var value = "all";
@@ -950,7 +961,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1)					
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
-						
+						else if(activityLevelId == 5)
+							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';							
 						str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
 						str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 						//str+='<th>PRESIDENT</th>';
@@ -1996,7 +2008,33 @@ function getActivityDates()
 			}
 		}) 
 }
-  
+	
+	$(document).on("change","#districtList",function(){
+		var activityLevelId = $('#activityLevelList').val();
+		if(activityLevelId == 5){
+		$('#constiList').find('option').remove();
+		var districtId = $(this).val();
+	var jObj = {
+			task:"getConstituenciesForDistrict",
+			districtId:districtId
+		};
+		$("#procesingImg3").show();
+		$.ajax({
+          type:'GET',
+          url: 'getConstituenciesForADistrictAjaxAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			
+			if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1)
+			{}else{
+				$("#constituencyDivId").show();
+				$("#procesingImg3").hide();
+				for(var i in result)
+					$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		});
+		}
+	});
 </script>
 </body>
 </html>
