@@ -36,10 +36,12 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long tabDetailsId;
 	
 	private ActivityQuestionnaire activityQuestionnaire;
 	private ActivityLocationInfo activityLocationInfo;
 	private ActivityOption activityOption;
+	private TabDetails tabDetails;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -159,5 +161,25 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	@Column(name = "tab_details_id")
+	public Long getTabDetailsId() {
+		return tabDetailsId;
+	}
+	public void setTabDetailsId(Long tabDetailsId) {
+		this.tabDetailsId = tabDetailsId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tab_details_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabDetails getTabDetails() {
+		return tabDetails;
+	}
+	public void setTabDetails(TabDetails tabDetails) {
+		this.tabDetails = tabDetails;
+	}
+	
 	
 }
