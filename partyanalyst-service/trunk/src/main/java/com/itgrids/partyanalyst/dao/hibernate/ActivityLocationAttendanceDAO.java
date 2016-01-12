@@ -63,7 +63,7 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 			str.append(" ,Constituency C ");
 		}
 		
-		str.append(" where model.activityDocument.activityDate is not null ");
+		str.append(" where model.attendance.attendedTime is not null ");
 		if(memberType.equalsIgnoreCase("cadre"))
 		str.append(" and model.tdpCadreId is not null ");
 		else
