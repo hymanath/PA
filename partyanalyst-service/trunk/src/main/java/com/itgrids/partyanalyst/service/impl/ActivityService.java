@@ -62,7 +62,15 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
+import com.itgrids.partyanalyst.dto.ActivityLocationVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
+import com.itgrids.partyanalyst.dto.ActivityMainVO;
+import com.itgrids.partyanalyst.dto.ActivityOptionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionnairOptionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionnairVO;
+import com.itgrids.partyanalyst.dto.ActivityReqAttributesVO;
+import com.itgrids.partyanalyst.dto.ActivityScopeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -3363,162 +3371,138 @@ public class ActivityService implements IActivityService{
 		return resultList;
 	}
 	
-	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password){
+	public ActivityWSVO getUserActivityDetailsByUserId(Long userId){
 		
-		ActivityWSVO activityWSVO = new ActivityWSVO();
+		ActivityWSVO finalVO = new ActivityWSVO();
 		
 		try {
-			Long userId = 0l;
-			List<Long> userIds = activityTabUserDAO.getUserByUserNameAndPassword(username, password);
-			
-			if(userIds != null && userIds.size() > 0){
-				userId = userIds.get(0);
-			}
-			
-			if(userId.longValue() == 0){
-				activityWSVO.setStatus("Failure");
-				return activityWSVO;
-			}
-			
-			List<ActivityWSVO> voList = new ArrayList<ActivityWSVO>();
-			//List<ActivityWSVO> questionsVoList = new ArrayList<ActivityWSVO>();
-			ActivityWSVO questionsvo = new ActivityWSVO();
-			List<BasicVO> reqAttrList = new ArrayList<BasicVO>();
-			List<ActivityWSVO> usrAccLvlsLst = new ArrayList<ActivityWSVO>();
-			List<ActivityWSVO> usrAccScpeLst = new ArrayList<ActivityWSVO>();
-			
 			List<Object[]> list = activityTabUserLocationDAO.getUserActivityDetailsByUserId(userId);
+			Set<Long> scpIds = new HashSet<Long>();
+			List<Long> actvtyIds = new ArrayList<Long>();
+			List<ActivityMainVO> activites = new ArrayList<ActivityMainVO>();
+			List<ActivityScopeVO> actvtyScpes = new ArrayList<ActivityScopeVO>();
+			List<ActivityLocationVO> actvtyLctns = new ArrayList<ActivityLocationVO>();
+			
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					ActivityWSVO mtchdScpeVO = getMatchedActivityWSVO(voList,Long.valueOf(obj[2].toString()),"ActivityScopeId");
-					if(mtchdScpeVO==null){
-						mtchdScpeVO = new ActivityWSVO();
 						Long scopeId = (Long) (obj[2] != null ? obj[2]:0l);
-						mtchdScpeVO.setActivityScopeId(scopeId);
-						mtchdScpeVO.setName(obj[3] != null ? obj[3].toString():"");
-						mtchdScpeVO.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
-						mtchdScpeVO.setScopeValue((Long) (obj[5] != null ? obj[5]:0l));
-						mtchdScpeVO.setActivityLevel(obj[6] != null ? obj[6].toString():"");
-						mtchdScpeVO.setStartDate(obj[7] != null ? obj[7].toString():"");
-						mtchdScpeVO.setEndDate(obj[8] != null ? obj[8].toString():"");
-						//mtchdScpeVO.setActivityLocationInfoId((Long) (obj[9] != null ? obj[9]:0l));
-						mtchdScpeVO.getAccessLocationsList().add(mtchdScpeVO.getScopeValue());
-						questionsvo = getQuestionsListForScopeId(scopeId);
-						mtchdScpeVO.setAcitivityQuesList(questionsvo.getAcitivityQuesList());
-						/*if(questionsvo!=null){
-							mtchdScpeVO.setQuestionList(questionsvo.getQuestionList());
-						}*/
-						reqAttrList = getRequiredAttributesListForScope(scopeId);
-						mtchdScpeVO.setReqAttrList(reqAttrList);
-						voList.add(mtchdScpeVO);
 						
-						ActivityWSVO lvlvo = new ActivityWSVO();
-						ActivityWSVO scpvo = new ActivityWSVO();
 						
-						lvlvo.setId((Long) (obj[4] != null ? obj[4]:0l));
-						lvlvo.setName(obj[6] != null ? obj[6].toString():"");
-						usrAccLvlsLst.add(lvlvo);
+						if(!actvtyIds.contains(Long.valueOf(obj[3].toString()))){
+							ActivityMainVO actvty = new ActivityMainVO();
+							actvty.setActivityId(obj[3] != null ? Long.valueOf(obj[3].toString()):null);
+							actvty.setActivityName(obj[4] != null ? obj[4].toString():"");
+							actvtyIds.add(obj[3] != null ? Long.valueOf(obj[3].toString()):null);
+							activites.add(actvty);
+						}
 						
-						scpvo.setId((Long) (obj[2] != null ? obj[2]:0l));
-						scpvo.setName(obj[3] != null ? obj[3].toString():"");
-						scpvo.setActivityLevelId((Long) (obj[4] != null ? obj[4]:0l));
-						usrAccScpeLst.add(scpvo);
+						if(!scpIds.contains(scopeId)){
+							ActivityScopeVO actvty = new ActivityScopeVO();
+							actvty.setActivityId(obj[3] != null ? Long.valueOf(obj[3].toString()):null);
+							actvty.setActivityScopeId(obj[2] != null ? Long.valueOf(obj[2].toString()):null);
+							actvty.setActivityLevelId(obj[8] != null ? Long.valueOf(obj[8].toString()):null);
+							actvty.setStartDate(obj[9] != null ? obj[9].toString():"");
+							actvty.setEndDate(obj[10] != null ? obj[10].toString():"");
+							actvtyScpes.add(actvty);
+							
+							scpIds.add(scopeId);
+						}
 						
-					}else{
-						mtchdScpeVO.getAccessLocationsList().add(Long.valueOf(obj[5].toString()));
-					}
+						ActivityLocationVO actvtyLctn = new ActivityLocationVO();
+						actvtyLctn.setActivityScopeId(obj[2] != null ? Long.valueOf(obj[2].toString()):null);
+						actvtyLctn.setLocationLevel(obj[5] != null ? Long.valueOf(obj[5].toString()):null);
+						actvtyLctn.setLocationValue(obj[6] != null ? Long.valueOf(obj[6].toString()):null);
+						actvtyLctn.setActivityLocationInfoId(obj[11] != null ? Long.valueOf(obj[11].toString()):null);
+						actvtyLctn.setPlannedStartDate(obj[12] != null ? obj[12].toString():"");
+						actvtyLctn.setPlannedEndDate(obj[14] != null ? obj[14].toString():"");
+						actvtyLctn.setConductedStartDate(obj[13] != null ? obj[13].toString():"");
+						actvtyLctn.setConductedEndDate(obj[15] != null ? obj[15].toString():"");
+						actvtyLctns.add(actvtyLctn);
+						
 				}
 			}
-			activityWSVO.setStatus("Success");
-			activityWSVO.setUserId(userId);
-			activityWSVO.setActivityWSVOList(voList);
-			activityWSVO.setActivityLevelList(usrAccLvlsLst);
-			activityWSVO.setActivityScopeList(usrAccScpeLst);
 			
+			finalVO.setActivities(activites);
+			finalVO.setActivityScopeList(actvtyScpes);
+			finalVO.setActivityLocationsList(actvtyLctns);
+			
+			if(!scpIds.isEmpty()){
+				List<Long> scpIdsLst = new ArrayList<Long>(scpIds);
+				ActivityWSVO fnlVO = getQuestionsListForScopeId(scpIdsLst);
+				
+				finalVO.setQuestionList(fnlVO.getQuestionList());
+				finalVO.setOptionsList(fnlVO.getOptionsList());
+				finalVO.setQuestnairList(fnlVO.getQuestnairList());
+				finalVO.setQuestnairOptnsList(fnlVO.getQuestnairOptnsList());
+				
+				List<ActivityReqAttributesVO> reqAttrs = getRequiredAttributes(scpIdsLst);
+				finalVO.setAttributes(reqAttrs);
+			}
 		} catch (Exception e) {
 			LOG.error("Exception occured in getUserActivityDetailsByUserId() Method ",e);
 		}
-		return activityWSVO;
-	}
-	
-	public ActivityWSVO getQuestionsListForScopeId(Long scopeId){
-		
-		ActivityWSVO finalVO = new ActivityWSVO(); 
-		try {
-			
-			  List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireOfScope(scopeId);
-			    
-			    if(objList != null && objList.size() > 0){
-			      for (Object[] objects : objList) {
-			        ActivityWSVO mtchdVO = getMatchedActivityWSVO(finalVO.getAcitivityQuesList(),Long.valueOf(objects[6].toString()),"respondent");
-			        if(mtchdVO==null){
-			          mtchdVO = new ActivityWSVO();
-			          mtchdVO.setRespondentTypeId(Long.valueOf(objects[6].toString()));
-			          mtchdVO.setRespondentType(objects[7].toString());
-			          finalVO.getAcitivityQuesList().add(mtchdVO);
-			        }
-			        
-			        ActivityWSVO matchedVO = getMatchedActivityWSVO(mtchdVO.getQuestionList(),Long.valueOf(objects[0].toString()),"question");
-			        
-			        int number = mtchdVO.getQuestionList().size()+1;
-			        if(matchedVO == null){
-			          matchedVO = new ActivityWSVO();
-			          matchedVO.setQuestionId((Long)objects[0]);
-			          matchedVO.setQuestion(number+") "+objects[1].toString());
-			          matchedVO.setOptionTypeId((Long)objects[2]);
-			          matchedVO.setOptionType(objects[3].toString());
-			          mtchdVO.getQuestionList().add(matchedVO);
-			          matchedVO.setRespondentTypeId(Long.valueOf(objects[6].toString()));
-			          matchedVO.setRespondentType(objects[7].toString());
-			        }
-			        ActivityWSVO optionVO = new ActivityWSVO();
-			        optionVO.setOptionId((Long)objects[4]);
-			        optionVO.setOption(objects[5].toString());
-			        matchedVO.getOptionsList().add(optionVO);
-			      }
-			    }
-			    
-			   /* for(ActivityWSVO vo:finalVO.getAcitivityQuesList()){
-					if(vo!=null && !vo.getQuestionList().isEmpty()){
-						finalVO.getQuestionList().addAll(vo.getQuestionList());
-					}
-				}*/
-			    
-			    
-		} catch (Exception e) {
-			LOG.error("Exception occured in getQuestionsListForScopeId() Method ",e);
-		}
-		
-		
 		return finalVO;
 	}
 	
-	public ActivityWSVO getMatchedActivityWSVO(List<ActivityWSVO> list,Long id, String fltr){
-	    if(id!=null && list!=null && !list.isEmpty()){
-	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("Respondent")){
-	        for(ActivityWSVO voIn : list){
-	          if(voIn.getRespondentTypeId().equals(id)){
-	            return voIn;
-	          }
-	        }
-	      }
-	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("Question")){
-	        for(ActivityWSVO voIn : list){
-	          if(voIn.getQuestionId().equals(id)){
-	            return voIn;
-	          }
-	        }
-	      }
-	      if(!fltr.isEmpty() && fltr.equalsIgnoreCase("ActivityScopeId")){
-		        for(ActivityWSVO voIn : list){
-		          if(voIn.getActivityScopeId().equals(id)){
-		            return voIn;
-		          }
-		        }
-		      }
-	    }
-	    return null;
-	  }
+	public ActivityWSVO getQuestionsListForScopeId(List<Long> scopeIds){
+		
+		ActivityWSVO finalVO = new ActivityWSVO();
+		try {
+			List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireOfScope(scopeIds);
+			finalVO = new ActivityWSVO(); 
+			List<ActivityQuestionVO> 						 questsList 		= new ArrayList<ActivityQuestionVO>();
+			List<ActivityOptionVO> 		 					 optnsList 			= new ArrayList<ActivityOptionVO>();
+			List<ActivityQuestionnairVO>					 actvtyQustnr 		= new ArrayList<ActivityQuestionnairVO>();
+			List<ActivityQuestionnairOptionVO> 				 actvtyQustnrOptn 	= new ArrayList<ActivityQuestionnairOptionVO>();
+			
+			List<Long> qlist =  new ArrayList<Long>();
+			List<Long> oplist =  new ArrayList<Long>();
+			if(objList != null && objList.size() > 0){
+				for(Object[] obj:objList){
+					if(!qlist.contains(Long.valueOf(obj[0].toString()))){
+						ActivityQuestionVO qvo = new ActivityQuestionVO();
+						qvo.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null);
+						qvo.setQuestion(obj[1]!=null?obj[1].toString():"");
+						qlist.add(obj[0]!=null?Long.valueOf(obj[0].toString()):null);
+						questsList.add(qvo);
+					}
+					if(!oplist.contains(Long.valueOf(obj[5].toString()))){
+						ActivityOptionVO optnVO = new ActivityOptionVO();
+						optnVO.setOptionId(obj[5]!=null?Long.valueOf(obj[5].toString()):null);
+						optnVO.setOption(obj[6]!=null?obj[6].toString():"");
+						oplist.add(obj[5]!=null?Long.valueOf(obj[5].toString()):null);
+						optnsList.add(optnVO);
+					}
+					
+					ActivityQuestionnairVO	actvtyQustnrVO 			= new ActivityQuestionnairVO();
+					actvtyQustnrVO.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null); 
+					actvtyQustnrVO.setOptionTypeId(obj[3]!=null?Long.valueOf(obj[3].toString()):null);
+					actvtyQustnrVO.setOrderNo(obj[2]!=null?Long.valueOf(obj[2].toString()):null);
+					actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
+					actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
+					actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+					actvtyQustnrVO.setActivityScopeId(obj[10]!=null?Long.valueOf(obj[10].toString()):null);
+					actvtyQustnr.add(actvtyQustnrVO);
+					
+					ActivityQuestionnairOptionVO actvtyQustnrOptnVO = new ActivityQuestionnairOptionVO();
+					actvtyQustnrOptnVO.setActivityQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+					actvtyQustnrOptnVO.setOptionId(obj[5]!=null?Long.valueOf(obj[5].toString()):null);
+					actvtyQustnrOptnVO.setOrderNo(obj[7]!=null?Long.valueOf(obj[7].toString()):null);
+					actvtyQustnrOptn.add(actvtyQustnrOptnVO);
+				}
+			}
+			finalVO.setQuestionList(questsList);
+			finalVO.setOptionsList(optnsList);
+			finalVO.setQuestnairList(actvtyQustnr);
+			finalVO.setQuestnairOptnsList(actvtyQustnrOptn);
+		} catch (Exception e) {
+			LOG.error("Exception Raised ",e);
+			
+		}
+		return finalVO;
+	}
+	
+	
 	public List<String> getActivityDates(Long activityScopeId)
 	{
 		List<String> dates = new ArrayList<String>();
@@ -3538,15 +3522,15 @@ public class ActivityService implements IActivityService{
 	}
 	
 	
-	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId){
-		List<BasicVO> voList = new ArrayList<BasicVO>();
+	public List<ActivityReqAttributesVO> getRequiredAttributes(List<Long> scopeIds){
+		List<ActivityReqAttributesVO> voList = new ArrayList<ActivityReqAttributesVO>();
 		try {
-			List<Object[]> list = activityScopeRequiredAttributesDAO.getActivityRequiredAttributesForScope(scopeId);
+			List<Object[]> list = activityScopeRequiredAttributesDAO.getActivityRequiredAttributes(scopeIds);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					BasicVO vo = new BasicVO();
-					vo.setId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
-					vo.setName(obj[1] != null ? obj[1].toString():"");
+					ActivityReqAttributesVO vo = new ActivityReqAttributesVO();
+					vo.setActivityScopeId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
+					vo.setReqAttributeId(obj[2] != null ? Long.valueOf(obj[2].toString()):0l);
 					voList.add(vo);
 				}
 			}
@@ -3648,5 +3632,23 @@ public class ActivityService implements IActivityService{
 			LOG.error("Exception Occured in checkActivityTabUserLogin method in ActivityService ",e);
 		}
 		return loginvo;
+	}
+	
+	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId){
+		List<BasicVO> voList = new ArrayList<BasicVO>();
+		try {
+			List<Object[]> list = activityScopeRequiredAttributesDAO.getActivityRequiredAttributesForScope(scopeId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					BasicVO vo = new BasicVO();
+					vo.setId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getRequiredAttributesListForScope method in ActivityService ",e);
+		}
+		return voList;
 	}
 }
