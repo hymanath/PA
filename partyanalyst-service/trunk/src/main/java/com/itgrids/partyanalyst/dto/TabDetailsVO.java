@@ -16,7 +16,7 @@ import java.util.Date;
  * @author Client
  *
  */
-public class TabDetailsVO {
+public class TabDetailsVO implements java.io.Serializable{
 
 	private Long 			id;
 	private String 			name;

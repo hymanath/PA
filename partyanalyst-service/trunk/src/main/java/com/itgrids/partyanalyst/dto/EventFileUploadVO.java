@@ -2,8 +2,12 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
+/**
+ * @author Administrator
+ *
+ */
 public class EventFileUploadVO implements Serializable{
 
 	/**
@@ -20,6 +24,7 @@ public class EventFileUploadVO implements Serializable{
 	private Long levelId;
 	private Long levelValue;
 	private String activityDate;
+	private Date activityDateFormat;
 	private String fileExtension;
 	private Long updatedBy;
 	private File file;
@@ -31,8 +36,20 @@ public class EventFileUploadVO implements Serializable{
 	private String insertType;
 	private TabDetailsVO tabDetailsVO;
 	private String imageBase64String;
+	private Long 			activityLocationInfoId;
 	
-	
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
+	public Date getActivityDateFormat() {
+		return activityDateFormat;
+	}
+	public void setActivityDateFormat(Date activityDateFormat) {
+		this.activityDateFormat = activityDateFormat;
+	}
 	public Long getUserId() {
 		return userId;
 	}

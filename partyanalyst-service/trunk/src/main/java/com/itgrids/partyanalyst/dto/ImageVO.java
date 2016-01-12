@@ -6,7 +6,7 @@ public class ImageVO implements java.io.Serializable{
 
 	private Long 			id;
 	private String 			name;
-	private Date 			uploadTime;
+	private String 			uploadTime;
 	private String 			imei;
 	private String 			uniqueKey;
 	private Date 			insertedTime;
@@ -20,10 +20,41 @@ public class ImageVO implements java.io.Serializable{
 	private Long 			webPrimaryKey;
 	private String 			status;
 	
-	public Date getUploadTime() {
+	private Long 			levelId;
+	private Long 			levelValue;
+	private Long 			activityScopeId;
+	private Long 			activityLocationInfoId;
+	
+	
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
+	}
+	
+	public String getUploadTime() {
 		return uploadTime;
 	}
-	public void setUploadTime(Date uploadTime) {
+	public void setUploadTime(String uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 	public String getStatus() {
