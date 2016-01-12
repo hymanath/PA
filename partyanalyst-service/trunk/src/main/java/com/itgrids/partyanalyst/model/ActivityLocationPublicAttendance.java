@@ -33,6 +33,9 @@ public class ActivityLocationPublicAttendance {
 	
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
+	
+	private String userType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_location_public_attendance_id", unique = true, nullable = false)
@@ -115,4 +118,14 @@ public class ActivityLocationPublicAttendance {
 	public void setUniqueKey(String uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
+	
+	@Column(name="user_type")
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	
 }
