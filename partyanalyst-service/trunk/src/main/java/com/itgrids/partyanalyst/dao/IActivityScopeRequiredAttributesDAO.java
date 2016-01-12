@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.model.ActivityScopeRequiredAttributes;
 
 public interface IActivityScopeRequiredAttributesDAO extends GenericDao<ActivityScopeRequiredAttributes, Long>{
 	
+	public List<Object[]> getActivityRequiredAttributes(List<Long> scopeIds);
 	public List<Object[]> getActivityRequiredAttributesForScope(Long scopeId);
 
 }
