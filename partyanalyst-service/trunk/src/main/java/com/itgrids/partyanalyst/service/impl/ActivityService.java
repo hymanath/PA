@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -107,6 +107,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class ActivityService implements IActivityService{
@@ -2401,7 +2402,7 @@ public class ActivityService implements IActivityService{
 			    try {
 			    	 activityDate = dateFormat.parse(eventFileUploadVO.getActivityDate());
 					 activityDocument.setActivityDate(activityDate);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					LOG.error(" Exception Occured in eventsUploadForm() method, Exception - ",e);	
 				}
 			}
@@ -2428,7 +2429,18 @@ public class ActivityService implements IActivityService{
 			activityDocument.setPath(pathBuilder.toString());
 			
 			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
-			copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
+			
+			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
+			{   
+				destPath = folderName+"/"+randomNumber+".JPG";
+				activityDocument.setActivityDate(eventFileUploadVO.getActivityDateFormat());
+				ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+				imageAndStringConverter.convertBase64StringToImage(eventFileUploadVO.getImageBase64String(), destPath);
+			}
+			else
+			{
+				copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
+			}
 			
 			activityDocument.setInsertedBy(eventFileUploadVO.getUserId());
 			activityDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
@@ -2440,6 +2452,11 @@ public class ActivityService implements IActivityService{
 			activityDocument = activityDocumentDAO.save(activityDocument);
 			
 		    ActivityInfoDocument activityInfoDocument = new ActivityInfoDocument();
+		    
+			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
+				if(eventFileUploadVO.getActivityLocationInfoId() != null && eventFileUploadVO.getActivityLocationInfoId()>0L)
+					activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    
 		    activityInfoDocument.setActivityDocument(activityDocument);
 		    activityInfoDocument.setInsertedBy(eventFileUploadVO.getUserId());
 		    activityInfoDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
@@ -2448,11 +2465,15 @@ public class ActivityService implements IActivityService{
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUserAddress(userAddress);
 		    
-		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
-		    if(eventFileUploadVO.getLevelId() < 5l)
-		     activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLevelValue());
-		    else
-		     activityInfoDocument.setLocationValueAddress(Long.parseLong(eventFileUploadVO.getLevelValue().toString().substring(1).toString()));
+			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
+		    {
+	    		activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
+			    if(eventFileUploadVO.getLevelId() < 5l)
+			     activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLevelValue());
+			    else
+			     activityInfoDocument.setLocationValueAddress(Long.parseLong(eventFileUploadVO.getLevelValue().toString().substring(1).toString()));
+		    }
+		   
 		    
 		    if(eventFileUploadVO.getTemp() != null && eventFileUploadVO.getTemp().equalsIgnoreCase("dayCalCulationReq"))
 		    {
@@ -3552,24 +3573,34 @@ public class ActivityService implements IActivityService{
 	public Long savingTabDetails(final TabDetailsVO tabDetailsVO){
 		Long tabDetailsId = 0l;
 		try {
-			TabDetails tabDetails = new TabDetails();
+			
+			Long tabDetailsPrimaryKeyId = (Long) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
 					
-			tabDetails.setAttendedTime(tabDetailsVO.getAttendedTime());
-			tabDetails.setImei(tabDetailsVO.getImei());
-			tabDetails.setUniqueKey(tabDetailsVO.getUniqueKey());
-			tabDetails.setInsertedTime(tabDetailsVO.getInsertedTime());
-			tabDetails.setLatitude(tabDetailsVO.getLatitude());
-			tabDetails.setLongitude(tabDetailsVO.getLongitude());
-			tabDetails.setTabUserId(tabDetailsVO.getTabUserId());
-			tabDetails.setCurrentTabUserId(tabDetailsVO.getCurrentTabUserId());
-			tabDetails.setSyncSource(tabDetailsVO.getSyncSource());
-			tabDetails.setInsertedBy(tabDetailsVO.getInsertedBy());
-			tabDetails.setTabPrimaryKey(tabDetailsVO.getTabPrimaryKey());
+					TabDetails tabDetails = new TabDetails();
+					
+					tabDetails.setAttendedTime(tabDetailsVO.getAttendedTime());
+					tabDetails.setImei(tabDetailsVO.getImei());
+					tabDetails.setUniqueKey(tabDetailsVO.getUniqueKey());
+					tabDetails.setInsertedTime(tabDetailsVO.getInsertedTime());
+					tabDetails.setLatitude(tabDetailsVO.getLatitude());
+					tabDetails.setLongitude(tabDetailsVO.getLongitude());
+					tabDetails.setTabUserId(tabDetailsVO.getTabUserId());
+					tabDetails.setSyncSource("WS");
+					tabDetails.setTabPrimaryKey(tabDetailsVO.getTabPrimaryKey());
+					tabDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					
+					tabDetails = tabDetailsDAO.save(tabDetails);
+					
+					if(tabDetails != null)
+						return  tabDetails.getTabDetailsId();
+					else
+						return 0;
+				}
+			});
 			
-			tabDetails = tabDetailsDAO.save(tabDetails);
-			
-			if(tabDetails != null)
-				tabDetailsId = tabDetails.getTabDetailsId();
+			tabDetailsId = tabDetailsPrimaryKeyId;
+				
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in saveTabDetails method in ActivityService ",e);
 		}
