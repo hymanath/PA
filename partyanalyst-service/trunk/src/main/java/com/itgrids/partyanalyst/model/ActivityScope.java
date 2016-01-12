@@ -33,6 +33,8 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date insertionTime;
+	private Date startDate;
+	private Date endDate;
 	
 	private Activity activity;
 	private ActivityLevel activityLevel;
@@ -123,5 +125,21 @@ public class ActivityScope extends BaseModel implements Serializable{
 	}
 	public void setActivityLevel(ActivityLevel activityLevel) {
 		this.activityLevel = activityLevel;
+	}
+	
+	@Column(name="start_date")
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	@Column(name="end_date")
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 }
