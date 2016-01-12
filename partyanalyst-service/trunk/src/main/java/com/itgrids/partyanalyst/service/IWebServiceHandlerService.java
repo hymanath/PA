@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -130,5 +131,6 @@ public interface IWebServiceHandlerService {
 	public TdpCadreWSVO getActivityCadreDetails(String memberShipNo, String voterCardNo);
 	
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
+	public ImageVO saveActivitiesImages(ImageVO inputVO);
 	public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo);
 }
