@@ -28,6 +28,8 @@ public class ActivityLocationPublicAttendance {
 	private String voterCard;
 	private Long bloodGroupId;
 	private Date insertedTime;
+	private String membershipNo;
+	private String uniqueKey;
 	
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
@@ -98,5 +100,19 @@ public class ActivityLocationPublicAttendance {
 		this.tdpCadreId = tdpCadreId;
 	}
 	
-
+	@Column(name="membership_no")
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	
+	@Column(name="unique_key")
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 }

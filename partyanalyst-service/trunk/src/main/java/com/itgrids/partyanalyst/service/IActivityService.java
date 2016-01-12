@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface IActivityService {
@@ -42,6 +43,8 @@ public interface IActivityService {
 	
 	public ActivityLoginVO checkActivityTabUserLogin(String userName,String password);
 	public Long getConstituencyId(Long locationLevel, Long locationValue);
+	public TdpCadreWSVO getCadreDetailsByVoterIdorMemberShipNo(String memberShipNo,String voterCardNo);
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
+	public BasicVO getActivityLocationWiseDetailsByScopeId(Long scopeId);
 }

@@ -38,9 +38,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
-import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -64,6 +62,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -3036,6 +3035,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   return activityVO;
 	   }
 	   
-	   
+	   public TdpCadreWSVO getActivityCadreDetails(String memberShipNo, String voterCardNo){
+		   Log.debug("Entered into getActivityCadreDetails Webservice method");
+		   TdpCadreWSVO tdpCadreWSVO = new TdpCadreWSVO();
+		   try{
+			   tdpCadreWSVO = activityService.getCadreDetailsByVoterIdorMemberShipNo(memberShipNo, voterCardNo);
+		   }catch (Exception e) {
+			   Log.error("Exception in getActivityCadreDetails Webservice method");
+		   }
+		   return tdpCadreWSVO;
+	   }
 }
 

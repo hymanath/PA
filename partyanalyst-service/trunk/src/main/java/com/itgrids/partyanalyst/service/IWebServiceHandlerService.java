@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -125,6 +126,7 @@ public interface IWebServiceHandlerService {
 	public List<TdpCadreVO>  getWebServiceEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,String reportType, Integer startIndex,Integer maxIndex);
 	 
 	public ActivityLoginVO checkActivityTabUserLogin(String userName, String password);
+	public TdpCadreWSVO getActivityCadreDetails(String memberShipNo, String voterCardNo);
 	
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
 }
