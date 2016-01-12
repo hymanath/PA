@@ -44,7 +44,7 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		}
 		
 		//Count
-		str.append(" ,count(model.attendance.activityLocationPublicAttendance.activityLocationPublicAttendanceId)");
+		str.append(" count(model.attendance.activityLocationPublicAttendance.activityLocationPublicAttendanceId)");
 		str.append(",model.attendance.syncSource");
 		
 		
@@ -132,7 +132,7 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 			str.append("  select C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 		}
 		//Count
-		str.append(" ,count(distinct model.activityLocationInfo.locationValue)");
+		str.append(" count(distinct model.activityLocationInfo.locationValue)");
 		str.append(" from ActivityLocationAttendance model ");
 		
 		if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
