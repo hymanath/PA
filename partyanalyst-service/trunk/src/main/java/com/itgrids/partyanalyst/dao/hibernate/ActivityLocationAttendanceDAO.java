@@ -23,24 +23,24 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		StringBuilder str = new StringBuilder();
 		if(inputVO.getSearchType().equalsIgnoreCase("district"))
 		{
-			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName ");
+			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName, ");
 		}
 		if(inputVO.getSearchType().equalsIgnoreCase("constituency"))
 		{
-			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name");
+			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name,");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-			str.append(" T.tehsilId,T.tehsilName, ");
+			str.append(" select T.tehsilId,T.tehsilName, ");
 		}
 		
 		else if( inputVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-			str.append(" LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
+			str.append(" select LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-			str.append(" P.panchayatId,P.panchayatName, ");
+			str.append(" select P.panchayatId,P.panchayatName, ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-			str.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
+			str.append("  select C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 		}
 		
 		//Count
