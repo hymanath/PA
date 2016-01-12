@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -1717,6 +1718,19 @@ public class WebServiceHandler {
 			 return webServiceHandlerService.savePublicActivityAttendance(inputVo);
 		 } catch (Exception e) {
 			 LOG.error("Exception Occured in savePublicActivityAttendance() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
+	 
+	 @POST
+	 @Path("/activityQuestionAnswer")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO aqWSVO){
+		 try {
+			 return webServiceHandlerService.saveActivityQuestionAnswer(aqWSVO);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in saveActivityQuestionAnswer() Method, Exception is ",e);
 		 }
 		 return null;
 	 }
