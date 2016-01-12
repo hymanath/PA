@@ -1008,7 +1008,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 								}
 								*/
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
-								str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';
+								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								
@@ -1927,58 +1927,59 @@ function getActivityLocationWiseDetails()
 		}
 	});
 }
-function buildBloodDonation(result){
-	
-	var str='';
-	
-	str+='<table class="table table-bordered m_top10">';
-		str+='<thead>';
-			str+='<tr>';
-				 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">CONSTITUENCY NAME </th>';
-				 str+='<th colspan=7 style="text-align: center;vertical-align: middle;">MEMBERS ATTENDED</th>';
-				 str+='<th colspan=2 style="text-align: center;">PHOTOS UPLOAD</th>';
-				 str+='<th rowspan=3 style="vertical-align: middle;">QUESTIONAIRE</th>';
-				 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">ORGANISER QUESTIONAIRE</th>';
-				 str+='<th rowspan=3 style="vertical-align: middle;">UPDATE</th>';
-			str+='</tr>';
-			str+='<tr>';
-				str+='<th rowspan=2 style="vertical-align: middle;">TOTAL</th>';
-				str+='<th colspan=3 style="text-align: center;">CADRE</th>';
-				str+='<th colspan=3 style="text-align: center;">PUBLIC</th>';
-				str+='<th rowspan=2 style="vertical-align: middle;">TAB</th>';
-				str+='<th rowspan=2 style="vertical-align: middle;">INFOCELL</th>';
-			str+='</tr>';
-			str+='<tr>';
-				str+='<th style="text-align: center;">Total</th>';
-				str+='<th style="text-align: center;">Tab</th>';
-				str+='<th style="text-align: center;">Infocell</th>';
-				str+='<th style="text-align: center;">Total</th>';
-				str+='<th style="text-align: center;">Tab</th>';
-				str+='<th style="text-align: center;">Infocell</th>';
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result.constituencyList){
-			str+='<tr>';
-				str+='<td>'+result.constituencyList[i].name+'</td>';
-				str+='<td>224</td>';
-				str+='<td>120</td>';
-				str+='<td>12</td>';
-				str+='<td>1000</td>';
-				str+='<td>120</td>';
-				str+='<td>12</td>';
-				str+='<td>1000</td>';
-				str+='<td>5</td>';
-				str+='<td>666</td>';
-				str+='<td>200</td>';
-				str+='<td>Yes</td>';
-				str+='<td><button type="button" class="btn btn-success">Update</button></td>';
-			str+='</tr>';
-		}
-		str+='</tbody>';
-	str+='</table>';
-			
-$("#bloodDonationDetails").html(str);
+
+	function buildBloodDonation(result){
+		var str='';
+		
+		str+='<table class="table table-bordered m_top10">';
+			str+='<thead>';
+				str+='<tr>';
+					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">CONSTITUENCY NAME </th>';
+					 str+='<th colspan=7 style="text-align: center;vertical-align: middle;">MEMBERS ATTENDED</th>';
+					 str+='<th colspan=2 style="text-align: center;">PHOTOS UPLOAD</th>';
+					 str+='<th rowspan=3 style="vertical-align: middle;">QUESTIONAIRE</th>';
+					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">ORGANISER QUESTIONAIRE</th>';
+					 str+='<th rowspan=3 style="vertical-align: middle;">UPDATE</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th rowspan=2 style="vertical-align: middle;">TOTAL</th>';
+					str+='<th colspan=3 style="text-align: center;">CADRE</th>';
+					str+='<th colspan=3 style="text-align: center;">PUBLIC</th>';
+					str+='<th rowspan=2 style="vertical-align: middle;">TAB</th>';
+					str+='<th rowspan=2 style="vertical-align: middle;">INFOCELL</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th style="text-align: center;">Total</th>';
+					str+='<th style="text-align: center;">Tab</th>';
+					str+='<th style="text-align: center;">Infocell</th>';
+					str+='<th style="text-align: center;">Total</th>';
+					str+='<th style="text-align: center;">Tab</th>';
+					str+='<th style="text-align: center;">Infocell</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result.constituencyList){
+				str+='<tr>';
+					str+='<td>'+result.constituencyList[i].name+'</td>';
+					str+='<td>224</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>5</td>';
+					str+='<td>666</td>';
+					str+='<td>200</td>';
+					str+='<td>Yes</td>';
+					str+='<td><button type="button" class="btn btn-success">Update</button></td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+				
+		$("#bloodDonationDetails").html(str);
+	}
 	
 function getActivityDates()
 {
@@ -2006,7 +2007,7 @@ function getActivityDates()
 						});
 			//	conductedDate	
 			}
-		}) 
+		});
 }
 	
 	$(document).on("change","#districtList",function(){
@@ -2014,7 +2015,7 @@ function getActivityDates()
 		if(activityLevelId == 5){
 		$('#constiList').find('option').remove();
 		var districtId = $(this).val();
-	var jObj = {
+		var jObj = {
 			task:"getConstituenciesForDistrict",
 			districtId:districtId
 		};
