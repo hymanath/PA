@@ -40,14 +40,14 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String ivrStatus;
+	private Date plannedEndDate;
+	private Date conductedEndDate;
 	
 	private Constituency constituency;
 	private ActivityScope activityScope;
-	private TdpCommitteeLevel tdpCommitteeLevel;
+	private ActivityPerformLevel activityPerformLevel;
 	private User insertedUser;
 	private User updatedUser;
-	
-	private String insertType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -204,11 +204,11 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	@JoinColumn(name="location_level", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCommitteeLevel getTdpCommitteeLevel() {
-		return tdpCommitteeLevel;
+	public ActivityPerformLevel getActivityPerformLevel() {
+		return activityPerformLevel;
 	}
-	public void setTdpCommitteeLevel(TdpCommitteeLevel tdpCommitteeLevel) {
-		this.tdpCommitteeLevel = tdpCommitteeLevel;
+	public void setActivityPerformLevel(ActivityPerformLevel activityPerformLevel) {
+		this.activityPerformLevel = activityPerformLevel;
 	}
 	
 	@Column(name="ivr_status")
@@ -218,13 +218,22 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setIvrStatus(String ivrStatus) {
 		this.ivrStatus = ivrStatus;
 	}
-	@Column(name="insert_type")
-	public String getInsertType() {
-		return insertType;
+	
+	
+	@Column(name="planned_end_date")
+	public Date getPlannedEndDate() {
+		return plannedEndDate;
 	}
-	public void setInsertType(String insertType) {
-		this.insertType = insertType;
+	public void setPlannedEndDate(Date plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
 	}
 	
+	@Column(name="conducted_end_date")
+	public Date getConductedEndDate() {
+		return conductedEndDate;
+	}
+	public void setConductedEndDate(Date conductedEndDate) {
+		this.conductedEndDate = conductedEndDate;
+	}
 	
 }
