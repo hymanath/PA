@@ -56,11 +56,27 @@
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 	
+	
+<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	
  <style type="text/css">
 	.m_top10{margin-top:10px}
+	.m_top20{margin-top:20px}
 	.input-g1 .form-control{border-radius:0px;border-left:0px}
 	.input-g1 .input-group-addon{border-radius:0px;background:#fff;}
 	.starMark{font:15px;color:red;}
+	.navtabsCustom{border:0px}
+	.navtabsCustom li{border:0px;}
+	.navtabsCustom li a{border-radius:0px;color:#666 }
+	.navtabsContent{background:#fff;padding:10px;border:1px solid #ddd}
+	.bg_cc{background:#ccc}
+	.or{padding:8px;border-radius:50%;border:1px solid #ddd;width:40px;}
+
+.errorCls{color:red;font-size:12px;}
+.prev, .next{min-width:44px !important}
 
  </style>
 </head>
@@ -160,6 +176,8 @@
                 </div>
             </div>
         </div>
+		
+		
         <div class="col-md-12" >
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
 		  <div class="panel-heading">
@@ -171,6 +189,7 @@
 			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
 		  </div>
 		   <div class="panel-body" id="assblyBody">
+		   <div id="bloodDonationDetails"></div>
 			<div id="buildAssConsActivity" ></div>
 		   </div>
 		
@@ -265,7 +284,7 @@
 		  <div class="modal-body">
 			<div id="questionsDivBodyId"></div>
 		  </div>
-		  <div id="errMsg" style="color:green;margin:20px;"></div>
+		  <div id="errMsg" style="color:green;margin:20px;" class="errMsgCls"></div>
 		  <div class="modal-footer" id="questionsDivFooterId">
 			<!--<button type="button" id="saveResult" class="btn btn-custom btn-success">Save</button>-->
 		  </div>
@@ -274,14 +293,182 @@
 	</div>
 	
 	<!-- questions modal end -->
-							
-							
+	
+<div class="modal fade" id="activityCadre" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg_cc">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">NUZVID CONSTITUENCY</h4>
+      </div>
+      <div class="modal-body" style="background:#EFF3F4">
+		<div class="row">
+			<div class="col-md-4">
+				<label>Planned Date</label>
+				<div class="input-group input-g1">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control" id="plannedDate">
+				</div>
+			</div>
+			<div class="col-md-4">
+				<label>Select Conducted Date</label>
+				<div class="input-group input-g1">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control" id="conductedDate">
+				</div>
+			</div>
+		</div>
+       <div>
+		  <ul class="nav nav-tabs navtabsCustom m_top20" role="tablist">
+			<li role="presentation" class="active"><a href="#cadre" aria-controls="cadre" role="tab" data-toggle="tab">Cadre</a></li>
+			<li role="presentation"><a href="#public" aria-controls="public" role="tab" data-toggle="tab" onclick="getBloodGroups();">Public</a></li>
+			<li role="presentation"><a href="#uploadphotos" aria-controls="uploadphotos" role="tab" data-toggle="tab" >Upload Photos</a></li>
+			<li role="presentation"><a href="#questionnaire" aria-controls="questionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(4)">Questionnaire</a></li>
+			<li role="presentation"><a href="#organizerQuestionnaire" aria-controls="organizerQuestionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(5)">Organizer Questionnaire</a></li>
+		  </ul>
+		  <div class="tab-content navtabsContent">
+		  <!-- Cadre -->
+			<div role="tabpanel" class="tab-pane active" id="cadre">
+				<div class="row">
+				 <div id="searchErrDiv" style="margin-left:10px;"></div>
+					<div class="col-md-3">
+						<label>Enter Membership No</label>
+						<input type="text" class="form-control clearCadre" id="membershipId">
+					</div>
+					<div class="col-md-1 m_top20">
+						<div class="or">OR</div>
+					</div>
+					<div class="col-md-3">
+						<label>Voter ID</label>
+						<input type="text" class="form-control clearCadre" id="voterId">
+					</div>
+					<div class="col-md-5 m_top20">
+					  <button type="button" class="btn btn-primary" onclick="getCadreDetailsBySearchCriteria(0);">Submit</button>
+					  <button type="button" class="btn btn-primary" id="cadreSaveBtn" style="display:none;" onclick="saveAttendedCadre();">Save changes</button>
+					</div>
+					 
+					<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" style=" margin-left: 400px;margin-top: 20px;width:250px;height:200px;display:none;"/>
+				<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
+				<div id="topPaginationDivId" class="paginationDivId"></div>
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;margin-top:10px;overflow:scroll:900px;display:none;" id="searchcadreDetailsDiv"></div>
+				<div id="paginationDivId"  class="paginationDivId"></div>
+
+			</div>
+				</div>
+			</div>
+			<!-- end -->
+			<div role="tabpanel" class="tab-pane" id="public">
+			<div class="row">
+			 <div id="searchErrDiv1" style="margin-left:10px;"></div>
+					<div class="col-md-3">
+						<label>Name</label>
+						<input type="text" class="form-control clearPublic" id="publicNameId">
+					</div>
+					
+					<div class="col-md-3">
+						<label>Mobile</label>
+						<input type="text" class="form-control clearPublic" id="publicMobileNoId">
+					</div>
+					
+					<div class="col-md-3">
+						<label>Voter Card</label>
+						<input type="text" class="form-control clearPublic" id="publicVoterCardId">
+					</div>
+					<div class="col-md-3">
+						<label>blood Group</label>
+						<select type="text" class="form-control" id="publicbloodGroupId"></select>
+					</div>
+					<div class="col-md-5 m_top20">
+						<button type="button" class="btn btn-primary" onclick="saveAttendedPublic();">Save changes</button>
+					</div>
+			</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="uploadphotos">
+				<div id="uploadInnerDiv" class="row">
+					<div class="col-md-12">
+					<div class="errorDiv"></div>
+					<input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
+					<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
+				</div>
+			</div>
+			<div class="row">
+				<div id="uploadDiv" class="col-md-6 m_top20">
+					<button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>
+				</div>
+			</div>
+		  </div>
+		  
+		  <div role="tabpanel" class="tab-pane" id="questionnaire">
+				
+			<div class="row">
+				<div class="questionnaireCls"></div>
+			</div>
+		  </div>
+		  <div role="tabpanel" class="tab-pane" id="organizerQuestionnaire">
+				
+			<div class="row">
+				<div class="questionnaireCls"></div>
+			 </div>
+		  </div>
+		</div>
+      </div>
+    <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveAttendedCadre();">Save changes</button>
+      </div>-->
+    </div>
+  </div>
+</div>						
+</div>						
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title imgTitleCls myModalLabel" id="myModalLabel" ></h4>
+      </div>
+      <div class="modal-body">
+       <div id="imagesDiv" class="row"></div>
+	   <div id="paginationDiv"></div>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary deleteBtnCls" style="display:none">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/activity/Date/daterangepicker.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script>
+
+var actScopeId = '${activityScopeId}';
+var locationValueID = '${locationValue}';
+var actvityLevelId = '${activityLevel}';
+var locationName = '${locationName}';
+
+var gobalLevelId = 0;
+var gobalLevelValue = 0;
+var gobalActivityScopeId = 0;
+var gobalLocName = "";
+var gobalActivityDate = null;
+var gobalTempVar = "dayCalCulationNotReq";
+var gobalDay = 0;
+
 $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
 	$('.applyBtn').click(function(){
@@ -810,8 +997,9 @@ function getLocationDetailsForActivity(startDate,endDate)
 								}
 								*/
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
+								str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
-								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" class="btn btn-success btn-xs" id="updateQBtnId"/>';
+								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId"/>';
 								
 								str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>';
 								
@@ -822,6 +1010,14 @@ function getLocationDetailsForActivity(startDate,endDate)
 						}
 					}
 					$('#home').html(str);
+					$(document).on("click","#activityCadrePopup",function(){
+						 gobalLevelValue = $(this).attr("attr_location_Value");
+						 gobalLocName  = $(this).attr("attr_location_name");
+						 getRequiredAttributesByActScopeId();
+						$("#activityCadre").modal("show")
+					});
+					$('#plannedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
+					$('#conductedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#home').append(' <div><input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
 					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					
@@ -841,6 +1037,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 function gettingCadreDetails(locationId,locationName,constituencyId){	
 	
 	$("#cadreDetailsDiv").html('');
+	
 	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+'  '+$("#activityLevelList option:selected").text()+' Main Committee Members </span>');
 	$("#dialogSummaryDistsrict").modal("show");
 	$("#dataLoadingImg").show();
@@ -970,6 +1167,7 @@ getUserAccessDistrictList();
 				$("#districtHeadingId").hide();
 		   }
 			buildAsemblyConstWiseActivities(result,levelId);
+			
        }else{
 		   $("#constituencyHeadingId").html('ASSEMBLY CONSTITUENCY WISE ACTIVITIES  '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 		   $("#constituencyHeadingId").hide();
@@ -978,7 +1176,16 @@ getUserAccessDistrictList();
 		    $("#showAsmblyData").hide();
          $("#buildAssConsActivity").html("NO DATA AVAILABLE...");
        }
-     
+	  
+		 if(activityTypeId == 4){
+			buildBloodDonation();
+			$("#bloodDonationDetails").show();
+			$("#buildAssConsActivity").hide();
+			}
+			else{
+				$("#bloodDonationDetails").hide();
+				$("#buildAssConsActivity").show();
+			}
     });   
    });
    
@@ -996,10 +1203,13 @@ $("#hideAsmblyData").click(function(){
 });
   function buildAsemblyConstWiseActivities(result,levelId){
    
-	if(levelId == 3)
+	if(levelId == 3){
 		$("#districtHeadingId").show();
-	else
+	}
+		
+	else{
 		$("#constituencyHeadingId").show();
+	}
 	 
     var str ='';
     str+='<table class="table table-bordered table-responsive bg_ff dataTableDiv">';
@@ -1073,8 +1283,8 @@ $("#hideAsmblyData").click(function(){
 			return false;
 		}else{
 			var jsObj={   
-				scopeId : scopeId,
-				requiredAttributeId:0
+				scopeId : 5,
+				requiredAttributeId:0,
             };
        
 			$.ajax({
@@ -1129,18 +1339,18 @@ $("#hideAsmblyData").click(function(){
 		$(".selectedVal").each(function(){
 		var value='';
 		var remarks='';
-			if($(this).attr("attr_type")=="selectbox"){
-				var key=$(this).attr("attr_qid");
-				value=$(this).val();
-			}
-			if($(this).attr("attr_type")=="ckeckBox"){
+		if($(this).attr("attr_type")=="selectbox" && $(this).val()>0){
+			var key=$(this).attr("attr_qid");
+			value=$(this).val();
+		}
+			/* if($(this).attr("attr_type")=="ckeckBox"){
 				if(this.checked)
 					value = this.value;			
 			}
 			else{
 				remarks = $(this).val();
 				value = "3";
-			}
+			} */
 			 
 			if(value != null && value.length>0)
 			{
@@ -1155,7 +1365,6 @@ $("#hideAsmblyData").click(function(){
 			}	
 				
 		});
-		 
 		 var jsObj={
 		         activityScopeId : $("#ActivityList").val(),
 				 activityLevelId : $("#activityLevelList").val(),
@@ -1170,9 +1379,9 @@ $("#hideAsmblyData").click(function(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.resultCode == 0){
-				$("#errMsg").html("Question Saved Successfully")
+				$(".errMsgCls").html("Question Saved Successfully")
 			}else{
-				$("#errMsg").html("Exception Occurred try Again")
+				$(".errMsgCls").html("Exception Occurred try Again")
 			}
 			//console.log(result);
 		});
@@ -1181,7 +1390,7 @@ $("#hideAsmblyData").click(function(){
 	
 	$(document).on("click","#uploadImagesId",function(){
 		
-		var locationValue = $(this).attr("attr_location_Value");
+		/*var locationValue = $(this).attr("attr_location_Value");
 		var activityLevel = $("#activityLevelList").val();
 		var activityScopeId = $("#ActivityList").val();
 		var locationName = $(this).attr("attr_location_Name");
@@ -1213,14 +1422,545 @@ $("#hideAsmblyData").click(function(){
 				else if(firstChar == 2)
 					locationLevelId = 8;//ward
 			}
-		}
-		
-		window.open('eventFieUploadAction.action?activityScopeId='+activityScopeId+'&locationValue='+locationValue+'&activityLevel='+locationLevelId+'&locationName='+locationName+'','_blank');
+		}*/
+		var locationName = $(this).attr("attr_location_Name");
+		gobalLevelValue = $(this).attr("attr_location_Value");
+		setGobalValues();
+		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'','_blank');
 	});
+	
+	
+	function setGobalValues()
+	{
+		//var locationValue = $(this).attr("attr_location_Value");
+		var activityScopeId = $("#ActivityList").val();
+		//var locationName = $(this).attr("attr_location_Name");
+		var locationLevelId = $('#activityLevelList').val();
+		
+		//gobalLevelValue       = locationValue;
+		gobalActivityScopeId  = activityScopeId;
+		//gobalLocName          = locationName;
+		
+		
+	    if(locationLevelId == 3 || locationLevelId == 4){
+			gobalLevelId = locationLevelId;
+		}
+		else{
+			var firstChar = gobalLevelValue.substr(0,1);
+			
+			if(locationLevelId == 2)
+		    {
+				if(firstChar == 2)
+					gobalLevelId = 5;//mandal
+				else if(firstChar == 3)
+					gobalLevelId = 8;//division
+				else if(firstChar == 1)
+					gobalLevelId = 7;//localEleBody	
+			}
+			else if(locationLevelId == 1)
+			{
+				if(firstChar == 1)
+					gobalLevelId = 6;//panchayat
+				else if(firstChar == 2)
+					gobalLevelId = 8;//ward
+			}
+		}
+	}
+	
 	
 	$(document).on("change","#activityTypeList",function(){
 		getActivityNames();
 	});
+	
+	function getCadreDetailsBySearchCriteria(startIndex)
+		{
+		$("#cadreSaveBtn").hide();	
+		var locationLevel = 0;
+		var locationValue = 0;
+		var searchName = '';
+		var mobileNo = '';
+		var casteCategory = '';
+		var casteStateId = 0;
+		var fromAge = 0;
+		var toAge = 0;
+		var memberShipCardNo = '';
+		var trNumber = '';
+		var voterCardNo = '';
+		var gender = '';
+		var houseNo = '';
+		var membershipAndMobileNo = '';
+	$('#searchcadreDetailsDiv,#searchErrDiv').html('');
+		if(startIndex == 0)
+		{
+			$(".paginationDivId").html('');
+		}
+		$(".paginationDivId").hide();	
+			var memberShipCardNo = $('#membershipId').val().trim();
+			var voterCardNo = $('#voterId').val().trim();
+			
+			if(memberShipCardNo.trim().length == 0 && voterCardNo.trim().length == 0)
+			{
+				$('#searchErrDiv').html('Search Value is Required').css("color","red");
+				return;
+			}
+			
+		var removedStatus =false;
+		$("#searchDataImg").show();
+		var jsObj =
+		{
+			locationLevel :locationLevel,
+			locationValue:locationValue,
+			searchName : searchName,
+			mobileNo: mobileNo,
+			casteCategory : casteCategory,
+			fromAge : fromAge,
+			toAge : toAge,
+			memberShipCardNo: memberShipCardNo,
+			casteStateId : casteStateId,
+			trNumber : trNumber,
+			voterCardNo:voterCardNo,
+			gender:gender,
+			houseNo:houseNo,
+			startIndex:startIndex,
+			maxIndex : 50,
+			removedStatus:removedStatus,
+			task:"tdpCadreSearch"
+		}
+		$.ajax({
+				type : "POST",
+				url : "getCadreSearchDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$(".paginationDivId").show();
+				 if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+				$("#searchDataImg").hide();
+				$('#searchcadreDetailsDiv').show();
+				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
+				{
+				buildCadreDetails(result.previousRoles,jsObj);
+				}
+				else
+				{
+					
+					$('#searchcadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
+				}
+			});  
+
+	}
+	function buildCadreDetails(result,jsObj)
+	{
+		$(".paginationDivId").show();
+	
+		var str ='';
+		var elegRolCnt=0;
+		var dtCnt = 0;
+		if(result != null)
+		{
+			for(var i in result)
+			{
+				
+				if(result[i].deletedStatus == "MD"){
+					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}else{
+					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+				}
+				
+				str+='<span href="#" class="media-left">';
+				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
+				str+='</span>';
+				str+='<div class="media-body">';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'<input type="checkbox" value="'+result[i].tdpCadreId+'" class="pull-right searchCadreCheck"> ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
+				str+='<ul class="list-inline">';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Gender: '+result[i].gender+'</li>';
+				str+='<li>Mobile No: <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span></li>';
+				str+='<li>Caste: <span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
+				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				if(result[i].deletedStatus == "MD"){
+					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
+				}
+				else{
+					str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
+				}
+				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
+				str+='</ul>';
+				
+				/*str+='<div>';
+				if(result[i].deletedStatus != "MD"){
+					
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
+					
+						str+='<div id="rc'+result[i].tdpCadreId+'" class="pull-right cadreRemoveCls" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-remove remove-icon" data-toggle="tooltip" data-placement="bottom" title="Remove Cadre"></i></div>';
+						
+						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
+						
+					</c:if> 
+				}
+				
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
+				</c:if> 
+				str+='</div>';*/
+				
+				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
+				{
+					str+='<ul>';
+					str+='<li style="font-weight:bold;display: block;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</li>';	
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</li>';
+						}
+					}
+					
+					str+='</ul>';	
+					str+='</div>';
+					str+='</div>';
+			}
+				else{
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+					    str+='<ul>';
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</li>';
+						}
+					    str+='</ul>';
+					}
+					str+='</div>';
+					str+='</div>';
+				
+				}
+				elegRolCnt++;
+				dtCnt++;
+			}
+		if(result[0].mobileType > 50)	
+		{
+		var itemsCount=result[0].mobileType;
+	    var maxResults=jsObj.maxIndex;
+	   
+	     if(jsObj.startIndex==0){
+		   $(".paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*50;
+				getCadreDetailsBySearchCriteria(num);
+				
+			}
+			});
+		}
+		
+		}
+		$("#cadreSaveBtn").show();
+		}
+		$('#searchcadreDetailsDiv').html(str);
+		$('[data-toggle="tooltip"]').tooltip();
+	}
+		
+	 $(document).on("click",".searchCadreCheck",function(){
+	 $(".searchCadreCheck").removeAttr("checked");
+	 $(this).prop( "checked", true );;
+  });
+  function saveAttendedCadre()
+  {
+	  $('#searchErrDiv').html('');
+	 
+	   $(".searchCadreCheck").each(function(){
+		   var cadreId = 0;
+		   if($(this).is(':checked'))
+			cadreId  = $(this).val();
+			if(cadreId == 0)
+			{
+				$('#searchErrDiv').html('Select Cadre').css("color","red");
+				return;
+			}
+				var jsObj =
+			{
+				tdpCadreId :cadreId,
+				activityLocationInfoId:2,
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "saveCadreActivityAttendanceInfoAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$('#searchErrDiv').html("Saved Successfully").css("color","green");
+			$(".clearCadre").val("");
+			
+		})
+	})
+  }
+   function saveAttendedPublic()
+  {
+	  $("#searchErrDiv1").html('');
+	 // var activityId= $("#ActivityList").val();
+	  var name = $("#publicNameId").val().trim();
+	  var mobileNumber = $("#publicMobileNoId").val().trim();
+	  var voterCard = $("#publicVoterCardId").val().trim();
+	  var bloodGroupId = $("#publicbloodGroupId").val();
+	  var pattern = /^\d{10}$/;
+	  var bloodGroupId ="";
+	  if(name.length == 0)
+			{
+				$('#searchErrDiv1').html('Name is Required').css("color","red");
+				return;
+			}
+			 if(mobileNumber.length == 0)
+			{
+				$('#searchErrDiv1').html('mobileNumber is Required').css("color","red");
+				return;
+			}
+			else if(!pattern.test(mobileNumber)) {
+			$('#searchErrDiv1').html('Mobile Number Should be Numerical & 10 digits only <br>');
+			return;
+			}
+		
+			 if(voterCard.length == 0)
+			{
+				$('#searchErrDiv1').html('Voter Card is Required').css("color","red");
+				return;
+			}
+		
+				var jsObj =
+			{
+				name :name,
+				mobileNumber:mobileNumber,
+				voterCard:voterCard,
+				activityLocationInfoId:2,
+				bloodGroupId:bloodGroupId,
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "savePublicActivityAttendanceInfoAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$(".clearPublic").val("");
+			$("#searchErrDiv1").html("Saved Successfully").css("color","green");
+		})
+	
+  }
+  function getBloodGroups()
+  {
+	  
+	$('#publicbloodGroupId').find('option').remove();
+	$('#publicbloodGroupId').append('<option value="0"> Select </option>');
+	   var jsObj =
+			{
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "getBloodGroupsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#publicbloodGroupId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+		}) 
+  }
+  
+  function validateFields()
+  {
+	  $(".errorDiv").html("");
+	  var str = '';
+	  var flag = true;
+	  var conductDate = $("#conductedDate").val();
+	  if(conductDate == null || conductDate.trim().length == 0){
+		str += 'Please Select Conducted Date';
+	   flag = false;
+	  }
+   
+   if(!flag){
+		$(".jFiler-items-list").html("");
+	}
+   if(flag){
+     setGobalValues();
+	 var d = conductDate.split("/");//dd/mm/yyyy
+	 gobalActivityDate = d[1] +'/'+ d[0] +'/'+ d[2];//mm/dd/yyyy
+	 gobalTempVar = "dayCalCulationReq";
+   }
+   $(".errorDiv").html(str).addClass("errorCls");  
+ 
+   return flag;
+  }
+  
+ 
+
+$(document).on("click",".deleteLocationImgCheck",function() {
+	var imageCheck = false;
+	$(".deleteLocationImgCheck").each(function(){
+		if($(this).is(":checked") == true){imageCheck = true;}
+		});
+	if(!imageCheck){
+		$(".deleteBtnCls").hide();
+	}
+    else{
+	   $(".deleteBtnCls").show();
+    }	
+});
+
+function getRequiredAttributesByActScopeId()
+{
+	var activityScopeId = $("#ActivityList").val();
+	var jsObj =
+			{
+				activityScopeId:activityScopeId,
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "getRequiredAttributesByActScopeIdAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			console.log(result)
+		}) 
+}
+
+function getQuestionnaireDetails(requiredAttributeId)
+{
+	var activityScopeId = $("#ActivityList").val();
+	$(".questionnaireCls").html("");
+	
+	var jsObj={   
+				scopeId 			: 5,
+				requiredAttributeId : requiredAttributeId,
+            };
+       
+			$.ajax({
+				type : "GET",
+				url : "getQuestionnaireForScopeAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildQuestionnaireDetails(result);
+		});
+			
+}
+function buildQuestionnaireDetails(result)
+{
+	var str='';
+	if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
+		for(var i in result.activityVoList){
+			str+='<div class="col-md-12">'
+			str+='<div class="row">'
+			str+='<div class="col-md-12 m_top10">';
+					str+='<label>'+result.activityVoList[i].question+' </label><br/>';
+			str+='</div>';
+			str+='<div class="col-md-4">';
+
+				if(result.activityVoList[i].optionsList!=null && result.activityVoList[i].optionsList.length>0){
+					if(result.activityVoList[i].optionTypeId==1){
+						str+='<select class="form-control selectedVal" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'">';
+						str+='<option value="0">Select Option </option>';
+							for(var j in result.activityVoList[i].optionsList){
+								str+='<option value="'+result.activityVoList[i].optionsList[j].optionId+'">'+result.activityVoList[i].optionsList[j].option+'</option>';
+							}
+							str+='</select>';
+					}
+					else if(result.activityVoList[i].optionTypeId==2){
+						for(var j in result.activityVoList[i].optionsList){
+							str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
+						}
+					}
+					else if(result.activityVoList[i].optionTypeId==3){
+						str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" /></label>';
+					}
+				}
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+		}
+		str += ' <div id="errMsg" class="col-md-12 m_top10 errMsgCls" style="color:green;margin:20px;"></div>';
+		str+= '<div class="col-md-12 m_top10"><button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+gobalLevelValue+'">Save</button></div>';
+		
+	}else{
+	str+='<div class="col-md-12"><h4>No Data Found.</h4></div>';
+	}
+	$(".questionnaireCls").html(str);
+	
+}
+
+function buildBloodDonation(){
+	
+	
+	var str='';
+	
+	str+='<table class="table table-bordered m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+						 str+='<th rowspan=3>Constituency Name </th>';
+						 str+='<th colspan=7>Memberes Attended</th>';
+						 str+='<th colspan=2>Photos Uploded</th>';
+						 str+='<th rowspan=3>Questionaire</th>';
+						 str+='<th rowspan=3>organizerQuestionnaire</th>';
+						 str+='<th rowspan=3>Update</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th rowspan=2>TOTAL</th>';
+						str+='<th colspan=3>CADRE</th>';
+						str+='<th colspan=3>PUBLIC</th>';
+						str+='<th rowspan=2>TAB</th>';
+						str+='<th rowspan=2>INFOCELL</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th>TOTAL</th>';
+						str+='<th>TAB</th>';
+						str+='<th>INFOCELL</th>';
+						str+='<th>TOTAL</th>';
+						str+='<th>TAB</th>';
+						str+='<th>INFOCELL</th>';
+					str+='</tr>';
+				str+='</thead>';
+				
+				str+='<tbody>';
+				str+='<tr>';
+					str+='<td>Tiruvuru</td>';
+					str+='<td>224</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>5</td>';
+					str+='<td>666</td>';
+					str+='<td>200</td>';
+					str+='<td>Yes</td>';
+					str+='<td>Update</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td>Tiruvuru</td>';
+					str+='<td>224</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>120</td>';
+					str+='<td>12</td>';
+					str+='<td>1000</td>';
+					str+='<td>5</td>';
+					str+='<td>666</td>';
+					str+='<td>200</td>';
+					str+='<td>Yes</td>';
+					str+='<td>Update</td>';
+				str+='</tr>';
+				
+					
+				str+='</tbody>';
+			
+			str+='</table>';
+			
+			$("#bloodDonationDetails").html(str);
+}
 </script>
 </body>
 </html>
