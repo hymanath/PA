@@ -24,6 +24,7 @@ public class ActivityAttendanceVO implements Serializable {
 	private Long bloodGroup;
 	private String activityDate;
 	private String membershipNo;
+	private String userType;
 	
 	
 	public String getActivityDate() {
@@ -140,5 +141,12 @@ public class ActivityAttendanceVO implements Serializable {
 	public void setMembershipNo(String membershipNo) {
 		this.membershipNo = membershipNo;
 	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
 	
 }
