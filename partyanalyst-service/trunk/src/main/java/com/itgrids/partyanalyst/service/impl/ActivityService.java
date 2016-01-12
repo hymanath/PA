@@ -3692,14 +3692,15 @@ public class ActivityService implements IActivityService{
 				for (Object[] obj : list) {
 					BasicVO vo = new BasicVO();
 					Long locationLvlId = (Long) (obj[2] != null ? obj[2]:0l);
-					vo.setId(locationLvlId);
+					Long locationVal = (Long) (obj[3] != null ? obj[3]:0l);
+					vo.setId(locationVal);
 					if(locationLvlId.longValue() == 9l){
-						constIds.add(locationLvlId);
-						constMap.put(locationLvlId, vo);
+						constIds.add(locationVal);
+						constMap.put(locationVal, vo);
 					}
 					else if(locationLvlId.longValue() == 7l){
-						distIds.add(locationLvlId);
-						distMap.put(locationLvlId, vo);
+						distIds.add(locationVal);
+						distMap.put(locationVal, vo);
 					}
 				}
 			}
@@ -3723,8 +3724,10 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
-			finalvo.setConstituencyList((List<BasicVO>) constMap.values());
-			finalvo.setDistrictList((List<BasicVO>) distMap.values());
+			finalvo.setConstituencyList(new ArrayList<BasicVO>(constMap.values()));
+			finalvo.setDistrictList(new ArrayList<BasicVO>(distMap.values()));
+			//finalvo.setConstituencyList((List<BasicVO>) constMap.values());
+			//finalvo.setDistrictList((List<BasicVO>) distMap.values());
 		} catch (Exception e) {
 			Log.error("Exception Occured in getActivityLocationWiseDetailsByScopeId method in ActivityService ",e);
 		}
