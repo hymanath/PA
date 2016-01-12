@@ -36,13 +36,12 @@ public interface IActivityService {
 	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
 	
 	public List<BasicVO> getActivityDocumentsImages(Long levelId,Long levelValue,Long day,Integer startIndex,Integer maxIndex,Long activityScopeId,String activityDate,String tempVar);
-	public ActivityWSVO getUserActivityDetailsByUserId(String username, String password);
 	public List<String> getActivityDates(Long activityScopeId);
 	public Long savingTabDetails(final TabDetailsVO tabDetailsVO);
 	public ResultStatus savingAttendenceQuestionAnswer(final Long activityQuestionAnswerId,final Long attendenceId);
 	
-	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
-	
 	public ActivityLoginVO checkActivityTabUserLogin(String userName,String password);
 	public Long getConstituencyId(Long locationLevel, Long locationValue);
+	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
+	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
 }
