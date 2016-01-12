@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -1682,5 +1683,10 @@ public class WebServiceHandler {
 	 
 	 
 	 
-	 
+	 @GET
+	 @Path("/ActivityCadreDetails/{memberShipNo}/{voterCardNo}")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public TdpCadreWSVO getActivityCadreDetails(@PathParam("memberShipNo") String memberShipNo, @PathParam("voterCardNo") String voterCardNo){
+		 return webServiceHandlerService.getActivityCadreDetails(memberShipNo,voterCardNo);
+	 }
 }
