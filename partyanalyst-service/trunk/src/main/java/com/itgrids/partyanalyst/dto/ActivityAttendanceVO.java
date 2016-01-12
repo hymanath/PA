@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
-public class ActivityAttendanceVO {
+import java.io.Serializable;
+
+public class ActivityAttendanceVO implements Serializable {
 	
 	private Long activityId;
 	private Long tdpCadreId;
@@ -21,6 +23,7 @@ public class ActivityAttendanceVO {
 	private Long activityLocationInfoId;
 	private Long bloodGroup;
 	private String activityDate;
+	private String membershipNo;
 	
 	
 	public String getActivityDate() {
@@ -131,6 +134,11 @@ public class ActivityAttendanceVO {
 	public void setTabPrimaryKey(Long tabPrimaryKey) {
 		this.tabPrimaryKey = tabPrimaryKey;
 	}
-	
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	
 }

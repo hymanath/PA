@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
@@ -129,4 +130,5 @@ public interface IWebServiceHandlerService {
 	public TdpCadreWSVO getActivityCadreDetails(String memberShipNo, String voterCardNo);
 	
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
+	public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo);
 }

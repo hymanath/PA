@@ -672,15 +672,23 @@ public class AttendanceService implements IAttendanceService{
 							}
 						}
 						DateUtilService date = new DateUtilService();
-						ActivityLocationPublicAttendance activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
-						activityLocationPublicAttendance.setName(inputVO.getName());
-						activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
-						activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
-						activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
-						activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
-						if(inputVO.getTdpCadreId() != null)
-						activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
-						activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
+						ActivityLocationPublicAttendance activityLocationPublicAttendance = null;
+						
+						activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.checkWhetherExistingOrNew(inputVO.getUnqueKey());
+						if(activityLocationPublicAttendance == null){
+							activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
+							activityLocationPublicAttendance.setName(inputVO.getName());
+							activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
+							activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
+							activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
+							activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
+							activityLocationPublicAttendance.setMembershipNo(inputVO.getMembershipNo());
+							activityLocationPublicAttendance.setUniqueKey(inputVO.getUnqueKey());
+							if(inputVO.getTdpCadreId() != null)
+							activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+							activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
+						}
+						
 						Attendance attendance = new Attendance();
 						if(attendedeTime != null)
 							attendance.setAttendedTime(attendedeTime);
