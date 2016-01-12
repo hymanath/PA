@@ -2932,6 +2932,7 @@
 		<property name="activityTabUserLocationDAO" ref="activityTabUserLocationDAO" />
 		<property name="activityTabUserDAO" ref="activityTabUserDAO" />
 		<property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO" />
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
