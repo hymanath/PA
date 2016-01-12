@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
@@ -1668,6 +1669,22 @@ public class WebServiceHandler {
 	 return null;
 	 }
 	 
+	 
+		@POST
+		@Path("/saveActivitiesImages")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public ImageVO saveActivitiesImages(ImageVO inputVo){
+			try{
+				return webServiceHandlerService.saveActivitiesImages(inputVo);
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in saveAttendance() Method - ",e);
+				return null;
+			}
+		}
+		
 	 @GET
 	 @Path("/ActivityLoginChecker/{username}/{password}")
 	 @Produces(MediaType.APPLICATION_JSON)
