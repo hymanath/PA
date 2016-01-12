@@ -23,7 +23,6 @@ import org.hibernate.annotations.NotFoundAction;
 public class ActivityLocationAttendance {
 	private Long activityLocationAttendanceId;
 	private Long activityLocationInfoId;
-	private Long attendanceId;
 	private Attendance attendance;
 	private ActivityLocationInfo activityLocationInfo;
 	@Id
@@ -43,15 +42,8 @@ public class ActivityLocationAttendance {
 	public void setActivityLocationInfoId(Long activityLocationInfoId) {
 		this.activityLocationInfoId = activityLocationInfoId;
 	}
-	@Column(name = "attendance_id")
-	public Long getAttendanceId() {
-		return attendanceId;
-	}
-	public void setAttendanceId(Long attendanceId) {
-		this.attendanceId = attendanceId;
-	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="attendance_id", insertable=false, updatable = false)
+	@JoinColumn(name="attendance_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Attendance getAttendance() {
