@@ -1178,7 +1178,7 @@ getUserAccessDistrictList();
        }
 	  
 		 if(activityTypeId == 4){
-			buildBloodDonation();
+			getActivityLocationWiseDetails();
 			$("#bloodDonationDetails").show();
 			$("#buildAssConsActivity").hide();
 			}
@@ -1890,76 +1890,76 @@ function buildQuestionnaireDetails(result)
 	
 }
 
-function buildBloodDonation(){
-	
+function getActivityLocationWiseDetails()
+{
+	var scopeId = $("#ActivityList").val();
+	var jsObj = {
+		scopeId : scopeId
+	};
+	$.ajax({
+		type : "GET",
+		url : "getActivityLocationWiseDetailsByScopeIdAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){
+			buildBloodDonation(result);
+		}
+	});
+}
+function buildBloodDonation(result){
 	
 	var str='';
 	
 	str+='<table class="table table-bordered m_top10">';
-				str+='<thead>';
-					str+='<tr>';
-						 str+='<th rowspan=3>Constituency Name </th>';
-						 str+='<th colspan=7>Memberes Attended</th>';
-						 str+='<th colspan=2>Photos Uploded</th>';
-						 str+='<th rowspan=3>Questionaire</th>';
-						 str+='<th rowspan=3>organizerQuestionnaire</th>';
-						 str+='<th rowspan=3>Update</th>';
-					str+='</tr>';
-					str+='<tr>';
-						str+='<th rowspan=2>TOTAL</th>';
-						str+='<th colspan=3>CADRE</th>';
-						str+='<th colspan=3>PUBLIC</th>';
-						str+='<th rowspan=2>TAB</th>';
-						str+='<th rowspan=2>INFOCELL</th>';
-					str+='</tr>';
-					str+='<tr>';
-						str+='<th>TOTAL</th>';
-						str+='<th>TAB</th>';
-						str+='<th>INFOCELL</th>';
-						str+='<th>TOTAL</th>';
-						str+='<th>TAB</th>';
-						str+='<th>INFOCELL</th>';
-					str+='</tr>';
-				str+='</thead>';
-				
-				str+='<tbody>';
-				str+='<tr>';
-					str+='<td>Tiruvuru</td>';
-					str+='<td>224</td>';
-					str+='<td>120</td>';
-					str+='<td>12</td>';
-					str+='<td>1000</td>';
-					str+='<td>120</td>';
-					str+='<td>12</td>';
-					str+='<td>1000</td>';
-					str+='<td>5</td>';
-					str+='<td>666</td>';
-					str+='<td>200</td>';
-					str+='<td>Yes</td>';
-					str+='<td>Update</td>';
-				str+='</tr>';
-				str+='<tr>';
-					str+='<td>Tiruvuru</td>';
-					str+='<td>224</td>';
-					str+='<td>120</td>';
-					str+='<td>12</td>';
-					str+='<td>1000</td>';
-					str+='<td>120</td>';
-					str+='<td>12</td>';
-					str+='<td>1000</td>';
-					str+='<td>5</td>';
-					str+='<td>666</td>';
-					str+='<td>200</td>';
-					str+='<td>Yes</td>';
-					str+='<td>Update</td>';
-				str+='</tr>';
-				
-					
-				str+='</tbody>';
+		str+='<thead>';
+			str+='<tr>';
+				 str+='<th rowspan=3>Constituency Name </th>';
+				 str+='<th colspan=7>Memberes Attended</th>';
+				 str+='<th colspan=2>Photos Uploded</th>';
+				 str+='<th rowspan=3>Questionaire</th>';
+				 str+='<th rowspan=3>organizerQuestionnaire</th>';
+				 str+='<th rowspan=3>Update</th>';
+			str+='</tr>';
+			str+='<tr>';
+				str+='<th rowspan=2>TOTAL</th>';
+				str+='<th colspan=3>CADRE</th>';
+				str+='<th colspan=3>PUBLIC</th>';
+				str+='<th rowspan=2>TAB</th>';
+				str+='<th rowspan=2>INFOCELL</th>';
+			str+='</tr>';
+			str+='<tr>';
+				str+='<th>TOTAL</th>';
+				str+='<th>TAB</th>';
+				str+='<th>INFOCELL</th>';
+				str+='<th>TOTAL</th>';
+				str+='<th>TAB</th>';
+				str+='<th>INFOCELL</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result.constituencyList){
+			str+='<tr>';
+				str+='<td>'+result.constituencyList[i].name+'</td>';
+				str+='<td>224</td>';
+				str+='<td>120</td>';
+				str+='<td>12</td>';
+				str+='<td>1000</td>';
+				str+='<td>120</td>';
+				str+='<td>12</td>';
+				str+='<td>1000</td>';
+				str+='<td>5</td>';
+				str+='<td>666</td>';
+				str+='<td>200</td>';
+				str+='<td>Yes</td>';
+				str+='<td>Update</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
 			
-			str+='</table>';
-			
-			$("#bloodDonationDetails").html(str);
+$("#bloodDonationDetails").html(str);
+	
 }
 </script>
 </body>

@@ -545,5 +545,17 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getActivityLocationWiseDetailsByScopeId(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long scopeId = jObj.getLong("scopeId");
+			
+			basicVO = activityService.getActivityLocationWiseDetailsByScopeId(scopeId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
+		}
+		return Action.SUCCESS;
+	}
 }
