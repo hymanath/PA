@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -133,4 +134,5 @@ public interface IWebServiceHandlerService {
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
 	public ImageVO saveActivitiesImages(ImageVO inputVO);
 	public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo);
+	public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO aqWSVO);
 }

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
@@ -21,4 +22,5 @@ public interface IAttendanceService {
 	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
 
 	public ResultStatus savePublicActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
+	public ResultStatus saveActivityQuestionAnswer(final AttendanceQuestionnariWSVO aqWSVO);
 }
