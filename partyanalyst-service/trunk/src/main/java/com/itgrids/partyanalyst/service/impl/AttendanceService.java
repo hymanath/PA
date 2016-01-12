@@ -13,8 +13,9 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationAttendanceDAO;
-import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationPublicAttendanceDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
+import com.itgrids.partyanalyst.dao.IActivityTabUserAnswerDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceErrorDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
@@ -27,21 +28,22 @@ import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ActivityLocationInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ActivityLocationPublicAttendanceDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingLocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserPartyMeetingVO;
 import com.itgrids.partyanalyst.dto.UserTrainingCampBatchVO;
 import com.itgrids.partyanalyst.dto.UserTrainingCampScheduleVO;
 import com.itgrids.partyanalyst.model.ActivityLocationAttendance;
-import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationPublicAttendance;
+import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
+import com.itgrids.partyanalyst.model.ActivityTabUserAnswer;
 import com.itgrids.partyanalyst.model.Attendance;
 import com.itgrids.partyanalyst.model.AttendanceError;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -50,6 +52,7 @@ import com.itgrids.partyanalyst.model.TrainingCampAttendance;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -73,7 +76,36 @@ public class AttendanceService implements IAttendanceService{
 	private TransactionTemplate transactionTemplate = null;
 	private IActivityLocationPublicAttendanceDAO activityLocationPublicAttendanceDAO;
 	private IActivityLocationAttendanceDAO  activityLocationAttendanceDAO;
+	private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
+	private IActivityService activityService;
+	private IActivityTabUserAnswerDAO activityTabUserAnswerDAO; 
+
 	
+	public IActivityTabUserAnswerDAO getActivityTabUserAnswerDAO() {
+		return activityTabUserAnswerDAO;
+	}
+
+	public void setActivityTabUserAnswerDAO(
+			IActivityTabUserAnswerDAO activityTabUserAnswerDAO) {
+		this.activityTabUserAnswerDAO = activityTabUserAnswerDAO;
+	}
+
+	public IActivityService getActivityService() {
+		return activityService;
+	}
+
+	public void setActivityService(IActivityService activityService) {
+		this.activityService = activityService;
+	}
+
+	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
+		return activityQuestionAnswerDAO;
+	}
+
+	public void setActivityQuestionAnswerDAO(
+			IActivityQuestionAnswerDAO activityQuestionAnswerDAO) {
+		this.activityQuestionAnswerDAO = activityQuestionAnswerDAO;
+	}
 
 	public IActivityLocationAttendanceDAO getActivityLocationAttendanceDAO() {
 		return activityLocationAttendanceDAO;
@@ -639,7 +671,7 @@ public class AttendanceService implements IAttendanceService{
 		attendance = attendanceDAO.save(attendance);
 		ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
 		activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
-		activityLocationAttendance.setAttendanceId(attendance.getAttendanceId());
+		activityLocationAttendance.setAttendance(attendance);
 		activityLocationAttendanceDAO.save(activityLocationAttendance);
 		
 		}});
@@ -686,6 +718,7 @@ public class AttendanceService implements IAttendanceService{
 							activityLocationPublicAttendance.setUniqueKey(inputVO.getUnqueKey());
 							if(inputVO.getTdpCadreId() != null)
 							activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+							activityLocationPublicAttendance.setUserType(inputVO.getUserType());
 							activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
 						}
 						
@@ -694,25 +727,23 @@ public class AttendanceService implements IAttendanceService{
 							attendance.setAttendedTime(attendedeTime);
 						attendance.setInsertedById(userId);
 						attendance.setInsertedTime(date.getCurrentDateAndTime());
-						if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
-						{
-							attendance.setImei(inputVO.getImei());
-							attendance.setRfid(inputVO.getRfid());
-							attendance.setUniqueKey(inputVO.getUnqueKey());
-							attendance.setLatitude(inputVO.getLatitude());
-							attendance.setLongitude(inputVO.getLongitude());
-							attendance.setTabUserId(inputVO.getTabUserId());
-							attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
-							attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());	
-						}
-						else
-						attendance.setSyncSource("WEB");
+						attendance.setSyncSource(inputVO.getSyncType());
+						
+						attendance.setImei(inputVO.getImei());
+						attendance.setRfid(inputVO.getRfid());
+						attendance.setUniqueKey(inputVO.getUnqueKey());
+						attendance.setLatitude(inputVO.getLatitude());
+						attendance.setLongitude(inputVO.getLongitude());
+						attendance.setTabUserId(inputVO.getTabUserId());
+						attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
+						attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());
 						attendance.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
 						
 						attendance = attendanceDAO.save(attendance);
 						ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
 						activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
-						activityLocationAttendance.setAttendanceId(attendance.getAttendanceId());
+						//activityLocationAttendance.setAttendanceId(attendance.getAttendanceId());
+						activityLocationAttendance.setAttendance(attendance);
 						activityLocationAttendanceDAO.save(activityLocationAttendance);
 					}});
 			  result.setResultCode(0);
@@ -722,5 +753,90 @@ public class AttendanceService implements IAttendanceService{
 			result.setResultCode(1);
 		}
 		return result;
+	}
+	
+	public ResultStatus saveActivityQuestionAnswer(final AttendanceQuestionnariWSVO aqWSVO){
+		ResultStatus rs = new ResultStatus();
+		try {
+			LOG.info("entered into saveActivityQuestionAnswer");
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus status) 
+				{
+					ActivityLocationPublicAttendance activityLocationPublicAttendance = null;
+					DateUtilService date = new DateUtilService();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					
+					if(aqWSVO.getUserType()!=null && !aqWSVO.getUserType().equalsIgnoreCase("incharge")){
+						activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.checkWhetherExistingOrNew(aqWSVO.getUniqueKey());
+						if(activityLocationPublicAttendance == null){
+							activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
+							activityLocationPublicAttendance.setName(aqWSVO.getName());
+							activityLocationPublicAttendance.setMobile(aqWSVO.getMobileNo());
+							activityLocationPublicAttendance.setVoterCard(aqWSVO.getVoterId());
+							activityLocationPublicAttendance.setBloodGroupId(aqWSVO.getBloodGroupId());
+							activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
+							activityLocationPublicAttendance.setMembershipNo(aqWSVO.getMembershipNo());
+							activityLocationPublicAttendance.setUniqueKey(aqWSVO.getUniqueKey());
+							activityLocationPublicAttendance.setUserType(aqWSVO.getUserType());
+							activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);					
+						}//if
+					}
+					
+					
+					
+					
+					  TabDetailsVO tabDetals = new TabDetailsVO();
+					  Long tabDetailsId = null;
+			          try {
+							tabDetals.setAttendedTime(dateFormat.parse(aqWSVO.getActivityDate()));
+						
+							tabDetals.setImei(aqWSVO.getImei());
+							tabDetals.setUniqueKey(aqWSVO.getUniqueKey());
+							tabDetals.setInsertedTime(date.getCurrentDateAndTime());
+							tabDetals.setLatitude(aqWSVO.getLatitude());
+							tabDetals.setLongitude(aqWSVO.getLangitude());
+							tabDetals.setTabUserId(aqWSVO.getTabUserId());
+							tabDetals.setSyncSource("WS");
+							tabDetals.setInsertedBy(aqWSVO.getInsertedBy());
+							tabDetals.setTabPrimaryKey(aqWSVO.getTabPrimaryKey());
+				          
+							tabDetailsId = activityService.savingTabDetails(tabDetals);
+			          	}catch (Exception e) {
+							LOG.error("exception raised while parsing date", e);
+						}
+			          
+					//saving question answers
+					ActivityQuestionAnswer activityQuestionAnswer = new ActivityQuestionAnswer();
+					activityQuestionAnswer.setActivityQuestionnaireId(aqWSVO.getQuestionnairId());
+					activityQuestionAnswer.setActivityLocationInfoId(aqWSVO.getActivityLocationInfoId());
+					activityQuestionAnswer.setActivityOptionId(aqWSVO.getOptionId());
+					activityQuestionAnswer.setOptionTxt(aqWSVO.getOptionTxt());
+					activityQuestionAnswer.setIsDeleted("N");
+					activityQuestionAnswer.setInsertedBy(aqWSVO.getTabUserId());
+					activityQuestionAnswer.setUpdatedBy(aqWSVO.getTabUserId());
+					activityQuestionAnswer.setInsertedTime(date.getCurrentDateAndTime());
+					activityQuestionAnswer.setUpdatedTime(date.getCurrentDateAndTime());
+					if(tabDetailsId!=null){
+						activityQuestionAnswer.setTabDetailsId(tabDetailsId);
+					}
+					activityQuestionAnswer = activityQuestionAnswerDAO.save(activityQuestionAnswer);
+					
+					if(aqWSVO.getUserType()!=null && !aqWSVO.getUserType().equalsIgnoreCase("incharge")){
+						ActivityTabUserAnswer activityTabUserAnswer = new ActivityTabUserAnswer();
+						activityTabUserAnswer.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
+						activityTabUserAnswer.setActivityQuestionAnswerId(activityQuestionAnswer.getActivityQuestionAnswerId());
+						activityTabUserAnswerDAO.save(activityTabUserAnswer);
+					}
+					
+					
+					
+				}
+			});
+			rs.setResultCode(0);
+		} catch (Exception e) {
+			rs.setResultCode(1);
+			LOG.error("Exception raised at saveActivityQuestionAnswer", e);
+		}
+		return rs;
 	}
 }
