@@ -65,9 +65,9 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		
 		str.append(" where model.attendance.attendedTime is not null ");
 		if(memberType.equalsIgnoreCase("cadre"))
-		str.append(" and model.tdpCadreId is not null ");
+		str.append(" and model.attendance.activityLocationPublicAttendance.tdpCadreId is not null ");
 		else
-		str.append(" and model.tdpCadreId is null ");	
+		str.append(" and model.attendance.activityLocationPublicAttendance.tdpCadreId is null ");	
 		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
 		{
 			str.append(" and model.activityLocationInfo.locationLevel in(:levelIds)");
