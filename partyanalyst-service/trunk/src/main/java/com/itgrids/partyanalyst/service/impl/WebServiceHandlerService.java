@@ -52,7 +52,9 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
@@ -63,6 +65,7 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
@@ -3057,7 +3060,73 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   }
 		   return tdpCadreWSVO;
 	   }
-	   
+	   public ImageVO saveActivitiesImages(ImageVO inputVO)
+	   {
+		   Log.debug("Entered into saveActivitiesImages Webservice method");
+		   ImageVO imageVO = new ImageVO();
+		   try{
+			   if(inputVO != null && inputVO.getBase64ImageStr() != null && !inputVO.getBase64ImageStr().trim().isEmpty() && 
+					   inputVO.getActivityLocationInfoId() != null && inputVO.getActivityLocationInfoId().longValue()>0L)
+			   {
+				   Date activityDate = null;
+				   if(inputVO.getUploadTime() != null && !inputVO.getUploadTime().equals("undefined"))
+					{
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					    try {
+					    	 activityDate = dateFormat.parse(inputVO.getUploadTime());
+						} catch (Exception e) {
+							Log.error(" Exception Occured Date Formatting method, Exception - ",e);	
+						}
+					}
+				   
+				    TabDetailsVO tabDetals = new TabDetailsVO();
+					
+					tabDetals.setAttendedTime(activityDate);
+					tabDetals.setImei(inputVO.getImei());
+					tabDetals.setUniqueKey(inputVO.getUniqueKey());
+					tabDetals.setInsertedTime(inputVO.getInsertedTime());
+					tabDetals.setLatitude(inputVO.getLatitude());
+					tabDetals.setLongitude(inputVO.getLongitude());
+					tabDetals.setTabUserId(inputVO.getTabUserId());
+					tabDetals.setSyncSource(inputVO.getSyncSource());
+					tabDetals.setInsertedBy(inputVO.getInsertedBy());
+					tabDetals.setTabPrimaryKey(inputVO.getTabPrimaryKey());
+					
+					Long tabDetailsId = activityService.savingTabDetails(tabDetals);
+					
+					if(tabDetailsId != null && tabDetailsId.longValue()>0L)
+					{
+						  EventFileUploadVO eventFileUploadVO = new EventFileUploadVO();
+						  eventFileUploadVO.setInsertType("WS");
+						  eventFileUploadVO.setImageBase64String(inputVO.getBase64ImageStr());
+						  eventFileUploadVO.setLevelId(inputVO.getLevelId());
+						  eventFileUploadVO.setLevelValue(inputVO.getLevelValue());
+						  eventFileUploadVO.setActivityDateFormat(activityDate);
+						  eventFileUploadVO.setActivityScopeId(inputVO.getActivityScopeId());
+						  eventFileUploadVO.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
+						  ResultStatus resultStatus = activityService.eventsUploadForm(eventFileUploadVO);
+						  if(resultStatus != null){
+							  if(resultStatus.getResultCode() ==0){
+								  imageVO.setStatus("SUCCESS");
+								  imageVO.setWebPrimaryKey(resultStatus.getResultState());
+								  imageVO.setTabPrimaryKey(inputVO.getTabPrimaryKey());
+							  }
+							  else
+								  imageVO.setStatus("FAILURE");
+						  }
+					}
+			   }
+			   else
+			   {
+				   imageVO.setStatus("FAILURE");
+				   imageVO.setName(" Image is not available... ");
+			   }
+		   }catch (Exception e) {
+			   Log.error("Exception in saveActivitiesImages Webservice method");
+			   imageVO.setStatus("FAILURE");
+		   }
+		   return imageVO;
+	   }
 	   public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo){
 		   ResultStatus rs = new ResultStatus();
 		   try {

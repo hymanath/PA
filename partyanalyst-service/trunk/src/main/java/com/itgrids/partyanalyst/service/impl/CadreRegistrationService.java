@@ -7919,10 +7919,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	  synchronized("CADRECOMMITTEEADDCANDIDATE"){
 		if(IConstants.ENABLE_LOGS_SAVE)
 		{
-			Date d1 = new Date();
+			//Date d1 = new Date();
 			updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
-			Date d2 = new Date();
-			LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
+			//Date d2 = new Date();
+			//LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
 		}
 		
 		if(eligibleRoles != null && eligibleRoles.size()>0)
@@ -7933,7 +7933,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			{
 				String status = tdpCommitteeRoleDAO.getCommitteeStatus(cadreRoleId);
 				if(status.equalsIgnoreCase("Y")){
-					surveyCadreResponceVO.setStatus(" This Committee Is Already Conformed, You Cannot Add Or Update Committee Members Info ");
+					surveyCadreResponceVO.setStatus(" This Committee Is Already Confirmed, You Cannot Add Or Update Committee Members Info ");
 					surveyCadreResponceVO.setResultCode(2);
 					return surveyCadreResponceVO;
 				}
