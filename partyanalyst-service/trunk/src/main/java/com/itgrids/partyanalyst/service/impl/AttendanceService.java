@@ -671,41 +671,41 @@ public class AttendanceService implements IAttendanceService{
 								e.printStackTrace();
 							}
 						}
-		DateUtilService date = new DateUtilService();
-		ActivityLocationPublicAttendance activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
-		activityLocationPublicAttendance.setName(inputVO.getName());
-		activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
-		activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
-		activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
-		activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
-		if(inputVO.getTdpCadreId() != null)
-		activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
-		activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
-		Attendance attendance = new Attendance();
-		if(attendedeTime != null)
-			attendance.setAttendedTime(attendedeTime);
-		attendance.setInsertedById(userId);
-		attendance.setInsertedTime(date.getCurrentDateAndTime());
-		if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
-		{
-			attendance.setImei(inputVO.getImei());
-			attendance.setRfid(inputVO.getRfid());
-			attendance.setUniqueKey(inputVO.getUnqueKey());
-			attendance.setLatitude(inputVO.getLatitude());
-			attendance.setLongitude(inputVO.getLongitude());
-			attendance.setTabUserId(inputVO.getTabUserId());
-			attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
-			attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());	
-		}
-		else
-		attendance.setSyncSource("WEB");
-		attendance.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
-		
-		attendance = attendanceDAO.save(attendance);
-		ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
-		activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
-		activityLocationAttendance.setAttendanceId(attendance.getAttendanceId());
-		activityLocationAttendanceDAO.save(activityLocationAttendance);
+						DateUtilService date = new DateUtilService();
+						ActivityLocationPublicAttendance activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
+						activityLocationPublicAttendance.setName(inputVO.getName());
+						activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
+						activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
+						activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
+						activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
+						if(inputVO.getTdpCadreId() != null)
+						activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+						activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
+						Attendance attendance = new Attendance();
+						if(attendedeTime != null)
+							attendance.setAttendedTime(attendedeTime);
+						attendance.setInsertedById(userId);
+						attendance.setInsertedTime(date.getCurrentDateAndTime());
+						if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
+						{
+							attendance.setImei(inputVO.getImei());
+							attendance.setRfid(inputVO.getRfid());
+							attendance.setUniqueKey(inputVO.getUnqueKey());
+							attendance.setLatitude(inputVO.getLatitude());
+							attendance.setLongitude(inputVO.getLongitude());
+							attendance.setTabUserId(inputVO.getTabUserId());
+							attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
+							attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());	
+						}
+						else
+						attendance.setSyncSource("WEB");
+						attendance.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
+						
+						attendance = attendanceDAO.save(attendance);
+						ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
+						activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
+						activityLocationAttendance.setAttendanceId(attendance.getAttendanceId());
+						activityLocationAttendanceDAO.save(activityLocationAttendance);
 					}});
 			  result.setResultCode(0);
 		}
