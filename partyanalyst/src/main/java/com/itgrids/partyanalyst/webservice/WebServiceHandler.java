@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
@@ -1688,5 +1689,18 @@ public class WebServiceHandler {
 	 @Produces(MediaType.APPLICATION_JSON)
 	 public TdpCadreWSVO getActivityCadreDetails(@PathParam("memberShipNo") String memberShipNo, @PathParam("voterCardNo") String voterCardNo){
 		 return webServiceHandlerService.getActivityCadreDetails(memberShipNo,voterCardNo);
+	 }
+	 
+	 @POST
+	 @Path("/publicActivityAttendance")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo){
+		 try {
+			 return webServiceHandlerService.savePublicActivityAttendance(inputVo);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in savePublicActivityAttendance() Method, Exception is ",e);
+		 }
+		 return null;
 	 }
 }
