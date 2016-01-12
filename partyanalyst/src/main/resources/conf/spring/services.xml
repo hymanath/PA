@@ -2938,6 +2938,7 @@
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO" />
 		<property name="activityScopeDAO" ref="activityScopeDAO" />
-	</bean>
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		</bean>
 </beans>		
 	
