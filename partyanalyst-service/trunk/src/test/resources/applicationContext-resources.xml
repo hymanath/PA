@@ -689,6 +689,7 @@
 				 <value>com.itgrids.partyanalyst.model.ReferalDesignation</value>
 				 <value>com.itgrids.partyanalyst.model.StudentRecomendation</value>
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
+				 <value>com.itgrids.partyanalyst.model.TdpCadreFamilyInfo</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
 				 <value>com.itgrids.partyanalyst.model.AttendeeType</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
@@ -728,7 +729,12 @@
 				 
 				 <value>com.itgrids.partyanalyst.model.ActivityAttribute</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityAttributeQuestionnaireInfo</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.RespondentType</value>
+				 <value>com.itgrids.partyanalyst.model.TabDetails</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityLocationPublicAttendance</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityPerformLevel</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
 			</list>
 		</property>
 	</bean>
@@ -3208,38 +3214,7 @@
 	  <bean id="studentCadreRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCadreRelationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	 <bean id="cadreDeleteReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDeleteReasonDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="eventInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	  <bean id="trainingCampFeedbackAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackAnswerDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 
-	 <bean id="activityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityInfoFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityInfoFileDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLevelDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityLocationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationInfoDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityRunningStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityRunningStatusDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityScopeDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activitySubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivitySubTypeDAO">
-	 	<property name="sessionFactory" ref="sessionFactory" /> 
-	 </bean>
-	 <bean id="activityTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTypeDAO">
+	   <bean id="tdpCadreFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyInfoDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	  <bean id="trainingCampFeedbackCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampFeedbackCategoryDAO">
@@ -3281,6 +3256,15 @@
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="activityAttributeQuestionnaireInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttributeQuestionnaireInfoDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="respondentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RespondentTypeDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="tabDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabDetailsDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="activityTabUserLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserLocationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
