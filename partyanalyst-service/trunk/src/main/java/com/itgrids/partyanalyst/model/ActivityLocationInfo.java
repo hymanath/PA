@@ -49,6 +49,8 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private User insertedUser;
 	private User updatedUser;
 	
+	/*private String insertType;*/
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_location_info_id", unique = true, nullable = false)
@@ -218,15 +220,14 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	public void setIvrStatus(String ivrStatus) {
 		this.ivrStatus = ivrStatus;
 	}
-	
-	
-	@Column(name="planned_end_date")
-	public Date getPlannedEndDate() {
-		return plannedEndDate;
+	/*@Column(name="insert_type")
+	public String getInsertType() {
+		return insertType;
 	}
 	public void setPlannedEndDate(Date plannedEndDate) {
 		this.plannedEndDate = plannedEndDate;
 	}
+	*/
 	
 	@Column(name="conducted_end_date")
 	public Date getConductedEndDate() {
