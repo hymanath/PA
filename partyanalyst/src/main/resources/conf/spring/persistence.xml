@@ -738,10 +738,12 @@
 				 <value>com.itgrids.partyanalyst.model.TabDetails</value>
 				 <value>com.itgrids.partyanalyst.model.AttendenceQuestionAnswer</value>
 				 <value>com.itgrids.partyanalyst.model.RequiredAttributeRespondentType</value>
-				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
-				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.ActivityPerformLevel</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabRequestBackup</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityPerformLevel</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
 			     </list>
 			
 		</property>
