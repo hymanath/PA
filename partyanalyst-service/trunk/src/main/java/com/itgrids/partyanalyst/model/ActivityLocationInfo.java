@@ -237,4 +237,14 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 		this.conductedEndDate = conductedEndDate;
 	}
 	
+	@Column(name="planned_end_date")
+	public Date getPlannedEndDate() {
+		return plannedEndDate;
+	}
+	public void setPlannedEndDate(Date plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
+	}
+	
+	
+	
 }
