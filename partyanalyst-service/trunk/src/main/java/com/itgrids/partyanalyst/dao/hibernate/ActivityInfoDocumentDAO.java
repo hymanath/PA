@@ -400,30 +400,6 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return (Long) query.uniqueResult();
 	}
 	
-	
-	
-	
-	/*public List<Object[]> getLocationWiseActivityImageCount(SearchAttributeVO inputVO)
-	{
-		StringBuilder str = new StringBuilder();
-		if(inputVO.getSearchType().equalsIgnoreCase("district"))
-		{
-			str.append(" select distinct model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name ");
-		}
-		
-		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null ");
-		
-		if(inputVO.getAttributesIdsList() != null)
-		{
-			str.append(" and model.activityDocument.activityScopeId in(:attributesIdsList)");
-		}
-		
-		Query query = getSession().createQuery(str.toString());
-		if(inputVO.getAttributesIdsList() != null)
-			query.setParameter("attributesIdsList",inputVO.getAttributesIdsList());
-		return query.list();
-	}*/
-	
 	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO)
 	{
 		StringBuilder str = new StringBuilder();
