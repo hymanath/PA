@@ -68,6 +68,10 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		str.append(" and model.tdpCadreId is not null ");
 		else
 		str.append(" and model.tdpCadreId is null ");	
+		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
+		{
+			str.append(" and model.activityLocationInfo.locationLevel in(:levelIds)");
+		}
 		if(inputVO.getAttributesIdsList() != null)
 		{
 			str.append(" and model.activityLocationInfo.activityScopeId in(:attributesIdsList)");
@@ -97,6 +101,8 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 			query.setParameterList("attributesIdsList",inputVO.getAttributesIdsList());
 		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0)
 			query.setParameterList("locationIdsList",inputVO.getLocationIdsList());
+		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
+			query.setParameterList("levelIds",inputVO.getLocationTypeIdsList());
 		return query.list();
 	}
 	

@@ -405,28 +405,28 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		StringBuilder str = new StringBuilder();
 		if(inputVO.getSearchType().equalsIgnoreCase("district"))
 		{
-			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName ");
+			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName, ");
 		}
 		if(inputVO.getSearchType().equalsIgnoreCase("constituency"))
 		{
-			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name");
+			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name,");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-			str.append(" T.tehsilId,T.tehsilName, ");
+			str.append(" select T.tehsilId,T.tehsilName, ");
 		}
 		
 		else if( inputVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-			str.append(" LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
+			str.append(" select LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-			str.append(" P.panchayatId,P.panchayatName, ");
+			str.append(" select P.panchayatId,P.panchayatName, ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-			str.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
+			str.append("  select C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 		}
 		
 		//Count
-		str.append(" ,count(model.activityDocument.activityDocumentId)");
+		str.append(" count(model.activityDocument.activityDocumentId)");
 		str.append(",model.insertType");
 		
 		str.append(" from ActivityInfoDocument model ");
@@ -446,7 +446,12 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		
 		str.append(" where model.activityDocument.activityDate is not null ");
 		
-		if(inputVO.getAttributesIdsList() != null)
+		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
+		{
+			str.append(" and model.activityLocationInfo.locationLevel in(:levelIds)");
+		}
+		
+		if(inputVO.getAttributesIdsList() != null && inputVO.getAttributesIdsList() .size() > 0)
 		{
 			str.append(" and model.activityLocationInfo.activityScopeId in(:attributesIdsList)");
 		}
@@ -471,10 +476,13 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			}
 		}
 		Query query = getSession().createQuery(str.toString());
-		if(inputVO.getAttributesIdsList() != null)
+		if(inputVO.getAttributesIdsList() != null && inputVO.getAttributesIdsList() .size() > 0)
 			query.setParameterList("attributesIdsList",inputVO.getAttributesIdsList());
 		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0)
 			query.setParameterList("locationIdsList",inputVO.getLocationIdsList());
+		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
+			query.setParameterList("levelIds",inputVO.getLocationTypeIdsList());
+		
 		return query.list();
 	}
 	
