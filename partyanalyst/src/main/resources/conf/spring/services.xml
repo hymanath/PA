@@ -2935,6 +2935,7 @@
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
-	</bean>
+		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO" />
+    </bean>
 </beans>		
 	
