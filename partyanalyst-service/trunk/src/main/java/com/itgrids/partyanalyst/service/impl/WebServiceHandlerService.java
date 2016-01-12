@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -3135,6 +3136,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   } catch (Exception e) {
 			
 		   }
+		   return rs;
+	   }
+	   
+	   public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO aqWSVO){
+		   ResultStatus rs = new ResultStatus();
+		   try {
+				Log.info("entered into saveActivityQuestionAnswer");
+				rs = attendanceService.saveActivityQuestionAnswer(aqWSVO);
+			} catch (Exception e) {
+				Log.error("exception riased at saveActivityQuestionAnswer", e);
+			}
 		   return rs;
 	   }
 }
