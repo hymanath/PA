@@ -11250,5 +11250,10 @@
 			<param name="root">attendanceVo</param>
 		</result>
 	</action>
+	<action name="getActivityLocationWiseDetailsByScopeIdAction" class="activityAction" method="getActivityLocationWiseDetailsByScopeId">
+		<result type="json" name="success">
+			<param name="root">basicVO</param>
+		</result>
+	</action>
 </package>
 </struts>      
