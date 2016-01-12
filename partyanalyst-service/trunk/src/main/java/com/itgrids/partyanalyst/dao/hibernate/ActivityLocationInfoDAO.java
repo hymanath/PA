@@ -213,60 +213,60 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 				{
 					if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 						queryStr.append(" and P.tehsil.tehsilId = T.tehsilId and  model.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) ");
-						queryStr.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 						queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-						queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-						queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-						queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 				}	
 				else if(searchAttributeVO.getTypeId().longValue() == 2L)// Mandal/Town/Division
 				{
 					if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-						queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else{
-						queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 				}
 				else{
 					
 					if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 					}
 					else
-						queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+						queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					queryStr.append(" group by model.constituency.state.stateId,model.locationLevel order by ");
@@ -398,60 +398,60 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId  in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 					queryStr.append(" and P.tehsil.tehsilId = T.tehsilId and  model.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) ");
-					queryStr.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and LEB.localElectionBodyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}	
 			else if(searchAttributeVO.getTypeId().longValue() == 2L)// Mandal/Town/Division
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else{
-					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}
 			else{
 				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else
-					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
@@ -586,60 +586,60 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 					queryStr.append(" and P.tehsil.tehsilId = T.tehsilId and  model.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) ");
-					queryStr.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}	
 			else if(searchAttributeVO.getTypeId().longValue() == 2L)// Mandal/Town/Division
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else{
-					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}
 			else{
 				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else
-					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
 			queryStr.append(" group by model1.activityOptionId order by ");
@@ -755,60 +755,60 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 					queryStr.append(" and P.tehsil.tehsilId = T.tehsilId and  model.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) ");
-					queryStr.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
 					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
-					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}	
 			else if(searchAttributeVO.getTypeId().longValue() == 2L)// Mandal/Town/Division
 			{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else{
-					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 			}
 			else{
 				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else
-					queryStr.append(" and model.locationValue in (:locationIdsList) and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:locationTypeIdsList) ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
 			queryStr.append("   ");
