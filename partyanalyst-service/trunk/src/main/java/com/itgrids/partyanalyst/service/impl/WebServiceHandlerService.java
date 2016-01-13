@@ -7,11 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
@@ -76,6 +79,7 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
+import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventAttendee;
@@ -178,8 +182,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IEventInviteeDAO eventInviteeDAO;
     private IActivityService							activityService;
     private IAttendanceService attendanceService;
+    private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
     
     
+	public IActivityTabRequestBackupDAO getActivityTabRequestBackupDAO() {
+		return activityTabRequestBackupDAO;
+	}
+
+	public void setActivityTabRequestBackupDAO(
+			IActivityTabRequestBackupDAO activityTabRequestBackupDAO) {
+		this.activityTabRequestBackupDAO = activityTabRequestBackupDAO;
+	}
+
 	public IAttendanceService getAttendanceService() {
 		return attendanceService;
 	}
@@ -3116,6 +3130,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								  imageVO.setStatus("FAILURE");
 						  }
 					}
+					
+					try {
+						 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+						   String json = ow.writeValueAsString(inputVO);
+						   
+						   ActivityTabRequestBackup activityTabRequestBackup = new ActivityTabRequestBackup();
+						   activityTabRequestBackup.setUserId(inputVO.getTabUserId());
+						   activityTabRequestBackup.setImeiNo(inputVO.getImei());
+						   activityTabRequestBackup.setUniqueCode(inputVO.getUniqueKey());
+						   activityTabRequestBackup.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						   activityTabRequestBackup.setJsonArr(json);
+						   activityTabRequestBackup.setApkPrimaryKey(inputVO.getTabPrimaryKey());
+						   
+						   activityTabRequestBackupDAO.save(activityTabRequestBackup);
+					} catch (Exception e) {
+						Log.error("Exception in saveActivitiesImages Webservice method");
+					}
 			   }
 			   else
 			   {
@@ -3128,22 +3159,60 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   }
 		   return imageVO;
 	   }
-	   public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVo){
+	   public ResultStatus savePublicActivityAttendance(ActivityAttendanceVO inputVO){
 		   ResultStatus rs = new ResultStatus();
 		   try {
 			   Log.debug(" entered into savePublicActivityAttendance webservice");
-			   rs = attendanceService.savePublicActivityAttendance(inputVo,inputVo.getTabUserId());
+			   rs = attendanceService.savePublicActivityAttendance(inputVO,inputVO.getTabUserId());
+			   
+			   try {
+
+				   ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+				   String json = ow.writeValueAsString(inputVO);
+				   
+				   ActivityTabRequestBackup activityTabRequestBackup = new ActivityTabRequestBackup();
+				   activityTabRequestBackup.setUserId(inputVO.getTabUserId());
+				   activityTabRequestBackup.setImeiNo(inputVO.getImei());
+				   activityTabRequestBackup.setUniqueCode(inputVO.getUnqueKey());
+				   activityTabRequestBackup.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				   activityTabRequestBackup.setJsonArr(json);
+				   activityTabRequestBackup.setApkPrimaryKey(inputVO.getTabPrimaryKey());
+				   
+				   activityTabRequestBackupDAO.save(activityTabRequestBackup);
+				} catch (Exception e) {
+					Log.error("Exception in saveActivitiesImages Webservice method");
+				}
+			   
 		   } catch (Exception e) {
 			
 		   }
 		   return rs;
 	   }
 	   
-	   public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO aqWSVO){
+	   public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO inputVO){
 		   ResultStatus rs = new ResultStatus();
 		   try {
 				Log.info("entered into saveActivityQuestionAnswer");
-				rs = attendanceService.saveActivityQuestionAnswer(aqWSVO);
+				rs = attendanceService.saveActivityQuestionAnswer(inputVO);
+				
+				try {
+
+					   ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					   String json = ow.writeValueAsString(inputVO);
+					   
+					   ActivityTabRequestBackup activityTabRequestBackup = new ActivityTabRequestBackup();
+					   activityTabRequestBackup.setUserId(inputVO.getTabUserId());
+					   activityTabRequestBackup.setImeiNo(inputVO.getImei());
+					   activityTabRequestBackup.setUniqueCode(inputVO.getUniqueKey());
+					   activityTabRequestBackup.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					   activityTabRequestBackup.setJsonArr(json);
+					   activityTabRequestBackup.setApkPrimaryKey(inputVO.getTabPrimaryKey());
+					   
+					   activityTabRequestBackupDAO.save(activityTabRequestBackup);
+					} catch (Exception e) {
+						Log.error("Exception in saveActivitiesImages Webservice method");
+					}
+				   
 			} catch (Exception e) {
 				Log.error("exception riased at saveActivityQuestionAnswer", e);
 			}
