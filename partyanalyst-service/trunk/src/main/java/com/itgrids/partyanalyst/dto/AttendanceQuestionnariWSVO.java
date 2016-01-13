@@ -44,10 +44,16 @@ public class AttendanceQuestionnariWSVO implements Serializable {
 		private String 			activityDate;
 		private String 			rfid;
 		private Long 			currentTabUserId;
+		private String			questUniqueKey;			
 		
 		
 		
-		
+		public String getQuestUniqueKey() {
+			return questUniqueKey;
+		}
+		public void setQuestUniqueKey(String questUniqueKey) {
+			this.questUniqueKey = questUniqueKey;
+		}
 		public Long getCurrentTabUserId() {
 			return currentTabUserId;
 		}

@@ -3487,6 +3487,7 @@ public class ActivityService implements IActivityService{
 			
 			List<Long> qlist =  new ArrayList<Long>();
 			List<Long> oplist =  new ArrayList<Long>();
+			List<Long> actvtyQstnrList =  new ArrayList<Long>();
 			if(objList != null && objList.size() > 0){
 				for(Object[] obj:objList){
 					if(!qlist.contains(Long.valueOf(obj[0].toString()))){
@@ -3504,15 +3505,17 @@ public class ActivityService implements IActivityService{
 						optnsList.add(optnVO);
 					}
 					
-					ActivityQuestionnairVO	actvtyQustnrVO 			= new ActivityQuestionnairVO();
-					actvtyQustnrVO.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null); 
-					actvtyQustnrVO.setOptionTypeId(obj[3]!=null?Long.valueOf(obj[3].toString()):null);
-					actvtyQustnrVO.setOrderNo(obj[2]!=null?Long.valueOf(obj[2].toString()):null);
-					actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
-					actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
-					actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
-					actvtyQustnrVO.setActivityScopeId(obj[10]!=null?Long.valueOf(obj[10].toString()):null);
-					actvtyQustnr.add(actvtyQustnrVO);
+					if(!actvtyQstnrList.contains(Long.valueOf(obj[11].toString()))){
+						ActivityQuestionnairVO	actvtyQustnrVO 			= new ActivityQuestionnairVO();
+						actvtyQustnrVO.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null); 
+						actvtyQustnrVO.setOptionTypeId(obj[3]!=null?Long.valueOf(obj[3].toString()):null);
+						actvtyQustnrVO.setOrderNo(obj[2]!=null?Long.valueOf(obj[2].toString()):null);
+						actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
+						actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
+						actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+						actvtyQstnrList.add(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+						actvtyQustnr.add(actvtyQustnrVO);
+					}
 					
 					ActivityQuestionnairOptionVO actvtyQustnrOptnVO = new ActivityQuestionnairOptionVO();
 					actvtyQustnrOptnVO.setActivityQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
