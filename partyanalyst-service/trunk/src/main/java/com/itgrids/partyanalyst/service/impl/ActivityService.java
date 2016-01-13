@@ -3516,6 +3516,7 @@ public class ActivityService implements IActivityService{
 						actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
 						actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
 						actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+						actvtyQustnrVO.setActivityScopeId(obj[10]!=null?Long.valueOf(obj[10].toString()):null);
 						actvtyQstnrList.add(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
 						actvtyQustnr.add(actvtyQustnrVO);
 					}
