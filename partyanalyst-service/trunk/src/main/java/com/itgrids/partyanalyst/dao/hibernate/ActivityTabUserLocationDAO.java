@@ -32,7 +32,8 @@ public class ActivityTabUserLocationDAO extends GenericDaoHibernate<ActivityTabU
 				" model.activityLocationInfo.plannedDate, " +//12
 				" model.activityLocationInfo.conductedDate, " +//13
 				" model.activityLocationInfo.plannedEndDate, " +//14
-				" model.activityLocationInfo.conductedEndDate " +//15
+				" model.activityLocationInfo.conductedEndDate, " +//15
+				" model.activityLocationInfo.activityScope.maxFilesCount " +//16
 				" from ActivityTabUserLocation model where model.activityTabUser.activityTabUserId = :userId and model.isActive = 'Y' ");
 		
 		query.setParameter("userId", userId);
