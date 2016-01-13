@@ -954,6 +954,6 @@ public interface IConstants {
     public static final String ACTIVITY_DOCUMENTS ="activity_documents";
     public static final String ACTIVITY_DOCUMENT_FOLDER = "activity_documents";
     public static final String ACTIVITY_DOCUMENT_UPLOAD = "activity_documents_upload";
-    
+    public static final Long	ACTIVITY_MAX_FILES_COUNT = 50L;
     
 }
