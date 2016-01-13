@@ -2423,25 +2423,28 @@ public class ActivityService implements IActivityService{
 			 int temp = month+1;
 			 
 			 StringBuilder pathBuilder = new StringBuilder();
-			 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
-			 .append(eventFileUploadVO.getFileExtension());
-			 
-			activityDocument.setPath(pathBuilder.toString());
 			
 			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
 			
 			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
 			{   
-				destPath = folderName+"/"+randomNumber+".JPG";
+				destPath = folderName+"/"+randomNumber+".jpg";
+				 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
+				 .append("jpg");
+				 
 				activityDocument.setActivityDate(eventFileUploadVO.getActivityDateFormat());
 				ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
 				imageAndStringConverter.convertBase64StringToImage(eventFileUploadVO.getImageBase64String(), destPath);
 			}
 			else
 			{
+				 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
+				 .append(eventFileUploadVO.getFileExtension());
+				 
 				copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
 			}
 			
+			activityDocument.setPath(pathBuilder.toString());
 			activityDocument.setInsertedBy(eventFileUploadVO.getUserId());
 			activityDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
 			
