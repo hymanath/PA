@@ -2866,6 +2866,8 @@ public class ActivityService implements IActivityService{
 						locationLevel = 11L;
 					 else if(locationLevelId.longValue() == 4L)
 						 locationLevel = 10L;
+					 else if(locationLevelId.longValue() == 5L)
+						 locationLevel = 13L;
 					
 					List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(finalvo.getActivityTypeId(),locationLevel, locationValue);
 					ActivityLocationInfo tempactivityLocationInfo =null;
@@ -2873,9 +2875,14 @@ public class ActivityService implements IActivityService{
 					{
 						ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
 							 
-						Long constituencyId = getConstituencyId(locationLevel, locationValue);
-						if(constituencyId != null)
-							activityLocationInfo.setConstituencyId(constituencyId);
+						if(locationLevel != null && locationLevel.longValue() <= 9L)
+						{
+							Long constituencyId = getConstituencyId(locationLevel, locationValue);
+							if(constituencyId != null && constituencyId.longValue()>0L)
+								activityLocationInfo.setConstituencyId(constituencyId);
+						}
+						else if(locationLevel != null && locationLevel.longValue() == 13L)
+							activityLocationInfo.setConstituencyId(locationValue);
 						
 						activityLocationInfo.setActivityScopeId(finalvo.getActivityTypeId());
 						activityLocationInfo.setLocationLevel(locationLevel);
