@@ -16435,14 +16435,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											 else if(locationLevel.longValue() == 4L)
 												 locationLevelId = 10L;
 											 else if(locationLevel.longValue() == 5L)
-												 locationLevelId = 5L;
+												 locationLevelId = 13L;
 											 
 											activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
 											activityLocationInfo.setActivityScopeId(activityScopeId);
 											activityLocationInfo.setLocationLevel(locationLevelId);
 											if(locationLevelId.longValue()<=5L)
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
-											else if(locationLevelId.longValue() == 9L){
+											else if(locationLevelId.longValue() == 13L){
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
 												activityLocationInfo.setConstituencyId(activityLocationInfo.getLocationValue());
 											}
