@@ -3443,6 +3443,11 @@ public class ActivityService implements IActivityService{
 							actvty.setActivityLevelId(obj[8] != null ? Long.valueOf(obj[8].toString()):null);
 							actvty.setStartDate(obj[9] != null ? obj[9].toString():"");
 							actvty.setEndDate(obj[10] != null ? obj[10].toString():"");
+							if(obj[16]!=null){
+								actvty.setMaxFilesCount(Long.valueOf(obj[16].toString()));
+							}else{
+								actvty.setMaxFilesCount(IConstants.ACTIVITY_MAX_FILES_COUNT);
+							}
 							actvtyScpes.add(actvty);
 							
 							scpIds.add(scopeId);
