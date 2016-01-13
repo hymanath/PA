@@ -1,18 +1,17 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityTabUserLocationDAO;
-import com.itgrids.partyanalyst.dto.ActivityLocationVO;
-import com.itgrids.partyanalyst.dto.ActivityMainVO;
-import com.itgrids.partyanalyst.dto.ActivityScopeVO;
+import com.itgrids.partyanalyst.dto.ActivityOptionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionnairOptionVO;
+import com.itgrids.partyanalyst.dto.ActivityQuestionnairVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 
 public class ActivityDAOHibernateTest extends BaseDaoTestCase{
@@ -48,7 +47,7 @@ public class ActivityDAOHibernateTest extends BaseDaoTestCase{
 	}
 	public void test(){
 		
-		/*List<Long> scopeIds = new ArrayList<Long>();
+		List<Long> scopeIds = new ArrayList<Long>();
 		scopeIds.add(5l);
 		
 		List<Object[]> objList = activityQuestionnaireOptionDAO.getQuestionnaireOfScope(scopeIds);
@@ -60,6 +59,7 @@ public class ActivityDAOHibernateTest extends BaseDaoTestCase{
 		
 		List<Long> qlist =  new ArrayList<Long>();
 		List<Long> oplist =  new ArrayList<Long>();
+		List<Long> actvtyQstnrList =  new ArrayList<Long>();
 		if(objList != null && objList.size() > 0){
 			for(Object[] obj:objList){
 				if(!qlist.contains(Long.valueOf(obj[0].toString()))){
@@ -77,14 +77,17 @@ public class ActivityDAOHibernateTest extends BaseDaoTestCase{
 					optnsList.add(optnVO);
 				}
 				
-				ActivityQuestionnairVO	actvtyQustnrVO 			= new ActivityQuestionnairVO();
-				actvtyQustnrVO.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null); 
-				actvtyQustnrVO.setOptionTypeId(obj[3]!=null?Long.valueOf(obj[3].toString()):null);
-				actvtyQustnrVO.setOrderNo(obj[2]!=null?Long.valueOf(obj[2].toString()):null);
-				actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
-				actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
-				actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
-				actvtyQustnr.add(actvtyQustnrVO);
+				if(!actvtyQstnrList.contains(Long.valueOf(obj[11].toString()))){
+					ActivityQuestionnairVO	actvtyQustnrVO 			= new ActivityQuestionnairVO();
+					actvtyQustnrVO.setQuestionId(obj[0]!=null?Long.valueOf(obj[0].toString()):null); 
+					actvtyQustnrVO.setOptionTypeId(obj[3]!=null?Long.valueOf(obj[3].toString()):null);
+					actvtyQustnrVO.setOrderNo(obj[2]!=null?Long.valueOf(obj[2].toString()):null);
+					actvtyQustnrVO.setParentQuestionnairId(obj[12]!=null?Long.valueOf(obj[12].toString()):null);
+					actvtyQustnrVO.setRespondentTypeId(obj[8]!=null?Long.valueOf(obj[8].toString()):null);
+					actvtyQustnrVO.setQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+					actvtyQstnrList.add(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
+					actvtyQustnr.add(actvtyQustnrVO);
+				}
 				
 				ActivityQuestionnairOptionVO actvtyQustnrOptnVO = new ActivityQuestionnairOptionVO();
 				actvtyQustnrOptnVO.setActivityQuestionnairId(obj[11]!=null?Long.valueOf(obj[11].toString()):null);
@@ -98,9 +101,9 @@ public class ActivityDAOHibernateTest extends BaseDaoTestCase{
 		finalVO.setQuestnairList(actvtyQustnr);
 		finalVO.setQuestnairOptnsList(actvtyQustnrOptn);
 		
-		System.out.println("sasi");*/
+		System.out.println("sasi");
 		
-		ActivityWSVO finalVO = new ActivityWSVO();
+		/*ActivityWSVO finalVO = new ActivityWSVO();
 		List<Object[]> list = activityTabUserLocationDAO.getUserActivityDetailsByUserId(1l);
 		Set<Long> scpIds = new HashSet<Long>();
 		List<Long> actvtyIds = new ArrayList<Long>();
@@ -146,7 +149,7 @@ public class ActivityDAOHibernateTest extends BaseDaoTestCase{
 		
 		finalVO.setActivities(activites);
 		finalVO.setActivityScopeList(actvtyScpes);
-		finalVO.setActivityLocationsList(actvtyLctns);
+		finalVO.setActivityLocationsList(actvtyLctns);*/
 		
 		System.out.println("sasi");
 	}
