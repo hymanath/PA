@@ -2832,7 +2832,7 @@ public class ActivityService implements IActivityService{
 					Long locationLevelId = 0l;
 					Long locationValue = 0l;
 					Long locationLevel = 0l;
-					
+					locationValue = finalvo.getLocationValue();
 					if(activityLevelId == 1l){
 						activityLevelValueStr = finalvo.getLocationValue().toString().substring(0, 1);
 						locationIdStr = finalvo.getLocationValue().toString().substring(1);
@@ -2862,11 +2862,11 @@ public class ActivityService implements IActivityService{
 							locationLevel = 9l;
 						}
 					}
-					else if(locationLevelId.longValue() == 3L)
+					else if(activityLevelId.longValue() == 3L)
 						locationLevel = 11L;
-					 else if(locationLevelId.longValue() == 4L)
+					 else if(activityLevelId.longValue() == 4L)
 						 locationLevel = 10L;
-					 else if(locationLevelId.longValue() == 5L)
+					 else if(activityLevelId.longValue() == 5L)
 						 locationLevel = 13L;
 					
 					List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(finalvo.getActivityTypeId(),locationLevel, locationValue);
