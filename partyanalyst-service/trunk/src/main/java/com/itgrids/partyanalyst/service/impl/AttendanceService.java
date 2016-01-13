@@ -726,7 +726,7 @@ public class AttendanceService implements IAttendanceService{
 						Attendance attendance = new Attendance();
 						if(attendedeTime != null)
 							attendance.setAttendedTime(attendedeTime);
-						attendance.setInsertedById(userId);
+						//attendance.setInsertedById(userId);
 						attendance.setInsertedTime(date.getCurrentDateAndTime());
 						attendance.setSyncSource(inputVO.getSyncType());
 						
