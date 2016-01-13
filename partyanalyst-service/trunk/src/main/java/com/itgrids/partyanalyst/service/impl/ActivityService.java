@@ -2409,7 +2409,11 @@ public class ActivityService implements IActivityService{
 			
 			StringBuilder str = new StringBuilder();
 			Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-			str.append(randomNumber).append(".").append(eventFileUploadVO.getFileExtension());
+			String extension = "";
+			if(eventFileUploadVO.getFileExtension()==null){
+				extension = "jpg";
+			}
+			str.append(randomNumber).append(".").append(extension);
 			activityDocument.setDocumentName(str.toString());
 			
 			String folderName = folderCreation();

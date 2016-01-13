@@ -729,7 +729,7 @@ public class AttendanceService implements IAttendanceService{
 						//attendance.setInsertedById(userId);
 						attendance.setInsertedTime(date.getCurrentDateAndTime());
 						attendance.setSyncSource(inputVO.getSyncType());
-						
+						attendance.setTdpCadreId(inputVO.getTdpCadreId());
 						attendance.setImei(inputVO.getImei());
 						attendance.setRfid(inputVO.getRfid());
 						attendance.setUniqueKey(inputVO.getUnqueKey());
