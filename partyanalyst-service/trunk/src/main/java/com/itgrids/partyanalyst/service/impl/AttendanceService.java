@@ -694,7 +694,8 @@ public class AttendanceService implements IAttendanceService{
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
 						Date attendedeTime = null;
-						 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+						 //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 						if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
 						{
 							try {
@@ -791,7 +792,7 @@ public class AttendanceService implements IAttendanceService{
 							tabDetals.setAttendedTime(dateFormat.parse(aqWSVO.getActivityDate()));
 						
 							tabDetals.setImei(aqWSVO.getImei());
-							tabDetals.setUniqueKey(aqWSVO.getUniqueKey());
+							tabDetals.setUniqueKey(aqWSVO.getQuestUniqueKey());
 							tabDetals.setInsertedTime(date.getCurrentDateAndTime());
 							tabDetals.setLatitude(aqWSVO.getLatitude());
 							tabDetals.setLongitude(aqWSVO.getLangitude());
