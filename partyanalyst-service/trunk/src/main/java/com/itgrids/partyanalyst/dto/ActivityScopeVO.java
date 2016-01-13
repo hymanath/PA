@@ -14,14 +14,22 @@ import java.io.Serializable;
  */
 public class ActivityScopeVO implements Serializable{
 
-	private Long activityScopeId;
-	private Long activityId;
-	private Long activityLevelId;
-	private Long activityLevelValue;
-	private String startDate;
-	private String endDate;
+	private Long    activityScopeId;
+	private Long    activityId;
+	private Long    activityLevelId;
+	private Long    activityLevelValue;
+	private String  startDate;
+	private String  endDate;
+	private Long	maxFilesCount;
 	
 	
+	
+	public Long getMaxFilesCount() {
+		return maxFilesCount;
+	}
+	public void setMaxFilesCount(Long maxFilesCount) {
+		this.maxFilesCount = maxFilesCount;
+	}
 	public Long getActivityLevelValue() {
 		return activityLevelValue;
 	}
