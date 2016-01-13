@@ -38,6 +38,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	
 	private Activity activity;
 	private ActivityLevel activityLevel;
+	private Long			maxFilesCount;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -142,4 +143,14 @@ public class ActivityScope extends BaseModel implements Serializable{
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+	@Column(name="max_files_count")
+	public Long getMaxFilesCount() {
+		return maxFilesCount;
+	}
+	public void setMaxFilesCount(Long maxFilesCount) {
+		this.maxFilesCount = maxFilesCount;
+	}
+	
+	
 }
