@@ -493,6 +493,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			if(jObj.getLong("tdpCadreId") > 0l)
 			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
 			VO.setBloodGroup(jObj.getLong("bloodGroupId"));
+			VO.setSyncType("WEB");
 				resultStatus = attendanceService.savePublicActivityAttendance(VO,regVO.getRegistrationID());		
 		}catch (Exception e) {
 			LOG.error("Exception raised at savePublicActivityAttendanceInfo()", e);
