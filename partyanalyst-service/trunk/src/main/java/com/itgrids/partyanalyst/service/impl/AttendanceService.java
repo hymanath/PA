@@ -694,8 +694,13 @@ public class AttendanceService implements IAttendanceService{
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
 						Date attendedeTime = null;
+						SimpleDateFormat format = null;
 						 //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						if(inputVO.getSyncType().equalsIgnoreCase("WEB")){
+							format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						}else{
+							format = new SimpleDateFormat("dd/MM/yyyy");
+						}
 						if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
 						{
 							try {
@@ -728,7 +733,12 @@ public class AttendanceService implements IAttendanceService{
 							attendance.setAttendedTime(attendedeTime);
 						//attendance.setInsertedById(userId);
 						attendance.setInsertedTime(date.getCurrentDateAndTime());
-						attendance.setSyncSource(inputVO.getSyncType());
+						if(inputVO.getSyncType().equalsIgnoreCase("WEB")){
+							attendance.setSyncSource(inputVO.getSyncType());
+							attendance.setInsertedById(userId);
+						}else{
+							attendance.setSyncSource("WS");
+						}
 						attendance.setTdpCadreId(inputVO.getTdpCadreId());
 						attendance.setImei(inputVO.getImei());
 						attendance.setRfid(inputVO.getRfid());
