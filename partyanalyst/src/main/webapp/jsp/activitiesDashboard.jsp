@@ -2194,7 +2194,7 @@ $(document).on('click', '.searchTypeCls', function(){
 				buildConstituencyWiseActivityResult(result,resultDivNum);
 			}else if(type=="mandal"){
 				buildMandalWiseActivityResult(result,resultDivNum);
-			}else if(type=="panchayat"){
+			}else if(type=="village"){
 				buildPanchayatWiseActivityResult(result,resultDivNum);
 			}else if(type=="ward"){
 				buildWardWiseActivityResult(result,resultDivNum);
@@ -2211,26 +2211,26 @@ $(document).on('click', '.searchTypeCls', function(){
 		str+='<caption class="cap-custom"><b>	</b></caption>';
 		str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="2" class="getChildWidth aligncenter">Location Name</th>';
-			str+='<th rowspan="2" class="getChildWidth2 aligncenter">Total Locations</th>';
-			str+='<th rowspan="2" class="getChildWidth3 aligncenter">Total Members Attended</th>';
+			str+='<th rowspan="2" class="getChildWidthbd aligncenter">Location Name</th>';
+			str+='<th rowspan="2" class="getChildWidthbd2 aligncenter">Total Locations</th>';
+			str+='<th rowspan="2" class="getChildWidthbd3 aligncenter">Total Members Attended</th>';
 			str+='<th colspan="2" class="aligncenter">Total Cadre Attended</th>';
 			str+='<th colspan="2" class="aligncenter">Total Public Attended</th>';
-			str+='<th colspan="2" class="aligncenter">Questionnaire Submitted</th>';
-			str+='<th colspan="2" class="aligncenter">Organiser Questionnaire Submitted</th>';
+			//str+='<th colspan="2" class="aligncenter">Questionnaire Submitted</th>';
+			//str+='<th colspan="2" class="aligncenter">Organiser Questionnaire Submitted</th>';
 			str+='<th colspan="2" class="aligncenter">Photos Attached</th>';
 			str+='</tr>';
 			str+='<tr>';
-			str+='<th class="getChildWidth4 aligncenter">WEB</th>';
-			str+='<th class="getChildWidth5 aligncenter">Info-cell</th>';
-			str+='<th class="getChildWidth6 aligncenter">WEB</th>';
-			str+='<th class="getChildWidth7 aligncenter">Info-cell</th>';
-			str+='<th class="getChildWidth8 aligncenter">WEB</th>';
+			str+='<th class="getChildWidthbd4 aligncenter">WEB</th>';
+			str+='<th class="getChildWidthbd5 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidthbd6 aligncenter">WEB</th>';
+			str+='<th class="getChildWidthbd7 aligncenter">Info-cell</th>';
+			/* str+='<th class="getChildWidth8 aligncenter">WEB</th>';
 			str+='<th class="getChildWidth9 aligncenter">Info-cell</th>';
 			str+='<th class="getChildWidth10 aligncenter">WEB</th>';
-			str+='<th class="getChildWidth11 aligncenter">Info-cell</th>';
-			str+='<th class="getChildWidth12 aligncenter">WEB</th>';
-			str+='<th class="getChildWidth13 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidth11 aligncenter">Info-cell</th>'; */
+			str+='<th class="getChildWidthbd8 aligncenter">WEB</th>';
+			str+='<th class="getChildWidthbd9 aligncenter">Info-cell</th>';
 			str+='</tr>';
 		str+='</thead>';
 		if(result != null && result.subList != null && result.subList.length > 0){
@@ -2245,19 +2245,19 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div>';
 						str+='<table>';
 						str+='<tr>';							
-							str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
-							str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
-							str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
-							str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
-							str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
-							str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
-							str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
-							str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+							str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
+							str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+							str+='<td class="dynChildWidthbd3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+							str+='<td class="dynChildWidthbd4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+							str+='<td class="dynChildWidthbd5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+							str+='<td class="dynChildWidthbd6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+							str+='<td class="dynChildWidthbd7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+							/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 							str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 							str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-							str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-							str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
-							str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+							str+='<td class="dynChildWidthbd8 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+							str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 						str+='</tr>';
 						str+='</table>';
 					str+='</div>';
@@ -2303,19 +2303,19 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
-								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
-								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
-								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
-								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidthbd3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidthbd4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidthbd7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
-								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+								str+='<td class="dynChildWidthbd8 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
 						str+='</div>';
@@ -2363,23 +2363,23 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div  class="panel-heading" role="tab" id="mandalHeading'+i+'">';
 					str+='<h4 class="panel-title">';
-						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("panchayat","'+result.subList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
+						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("village","'+result.subList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
-								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
-								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
-								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
-								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidthbd3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidthbd4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidthbd7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
-								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+								str+='<td class="dynChildWidthbd8 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
 						str+='</div>';
@@ -2425,19 +2425,19 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
-								str+='<td class="dynChildWidth aligncenter">'+result.localBodyList[i].name+'</td>';
-								str+='<td class="dynChildWidth2 aligncenter">'+result.localBodyList[i].totalLocations+'</td>';
-								str+='<td class="dynChildWidth3 aligncenter">'+result.localBodyList[i].totalMembers+'</td>';
-								str+='<td class="dynChildWidth4 aligncenter">'+result.localBodyList[i].totalWebCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth5 aligncenter">'+result.localBodyList[i].totalInfoCellCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth6 aligncenter">'+result.localBodyList[i].totalWebPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth7 aligncenter">'+result.localBodyList[i].totalInfoCellPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidthbd aligncenter">'+result.localBodyList[i].name+'</td>';
+								str+='<td class="dynChildWidthbd2 aligncenter">'+result.localBodyList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidthbd3 aligncenter">'+result.localBodyList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidthbd4 aligncenter">'+result.localBodyList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd5 aligncenter">'+result.localBodyList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd6 aligncenter">'+result.localBodyList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidthbd7 aligncenter">'+result.localBodyList[i].totalInfoCellPublicAttendance+'</td>';
+								/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth12 aligncenter">'+result.localBodyList[i].totalWebPhotosAttendance+'</td>';
-								str+='<td class="dynChildWidth13 aligncenter">'+result.localBodyList[i].totalInfoCellPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+								str+='<td class="dynChildWidthbd8 aligncenter">'+result.localBodyList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidthbd9 aligncenter">'+result.localBodyList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
 						str+='</div>';
@@ -2486,19 +2486,19 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
-								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
-								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
-								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
-								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidthbd3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidthbd4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidthbd7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
-								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+								str+='<td class="dynChildWidthbd8 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
 						str+='</div>';
@@ -2547,19 +2547,19 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
-								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
-								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
-								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
-								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
-								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
-								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidthbd3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidthbd4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidthbd6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidthbd7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								/* str+='<td class="dynChildWidth8 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
 								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
-								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
-								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>'; */
+								str+='<td class="dynChildWidthbd8 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
 						str+='</div>';
@@ -2593,20 +2593,18 @@ $(document).on('click', '.searchTypeCls', function(){
 	
 	function dynamicwidthforBlood()
 {
-	$(".dynChildWidth13").css("width",$(".getChildWidth10").width());
-	$(".dynChildWidth12").css("width",$(".getChildWidth9").width()+15);
-	$(".dynChildWidth11").css("width",$(".getChildWidth9").width()+15);
-	$(".dynChildWidth10").css("width",$(".getChildWidth9").width()+15);
-	$(".dynChildWidth9").css("width",$(".getChildWidth9").width()+15);
-	$(".dynChildWidth8").css("width",$(".getChildWidth8").width()+15);
-	$(".dynChildWidth7").css("width",$(".getChildWidth7").width()+15);
-	$(".dynChildWidth6").css("width",$(".getChildWidth6").width()+15);
-	$(".dynChildWidth5").css("width",$(".getChildWidth5").width()+15);
-	$(".dynChildWidth4").css("width",$(".getChildWidth4").width()+15);
-	$(".dynChildWidth3").css("width",$(".getChildWidth3").width()+15);
-	$(".dynChildWidth2").css("width",$(".getChildWidth2").width()+15);
-	$(".dynChildWidth").css("width",$(".getChildWidth").width()+15);
+	$(".dynChildWidthbd9").css("width",$(".getChildWidthbd9").width());
+	$(".dynChildWidthbd8").css("width",$(".getChildWidthbd8").width()+15); 
+	$(".dynChildWidthbd7").css("width",$(".getChildWidthbd7").width()+15);
+	$(".dynChildWidthbd6").css("width",$(".getChildWidthbd6").width()+15);
+	$(".dynChildWidthbd5").css("width",$(".getChildWidthbd5").width()+15);
+	$(".dynChildWidthbd4").css("width",$(".getChildWidthbd4").width()+15);
+	$(".dynChildWidthbd3").css("width",$(".getChildWidthbd3").width()+15);
+	$(".dynChildWidthbd2").css("width",$(".getChildWidthbd2").width()+15);
+	$(".dynChildWidthbd").css("width",$(".getChildWidthbd").width()+15);
 }
+
+
 </script>
 </body>
 </html>
