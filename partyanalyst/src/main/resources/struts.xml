@@ -11240,6 +11240,12 @@
 		</result>
     </action>
     
+    <action name="getActivityDatesByScopeAction" class="activityAction" method="getActivityDatesByScopeId">
+        <result type="json" name="success">
+		  <param name="root">dates</param>
+		</result>
+    </action>
+    
     <action name="getRequiredAttributesByActScopeIdAction" class="activityAction" method="getRequiredAttributesByActScopeId">
         <result type="json" name="success">
 		  <param name="root">basicVOList</param>
