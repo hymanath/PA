@@ -1395,6 +1395,7 @@ function buildDayWiseResults(result,divId,jObj)
 function getDetails(){
 	if($("#activityTypeList").val()==4){
 		$("#locationWiseActivityDetailsDivId").show();
+		getLocationWiseActivityDetails("district",0,"");
 		$("#nonBloodDonationDivId").hide();
 	}else{
 		$("#locationWiseActivityDetailsDivId").hide();
@@ -2175,11 +2176,14 @@ $(document).on('click', '.searchTypeCls', function(){
 	}
 	
 });
-	getLocationWiseActivityDetails("district",0,"");
+	
 	function getLocationWiseActivityDetails(type,id,resultDivNum){
+		
+		var acScpeId = $("#ActivityList").val();
+		
 		var jObj = {
         searchType:type,
-        activityScopeId:5,
+        activityScopeId:parseInt(acScpeId),
         locationValue:id,
         task:""
         };
