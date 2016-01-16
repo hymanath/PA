@@ -86,6 +86,7 @@
 .next{
 	width:60px !important;
 }
+
 </style>
 </head>
 
@@ -132,6 +133,9 @@
 							<div class="table-responsive" id="alignmentWidth" style="margin-top:10px;">
 				
 							</div>
+							
+							
+							<div id="locationWiseActivityDetailsDivId"></div>
 						</div>
                 
 					</div>
@@ -2166,7 +2170,438 @@ $(document).on('click', '.searchTypeCls', function(){
 	}
 	
 });
+	getLocationWiseActivityDetails("district",0,"");
+	function getLocationWiseActivityDetails(type,id,resultDivNum){
+		var jObj = {
+        searchType:type,
+        activityScopeId:5,
+        locationValue:id,
+        task:""
+        };
+        $.ajax({
+          type:'GET',
+          url: 'getLocationWiseActivityDetailsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(type=="district"){
+				buildDistrictWiseActivityResult(result);
+			}else if(type=="constituency"){
+				buildConstituencyWiseActivityResult(result,resultDivNum);
+			}else if(type=="mandal"){
+				buildMandalWiseActivityResult(result,resultDivNum);
+			}else if(type=="panchayat"){
+				buildPanchayatWiseActivityResult(result,resultDivNum);
+			}else if(type=="ward"){
+				buildWardWiseActivityResult(result,resultDivNum);
+			}
+			
+			
+        });
+	}
+	
+	function buildDistrictWiseActivityResult(result){
+		var str='';
+		
+		str+='<table class="table table-col" style="border:1px solid #ccc">';
+		str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
+		if(result != null && result.subList != null && result.subList.length > 0){
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th rowspan="2" class="getChildWidth aligncenter">Location Name</th>';
+			str+='<th rowspan="2" class="getChildWidth2 aligncenter">Total Locations</th>';
+			str+='<th rowspan="2" class="getChildWidth3 aligncenter">Total Members Attended</th>';
+			str+='<th colspan="2" class="aligncenter">Total Cadre Attended</th>';
+			str+='<th colspan="2" class="aligncenter">Total Public Attended</th>';
+			str+='<th colspan="2" class="aligncenter">Questionnaire Submitted</th>';
+			str+='<th colspan="2" class="aligncenter">Organiser Questionnaire Submitted</th>';
+			str+='<th colspan="2" class="aligncenter">Photos Attached</th>';
+			str+='</tr>';
+			str+='<tr>';
+			str+='<th class="getChildWidth4 aligncenter">WEB</th>';
+			str+='<th class="getChildWidth5 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidth6 aligncenter">WEB</th>';
+			str+='<th class="getChildWidth7 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidth8 aligncenter">WEB</th>';
+			str+='<th class="getChildWidth9 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidth10 aligncenter">WEB</th>';
+			str+='<th class="getChildWidth11 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidth12 aligncenter">WEB</th>';
+			str+='<th class="getChildWidth13 aligncenter">Info-cell</th>';
+			str+='</tr>';
+			str+='</thead>';
+			for(var i in result.subList){
+				str+='<tr  id="'+result.subList[i].id+'">';
+				str+='<td colspan="13" class="pad_0">';
+				str+='<div class="panel-group m_0" id="accordionforBlood'+i+'" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-customtd">';
+				str+='<div class="panel-heading" role="tab" id="distHeading'+i+'">';
+				//str+='<h4 class="panel-title">';
+					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'"  onclick=getLocationWiseActivityDetails("constituency","'+result.subList[i].id+'","'+i+'") >';
+					str+='<div>';
+						str+='<table>';
+						str+='<tr>';							
+							str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
+							str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+							str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+							str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+							str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+							str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+							str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+							str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+							str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+							str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+							str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+							str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+							str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+						str+='</tr>';
+						str+='</table>';
+					str+='</div>';
+					str+='</a>';
+				//str+='</h4>';
+				str+='</div>';
+				str+='<div id="constituencyResultDiv'+i+'"></div>';
+				str+='<div id="constituencyResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distHeading'+i+'"></div>';
+				str+='</div>';
+				str+='</div>';
+				str+='</td>';
+				str+='</tr>';
+			}
+		}else{
+			str+='<td style="background-color:#663300;">';
+			str+='<tr colspan="13">';
+			str+='<h4>No Data Available.</h4>';
+			str+='</td>';
+			str+='</tr>';
+		}
+		str+='</table>';
+		str+='</div>';
+		
+		$("#locationWiseActivityDetailsDivId").html(str);
+		
+		dynamicwidthforBlood();
+	}
+	
+	function buildConstituencyWiseActivityResult(result,resultDivNum){
+		var isOpened = $("#constituencyResultDiv"+resultDivNum).hasClass("opened");
+		if(!isOpened){
+			var str='';
+			if(result != null && result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					str+='<tr  id="'+result.subList[i].id+'">';
+					str+='<td colspan="13">';
+					str+='<div class="panel-body">';
+					str+='<div class="panel-group panel-group1 m_0" id="accordion1Level1bd'+i+'" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default panel-customtd">';
+					str+='<div class="panel-heading" role="tab" id="constituencyHeading'+i+'">';
+					str+='<h4 class="panel-title">';
+						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" onclick=getLocationWiseActivityDetails("mandal","'+result.subList[i].id+'","'+i+'") >';
+						str+='<div>';
+							str+='<table>';
+							str+='<tr>';							
+								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='</a>';
+					str+='</h4>';
+					str+='</div>';
+					
+					str+='<div id="mandalResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="constituencyHeading'+i+'"></div>';
+					str+='<div id="mandalResultDiv'+i+'"></div>';
+					str+='<div id="localElectionBodyResultDiv'+i+'"></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='<tr style="background-color:#663300;">';
+				str+='<td colspan="13">';
+				str+='No Data Available.';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#constituencyResultDiv"+resultDivNum).html(str);
+			$("#constituencyResultDiv"+resultDivNum).addClass("opened");
+		}else{
+			$("#constituencyResultDiv"+resultDivNum).removeClass("opened");
+			$("#constituencyResultDiv"+resultDivNum).html("");
+		}
+			dynamicwidthforBlood();
+	}
+		
+	
   
+	function buildMandalWiseActivityResult(result,resultDivNum){
+		var isOpened = $("#mandalResultDiv"+resultDivNum).hasClass("opened");
+		if(!isOpened){
+			var str='';
+			if(result != null && result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					str+='<tr  id="'+result.subList[i].id+'">';
+					str+='<td colspan="13">';
+					str+='<div class="panel-body">';
+					str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default panel-customtd">';
+					str+='<div  class="panel-heading" role="tab" id="mandalHeading'+i+'">';
+					str+='<h4 class="panel-title">';
+						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("panchayat","'+result.subList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
+						str+='<div>';
+							str+='<table>';
+							str+='<tr>';							
+								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='</a>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div id="panchayatResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading'+i+'"></div>';
+					str+='<div id="panchayatResultDiv'+i+'"></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='<tr style="background-color:#663300;">';
+				str+='<td colspan="13">';
+				str+='No Data Available.';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#mandalResultDiv"+resultDivNum).html(str);
+			$("#mandalResultDiv"+resultDivNum).addClass("opened");
+		}else{
+			$("#mandalResultDiv"+resultDivNum).removeClass("opened");
+			$("#mandalResultDiv"+resultDivNum).html("");
+		}
+		
+		
+		var isOpened1 = $("#localElectionBodyResultDiv"+resultDivNum).hasClass("opened");
+		if(!isOpened1){
+			var str='';
+			if(result != null && result.localBodyList != null && result.localBodyList.length > 0){
+				for(var i in result.localBodyList){
+					str+='<tr  id="'+result.localBodyList[i].id+'">';
+					str+='<td colspan="13">';
+					str+='<div class="panel-body">';
+					str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelLeb1'+i+'" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default panel-customtd">';
+					str+='<div  class="panel-heading" role="tab" id="mandalHeading1'+i+'">';
+					str+='<h4 class="panel-title">';
+						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("ward","'+result.localBodyList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelLeb1'+i+'" href="#wardResultDivd'+i+'" aria-expanded="true" aria-controls="wardResultDivd'+i+'">';
+						str+='<div>';
+							str+='<table>';
+							str+='<tr>';							
+								str+='<td class="dynChildWidth aligncenter">'+result.localBodyList[i].name+'</td>';
+								str+='<td class="dynChildWidth2 aligncenter">'+result.localBodyList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidth3 aligncenter">'+result.localBodyList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidth4 aligncenter">'+result.localBodyList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth5 aligncenter">'+result.localBodyList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth6 aligncenter">'+result.localBodyList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth7 aligncenter">'+result.localBodyList[i].totalInfoCellPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth12 aligncenter">'+result.localBodyList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth13 aligncenter">'+result.localBodyList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='</a>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div id="wardResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading1'+i+'"></div>';
+					str+='<div id="wardResultDiv'+i+'"></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='<tr style="background-color:#663300;">';
+				str+='<td colspan="13">';
+				str+='No Data Available.';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#localElectionBodyResultDiv"+resultDivNum).html(str);
+			$("#localElectionBodyResultDiv"+resultDivNum).addClass("opened");
+		}else{
+			$("#localElectionBodyResultDiv"+resultDivNum).removeClass("opened");
+			$("#localElectionBodyResultDiv"+resultDivNum).html("");
+		}
+		dynamicwidthforBlood();
+		
+	}
+	
+	function buildPanchayatWiseActivityResult(result,resultDivNum){
+		var isOpened = $("#panchayatResultDiv"+resultDivNum).hasClass("opened");
+		if(!isOpened){
+			var str='';
+			if(result != null && result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					str+='<tr  id="'+result.subList[i].id+'">';
+					str+='<td colspan="13">';
+					str+='<div class="panel-body">';
+					str+='<div class="panel-group panel-group1 m_0" id="accordion1LevelPanchayatbd'+i+'" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default panel-customtd">';
+					str+='<div class="panel-heading" role="tab" id="panchayatHeading'+i+'">';
+					str+='<h4 class="panel-title">';
+						str+='<a role="button" class="accordion1LevelPanchayatbd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1LevelPanchayatbd" href="#panchayatResultDivdummy'+i+'" aria-expanded="true" aria-controls="panchayatResultDivdummy'+i+'">';
+						str+='<div>';
+							str+='<table>';
+							str+='<tr>';							
+								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='</a>';
+					str+='</h4>';
+					str+='</div>';
+					
+					str+='<div id="panchayatResultDivdummy'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panchayatHeading'+i+'"></div>';
+					//str+='<div id="mandalResultDiv'+i+'"></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='<tr style="background-color:#663300;">';
+				str+='<td colspan="13">';
+				str+='No Data Available.';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#panchayatResultDiv"+resultDivNum).html(str);
+			$("#panchayatResultDiv"+resultDivNum).addClass("opened");
+		}else{
+			$("#panchayatResultDiv"+resultDivNum).removeClass("opened");
+			$("#panchayatResultDiv"+resultDivNum).html("");
+		}
+			dynamicwidthforBlood();
+	}
+	
+	function buildWardWiseActivityResult(result,resultDivNum){
+		var isOpened = $("#wardResultDiv"+resultDivNum).hasClass("opened");
+		if(!isOpened){
+			var str='';
+			if(result != null && result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					str+='<tr  id="'+result.subList[i].id+'">';
+					str+='<td colspan="13">';
+					str+='<div class="panel-body">';
+					str+='<div class="panel-group panel-group1 m_0" id="accordion1LevelWardbd'+i+'" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default panel-customtd">';
+					str+='<div class="panel-heading" role="tab" id="wardHeading'+i+'">';
+					str+='<h4 class="panel-title">';
+						str+='<a role="button" class="accordion1LevelWardbd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1LevelWardbd" href="#wardResultDivdummy'+i+'" aria-expanded="true" aria-controls="wardResultDivdummy'+i+'">';
+						str+='<div>';
+							str+='<table>';
+							str+='<tr>';							
+								str+='<td class="dynChildWidth aligncenter">'+result.subList[i].name+'</td>';
+								str+='<td class="dynChildWidth2 aligncenter">'+result.subList[i].totalLocations+'</td>';
+								str+='<td class="dynChildWidth3 aligncenter">'+result.subList[i].totalMembers+'</td>';
+								str+='<td class="dynChildWidth4 aligncenter">'+result.subList[i].totalWebCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth5 aligncenter">'+result.subList[i].totalInfoCellCadreAttendance+'</td>';
+								str+='<td class="dynChildWidth6 aligncenter">'+result.subList[i].totalWebPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth7 aligncenter">'+result.subList[i].totalInfoCellPublicAttendance+'</td>';
+								str+='<td class="dynChildWidth8 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth9 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth10 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth11 aligncenter">NA</td>';
+								str+='<td class="dynChildWidth12 aligncenter">'+result.subList[i].totalWebPhotosAttendance+'</td>';
+								str+='<td class="dynChildWidth13 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
+							str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='</a>';
+					str+='</h4>';
+					str+='</div>';
+					
+					str+='<div id="wardResultDivdummy'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="wardHeading'+i+'"></div>';
+					//str+='<div id="mandalResultDiv'+i+'"></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='<tr style="background-color:#663300;">';
+				str+='<td colspan="13">';
+				str+='No Data Available.';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#wardResultDiv"+resultDivNum).html(str);
+			$("#wardResultDiv"+resultDivNum).addClass("opened");
+		}else{
+			$("#wardResultDiv"+resultDivNum).removeClass("opened");
+			$("#wardResultDiv"+resultDivNum).html("");
+		}
+			dynamicwidthforBlood();
+	}
+	
+	function dynamicwidthforBlood()
+{
+	$(".dynChildWidth13").css("width",$(".getChildWidth10").width());
+	$(".dynChildWidth12").css("width",$(".getChildWidth9").width()+15);
+	$(".dynChildWidth11").css("width",$(".getChildWidth9").width()+15);
+	$(".dynChildWidth10").css("width",$(".getChildWidth9").width()+15);
+	$(".dynChildWidth9").css("width",$(".getChildWidth9").width()+15);
+	$(".dynChildWidth8").css("width",$(".getChildWidth8").width()+15);
+	$(".dynChildWidth7").css("width",$(".getChildWidth7").width()+15);
+	$(".dynChildWidth6").css("width",$(".getChildWidth6").width()+15);
+	$(".dynChildWidth5").css("width",$(".getChildWidth5").width()+15);
+	$(".dynChildWidth4").css("width",$(".getChildWidth4").width()+15);
+	$(".dynChildWidth3").css("width",$(".getChildWidth3").width()+15);
+	$(".dynChildWidth2").css("width",$(".getChildWidth2").width()+15);
+	$(".dynChildWidth").css("width",$(".getChildWidth").width()+15);
+}
 </script>
 </body>
 </html>
