@@ -2407,14 +2407,6 @@ public class ActivityService implements IActivityService{
 				}
 			}
 			
-			StringBuilder str = new StringBuilder();
-			Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-			String extension = "";
-			if(eventFileUploadVO.getFileExtension()==null){
-				extension = "jpg";
-			}
-			str.append(randomNumber).append(".").append(extension);
-			activityDocument.setDocumentName(str.toString());
 			
 			String folderName = folderCreation();
 			
@@ -2427,7 +2419,9 @@ public class ActivityService implements IActivityService{
 			 int temp = month+1;
 			 
 			 StringBuilder pathBuilder = new StringBuilder();
-			
+			 StringBuilder str = new StringBuilder();
+			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				
 			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
 			
 			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
@@ -2435,7 +2429,7 @@ public class ActivityService implements IActivityService{
 				destPath = folderName+"/"+randomNumber+".jpg";
 				 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
 				 .append("jpg");
-				 
+				 str.append(randomNumber).append(".").append("jpg");
 				activityDocument.setActivityDate(eventFileUploadVO.getActivityDateFormat());
 				ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
 				imageAndStringConverter.convertBase64StringToImage(eventFileUploadVO.getImageBase64String(), destPath);
@@ -2444,10 +2438,12 @@ public class ActivityService implements IActivityService{
 			{
 				 pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".")
 				 .append(eventFileUploadVO.getFileExtension());
+				 str.append(randomNumber).append(".").append(eventFileUploadVO.getFileExtension());
 				 
 				copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
 			}
 			
+			activityDocument.setDocumentName(str.toString());
 			activityDocument.setPath(pathBuilder.toString());
 			activityDocument.setInsertedBy(eventFileUploadVO.getUserId());
 			activityDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
