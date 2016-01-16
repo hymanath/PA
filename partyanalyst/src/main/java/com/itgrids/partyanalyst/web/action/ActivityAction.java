@@ -512,6 +512,17 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
+	public String getActivityDatesByScopeId(){
+		try{
+		
+			jObj = new JSONObject(getTask());
+			dates =activityService.getActivityScopeDates(jObj.getLong("activityScopeId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getActivityDatesByScope()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getRequiredAttributesByActScopeId()
 	{
 		try{
