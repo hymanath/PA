@@ -77,10 +77,18 @@ $(document).ready(function() {
            enctype: 'multipart/form-data',
             beforeSend: function(){},
             success: function(data, el){
-                var parent = el.find(".jFiler-jProgressBar").parent();
-                el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
-                    $("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");    
-                });
+				if(data.resultCode==0){
+					var parent = el.find(".jFiler-jProgressBar").parent();
+					el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+						$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");    
+					});
+				}else{
+					var parent = el.find(".jFiler-jProgressBar").parent();
+					el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+						$("<div class=\"jFiler-item-others text-error\"><i class=\"icon-jfi-minus-circle\"></i> Error</div>").hide().appendTo(parent).fadeIn("slow");    
+					});
+				}
+                
 				//window.location.href="eventFieUploadAction.action";
             },
             error: function(el){
