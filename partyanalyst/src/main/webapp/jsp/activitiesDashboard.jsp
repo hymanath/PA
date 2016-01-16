@@ -2203,9 +2203,8 @@ $(document).on('click', '.searchTypeCls', function(){
 		var str='';
 		
 		str+='<table class="table table-col" style="border:1px solid #ccc">';
-		str+='<caption class="cap-custom"><b>DISTRICT WISE - VILLAGE/WARD</b></caption>';
-		if(result != null && result.subList != null && result.subList.length > 0){
-			str+='<thead>';
+		str+='<caption class="cap-custom"><b>	</b></caption>';
+		str+='<thead>';
 			str+='<tr>';
 			str+='<th rowspan="2" class="getChildWidth aligncenter">Location Name</th>';
 			str+='<th rowspan="2" class="getChildWidth2 aligncenter">Total Locations</th>';
@@ -2228,7 +2227,8 @@ $(document).on('click', '.searchTypeCls', function(){
 			str+='<th class="getChildWidth12 aligncenter">WEB</th>';
 			str+='<th class="getChildWidth13 aligncenter">Info-cell</th>';
 			str+='</tr>';
-			str+='</thead>';
+		str+='</thead>';
+		if(result != null && result.subList != null && result.subList.length > 0){
 			for(var i in result.subList){
 				str+='<tr  id="'+result.subList[i].id+'">';
 				str+='<td colspan="13" class="pad_0">';
@@ -2267,9 +2267,9 @@ $(document).on('click', '.searchTypeCls', function(){
 				str+='</tr>';
 			}
 		}else{
-			str+='<td style="background-color:#663300;">';
-			str+='<tr colspan="13">';
-			str+='<h4>No Data Available.</h4>';
+			str+='<tr style="background-color:#663300;">';
+			str+='<td colspan="13">';
+			str+='<h4>No Data Available1.</h4>';
 			str+='</td>';
 			str+='</tr>';
 		}
@@ -2330,7 +2330,7 @@ $(document).on('click', '.searchTypeCls', function(){
 			}else{
 				str+='<tr style="background-color:#663300;">';
 				str+='<td colspan="13">';
-				str+='No Data Available.';
+				str+='No Data Available2.';
 				str+='</td>';
 				str+='</tr>';
 			}
@@ -2392,7 +2392,7 @@ $(document).on('click', '.searchTypeCls', function(){
 			}else{
 				str+='<tr style="background-color:#663300;">';
 				str+='<td colspan="13">';
-				str+='No Data Available.';
+				str+='No Data Available3.';
 				str+='</td>';
 				str+='</tr>';
 			}
@@ -2450,7 +2450,7 @@ $(document).on('click', '.searchTypeCls', function(){
 			}else{
 				str+='<tr style="background-color:#663300;">';
 				str+='<td colspan="13">';
-				str+='No Data Available.';
+				str+='No Data Available4.';
 				str+='</td>';
 				str+='</tr>';
 			}
@@ -2512,7 +2512,7 @@ $(document).on('click', '.searchTypeCls', function(){
 			}else{
 				str+='<tr style="background-color:#663300;">';
 				str+='<td colspan="13">';
-				str+='No Data Available.';
+				str+='No Data Available5.';
 				str+='</td>';
 				str+='</tr>';
 			}
@@ -2573,7 +2573,7 @@ $(document).on('click', '.searchTypeCls', function(){
 			}else{
 				str+='<tr style="background-color:#663300;">';
 				str+='<td colspan="13">';
-				str+='No Data Available.';
+				str+='No Data Available6.';
 				str+='</td>';
 				str+='</tr>';
 			}
