@@ -2245,7 +2245,11 @@ $(document).on('click', '.searchTypeCls', function(){
 				str+='<div class="panel panel-default panel-customtd">';
 				str+='<div class="panel-heading" role="tab" id="distHeading'+i+'">';
 				//str+='<h4 class="panel-title">';
+				if($("#activityLevelList").val()==1 || $("#activityLevelList").val()==2 || $("#activityLevelList").val()==5){
 					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'"  onclick=getLocationWiseActivityDetails("constituency","'+result.subList[i].id+'","'+i+'") >';
+				}else{
+					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'">';
+				}
 					str+='<div>';
 						str+='<table>';
 						str+='<tr>';							
@@ -2303,7 +2307,11 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div class="panel-heading" role="tab" id="constituencyHeading'+i+'">';
 					str+='<h4 class="panel-title">';
+					if($("#activityLevelList").val()==1 || $("#activityLevelList").val()==2){
 						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" onclick=getLocationWiseActivityDetails("mandal","'+result.subList[i].id+'","'+i+'") >';
+					}else{
+						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'">';
+					}
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
@@ -2355,10 +2363,12 @@ $(document).on('click', '.searchTypeCls', function(){
 	
   
 	function buildMandalWiseActivityResult(result,resultDivNum){
+		var flag=false;
 		var isOpened = $("#mandalResultDiv"+resultDivNum).hasClass("opened");
 		if(!isOpened){
 			var str='';
 			if(result != null && result.subList != null && result.subList.length > 0){
+				flag=true;
 				for(var i in result.subList){
 					str+='<tr  id="'+result.subList[i].id+'">';
 					str+='<td colspan="13">';
@@ -2367,7 +2377,12 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div  class="panel-heading" role="tab" id="mandalHeading'+i+'">';
 					str+='<h4 class="panel-title">';
+					if($("#activityLevelList").val()==1){
 						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("village","'+result.subList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
+					}else{
+						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
+					}
+						
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
@@ -2398,12 +2413,6 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='</td>';
 					str+='</tr>';
 				}
-			}else{
-				str+='<tr style="background-color:#663300;">';
-				str+='<td colspan="13">';
-				str+='No Data Available3.';
-				str+='</td>';
-				str+='</tr>';
 			}
 			$("#mandalResultDiv"+resultDivNum).html(str);
 			$("#mandalResultDiv"+resultDivNum).addClass("opened");
@@ -2417,6 +2426,7 @@ $(document).on('click', '.searchTypeCls', function(){
 		if(!isOpened1){
 			var str='';
 			if(result != null && result.localBodyList != null && result.localBodyList.length > 0){
+				flag=true;
 				for(var i in result.localBodyList){
 					str+='<tr  id="'+result.localBodyList[i].id+'">';
 					str+='<td colspan="13">';
@@ -2425,7 +2435,12 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div  class="panel-heading" role="tab" id="mandalHeading1'+i+'">';
 					str+='<h4 class="panel-title">';
+					if($("#activityLevelList").val()==1){
 						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("ward","'+result.localBodyList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelLeb1'+i+'" href="#wardResultDivd'+i+'" aria-expanded="true" aria-controls="wardResultDivd'+i+'">';
+					}else{
+						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelLeb1'+i+'" href="#wardResultDivd'+i+'" aria-expanded="true" aria-controls="wardResultDivd'+i+'">';
+					}
+						
 						str+='<div>';
 							str+='<table>';
 							str+='<tr>';							
@@ -2456,18 +2471,20 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='</td>';
 					str+='</tr>';
 				}
-			}else{
-				str+='<tr style="background-color:#663300;">';
-				str+='<td colspan="13">';
-				str+='No Data Available4.';
-				str+='</td>';
-				str+='</tr>';
 			}
 			$("#localElectionBodyResultDiv"+resultDivNum).html(str);
 			$("#localElectionBodyResultDiv"+resultDivNum).addClass("opened");
 		}else{
 			$("#localElectionBodyResultDiv"+resultDivNum).removeClass("opened");
 			$("#localElectionBodyResultDiv"+resultDivNum).html("");
+		}
+		
+		if(!flag){
+			str+='<tr style="background-color:#663300;">';
+			str+='<td colspan="13">';
+			str+='No Data Available3.';
+			str+='</td>';
+			str+='</tr>';
 		}
 		dynamicwidthforBlood();
 		
