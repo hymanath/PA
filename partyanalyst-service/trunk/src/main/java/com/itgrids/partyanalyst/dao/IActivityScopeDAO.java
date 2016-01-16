@@ -14,5 +14,5 @@ public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	public Long getNoOFTimesOfAnActivity(Long activityScopeId);
 	
 	public Date getActivityStartDateByActivityScopeId(Long activityScopeId);
-	
+	public Object[] getDatesForActivityScopeId(Long activityScopeId);
 }

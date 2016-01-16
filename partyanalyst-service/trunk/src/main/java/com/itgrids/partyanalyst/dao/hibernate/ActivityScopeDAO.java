@@ -47,4 +47,13 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		query.setParameter("activityScopeId", activityScopeId);
 		return (Date) query.uniqueResult();
 	}
+	
+	public Object[] getDatesForActivityScopeId(Long activityScopeId){ 
+		Query query=getSession().createQuery(" select date(model.activity.startDate)," +
+				" date(model.activity.endDate) " +
+				" from ActivityScope model " +
+				" where model.activityScopeId =:activityScopeId ");
+		query.setParameter("activityScopeId", activityScopeId);
+		return (Object[])query.uniqueResult();
+	}
 }
