@@ -438,7 +438,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" ,LocalElectionBody LEB, Constituency C  ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-			str.append(" , Panchayat P ");
+			str.append(" , Panchayat P,Tehsil T ");
 		}
 		else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
 			str.append(" ,Constituency C ");
