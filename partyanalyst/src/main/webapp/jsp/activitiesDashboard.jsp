@@ -110,7 +110,7 @@
                     	<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
                         	<h4 class="panel-title" id="headingDiv" style="font-weight:bold;">VILLAGE/WARD</h4>
                         </div>
-                        <div class="panel-body pad_0"  >
+                        <div class="panel-body pad_0" id="nonBloodDonationDivId">
 							<div class="row">
 								<div class="col-md-12">
 									<div id="stateWiseViewDid"></div>
@@ -133,11 +133,8 @@
 							<div class="table-responsive" id="alignmentWidth" style="margin-top:10px;">
 				
 							</div>
-							
-							
-							<div id="locationWiseActivityDetailsDivId"></div>
 						</div>
-                
+						<div id="locationWiseActivityDetailsDivId" style="display:none;"></div>
 					</div>
 				</div>
 			</div>
@@ -1396,9 +1393,17 @@ function buildDayWiseResults(result,divId,jObj)
 }
 
 function getDetails(){
-	isAlreadyBuild = false;
-	getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
-	getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
+	if($("#activityTypeList").val()==4){
+		$("#locationWiseActivityDetailsDivId").show();
+		$("#nonBloodDonationDivId").hide();
+	}else{
+		$("#locationWiseActivityDetailsDivId").hide();
+		$("#nonBloodDonationDivId").show();
+		isAlreadyBuild = false;
+		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
+		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
+	}
+	
 }
 
 var globallocationScope;
