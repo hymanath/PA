@@ -1157,6 +1157,7 @@ public class ActivityService implements IActivityService{
 			{
 				
 					ActivityScope activityScope = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0));
+					if(activityScope != null){
 					searchAttributeVO.setScopeId(activityScope.getScopeId());
 					searchAttributeVO.setScopeValue(activityScope.getScopeValue());
 					activityLevelId = activityScope.getActivityLevel().getActivityLevelId();
@@ -2165,7 +2166,7 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
-			
+		  }	
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getActivityDetailsBySearchCriteria() ActivityService Class... ",e);
