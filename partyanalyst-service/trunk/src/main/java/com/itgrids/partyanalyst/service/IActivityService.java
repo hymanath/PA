@@ -47,4 +47,5 @@ public interface IActivityService {
 	public ActivityWSVO getUserActivityDetailsByUserId(Long userId);
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
 	public BasicVO getActivityLocationWiseDetailsByScopeId(Long scopeId);
+	public List<String> getActivityScopeDates(Long activityScopeId);
 }
