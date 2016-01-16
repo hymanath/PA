@@ -2484,10 +2484,13 @@ public class ActivityService implements IActivityService{
 		    	//conducted Date
 		    	Date activityStartDate = activityScopeDAO.getActivityStartDateByActivityScopeId(eventFileUploadVO.getActivityScopeId());
 		    	if(activityStartDate != null){
-		    		long diff = activityStartDate.getTime() - activityDate.getTime();
-		    		long dayDiff = diff / (24 * 60 * 60 * 1000);
-		    		
-		    		activityInfoDocument.setDay(Math.abs(dayDiff));
+		    		if(activityDate.equals(activityStartDate) || activityDate.after(activityStartDate)){
+			    		long diff = activityDate.getTime()-activityStartDate.getTime();
+			    		long dayDiff = diff / (24 * 60 * 60 * 1000);
+			    		activityInfoDocument.setDay(Math.abs(dayDiff));
+		    		}else{
+		    			throw new ArithmeticException();
+		    		}
 		    	}
 		    }
 		    else
@@ -3571,6 +3574,23 @@ public class ActivityService implements IActivityService{
 		return dates;
 	}
 	
+	public List<String> getActivityScopeDates(Long activityScopeId){
+		List<String> dates = new ArrayList<String>();
+		Object[] obj = activityScopeDAO.getDatesForActivityScopeId(activityScopeId);
+		if(obj != null)
+		{
+			String Date = obj[0] != null ? obj[0].toString():"";
+			String Date1 = obj[1] != null ? obj[1].toString():"";
+			if(obj[0] != null)
+			{
+			dates.add(Date.substring(5, 7)+"/"+ Date.substring(8, 10)+"/"+Date.substring(0, 4));
+			}
+			if(obj[1] != null)
+				dates.add(Date1.substring(5, 7)+"/"+ Date1.substring(8, 10)+"/"+Date1.substring(0, 4));
+		}
+		return dates;
+	}
+	
 	
 	public List<ActivityReqAttributesVO> getRequiredAttributes(List<Long> scopeIds){
 		List<ActivityReqAttributesVO> voList = new ArrayList<ActivityReqAttributesVO>();
@@ -3745,11 +3765,11 @@ public class ActivityService implements IActivityService{
 					Long locationLvlId = (Long) (obj[2] != null ? obj[2]:0l);
 					Long locationVal = (Long) (obj[3] != null ? obj[3]:0l);
 					vo.setId(locationVal);
-					if(locationLvlId.longValue() == 9l){
+					if(locationLvlId.longValue() == 13l){
 						constIds.add(locationVal);
 						constMap.put(locationVal, vo);
 					}
-					else if(locationLvlId.longValue() == 7l){
+					else if(locationLvlId.longValue() == 11l){
 						distIds.add(locationVal);
 						distMap.put(locationVal, vo);
 					}
