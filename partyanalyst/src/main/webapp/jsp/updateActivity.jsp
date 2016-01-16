@@ -301,7 +301,7 @@
       </div>
       <div class="modal-body" style="background:#EFF3F4">
 		<div class="row">
-			<div class="col-md-4">
+			<!--<div class="col-md-4">
 				<label>Planned Date</label>
 				<div class="input-group input-g1">
 					<span class="input-group-addon">
@@ -309,7 +309,7 @@
 					</span>
 					<input type="text" class="form-control" id="plannedDate">
 				</div>
-			</div>
+			</div>-->
 			<div class="col-md-4">
 				<label>Select Conducted Date</label>
 				<div class="input-group input-g1">
@@ -325,8 +325,8 @@
 			<li role="presentation" class="active"><a href="#cadre" aria-controls="cadre" role="tab" data-toggle="tab">Cadre</a></li>
 			<li role="presentation"><a href="#public" aria-controls="public" role="tab" data-toggle="tab" onclick="getBloodGroups();">Public</a></li>
 			<li role="presentation"><a href="#uploadphotos" aria-controls="uploadphotos" role="tab" data-toggle="tab" >Upload Photos</a></li>
-			<li role="presentation"><a href="#questionnaire" aria-controls="questionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(4)">Questionnaire</a></li>
-			<li role="presentation"><a href="#organizerQuestionnaire" aria-controls="organizerQuestionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(5)">Organizer Questionnaire</a></li>
+			<!--<li role="presentation"><a href="#questionnaire" aria-controls="questionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(4)">Questionnaire</a></li>
+			<li role="presentation"><a href="#organizerQuestionnaire" aria-controls="organizerQuestionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(5)">Organizer Questionnaire</a></li>-->
 		  </ul>
 		  <div class="tab-content navtabsContent">
 		  <!-- Cadre -->
@@ -1021,12 +1021,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 						}
 					}
 					$('#home').html(str);
-					$(document).on("click","#activityCadrePopup",function(){
-						 gobalLevelValue = $(this).attr("attr_location_Value");
-						 gobalLocName  = $(this).attr("attr_location_name");
-						 getRequiredAttributesByActScopeId();
-						$("#activityCadre").modal("show")
-					});
+					
 					$('#plannedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#conductedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#home').append(' <div><input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
@@ -1044,6 +1039,13 @@ function getLocationDetailsForActivity(startDate,endDate)
 		
 }
 
+
+	$(document).on("click",".activityCadrePopup",function(){
+		gobalLevelValue = $(this).attr("attr_location_Value");
+		gobalLocName  = $(this).attr("attr_location_name");
+		//getRequiredAttributesByActScopeId();
+		$("#activityCadre").modal("show")
+	});
 
 function gettingCadreDetails(locationId,locationName,constituencyId){	
 	
@@ -1114,6 +1116,7 @@ getUserAccessDistrictList();
 	var ActivityId =$('#ActivityList').val();
 	var districtId =$('#districtList').val();
 	
+	getActivityDatesByScopeId();
 	
 	//$('#ErrDiv').html("");
 	var errStr ='';
@@ -1794,7 +1797,8 @@ $("#hideAsmblyData").click(function(){
 	  $(".errorDiv").html("");
 	  var str = '';
 	  var flag = true;
-	  var conductDate = $("#conductedDate").val();
+	  //var conductDate = $("#conductedDate").val();
+	  var conductDate = "20/01/2016";
 	  if(conductDate == null || conductDate.trim().length == 0){
 		str += 'Please Select Conducted Date';
 	   flag = false;
@@ -1937,8 +1941,8 @@ function getActivityLocationWiseDetails()
 					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">CONSTITUENCY NAME </th>';
 					 str+='<th colspan=7 style="text-align: center;vertical-align: middle;">MEMBERS ATTENDED</th>';
 					 str+='<th colspan=2 style="text-align: center;">PHOTOS UPLOAD</th>';
-					 str+='<th rowspan=3 style="vertical-align: middle;">QUESTIONAIRE</th>';
-					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">ORGANISER QUESTIONAIRE</th>';
+					 /* str+='<th rowspan=3 style="vertical-align: middle;">QUESTIONAIRE</th>';
+					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">ORGANISER QUESTIONAIRE</th>'; */
 					 str+='<th rowspan=3 style="vertical-align: middle;">UPDATE</th>';
 				str+='</tr>';
 				str+='<tr>';
@@ -1970,9 +1974,9 @@ function getActivityLocationWiseDetails()
 					str+='<td>1000</td>';
 					str+='<td>5</td>';
 					str+='<td>666</td>';
-					str+='<td>200</td>';
-					str+='<td>Yes</td>';
-					str+='<td><button type="button" class="btn btn-success">Update</button></td>';
+					/* str+='<td>200</td>';
+					str+='<td>Yes</td>'; */
+					str+='<td><span class="btn btn-success btn-xs activityCadrePopup" attr_location_Value="'+result.constituencyList[i].id+'" attr_location_Name=\''+result.constituencyList[i].name+'\'  >UPDATE</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -1980,12 +1984,39 @@ function getActivityLocationWiseDetails()
 				
 		$("#bloodDonationDetails").html(str);
 	}
-	
-function getActivityDates()
-{
+
+function getActivityDatesByScopeId(){
+	var scopeId =$('#ActivityList').val();
 	 var jsObj =
 			{
-				activityScopeId:1,
+				activityScopeId:scopeId,
+				task:""
+			}
+		$.ajax({
+				type : "POST",
+				url : "getActivityDatesByScopeAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			if(result != null && result.length >0){
+				$('#conductedDate').daterangepicker({
+						singleDatePicker:true,
+						format: 'MM/DD/YYYY',
+						startDate: new Date(result[0]),
+						endDate: new Date(result[1]),
+						minDate: new Date(result[0]),
+						maxDate: new Date(result[1])
+						});
+			//	conductedDate	
+			}
+		});
+}
+
+
+function getActivityDates(){
+	var scopeId =$('#ActivityList').val();
+	 var jsObj =
+			{
+				activityScopeId:scopeId,
 				task:""
 			}
 		$.ajax({
@@ -1993,10 +2024,7 @@ function getActivityDates()
 				url : "getActivityDatesAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-			if(result != null && result.length >0)
-			{
-				alert(result[0])
-				alert(result[1])
+			if(result != null && result.length >0){
 				$('#conductedDate').daterangepicker({
 						singleDatePicker:true,
 						format: 'MM/DD/YYYY',
