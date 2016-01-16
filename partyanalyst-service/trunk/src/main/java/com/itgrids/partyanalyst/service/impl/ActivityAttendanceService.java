@@ -89,6 +89,10 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			{
 				searchVO.getLocationTypeIdsList().add(11L);
 			}
+			else if(activityLevelId.longValue() == 4L)
+			{
+				searchVO.getLocationTypeIdsList().add(11L);
+			}
 			else if(activityLevelId.longValue() == 5L)
 			{
 				searchVO.getLocationTypeIdsList().add(13L);
@@ -99,6 +103,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 		getCadreAttendanceCount(searchVO,returnVO);
 		getPublicAttendanceCount(searchVO,returnVO);
 		getPhotosCount(searchVO,returnVO);
+		
 		Long totalAreasCount =0L;
 		Long totalPlannedCount =0L;
 		SearchAttributeVO searchVO1 = searchVO;
@@ -119,7 +124,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			{
 				searchVO1.getLocationTypeIdsList().add(3L);
 			}
-			else if(activityLevelId.longValue() == 4L)
+			else if(activityLevelId.longValue() == 5L)
 			{
 				searchVO1.getLocationTypeIdsList().add(4L);
 			}
