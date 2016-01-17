@@ -1206,6 +1206,33 @@ public class ActivityService implements IActivityService{
 					}
 				}
 				
+				if(activityLevelId != null && activityLevelId.longValue()>0L)
+		        {
+		          searchAttributeVO.getLocationTypeIdsList().clear();
+		          if(activityLevelId.longValue() == 1L)
+		          {
+		            searchAttributeVO.getLocationTypeIdsList().add(6L);
+		            searchAttributeVO.getLocationTypeIdsList().add(8L);
+		          }
+		          else if(activityLevelId.longValue() == 2L)
+		          {
+		            searchAttributeVO.getLocationTypeIdsList().add(5L);
+		            searchAttributeVO.getLocationTypeIdsList().add(7L);
+		            searchAttributeVO.getLocationTypeIdsList().add(9L);
+		          }
+		          else if(activityLevelId.longValue() == 3L)
+		          {
+		            searchAttributeVO.getLocationTypeIdsList().add(11L);
+		          }
+		          else if(activityLevelId.longValue() == 4L)
+		          {
+		            searchAttributeVO.getLocationTypeIdsList().add(10L);
+		          }
+		          else if(activityLevelId.longValue() == 5L)
+		          {
+		            searchAttributeVO.getLocationTypeIdsList().add(13L);
+		          }
+		        }
 				
 			if(searchAttributeVO.getSearchType() != null && searchAttributeVO.getConditionType().trim().contains("daywiseResult")){
 				List<ActivityVO> dayWiseResultList = getActivityDayWiseCountsByLocation(searchAttributeVO);

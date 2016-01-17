@@ -91,7 +91,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			}
 			else if(activityLevelId.longValue() == 4L)
 			{
-				searchVO.getLocationTypeIdsList().add(11L);
+				searchVO.getLocationTypeIdsList().add(10L);
 			}
 			else if(activityLevelId.longValue() == 5L)
 			{
