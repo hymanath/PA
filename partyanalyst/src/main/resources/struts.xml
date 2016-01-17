@@ -211,6 +211,7 @@
 			<result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
 			<result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>
 			<result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>
+			<result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5645,7 +5646,8 @@
 		    <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
 		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	
-		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>       
+		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>   
+		    <result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -11002,7 +11004,7 @@
 	
 	<action name="updateActivityAction" class="committeeDashBoardAction" method="updateActivity">
 	   	<result name="success">/jsp/updateActivity.jsp</result>
-		<result name="input">/jsp/loginForm.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
