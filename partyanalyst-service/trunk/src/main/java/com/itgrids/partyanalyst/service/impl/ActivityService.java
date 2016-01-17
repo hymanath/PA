@@ -2445,7 +2445,14 @@ public class ActivityService implements IActivityService{
 				 .append(eventFileUploadVO.getFileExtension());
 				 str.append(randomNumber).append(".").append(eventFileUploadVO.getFileExtension());
 				 
-				copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
+				String fileCpyStts = copyFile(eventFileUploadVO.getFile().getAbsolutePath(),destPath);
+				 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						LOG.error(" Exception Raise in copying file");
+						throw new ArithmeticException();
+					}
+				
 			}
 			
 			activityDocument.setDocumentName(str.toString());
