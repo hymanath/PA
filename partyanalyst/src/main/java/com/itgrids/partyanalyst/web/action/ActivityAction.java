@@ -57,8 +57,16 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private List<String> dates;
 	private IActivityAttendanceService activityAttendanceService;
 	private ActivityAttendanceInfoVO attendanceVo;
-	
+	private Long					 activityLocationInfoId;
 
+	
+	
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
 	public ActivityAttendanceInfoVO getAttendanceVo() {
 		return attendanceVo;
 	}
@@ -308,7 +316,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					if(reqParamName.equalsIgnoreCase("insertType")){
 						eventFileUploadVO.setInsertType(reqValue!= null?reqValue.toString():null);
 					}
-					if(reqParamName.equalsIgnoreCase("lctnInfoId")){
+					if(reqParamName.equalsIgnoreCase("activityLocationInfoId")){
 						eventFileUploadVO.setActivityLocationInfoId(reqValue!= null?Long.valueOf(reqValue.toString()):null);
 					}
 				  }

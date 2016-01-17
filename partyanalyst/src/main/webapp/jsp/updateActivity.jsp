@@ -324,7 +324,7 @@
 		  <ul class="nav nav-tabs navtabsCustom m_top20" role="tablist">
 			<li role="presentation" class="active"><a href="#cadre" aria-controls="cadre" role="tab" data-toggle="tab">Cadre</a></li>
 			<li role="presentation"><a href="#public" aria-controls="public" role="tab" data-toggle="tab" onclick="getBloodGroups();">Public</a></li>
-			<li role="presentation"><a href="#uploadphotos" aria-controls="uploadphotos" role="tab" data-toggle="tab" >Upload Photos</a></li>
+			<li role="presentation"><a href="#uploadphotos" id="upldPhotosId" aria-controls="uploadphotos" role="tab" data-toggle="tab" >Upload Photos</a></li>
 			<!--<li role="presentation"><a href="#questionnaire" aria-controls="questionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(4)">Questionnaire</a></li>
 			<li role="presentation"><a href="#organizerQuestionnaire" aria-controls="organizerQuestionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(5)">Organizer Questionnaire</a></li>-->
 		  </ul>
@@ -386,12 +386,7 @@
 			</div>
 			</div>
 			<div role="tabpanel" class="tab-pane uploadphotosDiv" id="uploadphotos">
-				<div id="uploadInnerDiv" class="row">
-					<div class="col-md-12">
-					<div class="errorDiv"></div>
-					<input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
-					<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
-				</div>
+				<div id="uploadInnerDiv" class="row"></div>
 			</div>
 			<!--<div class="row">
 				<div id="uploadDiv" class="col-md-6 m_top20">
@@ -444,11 +439,11 @@
 <!-- Modal -->
 	
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
-
+<script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/activity/Date/daterangepicker.js" type="text/javascript"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/custom-ver1.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script>
@@ -1469,23 +1464,23 @@ $("#hideAsmblyData").click(function(){
 		//gobalLocName          = locationName;
 		
 		
-	    if(locationLevelId == 3 || locationLevelId == 4){
-			gobalLevelId = locationLevelId;
-		}
-		else{
+	    if(locationLevelId == 3){
+			gobalLevelId = 11;
+		}else if(locationLevelId == 4){
+			gobalLevelId = 10;
+		}else if(locationLevelId == 5){
+			gobalLevelId = 13;
+		}else{
 			var firstChar = gobalLevelValue.substr(0,1);
 			
-			if(locationLevelId == 2)
-		    {
+			if(locationLevelId == 2){
 				if(firstChar == 2)
 					gobalLevelId = 5;//mandal
 				else if(firstChar == 3)
-					gobalLevelId = 8;//division
+					gobalLevelId = 9;//division
 				else if(firstChar == 1)
 					gobalLevelId = 7;//localEleBody	
-			}
-			else if(locationLevelId == 1)
-			{
+			}else if(locationLevelId == 1){
 				if(firstChar == 1)
 					gobalLevelId = 6;//panchayat
 				else if(firstChar == 2)
@@ -1851,7 +1846,7 @@ $("#hideAsmblyData").click(function(){
 	 gobalTempVar = "dayCalCulationReq";
    }
    $(".errorDiv").html(str).addClass("errorCls");  
-	uploadImgs();
+	
    return flag;
   }
 $(document).on("click",".deleteLocationImgCheck",function() {
@@ -2128,6 +2123,18 @@ function getActivityDates(){
 			   }
 		   });
 
+	});
+	$("#upldPhotosId").click(function(){
+		var conductDate = $("#conductedDate").val();
+		if(conductDate==""){
+			return;
+		}
+		// var d = conductDate.split("/");//dd/mm/yyyy
+		// gobalActivityDate = d[1] +'/'+ d[0] +'/'+ d[2];//mm/dd/yyyy
+		//gobalTempVar = "dayCalCulationReq";
+		gobalActivityDate = conductDate;
+		setGobalValues();
+		uploadImgs();
 	});
 </script>
 <script src="dist/activity/js/custom-ver1.js" type="text/javascript"></script>
