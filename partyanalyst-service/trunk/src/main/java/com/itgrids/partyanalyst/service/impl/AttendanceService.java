@@ -690,7 +690,7 @@ public class AttendanceService implements IAttendanceService{
 						Date attendedeTime = null;
 						SimpleDateFormat format = null;
 						 //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-						if(inputVO.getSyncType().equalsIgnoreCase("WEB")){
+						if(inputVO.getSyncType()!=null && inputVO.getSyncType().equalsIgnoreCase("WEB")){
 							format = new SimpleDateFormat("dd/MM/yyyy");
 						}else{
 							format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -727,7 +727,7 @@ public class AttendanceService implements IAttendanceService{
 							attendance.setAttendedTime(attendedeTime);
 						//attendance.setInsertedById(userId);
 						attendance.setInsertedTime(date.getCurrentDateAndTime());
-						if(inputVO.getSyncType().equalsIgnoreCase("WEB")){
+						if(inputVO.getSyncType()!=null && inputVO.getSyncType().equalsIgnoreCase("WEB")){
 							attendance.setSyncSource(inputVO.getSyncType());
 							attendance.setInsertedById(userId);
 						}else{
