@@ -3766,6 +3766,7 @@ public class ActivityService implements IActivityService{
 					BasicVO vo = new BasicVO();
 					Long locationLvlId = (Long) (obj[2] != null ? obj[2]:0l);
 					Long locationVal = (Long) (obj[3] != null ? obj[3]:0l);
+					vo.setLocationInfoId(obj[0] != null ?Long.valueOf(obj[0].toString()):0l);
 					vo.setId(locationVal);
 					if(locationLvlId.longValue() == 13l){
 						constIds.add(locationVal);

@@ -43,7 +43,7 @@ public class BasicVO implements Serializable{
 	private List<BasicVO> locationsList;
 	private List<BasicVO> constituencyList = new ArrayList<BasicVO>(0);
 	private List<BasicVO> districtList = new ArrayList<BasicVO>(0);
-	
+	private Long		  locationInfoId;
 	
 	public BasicVO(){}
 	
@@ -54,6 +54,15 @@ public class BasicVO implements Serializable{
 		
 	}
 	
+	
+	public Long getLocationInfoId() {
+		return locationInfoId;
+	}
+
+	public void setLocationInfoId(Long locationInfoId) {
+		this.locationInfoId = locationInfoId;
+	}
+
 	public List<BasicVO> getDaysList() {
 		return daysList;
 	}
