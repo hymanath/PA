@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
+import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLocationVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
@@ -83,7 +85,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
-import com.itgrids.partyanalyst.model.Activity;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.model.ActivityLevel;
@@ -101,6 +102,7 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.TabDetails;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.IActivityAttendanceService;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -160,8 +162,18 @@ public class ActivityService implements IActivityService{
 	private IActivityTabUserDAO activityTabUserDAO;
 	private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
 	private ITdpCadreDAO tdpCadreDAO;
+	private IActivityAttendanceService activityAttendanceService;
 	
 	
+	
+	
+	public IActivityAttendanceService getActivityAttendanceService() {
+		return activityAttendanceService;
+	}
+	public void setActivityAttendanceService(
+			IActivityAttendanceService activityAttendanceService) {
+		this.activityAttendanceService = activityAttendanceService;
+	}
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
 	}
@@ -3808,6 +3820,27 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
+			
+			//get members attended Counts and photos uploded counts constituency wise
+			SearchAttributeVO searchVO = new SearchAttributeVO();
+			searchVO.setSearchType("constituency");
+			searchVO.getAttributesIdsList().add(5l);
+			searchVO.getLocationTypeIdsList().add(13l);
+			searchVO.setLocationValue(0l);
+			List<Long> locationIds = new ArrayList<Long>(Arrays.asList(1l,2l,3l,4l,5l,6l,7l,
+					8l,9l,10l,11l,12l,13l,14l,15l,16l,17l,18l,19l,20l,21l,22l,23l));
+			searchVO.getLocationIdsList().addAll(locationIds);
+			
+			ActivityAttendanceInfoVO activityAttendanceInfoVO = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
+			
+			if(activityAttendanceInfoVO != null && activityAttendanceInfoVO.getSubList() != null && activityAttendanceInfoVO.getSubList().size() > 0 && constMap != null && constMap.size() > 0){
+				for(ActivityAttendanceInfoVO vo : activityAttendanceInfoVO.getSubList()){
+					BasicVO basicVo = constMap.get(vo.getId());
+					basicVo.setActivityAttendanceInfoVO(vo);
+				}
+			}
+			
+			
 			finalvo.setConstituencyList(new ArrayList<BasicVO>(constMap.values()));
 			finalvo.setDistrictList(new ArrayList<BasicVO>(distMap.values()));
 			//finalvo.setConstituencyList((List<BasicVO>) constMap.values());
