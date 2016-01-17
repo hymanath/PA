@@ -37,7 +37,14 @@ public class EventFileUploadVO implements Serializable{
 	private TabDetailsVO tabDetailsVO;
 	private String imageBase64String;
 	private Long 			activityLocationInfoId;
+	private Long tabDetailsId;
 	
+	public Long getTabDetailsId() {
+		return tabDetailsId;
+	}
+	public void setTabDetailsId(Long tabDetailsId) {
+		this.tabDetailsId = tabDetailsId;
+	}
 	public Long getActivityLocationInfoId() {
 		return activityLocationInfoId;
 	}
