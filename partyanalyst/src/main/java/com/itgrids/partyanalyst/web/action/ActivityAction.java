@@ -308,6 +308,9 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					if(reqParamName.equalsIgnoreCase("insertType")){
 						eventFileUploadVO.setInsertType(reqValue!= null?reqValue.toString():null);
 					}
+					if(reqParamName.equalsIgnoreCase("lctnInfoId")){
+						eventFileUploadVO.setActivityLocationInfoId(reqValue!= null?Long.valueOf(reqValue.toString()):null);
+					}
 				  }
 					
 				}
