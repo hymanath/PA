@@ -3499,7 +3499,8 @@ public class ActivityService implements IActivityService{
 							ActivityScopeVO actvty = new ActivityScopeVO();
 							actvty.setActivityId(obj[3] != null ? Long.valueOf(obj[3].toString()):null);
 							actvty.setActivityScopeId(obj[2] != null ? Long.valueOf(obj[2].toString()):null);
-							actvty.setActivityLevelId(obj[8] != null ? Long.valueOf(obj[8].toString()):null);
+							//actvty.setActivityLevelId(obj[8] != null ? Long.valueOf(obj[8].toString()):null);
+							actvty.setActivityLevelId(4l);
 							actvty.setStartDate(obj[9] != null ? obj[9].toString():"");
 							actvty.setEndDate(obj[10] != null ? obj[10].toString():"");
 							if(obj[16]!=null){
