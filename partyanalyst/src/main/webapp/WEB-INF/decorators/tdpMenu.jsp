@@ -384,12 +384,16 @@ footer
 								<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Events & Activities </span></a>
 								 <h2><img class=" ico-white line_heightDiv  pull-left" src="images/events.jpg"></img> Events & Activities  </h2>
 								 <ul>
-								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT') }">
+								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ACTIVITY_ENTRY_ENTITLEMENT') }">
 								 <li><a href="updateActivityAction.action"><i class="fa fa-mail-forward"></i><span>  Activities Entry  </span></a></li></c:if>
 								 
-								 <c:if test="${sessionScope.USER.isAdmin == 'true' ||
-							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') }">
+							
+							<c:if test="${sessionScope.USER.isAdmin == 'true' ||
+							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') || fn:contains(sessionScope.USER.entitlements, 'ACTIVITIES_DASHBOARD_ENTITLEMENT') }">
 								 <li><a href="activitiesDashboard.action"><i class="fa fa-firefox"></i><span> Activities DashBoard  </span></a></li>
+							</c:if>
+								 	 <c:if test="${sessionScope.USER.isAdmin == 'true' ||
+							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') }">
 								  <li>
 									<a href="eventInvitees.action"><i class="fa fa-envelope-square"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
 									</li>
