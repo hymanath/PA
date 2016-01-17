@@ -2484,7 +2484,8 @@ public class ActivityService implements IActivityService{
 		    if(eventFileUploadVO.getTemp() != null && eventFileUploadVO.getTemp().equalsIgnoreCase("dayCalCulationReq"))
 		    {
 		    	//conducted Date
-		    	Date activityStartDate = activityScopeDAO.getActivityStartDateByActivityScopeId(eventFileUploadVO.getActivityScopeId());
+		    	Object[] actvtyDts = activityScopeDAO.getDatesForActivityScopeId(eventFileUploadVO.getActivityScopeId());
+		    	Date activityStartDate = (Date) actvtyDts[0];
 		    	if(activityStartDate != null){
 		    		if(activityDate.equals(activityStartDate) || activityDate.after(activityStartDate)){
 			    		long diff = activityDate.getTime()-activityStartDate.getTime();
@@ -2504,6 +2505,7 @@ public class ActivityService implements IActivityService{
 		    
 		    activityInfoDocument.setIsDeleted("N");
 		    activityInfoDocument.setInsertType(eventFileUploadVO.getInsertType());
+		    activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
 		    
 		    activityInfoDocument = activityInfoDocumentDAO.save(activityInfoDocument);
 		    
