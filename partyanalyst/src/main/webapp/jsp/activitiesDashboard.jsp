@@ -2187,6 +2187,15 @@ $(document).on('click', '.searchTypeCls', function(){
 	
 	function getLocationWiseActivityDetails(type,id,resultDivNum){
 		
+		if(type == 'constituency'){
+		$(".PlusnMinusSignd").addClass('collapsed');
+		//$(".PlusnMinusSignd").attr('aria-expanded','true');
+		
+		$(".constiListCls").html("");		
+		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
+		//$(".constiListCls").removeClass('opened');
+	}
+		
 		var acScpeId = $("#ActivityList").val();
 		
 		var jObj = {
@@ -2221,7 +2230,7 @@ $(document).on('click', '.searchTypeCls', function(){
 		
 		str+='<table class="table table-col" style="border:1px solid #ccc">';
 		str+='<caption class="cap-custom"><b>	</b></caption>';
-		str+='<thead>';
+		str+='<thead style="background-color:#EFF3F4;">';
 			str+='<tr>';
 			str+='<th rowspan="2" class="getChildWidthbd aligncenter">Location Name</th>';
 			str+='<th rowspan="2" class="getChildWidthbd2 aligncenter">Total Locations</th>';
@@ -2256,10 +2265,10 @@ $(document).on('click', '.searchTypeCls', function(){
 				if($("#activityLevelList").val()==1 || $("#activityLevelList").val()==2 || $("#activityLevelList").val()==5){
 					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'"  onclick=getLocationWiseActivityDetails("constituency","'+result.subList[i].id+'","'+i+'") >';
 				}else{
-					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'"  style="color: #666 !important;cursor: auto;">';
+					str+='<a role="button" data-toggle="collapse" class="accordionforBlood'+i+'-toggle accordion-toggle PlusnMinusSignd collapsed" data-parent="#accordionforBlood'+i+'" href="#constituencyResultDivd'+i+'" aria-expanded="true" aria-controls="constituencyResultDivd'+i+'"  style="color: #666 !important;cursor: auto;">';
 				}
-					str+='<div>';
-						str+='<table>';
+					
+						str+='<table class="table table-col table-condensed" style="display:inline">';
 						str+='<tr>';							
 							str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
 							str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
@@ -2276,13 +2285,13 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 						str+='</tr>';
 						str+='</table>';
-					str+='</div>';
+				
 					str+='</a>';
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.subList[i].id+',\'dayWiseBDDistrictInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'district\','+result.subList[i].id+',\'dayWiseBDDistrictInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 				//str+='</h4>';
 				str+='</div>';
 				str+='<div id="dayWiseBDDistrictInfo'+result.subList[i].id+'"></div>';
-				str+='<div id="constituencyResultDiv'+i+'"></div>';
+				str+='<div id="constituencyResultDiv'+i+'" class="constiListCls"></div>';
 				str+='<div id="constituencyResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distHeading'+i+'"></div>';
 				str+='</div>';
 				str+='</div>';
@@ -2310,20 +2319,20 @@ $(document).on('click', '.searchTypeCls', function(){
 			var str='';
 			if(result != null && result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
+					str+='<div class="panel-body">';
 					str+='<tr  id="'+result.subList[i].id+'">';
 					str+='<td colspan="13">';
-					str+='<div class="panel-body">';
 					str+='<div class="panel-group panel-group1 m_0" id="accordion1Level1bd'+i+'" role="tablist" aria-multiselectable="true">';
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div class="panel-heading" role="tab" id="constituencyHeading'+i+'">';
-					str+='<h4 class="panel-title">';
+					//str+='<h4 class="panel-title">';
 					if($("#activityLevelList").val()==1 || $("#activityLevelList").val()==2){
-						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" onclick=getLocationWiseActivityDetails("mandal","'+result.subList[i].id+'","'+i+'") >';
+						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle accordion-toggle PlusnMinusSignM" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" onclick=getLocationWiseActivityDetails("mandal","'+result.subList[i].id+'","'+i+'") >';
 					}else{
-						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle collapsed" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" style="color: #666 !important;cursor: auto;">';
+						str+='<a role="button" class="accordion1Level1bd'+i+'-toggle" data-toggle="collapse" data-parent="#accordion1Level1bd" href="#mandalResultDivd'+i+'" aria-expanded="true" aria-controls="mandalResultDivd'+i+'" style="color: #666 !important;cursor: auto;">';
 					}
-						str+='<div>';
-							str+='<table>';
+						
+							str+='<table class="table table-col table-condensed" style="display:inline">';
 							str+='<tr>';							
 								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
 								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
@@ -2340,10 +2349,10 @@ $(document).on('click', '.searchTypeCls', function(){
 								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
-						str+='</div>';
+						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.subList[i].id+',\'dayWiseBDConstituencyInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
-					str+='</h4>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'constituency\','+result.subList[i].id+',\'dayWiseBDConstituencyInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDConstituencyInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="mandalResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="constituencyHeading'+i+'"></div>';
@@ -2351,9 +2360,9 @@ $(document).on('click', '.searchTypeCls', function(){
 					str+='<div id="localElectionBodyResultDiv'+i+'"></div>';
 					str+='</div>';
 					str+='</div>';
-					str+='</div>';
 					str+='</td>';
 					str+='</tr>';
+					str+='</div>';
 				}
 			}else{
 				str+='<tr style="background-color:#663300;">';
@@ -2381,21 +2390,21 @@ $(document).on('click', '.searchTypeCls', function(){
 			if(result != null && result.subList != null && result.subList.length > 0){
 				flag=true;
 				for(var i in result.subList){
+					str+='<div class="panel-body">';
 					str+='<tr  id="'+result.subList[i].id+'">';
 					str+='<td colspan="13">';
-					str+='<div class="panel-body">';
 					str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div  class="panel-heading" role="tab" id="mandalHeading'+i+'">';
-					str+='<h4 class="panel-title">';
+					//str+='<h4 class="panel-title">';
 					if($("#activityLevelList").val()==1){
 						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("village","'+result.subList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'">';
 					}else{
 						str+='<a role="button" class="collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelMandal1'+i+'" href="#panchayatResultDivd'+i+'" aria-expanded="true" aria-controls="panchayatResultDivd'+i+'" style="color: #666 !important;cursor: auto;">';
 					}
 						
-						str+='<div>';
-							str+='<table>';
+						
+							str+='<table class="table table-col table-condensed" style="display:inline">';
 							str+='<tr>';							
 								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
 								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
@@ -2412,19 +2421,19 @@ $(document).on('click', '.searchTypeCls', function(){
 								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
-						str+='</div>';
+						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
-					str+='</h4>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="panchayatResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading'+i+'"></div>';
 					str+='<div id="panchayatResultDiv'+i+'"></div>';
 					str+='</div>';
 					str+='</div>';
-					str+='</div>';
 					str+='</td>';
 					str+='</tr>';
+					str+='</div>';
 				}
 			}
 			$("#mandalResultDiv"+resultDivNum).html(str);
@@ -2441,21 +2450,21 @@ $(document).on('click', '.searchTypeCls', function(){
 			if(result != null && result.localBodyList != null && result.localBodyList.length > 0){
 				flag=true;
 				for(var i in result.localBodyList){
+					str+='<div class="panel-body">';
 					str+='<tr  id="'+result.localBodyList[i].id+'">';
 					str+='<td colspan="13">';
-					str+='<div class="panel-body">';
 					str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelLeb1'+i+'" role="tablist" aria-multiselectable="true">';
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div  class="panel-heading" role="tab" id="mandalHeading1'+i+'">';
-					str+='<h4 class="panel-title">';
+					//str+='<h4 class="panel-title">';
 					if($("#activityLevelList").val()==1){
 						str+='<a role="button" class=" accordion-toggle PlusnMinusSignV collapsed"  onclick=getLocationWiseActivityDetails("ward","'+result.localBodyList[i].id+'","'+i+'") data-toggle="collapse" data-parent="#collapseOne1LevelLeb1'+i+'" href="#wardResultDivd'+i+'" aria-expanded="true" aria-controls="wardResultDivd'+i+'">';
 					}else{
 						str+='<a role="button" class="collapsed" data-toggle="collapse" data-parent="#collapseOne1LevelLeb1'+i+'" href="#wardResultDivd'+i+'" aria-expanded="true" aria-controls="wardResultDivd'+i+'" style="color: #666 !important;cursor: auto;">';
 					}
 						
-						str+='<div>';
-							str+='<table>';
+						
+							str+='<table class="table table-col table-condensed" style="display:inline">';
 							str+='<tr>';							
 								str+='<td class="dynChildWidthbd aligncenter">'+result.localBodyList[i].name+'</td>';
 								str+='<td class="dynChildWidthbd2 aligncenter">'+result.localBodyList[i].totalLocations+'</td>';
@@ -2472,19 +2481,19 @@ $(document).on('click', '.searchTypeCls', function(){
 								str+='<td class="dynChildWidthbd9 aligncenter">'+result.localBodyList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
-						str+='</div>';
+						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
-					str+='</h4>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="wardResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading1'+i+'"></div>';
 					str+='<div id="wardResultDiv'+i+'"></div>';
 					str+='</div>';
 					str+='</div>';
-					str+='</div>';
 					str+='</td>';
 					str+='</tr>';
+					str+='</div>';
 				}
 			}
 			$("#localElectionBodyResultDiv"+resultDivNum).html(str);
@@ -2511,16 +2520,16 @@ $(document).on('click', '.searchTypeCls', function(){
 			var str='';
 			if(result != null && result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
+					str+='<div class="panel-body">';
 					str+='<tr  id="'+result.subList[i].id+'">';
 					str+='<td colspan="13">';
-					str+='<div class="panel-body">';
 					str+='<div class="panel-group panel-group1 m_0" id="accordion1LevelPanchayatbd'+i+'" role="tablist" aria-multiselectable="true">';
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div class="panel-heading" role="tab" id="panchayatHeading'+i+'">';
 					str+='<h4 class="panel-title">';
 						str+='<a role="button" class="accordion1LevelPanchayatbd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1LevelPanchayatbd" href="#panchayatResultDivdummy'+i+'" aria-expanded="true" aria-controls="panchayatResultDivdummy'+i+'">';
-						str+='<div>';
-							str+='<table>';
+						
+							str+='<table class="table table-col table-condensed" style="display:inline">';
 							str+='<tr>';							
 								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
 								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
@@ -2537,9 +2546,9 @@ $(document).on('click', '.searchTypeCls', function(){
 								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
-						str+='</div>';
+						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'"></div>';
@@ -2547,9 +2556,9 @@ $(document).on('click', '.searchTypeCls', function(){
 					//str+='<div id="mandalResultDiv'+i+'"></div>';
 					str+='</div>';
 					str+='</div>';
-					str+='</div>';
 					str+='</td>';
 					str+='</tr>';
+					str+='</div>';
 				}
 			}else{
 				str+='<tr style="background-color:#663300;">';
@@ -2573,16 +2582,16 @@ $(document).on('click', '.searchTypeCls', function(){
 			var str='';
 			if(result != null && result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
+					str+='<div class="panel-body">';
 					str+='<tr  id="'+result.subList[i].id+'">';
 					str+='<td colspan="13">';
-					str+='<div class="panel-body">';
 					str+='<div class="panel-group panel-group1 m_0" id="accordion1LevelWardbd'+i+'" role="tablist" aria-multiselectable="true">';
 					str+='<div class="panel panel-default panel-customtd">';
 					str+='<div class="panel-heading" role="tab" id="wardHeading'+i+'">';
 					str+='<h4 class="panel-title">';
 						str+='<a role="button" class="accordion1LevelWardbd'+i+'-toggle accordion-toggle PlusnMinusSignM collapsed" data-toggle="collapse" data-parent="#accordion1LevelWardbd" href="#wardResultDivdummy'+i+'" aria-expanded="true" aria-controls="wardResultDivdummy'+i+'">';
-						str+='<div>';
-							str+='<table>';
+						
+							str+='<table class="table table-col table-condensed" style="display:inline">';
 							str+='<tr>';							
 								str+='<td class="dynChildWidthbd aligncenter">'+result.subList[i].name+'</td>';
 								str+='<td class="dynChildWidthbd2 aligncenter">'+result.subList[i].totalLocations+'</td>';
@@ -2599,9 +2608,9 @@ $(document).on('click', '.searchTypeCls', function(){
 								str+='<td class="dynChildWidthbd9 aligncenter">'+result.subList[i].totalInfoCellPhotosAttendance+'</td>';
 							str+='</tr>';
 							str+='</table>';
-						str+='</div>';
+						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'"></div>';
@@ -2609,9 +2618,9 @@ $(document).on('click', '.searchTypeCls', function(){
 					//str+='<div id="mandalResultDiv'+i+'"></div>';
 					str+='</div>';
 					str+='</div>';
-					str+='</div>';
 					str+='</td>';
 					str+='</tr>';
+					str+='</div>';
 				}
 			}else{
 				str+='<tr style="background-color:#663300;">';
