@@ -2207,7 +2207,8 @@ public class ActivityService implements IActivityService{
 			
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
 			Map<String,ActivityVO> initialDateMap = new LinkedHashMap<String, ActivityVO>();
-			Activity activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0)).getActivity();
+			//Activity activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0)).getActivity();
+			ActivityScope activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0));
 			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null)
 				initialDateMap = commonMethodsUtilService.getDatesWiseCounts(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
 			else
