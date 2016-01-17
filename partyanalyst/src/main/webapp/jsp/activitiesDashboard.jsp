@@ -2243,15 +2243,15 @@ $(document).on('click', '.searchTypeCls', function(){
 			str+='</tr>';
 			str+='<tr>';
 			str+='<th class="getChildWidthbd4 aligncenter">WEB</th>';
-			str+='<th class="getChildWidthbd5 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidthbd5 aligncenter">TAB</th>';
 			str+='<th class="getChildWidthbd6 aligncenter">WEB</th>';
-			str+='<th class="getChildWidthbd7 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidthbd7 aligncenter">TAB</th>';
 			/* str+='<th class="getChildWidth8 aligncenter">WEB</th>';
 			str+='<th class="getChildWidth9 aligncenter">Info-cell</th>';
 			str+='<th class="getChildWidth10 aligncenter">WEB</th>';
 			str+='<th class="getChildWidth11 aligncenter">Info-cell</th>'; */
 			str+='<th class="getChildWidthbd8 aligncenter">WEB</th>';
-			str+='<th class="getChildWidthbd9 aligncenter">Info-cell</th>';
+			str+='<th class="getChildWidthbd9 aligncenter">TAB</th>';
 			str+='</tr>';
 		str+='</thead>';
 		if(result != null && result.subList != null && result.subList.length > 0){
