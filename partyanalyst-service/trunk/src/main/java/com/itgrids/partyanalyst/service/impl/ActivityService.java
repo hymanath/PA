@@ -2394,7 +2394,11 @@ public class ActivityService implements IActivityService{
 			//UserAddress userAddress = saveUserAddress(eventFileUploadVO);
 				
 			Date activityDate = null;		
-			UserAddress userAddress = saveUserAddressByLevelIdAndLevelValue(eventFileUploadVO.getLevelId(), eventFileUploadVO.getLevelValue());
+			UserAddress userAddress = null;
+			if(eventFileUploadVO.getInsertType() == null || !eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
+			{
+				userAddress = saveUserAddressByLevelIdAndLevelValue(eventFileUploadVO.getLevelId(), eventFileUploadVO.getLevelValue());
+			}
 			
 			ActivityDocument activityDocument = new ActivityDocument();
 			if(eventFileUploadVO.getActivityDate() != null && !eventFileUploadVO.getActivityDate().equals("undefined"))
@@ -2457,9 +2461,17 @@ public class ActivityService implements IActivityService{
 			
 		    ActivityInfoDocument activityInfoDocument = new ActivityInfoDocument();
 		    
-			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
-				if(eventFileUploadVO.getActivityLocationInfoId() != null && eventFileUploadVO.getActivityLocationInfoId()>0L)
+			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS")){
+				if(eventFileUploadVO.getActivityLocationInfoId() != null && eventFileUploadVO.getActivityLocationInfoId()>0L){
 					activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
+					ActivityLocationInfo activityLocationInfo = activityLocationInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
+					if(activityLocationInfo != null){
+						activityInfoDocument.setLocationScopeId(activityLocationInfo.getLocationLevel());
+						activityInfoDocument.setLocationValueAddress(activityLocationInfo.getLocationValue());
+						userAddress = saveUserAddressByLevelIdAndLevelValue(activityLocationInfo.getLocationLevel(),activityLocationInfo.getLocationValue());
+					}
+				}
+			}
 		    
 		    activityInfoDocument.setActivityDocument(activityDocument);
 		    activityInfoDocument.setInsertedBy(eventFileUploadVO.getUserId());
@@ -2468,16 +2480,6 @@ public class ActivityService implements IActivityService{
 		    activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUserAddress(userAddress);
-		    
-			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
-		    {
-	    		activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
-			    if(eventFileUploadVO.getLevelId() < 5l)
-			     activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLevelValue());
-			    else
-			     activityInfoDocument.setLocationValueAddress(Long.parseLong(eventFileUploadVO.getLevelValue().toString().substring(1).toString()));
-		    }
-		   
 		    
 		    if(eventFileUploadVO.getTemp() != null && eventFileUploadVO.getTemp().equalsIgnoreCase("dayCalCulationReq"))
 		    {
