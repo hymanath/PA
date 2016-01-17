@@ -13,8 +13,8 @@ public class SearchAttributeVO implements Serializable{
 	private Date startDate;
 	private Date endDate;
 	private String searchType;
-	private List<Long> locationIdsList = new ArrayList<Long>();
-	private List<Long> locationTypeIdsList = new ArrayList<Long>();
+	private List<Long> locationIdsList = new ArrayList<Long>(0);
+	private List<Long> locationTypeIdsList = new ArrayList<Long>(0);
 	private Long locationId;
 	private Long locationValue;
 	private List<Long> attributesIdsList = new ArrayList<Long>(0);
