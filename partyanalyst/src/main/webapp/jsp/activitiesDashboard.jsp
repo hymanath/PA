@@ -2278,8 +2278,10 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='</table>';
 					str+='</div>';
 					str+='</a>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.subList[i].id+',\'dayWiseBDDistrictInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 				//str+='</h4>';
 				str+='</div>';
+				str+='<div id="dayWiseBDDistrictInfo'+result.subList[i].id+'"></div>';
 				str+='<div id="constituencyResultDiv'+i+'"></div>';
 				str+='<div id="constituencyResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="distHeading'+i+'"></div>';
 				str+='</div>';
@@ -2340,9 +2342,10 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						str+='</div>';
 						str+='</a>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.subList[i].id+',\'dayWiseBDConstituencyInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
-					
+					str+='<div id="dayWiseBDConstituencyInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="mandalResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="constituencyHeading'+i+'"></div>';
 					str+='<div id="mandalResultDiv'+i+'"></div>';
 					str+='<div id="localElectionBodyResultDiv'+i+'"></div>';
@@ -2411,8 +2414,10 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						str+='</div>';
 						str+='</a>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
+					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="panchayatResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading'+i+'"></div>';
 					str+='<div id="panchayatResultDiv'+i+'"></div>';
 					str+='</div>';
@@ -2469,8 +2474,10 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						str+='</div>';
 						str+='</a>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
+					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="wardResultDivd'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mandalHeading1'+i+'"></div>';
 					str+='<div id="wardResultDiv'+i+'"></div>';
 					str+='</div>';
@@ -2532,9 +2539,10 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						str+='</div>';
 						str+='</a>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
-					
+					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="panchayatResultDivdummy'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panchayatHeading'+i+'"></div>';
 					//str+='<div id="mandalResultDiv'+i+'"></div>';
 					str+='</div>';
@@ -2593,9 +2601,10 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						str+='</div>';
 						str+='</a>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
-					
+					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'"></div>';
 					str+='<div id="wardResultDivdummy'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="wardHeading'+i+'"></div>';
 					//str+='<div id="mandalResultDiv'+i+'"></div>';
 					str+='</div>';
