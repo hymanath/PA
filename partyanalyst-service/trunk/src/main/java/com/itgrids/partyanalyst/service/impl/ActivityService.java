@@ -2501,6 +2501,10 @@ public class ActivityService implements IActivityService{
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUserAddress(userAddress);
 		    
+		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
+			activityInfoDocument.setLocationValueAddress(eventFileUploadVO.getLevelValue());
+		
+		    
 		    if(eventFileUploadVO.getTemp() != null && eventFileUploadVO.getTemp().equalsIgnoreCase("dayCalCulationReq"))
 		    {
 		    	//conducted Date
@@ -2726,19 +2730,19 @@ public class ActivityService implements IActivityService{
 	{
 		try{
 			UserAddress userAddress = null;
-			if(levelId == 2l){
+			if(levelId == 2l || levelId == 10l){
 				userAddress = new UserAddress();
 				userAddress.setState(stateDAO.get(levelValue));
 				userAddress = userAddressDAO.save(userAddress);
 			}
-			else if(levelId == 3l){
+			else if(levelId == 3l || levelId == 11l){
 				userAddress = new UserAddress();
 				District distinct = districtDAO.get(levelValue);
 				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
 				userAddress.setDistrict(distinct);
 				userAddress = userAddressDAO.save(userAddress);
 			}
-			else if(levelId == 4l){
+			else if(levelId == 4l || levelId == 13l){
 				userAddress = new UserAddress();
 				Constituency constituency = constituencyDAO.get(levelValue);
 				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
