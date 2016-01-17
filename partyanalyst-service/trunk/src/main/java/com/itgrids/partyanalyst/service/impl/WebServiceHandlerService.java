@@ -3086,7 +3086,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				   Date activityDate = null;
 				   if(inputVO.getUploadTime() != null && !inputVO.getUploadTime().equals("undefined"))
 					{
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					    try {
 					    	 activityDate = dateFormat.parse(inputVO.getUploadTime());
 						} catch (Exception e) {
@@ -3119,6 +3120,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						  eventFileUploadVO.setActivityDateFormat(activityDate);
 						  eventFileUploadVO.setActivityScopeId(inputVO.getActivityScopeId());
 						  eventFileUploadVO.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
+						  eventFileUploadVO.setTabDetailsId(tabDetailsId);
 						  ResultStatus resultStatus = activityService.eventsUploadForm(eventFileUploadVO);
 						  if(resultStatus != null){
 							  if(resultStatus.getResultCode() ==0){

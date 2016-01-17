@@ -2502,7 +2502,19 @@ public class ActivityService implements IActivityService{
 			
 			activityDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			activityDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			activityDocument.setActivityScopeId(eventFileUploadVO.getActivityScopeId());
+			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS")){
+				activityDocument.setTabDetailsId(eventFileUploadVO.getTabDetailsId());
+				
+				if(eventFileUploadVO.getActivityLocationInfoId() != null && eventFileUploadVO.getActivityLocationInfoId()>0L){
+					ActivityLocationInfo activityLocationInfo = activityLocationInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
+					if(activityLocationInfo != null){
+						activityDocument.setActivityScopeId(activityLocationInfo.getActivityScopeId());
+					}
+					else{
+						activityDocument.setActivityScopeId(eventFileUploadVO.getActivityScopeId());
+					}
+				}
+			}
 			
 			activityDocument = activityDocumentDAO.save(activityDocument);
 			
@@ -2513,8 +2525,8 @@ public class ActivityService implements IActivityService{
 					activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
 					ActivityLocationInfo activityLocationInfo = activityLocationInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
 					if(activityLocationInfo != null){
-						activityInfoDocument.setLocationScopeId(activityLocationInfo.getLocationLevel());
-						activityInfoDocument.setLocationValueAddress(activityLocationInfo.getLocationValue());
+						//activityInfoDocument.setLocationScopeId(activityLocationInfo.getLocationLevel());
+						//activityInfoDocument.setLocationValueAddress(activityLocationInfo.getLocationValue());
 						userAddress = saveUserAddressByLevelIdAndLevelValue(activityLocationInfo.getLocationLevel(),activityLocationInfo.getLocationValue());
 					}
 				}
