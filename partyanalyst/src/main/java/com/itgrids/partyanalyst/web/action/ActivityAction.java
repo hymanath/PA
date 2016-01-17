@@ -469,6 +469,8 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			VO.setActivityLocationInfoId(jObj.getLong("activityLocationInfoId"));
 			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
 			VO.setActivityDate(jObj.getString("conductedDate"));
+			VO.setSyncType("WEB");
+			VO.setUserType("C");								// SET TO CADRE BECAUSE -- THERE ARE SEPARATE METHODS FOR PUBLIC AND CADRE SAVING
 			
 			resultStatus = attendanceService.saveCadreActivityAttendance(VO,regVO.getRegistrationID());	
 			
@@ -492,7 +494,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			VO.setActivityDate(jObj.getString("conductedDate"));
 			if(jObj.getLong("tdpCadreId") > 0l)
 			VO.setTdpCadreId(jObj.getLong("tdpCadreId"));
-			VO.setBloodGroup(jObj.getLong("bloodGroupId"));
+			VO.setUserType("P");								// SET TO PUBLIC BECAUSE -- THERE ARE SEPARATE METHODS FOR PUBLIC AND CADRE SAVING
 			VO.setSyncType("WEB");
 				resultStatus = attendanceService.savePublicActivityAttendance(VO,regVO.getRegistrationID());		
 		}catch (Exception e) {
