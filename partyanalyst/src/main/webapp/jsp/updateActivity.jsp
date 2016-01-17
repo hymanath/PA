@@ -604,20 +604,24 @@ function getActivityNames()
 	
 	var activityLevelId = $('#activityLevelList').val();
 	
-	if(activityLevelId == 1){
+	if($("#activityTypeList").val()!=4){
+		if(activityLevelId == 1){
 		$("#constituencyDivId").show();
 		$("#mandalDivId").show();
 		$("#panchayatDivId").show();
+		}
+		else if(activityLevelId == 2){
+			$("#constituencyDivId").show();
+			$("#mandalDivId").show();
+		}else if(activityLevelId == 5){
+			$("#districtDivId").show();
+		}
+		else if(activityLevelId == 3 ){
+			$("#districtDivId").show();
+		}
 	}
-	else if(activityLevelId == 2){
-		$("#constituencyDivId").show();
-		$("#mandalDivId").show();
-	}else if(activityLevelId == 5){
-		$("#districtDivId").show();
-	}
-	else if(activityLevelId == 3 ){
-		$("#districtDivId").show();
-	}
+	
+	
 	var jObj = {
 			activityTypeId : $('#activityTypeList').val(),
 			activityLevelId:$('#activityLevelList').val(),
@@ -1490,6 +1494,11 @@ $("#hideAsmblyData").click(function(){
 	
 	
 	$(document).on("change","#activityTypeList",function(){
+		if($(this).val()==4){
+			$("#searchId").hide();
+		}else{
+			$("#searchId").show();
+		}
 		getActivityNames();
 	});
 	
