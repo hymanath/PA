@@ -24,9 +24,11 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IActivityAttendanceService;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -43,7 +45,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private JSONObject							jObj;
 	private String 								task;
 	private ActivityVO							activityVO;
-	
+	private EntitlementsHelper 					entitlementsHelper;
 	private BasicVO 							basicVO = new BasicVO();
 	private List<IdNameVO>  					idNameVOList;
 	private ResultStatus resultStatus;
@@ -66,6 +68,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setActivityLocationInfoId(Long activityLocationInfoId) {
 		this.activityLocationInfoId = activityLocationInfoId;
+	}
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
 	}
 	public ActivityAttendanceInfoVO getAttendanceVo() {
 		return attendanceVo;
@@ -195,7 +203,19 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		if(regVO==null){
 			return "input";
 		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_ACTIVITY_UPDATE") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"ACTIVITIES_DASHBOARD_ENTITLEMENT"))){
+			noaccess = true ;
+		}
 		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+
 		basicVO = activityService.getActivityTypeList();
 		idNameVOList = activityService.getActivityLevelsList();
 				
