@@ -17264,10 +17264,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				 }else if(activityLevelId==2l){//mandal/town/division
 					 levelIds.add(5l);
 					 levelIds.add(7l);
-				 }else if(activityLevelId==3l){//district
+				 }else if(activityLevelId==3l){//District
 					 levelIds.add(3l);
-				 }else if(activityLevelId==4l){//state
+				 }else if(activityLevelId==4l){//State
 					 levelIds.add(2l);
+				 }else if(activityLevelId==5l){//Constituency
+					 levelIds.add(4l);
 				 }
 				 
 				 List<Object[]> totalCounts=locationInfoDAO.getAssemblyWiseTotalCounts(levelIds,constIds);
