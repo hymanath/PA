@@ -628,53 +628,47 @@ public class AttendanceService implements IAttendanceService{
 		return result;
 	}
 	
-	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId)
-	{
-		
+	public ResultStatus saveCadreActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId){
 		 ResultStatus result = new ResultStatus();
-		
 		 try{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					protected void doInTransactionWithoutResult(TransactionStatus status) 
-					{
-			Date attendedeTime = null;
-			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
-			{
-				try {
-					attendedeTime = format.parse(inputVO.getActivityDate());
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-		DateUtilService date = new DateUtilService();
-		Attendance attendance = new Attendance();
-		attendance.setTdpCadreId(inputVO.getTdpCadreId());
-		if(attendedeTime != null)
-		attendance.setAttendedTime(attendedeTime);
-		attendance.setInsertedById(userId);
-		attendance.setInsertedTime(date.getCurrentDateAndTime());
-		if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS"))
-		{
-			attendance.setImei(inputVO.getImei());
-			attendance.setRfid(inputVO.getRfid());
-			attendance.setUniqueKey(inputVO.getUnqueKey());
-			attendance.setLatitude(inputVO.getLatitude());
-			attendance.setLongitude(inputVO.getLongitude());
-			attendance.setTabUserId(inputVO.getTabUserId());
-			attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
-			attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());
-		}
-		else
-		attendance.setSyncSource("WEB");
-		
-		attendance = attendanceDAO.save(attendance);
-		ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
-		activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
-		activityLocationAttendance.setAttendance(attendance);
-		activityLocationAttendanceDAO.save(activityLocationAttendance);
-		
-		}});
+						protected void doInTransactionWithoutResult(TransactionStatus status){
+							Date attendedeTime = null;
+							SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+							if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty()){
+								try {
+									attendedeTime = format.parse(inputVO.getActivityDate());
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+							}
+							DateUtilService date = new DateUtilService();
+							Attendance attendance = new Attendance();
+							attendance.setTdpCadreId(inputVO.getTdpCadreId());
+							if(attendedeTime != null)
+							attendance.setAttendedTime(attendedeTime);
+							
+							attendance.setInsertedTime(date.getCurrentDateAndTime());
+							if(inputVO.getSyncType() != null && inputVO.getSyncType().equalsIgnoreCase("WS")){
+								attendance.setImei(inputVO.getImei());
+								attendance.setRfid(inputVO.getRfid());
+								attendance.setUniqueKey(inputVO.getUnqueKey());
+								attendance.setLatitude(inputVO.getLatitude());
+								attendance.setLongitude(inputVO.getLongitude());
+								attendance.setTabUserId(inputVO.getTabUserId());
+								attendance.setCurrentTabUserId(inputVO.getCurrentTabUserId());
+								attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());
+							}else{
+								attendance.setInsertedById(userId);
+							}		
+							attendance = attendanceDAO.save(attendance);
+							ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
+							activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
+							activityLocationAttendance.setAttendance(attendance);
+							activityLocationAttendanceDAO.save(activityLocationAttendance);
+						
+						}
+					});
 			  result.setResultCode(0);
 		}
 		catch (Exception e) {
@@ -697,9 +691,9 @@ public class AttendanceService implements IAttendanceService{
 						SimpleDateFormat format = null;
 						 //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						if(inputVO.getSyncType().equalsIgnoreCase("WEB")){
-							format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-						}else{
 							format = new SimpleDateFormat("dd/MM/yyyy");
+						}else{
+							format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 						}
 						if(inputVO.getActivityDate() != null && !inputVO.getActivityDate().isEmpty())
 						{
