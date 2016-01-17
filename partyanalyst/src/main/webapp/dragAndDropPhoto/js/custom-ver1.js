@@ -1,5 +1,12 @@
 
 	function uploadImgs(){
+		var str = "<div class='col-md-12'>";
+			str +="<div class='errorDiv'></div>";
+			str +="<input type='file'  id='filer_input2' multiple='multiple' name='fileImage'>";
+			str +="<p class='text-danger font-10 text-center'>You can upload 10 files at a time.</p>";
+				
+		$("#uploadInnerDiv").html(str);		
+				
 		$('#filer_input2').filer({
     changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
     showThumbs: true,
@@ -68,9 +75,16 @@
        uploadFile: {
 		  
             url: "eventsUploadFormAction.action",
-            data: {"activityScopeId":gobalActivityScopeId,"day":gobalDay,
-						"levelId":gobalLevelId,levelValue:gobalLevelValue,
-						"activityDate":gobalActivityDate,gobalTempVar:gobalTempVar,"insertType":"WEB","lctnInfoId":globalLctnInfoId},
+            data: {
+			"activityScopeId":gobalActivityScopeId,
+			"day":gobalDay,
+			"levelId":gobalLevelId,
+			levelValue:gobalLevelValue,
+			"activityDate":gobalActivityDate,
+			gobalTempVar:gobalTempVar,
+			"insertType":"WEB",
+			"activityLocationInfoId":globalLctnInfoId						
+			},
             type: 'POST',
 			
            enctype: 'multipart/form-data',
@@ -133,3 +147,4 @@
         }
 		
 });
+}
