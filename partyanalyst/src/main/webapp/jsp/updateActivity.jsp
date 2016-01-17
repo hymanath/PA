@@ -346,7 +346,7 @@
 					</div>
 					<div class="col-md-5 m_top20">
 					  <button type="button" class="btn btn-primary" onclick="getCadreDetailsBySearchCriteria(0);">Submit</button>
-					  <button type="button" class="btn btn-primary" id="cadreSaveBtn" style="display:none;" onclick="saveAttendedCadre();">Save changes</button>
+					  <button type="button" class="btn btn-primary" id="cadreSaveBtn"  style="display:none;" onclick="saveAttendedCadre();">Save changes</button>
 					</div>
 					 
 					<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" style=" margin-left: 400px;margin-top: 20px;width:250px;height:200px;display:none;"/>
@@ -376,12 +376,12 @@
 						<label>Voter Card</label>
 						<input type="text" class="form-control clearPublic" id="publicVoterCardId">
 					</div>
-					<div class="col-md-3">
+					<!--<div class="col-md-3">
 						<label>blood Group</label>
 						<select type="text" class="form-control" id="publicbloodGroupId"></select>
-					</div>
+					</div>-->
 					<div class="col-md-5 m_top20">
-						<button type="button" class="btn btn-primary" onclick="saveAttendedPublic();">Save changes</button>
+						<button type="button" class="btn btn-primary" id="publicAttndId"  onclick="saveAttendedPublic();">Save changes</button>
 					</div>
 			</div>
 			</div>
@@ -1043,8 +1043,13 @@ function getLocationDetailsForActivity(startDate,endDate)
 	$(document).on("click",".activityCadrePopup",function(){
 		gobalLevelValue = $(this).attr("attr_location_Value");
 		gobalLocName  = $(this).attr("attr_location_name");
+		var actvty_lctn_info_id = $(this).attr("actvty_lctn_info_id");
 		//getRequiredAttributesByActScopeId();
+		$("#cadreSaveBtn").attr("actvty_lctn_info_id",actvty_lctn_info_id);
+		$("#publicAttndId").attr("actvty_lctn_info_id",actvty_lctn_info_id);
+		
 		$("#activityCadre").modal("show")
+		
 	});
 
 function gettingCadreDetails(locationId,locationName,constituencyId){	
@@ -1686,6 +1691,10 @@ $("#hideAsmblyData").click(function(){
 	  $('#searchErrDiv').html('');
 	 
 	 var conductedDate = $("#conductedDate").val();
+	 if(conductedDate.length<=0){
+		 alert("Please Selected Conducted Date");
+		 return;
+	 }
 	   $(".searchCadreCheck").each(function(){
 		   var cadreId = 0;
 		   if($(this).is(':checked'))
@@ -1720,7 +1729,7 @@ $("#hideAsmblyData").click(function(){
 	  var name = $("#publicNameId").val().trim();
 	  var mobileNumber = $("#publicMobileNoId").val().trim();
 	  var voterCard = $("#publicVoterCardId").val().trim();
-	  var bloodGroupId = $("#publicbloodGroupId").val();
+	  //var bloodGroupId = $("#publicbloodGroupId").val();
 	  var pattern = /^\d{10}$/;
 	
 	  var conductedDate = $("#conductedDate").val();
@@ -1744,11 +1753,11 @@ $("#hideAsmblyData").click(function(){
 				$('#searchErrDiv1').html('Voter Card is Required').css("color","red");
 				return;
 			}
-			if(bloodGroupId == 0)
+			/* if(bloodGroupId == 0)
 			{
 				$('#searchErrDiv1').html('Blood Group is Required').css("color","red");
 				return;
-			}
+			} */
 			 var jsObj =
 			{
 				name :name,
@@ -1976,7 +1985,7 @@ function getActivityLocationWiseDetails()
 					str+='<td>666</td>';
 					/* str+='<td>200</td>';
 					str+='<td>Yes</td>'; */
-					str+='<td><span class="btn btn-success btn-xs activityCadrePopup" attr_location_Value="'+result.constituencyList[i].id+'" attr_location_Name=\''+result.constituencyList[i].name+'\'  >UPDATE</span></td>';
+					str+='<td><span class="btn btn-success btn-xs activityCadrePopup" attr_location_Value="'+result.constituencyList[i].id+'" actvty_lctn_info_id="'+result.constituencyList[i].locationInfoId+'" attr_location_Name=\''+result.constituencyList[i].name+'\'  >UPDATE</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
