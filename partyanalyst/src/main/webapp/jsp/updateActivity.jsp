@@ -385,7 +385,7 @@
 					</div>
 			</div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="uploadphotos">
+			<div role="tabpanel" class="tab-pane uploadphotosDiv" id="uploadphotos">
 				<div id="uploadInnerDiv" class="row">
 					<div class="col-md-12">
 					<div class="errorDiv"></div>
@@ -393,11 +393,11 @@
 					<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
 				</div>
 			</div>
-			<div class="row">
+			<!--<div class="row">
 				<div id="uploadDiv" class="col-md-6 m_top20">
 					<button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>
 				</div>
-			</div>
+			</div>-->
 		  </div>
 		  
 		  <div role="tabpanel" class="tab-pane" id="questionnaire">
@@ -1055,6 +1055,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 		$("#publicAttndId").attr("actvty_lctn_info_id",actvty_lctn_info_id);
 		
 		$("#activityCadre").modal("show")
+		//$(".jFiler-row li").html('');
 		
 	});
 
@@ -1731,6 +1732,9 @@ $("#hideAsmblyData").click(function(){
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 			$('#searchErrDiv').html("Saved Successfully").css("color","green");
+			setTimeout(function() {
+				$("#searchErrDiv").hide();
+			}, 2000);
 			$(".clearCadre").val("");
 			
 		})
@@ -1797,6 +1801,9 @@ $("#hideAsmblyData").click(function(){
 			$(".clearPublic").val("");
 			$("#publicbloodGroupId").val(0);
 			$("#searchErrDiv1").html("Saved Successfully").css("color","green");
+			setTimeout(function() {
+				$("#searchErrDiv1").hide();
+			}, 2000);
 		})
 	
   }
@@ -1846,9 +1853,6 @@ $("#hideAsmblyData").click(function(){
  
    return flag;
   }
-  
- 
-
 $(document).on("click",".deleteLocationImgCheck",function() {
 	var imageCheck = false;
 	$(".deleteLocationImgCheck").each(function(){
@@ -1964,7 +1968,7 @@ function getActivityLocationWiseDetails()
 	function buildBloodDonation(result){
 		var str='';
 		
-		str+='<table class="table table-bordered m_top10">';
+		str+='<table class="table table-bordered m_top10" id="bloodCampTab">';
 			str+='<thead>';
 				str+='<tr>';
 					 str+='<th rowspan=3 style="vertical-align: middle;text-align: center;">CONSTITUENCY NAME </th>';
@@ -2012,6 +2016,11 @@ function getActivityLocationWiseDetails()
 		str+='</table>';
 				
 		$("#bloodDonationDetails").html(str);
+		$("#bloodCampTab").dataTable({
+					"iDisplayLength": 20,
+					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+		//$("#bloodCampTab").removeClass("dataTable");
 	}
 
 function getActivityDatesByScopeId(){
