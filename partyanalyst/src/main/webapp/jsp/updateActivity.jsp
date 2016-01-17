@@ -444,7 +444,7 @@
 <!-- Modal -->
 	
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/activity/js/custom.js" type="text/javascript"></script>
+
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/activity/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
@@ -1046,6 +1046,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 
 
 	$(document).on("click",".activityCadrePopup",function(){
+		
 		gobalLevelValue = $(this).attr("attr_location_Value");
 		gobalLocName  = $(this).attr("attr_location_name");
 		var actvty_lctn_info_id = $(this).attr("actvty_lctn_info_id");
@@ -1833,8 +1834,8 @@ $("#hideAsmblyData").click(function(){
 	  $(".errorDiv").html("");
 	  var str = '';
 	  var flag = true;
-	  //var conductDate = $("#conductedDate").val();
-	  var conductDate = "20/01/2016";
+	  var conductDate = $("#conductedDate").val();
+	  //var conductDate = "20/01/2016";
 	  if(conductDate == null || conductDate.trim().length == 0){
 		str += 'Please Select Conducted Date';
 	   flag = false;
@@ -1850,7 +1851,7 @@ $("#hideAsmblyData").click(function(){
 	 gobalTempVar = "dayCalCulationReq";
    }
    $(".errorDiv").html(str).addClass("errorCls");  
- 
+	uploadImgs();
    return flag;
   }
 $(document).on("click",".deleteLocationImgCheck",function() {
@@ -2126,5 +2127,6 @@ function getActivityDates(){
 
 	});
 </script>
+<script src="dist/activity/js/custom-ver1.js" type="text/javascript"></script>
 </body>
 </html>
