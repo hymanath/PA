@@ -651,8 +651,9 @@ public class AttendanceService implements IAttendanceService{
 							activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
 							activityLocationPublicAttendance.setMembershipNo(inputVO.getMembershipNo());
 							activityLocationPublicAttendance.setUniqueKey(inputVO.getUnqueKey());
-							if(inputVO.getTdpCadreId() != null)
-							activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+							if(inputVO.getTdpCadreId() != null && inputVO.getTdpCadreId()>0){
+								activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+							}
 							activityLocationPublicAttendance.setUserType(inputVO.getUserType());
 							activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
 							
@@ -675,6 +676,9 @@ public class AttendanceService implements IAttendanceService{
 								attendance.setInsertedById(userId);
 							}		
 							
+							if(inputVO.getTdpCadreId() != null && inputVO.getTdpCadreId()>0){
+								attendance.setTdpCadreId(inputVO.getTdpCadreId());
+							}
 							attendance.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
 							attendance = attendanceDAO.save(attendance);
 							ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
