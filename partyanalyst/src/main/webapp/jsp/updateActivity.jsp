@@ -2004,13 +2004,13 @@ function getActivityLocationWiseDetails()
 					var publicTotal=result.constituencyList[i].activityAttendanceInfoVO.totalWebPublicAttendance+result.constituencyList[i].activityAttendanceInfoVO.totalInfoCellPublicAttendance;
 					str+='<td>'+total+'</td>';
 					str+='<td>'+cadreTotal+'</td>';
-					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebCadreAttendance+'</td>';
 					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalInfoCellCadreAttendance+'</td>';
+					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebCadreAttendance+'</td>';
 					str+='<td>'+publicTotal+'</td>';
-					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebPublicAttendance+'</td>';
 					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalInfoCellPublicAttendance+'</td>';
-					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebPhotosAttendance+'</td>';
+					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebPublicAttendance+'</td>';
 					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalInfoCellPhotosAttendance+'</td>';
+					str+='<td>'+result.constituencyList[i].activityAttendanceInfoVO.totalWebPhotosAttendance+'</td>';
 					/* str+='<td>200</td>';
 					str+='<td>Yes</td>'; */
 					str+='<td><span class="btn btn-success btn-xs activityCadrePopup" attr_location_Value="'+result.constituencyList[i].id+'" actvty_lctn_info_id="'+result.constituencyList[i].locationInfoId+'" attr_location_Name=\''+result.constituencyList[i].name+'\'  >UPDATE</span></td>';
