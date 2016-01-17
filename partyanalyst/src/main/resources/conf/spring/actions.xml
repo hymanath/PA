@@ -1609,6 +1609,7 @@
 		<property name="activityService" ref="activityService" />
 		<property name="attendanceService" ref="attendanceService" />
 		<property name="activityAttendanceService" ref="activityAttendanceService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 </beans>	
