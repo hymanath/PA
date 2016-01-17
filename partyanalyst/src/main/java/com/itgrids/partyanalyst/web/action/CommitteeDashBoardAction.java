@@ -960,7 +960,8 @@ public String getAllConstituencysForADistrict(){
 		if(regVO==null){
 			return "input";
 		}
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_ACTIVITY_UPDATE") )){
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_ACTIVITY_UPDATE") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"ACTIVITY_ENTRY_ENTITLEMENT"))){
 			noaccess = true ;
 		}
 		
@@ -1142,7 +1143,7 @@ public String getAllConstituencysForADistrict(){
 				jObj = new JSONObject(getTask());
 				resultStatus = activityService.uploadActivityDocuments(jObj.getLong("activityScopeId"),jObj.getString("sourceFolderName"),null);
 		} catch (Exception e) {
-			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+			LOG.error("Exception occured in uploadActivityDocuments ",e);
 		}
 		return Action.SUCCESS;
 	}
