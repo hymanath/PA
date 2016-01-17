@@ -465,6 +465,7 @@ var gobalLocName = "";
 var gobalActivityDate = null;
 var gobalTempVar = "dayCalCulationNotReq";
 var gobalDay = 0;
+var globalLctnInfoId = null;
 
 $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
@@ -1044,6 +1045,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 		gobalLevelValue = $(this).attr("attr_location_Value");
 		gobalLocName  = $(this).attr("attr_location_name");
 		var actvty_lctn_info_id = $(this).attr("actvty_lctn_info_id");
+		globalLctnInfoId = actvty_lctn_info_id;
 		//getRequiredAttributesByActScopeId();
 		$("#cadreSaveBtn").attr("actvty_lctn_info_id",actvty_lctn_info_id);
 		$("#publicAttndId").attr("actvty_lctn_info_id",actvty_lctn_info_id);
@@ -1695,6 +1697,9 @@ $("#hideAsmblyData").click(function(){
 		 alert("Please Selected Conducted Date");
 		 return;
 	 }
+	 
+	 var lctnInfoId = $("#cadreSaveBtn").attr("actvty_lctn_info_id");
+	  
 	   $(".searchCadreCheck").each(function(){
 		   var cadreId = 0;
 		   if($(this).is(':checked'))
@@ -1707,7 +1712,7 @@ $("#hideAsmblyData").click(function(){
 				var jsObj =
 			{
 				tdpCadreId :cadreId,
-				activityLocationInfoId:2,
+				activityLocationInfoId:lctnInfoId,
 				conductedDate:conductedDate,
 				task:""
 			}
@@ -1731,8 +1736,14 @@ $("#hideAsmblyData").click(function(){
 	  var voterCard = $("#publicVoterCardId").val().trim();
 	  //var bloodGroupId = $("#publicbloodGroupId").val();
 	  var pattern = /^\d{10}$/;
-	
+	  
+	  var lctnInfoId = $("#publicAttndId").attr("actvty_lctn_info_id");
+	  
 	  var conductedDate = $("#conductedDate").val();
+	  if(conductedDate.length<=0){
+		 alert("Please Selected Conducted Date");
+		 return;
+	 }
 	  if(name.length == 0)
 			{
 				$('#searchErrDiv1').html('Name is Required').css("color","red");
@@ -1763,8 +1774,8 @@ $("#hideAsmblyData").click(function(){
 				name :name,
 				mobileNumber:mobileNumber,
 				voterCard:voterCard,
-				activityLocationInfoId:2,
-				bloodGroupId:bloodGroupId,
+				activityLocationInfoId:lctnInfoId,
+				bloodGroupId:"",
 				conductedDate:conductedDate,
 				tdpCadreId :0,
 				task:""
@@ -2072,6 +2083,29 @@ function getActivityDates(){
 			}
 		});
 		}
+	});
+	
+	
+	$(document).on("click",".deleteFile",function() {
+ 
+	 var acitivityInfoDocId = $(this).attr("id");
+	 
+	 var jsObj=
+	   {				
+		  acitivityInfoDocId:acitivityInfoDocId,
+		  task:"deleteFile"				
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'deleteUploadedFileAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result.resultCode == 0){
+				 $(this).closest("li").html("");
+			   }
+		   });
+
 	});
 </script>
 </body>
