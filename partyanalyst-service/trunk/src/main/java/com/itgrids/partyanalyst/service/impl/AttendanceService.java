@@ -643,6 +643,19 @@ public class AttendanceService implements IAttendanceService{
 								}
 							}
 							DateUtilService date = new DateUtilService();
+							ActivityLocationPublicAttendance activityLocationPublicAttendance = new ActivityLocationPublicAttendance();
+							activityLocationPublicAttendance.setName(inputVO.getName());
+							activityLocationPublicAttendance.setVoterCard(inputVO.getVoterCard());
+							activityLocationPublicAttendance.setMobile(inputVO.getMobileNumber());
+							activityLocationPublicAttendance.setBloodGroupId(inputVO.getBloodGroup());
+							activityLocationPublicAttendance.setInsertedTime(date.getCurrentDateAndTime());
+							activityLocationPublicAttendance.setMembershipNo(inputVO.getMembershipNo());
+							activityLocationPublicAttendance.setUniqueKey(inputVO.getUnqueKey());
+							if(inputVO.getTdpCadreId() != null)
+							activityLocationPublicAttendance.setTdpCadreId(inputVO.getTdpCadreId());
+							activityLocationPublicAttendance.setUserType(inputVO.getUserType());
+							activityLocationPublicAttendance = activityLocationPublicAttendanceDAO.save(activityLocationPublicAttendance);
+							
 							Attendance attendance = new Attendance();
 							attendance.setTdpCadreId(inputVO.getTdpCadreId());
 							if(attendedeTime != null)
@@ -661,6 +674,8 @@ public class AttendanceService implements IAttendanceService{
 							}else{
 								attendance.setInsertedById(userId);
 							}		
+							
+							attendance.setActivityLocationPublicAttendanceId(activityLocationPublicAttendance.getActivityLocationPublicAttendanceId());
 							attendance = attendanceDAO.save(attendance);
 							ActivityLocationAttendance activityLocationAttendance = new ActivityLocationAttendance();
 							activityLocationAttendance.setActivityLocationInfoId(inputVO.getActivityLocationInfoId());
