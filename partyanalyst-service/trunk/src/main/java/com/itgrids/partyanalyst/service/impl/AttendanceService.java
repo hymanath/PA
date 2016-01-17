@@ -674,7 +674,13 @@ public class AttendanceService implements IAttendanceService{
 								attendance.setTabPrimaryKey(inputVO.getTabPrimaryKey());
 							}else{
 								attendance.setInsertedById(userId);
-							}		
+							}
+							
+							if(inputVO.getSyncType()!=null && inputVO.getSyncType().equalsIgnoreCase("WEB")){
+								attendance.setSyncSource(inputVO.getSyncType());
+							}else{
+								attendance.setSyncSource("WS");
+							}
 							
 							if(inputVO.getTdpCadreId() != null && inputVO.getTdpCadreId()>0){
 								attendance.setTdpCadreId(inputVO.getTdpCadreId());
