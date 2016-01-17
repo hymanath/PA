@@ -44,6 +44,7 @@ public class BasicVO implements Serializable{
 	private List<BasicVO> constituencyList = new ArrayList<BasicVO>(0);
 	private List<BasicVO> districtList = new ArrayList<BasicVO>(0);
 	private Long		  locationInfoId;
+	private ActivityAttendanceInfoVO activityAttendanceInfoVO = new ActivityAttendanceInfoVO();
 	
 	public BasicVO(){}
 	
@@ -294,6 +295,15 @@ public class BasicVO implements Serializable{
 
 	public void setDistrictList(List<BasicVO> districtList) {
 		this.districtList = districtList;
+	}
+
+	public ActivityAttendanceInfoVO getActivityAttendanceInfoVO() {
+		return activityAttendanceInfoVO;
+	}
+
+	public void setActivityAttendanceInfoVO(
+			ActivityAttendanceInfoVO activityAttendanceInfoVO) {
+		this.activityAttendanceInfoVO = activityAttendanceInfoVO;
 	}
 	
 	
