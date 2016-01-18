@@ -22,7 +22,7 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getActivityDocumentsImagesByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate,Integer startIndex,Integer maxIndex);
 	
 	public Long getActivityDocumentsImagesCountByLevelIdAndLevelValue(Long levelId,Long levelValue,Long day,Long activityScopeId,Date activityDate);
-	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO);
+	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO,Long stateId);
 	
 	public List<Object[]> getEventDocumentsByLocationInfo(EventDocumentVO inputVO,Date startDate,Date endDate);
 	public Long getEventDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate);
