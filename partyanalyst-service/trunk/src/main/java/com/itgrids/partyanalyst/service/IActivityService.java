@@ -19,8 +19,8 @@ import com.itgrids.partyanalyst.model.UserAddress;
 public interface IActivityService {
 	
 	public Map<Long,ActivityVO> getAttributeListByQuestionnaireList(List<Long> questionnairesList);
-	public List<ActivityVO> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO);
-	public ActivityVO getActivityDetailsBySearchCriteria(SearchAttributeVO searchAttributeVO);
+	public List<ActivityVO> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId);
+	public ActivityVO getActivityDetailsBySearchCriteria(SearchAttributeVO searchAttributeVO,Long stateId,boolean isExecuted);
 	public List<IdNameVO> getActivityLevelsList();
 	public BasicVO getActivityTypeList();
 
