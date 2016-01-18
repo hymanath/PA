@@ -1088,6 +1088,8 @@ public String getAllConstituencysForADistrict(){
 			
 			inputVo.setStartIndex(jObj.getInt("startIndex"));
 			inputVo.setMaxIndex(jObj.getInt("maxIndex"));
+			inputVo.setCallFrom(jObj.getString("callFrom"));
+			
 			
 			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo);
 			
