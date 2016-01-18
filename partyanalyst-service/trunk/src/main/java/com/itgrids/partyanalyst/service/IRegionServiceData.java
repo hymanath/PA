@@ -103,7 +103,7 @@ public interface IRegionServiceData {
 	
 	public List<SelectOptionVO> getAllMandalsByAllConstituencies(List<Long> constiIds);
 	
-	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO);
+	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId);
 	
 	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
 }
