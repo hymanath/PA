@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityLocationAttendance;
 
 public interface IActivityLocationAttendanceDAO extends GenericDao<ActivityLocationAttendance, Long>{
-	public List<Object[]> getActivityAttendanceCount(SearchAttributeVO inputVO,String memberType);
+	public List<Object[]> getActivityAttendanceCount(SearchAttributeVO inputVO,String memberType,Long stateId);
 }
