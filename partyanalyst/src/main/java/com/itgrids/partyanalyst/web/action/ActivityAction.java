@@ -266,7 +266,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 				searchVO.setEndDate(format.parse(endDateStr));
 			} catch (Exception e) {}
 			
-			activityVO = activityService.getActivityDetailsBySearchCriteria(searchVO);
+			activityVO = activityService.getActivityDetailsBySearchCriteria(searchVO,1L,false);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured when loading getActivityDetailsBySearchCriteria() ActivityAction Controller... ",e);
@@ -583,7 +583,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			List<Long>  activityScopeIdsList = new ArrayList<Long>();
 			activityScopeIdsList.add(activityScopeId);
 			searchVO.setAttributesIdsList(activityScopeIdsList);
-			attendanceVo = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
+			attendanceVo = activityAttendanceService.getLocationWiseActivityDetails(searchVO,0L);
 		}catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseActivityDetails()", e);
 		}
