@@ -28,15 +28,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.day = :day");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
-			if(inputVO.getLocationValue() == 36)
-			{
-				str.append(" and model.userAddress.state.stateId = :locationValue ");
-			}
-			
-			if(inputVO.getLocationValue() == 1)
-			{
-				str.append(" and model.userAddress.state.stateId = :locationValue ");
-			}
+			str.append(" and model.userAddress.state.stateId = :locationValue ");
 		}
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
@@ -400,14 +392,18 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO)
+	public List<Object[]> getActivityInfoImagesCount(SearchAttributeVO inputVO,Long stateId)
 	{
 		StringBuilder str = new StringBuilder();
-		if(inputVO.getSearchType().equalsIgnoreCase("district"))
+		if(inputVO.getSearchType().equalsIgnoreCase("state"))
+		{
+			str.append(" select model.activityLocationInfo.constituency.state.stateId, model.activityLocationInfo.constituency.state.stateName, ");
+		}
+		else if(inputVO.getSearchType().equalsIgnoreCase("district"))
 		{
 			str.append(" select model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName, ");
 		}
-		if(inputVO.getSearchType().equalsIgnoreCase("constituency"))
+		else if(inputVO.getSearchType().equalsIgnoreCase("constituency"))
 		{
 			str.append(" select model.activityLocationInfo.constituency.constituencyId, model.activityLocationInfo.constituency.name,");
 		}
@@ -446,6 +442,11 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		
 		str.append(" where model.activityDocument.activityDate is not null ");
 		
+		if(stateId != null && stateId.longValue() == 36L)
+			str.append("   and model.activityLocationInfo.constituency.district.districtId between 1 and 10  ");
+		else if(stateId != null && stateId.longValue() == 1L)
+			str.append("   and model.activityLocationInfo.constituency.district.districtId between 11 and 23  ");
+		
 		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
 		{
 			str.append(" and model.activityLocationInfo.locationLevel in(:levelIds)");
@@ -459,7 +460,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 				str.append(" group by model.insertType,model.activityLocationInfo.constituency.district.districtId ");
 			}
 		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0){
-			 if(inputVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			if(inputVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				str.append(" and model.activityLocationInfo.constituency.district.districtId in (:locationIdsList) group by model.insertType,model.activityLocationInfo.constituency.constituencyId ");
 			}
 			else if(inputVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
@@ -478,8 +479,9 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		Query query = getSession().createQuery(str.toString());
 		if(inputVO.getAttributesIdsList() != null && inputVO.getAttributesIdsList() .size() > 0)
 			query.setParameterList("attributesIdsList",inputVO.getAttributesIdsList());
-		if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0)
-			query.setParameterList("locationIdsList",inputVO.getLocationIdsList());
+		if(!inputVO.getSearchType().equalsIgnoreCase("state"))
+			if(inputVO.getLocationIdsList() != null &&inputVO.getLocationIdsList().size() >0)
+				query.setParameterList("locationIdsList",inputVO.getLocationIdsList());
 		if(inputVO.getLocationTypeIdsList() != null && inputVO.getLocationTypeIdsList().size() > 0)
 			query.setParameterList("levelIds",inputVO.getLocationTypeIdsList());
 		

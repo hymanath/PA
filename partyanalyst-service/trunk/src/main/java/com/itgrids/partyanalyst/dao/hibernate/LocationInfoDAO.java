@@ -27,9 +27,12 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		return query.list();
 	}
 	
-	public List<Object[]> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO)
+	public List<Object[]> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId)
 	{
 		StringBuilder queryStr = new StringBuilder();
+		if(searchAttributeVO.getScopeId() == 2L && stateId != null && stateId.longValue()>0L)
+			searchAttributeVO.setScopeValue(stateId);
+		
 		queryStr.append(" select distinct model.levelId, model.count from LocationInfo model where model.scopeId =:scopeId and model.scopeValue =:scopeValue ");
 		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 			queryStr.append(" and model.levelId in (:requiredAreasIds) ");
