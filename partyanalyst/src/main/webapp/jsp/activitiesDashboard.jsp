@@ -2043,7 +2043,7 @@ $(document).on('click','.popupLevel',function(){
 	  $("#myModalLabel").html(''+$(this).attr("attr")+'');
   })
   
-function getEventDocumentsForPopup(searchType,locationId,day,num)
+function getEventDocumentsForPopup(searchType,locationId,day,num,path)
 {
 
 	
@@ -2076,12 +2076,12 @@ function getEventDocumentsForPopup(searchType,locationId,day,num)
           url: 'getEventDocumentsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			buildDayWiseImagesForPopup1(result,jObj);
+			buildDayWiseImagesForPopup1(result,jObj,path);
 			});
 }
 
 
-function buildDayWiseImagesForPopup1(result,jObj)
+function buildDayWiseImagesForPopup1(result,jObj,path)
 {
 	$("#popupImages").html('');
 	var str ='';
@@ -2090,6 +2090,8 @@ function buildDayWiseImagesForPopup1(result,jObj)
 	{
 	
 		str+='<ul class="slider-for">';
+		if(path != null && path.length>0)
+			str+='<li><img src="http://mytdp.com/activity_documents/' +path+'"></li>';
 			for(var i in result)
 			{
 			for(var j in result[i].subList)
@@ -2100,13 +2102,13 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			}
 			  str+='</ul>';
 		str+='<ul class="slider-nav">';	
+		if(path != null && path.length>0)
+			str+='<li><img src="http://mytdp.com/activity_documents/' +path+'" style="cursor:pointer;"></li>';
 		for(var i in result)
 		{	 
 			for(var j in result[i].subList)
 			{
-				
-				 str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
-				
+				str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
 			}
 		}
 				str+='</ul>';
@@ -2122,7 +2124,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			  asNavFor: '.slider-nav'
 			});
 			$('.slider-nav').slick({
-			  slidesToShow: 10,
+			  slidesToShow: 11,
 			  slidesToScroll: 0,
 			  slide: 'li',
 			  asNavFor: '.slider-for',
@@ -2151,7 +2153,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			
 			onPageClick: function(pageNumber, event) {
 				var num=(pageNumber-1)*10;
-				getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num);
+				getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,"");
 				
 			}
 		});
@@ -2234,7 +2236,7 @@ setTimeout(function(){
 		}
 	}*/
 	
-	getAvailableDates(globallocationScope,globallocationValue,day);
+	getAvailableDates(globallocationScope,globallocationValue,day,path);
 
 	//setTimeout(function(){imgTrigger()},800);
 	
@@ -2244,7 +2246,7 @@ function imgTrigger()
 
 	$('.imgTrig1').trigger('click');
 }
-function getAvailableDates(locationScope,locationValue,day)
+function getAvailableDates(locationScope,locationValue,day,path)
 	{
 		
 	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
@@ -2278,7 +2280,7 @@ function getAvailableDates(locationScope,locationValue,day)
 					if(result[i].id==day)
 					{
 						str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
-						getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,day,0);
+						getEventDocumentsForPopup(jObj.locationScope,jObj.locationValue,day,0,path);
 					}
 					
 					  else
@@ -2295,7 +2297,7 @@ function getAvailableDates(locationScope,locationValue,day)
 	 $(".daysCls").removeClass( "active" )
 	 $(this).addClass("active");
 	 var day = $(this).attr("attr");
-		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day,0);
+		getEventDocumentsForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,"");
   });
 
 $(document).on('click', '.searchTypeCls', function(){
