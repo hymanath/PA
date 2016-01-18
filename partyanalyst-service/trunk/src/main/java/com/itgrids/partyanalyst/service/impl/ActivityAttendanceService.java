@@ -302,7 +302,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
 						 VO.setName(params[1] != null ? params[1].toString():"");
-						 returnVO.getSubList().add(VO);
+						 returnVO.getLocalBodyList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
 					 {
@@ -386,7 +386,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
 						 VO.setName(params[1] != null ? params[1].toString():"");
-						 returnVO.getSubList().add(VO);
+						 returnVO.getLocalBodyList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
 					 {
