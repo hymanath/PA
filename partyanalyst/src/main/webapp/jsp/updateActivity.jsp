@@ -1041,6 +1041,17 @@ function getLocationDetailsForActivity(startDate,endDate)
 
 
 	$(document).on("click",".activityCadrePopup",function(){
+	
+		$("#cadreSaveBtn").hide();
+		$("#conductedDate").val("");
+		$("#membershipId").val("");
+		$("#voterId").val("");
+		$("#searchcadreDetailsDiv").html("");
+		$("#searchcadreDetailsDiv").hide();
+		$("#publicNameId").val("");
+		$("#publicMobileNoId").val("");
+		$("#publicVoterCardId").val("");
+		$("#uploadInnerDiv").html("");
 		
 		gobalLevelValue = $(this).attr("attr_location_Value");
 		gobalLocName  = $(this).attr("attr_location_name");
