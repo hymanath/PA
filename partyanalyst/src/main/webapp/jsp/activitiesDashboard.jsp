@@ -2327,13 +2327,16 @@ $(document).on('click', '.searchTypeCls', function(){
 	function getLocationWiseActivityDetails(type,id,resultDivNum){
 		
 		if(type == 'constituency'){
-		$(".PlusnMinusSignd").addClass('collapsed');
-		//$(".PlusnMinusSignd").attr('aria-expanded','true');
-		
-		$(".constiListCls").html("");		
-		$(".constiListCls").parent().find("div").removeClass('bod bod-b');
-		//$(".constiListCls").removeClass('opened');
-	}
+	        $(".PlusnMinusSignd").addClass('collapsed');
+	        //$(".PlusnMinusSignd").attr('aria-expanded','true');
+	       
+	        $(".constiListCls").html("");       
+	        $(".constiListCls").parent().find("div").removeClass('bod bod-b');
+	        $(".constiListCls").siblings().removeClass('in');
+	        $(".constiListCls").removeClass('opened');
+	        $(".constiListCls").siblings().attr('aria-expanded','false');
+	       
+	    }
 		
 		var acScpeId = $("#ActivityList").val();
 		
