@@ -297,7 +297,7 @@
     <div class="modal-content">
       <div class="modal-header bg_cc">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">NUZVID CONSTITUENCY</h4>
+        <h4 class="modal-title" id="myModalLabel">ENTRY DETAILS</h4>
       </div>
       <div class="modal-body" style="background:#EFF3F4">
 		<div class="row">
@@ -320,9 +320,9 @@
 				</div>
 			</div>
 		</div>
-       <div>
+       <div id="tabsId">
 		  <ul class="nav nav-tabs navtabsCustom m_top20" role="tablist">
-			<li role="presentation" class="active"><a href="#cadre" aria-controls="cadre" role="tab" data-toggle="tab">Cadre</a></li>
+			<li role="presentation" class="active" ><a href="#cadre" id="cadreLiTabId" aria-controls="cadre" role="tab" data-toggle="tab">Cadre</a></li>
 			<li role="presentation"><a href="#public" aria-controls="public" role="tab" data-toggle="tab" onclick="getBloodGroups();">Public</a></li>
 			<li role="presentation"><a href="#uploadphotos" id="upldPhotosId" aria-controls="uploadphotos" role="tab" data-toggle="tab" >Upload Photos</a></li>
 			<!--<li role="presentation"><a href="#questionnaire" aria-controls="questionnaire" role="tab" data-toggle="tab" onclick="getQuestionnaireDetails(4)">Questionnaire</a></li>
@@ -2124,9 +2124,14 @@ function getActivityDates(){
 		   });
 
 	});
-	$("#upldPhotosId").click(function(){
+	$(document).on("click","#upldPhotosId",function(){
+	//$("#upldPhotosId").click(function(){
 		var conductDate = $("#conductedDate").val();
 		if(conductDate==""){
+			alert("Please Enter Conducted Date");
+			//$('#cadreLiTabId').trigger("click");
+			$("#cadreLiTabId").trigger("click");
+			//$("#cadre").addClass("active");
 			return;
 		}
 		// var d = conductDate.split("/");//dd/mm/yyyy
@@ -2137,6 +2142,5 @@ function getActivityDates(){
 		uploadImgs();
 	});
 </script>
-<script src="dist/activity/js/custom-ver1.js" type="text/javascript"></script>
 </body>
 </html>
