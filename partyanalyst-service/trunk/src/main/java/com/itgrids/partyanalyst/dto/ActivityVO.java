@@ -28,7 +28,8 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String remarks;
 	private String startDate;
 	private String endDate;
-	private List<ActivityVO> activityVoList = new ArrayList<ActivityVO>();
+	private List<ActivityVO> activityVoList = new ArrayList<ActivityVO>(0);
+	private List<ActivityAttendanceInfoVO> activityAttendanceInfoVOList = new ArrayList<ActivityAttendanceInfoVO>(0);
 	private Map<String,ActivityVO>  activityMap = new LinkedHashMap<String,ActivityVO>(0);
 	private Long id;
 	private String name;
@@ -76,6 +77,13 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	
 	
 	
+	public List<ActivityAttendanceInfoVO> getActivityAttendanceInfoVOList() {
+		return activityAttendanceInfoVOList;
+	}
+	public void setActivityAttendanceInfoVOList(
+			List<ActivityAttendanceInfoVO> activityAttendanceInfoVOList) {
+		this.activityAttendanceInfoVOList = activityAttendanceInfoVOList;
+	}
 	public Long getUserId() {
 		return userId;
 	}
