@@ -1,13 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityAttendanceInfoVO {
+public class ActivityAttendanceInfoVO implements java.io.Serializable{
 	
 	private Long id;
 	private String name;
-	private List<ActivityAttendanceInfoVO> subList;
-	private List<ActivityAttendanceInfoVO> localBodyList;
+	private List<ActivityAttendanceInfoVO> subList = new ArrayList<ActivityAttendanceInfoVO>(0);
+	private List<ActivityAttendanceInfoVO> localBodyList= new ArrayList<ActivityAttendanceInfoVO>(0);
 	
 	private Long totalLocations=0l;
 	private Long totalMembers=0l;
