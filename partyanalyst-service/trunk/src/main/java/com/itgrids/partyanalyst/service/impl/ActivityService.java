@@ -1160,10 +1160,13 @@ public class ActivityService implements IActivityService{
 	}
 	//1111
 	
-	public ActivityVO getActivityDetailsBySearchCriteria(SearchAttributeVO searchAttributeVO)
+	public ActivityVO getActivityDetailsBySearchCriteria(SearchAttributeVO searchAttributeVO1,Long stateId1,boolean isExecuted)
 	{
 		ActivityVO returnVO = new ActivityVO();
 		try {
+			SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
+			searchAttributeVO = searchAttributeVO1;
+			
 			Long activityLevelId =null;
 			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
 			{
@@ -1193,12 +1196,17 @@ public class ActivityService implements IActivityService{
 						}
 						else if(activityLevelId.longValue() == 4L)
 						{
+							searchAttributeVO.getLocationTypeIdsList().add(2L);
+						}
+						else if(activityLevelId.longValue() == 5L)
+						{
 							searchAttributeVO.getLocationTypeIdsList().add(4L);
 						}
 					}
 					
+					
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
-					List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+					List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId1);
 					if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 					{
 						Long totalAreasCount = getTotalAreaCountByList(areaWiseCountLsit);
@@ -1233,9 +1241,36 @@ public class ActivityService implements IActivityService{
 		            searchAttributeVO.getLocationTypeIdsList().add(13L);
 		          }
 		        }
-				
+				if(activityLevelId != null && activityLevelId.longValue()>0L)
+				{
+					searchAttributeVO.getLocationTypeIdsList().clear();
+					if(activityLevelId.longValue() == 1L)
+					{
+						searchAttributeVO.getLocationTypeIdsList().add(6L);
+						searchAttributeVO.getLocationTypeIdsList().add(8L);
+					}
+					else if(activityLevelId.longValue() == 2L)
+					{
+						searchAttributeVO.getLocationTypeIdsList().add(5L);
+						searchAttributeVO.getLocationTypeIdsList().add(7L);
+						searchAttributeVO.getLocationTypeIdsList().add(9L);
+					}
+					else if(activityLevelId.longValue() == 3L)
+					{
+						searchAttributeVO.getLocationTypeIdsList().add(11L);
+					}
+					else if(activityLevelId.longValue() == 4L)
+					{
+						searchAttributeVO.getLocationTypeIdsList().add(10L);
+					}
+					else if(activityLevelId.longValue() == 5L)
+					{
+						searchAttributeVO.getLocationTypeIdsList().add(13L);
+					}
+				}
+				Long stateId =0L;
 			if(searchAttributeVO.getSearchType() != null && searchAttributeVO.getConditionType().trim().contains("daywiseResult")){
-				List<ActivityVO> dayWiseResultList = getActivityDayWiseCountsByLocation(searchAttributeVO);
+				List<ActivityVO> dayWiseResultList = getActivityDayWiseCountsByLocation(searchAttributeVO,stateId);
 				returnVO.getActivityVoList().addAll(dayWiseResultList);
 				return returnVO;
 			}
@@ -1256,19 +1291,19 @@ public class ActivityService implements IActivityService{
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationValue());
 					
-					questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-					yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+					questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+					yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 					searchAttributeVO.setConditionType("planned");
-						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 					searchAttributeVO.setConditionType(" infocell ");
-						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 					searchAttributeVO.setConditionType("ivr");
-						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 
 					searchAttributeVO.setConditionType("infocell");
-						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 					searchAttributeVO.setConditionType("ivr");
-						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 					
 					segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
 					
@@ -1301,19 +1336,19 @@ public class ActivityService implements IActivityService{
 					if(districtIds != null && districtIds.size()>0){
 						searchAttributeVO.setLocationIdsList(districtIds);
 						
-						questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-						yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+						questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+						yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 					searchAttributeVO.setConditionType("planned");
-						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 					searchAttributeVO.setConditionType(" infocell ");
-						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 					searchAttributeVO.setConditionType("ivr");
-						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 
 					searchAttributeVO.setConditionType("infocell");
-						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 					searchAttributeVO.setConditionType("ivr");
-						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 					
 					segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
 					
@@ -1351,19 +1386,19 @@ public class ActivityService implements IActivityService{
 					{
 						searchAttributeVO.setLocationIdsList(constituencyList);
 						
-						questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-						yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+						questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+						yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 						searchAttributeVO.setConditionType("planned");
-							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 						searchAttributeVO.setConditionType(" infocell ");
-							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 						searchAttributeVO.setConditionType("ivr");
-							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 	
 						searchAttributeVO.setConditionType("infocell");
-							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 						searchAttributeVO.setConditionType("ivr");
-							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 						
 						segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
 						
@@ -1415,20 +1450,20 @@ public class ActivityService implements IActivityService{
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(mandalsIdsList);
 
-							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-							 yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+							 yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 							 
 							searchAttributeVO.setConditionType("planned");
-								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 							searchAttributeVO.setConditionType(" infocell ");
-								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							searchAttributeVO.setConditionType("ivr");
-								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 	
 							searchAttributeVO.setConditionType("infocell");
-								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 							searchAttributeVO.setConditionType("ivr");
-								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							
 							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","2");
 							
@@ -1458,19 +1493,19 @@ public class ActivityService implements IActivityService{
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(munciORTownORCorpIdsList);
 							searchAttributeVO.setSearchType("URBAN");
-							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 							searchAttributeVO.setConditionType("planned");
-							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+							plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 						searchAttributeVO.setConditionType(" infocell ");
-							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 						searchAttributeVO.setConditionType("ivr");
-							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 
 						searchAttributeVO.setConditionType("infocell");
-							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+							infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 						searchAttributeVO.setConditionType("ivr");
-							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+							ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 						
 						segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","1");
 						
@@ -1499,19 +1534,19 @@ public class ActivityService implements IActivityService{
 							searchAttributeVO.getLocationIdsList().clear();
 							searchAttributeVO.getLocationIdsList().addAll(divisionIdsList);
 							searchAttributeVO.setSearchType("URBAN");
-							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+							questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+							yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 							searchAttributeVO.setConditionType("planned");
-								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 							searchAttributeVO.setConditionType(" infocell ");
-								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							searchAttributeVO.setConditionType("ivr");
-								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 	
 							searchAttributeVO.setConditionType("infocell");
-								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 							searchAttributeVO.setConditionType("ivr");
-								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							
 							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","3");
 							
@@ -1562,19 +1597,19 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.WARD_COMMITTEE_LEVEL_ID);
 								searchAttributeVO.setSearchType("WARD");
-								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 							searchAttributeVO.setConditionType("planned");
-								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 							searchAttributeVO.setConditionType(" infocell ");
-								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							searchAttributeVO.setConditionType("ivr");
-								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 
 							searchAttributeVO.setConditionType("infocell");
-								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 							searchAttributeVO.setConditionType("ivr");
-								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							
 							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","2");
 							
@@ -1597,19 +1632,19 @@ public class ActivityService implements IActivityService{
 								searchAttributeVO.getLocationTypeIdsList().clear();
 								searchAttributeVO.getLocationTypeIdsList().add(IConstants.VILLAGE_COMMITTEE_LEVEL_ID);
 								searchAttributeVO.setSearchType("VILLAGE");
-								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO);
-								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L);
+								questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+								yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 								searchAttributeVO.setConditionType("planned");
-								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO);
+								plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
 							searchAttributeVO.setConditionType(" infocell ");
-								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							searchAttributeVO.setConditionType("ivr");
-								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 
 							searchAttributeVO.setConditionType("infocell");
-								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 	
+								infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
 							searchAttributeVO.setConditionType("ivr");
-								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO); 
+								ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 							
 							segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED","1");
 							
@@ -1694,7 +1729,7 @@ public class ActivityService implements IActivityService{
 							if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 								searchAttributeVO.setScopeId(3L);
 								activityVO.setName(activityVO.getName()+" District");
-								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 								{
 									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -1706,7 +1741,7 @@ public class ActivityService implements IActivityService{
 							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 								searchAttributeVO.setScopeId(4L);
 								activityVO.setName(activityVO.getName()+" Constituency");
-								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 								{
 									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -1722,7 +1757,7 @@ public class ActivityService implements IActivityService{
 									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
 									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
 									activityVO.setName(activityVO.getName()+" Mandal");
-									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 									{
 										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -1737,7 +1772,7 @@ public class ActivityService implements IActivityService{
 									String mandalTownORDivisionId = locationId.toString().trim().substring(1);
 									searchAttributeVO.setScopeValue(Long.valueOf(mandalTownORDivisionId));
 									activityVO.setName(activityVO.getName());
-									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO);
+									List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 									if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 									{
 										totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -1796,13 +1831,13 @@ public class ActivityService implements IActivityService{
 										}
 									}
 								}
-								if(activityVO.getPlannedCount() != null && activityVO.getPlannedCount().longValue()>0L && totalAreasCount.longValue()>0L)
+								if(activityVO.getPlannedCount() != null && activityVO.getPlannedCount().longValue()>0L && totalAreasCount != null && totalAreasCount.longValue()>0L)
 								{
 									double perc = (activityVO.getPlannedCount() * 100.0)/totalAreasCount;
 									String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 									activityVO.setPercentage(percentage);
 								}
-								if(activityVO.getNotPlannedCount() != null && activityVO.getNotPlannedCount().longValue()>0L && totalAreasCount.longValue()>0L)
+								if(activityVO.getNotPlannedCount() != null && activityVO.getNotPlannedCount().longValue()>0L && totalAreasCount != null &&totalAreasCount.longValue()>0L)
 								{
 									double perc1 = (activityVO.getNotPlannedCount() * 100.0)/totalAreasCount;
 									String percentage1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc1)));
@@ -2205,6 +2240,25 @@ public class ActivityService implements IActivityService{
 					}
 				}
 			}
+			
+			ActivityAttendanceInfoVO apattendenceVO = getActivityAttendenceDetails(searchAttributeVO,stateId1);
+			if(returnVO != null && returnVO.getActivityVoList() != null && returnVO.getActivityVoList().size()>0)
+			{
+				ActivityVO vo = returnVO.getActivityVoList().get(0);
+				if(vo != null){
+					vo.setTotalCount(returnVO.getTotalCount());
+					if(apattendenceVO != null && apattendenceVO.getSubList() != null && apattendenceVO.getSubList().size()>0){
+						vo.getActivityAttendanceInfoVOList().addAll(apattendenceVO.getSubList());
+					}
+				}
+			}
+				
+			if(!isExecuted && searchAttributeVO1.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+				ActivityVO retirnVO1 =  getActivityDetailsBySearchCriteria(searchAttributeVO,36L,true);
+				if(retirnVO1 != null && retirnVO1.getActivityVoList() != null && retirnVO1.getActivityVoList().size()>0){
+					returnVO.getActivityVoList().addAll(retirnVO1.getActivityVoList());
+				}
+			}
 		  }	
 			
 		} catch (Exception e) {
@@ -2212,7 +2266,19 @@ public class ActivityService implements IActivityService{
 		}
 		return returnVO;
 	}
-
+//2222
+	public ActivityAttendanceInfoVO getActivityAttendenceDetails(SearchAttributeVO searchAttributeVO,Long stateId)
+	{
+		ActivityAttendanceInfoVO returnVO = new ActivityAttendanceInfoVO();
+		try {
+				activityAttendanceService.getCadreAttendanceCount(searchAttributeVO, returnVO, stateId);
+				activityAttendanceService.getPublicAttendanceCount(searchAttributeVO, returnVO, stateId);
+				activityAttendanceService.getPhotosCount(searchAttributeVO, returnVO, stateId);
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getActivityAttendenceDetails() ActivityService Class... ",e);
+		}
+		return returnVO;
+	}
 	public Map<Long,ActivityVO> getAttributeListByQuestionnaireList(List<Long> questionnairesList){
 		
 		Map<Long,ActivityVO> finalMap = new LinkedHashMap<Long, ActivityVO>();
@@ -2239,10 +2305,13 @@ public class ActivityService implements IActivityService{
 		return finalMap;
 	}
 	
-	public List<ActivityVO> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<ActivityVO> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 		try {
+			
+
+			
 			
 			Map<String,ActivityVO> datesMap = new LinkedHashMap<String, ActivityVO>();
 			Map<String,ActivityVO> initialDateMap = new LinkedHashMap<String, ActivityVO>();
@@ -2287,18 +2356,18 @@ public class ActivityService implements IActivityService{
 			
 			
 			searchAttributeVO.setConditionType("planned");
-				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO);
+				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId);
 			searchAttributeVO.setConditionType(" infocell ");
-				infoCellconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+				infoCellconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 
 			searchAttributeVO.setConditionType("ivr");
-				ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
+				ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 
 
 			searchAttributeVO.setConditionType("infocell");
-				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 	
+				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 	
 			searchAttributeVO.setConditionType("ivr");
-				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO); 
-				List<Object[]> questionnairesCount =activityQuestionAnswerDAO.getActivityQuestionnairesCountsByDayWise(searchAttributeVO);
-				List<Object[]> yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByDayWise(searchAttributeVO,1L);
+				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 
+				List<Object[]> questionnairesCount =activityQuestionAnswerDAO.getActivityQuestionnairesCountsByDayWise(searchAttributeVO,stateId);
+				List<Object[]> yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByDayWise(searchAttributeVO,1L,stateId);
 				 
 				buildResult(plannedActivities,datesMap,"PLANNED",null);
 				
@@ -2476,6 +2545,7 @@ public class ActivityService implements IActivityService{
 				 .append("jpg");
 				 str.append(randomNumber).append(".").append("jpg");
 				activityDocument.setActivityDate(eventFileUploadVO.getActivityDateFormat());
+				activityDocument.setTabDetailsId(eventFileUploadVO.getTabDetailsId());
 				ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
 				imageAndStringConverter.convertBase64StringToImage(eventFileUploadVO.getImageBase64String(), destPath);
 			}
@@ -2683,19 +2753,19 @@ public class ActivityService implements IActivityService{
 			Long levelId = null;
 			Long levelValue = null;
 			
-			if(eventFileUploadVO.getLevelId().equals(2l)){
+			if(eventFileUploadVO.getLevelId().equals(2l) || eventFileUploadVO.getLevelId().equals(10l)){
 				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
 				levelId = 2l;
 				levelValue = eventFileUploadVO.getStateId();
 			}
-			else if(eventFileUploadVO.getLevelId().equals(3l))
+			else if(eventFileUploadVO.getLevelId().equals(3l) || eventFileUploadVO.getLevelId().equals(11l))
 			{
 				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
 				levelId = 3l;
 				levelValue = eventFileUploadVO.getDistrictId();
 			}
-			else if(eventFileUploadVO.getLevelId().equals(4l))
+			else if(eventFileUploadVO.getLevelId().equals(4l) || eventFileUploadVO.getLevelId().equals(13l))
 			{
 				userAddress.setState(stateDAO.get(eventFileUploadVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(eventFileUploadVO.getDistrictId()));
@@ -3875,7 +3945,7 @@ public class ActivityService implements IActivityService{
 					8l,9l,10l,11l,12l,13l,14l,15l,16l,17l,18l,19l,20l,21l,22l,23l));
 			searchVO.getLocationIdsList().addAll(locationIds);
 			
-			ActivityAttendanceInfoVO activityAttendanceInfoVO = activityAttendanceService.getLocationWiseActivityDetails(searchVO);
+			ActivityAttendanceInfoVO activityAttendanceInfoVO = activityAttendanceService.getLocationWiseActivityDetails(searchVO,0L);//stateId = 0 --> ap & ts
 			
 			if(activityAttendanceInfoVO != null && activityAttendanceInfoVO.getSubList() != null && activityAttendanceInfoVO.getSubList().size() > 0 && constMap != null && constMap.size() > 0){
 				for(ActivityAttendanceInfoVO vo : activityAttendanceInfoVO.getSubList()){
