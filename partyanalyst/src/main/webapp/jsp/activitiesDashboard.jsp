@@ -86,7 +86,9 @@
 .next{
 	width:60px !important;
 }
-
+.slick-list{
+	margin-left:30px;
+}
 </style>
 </head>
 
@@ -1933,6 +1935,7 @@ $(document).on('click','.popupLevel',function(){
 		type:"popup",
 		startIndex:num,
 		maxIndex:10,
+		callFrom:"BD",
 		//locationName:obj.locationName,
 		 task:"popupdaywise"
 		};
@@ -1987,8 +1990,8 @@ function buildDayWiseImagesForPopup1(result,jObj)
 			  asNavFor: '.slider-nav'
 			});
 			$('.slider-nav').slick({
-			  slidesToShow: 3,
-			  slidesToScroll: 1,
+			  slidesToShow: 10,
+			  slidesToScroll: 0,
 			  slide: 'li',
 			  asNavFor: '.slider-for',
 			  dots: false,
@@ -2024,7 +2027,7 @@ function buildDayWiseImagesForPopup1(result,jObj)
 		}
 	GlobalPopupScope = globallocationScope;
 	GlobalPopuplocation =globallocationValue;
-	$(".imgTrig").trigger("click");
+	
 	}
 	
 	
