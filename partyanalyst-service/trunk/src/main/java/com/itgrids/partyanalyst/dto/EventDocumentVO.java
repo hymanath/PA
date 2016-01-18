@@ -21,10 +21,17 @@ public class EventDocumentVO {
 	private int startIndex;
 	private int maxIndex;
 	private Long totalResult;
+	private String callFrom;
 	
 	
 	
 	
+	public String getCallFrom() {
+		return callFrom;
+	}
+	public void setCallFrom(String callFrom) {
+		this.callFrom = callFrom;
+	}
 	public Long getTotalResult() {
 		return totalResult;
 	}

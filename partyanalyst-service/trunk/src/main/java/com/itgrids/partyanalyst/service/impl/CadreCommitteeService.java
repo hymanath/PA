@@ -17313,8 +17313,18 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				startDate = format.parse(inputVo.getStrDate().toString().trim());
 				toDate = format.parse(inputVo.getEndDate().toString().trim());
 			}
-			List<Object[]> list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
-			Long totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate);
+			
+			List<Object[]> list = null;
+			Long totalCount = null;
+			
+			if(inputVo.getCallFrom().equalsIgnoreCase("BD")){
+				list = activityInfoDocumentDAO.getEventDocumentsByLocationInfo(inputVo,startDate,toDate);
+				totalCount = activityInfoDocumentDAO.getEventDocumentsCountByLocationInbfo(inputVo,startDate,toDate);
+			}else{
+				list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
+				totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate);
+			}
+			
 			if(list != null && list.size() > 0)
 			{
 				returnList = new ArrayList<EventDocumentVO>();
@@ -17353,8 +17363,17 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		if(returnList == null || returnList.size() == 0)
 			return null;
 		for(EventDocumentVO vo : returnList)
-			if(vo.getDay().longValue() == id.longValue())
-				return vo;
+			if(vo.getDay()==null || vo.getDay()==0l){
+				vo.setDay(1l);
+				if(id==null)id=1l;
+				if(vo.getDay().longValue() == id.longValue())
+					return vo;
+			}else if(vo.getDay()==1l){
+				if(id==null)id=1l;
+				if(vo.getDay().longValue() == id.longValue())
+					return vo;
+			}
+			
 		return null;
 	}
 	

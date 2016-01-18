@@ -2320,7 +2320,7 @@ public class ActivityService implements IActivityService{
 			{
 				for (String dateStr : datesMap.keySet()) {
 					ActivityVO vo = datesMap.get(dateStr);
-					if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue() > 0)
+					//if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue() > 0)
 						finalList.add(vo);
 				}
 			}
@@ -3868,7 +3868,7 @@ public class ActivityService implements IActivityService{
 			//get members attended Counts and photos uploded counts constituency wise
 			SearchAttributeVO searchVO = new SearchAttributeVO();
 			searchVO.setSearchType("constituency");
-			searchVO.getAttributesIdsList().add(5l);
+			searchVO.getAttributesIdsList().add(scopeId);
 			searchVO.getLocationTypeIdsList().add(13l);
 			searchVO.setLocationValue(0l);
 			List<Long> locationIds = new ArrayList<Long>(Arrays.asList(1l,2l,3l,4l,5l,6l,7l,
