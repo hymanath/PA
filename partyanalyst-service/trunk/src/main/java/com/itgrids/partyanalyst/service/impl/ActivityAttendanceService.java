@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
@@ -202,8 +204,25 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 				
 			}
 	
+		if(returnVO != null && returnVO.getSubList() != null && returnVO.getSubList().size() > 0){
+			Collections.sort(returnVO.getSubList(),comparedCountSort);
+		}
+		
+		if(returnVO != null && returnVO.getLocalBodyList() != null && returnVO.getLocalBodyList().size() > 0){
+			Collections.sort(returnVO.getLocalBodyList(),comparedCountSort);
+		}
+		
 		return returnVO;
 	}
+	
+	public static Comparator<ActivityAttendanceInfoVO> comparedCountSort = new Comparator<ActivityAttendanceInfoVO>()
+	{
+
+		public int compare(ActivityAttendanceInfoVO cstVO1, ActivityAttendanceInfoVO cstVO2)
+		{
+			return (cstVO2.getTotalMembers().intValue()) - (cstVO1.getTotalMembers().intValue());
+		}
+	};
 	
 	public Long getTotalAreaCountByList(List<BasicVO> areaWiseCountLsit)
 	{
