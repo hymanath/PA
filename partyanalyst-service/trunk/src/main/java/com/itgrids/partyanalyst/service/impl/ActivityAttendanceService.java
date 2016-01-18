@@ -60,8 +60,9 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 		this.activityLocationAttendanceDAO = activityLocationAttendanceDAO;
 	}
 
-	public ActivityAttendanceInfoVO getLocationWiseActivityDetails(SearchAttributeVO searchVO)
+	public ActivityAttendanceInfoVO getLocationWiseActivityDetails(SearchAttributeVO searchVO,Long stateId)
 	{
+		stateId = 0L;
 		ActivityAttendanceInfoVO returnVO = new ActivityAttendanceInfoVO();
 		List<ActivityAttendanceInfoVO> returnList = new ArrayList<ActivityAttendanceInfoVO>();
 		List<ActivityAttendanceInfoVO> returnList1 = new ArrayList<ActivityAttendanceInfoVO>();
@@ -102,9 +103,9 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 		}
 		
 		
-		getCadreAttendanceCount(searchVO,returnVO);
-		getPublicAttendanceCount(searchVO,returnVO);
-		getPhotosCount(searchVO,returnVO);
+		getCadreAttendanceCount(searchVO,returnVO,stateId);
+		getPublicAttendanceCount(searchVO,returnVO,stateId);
+		getPhotosCount(searchVO,returnVO,stateId);
 		
 		Long totalAreasCount =0L;
 		Long totalPlannedCount =0L;
@@ -142,7 +143,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						searchVO1.setScopeId(3L);
 						searchVO1.setScopeValue(mainVO.getId());
 						//activityVO.setName(activityVO.getName()+" District");
-						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1,stateId);
 						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 						{
 							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -155,7 +156,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						searchVO1.setScopeId(4L);
 						searchVO1.setScopeValue(mainVO.getId());
 						//activityVO.setName(activityVO.getName()+" District");
-						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1,stateId);
 						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 						{
 							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -169,7 +170,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						searchVO1.setScopeId(5L);
 						searchVO1.setScopeValue(mainVO.getId());
 						//activityVO.setName(activityVO.getName()+" District");
-						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1,stateId);
 						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 						{
 							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -191,7 +192,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 						searchVO1.setScopeId(7L);
 						searchVO1.setScopeValue(localbodyVO.getId());
 						//activityVO.setName(activityVO.getName()+" District");
-						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1);
+						List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchVO1,stateId);
 						if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 						{
 							totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -242,7 +243,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 	}
 	
 	
-	public void getCadreAttendanceCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO)
+	public void getCadreAttendanceCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO,Long stateId)
 	{
 		try{
 			 List<Object[]> list = null;
@@ -256,13 +257,13 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			 
 			 if(searchVO.getSearchType().equalsIgnoreCase("mandal"))
 			 {
-				 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre");
+				 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre",stateId);
 				 searchVO.setSearchType(IConstants.URBAN);
-				 localbodyList = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre");
+				 localbodyList = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre",stateId);
 				 searchVO.setSearchType("mandal");
 			 }
 			 else
-			 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre");
+			 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"cadre",stateId);
 			 if(list != null && list.size() > 0)
 			 {
 				
@@ -273,7 +274,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getSubList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -300,7 +301,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getSubList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -325,7 +326,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 	}
 	
 	
-	public void getPublicAttendanceCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO)
+	public void getPublicAttendanceCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO,Long stateId)
 	{
 		try{
 			 List<Object[]> list = null;
@@ -339,13 +340,13 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			 
 			 if(searchVO.getSearchType().equalsIgnoreCase("mandal"))
 			 {
-				 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public");
+				 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public",stateId);
 				 searchVO.setSearchType(IConstants.URBAN);
-				 localbodyList = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public");
+				 localbodyList = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public",stateId);
 				 searchVO.setSearchType("mandal");
 			 }
 			 else
-			 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public");
+			 list = activityLocationAttendanceDAO.getActivityAttendanceCount(searchVO,"public",stateId);
 			 
 			 
 			 if(list != null && list.size() > 0)
@@ -358,7 +359,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getSubList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -384,7 +385,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getSubList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -407,7 +408,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 		
 	}
 	
-	public void getPhotosCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO)
+	public void getPhotosCount(SearchAttributeVO searchVO,ActivityAttendanceInfoVO returnVO,Long stateId)
 	{
 		try{
 			 List<Object[]> list = null;
@@ -422,13 +423,13 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 			 if(searchVO.getSearchType().equalsIgnoreCase("mandal"))
 			 {
 				 
-				 list = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO);
+				 list = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO,stateId);
 				 searchVO.setSearchType(IConstants.URBAN);
-				 localbodyList = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO);
+				 localbodyList = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO,stateId);
 			 }
 			 
 			 else
-			 list = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO);
+			 list = activityInfoDocumentDAO.getActivityInfoImagesCount(searchVO,stateId);
 			 if(list != null && list.size() > 0)
 			 {
 				
@@ -439,7 +440,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getSubList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -459,7 +460,7 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 					 {
 						 VO = new ActivityAttendanceInfoVO();
 						 VO.setId((Long)params[0]);
-						 VO.setName(params[1].toString());
+						 VO.setName(params[1] != null ? params[1].toString():"");
 						 returnVO.getLocalBodyList().add(VO);
 					 }
 					 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
@@ -479,13 +480,21 @@ public class ActivityAttendanceService implements IActivityAttendanceService {
 	
 	public ActivityAttendanceInfoVO getMatchedVO(List<ActivityAttendanceInfoVO> resultList,Long id)
 	{
-		if(resultList == null || resultList.size() == 0)
-			return null;
-		for(ActivityAttendanceInfoVO vo : resultList)
-			if(vo.getId().longValue() == id.longValue())
-				return vo;
+		try {
+			if(resultList == null || resultList.size() == 0 || id == null )
+				return null;
+			for(ActivityAttendanceInfoVO vo : resultList)
+				if(vo != null && vo.getId() != null && id.longValue() >0L && vo.getId().longValue() == id.longValue())
+					return vo;
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return null;
-		
-		
+	}
+	
+	public ActivityAttendanceInfoVO getlocationWiseAttendanceDetails()
+	{
+		return null;
 	}
 }

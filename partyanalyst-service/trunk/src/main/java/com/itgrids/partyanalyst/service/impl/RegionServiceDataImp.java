@@ -1811,11 +1811,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return mandalNames;
 	}
 	
-	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO)
+	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId)
 	{
 		List<BasicVO> returnList = null;
 		try {
-			List<Object[]>  areaWiseCountList = locationInfoDAO.areaCountListByAreaIdsOnScope(searchAttributeVO);
+			List<Object[]>  areaWiseCountList = locationInfoDAO.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 			if(areaWiseCountList != null && areaWiseCountList.size()>0)
 			{
 				returnList = new ArrayList<BasicVO>(0);
