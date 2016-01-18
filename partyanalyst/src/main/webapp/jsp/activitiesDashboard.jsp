@@ -112,13 +112,14 @@
                     	<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
                         	<h4 class="panel-title" id="headingDiv" style="font-weight:bold;">VILLAGE/WARD</h4>
                         </div>
-                        <div class="panel-body pad_0" id="nonBloodDonationDivId">
-							<div class="row">
+						
+						<div class="row">
 								<div class="col-md-12">
 									<div id="stateWiseViewDid"></div>
 								</div>
 							</div>
 							
+                        <div class="panel-body pad_0" id="nonBloodDonationDivId">
 							<div class="row">
 								<div class="col-md-12">
 									<div class=" pad_10">
@@ -328,6 +329,12 @@ $(".fancybox").fancybox();
 
 function getActivityNames(type)
 {
+	
+	if(type=='onload'){
+		$('#activityTypeList').val(4);
+		$('#activityLevelList').val(5);
+	}
+	
 	$('#ActivityList').find('option').remove();
 	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
 	var jObj = {
@@ -347,18 +354,137 @@ function getActivityNames(type)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 			}
 			if($("#activityTypeList").val()==4){
-				$('#ActivityList').val(0);
+				$('#ActivityList').val(11);
 			}else{
 				$('#ActivityList').val(1);
 			}
 			
 			if(type == "onload"){
 				//getTeamLeadersByActivityScope();
-				getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
-				getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
+				//getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
+				//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
+				getDetails();
 			}
 		});
 		
+}
+
+
+function buildBDResult(result)
+{
+	$('#stateWiseViewDid').html('');
+	var str='';
+	for(var i in result.activityVoList){
+		if(i==0)
+			str+='<div class="table-responsive" >';
+		else
+			str+='<div class="table-responsive" style="margin-top: 25px;">';
+		
+	str+='<table class="table table-bordered bg_ff" >';
+	str+='<tr class="text-center">';
+	if(i==0)
+		str+='<td class="pad_0" rowspan="2" style="box-sizing:none;"><img src="dist/activityDashboard/img/andhrap.jpg" class="img-responsive head-td" style="height:176px;" ></td>';
+	else 
+		str+='<td class="pad_0" rowspan="2" style="box-sizing:none;"><img src="dist/activityDashboard/img/telangana.jpg" class="img-responsive head-td" style="height:176px;" ></td>';
+	//var i=0;
+		if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].totalCount+'</h3><hr class="custom-hr"/></td>';
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+		var totalMembers = 0;
+		var totalCadreMembers = 0;
+		var totalPublicMembers = 0;
+		
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance >0)
+			totalCadreMembers = totalCadreMembers+result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance;
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance >0)
+			totalCadreMembers = totalCadreMembers+result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance;
+		
+		
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance >0)
+			totalPublicMembers = totalPublicMembers+result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance;
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance >0)
+			totalPublicMembers = totalPublicMembers+result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance;
+		
+		totalMembers = totalCadreMembers + totalPublicMembers;
+		
+		
+		if(totalMembers != null && totalMembers >0)
+			str+='<td><h3 class="m_top20 m_bottom10">'+totalMembers+'</h3><hr class="custom-hr"/></td>';
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+	
+	
+	
+	if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance >0){
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance+'';
+			
+			var perc = result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebCadreAttendance * 100 / totalMembers;
+			perc = parseFloat(perc).toFixed(2);
+			str+='<small class="font-10 text-danger" title="IVR covered percentage from total activities.">('+perc+'%)</small></h3></td>';
+	}
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+		
+	if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance >0){
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance+'';
+			var perc = result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellCadreAttendance * 100 / totalMembers;
+			perc = parseFloat(perc).toFixed(2);
+			str+='<small class="font-10 text-danger" title="IVR covered percentage from total activities.">('+perc+'%)</small></h3><hr class="custom-hr"/></td>';
+	}
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance >0){
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance+'';
+			var perc = result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPublicAttendance * 100 / totalMembers;
+			perc = parseFloat(perc).toFixed(2);
+			str+='<small class="font-10 text-danger" title="IVR covered percentage from total activities.">('+perc+'%)</small></h3><hr class="custom-hr"/></td>';
+		}
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+	
+		
+	if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance >0){
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance+'';
+			var perc = result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPublicAttendance * 100 / totalMembers;
+			perc = parseFloat(perc).toFixed(2);
+			str+='<small class="font-10 text-danger" title="IVR covered percentage from total activities.">('+perc+'%)</small></h3><hr class="custom-hr"/></td>';
+	}
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+	
+	if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPhotosAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPhotosAttendance >0)
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalWebPhotosAttendance+'</h3><hr class="custom-hr"/></td>';
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+		if(result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPhotosAttendance != null && result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPhotosAttendance >0)
+			str+='<td><h3 class="m_top20 m_bottom10">'+result.activityVoList[i].activityAttendanceInfoVOList[0].totalInfoCellPhotosAttendance+'</h3><hr class="custom-hr"/></td>';
+		else
+			str+='<td><h3 class="m_top20 m_bottom10"> - </h3><hr class="custom-hr"/></td>';
+		
+	str+='</tr>';
+	str+='<tr>';
+
+	str+='<td class="bg_ef text-center">TOTAL ACTIVITIES</td>';
+	str+='<td class="bg_ef text-center">TOTAL MEMBERS ATTENDED</td>';
+	str+='<td class="bg_ef text-center">CADRE ATTENDED (WEB) </td>';
+	str+='<td class="bg_ef text-center">CADRE ATTENDED (TAB) </td>';
+	str+='<td class="bg_ef text-center">PUBLIC ATTENDED (WEB)</td>';
+	str+='<td class="bg_ef text-center">PUBLIC ATTENDED (TAB)</td>';
+	str+='<td class="bg_ef text-center">PHOTO ATTACHED (WEB)</td>';
+	str+='<td class="bg_ef text-center">PHOTO ATTACHED (TAB)</td>';
+	
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
+}
+	$('#stateWiseViewDid').html(str);
+	dynamicwidth();
 }
 
 function buildResult(result)
@@ -550,7 +676,10 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId,teamSear
 				//console.log(result);
 				if(result != null)
 					if(searchType == 'state')
-						buildResult(result);
+						if(activityLevelId == 5)
+							buildBDResult(result);
+						else
+							buildResult(result);
 					else if(searchType == 'district')
 						buildsLocationsResult(result,divId,teamSearchType);
 					else if(searchType == 'constituency')
@@ -1405,12 +1534,15 @@ function getDetails(){
 		$("#locationWiseActivityDetailsDivId").show();
 		getLocationWiseActivityDetails("district",0,"");
 		$("#nonBloodDonationDivId").hide();
+		//$("#stateWiseViewDid").show();
 		var name = $('#ActivityList :selected').text();
 		var actiivityLevelStr = $('#activityLevelList :selected').text();
 		$('#headingDiv').html(''+name.toUpperCase()+' - '+actiivityLevelStr.toUpperCase()+' LEVEL');
+		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
 	}else{
 		$("#locationWiseActivityDetailsDivId").hide();
 		$("#nonBloodDonationDivId").show();
+		//$("#stateWiseViewDid").show();
 		isAlreadyBuild = false;
 		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
 		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
@@ -1911,7 +2043,7 @@ $(document).on('click','.popupLevel',function(){
 	  $("#myModalLabel").html(''+$(this).attr("attr")+'');
   })
   
-  function getEventDocumentsForPopup(searchType,locationId,day,num)
+function getEventDocumentsForPopup(searchType,locationId,day,num)
 {
 
 	
