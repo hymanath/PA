@@ -148,7 +148,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 	return query.list();
 }
 
-	public List<Object[]> getActivityPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<Object[]> getActivityPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 				
 			StringBuilder queryStr = new StringBuilder();
 			Query query = null;
@@ -268,6 +268,13 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 					else
 						queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
+				
+				if(stateId != null && stateId.longValue() == 36L)
+					queryStr.append("   and model.constituency.district.districtId between 1 and 10  ");
+				else if(stateId != null && stateId.longValue() == 1L)
+					queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
+				
+				
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					queryStr.append(" group by model.constituency.state.stateId,model.locationLevel order by ");
 				}
@@ -328,7 +335,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 					query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
 				if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 					query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
-				
+
 				return query.list();
 			}
 			else
@@ -336,7 +343,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 		
 	}
 	
-	public List<Object[]> getActivityNotPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<Object[]> getActivityNotPlannedInfoCellAndIVRCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		Query query = null;
@@ -454,6 +461,12 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
+			
+			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" group by model.constituency.state.stateId,model.locationLevel order by ");
 			}
@@ -513,7 +526,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
 			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 				query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
-			
+
 			return query.list();
 		}
 		else
@@ -522,7 +535,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 	}
 	
 	
-	public List<Object[]> getActivityAttributeCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<Object[]> getActivityAttributeCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		Query query = null;
@@ -641,6 +654,11 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				else
 					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
+			
 			
 			queryStr.append(" group by model1.activityOptionId order by ");
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -680,7 +698,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
 			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 				query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
-			
+
 			return query.list();
 		}
 		else
@@ -688,7 +706,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 	
 	}
 	
-	public List<Object[]> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<Object[]> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		Query query = null;
@@ -810,6 +828,10 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				else
 					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
 			
 			queryStr.append("   ");
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -844,7 +866,6 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
 			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 				query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
-			
 			return query.list();
 		}
 		else

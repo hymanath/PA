@@ -17,7 +17,7 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 		
 	}
 
-	public List<Object[]> getActivityQuestionnairesCountsByLocation(SearchAttributeVO searchAttributeVO){
+	public List<Object[]> getActivityQuestionnairesCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		Query query = null;
@@ -133,6 +133,12 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 					queryStr.append(" and model.activityLocationInfo.locationValue in (:locationIdsList) and model.activityLocationInfo.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 11 and 23  ");
+			
+			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" group by model.activityLocationInfo.constituency.state.stateId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
@@ -196,6 +202,7 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 				query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
 			
+			
 			return query.list();
 		}
 		else
@@ -203,7 +210,7 @@ public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuest
 	
 	}
 	
-public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchAttributeVO searchAttributeVO,Long optionId){
+public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchAttributeVO searchAttributeVO,Long optionId,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		Query query = null;
@@ -319,6 +326,12 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchA
 					queryStr.append(" and model.activityLocationInfo.locationValue in (:locationIdsList) and model.activityLocationInfo.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 			}
 			
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 11 and 23  ");
+			
+			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" group by model.activityLocationInfo.constituency.state.stateId,model.activityLocationInfo.locationLevel,model.activityQuestionnaireId order by ");
 			}
@@ -390,7 +403,7 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchA
 	}
 
 
-public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO searchAttributeVO){
+public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO searchAttributeVO,Long stateId){
 	
 	StringBuilder queryStr = new StringBuilder();
 	Query query = null;
@@ -506,6 +519,12 @@ public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO
 				queryStr.append(" and model.activityLocationInfo.locationValue in (:locationIdsList) and model.activityLocationInfo.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 		}
 		
+		if(stateId != null && stateId.longValue() == 36L)
+			queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 1 and 10  ");
+		else if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 11 and 23  ");
+		
+		
 		if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 			queryStr.append(" group by model.activityLocationInfo.constituency.state.stateId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
 		}
@@ -548,6 +567,7 @@ public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO
 		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 			query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
 		
+		
 		return query.list();
 	}
 	else
@@ -555,7 +575,7 @@ public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO
 
 }
 
-public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAttributeVO searchAttributeVO,Long optionId){
+public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAttributeVO searchAttributeVO,Long optionId,Long stateId){
 	
 	StringBuilder queryStr = new StringBuilder();
 	Query query = null;
@@ -670,6 +690,12 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAt
 			else
 				queryStr.append(" and model.activityLocationInfo.locationValue in (:locationIdsList) and model.activityLocationInfo.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 		}
+		
+		if(stateId != null && stateId.longValue() == 36L)
+			queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 1 and 10  ");
+		else if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append("   and model.activityLocationInfo.constituency.district.districtId between 11 and 23  ");
+		
 		
 		if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 			queryStr.append(" group by model.activityLocationInfo.constituency.state.stateId,model.activityLocationInfo.locationLevel,date(model.activityLocationInfo.plannedDate),model.activityQuestionnaireId order by ");
