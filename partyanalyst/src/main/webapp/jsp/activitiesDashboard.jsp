@@ -778,10 +778,10 @@ function buildVillageResult(result,divId,locationId,index)
 				}
 				else {
 					if(index == 1){
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo1'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo1'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 					}
 					else{
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.activityVoList[i].id+',\'dayWisePanchayatInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 					}
 				}
 				str+='</div>';
@@ -904,10 +904,10 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 				}
 				else {
 					if(teamSearchType == 'organizersWiseId'){
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 					}
 					else{
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.activityVoList[i].id+',\'dayWiseMandalInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 					}
 				}
 				str+='</div>';
@@ -1025,7 +1025,7 @@ function buildConstituencyResult(result,divId,locationId,teamSearchType)
 						str+='';
 					}
 					else{
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')" >Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'constituency\','+result.activityVoList[i].id+',\'dayWiseConstituencyInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')" >Day Wise</button>';
 					}
 				}
 				str+='</div>';
@@ -1190,7 +1190,7 @@ function buildsLocationsResult(result,divId,teamSearchType){
 					str+='';
 				}
 				else{
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\')">Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 				}
 			}
 			str+='</div>';			
@@ -1226,7 +1226,7 @@ function dynamicwidth()
 	$(".dynChildWidth").css("width",$(".getChildWidth").width()+15);
 }
 
-function getDaywiseInfo(searchType,locationId,divId,locationName)
+function getDaywiseInfo(searchType,locationId,divId,locationName,callFrom)
 {
 	$(".daywiseSCls").html("");	
 	var isOpened = $("#"+divId+"").hasClass("opened");	
@@ -1290,6 +1290,7 @@ function getDaywiseInfo(searchType,locationId,divId,locationName)
 				teamMemberId:0,
 				radioSearch:'location',
 				districtId:0,
+				callFrom:callFrom,
 				task:"getActivityDetailsBySearchCriteria"
 				};
 					$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -1443,6 +1444,7 @@ function getEventDocuments(divId,Obj)
 		locationName:Obj.locationName,
 		startIndex:0,
 		maxIndex:0,
+		callFrom:Obj.callFrom,
 		task:"daywise"
 		};
 		$.ajax({
@@ -2287,7 +2289,7 @@ $(document).on('click', '.searchTypeCls', function(){
 						str+='</table>';
 				
 					str+='</a>';
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'district\','+result.subList[i].id+',\'dayWiseBDDistrictInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+					str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'district\','+result.subList[i].id+',\'dayWiseBDDistrictInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 				//str+='</h4>';
 				str+='</div>';
 				str+='<div id="dayWiseBDDistrictInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
@@ -2351,7 +2353,7 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'constituency\','+result.subList[i].id+',\'dayWiseBDConstituencyInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'constituency\','+result.subList[i].id+',\'dayWiseBDConstituencyInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDConstituencyInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
@@ -2423,7 +2425,7 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
@@ -2483,7 +2485,7 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'mandal\','+result.subList[i].id+',\'dayWiseBDMandalInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 					//str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDMandalInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
@@ -2548,7 +2550,7 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
@@ -2610,7 +2612,7 @@ $(document).on('click', '.searchTypeCls', function(){
 							str+='</table>';
 						
 						str+='</a>';
-						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\')">Day Wise</button>';
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs "  onclick="getDaywiseInfo(\'village\','+result.subList[i].id+',\'dayWiseBDVillageInfo'+result.subList[i].id+'\',\''+result.subList[i].name+'\',\'BD\')">Day Wise</button>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div id="dayWiseBDVillageInfo'+result.subList[i].id+'" class="daywiseSCls"></div>';
