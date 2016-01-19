@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
+import com.itgrids.partyanalyst.dao.IActivityLocationAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
@@ -163,10 +164,17 @@ public class ActivityService implements IActivityService{
 	private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
 	private ITdpCadreDAO tdpCadreDAO;
 	private IActivityAttendanceService activityAttendanceService;
+	private IActivityLocationAttendanceDAO activityLocationAttendanceDAO;
 	
 	
 	
-	
+	public IActivityLocationAttendanceDAO getActivityLocationAttendanceDAO() {
+		return activityLocationAttendanceDAO;
+	}
+	public void setActivityLocationAttendanceDAO(
+			IActivityLocationAttendanceDAO activityLocationAttendanceDAO) {
+		this.activityLocationAttendanceDAO = activityLocationAttendanceDAO;
+	}
 	public IActivityAttendanceService getActivityAttendanceService() {
 		return activityAttendanceService;
 	}
@@ -1270,8 +1278,16 @@ public class ActivityService implements IActivityService{
 				}
 				Long stateId =0L;
 			if(searchAttributeVO.getSearchType() != null && searchAttributeVO.getConditionType().trim().contains("daywiseResult")){
+				if(searchAttributeVO.getCallFrom() != null && searchAttributeVO.getCallFrom().equalsIgnoreCase("BD"))
+				{
+					List<ActivityAttendanceInfoVO> dayWiseResultList = getActivityDayWiseCountsByLocationForAttendance(searchAttributeVO,stateId);
+					returnVO.getActivityAttendanceInfoVOList().addAll(dayWiseResultList);	
+				}
+				else
+				{
 				List<ActivityVO> dayWiseResultList = getActivityDayWiseCountsByLocation(searchAttributeVO,stateId);
 				returnVO.getActivityVoList().addAll(dayWiseResultList);
+				}
 				return returnVO;
 			}
 				
@@ -2305,6 +2321,174 @@ public class ActivityService implements IActivityService{
 		return finalMap;
 	}
 	
+	
+	
+	public List<ActivityAttendanceInfoVO> getActivityDayWiseCountsByLocationForAttendance(SearchAttributeVO searchAttributeVO,Long stateId){
+		
+		List<ActivityAttendanceInfoVO> finalList = new ArrayList<ActivityAttendanceInfoVO>();
+		try {
+			Map<String,ActivityAttendanceInfoVO> datesMap = new LinkedHashMap<String, ActivityAttendanceInfoVO>();
+			Map<String,ActivityAttendanceInfoVO> initialDateMap = new LinkedHashMap<String, ActivityAttendanceInfoVO>();
+			//Activity activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0)).getActivity();
+			ActivityScope activity = activityScopeDAO.get(searchAttributeVO.getAttributesIdsList().get(0));
+			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null)
+				initialDateMap = commonMethodsUtilService.getDatesWiseCountsForAttendance(searchAttributeVO.getStartDate(), searchAttributeVO.getEndDate(), "Day");
+			else
+				initialDateMap = commonMethodsUtilService.getDatesWiseCountsForAttendance(activity.getStartDate(), activity.getEndDate(), "Day");
+
+			Set<String> datesList = initialDateMap.keySet();
+			List<String> availableDatesList  =null;
+			if(datesList != null && datesList.size() > 0){
+				availableDatesList = commonMethodsUtilService.getAvailableDates(datesList, activity.getStartDate().toString(), activity.getEndDate().toString());
+			}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				datesMap = commonMethodsUtilService.getDatesWiseCountsForAttendance(sdf.parse(availableDatesList.get(0)), sdf.parse(availableDatesList.get(availableDatesList.size()-1)), "Day");
+			} catch (Exception e) {
+				datesMap = commonMethodsUtilService.getDatesWiseCountsForAttendance(activity.getStartDate(), activity.getEndDate(), "Day");
+			}
+			
+			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
+			
+			 List<Object[]> list = activityLocationAttendanceDAO.getDayWiseActivityLocationsCount(searchAttributeVO,"cadre",stateId);
+			 buildResultForAttendance(list,datesMap,"cadre",null);
+			 
+			 List<Object[]> list1 = activityLocationAttendanceDAO.getDayWiseActivityLocationsCount(searchAttributeVO,"public",stateId);
+			 buildResultForAttendance(list1,datesMap,"public",null);
+			
+			 
+			 if(datesMap != null && datesMap.size()>0)
+				{
+					for (String dateStr : datesMap.keySet()) {
+						ActivityAttendanceInfoVO vo = datesMap.get(dateStr);
+						//if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue() > 0)
+							finalList.add(vo);
+					}
+					 // Photos Count
+					List<Object[]> list2 = activityInfoDocumentDAO.getDayWiseActivityInfoImagesCount(searchAttributeVO,stateId);
+					 buildResultForPhotos(list2,finalList,"photos",null);
+				}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+}
+
+	@SuppressWarnings("null")
+	public void buildResultForPhotos(List<Object[]> activitiesList,List<ActivityAttendanceInfoVO> finalList,String type,String extentionNo)
+	{
+		try {
+			if(activitiesList != null && activitiesList.size()>0)
+			{
+				Map<String,ActivityVO> activityMap1 = null;
+				for (Object[] params : activitiesList) {
+					
+					String locationId = commonMethodsUtilService.getStringValueForObject(params[4]);
+					//Long areaId = Long.valueOf(locationId.trim());
+					ActivityAttendanceInfoVO VO = getMatchedDay(finalList,new Long(locationId));
+					if(VO != null)
+					{
+						if(type != null)
+						{
+								Long count = commonMethodsUtilService.getLongValueForObject(params[2]);
+								if(type.trim().equalsIgnoreCase("photos")){
+								 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
+									 VO.setTotalInfoCellPhotosAttendance((Long)params[2] + VO.getTotalInfoCellPhotosAttendance());
+								 else
+									 VO.setTotalWebPhotosAttendance((Long)params[2] + VO.getTotalWebPhotosAttendance());
+							}
+							
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in buildResultForPhotos() method, Exception - ",e);
+		}
+	}
+	
+	public ActivityAttendanceInfoVO getMatchedDay(List<ActivityAttendanceInfoVO> datesList,Long day)
+	{
+		if(datesList == null || datesList.size() == 0)
+			return null;
+		for(ActivityAttendanceInfoVO vo : datesList)
+		{
+			String date = vo.getName().substring(vo.getName().indexOf("(")+1,vo.getName().indexOf(")"));
+			Long day1 = new Long(date.replaceAll("\\D+",""));
+			if(day1.longValue() == day.longValue())
+			{
+				return vo;
+			}
+				
+		}
+		return null;
+	}
+	
+@SuppressWarnings("null")
+public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,ActivityAttendanceInfoVO> datesMap,String type,String extentionNo)
+{
+	try {
+		if(activitiesList != null && activitiesList.size()>0)
+		{
+			Map<String,ActivityVO> activityMap1 = null;
+			for (Object[] params : activitiesList) {
+				
+				String locationId = commonMethodsUtilService.getStringValueForObject(params[4]);
+				//Long areaId = Long.valueOf(locationId.trim());
+				ActivityAttendanceInfoVO VO = datesMap.get(locationId);
+				if(VO != null)
+				{
+					if(type != null)
+					{
+						
+						Long count = commonMethodsUtilService.getLongValueForObject(params[2]);
+						if(type.trim().equalsIgnoreCase("cadre")){
+							if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
+							 {
+								 VO.setTotalInfoCellCadreAttendance((Long)params[2] + VO.getTotalInfoCellCadreAttendance());
+							
+							 }
+							 else
+							 {	
+								 VO.setTotalWebCadreAttendance((Long)params[2] + VO.getTotalWebCadreAttendance());
+								
+							 }
+							 VO.setTotalMembers((Long)params[2] + VO.getTotalMembers());
+						}
+						
+						if(type.trim().equalsIgnoreCase("public")){
+							 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
+							 {
+								
+									 VO.setTotalInfoCellPublicAttendance((Long)params[2] + VO.getTotalInfoCellPublicAttendance());
+							 }
+							 else
+							 {
+								 VO.setTotalWebPublicAttendance((Long)params[2] + VO.getTotalWebPublicAttendance());
+							 }
+							 VO.setTotalMembers((Long)params[2] + VO.getTotalMembers());
+						}
+						
+						if(type.trim().equalsIgnoreCase("photos")){
+							 if(params[3] != null && params[3].toString().equalsIgnoreCase("WS"))
+								 VO.setTotalInfoCellPhotosAttendance((Long)params[2] + VO.getTotalInfoCellPhotosAttendance());
+							 else
+								 VO.setTotalWebPhotosAttendance((Long)params[2] + VO.getTotalWebPhotosAttendance());
+						}
+						
+					}
+				}
+			}
+		}
+		
+	} catch (Exception e) {
+		 LOG.error("Exception Occured in segrigateFirstResult() method, Exception - ",e);
+	}
+}
+	
+	
 	public List<ActivityVO> getActivityDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
 		
 		List<ActivityVO> finalList = new ArrayList<ActivityVO>();
@@ -2335,6 +2519,7 @@ public class ActivityService implements IActivityService{
 			}
 			
 			searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationId());
+			
 			List<Object[]> plannedActivities = null;
 			List<Object[]> infoCellconductedActivities = null;
 			List<Object[]> ivrconductedActivities = null;

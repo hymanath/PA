@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 
 public class CommonMethodsUtilService {
@@ -318,6 +319,36 @@ public class CommonMethodsUtilService {
 			return dateStr;
 		}
 		
+		
+	public Map<String,ActivityAttendanceInfoVO> getDatesWiseCountsForAttendance(Date startDate,Date endDate,String name){
+			
+			Map<String,ActivityAttendanceInfoVO> returnMap = new LinkedHashMap<String,ActivityAttendanceInfoVO>();
+			try {
+				
+				List<String> dates=getBetweenDatesInString(startDate,endDate);
+				
+				if(name != null && name.trim().length() > 0){
+					if(dates != null && dates.size() > 0){
+						for (int i = 0; i < dates.size(); i++) {
+							ActivityAttendanceInfoVO vo = new ActivityAttendanceInfoVO();
+							vo.setName(dates.get(i)+" ( "+name+"-"+(i+1)+" ) ");
+							returnMap.put(dates.get(i), vo);
+						}
+					}
+				}else{
+					if(dates != null && dates.size() > 0){
+						for (int i = 0; i < dates.size(); i++) {
+							ActivityAttendanceInfoVO vo = new ActivityAttendanceInfoVO();
+							vo.setName(dates.get(i));
+							returnMap.put(dates.get(i), vo);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised in getDatesWiseCounts in ActivityService service", e);
+			}
+			return returnMap;
+		}
 		public List<String> getAvailableDates(Set<String> datesList, String startDateStr,String endDateStr){
 			
 			List<String> availableList = new ArrayList<String>();

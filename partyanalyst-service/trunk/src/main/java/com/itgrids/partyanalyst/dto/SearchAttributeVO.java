@@ -31,9 +31,16 @@ public class SearchAttributeVO implements Serializable{
 	private Long teamMemberId;
 	private String radioSearch;
 	private Long districtId;
+	private String callFrom;
 	
 	
 	
+	public String getCallFrom() {
+		return callFrom;
+	}
+	public void setCallFrom(String callFrom) {
+		this.callFrom = callFrom;
+	}
 	public Long getDistrictId() {
 		return districtId;
 	}
