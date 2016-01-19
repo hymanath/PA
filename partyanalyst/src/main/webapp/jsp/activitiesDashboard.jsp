@@ -372,6 +372,7 @@ function getActivityNames(type)
 
 function buildBDResult(result)
 {
+	
 	$('#stateWiseViewDid').html('');
 	var str='';
 	for(var i in result.activityVoList){
@@ -1434,16 +1435,103 @@ function getDaywiseInfo(searchType,locationId,divId,locationName,callFrom)
 					//console.log(result);
 					$("#"+divId+"").addClass("opened");
 					if(result != null){
+						if(jObj.callFrom == "BD")
+						{
+							buildDayWiseResultsForBD(result,divId,jObj);
+						}
+						else
 						buildDayWiseResults(result,divId,jObj);
 					}
 				});
 	}else
 		$(".daywiseSCls").removeClass("opened");	
 }
+function buildDayWiseResultsForBD(result,divId,jObj)
+{
+	
+		
+	var str='';
+	str+='<div>';
+	str+='<ul class="villageDays getwidthForRes" style="padding-left:25px">';
+	if(result.activityAttendanceInfoVOList != null && result.activityAttendanceInfoVOList.length>0)
+	{
+		for(var i in result.activityAttendanceInfoVOList)
+		{
+			str+='<li>';
+			str+='<table class="table table-col table-condensed" style="display:inline" >';
+			str+='<tr>';
+			str+='<td style="width:125px;"><span class="days" style="border-radius: 20px;  text-shadow: 1px 1px rgba(0, 0, 0, 0.5); font-size: 12px; padding: 6px; line-height: 14px;">'+result.activityAttendanceInfoVOList[i].name+'</span></td>';
+			str+='<td class="dynChildWidthbd2 aligncenter">-</td>';
+			if(result.activityAttendanceInfoVOList[i].totalMembers != null && result.activityAttendanceInfoVOList[i].totalMembers>0)
+				str+='<td class="dynChildWidthbd3 aligncenter">'+result.activityAttendanceInfoVOList[i].totalMembers+'</td>';
+			else
+				str+='<td class="dynChildWidthbd3 aligncenter"> 0 </td>';
+			if(result.activityAttendanceInfoVOList[i].totalWebCadreAttendance != null && result.activityAttendanceInfoVOList[i].totalWebCadreAttendance >0)
+					str+='<td class="dynChildWidthbd4">'+result.activityAttendanceInfoVOList[i].totalWebCadreAttendance+'<span style="font-size: 11px;"></span></td>';
+			else
+				str+='<td class="dynChildWidthbd4 aligncenter"> 0 </td>';
+			if(result.activityAttendanceInfoVOList[i].totalInfoCellCadreAttendance != null && result.activityAttendanceInfoVOList[i].totalInfoCellCadreAttendance >0)
+					str+='<td class="dynChildWidthbd5 aligncenter">'+result.activityAttendanceInfoVOList[i].totalInfoCellCadreAttendance+'</td>';
+			else
+				str+='<td class="dynChildWidthbd5 aligncenter"> 0 </td>';
+			
+		
+			if(result.activityAttendanceInfoVOList[i].totalWebPublicAttendance != null && result.activityAttendanceInfoVOList[i].totalWebPublicAttendance >0)
+					str+='<td class="dynChildWidthbd6 aligncenter">'+result.activityAttendanceInfoVOList[i].totalWebPublicAttendance+'</td>';
+			else
+				str+='<td class="dynChildWidthbd6 aligncenter"> 0 </td>';
+			if(result.activityAttendanceInfoVOList[i].totalInfoCellPublicAttendance != null && result.activityAttendanceInfoVOList[i].totalInfoCellPublicAttendance >0)
+					str+='<td class="dynChildWidthbd7 aligncenter"  style="color:#a94442;">'+result.activityAttendanceInfoVOList[i].totalInfoCellPublicAttendance+'</td>';
+			else
+				str+='<td class="dynChildWidthbd7 aligncenter"> 0 </td>';
+			
+			
+			if(result.activityAttendanceInfoVOList[i].totalWebPhotosAttendance != null && result.activityAttendanceInfoVOList[i].totalWebPhotosAttendance >0)
+					str+='<td class="dynChildWidthbd8 aligncenter"  style="color:#a94442;">'+result.activityAttendanceInfoVOList[i].totalWebPhotosAttendance+'</td>';
+			else
+				str+='<td class="dynChildWidthbd8 aligncenter"> 0 </td>';
+			
+			if(result.activityAttendanceInfoVOList[i].totalInfoCellPhotosAttendance != null && result.activityAttendanceInfoVOList[i].totalInfoCellPhotosAttendance >0)
+					str+='<td class="dynChildWidthbd9 aligncenter"  style="color:#a94442;">'+result.activityAttendanceInfoVOList[i].totalInfoCellPhotosAttendance+'</td>';
+			else
+				str+='<td class="dynChildWidthbd9 aligncenter"> 0 </td>';
+			str+='</tr>';
+			str+='</table>';
+			var regularExp = /\((.*)\)/;
+			var day = result.activityAttendanceInfoVOList[i].name.match(regularExp)[1];
+			str+='<ul class="slick-training slick'+day.trim()+'" id="'+divId+'slick'+day.trim()+'" style="display:none;">';
+		
+			str+='</ul>';
+			
+
+			str+='</li>';
+		}
+	}
+	str+='</ul>';
+	str+='</div>';
+	$('#'+divId+'').html(str);
+	dynamicwidthforBlood123();
+	
+	getEventDocuments(divId,jObj);
+
+}
+function dynamicwidthforBlood123()
+{
+	$(".dynChildWidthbd9").css("width",$(".getChildWidthbd6").width()+15);
+	$(".dynChildWidthbd8").css("width",$(".getChildWidthbd6").width()+15);
+	$(".dynChildWidthbd7").css("width",$(".getChildWidthbd6").width()+15);
+	$(".dynChildWidthbd6").css("width",$(".getChildWidthbd6").width()+15);
+	$(".dynChildWidthbd5").css("width",$(".getChildWidthbd5").width()+15);
+	$(".dynChildWidthbd4").css("width",$(".getChildWidthbd4").width()+15);
+	$(".dynChildWidthbd3").css("width",$(".getChildWidthbd3").width()+15);
+	$(".dynChildWidthbd2").css("width",$(".getChildWidthbd2").width()+15);
+	$(".dynChildWidthbd").css("width",$(".getChildWidthbd").width()+15);
+}
 
 function buildDayWiseResults(result,divId,jObj)
 {
-
+	
+		
 	var str='';
 	str+='<div>';
 	str+='<ul class="villageDays getwidthForRes">';

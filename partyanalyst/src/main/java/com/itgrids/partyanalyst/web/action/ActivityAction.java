@@ -260,6 +260,9 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			searchVO.setTeamMemberId(teamMemberId);
 			searchVO.setRadioSearch(radioSearch);
 			searchVO.setDistrictId(districtId);
+			if(searchVO.getSearchType() != null && searchVO.getConditionType().trim().contains("daywiseResult"))
+			searchVO.setCallFrom(jObj.getString("callFrom"));
+			
 			try {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				searchVO.setStartDate(format.parse(startDateStr));
