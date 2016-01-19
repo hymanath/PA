@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.ActivityLocationAttendance;
 
 public interface IActivityLocationAttendanceDAO extends GenericDao<ActivityLocationAttendance, Long>{
 	public List<Object[]> getActivityAttendanceCount(SearchAttributeVO inputVO,String memberType,Long stateId);
+	public List<Object[]> getDayWiseActivityLocationsCount(SearchAttributeVO inputVO,String memberType,Long stateId);
 }

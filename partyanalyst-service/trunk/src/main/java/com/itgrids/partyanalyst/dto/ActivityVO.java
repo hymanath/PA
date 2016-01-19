@@ -77,6 +77,9 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	
 	
 	
+	
+	
+	
 	public List<ActivityAttendanceInfoVO> getActivityAttendanceInfoVOList() {
 		return activityAttendanceInfoVOList;
 	}

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -48,4 +49,5 @@ public interface IActivityService {
 	public List<BasicVO> getRequiredAttributesListForScope(Long scopeId);
 	public BasicVO getActivityLocationWiseDetailsByScopeId(Long scopeId);
 	public List<String> getActivityScopeDates(Long activityScopeId);
+	public List<ActivityAttendanceInfoVO> getActivityDayWiseCountsByLocationForAttendance(SearchAttributeVO searchAttributeVO,Long stateId);
 }
