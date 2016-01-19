@@ -72,7 +72,7 @@
 
 
 <style type="text/css">
-
+ul{padding:0px !important;}
 /*.disableClass{
 background-color:#AED1DB;
 opacity:0.66;
@@ -1155,7 +1155,7 @@ locationDetails.constituencyArr.push(ob);
 $(document).ready(function(){
 
 
-$(".votersInfoLi2").live("mouseover",function(){
+$(".votersInfoLi2").on("click","mouseover",function(){
 	
 	$(".votersInfoLi2").removeClass("votersInfoCls");
 	$(this).addClass("votersInfoCls");
@@ -1279,7 +1279,7 @@ for  body3 start    result  -->
  <div class="customMenu" id="CustomMenu"><!-- Menu Start-->
 
 <!-- Left Nav -->
-<div class="span3 leftNav">
+<div class="span3 leftNav col-md-3">
 <div class="leftNav-Mandals"> <h5 class="breadcrumb" style="margin-bottom:0px;">Mandals</h5>
 <ul id="leftNav-Mandals-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
 </div>
@@ -1289,7 +1289,7 @@ for  body3 start    result  -->
 </div>
 <!-- Left Nave End-->
  <!-- Middle Nav -->
-<div class="span3 middleNav" style="margin-left:10px;display:none;">
+<div class="span3 middleNav col-md-3" style="margin-left:10px;display:none;">
 	<div class="middleNav-Panchayats">
 		<h5 class="breadcrumb" style="margin-bottom:0px;">Panchayat(s)</h5>
 		<ul id="middleNav-Panchayats-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
@@ -1306,7 +1306,7 @@ for  body3 start    result  -->
 
 
 <!-- Middle Nav -->
-<div class="span3" style="display:none;margin-left:10px;box-shadow:0px 1px 2px #aaa;background:#fff;border-radius:2px;" id="customGroupsDiv">
+<div class="span3 col-md-3" style="display:none;margin-left:10px;box-shadow:0px 1px 2px #aaa;background:#fff;border-radius:2px;" id="customGroupsDiv">
 	<div class="middleNav-Panchayats middleNav-CustomGroups">
 		<h5 class="breadcrumb" style="margin-bottom:0px;">Custom Voter Group (s)</h5>
 		<ul id="middleNav-CustomGroups-list" class="nav nav-list bs-docs-sidenav nav-stacked disableClass">		
@@ -1320,6 +1320,7 @@ for  body3 start    result  -->
 
 
 <!-- Right Nav -->
+<div class="col-md-6">
 <div id="tabContainer"  >
   <div class="tabs">
       <ul>
@@ -1341,11 +1342,12 @@ for  body3 start    result  -->
   </div>
 </div>
  <div class="tabscontent">
- <div class="span6 rightNav" id="tabpage_1">
+ <div class="span6 col-md-6 rightNav" id="tabpage_1">
  <ul id="rightNav-Booths-list1" class="anils"></ul>
  </div>
- <div class="span6 rightNav" id="tabpage_2">
+ <div class="span6 col-md-6 rightNav" id="tabpage_2">
  <ul id="rightNav-Booths-list2" class="anils"></ul>
+ </div>
  </div>
  </div>
  <!--<div class="span6 rightNav" id="tabpage_3">
@@ -1360,7 +1362,7 @@ for  body3 start    result  -->
 	</div>
 	
 </div>-->
-
+<div class="col-md-6">
 <div id="tabContainer1"  style="display:none;">
   <div class="muncipalitytabs">
       <ul>
@@ -1380,6 +1382,7 @@ for  body3 start    result  -->
 			<ul id="rightNav-Booths-list"></ul>
 	</div>
 	
+</div>
 </div>
 
 <div class="span6 rightNav" id="voterGroupsDiv" style="display:none;">
