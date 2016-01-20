@@ -4149,4 +4149,51 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return finalvo;
 	}
+	
+	public ActivityVO getActivityDetailsForCadre(Long cadreId){
+		ActivityVO finalvo = new ActivityVO();
+		try {
+			
+			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>();
+			List<Object[]> list = activityLevelDAO.actvityLvlOrder();
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					ActivityVO vo = new ActivityVO();
+					Long lvlId = (Long) (obj[0] != null ? obj[0]:0l);
+					String level = obj[1] != null ? obj[1].toString():"";
+					vo.setId(lvlId);
+					vo.setName(level);
+					activityMap.put(lvlId, vo);
+				}
+			}
+			
+			List<Object[]> list1 = activityScopeDAO.getActivityLevelsDetails();
+			if(list1 != null && list1.size() > 0){
+				for (Object[] obj : list1) {
+					Long id = (Long) (obj[0] != null ? obj[0]:0l);
+					ActivityVO vo = activityMap.get(id);
+					if(vo != null){
+						vo.setTotalCount((Long) (obj[1] != null ? obj[1]:0l));
+					}
+				}
+			}
+			
+			List<Object[]> list2 = activityLocationAttendanceDAO.getActivityDetailsByTdpCadreId(cadreId);
+			if(list2 != null && list2.size() > 0){
+				for (Object[] obj : list2) {
+					Long id = (Long) (obj[0] != null ? obj[0]:0l);
+					ActivityVO vo = activityMap.get(id);
+					if(vo != null){
+						vo.setAttendedCount((Long) (obj[1] != null ? obj[1]:0l));
+					}
+				}
+			}
+			
+			List<ActivityVO> voList = new ArrayList<ActivityVO> (activityMap.values());
+			finalvo.setActivityVoList(voList);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityDetailsForCadre method in ActivityService ",e);
+		}
+		return finalvo;
+	}
 }

@@ -35,6 +35,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private Date insertionTime;
 	private Date startDate;
 	private Date endDate;
+	private String isDeleted;
 	
 	private Activity activity;
 	private ActivityLevel activityLevel;
@@ -152,5 +153,11 @@ public class ActivityScope extends BaseModel implements Serializable{
 		this.maxFilesCount = maxFilesCount;
 	}
 	
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 }

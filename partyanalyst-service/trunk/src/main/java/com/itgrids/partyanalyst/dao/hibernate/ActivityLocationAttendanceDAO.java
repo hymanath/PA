@@ -327,5 +327,20 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		
 	}
 	
-
+	public List<Object[]> getActivityDetailsByTdpCadreId(Long cadreId){
+		
+		/*Query query = getSession().createQuery(" select model.activityLocationAttendanceId, " +
+							" model.activityLocationInfo.activityLocationInfoId, " +
+							" model.activityLocationInfo.activityScope.activityLevelId, " +
+							" model.attendance.tdpCadre.tdpCadreId " +
+							" from ActivityLocationAttendance model " +
+							" where model.attendance.tdpCadre.tdpCadreId = :cadreId ");*/
+		Query query = getSession().createQuery(" select model.activityLocationInfo.activityScope.activityLevelId, " +
+							" count(model.activityLocationInfo.activityLocationInfoId) " +
+							" from ActivityLocationAttendance model " +
+							" where model.attendance.tdpCadre.tdpCadreId = :cadreId " +
+							" group by model.activityLocationInfo.activityScope.activityLevelId ");
+		query.setParameter("cadreId", cadreId);
+		return query.list();
+	}
 }

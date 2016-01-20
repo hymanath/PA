@@ -50,4 +50,5 @@ public interface IActivityService {
 	public BasicVO getActivityLocationWiseDetailsByScopeId(Long scopeId);
 	public List<String> getActivityScopeDates(Long activityScopeId);
 	public List<ActivityAttendanceInfoVO> getActivityDayWiseCountsByLocationForAttendance(SearchAttributeVO searchAttributeVO,Long stateId);
+	public ActivityVO getActivityDetailsForCadre(Long cadreId);
 }
