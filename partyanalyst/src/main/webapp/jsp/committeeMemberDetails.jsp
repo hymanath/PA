@@ -159,6 +159,28 @@
 				</div>
 				
 				
+				<div class="col-md-2 locationsCls" id="stateDiv">
+					<section>
+							<label class="select-label">State</label>
+						<div class="cs-select cs-skin-rotate" onclick="getDistricts();">
+	
+				<div class="cs-options">
+					<ul>
+						<li data-option data-value="0" class="cs-selected"><span>ALL</span></li>
+						<li data-option data-value="1" class="cs-selected"><span>Andhra Pradesh</span></li>
+						<li data-option data-value="2"><span>Telangana</span></li>
+						</ul>
+				</div>
+				<select class="cs-select cs-skin-slide" id="stateId">
+					<option value="0" >ALL</option>
+					 <option value="1" >Andhra Pradesh</option>
+					 <option value="2" >Telangana</option>
+				</select>
+               </div>
+					</section>
+				</div>
+				
+				
 				<div class="col-md-3 locationsCls" id="districtDiv">
 					<section>
 							<label class="select-label">District</label>
@@ -598,10 +620,10 @@
  var gldistrictId = 0;
  function getDistricts(){
 	  $("#districtId").find('option').remove();
-	 
+	 var stateId = $("#stateId").val();
      var jsObj=
 		{				
-				stateId:1,
+				stateId:stateId,
 				stateTypeId :1,
 				elmtId:"districtList_d",
                 type:"default",
@@ -621,11 +643,13 @@
    {
 	   if(result.length == 11)
 	   {
-		   glstateId=2;
+		  // glstateId=2;
+		  glstateId=stateId;
 	   }
 	   else if(result.length == 14)
 	   {
-		   glstateId=1;
+		//   glstateId=1;
+		 glstateId=stateId;
 	   }
 	   else if(result.length == 2)
 	   {
@@ -639,18 +663,51 @@
 		   str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
 		   //str+='<li data-value="AP" data-option="" class="distEle"><span>AP DISTRICTs </span></li>';
 		  // str+='<li data-value="TS" data-option="" class="distEle"><span>TS DISTRICTS </span></li>';
-		   
+		 
 		  for(var i in result)
 		  {
-		   if(result[i].id > 0)
-		  str+='<li data-value="'+result[i].id+'" data-option="" class="distEle"><span>'+result[i].name+'</span></li>';
-		  }
+			 
+			    if(result[i].id > 0)
+				{
+					if(stateId == 1)
+					{
+						if(result[i].id > 11)
+						str+='<li data-value="'+result[i].id+'" data-option="" class="distEle"><span>'+result[i].name+'</span></li>';
+					}
+					else if(stateId == 2)
+					{
+						if(result[i].id < 11)
+						str+='<li data-value="'+result[i].id+'" data-option="" class="distEle"><span>'+result[i].name+'</span></li>';
+					}
+					else
+						str+='<li data-value="'+result[i].id+'" data-option="" class="distEle"><span>'+result[i].name+'</span></li>';
+					
+				}
+				 
+		}
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="districtId">';
 		  for(var i in result)
 		  {
 		   if(result[i].id > 0)
-          str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		   {
+			 if(stateId == 1)
+					{
+						if(result[i].id > 11)
+							str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}	
+				else if(stateId == 2)
+				{
+					if(result[i].id < 11)
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				else
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			
+		   }
+          
 		  }
 		 str+='</select></div></section>';
 		$("#districtDiv").html(str);
@@ -922,10 +979,7 @@
 	  $("#mandalId").append('<option value=0>Select Mandal</option>');
 	  $("#panchayatId").append('<option value=0>Select Panchayat</option>');
   }
-  /*$(".distSlide div").click(function(){
-			alert('a');
-//$(this).addClass("cs-active");
-			});*/
+
 			function selectChange(divEle)
 			{
 
@@ -1075,14 +1129,21 @@
 				$('#mandalMembersUl').html('');
 				$('#stateMembersUl').html('');
 				$('#villageMembersUl').html('');
-				
+				var stateId = $("#stateId").val();
 				var levelId = $(".stateName").attr('value');
 				var committeeLevl = '';
+				
 				var locationLevel = 'State Level';
 				var levelValue = 0;
 				var divId = '';
 				var locationName = '';
 				$('#buildSelectionBlockDiv').show();
+				if(stateId == 1)
+						locationLevel = "Andhra Pradesh State Level";
+					else if(stateId == 2)
+						locationLevel = "Telangana State Level";
+					else
+					locationLevel = "State Level";
 				if(levelId == 10)
 				{
 					if(memberType =='CadreMembers')
@@ -1101,6 +1162,12 @@
 					}
 					
 					levelValue = 0;
+					
+					if(stateId == 1)
+						locationLevel = "Andhra Pradesh State Level";
+					else if(stateId == 2)
+						locationLevel = "Telangana State Level";
+					else
 					locationLevel = "State Level";
 					
 				}
@@ -1213,7 +1280,13 @@
 			else if(districtId == 0){
 				if(levelId == 10)
 				{
-					locationLevel = " State Level";
+				
+					if(stateId == 1)
+						locationLevel = "Andhra Pradesh State Level";
+					else if(stateId == 2)
+						locationLevel = "Telangana State Level";
+					else
+					locationLevel = "State Level";
 				}
 			}
 		
@@ -1659,13 +1732,21 @@
 			};
 			submitArr.push(villageObj);
 		}
-
+		var stateId = $("#stateId").val();
+		var stateStr;
+		if(stateId == 1)
+			stateStr ="AP";
+		else if(stateId == 2)
+			stateStr ="TS";
+		else
+			stateStr ="ALL";
 		//reportType:"EXPORTEXCEL";
 		var jsObj =
 		{
 			reportType:reportType,
 			searchType:"getDetails",
-			stateId:glstateId,
+			//stateId:glstateId,
+			stateId:stateId,
 			actionType:actionText,
 			stateStr:"AP",
 			groupName:"",
@@ -2563,6 +2644,8 @@
 						$("#checkText").html("Select All");
 					}
 				});	
+				
+			
 </script>
 <script>
 getDistricts();
