@@ -713,7 +713,21 @@ var globalCadreId = '${cadreId}';
 									  </div>
 									</div>
 								  </div>
-								  <div class="panel panel-default" id="trainingDetailsMainDivId" style="display:none">
+								  <div class="panel panel-default" id="activityMainDivId">
+									<div class="panel-heading" role="tab" id="headingFour">
+									  <a role="button" class="collapsed accordion-toggle" data-toggle="collapse" data-parent="#accordion2323" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										<h4 class="panel-title">
+										  <span> ACTIVITY PARTICIPATION DETAILS</span>
+										</h4>
+									   </a>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									  <div class="panel-body">
+										<div id="activityTableDivId" class="table-responsive"></div>
+									  </div>
+									</div>
+								  </div>
+									<div class="panel panel-default" id="trainingDetailsMainDivId" style="display:none">
 									<div class="panel-heading" role="tab" id="headingTwo">
 										<a class="collapsed accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion2323" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 										<h4 class="panel-title">
@@ -1395,6 +1409,7 @@ var globalCadreId = '${cadreId}';
 						getPartyMeetingsOverViewForCadre();
 						getEventsOverviewFortdpCadre();
 						//getCandidateAndConstituencySurveyResult();
+						getActivityDetails();
 						
 					}
 						
@@ -4175,6 +4190,7 @@ function getCadreIdByMemberShipId()
 				getLocationwiseCommitteesCount();
 				getPartyMeetingsOverViewForCadre();
 				getEventsOverviewFortdpCadre();
+				getActivityDetails();
 			}
 		}
 		
@@ -6381,6 +6397,53 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 			}
 	    }
 	}
+	
+function getActivityDetails()
+{
+	var jsObj={
+		tdpCadreId:globalCadreId
+	}	
+	$.ajax({
+		type:'GET',
+		url :'getActivityDetailsByTdpCadreIdAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null){
+			var str = '';
+			
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<th class="text-center">Activity Level</th>';
+					str+='<th class="text-center">Total</th>';
+					str+='<th class="text-center">Attended</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					if(result.activityVoList != null && result.activityVoList.length > 0){
+						for(var i in result.activityVoList){
+							str+='<tr class="text-center">';
+								str+='<td>'+result.activityVoList[i].name+'</td>';
+								if(result.activityVoList[i].totalCount != null){
+									str+='<td>'+result.activityVoList[i].totalCount+'</td>';
+								}
+								else{
+									str+='<td>0</td>';
+								}
+								if(result.activityVoList[i].attendedCount != null){
+									str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+								}
+								else{
+									str+='<td>0</td>';
+								}
+							str+='</tr>';
+						}
+					}
+				str+='</tbody>';
+			str+='</table>';
+		}
+		
+		$("#activityTableDivId").html(str);
+	});
+}
 </script>
 
 </body>
