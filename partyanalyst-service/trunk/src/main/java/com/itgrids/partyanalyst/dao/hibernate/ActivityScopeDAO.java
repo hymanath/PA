@@ -56,4 +56,14 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		query.setParameter("activityScopeId", activityScopeId);
 		return (Object[])query.uniqueResult();
 	}
+	
+	public List<Object[]> getActivityLevelsDetails(){
+		
+		Query query = getSession().createQuery(" select model.activityLevelId," +
+							" count(model.activityLevelId) " +
+							" from ActivityScope model " +
+							" where model.isDeleted = 'N' " +
+							" group by model.activityLevel.activityLevelId ");
+		return query.list();
+	}
 }
