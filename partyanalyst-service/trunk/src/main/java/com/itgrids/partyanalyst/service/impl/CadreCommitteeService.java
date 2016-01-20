@@ -12758,18 +12758,24 @@ return mandalList;
 										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
 										 {
 											 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 
 										 }
 										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
 										 {
 											 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
 											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											
 										 }
 										 
 										 if(locationLevelIdsList != null && locationLevelIdsList.size()>0)
 										 {
 											 Long committteeLevelId = locationLevelIdsList.get(0);
-											 if(committteeLevelId != null && (committteeLevelId.longValue() == 10L || committteeLevelId.longValue() == 12L ))
+											if(committteeLevelId != null && (committteeLevelId.longValue() == 10L || committteeLevelId.longValue() == 12L ))
 												 disstrictIds = null;
+											if(stateId.longValue() == 1L)
+											locationValuesList.add(1l);
+											if(stateId.longValue() == 2L)
+												locationValuesList.add(36l);
 										 }
 										 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);										 
 									 }
