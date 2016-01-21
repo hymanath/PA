@@ -57,13 +57,44 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		return (Object[])query.uniqueResult();
 	}
 	
-	public List<Object[]> getActivityLevelsDetails(){
+	public List<Object[]> getActivityLevelsDetails(Long requiredAtrrIds){
 		
-		Query query = getSession().createQuery(" select model.activityLevelId," +
+		/*Query query = getSession().createQuery(" select model.activityLevelId," +
 							" count(model.activityLevelId) " +
 							" from ActivityScope model " +
 							" where model.isDeleted = 'N' " +
-							" group by model.activityLevel.activityLevelId ");
+							" group by model.activityLevel.activityLevelId ");*/
+		Query query = getSession().createQuery(" select model.activityLevelId," +
+				" count(model.activityLevelId) " +
+				" from ActivityScope model,ActivityScopeRequiredAttributes model1 " +
+				" where model.activityScopeId = model1.activityScope.activityScopeId " +
+				" and model1.requiredAttribute.requiredAttributeId = :requiredAtrrIds " +
+				" and model1.isActive = 'Y' and model1.isActive = 'Y' and model.isDeleted = 'N' " +
+				" group by model.activityLevel.activityLevelId ");
+		query.setParameter("requiredAtrrIds", requiredAtrrIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getActivitiesListByLevelId(Long levelId,Long requiredAtrrIds){
+		/*Query query = getSession().createQuery(" select model.activityScopeId," +
+							" model.activity.activityId, " +
+							" model.activity.activityName, " +
+							" model.activityLevelId " +
+							" from ActivityScope model " +
+							" where model.activityLevel.activityLevelId = :levelId " +
+							" and model.isDeleted = 'N' and model.activity.isActive = 'Y' ");*/
+		Query query = getSession().createQuery(" select model.activityScopeId," +
+				" model.activity.activityId, " +
+				" model.activity.activityName, " +
+				" model.activityLevelId " +
+				" from ActivityScope model,ActivityScopeRequiredAttributes model1 " +
+				" where model.activityScopeId = model1.activityScope.activityScopeId " +
+				" and model1.requiredAttribute.requiredAttributeId = :requiredAtrrIds " +
+				" and model.activityLevel.activityLevelId = :levelId " +
+				" and model.isDeleted = 'N' and model.activity.isActive = 'Y' " +
+				" and model1.isActive = 'Y' and model1.isActive = 'Y' ");
+		query.setParameter("requiredAtrrIds", requiredAtrrIds);
+		query.setParameter("levelId", levelId);
 		return query.list();
 	}
 }

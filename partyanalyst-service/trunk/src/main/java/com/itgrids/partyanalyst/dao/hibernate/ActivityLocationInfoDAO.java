@@ -938,4 +938,19 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getActivityDetailsInCadreLocation(List<Long> activityScopeIds,Long locationId,Long locationValue){
+		Query query = getSession().createQuery("select model.activityLocationInfoId, " +
+							" model.activityScopeId, " +
+							" model.plannedDate, " +
+							" model.conductedDate, " +
+							" model.ivrStatus " +
+							" from ActivityLocationInfo model " +
+							" where model.activityScope.activityScopeId in (:activityScopeIds) " +
+							" and model.locationLevel = :locationId and model.locationValue = :locationValue ");
+		query.setParameterList("activityScopeIds", activityScopeIds);
+		query.setParameter("locationId", locationId);
+		query.setParameter("locationValue", locationValue);
+		return query.list();
+	}
 }

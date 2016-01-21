@@ -22,4 +22,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Date endDate,Long activityScopeId,List<Long> constIds);
 	public List<Long> isAlreadyAvailableActivityLocationDtls(Long activityScopeId,Long locationLevel,Long locationValue);
 	public List<Object[]> getActivityLocationDetailsByScopeId(Long scopeId);
+	public List<Object[]> getActivityDetailsInCadreLocation(List<Long> activityScopeIds,Long locationId,Long locationValue);
 }

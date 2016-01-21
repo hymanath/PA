@@ -11,4 +11,5 @@ public interface IActivityLocationAttendanceDAO extends GenericDao<ActivityLocat
 	public List<Object[]> getActivityAttendanceCount(SearchAttributeVO inputVO,String memberType,Long stateId);
 	public List<Object[]> getDayWiseActivityLocationsCount(SearchAttributeVO inputVO,String memberType,Long stateId);
 	public List<Object[]> getActivityDetailsByTdpCadreId(Long cadreId);
+	public List<Object[]> getCadreAttendedActivityDetails(List<Long> activityLocationInfoIds,Long cadreId);
 }

@@ -335,11 +335,44 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 							" model.attendance.tdpCadre.tdpCadreId " +
 							" from ActivityLocationAttendance model " +
 							" where model.attendance.tdpCadre.tdpCadreId = :cadreId ");*/
-		Query query = getSession().createQuery(" select model.activityLocationInfo.activityScope.activityLevelId, " +
+		/*Query query = getSession().createQuery(" select model.activityLocationInfo.activityScope.activityLevelId, " +
 							" count(model.activityLocationInfo.activityLocationInfoId) " +
 							" from ActivityLocationAttendance model " +
 							" where model.attendance.tdpCadre.tdpCadreId = :cadreId " +
-							" group by model.activityLocationInfo.activityScope.activityLevelId ");
+							" group by model.activityLocationInfo.activityScope.activityLevelId ");*/
+		
+		Query query = getSession().createSQLQuery("  select  distinct ass.activity_level_id, count(ali.activity_location_info_id) from  activity_location_info ali,"
+		+" activity_scope ass, activity_level al,activity_location_attendance ala,"
+		+" attendance a, tdp_cadre td, user_address ua "
+		+" left join district d on ua.district_id = d.district_id"
+		+" left join  constituency c on ua.constituency_id = c.constituency_id"
+		+" left join  constituency w on ua.ward = w.constituency_id"
+		+" left join   panchayat p on ua.panchayat_id = p.panchayat_id"
+		+" left join  local_election_body leb on ua.local_election_body = leb.local_election_body_id "
+		+" left join tehsil t on ua.tehsil_id = t.tehsil_id"
+		
+		+" where "
+		+" ali.activity_scope_id = ass.activity_scope_id and "
+		+" ass.activity_level_id = al.activity_level_id and"
+		+" td.address_id = ua.user_address_id and "
+		+" a.tdp_cadre_id = td.tdp_cadre_id and "
+		+" td.tdp_cadre_id = :cadreId and"
+		+" ali.activity_location_info_id = ala.activity_location_info_id and"
+		+" ala.attendance_id = a.attendance_id "
+		+" group by "
+		+" ass.activity_level_id ");
+		
+		query.setParameter("cadreId", cadreId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCadreAttendedActivityDetails(List<Long> activityLocationInfoIds,Long cadreId){
+		Query query = getSession().createQuery(" select model.activityLocationAttendanceId, " +
+							" model.activityLocationInfo.activityScope.activityScopeId " +
+							" from ActivityLocationAttendance model " +
+							" where model.activityLocationInfoId in (:activityLocationInfoIds) " +
+							" and model.attendance.tdpCadre.tdpCadreId = :cadreId ");
+		query.setParameterList("activityLocationInfoIds", activityLocationInfoIds);
 		query.setParameter("cadreId", cadreId);
 		return query.list();
 	}

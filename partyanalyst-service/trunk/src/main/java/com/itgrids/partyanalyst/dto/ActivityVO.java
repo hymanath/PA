@@ -74,12 +74,37 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long userId;
 	private Long activityScopeId;
 	private Long scopeValue;
+	private Long activityLocationInfoId;
+	private String ivrStatus;
+	private String isLocation;
+	private String isAttended;
 	
 	
 	
-	
-	
-	
+	public String getIsLocation() {
+		return isLocation;
+	}
+	public void setIsLocation(String isLocation) {
+		this.isLocation = isLocation;
+	}
+	public String getIsAttended() {
+		return isAttended;
+	}
+	public void setIsAttended(String isAttended) {
+		this.isAttended = isAttended;
+	}
+	public Long getActivityLocationInfoId() {
+		return activityLocationInfoId;
+	}
+	public void setActivityLocationInfoId(Long activityLocationInfoId) {
+		this.activityLocationInfoId = activityLocationInfoId;
+	}
+	public String getIvrStatus() {
+		return ivrStatus;
+	}
+	public void setIvrStatus(String ivrStatus) {
+		this.ivrStatus = ivrStatus;
+	}
 	public List<ActivityAttendanceInfoVO> getActivityAttendanceInfoVOList() {
 		return activityAttendanceInfoVOList;
 	}
