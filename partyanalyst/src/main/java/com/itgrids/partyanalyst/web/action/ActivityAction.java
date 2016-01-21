@@ -620,4 +620,26 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getActivityDetailsByActivityLevelIdAndCadreId(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long cadreId = jObj.getLong("tdpCadreId");
+			Long activityLvlId = jObj.getLong("activityLevelId");
+			Long locationId = jObj.getLong("locationId");
+			Long boothId = jObj.getLong("cadreBoothId");
+			Long panchayatId = jObj.getLong("cadrePanchaytId");
+			Long mandalId = jObj.getLong("cadremandalId");
+			Long constituencyId = jObj.getLong("cadreConstituencyId");
+			Long districtId = jObj.getLong("cadreDistrictId");
+			Long stateId = jObj.getLong("cadreStateId");
+			
+			activityVO = activityService.getActivityDetailsByActivityLevelIdAndCadreId(activityLvlId, cadreId, locationId, boothId, panchayatId, mandalId, constituencyId, districtId, stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
+		}
+		return Action.SUCCESS;
+	}
 }
