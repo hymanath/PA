@@ -11268,5 +11268,10 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
+	<action name="getActivityDetailsByActivityLevelIdAndCadreIdAction" class="activityAction" method="getActivityDetailsByActivityLevelIdAndCadreId">
+		<result type="json" name="success">
+			<param name="root">activityVO</param>
+		</result>
+	</action>
 </package>
 </struts>      

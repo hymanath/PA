@@ -724,6 +724,7 @@ var globalCadreId = '${cadreId}';
 									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 									  <div class="panel-body">
 										<div id="activityTableDivId" class="table-responsive"></div>
+										<div id="activityAttendedTableDivId" class="table-responsive"></div>
 									  </div>
 									</div>
 								  </div>
@@ -6423,13 +6424,13 @@ function getActivityDetails()
 							str+='<tr class="text-center">';
 								str+='<td>'+result.activityVoList[i].name+'</td>';
 								if(result.activityVoList[i].totalCount != null){
-									str+='<td>'+result.activityVoList[i].totalCount+'</td>';
+									str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
 								}
 								else{
 									str+='<td>0</td>';
 								}
 								if(result.activityVoList[i].attendedCount != null){
-									str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+									str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
 								}
 								else{
 									str+='<td>0</td>';
@@ -6444,6 +6445,134 @@ function getActivityDetails()
 		$("#activityTableDivId").html(str);
 	});
 }
+
+$(document).on('click', '.activityLvlCls', function(){
+	var activityLevelId = $(this).attr("attr_levelId");
+	var status = $(this).attr("attr_id");
+	var activityLevel = $(this).attr("attr_activity_level");
+	
+	var locationId = 0;
+	var cadreRuralORUrbanId = $("#cadreRuralORUrbanId").val();
+	
+	if(activityLevelId == 1){
+		if(cadreRuralORUrbanId == 0){
+			locationId = 6;
+		}
+		else if(cadreRuralORUrbanId != 0){
+			locationId = 8;
+		}
+	}
+	else if(activityLevelId == 2){
+		if(cadreRuralORUrbanId == 0){
+			locationId = 5;
+		}
+		else if(cadreRuralORUrbanId == 20 || cadreRuralORUrbanId == 124 || cadreRuralORUrbanId == 119){
+			locationId = 9;
+		}
+		else if(cadreRuralORUrbanId != 0){
+			locationId = 7;
+		}
+	}
+	
+	var boothId = $("#cadreBoothId").val();
+	var panchayatId = $("#cadrePanchaytId").val();
+	var mandalId = $("#cadremandalId").val();
+	var constituencyId = $("#cadreConstituencyId").val();
+	var districtId = $("#cadreDistrictId").val();
+	var stateId = $("#cadreStateId").val();
+	
+	var jsObj={
+		tdpCadreId:globalCadreId,
+		activityLevelId:activityLevelId,
+		locationId:locationId,
+		cadreBoothId:boothId,
+		cadrePanchaytId:panchayatId,
+		cadremandalId:mandalId,
+		cadreConstituencyId:constituencyId,
+		cadreDistrictId:districtId,
+		cadreStateId:stateId
+	}	
+	$.ajax({
+		type:'GET',
+		url :'getActivityDetailsByActivityLevelIdAndCadreIdAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null){
+			var str='';
+			
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<th class="text-center">Activity Name</th>';
+					str+='<th class="text-center">Activity Level</th>';
+					str+='<th class="text-center">Status</th>';
+					str+='<th class="text-center">Attended</th>';
+					str+='<th class="text-center">Absent</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					if(result.activityVoList != null && result.activityVoList.length > 0){
+						for(var i in result.activityVoList){
+							str+='<tr class="text-center">';
+								str+='<td>'+result.activityVoList[i].name+'</td>';
+								str+='<td>'+activityLevel+'</td>';
+								if(result.activityVoList[i].isLocation == 'Y'){
+									str+='<td>Conducted</td>';
+								}
+								else{
+									str+='<td>Not Conducted</td>';
+								}
+								if(status == 'total'){
+									if(result.activityVoList[i].isLocation == 'Y'){
+										if(result.activityVoList[i].isAttended == 'Y'){
+											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+										}
+										else{
+											str+='<td>0</td>';
+										}
+										if(result.activityVoList[i].isAttended == 'Y'){
+											str+='<td>0</td>';
+										}
+										else{
+											if(result.activityVoList[i].attendedCount != null){
+												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											}
+											else{
+												str+='<td>1</td>';
+											}
+										}							
+									}
+									else{
+										str+='<td>-</td>';
+										str+='<td>-</td>';
+									}
+								}
+								else if(status == 'attended'){
+									if(result.activityVoList[i].isAttended == 'Y'){
+										str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+									}
+									else{
+										str+='<td>0</td>';
+									}
+									if(result.activityVoList[i].isAttended == 'Y'){
+										str+='<td>0</td>';
+									}
+									else{
+										if(result.activityVoList[i].attendedCount != null){
+											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+										}
+										else{
+											str+='<td>1</td>';
+										}
+									}
+								}
+							str+='</tr>';
+						}
+					}
+				str+='</tbody>';
+			str+='</table>';
+		}
+		$("#activityAttendedTableDivId").html(str);
+	});
+});
 </script>
 
 </body>
