@@ -384,7 +384,7 @@ eventUpdate();
                     startDate: moment(),
                     endDate: moment(),
                     minDate: '01/01/2012',
-                    maxDate: '31/12/2018',
+                   // maxDate: '31/12/2025',
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
