@@ -51,4 +51,5 @@ public interface IActivityService {
 	public List<String> getActivityScopeDates(Long activityScopeId);
 	public List<ActivityAttendanceInfoVO> getActivityDayWiseCountsByLocationForAttendance(SearchAttributeVO searchAttributeVO,Long stateId);
 	public ActivityVO getActivityDetailsForCadre(Long cadreId);
+	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationId,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId);
 }

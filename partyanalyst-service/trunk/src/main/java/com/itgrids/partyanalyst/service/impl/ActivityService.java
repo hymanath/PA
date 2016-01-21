@@ -4167,7 +4167,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 			
-			List<Object[]> list1 = activityScopeDAO.getActivityLevelsDetails();
+			List<Object[]> list1 = activityScopeDAO.getActivityLevelsDetails(IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS);
 			if(list1 != null && list1.size() > 0){
 				for (Object[] obj : list1) {
 					Long id = (Long) (obj[0] != null ? obj[0]:0l);
@@ -4178,22 +4178,117 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 			
+			
 			List<Object[]> list2 = activityLocationAttendanceDAO.getActivityDetailsByTdpCadreId(cadreId);
+			
 			if(list2 != null && list2.size() > 0){
 				for (Object[] obj : list2) {
-					Long id = (Long) (obj[0] != null ? obj[0]:0l);
+					Long id = Long.parseLong(obj[0] != null ? obj[0].toString():"");
 					ActivityVO vo = activityMap.get(id);
 					if(vo != null){
-						vo.setAttendedCount((Long) (obj[1] != null ? obj[1]:0l));
+						vo.setAttendedCount(Long.parseLong(obj[1] != null ? obj[1].toString():""));
 					}
 				}
 			}
 			
 			List<ActivityVO> voList = new ArrayList<ActivityVO> (activityMap.values());
 			finalvo.setActivityVoList(voList);
+			
+			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getActivityDetailsForCadre method in ActivityService ",e);
 		}
 		return finalvo;
+	}
+	
+	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationId,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId){
+		ActivityVO activityvo = new ActivityVO();
+		try {
+			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>();
+			List<Long> scopeIds = new ArrayList<Long>();
+			List<Long> locationInfoIds = new ArrayList<Long>();
+			
+			List<Object[]> list = activityScopeDAO.getActivitiesListByLevelId(activityLevelId,IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					ActivityVO vo = new ActivityVO();
+					
+					Long activityScopeId = (Long) (obj[0] != null ? obj[0]:0l);
+					vo.setActivityScopeId(activityScopeId);
+					vo.setId((Long) (obj[1] != null ? obj[1]:0l));
+					vo.setName(obj[2] != null ? obj[2].toString():"");
+					vo.setActivityLevelId((Long) (obj[3] != null ? obj[3]:0l));
+					
+					scopeIds.add(activityScopeId);
+					activityMap.put(activityScopeId, vo);
+				}
+			}
+			
+			Long locationValue = 0l;
+			if(locationId == 6l || locationId == 8l){
+				locationValue = panchayatId;
+			}
+			else if(locationId == 5l || locationId == 7l || locationId == 9l){
+				locationValue = mandalId;
+			}
+			else if(locationId == 0l){
+				if(activityLevelId == 5l){
+					locationId = 13l;
+					locationValue = constituencyId;
+				}
+				else if (activityLevelId == 3l) {
+					locationId = 11l;
+					locationValue = districtId;
+				}
+				else if(activityLevelId == 4l){
+					locationId = 10l;
+					locationValue = stateId;
+				}
+			}
+			
+			List<Object[]> list1 = activityLocationInfoDAO.getActivityDetailsInCadreLocation(scopeIds, locationId, locationValue);
+		    if(list1 != null && list1.size() > 0){
+		    	for (Object[] obj : list1) {
+					Long scopeId = (Long) (obj[1] != null ? obj[1]:0l);
+					ActivityVO vo = activityMap.get(scopeId);
+					if(vo != null){
+						vo.setActivityLocationInfoId((Long) (obj[0] != null ? obj[0]:0l));
+						vo.setPlannedDate(obj[2] != null ? obj[2].toString():"");
+						vo.setConductedDate(obj[3] != null ? obj[3].toString():"");
+						vo.setIvrStatus(obj[4] != null ? obj[4].toString():"");
+						vo.setIsLocation("Y");
+						
+						locationInfoIds.add((Long) (obj[0] != null ? obj[0]:0l));
+					}
+				}
+		    }
+		
+		    if(locationInfoIds != null && locationInfoIds.size() > 0){
+		    	List<Object[]> list2 = activityLocationAttendanceDAO.getCadreAttendedActivityDetails(locationInfoIds, tdpCadreId);
+			    if(list2 != null && list2.size() > 0){
+			    	for (Object[] obj : list2) {
+						Long activityScpId = (Long) (obj[1] != null ? obj[1]:0l);
+						ActivityVO vo = activityMap.get(activityScpId);
+						if(vo != null){
+							Long count = 1l;
+							if(vo.getAttendedCount() != null){
+								count = count+1l;
+								vo.setAttendedCount(count);
+							}
+							else{
+								vo.setAttendedCount(count);
+							}
+							vo.setIsAttended("Y");
+						}
+					}
+			    }
+		    }
+		    
+		   List<ActivityVO> activitiesList = new ArrayList<ActivityVO>(activityMap.values());
+		   activityvo.setActivityVoList(activitiesList);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityDetailsByActivityLevelIdAndCadreId method in ActivityService ",e);
+		}
+		return activityvo;
 	}
 }
