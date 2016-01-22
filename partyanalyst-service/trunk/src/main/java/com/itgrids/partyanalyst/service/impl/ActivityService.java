@@ -4201,7 +4201,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return finalvo;
 	}
 	
-	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationId,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId){
+	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationlevel,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId){
 		ActivityVO activityvo = new ActivityVO();
 		try {
 			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>();
@@ -4225,28 +4225,28 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			}
 			
 			Long locationValue = 0l;
-			if(locationId == 6l || locationId == 8l){
+			if(locationlevel == 6l || locationlevel == 8l){
 				locationValue = panchayatId;
 			}
-			else if(locationId == 5l || locationId == 7l || locationId == 9l){
+			else if(locationlevel == 5l || locationlevel == 7l || locationlevel == 9l){
 				locationValue = mandalId;
 			}
-			else if(locationId == 0l){
+			else if(locationlevel == 0l){
 				if(activityLevelId == 5l){
-					locationId = 13l;
+					locationlevel = 13l;
 					locationValue = constituencyId;
 				}
 				else if (activityLevelId == 3l) {
-					locationId = 11l;
+					locationlevel = 11l;
 					locationValue = districtId;
 				}
 				else if(activityLevelId == 4l){
-					locationId = 10l;
+					locationlevel = 10l;
 					locationValue = stateId;
 				}
 			}
 			
-			List<Object[]> list1 = activityLocationInfoDAO.getActivityDetailsInCadreLocation(scopeIds, locationId, locationValue);
+			List<Object[]> list1 = activityLocationInfoDAO.getActivityDetailsInCadreLocation(scopeIds, locationlevel, locationValue);
 		    if(list1 != null && list1.size() > 0){
 		    	for (Object[] obj : list1) {
 					Long scopeId = (Long) (obj[1] != null ? obj[1]:0l);
@@ -4263,6 +4263,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 		    }
 		
+		    String locatiionName = null;
 		    if(locationInfoIds != null && locationInfoIds.size() > 0){
 		    	List<Object[]> list2 = activityLocationAttendanceDAO.getCadreAttendedActivityDetails(locationInfoIds, tdpCadreId);
 			    if(list2 != null && list2.size() > 0){
@@ -4281,6 +4282,27 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							vo.setIsAttended("Y");
 						}
 					}
+			    }
+			    else{
+			    	List<Long> activityInfoIds = activityLocationAttendanceDAO.getActivityInfoIdsByCadreIdFromAttendence(locationlevel,tdpCadreId);
+			    	if(activityInfoIds != null && activityInfoIds.size() > 0){
+			    		List<Object[]> locationNames = activityLocationInfoDAO.getActivityLocationNames(activityInfoIds,locationlevel);
+			    		if(locationNames != null && locationNames.size()>0)
+			    		{
+			    			for (Object[] location : locationNames) {
+			    				if(locatiionName != null && !locatiionName.isEmpty())
+			    					locatiionName = locatiionName+","+commonMethodsUtilService.getStringValueForObject(location[1]);
+			    				else
+			    					locatiionName = commonMethodsUtilService.getStringValueForObject(location[1]);
+			    				
+			    				Long activityScpId = commonMethodsUtilService.getLongValueForObject(location[0]);
+			    				ActivityVO vo = activityMap.get(activityScpId);
+								if(vo != null){
+									vo.setAttendendLocation(locatiionName);
+								}
+							}
+			    		}
+			    	}
 			    }
 		    }
 		    

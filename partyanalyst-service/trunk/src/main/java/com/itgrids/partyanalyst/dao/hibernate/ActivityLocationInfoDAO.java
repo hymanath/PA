@@ -953,4 +953,24 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		query.setParameter("locationValue", locationValue);
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationDetailsByInfoIds(List<Long> activityInfoIds){
+		Query query = getSession().createQuery(" select model.locationLevel, " +
+							" model.locationValue " +
+							" from ActivityLocationInfo model " +
+							" where model.activityLocationInfoId in (:activityInfoIds) ");
+		query.setParameterList("activityInfoIds", activityInfoIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getActivityLocationNames(List<Long> activityInfoIds,Long locationlevel){
+		
+		Query query = getSession().createQuery(" select distinct model.activityScopeId, constituency.name " +
+							" from ActivityLocationInfo model left join model.constituency constituency " +
+							" where model.activityLocationInfoId in (:activityInfoIds) ");
+		query.setParameterList("activityInfoIds", activityInfoIds);
+		return query.list();
+	}
+	
+	
 }

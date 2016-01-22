@@ -376,4 +376,12 @@ public class ActivityLocationAttendanceDAO extends GenericDaoHibernate<ActivityL
 		query.setParameter("cadreId", cadreId);
 		return query.list();
 	}
+	
+	public List<Long> getActivityInfoIdsByCadreIdFromAttendence(Long locationLevel,Long cadreId){
+		Query query = getSession().createQuery(" select distinct  model.activityLocationInfoId from ActivityLocationAttendance model " +
+							" where model.attendance.tdpCadre.tdpCadreId = :cadreId and model.activityLocationInfo.locationLevel =:locationLevel ");
+		query.setParameter("cadreId", cadreId);
+		query.setParameter("locationLevel", locationLevel);
+		return query.list();
+	}
 }
