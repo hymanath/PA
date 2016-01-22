@@ -23,4 +23,6 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Long> isAlreadyAvailableActivityLocationDtls(Long activityScopeId,Long locationLevel,Long locationValue);
 	public List<Object[]> getActivityLocationDetailsByScopeId(Long scopeId);
 	public List<Object[]> getActivityDetailsInCadreLocation(List<Long> activityScopeIds,Long locationId,Long locationValue);
+	public List<Object[]> getLocationDetailsByInfoIds(List<Long> activityInfoIds);
+	public List<Object[]> getActivityLocationNames(List<Long> activityInfoIds,Long locationlevel);
 }
