@@ -1411,17 +1411,14 @@ for  body3 start    result  -->
 	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
 
-<div id="votersBasicInfoBtnDiv"> 
+<div id="votersBasicInfoBtnDiv" style="background:#f0f0f0" > 
 	<span></span>
 	<span value="Mandal Wise Voters Info" id="votersShareBtn1"></span>
 
-	<span value="Mandal Wise Voters Info" id="votersShareBtnForCstmVtrGrp">
-	</div>
-
-	<div style="margin:7px;">
-	<div id="cnstHeading2" class="cutomVoterGroup thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:center;position:relative;display:none;">CUSTOM VOTER GROUP WISE VOTERS INFO<span id="votersShareBtnsForCstmVtrGrp" class="btn" title="Click Here to know Custom Voter Group Wise Voters Info " style="margin-left: 15px;font-weight:bold;">Show</span></div>
+	<span value="Mandal Wise Voters Info" id="votersShareBtnForCstmVtrGrp"></span>
+	<span style="margin:7px;">
+		<span id="cnstHeading2" class="cutomVoterGroup" style="background:#f0f0f0;border-radius:0px;text-align:center;position:relative;display:none;">CUSTOM VOTER GROUP WISE VOTERS INFO<span id="votersShareBtnsForCstmVtrGrp" class="btn" title="Click Here to know Custom Voter Group Wise Voters Info " style="margin-left: 15px;font-weight:bold;">Show</span></span>
 	</span>
-	
 </div>  
 <div id='votersMainOuterDiv3' class="" style="display:none;border-top:none;">
 <!--<div id="votersTitle"><h2  style="width:102%;padding:10px;"></h2></div>-->
@@ -1470,7 +1467,7 @@ for  body3 start    result  -->
 <div class="widget blue">
 <div class="widget-block" style="margin-top: 0px; clear: both; display: block; height: 35px;padding-bottom:1px;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:500px;color: black;">News Glance,Problems and Influencing People Details</h4>
-<a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-35px;margin-right: 28px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
+<a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-43px;margin-right: 28px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
 
 <div id="allAjaxImg" style="display:none;float:right;margin-top:-27px;">
 	<img src="./images/icons/search.gif" /></div>
@@ -1478,7 +1475,7 @@ for  body3 start    result  -->
 </div>
 
 
-	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000; margin-top: 51px;"></div>
+	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 101%;color:#000000; margin-top: 51px;"></div>
 	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
